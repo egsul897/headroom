@@ -5,7 +5,7 @@
 **Starting PR:** #153
 **Starting SHA:** `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
 **Frozen evaluation content SHA:** `cebec8ab3aaecd894b1903ac0b758828655a88df`
-**Generation HEAD:** `af9bbda1ef437e9afae7c34a125707ef44d7cb49`
+**Generation HEAD:** `e690ae4097e70cb1fb3f472a5e9f8b30ec0b9057`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
 **Production fixes in this branch:** `false`
@@ -54,15 +54,16 @@ Count: **12** (heuristic expansion probes; not GT-backed PASS).
 
 See `26-legal-safety-metrics.json`. Unavailable GT never converted to PASS.
 
+## 8b. Shared-capacity P0 E2E closure (scripted)
+
+- Production tip probed: `0e31c360c040df6bc7284ff8d3ca8c62a22bdd11` (labeling fix `83cde5b` still ancestor)
+- Artifacts: `29-p0-shared-cap-e2e-closure.json` · `29-p0-shared-cap-e2e-REPORT.md` (plus prior `28-*` labeling replay)
+- Scripted compile→capacity: ordinary aggregate alone → zero executable shared pools; genuine shared positives + fail-closed unquantified share verified
+- Gibraltar frozen-51 strata: 42 ordinary aggregate / 9 helper-shared but Pass-A nodeId-dropped
+- Ticket remains **INDEPENDENTLY_ADJUDICATED** (live unpaid LLM compile boundary)
+
 ## 9. SHA / tests / CI / PR
 
-- HEAD: `af9bbda1ef437e9afae7c34a125707ef44d7cb49`
+- HEAD: `e690ae4097e70cb1fb3f472a5e9f8b30ec0b9057` (pre-E2E-closure commit; regenerate on next phase3-run)
 - Tests: `npm run live-corpus-quality-gate:phase3` · `npx vitest run tests/live-corpus-quality-gate/`
 - PR: #153 draft — do not merge
-
-## P0 Shared-capacity independent replay (ADV-FP-01/02)
-
-- Baseline `8f87a06` reproduces false shared_cap / SHARED_CAP_CANDIDATE.
-- Fix `83cde5b` (PR #136) corrects labeling; genuine shared language retained.
-- Defect `LCQG-GIB-FALSE-AFFIRM-SHARED-CAP`: **INDEPENDENTLY_ADJUDICATED** (not CLOSED).
-- Artifact: `28-p0-shared-cap-independent-replay.json` · `28-p0-shared-cap-REPORT.md`

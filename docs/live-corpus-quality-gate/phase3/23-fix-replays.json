@@ -16,21 +16,23 @@
           "defectTicketVerdict": {
             "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
             "status": "INDEPENDENTLY_ADJUDICATED",
-            "notClosedBecause": "Labeling layer (Pass A / coverage-audit / context sibling typing / semantic SHARED_CAP_MARKER) independently verified repaired. End-to-end IR shared-capacity grant / transaction-capacity creation path not fully re-certified in this unpaid replay — per mission rule, INDEPENDENTLY_ADJUDICATED rather than CLOSED."
+            "notClosedBecause": "Labeling repaired (28). Scripted E2E compile\u2192capacity at 0e31c36 proves ordinary aggregate cannot CERTIFY/EXECUTE a shared pool (29). Not CLOSED \u2014 live unpaid LLM WireSharedCapacity emit from ADV-FP text not run; preserve INDEPENDENTLY_ADJUDICATED."
           },
           "advFp": {
             "ADV-FP-01": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
             "ADV-FP-02": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
             "ticketClosed": false
           }
-        }
+        },
+        "e2eClosureArtifact": "docs/live-corpus-quality-gate/phase3/29-p0-shared-cap-e2e-closure.json",
+        "productionTipProbed": "0e31c360c040df6bc7284ff8d3ca8c62a22bdd11"
       },
       "verdict": "REPLAY_PASSED",
-      "note": "Independent worktree replay recorded: baseline reproduces ADV-FP-01/02; fix 83cde5b corrects labeling. Eval checkout does not embed production fix (by design). Ticket INDEPENDENTLY_ADJUDICATED, not CLOSED."
+      "note": "Labeling + scripted E2E capacity path independently recorded. Ticket remains INDEPENDENTLY_ADJUDICATED (not CLOSED)."
     },
     {
       "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
-      "candidateSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
+      "candidateSha": "d6852f3a8fde5749902207d4c0758df1e4f79cc6",
       "baselineSha": null,
       "worktreeUsed": "current-eval",
       "reproductionPassed": true,
@@ -77,13 +79,13 @@
       "observations": {
         "vitestTail": [
           "",
-          " ✓ tests/contract-model/context-retrieval-definition-contents.test.ts (4 tests) 7ms",
-          " ✓ tests/contract-model/compiler/operative-authority.test.ts (21 tests) 16ms",
+          " \u2713 tests/contract-model/context-retrieval-definition-contents.test.ts (4 tests) 7ms",
+          " \u2713 tests/contract-model/compiler/operative-authority.test.ts (21 tests) 16ms",
           "",
           " Test Files  2 passed (2)",
           "      Tests  25 passed (25)",
-          "   Start at  22:49:15",
-          "   Duration  894ms (transform 541ms, setup 0ms, collect 890ms, tests 23ms, environment 0ms, prepare 108ms)"
+          "   Start at  23:43:25",
+          "   Duration  986ms (transform 594ms, setup 0ms, collect 993ms, tests 23ms, environment 0ms, prepare 90ms)"
         ],
         "acceptance": "CONTENTS_LISTING refuseModelDispatch; never silent TOC bind; AMBIGUOUS exposure preserved"
       },

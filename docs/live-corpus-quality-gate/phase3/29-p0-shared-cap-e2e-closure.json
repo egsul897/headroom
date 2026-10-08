@@ -1,0 +1,556 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.phase3.p0-shared-cap-e2e-closure.v1",
+  "evaluationPr": 153,
+  "productionPr": 136,
+  "startingObservedHead": "0e31c360c040df6bc7284ff8d3ca8c62a22bdd11",
+  "endingProductionHead": "696b9372c3e85e26504780c90a2538796449a281",
+  "labelingFixSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+  "labelingEvalSha": "d6852f3a8fde5749902207d4c0758df1e4f79cc6",
+  "fixPresentAtTip": true,
+  "fixIsAncestorOfTip": true,
+  "paidCalls": 0,
+  "freezeIntact": true,
+  "productionCodeModifiedByThisEvalScript": false,
+  "labelingSmoke": {
+    "advFp01": "aggregate_amount",
+    "advFp02": "aggregate_amount",
+    "genuineTogetherWith": "shared_cap",
+    "genuineIsRelationship": true
+  },
+  "gibraltarStratification": {
+    "frozenHistoricalSharedCapRows": 51,
+    "livePassACandidates": 901,
+    "liveSharedCap": 18,
+    "liveAggregateAmount": 83,
+    "stratumCounts": {
+      "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED": 9,
+      "ORDINARY_AGGREGATE_CEILING": 42
+    },
+    "droppedLikelySharedRelationship": [
+      {
+        "nodeId": "structural-node:a78010134626724c1947f374",
+        "sectionRef": "1.01(3)(31)(2)(1)(e)(ii)",
+        "excerptPreview": "(ii) fees, costs and expenses associated with acquisition related litigation and settlement thereof; provided that the aggregate amount of adjustments made pursuant to this clause (e)(i) (combined with the aggregate amou"
+      },
+      {
+        "nodeId": "structural-node:1404f14b21872b6fa025d963",
+        "sectionRef": "1.01(3)(31)(2)(1)(g)(ii)",
+        "excerptPreview": "first day of such period, net of the amount of actual benefits realized prior to or during such period from such actions; provided that the aggregate amount of adjustments made pursuant to this clause (g) (combined with "
+      },
+      {
+        "nodeId": "structural-node:0bdf9014f7b983ed367074f1",
+        "sectionRef": "1.01(3)(31)(2)(1)(u)",
+        "excerptPreview": "and start-up period prior to opening, that are operated, or to be operated, by the Borrower or any Restricted Subsidiary; provided that the aggregate amount of adjustments made pursuant to this clause (u) (combined with "
+      },
+      {
+        "nodeId": "structural-node:bd03ec1f7eaf077d11f487b8",
+        "sectionRef": "1.01(3)(31)(2)(1)(v)(ii)",
+        "excerptPreview": "of such incremental contract value had been realized as Consolidated EBITDA contributed on the first day of such period; provided that the aggregate amount of adjustments made pursuant to this clause (v) (combined with t"
+      },
+      {
+        "nodeId": "structural-node:d2d3f5a60a0943c7ed5ff5bb",
+        "sectionRef": "1.01(3)(31)(2)(1)(w)",
+        "excerptPreview": "date that is 24 months after the date of commencement of construction or the date of acquisition thereof, as applicable; provided that the aggregate amount of adjustments made pursuant to this clause (w) (combined with t"
+      },
+      {
+        "nodeId": "structural-node:3dd36c89a9009cb28b5b4d45",
+        "sectionRef": "1.01(9)(c)(1)(b)",
+        "excerptPreview": "ding the Capital Stock of any such Person) that will, upon the making of such Investment, become a Restricted Subsidiary; provided that the aggregate amount of Investments made by any Loan Party in any Non-Loan Party Sub"
+      },
+      {
+        "nodeId": "structural-node:ef7239e5f5ebc30dc1bada5a",
+        "sectionRef": "1.01(9)(c)(2)(a)",
+        "excerptPreview": "ult of such Investment such other Person, in one transaction or a series of transactions, is merged, amalgamated, consolidated or otherwise combined with or into, or transfers or conveys all or substantially all its asse"
+      },
+      {
+        "nodeId": "structural-node:aae165dcba11082ad7029d33",
+        "sectionRef": "1.10(b)",
+        "excerptPreview": "vings, operating expense reductions and synergies resulting from such transactions which is being given pro forma effect; provided that the aggregate amount of cost savings, operating expense reductions and synergies add"
+      },
+      {
+        "nodeId": "structural-node:1219870ad86e9fa63fb09477",
+        "sectionRef": "7.06(b)(4)",
+        "excerptPreview": "k or Indebtedness of a Person, entered into on or before the date on which such Person was acquired by or merged, consolidated or otherwise combined with or into the Borrower or any Restricted Subsidiary, or was designat"
+      }
+    ],
+    "droppedAmbiguousOrExotic": [],
+    "recallLimitation": "Production helper still classifies some frozen-fixture excerpts as shared_cap, but those historical nodeIds are absent from live Pass A shared_cap set (node identity / span drift or Pass A admission filter). Treat as residual under-recall risk; live tip still reports independent shared_cap candidates outside the frozen 51.",
+    "noteOnRetainedZero": "Frozen pass-a-shared-cap.json nodeIds are historical. Live tip shared_cap count is an independent Pass A recount and need not intersect those nodeIds."
+  },
+  "e2eBoundary": {
+    "unpaidScriptedE2EAvailable": true,
+    "unpaidLiveLlmCompileUnavailable": true,
+    "meaning": "Scripted golden harness proves aggregate-alone cannot CERTIFY/EXECUTE a shared pool when the model does not invent unsupported SHARED_CAP inventory, and that inventing a pool without source support fails verification (ATTACK). Live Pass B / LLM WireSharedCapacity emit from unpaid raw ADV-FP text is out of scope."
+  },
+  "vitestOnProductionWorktree": {
+    "command": "npx vitest run shared-capacity-aggregate-alone-e2e + shared-capacity + false-permission + shared-and-ledger + aggregate-ceiling-limit + figure-role",
+    "result": "53 passed / 0 failed / 53 total"
+  },
+  "defectTicketVerdict": {
+    "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+    "status": "INDEPENDENTLY_ADJUDICATED",
+    "ticketClosed": false,
+    "notClosedBecause": "Scripted compile\u2192certify\u2192REQUIRE\u2192capacity path independently verified for ADV-FP aggregate-alone (no executable shared pool) and genuine shared positives. Live unpaid LLM discovery/compile of ADV-FP source text was not run; certification pins and freeze untouched. Preserve INDEPENDENTLY_ADJUDICATED per mission (not CLOSED)."
+  },
+  "stratifiedRows": [
+    {
+      "nodeId": "structural-node:a78010134626724c1947f374",
+      "sectionRef": "1.01(3)(31)(2)(1)(e)(ii)",
+      "excerptPreview": "(ii) fees, costs and expenses associated with acquisition related litigation and settlement thereof; provided that the aggregate amount of adjustments made pursuant to this clause (e)(i) (combined with the aggregate amou",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:1404f14b21872b6fa025d963",
+      "sectionRef": "1.01(3)(31)(2)(1)(g)(ii)",
+      "excerptPreview": "first day of such period, net of the amount of actual benefits realized prior to or during such period from such actions; provided that the aggregate amount of adjustments made pursuant to this clause (g) (combined with ",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:0bdf9014f7b983ed367074f1",
+      "sectionRef": "1.01(3)(31)(2)(1)(u)",
+      "excerptPreview": "and start-up period prior to opening, that are operated, or to be operated, by the Borrower or any Restricted Subsidiary; provided that the aggregate amount of adjustments made pursuant to this clause (u) (combined with ",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:bd03ec1f7eaf077d11f487b8",
+      "sectionRef": "1.01(3)(31)(2)(1)(v)(ii)",
+      "excerptPreview": "of such incremental contract value had been realized as Consolidated EBITDA contributed on the first day of such period; provided that the aggregate amount of adjustments made pursuant to this clause (v) (combined with t",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:d2d3f5a60a0943c7ed5ff5bb",
+      "sectionRef": "1.01(3)(31)(2)(1)(w)",
+      "excerptPreview": "date that is 24 months after the date of commencement of construction or the date of acquisition thereof, as applicable; provided that the aggregate amount of adjustments made pursuant to this clause (w) (combined with t",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:810ab0499d78235da04d1f33",
+      "sectionRef": "1.01(3)(31)(2)(c)",
+      "excerptPreview": "(c) the aggregate amount of Unrestricted Cash and Cash Equivalents ( provided that the cash proceeds of any proposed incurrence of Indebtedness shall not be include",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:643b1619ba4f2b3c463a3f72",
+      "sectionRef": "1.01(3)(31)(2)(1)",
+      "excerptPreview": "that the Borrower\u2019s equity in the net income of any such Person for such period will be included in such Consolidated Net Income up to the aggregate amount of cash or Cash Equivalents actually distributed (or to the exte",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:8354ae51001d074128690462",
+      "sectionRef": "1.01(3)(31)(2)(2)(a)",
+      "excerptPreview": "wer\u2019s equity in the net income of any such Restricted Subsidiary for such period will be included in such Consolidated Net Income up to the aggregate amount of cash or Cash Equivalents actually distributed (or to the ext",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:755a1faaf522f06c0ed38f5c",
+      "sectionRef": "1.01(3)(31)(ii)(b)(ii)(B)",
+      "excerptPreview": "gations being equal at any time to the aggregate then undrawn and unexpired amount of such letters of credit or other instruments, plus the aggregate amount of drawings thereunder that have not been reimbursed) (except t",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:f114d1bbf96a737aadaad0ee",
+      "sectionRef": "1.01(9)(b)(i)",
+      "excerptPreview": "aption \u201cInitial Tranche A Term Commitment\u201d as such amount may be adjusted from time to time in accordance with this Agreement. The initial aggregate amount of the Initial Tranche A Term Commitments as of the Closing Date",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:6440dd9030f43befa3e63af9",
+      "sectionRef": "1.01(9)(b)(b)",
+      "excerptPreview": "each case, as agreed in such Revolving Credit Lender\u2019s sole discretion. \u201c L/C Obligations \u201d means, as at any date of determination, the aggregate amount available to be drawn under all outstanding Letters of Credit, plus",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:1af2c1945de8b80bcfa984d0",
+      "sectionRef": "1.01(9)(c)(a)(b)",
+      "excerptPreview": "nt of such L/C Obligations on such date after giving effect to any L/C Credit Extension occurring on such date and any other changes in the aggregate amount of the L/C Obligations as of such date, including as a result o",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:3dd36c89a9009cb28b5b4d45",
+      "sectionRef": "1.01(9)(c)(1)(b)",
+      "excerptPreview": "ding the Capital Stock of any such Person) that will, upon the making of such Investment, become a Restricted Subsidiary; provided that the aggregate amount of Investments made by any Loan Party in any Non-Loan Party Sub",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:ef7239e5f5ebc30dc1bada5a",
+      "sectionRef": "1.01(9)(c)(2)(a)",
+      "excerptPreview": "ult of such Investment such other Person, in one transaction or a series of transactions, is merged, amalgamated, consolidated or otherwise combined with or into, or transfers or conveys all or substantially all its asse",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:c58dbb1e64395fdc881720bc",
+      "sectionRef": "1.01(9)(c)(a)",
+      "excerptPreview": "(a) Total Outstandings (with the aggregate amount of each Lender\u2019s risk participation and funded participation in L/C Obligations being deemed \u201cheld\u201d by such Lender for purposes of this def",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:5276bd3956eb36500353dc07",
+      "sectionRef": "1.01(9)(c)(a)",
+      "excerptPreview": "(a) Total Revolving Credit Outstandings (with the aggregate amount of each Revolving Credit Lender\u2019s risk participation and funded participation in L/C Obligations being deemed \u201cheld\u201d by such Revolving Cred",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:b3a65d4a2052110338a24ed7",
+      "sectionRef": "1.01(9)(c)(a)",
+      "excerptPreview": "(a) Total Revolving Credit Outstandings (with the aggregate amount of each Revolving Credit Lender\u2019s risk participation and funded participation in L/C Obligations being deemed \u201cheld\u201d by such Revolving Cred",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:9c90753d5db142dbb39cabfd",
+      "sectionRef": "1.01(9)(c)(b)",
+      "excerptPreview": "uch amounts may be adjusted from time to time in accordance with this Agreement. \u201c Revolving Credit Facility \u201d means, at any time, the aggregate amount of the Revolving Credit Lenders\u2019 Revolving Credit Commitments in res",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:7295f642c22bb0fca8b72eb1",
+      "sectionRef": "1.01(9)(c)(a)",
+      "excerptPreview": "(a) with respect to the Administrative Agent, the aggregate amount, if any",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:47c02f930515ffdfc6cc34d5",
+      "sectionRef": "1.01(9)(c)(b)",
+      "excerptPreview": "(b) with respect to any L/C Issuer, the aggregate amount, if any, of amounts drawn under Letters of Credit in respect of which a Revolving Credit Lender shall have failed to make Revolving Credit",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:aae165dcba11082ad7029d33",
+      "sectionRef": "1.10(b)",
+      "excerptPreview": "vings, operating expense reductions and synergies resulting from such transactions which is being given pro forma effect; provided that the aggregate amount of cost savings, operating expense reductions and synergies add",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:18bbc2e5ba9393edff0aae60",
+      "sectionRef": "2.01(b)",
+      "excerptPreview": "Closing Date on any Business Day until and excluding the Business Day preceding the Maturity Date for the Revolving Credit Facility, in an aggregate amount not to exceed at any time outstanding the amount of such Lender\u2019",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:57a3db7008c14c65925285b8",
+      "sectionRef": "2.03(l)(i)",
+      "excerptPreview": "(and ratably participated in by Lenders pursuant to) the Revolving Credit Commitments in respect of such non-terminating Tranches up to an aggregate amount not to exceed the aggregate principal amount of the unused Revol",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:ec5552c3ade6451529dcfe77",
+      "sectionRef": "2.05(b)(B)(1)",
+      "excerptPreview": "(1) the aggregate amount of voluntary principal prepayments of the Loans or Indebtedness that is secured by a Lien on the Collateral on a senior or pari passu basis",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:65162a571d09ab1c89bb6b54",
+      "sectionRef": "2.05(b)(B)(5)",
+      "excerptPreview": "(5) the aggregate amount of capital expenditures either made in cash or accrued by the Restricted Group during the period commencing on the first day of the relevan",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:238012214aba788ae5275598",
+      "sectionRef": "2.05(b)(B)(6)",
+      "excerptPreview": "(6) the aggregate amount of cash consideration paid by the Restricted Group in connection with Investments (including, without limitation, any acquisitions and acqu",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:fdb0e2b4d17639ec8ba77082",
+      "sectionRef": "2.05(b)(B)(7)",
+      "excerptPreview": "uring the period of four consecutive fiscal quarters of the Borrower following the end of such fiscal year; provided that to the extent the aggregate amount of cash actually utilized to finance such Restricted Payments a",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:327e27890e5a4c6ff604c03b",
+      "sectionRef": "2.05(b)(B)(8)",
+      "excerptPreview": "(8) the aggregate amount of payments either made in cash or accrued by the Restricted Group during the period commencing on the first day of the relevant Excess Cas",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:878f7ffaffdff975fa91e0f5",
+      "sectionRef": "2.05(b)(B)(2)",
+      "excerptPreview": "all immediately prepay the Loans under the applicable Revolving Tranche and/or Cash Collateralize the L/C Obligations related thereto in an aggregate amount equal to such excess; provided , however , that the Borrower sh",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:45614924931520f1fa74fa00",
+      "sectionRef": "2.06(a)(i)",
+      "excerptPreview": "riod as the Administrative Agent shall agree) prior to the date of termination or reduction, (ii) any such partial reduction shall be in an aggregate amount of $500,000 or any whole multiple of $100,000 in excess thereof",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:715f6f9ee0c57b9e1b21602f",
+      "sectionRef": "2.14(c)(ii)(ii)",
+      "excerptPreview": "Incremental Arranger to execute and deliver any such documentation)) to increase the then-remaining unpaid installments of principal by an aggregate amount equal to the additional Loans under such Term Loan Tranche being",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:ca12b0aafb963f149458d47d",
+      "sectionRef": "2.14(d)(ii)(D)(1)",
+      "excerptPreview": "trative Agent (a \u201c Customary Term A Facility \u201d), and (z) an aggregate principal amount of New Term Loans under such New Term Facility in an aggregate amount equal to",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:bf31677dbd5c3c23d7292828",
+      "sectionRef": "2.19(b)",
+      "excerptPreview": "ion Request of the amount of its Specified Existing Tranche that it has elected to convert into an Extended Tranche. In the event that the aggregate amount of the Specified Existing Tranche subject to Extension Elections",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:a9796fc63d940d706ffed4ed",
+      "sectionRef": "5.07(b)",
+      "excerptPreview": "ricted payments and other Investments permitted hereunder) and/or for any other purpose not prohibited by this Agreement; provided that the aggregate amount of Revolving Credit Loans made on the Closing Date to finance t",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:6f2508aec50c242e0d858d32",
+      "sectionRef": "7.01(b)(d)",
+      "excerptPreview": "in the case of any Refinancing Indebtedness, when measuring the outstanding amount of such Indebtedness, such amount shall not include the aggregate amount of accrued and unpaid interest, dividends, premiums (including t",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:632e06c7cf52a1525811e7a7",
+      "sectionRef": "7.01(b)(b)",
+      "excerptPreview": "(b) the aggregate amount of accrued and unpaid interest, dividends, premiums (including tender premiums), defeasance costs, underwriting discounts, fees, costs and",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:0a2be8b2e0ea7fe1aa036380",
+      "sectionRef": "7.05(a)(4)(ii)",
+      "excerptPreview": "Section 8.01(a) , (f) or (g) shall have occurred and be continuing (or would immediately thereafter result therefrom); or (y) the aggregate amount of such Restricted Payment and all other Restricted Payments made subsequ",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:843e51ecaa831d56f86f43c4",
+      "sectionRef": "7.05(a)(4)(ii)(ii)",
+      "excerptPreview": "(ii) 100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower from the issue or sale of its C",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:a52c54dcbc2577c91ee428cd",
+      "sectionRef": "7.05(a)(4)(ii)(iii)",
+      "excerptPreview": "(iii) 100% of the aggregate amount of cash, and the fair market value of property or assets or marketable securities, received by the Borrower or any Restricted Subsidiary fr",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:fa2541647a1295b88f8cba8f",
+      "sectionRef": "7.05(a)(4)(ii)(iv)",
+      "excerptPreview": "(iv) 100% of the aggregate amount received in cash and the fair market value, as determined in good faith by the Borrower, of marketable securities or other property receive",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:a8239d9dfce91247fda7a077",
+      "sectionRef": "7.05(b)(2)(a)",
+      "excerptPreview": "which were used to redeem, repurchase, retire or otherwise acquire any Capital Stock of a direct or indirect parent of the Borrower) in an aggregate amount per year no greater than the aggregate amount of dividends per a",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:fc24a4e92b37f98289d848c1",
+      "sectionRef": "7.05(b)(13)(iii)",
+      "excerptPreview": "(ii) , the amount of dividends paid to a Person pursuant to such clause shall not exceed the cash proceeds received by the Borrower or the aggregate amount contributed in cash to the equity of the Borrower (other than th",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:5ba9d0815d28688eed5b701e",
+      "sectionRef": "7.05(b)(17)(i)",
+      "excerptPreview": "(i) Restricted Payments (including loans or advances) in an aggregate amount outstanding at the time made not to exceed the greater of",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:a079e343882f5f3c1adead2c",
+      "sectionRef": "7.05(b)(19)(i)",
+      "excerptPreview": "er acquisition or retirement of Subordinated Indebtedness of the Borrower or any Guarantor or the making of any Restricted Investment in an aggregate amount outstanding at the time made, taken together with all other red",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:72de995dbb3c4f01792b34fe",
+      "sectionRef": "7.05(b)(22)",
+      "excerptPreview": "(22) investments or other Restricted Payments in an aggregate amount not to exceed an amount equal to the Retained Declined Proceeds; 244",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:1219870ad86e9fa63fb09477",
+      "sectionRef": "7.06(b)(4)",
+      "excerptPreview": "k or Indebtedness of a Person, entered into on or before the date on which such Person was acquired by or merged, consolidated or otherwise combined with or into the Borrower or any Restricted Subsidiary, or was designat",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "shared_cap",
+      "stratum": "HELPER_SAYS_SHARED_BUT_PASS_A_DROPPED"
+    },
+    {
+      "nodeId": "structural-node:44f951ef730fa85dd90727ae",
+      "sectionRef": "8.01(h)",
+      "excerptPreview": "Judgments . There is entered against any Loan Party or any Material Subsidiary a final judgment or order for the payment of money in an aggregate amount (as to all such judgments and orders) equal to or greater than the ",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:d8f5812fdc25dd2d0f86d1b2",
+      "sectionRef": "8.01(i)(i)(i)",
+      "excerptPreview": "ed Pension Liability or Unfunded Pension Liabilities results or would reasonably be expected to result in liability of any Loan Party in an aggregate amount which would reasonably be expected to result in a Material Adve",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:a683e25ef207adc7e4332fb1",
+      "sectionRef": "8.01(i)(i)(ii)",
+      "excerptPreview": "wal liability under Section 4201 of ERISA which has resulted or could reasonably be expected to result in liability of any Loan Party in an aggregate amount which would reasonably be expected to result in a Material Adve",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:22993bfbc0a99a2b59880d1a",
+      "sectionRef": "10.07(b)(i)(B)",
+      "excerptPreview": "(B) in any case not described in clause (b)(i)(A) of this Section 10.07 , the aggregate amount of the Commitment (which for this purpose includes Loans outstanding thereunder) or, if the applicable Commitment is not then",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    },
+    {
+      "nodeId": "structural-node:5b89d57897af29e9a5c53715",
+      "sectionRef": "10.07(b)(viii)",
+      "excerptPreview": "er conditions thereto set forth herein, the parties to the assignment shall make such additional payments to the Administrative Agent in an aggregate amount sufficient, upon distribution thereof as appropriate (which may",
+      "stillSharedCapOnTip": false,
+      "helperClassOnExcerpt": "aggregate_amount",
+      "stratum": "ORDINARY_AGGREGATE_CEILING"
+    }
+  ],
+  "syntheticTransactionSharedProbes": {
+    "result": "10 passed (filtered shared/pool cases)"
+  },
+  "e2eTraces": {
+    "ADV-FP-02_singleAggregateBasket": {
+      "path": "source\u2192scripted inventory\u2192compile\u2192certify\u2192Phase4 REQUIRE\u2192evaluateVerifiedCapacity\u2192simulateVerifiedTransaction",
+      "sharedCapacitiesCompiled": 0,
+      "certification": "CERTIFIED",
+      "phase4": "DERIVED",
+      "capacityOutcome": "EXECUTED",
+      "sharedConstraints": 0,
+      "simulationOutcome": "EXECUTED"
+    },
+    "ADV-FP-01_ceilingWithoutAffirmativePermission": {
+      "sharedCapacitiesCompiled": 0,
+      "allCapacityExpressionsNull": true,
+      "sharedCapacityMapNodes": 0
+    },
+    "ATTACK_inventedPoolWithoutSource": {
+      "source": "existing shared-capacity.test.ts ATTACK",
+      "verification": "MATERIAL_DISCREPANCY",
+      "certification": "REVIEW_REQUIRED",
+      "phase4": "REFUSED",
+      "requireBoundary": "VERIFICATION_ARTIFACT_INCOMPLETE"
+    },
+    "genuine_crossClausePool": {
+      "certification": "CERTIFIED",
+      "sharedCapacitiesCompiled": 1,
+      "capacityOutcome": "EXECUTED",
+      "sharedConstraints": 1
+    },
+    "doubleCount_runtime": {
+      "memberDraws": [
+        40,
+        30
+      ],
+      "poolGross": 150,
+      "poolUsage": 70,
+      "poolRemaining": 80,
+      "memberGrossUnchanged": [
+        100,
+        100
+      ]
+    },
+    "unquantifiedSharesCapacityWith": {
+      "inventedPool": false,
+      "graphLimitation": "SHARED_CAPACITY_NOT_QUANTIFIED"
+    }
+  },
+  "e2eRegressionCommit": "696b9372c3e85e26504780c90a2538796449a281",
+  "note": "E2E regression test landed on PR #136 as 696b937 (rebased atop 9bc177f). Probe evidence gathered at 0e31c36; tests re-verified after push."
+}

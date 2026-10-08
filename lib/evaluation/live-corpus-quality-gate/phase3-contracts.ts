@@ -93,21 +93,22 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       frozenExpectedBehavior:
         "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
       independentTestCommand:
-        "docs/live-corpus-quality-gate/phase3/28-p0-shared-cap-independent-replay.json  # isolated baseline 8f87a06 vs fix 83cde5b",
+        "docs/live-corpus-quality-gate/phase3/29-p0-shared-cap-e2e-closure.json  # + 28 labeling replay; prod tests shared-capacity-aggregate-alone-e2e",
       acceptanceCriteria: [
         "shared_cap signal no longer fires on ordinary aggregate-amount nodes lacking shared-pool semantics.",
         "Explicit shared capacity / combined basket / reallocation language still detectable.",
         "No package-specific hardcoding (Invariant #29).",
         "Independent evaluator REPLAY_PASSED before any CLOSED status.",
+        "Scripted compile→certify→REQUIRE→capacity: ordinary aggregate alone yields zero executable IRSharedCapacity / sharedConstraints.",
       ],
       regressionRisks: [
-        "Over-narrowing may miss real shared baskets that use atypical phrasing (Gibraltar shared_cap 48→18; monitor exotic phrasing).",
+        "Over-narrowing may miss real shared baskets that use atypical phrasing (Gibraltar shared_cap ~18 live; 9 frozen-fixture excerpts still helper-shared_cap but Pass A nodeId-dropped).",
         "Downstream Pass B/C consumers that treated shared_cap as soft recall signal may need recalibration.",
-        "Labeling repair ≠ full IR shared-capacity grant certification — keep ticket out of CLOSED until capacity-path adjudication.",
+        "Unpaid scripted E2E ≠ live LLM WireSharedCapacity emit — keep ticket out of CLOSED until paid/live compile boundary is separately adjudicated or accepted.",
       ],
       status: overrides?.["LCQG-GIB-FALSE-AFFIRM-SHARED-CAP"] ?? "INDEPENDENTLY_ADJUDICATED",
       statusRationale:
-        "Independent worktree replay: baseline 8f87a06 reproduces ADV-FP-01/02 (shared_cap + SHARED_CAP_CANDIDATE); fix 83cde5b (PR #136) corrects labeling across Pass A / coverage-audit / context typing / semantic marker while genuine shared language remains detectable. Not CLOSED — end-to-end transaction-capacity creation from aggregate alone not separately re-certified beyond labeling + figure-role interaction probes.",
+        "Labeling independently verified (baseline 8f87a06 → fix 83cde5b). E2E scripted golden path at PR #136 head 0e31c36 proves ADV-FP aggregate-alone cannot CERTIFY/EXECUTE a shared pool; genuine shared positives and unquantified-share fail-closed hold; Gibraltar drop stratified (42 ordinary / 9 helper-shared but Pass-A-dropped). Not CLOSED — live unpaid LLM discovery/compile of ADV-FP text not run; preserve INDEPENDENTLY_ADJUDICATED.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
