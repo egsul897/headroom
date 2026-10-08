@@ -1,0 +1,111 @@
+{
+  "expected": 12,
+  "truePositives": 7,
+  "precisionProbeFalsePositives": 0,
+  "recall": 0.5833333333333334,
+  "precision": 1,
+  "independentReview": "SAMPLE_AUTHORED_FROM_SOURCE — not legal certification",
+  "details": [
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Indebtedness",
+        "connective": "defined-term occurrence in negative covenant region"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "EBITDA",
+        "connective": "defined-term occurrence"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "termName": "EBITDA",
+        "connective": "ratio definition compositional reference"
+      },
+      "hit": false
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "ENTITY_SCOPE",
+        "connective": "Restricted Subsidiary / Loan Party connective window"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CONDITION",
+        "connective": "subject to"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_EXCEPTION",
+        "connective": "except as provided / permitted by"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "RECLASSIFICATION",
+        "connective": "reclassification"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "FINANCIAL_INPUT",
+        "termName": "NET_INCOME",
+        "connective": "compositional means/plus Net Income"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Indebtedness",
+        "connective": "defined-term occurrence"
+      },
+      "hit": false
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Security/Collateral/Intercreditor Agreement"
+      },
+      "hit": false
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "connective": "Available Amount / shared basket"
+      },
+      "hit": false
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "connective": "Leverage Ratio definition"
+      },
+      "hit": false
+    }
+  ]
+}

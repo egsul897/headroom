@@ -1,0 +1,530 @@
+{
+  "schemaVersion": "covenant-dependency-atlas.v2",
+  "generatedAt": "2026-10-08T22:19:29.009Z",
+  "paidInference": false,
+  "productionResolverTouched": false,
+  "merges": false,
+  "certificationChanges": false,
+  "corpus": {
+    "registered": 25,
+    "available": 25,
+    "developmentAvailable": 24,
+    "evaluationAvailable": 1,
+    "issuers": [
+      "CHWY",
+      "CNMD",
+      "DSGR",
+      "FWRG",
+      "LSB",
+      "RIOT",
+      "ROCK",
+      "SXI"
+    ],
+    "targetRange": {
+      "min": 25,
+      "max": 50
+    },
+    "targetMet": true,
+    "note": "Local+acquired corpus meets the 25–50 authentic-agreement target window."
+  },
+  "extractionFailures": [],
+  "groundTruthAssisted": {
+    "documents": 4,
+    "edges": 2310,
+    "resolved": 1513,
+    "unresolved": 715,
+    "ambiguous": 82,
+    "nodeIdentity": {
+      "atlasNodeCountRaw": 2490,
+      "atlasNodeCountUnique": 2482,
+      "kfExportNodeCount": 2482,
+      "duplicateNodeIds": [
+        {
+          "nodeId": "node:financial_input:CONSOLIDATED_TOTAL_ASSETS",
+          "occurrences": 3,
+          "documentIds": [
+            "doc-a",
+            "doc-b",
+            "doc-d"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:INTEREST_EXPENSE",
+          "occurrences": 3,
+          "documentIds": [
+            "doc-a",
+            "doc-b",
+            "doc-d"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:NET_INCOME",
+          "occurrences": 3,
+          "documentIds": [
+            "doc-a",
+            "doc-b",
+            "doc-d"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:UNRESTRICTED_CASH",
+          "occurrences": 3,
+          "documentIds": [
+            "doc-a",
+            "doc-b",
+            "doc-d"
+          ]
+        }
+      ],
+      "explanation": "KF export flattens package documents and deduplicates by nodeId. 8 raw node row(s) share an id with another row (typically financial_input:* or cross_document:* leaves reused across documents, or authored overlays repeating an inventory node). Dedup keeps one canonical node per id — not silent loss of distinct legal objects with distinct ids.",
+      "silentDataLoss": false
+    },
+    "completenessMetricsSample": [
+      {
+        "documentId": "doc-a",
+        "metrics": {
+          "inventoryCoverage": 1,
+          "edgeDiscoveryCoverage": 0.789,
+          "edgeResolutionRate": 0.75,
+          "sourceProvenanceCoverage": 1,
+          "dependencyTypeCoverage": 0.8182,
+          "legalSemanticVerification": 0,
+          "legalSemanticVerificationStatus": "NOT_PERFORMED"
+        },
+        "gapCount": 4,
+        "deprecatedCompletenessScoreMeansInventoryCoverageOnly": 1
+      },
+      {
+        "documentId": "doc-b",
+        "metrics": {
+          "inventoryCoverage": 1,
+          "edgeDiscoveryCoverage": 0.7907,
+          "edgeResolutionRate": 0.67,
+          "sourceProvenanceCoverage": 1,
+          "dependencyTypeCoverage": 0.6364,
+          "legalSemanticVerification": 0,
+          "legalSemanticVerificationStatus": "NOT_PERFORMED"
+        },
+        "gapCount": 6,
+        "deprecatedCompletenessScoreMeansInventoryCoverageOnly": 1
+      },
+      {
+        "documentId": "doc-c",
+        "metrics": {
+          "inventoryCoverage": 1,
+          "edgeDiscoveryCoverage": 0.7576,
+          "edgeResolutionRate": 0.2376,
+          "sourceProvenanceCoverage": 1,
+          "dependencyTypeCoverage": 0.5455,
+          "legalSemanticVerification": 0,
+          "legalSemanticVerificationStatus": "NOT_PERFORMED"
+        },
+        "gapCount": 7,
+        "deprecatedCompletenessScoreMeansInventoryCoverageOnly": 1
+      },
+      {
+        "documentId": "doc-d",
+        "metrics": {
+          "inventoryCoverage": 1,
+          "edgeDiscoveryCoverage": 0.8452,
+          "edgeResolutionRate": 0.6119,
+          "sourceProvenanceCoverage": 1,
+          "dependencyTypeCoverage": 0.7273,
+          "legalSemanticVerification": 0,
+          "legalSemanticVerificationStatus": "NOT_PERFORMED"
+        },
+        "gapCount": 5,
+        "deprecatedCompletenessScoreMeansInventoryCoverageOnly": 1
+      }
+    ]
+  },
+  "structuralIndexOnly": {
+    "documents": 25,
+    "issuers": [
+      "CHWY",
+      "CNMD",
+      "DSGR",
+      "FWRG",
+      "LSB",
+      "RIOT",
+      "ROCK",
+      "SXI"
+    ],
+    "edges": 10932,
+    "resolved": 10229,
+    "unresolved": 246,
+    "ambiguous": 457,
+    "diamonds": 158,
+    "cycles": 57,
+    "nodeIdentity": {
+      "atlasNodeCountRaw": 13487,
+      "atlasNodeCountUnique": 13449,
+      "kfExportNodeCount": 13449,
+      "duplicateNodeIds": [
+        {
+          "nodeId": "node:financial_input:INTEREST_EXPENSE",
+          "occurrences": 7,
+          "documentIds": [
+            "chwy-doc-a",
+            "dsgr-doc-a",
+            "dsgr-doc-b",
+            "dsgr-doc-d",
+            "gibraltar-ca",
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:NET_INCOME",
+          "occurrences": 7,
+          "documentIds": [
+            "chwy-doc-a",
+            "dsgr-doc-a",
+            "dsgr-doc-b",
+            "dsgr-doc-d",
+            "gibraltar-ca",
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:exhibit_b",
+          "occurrences": 4,
+          "documentIds": [
+            "chwy-doc-a",
+            "cnmd-htm-omnibus",
+            "cnmd-omnibus",
+            "gibraltar-ca"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:UNRESTRICTED_CASH",
+          "occurrences": 4,
+          "documentIds": [
+            "dsgr-doc-a",
+            "dsgr-doc-b",
+            "dsgr-doc-d",
+            "gibraltar-ca"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:exhibit_g",
+          "occurrences": 3,
+          "documentIds": [
+            "chwy-doc-a",
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_6.9",
+          "occurrences": 3,
+          "documentIds": [
+            "cnmd-base-neg",
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:financial_input:CONSOLIDATED_TOTAL_ASSETS",
+          "occurrences": 3,
+          "documentIds": [
+            "dsgr-doc-a",
+            "dsgr-doc-b",
+            "dsgr-doc-d"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:clause_(3)",
+          "occurrences": 2,
+          "documentIds": [
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:exhibit_10.2",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-gca",
+            "cnmd-htm-gca"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:exhibit_f",
+          "occurrences": 2,
+          "documentIds": [
+            "chwy-doc-a",
+            "gibraltar-ca"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:schedule_3",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:schedule_5",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:schedule_i",
+          "occurrences": 2,
+          "documentIds": [
+            "dsgr-doc-a",
+            "dsgr-doc-d"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_10.1",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-omnibus",
+            "cnmd-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_10.21",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_4.01(1)(c)",
+          "occurrences": 2,
+          "documentIds": [
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_4.19",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_4.4",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_6.11",
+          "occurrences": 2,
+          "documentIds": [
+            "sup-doc-a",
+            "sup-doc-b"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_6.5",
+          "occurrences": 2,
+          "documentIds": [
+            "cnmd-htm-base",
+            "cnmd-htm-omnibus"
+          ]
+        },
+        {
+          "nodeId": "node:cross_document:section_9.15",
+          "occurrences": 2,
+          "documentIds": [
+            "gibraltar-ca",
+            "sup-doc-a"
+          ]
+        }
+      ],
+      "explanation": "KF export flattens package documents and deduplicates by nodeId. 38 raw node row(s) share an id with another row (typically financial_input:* or cross_document:* leaves reused across documents, or authored overlays repeating an inventory node). Dedup keeps one canonical node per id — not silent loss of distinct legal objects with distinct ids.",
+      "silentDataLoss": false
+    },
+    "priorityCoverage": {
+      "RECLASSIFICATION": 2,
+      "ENTITY_SCOPE": 637,
+      "COVENANT_TO_SHARED_BASKET": 25,
+      "COVENANT_TO_CROSS_DOCUMENT": 86,
+      "RATIO_CALCULATION": 98,
+      "FINANCIAL_INPUT": 31,
+      "COVENANT_TO_CONDITION": 470,
+      "COVENANT_TO_AMENDMENT": 34
+    },
+    "evaluationDocuments": [
+      {
+        "documentId": "gibraltar-ca",
+        "edges": 885,
+        "resolved": 794
+      }
+    ]
+  },
+  "unresolvedRootCause": {
+    "totalUnresolved": 715,
+    "totalAmbiguous": 82,
+    "byRootCause": {
+      "MISSING_DEFINITION": 624,
+      "MISSING_EXTERNAL_DOCUMENT": 5,
+      "AMENDMENT_TARGET_RESOLUTION": 51,
+      "STRUCTURAL_PARSING_FAILURE": 35,
+      "AMBIGUOUS_REFERENCE": 82,
+      "ENTITY_SCOPE_UNCERTAINTY": 0,
+      "INCORRECT_CANDIDATE_EDGE": 0,
+      "OTHER": 0
+    },
+    "controllingRestrictionRiskCount": 135
+  },
+  "motifAudit": {
+    "cycleCount": 7,
+    "classifications": {
+      "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION": 5,
+      "STRUCTURAL_EXTRACTION_ARTIFACT": 1,
+      "GENUINE_SEMANTIC_DEPENDENCY_CYCLE": 1
+    },
+    "diamondSampleSize": 25,
+    "falseCycleFromSharedDependency": 0,
+    "proofSharedDependencyNotCycle": "Audited 25 material diamonds; none were also classified as cycles. Shared-dependency fan-in (e.g. Available Amount) is distinct from directed circular dependency."
+  },
+  "recallPrecision": {
+    "expected": 12,
+    "truePositives": 7,
+    "precisionProbeFalsePositives": 0,
+    "recall": 0.5833333333333334,
+    "precision": 1,
+    "independentReview": "SAMPLE_AUTHORED_FROM_SOURCE — not legal certification",
+    "details": [
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_DEFINITION",
+          "termName": "Indebtedness",
+          "connective": "defined-term occurrence in negative covenant region"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_DEFINITION",
+          "termName": "EBITDA",
+          "connective": "defined-term occurrence"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "RATIO_CALCULATION",
+          "termName": "EBITDA",
+          "connective": "ratio definition compositional reference"
+        },
+        "hit": false
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "ENTITY_SCOPE",
+          "connective": "Restricted Subsidiary / Loan Party connective window"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_CONDITION",
+          "connective": "subject to"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_EXCEPTION",
+          "connective": "except as provided / permitted by"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "RECLASSIFICATION",
+          "connective": "reclassification"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "chwy-doc-a",
+        "expected": {
+          "kind": "FINANCIAL_INPUT",
+          "termName": "NET_INCOME",
+          "connective": "compositional means/plus Net Income"
+        },
+        "hit": true
+      },
+      {
+        "documentId": "riot-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_DEFINITION",
+          "termName": "Indebtedness",
+          "connective": "defined-term occurrence"
+        },
+        "hit": false
+      },
+      {
+        "documentId": "riot-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_CROSS_DOCUMENT",
+          "connective": "Security/Collateral/Intercreditor Agreement"
+        },
+        "hit": false
+      },
+      {
+        "documentId": "riot-doc-a",
+        "expected": {
+          "kind": "COVENANT_TO_SHARED_BASKET",
+          "connective": "Available Amount / shared basket"
+        },
+        "hit": false
+      },
+      {
+        "documentId": "riot-doc-a",
+        "expected": {
+          "kind": "RATIO_CALCULATION",
+          "connective": "Leverage Ratio definition"
+        },
+        "hit": false
+      }
+    ]
+  },
+  "knowledgeFactoryImport": {
+    "status": "EXPORT_READY_LOCAL",
+    "schemaVersion": "knowledge-factory.dependency-dataset.v1",
+    "localPaths": [
+      ".local-dependency-atlas/exports/structural-knowledge-factory-dataset.json",
+      ".local-dependency-atlas/exports/gt-knowledge-factory-dataset.json"
+    ],
+    "note": "Coordinate durable import with WS-CKF (cursor/covenant-knowledge-factory-7327). Atlas export is interchange; CKF maps into knowledge_relationship_edges without collapsing unresolved edges. Bulk JSON not committed to git.",
+    "peerBranches": {
+      "edgarBackfill": "cursor/edgar-historical-backfill-c45c",
+      "knowledgeFactory": "cursor/covenant-knowledge-factory-7327",
+      "ckgBenchmark": "cursor/covenant-knowledge-generalization-bench-7f51"
+    }
+  },
+  "checksums": {
+    "docs/covenant-dependency-atlas/phase-2/00-summary.json": "df81f58bafd84a83283df2ad732ab8e126eaf73e202b9560ca6e122c3e5e4ff5",
+    "docs/covenant-dependency-atlas/phase-2/01-unresolved-root-cause.json": "8894b400490c9f4f9090bec3c3d3f8c4adfd0afbabc41703c802d488100eeaaf",
+    "docs/covenant-dependency-atlas/phase-2/02-motif-audit.json": "8c90fb4900c184aa5b53fdd5177d98996066f0aaa3cc1f765063bb5a7d00e224",
+    "docs/covenant-dependency-atlas/phase-2/03-corpus-manifest.json": "a295d01ceaa754062a112367129baf487bfe180c41f80026e1d3ec98e7169e12",
+    ".local-dependency-atlas/exports/structural-knowledge-factory-dataset.json": "c06dbde3a57a5e03721cdb8061a82be2634be7fdb4ddfb6f2774d1073fd87c9a",
+    ".local-dependency-atlas/exports/gt-knowledge-factory-dataset.json": "facbfc5c6ed66c87b51d27edbd8c4749a118d125b3053e2251755ea40683613b"
+  }
+}

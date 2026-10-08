@@ -3,8 +3,12 @@
 ## Scope
 
 Offline, source-backed dataset of **directed, typed legal dependency edges** among
-provisions and definitions for the DSGR 2022–2025 credit-facility package
-(Phase-3F ground-truth docs A–D).
+provisions and definitions.
+
+- **Phase 1:** DSGR 2022–2025 (Phase-3F ground-truth docs A–D), ground-truth-assisted.
+- **Phase 2:** Structural-index-only adapter over 25 authentic agreements (8 issuers),
+  multi-metric completeness, unresolved root-cause taxonomy, motif audit, KF portable
+  export. Gibraltar held out for evaluation (CKG coordination).
 
 ## Non-goals / hard constraints
 
@@ -46,16 +50,28 @@ Unresolved and ambiguous edges are **preserved**, never dropped.
 Fixtures under `tests/fixtures/covenant-dependency-atlas/graph-fixtures/` prove the
 distinction.
 
+## Completeness (Phase 2)
+
+Separate metrics — never inventory coverage as legal completeness:
+
+- inventoryCoverage
+- edgeDiscoveryCoverage
+- edgeResolutionRate
+- sourceProvenanceCoverage
+- dependencyTypeCoverage
+- legalSemanticVerification = NOT_PERFORMED (always)
+
+Priority kinds with zero edges remain gaps even when inventory minimum is 0.
+
 ## Outputs
 
-- `tests/fixtures/covenant-dependency-atlas/export/atlas-dataset.json`
-- `tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.json` (KF-compatible)
-- `docs/covenant-dependency-atlas/export/README.md` (pointer to canonical exports)
+- `.local-dependency-atlas/exports/*` — full multi-MB JSON (gitignored)
+- `tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json`
+- `docs/covenant-dependency-atlas/phase-2/*` — manifests, audits, checksums
 - `docs/covenant-dependency-atlas/completeness-reports/doc-{a,b,c,d}.json`
-- `docs/covenant-dependency-atlas/00-summary.json`
 
 Rebuild:
 
 ```bash
-npx tsx scripts/covenant-dependency-atlas/build-atlas.ts
+npx tsx scripts/covenant-dependency-atlas/build-phase2.ts
 ```

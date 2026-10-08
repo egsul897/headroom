@@ -1,15 +1,18 @@
 /**
- * Knowledge-factory compatible dataset export.
+ * Knowledge-factory compatible dataset export (Phase 2).
  *
- * Flat nodes/edges + motifs + completeness + unresolved relationships.
- * Explicitly records: no paid inference, no merges, no certification changes,
- * production resolver untouched.
+ * Flat nodes/edges + motifs + completeness + unresolved relationships +
+ * deterministic node-identity reconciliation. No silent data loss.
  */
 
 import type { AtlasDataset, KnowledgeFactoryExport } from "./schema";
 import { ATLAS_SCHEMA_VERSION, DEPENDENCY_EDGE_KINDS, KF_EXPORT_SCHEMA_VERSION } from "./schema";
+import { assertNoSilentNodeLoss, reconcileNodeIdentity } from "./node-identity";
 
 export function toKnowledgeFactoryExport(dataset: AtlasDataset): KnowledgeFactoryExport {
+  const nodeIdentity = dataset.nodeIdentity ?? reconcileNodeIdentity(dataset);
+  assertNoSilentNodeLoss(nodeIdentity);
+
   const nodes = dataset.packages.flatMap((p) => p.documents.flatMap((d) => d.nodes));
   const edges = dataset.packages.flatMap((p) => p.documents.flatMap((d) => d.edges));
   const motifs = dataset.packages.flatMap((p) => p.documents.flatMap((d) => d.motifs));
@@ -33,12 +36,19 @@ export function toKnowledgeFactoryExport(dataset: AtlasDataset): KnowledgeFactor
       resolution: e.resolution as "UNRESOLVED" | "AMBIGUOUS",
       unresolvedReason: e.unresolvedReason,
       rationale: e.rationale,
+      rootCause: e.rootCause ?? null,
+      controllingRestrictionRisk: e.controllingRestrictionRisk ?? false,
     }));
 
-  // Deduplicate nodes by nodeId (authored overlays may repeat).
   const nodeMap = new Map(nodes.map((n) => [n.nodeId, n]));
   const edgeMap = new Map(edges.map((e) => [e.edgeId, e]));
   const motifMap = new Map(motifs.map((m) => [m.motifId, m]));
+
+  if (nodeMap.size !== nodeIdentity.kfExportNodeCount) {
+    throw new Error(
+      `KF node map size ${nodeMap.size} != reconciliation kfExportNodeCount ${nodeIdentity.kfExportNodeCount}`,
+    );
+  }
 
   return {
     schemaVersion: KF_EXPORT_SCHEMA_VERSION,
@@ -53,6 +63,7 @@ export function toKnowledgeFactoryExport(dataset: AtlasDataset): KnowledgeFactor
     motifs: [...motifMap.values()].sort((a, b) => a.motifId.localeCompare(b.motifId)),
     completenessReports,
     unresolvedRelationships,
+    nodeIdentity,
     counts: {
       nodes: nodeMap.size,
       edges: edgeMap.size,

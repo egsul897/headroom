@@ -1,0 +1,1087 @@
+{
+  "schemaVersion": "knowledge-factory.dependency-dataset.v1",
+  "atlasSchemaVersion": "covenant-dependency-atlas.v2",
+  "generatedAt": "2026-10-08T00:00:00.000Z",
+  "paidInference": false,
+  "merges": false,
+  "certificationChanges": false,
+  "productionResolverTouched": false,
+  "counts": {
+    "nodes": 2482,
+    "edges": 2310,
+    "byKind": {
+      "COVENANT_TO_DEFINITION": 1334,
+      "DEFINITION_TO_DEFINITION": 362,
+      "COVENANT_TO_CONDITION": 73,
+      "COVENANT_TO_EXCEPTION": 189,
+      "COVENANT_TO_AMENDMENT": 256,
+      "COVENANT_TO_SHARED_BASKET": 8,
+      "COVENANT_TO_CROSS_DOCUMENT": 2,
+      "ENTITY_SCOPE": 4,
+      "RATIO_CALCULATION": 54,
+      "FINANCIAL_INPUT": 28,
+      "RECLASSIFICATION": 0
+    },
+    "byResolution": {
+      "RESOLVED": 1513,
+      "UNRESOLVED": 715,
+      "AMBIGUOUS": 82
+    },
+    "diamonds": 175,
+    "cycles": 7,
+    "unresolved": 715,
+    "ambiguous": 82
+  },
+  "nodeIdentity": {
+    "atlasNodeCountRaw": 2490,
+    "atlasNodeCountUnique": 2482,
+    "kfExportNodeCount": 2482,
+    "duplicateNodeIds": [
+      {
+        "nodeId": "node:financial_input:CONSOLIDATED_TOTAL_ASSETS",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:INTEREST_EXPENSE",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:NET_INCOME",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:UNRESTRICTED_CASH",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      }
+    ],
+    "explanation": "KF export flattens package documents and deduplicates by nodeId. 8 raw node row(s) share an id with another row (typically financial_input:* or cross_document:* leaves reused across documents, or authored overlays repeating an inventory node). Dedup keeps one canonical node per id — not silent loss of distinct legal objects with distinct ids.",
+    "silentDataLoss": false
+  },
+  "completenessReports": [
+    {
+      "documentId": "doc-a",
+      "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "nodeCount": 718,
+      "edgeCount": 696,
+      "resolvedEdgeCount": 522,
+      "unresolvedEdgeCount": 160,
+      "ambiguousEdgeCount": 14,
+      "buckets": [
+        {
+          "kind": "COVENANT_TO_DEFINITION",
+          "expectedMinimum": 5,
+          "observedResolved": 268,
+          "observedUnresolved": 154,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "DEFINITION_TO_DEFINITION",
+          "expectedMinimum": 3,
+          "observedResolved": 135,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CONDITION",
+          "expectedMinimum": 1,
+          "observedResolved": 18,
+          "observedUnresolved": 3,
+          "observedAmbiguous": 4,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_EXCEPTION",
+          "expectedMinimum": 1,
+          "observedResolved": 62,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 10,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_AMENDMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "COVENANT_TO_SHARED_BASKET",
+          "expectedMinimum": 3,
+          "observedResolved": 5,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CROSS_DOCUMENT",
+          "expectedMinimum": 1,
+          "observedResolved": 0,
+          "observedUnresolved": 2,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "ENTITY_SCOPE",
+          "expectedMinimum": 2,
+          "observedResolved": 4,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "RATIO_CALCULATION",
+          "expectedMinimum": 2,
+          "observedResolved": 19,
+          "observedUnresolved": 1,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "FINANCIAL_INPUT",
+          "expectedMinimum": 0,
+          "observedResolved": 11,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "RECLASSIFICATION",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        }
+      ],
+      "diamondCount": 66,
+      "cycleCount": 4,
+      "completenessScore": 1,
+      "metrics": {
+        "inventoryCoverage": 1,
+        "edgeDiscoveryCoverage": 0.789,
+        "edgeResolutionRate": 0.75,
+        "sourceProvenanceCoverage": 1,
+        "dependencyTypeCoverage": 0.8182,
+        "legalSemanticVerification": 0,
+        "legalSemanticVerificationStatus": "NOT_PERFORMED"
+      },
+      "gaps": [
+        "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity.",
+        "COVENANT_TO_AMENDMENT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "RECLASSIFICATION: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "LEGAL_SEMANTIC_VERIFICATION: not performed — inventory/discovery metrics must not be read as legal completeness."
+      ]
+    },
+    {
+      "documentId": "doc-b",
+      "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "nodeCount": 847,
+      "edgeCount": 709,
+      "resolvedEdgeCount": 475,
+      "unresolvedEdgeCount": 186,
+      "ambiguousEdgeCount": 48,
+      "buckets": [
+        {
+          "kind": "COVENANT_TO_DEFINITION",
+          "expectedMinimum": 5,
+          "observedResolved": 151,
+          "observedUnresolved": 136,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "DEFINITION_TO_DEFINITION",
+          "expectedMinimum": 3,
+          "observedResolved": 115,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CONDITION",
+          "expectedMinimum": 1,
+          "observedResolved": 5,
+          "observedUnresolved": 6,
+          "observedAmbiguous": 3,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_EXCEPTION",
+          "expectedMinimum": 1,
+          "observedResolved": 13,
+          "observedUnresolved": 2,
+          "observedAmbiguous": 11,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_AMENDMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 170,
+          "observedUnresolved": 42,
+          "observedAmbiguous": 34,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "COVENANT_TO_SHARED_BASKET",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "COVENANT_TO_CROSS_DOCUMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "ENTITY_SCOPE",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "RATIO_CALCULATION",
+          "expectedMinimum": 2,
+          "observedResolved": 12,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "FINANCIAL_INPUT",
+          "expectedMinimum": 0,
+          "observedResolved": 9,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "RECLASSIFICATION",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        }
+      ],
+      "diamondCount": 18,
+      "cycleCount": 1,
+      "completenessScore": 1,
+      "metrics": {
+        "inventoryCoverage": 1,
+        "edgeDiscoveryCoverage": 0.7907,
+        "edgeResolutionRate": 0.67,
+        "sourceProvenanceCoverage": 1,
+        "dependencyTypeCoverage": 0.6364,
+        "legalSemanticVerification": 0,
+        "legalSemanticVerificationStatus": "NOT_PERFORMED"
+      },
+      "gaps": [
+        "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity.",
+        "COVENANT_TO_SHARED_BASKET: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "COVENANT_TO_CROSS_DOCUMENT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "ENTITY_SCOPE: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "RECLASSIFICATION: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "LEGAL_SEMANTIC_VERIFICATION: not performed — inventory/discovery metrics must not be read as legal completeness."
+      ]
+    },
+    {
+      "documentId": "doc-c",
+      "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "nodeCount": 120,
+      "edgeCount": 101,
+      "resolvedEdgeCount": 24,
+      "unresolvedEdgeCount": 77,
+      "ambiguousEdgeCount": 0,
+      "buckets": [
+        {
+          "kind": "COVENANT_TO_DEFINITION",
+          "expectedMinimum": 5,
+          "observedResolved": 18,
+          "observedUnresolved": 57,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "DEFINITION_TO_DEFINITION",
+          "expectedMinimum": 2,
+          "observedResolved": 5,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CONDITION",
+          "expectedMinimum": 1,
+          "observedResolved": 0,
+          "observedUnresolved": 5,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_EXCEPTION",
+          "expectedMinimum": 1,
+          "observedResolved": 1,
+          "observedUnresolved": 2,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_AMENDMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 9,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "COVENANT_TO_SHARED_BASKET",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "COVENANT_TO_CROSS_DOCUMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "ENTITY_SCOPE",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "RATIO_CALCULATION",
+          "expectedMinimum": 1,
+          "observedResolved": 0,
+          "observedUnresolved": 4,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "FINANCIAL_INPUT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "RECLASSIFICATION",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        }
+      ],
+      "diamondCount": 0,
+      "cycleCount": 0,
+      "completenessScore": 1,
+      "metrics": {
+        "inventoryCoverage": 1,
+        "edgeDiscoveryCoverage": 0.7576,
+        "edgeResolutionRate": 0.2376,
+        "sourceProvenanceCoverage": 1,
+        "dependencyTypeCoverage": 0.5455,
+        "legalSemanticVerification": 0,
+        "legalSemanticVerificationStatus": "NOT_PERFORMED"
+      },
+      "gaps": [
+        "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity.",
+        "COVENANT_TO_SHARED_BASKET: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "COVENANT_TO_CROSS_DOCUMENT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "ENTITY_SCOPE: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "FINANCIAL_INPUT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "RECLASSIFICATION: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "LEGAL_SEMANTIC_VERIFICATION: not performed — inventory/discovery metrics must not be read as legal completeness."
+      ]
+    },
+    {
+      "documentId": "doc-d",
+      "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "nodeCount": 805,
+      "edgeCount": 804,
+      "resolvedEdgeCount": 492,
+      "unresolvedEdgeCount": 292,
+      "ambiguousEdgeCount": 20,
+      "buckets": [
+        {
+          "kind": "COVENANT_TO_DEFINITION",
+          "expectedMinimum": 5,
+          "observedResolved": 277,
+          "observedUnresolved": 273,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "DEFINITION_TO_DEFINITION",
+          "expectedMinimum": 3,
+          "observedResolved": 107,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CONDITION",
+          "expectedMinimum": 1,
+          "observedResolved": 6,
+          "observedUnresolved": 16,
+          "observedAmbiguous": 7,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_EXCEPTION",
+          "expectedMinimum": 1,
+          "observedResolved": 75,
+          "observedUnresolved": 1,
+          "observedAmbiguous": 12,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_AMENDMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 1,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "COVENANT_TO_SHARED_BASKET",
+          "expectedMinimum": 3,
+          "observedResolved": 3,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "COVENANT_TO_CROSS_DOCUMENT",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "ENTITY_SCOPE",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        },
+        {
+          "kind": "RATIO_CALCULATION",
+          "expectedMinimum": 2,
+          "observedResolved": 16,
+          "observedUnresolved": 2,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
+        },
+        {
+          "kind": "FINANCIAL_INPUT",
+          "expectedMinimum": 0,
+          "observedResolved": 8,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": false,
+          "notes": "No inventory signal required this kind; priority status checked separately."
+        },
+        {
+          "kind": "RECLASSIFICATION",
+          "expectedMinimum": 0,
+          "observedResolved": 0,
+          "observedUnresolved": 0,
+          "observedAmbiguous": 0,
+          "missingOrThin": false,
+          "priorityGap": true,
+          "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
+        }
+      ],
+      "diamondCount": 91,
+      "cycleCount": 2,
+      "completenessScore": 1,
+      "metrics": {
+        "inventoryCoverage": 1,
+        "edgeDiscoveryCoverage": 0.8452,
+        "edgeResolutionRate": 0.6119,
+        "sourceProvenanceCoverage": 1,
+        "dependencyTypeCoverage": 0.7273,
+        "legalSemanticVerification": 0,
+        "legalSemanticVerificationStatus": "NOT_PERFORMED"
+      },
+      "gaps": [
+        "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity.",
+        "COVENANT_TO_CROSS_DOCUMENT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "ENTITY_SCOPE: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "RECLASSIFICATION: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+        "LEGAL_SEMANTIC_VERIFICATION: not performed — inventory/discovery metrics must not be read as legal completeness."
+      ]
+    }
+  ],
+  "unresolvedRelationshipsSample": [
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::III::3.19-no-burdensome-restrictions::node:doc-a:unresolved:ambiguous-6.10-doc-a::iii::3.19-no-burdensome-restrictions::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::III::3.19-no-burdensome-restrictions",
+      "toNodeId": "node:doc-a:unresolved:ambiguous-6.10-doc-a::iii::3.19-no-burdensome-restrictions",
+      "resolution": "AMBIGUOUS",
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.10-chapeau, doc-a::VI::6.10-proviso-i, doc-a::VI::6.10-proviso-ii, doc-a::VI::6.10-proviso-iii, doc-a::VI::6.10-proviso-iv, doc-a::VI::6.10-proviso-v",
+      "rationale": "doc-a::III::3.19-no-burdensome-restrictions cites Section 6.10 via 'subject to Section' but 6 inventory units match.",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.01b::node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01b::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::VI::6.01b",
+      "toNodeId": "node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01b",
+      "resolution": "AMBIGUOUS",
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.04-chapeau, doc-a::VI::6.04a, doc-a::VI::6.04b, doc-a::VI::6.04c, doc-a::VI::6.04d, doc-a::VI::6.04e, doc-a::VI::6.04f, doc-a::VI::6.04g, doc-a::VI::6.04h, doc-a::VI::6.04i, doc-a::VI::6.04j, doc-a::VI::6.04k, doc-a::VI::6.04l, doc-a::VI::6.04m, doc-a::VI::6.04n, doc-a::VI::6.04o, doc-a::VI::6.04p, doc-a::VI::6.04q, doc-a::VI::6.04r, doc-a::VI::6.04-unrestricted-sub-valuation",
+      "rationale": "doc-a::VI::6.01b cites Section 6.04 via 'subject to Section' but 20 inventory units match.",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.01c::node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01c::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::VI::6.01c",
+      "toNodeId": "node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01c",
+      "resolution": "AMBIGUOUS",
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.04-chapeau, doc-a::VI::6.04a, doc-a::VI::6.04b, doc-a::VI::6.04c, doc-a::VI::6.04d, doc-a::VI::6.04e, doc-a::VI::6.04f, doc-a::VI::6.04g, doc-a::VI::6.04h, doc-a::VI::6.04i, doc-a::VI::6.04j, doc-a::VI::6.04k, doc-a::VI::6.04l, doc-a::VI::6.04m, doc-a::VI::6.04n, doc-a::VI::6.04o, doc-a::VI::6.04p, doc-a::VI::6.04q, doc-a::VI::6.04r, doc-a::VI::6.04-unrestricted-sub-valuation",
+      "rationale": "doc-a::VI::6.01c cites Section 6.04 via 'subject to Section' but 20 inventory units match.",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.12a-interest-coverage::node:doc-a:unresolved:ambiguous-7.03-doc-a::vi::6.12a-interest-coverage::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::VI::6.12a-interest-coverage",
+      "toNodeId": "node:doc-a:unresolved:ambiguous-7.03-doc-a::vi::6.12a-interest-coverage",
+      "resolution": "AMBIGUOUS",
+      "unresolvedReason": "Ambiguous section target: doc-a::VII::7.03a-equity-cure-right, doc-a::VII::7.03b-equity-cure-conditions, doc-a::VII::7.03c-equity-cure-standstill",
+      "rationale": "doc-a::VI::6.12a-interest-coverage cites Section 7.03 via 'subject to Section' but 3 inventory units match.",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unresolved:parent-of-doc-a::iv::4.01c-corporate-certificates::node:doc-a:unit:doc-a::IV::4.01c-corporate-certificates",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unresolved:parent-of-doc-a::iv::4.01c-corporate-certificates",
+      "toNodeId": "node:doc-a:unit:doc-a::IV::4.01c-corporate-certificates",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "No parent COVENANT/BASKET unit found for section 4.01.",
+      "rationale": "CONDITION unit doc-a::IV::4.01c-corporate-certificates has no inventory-resolvable parent covenant.",
+      "rootCause": "STRUCTURAL_PARSING_FAILURE",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unresolved:parent-of-doc-a::iv::4.01g-payoff-letters::node:doc-a:unit:doc-a::IV::4.01g-payoff-letters",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unresolved:parent-of-doc-a::iv::4.01g-payoff-letters",
+      "toNodeId": "node:doc-a:unit:doc-a::IV::4.01g-payoff-letters",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "No parent COVENANT/BASKET unit found for section 4.01.",
+      "rationale": "CONDITION unit doc-a::IV::4.01g-payoff-letters has no inventory-resolvable parent covenant.",
+      "rootCause": "STRUCTURAL_PARSING_FAILURE",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unresolved:parent-of-doc-a::iv::4.01h-funding-account::node:doc-a:unit:doc-a::IV::4.01h-funding-account",
+      "kind": "COVENANT_TO_CONDITION",
+      "fromNodeId": "node:doc-a:unresolved:parent-of-doc-a::iv::4.01h-funding-account",
+      "toNodeId": "node:doc-a:unit:doc-a::IV::4.01h-funding-account",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "No parent COVENANT/BASKET unit found for section 4.01.",
+      "rationale": "CONDITION unit doc-a::IV::4.01h-funding-account has no inventory-resolvable parent covenant.",
+      "rootCause": "STRUCTURAL_PARSING_FAILURE",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::authored::excluded-property",
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::collateral-and-security-documents",
+      "toNodeId": "node:cross_document:security_agreements",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Security Agreements are outside the DSGR credit-agreement package.",
+      "rationale": "Excluded Property is defined only by cross-reference to the Security Agreements, which are not part of this document.",
+      "rootCause": "MISSING_EXTERNAL_DOCUMENT",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::node:doc-a:unit:doc-a::I::collateral-and-security-documents::node:cross_document:security_agreements,_which_are_not_part_of_this_document_-_a_genuine_cross-document_dependency",
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::collateral-and-security-documents",
+      "toNodeId": "node:cross_document:security_agreements,_which_are_not_part_of_this_document_-_a_genuine_cross-document_dependency",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Target instrument 'Security Agreements, which are not part of this document - a genuine cross-document dependency' is outside this document package.",
+      "rationale": "Ground-truth notes for doc-a::I::collateral-and-security-documents record a genuine cross-document dependency (Security Agreements, which are not part of this document - a genuine cross-document dependency).",
+      "rootCause": "MISSING_EXTERNAL_DOCUMENT",
+      "controllingRestrictionRisk": true
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:ppsa",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.03-terms-generally",
+      "toNodeId": "node:doc-a:unresolved:ppsa",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'PPSA' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'PPSA' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:sta",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.03-terms-generally",
+      "toNodeId": "node:doc-a:unresolved:sta",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'STA' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'STA' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:ucc",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.03-terms-generally",
+      "toNodeId": "node:doc-a:unresolved:ucc",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'UCC' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'UCC' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.04-accounting-terms-gaap::node:doc-a:unresolved:gaap",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.04-accounting-terms-gaap",
+      "toNodeId": "node:doc-a:unresolved:gaap",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'GAAP' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.04-accounting-terms-gaap (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'GAAP' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments::node:doc-a:unresolved:total_net_leverage_ratio_adjustment",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+      "toNodeId": "node:doc-a:unresolved:total_net_leverage_ratio_adjustment",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Total Net Leverage Ratio Adjustment' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.06-pro-forma-adjustments (FINANCIAL_TEST) inventory-declares keyDefinedTerm 'Total Net Leverage Ratio Adjustment' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:alternative_currency",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.10-exchange-rates",
+      "toNodeId": "node:doc-a:unresolved:alternative_currency",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Alternative Currency' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Alternative Currency' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:dollar_equivalent",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.10-exchange-rates",
+      "toNodeId": "node:doc-a:unresolved:dollar_equivalent",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Dollar Equivalent' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Dollar Equivalent' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:revaluation_date",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.10-exchange-rates",
+      "toNodeId": "node:doc-a:unresolved:revaluation_date",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Revaluation Date' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Revaluation Date' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement::node:doc-a:unresolved:effective_date",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement",
+      "toNodeId": "node:doc-a:unresolved:effective_date",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Effective Date' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.11-amendment-and-restatement (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Effective Date' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement::node:doc-a:unresolved:existing_credit_agreement",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement",
+      "toNodeId": "node:doc-a:unresolved:existing_credit_agreement",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Existing Credit Agreement' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.11-amendment-and-restatement (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Existing Credit Agreement' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.01-commitments::node:doc-a:unresolved:alternative_currency",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.01-commitments",
+      "toNodeId": "node:doc-a:unresolved:alternative_currency",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Alternative Currency' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.01-commitments (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Alternative Currency' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.01-commitments::node:doc-a:unresolved:availability_period",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.01-commitments",
+      "toNodeId": "node:doc-a:unresolved:availability_period",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Availability Period' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.01-commitments (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Availability Period' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.01-commitments::node:doc-a:unresolved:delayed_draw_term_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.01-commitments",
+      "toNodeId": "node:doc-a:unresolved:delayed_draw_term_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Delayed Draw Term Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.01-commitments (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Delayed Draw Term Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.01-commitments::node:doc-a:unresolved:initial_term_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.01-commitments",
+      "toNodeId": "node:doc-a:unresolved:initial_term_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Initial Term Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.01-commitments (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Initial Term Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.02-loans-and-borrowings::node:doc-a:unresolved:borrowing",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.02-loans-and-borrowings",
+      "toNodeId": "node:doc-a:unresolved:borrowing",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Borrowing' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.02-loans-and-borrowings (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Borrowing' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.03-requests-for-borrowings::node:doc-a:unresolved:borrowing_request",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.03-requests-for-borrowings",
+      "toNodeId": "node:doc-a:unresolved:borrowing_request",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Borrowing Request' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.03-requests-for-borrowings (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Borrowing Request' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.04-original-currency::node:doc-a:unresolved:alternative_currency",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.04-original-currency",
+      "toNodeId": "node:doc-a:unresolved:alternative_currency",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Alternative Currency' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.04-original-currency (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Alternative Currency' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.05-swingline-loans::node:doc-a:unresolved:swingline_exposure",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.05-swingline-loans",
+      "toNodeId": "node:doc-a:unresolved:swingline_exposure",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Swingline Exposure' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.05-swingline-loans (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Swingline Exposure' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.05-swingline-loans::node:doc-a:unresolved:swingline_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.05-swingline-loans",
+      "toNodeId": "node:doc-a:unresolved:swingline_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Swingline Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.05-swingline-loans (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Swingline Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.06-letters-of-credit::node:doc-a:unresolved:existing_letters_of_credit",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.06-letters-of-credit",
+      "toNodeId": "node:doc-a:unresolved:existing_letters_of_credit",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Existing Letters of Credit' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.06-letters-of-credit (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Existing Letters of Credit' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.06-letters-of-credit::node:doc-a:unresolved:lc_collateral_account",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.06-letters-of-credit",
+      "toNodeId": "node:doc-a:unresolved:lc_collateral_account",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'LC Collateral Account' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.06-letters-of-credit (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'LC Collateral Account' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.06-letters-of-credit::node:doc-a:unresolved:letters_of_credit",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.06-letters-of-credit",
+      "toNodeId": "node:doc-a:unresolved:letters_of_credit",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Letters of Credit' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.06-letters-of-credit (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Letters of Credit' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.08-interest-elections::node:doc-a:unresolved:interest_election_request",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.08-interest-elections",
+      "toNodeId": "node:doc-a:unresolved:interest_election_request",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Interest Election Request' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.08-interest-elections (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Interest Election Request' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.09-incremental-facility::node:doc-a:unresolved:incremental_facility_amendment",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.09-incremental-facility",
+      "toNodeId": "node:doc-a:unresolved:incremental_facility_amendment",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Incremental Facility Amendment' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.09-incremental-facility (BASKET) inventory-declares keyDefinedTerm 'Incremental Facility Amendment' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.09-incremental-facility::node:doc-a:unresolved:incremental_term_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.09-incremental-facility",
+      "toNodeId": "node:doc-a:unresolved:incremental_term_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Incremental Term Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.09-incremental-facility (BASKET) inventory-declares keyDefinedTerm 'Incremental Term Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.09-incremental-facility::node:doc-a:unresolved:ineligible_institution",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.09-incremental-facility",
+      "toNodeId": "node:doc-a:unresolved:ineligible_institution",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Ineligible Institution' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.09-incremental-facility (BASKET) inventory-declares keyDefinedTerm 'Ineligible Institution' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.09-incremental-facility::node:doc-a:unresolved:total_net_leverage_ratio_adjustment",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.09-incremental-facility",
+      "toNodeId": "node:doc-a:unresolved:total_net_leverage_ratio_adjustment",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Total Net Leverage Ratio Adjustment' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.09-incremental-facility (BASKET) inventory-declares keyDefinedTerm 'Total Net Leverage Ratio Adjustment' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.10-repayment-amortization::node:doc-a:unresolved:delayed_draw_term_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.10-repayment-amortization",
+      "toNodeId": "node:doc-a:unresolved:delayed_draw_term_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Delayed Draw Term Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.10-repayment-amortization (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Delayed Draw Term Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.10-repayment-amortization::node:doc-a:unresolved:initial_term_loan",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.10-repayment-amortization",
+      "toNodeId": "node:doc-a:unresolved:initial_term_loan",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Initial Term Loan' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.10-repayment-amortization (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Initial Term Loan' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.11b-revolver-overadvance-cure::node:doc-a:unresolved:aggregate_revolving_exposure",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.11b-revolver-overadvance-cure",
+      "toNodeId": "node:doc-a:unresolved:aggregate_revolving_exposure",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Aggregate Revolving Exposure' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.11b-revolver-overadvance-cure (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Aggregate Revolving Exposure' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::II::2.11b-revolver-overadvance-cure::node:doc-a:unresolved:dollar_equivalent",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "node:doc-a:unit:doc-a::II::2.11b-revolver-overadvance-cure",
+      "toNodeId": "node:doc-a:unresolved:dollar_equivalent",
+      "resolution": "UNRESOLVED",
+      "unresolvedReason": "Term 'Dollar Equivalent' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::II::2.11b-revolver-overadvance-cure (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Dollar Equivalent' with no local definition unit.",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false
+    }
+  ],
+  "fullExportPath": ".local-dependency-atlas/exports/gt-knowledge-factory-dataset.json"
+}

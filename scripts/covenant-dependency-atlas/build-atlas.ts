@@ -10,6 +10,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { extractDocumentAtlas, loadGroundTruthDocument } from "./extract-from-ground-truth";
 import { toKnowledgeFactoryExport } from "./export-kf";
+import { reconcileNodeIdentity } from "./node-identity";
 import {
   ATLAS_SCHEMA_VERSION,
   AtlasDatasetSchema,
@@ -26,6 +27,7 @@ const ROOT = resolve(__dirname, "../..");
 const GT_DIR = join(ROOT, "tests/fixtures/unseen-packages/phase-3f-ground-truth");
 const AUTHORED_DIR = join(ROOT, "tests/fixtures/covenant-dependency-atlas/authored-edges");
 const OUT_FIXTURE = join(ROOT, "tests/fixtures/covenant-dependency-atlas/export");
+const OUT_LOCAL = join(ROOT, ".local-dependency-atlas/exports");
 const OUT_DOCS = join(ROOT, "docs/covenant-dependency-atlas");
 const OUT_DOCS_EXPORT = join(OUT_DOCS, "export");
 const OUT_COMPLETENESS = join(OUT_DOCS, "completeness-reports");
@@ -44,7 +46,13 @@ function loadAuthored(path: string | null): { edges: AtlasEdge[]; nodes: AtlasNo
     nodes?: unknown[];
   };
   return {
-    edges: (raw.edges ?? []).map((e) => AtlasEdgeSchema.parse(e)),
+    edges: (raw.edges ?? []).map((e) =>
+      AtlasEdgeSchema.parse({
+        rootCause: null,
+        controllingRestrictionRisk: false,
+        ...(e as object),
+      }),
+    ),
     nodes: (raw.nodes ?? []).map((n) => AtlasNodeSchema.parse(n)),
   };
 }
@@ -61,32 +69,33 @@ export function buildAtlasDataset(generatedAt = new Date().toISOString()): Atlas
     });
   });
 
-  const totals = {
-    documents: documents.length,
-    nodes: documents.reduce((n, d) => n + d.nodes.length, 0),
-    edges: documents.reduce((n, d) => n + d.edges.length, 0),
-    resolved: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "RESOLVED").length, 0),
-    unresolved: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "UNRESOLVED").length, 0),
-    ambiguous: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "AMBIGUOUS").length, 0),
-    diamonds: documents.reduce(
-      (n, d) => n + d.motifs.filter((m) => m.motifType === "DIAMOND_SHARED_DEPENDENCY").length,
-      0,
-    ),
-    cycles: documents.reduce((n, d) => n + d.motifs.filter((m) => m.motifType === "GENUINE_CYCLE").length, 0),
-  };
-
-  const dataset: AtlasDataset = {
+  const raw: AtlasDataset = {
     schemaVersion: ATLAS_SCHEMA_VERSION,
     generatedAt,
     paidInference: false,
     productionResolverTouched: false,
     methodology:
-      "Source-backed directed edges from Phase-3F ground-truth inventories (keyDefinedTerms, unitType, explicit SHARED RESOURCE / ENTITY SCOPE / cross-document notes) plus explicit legal connectives in description/notes and a small hand-authored critical overlay. Bare textual similarity never admits an edge. Unresolved and ambiguous references are preserved. Production dependency resolver and compiler are untouched.",
+      "Phase 2 v2: source-backed directed edges from Phase-3F ground-truth inventories plus authored overlays. Completeness is multi-metric (inventory/discovery/resolution/provenance/type coverage); legalSemanticVerification is NOT_PERFORMED. Bare textual similarity never admits an edge. Production dependency resolver and compiler are untouched.",
     packages: [{ packageId: "dsgr-2022-2025-credit-facility", documents }],
-    totals,
+    totals: {
+      documents: documents.length,
+      nodes: documents.reduce((n, d) => n + d.nodes.length, 0),
+      uniqueNodes: 0,
+      edges: documents.reduce((n, d) => n + d.edges.length, 0),
+      resolved: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "RESOLVED").length, 0),
+      unresolved: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "UNRESOLVED").length, 0),
+      ambiguous: documents.reduce((n, d) => n + d.edges.filter((e) => e.resolution === "AMBIGUOUS").length, 0),
+      diamonds: documents.reduce(
+        (n, d) => n + d.motifs.filter((m) => m.motifType === "DIAMOND_SHARED_DEPENDENCY").length,
+        0,
+      ),
+      cycles: documents.reduce((n, d) => n + d.motifs.filter((m) => m.motifType === "GENUINE_CYCLE").length, 0),
+    },
   };
-
-  return AtlasDatasetSchema.parse(dataset);
+  const nodeIdentity = reconcileNodeIdentity(raw);
+  raw.totals.uniqueNodes = nodeIdentity.atlasNodeCountUnique;
+  raw.nodeIdentity = nodeIdentity;
+  return AtlasDatasetSchema.parse(raw);
 }
 
 export function writeAtlasArtifacts(dataset: AtlasDataset): {
@@ -95,28 +104,52 @@ export function writeAtlasArtifacts(dataset: AtlasDataset): {
   summaryPath: string;
   completenessPaths: string[];
 } {
-  for (const dir of [OUT_FIXTURE, OUT_DOCS_EXPORT, OUT_COMPLETENESS]) mkdirSync(dir, { recursive: true });
-
-  const atlasPath = join(OUT_FIXTURE, "atlas-dataset.json");
-  writeFileSync(atlasPath, `${JSON.stringify(dataset, null, 2)}\n`);
+  for (const dir of [OUT_FIXTURE, OUT_DOCS_EXPORT, OUT_COMPLETENESS, OUT_LOCAL]) mkdirSync(dir, { recursive: true });
 
   const kf = KnowledgeFactoryExportSchema.parse(toKnowledgeFactoryExport(dataset));
-  const kfPath = join(OUT_FIXTURE, "knowledge-factory-dataset.json");
+
+  // Full multi-MB dumps → local gitignored store (Phase 2 scale policy).
+  const atlasPath = join(OUT_LOCAL, "gt-atlas-dataset.json");
+  const kfPath = join(OUT_LOCAL, "gt-knowledge-factory-dataset.json");
+  writeFileSync(atlasPath, `${JSON.stringify(dataset, null, 2)}\n`);
   writeFileSync(kfPath, `${JSON.stringify(kf, null, 2)}\n`);
 
-  // Docs export directory keeps a pointer (not a second multi-MB copy).
+  // Portable fixture subset for tests / KF handoff without megabyte git blobs.
+  writeFileSync(
+    join(OUT_FIXTURE, "knowledge-factory-dataset.portable.json"),
+    `${JSON.stringify(
+      {
+        schemaVersion: kf.schemaVersion,
+        atlasSchemaVersion: kf.atlasSchemaVersion,
+        generatedAt: kf.generatedAt,
+        paidInference: false,
+        merges: false,
+        certificationChanges: false,
+        productionResolverTouched: false,
+        counts: kf.counts,
+        nodeIdentity: kf.nodeIdentity,
+        completenessReports: kf.completenessReports,
+        unresolvedRelationshipsSample: kf.unresolvedRelationships.slice(0, 40),
+        fullExportPath: ".local-dependency-atlas/exports/gt-knowledge-factory-dataset.json",
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
   writeFileSync(
     join(OUT_DOCS_EXPORT, "README.md"),
     [
       "# Knowledge-factory dataset export",
       "",
-      "Canonical artifacts (rebuild with `npx tsx scripts/covenant-dependency-atlas/build-atlas.ts`):",
+      "Full artifacts (rebuild: `npx tsx scripts/covenant-dependency-atlas/build-phase2.ts`):",
       "",
-      "- `tests/fixtures/covenant-dependency-atlas/export/atlas-dataset.json`",
-      "- `tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.json`",
+      "- `.local-dependency-atlas/exports/gt-knowledge-factory-dataset.json` (gitignored)",
+      "- `.local-dependency-atlas/exports/structural-knowledge-factory-dataset.json` (gitignored)",
+      "- `tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json`",
       "",
       `Generated at: ${dataset.generatedAt}`,
-      `Edges: ${dataset.totals.edges}; unresolved+ambiguous: ${dataset.totals.unresolved + dataset.totals.ambiguous}`,
+      `Edges: ${dataset.totals.edges}; uniqueNodes: ${dataset.totals.uniqueNodes}; rawNodes: ${dataset.totals.nodes}`,
       "",
     ].join("\n"),
   );
@@ -137,6 +170,7 @@ export function writeAtlasArtifacts(dataset: AtlasDataset): {
     certificationChanges: false,
     totals: dataset.totals,
     kfCounts: kf.counts,
+    nodeIdentity: kf.nodeIdentity,
     documents: dataset.packages[0]!.documents.map((d) => ({
       documentId: d.documentId,
       nodes: d.nodes.length,
@@ -146,7 +180,9 @@ export function writeAtlasArtifacts(dataset: AtlasDataset): {
       ambiguous: d.completeness.ambiguousEdgeCount,
       diamonds: d.completeness.diamondCount,
       cycles: d.completeness.cycleCount,
-      completenessScore: d.completeness.completenessScore,
+      inventoryCoverageOnly: d.completeness.metrics.inventoryCoverage,
+      edgeResolutionRate: d.completeness.metrics.edgeResolutionRate,
+      legalSemanticVerification: d.completeness.metrics.legalSemanticVerificationStatus,
       gapCount: d.completeness.gaps.length,
     })),
     unresolvedRelationshipCount: kf.unresolvedRelationships.length,

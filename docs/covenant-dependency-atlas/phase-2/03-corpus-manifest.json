@@ -1,0 +1,301 @@
+{
+  "summary": {
+    "registered": 25,
+    "available": 25,
+    "developmentAvailable": 24,
+    "evaluationAvailable": 1,
+    "issuers": [
+      "CHWY",
+      "CNMD",
+      "DSGR",
+      "FWRG",
+      "LSB",
+      "RIOT",
+      "ROCK",
+      "SXI"
+    ],
+    "targetRange": {
+      "min": 25,
+      "max": 50
+    },
+    "targetMet": true,
+    "note": "Local+acquired corpus meets the 25–50 authentic-agreement target window."
+  },
+  "entries": [
+    {
+      "documentId": "dsgr-doc-a",
+      "packageId": "dsgr-2022-2025",
+      "issuer": "DSGR",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": true,
+      "bytes": 743476,
+      "sha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "available": true
+    },
+    {
+      "documentId": "dsgr-doc-b",
+      "packageId": "dsgr-2022-2025",
+      "issuer": "DSGR",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "split": "development",
+      "hasGroundTruth": true,
+      "bytes": 741527,
+      "sha256": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+      "available": true
+    },
+    {
+      "documentId": "dsgr-doc-c",
+      "packageId": "dsgr-2022-2025",
+      "issuer": "DSGR",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "split": "development",
+      "hasGroundTruth": true,
+      "bytes": 13862,
+      "sha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "available": true
+    },
+    {
+      "documentId": "dsgr-doc-d",
+      "packageId": "dsgr-2022-2025",
+      "issuer": "DSGR",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": true,
+      "bytes": 844994,
+      "sha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "available": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "packageId": "chwy-2026",
+      "issuer": "CHWY",
+      "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 868560,
+      "sha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "available": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "packageId": "riot-2025-2026",
+      "issuer": "RIOT",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 177631,
+      "sha256": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+      "available": true
+    },
+    {
+      "documentId": "riot-doc-b",
+      "packageId": "riot-2025-2026",
+      "issuer": "RIOT",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 181371,
+      "sha256": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+      "available": true
+    },
+    {
+      "documentId": "riot-doc-c",
+      "packageId": "riot-2025-2026",
+      "issuer": "RIOT",
+      "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 189102,
+      "sha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "available": true
+    },
+    {
+      "documentId": "sup-doc-a",
+      "packageId": "superior-2022-2025",
+      "issuer": "SXI",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 788998,
+      "sha256": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a",
+      "available": true
+    },
+    {
+      "documentId": "sup-doc-b",
+      "packageId": "superior-2022-2025",
+      "issuer": "SXI",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 802119,
+      "sha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "available": true
+    },
+    {
+      "documentId": "sup-doc-c",
+      "packageId": "superior-2022-2025",
+      "issuer": "SXI",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 28489,
+      "sha256": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-base-neg",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 50080,
+      "sha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-defs",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 44178,
+      "sha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-omnibus",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 18111,
+      "sha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-gca",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 106821,
+      "sha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-htm-base",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 826331,
+      "sha256": "20496bb3c5effc5c85e5d5d3dd2efa5d48cf003b5024964ae613fab140b559ac",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-htm-omnibus",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 1268135,
+      "sha256": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-htm-gca",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 191561,
+      "sha256": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "available": true
+    },
+    {
+      "documentId": "cnmd-htm-amd2",
+      "packageId": "conmed-2025",
+      "issuer": "CNMD",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 37209,
+      "sha256": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
+      "available": true
+    },
+    {
+      "documentId": "fwrg-art6",
+      "packageId": "fwrg-2021",
+      "issuer": "FWRG",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 104183,
+      "sha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "available": true
+    },
+    {
+      "documentId": "fwrg-defs",
+      "packageId": "fwrg-2021",
+      "issuer": "FWRG",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 16544,
+      "sha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "available": true
+    },
+    {
+      "documentId": "lsb-art6",
+      "packageId": "lsb-2023",
+      "issuer": "LSB",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 16854,
+      "sha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "available": true
+    },
+    {
+      "documentId": "lsb-defs",
+      "packageId": "lsb-2023",
+      "issuer": "LSB",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 8137,
+      "sha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "available": true
+    },
+    {
+      "documentId": "lsb-intercreditor",
+      "packageId": "lsb-2023",
+      "issuer": "LSB",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+      "split": "development",
+      "hasGroundTruth": false,
+      "bytes": 10883,
+      "sha256": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+      "available": true
+    },
+    {
+      "documentId": "gibraltar-ca",
+      "packageId": "gibraltar-2026",
+      "issuer": "ROCK",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "split": "evaluation",
+      "hasGroundTruth": false,
+      "bytes": 1043514,
+      "sha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "available": true
+    }
+  ]
+}

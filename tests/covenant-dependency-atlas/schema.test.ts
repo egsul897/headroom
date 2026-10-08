@@ -48,6 +48,8 @@ describe("Covenant Dependency Atlas schema", () => {
       unresolvedReason: null,
       sharedBasketKey: null,
       financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
     };
     expect(() => AtlasEdgeSchema.parse(bad)).toThrow();
   });

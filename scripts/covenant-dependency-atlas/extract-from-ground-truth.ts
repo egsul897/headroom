@@ -10,6 +10,7 @@
 
 import { readFileSync } from "node:fs";
 import { analyzeGraph } from "./graph-analysis";
+import { annotateEdgesWithRootCause } from "./classify-unresolved";
 import { buildCompletenessReport, type CompletenessExpectations } from "./completeness";
 import type {
   AtlasDocument,
@@ -254,6 +255,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: resolved === "UNRESOLVED" ? `No DEFINITION unit in ${doc.documentId} declares term '${other}'.` : null,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       }
     } else if (COVENANTISH.has(unit.unitType)) {
@@ -289,6 +292,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: defUnit ? null : `Term '${term}' not declared by any DEFINITION unit in ${doc.documentId}.`,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       }
     }
@@ -325,6 +330,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: null,
         sharedBasketKey: basketKey,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
     if (sig.entityScope) {
@@ -353,6 +360,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: null,
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
     if (sig.crossDocument) {
@@ -382,6 +391,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: `Target instrument '${targetLabel}' is outside this document package.`,
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
     if (sig.reclassification) {
@@ -418,6 +429,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: target ? null : "Reclassification mentioned but destination provision not inventory-resolved.",
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
   }
@@ -457,6 +470,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: null,
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     } else {
       const unresolvedId = nodeIdForUnresolved(doc.documentId, `parent-of-${unit.unitId}`);
@@ -484,6 +499,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: `No parent COVENANT/BASKET unit found for section ${parentSection}.`,
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
   }
@@ -525,6 +542,8 @@ export function extractDocumentAtlas(args: {
             : "Amendment connective present but target amendment instrument not uniquely identified in inventory.",
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
         continue;
       }
@@ -558,6 +577,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: "Reclassification connective found; destination not inventory-resolved.",
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
         continue;
       }
@@ -580,6 +601,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: null,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       } else if (targets.length > 1) {
         const ambId = nodeIdForUnresolved(doc.documentId, `ambiguous-${sectionRef}-${unit.unitId}`);
@@ -607,6 +630,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: `Ambiguous section target: ${targets.map((t) => t.unitId).join(", ")}`,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       } else {
         const uId = nodeIdForUnresolved(doc.documentId, `section-${sectionRef}`);
@@ -634,6 +659,8 @@ export function extractDocumentAtlas(args: {
           unresolvedReason: `Section ${sectionRef} not present as a ground-truth unit.`,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       }
     }
@@ -667,6 +694,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: findDefinitionUnit(units, term) ? null : `Component term '${term}' lacks a DEFINITION unit.`,
         sharedBasketKey: null,
         financialInputKey: null,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
   }
@@ -711,6 +740,8 @@ export function extractDocumentAtlas(args: {
         unresolvedReason: null,
         sharedBasketKey: null,
         financialInputKey: cue.key,
+      rootCause: null,
+      controllingRestrictionRisk: false,
       });
     }
   }
@@ -757,6 +788,8 @@ export function extractDocumentAtlas(args: {
                 : null,
           sharedBasketKey: null,
           financialInputKey: null,
+        rootCause: null,
+        controllingRestrictionRisk: false,
         });
       }
     }
@@ -794,7 +827,7 @@ export function extractDocumentAtlas(args: {
   }
 
   const nodeList = [...nodes.values()].sort((a, b) => a.nodeId.localeCompare(b.nodeId));
-  const edgeList = [...edges.values()].sort((a, b) => a.edgeId.localeCompare(b.edgeId));
+  const edgeList = annotateEdgesWithRootCause([...edges.values()].sort((a, b) => a.edgeId.localeCompare(b.edgeId)));
   const analysis = analyzeGraph(nodeList, edgeList);
   const expectations = deriveExpectations(units, edgeList);
   const completeness = buildCompletenessReport({
@@ -811,6 +844,7 @@ export function extractDocumentAtlas(args: {
     documentId: doc.documentId,
     sourceFile: doc.sourceFile,
     packageId,
+    extractionMode: "GROUND_TRUTH_ASSISTED" as const,
     nodes: nodeList,
     edges: edgeList,
     motifs: analysis.motifs,
@@ -864,9 +898,18 @@ function deriveExpectations(units: GroundTruthUnit[], edges: AtlasEdge[]): Compl
     expectedMinimumByKind.RECLASSIFICATION = 1;
   }
 
-  // Amendment expectation only when document is an amendment.
-  void edges;
-  return { expectedMinimumByKind, gapHints };
+  const unitsWithEdges = new Set(
+    edges
+      .map((e) => e.sourceSpans[0]?.unitId)
+      .filter((x): x is string => Boolean(x)),
+  ).size;
+
+  return {
+    expectedMinimumByKind,
+    gapHints,
+    inventoryUnitCount: units.length,
+    unitsWithEdges: Math.max(unitsWithEdges, Math.min(units.length, edges.length > 0 ? 1 : 0)),
+  };
 }
 
 export type { Confidence, EvidenceClass };

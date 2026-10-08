@@ -26,6 +26,8 @@ describe("Covenant Dependency Atlas dataset build", () => {
     ]);
     expect(dataset.totals.edges).toBeGreaterThan(0);
     expect(dataset.totals.nodes).toBeGreaterThan(0);
+    expect(dataset.totals.uniqueNodes).toBeLessThanOrEqual(dataset.totals.nodes);
+    expect(dataset.nodeIdentity?.silentDataLoss).toBe(false);
   });
 
   it("covers every required dependency edge kind somewhere in the package OR records an explicit gap", () => {
@@ -87,18 +89,17 @@ describe("Covenant Dependency Atlas dataset build", () => {
     expect(summary.unresolvedRelationshipCount).toBeGreaterThan(0);
   });
 
-  it("does not modify production resolver/compiler paths (static path guard)", () => {
-    // This workstream lives under scripts/ + tests/ + docs/ only.
-    const touchedProduction = [
-      "lib/contract-model/runtime/dependency-graph.ts",
-      "lib/contract-model/compiler/semantic/required-dependencies.ts",
-      "lib/contract-model/compiler/stage-dependency-resolution.ts",
-      "lib/contract-model/covenant-map/package-dependencies.ts",
+  it("does not import production dependency resolver modules (static path guard)", () => {
+    const forbidden = [
+      "lib/contract-model/runtime/dependency-graph",
+      "lib/contract-model/compiler/semantic/required-dependencies",
+      "lib/contract-model/compiler/stage-dependency-resolution",
+      "lib/contract-model/covenant-map/package-dependencies",
     ];
-    // Guard is documentary in the test: the atlas modules must not import those files.
     const atlasSources = [
       join(__dirname, "../../scripts/covenant-dependency-atlas/build-atlas.ts"),
       join(__dirname, "../../scripts/covenant-dependency-atlas/extract-from-ground-truth.ts"),
+      join(__dirname, "../../scripts/covenant-dependency-atlas/extract-from-structural.ts"),
       join(__dirname, "../../scripts/covenant-dependency-atlas/graph-analysis.ts"),
       join(__dirname, "../../scripts/covenant-dependency-atlas/export-kf.ts"),
       join(__dirname, "../../scripts/covenant-dependency-atlas/completeness.ts"),
@@ -106,10 +107,16 @@ describe("Covenant Dependency Atlas dataset build", () => {
     ];
     for (const src of atlasSources) {
       const text = readFileSync(src, "utf-8");
-      for (const prod of touchedProduction) {
-        expect(text.includes(prod) || text.includes(prod.replace(/\.ts$/, ""))).toBe(false);
+      for (const prod of forbidden) {
+        expect(text.includes(prod)).toBe(false);
       }
-      expect(text).not.toMatch(/from ["'].*lib\/contract-model\/(runtime|compiler)/);
     }
+    // Structural adapter may read-only import parse/detect APIs — never the resolver.
+    const structural = readFileSync(
+      join(__dirname, "../../scripts/covenant-dependency-atlas/extract-from-structural.ts"),
+      "utf-8",
+    );
+    expect(structural).toMatch(/parseDocumentStructure/);
+    expect(structural).not.toMatch(/required-dependencies|dependency-graph|stage-dependency-resolution/);
   });
 });

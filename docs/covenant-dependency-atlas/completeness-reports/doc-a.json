@@ -14,7 +14,8 @@
       "observedUnresolved": 154,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "DEFINITION_TO_DEFINITION",
@@ -23,7 +24,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "COVENANT_TO_CONDITION",
@@ -32,7 +34,8 @@
       "observedUnresolved": 3,
       "observedAmbiguous": 4,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "COVENANT_TO_EXCEPTION",
@@ -41,7 +44,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 10,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "COVENANT_TO_AMENDMENT",
@@ -50,7 +54,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "No inventory signal required this kind for this document."
+      "priorityGap": true,
+      "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
     },
     {
       "kind": "COVENANT_TO_SHARED_BASKET",
@@ -59,7 +64,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "COVENANT_TO_CROSS_DOCUMENT",
@@ -68,7 +74,8 @@
       "observedUnresolved": 2,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "ENTITY_SCOPE",
@@ -77,7 +84,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "RATIO_CALCULATION",
@@ -86,7 +94,8 @@
       "observedUnresolved": 1,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "Meets inventory-derived soft minimum."
+      "priorityGap": false,
+      "notes": "Meets inventory-derived soft minimum (inventory coverage only)."
     },
     {
       "kind": "FINANCIAL_INPUT",
@@ -95,7 +104,8 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "No inventory signal required this kind for this document."
+      "priorityGap": false,
+      "notes": "No inventory signal required this kind; priority status checked separately."
     },
     {
       "kind": "RECLASSIFICATION",
@@ -104,13 +114,26 @@
       "observedUnresolved": 0,
       "observedAmbiguous": 0,
       "missingOrThin": false,
-      "notes": "No inventory signal required this kind for this document."
+      "priorityGap": true,
+      "notes": "Priority legal-relationship kind absent — recorded as gap; does not imply legal semantic verification."
     }
   ],
   "diamondCount": 66,
   "cycleCount": 4,
   "completenessScore": 1,
+  "metrics": {
+    "inventoryCoverage": 1,
+    "edgeDiscoveryCoverage": 0.789,
+    "edgeResolutionRate": 0.75,
+    "sourceProvenanceCoverage": 1,
+    "dependencyTypeCoverage": 0.8182,
+    "legalSemanticVerification": 0,
+    "legalSemanticVerificationStatus": "NOT_PERFORMED"
+  },
   "gaps": [
-    "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity."
+    "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity.",
+    "COVENANT_TO_AMENDMENT: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+    "RECLASSIFICATION: PRIORITY GAP — zero edges of this kind; inventory minimum may be 0 but Phase 2 still records absence as a coverage gap (not legal completeness).",
+    "LEGAL_SEMANTIC_VERIFICATION: not performed — inventory/discovery metrics must not be read as legal completeness."
   ]
 }

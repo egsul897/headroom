@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "covenant-dependency-atlas.v1",
-  "generatedAt": "2026-10-08T22:06:23.979Z",
+  "schemaVersion": "covenant-dependency-atlas.v2",
+  "generatedAt": "2026-10-08T00:00:00.000Z",
   "paidInference": false,
   "productionResolverTouched": false,
   "merges": false,
@@ -8,6 +8,7 @@
   "totals": {
     "documents": 4,
     "nodes": 2490,
+    "uniqueNodes": 2482,
     "edges": 2310,
     "resolved": 1513,
     "unresolved": 715,
@@ -41,6 +42,51 @@
     "unresolved": 715,
     "ambiguous": 82
   },
+  "nodeIdentity": {
+    "atlasNodeCountRaw": 2490,
+    "atlasNodeCountUnique": 2482,
+    "kfExportNodeCount": 2482,
+    "duplicateNodeIds": [
+      {
+        "nodeId": "node:financial_input:CONSOLIDATED_TOTAL_ASSETS",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:INTEREST_EXPENSE",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:NET_INCOME",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      },
+      {
+        "nodeId": "node:financial_input:UNRESTRICTED_CASH",
+        "occurrences": 3,
+        "documentIds": [
+          "doc-a",
+          "doc-b",
+          "doc-d"
+        ]
+      }
+    ],
+    "explanation": "KF export flattens package documents and deduplicates by nodeId. 8 raw node row(s) share an id with another row (typically financial_input:* or cross_document:* leaves reused across documents, or authored overlays repeating an inventory node). Dedup keeps one canonical node per id — not silent loss of distinct legal objects with distinct ids.",
+    "silentDataLoss": false
+  },
   "documents": [
     {
       "documentId": "doc-a",
@@ -51,8 +97,10 @@
       "ambiguous": 14,
       "diamonds": 66,
       "cycles": 4,
-      "completenessScore": 1,
-      "gapCount": 1
+      "inventoryCoverageOnly": 1,
+      "edgeResolutionRate": 0.75,
+      "legalSemanticVerification": "NOT_PERFORMED",
+      "gapCount": 4
     },
     {
       "documentId": "doc-b",
@@ -63,8 +111,10 @@
       "ambiguous": 48,
       "diamonds": 18,
       "cycles": 1,
-      "completenessScore": 1,
-      "gapCount": 1
+      "inventoryCoverageOnly": 1,
+      "edgeResolutionRate": 0.67,
+      "legalSemanticVerification": "NOT_PERFORMED",
+      "gapCount": 6
     },
     {
       "documentId": "doc-c",
@@ -75,8 +125,10 @@
       "ambiguous": 0,
       "diamonds": 0,
       "cycles": 0,
-      "completenessScore": 1,
-      "gapCount": 1
+      "inventoryCoverageOnly": 1,
+      "edgeResolutionRate": 0.2376,
+      "legalSemanticVerification": "NOT_PERFORMED",
+      "gapCount": 7
     },
     {
       "documentId": "doc-d",
@@ -87,8 +139,10 @@
       "ambiguous": 20,
       "diamonds": 91,
       "cycles": 2,
-      "completenessScore": 1,
-      "gapCount": 1
+      "inventoryCoverageOnly": 1,
+      "edgeResolutionRate": 0.6119,
+      "legalSemanticVerification": "NOT_PERFORMED",
+      "gapCount": 5
     }
   ],
   "unresolvedRelationshipCount": 797

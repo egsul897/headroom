@@ -23,7 +23,9 @@ function loadFixture(name: string): {
   };
   return {
     nodes: raw.nodes.map((n) => AtlasNodeSchema.parse(n)),
-    edges: raw.edges.map((e) => AtlasEdgeSchema.parse(e)),
+    edges: raw.edges.map((e) =>
+      AtlasEdgeSchema.parse({ rootCause: null, controllingRestrictionRisk: false, ...(e as object) }),
+    ),
     expectedMotifs: raw.expectedMotifs,
   };
 }
