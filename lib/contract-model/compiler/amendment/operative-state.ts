@@ -461,26 +461,39 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
  */
 function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionView[], baseDocumentId: string, index: StructuralIndex): OperativeProvisionView[] {
   const claimedSectionRefs = new Set(provisions.filter((p) => p.kind === "SECTION" && p.sectionRef).map((p) => p.sectionRef));
-  const bySection = new Map<string, { section: StructuralNode; replacements: Array<{ at: number; oldText: string; view: OperativeProvisionView }> }>();
+  const bySection = new Map<string, { section: StructuralNode; replacements: Array<{ at: number; oldText: string; view: OperativeProvisionView }>; failures: string[] }>();
   for (const view of provisions) {
-    if (view.kind !== "DEFINITION" || view.status !== "OPERATIVE_STATE_RESOLVED" || !view.currentText || !view.definedTermRef) continue;
+    if (view.kind !== "DEFINITION" || view.appliedChain.length === 0 || !view.definedTermRef) continue;
     const def = index.getDefinition(view.definedTermRef, baseDocumentId);
     if (!def?.sourceNodeId) continue;
     const enclosing = index.getNode(def.sourceNodeId);
     if (!enclosing) continue;
     const section = [enclosing, ...index.getAncestors(def.sourceNodeId).slice().reverse()].find((n) => n.nodeType === "SECTION");
     if (!section || claimedSectionRefs.has(section.sectionRef)) continue;
+    const bucket = bySection.get(section.nodeId) ?? { section, replacements: [], failures: [] };
     const oldText = index.getDefinitionFullText(def.exactTerm, baseDocumentId);
     const sectionText = index.getNodeText(section.nodeId, "DESCENDANTS");
-    if (!oldText || !sectionText) continue;
-    const at = sectionText.indexOf(oldText);
-    if (at < 0 || sectionText.indexOf(oldText, at + 1) >= 0) continue;
-    const bucket = bySection.get(section.nodeId) ?? { section, replacements: [] };
-    bucket.replacements.push({ at, oldText, view });
+    const at = oldText && sectionText ? sectionText.indexOf(oldText) : -1;
+    const unique = !!oldText && !!sectionText && at >= 0 && sectionText.indexOf(oldText, at + 1) < 0;
+    if (view.status !== "OPERATIVE_STATE_RESOLVED" || !view.currentText) {
+      bucket.failures.push(`The amendment of "${view.definedTermRef}" is not a resolved replacement, so Section ${section.sectionRef} cannot be reconstructed.`);
+    } else if (!unique) {
+      bucket.failures.push(`The original text of "${view.definedTermRef}" does not occur once inside Section ${section.sectionRef}, so the section cannot be reconstructed without guessing.`);
+    } else {
+      bucket.replacements.push({ at, oldText: oldText!, view });
+    }
     bySection.set(section.nodeId, bucket);
   }
   const derived: OperativeProvisionView[] = [];
-  for (const { section, replacements } of bySection.values()) {
+  for (const { section, replacements, failures } of bySection.values()) {
+    const involved = provisions.filter((p) => p.kind === "DEFINITION" && p.appliedChain.length > 0 && p.definedTermRef && (replacements.some((r) => r.view === p) || failures.some((f) => f.includes(`"${p.definedTermRef}"`))));
+    const sourceView = involved[0];
+    if (!sourceView) continue;
+    if (failures.length > 0) {
+      derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, involved, "OPERATIVE_STATE_REVIEW_REQUIRED", failures));
+      continue;
+    }
+    const views = replacements.map((r) => r.view);
     let text = index.getNodeText(section.nodeId, "DESCENDANTS");
     const ordered = [...replacements].sort((a, b) => b.at - a.at);
     let spliced = true;
@@ -490,37 +503,43 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
       const trailing = replacement.oldText.match(/\s*$/)?.[0] ?? "";
       text = text.slice(0, at) + replacement.view.currentText.replace(/\s*$/, "") + trailing + text.slice(at + replacement.oldText.length);
     }
-    if (!spliced) continue;
-    const latest = [...replacements].sort((a, b) => a.view.appliedChain.length - b.view.appliedChain.length).at(-1) ?? replacements[0]!;
-    derived.push({
-      instrumentKey: latest.view.instrumentKey,
-      provisionKey: `${latest.view.instrumentKey}::SECTION::${section.sectionRef}`,
-      kind: "SECTION",
-      documentId: baseDocumentId,
-      sectionRef: section.sectionRef,
-      definedTermRef: null,
-      asOfDate: latest.view.asOfDate,
-      currentSourceDocumentId: latest.view.currentSourceDocumentId,
-      currentSourceNodeKey: null,
-      currentSourceNodeId: null,
-      currentText: text,
-      fullChain: replacements.flatMap((r) => r.view.fullChain),
-      appliedChain: replacements.flatMap((r) => r.view.appliedChain),
-      supersededSourceNodeKeys: [],
-      supersededSourceNodeIds: [],
-      status: "OPERATIVE_STATE_RESOLVED",
-      unresolvedIssues: [],
-      conflicts: [],
-      targetResolutionStatus: "UNIQUE",
-      targetResolutionReason: null,
-      candidateSourceNodeIds: [],
-      ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
-      attemptedText: text,
-      reviewRequired: false,
-      candidateTexts: [],
-    });
+    if (!spliced || !text) {
+      derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, views, "OPERATIVE_STATE_REVIEW_REQUIRED", [`Section ${section.sectionRef} could not be reconstructed from its definition amendments.`]));
+      continue;
+    }
+    derived.push(derivedSectionView(sourceView, section, baseDocumentId, text, views, "OPERATIVE_STATE_RESOLVED", []));
   }
   return derived;
+}
+
+function derivedSectionView(source: OperativeProvisionView, section: StructuralNode, baseDocumentId: string, text: string | null, views: OperativeProvisionView[], status: OperativeProvisionView["status"], unresolvedIssues: string[]): OperativeProvisionView {
+  return {
+    instrumentKey: source.instrumentKey,
+    provisionKey: `${source.instrumentKey}::SECTION::${section.sectionRef}`,
+    kind: "SECTION",
+    documentId: baseDocumentId,
+    sectionRef: section.sectionRef,
+    definedTermRef: null,
+    asOfDate: source.asOfDate,
+    currentSourceDocumentId: source.currentSourceDocumentId,
+    currentSourceNodeKey: null,
+    currentSourceNodeId: null,
+    currentText: text,
+    fullChain: views.flatMap((r) => r.fullChain),
+    appliedChain: views.flatMap((r) => r.appliedChain),
+    supersededSourceNodeKeys: [],
+    supersededSourceNodeIds: [],
+    status,
+    unresolvedIssues,
+    conflicts: [],
+    targetResolutionStatus: "UNIQUE",
+    targetResolutionReason: null,
+    candidateSourceNodeIds: [],
+    ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
+    attemptedText: text,
+    reviewRequired: status !== "OPERATIVE_STATE_RESOLVED",
+    candidateTexts: [],
+  };
 }
 
 export function computeOperativeContractState(input: OperativeStateInput): OperativeContractState {

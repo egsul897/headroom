@@ -12,6 +12,7 @@ import { detectModificationCandidates } from "../../lib/contract-model/compiler/
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
 import { runAmendmentPipeline } from "../../lib/contract-model/compiler/amendment/pipeline";
 import { computeOperativeContractState, getOperativeDefinition } from "../../lib/contract-model/compiler/amendment/operative-state";
+import { resolveOperativeSource } from "../../lib/contract-model/compiler/candidate-span";
 import { getStageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import { createRetrievalState } from "../../lib/contract-model/compiler/context-retrieval/state";
 import { retrieveDirectDefinitions } from "../../lib/contract-model/compiler/context-retrieval/definition-graph";
@@ -109,5 +110,32 @@ describe("definition-level amendments", () => {
     expect(item?.excerptText).not.toMatch(/income tax expense/);
     expect(item?.excerptText).toMatch(/depreciation and amortization/);
     expect(item?.evidenceState?.isCurrentTruth).toBe(true);
+  });
+
+  it("does not keep the base definitions section when the amended definition text occurs twice", async () => {
+    const duplicated = `CREDIT AGREEMENT dated as of March 3, 2026, among Harbor Lane Industries, Inc., as Borrower.
+
+SECTION 1.01 Defined Terms. As used in this Agreement:
+"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus income tax expense.
+"Indebtedness" means borrowed money. The disclosure repeats "Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus income tax expense.`;
+    const documents = [doc("credit-agreement", "Credit Agreement", duplicated), amendment(`SECTION 1. Amendments. The definition of "Consolidated EBITDA" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: ${SMALLER}`)];
+    const nodesByDocument = new Map<string, { text: string; nodes: ReturnType<typeof parseDocumentStructure> }>();
+    const allDefs = [];
+    for (const d of documents) {
+      const nodes = parseDocumentStructure(d);
+      nodesByDocument.set(d.documentId, { text: d.text, nodes });
+      allDefs.push(...detectStructuralDefinitions(d.documentId, d.text, nodes));
+    }
+    const index = buildStructuralIndex(nodesByDocument, allDefs, []);
+    const packageGraph = buildPackageGraph("co", "pkg", documents);
+    const result = await runAmendmentPipeline(getStageCaller(), { documents, packageGraph, index });
+    const instrumentKey = packageGraph.instruments.find((i) => i.documentIds.includes("credit-agreement"))?.instrumentKey ?? "instrument:credit-agreement";
+    const state = computeOperativeContractState({ instrumentKey, baseDocumentId: "credit-agreement", asOfDate: "2026-06-30", index, allEffects: result.effects });
+    const sectionNode = index.getNodeByRef("credit-agreement", "1.01");
+    expect(sectionNode).toBeTruthy();
+    const section = resolveOperativeSource({ structuralNodeIds: [sectionNode!.nodeId], documentId: "credit-agreement", normalizedSourceRef: "1.01" }, index, state);
+    expect(section.withheld).toBe(true);
+    expect(section.text).not.toContain("income tax expense");
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
   });
 });

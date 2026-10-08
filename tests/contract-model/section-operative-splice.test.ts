@@ -309,4 +309,52 @@ describe("section operative text follows clause amendments", () => {
     expect(section.text).toBe("");
     expect(section.text).not.toContain("$25,000,000");
   });
+
+  it("a later child amendment withholds the earlier parent restatement", async () => {
+    const { state, index } = await compile([
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment("amendment-1", "Amendment No. 1", "March 1, 2026", `SECTION 1. Amendments. Section 7.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: Section 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except (b) Indebtedness in an aggregate principal amount not to exceed $40,000,000.`),
+      amendment("amendment-2", "Amendment No. 2", "May 1, 2026", `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: (b) Indebtedness in an aggregate principal amount not to exceed $10,000,000.`),
+    ]);
+    const section = source(index, state, "7.01");
+    expect(section.withheld).toBe(true);
+    expect(section.text).toBe("");
+    expect(source(index, state, "7.01(b)").text).toContain("$10,000,000");
+  });
+
+  it("an earlier child amendment yields to a later parent restatement", async () => {
+    const { state, index } = await compile([
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment("amendment-1", "Amendment No. 1", "February 1, 2026", `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: (b) Indebtedness in an aggregate principal amount not to exceed $10,000,000.`),
+      amendment("amendment-2", "Amendment No. 2", "May 1, 2026", `SECTION 1. Amendments. Section 7.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: Section 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except (b) Indebtedness in an aggregate principal amount not to exceed $40,000,000.`),
+    ]);
+    const section = source(index, state, "7.01");
+    expect(section.withheld).toBe(false);
+    expect(section.text).toContain("$40,000,000");
+    expect(section.text).not.toContain("$25,000,000");
+    expect(section.text).not.toContain("$10,000,000");
+  });
+
+  it("withholds the section when the parent and the child are amended on the same day", async () => {
+    const { state, index } = await compile([
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment("amendment-1", "Amendment No. 1", "March 1, 2026", `SECTION 1. Amendments. Section 7.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: Section 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except (b) Indebtedness in an aggregate principal amount not to exceed $40,000,000.`),
+      amendment("amendment-2", "Amendment No. 2", "March 1, 2026", `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: (b) Indebtedness in an aggregate principal amount not to exceed $10,000,000.`),
+    ]);
+    const section = source(index, state, "7.01");
+    expect(section.withheld).toBe(true);
+    expect(section.text).not.toContain("$40,000,000");
+    expect(section.text).not.toContain("$25,000,000");
+  });
+
+  it("does not treat a parent deletion as final when a later child amendment exists", async () => {
+    const { state, index } = await compile([
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment("amendment-1", "Amendment No. 1", "March 1, 2026", `SECTION 1. Amendments. Section 7.01 of the Credit Agreement is hereby deleted in its entirety.`),
+      amendment("amendment-2", "Amendment No. 2", "May 1, 2026", `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: (b) Indebtedness in an aggregate principal amount not to exceed $10,000,000.`),
+    ]);
+    const section = source(index, state, "7.01");
+    expect(section.withheld).toBe(true);
+    expect(section.origin).not.toBe("OPERATIVE_STATE_CURRENT_TEXT");
+  });
 });

@@ -41,6 +41,28 @@ function isResolvedDeletion(provision: OperativeProvisionView): boolean {
   return provision.status === "OPERATIVE_STATE_RESOLVED" && provision.appliedChain.length > 0 && !provision.currentText && !!last && DELETE_OPERATIONS.has(last.operation);
 }
 
+function lastAppliedMs(provision: OperativeProvisionView): number | null {
+  const last = provision.appliedChain[provision.appliedChain.length - 1];
+  if (!last?.effectiveDate.date) return null;
+  const ms = new Date(last.effectiveDate.date).getTime();
+  return Number.isNaN(ms) ? null : ms;
+}
+
+/** A parent replacement is the operative text only when every related amendment is strictly earlier. Same-day and later amendments, and undated ones, do not yield to it. */
+function relatedAmendmentIsNotStrictlyEarlier(anchor: OperativeProvisionView, anchorNodeId: string, index: StructuralIndex, operativeState: OperativeContractState | null | undefined): boolean {
+  if (!operativeState) return false;
+  const parentMs = lastAppliedMs(anchor);
+  const descendantIds = new Set(index.getDescendants(anchorNodeId).map((n) => n.nodeId));
+  return operativeState.provisions.some((provision) => {
+    if (provision.provisionKey === anchor.provisionKey || provision.appliedChain.length === 0) return false;
+    const hits = provision.supersededSourceNodeIds.some((id) => id === anchorNodeId || descendantIds.has(id));
+    if (!hits) return false;
+    const ms = lastAppliedMs(provision);
+    if (parentMs === null || ms === null) return true;
+    return ms >= parentMs;
+  });
+}
+
 /** The provision view governing this candidate's anchor node, if the operative state has one. */
 export function governingProvisionFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, operativeState: OperativeContractState | null | undefined): OperativeProvisionView | null {
   if (!operativeState) return null;
@@ -106,13 +128,24 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
 
   const ownsAnchor = !!provision && provision.kind !== "DEFINITION" && provision.supersededSourceNodeIds.includes(anchorNodeId);
   if (ownsAnchor && provision) {
-    if (hasCurrentText(provision)) return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false };
-    if (isResolvedDeletion(provision)) return { text: "", origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false };
+    if (hasCurrentText(provision)) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true };
+      return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false };
+    }
+    if (isResolvedDeletion(provision)) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true };
+      return { text: "", origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false };
+    }
     // A review-required amendment of this node does not substitute its own text. The base node remains the fallback
     // only when no descendant clause has its own applied amendment. Otherwise the base text still contains that clause.
     const descendant = spliceDescendantAmendments(anchorNodeId, base, index, operativeState);
     if (descendant.amended || descendant.withheld) return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true };
     return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false };
+  }
+  // A derived section view with no safe text means a definition amendment could not be reconstructed.
+  // The base section still contains the pre-amendment term.
+  if (provision?.kind === "SECTION" && provision.sectionRef === candidate.normalizedSourceRef && !hasCurrentText(provision) && (provision.status !== "OPERATIVE_STATE_RESOLVED" || provision.appliedChain.length > 0)) {
+    return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true };
   }
   if (provision?.kind === "DEFINITION" && sameRef(provision.definedTermRef, candidate.normalizedSourceRef) && hasCurrentText(provision)) {
     return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false };
