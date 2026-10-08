@@ -26,12 +26,12 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/291855ce3f9b/`, repository SHA `291855ce3f9b`, 754 checks: 664 pass · 71 fail · 19 not tested)
+## Matrix (committed run `acceptance-runs/514f39617677/`, repository SHA `514f39617677`, 756 checks: 666 pass · 71 fail · 19 not tested)
 
 Earlier committed runs: `8f51e2981bd2` (8 packages, 360: 318/30/12), `00977b674579` (10, 431: 376/41/14),
 `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 + clause-text pins, 571: 508/48/15),
 `f182a679394b` (12, 604: 539/49/16), `440069481941` (I definition amendment, 609: 539/53/17), `dcfd931004c6` (B
-supplemental indenture, 614: 543/54/17), `731f34e2f9ae` (13 + package M, 657: 577/62/18). At `291855c`: package N
+supplemental indenture, 614: 543/54/17), `731f34e2f9ae` (13 + package M, 657: 577/62/18), `291855ce3f9b` (14 + package N, 754: 664/71/19). At `291855c` and after: package N
 (a clean ratio path), four manifest-independent structural cards (enumeration-count / enumeration-gap /
 embedded-heading / malformed-label), the DROP_GATE control and the A/M/N evaluation-basis cases. Findings are 71, all
 registered (IPV-01…IPV-24; IPV-17 closed).
@@ -52,7 +52,7 @@ registered (IPV-01…IPV-24; IPV-17 closed).
 | l-affiliate-transactions | 17/17 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 33/35 |
 | m-composed-p0 | 21/21 | 3/6 (3 F) | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 6/7 (1 F) | 5/7 (2 F) | – | 42/51 |
 | n-clean-ratio | 16/16 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 5/9 (4 F) | – | 33/38 |
-Invariant checks (`invariant-runs/291855ce3f9b/`): 18 invariants, 39 PRODUCT verdicts pass / 18 fail — every
+Invariant checks (`invariant-runs/514f39617677/`): 19 invariants, 40 PRODUCT verdicts pass / 18 fail — every
 failure is IPV-19/20/21/22. Mutation suite: 22 mutants, 15 killed, 22/22 predictions held. Benchmark: quality unchanged.
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
@@ -64,7 +64,7 @@ rule; "pure omission" variants strip it.
 | package | refused / cases | accepted (= finding) |
 |---|---|---|
 | A | 2/5 | A-P1 lineage-on-rule (dropped no-Default proviso), A-P2 (scope widened to any Subsidiary), A-P5 both variants (7.01(c) condition nodes dropped while the capacity keeps its ratio gate: the pro forma basis vanishes — IPV-24); A-P4 (gate and conditions dropped: 'unconditional unlimited') refused ✅ |
-| B | 2/2 | — |
+| B | 3/3 | — (B-P4, the indenture FCCR test with its pro forma condition dropped, refused only because 4.09 is NOT_CERTIFIED on the faithful submission too: IPV-12/IPV-04 masking IPV-24) |
 | C | 3/3 | — |
 | D | 3/3 | — |
 | E | 5/5 | — |
