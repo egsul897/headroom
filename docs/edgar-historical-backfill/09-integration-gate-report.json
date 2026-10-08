@@ -8,8 +8,9 @@
     "gateStartTip": "97400e5d7f7e65a7612fdc970abcbe8110cb1cdb",
     "originMainAtReconcile": "ab87979fe6e768ac41f691341f38a3d098e1ebb2",
     "mergeCommit": "c0a6aa437341e790003080aaecb8d995c79f9c0f",
-    "endingSha": "6bc60dac022071d2e729ac83e208907d1998e8e0",
-    "mergeBaseWithMain": "ab87979fe6e768ac41f691341f38a3d098e1ebb2"
+    "endingSha": "fda29329019e28fe74f184c62deaa43f8d56a5cf",
+    "mergeBaseWithMain": "ab87979fe6e768ac41f691341f38a3d098e1ebb2",
+    "ciVerifiedTip": "fda29329019e28fe74f184c62deaa43f8d56a5cf"
   },
   "scopeAudit": {
     "changedFileCountVsMain": 47,
@@ -71,7 +72,8 @@
     },
     "focusedTests": {
       "passed": 29,
-      "failed": 0
+      "failed": 0,
+      "command": "npx vitest run tests/edgar-historical-backfill"
     },
     "typescript": {
       "command": "npx tsc --noEmit",
