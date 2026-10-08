@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ckg-benchmark.v1",
+  "packages": [
+    {
+      "packageId": "gibraltar-2026-credit-agreement",
+      "issuer": "Gibraltar Industries, Inc.",
+      "ticker": "ROCK",
+      "cik": "0000912562",
+      "agreementType": "CREDIT_AGREEMENT",
+      "heldOutStatus": "HELD_OUT_DEVELOPMENT_PACKAGE",
+      "heldOutRationale": "Public SEC EDGAR EX-10.1 (accession 0001140361-26-003087). Designated DEVELOPMENT for structural ingestion only. Pass B/C/D never ran; no prompt or extraction-rule tuning against this package. Eligible for independent offline labeling.",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "provenancePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/provenance.json",
+      "usedForPromptTuning": false,
+      "usedForExtractionRuleDevelopment": false,
+      "paidCallsInThisBenchmark": 0
+    },
+    {
+      "packageId": "superior-2022-2025-credit-facility",
+      "issuer": "Superior Industries International, Inc.",
+      "ticker": "SUP",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "heldOutStatus": "FORMERLY_UNSEEN_NOW_REGRESSION",
+      "heldOutRationale": "Selected as genuinely unseen for lightweight confirmation. Independent source-first GT in docs/final-lightweight-unseen/07-targeted-ground-truth.json. Per invariant 28 it is permanent regression evidence and cannot again claim blind generalization, but remains valid for offline CKG metric measurement without further tuning.",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/",
+      "independentGtPath": "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+      "usedForPromptTuning": false,
+      "usedForExtractionRuleDevelopment": false,
+      "paidCallsInThisBenchmark": 0,
+      "invariant28Disclosure": true
+    },
+    {
+      "packageId": "ckg-synthetic-micro",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "heldOutStatus": "REVIEWER_APPROVED_CONTROLS",
+      "heldOutRationale": "Controlled micro-agreements for false-permission, unsupported-semantic refusal, and comparator direction. Not derived from model output. REVIEWER_APPROVED labels only.",
+      "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json",
+      "usedForPromptTuning": false,
+      "usedForExtractionRuleDevelopment": false,
+      "paidCallsInThisBenchmark": 0
+    }
+  ],
+  "reservedBlind": {
+    "issuer": "Knife River",
+    "status": "BLIND_BODY_UNREAD",
+    "note": "Body must remain unread. Not included in this benchmark dataset."
+  }
+}

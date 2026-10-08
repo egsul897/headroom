@@ -1,0 +1,41 @@
+{
+  "importContract": "knowledge-factory-import.basket-formula.v1",
+  "verificationLane": "SOURCE_SUPPORTED_HYPOTHESIS",
+  "competingSchema": false,
+  "independentSecDownload": false,
+  "productionCapacityEngineEdits": false,
+  "autoPromoteToVerified": false,
+  "workstreamCoordination": [
+    {
+      "system": "ARCHITECTURE_REMEDIATION_LEGAL_CORE",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "NEGATIVE_COVENANT_EXCEPTION_DATABASE",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "DEPENDENCY_ATLAS",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "DEFINITION_ENCYCLOPEDIA",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "FINANCIAL_DEFINITIONS_PRECEDENT",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "COVENANT_KNOWLEDGE_FACTORY",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    }
+  ],
+  "export": "phase-3/export/phase3-import-records.jsonl"
+}

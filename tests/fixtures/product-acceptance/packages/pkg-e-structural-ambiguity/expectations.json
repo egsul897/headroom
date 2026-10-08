@@ -1,0 +1,488 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-e-structural-ambiguity",
+  "title": "Package E — table of contents, nested enumeration, inline definition enumeration, builder basket and hanging shared cap",
+  "issuer": "Ironvale Manufacturing Co. (synthetic)",
+  "scenario": "A leading TABLE OF CONTENTS repeats every heading. 7.01(b) nests (i)/(ii) with (A)/(B) under (ii). A hanging paragraph after 7.01(c) imposes a $75,000,000 shared cap across (b) and (c). The 'Available Amount' definition enumerates (a)/(b)/(c) inline. 7.06(c) is a builder basket limited to the Available Amount.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:ironvale",
+  "instrumentKey": "ironvale-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "d395730797a31ccded9be230d90e19ab2e2bea6c1a608857fc1313add853fb01"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-09-30"
+    ],
+    "exact": []
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "shall not create, incur or assume any Indebtedness, except"
+        ],
+        "uniquenessNote": "The TOC line 'SECTION 7.01 Indebtedness ..... 62' is not an operative occurrence; the operative 7.01 must be uniquely resolvable."
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$50,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)(i)",
+        "nodeType": "CLAUSE",
+        "parentSectionRef": "7.01(b)",
+        "unique": true,
+        "ownTextContains": [
+          "no Default"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)(ii)",
+        "nodeType": "CLAUSE",
+        "parentSectionRef": "7.01(b)",
+        "unique": true,
+        "ownTextContains": [
+          "unsecured"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)(ii)(A)",
+        "nodeType": "SUBCLAUSE",
+        "parentSectionRef": "7.01(b)(ii)",
+        "unique": true,
+        "ownTextContains": [
+          "purchase money"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)(ii)(B)",
+        "nodeType": "SUBCLAUSE",
+        "parentSectionRef": "7.01(b)(ii)",
+        "unique": true,
+        "ownTextContains": [
+          "Subsidiary"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$40,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.02(a)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.02",
+        "unique": true,
+        "ownTextContains": [
+          "Section 7.01(b)(ii)(A)"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.06(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.06",
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount"
+        ]
+      }
+    ],
+    "invariants": [
+      "The operative ARTICLE I / SECTION 1.01 / 7.01 / 7.02 / 7.06 must each be uniquely resolvable despite the TOC repeating their labels; if the index cannot distinguish them, it must report AMBIGUOUS rather than pick one.",
+      "The inline (a)/(b)/(c) inside the 'Available Amount' definition are definition components, not subsections of 1.01; if the parser materialises them as nodes, the definition text must still be recoverable in full from the definition record.",
+      "The $75,000,000 hanging paragraph after 7.01(c) must be reachable from 7.01 full text."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Available Amount",
+        "unique": true,
+        "excerptContains": "$15,000,000"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated Net Income",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Restricted Payment",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Default",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "E-7.06",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not make any Restricted Payment"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": []
+    },
+    {
+      "id": "E-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create any Lien"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": []
+    },
+    {
+      "id": "E-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": []
+    },
+    {
+      "id": "E-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$50,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 50000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "UNSECURED",
+          "textContains": "such Indebtedness is unsecured",
+          "independent": true,
+          "material": true,
+          "exceptions": [
+            "7.01(b)(ii)(A)",
+            "7.01(b)(ii)(B)"
+          ]
+        },
+        {
+          "kind": "SHARED_CAP",
+          "textContains": "shall not exceed $75,000,000",
+          "independent": true,
+          "material": true,
+          "source": "hanging paragraph after (c)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Default"
+      ],
+      "crossReferences": [],
+      "textSha256": "ac2e2c065915ad9eb3ef64d8d581063ec6c099f121e58aca36a5da71b77c0e71"
+    },
+    {
+      "id": "E-7.01(b)(ii)(A)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)(ii)(A)",
+      "family": "INDEBTEDNESS",
+      "role": "EXCEPTION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "purchase money Indebtedness may be secured"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "3ca37e08f648ce80f86238516d1f0705ec4589727d0d679123177263a9078113"
+    },
+    {
+      "id": "E-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$40,000,000",
+        "acquisitions"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 40000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "SHARED_CAP",
+          "textContains": "shall not exceed $75,000,000",
+          "independent": true,
+          "material": true,
+          "source": "hanging paragraph after (c)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "4dfe94e75e55de4823ad6e1f023158f49dca70ec4e45b6463b1b7cc53500364b"
+    },
+    {
+      "id": "E-7.02(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02(a)",
+      "family": "LIENS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Section 7.01(b)(ii)(A)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)(ii)(A)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "5631d170798dbba54302c3ac0e6804ba262782e13768651bd259c041454d73c7"
+    },
+    {
+      "id": "E-7.06(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06(b)",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$5,000,000",
+        "fiscal year"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 5000000,
+        "currency": "USD",
+        "basis": "PER_FISCAL_YEAR"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Restricted Payment"
+      ],
+      "crossReferences": [],
+      "textSha256": "a33745a3cc19cb975b9af7653abb2f00b85123d4ac0022d7a47e6a7746390e39"
+    },
+    {
+      "id": "E-7.06(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06(c)",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "BUILDER",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Available Amount",
+        "no Default"
+      ],
+      "value": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount",
+        "components": [
+          {
+            "kind": "STARTER",
+            "amount": 15000000
+          },
+          {
+            "kind": "PERCENT_OF_METRIC",
+            "percent": 50,
+            "metric": "Consolidated Net Income",
+            "period": "cumulative from Closing Date"
+          },
+          {
+            "kind": "LESS_PRIOR_USAGE",
+            "ofSectionRef": "7.06(c)"
+          }
+        ]
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Available Amount",
+        "Consolidated Net Income",
+        "Default"
+      ],
+      "crossReferences": [],
+      "textSha256": "b6f38224eef3ad1348fce77973581c52004a10357e86e20e272a8d546c324852"
+    }
+  ],
+  "sharedCaps": [
+    {
+      "id": "E-SC-1",
+      "documentId": "credit-agreement",
+      "where": "hanging paragraph after 7.01(c)",
+      "participants": [
+        "7.01(b)",
+        "7.01(c)"
+      ],
+      "cap": {
+        "kind": "MONEY",
+        "amount": 75000000,
+        "currency": "USD"
+      },
+      "textContains": "clauses (b) and (c) above shall not exceed $75,000,000"
+    }
+  ],
+  "ambiguities": [
+    {
+      "id": "E-AMB-1",
+      "where": "7.01 hanging paragraph",
+      "description": "The $75,000,000 aggregate cap sits after (c) and names (b) and (c). It is not a condition of (c) alone.",
+      "mustBePreservedAs": [
+        "SHARED_CAP",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "attributing the cap to (c) only",
+        "dropping the cap"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "id": "E-U1",
+      "where": "7.06(c)",
+      "construct": "Builder basket requiring cumulative Consolidated Net Income since the Closing Date and prior usage under the same clause.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "AVAILABLE $15,000,000 without recording the net-income and prior-usage components"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "E-P1",
+      "claim": "7.01(b) and 7.01(c) together permit $90,000,000",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The shared cap limits (b)+(c) to $75,000,000."
+    },
+    {
+      "id": "E-P2",
+      "claim": "7.01(b) debt may be secured generally",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "(ii) requires unsecured except purchase money and subsidiary-asset liens."
+    },
+    {
+      "id": "E-P3",
+      "claim": "The Available Amount is $15,000,000",
+      "severityIfAsserted": "UNSUPPORTED_AS_COMPLETE",
+      "reason": "$15,000,000 is only the starter; the net-income and prior-usage components change it."
+    },
+    {
+      "id": "E-P4",
+      "claim": "7.02(a) refers to Section 7.01(b)",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "It refers to the subclause 7.01(b)(ii)(A) only (purchase money)."
+    }
+  ],
+  "nonOperative": [
+    {
+      "documentId": "credit-agreement",
+      "textContains": "SECTION 7.01 Indebtedness ..... 62",
+      "why": "Table of contents entry; not an operative provision."
+    }
+  ],
+  "invariants": [
+    "Four-level nesting (7.01(b)(ii)(A)) must round-trip: the subclause's ancestors are 7.01(b)(ii), 7.01(b), 7.01, VII in that order.",
+    "A reference to '7.01(b)(ii)(A)' must resolve to the subclause, not to 7.01(b).",
+    "No covenant may be sourced from a TOC line."
+  ]
+}

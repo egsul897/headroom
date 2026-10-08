@@ -14,7 +14,8 @@
 - `lib/contract-model/compiler/discovery/pass-c-neighborhood.ts` `runPassCNeighborhoodExpansion`
 - `scripts/stratified-cert/lib/emit-pin-packet.ts` pin UNIQUE comment
 - `lib/contract-model/ir/types.ts` `IRRuleDependency` (D2 context only; not decided)
-- Grant FROZEN sha256 `eb5c6aabf9632755ced189683be6fb021f47e873b6f6bc39fb6a36ff0c33b84a` (recorded MATCH). Invent-safe ALL Y. CEO APPROVE on record.
+- Grant FROZEN sha256 `eb5c6aabf9632755ced189683be6fb021f47e873b6f6bc39fb6a36ff0c33b84a` (recorded MATCH). Invent-safe ALL Y. CEO APPROVE on record. This is the naming-lock digest. It is not the C1 implement preimage.
+- C1 seal-primitive grant body `docs/architecture/PHASE-3-TRACK-C1-SEAL.FROZEN.md`. sha256 of those bytes is `35907db264d8b6201189d315ee1a282e0dca008023b953652d39f71862005f4d` (MATCH verifiable by `sha256sum` on that path). Distinct from the naming-lock digest above. This citation does not amend requirements 1–6 and does not certify. **IMPLEMENTED ≠ CERTIFIED.** **Seal ≠ CERTIFIED.**
 
 This ADR names the D1 seal contract. It does not emit a window, mint an identity, or choose an IR edge. Soft gate. Invent-absence forever. **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.**
 

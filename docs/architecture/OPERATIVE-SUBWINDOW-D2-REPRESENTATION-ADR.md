@@ -5,14 +5,17 @@
 **Base:** main @ `82a91cfa2bbb03a2722727125e909215ab96d2d4` (#120 MERGED). D1 naming landed in #119 (`7683a14697dceaa264ac97268e4909d45725bbb5`) as `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md`. This lock does not amend that file.
 **Arch decision:** D2 fail-closed. Category → `targetRuleId` invent is FORBIDDEN. No `RECLASSIFIABLE_TO` edge from category labels alone. No new IR enum or edge type in this ADR.
 **HOLD:** `OPERATIVE_SUBWINDOW` seal implement remains HOLD. FREEZE_NOT_READY honesty sha256 `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`. This ADR does not implement seal emit.
-**Does not authorize:** production seal code; a Stage-1 marker; a `discoveryId`; a `stage2b` edit; a structural node; a pin or pin folder; a `RECLASSIFIABLE_TO` edge; a new IR enum or edge type; a Phase-3 percentage raise; a `CERTIFIED` claim
+**Track C2 terminal disposition:** **PHASE3_CATEGORY_RECLASS_UNSUPPORTED**. Grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH at tip `62a40be22b9598d9732e9ce2574d86d2228d6270`). Rejects `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` as the terminal path. Supersedes voided FROZEN prefix `23da0fcc…` and the voided label `EXISTING_IR_SUFFICIENT`. D2 fail-closed is unchanged. See §8 and `docs/architecture/PHASE3-CATEGORY-RECLASS-UNSUPPORTED-ADR.md`.
+**Does not authorize:** production seal code; a Stage-1 marker; a `discoveryId`; a `stage2b` edit; a structural node; a pin or pin folder; a `RECLASSIFIABLE_TO` edge; a new IR enum or edge type; a category → `targetRuleId` invent; a generalized category-reclass model; the voided label `EXISTING_IR_SUFFICIENT`; a Phase-3 percentage raise; a `CERTIFIED` claim
 **Related:**
 - `docs/architecture/OPERATIVE-SUBWINDOW-SEAL-ADR.md` — ADR #119, Arch D1 naming only. D2 was deferred there.
+- `docs/architecture/PHASE3-CATEGORY-RECLASS-UNSUPPORTED-ADR.md` — Track C2 terminal disposition.
 - `lib/contract-model/ir/types.ts` `IRRuleDependency`
 - `docs/phase-4c/08-reclassification-model.json`
-- Grant FROZEN sha256 `5d57282b684816d26c82c60c345054121b01f0587e1a8c231b347cbf8116a41c` (recorded MATCH). Invent-safe ALL Y. CEO APPROVE on record.
+- D2 grant FROZEN sha256 `5d57282b684816d26c82c60c345054121b01f0587e1a8c231b347cbf8116a41c` (recorded MATCH). Invent-safe ALL Y. CEO APPROVE on record.
+- Track C2 grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH). CEO APPROVED. COO GRANTED.
 
-This ADR locks the D2 representation refusal. It does not emit a window, mint an identity, or choose an IR edge. Soft gate. Invent-absence forever. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.**
+This ADR locks the D2 representation refusal. It does not emit a window, mint an identity, or choose an IR edge. Soft gate. Invent-absence forever. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.** The Track C2 stamp is the same soft gate. It is not `CERTIFIED`.
 
 ---
 
@@ -56,9 +59,9 @@ The #119 ADR recorded the same owned-span pattern on CONMED §7.2, CONMED §7.3,
 
 2. **No `RECLASSIFIABLE_TO` edge from category labels alone.** An edge requires a recorded relationship whose `targetRuleId` is an evidence-bound rule identity. Labels are not that identity. Edge count may stay 0.
 
-3. **No new IR enum or edge type in this ADR.** `ContractRuleRelationshipType` is not extended here. A generalized representation that is not `targetRuleId` is not named here. It exists only if a later, separate invent-safe FROZEN names it.
+3. **No new IR enum or edge type in this ADR.** `ContractRuleRelationshipType` is not extended here. A generalized representation that is not `targetRuleId` is not named here. Track C2 (§8) is the later invent-safe FROZEN. It does not name a representation. Its terminal label is `PHASE3_CATEGORY_RECLASS_UNSUPPORTED`. `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` is rejected as the terminal path.
 
-4. **`OPERATIVE_SUBWINDOW` seal implement remains HOLD.** D1 named the contract. Naming is not an emit. Implementation stays HOLD until a future invent-safe GRANT after D2 is either (a) evidence-bound rule ids exist, or (b) Arch stamps a separate generalized representation FROZEN. FREEZE_NOT_READY honesty sha256 `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`. This ADR does not implement seal emit.
+4. **`OPERATIVE_SUBWINDOW` seal implement remains HOLD.** D1 named the contract. Naming is not an emit. Track C2 does not lift this HOLD and does not implement seal emit. Absent evidence-bound rule ids, the category-to-category residual terminates as `PHASE3_CATEGORY_RECLASS_UNSUPPORTED` (§8). A generalized category-reclass model is not that termination. FREEZE_NOT_READY honesty sha256 `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`. This ADR does not implement seal emit.
 
 5. **Docs only.** No production seal code. No Stage-1 marker. No `discoveryId`. No pin. No percentage raise. No `CERTIFIED` claim.
 
@@ -93,6 +96,8 @@ The #119 ADR recorded the same owned-span pattern on CONMED §7.2, CONMED §7.3,
 - Pin folders and `01-pin-matrix.json`
 - A new `ContractRuleRelationshipType` value or any other new IR enum or edge type
 - Mapping category labels onto basket rule ids
+- A generalized category-reclass model (`GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` is rejected as the terminal path)
+- Restoring voided FROZEN prefix `23da0fcc…` or the label `EXISTING_IR_SUFFICIENT`
 - Promoting CONMED §7.2, CONMED §7.3, Chewy §6.01, or Chewy §6.08 to identities
 - Amending ADR #119's requirements 1–6
 - Phase-3 percentage, live/paid cert, NS-4, related-series A/C
@@ -104,9 +109,10 @@ The #119 ADR recorded the same owned-span pattern on CONMED §7.2, CONMED §7.3,
 - This file is the architecture lock at `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` with Status **ACCEPTED** under the COO formal grant.
 - Base tip is `82a91cfa2bbb03a2722727125e909215ab96d2d4`.
 - Decision is Arch D2 fail-closed: category → `targetRuleId` invent is FORBIDDEN; no `RECLASSIFIABLE_TO` edge from labels alone; no new IR enum in this ADR.
+- Track C2 terminal disposition is **PHASE3_CATEGORY_RECLASS_UNSUPPORTED**. Grant FROZEN sha256 `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH at tip `62a40be22b9598d9732e9ce2574d86d2228d6270`). `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` is rejected. Voided FROZEN prefix `23da0fcc…` / `EXISTING_IR_SUFFICIENT` is superseded.
 - ADR #119 remains D1 naming only. This chunk does not implement the seal.
 - Seal implement remains HOLD. FREEZE_NOT_READY honesty sha256 `2e2b988eebb3e164cf909c0bbfed2834529cd3fb1a96686a40fc0fc2fa8dc13a`.
-- Docs only. No pin. Soft gate. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.**
+- Docs only. No pin. Soft gate. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** This stamp is not `CERTIFIED`.
 
 ---
 
@@ -145,3 +151,23 @@ Write `docs/architecture/OPERATIVE-SUBWINDOW-D2-REPRESENTATION-ADR.md` (or exten
 
 **ALL Y? YES** for docs ADR only. Soft gate; invent-absence forever; IMPLEMENTED ≠ CERTIFIED; LOCK ≠ implement.
 ```
+
+---
+
+## 8. Track C2 terminal disposition
+
+The §7 body stays the D2 grant text. Its sha256 stays `5d57282b684816d26c82c60c345054121b01f0587e1a8c231b347cbf8116a41c`. This section is the later stamp. It does not rewrite that body.
+
+**PHASE3_CATEGORY_RECLASS_UNSUPPORTED.**
+
+| Binding | Value |
+| --- | --- |
+| Tip | `62a40be22b9598d9732e9ce2574d86d2228d6270` |
+| Arch EXECUTE | `PHASE3_CATEGORY_RECLASS_UNSUPPORTED` |
+| Grant FROZEN sha256 | `b9666774438368088899fb8a2cfe2846f958175c8ab61462ebad6ce5f4466bae` (COO+Arch MATCH) |
+| Authority | CEO APPROVED. COO GRANTED. |
+| Rejected terminal path | `GENERALIZED_CATEGORY_RECLASS_MODEL_REQUIRED` |
+| Supersedes | voided FROZEN prefix `23da0fcc…` and the voided label `EXISTING_IR_SUFFICIENT` |
+| Note | `docs/architecture/PHASE3-CATEGORY-RECLASS-UNSUPPORTED-ADR.md` |
+
+Category → `targetRuleId` invent stays FORBIDDEN. No `RECLASSIFIABLE_TO` edge is written. No IR enum or edge type is minted. Seal implement stays HOLD. Invent-absence forever. Soft gate. **LOCK ≠ implement.** **IMPLEMENTED ≠ CERTIFIED.** **PINNED_OFFLINE ≠ CERTIFIED.** This stamp is not `CERTIFIED`.

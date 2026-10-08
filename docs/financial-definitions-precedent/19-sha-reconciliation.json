@@ -1,0 +1,16 @@
+{
+  "artifact": "financial-definitions-precedent.sha-reconciliation",
+  "reportedShaInPrompt": "ead0fc1874e57e5ab503ac9fb74cc5ed4769f2e3",
+  "githubObservedPrHeadAtPrompt": "23e42a56973cd399e9150399e269092a5c6cf715",
+  "reconciledStartingSha": "23e42a56973cd399e9150399e269092a5c6cf715",
+  "explanation": "ead0fc1 was the batch-2 checkpoint commit reported in the prior data-production checkpoint. 23e42a5 is the immediately subsequent commit on the same WS-FDP branch (peer ownership path sync + Riot Cure Amount\u2260equity-cure entries). Both commits are authored by this workstream; intervening diff is 11 files under docs/financial-definitions-precedent/** only. No unexpected foreign/concurrent edits. Local HEAD matched origin/cursor/financial-definitions-precedent-43af after fetch. HOLD not required.",
+  "interveningCommit": {
+    "sha": "23e42a56973cd399e9150399e269092a5c6cf715",
+    "subject": "WS-FDP: sync peer ownership paths; Riot Cure Amount \u2260 equity cure"
+  },
+  "focusedTestsOnReconciledTree": {
+    "command": "npx vitest run tests/financial-definitions-precedent",
+    "passed": 11,
+    "failed": 0
+  }
+}
