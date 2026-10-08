@@ -1,0 +1,16 @@
+{
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "nodes": [
+    { "id": "cnmd-seventh-ar", "date": "2021-07-16", "label": "Seventh A&R (MISSING body)", "status": "MISSING" },
+    { "id": "cnmd-second-am-2022", "date": "2022-08-01", "label": "Second Amendment to Seventh A&R" },
+    { "id": "cnmd-eighth-ar", "date": "2025-06-10", "label": "Eighth A&R Credit Agreement" },
+    { "id": "cnmd-gca", "date": "2025-06-10", "label": "A&R Guarantee & Collateral Agreement" },
+    { "id": "cnmd-omnibus-2026", "date": "2026-05-27", "label": "First Omnibus Amendment" }
+  ],
+  "edges": [
+    { "from": "cnmd-seventh-ar", "to": "cnmd-second-am-2022", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cnmd-seventh-ar", "to": "cnmd-eighth-ar", "kind": "RESTATES", "authority": "INFERRED_FROM_TITLES", "warning": "Do not auto-apply Second Amendment onto Eighth A&R" },
+    { "from": "cnmd-eighth-ar", "to": "cnmd-omnibus-2026", "kind": "AMENDS", "authority": "SOURCE_BACKED" },
+    { "from": "cnmd-gca", "to": "cnmd-omnibus-2026", "kind": "AMENDS", "authority": "SOURCE_BACKED" }
+  ]
+}

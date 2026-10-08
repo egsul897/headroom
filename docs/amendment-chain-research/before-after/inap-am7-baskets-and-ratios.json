@@ -1,0 +1,71 @@
+{
+  "recordId": "ba-inap-am7-baskets-ratios",
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "amendingDocId": "inap-am7",
+  "comparisons": [
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": { "kind": "SECTION", "sectionRef": "6.04(m)", "covenantFamily": "INVESTMENTS" },
+      "label": "General Investments basket narrowed",
+      "beforeText": "8-K narrative (corroboration only, not controlling): greater of $25 million and 30% of EBITDA",
+      "afterText": "(m) other Investments in an aggregate amount not to exceed on the date such Investments are made the greater of (x) $12,500,000 and (y) 15% of Consolidated EBITDA for the most recently ended Test Period as of such date;",
+      "authority": {
+        "status": "PARTIAL",
+        "after": {
+          "accession": "0001140361-19-019513",
+          "exhibit": "EX-10.1",
+          "quote": "Section 6.04(m) of the Credit Agreement is hereby amended and restated in its entirety as follows: [afterText]"
+        },
+        "before": {
+          "status": "UNRESOLVED_AUTHORITY",
+          "gapReason": "Original CA / prior amendments not retrieved; 8-K Item 1.01 states prior investment basket levels as narrative only."
+        }
+      },
+      "adversarialTags": ["PERMISSION_NARROWING", "BASKET_AMOUNT_CHANGE", "MISSING_DOCUMENT"]
+    },
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": { "kind": "SECTION", "sectionRef": "6.01(k)", "covenantFamily": "INDEBTEDNESS" },
+      "label": "Foreign Subsidiary debt basket narrowed",
+      "beforeText": "8-K narrative: greater of $15 million and 18% of EBITDA",
+      "afterText": "(k) Indebtedness of any Foreign Subsidiary in an aggregate outstanding principal amount for all such Foreign Subsidiaries in an amount not to exceed, at any time outstanding, the greater of (x) $5,000,000 and (y) 6% of Consolidated EBITDA for the most recently ended Test Period as of such time; provided that such Indebtedness is not directly or indirectly recourse to any [continuation truncated in extract]",
+      "authority": {
+        "status": "PARTIAL",
+        "after": {
+          "accession": "0001140361-19-019513",
+          "exhibit": "EX-10.1",
+          "quote": "Section 6.01(k)... hereby amended and restated... greater of (x) $5,000,000 and (y) 6% of Consolidated EBITDA..."
+        }
+      },
+      "adversarialTags": ["PERMISSION_NARROWING", "BASKET_AMOUNT_CHANGE"]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": { "kind": "SECTION", "sectionRef": "6.10(a)", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Total Net Leverage Ratio table reset",
+      "beforeText": null,
+      "afterText": "Test Period End Date Total Net Leverage Ratio: 12/31/19–12/31/20 7.25:1.00; 3/31/21 5.50:1.00; 6/30/21 5.00:1.00; 9/30/21 4.50:1.00; 12/31/21 and thereafter 4.50:1.00",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001140361-19-019513",
+        "exhibit": "EX-10.1",
+        "quote": "2.7 The table set forth in clause (a) of Section 6.10 of the Credit Agreement is hereby amended and restated in its entirety as follows: [table]"
+      },
+      "adversarialTags": ["RATIO_CHANGE", "MULTI_COVENANT_FAMILY"]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": { "kind": "SECTION", "sectionRef": "6.10(b)", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Consolidated Interest Coverage Ratio table reset",
+      "beforeText": null,
+      "afterText": "Table restated beginning 12/31/19 at 1.60:1.00 stepping to 2.00:1.00 by 9/30/21 and thereafter (full rows in EX-10.1).",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001140361-19-019513",
+        "exhibit": "EX-10.1",
+        "quote": "2.8 The table set forth in clause (b) of Section 6.10 of the Credit Agreement is hereby amended and restated in its entirety as follows: [table]"
+      }
+    }
+  ],
+  "multiFamilyNote": "Single amendment simultaneously touches Investments, Indebtedness, Asset Sales mechanics, and Financial Covenants — MULTI_COVENANT_FAMILY adversarial specimen."
+}

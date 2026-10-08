@@ -1,0 +1,82 @@
+{
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "issuer": {
+    "name": "Internap Corporation",
+    "ticker": "INAP",
+    "cik": "0001056386"
+  },
+  "instrument": {
+    "instrumentId": "inap-ca-2017-04-06",
+    "title": "Credit Agreement dated April 6, 2017 (as amended through Seventh Amendment)",
+    "governingLawNote": "See filed exhibits.",
+    "identityNotes": [
+      "Seventh Amendment is a high-signal permission-narrowing + ratio-reset example.",
+      "Amendments 1–6 not retrieved in this pass — chain completeness UNRESOLVED beyond Seventh Amendment's own 'Existing Credit Agreement' reference.",
+      "Included as adversarial basket-narrowing / multi-covenant-family specimen, not as a complete six-prior-amendment reconstruction."
+    ]
+  },
+  "documents": [
+    {
+      "docId": "inap-ca-orig",
+      "role": "ORIGINAL",
+      "title": "Credit Agreement",
+      "executionDate": "2017-04-06",
+      "filingDate": null,
+      "accession": "UNKNOWN",
+      "exhibit": "UNKNOWN",
+      "sourceUrl": "",
+      "localFixturePath": null,
+      "retrievalStatus": "MISSING",
+      "effectiveDateProvision": {
+        "status": "UNKNOWN",
+        "namedEffectiveDate": "2017-04-06",
+        "conditionsSummary": null,
+        "evidenceQuote": "Seventh Amendment / 8-K: Credit Agreement, dated as of April 6, 2017"
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": ["MISSING for before-text of baskets; after-text of Seventh Amendment is SOURCE_BACKED."]
+    },
+    {
+      "docId": "inap-am7",
+      "role": "AMENDMENT",
+      "title": "Seventh Amendment to Credit Agreement",
+      "executionDate": "2019-10-29",
+      "filingDate": "2019-10-30",
+      "accession": "0001140361-19-019513",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1056386/000114036119019513/ex10_1.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Seventh Amendment Effective Date = satisfaction of conditions precedent (execution, etc.).",
+        "evidenceQuote": "This Amendment and the amendments to the Credit Agreement contained herein shall be legal, valid and binding on the date on which the following conditions precedent are satisfied (the date of such satisfaction, the \"Seventh Amendment Effective Date\")"
+      },
+      "amendsInstrumentId": "inap-ca-2017-04-06",
+      "amendsDocIds": ["inap-ca-orig"],
+      "notes": [
+        "Resets Total Net Leverage Ratio and Consolidated Interest Coverage Ratio tables.",
+        "Narrows multiple baskets (investments, foreign subsidiary debt, etc.).",
+        "8-K Item 1.01 summarizes prior basket levels — used only as corroboration pointers; operative after-text taken from EX-10.1."
+      ]
+    }
+  ],
+  "authorityPolicy": {
+    "noInferenceWithoutSource": true,
+    "waiversSeparateFromAmendments": true,
+    "notes": [
+      "Before-text for narrowed baskets is PARTIAL: 8-K narrative states prior levels; original CA / Am1–6 exhibits not retrieved here.",
+      "After-text from Seventh Amendment exhibit is SOURCE_BACKED."
+    ]
+  },
+  "adversarialTags": [
+    "PERMISSION_NARROWING",
+    "BASKET_AMOUNT_CHANGE",
+    "RATIO_CHANGE",
+    "MULTI_COVENANT_FAMILY",
+    "CONDITIONAL_EFFECTIVENESS",
+    "MISSING_DOCUMENT"
+  ]
+}

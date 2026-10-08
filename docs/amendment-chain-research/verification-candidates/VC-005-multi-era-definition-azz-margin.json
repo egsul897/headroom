@@ -1,0 +1,18 @@
+{
+  "candidateId": "VC-005",
+  "chainId": "azz-2022-05-13-credit-agreement",
+  "purpose": "Single Applicable Margin definition encodes four pricing eras keyed to First/Third/Fourth Amendment Effective Dates — multi-amendment same definition with query-date sensitivity.",
+  "mapsToProductionModules": ["effective-date", "chain", "operative-state"],
+  "expectedFailClosedBehavior": "Operative margin for a query date must select the correct era subclause (A)/(B)/(C)/(D). If a referenced Amendment Effective Date is CONDITIONAL_UNRESOLVED, the engine must not invent which subclause applies.",
+  "queryDates": ["2023-08-01", "2023-08-17", "2024-03-20", "2024-09-24"],
+  "sourcePointers": [
+    {
+      "docId": "azz-am4",
+      "accession": "0000008947-24-000205",
+      "localFixturePath": null,
+      "quote": "(D) at any time on or following the Fourth Amendment Effective Date, (x) for any Adjusted Term SOFR Loan, 2.50% per annum, and (y) for any Base Rate Loan, 1.50% per annum"
+    }
+  ],
+  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/azz-am4-applicable-margin.json",
+  "notAProductionPatch": true
+}

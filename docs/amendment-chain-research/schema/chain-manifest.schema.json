@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "headroom://amendment-chain-research/chain-manifest",
+  "title": "AmendmentChainManifest",
+  "type": "object",
+  "required": ["chainId", "issuer", "instrument", "documents", "authorityPolicy"],
+  "properties": {
+    "chainId": { "type": "string" },
+    "issuer": {
+      "type": "object",
+      "required": ["name", "ticker", "cik"],
+      "properties": {
+        "name": { "type": "string" },
+        "ticker": { "type": ["string", "null"] },
+        "cik": { "type": "string" }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "required": ["instrumentId", "title", "governingLawNote"],
+      "properties": {
+        "instrumentId": { "type": "string", "description": "Stable research ID for the credit instrument lineage" },
+        "title": { "type": "string" },
+        "governingLawNote": { "type": "string" },
+        "identityNotes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["docId", "role", "title", "executionDate", "accession", "exhibit", "sourceUrl", "retrievalStatus"],
+        "properties": {
+          "docId": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["ORIGINAL", "AMENDMENT", "RESTATEMENT", "OMNIBUS_AMENDMENT", "WAIVER", "CONSENT", "SIDE_LETTER", "RELATED_SECURITY", "UNKNOWN"]
+          },
+          "title": { "type": "string" },
+          "executionDate": { "type": ["string", "null"], "description": "ISO date of execution/dating on face of instrument" },
+          "filingDate": { "type": ["string", "null"] },
+          "accession": { "type": "string" },
+          "exhibit": { "type": "string" },
+          "sourceUrl": { "type": "string" },
+          "localFixturePath": { "type": ["string", "null"] },
+          "retrievalStatus": {
+            "type": "string",
+            "enum": ["RETRIEVED", "FIXTURE_PRESENT", "RECITAL_ONLY", "MISSING", "PARTIAL"]
+          },
+          "effectiveDateProvision": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": ["EXPLICIT_EFFECTIVE_DATE", "INFERRED_FROM_EXECUTION_DATE", "CONDITIONAL_UNRESOLVED", "DEEMED_RETROACTIVE", "UNKNOWN"]
+              },
+              "namedEffectiveDate": { "type": ["string", "null"] },
+              "conditionsSummary": { "type": ["string", "null"] },
+              "evidenceQuote": { "type": ["string", "null"] }
+            }
+          },
+          "amendsInstrumentId": { "type": ["string", "null"] },
+          "amendsDocIds": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "authorityPolicy": {
+      "type": "object",
+      "required": ["noInferenceWithoutSource", "waiversSeparateFromAmendments"],
+      "properties": {
+        "noInferenceWithoutSource": { "type": "boolean" },
+        "waiversSeparateFromAmendments": { "type": "boolean" },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "adversarialTags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "MULTI_AMEND_SAME_DEFINITION",
+          "RESTATEMENT_THEN_TARGETED",
+          "SAME_DAY_OR_OVERLAPPING_EFFECTIVENESS",
+          "CONDITIONAL_EFFECTIVENESS",
+          "PARENT_CHILD_CONFLICT_RISK",
+          "INCORPORATION_BY_REFERENCE",
+          "SIDE_LETTER_RESTRICTION",
+          "MULTI_COVENANT_FAMILY",
+          "BASKET_AMOUNT_CHANGE",
+          "RATIO_CHANGE",
+          "PERMISSION_NARROWING",
+          "WAIVER_OR_CONSENT_SEPARATE",
+          "MISSING_DOCUMENT",
+          "DEEMED_RETROACTIVE_EFFECT"
+        ]
+      }
+    }
+  }
+}

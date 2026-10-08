@@ -1,0 +1,138 @@
+{
+  "chainId": "azz-2022-05-13-credit-agreement",
+  "issuer": {
+    "name": "AZZ Inc.",
+    "ticker": "AZZ",
+    "cik": "0000008947"
+  },
+  "instrument": {
+    "instrumentId": "azz-ca-2022-05-13",
+    "title": "Credit Agreement dated May 13, 2022 (as amended through Fourth Amendment)",
+    "governingLawNote": "See filed exhibits.",
+    "identityNotes": [
+      "Fourth Amendment preamble enumerates First (Aug 17, 2023), Second (Dec 20, 2023), and Third (Mar 20, 2024) Amendments.",
+      "Applicable Margin definition in Fourth Amendment encodes the multi-amendment pricing history in a single definition — adversarial multi-amend-same-definition pattern."
+    ]
+  },
+  "documents": [
+    {
+      "docId": "azz-ca-orig",
+      "role": "ORIGINAL",
+      "title": "Credit Agreement",
+      "executionDate": "2022-05-13",
+      "filingDate": "2022-05-16",
+      "accession": "0000008947-22-000056",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894722000056/ex101pegasus-creditagreeme.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "INFERRED_FROM_EXECUTION_DATE",
+        "namedEffectiveDate": "2022-05-13",
+        "conditionsSummary": null,
+        "evidenceQuote": "Credit Agreement dated as of May 13, 2022 (Fourth Amendment preamble)."
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": []
+    },
+    {
+      "docId": "azz-am1",
+      "role": "AMENDMENT",
+      "title": "First Amendment (repricing)",
+      "executionDate": "2023-08-17",
+      "filingDate": "2023-08-17",
+      "accession": "0000008947-23-000145",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000145/firstamendment-repricing.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "First Amendment Effective Date defined by conditions; not collapsed to execution date.",
+        "evidenceQuote": "Instrument uses 'First Amendment Effective Date'."
+      },
+      "amendsInstrumentId": "azz-ca-2022-05-13",
+      "amendsDocIds": ["azz-ca-orig"],
+      "notes": []
+    },
+    {
+      "docId": "azz-am2",
+      "role": "AMENDMENT",
+      "title": "Second Amendment",
+      "executionDate": "2023-12-20",
+      "filingDate": "2023-12-21",
+      "accession": "0000008947-23-000162",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894723000162/secondamendmenttocreditagr.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Second Amendment Effective Date named in later amendments; conditions not fully extracted.",
+        "evidenceQuote": "Fourth Amendment preamble: Second Amendment dated as of December 20, 2023."
+      },
+      "amendsInstrumentId": "azz-ca-2022-05-13",
+      "amendsDocIds": ["azz-am1"],
+      "notes": []
+    },
+    {
+      "docId": "azz-am3",
+      "role": "AMENDMENT",
+      "title": "Third Amendment",
+      "executionDate": "2024-03-20",
+      "filingDate": "2024-03-20",
+      "accession": "0000008947-24-000029",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000029/a3rdamendmenttocreditagree.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Third Amendment Effective Date named in Fourth Amendment Applicable Margin grid.",
+        "evidenceQuote": "Fourth Amendment Applicable Margin clause references 'Third Amendment Effective Date'."
+      },
+      "amendsInstrumentId": "azz-ca-2022-05-13",
+      "amendsDocIds": ["azz-am2"],
+      "notes": []
+    },
+    {
+      "docId": "azz-am4",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment",
+      "executionDate": "2024-09-24",
+      "filingDate": "2024-09-24",
+      "accession": "0000008947-24-000205",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/8947/000000894724000205/fourthamendmenttocreditagr.htm",
+      "localFixturePath": null,
+      "retrievalStatus": "RETRIEVED",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Fourth Amendment Effective Date; Consent Deadline 5:00 p.m. EST Sep 5, 2024 for Continuing Term Loan Lenders; Departing Lenders subject to mandatory assignment.",
+        "evidenceQuote": "WHEREAS... Consent Deadline... Fourth Amendment Effective Date. Each Existing Term Loan Lender that does not execute... Departing Term Loan Lender... mandatory assignment."
+      },
+      "amendsInstrumentId": "azz-ca-2022-05-13",
+      "amendsDocIds": ["azz-am3"],
+      "notes": ["Primary research value: multi-era Applicable Margin definition."]
+    }
+  ],
+  "authorityPolicy": {
+    "noInferenceWithoutSource": true,
+    "waiversSeparateFromAmendments": true,
+    "notes": [
+      "Applicable Margin after-text is SOURCE_BACKED from Fourth Amendment.",
+      "Per-amendment intermediate before-text for Am1/Am3 pricing relies on the Fourth Amendment's own historical recounting in the restated definition (incorporation of history into current definition text)."
+    ]
+  },
+  "adversarialTags": [
+    "MULTI_AMEND_SAME_DEFINITION",
+    "CONDITIONAL_EFFECTIVENESS",
+    "INCORPORATION_BY_REFERENCE",
+    "RESTATEMENT_THEN_TARGETED"
+  ]
+}
