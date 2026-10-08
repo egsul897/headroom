@@ -1,0 +1,478 @@
+{
+  "artifact": "VIC_PHASE2_AUTHENTIC_CORPUS_REPORT",
+  "measuredAt": "2026-10-08T22:20:41.071Z",
+  "compilerVersion": "vic-phase2a/phase-3f1-open1-wiring-structural-ambiguity.v1+phase-2b-discovery-pipeline.v4+deterministic-covenant-extraction.v1",
+  "session": {
+    "wallClockMs": 56514,
+    "paidInferenceUsd": 0,
+    "ollamaAvailable": false,
+    "vllmAvailable": false,
+    "newEdgarDownloadsThisSession": 0,
+    "note": "No bulk live EDGAR acquisition available from CKF/EHB open PRs (WS-PAR daily summary count=0). Processed authentic on-disk fixture bodies only. URLs not counted as documents."
+  },
+  "corpus": {
+    "authenticDocumentsProcessed": 21,
+    "bySourceClass": {
+      "EXTRACTED_TEXT": 12,
+      "RAW_HTML": 4,
+      "CURATED_EXCERPT": 5
+    },
+    "packages": [
+      "chwy-2026-credit-agreement",
+      "conmed-2025-credit-facility",
+      "dsgr-2022-2025-credit-facility",
+      "fwrg-2021-credit-agreement",
+      "gibraltar-2026-credit-agreement",
+      "lsb-2023-abl-credit-agreement",
+      "riot-2025-2026-credit-facility",
+      "final-lightweight-unseen-sup"
+    ],
+    "targetWas100": true,
+    "reached100": false,
+    "gapReason": "Only authentic on-disk financing docs available; CKF/EHB have not delivered ≥100 newly acquired EDGAR bodies to consumers yet."
+  },
+  "structuralAndDiscovery": {
+    "totalStructuralNodes": 14627,
+    "totalDefinitions": 4474,
+    "totalCrossReferences": 10763,
+    "totalPassACandidates": 6680,
+    "totalLightweightWindows": 1506,
+    "structuralParseEmptyDocs": 4,
+    "comparisonNote": "Pass A (Phase 2B deterministic) vs lightweight splitter — candidate counts are not legal completeness."
+  },
+  "semantic": {
+    "hypothesesStored": 34,
+    "independentlyVerifiedRepresentations": 0,
+    "falsePermissionIndependentProbes": [
+      {
+        "probeId": "fp-threshold",
+        "mode": "DETERMINISTIC_ONLY",
+        "claimedPermission": false,
+        "falsePermission": false,
+        "verificationStatus": "UNVERIFIED",
+        "note": "Independent probe — not a confirmed legal defect corpus; deterministic mode emits no rules so false-permission rate should be 0"
+      },
+      {
+        "probeId": "fp-shall-not",
+        "mode": "DETERMINISTIC_ONLY",
+        "claimedPermission": false,
+        "falsePermission": false,
+        "verificationStatus": "UNVERIFIED",
+        "note": "Independent probe — not a confirmed legal defect corpus; deterministic mode emits no rules so false-permission rate should be 0"
+      }
+    ],
+    "falsePermissionCount": 0
+  },
+  "unresolvedBreakdown": {
+    "STRUCTURAL_PARSER_FAILURE": 1318,
+    "SEMANTIC_UNCERTAINTY": 580
+  },
+  "heuristicOmissionSample": {
+    "reviewed": 4,
+    "confirmedLegalDefects": 0,
+    "heuristicOnly": 4,
+    "samples": [
+      {
+        "sampleIndex": 0,
+        "defectId": "dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt::structural-node:179e1a3c3113f77e11bfdf54:missing-restriction",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+      },
+      {
+        "sampleIndex": 1,
+        "defectId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt::structural-node:5dccdbdc87c719de66ac917e:missing-restriction",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+      },
+      {
+        "sampleIndex": 2,
+        "defectId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::structural-node:94fb758e86810619a809db7e:missing-restriction",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+      },
+      {
+        "sampleIndex": 3,
+        "defectId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::structural-node:878724e94bdd5943bdfb7385:missing-restriction",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+      }
+    ],
+    "rule": "Do not relabel DETERMINISTIC_ONLY missing-restriction heuristics as confirmed legal defects."
+  },
+  "knowledgeStore": {
+    "path": "lib/contract-model/compiler/inference/run-store",
+    "role": "VIC compile-run artifacts (C-DUP-KF cleared; not CKF corpus)",
+    "storageBytes": 13389550,
+    "recordCounts": {
+      "SOURCE_DOCUMENT": 21,
+      "STRUCTURAL_PROVISION": 21,
+      "COVENANT_CANDIDATE": 5109,
+      "SEMANTIC_HYPOTHESIS": 34
+    },
+    "idempotentImport": true,
+    "evaluationSetContamination": false,
+    "note": "Held-out CKB (#145) not ingested."
+  },
+  "perDocument": [
+    {
+      "documentId": "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "packageKey": "chwy-2026-credit-agreement",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "bytes": 868560,
+      "chars": 864362,
+      "structuralNodes": 1548,
+      "definitions": 486,
+      "crossReferences": 1198,
+      "passACandidates": 768,
+      "lightweightWindows": 188,
+      "wallClockMs": 548,
+      "error": null
+    },
+    {
+      "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+      "packageKey": "conmed-2025-credit-facility",
+      "sourceClass": "RAW_HTML",
+      "contentHash": "479f8570fe26cc922c77148ce0f8999a755baca695f1ccd75734a604aabe4794",
+      "bytes": 826331,
+      "chars": 521442,
+      "structuralNodes": 774,
+      "definitions": 361,
+      "crossReferences": 780,
+      "passACandidates": 391,
+      "lightweightWindows": 1,
+      "wallClockMs": 563,
+      "error": null
+    },
+    {
+      "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "packageKey": "conmed-2025-credit-facility",
+      "sourceClass": "RAW_HTML",
+      "contentHash": "e5c6771cf0ed33033622ce2516897eb12aa54779a78395f4d1e032279dbae9c3",
+      "bytes": 1268135,
+      "chars": 674007,
+      "structuralNodes": 980,
+      "definitions": 406,
+      "crossReferences": 906,
+      "passACandidates": 515,
+      "lightweightWindows": 1,
+      "wallClockMs": 1442,
+      "error": null
+    },
+    {
+      "documentId": "conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "packageKey": "conmed-2025-credit-facility",
+      "sourceClass": "RAW_HTML",
+      "contentHash": "cffc5775756dc930717772368cd47d0709920688db16aa2444ee411f6399d559",
+      "bytes": 191561,
+      "chars": 107919,
+      "structuralNodes": 0,
+      "definitions": 35,
+      "crossReferences": 68,
+      "passACandidates": 0,
+      "lightweightWindows": 1,
+      "wallClockMs": 10,
+      "error": null
+    },
+    {
+      "documentId": "conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
+      "packageKey": "conmed-2025-credit-facility",
+      "sourceClass": "RAW_HTML",
+      "contentHash": "c45f4eea860d60ff7a6d581573d45f73992a9efe79409233b93ef7a5f30c2a21",
+      "bytes": 37209,
+      "chars": 11647,
+      "structuralNodes": 23,
+      "definitions": 0,
+      "crossReferences": 5,
+      "passACandidates": 10,
+      "lightweightWindows": 1,
+      "wallClockMs": 55,
+      "error": null
+    },
+    {
+      "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "bytes": 743476,
+      "chars": 739530,
+      "structuralNodes": 1356,
+      "definitions": 370,
+      "crossReferences": 957,
+      "passACandidates": 622,
+      "lightweightWindows": 194,
+      "wallClockMs": 1966,
+      "error": null
+    },
+    {
+      "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+      "bytes": 741527,
+      "chars": 737387,
+      "structuralNodes": 1367,
+      "definitions": 408,
+      "crossReferences": 969,
+      "passACandidates": 648,
+      "lightweightWindows": 198,
+      "wallClockMs": 3246,
+      "error": null
+    },
+    {
+      "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "bytes": 13862,
+      "chars": 13810,
+      "structuralNodes": 21,
+      "definitions": 0,
+      "crossReferences": 9,
+      "passACandidates": 15,
+      "lightweightWindows": 1,
+      "wallClockMs": 110,
+      "error": null
+    },
+    {
+      "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "bytes": 844994,
+      "chars": 840654,
+      "structuralNodes": 1406,
+      "definitions": 481,
+      "crossReferences": 1025,
+      "passACandidates": 658,
+      "lightweightWindows": 196,
+      "wallClockMs": 3687,
+      "error": null
+    },
+    {
+      "documentId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "packageKey": "fwrg-2021-credit-agreement",
+      "sourceClass": "CURATED_EXCERPT",
+      "contentHash": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "bytes": 104183,
+      "chars": 104183,
+      "structuralNodes": 396,
+      "definitions": 0,
+      "crossReferences": 198,
+      "passACandidates": 168,
+      "lightweightWindows": 1,
+      "wallClockMs": 1202,
+      "error": null
+    },
+    {
+      "documentId": "fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "packageKey": "fwrg-2021-credit-agreement",
+      "sourceClass": "CURATED_EXCERPT",
+      "contentHash": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "bytes": 16544,
+      "chars": 16544,
+      "structuralNodes": 0,
+      "definitions": 25,
+      "crossReferences": 16,
+      "passACandidates": 0,
+      "lightweightWindows": 1,
+      "wallClockMs": 21,
+      "error": null
+    },
+    {
+      "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "bytes": 1043514,
+      "chars": 1029323,
+      "structuralNodes": 2087,
+      "definitions": 564,
+      "crossReferences": 1459,
+      "passACandidates": 946,
+      "lightweightWindows": 162,
+      "wallClockMs": 4032,
+      "error": null
+    },
+    {
+      "documentId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "sourceClass": "CURATED_EXCERPT",
+      "contentHash": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "bytes": 16854,
+      "chars": 16826,
+      "structuralNodes": 75,
+      "definitions": 0,
+      "crossReferences": 10,
+      "passACandidates": 43,
+      "lightweightWindows": 14,
+      "wallClockMs": 379,
+      "error": null
+    },
+    {
+      "documentId": "lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "sourceClass": "CURATED_EXCERPT",
+      "contentHash": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "bytes": 8137,
+      "chars": 8065,
+      "structuralNodes": 0,
+      "definitions": 12,
+      "crossReferences": 13,
+      "passACandidates": 0,
+      "lightweightWindows": 1,
+      "wallClockMs": 20,
+      "error": null
+    },
+    {
+      "documentId": "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "sourceClass": "CURATED_EXCERPT",
+      "contentHash": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+      "bytes": 10883,
+      "chars": 10801,
+      "structuralNodes": 0,
+      "definitions": 0,
+      "crossReferences": 6,
+      "passACandidates": 0,
+      "lightweightWindows": 8,
+      "wallClockMs": 24,
+      "error": null
+    },
+    {
+      "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+      "packageKey": "riot-2025-2026-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+      "bytes": 177631,
+      "chars": 175129,
+      "structuralNodes": 426,
+      "definitions": 123,
+      "crossReferences": 253,
+      "passACandidates": 149,
+      "lightweightWindows": 42,
+      "wallClockMs": 1349,
+      "error": null
+    },
+    {
+      "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+      "packageKey": "riot-2025-2026-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+      "bytes": 181371,
+      "chars": 179991,
+      "structuralNodes": 442,
+      "definitions": 126,
+      "crossReferences": 259,
+      "passACandidates": 157,
+      "lightweightWindows": 42,
+      "wallClockMs": 1471,
+      "error": null
+    },
+    {
+      "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "packageKey": "riot-2025-2026-credit-facility",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "bytes": 189102,
+      "chars": 186320,
+      "structuralNodes": 458,
+      "definitions": 128,
+      "crossReferences": 263,
+      "passACandidates": 162,
+      "lightweightWindows": 46,
+      "wallClockMs": 1664,
+      "error": null
+    },
+    {
+      "documentId": "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+      "packageKey": "final-lightweight-unseen-sup",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a",
+      "bytes": 788998,
+      "chars": 782909,
+      "structuralNodes": 1625,
+      "definitions": 469,
+      "crossReferences": 1172,
+      "passACandidates": 707,
+      "lightweightWindows": 200,
+      "wallClockMs": 5647,
+      "error": null
+    },
+    {
+      "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+      "packageKey": "final-lightweight-unseen-sup",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "bytes": 802119,
+      "chars": 795785,
+      "structuralNodes": 1612,
+      "definitions": 477,
+      "crossReferences": 1179,
+      "passACandidates": 707,
+      "lightweightWindows": 200,
+      "wallClockMs": 6525,
+      "error": null
+    },
+    {
+      "documentId": "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+      "packageKey": "final-lightweight-unseen-sup",
+      "sourceClass": "EXTRACTED_TEXT",
+      "contentHash": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+      "bytes": 28489,
+      "chars": 28291,
+      "structuralNodes": 31,
+      "definitions": 3,
+      "crossReferences": 18,
+      "passACandidates": 14,
+      "lightweightWindows": 8,
+      "wallClockMs": 248,
+      "error": null
+    }
+  ],
+  "integrationConflicts": {
+    "C_DUP_KF": "RESOLVED — removed lib/contract-model/covenant-knowledge/**; VicRunStore under inference/run-store",
+    "overlappingPeers": [
+      {
+        "peer": "WS-CKF",
+        "disposition": "mustNotTouch knowledge-factory; consume dataset contracts only"
+      },
+      {
+        "peer": "WS-CDA",
+        "disposition": "mustNotTouch dependency atlas exclusive tree"
+      },
+      {
+        "peer": "WS-DEF",
+        "disposition": "mustNotTouch definition encyclopedia exclusive tree"
+      },
+      {
+        "peer": "Structural Compiler / Legal Core",
+        "disposition": "consume parseDocumentStructure/Pass A; do not rewrite"
+      }
+    ],
+    "contractPath": "docs/vercel-independent-covenant-compilation/05-integration-contract.md"
+  },
+  "modelExperimentPlan": {
+    "status": "RUNTIME_UNAVAILABLE",
+    "plan": [
+      "Install Ollama locally; pull an authorized open-weight instruct model ≤ authorized size",
+      "HEADROOM_INFERENCE_MODE=OLLAMA_LOCAL npx tsx scripts/vercel-independent-compilation/run-local-semantic-sample.ts",
+      "Compare DETERMINISTIC_ONLY vs OLLAMA_LOCAL vs OFFLINE_REPLAY on the same Pass A seeds",
+      "Label any gateway-era fixtures as HISTORICAL — never as current VIC accuracy",
+      "Score false-permission rate on held-out probes before any promotion"
+    ],
+    "doNotClaim": "Semantic model accuracy without a measured local run"
+  }
+}

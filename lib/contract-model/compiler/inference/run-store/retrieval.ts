@@ -1,4 +1,4 @@
-import type { CovenantKnowledgeStore } from "./store";
+import type { VicRunStore } from "./store";
 import type { KnowledgeRecord } from "./schema";
 
 export interface SourceBackedQuery {
@@ -16,7 +16,7 @@ export interface SourceBackedQuery {
  * Returns only records that carry provenance when requireSourceSpan is set.
  * Never upgrades verification status.
  */
-export function retrieveSourceBacked(store: CovenantKnowledgeStore, query: SourceBackedQuery): KnowledgeRecord[] {
+export function retrieveSourceBacked(store: VicRunStore, query: SourceBackedQuery): KnowledgeRecord[] {
   return store.list().filter((r) => {
     if (query.documentId != null && r.documentId !== query.documentId) return false;
     if (query.candidateRef != null && r.candidateRef !== query.candidateRef) return false;

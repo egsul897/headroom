@@ -1,4 +1,4 @@
-import type { CovenantKnowledgeStore } from "./store";
+import type { VicRunStore } from "./store";
 import type { KnowledgeRecord } from "./schema";
 
 export type InvalidationTrigger =
@@ -24,7 +24,7 @@ export interface InvalidationEvent {
  * compiler versions, or controlling dependencies change.
  */
 export function invalidateAffectedRecords(
-  store: CovenantKnowledgeStore,
+  store: VicRunStore,
   event: InvalidationEvent
 ): KnowledgeRecord[] {
   const changed = new Set(event.changedRefs);

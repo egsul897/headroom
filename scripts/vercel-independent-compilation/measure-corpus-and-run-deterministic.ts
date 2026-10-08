@@ -4,14 +4,14 @@
  * docs/vercel-independent-covenant-compilation/ (not bulk document bodies).
  *
  * Usage:
- *   npx tsx scripts/covenant-knowledge/measure-corpus-and-run-deterministic.ts
+ *   npx tsx scripts/vercel-independent-compilation/measure-corpus-and-run-deterministic.ts
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { extractDeterministicCovenantFacts } from "../../lib/contract-model/compiler/deterministic-extraction";
 import { planSelectiveCompilation, type InventoryProvision } from "../../lib/contract-model/compiler/selective-compilation";
 import { compileLocalSemanticUnit } from "../../lib/contract-model/compiler/local-semantic";
-import { CovenantKnowledgeStore } from "../../lib/contract-model/covenant-knowledge";
+import { VicRunStore } from "../../lib/contract-model/compiler/inference/run-store";
 import { runScaleBenchmark } from "../../lib/contract-model/compiler/inference/scale-benchmark";
 import { detectDefectsFromOutput, appendEngineeringLedger, generateAdversarialCasesFromDefects } from "../../lib/contract-model/compiler/inference/adversarial-quality";
 import { runModelComparison } from "../../lib/contract-model/compiler/inference/model-comparison";
@@ -121,7 +121,7 @@ async function main() {
     for (const m of readFileSync(gibUrls, "utf8").matchAll(/(\d{10}-\d{2}-\d{6})/g)) accessionSet.add(m[1]!);
   }
 
-  const store = new CovenantKnowledgeStore({ rootDir: join(DATA, "knowledge") });
+  const store = new VicRunStore({ rootDir: join(DATA, "knowledge") });
   let provisionCount = 0;
   let factCount = 0;
   let hypothesisCount = 0;

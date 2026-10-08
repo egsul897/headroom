@@ -1,4 +1,4 @@
-import { contentAddress, sha256Hex } from "../compiler/inference/hash";
+import { contentAddress, sha256Hex } from "../hash";
 import type { KnowledgeRecord } from "./schema";
 
 /**

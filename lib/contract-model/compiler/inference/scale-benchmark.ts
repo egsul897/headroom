@@ -6,7 +6,7 @@
  */
 import { extractDeterministicCovenantFacts } from "../deterministic-extraction";
 import { planSelectiveCompilation, type InventoryProvision } from "../selective-compilation";
-import { CovenantKnowledgeStore } from "../../covenant-knowledge";
+import { VicRunStore } from "./run-store";
 
 export interface ScaleDoc {
   documentId: string;
@@ -47,7 +47,7 @@ export interface ScaleBenchmarkReport {
   };
 }
 
-function runTier(docs: ScaleDoc[], n: 10 | 100 | 1000, store: CovenantKnowledgeStore): ScaleTierResult {
+function runTier(docs: ScaleDoc[], n: 10 | 100 | 1000, store: VicRunStore): ScaleTierResult {
   const slice = docs.slice(0, n);
   const executed = slice.length === n || (docs.length < n && slice.length === docs.length && docs.length > 0);
   const errors: string[] = [];
@@ -131,7 +131,7 @@ export function runScaleBenchmark(args: {
   storeDir: string;
   tiers?: Array<10 | 100 | 1000>;
 }): ScaleBenchmarkReport {
-  const store = new CovenantKnowledgeStore({ rootDir: args.storeDir });
+  const store = new VicRunStore({ rootDir: args.storeDir });
   const tiersToRun = args.tiers ?? [10, 100, 1000];
   const tiers: ScaleTierResult[] = [];
   for (const t of tiersToRun) {

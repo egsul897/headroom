@@ -38,12 +38,19 @@ REAL DOCUMENTS / FIXTURES
 
 ```bash
 # Measured corpus checkpoint + deterministic vertical slice (zero paid)
-npx tsx scripts/covenant-knowledge/measure-corpus-and-run-deterministic.ts
+npx tsx scripts/vercel-independent-compilation/measure-corpus-and-run-deterministic.ts
+
+# Phase 2A authentic corpus (Pass A + VicRunStore)
+npx tsx scripts/vercel-independent-compilation/run-phase2a-authentic-corpus.ts
 
 # Focused tests
-npx vitest run tests/contract-model/inference tests/contract-model/deterministic-extraction tests/contract-model/selective-compilation tests/contract-model/covenant-knowledge tests/contract-model/local-semantic
+npx vitest run tests/contract-model/inference tests/contract-model/deterministic-extraction tests/contract-model/selective-compilation tests/contract-model/local-semantic tests/vercel-independent-compilation
 ```
 
 ## Bulk data
 
 `covenant-knowledge-data/`, `.ollama/`, `.vllm/`, `*.gguf` are gitignored. Model weights stay out of Git.
+
+## Ownership
+
+See `05-integration-contract.md`. Compile-run persistence is `lib/contract-model/compiler/inference/run-store` (not WS-CKF corpus DB). C-DUP-KF cleared.

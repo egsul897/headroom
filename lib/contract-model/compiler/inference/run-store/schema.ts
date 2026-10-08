@@ -1,11 +1,13 @@
 /**
- * Covenant knowledge persistence schemas.
+ * WS-VIC compile-run artifact schemas (not WS-CKF corpus persistence).
  * Extends existing IR / verified-unit concepts; does not create a second
  * competing covenant engine. Model output is NEVER labelled verified.
  */
 import { z } from "zod";
 
-export const COVENANT_KNOWLEDGE_SCHEMA_VERSION = "covenant-knowledge.v1";
+export const VIC_RUN_STORE_SCHEMA_VERSION = "vic-run-store.v1";
+/** @deprecated alias — prefer VIC_RUN_STORE_SCHEMA_VERSION */
+export const COVENANT_KNOWLEDGE_SCHEMA_VERSION = VIC_RUN_STORE_SCHEMA_VERSION;
 
 export const VerificationStatusSchema = z.enum([
   "UNVERIFIED",
@@ -34,7 +36,7 @@ export const KnowledgeRecordKindSchema = z.enum([
 ]);
 
 export const KnowledgeRecordSchema = z.object({
-  schemaVersion: z.literal(COVENANT_KNOWLEDGE_SCHEMA_VERSION),
+  schemaVersion: z.literal(VIC_RUN_STORE_SCHEMA_VERSION),
   recordId: z.string().min(1),
   kind: KnowledgeRecordKindSchema,
   contentHash: z.string().min(1),

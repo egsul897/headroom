@@ -3,18 +3,18 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
-  CovenantKnowledgeStore,
+  VicRunStore,
   findNearDuplicates,
   invalidateAffectedRecords,
   mayReuseSemanticInterpretation,
   retrieveSourceBacked,
   structuralContentKey,
-} from "../../../lib/contract-model/covenant-knowledge";
+} from "../../lib/contract-model/compiler/inference/run-store";
 
-describe("covenant knowledge store", () => {
+describe("VIC run-store (compile artifacts — not CKF corpus)", () => {
   it("persists content-addressed records and refuses model auto-verify", () => {
     const dir = mkdtempSync(join(tmpdir(), "hr-kb-"));
-    const store = new CovenantKnowledgeStore({ rootDir: dir });
+    const store = new VicRunStore({ rootDir: dir });
     const rec = store.put({
       recordId: "r1",
       kind: "SEMANTIC_HYPOTHESIS",
@@ -55,7 +55,7 @@ describe("covenant knowledge store", () => {
 
   it("detects near-duplicates and blocks unsafe semantic reuse", () => {
     const dir = mkdtempSync(join(tmpdir(), "hr-kb2-"));
-    const store = new CovenantKnowledgeStore({ rootDir: dir });
+    const store = new VicRunStore({ rootDir: dir });
     store.put({
       recordId: "a",
       kind: "STRUCTURAL_PROVISION",
@@ -80,7 +80,7 @@ describe("covenant knowledge store", () => {
 
   it("invalidates dependents when documents change", () => {
     const dir = mkdtempSync(join(tmpdir(), "hr-kb3-"));
-    const store = new CovenantKnowledgeStore({ rootDir: dir });
+    const store = new VicRunStore({ rootDir: dir });
     store.put({
       recordId: "hyp",
       kind: "SEMANTIC_HYPOTHESIS",

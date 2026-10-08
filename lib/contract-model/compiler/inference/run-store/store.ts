@@ -1,27 +1,30 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { contentAddress } from "../compiler/inference/hash";
-import { assertNotAutoVerified, COVENANT_KNOWLEDGE_SCHEMA_VERSION, KnowledgeRecordSchema, type KnowledgeRecord } from "./schema";
+import { contentAddress } from "../hash";
+import { assertNotAutoVerified, VIC_RUN_STORE_SCHEMA_VERSION, KnowledgeRecordSchema, type KnowledgeRecord } from "./schema";
 
-export interface CovenantKnowledgeStoreOptions {
+export interface VicRunStoreOptions {
   rootDir: string;
 }
 
 /**
- * File-backed content-addressed covenant knowledge store.
+ * WS-VIC compile-run artifact store (NOT the Covenant Knowledge Factory corpus DB).
+ * Persists compilation-run facts/hypotheses for offline replay and benchmarks.
+ * Corpus persistence / KF Prisma remains WS-CKF (`lib/knowledge-factory/**`).
+ * Resolves C-DUP-KF by living under `lib/contract-model/compiler/inference/**`.
  * Bulk data stays out of Git (covenant-knowledge-data/ is gitignored).
  */
-export class CovenantKnowledgeStore {
+export class VicRunStore {
   readonly rootDir: string;
   private readonly objectsDir: string;
   private readonly indexPath: string;
 
-  constructor(options: CovenantKnowledgeStoreOptions) {
+  constructor(options: VicRunStoreOptions) {
     this.rootDir = options.rootDir;
     this.objectsDir = join(this.rootDir, "objects");
     this.indexPath = join(this.rootDir, "index.json");
     mkdirSync(this.objectsDir, { recursive: true });
-    if (!existsSync(this.indexPath)) writeFileSync(this.indexPath, JSON.stringify({ schemaVersion: COVENANT_KNOWLEDGE_SCHEMA_VERSION, records: {} }, null, 2));
+    if (!existsSync(this.indexPath)) writeFileSync(this.indexPath, JSON.stringify({ schemaVersion: VIC_RUN_STORE_SCHEMA_VERSION, records: {} }, null, 2));
   }
 
   private loadIndex(): { schemaVersion: string; records: Record<string, { contentHash: string; kind: string; path: string }> } {
@@ -68,7 +71,7 @@ export class CovenantKnowledgeStore {
       dependencies: partial.dependencies ?? [],
       invalidatedBy: partial.invalidatedBy ?? null,
       reviewerDecision: partial.reviewerDecision ?? null,
-      schemaVersion: COVENANT_KNOWLEDGE_SCHEMA_VERSION,
+      schemaVersion: VIC_RUN_STORE_SCHEMA_VERSION,
       contentHash: partial.contentHash ?? bodyHash,
       provenance: {
         sourceSpans: partial.provenance?.sourceSpans ?? [],
@@ -123,3 +126,6 @@ export class CovenantKnowledgeStore {
     return total;
   }
 }
+
+/** @deprecated Prefer VicRunStore — retained only for in-branch rename compatibility. */
+export class CovenantKnowledgeStore extends VicRunStore {}
