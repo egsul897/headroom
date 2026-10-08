@@ -138,7 +138,7 @@ production.
 
 ## Footer (exact identifiers)
 
-- **SHA:** recorded at commit time on `cursor/covenant-precedent-research-3e8f`
+- **SHA:** `888d8bd3115ae929434d9f16348abd943aa16714` on `cursor/covenant-precedent-research-3e8f`
 - **PR:** https://github.com/egsul897/headroom/pull/152
 - **CI:** see PR checks (provider-free research tests are local; GitHub Actions
   soft-gates are separate)
