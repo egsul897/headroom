@@ -157,7 +157,7 @@ export function hybridScope(pkg: CorpusPackage, s: DeterministicStages, c: Bench
     for (const u of [...chosen.values()]) {
       for (const r of index.findReferencesFrom(u.nodeId, true)) {
         const targetRef = r.normalizedTarget;
-        if (!targetRef || r.targetKind !== "SECTION" && r.targetKind !== "CLAUSE" && r.targetKind !== "SUBSECTION") { if (r.targetKind === "SCHEDULE" || r.targetKind === "EXHIBIT") unresolved.add(`${r.referenceText} (${r.targetKind})`); continue; }
+        if (!targetRef || (r.targetKind !== "SECTION" && r.targetKind !== "CLAUSE")) { if (r.targetKind === "SCHEDULE" || r.targetKind === "EXHIBIT") unresolved.add(`${r.referenceText} (${r.targetKind})`); continue; }
         const targets = sectionNode(u.documentId, sectionOf(targetRef));
         if (targets.length === 1) add(targets[0]!, `cross-reference from ${u.sectionRef}: "${r.referenceText}"`);
         else unresolved.add(`${r.referenceText} from ${u.sectionRef} → ${targets.length === 0 ? "NOT_FOUND" : "AMBIGUOUS"}`);

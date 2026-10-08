@@ -17,7 +17,11 @@ import { loadPackage } from "../../scripts/product-acceptance/corpus";
 import { buildIndex, runDeterministicStages } from "../../scripts/product-acceptance/stages";
 import { candidateFor } from "../../scripts/product-acceptance/auditor";
 
-type Authority = typeof import("../../lib/contract-model/compiler/operative-authority");
+// Structural stand-in for the PR #136 module's surface: the module does not exist on main, so a `typeof import(...)`
+// would fail typechecking there; the real module is loaded dynamically below when present (integration checkout).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AuthorityFn = (...args: any[]) => any;
+type Authority = { classifyStructuralOccurrence: AuthorityFn; authenticateStructuralOccurrence: AuthorityFn; operativeModelDispatchBlock: AuthorityFn; selectAuthenticatedSectionBodies: AuthorityFn; sha256Utf8: AuthorityFn };
 const AUTHORITY_MODULE = "../../lib/contract-model/compiler/operative-authority";
 const authority: Authority | null = await import(/* @vite-ignore */ AUTHORITY_MODULE).then((m) => m as Authority).catch(() => null);
 

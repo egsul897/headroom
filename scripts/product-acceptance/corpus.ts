@@ -29,6 +29,10 @@ export const SEVERITIES = [
   "AMBIGUITY_NOT_PRESERVED",
   "NONMATERIAL_OMISSION",
   "EVIDENCE_INCOMPLETE",
+  // directive queue 4 additions: a dependency the operative text relies on that cannot be located, and an amendment
+  // chain applied in the wrong order / from the wrong document
+  "MISSING_DEPENDENCY",
+  "INCORRECT_AMENDMENT_PRECEDENCE",
 ] as const;
 export type Severity = (typeof SEVERITIES)[number];
 
