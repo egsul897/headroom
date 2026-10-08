@@ -127,8 +127,8 @@ describe("Gibraltar evidence integrity", () => {
       evidenceIdentity: { providerExecutionIdentity: string; verificationState: string; structuralTreeSha256: string; parserCodeSha256: string };
     };
     const fresh = await runOfflineDevelopmentPipeline(pipelineInput());
-    expect(current.offline.totalNodes).toBe(2064);
-    expect(current.offline.passACandidates).toBe(938);
+    expect(current.offline.totalNodes).toBe(2081);
+    expect(current.offline.passACandidates).toBe(943);
     expect(current.passB.executed).toBe(false);
     expect(current.passB.terminal).toBe("PROVIDER_EXECUTION_REQUIRED");
     expect(current.discoveredCandidates).toEqual([]);

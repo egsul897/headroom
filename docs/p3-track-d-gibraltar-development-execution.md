@@ -24,9 +24,9 @@ pipeline stage unlocked: PASS_B_SEMANTIC_CLASSIFICATION
 
 The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DEFAULT_MAX_TOKENS` (128000) priced by `maxCostOfRequestUsd` on rate card `headroom-pricing.v1 (2026-09)` for `anthropic/claude-sonnet-5`, summed over the 121 Pass A sections the current tree sends. It is the code's own maximum, not a typical invoice, and not a completed provider run. The earlier no-key preflight of 181.67 USD over 141 sections belonged to the pre-parser tree. Haiku is not on the rate card.
 
-HTML sha256 `6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a` and extracted-text sha256 `4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5` match `provenance.json`. Parsed characters 1,029,323. Chunks 511 (444 with a section ref). Structural nodes 2,064. Definitions 564. References 1,459 (505 resolved, 154 unresolved, 800 ambiguous). Pass A candidates 938. Health findings 849. Supersession index empty, so Pass A status stays `UNKNOWN_SUPERSESSION_STATUS`.
+HTML sha256 `6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a` and extracted-text sha256 `4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5` match `provenance.json`. Parsed characters 1,029,323. Chunks 511 (444 with a section ref). Structural nodes 2,081. Definitions 564. References 1,459 (490 resolved, 146 unresolved, 823 ambiguous). Pass A candidates 943. Health findings 867. Supersession index empty, so Pass A status stays `UNKNOWN_SUPERSESSION_STATUS`.
 
-The record binds those source hashes, parser code sha256 `8ddef00641005e2f8fd784ccf38776df5784c6cc395224ea65f4b0fc51d81101` (`lib/contract-model/compiler/clause-hierarchy.ts`), the structural-tree hash, the Pass A candidate-set hash, `PROVIDER_EXECUTION_REQUIRED`, `verificationState` `NOT_EXECUTED`, and the producing-code hash of the pipeline sources. A provider candidate set whose parser or tree identity differs from this record is refused.
+The record binds those source hashes, parser code sha256 `dc3d8f873f8ec33aa67370216c4ea9e26a7ee55ede35463f4fe82bbc70a5b517` (`lib/contract-model/compiler/clause-hierarchy.ts`), the structural-tree hash, the Pass A candidate-set hash, `PROVIDER_EXECUTION_REQUIRED`, `verificationState` `NOT_EXECUTED`, and the producing-code hash of the pipeline sources. A provider candidate set whose parser or tree identity differs from this record is refused. The 2,064-node / 938-candidate figures belonged to the pre-correction tree and are not this record.
 
 ## Historical Haiku execution
 
@@ -43,7 +43,7 @@ Two stored section references on that snapshot do not match the current tree:
 | nodeId | historical sectionRef | current sectionRef |
 |---|---|---|
 | `structural-node:99a53df526604251c4688760` | `7.05(a)(4)(ii)(vi)(B)` | `7.05(a)(y)(vi)(B)` |
-| `structural-node:7254026c586c453960bc7646` | `1.01(9)(c)(46)` | `1.01(9)(c)(c)(46)` |
+| `structural-node:7254026c586c453960bc7646` | `1.01(9)(c)(46)` | `1.01(6)(A)(46)` |
 
 The historical cross-cut read below describes those 842 rows only. It is not a read of the current tree.
 
@@ -72,4 +72,4 @@ Source: `docs/phase-3-final-chewy/02-cost-preflight.json` and `scripts/semantic-
 
 **Asset dispositions.** Bare ref `7.04` is `UNIQUE_AFTER_DEGENERATE_EXCLUSION`. The table-of-contents node `structural-node:a744dbebadfcae7ddeac6525` is 39 characters and is the excluded degenerate candidate. The body node `structural-node:a80b8b3639f39c55e5617fd7` is 5,767 characters. Both candidates stay on the investigation. `selected` is false. This is not a forced choice between two substantive sections, and it does not assign a role.
 
-No generalized parser change follows from these investigations. The clause hierarchy is unchanged. Chewy clause hierarchy, including §6.08(a)(3)(a)–(i), is unchanged.
+These investigations do not certify Gibraltar and do not complete Pass B. The current record was regenerated, with no provider key, after the glued alphabetic-marker parser correction. The live section ref of `structural-node:7254026c586c453960bc7646` is `1.01(6)(A)(46)`. The historical ref `1.01(9)(c)(46)` still fails closed. That live ref is not a certification of the Permitted Lien path.
