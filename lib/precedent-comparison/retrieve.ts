@@ -6,8 +6,12 @@ import { profileProvision } from "./features";
 import type { ComparisonStanding, RetrievalHit, RetrievalQuery } from "./types";
 
 function standingCeiling(reviewStatus: string): ComparisonStanding {
-  // Provision-level approval raises provenance ceiling only — never claim standing.
-  return reviewStatus === "APPROVED_PRECEDENT" ? "SOURCE_SUPPORTED_LEGAL_DIFFERENCE" : "SOURCE_SUPPORTED_LEGAL_DIFFERENCE";
+  // Retrieval hits are not claims. Provision-level APPROVED_PRECEDENT never
+  // elevates to REVIEWER_VERIFIED_CONCLUSION (claim-bound review required).
+  // SOURCE_ONLY caps suggestion at SEMANTIC_HYPOTHESIS until a claim is built
+  // with source excerpts via makeClaim.
+  if (reviewStatus === "APPROVED_PRECEDENT") return "SOURCE_SUPPORTED_LEGAL_DIFFERENCE";
+  return "SEMANTIC_HYPOTHESIS";
 }
 
 export function retrieveComparableProvisions(corpus: PrecedentCorpus, query: RetrievalQuery): RetrievalHit[] {

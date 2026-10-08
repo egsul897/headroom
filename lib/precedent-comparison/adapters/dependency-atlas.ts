@@ -32,6 +32,8 @@ export interface AtlasDatasetView {
 const DEFAULT_PATHS = [
   "tests/fixtures/covenant-dependency-atlas/export/atlas-dataset.json",
   "docs/covenant-dependency-atlas/export/atlas-dataset.json",
+  // Peer-published portable envelope (may be counts-only; edges preferred when present).
+  "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json",
   "lib/precedent-comparison/adapters/fixtures/atlas-dataset.sample.json",
 ];
 
@@ -53,6 +55,8 @@ export function loadDependencyAtlas(baseDir: string = process.cwd(), extraPaths:
           note: `file present but edges[] missing: ${rel}`,
         };
       }
+      // Counts-only portable exports without edges: keep searching for a usable dataset.
+      if (edges.length === 0 && rel.includes("portable")) continue;
       return {
         peer: "WS-CDA",
         availability: "AVAILABLE",

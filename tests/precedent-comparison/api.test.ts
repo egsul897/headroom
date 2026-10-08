@@ -21,8 +21,8 @@ describe("Precedent Comparison API (Phase 2)", () => {
   it("reports honest corpus statistics against expansion targets", () => {
     const stats = api.statistics();
     expect(stats.provisionCount).toBeGreaterThanOrEqual(500);
-    expect(stats.distinctAgreements).toBeGreaterThanOrEqual(10);
-    expect(stats.distinctIssuers).toBeGreaterThanOrEqual(6);
+    expect(stats.distinctAgreements).toBeGreaterThanOrEqual(14);
+    expect(stats.distinctIssuers).toBeGreaterThanOrEqual(8);
     expect(stats.targetsMet.provisions).toBe(true);
     expect(stats.targetsMet.agreements).toBe(false);
     expect(stats.targetsMet.issuers).toBe(false);

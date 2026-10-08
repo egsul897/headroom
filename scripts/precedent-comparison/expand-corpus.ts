@@ -85,6 +85,7 @@ function classifyTitle(title: string): { family: Family; tags: string[] } | null
 
 function extractSections(text: string): Array<{ sectionRef: string; title: string; start: number; end: number }> {
   // Prefer "Section 6.01. Title" / "SECTION 7.2 Title" including mid-paragraph headers.
+  // Also accept TOC-style "SECTION 7.02\n\nIndebtedness" when the title follows within 80 chars.
   const headerRe =
     /(?:SECTION|Section)\s+(\d+\.\d+)\s*\.?\s+([A-Z\[\"][A-Za-z0-9 ;,&\-\/()]{2,100})/g;
   const matches: Array<{ sectionRef: string; title: string; start: number }> = [];
@@ -97,6 +98,27 @@ function extractSections(text: string): Array<{ sectionRef: string; title: strin
     // Title should look like a heading word, not a sentence object
     const first = title.split(/\s+/)[0] ?? "";
     if (!/^[A-Z\[]/.test(first)) continue;
+    // Skip bare page-number titles from some TOC extracts
+    if (/^\d+$/.test(title)) continue;
+    matches.push({ sectionRef: num, title: `Section ${num}. ${title}`, start: m.index! });
+  }
+  // Multiline headers: SECTION N.NN\nTitle (common in Superior / some EDGAR extracts)
+  const multiRe = /(?:SECTION|Section)\s+(\d+\.\d+)\s*\.?\s*(?:\n+\s*)([A-Z][A-Za-z0-9 ;,&\-\/()]{2,80})/g;
+  for (const m of text.matchAll(multiRe)) {
+    const num = m[1] ?? "";
+    const title = (m[2] ?? "").replace(/\s+/g, " ").trim();
+    if (/^(of|hereof|thereof|above|below|to|and)\b/i.test(title)) continue;
+    if (/^\d+$/.test(title)) continue;
+    if (!/[A-Za-z]{3,}/.test(title)) continue;
+    matches.push({ sectionRef: num, title: `Section ${num}. ${title}`, start: m.index! });
+  }
+  // Amendment-style "SECTION 2. Amendments" / "Section 1. Defined Terms"
+  const amendHeaderRe = /(?:SECTION|Section)\s+(\d+)\s*\.\s+([A-Z][A-Za-z0-9 ;,&\-\/()]{2,80})/g;
+  for (const m of text.matchAll(amendHeaderRe)) {
+    const num = m[1] ?? "";
+    const title = (m[2] ?? "").replace(/\s+/g, " ").trim();
+    if (/^(of|hereof|thereof|above|below|to|and)\b/i.test(title)) continue;
+    if (!/[A-Za-z]{3,}/.test(title)) continue;
     matches.push({ sectionRef: num, title: `Section ${num}. ${title}`, start: m.index! });
   }
   matches.sort((a, b) => a.start - b.start);
@@ -104,10 +126,23 @@ function extractSections(text: string): Array<{ sectionRef: string; title: strin
   for (const m of matches) {
     const prev = deduped[deduped.length - 1];
     if (prev && m.start - prev.start < 40) continue;
-    // Collapse duplicate section numbers: keep the earlier (usually true header)
-    if (prev && prev.sectionRef === m.sectionRef) continue;
+    // Prefer later body headers over early TOC duplicates of the same section number
+    if (prev && prev.sectionRef === m.sectionRef) {
+      // Replace TOC hit with later body hit when gap is large (TOC vs operative text)
+      if (m.start - prev.start > 50_000) {
+        deduped[deduped.length - 1] = m;
+      }
+      continue;
+    }
+    // Also replace earlier TOC entry when same section appears much later
+    const earlierIdx = deduped.findIndex((d) => d.sectionRef === m.sectionRef);
+    if (earlierIdx >= 0) {
+      if (m.start - deduped[earlierIdx]!.start > 50_000) deduped[earlierIdx] = m;
+      continue;
+    }
     deduped.push(m);
   }
+  deduped.sort((a, b) => a.start - b.start);
   const out: Array<{ sectionRef: string; title: string; start: number; end: number }> = [];
   for (let i = 0; i < deduped.length; i++) {
     const cur = deduped[i]!;
@@ -119,14 +154,23 @@ function extractSections(text: string): Array<{ sectionRef: string; title: strin
 
 function extractLetterBaskets(sectionText: string, sectionStart: number, sectionRef: string): Array<{ ref: string; start: number; end: number; text: string }> {
   const baskets: Array<{ ref: string; start: number; end: number; text: string }> = [];
-  const re = /\(([a-z])\)\s+/g;
+  const letterRe = /\(([a-z])\)\s+/g;
+  const romanRe = /\(([ivx]+)\)\s+/gi;
   const hits: Array<{ letter: string; start: number }> = [];
-  for (const m of sectionText.matchAll(re)) {
-    // only early lettered lists in the first 80% of a section window
+  for (const m of sectionText.matchAll(letterRe)) {
     if (m.index! > Math.min(sectionText.length, 4500)) break;
     hits.push({ letter: m[1]!, start: m.index! });
   }
-  // Keep contiguous a.. runs
+  // Roman-numeral baskets (common in Superior / modern LSTA forms) when lettered (a)/(b) density is low
+  if (hits.length < 4) {
+    for (const m of sectionText.matchAll(romanRe)) {
+      if (m.index! > Math.min(sectionText.length, 5000)) break;
+      const roman = (m[1] ?? "").toLowerCase();
+      if (!/^[ivx]+$/.test(roman)) continue;
+      hits.push({ letter: roman, start: m.index! });
+    }
+    hits.sort((a, b) => a.start - b.start);
+  }
   for (let i = 0; i < hits.length; i++) {
     const cur = hits[i]!;
     const next = hits[i + 1];
@@ -140,7 +184,7 @@ function extractLetterBaskets(sectionText: string, sectionStart: number, section
       text: clean(slice),
     });
   }
-  return baskets.slice(0, 40);
+  return baskets.slice(0, 50);
 }
 
 function extractDefinitions(text: string): Array<{ term: string; start: number; end: number; text: string }> {
@@ -312,6 +356,13 @@ const SOURCES: SourceSpec[] = [
   { packageId: "riot-2025b", issuerId: "riot", documentId: "riot-doc-b-2025-ar", sourcePath: "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt", agreementType: "CREDIT_AGREEMENT", documentRole: "ORIGINAL" },
   { packageId: "riot-2026", issuerId: "riot", documentId: "riot-doc-c-2026-second-ar", sourcePath: "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt", agreementType: "CREDIT_AGREEMENT", documentRole: "ORIGINAL" },
   { packageId: "gibraltar-2026", issuerId: "gibraltar", documentId: "gibraltar-doc-a-2026", sourcePath: "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt", agreementType: "CREDIT_AGREEMENT", documentRole: "ORIGINAL" },
+  // Previously unharvested authentic fixtures (read-only; no fixture mutation).
+  { packageId: "superior-2022", issuerId: "superior", documentId: "superior-doc-a-2022-term-loan", sourcePath: "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt", agreementType: "CREDIT_AGREEMENT", documentRole: "ORIGINAL" },
+  { packageId: "superior-2024", issuerId: "superior", documentId: "superior-doc-b-2024-ar-term-loan", sourcePath: "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt", agreementType: "CREDIT_AGREEMENT", documentRole: "ORIGINAL" },
+  { packageId: "superior-2025", issuerId: "superior", documentId: "superior-doc-c-2025-first-amendment", sourcePath: "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt", agreementType: "AMENDMENT", documentRole: "AMENDMENT" },
+  { packageId: "conmed-2025", issuerId: "conmed", documentId: "conmed-doc-d-first-omnibus-amendment-2026", sourcePath: "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt", agreementType: "AMENDMENT", documentRole: "AMENDMENT" },
+  { packageId: "dsgr-2025c", issuerId: "dsgr", documentId: "dsgr-doc-c-2025-fourth-amendment", sourcePath: "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt", agreementType: "AMENDMENT", documentRole: "AMENDMENT" },
+  { packageId: "lsb-2023", issuerId: "lsb", documentId: "lsb-doc-b-intercreditor-joinder", sourcePath: "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt", agreementType: "GUARANTEE_SECURITY", documentRole: "ORIGINAL" },
 ];
 
 function main(): void {
@@ -361,6 +412,150 @@ function main(): void {
     }
   }
 
+  // Hand spans for short amendments / joinders that lack Article-style headers.
+  function addHandSpan(opts: {
+    provisionId: string;
+    packageId: string;
+    documentId: string;
+    sourcePath: string;
+    sourceSectionRef: string;
+    covenantFamily: Family;
+    issuerId: string;
+    agreementType: SourceSpec["agreementType"];
+    documentRole: SourceSpec["documentRole"];
+    needle: RegExp;
+    tags: string[];
+    amendsProvisionId?: string | null;
+    window?: number;
+  }): void {
+    const abs = join(root, opts.sourcePath);
+    if (!existsSync(abs) || byId.has(opts.provisionId)) return;
+    const text = readFileSync(abs, "utf8");
+    const m = text.search(opts.needle);
+    if (m < 0) return;
+    const sourceText = clean(text.slice(m, m + (opts.window ?? 1800)));
+    if (sourceText.length < 80) return;
+    byId.set(opts.provisionId, {
+      provisionId: opts.provisionId,
+      packageId: opts.packageId,
+      documentId: opts.documentId,
+      sourcePath: opts.sourcePath,
+      sourceSectionRef: opts.sourceSectionRef,
+      covenantFamily: opts.covenantFamily,
+      charStart: m,
+      charEnd: m + sourceText.length,
+      sourceText,
+      documentRole: opts.documentRole,
+      agreementType: opts.agreementType,
+      issuerId: opts.issuerId,
+      amendsProvisionId: opts.amendsProvisionId ?? null,
+      tags: opts.tags,
+      reviewStatus: "SOURCE_ONLY",
+      financialDefinitionTerms: [],
+      sourceVersionHash: sha256(sourceText),
+    });
+  }
+
+  addHandSpan({
+    provisionId: "superior-2025:amend-2b-prepay",
+    packageId: "superior-2025",
+    documentId: "superior-doc-c-2025-first-amendment",
+    sourcePath: "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+    sourceSectionRef: "SECTION 2(b)",
+    covenantFamily: "MANDATORY_PREPAYMENTS",
+    issuerId: "superior",
+    agreementType: "AMENDMENT",
+    documentRole: "AMENDMENT",
+    needle: /Section 2\.05\(2\)\(c\) of the Credit Agreement is hereby/,
+    tags: ["mandatory prepayment", "maintenance liquidity", "amendment restatement"],
+    amendsProvisionId: [...byId.keys()].find((id) => id.startsWith("superior-2024:") && id.includes("2.05")) ?? null,
+  });
+  addHandSpan({
+    provisionId: "superior-2025:def-maintenance-liquidity",
+    packageId: "superior-2025",
+    documentId: "superior-doc-c-2025-first-amendment",
+    sourcePath: "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+    sourceSectionRef: "Maintenance Liquidity",
+    covenantFamily: "DEFINITIONS_CALCULATION_RULES",
+    issuerId: "superior",
+    agreementType: "DEFINITIONS_EXCERPT",
+    documentRole: "DEFINITION",
+    needle: /“Maintenance Liquidity”/,
+    tags: ["financial definition", "amendment-added definition"],
+  });
+  addHandSpan({
+    provisionId: "conmed-2025:omnibus-incremental",
+    packageId: "conmed-2025",
+    documentId: "conmed-doc-d-first-omnibus-amendment-2026",
+    sourcePath: "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+    sourceSectionRef: "Incremental Term Loans",
+    covenantFamily: "INDEBTEDNESS",
+    issuerId: "conmed",
+    agreementType: "AMENDMENT",
+    documentRole: "AMENDMENT",
+    needle: /Incremental Term Loans|Increased Facility|Section\s+2\.28/i,
+    tags: ["incremental facility", "omnibus amendment"],
+  });
+  addHandSpan({
+    provisionId: "dsgr-2025c:fourth-amendment-effect",
+    packageId: "dsgr-2025c",
+    documentId: "dsgr-doc-c-2025-fourth-amendment",
+    sourcePath: "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+    sourceSectionRef: "SECTION 4",
+    covenantFamily: "QUALITATIVE_NEGATIVE_COVENANTS",
+    issuerId: "dsgr",
+    agreementType: "AMENDMENT",
+    documentRole: "AMENDMENT",
+    needle: /Reference to and Effect on the Credit Agreement/i,
+    tags: ["amendment reaffirmation", "no novation"],
+  });
+  addHandSpan({
+    provisionId: "lsb-2023:intercreditor-joinder-1",
+    packageId: "lsb-2023",
+    documentId: "lsb-doc-b-intercreditor-joinder",
+    sourcePath: "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+    sourceSectionRef: "SECTION 1",
+    covenantFamily: "LIENS",
+    issuerId: "lsb",
+    agreementType: "GUARANTEE_SECURITY",
+    documentRole: "ORIGINAL",
+    needle: /SECTION 1\.\s*\(A\)\s*In accordance with Section 5\.3\(a\)/i,
+    tags: ["intercreditor", "abl agent succession", "lien priority"],
+  });
+
+  // Ingest CKF provision records when a published export is mounted (never download).
+  if (kf.availability === "AVAILABLE" && kf.data) {
+    let ingested = 0;
+    for (const rec of kf.data.records) {
+      if (!rec.sourceText || rec.sourceText.length < 80) continue;
+      const provisionId = `ckf:${rec.recordId ?? sha256(rec.sourceText).slice(0, 16)}`;
+      if (byId.has(provisionId)) continue;
+      const sourceText = clean(rec.sourceText).slice(0, 2400);
+      const family = (rec.covenantFamily as Family | undefined) ?? "QUALITATIVE_NEGATIVE_COVENANTS";
+      byId.set(provisionId, {
+        provisionId,
+        packageId: `ckf-${rec.issuerId ?? "unknown"}`,
+        documentId: rec.documentId ?? `ckf-doc-${rec.recordId ?? provisionId}`,
+        sourcePath: `peer://ws-ckf/${rec.recordId ?? provisionId}`,
+        sourceSectionRef: rec.sourceSectionRef ?? "unknown",
+        covenantFamily: family,
+        charStart: 0,
+        charEnd: sourceText.length,
+        sourceText,
+        documentRole: /amend/i.test(rec.agreementType ?? "") ? "AMENDMENT" : "ORIGINAL",
+        agreementType: (rec.agreementType as SourceSpec["agreementType"] | undefined) ?? "CREDIT_AGREEMENT",
+        issuerId: rec.issuerId ?? "ckf-unknown",
+        amendsProvisionId: null,
+        tags: ["ckf-export"],
+        reviewStatus: "SOURCE_ONLY",
+        financialDefinitionTerms: [],
+        sourceVersionHash: sha256(sourceText),
+      });
+      ingested += 1;
+    }
+    console.log("CKF ingested records:", ingested);
+  }
+
   const provisions = [...byId.values()].sort((a, b) => a.provisionId.localeCompare(b.provisionId));
   const issuers = new Set(provisions.map((p) => p.issuerId));
   const agreements = new Set(provisions.map((p) => p.documentId));
@@ -382,10 +577,14 @@ function main(): void {
       peerCoordination: {
         edgarBackfill: ehb.availability,
         knowledgeFactory: kf.availability,
+        edgarNote: ehb.note,
+        knowledgeFactoryNote: kf.note,
       },
       samplingBiasNotes: [
         "Expanded from local authentic Headroom fixtures only; no live EDGAR download in PCI.",
+        "Includes Superior Industries, CONMED omnibus amendment, DSGR fourth amendment, LSB intercreditor when present on disk.",
         "100-agreement / 50-issuer targets require WS-EHB queue + WS-CKF acquisition delivery.",
+        "Corpus frequency ≠ market prevalence.",
       ],
     },
     provisions,

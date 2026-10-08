@@ -16,6 +16,8 @@ export { retrieveCounterexamples } from "./counterexamples";
 export { compareOriginalAndAmendment, listAmendmentPairs } from "./amendments";
 export { signalsForProvision, normalizeText, tokenizeSource } from "./knowledge";
 export { makeClaim, applyClaimReviews, evidenceFromExcerpts, maxStandingAmongClaims, EpistemicBoundaryError } from "./epistemic";
+export { auditElevatedStandingEmissions, ELEVATED_STANDINGS } from "./epistemic-audit";
+export type { StandingEmissionSite, ElevatedStanding } from "./epistemic-audit";
 export { validateSourceSpan, validateCorpusSpans } from "./source-span";
 export { sha256Hex } from "./hash";
 export { loadDependencyAtlas, atlasEdgesForSection } from "./adapters/dependency-atlas";
