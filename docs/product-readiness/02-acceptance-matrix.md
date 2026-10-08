@@ -26,7 +26,7 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (run at `9de4e57`, 360 checks: 318 pass · 30 fail · 12 not tested)
+## Matrix (committed run `acceptance-runs/8f51e2981bd2/`, repository SHA `8f51e2981bd2`, 360 checks: 318 pass · 30 fail · 12 not tested)
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
