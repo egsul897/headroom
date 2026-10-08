@@ -21,6 +21,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
+import { resolveOperativeSource } from "../candidate-span";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
@@ -185,7 +186,7 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
+  const operativeText = resolveOperativeSource({ structuralNodeIds: [primaryNodeId], documentId, normalizedSourceRef: candidate.normalizedSourceRef }, access.index, access.operativeState).text;
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
 

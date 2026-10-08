@@ -24,7 +24,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## P0-B — Definition amendments (IPV-19, IPV-20)
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `ab158c3`.
 - Reproduction: `The definition of "Consolidated EBITDA" in Section 1.01 ... is hereby amended and restated ... to read as follows`. The section-restatement pattern matched the locator `Section 1.01 ... is hereby amended and restated` and emitted `REPLACE_TEXT` for the whole section.
 - Fix: a definition sentence that names its section is a definition candidate. The section pattern does not reclaim that span. `REPLACE_DEFINITION` captures the quoted replacement. The section's operative text is the base section with that one definition span replaced, when the old span occurs once. Retrieval uses that operative definition text instead of the static base definition.
 - Preserved: a real `Section 6.01 is hereby amended and restated` remains a section replacement. `Section 1.01 is hereby amended by amending and restating the definition of ...` stays a section candidate for interpretation and is not captured as a deterministic definition replacement.
@@ -33,11 +33,22 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## P0-C — Side letters, consents, and waivers (IPV-16)
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `9c53820`.
 - Reproduction: a document captioned `SIDE LETTER` or `CONSENT` says `Notwithstanding Section 7.01(b)` and states a different cap. The amendment pipeline produced no effect. Operative state stayed `OPERATIVE_STATE_RESOLVED` on the base cap.
 - Fix: that caption plus a named section records `UNKNOWN_CHANGE` with `newText` null and reason `UNCLASSIFIED_OVERRIDE`. No interpreter call. The named provision is `REVIEW_REQUIRED` and does not keep the base amount as current text. If the section exists in more than one agreement, the effect stays unattached and the instrument is still not `RESOLVED`. A credit agreement's own notwithstanding clause is not an override document.
 - Tests: `tests/contract-model/unclassified-override.test.ts` 4 passed. `phase-2g-amendment-precedence.test.ts` 48 passed. `npm run test:phase3-certification` 459 passed.
 - Not done: the legal effect of the override is not interpreted. A side letter that names no section is not yet flagged.
+
+## IPV-04 — Section operative text kept superseded clauses
+
+- Status: local tests passed; push follows this entry.
+- Severity: P0 wrong operative source. A deleted basket compiled from the parent section is a live permission.
+- Reproduction: Amendment 1 restates `7.01(b)` from `$25,000,000` to `$40,000,000`. Amendment 2 deletes `7.01(d)` (`$15,000,000`). Operative state resolves both clauses. `resolveOperativeSource` for section `7.01` returned the base descendants, including both stale amounts.
+- Root cause: supersession is recorded on the clause node. The parent section has no provision view, so the candidate-span fallback read `getNodeText(section, DESCENDANTS)`. A definition amendment sourced on the enclosing section could also win that lookup and replace the section with the single new definition.
+- Fix: a resolved clause replacement or deletion is spliced into the parent when the old span occurs once. Overlapping or repeated spans, and any descendant amendment that is not resolved, withhold the parent text. A definition provision no longer governs a section candidate. Context retrieval uses the same operative text for the operative-source item, child rules, and definition scan.
+- Preserved: a review-required amendment of a node that has no amended descendants still falls back to that node's base text. An unresolved amendment of the section itself does not keep the base section when a child clause was replaced. A real section restatement still wins over its old children.
+- Tests: `tests/contract-model/section-operative-splice.test.ts` 6 passed. Context retrieval 36, phase-2g 48, architecture 17, definition-level 6, unclassified-override 4 passed. `npm run test:phase3-certification` plus the new file: 465 passed. `npx tsc --noEmit -p .` clean.
+- False-permission implication: the parent section no longer compiles the replaced `$25,000,000` cap or the deleted `$15,000,000` basket. When the splice is not unique, the section text is withheld rather than certified from the base document.
 
 ## Queue
 
@@ -47,6 +58,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | P0-B IPV-19 definition amendment replaces all of Section 1.01 | P0 | VERIFIED locally | Definition target plus section splice; see definition-level-amendment tests |
 | P0-B IPV-20 retrieval ignores operative definition | P0 | VERIFIED locally | Bundle excerpt uses the operative definition when one exists |
 | P0-C IPV-16 notwithstanding side letter | P0 | VERIFIED locally | Unresolved override; no invented amount; base cap not RESOLVED |
+| IPV-04 section candidate compiles superseded clauses | P0 | VERIFIED locally | Parent operative text splices resolved clause replacements and deletions |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
 

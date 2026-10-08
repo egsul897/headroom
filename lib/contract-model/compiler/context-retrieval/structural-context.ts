@@ -7,8 +7,9 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
+import { resolveOperativeSource } from "../candidate-span";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
-import type { ContextItem } from "./types";
+import type { ContextItem, ContextItemEvidenceState } from "./types";
 
 /**
  * Task §7's own "nearby concluding language" list, plus aggregate/shared-
@@ -129,11 +130,19 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
   return { relevant: signals.length > 0, signals };
 }
 
+function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documentId: string, node: { nodeId: string; sectionRef: string }, ownWhenUnamended: boolean): { text: string; evidenceState: ContextItemEvidenceState } {
+  const resolved = resolveOperativeSource({ structuralNodeIds: [node.nodeId], documentId, normalizedSourceRef: node.sectionRef }, index, state.operativeState);
+  if (resolved.withheld) {
+    return { text: "", evidenceState: { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason: "An amendment to a clause inside this text could not be applied without guessing, so the base text is not current operative text." } };
+  }
+  const text = resolved.origin === "OPERATIVE_STATE_CURRENT_TEXT" || !ownWhenUnamended ? resolved.text : index.getNodeText(node.nodeId, "OWN");
+  return { text, evidenceState: resolveSectionEvidenceState(state, documentId, node) };
+}
+
 export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
   const node = index.getNodeById(nodeId);
   if (!node) return null;
-  const text = index.getNodeText(nodeId, "DESCENDANTS");
-  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  const { text, evidenceState } = operativeExcerpt(state, index, documentId, node, false);
   return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 
@@ -190,11 +199,11 @@ export function retrieveChildRules(state: RetrievalState, index: StructuralIndex
   // primary candidate's own DESCENDANTS span never covers.
   const children = index.getChildren(nodeId);
   for (const child of children) {
-    const text = index.getNodeText(child.nodeId, "OWN");
+    const excerpt = operativeExcerpt(state, index, documentId, child, true);
+    const text = excerpt.text;
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: child.nodeId, sectionRef: child.sectionRef });
-    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
+    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, excerpt.evidenceState));
     addEdge(state, operativeItemId, item.itemId, "CHILD_OF", "Independently operative sub-rule of the discovered section.");
   }
 }
