@@ -6,11 +6,12 @@
  * INVARIANT), OBSERVATION (recorded, never a test failure: behaviour outside the production candidate granularity or a
  * measurement with no legal expectation). Nothing under lib/ is modified; fixtures on disk are never changed.
  */
+import { runSemanticStage } from "./semantic-stage";
 import type { CorpusPackage, Severity } from "./corpus";
 import { loadCorpus, loadPackage } from "./corpus";
 import { runDeterministicStages, type DeterministicStages } from "./stages";
 import { candidateFor } from "./auditor";
-import { applyMutation, type Mutation } from "./mutations";
+import { MUTATIONS, applyMutation, type Mutation } from "./mutations";
 import { hybridScope, type BenchmarkCase } from "./benchmark/strategies";
 import { runPackage } from "./runner";
 import { buildCandidateCompilerInput, type CandidateCompilerInputBuild } from "../../lib/contract-model/covenant-map/candidate-input";
@@ -170,6 +171,40 @@ export const INVARIANTS: Array<{ id: string; title: string; legalStatement: stri
       out.push({ ref: "invariant:INV-05c:amendment-applied", check: "7.01(b) at 2025-12-31 reads $40,000,000 with the no-Default proviso (the amendment attached despite the heading noise)", ok: applied, detail: p ? `${p.status}, applied chain ${p.appliedChain.length}, "${(p.currentText ?? "").slice(0, 80)}"` : "no 7.01(b) provision in the operative state", kind: "OBSERVATION" });
       return out;
     } },
+  { id: "INV-16b", title: "An unresolved side letter or consent stays attached to the provision it names, blocks a RESOLVED reading, preserves the last authoritative text, and is never silently dropped from retrieval", packageId: "pkg-m-composed-p0",
+    legalStatement: "Package M's side letter (2026-05-01) says the Borrower 'shall not incur other Indebtedness under Section 7.01(b) … exceeding $15,000,000'. Until its effect is classified, 7.01(b) must not be reported as a resolved $40,000,000 basket at 2026-06-30; the $40,000,000 text (the last text with authority) must stay visible for review; the override must remain attached to 7.01(b); and no retrieval view - clause-level or section-level - may serve the $40,000,000 clause as current truth without naming the override.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const M = loadPackage("pkg-m-composed-p0"); const s = await runDeterministicStages(M);
+      const st = s.operativeStates.get("2026-06-30"); const p = st?.provisions.find((x) => x.kind === "SECTION" && x.sectionRef === "7.01(b)");
+      const effects = (s.amendment?.effects ?? []).filter((e) => e.amendmentDocumentId === "side-letter");
+      const attached = effects.filter((e) => e.target.targetDocumentId === "credit-agreement" && e.target.targetSectionRef === "7.01(b)");
+      out.push({ ref: "invariant:INV-16b:override-attached-to-named-provision", check: "the side letter yields an effect targeting credit-agreement#7.01(b) (resolved or unresolved), with zero unattached effects", ok: attached.length > 0 && (s.amendment?.unattachedEffects.length ?? 0) === 0, detail: `${effects.length} effect(s) from side-letter: ${effects.map((e) => `${e.operation}/${e.status}→${e.target.targetDocumentId ?? "?"}#${e.target.targetSectionRef ?? "?"}`).join(", ") || "none"}; unattached ${s.amendment?.unattachedEffects.length ?? "?"}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const lastText = p?.currentText ?? null;
+      out.push({ ref: "invariant:INV-16b:provision-not-resolved-last-text-preserved", check: "7.01(b) at 2026-06-30 is not OPERATIVE_STATE_RESOLVED (and not CONFLICTED), and its last authoritative text ($40,000,000) is preserved for review", ok: !!p && p.status !== "OPERATIVE_STATE_RESOLVED" && p.status !== "OPERATIVE_STATE_CONFLICTED" && !!lastText && /\$40,000,000/.test(lastText), detail: p ? `${p.status}; applied ${p.appliedChain.length}; source ${p.currentSourceDocumentId}; text ${lastText ? JSON.stringify(lastText.slice(0, 70)) : "null"}` : `no provision view; instrument ${st?.status}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const names = (x: unknown) => /side[- ]letter|UNCLASSIFIED_OVERRIDE/i.test(JSON.stringify(x));
+      const clause = await bundleFor(M, s, "credit-agreement", "7.01(b)", "INDEBTEDNESS");
+      const cItems = clause.bundle.items as Array<{ type: string; evidenceState?: { status?: string; isCurrentTruth?: boolean; reason?: string } }>;
+      const cSrc = cItems.find((i) => i.type === "OPERATIVE_SOURCE");
+      const cFlagged = (cSrc?.evidenceState?.isCurrentTruth === false) || names(clause.bundle.unresolvedDependencies) || names(clause.bundle.retrievalStops);
+      out.push({ ref: "invariant:INV-16b:clause-retrieval-withheld-or-flagged", check: "the clause-level 7.01(b) bundle does not present the $40,000,000 text as current truth (withheld, or flagged by an unresolved item / stop naming the override)", ok: cFlagged, detail: `OPERATIVE_SOURCE evidence ${JSON.stringify(cSrc?.evidenceState ?? null)}; text ${(clause.operativeSourceText ?? "").length} chars; names the override: ${names(clause.bundle)}`, kind: "PRODUCT", severity: "WRONG_OPERATIVE_SOURCE" });
+      out.push({ ref: "invariant:INV-16b:clause-withhold-reason-names-override", check: "when the clause text is withheld, the stated reason names the side letter / override (observation)", ok: names(cSrc?.evidenceState ?? {}), detail: cSrc?.evidenceState?.reason ?? "no reason", kind: "OBSERVATION" });
+      const section = await bundleFor(M, s, "credit-agreement", "7.01", "INDEBTEDNESS");
+      const sItems = section.bundle.items as Array<{ type: string; normalizedRef?: string; sectionRef?: string; evidenceState?: { status?: string; isCurrentTruth?: boolean } }>;
+      const sSrc = sItems.find((i) => i.type === "OPERATIVE_SOURCE");
+      const servesStale = /\$40,000,000/.test(section.operativeSourceText ?? "") && sSrc?.evidenceState?.isCurrentTruth === true;
+      const childB = sItems.some((i) => i.type === "CHILD_RULE" && (i.normalizedRef ?? i.sectionRef) === "7.01(b)");
+      out.push({ ref: "invariant:INV-16b:section-retrieval-does-not-serve-overridden-clause-as-current", check: "the section-level 7.01 bundle does not serve clause (b)'s $40,000,000 as current truth unless the bundle names the override (unresolved item, stop, or lead)", ok: !servesStale || names(section.bundle), detail: `OPERATIVE_SOURCE evidence ${JSON.stringify(sSrc?.evidenceState ?? null)}; text contains $40,000,000: ${/\$40,000,000/.test(section.operativeSourceText ?? "")}; CHILD_RULE 7.01(b) present: ${childB}; bundle names the override: ${names(section.bundle)}; items ${sItems.map((i) => `${i.type}:${i.normalizedRef ?? i.sectionRef ?? ""}`).join(", ").slice(0, 200)}`, kind: "PRODUCT", severity: "WRONG_OPERATIVE_SOURCE" });
+      out.push({ ref: "invariant:INV-16b:section-child-rule-not-silently-dropped", check: "clause (b) is either listed as a CHILD_RULE of 7.01 or the bundle says why it is absent (observation)", ok: childB || names(section.bundle), detail: `CHILD_RULE 7.01(b): ${childB}; names the override: ${names(section.bundle)}`, kind: "OBSERVATION" });
+      // Certification: on package A plus a tightening side letter on 7.01(b) (the MUT-13 shape, no other unresolved evidence in the way),
+      // the section-level 7.01 unit must not be CERTIFIED with the overridden $30,000,000 cap compiled as its basket.
+      const mut13 = MUTATIONS.find((x) => x.id === "MUT-13")!; const A13 = applyMutation(loadPackage("pkg-a-basic-credit-agreement"), mut13);
+      const s13 = await runDeterministicStages(A13); const r13 = await runSemanticStage(A13, s13);
+      const res13 = r13.faithful?.results.find((x) => x.candidate.description === "credit-agreement::7.01");
+      const cert13 = res13?.certification; const capB = (res13?.compilation?.rules ?? []).find((x) => x.sourceSectionRef === "7.01(b)");
+      out.push({ ref: "invariant:INV-16b:section-with-overridden-clause-not-certified", check: "A + tightening side letter on 7.01(b): the faithful section-level 7.01 submission is not CERTIFIED while the override is unresolved (the compiled 7.01(b) cap would otherwise be the superseded $30,000,000)", ok: !!cert13 && cert13.status !== "CERTIFIED", detail: `certification ${cert13?.status ?? "none"} [${(cert13?.blockers ?? []).map((b) => b.code).join(", ")}]; compiled 7.01(b) capacity ${JSON.stringify((capB?.capacityExpression as { amount?: unknown } | undefined)?.amount ?? null)}; package ${r13.faithful?.packageCertification.status ?? "none"}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      return out;
+    } },
   { id: "INV-37", title: "Cache identity: a compiled unit is reusable when its own text and context are unchanged, and never reused when its text changed", packageId: "pkg-a-basic-credit-agreement",
     legalStatement: "Inserting a proviso into 7.01(c) must not invalidate the cached compilation of 7.02 (text unchanged) and must invalidate 7.01's (text changed).",
     run: async () => {
@@ -209,7 +244,16 @@ INVARIANTS.push(
       }
       const B = loadPackage("pkg-b-multi-document"); const sb = await runDeterministicStages(B);
       const bi = await bundleFor(B, sb, "indenture", "4.09", "INDEBTEDNESS");
-      out.push({ ref: "invariant:INV-19:true-cycle-still-reported", check: "B indenture 4.09 (Restricted Subsidiary ↔ Unrestricted Subsidiary) still reports a DEFINITION_CYCLE (positive control)", ok: cyclesFor(bi).length > 0, detail: cyclesFor(bi).join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      // HISTORICAL (adjudicated 2026-10-08, doc 22): "Restricted Subsidiary" means … that is not an Unrestricted Subsidiary; "Unrestricted
+      // Subsidiary" means … designated as an Unrestricted Subsidiary … - one directed edge plus a self-mention, NOT a cycle. The cycle main
+      // reported came from the last definition's span running into §4.09 (IPV-21). The verdict is kept as a record, no longer asserted.
+      out.push({ ref: "invariant:INV-19:true-cycle-still-reported", check: "HISTORICAL (invalid positive control, see doc 22): B indenture 4.09 Restricted/Unrestricted Subsidiary reported as a DEFINITION_CYCLE", ok: cyclesFor(bi).length > 0, detail: cyclesFor(bi).join("; ") || "none (correct: the pair is one-way)", kind: "OBSERVATION" });
+      out.push({ ref: "invariant:INV-19:one-way-pair-is-not-a-cycle", check: "B indenture 4.09: a one-way pair (Restricted → Unrestricted Subsidiary, plus a self-mention) is NOT reported as a DEFINITION_CYCLE", ok: cyclesFor(bi).length === 0, detail: cyclesFor(bi).join("; ") || "no cycle", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      // Corrected positive control: a genuine two-way dependency on package A, reached by 7.01(c) through Consolidated Total Leverage Ratio.
+      const genuine = variation(A, "INV-19-genuine", [{ documentId: "credit-agreement", find: '"Consolidated Total Debt" means, as of any date, the aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries outstanding on such date.', replace: '"Consolidated Net Debt" means, as of any date, Consolidated Total Debt on such date minus unrestricted cash of the Borrower on such date.\n\n"Consolidated Total Debt" means, as of any date, Consolidated Net Debt on such date plus unrestricted cash of the Borrower on such date.' }]);
+      const sg = await runDeterministicStages(genuine); const bg = await bundleFor(genuine, sg, "credit-agreement", "7.01", "INDEBTEDNESS");
+      const gc = cyclesFor(bg).filter((c) => /consolidated total debt/i.test(c) && /consolidated net debt/i.test(c));
+      out.push({ ref: "invariant:INV-19:genuine-cycle-reported", check: "A + ('Consolidated Total Debt' means Consolidated Net Debt plus cash; 'Consolidated Net Debt' means Consolidated Total Debt minus cash): compiling 7.01 reports a DEFINITION_CYCLE on exactly that pair (corrected positive control)", ok: gc.length > 0, detail: cyclesFor(bg).join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
       return out;
     } },
   { id: "INV-09", title: "A 'greater of $X and Y% of metric' basket is computable only with the metric; without it the answer is NEEDS_INPUT or, at most, the fixed floor stated as a floor", packageId: "pkg-f-capacity-ledger-honesty",
@@ -266,14 +310,25 @@ INVARIANTS.push(
           const b = buildCandidateCompilerInput(cand, candidatePkg as never);
           for (const cy of cyclesFor(b).map((x) => x.replace("Definition cycle detected: ", ""))) {
             const terms = cy.split(" -> ");
-            const defText = (t: string) => (s.index.allDefinitions().find((d) => d.normalizedTerm === t || d.exactTerm.toLowerCase() === t)?.definitionExcerpt ?? "").toLowerCase();
-            const genuine = terms.slice(1).every((t, i) => defText(terms[i]!).includes(t.toLowerCase()));
+            // genuineness by exact defined-term boundaries on the full definition span (case-sensitive, \b-bounded, the term's own
+            // name excluded) - never substring containment ("unrestricted subsidiary" contains "restricted subsidiary" as a substring)
+            const defOf = (t: string) => s.index.allDefinitions().find((d) => d.normalizedTerm === t || d.exactTerm.toLowerCase() === t);
+            // the span is taken from the SOURCE (declaration to the end of its paragraph), never from the product's own definition span,
+            // which on main over-extends into later sections and would make every false cycle look genuine
+            const sourceSpan = (d: { documentId: string; charStart: number }) => { const text = pkg.documents.find((x) => x.documentId === d.documentId)?.text ?? ""; const end = text.indexOf("\n\n", d.charStart); return text.slice(d.charStart, end < 0 ? text.length : end); };
+            const mentions = (fromTerm: string, toTerm: string) => { const from = defOf(fromTerm); const to = defOf(toTerm); if (!from || !to || from.exactTerm === to.exactTerm) return false; return new RegExp(`\\b${to.exactTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(sourceSpan(from)); };
+            const genuine = terms.slice(1).every((t, i) => mentions(terms[i]!, t));
             (genuine ? genuineRows : falseRows).push(`${pkg.packageId.replace(/^pkg-([a-z])-.*$/, "$1").toUpperCase()} ${c.documentId}#${c.sectionRef}: ${cy}`);
           }
         }
       }
       out.push({ ref: "invariant:INV-19b:no-false-cycles-corpus-wide", check: `no section-level candidate in the corpus carries a false DEFINITION_CYCLE (${total} candidates examined)`, ok: falseRows.length === 0, detail: falseRows.length ? `${falseRows.length} false cycle(s): ${falseRows.join("; ")}` : "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
-      out.push({ ref: "invariant:INV-19b:genuine-cycles-reported", check: "genuine cycles are reported (B indenture)", ok: genuineRows.length > 0, detail: genuineRows.join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      // HISTORICAL: this used to assert that the corpus carries a genuine cycle (B indenture); by exact-term boundaries the corpus has none (doc 22).
+      out.push({ ref: "invariant:INV-19b:genuine-cycles-reported", check: "HISTORICAL (see doc 22): genuine cycles found across the corpus by exact defined-term boundaries", ok: genuineRows.length > 0, detail: genuineRows.join("; ") || "none - the corpus has no genuine definition cycle", kind: "OBSERVATION" });
+      const A = loadPackage("pkg-a-basic-credit-agreement");
+      const genuinePkg = variation(A, "INV-19b-genuine", [{ documentId: "credit-agreement", find: '"Consolidated Total Debt" means, as of any date, the aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries outstanding on such date.', replace: '"Consolidated Net Debt" means, as of any date, Consolidated Total Debt on such date minus unrestricted cash of the Borrower on such date.\n\n"Consolidated Total Debt" means, as of any date, Consolidated Net Debt on such date plus unrestricted cash of the Borrower on such date.' }]);
+      const sg = await runDeterministicStages(genuinePkg); const bg = await bundleFor(genuinePkg, sg, "credit-agreement", "7.01", "INDEBTEDNESS");
+      out.push({ ref: "invariant:INV-19b:genuine-cycle-control", check: "a genuine two-way definition cycle (A variation, Consolidated Total Debt ↔ Consolidated Net Debt) is reported on the section-level 7.01 candidate (corrected positive control)", ok: cyclesFor(bg).some((c) => /consolidated total debt/i.test(c) && /consolidated net debt/i.test(c)), detail: cyclesFor(bg).join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
       return out;
     } },
 );

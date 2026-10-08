@@ -467,7 +467,7 @@
       "outcomeClass": "CAPABILITY_NOT_IMPLEMENTED",
       "deterministic": true,
       "stage": "CONTEXT_RETRIEVAL",
-      "title": "A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant",
+      "title": "A one-way Restricted/Unrestricted Subsidiary pair is reported as a DEFINITION_CYCLE (an IPV-21 over-extension, not a self-reference) and blocks certification of every dependent covenant",
       "packages": [
         "pkg-b-multi-document"
       ],
@@ -482,8 +482,8 @@
       "actual": "DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary → bundle REVIEW_REQUIRED → VERIFICATION_INCOMPLETE → NOT_CERTIFIED for 4.09 (and the indenture definitions candidate). Package I: DEFINITION_CYCLE on \"Subsidiary\" and \"Guarantor\" (\"Guarantor\" means each Subsidiary that has executed the Guarantee; \"Foreign Subsidiary\" means any Subsidiary …) blocks 7.01, 7.02 and 7.04 - no genuine cycle exists. (Package I's 7.01/7.02/7.04 signatures were re-attributed to IPV-21 on 2026-10-08: their DEFINITION_CYCLE is a false cycle on a diamond dependency, not a self-referential definition.)",
       "repro": "buildCandidateCompilerInput(candidateFor('indenture','4.09')).bundle.unresolvedDependencies",
       "impact": "Fail-closed, but a ubiquitous drafting pattern makes indenture covenants uncertifiable.",
-      "hypothesis": "The cycle detector treats a term's own name appearing inside its definition (\"designated as an Unrestricted Subsidiary\") as a dependency edge.",
-      "acceptance": "A definition that mentions its own term is not a cycle; genuine A→B→A cycles still are."
+      "hypothesis": "RE-RATED (doc 22): the detector excludes a term's own name (findKnownTermMentions skips the current term), so the self-mention is not the cause. The last definition's span ran to the end of the document and included Section 4.09's 'Restricted Subsidiary', which closed the loop. This is the IPV-21 mechanism on a different pair; fixed on PR #136 by bounding definition spans at the next SECTION/ARTICLE heading.",
+      "acceptance": "No cycle is reported for the one-way pair (INV-19:one-way-pair-is-not-a-cycle); a genuine two-way pair is still reported (INV-19:genuine-cycle-reported); 4.09 certifies on the faithful submission."
     },
     {
       "id": "IPV-13",
@@ -678,11 +678,41 @@
           "packageId": "pkg-m-composed-p0",
           "expectationRef": "operative:2026-06-30:credit-agreement#7.01(b)",
           "severity": "CRITICAL_FALSE_PERMISSION"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "invariant:INV-16b:override-attached-to-named-provision",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "invariant:INV-16b:provision-not-resolved-last-text-preserved",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "invariant:INV-16b:clause-retrieval-withheld-or-flagged",
+          "severity": "WRONG_OPERATIVE_SOURCE",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "invariant:INV-16b:section-retrieval-does-not-serve-overridden-clause-as-current",
+          "severity": "WRONG_OPERATIVE_SOURCE",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "invariant:INV-16b:section-with-overridden-clause-not-certified",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "INVARIANT"
         }
       ],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state. Breadth (mutants MUT-13…16, same mechanism): a tightening side letter on the single-agreement package A, on package C after two real amendments (the amendments still apply; the override is dropped), on the ABL package H (7.02(d)), and a lender CONSENT on package I ('The Required Lenders hereby consent to … notwithstanding the limitation in Section 7.02(b)') - 0 effects in every case. ON DISK (package M, side letter effective 2026-05-01 capping 7.01(b) at $15,000,000): no provision view for 7.01(b); the base node is CURRENT_OPERATIVE at 2026-06-30; the manifest's expectation that the side letter governs fails in the acceptance run (first acceptance-run signature for this defect).",
+      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state. Breadth (mutants MUT-13…16, same mechanism): a tightening side letter on the single-agreement package A, on package C after two real amendments (the amendments still apply; the override is dropped), on the ABL package H (7.02(d)), and a lender CONSENT on package I ('The Required Lenders hereby consent to … notwithstanding the limitation in Section 7.02(b)') - 0 effects in every case. ON DISK (package M, side letter effective 2026-05-01 capping 7.01(b) at $15,000,000): no provision view for 7.01(b); the base node is CURRENT_OPERATIVE at 2026-06-30; the manifest's expectation that the side letter governs fails in the acceptance run (first acceptance-run signature for this defect). ADJUDICATION (doc 22, PR #136 @8f87a06): the side letter now yields an UNKNOWN_CHANGE/REVIEW_REQUIRED effect attached to credit-agreement#7.01(b) (0 unattached); 7.01(b) is OPERATIVE_STATE_REVIEW_REQUIRED with the last authoritative $40,000,000 text preserved (not applied, not deleted); the clause-level bundle withholds the text (isCurrentTruth false) and the $40,000,000 claim (M-P1) is refused at certification. STILL OPEN at 8f87a06: the section-level 7.01 bundle serves the whole section including clause (b)'s $40,000,000 as OPERATIVE_SOURCE CURRENT / isCurrentTruth true, drops (b) from CHILD_RULE, and carries no item naming the side letter; the clause-level withhold reason is generic and does not name the override (INV-16b). CERTIFICATION (doc 22): on A + a tightening side letter on 7.01(b) (MUT-13) and on B + the same (MUT-12), the faithful section-level 7.01 unit is CERTIFIED at PR #136 @8f87a06 with 7.01(b) compiled as the superseded $30,000,000 basket (the override blocks only the clause-level view and candidates that cross-reference 7.01(b), such as 7.02). This is the surviving legal-safety blocker for IPV-16.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
@@ -956,11 +986,17 @@
           "expectationRef": "invariant:INV-19b:no-false-cycles-corpus-wide",
           "severity": "UNSUPPORTED_AS_COMPLETE",
           "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "invariant:INV-19:one-way-pair-is-not-a-cycle",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "INVARIANT"
         }
       ],
       "failingInput": "Minimal reproduction (INV-19, package A in memory): add '\"Guarantor\" means each Subsidiary that has executed the Guarantee.' and make 7.01(b) read 'other Indebtedness of the Borrower and any Guarantor …'. 'Subsidiary' means any corporation or other entity that is controlled by the Borrower (no reference back). Real packages: I 7.01 (Subsidiary/Guarantor), L 7.07 (Loan Parties/Subsidiary).",
       "expected": "No DEFINITION_CYCLE: Subsidiary is reached by two paths (directly and through Guarantor) but no definition refers to itself or to a term that refers back to it. Context contract acceptable. The B indenture's Restricted Subsidiary ↔ Unrestricted Subsidiary pair, which IS circular, keeps being reported (positive control passes).",
-      "actual": "buildCandidateCompilerInput → bundle.unresolvedDependencies contains DEFINITION_CYCLE 'guarantor -> subsidiary -> guarantor' (MEDIUM), sufficiency REVIEW_REQUIRED; the same definition without the covenant naming Guarantors reports nothing (control). I 7.01: 'subsidiary -> guarantor -> subsidiary'; L 7.07: 'loan parties -> subsidiary -> loan parties'. Certification of I 7.01/7.02/7.04 and L 7.07 is blocked with CONTEXT_CONTRACT_UNACCEPTABLE. (The acceptance run records the blocked certifications as NONMATERIAL_OMISSION / CAPABILITY_NOT_IMPLEMENTED: fail-closed; the defect-level severity UNSUPPORTED_AS_COMPLETE names the false refusal.)",
+      "actual": "buildCandidateCompilerInput → bundle.unresolvedDependencies contains DEFINITION_CYCLE 'guarantor -> subsidiary -> guarantor' (MEDIUM), sufficiency REVIEW_REQUIRED; the same definition without the covenant naming Guarantors reports nothing (control). I 7.01: 'subsidiary -> guarantor -> subsidiary'; L 7.07: 'loan parties -> subsidiary -> loan parties'. Certification of I 7.01/7.02/7.04 and L 7.07 is blocked with CONTEXT_CONTRACT_UNACCEPTABLE. (The acceptance run records the blocked certifications as NONMATERIAL_OMISSION / CAPABILITY_NOT_IMPLEMENTED: fail-closed; the defect-level severity UNSUPPORTED_AS_COMPLETE names the false refusal.) ADJUDICATION (doc 22): the B indenture pair 'Restricted Subsidiary' -> 'Unrestricted Subsidiary' is one directed edge plus a self-mention; by exact defined-term boundaries on the source paragraph there is no cycle. main reports one because the last definition's span runs into Section 4.09 (which names Restricted Subsidiary) - the same over-extension as the I/L false cycles. The harness's former positive control (INV-19:true-cycle-still-reported) was therefore invalid and is kept only as a historical observation; the corrected positive control is a genuine two-way pair (Consolidated Total Debt <-> Consolidated Net Debt) on an A variation, which main and PR #136 @8f87a06 both report.",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-19 (scripts/product-acceptance/invariants.ts)",
       "impact": "False refusal on the most common definitional drafting in credit agreements ('Guarantor' / 'Loan Party' / 'Restricted Subsidiary' defined in terms of 'Subsidiary'): every covenant naming both terms is uncertifiable. Fail-closed, so no false permission, but it makes a realistic package unusable and masks adversarial evidence (I-P2, L-P1…P3 refusals cite this blocker). Breadth (INV-19b): 4 of the 33 section-level manifest covenants across the twelve packages are blocked by a false cycle (I 7.01, 7.02, 7.04; L 7.07); the only genuine cycle in the corpus (B indenture) is reported correctly.",
       "hypothesis": "context-retrieval/definition-graph.ts retrieveDefinitionsRecursive: the reported path 'guarantor -> subsidiary -> guarantor' is only possible if, while expanding Subsidiary (whose own text names no Guarantor), the text being scanned still contains 'Guarantor' - i.e. the candidate's or the parent's sourceText is scanned at depth 2 instead of the newly retrieved definition's text, or pathTermsStack is not popped between sibling expansions. Not traced line by line.",

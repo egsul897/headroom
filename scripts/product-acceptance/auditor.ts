@@ -221,8 +221,12 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // was the amendment that should have superseded this provision left UNRESOLVED upstream (pipeline-level), while the instrument state still says RESOLVED?
       const unresolvedUpstream = e.supersededBy ? (s.amendment?.effects ?? []).filter((x) => x.amendmentDocumentId === e.supersededBy && x.status !== "RESOLVED") : [];
       const stateClaimsResolved = state.status === "OPERATIVE_STATE_RESOLVED";
-      const falsePermission = e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));
-      const failClosed = !stateClaimsResolved || problems.every((p) => p.includes("null") || p.includes("CONFLICTED") || p.includes("UNKNOWN") || p.includes("REVIEW"));
+      // doc 22: an override that stays ATTACHED to this provision as an unresolved effect while the provision itself is REVIEW_REQUIRED
+      // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
+      // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
+      const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
+      const falsePermission = !attachedUnresolved && e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));
+      const failClosed = attachedUnresolved || !stateClaimsResolved || problems.every((p) => p.includes("null") || p.includes("CONFLICTED") || p.includes("UNKNOWN") || p.includes("REVIEW"));
       const upstreamNote = unresolvedUpstream.length ? ` | upstream: ${unresolvedUpstream.map((x) => `${x.operation} ${x.status}: ${x.unresolvedReason ?? ""}`).join("; ")} while instrument state is ${state.status} with ${state.unattachedEffects.length} unattached` : "";
       L.fail("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, { severity: falsePermission ? "CRITICAL_FALSE_PERMISSION" : failClosed ? "EVIDENCE_INCOMPLETE" : "WRONG_OPERATIVE_SOURCE", outcomeClass: failClosed ? "CORRECT_FAIL_CLOSED" : "INCORRECT_RESULT", expected: `${e.status}${e.supersededBy ? ` by ${e.supersededBy}` : ""}; text contains [${e.mustContain.join(", ")}] not [${e.mustNotContain.join(", ")}]`, actual: `${problems.join("; ")} (${detail})${upstreamNote}`, repro, deterministic: true });
     }
