@@ -8,6 +8,7 @@
 
 export const NCEDB_DATASET_VERSION = "ncedb.phase2.v1";
 export const NCEDB_PHASE3_DATASET_VERSION = "ncedb.phase3.v1";
+export const NCEDB_PHASE4_DATASET_VERSION = "ncedb.phase4.v1";
 
 export const PERMISSION_CLASSIFICATIONS = [
   "CONDITIONAL",

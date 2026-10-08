@@ -1,0 +1,150 @@
+{
+  "artifact": "99-phase-4-verdict",
+  "startingSha": "1456000040f03faeb2beca3c9f46bc2db91ac960",
+  "datasetVersion": "ncedb.phase4.v1",
+  "frozenMetrics": {
+    "exceptionDiscoveryPrecision": {
+      "value": 1,
+      "numerator": 16,
+      "denominator": 16,
+      "status": "MEASURED"
+    },
+    "exceptionDiscoveryRecall": {
+      "value": 1,
+      "numerator": 16,
+      "denominator": 16,
+      "status": "MEASURED"
+    },
+    "remoteConditionRecall": {
+      "value": 1,
+      "numerator": 6,
+      "denominator": 6,
+      "status": "MEASURED",
+      "evidence": [
+        "7.06(b)(1): Closing Date limb; Loan Document defs; parent section provisos; unresolved cross-ref:Closing Date",
+        "7.06(b)(4): parent section provisos; acquisition timing / designation conditions; Initial Agreement refinement proviso",
+        "7.06(b)(5): parent section provisos; nested subclause conditions; subsequent incurrence permission cross-ref; local contest/reserve conditions; Initial Agreement refinement proviso; unresolved cross-ref:this Agreement (permission cross-reference)",
+        "7.06(b)(14): Closing Date limb; parent section provisos; subsequent incurrence permission cross-ref; unresolved cross-ref:Section 7.01; unresolved cross-ref:Closing Date",
+        "7.06(b)(16): parent section provisos; Transaction Documents definition/external; unresolved cross-ref:Transaction Documents",
+        "7.06(b)(17): parent section provisos; Initial Agreement refinement proviso"
+      ]
+    },
+    "provisoAttachmentAccuracy": {
+      "value": 1,
+      "numerator": 2,
+      "denominator": 2,
+      "status": "MEASURED",
+      "evidence": [
+        "7.06(b)(1): PARENT_PROVISO_MAY_INTERACT",
+        "7.06(b)(17): HANGING"
+      ]
+    },
+    "entityScopeFidelity": {
+      "value": 1,
+      "numerator": 2,
+      "denominator": 2,
+      "status": "MEASURED",
+      "evidence": [
+        "7.06(b)(1): LOAN_PARTY_OTHER_THAN_BORROWER, LOAN_PARTIES, BORROWER, EXCLUDE:BORROWER",
+        "7.06(b)(12): LOAN_PARTY_OTHER_THAN_BORROWER, LOAN_PARTIES, BORROWER, NON_LOAN_PARTY_SUBSIDIARIES, SUBSIDIARIES, EXCLUDE:BORROWER"
+      ]
+    },
+    "crossReferenceAccuracy": {
+      "value": 1,
+      "numerator": 3,
+      "denominator": 3,
+      "status": "MEASURED",
+      "evidence": [
+        "7.06(b)(1): Section 7.06(a), Loan Documents, Closing Date",
+        "7.06(b)(6): Section 7.06(a), this Agreement (permission cross-reference)",
+        "7.06(b)(15): Section 7.06(a), Section 7.02"
+      ]
+    },
+    "incorrectUnconditionalPermissionRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 16,
+      "status": "MEASURED"
+    },
+    "unsupportedCaseRefusal": {
+      "value": 1,
+      "numerator": 1,
+      "denominator": 1,
+      "status": "MEASURED",
+      "evidence": [
+        "7.06(b)(5): refusal=none remote=parent section provisos|nested subclause conditions|subsequent incurrence permission cross-ref|local contest/reserve conditions|Initial Agreement refinement proviso|unresolved cross-ref:this Agreement (permission cross-reference)"
+      ]
+    }
+  },
+  "riotMetrics": {
+    "exceptionDiscoveryPrecision": {
+      "value": 1,
+      "numerator": 4,
+      "denominator": 4,
+      "status": "MEASURED"
+    },
+    "exceptionDiscoveryRecall": {
+      "value": 1,
+      "numerator": 4,
+      "denominator": 4,
+      "status": "MEASURED"
+    },
+    "remoteConditionRecall": {
+      "value": 1,
+      "numerator": 4,
+      "denominator": 4,
+      "status": "MEASURED",
+      "evidence": [
+        "5.02(a)(i): Loan Document defs; Collateral external; unresolved cross-ref:Loan Document",
+        "5.02(a)(ii): Collateral external; local contest/reserve conditions; local contest/reserve conditions",
+        "5.02(a)(iii): Collateral external; local contest/reserve conditions; Section 430(k) definitional dependence; Section 436 definitional dependence; local contest/reserve conditions",
+        "5.02(a)(iv): Collateral external"
+      ]
+    },
+    "provisoAttachmentAccuracy": {
+      "value": null,
+      "numerator": 0,
+      "denominator": 0,
+      "status": "MEASURED",
+      "evidence": []
+    },
+    "entityScopeFidelity": {
+      "value": 1,
+      "numerator": 3,
+      "denominator": 3,
+      "status": "MEASURED",
+      "evidence": [
+        "5.02(a)(i): BORROWER",
+        "5.02(a)(ii): BORROWER",
+        "5.02(a)(iv): BORROWER"
+      ]
+    },
+    "crossReferenceAccuracy": {
+      "value": 1,
+      "numerator": 2,
+      "denominator": 2,
+      "status": "MEASURED",
+      "evidence": [
+        "5.02(a)(i): Loan Document",
+        "5.02(a)(iii): Section 430(k), Section 436"
+      ]
+    },
+    "incorrectUnconditionalPermissionRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 4,
+      "status": "MEASURED"
+    },
+    "unsupportedCaseRefusal": {
+      "value": null,
+      "numerator": 0,
+      "denominator": 0,
+      "status": "MEASURED",
+      "evidence": []
+    }
+  },
+  "ckfStatus": "ALIGNED_FOR_REVIEW",
+  "productionCapacityApproved": false,
+  "readyForMerge": false,
+  "actualPaidSpendUsd": 0
+}
