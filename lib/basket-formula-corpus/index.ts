@@ -6,3 +6,4 @@ export * from "./provenance";
 export * from "./typed-formula";
 export * from "./dependency";
 export * from "./import-contract";
+export * from "./legal-class";

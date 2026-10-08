@@ -1,0 +1,51 @@
+{
+  "candidateCount": 390,
+  "closureStatusCounts": {
+    "PARTIAL": 99,
+    "REVIEW_REQUIRED": 291
+  },
+  "unresolvedDependenciesByCause": {
+    "DEFINITION_ENCYCLOPEDIA_MISSING": 193,
+    "DEPENDENCY_ATLAS_MISSING": 39,
+    "EXCEPTION_DB_MISSING": 42,
+    "FINANCIAL_DEFINITIONS_PRECEDENT_MISSING": 239,
+    "LEGAL_CORE_UNVERIFIED": 390,
+    "KNOWLEDGE_FACTORY_UNVERIFIED": 390,
+    "AMENDMENT_AUTHORITY_UNSPECIFIED": 390,
+    "PARENT_COVENANT_UNBOUND": 335,
+    "MEASUREMENT_DATE_UNSPECIFIED": 335
+  },
+  "executableCount": 0,
+  "workstreams": [
+    {
+      "system": "ARCHITECTURE_REMEDIATION_LEGAL_CORE",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "NEGATIVE_COVENANT_EXCEPTION_DATABASE",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "DEPENDENCY_ATLAS",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "DEFINITION_ENCYCLOPEDIA",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "FINANCIAL_DEFINITIONS_PRECEDENT",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    },
+    {
+      "system": "COVENANT_KNOWLEDGE_FACTORY",
+      "availableInRepo": false,
+      "coordinationMode": "INTERFACE_ONLY"
+    }
+  ]
+}

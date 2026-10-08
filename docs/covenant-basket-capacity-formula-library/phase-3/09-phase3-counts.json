@@ -1,0 +1,73 @@
+{
+  "startingSHA": "c438de3c12793bdec889936d51249c6edbfee39d",
+  "generatedAt": "2026-10-08T22:49:10.544816+00:00",
+  "candidateCount": 390,
+  "correctedFalseAffirmatives": 267,
+  "affirmativeCapacityBefore": 294,
+  "affirmativeCapacityAfter": 27,
+  "independentReviews": {
+    "frozenPhase2": 30,
+    "additional": 115,
+    "total": 145,
+    "positiveControls": 25,
+    "negativeControls": 120
+  },
+  "metrics": {
+    "precision": {
+      "value": 1.0,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "recall": {
+      "value": 1.0,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "falsePermissionRate": {
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 145,
+      "definition": "FP / evaluation_set — remediator predicts AFFIRMATIVE_CAPACITY but independent verdict does not"
+    },
+    "falseRefusalRate": {
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 25,
+      "definition": "FN / (TP+FN) — remediator refuses affirmative where independent finds genuine permission"
+    }
+  },
+  "unresolvedDependenciesByCause": {
+    "DEFINITION_ENCYCLOPEDIA_MISSING": 193,
+    "DEPENDENCY_ATLAS_MISSING": 39,
+    "EXCEPTION_DB_MISSING": 42,
+    "FINANCIAL_DEFINITIONS_PRECEDENT_MISSING": 239,
+    "LEGAL_CORE_UNVERIFIED": 390,
+    "KNOWLEDGE_FACTORY_UNVERIFIED": 390,
+    "AMENDMENT_AUTHORITY_UNSPECIFIED": 390,
+    "PARENT_COVENANT_UNBOUND": 335,
+    "MEASUREMENT_DATE_UNSPECIFIED": 335
+  },
+  "legalRoleCounts": {
+    "AFFIRMATIVE_PERMISSION": 17,
+    "DEFINITION_ONLY_FORMULA": 6,
+    "FORMULA_COMPONENT": 212,
+    "SHARED_CAPACITY_RESTRICTION": 46,
+    "NON_PERMISSIVE_NUMERICAL_REFERENCE": 38,
+    "EXCEPTION_TO_PROHIBITION": 71
+  },
+  "semanticsAfter": {
+    "AFFIRMATIVE_CAPACITY": 27,
+    "INCOMPLETE_SEMANTICS": 314,
+    "NOT_CAPACITY": 49
+  },
+  "genuinePositivePermissionsPreserved": 27,
+  "executableCount": 0,
+  "constraints": {
+    "paidInference": false,
+    "merges": false,
+    "certificationAdvancement": false,
+    "productionCapacityEngineEdits": false,
+    "claudeOwnedFixtureChanges": false,
+    "independentSecDownload": false
+  }
+}

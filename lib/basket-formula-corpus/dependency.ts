@@ -11,7 +11,9 @@ export type DependencySystem =
   | "DEFINITION_ENCYCLOPEDIA"
   | "DEPENDENCY_ATLAS"
   | "NEGATIVE_COVENANT_EXCEPTION_DATABASE"
-  | "COVENANT_KNOWLEDGE_FACTORY";
+  | "COVENANT_KNOWLEDGE_FACTORY"
+  | "ARCHITECTURE_REMEDIATION_LEGAL_CORE"
+  | "FINANCIAL_DEFINITIONS_PRECEDENT";
 
 export interface DependencySystemStatus {
   system: DependencySystem;
@@ -44,6 +46,18 @@ export const DEPENDENCY_SYSTEM_STATUS: DependencySystemStatus[] = [
     availableInRepo: false,
     coordinationMode: "INTERFACE_ONLY",
     note: "Knowledge Factory not shipped; import contract knowledge-factory-import.basket-formula.v1 is the integration surface.",
+  },
+  {
+    system: "ARCHITECTURE_REMEDIATION_LEGAL_CORE",
+    availableInRepo: false,
+    coordinationMode: "INTERFACE_ONLY",
+    note: "Architecture Remediation / Legal Core interfaces are coordinated only; no competing schema or independent SEC download path.",
+  },
+  {
+    system: "FINANCIAL_DEFINITIONS_PRECEDENT",
+    availableInRepo: false,
+    coordinationMode: "INTERFACE_ONLY",
+    note: "Financial Definitions Precedent not bound; EBITDA/ratio inputs remain unresolved financial dependencies.",
   },
 ];
 
@@ -115,6 +129,18 @@ export function buildDependencyReport(input: {
     key: input.candidateId,
     reason: "Not imported/verified by Covenant Knowledge Factory",
   });
+  unresolved.push({
+    system: "ARCHITECTURE_REMEDIATION_LEGAL_CORE",
+    key: input.governingCovenant.slice(0, 160) || input.candidateId,
+    reason: "Legal Core parent-covenant binding not certified via Architecture Remediation interfaces",
+  });
+  for (const fi of input.financialInputs) {
+    unresolved.push({
+      system: "FINANCIAL_DEFINITIONS_PRECEDENT",
+      key: fi.slice(0, 160),
+      reason: "Financial Definitions Precedent unavailable; metric/input not precedent-resolved",
+    });
+  }
 
   return {
     candidateId: input.candidateId,

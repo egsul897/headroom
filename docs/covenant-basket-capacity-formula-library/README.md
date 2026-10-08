@@ -39,3 +39,7 @@ Every basket candidate records: exact source span, governing covenant, basket fa
 ## Phase 2
 
 Legal-formula validation, provenance hardening, typed IR, dependency coordination, adversarial scenarios, EDGAR expansion, and knowledge-factory import contract live under [`phase-2/`](./phase-2/).
+
+## Phase 3
+
+Corpus-wide false-permission audit and dependency closure: [`phase-3/`](./phase-3/).
