@@ -32,7 +32,10 @@ function looksPlaceholder(ua: string): boolean {
   );
 }
 
-export function resolveAuthorizedUserAgent(env: NodeJS.ProcessEnv = process.env): string | null {
+/** Env bag for SEC identity / fleet gates — accepts partial test stubs. */
+export type FleetSecEnv = Record<string, string | undefined>;
+
+export function resolveAuthorizedUserAgent(env: FleetSecEnv = process.env): string | null {
   const full = env.SEC_EDGAR_USER_AGENT?.trim();
   if (full) {
     if (!/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(full) || looksPlaceholder(full)) {
@@ -53,9 +56,9 @@ export function resolveAuthorizedUserAgent(env: NodeJS.ProcessEnv = process.env)
 
 export async function evaluateFleetSecGate(options?: {
   ehbRoot?: string | null;
-  env?: NodeJS.ProcessEnv;
+  env?: FleetSecEnv;
 }): Promise<FleetSecGateReport> {
-  const env = options?.env ?? process.env;
+  const env: FleetSecEnv = options?.env ?? process.env;
   const ehbRoot = options?.ehbRoot ?? env.HEADROOM_EHB_ROOT ?? null;
   const owner = (env.HEADROOM_SEC_FETCH_OWNER?.trim() || "NONE").toUpperCase() === "NONE"
     ? env.HEADROOM_SEC_FETCH_OWNER?.trim() || "NONE"
@@ -85,7 +88,7 @@ export async function evaluateFleetSecGate(options?: {
           evaluateSecAccessPolicy?: (p: {
             role: string;
             userAgent: string;
-            env?: NodeJS.ProcessEnv;
+            env?: FleetSecEnv;
           }) => {
             liveNetworkAllowed: boolean;
             reason: string;
