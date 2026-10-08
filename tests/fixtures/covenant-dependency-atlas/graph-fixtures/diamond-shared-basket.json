@@ -1,0 +1,128 @@
+{
+  "fixtureId": "diamond-shared-basket",
+  "purpose": "Distinguish a shared-basket diamond (two covenants → one Available Amount) from a circular definition. There is NO cycle.",
+  "nodes": [
+    {
+      "nodeId": "node:fixture:unit:inv-6.04q",
+      "kind": "BASKET",
+      "documentId": "fixture-diamond",
+      "label": "Section 6.04(q) Investments — Available Amount",
+      "sectionRef": "6.04(q)",
+      "unitId": "fixture::6.04q",
+      "termName": null,
+      "materiality": "CRITICAL",
+      "notes": "SHARED RESOURCE: consumes Available Amount."
+    },
+    {
+      "nodeId": "node:fixture:unit:rp-6.08aiv",
+      "kind": "BASKET",
+      "documentId": "fixture-diamond",
+      "label": "Section 6.08(a)(iv) Restricted Payments — Available Amount",
+      "sectionRef": "6.08(a)(iv)",
+      "unitId": "fixture::6.08aiv",
+      "termName": null,
+      "materiality": "CRITICAL",
+      "notes": "SHARED RESOURCE: consumes Available Amount."
+    },
+    {
+      "nodeId": "node:fixture:term:available_amount",
+      "kind": "SHARED_BASKET",
+      "documentId": "fixture-diamond",
+      "label": "Available Amount",
+      "sectionRef": "1.01",
+      "unitId": "fixture::available-amount",
+      "termName": "Available Amount",
+      "materiality": "CRITICAL",
+      "notes": "Shared builder basket."
+    },
+    {
+      "nodeId": "node:fixture:term:applicable_ebitda",
+      "kind": "DEFINITION",
+      "documentId": "fixture-diamond",
+      "label": "Applicable EBITDA",
+      "sectionRef": "1.01",
+      "unitId": "fixture::applicable-ebitda",
+      "termName": "Applicable EBITDA",
+      "materiality": "CRITICAL",
+      "notes": null
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "COVENANT_TO_SHARED_BASKET::node:fixture:unit:inv-6.04q::node:fixture:term:available_amount",
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "fromNodeId": "node:fixture:unit:inv-6.04q",
+      "toNodeId": "node:fixture:term:available_amount",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "EXPLICIT_GROUND_TRUTH_NOTE",
+      "rationale": "Fixture note: 6.04(q) consumes Available Amount.",
+      "sourceSpans": [
+        {
+          "documentId": "fixture-diamond",
+          "sourceFile": null,
+          "sectionRef": "6.04(q)",
+          "unitId": "fixture::6.04q",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "SHARED RESOURCE: consumes Available Amount."
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": "Available Amount",
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "COVENANT_TO_SHARED_BASKET::node:fixture:unit:rp-6.08aiv::node:fixture:term:available_amount",
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "fromNodeId": "node:fixture:unit:rp-6.08aiv",
+      "toNodeId": "node:fixture:term:available_amount",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "EXPLICIT_GROUND_TRUTH_NOTE",
+      "rationale": "Fixture note: 6.08(a)(iv) consumes Available Amount.",
+      "sourceSpans": [
+        {
+          "documentId": "fixture-diamond",
+          "sourceFile": null,
+          "sectionRef": "6.08(a)(iv)",
+          "unitId": "fixture::6.08aiv",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "SHARED RESOURCE: consumes Available Amount."
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": "Available Amount",
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "DEFINITION_TO_DEFINITION::node:fixture:term:available_amount::node:fixture:term:applicable_ebitda",
+      "kind": "DEFINITION_TO_DEFINITION",
+      "fromNodeId": "node:fixture:term:available_amount",
+      "toNodeId": "node:fixture:term:applicable_ebitda",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "GROUND_TRUTH_INVENTORY_DECLARATION",
+      "rationale": "Available Amount clause (i) is 25% of Applicable EBITDA.",
+      "sourceSpans": [
+        {
+          "documentId": "fixture-diamond",
+          "sourceFile": null,
+          "sectionRef": "1.01",
+          "unitId": "fixture::available-amount",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Available Amount includes 25% of Applicable EBITDA."
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": null,
+      "financialInputKey": null
+    }
+  ],
+  "expectedMotifs": {
+    "DIAMOND_SHARED_DEPENDENCY": 1,
+    "GENUINE_CYCLE": 0
+  }
+}
