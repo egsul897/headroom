@@ -35,7 +35,7 @@ Pass A on Gibraltar extracted text: `shared_cap` candidates ≈ **18** (was fixt
 
 ## Independent replay handoff (LCQG)
 
-Proposed fix SHA: **(see git tip after push)**  
+Proposed fix SHA: `83cde5b985b6bb480ac2500cccf894fe6e497f20`  
 
 Independent test command:
 
