@@ -88,8 +88,9 @@ describe("figure roles", () => {
     const greater = "if the consideration is greater than $4,000,000";
     expect(figureRoleIssues(greater, [rule(money(4_000_000))]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
     const noShall = "No Restricted Subsidiary shall incur Indebtedness in excess of $3,000,000 in the aggregate.";
-    expect(figureRoleIssues(noShall, [rule(money(3_000_000))])).toEqual([]);
+    expect(figureRoleIssues(noShall, [rule(money(3_000_000))]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
     expect(classifyFigures(noShall)[0]?.role).toBe("PROHIBITION_THRESHOLD");
+    expect(classifyFigures(noShall)[0]?.capacity).toBe(false);
     const conditional = "The Borrower may consummate the transaction in excess of $5,000,000 so long as the Required Lenders have approved it in writing.";
     expect(figureRoleIssues(conditional, [rule(money(5_000_000))]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
   });
@@ -119,6 +120,41 @@ describe("figure roles", () => {
     const result = await verify(text, money(5_000_000));
     expect(result.status).toBe("MATERIAL_DISCREPANCY");
     expect(result.findings.some((finding) => finding.findingType === "WRONG_AMOUNT")).toBe(true);
+  });
+
+  it("uses one number under seven governing structures", () => {
+    const amount = 5_000_000;
+    const cases: Array<[string, string, boolean]> = [
+      ["The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $5,000,000.", "AFFIRMATIVE_PERMISSION", true],
+      ["except other Indebtedness not to exceed $5,000,000.", "EXCEPTION_AMOUNT", true],
+      ["The Borrower shall not incur Indebtedness in excess of $5,000,000.", "PROHIBITION_THRESHOLD", false],
+      ["The Borrower shall not incur Indebtedness if the consideration is in excess of $5,000,000.", "CONDITION_THRESHOLD", false],
+      ["if Availability would be less than $5,000,000.", "TRIGGER_THRESHOLD", false],
+      ["an amount equal to the greater of $5,000,000 and Consolidated EBITDA.", "FORMULA_COMPONENT", false],
+      ["The Borrower may incur an amount equal to the greater of $5,000,000 and Consolidated EBITDA.", "FORMULA_COMPONENT", true],
+      ["The aggregate principal amount incurred under this Section shall not at any time exceed the greater of $5,000,000 and 10% of Total Assets.", "FORMULA_COMPONENT", true],
+      ["$5,000,000.", "UNCLASSIFIED", false],
+      ["so long as Indebtedness does not exceed $5,000,000.", "CONDITION_THRESHOLD", false],
+    ];
+    for (const [text, role, capacity] of cases) {
+      const figure = classifyFigures(text).find((item) => item.kind === "MONEY" && item.value === amount);
+      expect(figure?.role, text).toBe(role);
+      expect(figure?.capacity, text).toBe(capacity);
+      const issues = figureRoleIssues(text, [rule(money(amount))]).map((issue) => issue.kind);
+      expect(issues, text).toEqual(capacity ? [] : ["THRESHOLD_AS_CAPACITY"]);
+    }
+    const siblingProviso = "other Indebtedness in an aggregate principal amount not to exceed $9,000,000; provided that no Default has occurred; and Indebtedness not to exceed the greater of $5,000,000 and Consolidated EBITDA.";
+    const sibling = classifyFigures(siblingProviso).find((item) => item.kind === "MONEY" && item.value === amount);
+    expect(sibling?.role, siblingProviso).toBe("FORMULA_COMPONENT");
+    expect(sibling?.capacity, siblingProviso).toBe(true);
+    expect(figureRoleIssues(siblingProviso, [rule(money(amount))]), siblingProviso).toEqual([]);
+    const conditionInsideGrant = "not to exceed, so long as approved, the greater of $5,000,000 and Consolidated EBITDA.";
+    const inside = classifyFigures(conditionInsideGrant).find((item) => item.kind === "MONEY" && item.value === amount);
+    expect(inside?.capacity, conditionInsideGrant).toBe(false);
+    expect(figureRoleIssues(conditionInsideGrant, [rule(money(amount))]).map((issue) => issue.kind), conditionInsideGrant).toEqual(["THRESHOLD_AS_CAPACITY"]);
+    const maintenance = "The Borrower shall not permit the Leverage Ratio to exceed 5.00 to 1.00.";
+    expect(classifyFigures(maintenance).find((figure) => figure.kind === "RATIO")?.role).toBe("FINANCIAL_MAINTENANCE");
+    expect(figureRoleIssues(maintenance, [rule(null, [{ conditionId: "a", conditionType: "RATIO_SATISFIED", expression: compare("LTE", 5), referencesDefinitionId: null, description: "maximum leverage", provenance: null }])])).toEqual([]);
   });
 
   it("still verifies a source-supported cap", async () => {

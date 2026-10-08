@@ -279,8 +279,18 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
 
 const DELETE_OPERATIONS = new Set(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
 
+function isUnclassifiedOverride(effect: AmendmentEffectCandidate): boolean {
+  return (effect.unresolvedReason ?? "").startsWith("UNCLASSIFIED_OVERRIDE:");
+}
+
 function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfDate: string, index: StructuralIndex): OperativeProvisionView {
-  const { fullChain, conflicts } = buildProvisionChain(group);
+  // An unclassified side letter, consent, or waiver names the provision and
+  // does not establish a replacement. It must not be applied as an amendment,
+  // must not be treated as a deletion, and must not erase the last text that
+  // does have authority. The provision stays REVIEW_REQUIRED because the
+  // override is unresolved.
+  const textualGroup: ProvisionGroup = { ...group, effects: group.effects.filter((effect) => !isUnclassifiedOverride(effect)) };
+  const { fullChain, conflicts } = buildProvisionChain(textualGroup);
   const asOfMs = new Date(asOfDate).getTime();
   const appliedChain = fullChain.filter((e) => e.effectiveDate.date !== null && new Date(e.effectiveDate.date).getTime() <= asOfMs).map((e) => ({ ...e, appliedAsOfQuery: true }));
 

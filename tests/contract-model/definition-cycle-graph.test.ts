@@ -41,6 +41,23 @@ describe("definition dependency graph", () => {
     expect(body).not.toMatch(/SECTION 7.01/);
   });
 
+  it("does not turn a one-way subsidiary pair plus a later covenant mention into a cycle", () => {
+    const text = [
+      '"Restricted Subsidiary" means any Subsidiary of the Issuer that is not an Unrestricted Subsidiary.',
+      '"Unrestricted Subsidiary" means any Subsidiary of the Issuer designated as an Unrestricted Subsidiary by the board of directors of the Issuer.',
+      "SECTION 4.09 Limitation on Indebtedness. The Issuer shall not, and shall not permit any Restricted Subsidiary to, incur any Indebtedness.",
+    ].join("\n\n");
+    const result = cycles(text, "4.09");
+    const restricted = result.index.getDefinitionFullText("Restricted Subsidiary", "doc") ?? "";
+    const unrestricted = result.index.getDefinitionFullText("Unrestricted Subsidiary", "doc") ?? "";
+    expect(restricted).toMatch(/not an Unrestricted Subsidiary/);
+    expect(restricted).not.toMatch(/SECTION 4.09/);
+    expect(unrestricted).toMatch(/designated as an Unrestricted Subsidiary/);
+    expect(unrestricted).not.toMatch(/\bRestricted Subsidiary\b/);
+    expect(unrestricted).not.toMatch(/SECTION 4.09/);
+    expect(result.cycles).toEqual([]);
+  });
+
   it("follows a chain and still reports a real directed cycle", () => {
     const chain = [
       '"Total Leverage Amount" means Consolidated EBITDA multiplied by 3.00.',

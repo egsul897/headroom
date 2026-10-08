@@ -60,7 +60,11 @@ describe("unclassified side-letter and consent overrides", () => {
     expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
     const provision = state.provisions.find((p) => p.sectionRef === "7.01(b)");
     expect(provision?.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
-    expect(provision?.currentText ?? "").not.toContain("$30,000,000");
+    expect(provision?.currentText).toContain("$30,000,000");
+    expect(provision?.currentText).not.toContain("$10,000,000");
+    expect(provision?.currentSourceDocumentId).toBe("credit-agreement");
+    expect(provision?.appliedChain).toEqual([]);
+    expect(provision?.unresolvedIssues.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
   });
 
   it("a lender consent that names a section is the same unresolved override", async () => {
@@ -82,6 +86,30 @@ SECTION 2. Effectiveness. This Consent shall become effective on October 1, 2026
     const { result, state } = await compile([doc("credit-agreement", "Credit Agreement", credit)]);
     expect(result.effects.filter((e) => e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:"))).toEqual([]);
     expect(state.status).toBe("OPERATIVE_STATE_RESOLVED");
+  });
+
+  it("a later side letter does not delete a prior amendment's authoritative text", async () => {
+    const amendment = `AMENDMENT NO. 1 dated as of June 1, 2026 to the Credit Agreement dated as of February 10, 2026, among Northfield Components Corp., as Borrower.
+
+SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows:
+
+(b) other Indebtedness in an aggregate principal amount not to exceed $40,000,000 at any time outstanding.
+
+SECTION 2. Effectiveness. This Amendment shall become effective on June 1, 2026.
+`;
+    const laterLetter = SIDE_LETTER.replaceAll("March 1, 2026", "August 1, 2026");
+    const { state } = await compile([
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      doc("amendment-1", "Amendment No. 1", amendment),
+      doc("side-letter", "Side Letter", laterLetter),
+    ]);
+    const provision = state.provisions.find((p) => p.sectionRef === "7.01(b)");
+    expect(state.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
+    expect(provision?.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
+    expect(provision?.currentText).toContain("$40,000,000");
+    expect(provision?.currentText).not.toContain("$10,000,000");
+    expect(provision?.currentSourceDocumentId).toBe("amendment-1");
+    expect(provision?.appliedChain.map((entry) => entry.amendmentDocumentId)).toEqual(["amendment-1"]);
   });
 
   it("an override whose section exists in two agreements stays unattached and still blocks a resolved instrument", async () => {

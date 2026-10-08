@@ -1,8 +1,13 @@
 /**
- * A dollar figure or ratio in the source has a role. Available capacity is only an
- * affirmative permission, a prohibition that states the ceiling, or an exception amount.
- * A condition floor, a trigger, or a ratio test is not basket capacity, and a COMPARE
- * operator has to match the comparator that introduces the figure.
+ * A dollar figure or ratio in the source has a role. Available capacity requires a
+ * grant the words themselves make ("not to exceed", "up to") or governing permission,
+ * exception, or amount-ceiling authority. These comparators never grant capacity on
+ * their own: "does not exceed", "not in excess of", "greater of", "lesser of",
+ * "shall not exceed". A prohibition ceiling, a condition, a trigger, a maintenance
+ * test, a bare formula, and an unclassified figure are not freely available baskets.
+ * A condition in an earlier clause does not govern a later figure that an unconsumed
+ * grant introduces. A COMPARE operator has to match the comparator that introduces
+ * the figure.
  *
  * No package names and no expected amounts. The words in front of the figure decide.
  */
@@ -13,11 +18,14 @@ import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, type SemanticVerificationFinding }
 
 export type FigureRole =
   | "AFFIRMATIVE_PERMISSION"
-  | "CONDITION_THRESHOLD"
-  | "TRIGGER_THRESHOLD"
-  | "RATIO_REQUIREMENT"
   | "PROHIBITION_THRESHOLD"
-  | "EXCEPTION_AMOUNT";
+  | "CONDITION_THRESHOLD"
+  | "FINANCIAL_MAINTENANCE"
+  | "TRIGGER_THRESHOLD"
+  | "FORMULA_COMPONENT"
+  | "EXCEPTION_AMOUNT"
+  | "UNCLASSIFIED"
+  | "RATIO_REQUIREMENT";
 
 export interface ClassifiedFigure {
   role: FigureRole;
@@ -48,38 +56,44 @@ interface Phrase {
   re: RegExp;
   role: FigureRole;
   operator: CompareOperator | null;
-  capacity: boolean;
+  /**
+   * True only for a cap phrase that states the amount of a permission or an
+   * exception ("not to exceed"). A weak comparator ("does not exceed",
+   * "greater of", "shall not exceed") never does this by itself.
+   */
+  alone: boolean;
   /** The words state a forbidden comparison, not the test that must hold. */
   bare: boolean;
+  formula?: boolean;
 }
 
 const PHRASES: readonly Phrase[] = [
-  { re: /\bnot in excess of\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bin excess of\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bdoes not exceed\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bshall not exceed\b/gi, role: "PROHIBITION_THRESHOLD", operator: "LTE", capacity: true, bare: false },
-  { re: /\bnot to exceed\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bnot exceeding\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bnot greater than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bnot more than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bno more than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bequal to or greater than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", capacity: false, bare: false },
-  { re: /\bequal to or less than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bnot less than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", capacity: false, bare: false },
-  { re: /\bno less than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", capacity: false, bare: false },
-  { re: /\bat least\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", capacity: false, bare: false },
-  { re: /\bwould be less than\b/gi, role: "TRIGGER_THRESHOLD", operator: "LT", capacity: false, bare: true },
-  { re: /\bwould be greater than\b/gi, role: "TRIGGER_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bgreater of\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: null, capacity: true, bare: false },
-  { re: /\blesser of\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: null, capacity: true, bare: false },
-  { re: /\bless than\b/gi, role: "TRIGGER_THRESHOLD", operator: "LT", capacity: false, bare: true },
-  { re: /\bgreater than\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bmore than\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bexceeding\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bexceeds\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bexceed\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", capacity: false, bare: true },
-  { re: /\bup to\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", capacity: true, bare: false },
-  { re: /\bin an aggregate(?:\s+principal)?\s+amount(?:\s+of)?\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: null, capacity: true, bare: false },
+  { re: /\bnot in excess of\b/gi, role: "CONDITION_THRESHOLD", operator: "LTE", alone: false, bare: false },
+  { re: /\bin excess of\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bdoes not exceed\b/gi, role: "CONDITION_THRESHOLD", operator: "LTE", alone: false, bare: false },
+  { re: /\bshall not exceed\b/gi, role: "PROHIBITION_THRESHOLD", operator: "LTE", alone: false, bare: false },
+  { re: /\bnot to exceed\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bnot exceeding\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bnot greater than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bnot more than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bno more than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bequal to or greater than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", alone: false, bare: false },
+  { re: /\bequal to or less than\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bnot less than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", alone: false, bare: false },
+  { re: /\bno less than\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", alone: false, bare: false },
+  { re: /\bat least\b/gi, role: "CONDITION_THRESHOLD", operator: "GTE", alone: false, bare: false },
+  { re: /\bwould be less than\b/gi, role: "TRIGGER_THRESHOLD", operator: "LT", alone: false, bare: true },
+  { re: /\bwould be greater than\b/gi, role: "TRIGGER_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bgreater of\b/gi, role: "FORMULA_COMPONENT", operator: null, alone: false, bare: false, formula: true },
+  { re: /\blesser of\b/gi, role: "FORMULA_COMPONENT", operator: null, alone: false, bare: false, formula: true },
+  { re: /\bless than\b/gi, role: "TRIGGER_THRESHOLD", operator: "LT", alone: false, bare: true },
+  { re: /\bgreater than\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bmore than\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bexceeding\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bexceeds\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bexceed\b/gi, role: "CONDITION_THRESHOLD", operator: "GT", alone: false, bare: true },
+  { re: /\bup to\b/gi, role: "AFFIRMATIVE_PERMISSION", operator: "LTE", alone: true, bare: false },
+  { re: /\bin an aggregate(?:\s+principal)?\s+amount(?:\s+of)?\b/gi, role: "UNCLASSIFIED", operator: null, alone: false, bare: false },
 ];
 
 const RATIO_RE = /\b(\d[\d,]*(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?\b/gi;
@@ -110,17 +124,65 @@ function forbiddenState(text: string, figureStart: number, phraseStartInPrefix: 
   return last !== undefined && /\bnot\b/i.test(last[0]);
 }
 
-function prohibitionCeiling(prefix: string, phraseStart: number, operator: CompareOperator | null): boolean {
-  if (operator !== "GT") return false;
-  const before = prefix.slice(0, phraseStart);
-  const marks = [...before.matchAll(/\b(?:(?:shall|may|will|must)\s+not|(?:no|neither))\b/gi)];
-  const last = marks[marks.length - 1];
-  if (!last || last.index === undefined) return false;
-  const between = before.slice(last.index);
-  if (/\b(?:if|provided|so long as|unless|when|whenever)\b/i.test(between)) return false;
-  // "no Default" is not a prohibition. "No Loan Party shall" is.
-  if (/^(?:no|neither)$/i.test(last[0]) && !/\b(?:shall|may|will|must|permit)\b/i.test(between)) return false;
-  return true;
+type Governing = "CONDITION" | "EXCEPTION" | "PERMISSION" | "AMOUNT_CEILING" | "PROHIBITION" | "NONE";
+
+const GRANT_BEFORE = /\b(?:not to exceed|not exceeding|not greater than|not more than|no more than|up to)\b/i;
+
+function nearestAuthority(before: string): { kind: Governing; end: number } {
+  const hits: { end: number; len: number; kind: Governing }[] = [];
+  const consider = (re: RegExp, kind: Governing) => {
+    for (const match of before.matchAll(re)) {
+      hits.push({ end: (match.index ?? 0) + match[0].length, len: match[0].length, kind });
+    }
+  };
+  consider(/\b(?:if|provided|so long as|unless|when|whenever)\b/gi, "CONDITION");
+  consider(/\bexcept\b/gi, "EXCEPTION");
+  consider(/\b(?:may|permitted)\b/gi, "PERMISSION");
+  consider(/\b(?:aggregate|principal)\s+(?:principal\s+)?(?:amount|sum)\b[\s\S]{0,160}?\bshall not\b/gi, "AMOUNT_CEILING");
+  consider(/\b(?:shall|will|may|must)\s+not\b/gi, "PROHIBITION");
+  consider(/\b(?:no|neither)\b(?:(?!\bif\b|\bprovided\b|\bunless\b).){0,100}?\b(?:shall|may|will|must)\b/gi, "PROHIBITION");
+  let best: { end: number; len: number; kind: Governing } | null = null;
+  for (const hit of hits) {
+    if (!best || hit.end > best.end || (hit.end === best.end && hit.len > best.len)) best = hit;
+  }
+  return best ? { kind: best.kind, end: best.end } : { kind: "NONE", end: -1 };
+}
+
+function decideMoney(prefix: string, hit: { phrase: Phrase; start: number } | null): { role: FigureRole; operator: CompareOperator | null; capacity: boolean } {
+  if (!hit) return { role: "UNCLASSIFIED", operator: null, capacity: false };
+  const beforePhrase = prefix.slice(0, hit.start);
+  const authority = nearestAuthority(beforePhrase);
+  const auth = authority.kind;
+  const grantMatches = [...beforePhrase.matchAll(new RegExp(GRANT_BEFORE.source, "gi"))];
+  const lastGrant = grantMatches[grantMatches.length - 1];
+  const grantBefore = lastGrant !== undefined && !/\$\s?\d/.test(beforePhrase.slice((lastGrant.index ?? 0) + lastGrant[0].length));
+  // A proviso that closed before this grant belongs to the earlier clause.
+  const grantAfterAuthority = grantBefore && (lastGrant?.index ?? -1) >= authority.end;
+  let role = hit.phrase.role;
+  let operator = hit.phrase.operator;
+  let capacity = false;
+  if (auth === "CONDITION" && !grantAfterAuthority) {
+    role = role === "TRIGGER_THRESHOLD" || operator === "LT" ? "TRIGGER_THRESHOLD" : "CONDITION_THRESHOLD";
+  } else if (hit.phrase.alone) {
+    role = auth === "EXCEPTION" ? "EXCEPTION_AMOUNT" : "AFFIRMATIVE_PERMISSION";
+    capacity = true;
+  } else if (grantBefore || auth === "AMOUNT_CEILING" || ((auth === "PERMISSION" || auth === "EXCEPTION") && hit.phrase.formula)) {
+    // Permission or exception authority turns a formula into capacity.
+    // It does not turn "in excess of" or "greater than" into a basket.
+    capacity = true;
+    if (auth === "EXCEPTION") role = "EXCEPTION_AMOUNT";
+    else if (hit.phrase.formula) role = "FORMULA_COMPONENT";
+    else role = "AFFIRMATIVE_PERMISSION";
+  } else if (auth === "PROHIBITION" || role === "PROHIBITION_THRESHOLD") {
+    role = "PROHIBITION_THRESHOLD";
+    capacity = false;
+  } else if (hit.phrase.formula) {
+    role = "FORMULA_COMPONENT";
+  } else if (!hit.phrase.alone && role === "AFFIRMATIVE_PERMISSION") {
+    role = "UNCLASSIFIED";
+  }
+  if (capacity && role === "AFFIRMATIVE_PERMISSION" && /\bexcept\b/i.test(beforePhrase)) role = "EXCEPTION_AMOUNT";
+  return { role, operator, capacity };
 }
 
 export function classifyFigures(text: string): ClassifiedFigure[] {
@@ -135,18 +197,10 @@ export function classifyFigures(text: string): ClassifiedFigure[] {
     if (parsed.canonicalValue === null) continue;
     const prefix = text.slice(Math.max(0, start - WINDOW), start);
     const hit = closestPhrase(prefix);
-    let role: FigureRole = hit?.phrase.role ?? "AFFIRMATIVE_PERMISSION";
-    let operator = hit?.phrase.operator ?? null;
-    let capacity = hit ? hit.phrase.capacity : true;
-    if (hit && prohibitionCeiling(prefix, hit.start, operator)) {
-      role = "PROHIBITION_THRESHOLD";
-      operator = "LTE";
-      capacity = true;
-    }
-    if (capacity && role === "AFFIRMATIVE_PERMISSION" && /\bexcept\b/i.test(prefix)) role = "EXCEPTION_AMOUNT";
-    if (/\bif\b/i.test(prefix) && (role === "TRIGGER_THRESHOLD" || operator === "LT")) role = "TRIGGER_THRESHOLD";
+    const decided = decideMoney(prefix, hit);
+    if (/\bif\b/i.test(prefix) && (decided.role === "TRIGGER_THRESHOLD" || decided.operator === "LT") && decided.role !== "AFFIRMATIVE_PERMISSION" && decided.role !== "EXCEPTION_AMOUNT") decided.role = "TRIGGER_THRESHOLD";
     const invertOperator = hit ? forbiddenState(text, start, hit.start, hit.phrase.bare) : false;
-    out.push({ role, operator, capacity, invertOperator, rawText: match[0], value: parsed.canonicalValue, kind: "MONEY", charStart: start });
+    out.push({ role: decided.role, operator: decided.operator, capacity: decided.capacity, invertOperator, rawText: match[0], value: parsed.canonicalValue, kind: "MONEY", charStart: start });
     taken.push({ start, end });
   }
 
@@ -158,11 +212,12 @@ export function classifyFigures(text: string): ClassifiedFigure[] {
     if (!Number.isFinite(value)) continue;
     const prefix = text.slice(Math.max(0, start - WINDOW), start);
     const hit = closestPhrase(prefix);
+    const invertOperator = hit ? forbiddenState(text, start, hit.start, hit.phrase.bare) : false;
     out.push({
-      role: "RATIO_REQUIREMENT",
+      role: invertOperator ? "FINANCIAL_MAINTENANCE" : "RATIO_REQUIREMENT",
       operator: hit?.phrase.operator ?? null,
       capacity: false,
-      invertOperator: hit ? forbiddenState(text, start, hit.start, hit.phrase.bare) : false,
+      invertOperator,
       rawText: match[0],
       value,
       kind: "RATIO",
