@@ -43,3 +43,7 @@ Legal-formula validation, provenance hardening, typed IR, dependency coordinatio
 ## Phase 3
 
 Corpus-wide false-permission audit and dependency closure: [`phase-3/`](./phase-3/).
+
+## Phase 4
+
+Governing-source binding, semantic roles, peer integration, dependency graphs, and non-promoting library statuses: [`phase-4/`](./phase-4/).
