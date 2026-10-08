@@ -1,7 +1,7 @@
 # Rare Drafting Discovery Phase 2 — Validated Novelty
 
 Starting SHA: `6c9e8a65c9cbac50c922c0d4ec4a91611957fdbb`
-Exact HEAD: `1b6b291daadae7dd074626f2e09d1a3c192db7e2`
+Exact HEAD: `86281007bdcf9015876020d5631faaffaadb7173`
 Version: rare-covenant-drafting-discovery.phase2.v1
 Paid calls: 0
 Production legal rules modified: false
@@ -192,7 +192,7 @@ Exported **40** records to `05-knowledge-factory-import.json` using schema `know
 ## 8. Exact SHA, tests, and PR status
 
 - Starting SHA: `6c9e8a65c9cbac50c922c0d4ec4a91611957fdbb`
-- Exact HEAD at report: `1b6b291daadae7dd074626f2e09d1a3c192db7e2`
+- Exact HEAD at report: `86281007bdcf9015876020d5631faaffaadb7173`
 - PR: https://github.com/egsul897/headroom/pull/147 (draft; do not merge)
 - Tests: `npx vitest run tests/drafting-novelty`
 
