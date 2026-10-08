@@ -319,6 +319,15 @@ function ruleFields(rule: IRRule, path: string): { visits: FieldVisit[]; relatio
   for (const c of rule.conditions ?? []) collectReferencedTerms(c.expression, referencedTerms);
   for (const e of rule.exceptions ?? []) for (const c of e.conditions ?? []) collectReferencedTerms(c.expression, referencedTerms);
   if (capacity) collectReferencedTerms(capacity.kind === "UNLIMITED_CAPACITY" ? capacity.gatedBy : (capacity as IRExpression), referencedTerms);
+  const limit = rule.governingLimit;
+  const limitVisits: FieldVisit[] = limit
+    ? [
+        ...provenanceFields(`${path}.governingLimit`, limit.provenance, unitCitation),
+        ...expressionFields(limit.ceilingExpression, `${path}.governingLimit.ceilingExpression`, citationOf(limit.provenance) ?? unitCitation),
+        { fieldPath: `${path}.governingLimit.measuredAggregate.measurementBasis`, fieldClass: "MATERIAL_ASSERTION_FIELD", text: limit.measuredAggregate.measurementBasis, ownerCitation: citationOf(limit.measuredAggregate.provenance) ?? unitCitation },
+      ]
+    : [];
+  if (limit) collectReferencedTerms(limit.ceilingExpression, referencedTerms);
 
   const referencedSections: string[] = [
     ...(rule.sourceSectionRef ? [rule.sourceSectionRef] : []),
@@ -326,6 +335,7 @@ function ruleFields(rule: IRRule, path: string): { visits: FieldVisit[]; relatio
     ...(rule.conditions ?? []).map((c) => citationOf(c.provenance)).filter((x): x is string => x !== null),
     ...(rule.exceptions ?? []).map((e) => citationOf(e.provenance)).filter((x): x is string => x !== null),
     ...(rule.unresolvedDependencies ?? []).map((d) => d.targetRef),
+    ...(limit?.measuredAggregate.governingSectionRef ? [limit.measuredAggregate.governingSectionRef] : []),
   ];
 
   return {
@@ -336,6 +346,7 @@ function ruleFields(rule: IRRule, path: string): { visits: FieldVisit[]; relatio
       ...(rule.dependsOn ?? []).map((d, i) => ({ fieldPath: `${path}.dependsOn[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description, ownerCitation: unitCitation })),
       ...(rule.unresolvedDependencies ?? []).map((d, i) => ({ fieldPath: `${path}.unresolvedDependencies[${i}].description`, fieldClass: "MATERIAL_ASSERTION_FIELD" as const, text: d.description, ownerCitation: unitCitation })),
       ...capacityVisits,
+      ...limitVisits,
     ],
     relation: { ownerTermName: null, referencedTerms, referencedSections, unitCitation },
   };

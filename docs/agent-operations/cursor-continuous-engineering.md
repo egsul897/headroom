@@ -167,26 +167,15 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Exotic shared-pool phrasing outside the LCQG relationship regex under-recalls to `aggregate_amount`. A real pool that is only a ceiling is not an independent basket.
 - An unclassified override does not invent the side-letter amount. The last authoritative text stays, with `REVIEW_REQUIRED`. A genuine deletion still clears the text.
 
-## §7.04 — IR_CAPABILITY_BLOCKED
+## §7.04 — governing limit implemented, frozen submission unchanged
 
-Verdict on `0e31c36` and the tests added after it: `IR_CAPABILITY_BLOCKED`. Adjudication at `ad7955c` remains `CURRENT_REVIEW_REQUIRED_BEHAVIOR_CORRECT`. §7.02(c) is the INCUR_DEBT permission. §7.04 is the aggregate MAX ceiling. The scripted `QUANTITATIVE_PERMISSION` / `PERMISSION` / `COMPLETE` rule is unsupported. Figure-role and the certification gate were not changed. The frozen xref expectations were not rewritten. No certification was advanced. This is separate from IPV-16.
+The slot that was missing at `9bc177f` (`IR_CAPABILITY_BLOCKED`) now exists. Adjudication at `ad7955c` remains `CURRENT_REVIEW_REQUIRED_BEHAVIOR_CORRECT` for the scripted submission. §7.02(c) is the INCUR_DEBT permission. §7.04 is the aggregate MAX ceiling. The scripted `QUANTITATIVE_PERMISSION` / `PERMISSION` / `COMPLETE` rule was not rewritten. Figure-role still refuses a ceiling stored as `capacityExpression`. The frozen xref expectations were not rewritten. No certification was advanced. This is separate from IPV-16.
 
-Missing capability, precisely: a rule-level limit expression that is not `capacityExpression`. It must not be walked as available capacity and must not emit `RULE_CAPACITY`. `LIMITED_BY` must be able to name it without the limit itself being a capacity node. It needs an operand for the aggregate principal amount incurred under that section, distinct from a financial metric and from `RULE_REFERENCE` / `LEDGER_USAGE_REFERENCE`. Certification of that limit requires the source figure to be a `PROHIBITION_THRESHOLD`, the tree to be the stated MAX, Total Assets resolved, scope safe to rely on, and §7.02(c) remaining the only incurrence permission. None of those slots exist. `QUANTITATIVE_RESTRICTION` does not create one. A condition can hold the MAX and stay silent; silence is not that verification. Supplying Total Assets makes the runtime publish the MAX as `AVAILABLE` capacity (`170000000` on a $1,000,000,000 base in the non-frozen test). That publication is the second basket, and figure-role still returns `MATERIAL_DISCREPANCY`, so it is not certifiable.
+`IRRule.governingLimit` is optional. `ceilingExpression` is the stated MAX. `measuredAggregate` is `PROVISION_AGGREGATE` (governing section plus measurement basis). It is not an `IRExpression` kind, not a metric, and not `RULE_REFERENCE` / `LEDGER_USAGE_REFERENCE`. `buildCapacityGraph` does not read the field. `evaluateGoverningLimit` returns `DETERMINED` only when scope, amendment authority, usage, and ceiling inputs are established, and the result is ceiling, usage, and remaining. It never returns `AVAILABLE` and `authorizesDebt` is false. Several permissions `LIMITED_BY` the same rule share one remaining amount. A permission posture, a duplicate `capacityExpression`, an entity mismatch, or unresolved amendment authority withholds the number.
 
-The frozen CERTIFIED expectations are obsolete relative to this verifier. They are not a license to certify the scripted permission. The controlled migration remains the one recorded below. It was not applied.
+Putting the MAX on `capacityExpression` is still the second basket. On a $1,000,000,000 Total Assets base the capacity runtime still publishes `AVAILABLE` `170000000`, and figure-role still returns `THRESHOLD_AS_CAPACITY`. The governing-limit path on the same base returns ceiling `170000000`, usage subtracted, and no second `RULE_CAPACITY` node.
 
-Existing pieces, none of which is a verified non-permission limit:
-
-- `QUANTITATIVE_RESTRICTION` plus posture `PROHIBITION` already exists. Ground truth uses it for a greater-of restriction. It is not a new rule type.
-- `MAX(MONEY, MULTIPLY(PERCENT, DEFINED_TERM_REFERENCE))` is the ceiling arithmetic.
-- `LIMITED_BY` is the relationship §7.02(c) already emits. The capacity graph records it as `LEGAL_RELATIONSHIP` and only when both rules have capacity nodes (`runtime/capacity/graph.ts`). The evaluator does not follow that edge. Verified execution refuses `LIMITED_BY` as `CROSS_RULE_GATE_NOT_EXECUTABLE`.
-- `IRSharedCapacity` is a pool shared by member permissions. This ceiling is one section limiting one permission, not a shared pool.
-
-Gap:
-
-- `capacityExpression` is available capacity. `buildCapacityGraph` emits `RULE_CAPACITY` for every non-null `capacityExpression`, with no posture or rule-type filter. Figure-role walks that slot as capacity and emits `THRESHOLD_AS_CAPACITY` / `WRONG_AMOUNT` when the figure's own clause is not a permission or exception. Putting the MAX on a `QUANTITATIVE_RESTRICTION` still creates a second executable capacity and stays `MATERIAL_DISCREPANCY`.
-- There is no operand for "the aggregate principal amount incurred under this section" that is not itself a capacity reference (`RULE_REFERENCE`, `LEDGER_USAGE_REFERENCE`). A condition may hold the MAX with `capacityExpression` null. That creates no capacity node, draws no `LIMITED_BY` edge, and emits no `WRONG_AMOUNT`. Empty findings are not a verification that the number is the ceiling. Sufficiency on that shape is not `COMPLETE`.
-- No schema field was added. A new rule type was not added.
+The frozen CERTIFIED expectations are obsolete relative to the scripted permission. They are not a license to certify it. The controlled migration remains the one recorded below. It was not applied. Being able to represent the relationship is not certification of the xref package.
 
 Frozen-expectation migration, not applied. File `tests/contract-model/certified/xref-fixtures.test.ts`. Do not edit the scripted submission in `xref-harness.ts` to a different COMPLETE shape.
 
@@ -212,7 +201,7 @@ Until a separately authorized non-capacity limit slot exists, §7.04 remains `RE
 | P0-C IPV-16 notwithstanding side letter | P0 | PRODUCT assertions pass on replay | Override stays REVIEW_REQUIRED and does not erase authoritative text. Five GAP kill predictions are now KILLED. Expectations were not edited. Next owner: challenger harness |
 | IPV-21 false definition cycle | P0 | FIXED, indenture control disagreed | Spans prove one direction only. `true-cycle-still-reported` and `genuine-cycles-reported` still fail. Expectations were not edited. Next owner: challenger expectation author |
 | IPV-22 comparator as capacity | P0 | CLAUSE BOUNDARY | Capacity requires the figure's own permission or exception. xref 7.04 ceiling stays REVIEW_REQUIRED. L-P2, H-T2, A-T1, and B-T1 refuse |
-| §7.04 aggregate limit slot | P0 | IR_CAPABILITY_BLOCKED | No non-capacity limit slot. Scripted PERMISSION stays REVIEW_REQUIRED. Frozen CERTIFIED migration is recorded and not applied |
+| §7.04 aggregate limit slot | P0 | SLOT IMPLEMENTED, FROZEN SUBMISSION UNCHANGED | `governingLimit` is not capacity. Scripted PERMISSION stays REVIEW_REQUIRED. Frozen CERTIFIED migration is recorded and not applied |
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |

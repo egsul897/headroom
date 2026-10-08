@@ -53,6 +53,7 @@ export const RULE_FIELD_CLASSIFICATION = {
   entityScopeAudit: "REVIEW_CONTEXTUAL",
   transactionScope: "REVIEW_SEMANTIC",
   capacityExpression: "REVIEW_SEMANTIC",
+  governingLimit: "REVIEW_SEMANTIC",
   conditions: "REVIEW_SEMANTIC",
   exceptions: "REVIEW_SEMANTIC",
   dependsOn: "REVIEW_SEMANTIC",
@@ -138,7 +139,7 @@ export interface ProjectedRule {
   unitKind: "RULE";
   ruleId: string; sourceSectionRef: string | null; covenantFamily: string; ruleType: string; posture: string; action: string | null;
   entityScope: string[]; entityScopeExcluded: string[]; transactionScope: string[] | null;
-  capacityExpression: unknown; conditions: unknown[]; exceptions: unknown[]; dependsOn: unknown[]; unresolvedDependencies: unknown[]; sourceDependencies: unknown[]; inheritedAttributes: unknown[];
+  capacityExpression: unknown; governingLimit?: unknown; conditions: unknown[]; exceptions: unknown[]; dependsOn: unknown[]; unresolvedDependencies: unknown[]; sourceDependencies: unknown[]; inheritedAttributes: unknown[];
   compilerSufficiencyClaim: ProjectedSufficiencyClaim;
   reviewContext: { sourceDocumentId: string; operativeLineage: unknown; provenance: unknown; inventoryItemIds: string[]; entityScopeAudit: ProjectedEntityScopeAudit | null; sourceReferenceAudit: ProjectedSourceReferenceAudit | null };
 }
@@ -191,7 +192,7 @@ export function projectRule(r: IRRule): ProjectedRule {
     unitKind: "RULE",
     ruleId: r.ruleId, sourceSectionRef: r.sourceSectionRef, covenantFamily: r.covenantFamily, ruleType: r.ruleType, posture: r.posture, action: r.action,
     entityScope: [...r.entityScope], entityScopeExcluded: [...r.entityScopeExcluded], transactionScope: r.transactionScope ? [...r.transactionScope] : null,
-    capacityExpression: sanitizeForReview(r.capacityExpression), conditions: sanitizeForReview(r.conditions), exceptions: sanitizeForReview(r.exceptions),
+    capacityExpression: sanitizeForReview(r.capacityExpression), ...(r.governingLimit ? { governingLimit: sanitizeForReview(r.governingLimit) } : {}), conditions: sanitizeForReview(r.conditions), exceptions: sanitizeForReview(r.exceptions),
     dependsOn: sanitizeForReview(r.dependsOn), unresolvedDependencies: sanitizeForReview(r.unresolvedDependencies ?? []), sourceDependencies: sanitizeForReview(r.sourceDependencies ?? []), inheritedAttributes: sanitizeForReview(r.inheritedAttributes ?? []),
     compilerSufficiencyClaim: { sufficiency: r.sufficiency, sufficiencyReasons: [...r.sufficiencyReasons], note: SUFFICIENCY_CLAIM_NOTE },
     reviewContext: { sourceDocumentId: r.sourceDocumentId, operativeLineage: sanitizeForReview(r.operativeLineage), provenance: sanitizeForReview(r.provenance), inventoryItemIds: [...(r.inventoryItemIds ?? [])], entityScopeAudit: projectEntityScopeAudit(r.entityScopeAudit), sourceReferenceAudit: projectSourceReferenceAudit(r.sourceReferenceAudit) },

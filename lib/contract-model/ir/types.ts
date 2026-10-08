@@ -793,6 +793,32 @@ export interface IRSharedCapacity {
 }
 
 // ---------------------------------------------------------------------------
+// Governing aggregate limit. A ceiling on indebtedness a different permission
+// authorizes. It is not available capacity, so it is not capacityExpression,
+// not an IRExpression kind, and not a financial metric. The measured aggregate
+// is the amount incurred under the governing provision. Total Assets and the
+// other formula inputs stay ordinary expression operands inside the ceiling.
+// ---------------------------------------------------------------------------
+
+export interface IRProvisionAggregate {
+  kind: "PROVISION_AGGREGATE";
+  /** The provision whose incurred aggregate is measured ("Section 7.04"). */
+  governingSectionRef: string;
+  /** Source-grounded measurement, e.g. "aggregate principal amount of Indebtedness". */
+  measurementBasis: string;
+  provenance: SourceProvenance | null;
+}
+
+export interface IRGoverningLimit {
+  limitId: string;
+  /** The contractual ceiling (the stated MAX). Not remaining headroom. */
+  ceilingExpression: IRExpression;
+  measuredAggregate: IRProvisionAggregate;
+  provenance: SourceProvenance | null;
+  inventoryItemIds?: string[];
+}
+
+// ---------------------------------------------------------------------------
 // The rule itself (task §4). High-level semantic category is NOT a new
 // 8-value enum invented for this phase - it is the real, existing
 // ContractRulePosture (PERMISSION | PROHIBITION | OBLIGATION | N_A) plus
@@ -835,6 +861,14 @@ export interface IRRule {
 
   /** Null for a rule type that carries no amount/ratio mechanics at all (a bare qualitative PROHIBITION, an ENTITY_SCOPE_RULE, ...). */
   capacityExpression: IRCapacityExpression | null;
+  /**
+   * A ceiling on separately authorized indebtedness. The capacity graph does
+   * not read this field and must not emit RULE_CAPACITY for it. Absent when
+   * the rule states no governing aggregate limit. A permission that is subject
+   * to the ceiling records LIMITED_BY against this rule; the ceiling is not
+   * copied onto the permission.
+   */
+  governingLimit?: IRGoverningLimit | null;
 
   conditions: IRCondition[];
   exceptions: IRException[];

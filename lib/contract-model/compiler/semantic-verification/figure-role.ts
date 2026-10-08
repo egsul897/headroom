@@ -48,7 +48,7 @@ export interface ClassifiedFigure {
 
 export interface FigureRoleIssue {
   ruleId: string;
-  kind: "THRESHOLD_AS_CAPACITY" | "COMPARATOR_MISMATCH";
+  kind: "THRESHOLD_AS_CAPACITY" | "COMPARATOR_MISMATCH" | "GOVERNING_LIMIT_ROLE" | "GOVERNING_LIMIT_AS_PERMISSION";
   role: FigureRole;
   detail: string;
 }
@@ -343,7 +343,13 @@ function numericOf(expr: IRExpression): { kind: "MONEY" | "RATIO"; value: number
   return null;
 }
 
-export function figureRoleIssues(sourceText: string, rules: readonly Pick<IRRule, "ruleId" | "capacityExpression" | "conditions" | "exceptions">[]): FigureRoleIssue[] {
+type FigureRoleRule = Pick<IRRule, "ruleId" | "capacityExpression" | "conditions" | "exceptions"> & {
+  governingLimit?: IRRule["governingLimit"];
+  posture?: IRRule["posture"];
+  ruleType?: IRRule["ruleType"];
+};
+
+export function figureRoleIssues(sourceText: string, rules: readonly FigureRoleRule[]): FigureRoleIssue[] {
   const figures = classifyFigures(sourceText);
   const issues: FigureRoleIssue[] = [];
   const seen = new Set<string>();
@@ -359,6 +365,34 @@ export function figureRoleIssues(sourceText: string, rules: readonly Pick<IRRule
     walkCapacity(rule.capacityExpression, nodes);
     for (const condition of rule.conditions) literals(condition.expression, false, false, nodes);
     for (const exception of rule.exceptions) for (const condition of exception.conditions) literals(condition.expression, false, false, nodes);
+    const limit = rule.governingLimit;
+    if (limit) {
+      literals(limit.ceilingExpression, false, false, nodes);
+      if (rule.posture === "PERMISSION" || rule.ruleType === "QUANTITATIVE_PERMISSION") {
+        push({
+          ruleId: rule.ruleId,
+          kind: "GOVERNING_LIMIT_AS_PERMISSION",
+          role: "UNCLASSIFIED",
+          detail: "a governing aggregate limit is not an incurrence permission",
+        });
+      }
+      const ceilingNodes: { expr: IRExpression; negated: boolean; asCapacity: boolean }[] = [];
+      literals(limit.ceilingExpression, false, false, ceilingNodes);
+      for (const node of ceilingNodes) {
+        if (node.expr.kind !== "MONEY") continue;
+        const numeric = numericOf(node.expr);
+        if (!numeric || numeric.kind !== "MONEY") continue;
+        const matches = figures.filter((figure) => figure.kind === "MONEY" && sameValue(figure.value, numeric.value));
+        if (matches.some((figure) => figure.role === "PROHIBITION_THRESHOLD" && !figure.capacity)) continue;
+        const figure = matches[0];
+        push({
+          ruleId: rule.ruleId,
+          kind: "GOVERNING_LIMIT_ROLE",
+          role: figure?.role ?? "UNCLASSIFIED",
+          detail: figure ? `${figure.rawText} is a ${figure.role}; a governing limit requires a prohibition threshold` : `ceiling amount ${numeric.value} is not a prohibition threshold in the source`,
+        });
+      }
+    }
 
     for (const node of nodes) {
       if (node.expr.kind === "COMPARE") {

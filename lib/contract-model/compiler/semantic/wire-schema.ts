@@ -181,6 +181,24 @@ export const WireDependencySchema = z.object({
 });
 export type WireDependency = z.infer<typeof WireDependencySchema>;
 
+export const WireProvisionAggregateSchema = z.object({
+  governingSectionRef: z.string().default(""),
+  measurementBasis: z.string().default(""),
+  citation: z.string().nullable().default(null),
+  excerpt: z.string().nullable().default(null),
+});
+export type WireProvisionAggregate = z.infer<typeof WireProvisionAggregateSchema>;
+
+/** A ceiling on a separately authorized permission. Not a capacity expression and not a shared cap. */
+export const WireGoverningLimitSchema = z.object({
+  ceilingExpression: WireExpressionSchema,
+  measuredAggregate: WireProvisionAggregateSchema,
+  citation: z.string().nullable().default(null),
+  excerpt: z.string().nullable().default(null),
+  inventoryItemIds: z.array(z.string()).optional(),
+});
+export type WireGoverningLimit = z.infer<typeof WireGoverningLimitSchema>;
+
 export const WireRuleSchema = z.object({
   /** Model-chosen short identifier unique within this ONE compilation call (e.g. "rule-1") - used ONLY to let exceptions/dependencies/shared-caps cross-reference each other within the same submission. Never used as the rule's real, final identity (normalize.ts computes that deterministically via lib/contract-model/ir/identity.ts, exactly like every other IR producer in this codebase). */
   localRef: z.string(),
@@ -192,6 +210,8 @@ export const WireRuleSchema = z.object({
   entityScope: z.array(z.string()).default([]),
   entityScopeExcluded: z.array(z.string()).default([]),
   capacityExpression: WireExpressionSchema.nullable().default(null),
+  /** Optional. Absent on every submission that does not state a governing aggregate ceiling. */
+  governingLimit: WireGoverningLimitSchema.nullable().optional(),
   conditions: z.array(WireConditionSchema).default([]),
   exceptions: z.array(WireExceptionSchema).default([]),
   dependsOn: z.array(WireDependencySchema).default([]),

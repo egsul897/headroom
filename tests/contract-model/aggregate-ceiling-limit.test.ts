@@ -1,26 +1,28 @@
 /**
- * Aggregate ceiling with no governing permission.
+ * Aggregate ceiling with no governing permission, and the governing-limit slot.
  *
- * Non-frozen. This file does not import the xref golden, does not change
- * figure-role, and does not treat a ceiling as certified capacity.
- *
- * The IR can store the MAX arithmetic, a QUANTITATIVE_RESTRICTION posture,
- * and a LIMITED_BY edge. It cannot store that MAX as a verified limit:
- * capacityExpression is available capacity, the capacity graph builds a
- * RULE_CAPACITY for every non-null capacityExpression, and LIMITED_BY is
- * drawn only between those nodes. A condition can hold the number without
- * becoming capacity, and that silence is not a verification of the limit.
+ * Non-frozen. This file does not import the xref golden and does not treat a
+ * ceiling as certified capacity. capacityExpression remains available capacity:
+ * a MAX stored there still emits RULE_CAPACITY and THRESHOLD_AS_CAPACITY.
+ * governingLimit is the ceiling. It is not a second basket. A condition that
+ * merely holds the MAX is still not that slot.
  */
 import { beforeEach, describe, expect, it } from "vitest";
 import type { ZodType } from "zod";
+import { buildIrInventory } from "../../lib/contract-model/compiler/semantic-verification/ir-inventory";
 import { classifyFigures, figureRoleIssues } from "../../lib/contract-model/compiler/semantic-verification/figure-role";
+import { collectNumericAssertions } from "../../lib/contract-model/compiler/semantic-verification/numeric-assertion";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
 import type { VerificationInput } from "../../lib/contract-model/compiler/semantic-verification/types";
+import { normalizeSubmission } from "../../lib/contract-model/compiler/semantic/normalize";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
+import { SubmitCompilationSchema } from "../../lib/contract-model/compiler/semantic/wire-schema";
 import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
-import type { IRRule } from "../../lib/contract-model/ir/types";
+import { validateRule } from "../../lib/contract-model/ir/validate";
+import type { IRGoverningLimit, IRRule } from "../../lib/contract-model/ir/types";
 import { certifyCandidate } from "../../lib/contract-model/phase3-certification/certify";
 import { buildCapacityGraph, evaluateCapacityState } from "../../lib/contract-model/runtime/capacity";
+import { evaluateGoverningLimit, type ProvisionAggregateUsage } from "../../lib/contract-model/runtime/governing-limit";
 import { EMPTY_RESOLVER } from "../../lib/contract-model/runtime/input-resolver";
 import { testCompilerInput } from "./semantic-compiler/test-helpers";
 import { AS_OF, CO, INST, MAX, METRIC, MONEY, MUL, PCT, UNLIMITED, amountString, fact, resetIds, resolver, rule } from "./runtime/capacity/helpers";
@@ -164,6 +166,7 @@ describe("aggregate ceiling without a governing permission", () => {
         provenance: null,
       }],
     });
+    expect(conditionOnly.governingLimit ?? null).toBeNull();
     expect(figureRoleIssues(CEILING, [conditionOnly])).toEqual([]);
     const silent = buildCapacityGraph({ rules: [permission, conditionOnly], companyId: CO, instrumentKey: INST, asOf: AS_OF });
     expect(silent.nodes.filter((node) => node.kind === "RULE_CAPACITY").map((node) => node.ruleId)).toEqual(["permission"]);
@@ -229,5 +232,319 @@ describe("aggregate ceiling without a governing permission", () => {
     expect(computed.capacities[0]?.status).toBe("AVAILABLE");
     expect(amountString(computed.capacities[0]!.grossCapacity)).toBe("170000000");
     expect(figureRoleIssues(text, [supplied]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
+  });
+});
+
+const SECTION_704 = [
+  "SECTION 7.02 Indebtedness . The Borrower shall not create, incur or assume any Indebtedness, except:",
+  "",
+  "(c) other Indebtedness incurred subject to Section 7.04.",
+  "",
+  "(d) other Indebtedness incurred subject to Section 7.04.",
+  "",
+  "SECTION 7.04 General Debt Basket . The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+].join("\n");
+
+const CEILING_SENTENCE = "The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.";
+
+function resolvedLineage(provisionKey: string): IRRule["operativeLineage"] {
+  return { instrumentKey: INST, provisionKey, asOfDate: AS_OF, operativeStatus: "OPERATIVE_STATE_RESOLVED", currentSourceDocumentId: "doc" };
+}
+
+function established(tags: Array<"BORROWER" | "UNRESTRICTED_SUB">): Pick<IRRule, "entityScope" | "entityScopeAudit"> {
+  return {
+    entityScope: tags,
+    entityScopeAudit: {
+      guardVersion: "test",
+      status: "SOURCE_MATCH_CONFIRMED",
+      safeToRely: true,
+      reasonCodes: [],
+      rawEmitted: { entityScope: [...tags], entityScopeExcluded: [], source: "RULE_FIELD" },
+      tagNormalization: [],
+      before: { entityScope: [...tags], entityScopeExcluded: [], sufficiency: "COMPLETE" },
+      witness: { ownExcerpt: "The Borrower", citedUnitLeadIn: null, decidedBy: "OWN_EXCERPT", signals: [] },
+    },
+  };
+}
+
+function governing(amount: number, percent: number, section: string): IRGoverningLimit {
+  return {
+    limitId: `limit-${section}`,
+    ceilingExpression: MAX(MONEY(amount), MUL(PCT(percent), METRIC("Total Assets"))),
+    measuredAggregate: {
+      kind: "PROVISION_AGGREGATE",
+      governingSectionRef: section,
+      measurementBasis: "aggregate principal amount of Indebtedness",
+      provenance: { documentId: "doc", sourceNodeKey: null, sourceCitation: section, excerpt: "aggregate principal amount of Indebtedness" },
+    },
+    provenance: { documentId: "doc", sourceNodeKey: null, sourceCitation: section, excerpt: CEILING_SENTENCE },
+  };
+}
+
+function permission702(ruleId: string, over: Partial<IRRule> = {}): IRRule {
+  return rule(ruleId, UNLIMITED(null), {
+    sourceSectionRef: ruleId,
+    posture: "PERMISSION",
+    ruleType: "QUANTITATIVE_PERMISSION",
+    action: "INCUR_DEBT",
+    dependsOn: [{ relationshipType: "LIMITED_BY", targetRuleId: "7.04", description: "subject to Section 7.04" }],
+    operativeLineage: resolvedLineage(ruleId),
+    ...established(["BORROWER"]),
+    ...over,
+  });
+}
+
+function limit704(over: Partial<IRRule> = {}): IRRule {
+  return rule("7.04", null, {
+    sourceSectionRef: "7.04",
+    ruleType: "QUANTITATIVE_RESTRICTION",
+    posture: "PROHIBITION",
+    action: "INCUR_DEBT",
+    operativeLineage: resolvedLineage("7.04"),
+    governingLimit: governing(123_000_000, 0.17, "Section 7.04"),
+    ...established(["BORROWER"]),
+    ...over,
+  });
+}
+
+function usageOf(amount: string | null, conflicting = false): ProvisionAggregateUsage {
+  return { amount, currency: "USD", conflicting, ...(conflicting ? { conflictDetail: "two aggregate records disagree and neither supersedes the other" } : {}) };
+}
+
+function capacityRuleIds(rules: IRRule[]): string[] {
+  return buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF }).nodes.filter((node) => node.kind === "RULE_CAPACITY").map((node) => node.ruleId).filter((ruleId): ruleId is string => ruleId !== null);
+}
+
+describe("governing aggregate limit", () => {
+  it("does not let a standalone ceiling authorize debt", () => {
+    const limit = limit704();
+    expect(classifyFigures(SECTION_704).find((item) => item.value === 123_000_000)?.role).toBe("PROHIBITION_THRESHOLD");
+    expect(figureRoleIssues(SECTION_704, [limit])).toEqual([]);
+    expect(capacityRuleIds([limit])).toEqual([]);
+    const measured = evaluateGoverningLimit({ limit, usage: usageOf("0"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF });
+    expect(measured.authorizesDebt).toBe(false);
+    expect(measured.status).toBe("DETERMINED");
+    expect(measured.memberRuleIds).toEqual([]);
+    expect(measured.status).not.toBe("AVAILABLE");
+    const claimed = limit704({ posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION" });
+    expect(figureRoleIssues(SECTION_704, [claimed]).map((issue) => issue.kind)).toContain("GOVERNING_LIMIT_AS_PERMISSION");
+    const refused = evaluateGoverningLimit({ limit: claimed, usage: usageOf("0"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF });
+    expect(refused.status).toBe("NON_EXECUTABLE");
+    expect(refused.remaining).toBeNull();
+    expect(refused.authorizesDebt).toBe(false);
+  });
+
+  it("keeps §7.02(c) as the only capacity and applies §7.04 as the ceiling", () => {
+    const permission = permission702("7.02(c)");
+    const limit = limit704();
+    expect(JSON.stringify(permission.capacityExpression)).not.toContain("123000000");
+    expect(JSON.stringify(permission)).not.toContain("0.17");
+    expect(permission.dependsOn).toEqual([{ relationshipType: "LIMITED_BY", targetRuleId: "7.04", description: "subject to Section 7.04" }]);
+    expect(limit.capacityExpression).toBeNull();
+    expect(limit.governingLimit?.measuredAggregate.kind).toBe("PROVISION_AGGREGATE");
+    expect(JSON.stringify(limit.governingLimit?.measuredAggregate)).not.toContain("METRIC_REFERENCE");
+    expect(limit.governingLimit?.ceilingExpression.kind).toBe("MAX");
+    expect(capacityRuleIds([permission, limit])).toEqual(["7.02(c)"]);
+    expect(buildCapacityGraph({ rules: [permission, limit], companyId: CO, instrumentKey: INST, asOf: AS_OF }).edges.some((edge) => edge.sourceRelationship === "LIMITED_BY")).toBe(false);
+    const measured = evaluateGoverningLimit({
+      limit, permissions: [permission], usage: usageOf("20000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(measured.status).toBe("DETERMINED");
+    expect(measured.ceiling).toBe("170000000");
+    expect(measured.usage).toBe("20000000");
+    expect(measured.remaining).toBe("150000000");
+    expect(measured.remaining).not.toBe(measured.ceiling);
+    expect(measured.authorizesDebt).toBe(false);
+    expect(measured.memberHeadroom).toEqual([{ ruleId: "7.02(c)", remaining: "150000000", status: "DETERMINED" }]);
+    expect(validateRule(limit).ok).toBe(true);
+  });
+
+  it("withholds a number when Total Assets or the aggregate usage is missing or in conflict", () => {
+    const permission = permission702("7.02(c)");
+    const limit = limit704();
+    const missingAssets = evaluateGoverningLimit({ limit, permissions: [permission], usage: usageOf("20000000"), inputs: resolver([]), asOf: AS_OF });
+    expect(missingAssets.status).toBe("NEEDS_INPUT");
+    expect(missingAssets.remaining).toBeNull();
+    expect(missingAssets.reasons.some((reason) => reason.includes("Total Assets"))).toBe(true);
+    const missingUsage = evaluateGoverningLimit({ limit, permissions: [permission], usage: usageOf(null), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF });
+    expect(missingUsage.status).toBe("NEEDS_INPUT");
+    expect(missingUsage.remaining).toBeNull();
+    expect(missingUsage.reasons.some((reason) => reason.includes("aggregate usage"))).toBe(true);
+    const conflicted = evaluateGoverningLimit({ limit, permissions: [permission], usage: usageOf("20000000", true), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF });
+    expect(conflicted.status).toBe("REVIEW_REQUIRED");
+    expect(conflicted.remaining).toBeNull();
+    expect(conflicted.reasons.some((reason) => reason.includes("disagree"))).toBe(true);
+  });
+
+  it("shares one ceiling across two permissions", () => {
+    const first = permission702("7.02(c)");
+    const second = permission702("7.02(d)");
+    const limit = limit704();
+    expect(capacityRuleIds([first, second, limit]).sort()).toEqual(["7.02(c)", "7.02(d)"]);
+    const measured = evaluateGoverningLimit({
+      limit, permissions: [first, second], usage: usageOf("40000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(measured.status).toBe("DETERMINED");
+    expect(measured.ceiling).toBe("170000000");
+    expect(measured.remaining).toBe("130000000");
+    expect(measured.memberHeadroom.map((member) => member.remaining)).toEqual(["130000000", "130000000"]);
+    expect(measured.memberHeadroom.every((member) => member.remaining !== measured.ceiling)).toBe(true);
+    const copied = Number(measured.remaining) * measured.memberHeadroom.length;
+    expect(copied).not.toBe(Number(measured.ceiling) * measured.memberHeadroom.length);
+  });
+
+  it("requires established entity scope and resolved amendment authority", () => {
+    const limit = limit704();
+    const mismatched = permission702("7.02(c)", established(["UNRESTRICTED_SUB"]));
+    const entity = evaluateGoverningLimit({
+      limit, permissions: [mismatched], usage: usageOf("20000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(entity.status).toBe("REVIEW_REQUIRED");
+    expect(entity.remaining).toBeNull();
+    expect(entity.reasons.some((reason) => reason.includes("outside"))).toBe(true);
+    const uncertain = limit704({
+      operativeLineage: { instrumentKey: INST, provisionKey: "7.04", asOfDate: AS_OF, operativeStatus: "OPERATIVE_STATE_REVIEW_REQUIRED", currentSourceDocumentId: "doc" },
+    });
+    const amendment = evaluateGoverningLimit({
+      limit: uncertain, permissions: [permission702("7.02(c)")], usage: usageOf("20000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(amendment.status).toBe("REVIEW_REQUIRED");
+    expect(amendment.remaining).toBeNull();
+    expect(amendment.reasons.some((reason) => reason.includes("OPERATIVE_STATE_REVIEW_REQUIRED"))).toBe(true);
+  });
+
+  it("selects the greater of $123,000,000 and 17% of Total Assets and subtracts usage", () => {
+    const permission = permission702("7.02(c)");
+    const limit = limit704();
+    const percentWins = evaluateGoverningLimit({
+      limit, permissions: [permission], usage: usageOf("20000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(percentWins.ceiling).toBe("170000000");
+    expect(percentWins.remaining).toBe("150000000");
+    const flatWins = evaluateGoverningLimit({
+      limit, permissions: [permission], usage: usageOf("1000000"), inputs: resolver([fact("Total Assets", "100000000")]), asOf: AS_OF,
+    });
+    expect(flatWins.ceiling).toBe("123000000");
+    expect(flatWins.remaining).toBe("122000000");
+    expect(flatWins.ceiling).not.toBe(flatWins.remaining);
+  });
+
+  it("rejects a governing limit whose figure is not a prohibition threshold", async () => {
+    const misplaced = rule("misplaced", null, {
+      sourceSectionRef: "9.02",
+      ruleType: "QUANTITATIVE_RESTRICTION",
+      posture: "PROHIBITION",
+      governingLimit: governing(AMOUNT, 0.1, "Section 9.02"),
+    });
+    const issues = figureRoleIssues(SAME_CLAUSE, [misplaced]);
+    expect(issues.map((issue) => issue.kind)).toContain("GOVERNING_LIMIT_ROLE");
+    expect(issues.find((issue) => issue.kind === "GOVERNING_LIMIT_ROLE")?.role).toBe("FORMULA_COMPONENT");
+    const result = await verify(SAME_CLAUSE, misplaced);
+    expect(result.status).toBe("MATERIAL_DISCREPANCY");
+    expect(result.findings.some((finding) => finding.findingType === "WRONG_LOGIC" && finding.deterministicSignals.includes("GOVERNING_LIMIT_ROLE"))).toBe(true);
+  });
+
+  it("refuses a ceiling that is also stored as capacity", () => {
+    const permission = permission702("7.02(c)", { capacityExpression: governing(123_000_000, 0.17, "Section 7.04").ceilingExpression });
+    const duplicated = limit704({ capacityExpression: governing(123_000_000, 0.17, "Section 7.04").ceilingExpression });
+    const issues = figureRoleIssues(SECTION_704, [permission, duplicated]);
+    expect(issues.map((issue) => issue.kind).sort()).toEqual(["THRESHOLD_AS_CAPACITY", "THRESHOLD_AS_CAPACITY"]);
+    expect(capacityRuleIds([permission, duplicated]).sort()).toEqual(["7.02(c)", "7.04"]);
+    const measured = evaluateGoverningLimit({
+      limit: duplicated, permissions: [permission], usage: usageOf("20000000"), inputs: resolver([fact("Total Assets", "1000000000")]), asOf: AS_OF,
+    });
+    expect(measured.status).toBe("REVIEW_REQUIRED");
+    expect(measured.remaining).toBeNull();
+    expect(measured.reasons.some((reason) => reason.includes("capacityExpression"))).toBe(true);
+    expect(measured.authorizesDebt).toBe(false);
+  });
+
+  it("traces §7.02(c) LIMITED_BY §7.04 from source into one governing limit", () => {
+    const submission = SubmitCompilationSchema.parse({
+      rules: [
+        {
+          localRef: "perm",
+          sourceSectionRef: "7.02(c)",
+          covenantFamily: "INDEBTEDNESS",
+          ruleType: "QUANTITATIVE_PERMISSION",
+          posture: "PERMISSION",
+          action: "INCUR_DEBT",
+          capacityExpression: { kind: "UNLIMITED_CAPACITY", gatedBy: null, citation: "§7.02(c)", excerpt: "(c) other Indebtedness incurred subject to Section 7.04." },
+          dependsOn: [
+            { relationshipType: "LIMITED_BY", targetRef: "limit", description: "subject to Section 7.04" },
+            { relationshipType: "LIMITED_BY", targetRef: "Section 7.04", description: "subject to Section 7.04" },
+          ],
+          sufficiency: "COMPLETE",
+          citation: "§7.02(c)",
+          excerpt: "(c) other Indebtedness incurred subject to Section 7.04.",
+        },
+        {
+          localRef: "limit",
+          sourceSectionRef: "7.04",
+          covenantFamily: "INDEBTEDNESS",
+          ruleType: "QUANTITATIVE_RESTRICTION",
+          posture: "PROHIBITION",
+          action: "INCUR_DEBT",
+          capacityExpression: null,
+          governingLimit: {
+            ceilingExpression: {
+              kind: "MAX",
+              citation: "§7.04",
+              excerpt: CEILING_SENTENCE,
+              operands: [
+                { kind: "MONEY", amount: 123_000_000, currency: "USD", citation: "§7.04", excerpt: "$123,000,000" },
+                { kind: "MULTIPLY", citation: "§7.04", excerpt: "17% of Total Assets", operands: [
+                  { kind: "PERCENT", value: 0.17, citation: "§7.04", excerpt: "17%" },
+                  { kind: "METRIC_REFERENCE", metricName: "Total Assets", valueType: "MONEY", citation: "§7.04", excerpt: "Total Assets" },
+                ] },
+              ],
+            },
+            measuredAggregate: {
+              governingSectionRef: "Section 7.04",
+              measurementBasis: "aggregate principal amount of Indebtedness",
+              citation: "§7.04",
+              excerpt: "The aggregate principal amount of Indebtedness incurred under this Section 7.04",
+            },
+            citation: "§7.04",
+            excerpt: CEILING_SENTENCE,
+          },
+          sufficiency: "COMPLETE",
+          citation: "§7.04",
+          excerpt: CEILING_SENTENCE,
+        },
+      ],
+      definitions: [],
+      sharedCapacities: [],
+      irExtensionCandidates: [],
+      overallNotes: [],
+    });
+    const normalized = normalizeSubmission(submission, testCompilerInput({ operativeSourceText: SECTION_704, sourceSectionRef: "7.04" }));
+    const permission = normalized.rules.find((item) => item.sourceSectionRef === "7.02(c)");
+    const limit = normalized.rules.find((item) => item.sourceSectionRef === "7.04");
+    expect(permission?.capacityExpression?.kind).toBe("UNLIMITED_CAPACITY");
+    expect(permission?.posture).toBe("PERMISSION");
+    expect(permission?.action).toBe("INCUR_DEBT");
+    expect(JSON.stringify(permission)).not.toContain("123000000");
+    expect(JSON.stringify(permission)).not.toContain("0.17");
+    expect(permission?.dependsOn.map((dependency) => dependency.relationshipType)).toEqual(["LIMITED_BY"]);
+    expect(permission?.dependsOn[0]?.targetRuleId).toBe(limit?.ruleId);
+    expect(permission?.sourceDependencies?.some((dependency) => dependency.relationshipType === "LIMITED_BY" && dependency.exactSourceTargetRef === "Section 7.04")).toBe(true);
+    expect(limit?.capacityExpression).toBeNull();
+    expect(limit?.posture).toBe("PROHIBITION");
+    expect(limit?.ruleType).toBe("QUANTITATIVE_RESTRICTION");
+    expect(limit?.governingLimit?.measuredAggregate).toMatchObject({
+      kind: "PROVISION_AGGREGATE",
+      governingSectionRef: "Section 7.04",
+      measurementBasis: "aggregate principal amount of Indebtedness",
+    });
+    expect(limit?.governingLimit?.ceilingExpression.kind).toBe("MAX");
+    expect(limit?.governingLimit?.provenance?.sourceCitation).toBe("§7.04");
+    const traced = buildCapacityGraph({ rules: [permission!, limit!], companyId: permission!.companyId, instrumentKey: permission!.instrumentKey, asOf: AS_OF });
+    expect(traced.nodes.filter((node) => node.kind === "RULE_CAPACITY").map((node) => node.ruleId)).toEqual([permission!.ruleId]);
+    const inventory = buildIrInventory("trace", [limit!], []);
+    expect(inventory.items.some((item) => item.kind === "GOVERNING_LIMIT" && item.textValue === "PROVISION_AGGREGATE:Section 7.04|aggregate principal amount of Indebtedness")).toBe(true);
+    const assertions = collectNumericAssertions("trace", [limit!], []);
+    expect(assertions.items.some((item) => item.fieldPath.includes("governingLimit") && item.normalizedValue === 123_000_000)).toBe(true);
+    expect(assertions.items.some((item) => item.referencedSections.includes("Section 7.04"))).toBe(true);
   });
 });

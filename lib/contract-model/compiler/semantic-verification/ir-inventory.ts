@@ -205,6 +205,12 @@ function walkRule(candidateRef: string, rule: IRRule, rulePath: string): IrInven
     }
   }
 
+  if (rule.governingLimit) {
+    const limit = rule.governingLimit;
+    pushItem(ctx, "GOVERNING_LIMIT", `${rulePath}.governingLimit`, null, `PROVISION_AGGREGATE:${limit.measuredAggregate.governingSectionRef}|${limit.measuredAggregate.measurementBasis}`, false, limit.provenance?.sourceCitation ?? null, limit.measuredAggregate.measurementBasis);
+    walkExpression(ctx, limit.ceilingExpression, `${rulePath}.governingLimit.ceilingExpression`, false);
+  }
+
   return ctx.items;
 }
 
