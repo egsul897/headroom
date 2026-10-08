@@ -1,0 +1,56 @@
+{
+  "reviewedSha": "ce07b1525972d1dea00792a2058900fa56291163",
+  "researchPr": 150,
+  "generatedAt": "2026-10-08T22:45:00Z",
+  "promotionStatus": "NOT_INDEPENDENTLY_LEGALLY_VERIFIED",
+  "sourceAuthorExpectationsEdited": false,
+  "frozenCertificationEvidenceEdited": false,
+  "verdicts": {
+    "VC-001": {
+      "verdict": "PASS",
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "summary": "Am5 recital establishes Am4 parent order; basket after-text source-backed; ED calendars correctly unresolved"
+    },
+    "VC-002": {
+      "verdict": "PASS",
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "summary": "Deemed effect as of 2025-01-01 signed in Doc C; fail-closed without deemed model; 10-Q not operative"
+    },
+    "VC-003": {
+      "verdict": "PASS",
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "summary": "Cash-netting $25→$75→$100 on Seventh line; WP-003 confirmed; Eighth supersession blocks Am1/Am2 overlay"
+    },
+    "VC-004": {
+      "verdict": "PASS",
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "summary": "Am6 deletes/restates §6.01; (j) narrows from $50M Permitted Amount basket to Notes-only subordinate liens"
+    },
+    "VC-005": {
+      "verdict": "AMBIGUOUS",
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "summary": "Era grid source-backed but defined term mislabeled Applicable Margin; operative term is Applicable Rate; AZZ absent from KF export"
+    },
+    "VC-006": {
+      "verdict": "PASS",
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "summary": "Omnibus multi-target + blackline incorporation; curated-only must fail closed; consents ≠ unrelated waivers"
+    },
+    "VC-007": {
+      "verdict": "PASS",
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "summary": "Explicit non-waiver in Am3/Am4; consent signatures must not invent WAIVER effects"
+    },
+    "VC-008": {
+      "verdict": "AMBIGUOUS",
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "summary": "Am7 after-text and ordering solid; before-text available in acquired orig CA contrary to stale 8-K/MISSING research rows"
+    }
+  },
+  "wrongParent": {
+    "WP-003": "CONFIRMED",
+    "WP-002": "CONFIRMED_AS_ENGINE_FAILURE_MODE",
+    "WP-006": "AFFIRMED",
+    "WP-008": "AFFIRMED"
+  }
+}
