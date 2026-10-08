@@ -9,7 +9,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "test": "vitest run",
-    "test:phase3-certification": "vitest run tests/contract-model/certified tests/contract-model/verified-execution.test.ts tests/contract-model/semantic-verification-verify.test.ts tests/contract-model/semantic-verification-fault-injection.test.ts tests/contract-model/adversarial-verification.test.ts tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts tests/phase-3-conmed-pilot/evidence-preservation.test.ts tests/phase-3-conmed-pilot/pilot-integrity.test.ts tests/contract-model/operative-subwindow-seal.test.ts",
+    "test:phase3-certification": "vitest run tests/contract-model/certified tests/contract-model/verified-execution.test.ts tests/contract-model/semantic-verification-verify.test.ts tests/contract-model/semantic-verification-fault-injection.test.ts tests/contract-model/adversarial-verification.test.ts tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts tests/phase-3-conmed-pilot/evidence-preservation.test.ts tests/phase-3-conmed-pilot/pilot-integrity.test.ts tests/contract-model/operative-subwindow-seal.test.ts tests/contract-model/semantic-compiler/unlimited-carveout-qualitative-gates.test.ts",
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
