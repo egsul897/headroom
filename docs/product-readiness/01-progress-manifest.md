@@ -18,7 +18,8 @@ Cursor work. Provider calls: none in this workstream.
 | 8 | harness strengthening: text-hash pinning, side-letter/consent mutants, package K, I/J/K adversarial plans, IPV-17 closed, IPV-18; runs at `2b018f8a6719` | done (`2b018f8` + this commit) |
 | 9 | invariant ledger (`17-invariant-backlog.md`, forty mapped), invariant checks INV-01/03/04/05/06/37 (`invariants.ts`, `invariants.test.ts`), IPV-19/IPV-20 | done (this commit) |
 | 10 | invariant batch 2: INV-05b (both directions of the definition-amendment defect), package L (affiliate transactions), ledger rows 8/16/32 assessed; runs at `f182a679394b` | done (`f182a67` + this commit) |
-| 11 | invariant batch 3: package-L variant with the Management Agreement in the package; 'greater of' runtime case; unsupported-effect simulation; citation completeness | next |
+| 11 | invariant batch 3: INV-19 false definition cycle (IPV-21; I/L certification signatures re-attributed), INV-09 greater-of runtime (holds), INV-34 reserved transaction effects (holds); ledger rows 9/19/29/34/35; `invariant-runs/` at `31893c6` | done (`31893c6` + this commit) |
+| 12 | invariant batch 4: package-L variant without the Loan-Parties diamond (to unmask the adversarial evidence), designation mechanics, citation completeness with a live-shaped submission, product-workflow acceptance criteria (doc 05 §6 expansion) | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".
