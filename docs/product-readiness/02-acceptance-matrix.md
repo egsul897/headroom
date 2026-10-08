@@ -26,18 +26,24 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/8f51e2981bd2/`, repository SHA `8f51e2981bd2`, 360 checks: 318 pass · 30 fail · 12 not tested)
+## Matrix (committed run `acceptance-runs/83e6bf1d3ce0/`, repository SHA `83e6bf1d3ce0`, 444 checks: 388 pass · 42 fail · 14 not tested)
+
+Earlier committed runs: `8f51e2981bd2` (8 packages, 360 checks: 318/30/12), `00977b674579` (10 packages, 431 checks:
+376/41/14). The 13 checks added at `83e6bf1` are the cross-reference audits (`context:<id>:cross-references`), one of
+which fails (IPV-17). Findings are 42, all registered (IPV-01…IPV-17).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
-| a-basic-credit-agreement | 16/16 | 2/2 | 1/1 | 0/1 (1 NT) | 6/6 | 7/7 | 4/6 (2 F) | – | 36/39 |
-| b-multi-document | 13/13 | 2/2 | 1/1 | 0/1 (1 NT) | 11/11 | 13/13 | 5/6 (1 F) | – | 45/47 |
-| c-amendment-supersession | 7/7 | 7/7 | 1/1 | 0/1 (1 NT) | 6/7 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 34/39 |
-| d-qualitative-restrictions | 11/11 | 1/1 | 1/1 | 0/1 (1 NT) | 5/6 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 28/32 |
-| e-structural-ambiguity | 13/14 (1 F) | – | 1/1 | 0/1 (1 NT) | 6/10 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 38/48 |
-| f-capacity-ledger-honesty | 11/11 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 49/54 |
-| g-adversarial-evidence | 9/11 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 9/11 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 40/47 |
+| a-basic-credit-agreement | 16/16 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 4/6 (2 F) | – | 37/40 |
+| b-multi-document | 13/13 | 2/2 | 1/1 | 0/1 (1 NT) | 12/12 | 13/13 | 5/6 (1 F) | – | 46/48 |
+| c-amendment-supersession | 7/7 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 35/40 |
+| d-qualitative-restrictions | 11/11 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 30/34 |
+| e-structural-ambiguity | 13/14 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 39/49 |
+| f-capacity-ledger-honesty | 11/11 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 52/57 |
+| g-adversarial-evidence | 9/11 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 41/48 |
 | h-unseen-composition | 18/20 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/9 (1 F) | 10/10 | 9/10 (1 F) | – | 48/54 |
+| i-secured-debt-lien | 10/10 | – | 1/1 | 0/1 (1 NT) | 12/17 (5 F) | 12/12 | 0/4 (4 F) | – | 35/45 |
+| j-restricted-payments-builder | 10/10 | – | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 7/7 | 1/2 (1 F) | – | 25/29 |
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 
@@ -55,6 +61,8 @@ rule; "pure omission" variants strip it.
 | F | 1/3 | F-P3 both variants (dropped "together with" shared cap) |
 | G | 5/5 | — |
 | H | 5/6 | H-P3 lineage-on-rule (dropped Payment Conditions gate) |
+| I | 0 cases | prohibited claims declared in the manifest (I-P1…) but no scripted adversarial submission authored yet — backlog item, not evidence either way |
+| J | 0 cases | as I (J-P1/J-P2 declared; J-P2 "two independent $20m pools" is the claim IPV-15/IPV-17 would let through) |
 
 Refusals worth noting because they are the product doing the right thing: a non-operative recital/exhibit figure
 (G-P1), a stale amendment's figure (G-P2), a superseded amount at a later date (C-P1), a figure invented for a
@@ -73,6 +81,8 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | F | REVIEW_REQUIRED | 7.06/7.08 CERTIFIED; 7.01 review (7.01(f) EUR / 7.01(g) reclassification units not COMPLETE - expected) |
 | G | FAILED | 7.04 truncated and 7.01(c) undefined term fail closed (expected); duplicate 7.01 ambiguous (expected); 7.03 review (IPV-07 merged clause) |
 | H | FAILED | 7.03 CERTIFIED; 7.11 springing covenant review (expected: undefined FCCR inputs); 7.02 review (undefined Eligible Receivables - expected) |
+| I | FAILED | 7.01, 7.02, 7.04 NOT_CERTIFIED (CONTEXT_CONTRACT_UNACCEPTABLE: DEFINITION_CYCLE on "Subsidiary"/"Guarantor" — IPV-12 class); 9.15 Article IX secured cap REVIEW (UNACCOUNTED_MATERIAL_SOURCE — IPV-14) |
+| J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented; deterministic root IPV-17) |
 
 ## Runtime (package F, production Phase-4 runtime over fixture IR): 14/14
 
