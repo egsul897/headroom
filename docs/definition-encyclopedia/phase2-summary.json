@@ -1,0 +1,88 @@
+{
+  "totalDefinitionExamples": 5491,
+  "phase1BaselineExamples": 120,
+  "additionalDefinitionExamples": 5371,
+  "totalSourceDocuments": 82,
+  "fixtureSourceDocuments": 15,
+  "acquiredSourceDocuments": 67,
+  "acquiredDistinctIssuers": 67,
+  "newDefinitionFamilies": [
+    "Incremental Cap",
+    "Free and Clear Incremental Amount",
+    "Permitted Acquisition",
+    "Permitted Ratio Debt",
+    "Designated Non-Cash Consideration",
+    "Consolidated First Lien Debt",
+    "Consolidated Net Leverage Ratio",
+    "Pro Forma Basis",
+    "Pro Forma Effect",
+    "Consolidated Interest Expense",
+    "Capital Expenditures",
+    "Net Proceeds",
+    "Indebtedness",
+    "Lien",
+    "Subsidiary",
+    "Wholly Owned Subsidiary",
+    "Change of Control",
+    "Material Adverse Effect",
+    "Cash Equivalents",
+    "Disqualified Equity Interests",
+    "Excluded Subsidiary"
+  ],
+  "exactGapCoverage": {
+    "Available Equity Amount": 0,
+    "Cumulative Credit": 0,
+    "Incremental Cap": 1,
+    "Free and Clear Incremental Amount": 0,
+    "Permitted Acquisition": 11,
+    "Permitted Ratio Debt": 4,
+    "Permitted Refinancing": 8,
+    "Designated Non-Cash Consideration": 9,
+    "Consolidated First Lien Debt": 1,
+    "Consolidated Net Leverage Ratio": 0,
+    "Pro Forma Basis": 11,
+    "Pro Forma Effect": 1,
+    "Excess Cash Flow": 8,
+    "Applicable Amount": 0
+  },
+  "forwardingResolved": 589,
+  "forwardingUnresolved": 1135,
+  "extractionAudit": {
+    "documentsSampled": 6,
+    "meanPrecision": 1,
+    "meanRecall": 0.9906407596543092
+  },
+  "dependencyAudit": {
+    "reportedEdges": 3476,
+    "directReferences": 1654,
+    "mereLexicalRisk": 182,
+    "cycles": 50,
+    "diamonds": 40
+  },
+  "amendmentAuthorityUnresolved": 496,
+  "importReplayOk": true,
+  "importIdempotencyKey": "0b996642b204d927b9c2d972f7885a8b5a386313786e25a2ffcf5d8326defefc",
+  "targets": {
+    "additionalExamples": {
+      "target": 500,
+      "actual": 5371,
+      "met": true
+    },
+    "newDocuments": {
+      "target": 100,
+      "actual": 67,
+      "met": false
+    },
+    "newIssuers": {
+      "target": 50,
+      "actual": 67,
+      "met": true
+    }
+  },
+  "coordination": {
+    "ehbQueueConsumed": true,
+    "kfAdapterEmitted": true,
+    "foreignSchemaModified": false,
+    "paidInference": false
+  }
+}

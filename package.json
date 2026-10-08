@@ -21,6 +21,8 @@
     "ckg-benchmark": "tsx scripts/ckg-benchmark/run.ts",
     "test:ckg-benchmark": "vitest run tests/covenant-knowledge-generalization/",
     "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts",
+    "definition-encyclopedia:build": "tsx scripts/definition-encyclopedia/build.ts",
+    "definition-encyclopedia:acquire": "tsx scripts/definition-encyclopedia/acquire-expansion.ts",
     "compute:inspect": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=1",
     "compute:bench-100": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=100",
     "compute:phase2-real-edgar": "tsx scripts/cursor-cloud-compute/run-phase2-real-edgar.ts",
