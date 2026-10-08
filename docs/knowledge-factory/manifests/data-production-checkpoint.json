@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-10-08T22:27:32.045Z",
+  "generatedAt": "2026-10-08T22:37:45.034Z",
   "distinction": {
     "note": "Fixture documents are recorded public excerpts already in-repo. SEC documents were acquired live from sec.gov in this session. False-positive SEC exhibits are listed separately and excluded from debt-document counts."
   },
-  "realSecFilingsDiscoveredAccessions": 49,
-  "realSecDebtDocumentsAcquired": 63,
+  "realSecFilingsDiscoveredAccessions": 68,
+  "realSecDebtDocumentsAcquired": 99,
   "realSecFalsePositiveExhibitsAcquired": 6,
   "fixtureDocuments": 12,
   "uniqueIssuers": {
-    "secDebt": 21,
+    "secDebt": 30,
     "fixtures": 5,
-    "combinedDebtAndFixture": 25
+    "combinedDebtAndFixture": 34
   },
-  "uniqueInstrumentsApprox": 66,
-  "provisionsStructurallyIndexed": 20003,
-  "ambiguousStructuralNodes": 3940,
-  "covenantCandidatesExtracted": 2386,
-  "sourceBackedDefinitions": 93,
-  "dependencyEdgesCrossReferences": 12806,
-  "documentRelationships": 18,
+  "uniqueInstrumentsApprox": 98,
+  "provisionsStructurallyIndexed": 32591,
+  "ambiguousStructuralNodes": 6385,
+  "covenantCandidatesExtracted": 3708,
+  "sourceBackedDefinitions": 162,
+  "dependencyEdgesCrossReferences": 21552,
+  "documentRelationships": 40,
   "semanticHypothesesProduced": 0,
   "independentlyVerifiedRepresentations": 0,
   "unresolvedOrAmbiguousLegalIssues": {
-    "uncertaintyQueueItems": 1966,
-    "ambiguousStructuralNodes": 3940,
-    "unlinkedAmendments": 11,
-    "missingOperativeAuthorityDocs": 59,
+    "uncertaintyQueueItems": 2929,
+    "ambiguousStructuralNodes": 6385,
+    "unlinkedAmendments": 8,
+    "missingOperativeAuthorityDocs": 86,
     "note": "These are unresolved discovery/ambiguity items — not independently verified legal conclusions."
   },
   "draftingPatterns": {
@@ -87,13 +87,13 @@
     ]
   },
   "processing": {
-    "measuredParsingMsFromLedger": 1676,
-    "secRequests": 172,
-    "downloadBytes": 30087862,
-    "storageBytes": 30087862,
+    "measuredParsingMsFromLedger": 2634,
+    "secRequests": 237,
+    "downloadBytes": 54158388,
+    "storageBytes": 54158388,
     "actualPaidProviderUsd": 0,
-    "estimatedModelCostUsdIfEnabled": 41.577579000000014,
-    "estimatedModelTokensIfEnabled": 13859193,
+    "estimatedModelCostUsdIfEnabled": 51.155034000000015,
+    "estimatedModelTokensIfEnabled": 17051678,
     "note": "Actual paid AI spend is $0. Estimated model figures are NOT actual spend."
   },
   "secDebtDocuments": [
@@ -194,6 +194,50 @@
       "bytes": 91643,
       "url": "https://www.sec.gov/Archives/edgar/data/78003/000007800318000027/pfe-exhibit104x1231201.htm",
       "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit101termloanagreemen.htm",
+      "ticker": "TSN",
+      "class": "TERM_LOAN_AGREEMENT",
+      "title": "EXHIBIT 10.1- TERM LOAN AGREEMENT DATED MAY 12, 2017",
+      "form": "8-K",
+      "filingDate": "2017-05-17",
+      "bytes": 729282,
+      "url": "https://www.sec.gov/Archives/edgar/data/100493/000010049317000095/exhibit101termloanagreemen.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
+      "ticker": "TSN",
+      "class": "RESTATEMENT",
+      "title": "EXHIBIT 10.2- AMENDED AND RESTATED CREDIT AGREEMENT DATED MAY 12, 2017",
+      "form": "8-K",
+      "filingDate": "2017-05-17",
+      "bytes": 802119,
+      "url": "https://www.sec.gov/Archives/edgar/data/100493/000010049317000095/exhibit102amendedandrestat.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
+      "ticker": "TSN",
+      "class": "RESTATEMENT",
+      "title": "EXHIBIT 10.1 AMENDED AND RESTATED CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2018-03-20",
+      "bytes": 1043681,
+      "url": "https://www.sec.gov/Archives/edgar/data/100493/000010049318000047/exhibit101amendedandrestat.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit102amendmentno3tote.htm",
+      "ticker": "TSN",
+      "class": "AMENDMENT",
+      "title": "EXHIBIT 10.2 AMENDMENT NO.3 TO TERM LOAN AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2018-03-20",
+      "bytes": 801850,
+      "url": "https://www.sec.gov/Archives/edgar/data/100493/000010049318000047/exhibit102amendmentno3tote.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
       "sourceId": "edgar:0000320187-15-000153:nikecreditagreement2015.htm",
@@ -318,6 +362,17 @@
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
+      "sourceId": "edgar:0000950157-19-000659:ex10-1.htm",
+      "ticker": "PH",
+      "class": "CREDIT_AGREEMENT",
+      "title": "CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2019-05-24",
+      "bytes": 519034,
+      "url": "https://www.sec.gov/Archives/edgar/data/76334/000095015719000659/ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
       "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
       "ticker": "IBM",
       "class": "CREDIT_AGREEMENT",
@@ -383,6 +438,102 @@
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex10d1.htm",
+      "ticker": "ATR",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT NO. 3 TO CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2014-12-17",
+      "bytes": 367031,
+      "url": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex10d1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+      "ticker": "ATR",
+      "class": "OTHER_DEBT_RELATED",
+      "title": "NOTE PURCHASE AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2014-12-17",
+      "bytes": 896513,
+      "url": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d6.htm",
+      "ticker": "ATR",
+      "class": "AMENDMENT",
+      "title": "SECOND AMENDMENT TO 2006 NOTE PURCHASE AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2014-12-17",
+      "bytes": 243970,
+      "url": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d6.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d7.htm",
+      "ticker": "ATR",
+      "class": "AMENDMENT",
+      "title": "SECOND AMENDMENT TO 2008 NOTE PURCHASE AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2014-12-17",
+      "bytes": 470532,
+      "url": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d7.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "ticker": "RCL",
+      "class": "INDENTURE",
+      "title": "SENIOR GUARANTEED NOTES INDENTURE",
+      "form": "8-K",
+      "filingDate": "2022-10-06",
+      "bytes": 914561,
+      "url": "https://www.sec.gov/Archives/edgar/data/884887/000110465922106834/tm2227571d1_ex4-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "ticker": "RCL",
+      "class": "INDENTURE",
+      "title": "SENIOR SECURED NOTES INDENTURE",
+      "form": "8-K",
+      "filingDate": "2022-10-06",
+      "bytes": 974755,
+      "url": "https://www.sec.gov/Archives/edgar/data/884887/000110465922106834/tm2227571d1_ex4-2.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-224972:d311298dex10b.htm",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED DEFERRED COMPENSATION PLAN",
+      "form": "10-Q",
+      "filingDate": "2012-05-10",
+      "bytes": 42892,
+      "url": "https://www.sec.gov/Archives/edgar/data/75362/000119312512224972/d311298dex10b.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex101.htm",
+      "class": "RESTATEMENT",
+      "title": "AMENDED AND RESTATED TERM LOAN AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2012-10-15",
+      "bytes": 534016,
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312512423438/d424570dex101.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
+      "class": "RESTATEMENT",
+      "title": "AMENDMENT NO. 1 TO REVOLVING FACILITY",
+      "form": "8-K",
+      "filingDate": "2012-10-15",
+      "bytes": 17278,
+      "url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312512423438/d424570dex102.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
       "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
       "class": "UNKNOWN",
       "title": "AMENDED AND RESTATED KBI SHARES OPTION AGREEMENT",
@@ -400,6 +551,46 @@
       "filingDate": "2013-02-01",
       "bytes": 536966,
       "url": "https://www.sec.gov/Archives/edgar/data/1065280/000119312513034798/d477945dex41.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+      "class": "INDENTURE",
+      "title": "GOOGLE INDENTURE DATED MAY 19, 2011",
+      "form": "S-4",
+      "filingDate": "2016-02-12",
+      "bytes": 442172,
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516462492/d49534dex42.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex43.htm",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "FORM OF GOOGLE SUPPLEMENTAL INDENTURE",
+      "form": "S-4",
+      "filingDate": "2016-02-12",
+      "bytes": 32102,
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516462492/d49534dex43.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex41.htm",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "GOOGLE FIRST SUPPLEMENTAL INDENTURE",
+      "form": "8-K",
+      "filingDate": "2016-04-27",
+      "bytes": 33071,
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516559672/d188918dex41.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex42.htm",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "ALPHABET FIRST SUPPLEMENTAL INDENTURE",
+      "form": "8-K",
+      "filingDate": "2016-04-27",
+      "bytes": 118107,
+      "url": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516559672/d188918dex42.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
@@ -444,6 +635,50 @@
       "filingDate": "2020-12-07",
       "bytes": 2579,
       "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-4_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-5_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF COURTNEY ROBINSON",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2588,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-5_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-6_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF TRIPP JONES",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2571,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-6_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-7_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF KENT SCHOFIELD",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2580,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-7_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-8_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF PATRICK EGGEN",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2577,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-8_7gcholdings.htm",
       "representationLevel": "STRUCTURALLY_INDEXED"
     },
     {
@@ -499,6 +734,46 @@
       "filingDate": "2025-06-16",
       "bytes": 1017865,
       "url": "https://www.sec.gov/Archives/edgar/data/829224/000121390025054811/ea024579601ex10-1_starbucks.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000050:incamend8kfeb2016.htm",
+      "class": "AMENDMENT",
+      "title": "8-K AMENDMENT TO CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2016-02-26",
+      "bytes": 32108,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960116000050/incamend8kfeb2016.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
+      "class": "AMENDMENT",
+      "title": "8-K AMENDMENT TO CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2016-09-23",
+      "bytes": 42170,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960116000070/creditagreementsep2016.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000011:creditagreement8kapril2017.htm",
+      "class": "AMENDMENT",
+      "title": "8-K AMENDMENT TO CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2017-04-12",
+      "bytes": 33749,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960117000011/creditagreement8kapril2017.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+      "class": "RESTATEMENT",
+      "title": "AMENDED AND RESTATED CREDIT AGREEMENT",
+      "form": "10-Q",
+      "filingDate": "2017-04-28",
+      "bytes": 6519276,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960117000016/ex4march2017.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
@@ -606,6 +881,50 @@
       "filingDate": "2017-09-07",
       "bytes": 109543,
       "url": "https://www.sec.gov/Archives/edgar/data/1327567/000132756717000027/panwex104q417esppplan.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
+      "ticker": "LYV",
+      "class": "AMENDMENT",
+      "title": "EX-10.30 AMENDMENT NO.11 TO THE CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2024-02-22",
+      "bytes": 2497620,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525824000017/lyv-20231231xex1030xamendm.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1047x4875se.htm",
+      "ticker": "LYV",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "EX-10.47 FIFTH SUPPLEMENTAL INDENTURE",
+      "form": "10-K",
+      "filingDate": "2024-02-22",
+      "bytes": 122653,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525824000017/lyv-20231231xex1047x4875se.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1031xamendm.htm",
+      "ticker": "LYV",
+      "class": "AMENDMENT",
+      "title": "EX-10.31 AMENDMENT NO.12 TO CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2025-02-21",
+      "bytes": 2446421,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525825000028/lyv-20241231xex1031xamendm.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+      "ticker": "LYV",
+      "class": "INDENTURE",
+      "title": "EX-10.49 2.875% CONVERTIBLE SENIOR NOTES DUE 2030 INDENTURE",
+      "form": "10-K",
+      "filingDate": "2025-02-21",
+      "bytes": 831114,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525825000028/lyv-20241231xex1049x2875co.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
@@ -719,6 +1038,50 @@
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-bxe.htm",
+      "ticker": "HLT",
+      "class": "UNKNOWN",
+      "title": "CERT OF AMEND TO AMENDED AND RESTATED CERT OF INCORP",
+      "form": "8-K",
+      "filingDate": "2025-05-16",
+      "bytes": 22690,
+      "url": "https://www.sec.gov/Archives/edgar/data/1585689/000158568925000109/certificateofamendment-bxe.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-sup.htm",
+      "ticker": "HLT",
+      "class": "UNKNOWN",
+      "title": "CERT OF AMEND TO AMENDED AND RESTATED CERT OF INCORP",
+      "form": "8-K",
+      "filingDate": "2025-05-16",
+      "bytes": 5393,
+      "url": "https://www.sec.gov/Archives/edgar/data/1585689/000158568925000109/certificateofamendment-sup.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000007:hgv-xfirstamendmenttosecon.htm",
+      "ticker": "HLT",
+      "class": "RESTATEMENT",
+      "title": "FIRST AMENDMENT TO SECOND AMENDED AND RESTATED LICENSE AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2026-02-11",
+      "bytes": 74780,
+      "url": "https://www.sec.gov/Archives/edgar/data/1585689/000158568926000007/hgv-xfirstamendmenttosecon.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000037:hiltonamendedandrestated20.htm",
+      "ticker": "HLT",
+      "class": "UNKNOWN",
+      "title": "AMENDED AND RESTATED 2017 OMNIBUS PLAN",
+      "form": "8-K",
+      "filingDate": "2026-05-18",
+      "bytes": 206923,
+      "url": "https://www.sec.gov/Archives/edgar/data/1585689/000158568926000037/hiltonamendedandrestated20.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
       "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
       "ticker": "CCK",
       "class": "CONSENT",
@@ -760,6 +1123,28 @@
       "filingDate": "2022-11-21",
       "bytes": 1038824,
       "url": "https://www.sec.gov/Archives/edgar/data/27904/000168316822007951/delta_ex1001.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex101364-day.htm",
+      "ticker": "DIS",
+      "class": "CREDIT_AGREEMENT",
+      "title": "364-DAY CREDIT AGREEMENT DATED AS OF MARCH 6, 2020",
+      "form": "8-K",
+      "filingDate": "2020-03-11",
+      "bytes": 1152940,
+      "url": "https://www.sec.gov/Archives/edgar/data/1744489/000174448920000066/fy2020q28kex101364-day.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex1025-yearc.htm",
+      "ticker": "DIS",
+      "class": "CREDIT_AGREEMENT",
+      "title": "FIVE-YEAR CREDIT AGREEMENT DATED AS OF MARCH 6, 2020",
+      "form": "8-K",
+      "filingDate": "2020-03-11",
+      "bytes": 1089407,
+      "url": "https://www.sec.gov/Archives/edgar/data/1744489/000174448920000066/fy2020q28kex1025-yearc.htm",
       "representationLevel": "DISCOVERED_CANDIDATE"
     },
     {

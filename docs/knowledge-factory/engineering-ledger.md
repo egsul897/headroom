@@ -42,14 +42,15 @@ Living progress log for the Cursor-owned knowledge-factory branch.
 
 See `docs/knowledge-factory/manifests/data-production-checkpoint.json`.
 
-- Real SEC debt documents acquired: **45** (plus 6 false-positive exhibits quarantined from debt counts)
-- Real SEC filings (accessions) with acquired exhibits: **35**
-- Fixture documents: **12** (synthetic/recorded public excerpts — not live SEC)
-- SEC debt issuers: **13**; combined issuers with fixtures: **17**
-- Structural nodes (debt+fixture): **18,062**; covenant candidates: **2,214**
+- Real SEC debt documents acquired: **63** (plus 6 false-positive exhibits quarantined from debt counts)
+- Real SEC filings (accessions) with acquired exhibits: **49**
+- Fixture documents: **12** (recorded public excerpts — not live SEC)
+- SEC debt issuers: **21**; combined issuers with fixtures: **25**
+- Structural nodes (debt+fixture): **20,003**; covenant candidates: **2,386**
 - Independently verified representations: **0**
 - Actual paid AI spend: **$0**
-- Live batch wall clocks: ~110s + ~126s + ~520s under SEC rate limits
+- Live batch wall clocks: ~110s + ~126s + ~520s + ~418s under SEC rate limits
+- PR: https://github.com/egsul897/headroom/pull/154 — CI soft gates green at `ba59df6`
 
 ## Next ten implementation tasks
 
