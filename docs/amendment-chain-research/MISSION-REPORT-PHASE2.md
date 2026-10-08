@@ -60,7 +60,7 @@ Handoff packet: `independent-review-handoff/HANDOFF.json` (no Independent Legal 
 
 ## 8. SHA / PR / tests / CI
 
-- **SHA:** `906cb645db27d36893e19af1c41376871ec22cc6`
+- **Branch tip SHA (at Phase 2 close):** `942b6046288f99e8c9d324844a90fafa99e41eb5`
 - **PR:** https://github.com/egsul897/headroom/pull/150 (draft; not merged)
 - **Tests:** `npx vitest run tests/amendment-chain-research/phase2-corpus-integrity.test.ts` — 6 passed
-- **CI:** see PR checks after push
+- **CI:** subscribed on PR head branch `cursor/amendment-chain-research-2926`
