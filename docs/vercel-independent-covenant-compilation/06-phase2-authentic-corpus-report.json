@@ -64,52 +64,189 @@
     "falsePermissionCount": 0
   },
   "unresolvedBreakdown": {
-    "STRUCTURAL_PARSER_FAILURE": 1318,
-    "SEMANTIC_UNCERTAINTY": 580
+    "MISSING_SOURCE": 5,
+    "MISSING_DEFINITION": 0,
+    "MISSING_FINANCIAL_INPUT": 0,
+    "STRUCTURAL_PARSER_FAILURE": 4,
+    "SEMANTIC_UNCERTAINTY": 582,
+    "AMENDMENT_AUTHORITY": 1320,
+    "CROSS_DOCUMENT_RESTRICTION": 0,
+    "OTHER": 0,
+    "note": "Reclassified from VicRunStore uncertainty claims with template-aware classifier (avoids false STRUCTURAL matches on 'Structural/family recognition…' claims). See 07-unresolved-triage.json."
   },
   "heuristicOmissionSample": {
-    "reviewed": 4,
+    "reviewed": 15,
     "confirmedLegalDefects": 0,
-    "heuristicOnly": 4,
+    "heuristicOnly": 15,
     "samples": [
       {
         "sampleIndex": 0,
-        "defectId": "dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt::structural-node:179e1a3c3113f77e11bfdf54:missing-restriction",
+        "defectId": "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt::1031::15:missing-restriction",
+        "stratum": "chwy-2026-credit-agreement:core",
         "cls": "MISSING_LEGAL_RESTRICTION",
         "severity": "HIGH",
         "confirmed": false,
         "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
-        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
       },
       {
         "sampleIndex": 1,
-        "defectId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt::structural-node:5dccdbdc87c719de66ac917e:missing-restriction",
+        "defectId": "conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt::chunk-1::0:missing-restriction",
+        "stratum": "conmed-2025-credit-facility:core",
         "cls": "MISSING_LEGAL_RESTRICTION",
         "severity": "HIGH",
         "confirmed": false,
         "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
-        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
       },
       {
         "sampleIndex": 2,
-        "defectId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::structural-node:94fb758e86810619a809db7e:missing-restriction",
+        "defectId": "conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt::7.5::0:missing-restriction",
+        "stratum": "conmed-2025-credit-facility:def",
         "cls": "MISSING_LEGAL_RESTRICTION",
         "severity": "HIGH",
         "confirmed": false,
         "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
-        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
       },
       {
         "sampleIndex": 3,
-        "defectId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::structural-node:878724e94bdd5943bdfb7385:missing-restriction",
+        "defectId": "conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt::7.::7:missing-restriction",
+        "stratum": "conmed-2025-credit-facility:amend",
         "cls": "MISSING_LEGAL_RESTRICTION",
         "severity": "HIGH",
         "confirmed": false,
         "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
-        "evidence": "Operative text contains prohibition language but no PROHIBITION rule [HEURISTIC_ONLY under DETERMINISTIC_ONLY — not independently confirmed]"
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 4,
+        "defectId": "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt::3.22.::3:missing-restriction",
+        "stratum": "dsgr-2022-2025-credit-facility:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 5,
+        "defectId": "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt::2.09::0:missing-restriction",
+        "stratum": "dsgr-2022-2025-credit-facility:amend",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 6,
+        "defectId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt::6.09::0:missing-restriction",
+        "stratum": "fwrg-2021-credit-agreement:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 7,
+        "defectId": "fwrg-2021-credit-agreement/definitions-excerpt.txt::6.04(a)::0:missing-restriction",
+        "stratum": "fwrg-2021-credit-agreement:def",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 8,
+        "defectId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt::1.01::16:missing-restriction",
+        "stratum": "gibraltar-2026-credit-agreement:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 9,
+        "defectId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::6.01::1:missing-restriction",
+        "stratum": "lsb-2023-abl-credit-agreement:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 10,
+        "defectId": "lsb-2023-abl-credit-agreement/definitions-excerpt.txt::2.01(b)::0:missing-restriction",
+        "stratum": "lsb-2023-abl-credit-agreement:def",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 11,
+        "defectId": "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt::2.::1:missing-restriction",
+        "stratum": "lsb-2023-abl-credit-agreement:joinder",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 12,
+        "defectId": "riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt::2.03.::13:missing-restriction",
+        "stratum": "riot-2025-2026-credit-facility:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 13,
+        "defectId": "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt::10.07(g)::13:missing-restriction",
+        "stratum": "final-lightweight-unseen-sup:core",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
+      },
+      {
+        "sampleIndex": 14,
+        "defectId": "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt::3.::3:missing-restriction",
+        "stratum": "final-lightweight-unseen-sup:amend",
+        "cls": "MISSING_LEGAL_RESTRICTION",
+        "severity": "HIGH",
+        "confirmed": false,
+        "materiality": "HEURISTIC_ONLY_NOT_LEGAL_DEFECT",
+        "cause": "SEMANTIC_UNCERTAINTY",
+        "evidence": "Adversarial heuristic vs DETERMINISTIC_ONLY (zero PROHIBITION rules emitted). Not an independently confirmed legal defect."
       }
     ],
-    "rule": "Do not relabel DETERMINISTIC_ONLY missing-restriction heuristics as confirmed legal defects."
+    "rule": "Do not relabel DETERMINISTIC_ONLY missing-restriction heuristics as confirmed legal defects.",
+    "detailPath": "docs/vercel-independent-covenant-compilation/07-unresolved-triage.json"
   },
   "knowledgeStore": {
     "path": "lib/contract-model/compiler/inference/run-store",

@@ -175,13 +175,22 @@ function factsFamiliesFromSignals(signals: string[]): string[] {
 
 function classifyUnresolved(claim: string): string {
   const c = claim.toLowerCase();
+  // Exact deterministic-extraction templates first (avoid false "structural" matches).
+  if (c.includes("numerical threshold was observed")) return "SEMANTIC_UNCERTAINTY";
+  if (c.includes("not operative authority") || c.includes("amendments must be compiled")) {
+    return "AMENDMENT_AUTHORITY";
+  }
+  if (c.includes("excerpt_not_full_filing") || c.includes("excerpt not full")) return "MISSING_SOURCE";
+  if (c.includes("structural_parse_empty") || c.includes("structural parse empty")) {
+    return "STRUCTURAL_PARSER_FAILURE";
+  }
   if (/missing.*source|source.*missing|not found/.test(c)) return "MISSING_SOURCE";
-  if (/definition|defined term|means\b/.test(c)) return "MISSING_DEFINITION";
-  if (/financial|ebitda|leverage ratio|input/.test(c)) return "MISSING_FINANCIAL_INPUT";
-  if (/structural|parser|nest|window/.test(c)) return "STRUCTURAL_PARSER_FAILURE";
-  if (/amendment|operative|supersed/.test(c)) return "AMENDMENT_AUTHORITY";
+  if (/definition|defined term/.test(c)) return "MISSING_DEFINITION";
+  if (/financial input|ebitda|missing.*ratio/.test(c)) return "MISSING_FINANCIAL_INPUT";
+  if (/parser failure|nesting failure|window failure/.test(c)) return "STRUCTURAL_PARSER_FAILURE";
+  if (/amendment|supersed/.test(c)) return "AMENDMENT_AUTHORITY";
   if (/cross-document|secured notes|outside this/.test(c)) return "CROSS_DOCUMENT_RESTRICTION";
-  if (/semantic|unresolved|ambiguous|authority|permission/.test(c)) return "SEMANTIC_UNCERTAINTY";
+  if (/unresolved|ambiguous|permission|authority|semantic/.test(c)) return "SEMANTIC_UNCERTAINTY";
   return "OTHER";
 }
 
