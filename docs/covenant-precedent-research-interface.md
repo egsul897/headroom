@@ -52,9 +52,17 @@ npm alias: `npm run research:covenant -- "<query>"`.
 - `tests/covenant-research/search-relevance.test.ts`
 - `tests/covenant-research/unsupported-refusal.test.ts`
 
-## Out of scope (this slice)
+## Phase 2
+
+- `--phase2-corpus` builds curated + DSGR/CHWY/CONMED/FWRG/LSB/RIOT discovery + compiled-IR ingest with identity dedupe
+- `--as-of` / `--operative-only` amendment-aware retrieval
+- `--report-corpus` / `--eval-held-out` for measured corpus + held-out metrics
+- Knowledge-factory probe reports blockers when canonical exports are absent
+- See `docs/covenant-precedent-research-phase2-report.md`
+
+## Out of scope
 
 - Paid embedding / vector DB
 - UI integration (secondary; CLI is the primary surface)
-- Certification / merge changes
+- Certification / merge changes / production legal-rule edits
 - Capacity computation or Ask-Headroom transaction answers
