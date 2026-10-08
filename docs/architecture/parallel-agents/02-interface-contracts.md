@@ -60,6 +60,19 @@ git diff --name-only origin/main...HEAD \
 
 Exit `0` if all listed paths are within the workstream’s boundaries; exit `1` on violation.
 
+### 1.4 Canonical identity + corpus delivery (v3 pack)
+
+| Contract | Path |
+| --- | --- |
+| Logical IDs → existing schema | `04-canonical-identity-contract.json` |
+| SEC scheduler | `05-sec-request-scheduler-contract.md` + mock `scripts/parallel-agents/mocks/sec-scheduler-mock.ts` |
+| Dataset delivery fields | `06-dataset-delivery-contract.json` |
+| Integration gates / merge order | `07-integration-gates.md` |
+| Integration queue ledger | `08-integration-queue.json` |
+| Dependency / anti-duplication map | `09-dependency-map.md` |
+
+Peers blocked on unfinished CKF scheduler work must use the mock, not invent a second SEC client.
+
 ---
 
 ## 2. Contracts peers should reuse (existing production — consume, don’t fork)

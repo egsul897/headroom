@@ -15,11 +15,18 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | Path | Role |
 | --- | --- |
 | `00-operating-rules.md` | Binding operating rules for this fleet |
-| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v2) |
+| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v3) |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
+| `04-canonical-identity-contract.json` | Logical corpus IDs → existing schema mappings |
+| `05-sec-request-scheduler-contract.md` | Single SEC fair-access scheduler contract |
+| `06-dataset-delivery-contract.json` | Required fields for importable datasets |
+| `07-integration-gates.md` | Hard integration gates + merge sequence |
+| `08-integration-queue.json` | Shared integration queue / conflict ledger |
+| `09-dependency-map.md` | Who can proceed independently; anti-duplication |
 | `README.md` | This index |
-| `scripts/parallel-agents/check-ownership-boundaries.ts` | CLI ownership checker (WS-PAR exclusive) |
+| `scripts/parallel-agents/check-ownership-boundaries.ts` | CLI ownership checker |
+| `scripts/parallel-agents/mocks/sec-scheduler-mock.ts` | Mock scheduler for blocked peers |
 
 ## Soft gates (FAIL for this workstream)
 

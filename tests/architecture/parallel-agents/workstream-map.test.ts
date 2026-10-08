@@ -46,10 +46,10 @@ describe("parallel-agent workstream map", () => {
 
   it("has required top-level identity fields", () => {
     expect(map.artifact).toBe("parallel-agent-workstream-map");
-    expect(map.version).toBeGreaterThanOrEqual(2);
+    expect(map.version).toBeGreaterThanOrEqual(3);
     expect(map.status).toBe("DRAFT_CONTRACT");
     expect(map.baseMainSha).toMatch(/^[0-9a-f]{40}$/);
-    expect(map.workstreams.length).toBeGreaterThanOrEqual(12);
+    expect(map.workstreams.length).toBeGreaterThanOrEqual(16);
     expect(map.ownershipInvariants.length).toBeGreaterThan(0);
   });
 
@@ -69,6 +69,11 @@ describe("parallel-agent workstream map", () => {
         "WS-BFL",
         "WS-DEF",
         "WS-PCI",
+        "WS-GIB",
+        "WS-SCR",
+        "WS-FDP",
+        "WS-RAC",
+        "WS-CRI",
       ]),
     );
     expect(ids).not.toEqual(expect.arrayContaining(["WS-RESERVE-5", "WS-RESERVE-6"]));

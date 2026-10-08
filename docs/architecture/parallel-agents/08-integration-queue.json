@@ -1,0 +1,77 @@
+{
+  "artifact": "parallel-agent-integration-queue",
+  "version": 1,
+  "status": "ACTIVE_LEDGER",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "updatedAt": "2026-10-08T22:08:00Z",
+  "items": [
+    {
+      "id": "IQ-001",
+      "workstreamId": "WS-PAR",
+      "deliverable": "Operating rules, ownership map v2+, identity/SEC/dataset/gate contracts, ownership checker",
+      "branch": "cursor/parallel-agent-operating-rules-0e3f",
+      "pr": "https://github.com/egsul897/headroom/pull/138",
+      "tipSha": "0ecd68b8edfc56162e524397143a0a785ed69ca9",
+      "status": "IN_PROGRESS",
+      "blockers": [],
+      "dependsOn": []
+    },
+    {
+      "id": "IQ-002",
+      "workstreamId": "WS-CKF",
+      "deliverable": "Acquisition + corpus registry + production SEC scheduler implementing 05-contract",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_PEER_PR",
+      "blockers": [],
+      "dependsOn": ["IQ-001"]
+    },
+    {
+      "id": "IQ-003",
+      "workstreamId": "WS-VIC",
+      "deliverable": "Provider-independent adapters + offline/deterministic compilation path",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_PEER_PR",
+      "blockers": [],
+      "dependsOn": ["IQ-001"]
+    },
+    {
+      "id": "IQ-004",
+      "workstreamId": "WS-CCA",
+      "deliverable": "Cursor Cloud compute benchmark measurements (no paid provisioning)",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_PEER_PR",
+      "blockers": [],
+      "dependsOn": ["IQ-001"]
+    },
+    {
+      "id": "IQ-005",
+      "workstreamId": "WS-GIB",
+      "deliverable": "Gibraltar Pass B cheapest-path cost analysis without launching paid inference",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_AGENT",
+      "blockers": ["Agent not yet visible in mobile fleet list at ledger update"],
+      "dependsOn": ["IQ-001"]
+    },
+    {
+      "id": "IQ-006",
+      "workstreamId": "WS-EHB",
+      "deliverable": "Historical EDGAR backfill queue using centralized scheduler",
+      "branch": null,
+      "pr": null,
+      "tipSha": null,
+      "status": "AWAITING_PEER_PR",
+      "blockers": ["Production scheduler owned by WS-CKF — use PAR mock until ready"],
+      "dependsOn": ["IQ-001", "IQ-002"]
+    }
+  ],
+  "conflicts": [],
+  "proposedResolutions": []
+}

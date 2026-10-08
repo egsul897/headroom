@@ -68,3 +68,16 @@
 - **ciStatus:** pending on new tip; CI resubscribed
 - **ownershipViolations:** []
 - **integrationDependencies:** peers consume map v2 + interface contracts; no unfinished peer code required
+
+---
+
+## 2026-10-08T22:08:30Z — founder coordination follow-ups absorbed
+
+- Queued mandates: PARALLEL EXECUTION COORDINATION + CENTRAL COVENANT KNOWLEDGE COORDINATION.
+- Published canonical identity contract (13 logical IDs mapped onto existing Prisma/connector fields where possible).
+- Published centralized SEC scheduler contract + mock (WS-CKF owns production impl path `lib/covenant-knowledge/sec-scheduler/**`).
+- Published dataset delivery contract (10 required fields), integration gates G1–G10, dependency map, integration queue.
+- Map **v3** adds WS-GIB (awaiting agent), WS-SCR, WS-FDP, WS-RAC, WS-CRI with non-overlapping exclusive trees.
+- Role lock: CKF=acquisition/corpus; VIC=adapters/orchestration; CCA=infra measurements; GIB=Pass B cost study; PAR=contracts only (no rewrite of those components).
+- **ownershipViolations:** []
+- **ciStatus:** deferred while message queue non-empty (per cloud-agent guidance)

@@ -1,10 +1,10 @@
 {
   "artifact": "parallel-agent-workstream-map",
-  "version": 2,
+  "version": 3,
   "status": "DRAFT_CONTRACT",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "baseMainFetchedAt": "2026-10-08T22:00:00Z",
-  "mapAmendedAt": "2026-10-08T22:05:00Z",
+  "mapAmendedAt": "2026-10-08T22:08:30Z",
   "coordinator": {
     "workstreamId": "WS-PAR",
     "name": "Parallel Agent Operating Rules",
@@ -15,8 +15,9 @@
   "notes": [
     "Exclusive ownership is a published coordination contract. Peers amend exclusive trees via WS-PAR reconciliation or their own docs amendment that WS-PAR merges without silently rewriting peer contracts.",
     "Existing production files listed as extendViaNewSiblingOnly must not be rewritten in place; prefer new sibling modules.",
-    "v1 reserved slots 5–6 are superseded: founder dispatched a larger concurrent fleet. v2 assigns exclusive trees for all known mobile missions at amendment time.",
-    "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines."
+    "v1 reserved slots 5\u20136 are superseded: founder dispatched a larger concurrent fleet. v2 assigns exclusive trees for all known mobile missions at amendment time.",
+    "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines.",
+    "v3 adds WS-GIB and later corpus agents (SCR/FDP/RAC/CRI) from founder coordination follow-ups; coordinator publishes contracts only."
   ],
   "sharedHardExclusions": [
     "docs/**/sealed*/**",
@@ -62,7 +63,7 @@
       "workstreamId": "WS-CKF",
       "name": "Covenant knowledge factory",
       "bcId": "bc-01a11d83-6b3f-71e1-9438-3e157bb27327",
-      "missionSummary": "Autonomous EDGAR acquisition → corpus registry/graph → taxonomy → cheap deterministic-first extraction → retrieval; expand a source-backed covenant corpus without a parallel covenant engine.",
+      "missionSummary": "Autonomous EDGAR acquisition \u2192 corpus registry/graph \u2192 taxonomy \u2192 cheap deterministic-first extraction \u2192 retrieval; expand a source-backed covenant corpus without a parallel covenant engine.",
       "exclusiveOwn": [
         "docs/covenant-knowledge-factory/**",
         "lib/covenant-knowledge/**",
@@ -90,6 +91,9 @@
         "Do not use paid AI providers",
         "Do not modify sealed evidence or certification gates",
         "Do not interfere with Claude-owned independent acceptance tests"
+      ],
+      "notes": [
+        "Production SEC scheduler implementation lives under lib/covenant-knowledge/sec-scheduler/** (already covered by lib/covenant-knowledge/** exclusiveOwn)."
       ]
     },
     {
@@ -274,7 +278,7 @@
         "lib/covenant-knowledge/**"
       ],
       "softGates": [
-        "No amounts→permissions without source semantics",
+        "No amounts\u2192permissions without source semantics",
         "No capacity calc with missing inputs",
         "Do not modify production capacity engine"
       ]
@@ -297,7 +301,7 @@
       ],
       "softGates": [
         "Never assume alternate formulations are legally equivalent",
-        "Do not modify another agent’s schema"
+        "Do not modify another agent\u2019s schema"
       ]
     },
     {
@@ -320,6 +324,111 @@
         "No production legal-engine edits",
         "No competing DB schema",
         "Do not label model summaries as reviewed precedent"
+      ]
+    },
+    {
+      "workstreamId": "WS-GIB",
+      "name": "Gibraltar Pass B cheapest-path cost analysis",
+      "bcId": null,
+      "missionSummary": "Cost analysis of the existing Pass B pipeline without launching paid inference or provisioning infra.",
+      "exclusiveOwn": [
+        "docs/gibraltar-pass-b-cost/**",
+        "scripts/gibraltar-pass-b-cost/**",
+        "tests/gibraltar-pass-b-cost/**"
+      ],
+      "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
+        "lib/extraction/providers/**",
+        "lib/covenant-knowledge/**"
+      ],
+      "softGates": [
+        "No paid inference launches",
+        "No certification status changes",
+        "Analyze existing artifacts/logs only"
+      ],
+      "status": "AWAITING_AGENT"
+    },
+    {
+      "workstreamId": "WS-SCR",
+      "name": "Source covenant representation",
+      "bcId": "bc-01a11d8b-bc00-72d9-a0fc-8e60af5c6502",
+      "missionSummary": "Source-backed covenant representation corpus distinct from Phase-3 IR promotion.",
+      "exclusiveOwn": [
+        "docs/source-covenant-representation/**",
+        "lib/source-covenant-representation/**",
+        "scripts/source-covenant-representation/**",
+        "tests/source-covenant-representation/**"
+      ],
+      "mustNotTouch": [
+        "lib/contract-model/ir/**",
+        "lib/covenant-knowledge/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "softGates": [
+        "Do not promote source representations to verified rules without verification_record_id",
+        "Do not rewrite Phase-3 IR"
+      ]
+    },
+    {
+      "workstreamId": "WS-FDP",
+      "name": "Financial definitions precedent",
+      "bcId": "bc-01a11d8b-e431-7a57-b700-f0b5e1d143af",
+      "missionSummary": "Precedent intelligence over financial definitions; must not collide with WS-DEF encyclopedia corpus trees.",
+      "exclusiveOwn": [
+        "docs/financial-definitions-precedent/**",
+        "lib/financial-definitions-precedent/**",
+        "scripts/financial-definitions-precedent/**",
+        "tests/financial-definitions-precedent/**"
+      ],
+      "mustNotTouch": [
+        "docs/definition-encyclopedia/**",
+        "lib/definition-encyclopedia/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "softGates": [
+        "Do not claim legal equivalence across formulations",
+        "Coordinate identities via WS-PAR canonical contract"
+      ]
+    },
+    {
+      "workstreamId": "WS-RAC",
+      "name": "Real-world amendment chains",
+      "bcId": "bc-01a11d8c-04a1-7063-8ba7-696cb3502926",
+      "missionSummary": "Corpus of real amendment chains with provenance; overlays DocumentRelationshipEdge vocabulary.",
+      "exclusiveOwn": [
+        "docs/real-world-amendment-chains/**",
+        "lib/real-world-amendment-chains/**",
+        "scripts/real-world-amendment-chains/**",
+        "tests/real-world-amendment-chains/**"
+      ],
+      "mustNotTouch": [
+        "lib/contract-model/compiler/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "softGates": [
+        "Superseded text must never be marked operative",
+        "Reuse DocumentRelationshipEdge kinds; do not invent a second amendment engine"
+      ]
+    },
+    {
+      "workstreamId": "WS-CRI",
+      "name": "Covenant research interface",
+      "bcId": "bc-01a11d8c-46c0-7e9a-9fba-283fdfb73e8f",
+      "missionSummary": "Research/query interface over published corpus contracts; consume-only against peer exclusive trees.",
+      "exclusiveOwn": [
+        "docs/covenant-research-interface/**",
+        "lib/covenant-research-interface/**",
+        "scripts/covenant-research-interface/**",
+        "tests/covenant-research-interface/**"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-knowledge/**",
+        "lib/extraction/providers/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "softGates": [
+        "Do not own acquisition or model adapters",
+        "Consume published corpus manifests only"
       ]
     }
   ],
