@@ -32,7 +32,7 @@ describe("mutation suite contract", () => {
       expect(pkg.documents.map((d) => [d.documentId, d.text, d.sha256] as const)).toEqual(before);
       for (const d of pkg.documents) expect(fs.readFileSync(path.join(pkg.dir, d.file), "utf8")).toBe(d.text);
     }
-    expect(listPackageIds().length).toBe(11);
+    expect(listPackageIds().length).toBe(12);
   });
   it("every mutation is applicable (no edit anchor drifted)", () => { for (const m of MUTATIONS) expect(obs.get(m.id), m.id).toBeDefined(); });
 });

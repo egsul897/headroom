@@ -19,7 +19,7 @@ type Cond = Cov["conditions"][number];
 
 const ACTION_BY_FAMILY: Record<string, string | null> = {
   INDEBTEDNESS: "INCUR_DEBT", LIENS: "CREATE_LIEN", RESTRICTED_PAYMENTS: "PAY_DIVIDEND", INVESTMENTS: "MAKE_INVESTMENT", ASSET_SALES: "SELL_ASSET", DISPOSITIONS: "SELL_ASSET",
-  FUNDAMENTAL_CHANGES: "MERGE", MANDATORY_PREPAYMENTS: "MAKE_MANDATORY_PREPAYMENT", SPRINGING_COVENANTS: "SATISFY_RATIO", FINANCIAL_COVENANTS: "SATISFY_RATIO", COLLATERAL_SECURITY: null,
+  FUNDAMENTAL_CHANGES: "MERGE", MANDATORY_PREPAYMENTS: "MAKE_MANDATORY_PREPAYMENT", SPRINGING_COVENANTS: "SATISFY_RATIO", FINANCIAL_COVENANTS: "SATISFY_RATIO", COLLATERAL_SECURITY: null, AFFILIATE_TRANSACTIONS: "ENTER_AFFILIATE_TRANSACTION",
 };
 const RULE_TYPE_BY_ROLE: Record<string, string> = {
   GENERAL_PROHIBITION: "PROHIBITION", PERMISSION: "QUALITATIVE_OBLIGATION", BASKET: "QUANTITATIVE_PERMISSION", RATIO_BASED_PERMISSION: "QUANTITATIVE_PERMISSION", BUILDER: "QUANTITATIVE_PERMISSION",
@@ -255,6 +255,11 @@ export function adversarialCases(m: ExpectationsManifest, specs: CandidateSpec[]
       // J-P2 (independent pools) cannot be expressed by dropping a shared cap: a BUILDER-kind shared cap has no wire representation to drop (IPV-15)
       add("J-P1", { kind: "DROP_CONDITIONS", sectionRef: "7.06(c)" }, sec("7.06(c)"));
       add("J-P3", { kind: "CLAIM_COMPLETE", sectionRef: "7.06(c)" }, sec("7.06(c)"));
+      break;
+    case "pkg-l-affiliate-transactions":
+      add("L-P1", { kind: "DROP_CONDITIONS", sectionRef: "7.07(c)" }, sec("7.07(c)"));
+      add("L-P2", { kind: "CLAIM_COMPLETE", sectionRef: "7.07(d)", amount: 5000000, excerpt: "$5,000,000" }, sec("7.07(d)"));
+      add("L-P3", { kind: "SET_SCOPE", sectionRef: "7.07", entityScope: ["BORROWER"] }, sec("7.07"));
       break;
     case "pkg-k-three-way-builder":
       // K-P1 (three independent pools) is the IPV-15 representation gap again; K-P2 drops the definition-sourced Default kill-switch on the third basket

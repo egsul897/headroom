@@ -66,6 +66,7 @@ rule; "pure omission" variants strip it.
 | I | 1/1 | — (I-P2 scope widening refused, but by CONTEXT_CONTRACT_UNACCEPTABLE from the Subsidiary definition cycle, not by the scope guard; I-P1/I-P3 are question-level claims covered by BM-01/BM-14) |
 | J | 3/3 | — (J-P1 both variants refused with MATERIAL_DISCREPANCY: the definition-sourced Default kill-switch is accounted for; J-P2 is the IPV-15 representation gap, not expressible) |
 | K | 2/2 | — (K-P2 both variants refused; K-P1 as J-P2) |
+| L | 4/4 | — (L-P1 both variants, L-P2, L-P3 refused; every refusal cites CONTEXT_CONTRACT_UNACCEPTABLE because the Management Agreement is outside the package, so these are not evidence the gates caught the claims) |
 
 Refusals worth noting because they are the product doing the right thing: a non-operative recital/exhibit figure
 (G-P1), a stale amendment's figure (G-P2), a superseded amount at a later date (C-P1), a figure invented for a
@@ -87,6 +88,7 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | I | FAILED | 7.01, 7.02, 7.04 NOT_CERTIFIED (CONTEXT_CONTRACT_UNACCEPTABLE: DEFINITION_CYCLE on "Subsidiary"/"Guarantor" — IPV-12 class); 9.15 Article IX secured cap REVIEW (UNACCOUNTED_MATERIAL_SOURCE — IPV-14) |
 | J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented) |
 | K | FAILED | 7.06 and 7.08 review (IPV-14 class: mock did not represent one sibling unit each); 7.09 review (IPV-18: family unrecognised, relabelled) |
+| L | REVIEW_REQUIRED | 7.07 review (IPV-14 class; context contract unacceptable: Management Agreement not in the package — correct fail-closed for a missing referenced document) |
 
 ## Runtime (package F, production Phase-4 runtime over fixture IR): 14/14
 
