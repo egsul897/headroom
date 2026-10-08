@@ -171,7 +171,7 @@ const ProhibitedClaim = z.object({
   severityIfAsserted: z.enum(SEVERITIES),
   reason: z.string(),
   /** Declarative adversarial submission for this claim (used by semantic-plan.ts adversarialCases in addition to the per-package switch): the mocked Pass B submits the faithful plan with this mutation applied to the named candidate section. */
-  adversarial: z.object({ kind: z.enum(["DROP_CONDITIONS", "SET_AMOUNT", "SET_SCOPE", "CLAIM_COMPLETE", "DROP_SHARED_CAPS", "SET_RATIO"]), sectionRef: z.string(), documentId: z.string().optional(), amount: z.number().optional(), excerpt: z.string().optional(), entityScope: z.array(z.string()).optional(), operator: z.string().optional(), value: z.number().optional() }).optional(),
+  adversarial: z.object({ kind: z.enum(["DROP_CONDITIONS", "SET_AMOUNT", "SET_SCOPE", "CLAIM_COMPLETE", "DROP_SHARED_CAPS", "SET_RATIO", "SET_POSTURE", "SET_PERCENT"]), sectionRef: z.string(), documentId: z.string().optional(), amount: z.number().optional(), excerpt: z.string().optional(), entityScope: z.array(z.string()).optional(), operator: z.string().optional(), value: z.number().optional(), posture: z.enum(["PERMISSION", "PROHIBITION"]).optional(), percent: z.number().optional() }).optional(),
 });
 
 const NonOperative = z.object({ documentId: z.string(), textContains: z.string(), why: z.string() });

@@ -3,7 +3,7 @@
   "packageId": "pkg-i-secured-debt-lien",
   "title": "Package I — secured debt: a debt basket constrained by a separate lien covenant and an out-of-article secured-debt cap",
   "issuer": "Granite Peak Fabrication, Inc. (synthetic)",
-  "scenario": "7.01(b) permits $50,000,000 of debt for the Borrower and Guarantors only; 7.02(b) permits Liens securing 7.01(b) debt only up to $20,000,000; Section 9.15 in Article IX (Miscellaneous) caps all secured debt at $25,000,000 notwithstanding Article VII; 7.01(c) is limited to Foreign Subsidiaries; 7.04 forbids non-Guarantor subsidiary guarantees. A debt-only reading of 7.01(b) is a false permission for secured debt.",
+  "scenario": "7.01(b) permits $50,000,000 of debt for the Borrower and Guarantors only; 7.02(b) permits Liens securing 7.01(b) debt only up to $20,000,000; Section 9.15 in Article IX (Miscellaneous) caps all secured debt at $25,000,000 notwithstanding Article VII; 7.01(c) is limited to Foreign Subsidiaries; 7.04 forbids non-Guarantor subsidiary guarantees. A debt-only reading of 7.01(b) is a false permission for secured debt. Amendment No. 1 (effective 2026-10-15) restates the definition of Foreign Subsidiary to exclude Canadian Subsidiaries, narrowing who may use the 7.01(c) $15,000,000 basket from that date.",
   "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
   "companyId": "company:granite-peak",
   "instrumentKey": "granite-peak-credit-agreement-2026",
@@ -15,13 +15,47 @@
       "role": "BASE_AGREEMENT",
       "operative": true,
       "sha256": "a878dd44f5bc36edc5f895dcc24d1d3bd89eca26ccd1d7bc7868f59be9156994"
+    },
+    {
+      "documentId": "amendment-1",
+      "label": "Amendment No. 1",
+      "file": "documents/amendment-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "05a482e2bd325d6da83803d94216088455389a21a64283cf06a3f15e432ae15c"
     }
   ],
   "operativeState": {
     "asOfDates": [
       "2026-12-31"
     ],
-    "exact": []
+    "exact": [
+      {
+        "asOfDate": "2026-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Foreign Subsidiary",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "other than the United States of America or Canada"
+        ],
+        "mustNotContain": [],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2026-12-31",
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "\"Guarantor\" means",
+          "\"Permitted Liens\" means",
+          "other than the United States of America or Canada"
+        ],
+        "mustNotContain": [],
+        "supersededBy": "amendment-1"
+      }
+    ]
   },
   "structure": {
     "exact": [
@@ -77,6 +111,17 @@
         "ownTextContains": [
           "Notwithstanding anything to the contrary in Article VII",
           "$25,000,000"
+        ]
+      },
+      {
+        "documentId": "amendment-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "\"Foreign Subsidiary\"",
+          "amended and restated"
         ]
       }
     ],
@@ -406,6 +451,7 @@
   "nonOperative": [],
   "invariants": [
     "A secured-debt question must reach 7.02 and 9.15, not only 7.01.",
-    "A Foreign Subsidiary question must reach the entity scope of 7.01(b) and 7.01(c)."
+    "A Foreign Subsidiary question must reach the entity scope of 7.01(b) and 7.01(c).",
+    "After Amendment No. 1 the operative definition of 'Foreign Subsidiary' is the restated text and every other definition in Section 1.01 is unchanged; dependent baskets compile against the restated definition."
   ]
 }

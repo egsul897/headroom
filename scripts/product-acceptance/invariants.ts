@@ -336,6 +336,25 @@ INVARIANTS.push(
     } },
 );
 
+INVARIANTS.push(
+  { id: "INV-28b", title: "A posture flip or a changed percentage is not a faithful representation", packageId: "pkg-f-capacity-ledger-honesty",
+    legalStatement: "F 7.01(c) permits Indebtedness 'not to exceed 20% of Consolidated EBITDA': a representation at 35% asserts a figure the text does not state. D 7.05 is a prohibition ('shall not … make any Disposition, except'): representing the section as a permission inverts it. Neither may certify.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const cases: Array<{ pkg: string; id: string; claim: string; adversarial: Record<string, unknown> }> = [
+        { pkg: "pkg-f-capacity-ledger-honesty", id: "F-T1", claim: "7.01(c) permits Indebtedness up to 35% of Consolidated EBITDA", adversarial: { kind: "SET_PERCENT", sectionRef: "7.01(c)", percent: 35, excerpt: "35% of Consolidated EBITDA" } },
+        { pkg: "pkg-d-qualitative-restrictions", id: "D-T1", claim: "7.05 permits Dispositions (the prohibition presented as a permission)", adversarial: { kind: "SET_POSTURE", sectionRef: "7.05", posture: "PERMISSION" } },
+      ];
+      for (const pid of [...new Set(cases.map((c) => c.pkg))]) {
+        const base = loadPackage(pid); const manifest = JSON.parse(JSON.stringify(base.manifest)) as typeof base.manifest;
+        for (const c of cases.filter((c) => c.pkg === pid)) manifest.prohibitedClaims.push({ id: c.id, claim: c.claim, severityIfAsserted: "CRITICAL_FALSE_PERMISSION", reason: "not what the text states", adversarial: c.adversarial as never });
+        const r = await runPackage({ ...base, manifest });
+        for (const c of cases.filter((c) => c.pkg === pid)) { const ch = r.checks.find((x) => x.expectationRef === `adversarial:${c.id}`); out.push({ ref: `invariant:INV-28b:${c.id}-refused`, check: `${c.id} (${c.claim}) is refused`, ok: ch?.result === "PASS", detail: (ch?.detail ?? "check absent").slice(0, 260), kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" }); }
+      }
+      return out;
+    } },
+);
+
 export async function runInvariants(): Promise<InvariantResult[]> {
   const out: InvariantResult[] = [];
   for (const inv of INVARIANTS) out.push({ id: inv.id, title: inv.title, legalStatement: inv.legalStatement, packageId: inv.packageId, verdicts: await inv.run() });
