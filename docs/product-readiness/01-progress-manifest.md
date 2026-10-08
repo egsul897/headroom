@@ -20,7 +20,8 @@ Cursor work. Provider calls: none in this workstream.
 | 10 | invariant batch 2: INV-05b (both directions of the definition-amendment defect), package L (affiliate transactions), ledger rows 8/16/32 assessed; runs at `f182a679394b` | done (`f182a67` + this commit) |
 | 11 | invariant batch 3: INV-19 false definition cycle (IPV-21; I/L certification signatures re-attributed), INV-09 greater-of runtime (holds), INV-34 reserved transaction effects (holds); ledger rows 9/19/29/34/35; `invariant-runs/` at `31893c6` | done (`31893c6` + this commit) |
 | 12 | invariant batch 4: INV-19b breadth (4/33 blocked by IPV-21), INV-25 unmasked L adversarial (IPV-22: gate threshold certified as a cap), INV-16 designation observations, MVP §6 criteria 7-9 + W1-W9; `invariant-runs/` at `0285d7b` | done (`0285d7b` + this commit) |
-| 13 | invariant batch 5: comparator-direction adversarial cases across packages (IPV-22 breadth); designation entity-scope at the semantic stage; milestone report | next |
+| 13 | invariant batch 5: IPV-22 breadth (INV-25b: 2 of 5 comparator figures certify as caps), declarative adversarial cases; `invariant-runs/` at `f45317f` | done (`f45317f` + this commit) |
+| 14 | milestone report; then batch 6 (ratio-direction cases, designation entity scope at the semantic stage) | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

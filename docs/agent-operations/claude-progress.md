@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `f45317f` + this commit | invariant batch 5: IPV-22 breadth (H intercreditor 4.01 Availability floor certified as a $15m payment basket; 2 of 5 comparator figures certify), declarative adversarial cases in manifests; `invariant-runs/f45317f` (14 invariants) | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `0285d7b` + this commit | invariant batch 4: IPV-21 breadth 4/33 (INV-19b), IPV-22 gate threshold certified as a $5m cap (INV-25 on the unmasked L variant; L-P1/P3 refused), INV-16 designation observations, MVP §6 criteria 7–9 and W1–W9; `invariant-runs/0285d7b` (13 invariants) | `npx vitest run tests/product-acceptance` → 185 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `31893c6` + this commit | invariant batch 3: IPV-21 false DEFINITION_CYCLE on diamond dependencies (minimal repro on A; I 7.01/7.02/7.04 and L 7.07 re-attributed from IPV-12/14), INV-09 greater-of runtime holds, INV-34 reserved effects refused and not committable; `invariant-runs/31893c6` (10 invariants, 23 PRODUCT verdicts pass / 13 fail, all IPV-19/20/21) | `npx vitest run tests/product-acceptance` → 185 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `f182a67` + this commit | invariant batch 2: INV-05b (definition amendment removing an add-back → IPV-20 now CRITICAL_FALSE_PERMISSION direction; layered on C keeps section amendments intact), package L affiliate transactions (L-P1/P2/P3; refusals masked by CONTEXT_CONTRACT_UNACCEPTABLE), ledger rows 8/16/32 (runtime has no springing construct); artefacts `acceptance-runs/f182a679394b` (604 checks: 539/49/16), `invariant-runs/f182a679394b` (15 pass / 10 fail all IPV-19/20), `mutation-runs/f182a679394b` (unchanged) | `npx vitest run tests/product-acceptance` → 184 pass / 28 skipped; tsc clean; pin-check clean |
@@ -25,7 +26,7 @@
 
 ## Current task
 
-Invariant batch 5 (task 6 below). Batch 4 complete: IPV-22 registered, IPV-21 breadth measured, MVP workflow criteria written. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+Milestone report, then invariant batch 6 (task 6 below). Batch 5 complete: IPV-22 breadth measured (2/5), declarative adversarial cases. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -62,10 +63,10 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: invariant batch 5 — (a) IPV-22 breadth: for every corpus clause whose only figure is introduced by a comparator phrase ('in excess of', 'exceeding', 'greater than', 'not less than', 'at least'), submit a CLAIM_COMPLETE with that figure as a MONEY cap through the mocked semantic stage (per-package adversarial cases, in memory where the on-disk manifest has no such claim) and count certifications; (b) designation entity scope at the semantic stage: faithful B indenture plan with `entityScopeExcluded: ["UNRESTRICTED_SUB"]` vs a submission that omits the exclusion after the designation document is present — observe whether anything objects; (c) milestone report (required return fields) after (a)/(b) commit.
-- Files: `scripts/product-acceptance/invariants.ts` (INV-25b breadth, INV-16b), `docs/product-readiness/17-invariant-backlog.md`, register (IPV-22 breadth signatures), checkpoint.
-- First step: grep the twelve packages' documents for comparator phrases followed by a dollar figure; list clause refs; for each, build the CLAIM_COMPLETE mutation (reuse `mutate` from semantic-plan.ts via runPackage on an in-memory package whose manifest gains a prohibited claim).
-- Expected output: table of comparator-introduced figures × certification outcome; new IPV-22 signatures; milestone report.
+- Objective: invariant batch 6 — (a) ratio-direction adversarial kind: add `SET_RATIO` to `mutate` (flip the comparator or the threshold of a RATIO_TEST / gatedBy expression) and submit B 4.09 ('at least 2.00 to 1.00' flipped to 'at most') and A 7.01(c) ('does not exceed 3.50' flipped) through the mocked stage; expectation: refused (the comparator is part of the source text); (b) designation entity scope at the semantic stage: B indenture faithful plan with `entityScopeExcluded: ["UNRESTRICTED_SUB"]` vs a submission omitting the exclusion; (c) register / ledger / docs; (d) re-run `run-all.ts` to refresh the acceptance artefacts if any manifest changed.
+- Files: `scripts/product-acceptance/semantic-plan.ts` (SET_RATIO), `scripts/product-acceptance/invariants.ts` (INV-09b, INV-16b), register, `17-invariant-backlog.md`.
+- First step: read how `capacityFor` renders RATIO_BASED_PERMISSION / FINANCIAL_TEST values in `semantic-plan.ts` (the gatedBy COMPARE expression) and add a mutation that rewrites `operator` and/or `right.value`.
+- Expected output: whether the deterministic layers notice a flipped comparator (numeric-assertion checks values, not operators, per IPV-22's hypothesis); new signatures if accepted.
 - Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 
