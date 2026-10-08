@@ -16,19 +16,19 @@ import { simulateTransaction } from "../../lib/contract-model/runtime/transactio
 import type { CorpusPackage } from "./corpus";
 import { Ledger } from "./auditor";
 
-const ORG = "company:summit-ridge", INST = "summit-ridge-credit-agreement-2026", DOC = "credit-agreement";
+export const ORG = "company:summit-ridge", INST = "summit-ridge-credit-agreement-2026", DOC = "credit-agreement";
 let n = 0; const id = () => `pa-expr-${++n}`;
-const MONEY = (amount: number, currency = "USD"): IRExpression => ({ kind: "MONEY", type: "MONEY", amount, currency, exprId: id() });
-const PCT = (value: number): IRExpression => ({ kind: "PERCENT", type: "PERCENT", value, exprId: id() });
-const TERM = (termName: string): IRExpression => ({ kind: "DEFINED_TERM_REFERENCE", type: "MONEY", termName, companyId: ORG, instrumentKey: INST, resolvedDefinitionId: null, exprId: id() } as IRExpression);
-const MUL = (...operands: IRExpression[]): IRExpression => ({ kind: "MULTIPLY", type: "MONEY", operands, exprId: id() });
+export const MONEY = (amount: number, currency = "USD"): IRExpression => ({ kind: "MONEY", type: "MONEY", amount, currency, exprId: id() });
+export const PCT = (value: number): IRExpression => ({ kind: "PERCENT", type: "PERCENT", value, exprId: id() });
+export const TERM = (termName: string): IRExpression => ({ kind: "DEFINED_TERM_REFERENCE", type: "MONEY", termName, companyId: ORG, instrumentKey: INST, resolvedDefinitionId: null, exprId: id() } as IRExpression);
+export const MUL = (...operands: IRExpression[]): IRExpression => ({ kind: "MULTIPLY", type: "MONEY", operands, exprId: id() });
 
-function rule(ruleId: string, sourceSectionRef: string, family: IRRule["covenantFamily"], action: IRRule["action"], capacityExpression: IRCapacityExpression | null, excerpt: string): IRRule {
+export function rule(ruleId: string, sourceSectionRef: string, family: IRRule["covenantFamily"], action: IRRule["action"], capacityExpression: IRCapacityExpression | null, excerpt: string): IRRule {
   return { ruleId, irSchemaVersion: "product-acceptance-fixture", companyId: ORG, instrumentKey: INST, sourceDocumentId: DOC, sourceSectionRef, covenantFamily: family, ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action, entityScope: ["BORROWER"], entityScopeExcluded: [], transactionScope: null, capacityExpression, conditions: [], exceptions: [], dependsOn: [], operativeLineage: null, sufficiency: "COMPLETE", sufficiencyReasons: [], provenance: { documentId: DOC, sourceNodeKey: null, sourceCitation: `Section ${sourceSectionRef}`, excerpt }, compilerVersion: null, sourceContentVersion: null };
 }
 
 /** The compiler shape for a prose metric (as the golden certified fixtures emit it): an IRDefinition with no calculation expression and sufficiency COMPLETE, satisfied by a supplied TERM_VALUE input that overrides it. A PARTIAL definition makes every dependent capacity AMBIGUOUS (observed). */
-const EBITDA_DEF: IRDefinition = { definitionId: "def:f-consolidated-ebitda", irSchemaVersion: "product-acceptance-fixture", companyId: ORG, instrumentKey: INST, sourceDocumentId: DOC, termName: "Consolidated EBITDA", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: null, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"], sufficiency: "COMPLETE", sufficiencyReasons: [], provenance: { documentId: DOC, sourceNodeKey: null, sourceCitation: "Section 1.01", excerpt: "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus Interest Expense, income tax expense and depreciation and amortization expense for such period." }, compilerVersion: null, sourceContentVersion: null };
+export const EBITDA_DEF: IRDefinition = { definitionId: "def:f-consolidated-ebitda", irSchemaVersion: "product-acceptance-fixture", companyId: ORG, instrumentKey: INST, sourceDocumentId: DOC, termName: "Consolidated EBITDA", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: null, dependsOnTerms: ["Consolidated Net Income", "Interest Expense"], sufficiency: "COMPLETE", sufficiencyReasons: [], provenance: { documentId: DOC, sourceNodeKey: null, sourceCitation: "Section 1.01", excerpt: "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period plus Interest Expense, income tax expense and depreciation and amortization expense for such period." }, compilerVersion: null, sourceContentVersion: null };
 export function fixtureIR(): { rules: IRRule[]; shared: IRSharedCapacity[]; definitions: IRDefinition[] } {
   const rules = [
     rule("rule:f-7.01(b)", "7.01(b)", "INDEBTEDNESS", "INCUR_DEBT", MONEY(50_000_000), "not to exceed $50,000,000 at any time outstanding"),
@@ -41,21 +41,21 @@ export function fixtureIR(): { rules: IRRule[]; shared: IRSharedCapacity[]; defi
   return { rules, shared, definitions: [EBITDA_DEF] };
 }
 
-function metric(key: string, amount: number, asOf: string): FinancialInput {
+export function metric(key: string, amount: number, asOf: string): FinancialInput {
   // the 4B contract (observed through the dependency manifest): a bare DEFINED_TERM_REFERENCE is queried with the EVALUATION
   // date as its exact as-of selector, so the input must be dated exactly at the evaluation date; and a reported value for a term
   // that also has a definition must declare itself an override of that definition.
   return { identity: { companyId: ORG, scope: { kind: "INSTRUMENT_LEVEL", instrumentKey: INST }, inputKind: "TERM_VALUE", key, identityStrength: "CONTRACT_NAME_ONLY", period: { kind: "NOT_PERIOD_SPECIFIC" }, asOf: { kind: "EXACT_DATE", isoDate: asOf }, valueType: "MONEY", currency: "USD" }, value: { type: "MONEY", amount: rationalFromString(String(amount)), currency: "USD", lineage: { exprId: null, inputKeys: [] } }, sourceVersion: "fixture-1", overridesDefinitionId: key === "Consolidated EBITDA" ? EBITDA_DEF.definitionId : undefined };
 }
-function snapshot(snapshotId: string, status: FinancialSnapshot["status"], asOf: string, ebitda: number): FinancialSnapshot {
+export function snapshot(snapshotId: string, status: FinancialSnapshot["status"], asOf: string, ebitda: number): FinancialSnapshot {
   return { snapshotId, version: "1", companyId: ORG, asOf, reportingPeriod: `period-${asOf}`, status, supersedesSnapshotId: null, inputs: [metric("Consolidated EBITDA", ebitda, asOf)], provenance: { source: "product-acceptance fixture", sourceVersion: "1" }, review: status === "APPROVED" ? { reviewedBy: "fixture-reviewer", reviewedAt: `${asOf}T00:00:00Z`, approvalRef: `approval-${snapshotId}` } : { reviewedBy: null, reviewedAt: null, approvalRef: null } };
 }
-function usage(usageId: string, amount: number, ruleId: string, effectiveAsOf: string, over: Partial<LedgerUsageRecord> = {}): LedgerUsageRecord {
+export function usage(usageId: string, amount: number, ruleId: string, effectiveAsOf: string, over: Partial<LedgerUsageRecord> = {}): LedgerUsageRecord {
   return { usageId, companyId: ORG, instrumentKey: INST, effectiveAsOf, amount: { amount: String(amount), currency: "USD" }, capacityPath: { kind: "RULE", ruleId }, transactionRef: `hist-${usageId}`, status: "RECORDED", supersededByUsageId: null, provenance: { source: "fixture ledger", sourceVersion: "1", approvalRef: "fixture-approval", approvalState: "APPROVED" }, ...over };
 }
 
-const amt = (a: CapacityAmount | undefined): string => !a ? "undefined" : a.kind === "AMOUNT" ? (a.value.type === "MONEY" ? `${a.value.currency} ${a.value.amount}` : JSON.stringify(a.value)) : a.kind === "NOT_DETERMINED" ? `NOT_DETERMINED(${a.reason.slice(0, 80)})` : a.kind;
-const num = (a: CapacityAmount | undefined): number | null => a && a.kind === "AMOUNT" && a.value.type === "MONEY" ? Number(a.value.amount) : null;
+export const amt = (a: CapacityAmount | undefined): string => !a ? "undefined" : a.kind === "AMOUNT" ? (a.value.type === "MONEY" ? `${a.value.currency} ${a.value.amount}` : JSON.stringify(a.value)) : a.kind === "NOT_DETERMINED" ? `NOT_DETERMINED(${a.reason.slice(0, 80)})` : a.kind;
+export const num = (a: CapacityAmount | undefined): number | null => a && a.kind === "AMOUNT" && a.value.type === "MONEY" ? Number(a.value.amount) : null;
 
 export function runRuntimeF(pkg: CorpusPackage, L: Ledger): void {
   const rt = pkg.manifest.runtime;

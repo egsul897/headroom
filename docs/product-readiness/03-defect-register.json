@@ -396,30 +396,17 @@
       "stage": "CONTEXT_RETRIEVAL",
       "title": "A self-referential definition trips DEFINITION_CYCLE and blocks certification of every dependent covenant",
       "packages": [
-        "pkg-b-multi-document",
-        "pkg-i-secured-debt-lien"
+        "pkg-b-multi-document"
       ],
       "signatures": [
         {
           "packageId": "pkg-b-multi-document",
           "expectationRef": "certification:indenture::4.09"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "certification:credit-agreement::7.01"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "certification:credit-agreement::7.02"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "certification:credit-agreement::7.04"
         }
       ],
       "failingInput": "\"Unrestricted Subsidiary\" means any Subsidiary of the Issuer designated as an Unrestricted Subsidiary …; \"Restricted Subsidiary\" means any Subsidiary … that is not an Unrestricted Subsidiary.",
       "expected": "Standard drafting; bundle SUFFICIENT.",
-      "actual": "DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary → bundle REVIEW_REQUIRED → VERIFICATION_INCOMPLETE → NOT_CERTIFIED for 4.09 (and the indenture definitions candidate). Package I: DEFINITION_CYCLE on \"Subsidiary\" and \"Guarantor\" (\"Guarantor\" means each Subsidiary that has executed the Guarantee; \"Foreign Subsidiary\" means any Subsidiary …) blocks 7.01, 7.02 and 7.04 - no genuine cycle exists.",
+      "actual": "DEFINITION_CYCLE/MEDIUM on Restricted Subsidiary → bundle REVIEW_REQUIRED → VERIFICATION_INCOMPLETE → NOT_CERTIFIED for 4.09 (and the indenture definitions candidate). Package I: DEFINITION_CYCLE on \"Subsidiary\" and \"Guarantor\" (\"Guarantor\" means each Subsidiary that has executed the Guarantee; \"Foreign Subsidiary\" means any Subsidiary …) blocks 7.01, 7.02 and 7.04 - no genuine cycle exists. (Package I's 7.01/7.02/7.04 signatures were re-attributed to IPV-21 on 2026-10-08: their DEFINITION_CYCLE is a false cycle on a diamond dependency, not a self-referential definition.)",
       "repro": "buildCandidateCompilerInput(candidateFor('indenture','4.09')).bundle.unresolvedDependencies",
       "impact": "Fail-closed, but a ubiquitous drafting pattern makes indenture covenants uncertifiable.",
       "hypothesis": "The cycle detector treats a term's own name appearing inside its definition (\"designated as an Unrestricted Subsidiary\") as a dependency edge.",
@@ -467,8 +454,7 @@
         "pkg-d-qualitative-restrictions",
         "pkg-g-adversarial-evidence",
         "pkg-i-secured-debt-lien",
-        "pkg-k-three-way-builder",
-        "pkg-l-affiliate-transactions"
+        "pkg-k-three-way-builder"
       ],
       "signatures": [
         {
@@ -490,10 +476,6 @@
         {
           "packageId": "pkg-k-three-way-builder",
           "expectationRef": "certification:credit-agreement::7.08"
-        },
-        {
-          "packageId": "pkg-l-affiliate-transactions",
-          "expectationRef": "certification:credit-agreement::7.07"
         }
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
@@ -793,6 +775,67 @@
       "impact": "Demonstrated in the false-permission direction (INV-05b): a definition amendment that shrinks EBITDA leaves the compiler with the larger pre-amendment definition. Mechanism independent of IPV-19: definition items are read from the static definitions index, never re-resolved against the operative state.",
       "hypothesis": "buildCovenantContextBundle resolves definitions through the static definitions index (exactTermsByDocument / allDefinitions) and only consults the operative state for the candidate's own anchor node (operativeSourceTextFor / deriveOperativeLineage).",
       "acceptance": "With a resolved definition amendment, the definition item text equals the operative text and the item records its lineage; invariant:INV-05:F1/F3 bundle-definition-current pass."
+    },
+    {
+      "id": "IPV-21",
+      "status": "OPEN",
+      "severity": "UNSUPPORTED_AS_COMPLETE",
+      "outcomeClass": "INCORRECT_RESULT",
+      "deterministic": true,
+      "stage": "CONTEXT_RETRIEVAL",
+      "title": "A diamond dependency (a covenant names term T and term U, and U's definition names T) is reported as DEFINITION_CYCLE; the context contract then refuses certification of every such covenant (false refusal)",
+      "packages": [
+        "pkg-a-basic-credit-agreement",
+        "pkg-i-secured-debt-lien",
+        "pkg-l-affiliate-transactions"
+      ],
+      "signatures": [
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "invariant:INV-19:diamond-is-not-a-cycle",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "invariant:INV-19:no-false-cycle:i:7.01",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "invariant:INV-19:no-false-cycle:l:7.07",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.01",
+          "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.02",
+          "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "certification:credit-agreement::7.04",
+          "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-l-affiliate-transactions",
+          "expectationRef": "certification:credit-agreement::7.07",
+          "severity": "NONMATERIAL_OMISSION"
+        }
+      ],
+      "failingInput": "Minimal reproduction (INV-19, package A in memory): add '\"Guarantor\" means each Subsidiary that has executed the Guarantee.' and make 7.01(b) read 'other Indebtedness of the Borrower and any Guarantor …'. 'Subsidiary' means any corporation or other entity that is controlled by the Borrower (no reference back). Real packages: I 7.01 (Subsidiary/Guarantor), L 7.07 (Loan Parties/Subsidiary).",
+      "expected": "No DEFINITION_CYCLE: Subsidiary is reached by two paths (directly and through Guarantor) but no definition refers to itself or to a term that refers back to it. Context contract acceptable. The B indenture's Restricted Subsidiary ↔ Unrestricted Subsidiary pair, which IS circular, keeps being reported (positive control passes).",
+      "actual": "buildCandidateCompilerInput → bundle.unresolvedDependencies contains DEFINITION_CYCLE 'guarantor -> subsidiary -> guarantor' (MEDIUM), sufficiency REVIEW_REQUIRED; the same definition without the covenant naming Guarantors reports nothing (control). I 7.01: 'subsidiary -> guarantor -> subsidiary'; L 7.07: 'loan parties -> subsidiary -> loan parties'. Certification of I 7.01/7.02/7.04 and L 7.07 is blocked with CONTEXT_CONTRACT_UNACCEPTABLE. (The acceptance run records the blocked certifications as NONMATERIAL_OMISSION / CAPABILITY_NOT_IMPLEMENTED: fail-closed; the defect-level severity UNSUPPORTED_AS_COMPLETE names the false refusal.)",
+      "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-19 (scripts/product-acceptance/invariants.ts)",
+      "impact": "False refusal on the most common definitional drafting in credit agreements ('Guarantor' / 'Loan Party' / 'Restricted Subsidiary' defined in terms of 'Subsidiary'): every covenant naming both terms is uncertifiable. Fail-closed, so no false permission, but it makes a realistic package unusable and masks adversarial evidence (I-P2, L-P1…P3 refusals cite this blocker).",
+      "hypothesis": "context-retrieval/definition-graph.ts retrieveDefinitionsRecursive: the reported path 'guarantor -> subsidiary -> guarantor' is only possible if, while expanding Subsidiary (whose own text names no Guarantor), the text being scanned still contains 'Guarantor' - i.e. the candidate's or the parent's sourceText is scanned at depth 2 instead of the newly retrieved definition's text, or pathTermsStack is not popped between sibling expansions. Not traced line by line.",
+      "acceptance": "invariant:INV-19:diamond-is-not-a-cycle, no-false-cycle:i:7.01 and no-false-cycle:l:7.07 pass while true-cycle-still-reported keeps passing; I 7.01/7.02/7.04 and L 7.07 certification rows no longer cite CONTEXT_CONTRACT_UNACCEPTABLE for a cycle."
     }
   ],
   "observations": [

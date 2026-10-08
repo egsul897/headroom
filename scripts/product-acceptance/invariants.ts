@@ -14,6 +14,14 @@ import { applyMutation, type Mutation } from "./mutations";
 import { hybridScope, type BenchmarkCase } from "./benchmark/strategies";
 import { buildCandidateCompilerInput, type CandidateCompilerInputBuild } from "../../lib/contract-model/covenant-map/candidate-input";
 import { computeCacheKey } from "../../lib/contract-model/compiler/semantic/cache";
+import type { IRExpression, IRRule, IRDefinition } from "../../lib/contract-model/ir/types";
+import { snapshotInputResolver } from "../../lib/contract-model/runtime/input/snapshot-resolver";
+import { EMPTY_RESOLVER } from "../../lib/contract-model/runtime/input-resolver";
+import type { FinancialSnapshot } from "../../lib/contract-model/runtime/input/types";
+import { buildCapacityGraph } from "../../lib/contract-model/runtime/capacity/graph";
+import { evaluateCapacityState } from "../../lib/contract-model/runtime/capacity/state";
+import { simulateTransaction } from "../../lib/contract-model/runtime/transaction/simulate";
+import { ORG, INST, MONEY, PCT, TERM, MUL, rule, EBITDA_DEF, snapshot, usage, fixtureIR, amt, num } from "./runtime-f";
 
 export interface InvariantVerdict { ref: string; check: string; ok: boolean; detail: string; kind: "PRODUCT" | "OBSERVATION"; severity?: Severity }
 export interface InvariantResult { id: string; title: string; legalStatement: string; packageId: string; verdicts: InvariantVerdict[] }
@@ -157,6 +165,72 @@ export const INVARIANTS: Array<{ id: string; title: string; legalStatement: stri
       return out;
     } },
 ];
+
+const cyclesFor = (b: CandidateCompilerInputBuild) => (b.bundle.unresolvedDependencies as Array<{ dependencyType: string; attemptedResolution: string }>).filter((u) => u.dependencyType === "DEFINITION_CYCLE").map((u) => u.attemptedResolution);
+
+INVARIANTS.push(
+  { id: "INV-19", title: "Only a genuinely circular definition is a definition cycle; a diamond (two paths to one term) is not", packageId: "pkg-a-basic-credit-agreement",
+    legalStatement: "'Guarantor' means each Subsidiary that has executed the Guarantee; 'Subsidiary' means any entity controlled by the Borrower. A covenant that names both Guarantors and Subsidiaries depends on Subsidiary by two paths; nothing is circular, so the context contract must not refuse it. The B indenture's Restricted/Unrestricted Subsidiary pair IS circular and must still be reported.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const A = loadPackage("pkg-a-basic-credit-agreement");
+      const diamond = variation(A, "INV-19", [
+        { documentId: "credit-agreement", find: '"Indebtedness" means', replace: '"Guarantor" means each Subsidiary that has executed the Guarantee.\n\n"Indebtedness" means' },
+        { documentId: "credit-agreement", find: "(b) other Indebtedness in an aggregate principal amount", replace: "(b) other Indebtedness of the Borrower and any Guarantor in an aggregate principal amount" }]);
+      const s = await runDeterministicStages(diamond);
+      const b = await bundleFor(diamond, s, "credit-agreement", "7.01", "INDEBTEDNESS");
+      out.push({ ref: "invariant:INV-19:diamond-is-not-a-cycle", check: "A + Guarantor definition: compiling 7.01 reports no DEFINITION_CYCLE", ok: cyclesFor(b).length === 0, detail: `${cyclesFor(b).join("; ") || "no cycle"}; sufficiency ${b.bundle.sufficiencyState}`, kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      const onlyGuarantorDefined = variation(A, "INV-19-def-only", [{ documentId: "credit-agreement", find: '"Indebtedness" means', replace: '"Guarantor" means each Subsidiary that has executed the Guarantee.\n\n"Indebtedness" means' }]);
+      const s1 = await runDeterministicStages(onlyGuarantorDefined);
+      out.push({ ref: "invariant:INV-19:mention-alone-no-cycle", check: "the same definition with 7.01 not naming Guarantors: no cycle (control)", ok: cyclesFor(await bundleFor(onlyGuarantorDefined, s1, "credit-agreement", "7.01", "INDEBTEDNESS")).length === 0, detail: "control", kind: "OBSERVATION" });
+      for (const [pid, ref, fam, terms] of [["pkg-i-secured-debt-lien", "7.01", "INDEBTEDNESS", "Subsidiary/Guarantor"], ["pkg-l-affiliate-transactions", "7.07", "AFFILIATE_TRANSACTIONS", "Loan Parties/Subsidiary"]] as const) {
+        const pkg = loadPackage(pid); const st = await runDeterministicStages(pkg); const bb = await bundleFor(pkg, st, "credit-agreement", ref, fam);
+        out.push({ ref: `invariant:INV-19:no-false-cycle:${pid.replace(/^pkg-([a-z])-.*$/, "$1")}:${ref}`, check: `${pid} ${ref} (${terms}, no definition refers to itself): no DEFINITION_CYCLE`, ok: cyclesFor(bb).length === 0, detail: `${cyclesFor(bb).join("; ") || "no cycle"}; sufficiency ${bb.bundle.sufficiencyState}`, kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      }
+      const B = loadPackage("pkg-b-multi-document"); const sb = await runDeterministicStages(B);
+      const bi = await bundleFor(B, sb, "indenture", "4.09", "INDEBTEDNESS");
+      out.push({ ref: "invariant:INV-19:true-cycle-still-reported", check: "B indenture 4.09 (Restricted Subsidiary ↔ Unrestricted Subsidiary) still reports a DEFINITION_CYCLE (positive control)", ok: cyclesFor(bi).length > 0, detail: cyclesFor(bi).join("; ") || "none", kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
+      return out;
+    } },
+  { id: "INV-09", title: "A 'greater of $X and Y% of metric' basket is computable only with the metric; without it the answer is NEEDS_INPUT or, at most, the fixed floor stated as a floor", packageId: "pkg-f-capacity-ledger-honesty",
+    legalStatement: "Capacity = max($25,000,000, 25% × Consolidated EBITDA). With approved EBITDA 80,000,000 the capacity is 25,000,000 (floor wins); with 200,000,000 it is 50,000,000; with no approved EBITDA the metric branch is unknown, so no figure above the floor may be reported.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const MAX = (...operands: IRExpression[]): IRExpression => ({ kind: "MAX", type: "MONEY", operands, exprId: "pa-expr-max" } as IRExpression);
+      const r: IRRule = rule("rule:inv09-greater-of", "7.01(h)", "INDEBTEDNESS", "INCUR_DEBT", MAX(MONEY(25_000_000), MUL(PCT(0.25), TERM("Consolidated EBITDA"))), "the greater of $25,000,000 and 25% of Consolidated EBITDA");
+      const rules = [r]; const definitions: IRDefinition[] = [EBITDA_DEF]; const asOf = "2026-06-30";
+      const resolver = (snaps: FinancialSnapshot[]) => snaps.length ? snapshotInputResolver({ snapshots: snaps, rules, definitions, companyId: ORG, instrumentKey: INST }) : EMPTY_RESOLVER;
+      const graph = buildCapacityGraph({ rules, sharedCapacities: [], definitions, companyId: ORG, instrumentKey: INST, asOf });
+      const ev = (snaps: FinancialSnapshot[]) => evaluateCapacityState({ graph, rules, sharedCapacities: [], definitions, inputs: resolver(snaps), ledger: [], asOf }).capacities.find((c) => c.ruleId === r.ruleId)!;
+      const low = ev([snapshot("snap-inv09-low", "APPROVED", asOf, 80_000_000)]);
+      out.push({ ref: "invariant:INV-09:floor-wins", check: "EBITDA 80m → 25,000,000 (floor > 20m)", ok: low.status === "AVAILABLE" && num(low.effectiveRemaining) === 25_000_000, detail: `${low.status}, remaining ${amt(low.effectiveRemaining)}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const high = ev([snapshot("snap-inv09-high", "APPROVED", asOf, 200_000_000)]);
+      out.push({ ref: "invariant:INV-09:metric-wins", check: "EBITDA 200m → 50,000,000", ok: high.status === "AVAILABLE" && num(high.effectiveRemaining) === 50_000_000, detail: `${high.status}, remaining ${amt(high.effectiveRemaining)}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const none = ev([]);
+      out.push({ ref: "invariant:INV-09:no-metric-no-figure-above-floor", check: "no approved EBITDA → NEEDS_INPUT, or at most the 25,000,000 floor (never more)", ok: none.status !== "AVAILABLE" || num(none.effectiveRemaining) === 25_000_000, detail: `${none.status}, remaining ${amt(none.effectiveRemaining)}${none.status === "AVAILABLE" ? " (floor reported as the figure: a lower bound, acceptable only if labelled)" : ""}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      return out;
+    } },
+  { id: "INV-34", title: "A transaction effect the runtime does not support is refused explicitly, never applied approximately or ignored", packageId: "pkg-f-capacity-ledger-honesty",
+    legalStatement: "A balance-sheet movement (CHANGE_BALANCE) and an entity-state change (CHANGE_ENTITY_STATE) are reserved effect kinds; a transaction stating one must come back UNSUPPORTED with the limitation named, and no capacity may move.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const { rules, shared, definitions } = fixtureIR(); const asOf = "2026-09-30";
+      const approved = snapshot("snap-inv34", "APPROVED", "2026-06-30", 80_000_000);
+      const ledger = [usage("usage-inv34-1", 12_000_000, "rule:f-7.01(b)", "2026-03-15")];
+      const inputs = snapshotInputResolver({ snapshots: [approved], rules, definitions, companyId: ORG, instrumentKey: INST });
+      const graph = buildCapacityGraph({ rules, sharedCapacities: shared, definitions, companyId: ORG, instrumentKey: INST, asOf });
+      const base = evaluateCapacityState({ graph, rules, sharedCapacities: shared, definitions, inputs, ledger, asOf });
+      for (const kind of ["CHANGE_BALANCE", "CHANGE_ENTITY_STATE"]) {
+        const sim = simulateTransaction({ transaction: { transactionId: `tx-inv34-${kind}`, companyId: ORG, instrumentKey: INST, effectiveAsOf: asOf, category: "debt", label: kind, entities: ["BORROWER"], effects: [{ effectId: "e1", kind, amount: { type: "MONEY", amount: "5000000", currency: "USD" } }, { effectId: "e2", kind: "CONSUME_CAPACITY", capacityNodeId: "capacity:rule:rule:f-7.01(b)", amount: { type: "MONEY", amount: "5000000", currency: "USD" } }], provenance: { source: "product-acceptance invariant", sourceVersion: "1", approvalRef: null } } as never, currentState: base, capacityGraph: graph, selectedPath: { capacityNodeIds: ["capacity:rule:rule:f-7.01(b)"], ruleIds: ["rule:f-7.01(b)"], sharedCapacityIds: [], reclassificationElectionIds: [] }, inputs, context: { rules, sharedCapacities: shared, definitions, ledger, asOf } });
+        const named = (sim.limitations as Array<{ code: string }>).some((l) => l.code === "UNSUPPORTED_TRANSACTION_EFFECT");
+        const plan = (sim as unknown as { commitPlan: { committable: boolean; blockedBy: string[]; wouldAppendLedgerRecords: unknown[] } }).commitPlan;
+        out.push({ ref: `invariant:INV-34:${kind}:refused-explicitly`, check: `${kind}: simulation UNSUPPORTED with UNSUPPORTED_TRANSACTION_EFFECT named`, ok: sim.simulationStatus === "UNSUPPORTED" && named, detail: `status ${sim.simulationStatus}; limitations ${(sim.limitations as Array<{ code: string }>).map((l) => l.code).join(",") || "none"}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+        out.push({ ref: `invariant:INV-34:${kind}:not-committable`, check: `${kind}: the commit plan is not committable and is blocked by UNSUPPORTED_TRANSACTION_EFFECT (nothing can be written to the ledger)`, ok: plan.committable === false && plan.blockedBy.includes("UNSUPPORTED_TRANSACTION_EFFECT"), detail: `committable ${plan.committable}; blockedBy ${plan.blockedBy.join(",")}; wouldAppend ${plan.wouldAppendLedgerRecords.length} row(s)`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+        out.push({ ref: `invariant:INV-34:${kind}:partial-evaluation-recorded`, check: `${kind}: the supported CONSUME_CAPACITY effect is still evaluated (SATISFIED) and listed as a would-be ledger row while the transaction is refused (recorded: informational, not committable)`, ok: (sim.capacityEffects as Array<{ outcome?: string }>).every((c) => c.outcome !== "SATISFIED"), detail: `capacityEffects ${(sim.capacityEffects as Array<{ outcome?: string }>).map((c) => c.outcome ?? "?").join(",") || "none"}; path ${sim.selectedPathResult}`, kind: "OBSERVATION" });
+      }
+      return out;
+    } },
+);
 
 export async function runInvariants(): Promise<InvariantResult[]> {
   const out: InvariantResult[] = [];
