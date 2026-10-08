@@ -7,7 +7,10 @@
 ## Mandatory return
 
 1. **Starting / ending SHAs:** start `86cb255…`; end see tip after push.
-2. **Context completeness (100 stratified):** incomplete **54 → 52** after parent/peer assembly attempt; peer exports largely unmounted so residual gaps remain disclosed via `comparisonQualified`.
+2. **Context completeness (100 stratified):**
+   - Span-heuristic complete rate **64% → 81%** (parent-basket assembly in corpus audit).
+   - Dependency-classification incomplete **54 → 52** after peer assembly attempt (mostly unmounted peers; residual gaps → `comparisonQualified`).
+   - Dominant gap kinds: CROSS_REFERENCE (106), DEFINED_TERM (25), ENTITY_RESTRICTION (12).
 3. **D18 / D28 / H02:**
    - **D18** — orthographic ratio tokens treated as ECONOMICS difference → **fixed** (normalize `N to 1.00` / `N:1.00`); positive control 4.00 vs 3.50 retained.
    - **D28** — `ordinary course` vs `ordinary-course` missed feature → **fixed** (hyphen-tolerant); positive control without carveout retained.
