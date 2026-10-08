@@ -87,7 +87,7 @@ The 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset 
 
 ## Article VII bodies, one call each
 
-`scripts/p3-development-pipeline/compile-gibraltar-article-vii.ts` compiled six unpaid section bodies on `BoundedSemanticCaller` (`anthropic/claude-haiku-4.5` through the gateway). One `submit_compilation`, plus one refinement when the model named a gap. Inventory was off. The verifier was off. The 12-turn loop was not used. `7.04` was skipped because that body is already on the verification ledger. Child rows and table-of-contents lines were not sent. Output ceiling 24,576 tokens. New-spend stop $12. The run completed at list price **$1.079528**. Record: `development-pipeline/article-vii-compile.json`.
+`scripts/p3-development-pipeline/compile-gibraltar-article-vii.ts` compiled six unpaid section bodies on `BoundedSemanticCaller` (`anthropic/claude-haiku-4.5` through the gateway). One `submit_compilation`, plus one refinement when the model named a gap. Inventory was off. The verifier was off. The 12-turn loop was not used. `7.04` was skipped because that body is already on the verification ledger. Child rows and table-of-contents lines were not sent. Output ceiling 24,576 tokens. The $12 figure on that run is a development spending target, not a hard ceiling. The run completed at list price **$1.079528**. Record: `development-pipeline/article-vii-compile.json`.
 
 | Section | Chars | Rules | Input | Output | Refinement | List price |
 |---|---:|---:|---:|---:|---:|---:|
@@ -98,7 +98,7 @@ The 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset 
 | 7.01 | 21,491 | 28 | 90,251 | 48,808 | 1 | 0.334291 |
 | 7.05 | 34,605 | 26 | 92,323 | 49,152 | 1 | 0.338083 |
 
-Every section returned `REVIEW_REQUIRED`. `OPERATIVE_STATE_UNRESOLVED` is on each row because the supersession index is empty. `7.02` also reports `MISSING_CONTEXT`. `7.06`, `7.01`, and `7.05` also report `PROVIDER_FAILURE`. `7.05` output is exactly 2 × 24,576, so both the submit and the refinement filled the output ceiling. `7.01` output is 48,808, the same shape. Those two replies are capped. The rules that were returned are kept. DEVELOPMENT. `certified` false. `pinnedOffline` false. `eligibleClaimed` false. No pin. Cite `7.05(a)(y)` remains `NOT_FOUND`. Bare `7.04` remains `AMBIGUOUS`.
+Every section returned `REVIEW_REQUIRED`. `OPERATIVE_STATE_UNRESOLVED` is on each row because the supersession index is empty. `7.02` also reports `MISSING_CONTEXT`. `7.06`, `7.01`, and `7.05` also report `PROVIDER_FAILURE`. `7.05` output is exactly 2 × 24,576, so both the submit and the refinement filled the output ceiling. `7.01` output is 48,808, the same shape. Those two replies are capped. The attempt record stores rule counts only. The 82 rule objects were not persisted and are not reconstructed. The linked limitation record classifies this run `SUMMARY_ONLY_DIAGNOSTIC_EVIDENCE`. DEVELOPMENT. `certified` false. `pinnedOffline` false. `eligibleClaimed` false. No pin. Cite `7.05(a)(y)` remains `NOT_FOUND`. Bare `7.04` remains `AMBIGUOUS`. Limitation: `development-pipeline/article-vii-compile.evidence-limitation.json`.
 
 ## Offline stages that ran
 

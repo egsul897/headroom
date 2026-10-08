@@ -32,7 +32,7 @@ const run = (right: WireExpression) => { const n = normalizeSubmission(submissio
 
 describe("defect D - METRIC_REFERENCE asOfDate is lifted into AS_OF, never dropped silently", () => {
   it("version: compiler v10", () => {
-    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v11");
+    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v12");
   });
 
   it("D1: a METRIC_REFERENCE without asOfDate is unchanged", () => {

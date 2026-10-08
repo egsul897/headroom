@@ -77,7 +77,12 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // AND-composed on UNLIMITED_CAPACITY.gatedBy, with sufficiency PARTIAL. No new condition type is introduced. A v10-era
 // cached compilation may fold the object class into one ordinary-course description and claim COMPLETE; it must not be
 // served as this compiler's output. This bump is an honesty rem. IMPLEMENTED ≠ CERTIFIED.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v11";
+// v12 (unlimited carve-out fail-closed): a pre-existing UNSUPPORTED condition is dropped only when redundancy with the
+// two gates is shown after the gate phrases are removed. Substring containment is not equivalence. An operative pair
+// that cannot be uniquely attributed leaves sufficiency AMBIGUOUS rather than COMPLETE. A v11-era cached compilation
+// may delete an independent qualifier or claim COMPLETE on an unattributed pair; it must not be served as this
+// compiler's output. Prompt wording is unchanged. IMPLEMENTED ≠ CERTIFIED.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v12";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v9";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
@@ -209,6 +214,8 @@ export interface SemanticCompilerInput {
   operativeCharStart?: number | null;
   /** Canonical-map remediation: where operativeSourceText came from (candidate-span.ts). OPERATIVE_STATE_CURRENT_TEXT means the text is the operative state's RESOLVED current (amended) text, not the base node's text - it has no offset in the base document, and it is complete by construction (the provision view is the unit). */
   operativeSourceOrigin?: import("../candidate-span").OperativeSourceOrigin;
+  /** When set, compileCovenantToIR refuses dispatch unless the anchor span's sha256 matches. Absent means no hash was supplied. */
+  expectedOperativeSourceSha256?: string | null;
   /** SEMANTIC ACCOUNTABILITY: populated by compileCovenantToIR before the model call - the resolved source-context (regions + state) handed to Pass A and Pass B. Never set by external callers. */
   sourceContext?: SourceContextResult | null;
   /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */
@@ -263,7 +270,9 @@ export type SemanticCompilerFailureReason =
   /** F-7A: independently compiled shards emitted incompatible representations of the same source (or an emission owned by another shard, or a dangling cross-shard reference) - explicit review, never a silent choice. */
   | "SHARD_CONFLICT"
   /** F-7C.1: a caller asked to resume a frozen Pass A inventory (CompileOptions.frozenInventory) that could not be proven to belong to the exact source context being compiled - candidate, document, recorded source-context hash or legacy re-anchoring failed. Local, deterministic, pre-model: never PROVIDER_FAILURE or MODEL_SCHEMA_FAILURE. Pass A was NOT silently rerun and the stale inventory was NOT used; the compilation is FAILED so the caller can decide. */
-  | "FROZEN_INVENTORY_SOURCE_MISMATCH";
+  | "FROZEN_INVENTORY_SOURCE_MISMATCH"
+  /** Operative-source authentication refused the dispatch before any model call. A contents listing, a span with no operative evidence, a superseded base span, a missing anchor, or a source-hash mismatch is not an operative covenant. */
+  | "OPERATIVE_AUTHORITY_REFUSED";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {

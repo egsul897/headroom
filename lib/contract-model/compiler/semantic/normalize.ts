@@ -820,6 +820,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       conditions,
       bindExcerpt: (excerpt) => provenanceFor(ctx, wireRule.citation, excerpt) ?? null,
     });
+    if (honestGates.ambiguousAttribution && honestGates.reason) warn(ctx, honestGates.reason, "SUFFICIENCY");
     if (honestGates.applied && honestGates.reason) limitRule(ctx, honestGates.reason);
     capacityExpression = honestGates.capacity;
     conditions = honestGates.conditions;
@@ -865,6 +866,8 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
 
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
+    // Unknown attribution of a material qualitative pair is not a complete representation.
+    if (honestGates.ambiguousAttribution && (consistent.sufficiency === "COMPLETE" || consistent.sufficiency === "PARTIAL")) consistent.sufficiency = "AMBIGUOUS";
     // deterministic limits raised under this rule (invented references, unverifiable references, incompatible action) downgrade a COMPLETE claim
     if (ctx.limits.length > 0 && consistent.sufficiency === "COMPLETE") { consistent.sufficiency = "PARTIAL"; consistent.reasons.push(`deterministic post-processing: ${ctx.limits.length} limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL`); }
     const sufficiencyWarnings = warnings.filter((w) => w.scope.startsWith(ctx.scopePath) && (w.kind ?? "SUFFICIENCY") === "SUFFICIENCY").map((w) => w.message);

@@ -78,16 +78,6 @@ export function haikuGatewayModel(): GatewayModel {
   };
 }
 
-/**
- * Token exceedance still stops the run. The CONMED conversation cap (5) does not:
- * the first Gibraltar section executed 11 shard attempts, spent $1.05, and was still
- * inside the token reservation. Stopping there would record a cut-off compile and
- * never call the verifier.
- */
-export function gibraltarShapeStop(reasons: string[]): string[] {
-  return reasons.filter((reason) => !reason.startsWith("conversations "));
-}
-
 export function verificationDispatchRank(args: {
   normalizedSourceRef: string;
   structuralNodeIds: readonly string[];
@@ -171,10 +161,11 @@ function meter(inner: StageCaller): { caller: StageCaller; read: () => { inputTo
         return await inner.call(schema, stage, systemPrompt, userContent, options);
       } finally {
         const telemetry = inner.lastTelemetry();
-        if (!telemetry) return;
-        inputTokens += telemetry.inputTokens ?? 0;
-        outputTokens += telemetry.outputTokens ?? 0;
-        calls += 1;
+        if (telemetry) {
+          inputTokens += telemetry.inputTokens ?? 0;
+          outputTokens += telemetry.outputTokens ?? 0;
+          calls += 1;
+        }
       }
     },
     lastTelemetry: () => inner.lastTelemetry(),
@@ -227,7 +218,7 @@ async function loadIndex(): Promise<{ index: StructuralIndex; exactTerms: Map<st
   }
   const packageGraph = buildPackageGraph(COMPANY_ID, PACKAGE_KEY, [{ documentId: DOCUMENT_ID, label: LABEL, text }]);
   const deterministic = runPassADeterministicSignals(DOCUMENT_ID, index, EMPTY_SUPERSESSION_INDEX);
-  const signalsByNodeId = new Map(deterministic.map((candidate) => [candidate.nodeId, [...candidate.signals]] as const));
+  const signalsByNodeId = new Map(deterministic.map((candidate) => [candidate.nodeId, [...candidate.signals]]));
   const phraseNodeIds = new Set(
     index.allNodes().filter((node) => node.documentId === DOCUMENT_ID && index.getNodeText(node.nodeId, "OWN").includes("Available Amount Builder Basket")).map((node) => node.nodeId),
   );
@@ -502,7 +493,9 @@ async function main(): Promise<void> {
       { attemptCount: result?.telemetry?.attemptCount ?? null, inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null },
       compileShape(model, item.operativeChars, DEFAULT_CANDIDATE_TIMEOUT_MS),
     );
-    const exceeded = gibraltarShapeStop(shapeReasons);
+    // The conversation bound is the reservation's declared shape, for every document.
+    // A Gibraltar run does not drop that reason. Exceeding it means the hold did not cover the call.
+    const exceeded = shapeReasons;
 
     let verifyCost: CostRecord | null = null;
     let verification: SemanticVerificationResult | null = null;
