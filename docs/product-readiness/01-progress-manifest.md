@@ -24,7 +24,8 @@ Cursor work. Provider calls: none in this workstream.
 | 14 | milestone report 2; batch 6: SET_RATIO adversarial kind, INV-09b (flipped comparator certified → IPV-22 direction); `invariant-runs/` at `66b868e` | done (`66b868e` + this commit) |
 | 15 | `18-workflow-analyses.md` (CFO / treasury / in-house legal / outside counsel, tied to artefacts and register ids); self-replenishing backlog pass appended to doc 16 (T1–T6) | done (this commit) |
 | 16 | T1: on-disk definition amendment on I (IPV-19 on disk; F tried and reverted because it masked IPV-02; A kept as the in-memory lab), definition-currency audit (IPV-05 consequence on H); T2: SET_POSTURE / SET_PERCENT kinds, INV-28b (both refused); runs at `440069481941` | done (`4400694` + this commit) |
-| 17 | T3 triple-composition package (amended definition + side letter + diamond), T4 supplemental indenture, T5 prompt-token measurement, T6 onboarding / data-room assumptions doc | next |
+| 17 | T4 supplemental indenture on B (resolves on the second instrument; IPV-04 breadth), T5 offline prompt-size measurement (doc 08), T6 `19-onboarding-and-ingestion-assumptions.md`; runs at `dcfd931004c6` | done (`dcfd931` + this commit) |
+| 18 | T3 triple-composition package M (amended definition + side letter + diamond) with refusal-precedence expectations | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

@@ -26,18 +26,19 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/440069481941/`, repository SHA `440069481941`, 609 checks: 539 pass · 53 fail · 17 not tested)
+## Matrix (committed run `acceptance-runs/dcfd931004c6/`, repository SHA `dcfd931004c6`, 614 checks: 543 pass · 54 fail · 17 not tested)
 
 Earlier committed runs: `8f51e2981bd2` (8 packages, 360: 318/30/12), `00977b674579` (10, 431: 376/41/14),
 `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 + clause-text pins, 571: 508/48/15),
-`f182a679394b` (12, 604: 539/49/16). At `4400694`: package I gains an on-disk definition amendment (IPV-19 now on
-disk: 2 operative-state rows + the 1.01 definitions candidate) and the definition-currency audit carries IPV-05's
-consequence on H. Findings are 53, all registered (IPV-01…IPV-22; IPV-17 closed).
+`f182a679394b` (12, 604: 539/49/16), `440069481941` (I definition amendment, 609: 539/53/17). At `dcfd931`: package B
+gains a First Supplemental Indenture (second-instrument amendment resolves correctly; the section-level 4.09
+candidate still compiles on stale text — IPV-04 breadth). Findings are 54, all registered (IPV-01…IPV-22; IPV-17
+closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
 | a-basic-credit-agreement | 22/22 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 4/6 (2 F) | – | 43/46 |
-| b-multi-document | 24/24 | 2/2 | 1/1 | 0/1 (1 NT) | 12/12 | 13/13 | 5/6 (1 F) | – | 57/59 |
+| b-multi-document | 25/25 | 5/5 | 1/1 | 0/1 (1 NT) | 12/12 | 13/14 (1 F) | 5/6 (1 F) | – | 61/64 |
 | c-amendment-supersession | 15/15 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 43/48 |
 | d-qualitative-restrictions | 16/16 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 35/39 |
 | e-structural-ambiguity | 19/20 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 45/55 |
@@ -49,10 +50,9 @@ consequence on H. Findings are 53, all registered (IPV-01…IPV-22; IPV-17 close
 | k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
 | l-affiliate-transactions | 15/15 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 31/33 |
 
-Invariant checks (`invariant-runs/440069481941/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen are
-IPV-19/20/21/22. Mutation suite (`mutation-runs/440069481941/`): 16 mutants, 9 killed, 16/16 predictions held.
-Benchmark (`benchmark-runs/440069481941/`): quality unchanged; the I amendment adds units (broad 410 calls / est.
-$0.144, hybrid 270 / $0.094 — hybrid ≈65% of broad).
+Invariant checks (`invariant-runs/dcfd931004c6/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen
+are IPV-19/20/21/22. Mutation suite: 16 mutants, 9 killed, 16/16 predictions held. Benchmark: quality unchanged (see
+doc 08 §Re-runs and §Prompt-size measurement).
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 
@@ -85,7 +85,7 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | package | package certification | per-candidate |
 |---|---|---|
 | A | REVIEW_REQUIRED | 7.01, 7.02, 7.03 CERTIFIED; 1.01 review (definitions candidate observed only) |
-| B | FAILED | CA 7.01/7.02 and indenture 4.10 CERTIFIED; indenture 4.09 NOT_CERTIFIED (IPV-12 self-referential definition cycle) |
+| B | FAILED | CA 7.01/7.02 and indenture 4.10 CERTIFIED; indenture 4.09 NOT_CERTIFIED (IPV-12 self-referential definition cycle) and, after the First Supplemental Indenture, compiled on text still carrying the superseded $50,000,000 (IPV-04 on the second instrument) |
 | C | REVIEW_REQUIRED | 7.02 and clause-level 7.01(b) ok; section-level 7.01 compiled from stale text (IPV-04) |
 | D | REVIEW_REQUIRED | 7.05 review (expected: 7.05(l) undefined term, plus IPV-13 ontology gap); 2.05 review (IPV-14) |
 | E | FAILED | 0/7 certifiable: TOC duplicates make every reference ambiguous (IPV-11) |
