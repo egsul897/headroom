@@ -5,7 +5,7 @@
 | Item | Value |
 |---|---|
 | Starting SHA (`origin/main` at branch cut) | `caa08f8b1c68d9656b30cabb6a866f8cf9b23b1d` |
-| Ending SHA | *(filled after commit)* |
+| Ending SHA |  |
 | Prior merged PR #148 head | `01a1972817091f6bd4c074d2d8b9c75dfb6fcd18` |
 
 ## 2. PR URL and integration status
