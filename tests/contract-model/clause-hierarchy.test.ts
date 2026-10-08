@@ -153,4 +153,59 @@ describe("buildClauseTree", () => {
     const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
     expect(refs).toEqual(["(a)", "(a)(i)", "(a)(ii)", "(a)(1)", "(b)"]);
   });
+
+  it("does not nest interior (x)/(y) under an open letter item when that letter list resumes nearby", () => {
+    // Builder-limb pattern: (a)/(b)/(c) lettered amounts; inside (b), an undetected deeper
+    // nest leaves line-start (x)/(y) before (c) resumes. Those are not a nested letter list
+    // under (b) — nesting them would truncate (b)'s owned span at (x).
+    const text = [
+      "(a) first amount; plus",
+      "(b) proceeds from the issue or sale of:",
+      "",
+      "Equity Interests excluding cash proceeds from the sale of:",
+      "(x) Equity Interests to employees; or",
+      "(y) Designated Preferred Stock; and",
+      "",
+      "(B) contributed equity; or",
+      "",
+      "(ii) converted Indebtedness;",
+      "(c) third amount.",
+    ].join("\n");
+    const tree = buildClauseTree(text);
+    const refs = tree.map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(refs.filter((r) => /^\([a-z]\)$/.test(r))).toEqual(["(a)", "(b)", "(c)"]);
+    expect(refs).not.toContain("(b)(x)");
+    expect(refs).not.toContain("(b)(y)");
+    expect(tree.some((n) => n.marker === "(x)")).toBe(false);
+    expect(tree.some((n) => n.marker === "(y)")).toBe(false);
+  });
+
+  it("still opens a restarted (x)/(y) letter run under an outer letter when that letter resumes only after a longer nested run", () => {
+    // Gibraltar-shaped: numbered children under (a), then (x)/(y) with a multi-limb roman
+    // sum under (y), and only then outer (b). The outer letter does not resume "nearby".
+    const text = [
+      "(a) restricted payments:",
+      "(1) dividends.",
+      "(2) redemptions.",
+      "(3) purchases.",
+      "(4) investments;",
+      "",
+      "if at the time of such payment:",
+      "(x) an Event of Default has occurred; or",
+      "(y) the aggregate amount would exceed the sum of:",
+      "(i) fifty percent of Consolidated Net Income;",
+      "(ii) equity proceeds;",
+      "(iii) returns on investments;",
+      "(iv) redesignation amounts;",
+      "(v) further amounts; and",
+      "(vi) the greater of a dollar floor and EBITDA.",
+      "(b) The foregoing will not prohibit permitted payments.",
+    ].join("\n");
+    const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(refs).toContain("(a)(x)");
+    expect(refs).toContain("(a)(y)");
+    expect(refs).toContain("(a)(y)(i)");
+    expect(refs).toContain("(a)(y)(vi)");
+    expect(refs).toContain("(b)");
+  });
 });
