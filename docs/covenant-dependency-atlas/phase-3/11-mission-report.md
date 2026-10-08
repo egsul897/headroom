@@ -105,4 +105,5 @@ Local demo store (gitignored):
 - Tests: `npx vitest run tests/covenant-dependency-atlas/` → **31 passed**  
 - Rebuild: `npx tsx scripts/covenant-dependency-atlas/build-phase3.ts`  
 - PR: continue #140 on `cursor/covenant-dependency-atlas-5021` (no merge)  
-- Exact tip SHA: set after commit in this turn  
+- Exact tip SHA (pre-pin commit): `e45fd18f4d98f1eb070a2e6ccfe5721aa41f4211`  
+
