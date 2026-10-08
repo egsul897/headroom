@@ -280,7 +280,11 @@ export async function acquireViaEdgarConnector(args: {
       mkdirSync(outDir, { recursive: true });
       const textPath = join(outDir, `${sourceId.replace(/:/g, "_")}.txt`);
       writeFileSync(textPath, text, "utf8");
-      const filingDate = (item.metadata?.filingDate as string | undefined) ?? "unknown-date";
+      if (!item.sourceUri) continue;
+      const sourceUri = item.sourceUri;
+      const filingDate = item.effectiveDate ?? "unknown-date";
+      const formMatch = item.summary.match(/^(\S+)/);
+      const formType = formMatch?.[1];
       const record: AcquiredDocumentMeta = {
         sourceId,
         issuerCik: cik,
@@ -288,9 +292,9 @@ export async function acquireViaEdgarConnector(args: {
         issuerTitle: title,
         accessionNumber: item.sourceIdentifier,
         filingDate,
-        formType: (item.metadata?.form as string | undefined) ?? undefined,
-        sourceUri: item.sourceUri,
-        exhibitFilename: item.sourceUri.split("/").pop(),
+        formType,
+        sourceUri,
+        exhibitFilename: sourceUri.split("/").pop(),
         documentLabel: `${ticker} — ${item.summary}`,
         documentType: mapDocType("", item.summary),
         agreementVersion: `${filingDate} ${item.summary}`.slice(0, 160),

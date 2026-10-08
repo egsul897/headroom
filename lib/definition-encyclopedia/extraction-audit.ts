@@ -164,6 +164,6 @@ export function auditExtractionCompleteness(args: {
     precision,
     recall,
     inventoryMethodNote:
-      "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Not a human gold standard.",
+      "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard.",
   };
 }
