@@ -15,7 +15,7 @@
 | 5 | Held-out retrieval metrics (phase2 corpus) | Recall@5 **0.9545** · Recall@10 **0.9545** · Precision@5 **0.3182** · citation **1.0** · version **1.0** · refusal **1.0** · missing-dep disclosure **1.0** |
 | 6 | Source & version correctness | Citation substrings correct on measured queries; as-of operative-only query excludes superseded RP basket |
 | 7 | Integration blockers | See knowledge-factory table below |
-| 8 | SHA / tests / CI / PR | Tip `6b23e950b87561039388a537af3994a57bd08f82`; `npm test -- tests/covenant-research` **43/43**; PR #152 (CI pending at write time) |
+| 8 | SHA / tests / CI / PR | Phase2 code `6b23e95` / docs tip at push time; `npm test -- tests/covenant-research` **43/43**; PR #152 |
 
 **Not claimed:** new SEC acquisitions, production DB integration, legal correctness from retrieval relevance, VERIFIED promotions.
 
