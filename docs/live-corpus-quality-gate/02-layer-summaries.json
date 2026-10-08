@@ -1,0 +1,142 @@
+{
+  "layerSummaries": [
+    {
+      "layer": "infrastructure",
+      "pass": 7,
+      "fail": 0,
+      "unverified": 0,
+      "findings": [
+        "gib-doc-a:source_integrity:infrastructure:pass",
+        "gib-doc-a:held_out_blind:infrastructure",
+        "gib-doc-a:structural_completeness:infrastructure:pass",
+        "gib-doc-a:provenance_correctness:infrastructure:pass",
+        "sup-doc-a:source_integrity:infrastructure:pass",
+        "sup-doc-b:source_integrity:infrastructure:pass",
+        "sup-doc-c:source_integrity:infrastructure:pass"
+      ]
+    },
+    {
+      "layer": "extraction",
+      "pass": 4,
+      "fail": 6,
+      "unverified": 2,
+      "findings": [
+        "gib-doc-a:structural_completeness:extraction:fail",
+        "gib-doc-a:definition_completeness:extraction:pass",
+        "gib-doc-a:negative_covenant_discovery:extraction:pass",
+        "gib-doc-a:exception_and_condition_recall:extraction:unverified",
+        "gib-doc-a:cross_reference_completeness:extraction:fail",
+        "gib-doc-a:amendment_authority:extraction:pass",
+        "gib-doc-a:entity_scope_recognition:extraction:unverified",
+        "gib-doc-a:false_affirmative_capacity:extraction:fail",
+        "gib-doc-a:provenance_correctness:extraction:fail",
+        "gib-doc-a:unresolved_and_unsupported_semantics:extraction:pass",
+        "sup-doc-b:amendment_authority:extraction:fail",
+        "sup-doc-a:definition_completeness:extraction:fail"
+      ]
+    },
+    {
+      "layer": "legally_verified",
+      "pass": 11,
+      "fail": 2,
+      "unverified": 14,
+      "findings": [
+        "gib-doc-a:source_integrity:legally_verified:pass",
+        "gib-doc-a:structural_completeness:legally_verified:unverified",
+        "gib-doc-a:definition_completeness:legally_verified:pass",
+        "gib-doc-a:definition_completeness:legally_verified:exhaustive",
+        "gib-doc-a:negative_covenant_discovery:legally_verified:pass",
+        "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "gib-doc-a:cross_reference_completeness:legally_verified:fail",
+        "gib-doc-a:amendment_authority:legally_verified:pass",
+        "gib-doc-a:entity_scope_recognition:legally_verified:pass",
+        "gib-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "gib-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-a:provenance_correctness:legally_verified:pass",
+        "sup-doc-b:provenance_correctness:legally_verified:pass",
+        "sup-doc-c:provenance_correctness:legally_verified:pass",
+        "sup-doc-b:amendment_authority:legally_verified:fail",
+        "sup-doc-a:definition_completeness:legally_verified:unverified",
+        "sup-doc-a:structural_completeness:legally_verified:unverified",
+        "sup-doc-a:negative_covenant_discovery:legally_verified:unverified",
+        "sup-doc-a:exception_and_condition_recall:legally_verified:unverified",
+        "sup-doc-a:cross_reference_completeness:legally_verified:unverified",
+        "sup-doc-a:entity_scope_recognition:legally_verified:unverified",
+        "sup-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "sup-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-b:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-c:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-c:amendment_authority:legally_verified:pass"
+      ]
+    }
+  ],
+  "dimensionRollup": [
+    {
+      "dimension": "source_integrity",
+      "pass": 6,
+      "fail": 0,
+      "unverified": 0
+    },
+    {
+      "dimension": "structural_completeness",
+      "pass": 1,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "definition_completeness",
+      "pass": 2,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "negative_covenant_discovery",
+      "pass": 2,
+      "fail": 0,
+      "unverified": 1
+    },
+    {
+      "dimension": "exception_and_condition_recall",
+      "pass": 2,
+      "fail": 0,
+      "unverified": 2
+    },
+    {
+      "dimension": "cross_reference_completeness",
+      "pass": 0,
+      "fail": 2,
+      "unverified": 1
+    },
+    {
+      "dimension": "amendment_authority",
+      "pass": 3,
+      "fail": 2,
+      "unverified": 0
+    },
+    {
+      "dimension": "entity_scope_recognition",
+      "pass": 1,
+      "fail": 0,
+      "unverified": 2
+    },
+    {
+      "dimension": "false_affirmative_capacity",
+      "pass": 0,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "provenance_correctness",
+      "pass": 4,
+      "fail": 1,
+      "unverified": 0
+    },
+    {
+      "dimension": "unresolved_and_unsupported_semantics",
+      "pass": 1,
+      "fail": 0,
+      "unverified": 4
+    }
+  ]
+}

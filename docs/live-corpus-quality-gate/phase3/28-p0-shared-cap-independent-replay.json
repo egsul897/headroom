@@ -1,0 +1,335 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.phase3.p0-shared-cap-replay.v1",
+  "evaluationPr": 153,
+  "productionPr": 136,
+  "baselineSha": "8f87a0633ac31cb7b5f6282cc0787231d365f27c",
+  "fixSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+  "productionTip": "316c22e8041cfed9d94aac8f89a511cac103eb3b",
+  "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+  "freezeIntact": true,
+  "paidCalls": 0,
+  "productionCodeModifiedByEval": false,
+  "claudeOwnedFixturesModified": false,
+  "adversarialReplay": {
+    "ADV-FP-01": {
+      "stimulus": "Indebtedness in an aggregate amount not to exceed $25,000,000 incurred by the Borrower.",
+      "baseline": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "HEADLINE_SECTION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "aggregate_amount",
+          "isSharedRelationship": false
+        }
+      },
+      "baselineUnsafe": true,
+      "fixCorrected": true,
+      "status": "REPLAY_PASSED_LABELING"
+    },
+    "ADV-FP-02": {
+      "stimulus": "The Borrower may incur Indebtedness in an aggregate amount not to exceed $25,000,000.",
+      "baseline": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "PERMISSION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "aggregate_amount",
+          "isSharedRelationship": false
+        }
+      },
+      "baselineUnsafe": true,
+      "fixCorrected": true,
+      "status": "REPLAY_PASSED_LABELING"
+    }
+  },
+  "genuinePositiveControls": {
+    "genuine_togetherWithSection": {
+      "baseline": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": true,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": true,
+        "semantic_SHARED_CAP_MARKER": true,
+        "helper": {
+          "classify": "shared_cap",
+          "isSharedRelationship": true
+        }
+      }
+    },
+    "genuine_multiClause": {
+      "baseline": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": true,
+        "semantic_SHARED_CAP_MARKER": true,
+        "helper": {
+          "classify": "shared_cap",
+          "isSharedRelationship": true
+        }
+      }
+    },
+    "genuine_sharedCapacityPhrase": {
+      "baseline": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": true,
+        "semantic_SHARED_CAP_MARKER": true,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": true,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": true,
+        "semantic_SHARED_CAP_MARKER": true,
+        "helper": {
+          "classify": "shared_cap",
+          "isSharedRelationship": true
+        }
+      }
+    }
+  },
+  "nearbyControls": {
+    "affirmative_singleBasket": {
+      "baseline": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "SHARED_CAP_CANDIDATE",
+        "coverage_sharedCapCandidate": true,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "PERMISSION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "aggregate_amount",
+          "isSharedRelationship": false
+        }
+      }
+    },
+    "comparator_excessAsCapacityRisk": {
+      "baseline": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "CONDITION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": true,
+        "coverage_probableRole": "CONDITION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "aggregate_amount",
+          "isSharedRelationship": false
+        }
+      }
+    },
+    "comparator_threshold": {
+      "baseline": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "RATIO_TEST_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "RATIO_TEST_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": null,
+          "isSharedRelationship": false
+        }
+      }
+    },
+    "remote_proviso": {
+      "baseline": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "EXCEPTION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "EXCEPTION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": null,
+          "isSharedRelationship": false
+        }
+      }
+    },
+    "ambiguous_xref": {
+      "baseline": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "HEADLINE_SECTION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": "HELPER_MODULE_ABSENT",
+          "isSharedRelationship": null
+        }
+      },
+      "fix": {
+        "passA_shared_cap": false,
+        "passA_aggregate_amount": false,
+        "coverage_probableRole": "HEADLINE_SECTION_CANDIDATE",
+        "coverage_sharedCapCandidate": false,
+        "coverage_hasSharedCapSignal": false,
+        "semantic_SHARED_CAP_MARKER": false,
+        "helper": {
+          "classify": null,
+          "isSharedRelationship": false
+        }
+      }
+    }
+  },
+  "downstreamStaticTrace": {
+    "baseline": {
+      "passA_legacyAggregateInsideSharedCapRegex": true,
+      "coverageAudit_orsAggregateIntoSharedCapCandidate": true,
+      "structuralContext_bareAggregateInSharedCapSignals": true,
+      "contextInventory_bareAggregateInSharedCapLike": true,
+      "helperModulePresent": false
+    },
+    "fix": {
+      "passA_legacyAggregateInsideSharedCapRegex": false,
+      "coverageAudit_orsAggregateIntoSharedCapCandidate": false,
+      "structuralContext_bareAggregateInSharedCapSignals": false,
+      "contextInventory_bareAggregateInSharedCapLike": false,
+      "helperModulePresent": true
+    }
+  },
+  "gibraltarProbe": {
+    "baseline": {
+      "passACandidates": 901,
+      "shared_cap": 48,
+      "aggregate_amount": 0,
+      "frozenFixtureSharedCapCount": 51,
+      "note": "Frozen fixture count is historical evidence; live Pass A counts are independent replay probes."
+    },
+    "fix": {
+      "passACandidates": 910,
+      "shared_cap": 18,
+      "aggregate_amount": 92,
+      "frozenFixtureSharedCapCount": 51,
+      "note": "Frozen fixture count is historical evidence; live Pass A counts are independent replay probes."
+    },
+    "interpretation": "shared_cap 48\u219218 is largely false-positive reduction; aggregate_amount 0\u219292 is intentional reclassification of ordinary ceilings, not silent omission. Frozen fixture 51 remains historical."
+  },
+  "falseRefusalsObserved": [],
+  "productionVitestOnFixSha": {
+    "command": "npx vitest run tests/contract-model/shared-capacity-false-permission.test.ts tests/contract-model/figure-role.test.ts tests/contract-model/coverage-audit-pipeline.test.ts tests/contract-model/semantic-verification-reconciliation.test.ts",
+    "result": "59 passed"
+  },
+  "defectTicketVerdict": {
+    "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+    "status": "INDEPENDENTLY_ADJUDICATED",
+    "notClosedBecause": "Labeling layer (Pass A / coverage-audit / context sibling typing / semantic SHARED_CAP_MARKER) independently verified repaired. End-to-end IR shared-capacity grant / transaction-capacity creation path not fully re-certified in this unpaid replay \u2014 per mission rule, INDEPENDENTLY_ADJUDICATED rather than CLOSED."
+  },
+  "advFpClosure": {
+    "ADV-FP-01": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+    "ADV-FP-02": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+    "ticketClosed": false
+  }
+}

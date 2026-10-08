@@ -1,0 +1,132 @@
+{
+  "results": [
+    {
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "candidateSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+      "baselineSha": "8f87a0633ac31cb7b5f6282cc0787231d365f27c",
+      "worktreeUsed": "isolated:baseline@8f87a06+fix@83cde5b",
+      "reproductionPassed": true,
+      "observations": {
+        "evalCheckoutStillHasLegacyPattern": true,
+        "fixtureSharedCapCount": 51,
+        "independentReplayArtifact": "docs/live-corpus-quality-gate/phase3/28-p0-shared-cap-independent-replay.json",
+        "independentReplay": {
+          "fixSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+          "baselineSha": "8f87a0633ac31cb7b5f6282cc0787231d365f27c",
+          "defectTicketVerdict": {
+            "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+            "status": "INDEPENDENTLY_ADJUDICATED",
+            "notClosedBecause": "Labeling layer (Pass A / coverage-audit / context sibling typing / semantic SHARED_CAP_MARKER) independently verified repaired. End-to-end IR shared-capacity grant / transaction-capacity creation path not fully re-certified in this unpaid replay — per mission rule, INDEPENDENTLY_ADJUDICATED rather than CLOSED."
+          },
+          "advFp": {
+            "ADV-FP-01": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+            "ADV-FP-02": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+            "ticketClosed": false
+          }
+        }
+      },
+      "verdict": "REPLAY_PASSED",
+      "note": "Independent worktree replay recorded: baseline reproduces ADV-FP-01/02; fix 83cde5b corrects labeling. Eval checkout does not embed production fix (by design). Ticket INDEPENDENTLY_ADJUDICATED, not CLOSED."
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "candidateSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
+      "baselineSha": null,
+      "worktreeUsed": "current-eval",
+      "reproductionPassed": true,
+      "observations": {
+        "docBType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "docBConfidence": 0.9,
+        "docBEvidence": "AMENDED AND RESTATED\nCREDIT AGREEMENT",
+        "restatesCount": 1,
+        "restatesBA": [
+          {
+            "status": "REVIEW_REQUIRED",
+            "confidence": 0.6,
+            "method": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY"
+          }
+        ],
+        "fixSha": "e6c85cd8e3d26db6ad867300bccd8f3eefc088af",
+        "mainReplaySha": "9de4e5737166fcec84a35fdc9a3404870549211f"
+      },
+      "verdict": "REPLAY_PASSED",
+      "note": "Classification + RESTATES edge surfaced (REVIEW_REQUIRED allowed). Matches frozen expected safe behavior."
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "candidateSha": null,
+      "baselineSha": null,
+      "worktreeUsed": "/workspace",
+      "reproductionPassed": true,
+      "observations": {
+        "definitionCites705ay": true,
+        "printedViAndClauseYPresent": true,
+        "printedViLoose": true,
+        "expectedSafe": "UNRESOLVED / dual-cite REVIEW_REQUIRED",
+        "proposedFixSha": null
+      },
+      "verdict": "OPEN_UNAVAILABLE",
+      "note": "Source dual-cite still present; no production dual-cite handler SHA available for replay."
+    },
+    {
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "candidateSha": "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8",
+      "baselineSha": null,
+      "worktreeUsed": "/tmp/lcqg-phase3-worktrees/arch-remed",
+      "reproductionPassed": true,
+      "observations": {
+        "vitestTail": [
+          "",
+          " ✓ tests/contract-model/context-retrieval-definition-contents.test.ts (4 tests) 7ms",
+          " ✓ tests/contract-model/compiler/operative-authority.test.ts (21 tests) 16ms",
+          "",
+          " Test Files  2 passed (2)",
+          "      Tests  25 passed (25)",
+          "   Start at  22:49:15",
+          "   Duration  894ms (transform 541ms, setup 0ms, collect 890ms, tests 23ms, environment 0ms, prepare 108ms)"
+        ],
+        "acceptance": "CONTENTS_LISTING refuseModelDispatch; never silent TOC bind; AMBIGUOUS exposure preserved"
+      },
+      "verdict": "REPLAY_PASSED",
+      "note": "Independent vitest replay of contents-listing refusal PASSED on architecture-remediation tip."
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "candidateSha": null,
+      "baselineSha": null,
+      "worktreeUsed": "/workspace",
+      "reproductionPassed": true,
+      "observations": {
+        "detected": 1459,
+        "resolved": 491,
+        "unresolved": 968,
+        "resolveRate": 0.3365318711446196,
+        "relatedPartialFix": "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8",
+        "relatedPartialNote": "architecture-remediation refuses TOC contents as xref targets; does not itself raise frozen resolve rate."
+      },
+      "verdict": "OPEN_UNAVAILABLE",
+      "note": "No dedicated resolve-rate fix SHA. Unresolved remain explicit in frozen fixture. OPEN."
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "candidateSha": null,
+      "baselineSha": "4331cf8fb2e19b2ab13133a23e7c6aaa8e011807",
+      "worktreeUsed": "/tmp/lcqg-phase3-worktrees/pre-whitespace",
+      "reproductionPassed": true,
+      "observations": {
+        "docB": "CREDIT_AGREEMENT",
+        "restates": 0,
+        "sha": "4331cf8fb2e19b2ab13133a23e7c6aaa8e011807"
+      },
+      "verdict": "REPLAY_PASSED",
+      "note": "Baseline reproduces historical silence (CREDIT_AGREEMENT + 0 RESTATES)."
+    }
+  ],
+  "prioritized": [
+    "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+    "LCQG-SUP-AMEND-RESTATES-MISSING",
+    "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+    "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+    "LCQG-GIB-XREF-LOW-RESOLVE"
+  ]
+}

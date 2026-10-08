@@ -1,0 +1,366 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.phase3.v1",
+  "generatedAt": "2026-10-08T22:49:17.039Z",
+  "headSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
+  "branch": "cursor/live-corpus-quality-gate-7f51",
+  "startingPr": 153,
+  "startingSha": "18e2ed4bd66eaa9caff25eac49ef490c2fbb1816",
+  "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+  "paidCalls": 0,
+  "certificationImpact": "NONE",
+  "claudeOwnedFixturesModified": false,
+  "productionLegalRulesModified": false,
+  "productionFixesImplemented": false,
+  "mergesPerformed": false,
+  "oracleUntouched": true,
+  "freezeIntact": true,
+  "mandatoryReturn": {
+    "1_originalFindingsPreserved": {
+      "freezeIntact": true,
+      "frozenFindingCount": 46,
+      "frozenUniqueFindingIds": 45,
+      "phase1ReplayReproducedUnique": 45,
+      "freezeEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df"
+    },
+    "2_findingIdCollisionResolvedInVersionedHarness": {
+      "harnessVersion": "live-corpus-quality-gate.phase3-harness.v1",
+      "originalListed": 46,
+      "originalUnique": 45,
+      "stableCount": 46,
+      "allIndividuallyAddressable": true,
+      "collisionGroups": [
+        {
+          "originalFindingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+          "occurrences": 2,
+          "stableFindingIds": [
+            "LCQG-F-012",
+            "LCQG-F-013"
+          ],
+          "ordinals": [
+            11,
+            12
+          ]
+        }
+      ],
+      "freezeUntouched": true
+    },
+    "3_productionFixesReceivedAndIndependentlyReplayed": [
+      {
+        "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+        "candidateSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+        "verdict": "REPLAY_PASSED",
+        "note": "Independent worktree replay recorded: baseline reproduces ADV-FP-01/02; fix 83cde5b corrects labeling. Eval checkout does not embed production fix (by design). Ticket INDEPENDENTLY_ADJUDICATED, not CLOSED."
+      },
+      {
+        "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+        "candidateSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
+        "verdict": "REPLAY_PASSED",
+        "note": "Classification + RESTATES edge surfaced (REVIEW_REQUIRED allowed). Matches frozen expected safe behavior."
+      },
+      {
+        "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+        "candidateSha": null,
+        "verdict": "OPEN_UNAVAILABLE",
+        "note": "Source dual-cite still present; no production dual-cite handler SHA available for replay."
+      },
+      {
+        "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+        "candidateSha": "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8",
+        "verdict": "REPLAY_PASSED",
+        "note": "Independent vitest replay of contents-listing refusal PASSED on architecture-remediation tip."
+      },
+      {
+        "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+        "candidateSha": null,
+        "verdict": "OPEN_UNAVAILABLE",
+        "note": "No dedicated resolve-rate fix SHA. Unresolved remain explicit in frozen fixture. OPEN."
+      },
+      {
+        "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+        "candidateSha": null,
+        "verdict": "REPLAY_PASSED",
+        "note": "Baseline reproduces historical silence (CREDIT_AGREEMENT + 0 RESTATES)."
+      }
+    ],
+    "4_defectsClosedOpenOrRegressed": {
+      "CLOSED": [],
+      "OPEN": [
+        "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+        "LCQG-GIB-XREF-LOW-RESOLVE"
+      ],
+      "REPLAY_PASSED": [],
+      "INDEPENDENTLY_ADJUDICATED": [
+        "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+        "LCQG-SUP-AMEND-RESTATES-MISSING",
+        "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+        "LCQG-HARNESS-FINDING-ID-COLLISION"
+      ],
+      "REPLAY_FAILED": [],
+      "statusRollup": {
+        "OPEN": 2,
+        "FIX_PROPOSED": 0,
+        "REPLAY_FAILED": 0,
+        "REPLAY_PASSED": 0,
+        "INDEPENDENTLY_ADJUDICATED": 4,
+        "CLOSED": 0
+      },
+      "note": "No defect CLOSED solely because a production agent reported passing tests."
+    },
+    "5_falsePermissionAdversarialResults": {
+      "passFailClosed": 3,
+      "failUnsafe": 2,
+      "unverified": 2,
+      "denominator": 7
+    },
+    "6_newlyEvaluatedAuthenticDocuments": {
+      "count": 12,
+      "documents": [
+        {
+          "docId": "chwy-doc-a",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "dsgr-doc-a",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "dsgr-doc-b",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "dsgr-doc-c",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "dsgr-doc-d",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "riot-doc-a",
+          "packageId": "riot-2025-2026-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "riot-doc-b",
+          "packageId": "riot-2025-2026-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "riot-doc-c",
+          "packageId": "riot-2025-2026-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "conmed-eighth-ar",
+          "packageId": "conmed-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "20496bb3c5effc5c85e5d5d3dd2efa5d48cf003b5024964ae613fab140b559ac",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "conmed-omnibus-2026",
+          "packageId": "conmed-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "conmed-guarantee",
+          "packageId": "conmed-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        },
+        {
+          "docId": "conmed-second-amend-2022",
+          "packageId": "conmed-2025-credit-facility",
+          "role": "REGRESSION_AUTHENTIC",
+          "sha256": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
+          "phase3Probe": "HEURISTIC_EXPANSION"
+        }
+      ],
+      "datasetSplits": {
+        "development": [
+          "gib-doc-a",
+          "sup-doc-a",
+          "sup-doc-b",
+          "sup-doc-c"
+        ],
+        "regression": [
+          "chwy-doc-a",
+          "dsgr-doc-a",
+          "dsgr-doc-b",
+          "dsgr-doc-c",
+          "dsgr-doc-d",
+          "riot-doc-a",
+          "riot-doc-b",
+          "riot-doc-c",
+          "conmed-eighth-ar",
+          "conmed-omnibus-2026",
+          "conmed-guarantee",
+          "conmed-second-amend-2022",
+          "conmed-curated-neg-cov",
+          "conmed-curated-definitions",
+          "conmed-curated-omnibus",
+          "conmed-curated-guarantee",
+          "conmed-curated-second-amend",
+          "fwrg-article-6",
+          "fwrg-definitions",
+          "lsb-article-6",
+          "lsb-definitions",
+          "lsb-intercreditor-joinder"
+        ],
+        "heldOut": [],
+        "blind": [
+          "knife-river-blind(reserved)"
+        ],
+        "partialExcerptsExcludedFromCompleteAgreementCounts": [
+          "conmed-curated-neg-cov",
+          "conmed-curated-definitions",
+          "conmed-curated-omnibus",
+          "conmed-curated-guarantee",
+          "conmed-curated-second-amend",
+          "fwrg-article-6",
+          "fwrg-definitions",
+          "lsb-article-6",
+          "lsb-definitions",
+          "lsb-intercreditor-joinder"
+        ],
+        "note": "Partial excerpts never counted as complete financing agreements. Knife River BLIND body unread. Held-out = expansion authentic not used for compiler tuning when present."
+      }
+    },
+    "7_independentLegalSafetyMetrics": [
+      {
+        "metricId": "dangerous_omission_recall",
+        "name": "Dangerous omission recall",
+        "status": "PASS",
+        "numerator": 1,
+        "denominator": 1,
+        "rate": 1,
+        "uncertainty": "Denominator limited to GT claim D1 (SUP RESTATES) with independent source GT. Broader dangerous-omission inventory across expansion corpus is UNVERIFIED.",
+        "groundTruthBasis": "docs/final-lightweight-unseen/07-targeted-ground-truth.json claim D1",
+        "notes": "SUP RESTATES now surfaced (REVIEW_REQUIRED). Historical Phase-1 omission cured at relationship layer on current tip."
+      },
+      {
+        "metricId": "false_affirmative_permission_rate",
+        "name": "False affirmative permission rate",
+        "status": "FAIL",
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1,
+        "uncertainty": "Adversarial denominator=2. Gibraltar shared_cap fixture hits=51 (signal layer; not certified capacity answers). Expansion corpus capacity answers UNVERIFIED.",
+        "groundTruthBasis": "Phase-1 adjudication LCQG-GIB-FALSE-AFFIRM-SHARED-CAP + ADV-FP-01/02 synthetic controls",
+        "notes": "Signal-layer false affirmative risk remains. Not PASS."
+      },
+      {
+        "metricId": "amendment_relationship_accuracy",
+        "name": "Amendment relationship accuracy",
+        "status": "PASS",
+        "numerator": 4,
+        "denominator": 4,
+        "rate": 1,
+        "uncertainty": "Denominator = 4 SUP GT checks (2 classifications + RESTATES + AMENDS). DSGR/RIOT/CONMED amendment chains lack fresh independent GT this unpaid gate → UNVERIFIED (not scored as PASS).",
+        "groundTruthBasis": "SUP final-lightweight-unseen GT C2/D1/D2",
+        "notes": "SUP development docs considered: sup-doc-a, sup-doc-b, sup-doc-c"
+      },
+      {
+        "metricId": "operative_version_correctness",
+        "name": "Operative-version correctness",
+        "status": "UNVERIFIED",
+        "numerator": null,
+        "denominator": null,
+        "rate": null,
+        "uncertainty": "RESTATES edge REVIEW_REQUIRED is necessary but not sufficient for CURRENT_OPERATIVE marking. No independent re-certification of supersession index this phase.",
+        "groundTruthBasis": "Unavailable for CLOSED operative-state claims this unpaid gate",
+        "notes": "Never convert unavailable GT into PASS."
+      },
+      {
+        "metricId": "cross_reference_precision_recall",
+        "name": "Cross-reference precision and recall",
+        "status": "UNVERIFIED",
+        "numerator": 491,
+        "denominator": 1459,
+        "rate": 0.3365318711446196,
+        "uncertainty": "Frozen resolve rate is a coverage proxy, NOT precision/recall vs independent xref GT. Precision/recall remain UNVERIFIED.",
+        "groundTruthBasis": "No exhaustive independent xref GT for Gibraltar",
+        "notes": "detected=1459 resolved=491 unresolved=968"
+      },
+      {
+        "metricId": "proviso_attachment",
+        "name": "Proviso attachment",
+        "status": "UNVERIFIED",
+        "numerator": null,
+        "denominator": null,
+        "rate": null,
+        "uncertainty": "Pass B semantic compile not executed for Gibraltar DEVELOPMENT batch.",
+        "groundTruthBasis": "Unavailable",
+        "notes": "UNVERIFIED — not PASS."
+      },
+      {
+        "metricId": "entity_scope_fidelity",
+        "name": "Entity-scope fidelity",
+        "status": "UNVERIFIED",
+        "numerator": null,
+        "denominator": null,
+        "rate": null,
+        "uncertainty": "Source phrase present for §7.08 facility scope; IR entityScope population absent.",
+        "groundTruthBasis": "Partial source probe only — insufficient for fidelity rate",
+        "notes": "UNVERIFIED — not PASS."
+      }
+    ],
+    "8_remainingUnverifiedAreas": [
+      "Operative-version / supersession CURRENT marking after SUP RESTATES REVIEW_REQUIRED.",
+      "Exhaustive Gibraltar definition inventory.",
+      "Pass B/C/D semantic IR for Gibraltar.",
+      "Cross-reference precision/recall (resolve-rate proxy only).",
+      "Proviso attachment accuracy.",
+      "Entity-scope IR fidelity.",
+      "False-affirmative capacity beyond shared_cap signal + ADV-FP adversarial cases.",
+      "Comparator-as-capacity refusal on eval branch (module lives on architecture-remediation).",
+      "Builder dual-cite dual-handler production fix.",
+      "Expansion/regression docs without fresh independent legal GT.",
+      "Knife River BLIND body unread by design.",
+      "Availability gap vs 25 additional agreements: 3 (disclosed).",
+      "Heuristic UNVERIFIED: chwy-doc-a / expansion_doc_no_independent_gt_this_gate",
+      "Heuristic UNVERIFIED: dsgr-doc-a / expansion_doc_no_independent_gt_this_gate",
+      "Heuristic UNVERIFIED: dsgr-doc-b / expansion_doc_no_independent_gt_this_gate",
+      "Heuristic UNVERIFIED: dsgr-doc-c / expansion_doc_no_independent_gt_this_gate",
+      "Heuristic UNVERIFIED: dsgr-doc-d / expansion_doc_no_independent_gt_this_gate"
+    ],
+    "9_exactShaTestsCiPr": {
+      "headSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
+      "branch": "cursor/live-corpus-quality-gate-7f51",
+      "startingPr": 153,
+      "startingSha": "18e2ed4bd66eaa9caff25eac49ef490c2fbb1816",
+      "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+      "tests": [
+        "npm run live-corpus-quality-gate:phase3",
+        "npx vitest run tests/live-corpus-quality-gate/"
+      ],
+      "ci": "GitHub Actions on PR #153 (draft)",
+      "prStatus": "draft — do not merge"
+    }
+  },
+  "gateVerdict": "LIVE_CORPUS_QUALITY_GATE_PHASE3_REMEDIATION_VERIFICATION_RECORDED"
+}

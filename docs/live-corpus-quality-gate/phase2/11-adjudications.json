@@ -1,0 +1,204 @@
+{
+  "adjudications": [
+    {
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "priority": "CRITICAL",
+      "classification": "SOURCE_INCONSISTENCY",
+      "secondaryClassifications": [
+        "COMPILER_DEFECT"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "regex locate definition cite + natural-search operative prong",
+        "charStart": 37218,
+        "charEnd": 37338,
+        "excerpt": " specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "sectionRef": "1.01(3)(31)(ii)"
+      },
+      "compilerStage": "reference-resolution",
+      "actualOutput": {
+        "definitionCites": "Section 7.05(a)(y)",
+        "printedMarker": "(vi)",
+        "parentheticalStillSays": "clause (y)",
+        "compilerStructuralPath": "1.01(3)(31)(ii)"
+      },
+      "expectedSafeBehavior": "Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement.",
+      "rootCauseHypothesis": "Primary: filed HTML itself disagrees (definition vs printed marker). Secondary: structural path 7.05(a)(4)(ii)(vi)(B) matches neither clean legal citation, so reference-resolution can invent false certainty if it binds uniquely.",
+      "independentEvidence": [
+        "sourceSha256=4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "definitionSpan= specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "operativeExcerpt=he Borrower or any Restricted Subsidiary. “ Auto-Extension Letter of Credit ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as of any date of determination and with res",
+        "Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "recommendedOwningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core",
+        "Covenant Knowledge Factory"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "title": "Pass A shared_cap over-fires on aggregate-amount nodes (51 hits)",
+      "priority": "CRITICAL",
+      "classification": "COMPILER_DEFECT",
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "Pass A shared_cap fixture excerpts + absence of phrase 'shared capacity'",
+        "excerpt": "(ii) fees, costs and expenses associated with acquisition related litigation and settlement thereof; provided that the aggregate amount of adjustments made pursuant to this clause (e)(i) (combined with the aggregate amount of adjustments made pursuant to clauses (g) , (u) ,",
+        "sectionRef": "1.01(3)(31)(2)(1)(e)(ii)"
+      },
+      "compilerStage": "pass-a-deterministic-discovery",
+      "actualOutput": {
+        "sharedCapSignalCount": 51,
+        "phraseSharedCapacityPresent": false,
+        "realReallocationTermPresent": true
+      },
+      "expectedSafeBehavior": "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
+      "rootCauseHypothesis": "Pass A `shared_cap` regex/heuristic keyed primarily to 'aggregate amount' (and similar), which fires on ordinary EBITDA add-back caps and other non-shared constructions.",
+      "independentEvidence": [
+        "sharedCapCount=51",
+        "phraseSharedCapacityPresent=false",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "Lane C report: shared capacity phrase does not occur"
+      ],
+      "recommendedOwningAgent": "Covenant Knowledge Factory",
+      "coordinatingAgents": [
+        "Legal Core",
+        "Structural Compiler"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "priority": "CRITICAL",
+      "classification": "COMPILER_DEFECT",
+      "sampleId": "sup-doc-b",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+      "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "exactSourceSpan": {
+        "method": "caption locate AMENDED AND RESTATED + historical lightweight report",
+        "charStart": 92,
+        "charEnd": 112,
+        "excerpt": "19822dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nEXECUTION VERSION\n\n$520,000,000\nAMENDED AND RESTATED\nCREDIT AGREEMENT\nDated as of August 14, 2024,\n\namong\nSUPERIOR INDUSTRIES\nINTERN",
+        "sectionRef": "caption"
+      },
+      "compilerStage": "document-classification",
+      "actualOutput": {
+        "historicalClassification": "CREDIT_AGREEMENT @ 0.9",
+        "restatesCandidates": 0,
+        "historicalReportConfirms": true
+      },
+      "expectedSafeBehavior": "Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission.",
+      "rootCauseHypothesis": "document-classifier AMENDED_AND_RESTATED pattern requires literal space between 'RESTATED' and 'CREDIT AGREEMENT' without whitespace normalization; EDGAR HTML line-wrap inserts newline and falls through to CREDIT_AGREEMENT. Relationship scan gated on classification type, so RESTATES never attempted.",
+      "independentEvidence": [
+        "sourceSha256=722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "docs/final-lightweight-unseen.md §4",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "recommendedOwningAgent": "Amendment Intelligence",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Dependency Atlas"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "priority": "HIGH",
+      "classification": "COMPILER_DEFECT",
+      "secondaryClassifications": [
+        "SOURCE_INCONSISTENCY"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "Articles I–X appear twice (TOC + body); health-summary counts",
+        "excerpt": "Articles I through X appear twice: table of contents, then the body. Bare section labels AMBIGUOUS under resolveUniqueNodeByRef.",
+        "sectionRef": "I–X / 7.xx"
+      },
+      "compilerStage": "structural-index",
+      "actualOutput": {
+        "healthByCode": {
+          "DUPLICATE_LABEL_EXPECTED": 306,
+          "AMBIGUOUS_LEGAL_REFERENCE": 306,
+          "DUPLICATE_NORMALIZED_PATH": 306
+        },
+        "findingCount": 918,
+        "articlesJsonLength": 20,
+        "operativeLongSpanRecovery": [
+          "7.01",
+          "7.02",
+          "7.03",
+          "7.04",
+          "7.05",
+          "7.06",
+          "7.08"
+        ]
+      },
+      "expectedSafeBehavior": "Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers.",
+      "rootCauseHypothesis": "EDGAR HTML embeds a full TOC before the body (source shape). Structural index correctly emits duplicate labels but resolveUniqueNodeByRef stays AMBIGUOUS; downstream consumers that ignore span length risk TOC binding.",
+      "independentEvidence": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "recommendedOwningAgent": "Structural Compiler",
+      "coordinatingAgents": [
+        "Dependency Atlas",
+        "Covenant Knowledge Factory"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "priority": "HIGH",
+      "classification": "COMPILER_DEFECT",
+      "secondaryClassifications": [
+        "UNRESOLVED_LEGAL_QUESTION"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "structure-summary reference counters",
+        "excerpt": "referencesDetected=1459 resolved=491 unresolved=968"
+      },
+      "compilerStage": "reference-resolution",
+      "actualOutput": {
+        "detected": 1459,
+        "resolved": 491,
+        "unresolved": 968,
+        "resolveRate": 0.3365318711446196
+      },
+      "expectedSafeBehavior": "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
+      "rootCauseHypothesis": "Mixture of (a) TOC-induced AMBIGUOUS targets, (b) external/schedule references omitted from package, (c) genuine cross-article refs not yet resolved by deterministic matcher. Not purely a source inconsistency.",
+      "independentEvidence": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "recommendedOwningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    }
+  ]
+}

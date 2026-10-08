@@ -1,0 +1,210 @@
+{
+  "tickets": [
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "severity": "CRITICAL",
+      "owningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core",
+        "Covenant Knowledge Factory"
+      ],
+      "classification": "SOURCE_INCONSISTENCY",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: reference-resolution",
+        "Confirm actualOutput: {\"definitionCites\":\"Section 7.05(a)(y)\",\"printedMarker\":\"(vi)\",\"parentheticalStillSays\":\"clause (y)\",\"compilerStructuralPath\":\"1.01(3)(31)(ii)\"}",
+        "Expected safe behavior: Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement.",
+        "Evidence: sourceSha256=4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "Evidence: definitionSpan= specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "Evidence: operativeExcerpt=he Borrower or any Restricted Subsidiary. “ Auto-Extension Letter of Credit ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as of any date of determination and with res",
+        "Evidence: Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "title": "Pass A shared_cap over-fires on aggregate-amount nodes (51 hits)",
+      "severity": "CRITICAL",
+      "owningAgent": "Covenant Knowledge Factory",
+      "coordinatingAgents": [
+        "Legal Core",
+        "Structural Compiler"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: pass-a-deterministic-discovery",
+        "Confirm actualOutput: {\"sharedCapSignalCount\":51,\"phraseSharedCapacityPresent\":false,\"realReallocationTermPresent\":true}",
+        "Expected safe behavior: Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
+        "Evidence: sharedCapCount=51",
+        "Evidence: phraseSharedCapacityPresent=false",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "Evidence: Lane C report: shared capacity phrase does not occur"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING",
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "severity": "CRITICAL",
+      "owningAgent": "Amendment Intelligence",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Dependency Atlas"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt (sha256 722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c)",
+        "Compiler stage: document-classification",
+        "Confirm actualOutput: {\"historicalClassification\":\"CREDIT_AGREEMENT @ 0.9\",\"restatesCandidates\":0,\"historicalReportConfirms\":true}",
+        "Expected safe behavior: Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission.",
+        "Evidence: sourceSha256=722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "Evidence: docs/final-lightweight-unseen.md §4",
+        "Evidence: docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "Evidence: docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "docs/final-lightweight-unseen.md §4",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "severity": "HIGH",
+      "owningAgent": "Structural Compiler",
+      "coordinatingAgents": [
+        "Dependency Atlas",
+        "Covenant Knowledge Factory"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: structural-index",
+        "Confirm actualOutput: {\"healthByCode\":{\"DUPLICATE_LABEL_EXPECTED\":306,\"AMBIGUOUS_LEGAL_REFERENCE\":306,\"DUPLICATE_NORMALIZED_PATH\":306},\"findingCount\":918,\"articlesJsonLength\":20,\"operativeLongSpanRecovery\":[\"7.01\",\"7.02\",\"7.03\",\"7.04\",\"7.05\",\"7.06\",\"7.08\"]}",
+        "Expected safe behavior: Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers.",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-LOW-RESOLVE",
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "severity": "HIGH",
+      "owningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: reference-resolution",
+        "Confirm actualOutput: {\"detected\":1459,\"resolved\":491,\"unresolved\":968,\"resolveRate\":0.3365318711446196}",
+        "Expected safe behavior: Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    }
+  ],
+  "ticketsByOwner": {
+    "Dependency Atlas": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING (coordinating)",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC (coordinating)",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE"
+    ],
+    "Structural Compiler": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP (coordinating)",
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING (coordinating)",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE (coordinating)"
+    ],
+    "Legal Core": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP (coordinating)",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE (coordinating)"
+    ],
+    "Covenant Knowledge Factory": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC (coordinating)"
+    ],
+    "Amendment Intelligence": [
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING"
+    ]
+  }
+}
