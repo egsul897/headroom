@@ -119,6 +119,8 @@ const Covenant = z.object({
   operativeFrom: z.string().optional(),
   operativeUntil: z.string().optional(),
   operativeNote: z.string().optional(),
+  /** When the CURRENT operative text of this provision lives in another package document (an amendment), literal checks run against that document. */
+  operativeTextDocumentId: z.string().optional(),
   material: z.boolean(),
   mustContain: z.array(z.string()),
   value: z.record(z.string(), z.unknown()).optional(),

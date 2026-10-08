@@ -196,6 +196,42 @@
   },
   "covenants": [
     {
+      "id": "C-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "C-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": []
+    },
+    {
       "id": "C-7.01(b)-original",
       "documentId": "credit-agreement",
       "sectionRef": "7.01(b)",
@@ -222,9 +258,8 @@
     },
     {
       "id": "C-7.01(b)-amended",
-      "documentId": "amendment-1",
-      "sectionRef": "1",
-      "targetSectionRef": "7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
       "family": "INDEBTEDNESS",
       "role": "BASKET",
       "posture": "PERMISSION",
@@ -252,6 +287,25 @@
       "dependsOnTerms": [
         "Indebtedness",
         "Default"
+      ],
+      "crossReferences": [],
+      "operativeTextDocumentId": "amendment-1"
+    },
+    {
+      "id": "C-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "owed to the Borrower by any Subsidiary"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Subsidiary"
       ],
       "crossReferences": []
     },

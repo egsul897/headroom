@@ -70,8 +70,9 @@ describe("product-acceptance corpus integrity", () => {
       it("every mustContain string for a covenant or structure node is literally present in its document", () => {
         const textOf = (id: string) => pkg.documents.find((d) => d.documentId === id)?.text ?? "";
         for (const c of pkg.manifest.covenants) {
-          for (const s of c.mustContain) expect(textOf(c.documentId), `${c.id} mustContain "${s}"`).toContain(s);
-          for (const cond of c.conditions) if (cond.textContains) expect(textOf(c.documentId), `${c.id} condition "${cond.textContains}"`).toContain(cond.textContains);
+          const doc = c.operativeTextDocumentId ?? c.documentId;
+          for (const s of c.mustContain) expect(textOf(doc), `${c.id} mustContain "${s}"`).toContain(s);
+          for (const cond of c.conditions) if (cond.textContains) expect(textOf(doc), `${c.id} condition "${cond.textContains}"`).toContain(cond.textContains);
         }
         for (const s of pkg.manifest.structure.exact) {
           for (const t of [...(s.ownTextContains ?? []), ...(s.fullTextContains ?? [])]) expect(textOf(s.documentId), `${s.sectionRef} text "${t}"`).toContain(t);

@@ -148,6 +148,43 @@
   },
   "covenants": [
     {
+      "id": "G-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "occurrence": 1,
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness, except"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "G-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": []
+    },
+    {
       "id": "G-7.01(b)",
       "documentId": "credit-agreement",
       "sectionRef": "7.01(b)",
@@ -220,7 +257,13 @@
       "dependsOnTerms": [
         "Indebtedness"
       ],
-      "crossReferences": []
+      "crossReferences": [],
+      "value": {
+        "kind": "MONEY",
+        "amount": 35000000,
+        "currency": "USD",
+        "basis": "AGGREGATE_AT_ANY_TIME_OUTSTANDING"
+      }
     },
     {
       "id": "G-7.03",
@@ -309,6 +352,25 @@
       "dependsOnTerms": [],
       "crossReferences": [],
       "truncated": true
+    },
+    {
+      "id": "G-7.03(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03(b)",
+      "family": "INVESTMENTS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Cash Equivalents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "unresolvedTerms": [
+        "Cash Equivalents"
+      ],
+      "crossReferences": []
     }
   ],
   "sharedCaps": [],

@@ -1,12 +1,16 @@
-# Progress manifest — independent product validation (branch `claude/independent-product-validation`)
+# Progress manifest — independent product validation
+
+Branch `claude/independent-product-validation` from `origin/main` @ `9de4e5737166fcec84a35fdc9a3404870549211f`.
+Collaboration contract: no edits under `lib/contract-model/`, no Gibraltar runners, no sealed evidence, no frozen
+architecture docs, no shared test configuration, no package.json changes, no merge into main, no rebase onto unmerged
+Cursor work. Provider calls: none in this workstream.
 
 | checkpoint | content | status |
 |---|---|---|
-| 0 | baseline recorded; branch from `origin/main` `9de4e573`; open Cursor PRs #125–#135 noted; repository map | done |
-| 1 | synthetic corpus A–H with independent expectation manifests and hash-pinned integrity test | pending |
-| 2 | offline acceptance runner + coverage/omission auditor + structured report | pending |
-| 3 | acceptance and safety-invariant tests | pending |
-| 4 | acceptance run artefacts, defect register, readiness scorecard | pending |
-| 5 | MVP specification, commercial validation plan, draft PR | pending |
+| 0 | branch, baseline SHA, open-PR inventory, interface map (`00-repository-map.md`) | done |
+| 1 | synthetic corpus A–H, expectation manifests, hash pinning, corpus-integrity test | done (`84c3ef8`) |
+| 2 | offline acceptance runner (deterministic stages, mocked semantic stage, runtime F), auditor, tests, defect register, matrix, scorecard, MVP spec, commercial plan | done (this commit) |
+| 3 | committed acceptance-run artefacts (`acceptance-runs/<sha>/`), progress manifest, draft PR | done (next commit) |
 
-Rules kept: no provider call; no edit under `lib/`, `app/`, `prisma/`, existing tests, CI, sealed evidence; no fixture tuned to make Headroom look good; every finding records input, expectation, actual, SHA, severity and an outcome class.
+Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
+not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

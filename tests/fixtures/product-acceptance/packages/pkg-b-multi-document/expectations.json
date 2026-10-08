@@ -174,6 +174,45 @@
   },
   "covenants": [
     {
+      "id": "B-CA-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness"
+      ],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "B-CA-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": []
+    },
+    {
       "id": "B-CA-7.01(b)",
       "documentId": "credit-agreement",
       "sectionRef": "7.01(b)",
@@ -369,6 +408,45 @@
           "material": true
         }
       ],
+      "dependsOnTerms": [],
+      "crossReferences": []
+    },
+    {
+      "id": "B-CA-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create any Lien",
+        "Section 7.01(b)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ]
+    },
+    {
+      "id": "B-IND-4.09(b)",
+      "documentId": "indenture",
+      "sectionRef": "4.09(b)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Notes issued on the Issue Date"
+      ],
+      "conditions": [],
       "dependsOnTerms": [],
       "crossReferences": []
     }
