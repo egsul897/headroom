@@ -117,6 +117,7 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Claude-owned acceptance fixtures were not edited.
 - `7.05(a)(y)` resolves UNIQUE. The Available Amount Builder Basket sentence is `7.05(a)(y)(vi)(B)`. The sealed path `7.05(a)(4)(ii)(vi)(B)` was the swallowed letter run.
 - Local checks on this tree: `npx tsc --noEmit -p .` exited 0. `npm run test:phase3-certification` 459 passed. `npx vitest run tests/stratified-cert` 58 passed. Pass B accountability corpus 67 passed. The frozen entity-scope replay still fails on the committed guard: `ir-rule:01c9a005fd9c7649ddc26012` becomes `SOURCE_SCOPE_DERIVED` with `["BORROWER","GUARANTOR_RS","NON_GUARANTOR_RS"]` and stays COMPLETE. That failure is present with the MODEL_WIDER branch removed. It is not this narrowing fix.
+- Actions `37808218579` on `5a6e79a` failed the provider-free certified path in `f7a-shard-planner-stitcher.test.ts`: the chapeau CONDITION (`so long as no Default`) was cited on the rule, so accountability counted it missing. The owning shard now places that id on a `NO_DEFAULT` condition node. The 32 stitcher tests pass.
 
 ## NEXT_TASK
 
