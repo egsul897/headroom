@@ -18,6 +18,7 @@ DEVELOPMENT ≠ CERTIFIED. This register does not change certification status.
 | An unanchored compile with an index looked like a missing fail-closed. | Production discovery, covenant-map, and Gibraltar rehydration pass an anchor. Raw-text fixtures keep compiling when the anchor id is absent. A supplied id missing from the index is still refused. |
 | A long contents title outranked a shorter operative body in reference resolution. | `resolveReferenceTarget` treats a contents listing as degenerate at any length. Two operative bodies stay `AMBIGUOUS`. |
 | `getOperativeProvision` served a contents listing when it was the only node for the label. | The raw fallback refuses a contents listing. A unique operative body is still returned. |
+| `getReferencedProvision` followed a stored target id into a contents listing. | A contents-listing target is skipped. The operative body is returned when one exists. A label whose only node is a contents listing is refused. |
 | An independent qualitative condition was deleted, and an unattributed unlimited pair was copied onto siblings. | `semantic-accountability-compiler.v12` qualitative redundancy and ambiguous attribution. |
 | Missing token telemetry was treated as zero spend. | `mayDispatchUnderSpendingTarget` blocks the next dispatch when tokens are unknown. |
 | The five-conversation reservation shape was filtered only for Gibraltar. | The Gibraltar-only stop was removed. The shape applies generally. |

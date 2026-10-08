@@ -82,8 +82,8 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Mission: source-backed compilation without false operative text, silent condition loss, or unanchored authority.
 - Branch: `cursor/architecture-remediation-7cc2`. Base: `cursor/gibraltar-haiku-verify-7cc2`. PR #136 draft.
 - Last verified SHA before the unanchored decision: `044d1b32052d5d75c1bfb57d26fdbd183a0804b5`. Certified path on `4a7a477` succeeded (Actions `37798576897`). Actions on `8590be6` and `044d1b3` were not observed.
-- Current task: `getOperativeProvision` returned a contents listing when that listing was the only node for the label.
-- Status: the raw fallback now refuses a contents listing. A unique operative body is still returned. `semantic-tools-operative-state-discipline.test.ts` 17 passed. Prior cycle: `reference-resolver-contents.test.ts` 2 passed; heading-only, generic, and two-substantive resolver tests passed; `operative-authority.test.ts` 13 passed.
+- Current task: `getReferencedProvision` followed a stored target id into a contents listing.
+- Status: a contents-listing target is skipped. The operative body is returned when one exists. A contents-only label is refused. `semantic-tools-operative-state-discipline.test.ts` 19 passed. Prior cycle on `825aacf`: the same file had 17 passed for the `getOperativeProvision` refusal.
 - Known defects still open: `package-compile.ts` still compiles every eligible non-representation candidate. Local semantic-review timeouts under the 5s default are not a certification result. Actions on `8590be6` and `044d1b3` are unobserved.
 - Unanchored compile: every production caller that reaches `compileCovenantToIR` with a real package index also passes a non-empty anchor. Discovery Pass C sets `structuralNodeIds` to a node id from that index. `compileCandidateToVerifiedIR` returns `NO_STRUCTURAL_ANCHOR` before compile when the list is empty or the id is missing. Gibraltar `candidateFor` and `rehydrate` skip a row with no resolvable node id. `operativeModelDispatchBlock` still returns null when the index is absent or the anchor id is absent, because `testCompilerInput` and certified bounded-execution fixtures compile raw operative text with an index attached and `originatingStructuralNodeIds` empty. An anchor id that is present and missing from the index is still refused.
 - `7.4(a)(iii)` and `7.4(a)(iv)` are not nodes. The marker scanner rejects a parenthesis that is immediately preceded by a comma and a space (`MARKER_OCCURRENCE` in `clause-hierarchy.ts`). The Section 7.4 text is "), (iii)" and "), (iv)". That exclusion is the documented citation-list rule. Those two discovery ids have no run-original evidence file. The same two keys were already unresolved on the parser before the letter-run guard. Do not accept every comma-separated marker; that was the FWRG citation false-positive the rule exists to stop.
@@ -97,8 +97,16 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: decide whether `getReferencedProvision` can still return a contents listing when the reference graph's target node id is that listing.
-- Relevant files: `lib/contract-model/compiler/semantic/tools.ts` (`getReferencedProvision` execute, the `found.targetNodeId` branch), `lib/contract-model/compiler/operative-authority.ts`.
-- First step: read that branch. If a resolved target node id is served without a contents check, add a regression that refuses a contents-listing target and still returns an operative target.
-- Acceptance: `tests/contract-model/semantic-tools-operative-state-discipline.test.ts` shows no new assertion failure. No provider call.
-- Dependency: do not refuse an operative target. Do not guess between two operative bodies.
+- Objective: decide whether definition-text cross-reference retrieval still withholds an operative section because a contents listing shares its label.
+- Relevant files: `lib/contract-model/compiler/context-retrieval/reference-context.ts` (`retrieveCrossReferencesFromDefinitionText`), `lib/contract-model/compiler/semantic-accountability/reference-resolver.ts`.
+- First step: read the `resolveUniqueNodeByRef` branch. It records AMBIGUOUS and does not call `resolveReferenceTarget`. If a definition mention of a label that has one contents row and one operative body stays unresolved, retrieve the operative body through `resolveReferenceTarget` and keep two operative bodies unresolved.
+- Acceptance: existing context-retrieval tests pass, plus a regression for the contents-plus-body case. No provider call.
+- Dependency: do not retrieve a contents listing as the definition's cross-reference target. Do not guess between two operative bodies.
+
+## Milestone
+
+- Starting SHA this continuation: `044d1b32052d5d75c1bfb57d26fdbd183a0804b5`.
+- Commits since then: `982c3bc` contents titles and the unanchored-fixture decision; `be9b01c` long contents titles are not reference targets; `825aacf` `getOperativeProvision` refuses a contents listing; the commit that contains this note is the `getReferencedProvision` refusal.
+- Tests this milestone: operative-authority 13 passed; reference-resolver contents 2 passed; heading-only, generic, and two-substantive resolver tests passed; semantic-tool discipline 19 passed.
+- Blockers: Actions on `8590be6` and later SHAs are unobserved. `npm run test:phase3-certification` has not been re-run on this head. Local semantic-review timeouts under the 5s default are not a certification result. `package-compile.ts` is still the broad set.
+- Paid calls: none. Certification: not advanced. Sealed evidence: not rewritten.

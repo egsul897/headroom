@@ -937,7 +937,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             // the candidates. The pre-fix early refusal made "Section 2.18" unretrievable from its own citing clause.
             if (found?.resolved && found.targetNodeId && !found.targetAmbiguous) {
               const targetNode = access.structuralIndex.getNode(found.targetNodeId);
-              if (targetNode) {
+              if (targetNode && classifyStructuralOccurrence(targetNode, access.structuralIndex) !== "CONTENTS_LISTING") {
                 // Phase 3F.1.6.R BLOCKER-5 fix (SUPER-5): previously read
                 // raw structural text unconditionally, with no
                 // operative-state check at all, despite this tool's own
@@ -984,6 +984,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // the model can disambiguate deliberately via getSourceSpan(nodeId)
         // on real evidence, instead of this code ever guessing (mission §15).
         const ambiguousCandidates: { documentId: string; nodeId: string; sectionRef: string; charStart: number; heading: string }[] = [];
+        let sawContentsListing = false;
         for (const documentId of allowedDocs) {
           const resolution = resolveReferenceTarget(access.structuralIndex, documentId, ref, { fromNodeId });
           if (resolution.status === "AMBIGUOUS") {
@@ -991,6 +992,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
               const n = access.structuralIndex.getNodeById(nodeId);
               if (n) ambiguousCandidates.push({ documentId, nodeId, sectionRef: n.sectionRef, charStart: n.charStart, heading: n.heading.slice(0, 80) });
             }
+            continue;
+          }
+          if (resolution.node && classifyStructuralOccurrence(resolution.node, access.structuralIndex) === "CONTENTS_LISTING") {
+            sawContentsListing = true;
             continue;
           }
           if (resolution.node) {
@@ -1011,6 +1016,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           }
         }
         if (ambiguousCandidates.length > 0) return refuse(`reference "${ref}"${fromNodeId ? ` (from node "${fromNodeId}")` : ""} matches ${ambiguousCandidates.length} substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: ${JSON.stringify(ambiguousCandidates)}. ${fromNodeId ? "Call" : "Provide a fromNodeId for context-scoped resolution, or call"} getSourceSpan on the specific candidate nodeId your evidence supports.`);
+        if (sawContentsListing) return refuse(`section reference "${ref}" resolves to a contents listing, not an operative covenant`);
         return refuse(`reference "${ref}" did not resolve to any section (or any enclosing section) within this instrument's documents`);
       },
     },
