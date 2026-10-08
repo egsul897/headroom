@@ -109,8 +109,8 @@ describe("financial-definitions-precedent dataset integrity", () => {
     }>("01-schema.json");
     expect(schema.version).toBe("fdp.v1");
     expect(schema.missingInputRepresentation.pattern).toBe("MISSING_INPUT:<inputKey>");
-    expect(schema.coordination.definitionEncyclopedia.bcId).toMatch(/^bc-/);
-    expect(schema.coordination.basketFormulaLibrary.bcId).toMatch(/^bc-/);
+    expect(schema.coordination.definitionEncyclopedia?.bcId).toMatch(/^bc-/);
+    expect(schema.coordination.basketFormulaLibrary?.bcId).toMatch(/^bc-/);
     expect(schema.nonGoals.join(" ")).toMatch(/calculation equivalence/i);
   });
 
@@ -668,7 +668,7 @@ describe("financial-definitions-precedent dataset integrity", () => {
       }
     }
     const gib = legal.models.find((m) => m.modelId === "CM-GIB-AA-BUILDER-v1");
-    expect(gib?.dimensions.arithmeticCorrectness.status).toBe("BLOCKED");
+    expect(gib?.dimensions.arithmeticCorrectness?.status).toBe("BLOCKED");
   });
 
   it("canonical export v3 integrates peers without competing production schemas", () => {
