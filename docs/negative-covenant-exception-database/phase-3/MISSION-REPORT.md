@@ -76,4 +76,6 @@ See `08-unresolved-legal-questions.json` (ULQ-P3-1 … ULQ-P3-4).
 
 ## 9. SHA / tests / CI / PR
 
-Recorded after commit/push in the mandatory return box.
+Exact SHA: `2d2612400ada582fd0ea443941d71651b8691011`
+Tests: `npx vitest run tests/negative-covenant-exception-database/phase2-catalog.test.ts tests/negative-covenant-exception-database/phase3-catalog.test.ts` — 16/16 passed locally.
+PR: #143 (draft, do not merge).
