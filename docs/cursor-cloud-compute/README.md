@@ -51,3 +51,18 @@ GPU-required workloads via the optional GPU-worker interface
 | `lib/cursor-cloud-compute/` | Assessment library |
 | `scripts/cursor-cloud-compute/run-100-doc-benchmark.ts` | CLI |
 | `tests/cursor-cloud-compute/` | Soft-gate acceptance tests |
+
+## Phase 2 — real EDGAR scale
+
+See [`measured-results-phase2.md`](./measured-results-phase2.md).
+
+```bash
+export HEADROOM_CKF_ROOT=/tmp/peer-worktrees/ckf
+export HEADROOM_EHB_ROOT=/tmp/peer-worktrees/ehb
+npm run compute:phase2-real-edgar -- \
+  --ehb-run-dir data/edgar-historical-backfill/cca-phase2-pilot100 \
+  --limit 1000
+```
+
+Consumes WS-EHB manifests (no competing registry). Downloads via peer SEC transport.
+Raw corpora stay under gitignored `data/`.

@@ -214,11 +214,15 @@ export function readEhbDiscoveryWallMs(ehbRunDir: string): number | null {
     const cp = JSON.parse(fs.readFileSync(checkpointPath, "utf-8")) as {
       startedAt?: string;
       finishedAt?: string;
+      createdAt?: string;
+      updatedAt?: string;
       stats?: { wallMs?: number };
     };
     if (typeof cp.stats?.wallMs === "number") return cp.stats.wallMs;
-    if (cp.startedAt && cp.finishedAt) {
-      return new Date(cp.finishedAt).getTime() - new Date(cp.startedAt).getTime();
+    const start = cp.startedAt ?? cp.createdAt;
+    const end = cp.finishedAt ?? cp.updatedAt;
+    if (start && end) {
+      return new Date(end).getTime() - new Date(start).getTime();
     }
   } catch {
     return null;

@@ -1,0 +1,501 @@
+{
+  "status": "COMPUTE_ASSESSMENT_PHASE2_NOT_CERTIFIED",
+  "generatedAt": "2026-10-08T22:27:10.981Z",
+  "jobId": "phase2-2026-10-08T22-26-35-340Z-7a6d213d",
+  "northStarPreserved": true,
+  "certificationClaimed": false,
+  "coordination": {
+    "workstreamId": "WS-CCA",
+    "consumedContracts": [
+      "docs/architecture/parallel-agents/00-operating-rules.md",
+      "docs/architecture/parallel-agents/01-workstream-map.json",
+      "docs/architecture/parallel-agents/05-sec-request-scheduler-contract.md",
+      "docs/architecture/parallel-agents/13-shared-corpus-manifest.json",
+      "docs/edgar-historical-backfill/00-interface-contract.md",
+      "lib/knowledge-factory/edgar/http.ts (CKF SecHttpClient via HEADROOM_CKF_ROOT)"
+    ],
+    "ehbRunDir": "data/edgar-historical-backfill/cca-phase2-pilot100",
+    "ckfRoot": "/tmp/peer-worktrees/ckf",
+    "ownershipExclusive": [
+      "docs/cursor-cloud-compute/**",
+      "lib/cursor-cloud-compute/**",
+      "scripts/cursor-cloud-compute/**",
+      "tests/cursor-cloud-compute/**"
+    ]
+  },
+  "cold": {
+    "mode": "cold",
+    "documentCountTarget": 1000,
+    "uniqueDocumentsProcessed": 154,
+    "uniqueIssuers": 48,
+    "uniqueInstruments": 85,
+    "uniqueAgreementKeys": 155,
+    "uniqueAccessions": 103,
+    "documentKindCounts": {
+      "RESTATEMENT": 38,
+      "CREDIT_AGREEMENT": 39,
+      "SUPPLEMENTAL_INDENTURE": 8,
+      "AMENDMENT": 26,
+      "INDENTURE": 17,
+      "INTERCREDITOR": 1,
+      "SECURITY_AGREEMENT": 6,
+      "OTHER_DEBT_AGREEMENT": 20
+    },
+    "filingDateMin": "2004-11-02",
+    "filingDateMax": "2026-08-12",
+    "discoveryMs": 177830.0,
+    "downloadMs": 31302.48681900002,
+    "parseMs": 712.6566819999953,
+    "structureMs": 470.92551899999773,
+    "definitionsMs": 85.69498199998026,
+    "referencesMs": 153.9975199999945,
+    "passAMs": 522.7406019999903,
+    "dedupeMs": 0.284217999998134,
+    "storageMs": 15.46072400001168,
+    "endToEndWallMs": 33569.884892,
+    "processingOnlyMs": 1961.7602469999679,
+    "processingOnlyDocsPerSecond": 79.01067433547732,
+    "endToEndDocsPerSecond": 4.617233585955425,
+    "peakRssBytes": 194940928,
+    "cpuUserMs": 3767.703,
+    "cpuSystemMs": 472.755,
+    "cpuUtilizationApprox": 0.12631732320924752,
+    "storageBytes": 97330003,
+    "secRequestCount": 155,
+    "cacheHitCount": 0,
+    "cacheMissCount": 155,
+    "okCount": 154,
+    "failureCount": 0,
+    "duplicateCount": 1,
+    "unsupportedCount": 0,
+    "oversizedCount": 0,
+    "failureRate": 0,
+    "errorClassCounts": {
+      "MISSING_DEFINITIONS": 23,
+      "STRUCTURE_EMPTY": 42,
+      "DUPLICATE_IDENTITY": 1
+    },
+    "throughputByKind": [
+      {
+        "label": "RESTATEMENT",
+        "documentCount": 37,
+        "processingOnlyMs": 545.9955770000092,
+        "docsPerSecondProcessingOnly": 67.76611672075757,
+        "meanBytes": 347500.3243243243
+      },
+      {
+        "label": "CREDIT_AGREEMENT",
+        "documentCount": 39,
+        "processingOnlyMs": 496.0589469999941,
+        "docsPerSecondProcessingOnly": 78.61968872018039,
+        "meanBytes": 305665.7948717949
+      },
+      {
+        "label": "SUPPLEMENTAL_INDENTURE",
+        "documentCount": 8,
+        "processingOnlyMs": 130.7782020000086,
+        "docsPerSecondProcessingOnly": 61.17227395433586,
+        "meanBytes": 513587.25
+      },
+      {
+        "label": "AMENDMENT",
+        "documentCount": 26,
+        "processingOnlyMs": 176.76261399998475,
+        "docsPerSecondProcessingOnly": 147.0899270589099,
+        "meanBytes": 151830.07692307694
+      },
+      {
+        "label": "INDENTURE",
+        "documentCount": 17,
+        "processingOnlyMs": 527.6403769999997,
+        "docsPerSecondProcessingOnly": 32.21891413363161,
+        "meanBytes": 659730.1764705882
+      },
+      {
+        "label": "INTERCREDITOR",
+        "documentCount": 1,
+        "processingOnlyMs": 5.161010000003444,
+        "docsPerSecondProcessingOnly": 193.76052361830975,
+        "meanBytes": 96187
+      },
+      {
+        "label": "SECURITY_AGREEMENT",
+        "documentCount": 6,
+        "processingOnlyMs": 29.560959000002185,
+        "docsPerSecondProcessingOnly": 202.97041107494368,
+        "meanBytes": 125892.33333333333
+      },
+      {
+        "label": "OTHER_DEBT_AGREEMENT",
+        "documentCount": 20,
+        "processingOnlyMs": 49.800599999965925,
+        "docsPerSecondProcessingOnly": 401.60158712974714,
+        "meanBytes": 129278.8
+      }
+    ],
+    "throughputBySize": [
+      {
+        "label": "<100KB",
+        "documentCount": 69,
+        "processingOnlyMs": 97.05564699999309,
+        "docsPerSecondProcessingOnly": 710.9323582171877,
+        "meanBytes": 42393.68115942029
+      },
+      {
+        "label": "100KB-1MB",
+        "documentCount": 73,
+        "processingOnlyMs": 1333.4628459999933,
+        "docsPerSecondProcessingOnly": 54.744682402647435,
+        "meanBytes": 410991.31506849313
+      },
+      {
+        "label": "1MB-5MB",
+        "documentCount": 12,
+        "processingOnlyMs": 531.2397929999815,
+        "docsPerSecondProcessingOnly": 22.588669294207815,
+        "meanBytes": 1213313.1666666667
+      },
+      {
+        "label": ">=5MB",
+        "documentCount": 0,
+        "processingOnlyMs": 0,
+        "docsPerSecondProcessingOnly": 0,
+        "meanBytes": 0
+      }
+    ],
+    "retryCount": 0
+  },
+  "warm": {
+    "mode": "warm",
+    "documentCountTarget": 1000,
+    "uniqueDocumentsProcessed": 154,
+    "uniqueIssuers": 48,
+    "uniqueInstruments": 85,
+    "uniqueAgreementKeys": 154,
+    "uniqueAccessions": 102,
+    "documentKindCounts": {
+      "RESTATEMENT": 37,
+      "CREDIT_AGREEMENT": 39,
+      "SUPPLEMENTAL_INDENTURE": 8,
+      "AMENDMENT": 26,
+      "INDENTURE": 17,
+      "INTERCREDITOR": 1,
+      "SECURITY_AGREEMENT": 6,
+      "OTHER_DEBT_AGREEMENT": 20
+    },
+    "filingDateMin": "2004-11-02",
+    "filingDateMax": "2026-08-12",
+    "discoveryMs": 0,
+    "downloadMs": 0,
+    "parseMs": 689.8304279999502,
+    "structureMs": 410.51701600000524,
+    "definitionsMs": 77.3840830000554,
+    "referencesMs": 162.98185199997533,
+    "passAMs": 459.2771970000831,
+    "dedupeMs": 0.1534790000077919,
+    "storageMs": 14.763369999993301,
+    "endToEndWallMs": 2043.9809779999996,
+    "processingOnlyMs": 1814.9074250000704,
+    "processingOnlyDocsPerSecond": 84.85281280944346,
+    "endToEndDocsPerSecond": 75.3431669166933,
+    "peakRssBytes": 263729152,
+    "cpuUserMs": 2023.668,
+    "cpuSystemMs": 235.804,
+    "cpuUtilizationApprox": 1.1054271171402263,
+    "storageBytes": 97325823,
+    "secRequestCount": 0,
+    "cacheHitCount": 154,
+    "cacheMissCount": 0,
+    "okCount": 154,
+    "failureCount": 0,
+    "duplicateCount": 0,
+    "unsupportedCount": 0,
+    "oversizedCount": 0,
+    "failureRate": 0,
+    "errorClassCounts": {
+      "MISSING_DEFINITIONS": 23,
+      "STRUCTURE_EMPTY": 42
+    },
+    "throughputByKind": [
+      {
+        "label": "RESTATEMENT",
+        "documentCount": 37,
+        "processingOnlyMs": 505.4692359999899,
+        "docsPerSecondProcessingOnly": 73.19931138202988,
+        "meanBytes": 347500.3243243243
+      },
+      {
+        "label": "CREDIT_AGREEMENT",
+        "documentCount": 39,
+        "processingOnlyMs": 472.244555000063,
+        "docsPerSecondProcessingOnly": 82.58432963826296,
+        "meanBytes": 305665.7948717949
+      },
+      {
+        "label": "SUPPLEMENTAL_INDENTURE",
+        "documentCount": 8,
+        "processingOnlyMs": 134.2985939999926,
+        "docsPerSecondProcessingOnly": 59.56875468108357,
+        "meanBytes": 513587.25
+      },
+      {
+        "label": "AMENDMENT",
+        "documentCount": 26,
+        "processingOnlyMs": 158.82273400005215,
+        "docsPerSecondProcessingOnly": 163.70452356015647,
+        "meanBytes": 151830.07692307694
+      },
+      {
+        "label": "INDENTURE",
+        "documentCount": 17,
+        "processingOnlyMs": 466.48357799997757,
+        "docsPerSecondProcessingOnly": 36.442869163554604,
+        "meanBytes": 659730.1764705882
+      },
+      {
+        "label": "INTERCREDITOR",
+        "documentCount": 1,
+        "processingOnlyMs": 4.816585000000487,
+        "docsPerSecondProcessingOnly": 207.61597687986384,
+        "meanBytes": 96187
+      },
+      {
+        "label": "SECURITY_AGREEMENT",
+        "documentCount": 6,
+        "processingOnlyMs": 25.85135400001309,
+        "docsPerSecondProcessingOnly": 232.09616022421736,
+        "meanBytes": 125892.33333333333
+      },
+      {
+        "label": "OTHER_DEBT_AGREEMENT",
+        "documentCount": 20,
+        "processingOnlyMs": 46.920788999981596,
+        "docsPerSecondProcessingOnly": 426.25029174185124,
+        "meanBytes": 129278.8
+      }
+    ],
+    "throughputBySize": [
+      {
+        "label": "<100KB",
+        "documentCount": 69,
+        "processingOnlyMs": 85.04912500001228,
+        "docsPerSecondProcessingOnly": 811.2958246188898,
+        "meanBytes": 42393.68115942029
+      },
+      {
+        "label": "100KB-1MB",
+        "documentCount": 73,
+        "processingOnlyMs": 1212.9624280000498,
+        "docsPerSecondProcessingOnly": 60.18323264997043,
+        "meanBytes": 410991.31506849313
+      },
+      {
+        "label": "1MB-5MB",
+        "documentCount": 12,
+        "processingOnlyMs": 516.8958720000082,
+        "docsPerSecondProcessingOnly": 23.21550751328076,
+        "meanBytes": 1213313.1666666667
+      },
+      {
+        "label": ">=5MB",
+        "documentCount": 0,
+        "processingOnlyMs": 0,
+        "docsPerSecondProcessingOnly": 0,
+        "meanBytes": 0
+      }
+    ],
+    "retryCount": 0
+  },
+  "resumeProof": {
+    "proved": true,
+    "notes": [
+      "Restart loads processing-queue.json; DONE stages are not re-executed unless INVALIDATED.",
+      "Content-hash mismatch invalidates downstream stages only.",
+      "Dedup map rebuilt from completed OK rows prevents duplicate logical records."
+    ],
+    "duplicateRecordsOnRestart": 0,
+    "completedWorkPreserved": 154,
+    "contentChangeInvalidations": 1,
+    "reprocessedStagesOnly": true
+  },
+  "quality": {
+    "parseFailures": 0,
+    "brokenHierarchies": 0,
+    "missingDefinitions": 23,
+    "crossReferenceIssues": 0,
+    "duplicateIdentities": 1,
+    "unsupportedFormats": 0,
+    "oversizedDocuments": 0,
+    "exampleFailures": [
+      {
+        "sourceDocumentId": "05c72cb10c11ded54a93e802",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/10329/000119312504186079/dex4a.htm"
+      },
+      {
+        "sourceDocumentId": "1bb670fa511f6878fb8fae8c",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/3197/000119312510192406/dex103.htm"
+      },
+      {
+        "sourceDocumentId": "2a273ad7263572f4e1928879",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/6955/000119312509128979/dex101.htm"
+      },
+      {
+        "sourceDocumentId": "52601482ae5521accbb721d2",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/92380/000009238020000154/luv-20201123.htm"
+      },
+      {
+        "sourceDocumentId": "76615213df43383da5682415",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/5272/000119312512416897/d420655dex101.htm"
+      },
+      {
+        "sourceDocumentId": "9e8bfa5ae61138724bb16eb0",
+        "errorClass": "DUPLICATE_IDENTITY",
+        "error": "",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/2230/000089843224000465/exh3-1.htm"
+      },
+      {
+        "sourceDocumentId": "a687a00bd737b4fef4461397",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/3197/000119312510192406/dex102.htm"
+      },
+      {
+        "sourceDocumentId": "a8b9ad53b12c32083db07153",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/100517/000119312507020056/dex41.htm"
+      },
+      {
+        "sourceDocumentId": "b8e3286a95f5cf485db2ebed",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/12208/000001220810000058/exhibit101.htm"
+      },
+      {
+        "sourceDocumentId": "c865950e7f36e27dfa9edcf3",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/3197/000118143107017025/rrd149156_18843.htm"
+      },
+      {
+        "sourceDocumentId": "f1145efdca543500b4f2dcc8",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/3197/000118143107017025/rrd149156_18844.htm"
+      },
+      {
+        "sourceDocumentId": "169e1581a6216fddeb17124f",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/92380/000009238020000056/coverpage4-2x20.htm"
+      },
+      {
+        "sourceDocumentId": "1c3d1a80babad16547b9de69",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/4515/000000620119000070/a8k11819-2019amendment.htm"
+      },
+      {
+        "sourceDocumentId": "1edfd0ceffd4a9763b72aa5c",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/10795/000162828017000301/bdx1192017creditagreemente.htm"
+      },
+      {
+        "sourceDocumentId": "3ac6fe9f007f2d10b2c2fe58",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/14272/000119312506260516/dex101.htm"
+      },
+      {
+        "sourceDocumentId": "3cb261a3aa91c76e53b6b89e",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/9389/000000938912000018/f8k.htm"
+      },
+      {
+        "sourceDocumentId": "59347ddb808cd973fbf4d94d",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/8177/000000817706000040/creditagreemt2006.htm"
+      },
+      {
+        "sourceDocumentId": "69f08b70c79217a74f520a80",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/2488/000119312506217735/dex101.htm"
+      },
+      {
+        "sourceDocumentId": "6f56327eab3682a77eca1776",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/4904/000000490413000066/aep8k07172013.htm"
+      },
+      {
+        "sourceDocumentId": "75a4ef0f7a93074e18e9f1f2",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/12927/000001292712000019/a201210oct15extension.htm"
+      },
+      {
+        "sourceDocumentId": "75fa796c9ef1570bddf4a2b0",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/4904/000000490413000010/aep8k02142013.htm"
+      },
+      {
+        "sourceDocumentId": "76db93b08e7aba79066fada3",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/4281/000119312507152467/dex10a.htm"
+      },
+      {
+        "sourceDocumentId": "79a20b72f13f810e448ab433",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/6845/000119312505102714/dex101.htm"
+      },
+      {
+        "sourceDocumentId": "7d63b86b32689a068e2edac0",
+        "errorClass": "MISSING_DEFINITIONS",
+        "error": "no definitions detected on large financing document",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/14272/000119312512326074/d387499dex101.htm"
+      },
+      {
+        "sourceDocumentId": "87ea6750177dd2f6cad4e49a",
+        "errorClass": "STRUCTURE_EMPTY",
+        "error": "structural compilation produced zero nodes",
+        "sourceUri": "https://www.sec.gov/Archives/edgar/data/4904/000000490411000098/aep8k_07272011.htm"
+      }
+    ]
+  },
+  "cost": {
+    "externalPaidUsd": 0,
+    "anthropicCalls": 0,
+    "gpuProvisioned": false
+  },
+  "cursorUsage": {
+    "observable": true,
+    "notes": [
+      "Cursor Cloud agent wall-minutes estimated from cold+warm end-to-end wall only.",
+      "Subscription-level Cursor billing is not exposed to this process."
+    ],
+    "agentWallMinutesColdWarm": 0.5935644311666667
+  },
+  "durability": {
+    "corpusRootIsVmLocal": true,
+    "portableManifestPath": "/workspace/docs/cursor-cloud-compute/results/phase2-real-edgar-phase2-2026-10-08T22-26-35-340Z-7a6d213d.json",
+    "claimedPersistentInfrastructure": false
+  },
+  "blocker": "EHB discovery corpus currently yields 155 distinct fetchable financing documents (target 1000). Blocker: upstream WS-EHB discovery coverage / ranking \u2014 expand issuer universe or lower relevance gate in EHB; WS-CCA does not invent a competing registry."
+}
