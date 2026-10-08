@@ -18,6 +18,7 @@
     "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts",
     "compute:inspect": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=1",
     "compute:bench-100": "tsx scripts/cursor-cloud-compute/run-100-doc-benchmark.ts --size=100",
+    "compute:phase2-real-edgar": "tsx scripts/cursor-cloud-compute/run-phase2-real-edgar.ts",
     "test:cursor-cloud-compute": "vitest run tests/cursor-cloud-compute"
   },
   "dependencies": {
