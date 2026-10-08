@@ -1,0 +1,235 @@
+{
+  "exampleId": "stc-lsb-6.11-restricted-payments",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "dev",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    "filingAccession": "0001193125-23-303035",
+    "cik": "0000060714",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2023-12-21",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/60714/000119312523303035/"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": "2023-12-21",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.11",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VI",
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": "Make any distribution or declare or pay any dividends ... or purchase, acquire, redeem, or retire any of any Loan Party's Stock",
+  "input": {
+    "exactText": "SECTION  6.11 Restricted Payments . Make any\ndistribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a\n“ Restricted Payment ”); provided , that the foregoing shall not prohibit any of the following: (a) Restricted\nPayments by a Loan Party to another Loan Party; (b) transactions permitted under Section  6.03 ; \n (c) Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment; and \n (d) Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any\nRestricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section  6.11 ).\n ",
+    "charStartInFixture": 13300,
+    "charEndInFixture": 14270,
+    "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "windowSha256": "1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+    "definitions": {
+      "Payment Conditions": "Payment Conditions ” shall be deemed to be satisfied in connection with any Payment Condition Transaction if: \n (a) no Default has occurred and is continuing or would result immediately after giving effect to such Payment Condition\nTransaction; (b) immediately after giving effect to, and at all times during the thirty (30) consecutive day period\nimmediately preceding, the Payment Condition Transaction, the Borrowers shall have Specified Availability calculated on a pro forma basis after giving effect to such Payment Condition Transaction of not less than the greater of (1) 20% of the\nRevolving Commitment and (2) $13,000,000; and (c) the Borrower Representative shall have delivered to the Administrative\nAgent a certificate in form and substance reasonably satisfactory to the Administrative Agent certifying as to the items described in (a) and (b) above and attaching calculations for item (b) (provided, that the Administrative Agent may waive\nthe requirement to attach calculations under this sub-clause (ii) in its sole discretion). \n Notwithstanding the foregoing, with respect to Payment Condition Transactions that are Restricted Payments made pursuant to clause\n(ii)  of Section  6.11(c) and the proceeds of such Restricted Payments are used to repurchase, retire, or redeem the Parent’s Stock, the certificate described in clause (c) of this definition shall not be\nrequired to be d"
+    },
+    "definitionSourceSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+    "exceptions": [
+      "6.11(a)–(listed carve-outs including Payment Conditions path)"
+    ],
+    "conditions": [
+      "Payment Conditions for certain RP paths"
+    ],
+    "crossReferences": [
+      "Section 6.03",
+      "Payment Conditions"
+    ],
+    "entityScopeNotes": [
+      "Loan Parties"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "RESTRICTED_PAYMENTS",
+    "candidatePermissionProhibitionClass": "PROHIBITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "PROHIBITION_WITH_ENUMERATED_EXCEPTIONS",
+      "description": "General Restricted Payment prohibition with enumerated exceptions; some exceptions gated by Payment Conditions.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "OTHER_RULE_SATISFIED",
+        "description": "Payment Conditions on applicable RP baskets",
+        "status": "PROPOSED"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "REQUIRES",
+        "targetRef": "Payment Conditions",
+        "description": "Shared compound gate across RP and other baskets"
+      }
+    ],
+    "missingInputs": [
+      "Full enumeration of each RP exception limb economics"
+    ],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Multiple exception limbs; not every dollar figure isolated in this window alone"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Dev-split example; family/prohibition posture verified from §6.11 source."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+      "sectionRef=6.11"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Make any distribution or declare or pay any dividends ... or purchase, acquire, redeem, or retire any of any Loan Party'",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Payment Conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Loan Parties",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "General Restricted Payment prohibition with enumerated exceptions; some exceptions gated by Payment Conditions.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "exampleId": "stc-fwrg-6.04-a-xi-ratio-unlimited",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "dev",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    "filingAccession": "0001193125-21-293207",
+    "cik": "0001789940",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2021-10-06",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": "2021-10-06",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.04(a)(xi)",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VI",
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Restricted Payments general prohibition (Section 6.04)",
+  "input": {
+    "exactText": "an Sections 6.06(j) and (t) ) and/or Section 6.07 (other than Section 6.07(g) ); (x) so long as no Event of Default exists, the Borrower may make Restricted Payments in an aggregate amount not to exceed the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period; (xi) so long as no Event of Default exists, the Borrower may make Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period; (xii) the Borrower may declare and make dividend payments or other Restricted Payments payable solely in the Capital Stock of the Borrower or of any Parent Company; (xiii) the Borrower may make Restricted Payments (other than in the form of Cash and Cash Equivalents) in connection with and/or relating to any internal reorganization or restructuring activities (including related to tax planning); provided that such activities do not result in any Capit",
+    "charStartInFixture": 49120,
+    "charEndInFixture": 50164,
+    "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "windowSha256": "17a4dfd4f91518af08fcdac722860dd0fdacfe0cdbba5b925d40b2d42a3aec45",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "6.04(a)(xi)"
+    ],
+    "conditions": [
+      "Total Rent Adjusted Net Leverage Ratio ≤ 3.50:1.00 on Pro Forma Basis"
+    ],
+    "crossReferences": [
+      "Total Rent Adjusted Net Leverage Ratio",
+      "Pro Forma Basis"
+    ],
+    "entityScopeNotes": [
+      "Borrower / Restricted Subsidiaries per §6.04"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "RESTRICTED_PAYMENTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "RATIO_GATED_UNLIMITED",
+      "description": "Unlimited Restricted Payments so long as Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed 3.50:1.00.",
+      "figures": [
+        "3.50:1.00 Total Rent Adjusted Net Leverage Ratio"
+      ],
+      "capacityUnlimited": true
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "RATIO_SATISFIED",
+        "description": "Total Rent Adjusted Net Leverage Ratio ≤ 3.50:1.00 Pro Forma",
+        "status": "PROPOSED"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "REQUIRES",
+        "targetRef": "Total Rent Adjusted Net Leverage Ratio",
+        "description": "Ratio definition + components"
+      }
+    ],
+    "missingInputs": [
+      "Total Rent Adjusted Net Leverage Ratio inputs"
+    ],
+    "uncertainty": {
+      "level": "LOW",
+      "reasons": []
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Verified from FWRG §6.04(a)(xi) source window."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "fwrg-2021-credit-agreement",
+    "operativeVersion": "fwrg-doc-a-credit-agreement-2021",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=17a4dfd4f91518af08fcdac722860dd0fdacfe0cdbba5b925d40b2d42a3aec45",
+      "sectionRef=6.04(a)(xi)"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Restricted Payments general prohibition (Section 6.04)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cited terms without pulled definitions: Total Rent Adjusted Net Leverage Ratio, Pro Forma Basis"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Borrower / Restricted Subsidiaries per §6.04",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "DEFINED_TERM:(none pulled)",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: DEFINED_TERM:(none pulled); FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Unlimited Restricted Payments so long as Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed 3.50:1.00.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "17a4dfd4f91518af08fcdac722860dd0fdacfe0cdbba5b925d40b2d42a3aec45",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

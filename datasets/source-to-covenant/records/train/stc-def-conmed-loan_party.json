@@ -1,0 +1,200 @@
+{
+  "exampleId": "stc-def-conmed-loan_party",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Loan Party",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Loan Party or whether or not it is reflected in the consolidated balance sheet of the Parent Borrower and its Subsidiaries)\non such day minus (iii) an amount equal to the lesser of (x) $100,000,000 and (y) the amount of unrestricted cash and Cash Equivalents\nof the Parent Borrower and its Subsidiaries on the consolidated balance sheet of the Parent Borrower and its Subsidiaries on such day\nto (b) Consolidated EBITDA for such period.\n\n\"Convertible Notes\": $800,000,000 aggregate principal amount of the Parent Borrower's 2.25% Convertible Senior Notes due 2027 issued on June 6, 2022.\n\n\"Default\": any of the\nevents specified in Article VIII, whether or not any requirement for the giving of notice, the lapse of time, or both, has been satisfied.\n\n\"Disposition\": with\nrespect to any Property, any sale, lease, sale and leaseback, assignment, conveyance, transfer or other disposition thereof (whether effected\npursuant to a Division or otherwise). The terms \" Dispose \" and \" Disposed of \" shall have correlative\nmeanings.\n\n\"Division\": the division of the assets, liabilities and/or obligations of a Person that is a limited liability company (the \" Dividing Person \")\namong two or more Persons (whether pursuant to a \"plan of division\" or similar arrangement), which may or may not include\nthe Dividing Person and pursuant to which the Dividing Person may or may not survive.\n\" Division\nSuccessor \": any Person that, upon the consummation of a Division of a Dividing Person, holds all or any portion of the assets,\nliabilities and/or obligations previously held by such Dividing Person immediately prior to the consummation of such Division. A Dividing\nPerson which retains any of its assets, liabilities and/or obligations after a Division shall be deemed a Division Successor upon the\noccurrence of such ",
+    "charStartInFixture": 11980,
+    "charEndInFixture": 13790,
+    "sourceTextSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "windowSha256": "bdbaa356c8f7c7608c973d1baed139710db8135c711f45507404de7b653d6252",
+    "definitions": {
+      "Loan Party": "Loan Party or whether or not it is reflected in the consolidated balance sheet of the Parent Borrower and its Subsidiaries)\non such day minus (iii) an amount equal to the lesser of (x) $100,000,000 and (y) the amount of unrestricted cash and Cash Equivalents\nof the Parent Borrower and its Subsidiaries on the consolidated balance sheet of the Parent Borrower and its Subsidiaries on such day\nto (b) Consolidated EBITDA for such period.\n\n\"Convertible Notes\": $800,000,000 aggregate principal amount of the Parent Borrower's 2.25% Convertible Senior Notes due 2027 issued on June 6, 2022.\n\n\"Default\": any of the\nevents specified in Article VIII, whether or not any requirement for the giving of notice, the lapse of time, or both, has been satisfied.\n\n\"Disposition\": with\nrespect to any Property, any sale, lease, sale and leaseback, assignment, conveyance, transfer or other disposition thereof (whether effected\npursuant to a Division or otherwise). The terms \" Dispose \" and \" Disposed of \" shall have correlative\nmeanings.\n\n\"Division\": the division of the assets, liabilities and/or obligations of a Person that is a limited liability company (the \" Dividing Person \")\namong two or more Persons (whether pursuant to a \"plan of division\" or similar arrangement), which may or may not include\nthe Dividing Person and pursuant to which the Dividing Person may or may not survive.\n\" Division\nSuccessor \": any Person that, upon the consummation of a Division of a Dividing Person, holds all or any portion of the assets,\nliabilities and/or obligations previously held by such Dividing Person immediately prior to the consummation of such Division. A Dividing\nPerson which retains any of its assets, liabilities and/or obligations after a Division shall be deemed a Division Successor upon the\noccurrence of such "
+    },
+    "definitionSourceSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Loan Party — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "windowSha256=bdbaa356c8f7c7608c973d1baed139710db8135c711f45507404de7b653d6252",
+      "sectionRef=1.01/Loan Party"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Loan Party",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_DEV_DIAGNOSTIC",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Loan Party — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "bdbaa356c8f7c7608c973d1baed139710db8135c711f45507404de7b653d6252",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

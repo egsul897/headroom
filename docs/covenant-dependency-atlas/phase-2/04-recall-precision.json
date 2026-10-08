@@ -1,0 +1,155 @@
+{
+  "expected": 17,
+  "truePositives": 17,
+  "precisionProbeFalsePositives": 0,
+  "recall": 1,
+  "precision": 1,
+  "independentReview": "SAMPLE_AUTHORED_FROM_SOURCE — not legal certification",
+  "details": [
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Indebtedness",
+        "connective": "defined-term occurrence in negative covenant region"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "EBITDA",
+        "connective": "defined-term occurrence"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "termName": "Consolidated EBITDA",
+        "connective": "ratio definition compositional reference (Total Leverage Ratio body)"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "ENTITY_SCOPE",
+        "connective": "Restricted Subsidiary / Loan Party connective window"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CONDITION",
+        "connective": "subject to"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_EXCEPTION",
+        "connective": "except as provided / permitted by"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "RECLASSIFICATION",
+        "connective": "reclassification"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "FINANCIAL_INPUT",
+        "termName": "NET_INCOME",
+        "connective": "compositional means/plus Net Income"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "termName": "Available Amount",
+        "connective": "Available Amount shared basket"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Intercreditor Agreement"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "termName": "Prevailing Market Value",
+        "connective": "Actual LTV Ratio compositional reference"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Collateral",
+        "connective": "defined-term occurrence"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Loan",
+        "connective": "defined-term occurrence"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Collateral Documents / Custody Agreement"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CONDITION",
+        "connective": "subject to"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "ENTITY_SCOPE",
+        "connective": "Restricted Party"
+      },
+      "hit": true
+    },
+    {
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "FINANCIAL_INPUT",
+        "termName": "PREVAILING_MARKET_VALUE",
+        "connective": "Prevailing Market Value LTV input"
+      },
+      "hit": true
+    }
+  ]
+}

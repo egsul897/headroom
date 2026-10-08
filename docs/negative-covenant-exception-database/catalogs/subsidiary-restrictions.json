@@ -1,0 +1,239 @@
+{
+  "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+  "count": 3,
+  "exceptionIds": [
+    "conmed-7.13-negative-pledge-exceptions",
+    "conmed-7.14-subsidiary-distribution-restrictions",
+    "fwrg-6.05-burdensome-agreements"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.13-negative-pledge-exceptions",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+      "parentProhibition": {
+        "sectionRef": "7.13",
+        "text": "Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent Borrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues ... to secure the Obligations ... other than ..."
+      },
+      "exceptionSectionRef": "7.13(a)-(c)",
+      "exactExceptionText": "other than (a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money Liens, Finance Lease Obligations otherwise permitted hereby or Liens permitted by Sections 7.3(f), (g), or (l) (in which case, any prohibition or limitation shall only be effective against the assets financed thereby) and (c) any agreement entered into in connection with a Receivables Transfer Program that prohibits or limits the ability ... to create ... any Lien upon the accounts receivable or related ancillary rights or assets ... disposed of pursuant to such Receivable Transfer Program.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.13"
+      ],
+      "definedTerms": [
+        "Finance Lease Obligations",
+        "Receivables Transfer Program",
+        "Obligations"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "purchase-money / finance-lease / listed lien agreements only effective against financed assets",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.13(b)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "underlying Liens must be permitted by 7.3(f)/(g)/(l) or otherwise permitted finance leases",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.3(f)/(g)/(l)",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "7.3(f)",
+          "role": "existing closing-date liens"
+        },
+        {
+          "targetRef": "7.3(g)",
+          "role": "purchase-money"
+        },
+        {
+          "targetRef": "7.3(l)",
+          "role": "acquisition liens"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Negative-pledge exceptions depend on Lien permissions elsewhere."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Subsidiary / negative-pledge restriction exceptions are derivative of Lien baskets.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.14-subsidiary-distribution-restrictions",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+      "parentProhibition": {
+        "sectionRef": "7.14",
+        "text": "Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability of any Subsidiary to (a) pay dividends or make any other distributions ... (b) make loans or advances ... or (c) transfer any of its assets ... except for ..."
+      },
+      "exceptionSectionRef": "7.14(i)-(iii)",
+      "exactExceptionText": "except for such encumbrances or restrictions existing under or by reason of (i) any restrictions existing under the Loan Documents, (ii) any restrictions with respect to a Subsidiary imposed pursuant to an agreement which has been entered into in connection with the Disposition of all or substantially all of the Capital Stock or assets of such Subsidiary and (iii) any restrictions imposed pursuant to a Receivables Transfer Program with respect to a Subsidiary established solely for the purpose of a Receivables Transfer Program.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.14"
+      ],
+      "definedTerms": [
+        "Disposition",
+        "Receivables Transfer Program",
+        "Capital Stock"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "disposition-related restrictions only in connection with Disposition of all/substantially all",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.14(ii)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "RTP restrictions only for RTP-purpose Subsidiary",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.14(iii)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c3",
+          "text": "Disposition itself must otherwise be permitted (typically via 7.5)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.5",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "any Subsidiary"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "7.5",
+          "role": "Disposition permission that enables 7.14(ii)"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "7.14(ii) is only usable when a qualifying Disposition pathway exists."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Subsidiary distribution-restriction exceptions often look categorical but depend on Asset Sale permissions.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.05-burdensome-agreements",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+      "parentProhibition": {
+        "sectionRef": "6.05",
+        "text": "Burdensome Agreements: Borrower shall not, nor shall it permit any of its Restricted Subsidiaries to, enter into or permit to exist any Contractual Obligation that limits the ability of ... (dividends / guarantees / liens) except for enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.05 exceptions",
+      "exactExceptionText": "Section 6.05 Burdensome Agreements exceptions include restrictions under the Loan Documents, refinancing/permitted Indebtedness documentation, and other customary carve-outs that themselves depend on Indebtedness and Lien permissions under Sections 6.01 and 6.02 (source positions ~54548+ in article-6-negative-covenants.txt).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.05"
+      ],
+      "definedTerms": [
+        "Restricted Subsidiary",
+        "Contractual Obligation"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "many exceptions require the underlying debt/lien to be permitted under 6.01/6.02",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.01 / 6.02",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "excludes": [
+          "Unrestricted Subsidiaries typically"
+        ]
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.01",
+          "role": "permitted Indebtedness documentation"
+        },
+        {
+          "targetRef": "6.02",
+          "role": "permitted Liens documentation"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Burdensome-agreement exceptions are derivative of debt/lien permissions."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Subsidiary-restriction family exemplar from FWRG; exceptions are not free-standing capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

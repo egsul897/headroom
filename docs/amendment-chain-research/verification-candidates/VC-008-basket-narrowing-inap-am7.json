@@ -1,0 +1,26 @@
+{
+  "candidateId": "VC-008",
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "purpose": "Multi-covenant-family permission-narrowing amendment: investments, foreign-sub debt, and leverage/ICR tables change together; missing prior docs force honest PARTIAL before-text.",
+  "mapsToProductionModules": [
+    "chain",
+    "operative-state",
+    "independent-verification"
+  ],
+  "expectedFailClosedBehavior": "Orig CA before-text for \u00a76.04(m)/\u00a76.01(k) is SOURCE_BACKED. Do not invent Am6-era levels from 8-K narrative. Am1\u2013Am6 intervening effects remain UNRESOLVED_DEPENDENCY \u2014 complete operative-state reconstruction must REVIEW_REQUIRED until verified. Am7 ED CONDITIONAL_UNRESOLVED.",
+  "queryDates": [
+    "2019-10-28",
+    "2019-10-29",
+    "2019-10-30"
+  ],
+  "sourcePointers": [
+    {
+      "docId": "inap-am7",
+      "accession": "0001140361-19-019513",
+      "localFixturePath": null,
+      "quote": "other Investments... greater of (x) $12,500,000 and (y) 15% of Consolidated EBITDA"
+    }
+  ],
+  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/inap-am7-baskets-and-ratios.json",
+  "notAProductionPatch": true
+}

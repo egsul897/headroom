@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "covenant-dependency-atlas.phase-4",
+  "generatedAt": "2026-10-08T22:54:12.886Z",
+  "startingSha": "9c6f56c810fef1fdaa985155163c96560c2bae00",
+  "reportedPhase3Sha": "3a41dbfd34835689a301075a0bbfb43b3c46cfc6",
+  "observedGithubHeadAtMissionStart": "9c6f56c810fef1fdaa985155163c96560c2bae00",
+  "shaAtBuild": "9c6f56c810fef1fdaa985155163c96560c2bae00",
+  "shaDriftReconciliation": {
+    "commitsAfterReportedPhase3Sha": [
+      {
+        "sha": "9c6f56c810fef1fdaa985155163c96560c2bae00",
+        "summary": "Fix Phase 3 atlas TS2367 errors breaking next build."
+      }
+    ],
+    "phase4BegunBeforeThisRun": false,
+    "preserved": true
+  },
+  "paidInference": false,
+  "productionResolverTouched": false,
+  "merges": false,
+  "certificationChanges": false,
+  "knifeRiverBlind": "PRESERVED_UNREAD",
+  "frozenBenchmark": {
+    "edges": 135,
+    "sha256": "eda1bda0caad4e27409f1dc4e55bc6d1c29cfd0c29cbb7c778d28a4def317b87"
+  },
+  "falseNegatives": {
+    "total": 42,
+    "byRootCause": {
+      "MEASUREMENT_TO_LABEL_OVERFILTER": 9,
+      "REMEDIATED_BY_PHASE4_ADAPTER": 24,
+      "RATIO_COMPONENT_TERM_MISMATCH": 2,
+      "CROSS_DOCUMENT_NOT_IN_COVENANTISH_BODY": 1,
+      "NO_COVENANTISH_SECTION_OR_DEFS": 2,
+      "DEFINED_TERM_NOT_LINKED_IN_COVENANTISH_WINDOW": 2,
+      "REMOTE_CONDITION_REQUIRES_SECTION_REF_WINDOW": 1,
+      "AMENDMENT_CONNECTIVE_OR_CHAIN_MODELING": 1
+    },
+    "bySystemicGroup": {
+      "EVAL_HARNESS": 9,
+      "REMEDIATED": 24,
+      "RATIO_DEPENDENCY": 2,
+      "CROSS_DOCUMENT": 1,
+      "STRUCTURAL_PARSING": 2,
+      "ATLAS_SECTION_WINDOW": 2,
+      "REMOTE_CONDITION": 1,
+      "AMENDMENT_TARGET": 1
+    },
+    "measurementArtifacts": 9
+  },
+  "recall": {
+    "phase3ReportedOverall": 0.6888888888888889,
+    "phase4CorrectedOverall": 0.9333333333333333,
+    "phase4CorrectedBySplit": {
+      "development": {
+        "expected": 46,
+        "truePositives": 46,
+        "falseNegatives": 0,
+        "precisionProbeFalsePositives": 0,
+        "recall": 1,
+        "precision": 1,
+        "wilsonRecallLow": 0.9229238226702192,
+        "wilsonRecallHigh": 1
+      },
+      "evaluation": {
+        "expected": 46,
+        "truePositives": 39,
+        "falseNegatives": 7,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.8478260869565217,
+        "precision": 1,
+        "wilsonRecallLow": 0.7177558259368491,
+        "wilsonRecallHigh": 0.9242781376598251
+      },
+      "blind": {
+        "expected": 43,
+        "truePositives": 41,
+        "falseNegatives": 2,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.9534883720930233,
+        "precision": 1,
+        "wilsonRecallLow": 0.8454422407613695,
+        "wilsonRecallHigh": 0.9871510096826803
+      }
+    },
+    "phase4CorrectedByFamily": {
+      "COVENANT_TO_DEFINITION": {
+        "expected": 39,
+        "truePositives": 35,
+        "falseNegatives": 4,
+        "recall": 0.8974358974358975
+      },
+      "RATIO_CALCULATION": {
+        "expected": 18,
+        "truePositives": 16,
+        "falseNegatives": 2,
+        "recall": 0.8888888888888888
+      },
+      "ENTITY_SCOPE": {
+        "expected": 16,
+        "truePositives": 16,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_CONDITION": {
+        "expected": 15,
+        "truePositives": 14,
+        "falseNegatives": 1,
+        "recall": 0.9333333333333333
+      },
+      "COVENANT_TO_EXCEPTION": {
+        "expected": 8,
+        "truePositives": 8,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "RECLASSIFICATION": {
+        "expected": 5,
+        "truePositives": 5,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "FINANCIAL_INPUT": {
+        "expected": 7,
+        "truePositives": 7,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_SHARED_BASKET": {
+        "expected": 9,
+        "truePositives": 9,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_CROSS_DOCUMENT": {
+        "expected": 10,
+        "truePositives": 9,
+        "falseNegatives": 1,
+        "recall": 0.9
+      },
+      "COVENANT_TO_AMENDMENT": {
+        "expected": 7,
+        "truePositives": 6,
+        "falseNegatives": 1,
+        "recall": 0.8571428571428571
+      },
+      "DEFINITION_TO_DEFINITION": {
+        "expected": 1,
+        "truePositives": 1,
+        "falseNegatives": 0,
+        "recall": 1
+      }
+    },
+    "phase3HarnessRecomputed": 0.8666666666666667
+  },
+  "independentPrecision": {
+    "sampleSize": 152,
+    "byVerdict": {
+      "TRUE_POSITIVE_LEGALLY_SUPPORTED": 77,
+      "FALSE_POSITIVE_UNSUPPORTED": 0,
+      "UNSUPPORTED_INTERPRETATION": 0,
+      "AMBIGUOUS_NEEDS_REVIEW": 11,
+      "FAIL_CLOSED_UNRESOLVED_OK": 64
+    },
+    "overallPrecisionAmongResolvedClaims": 1,
+    "wilsonPrecisionLow": 0.9524799113327792,
+    "wilsonPrecisionHigh": 1
+  },
+  "controllingRestrictionRisks": {
+    "total": 135,
+    "byCategory": {
+      "MISSING_DEFINITIONS": 0,
+      "AMENDMENT_TARGET_RESOLUTION": 51,
+      "STRUCTURAL_PARSING_FAILURE": 0,
+      "REMOTE_CONDITIONS": 14,
+      "SHARED_CAPACITY": 0,
+      "RECLASSIFICATION": 0,
+      "CROSS_DOCUMENT_RESTRICTIONS": 2,
+      "AMBIGUOUS_REFERENCE": 68,
+      "OTHER": 0
+    }
+  },
+  "definitionResolution": {
+    "gtAssisted": 627,
+    "bySubtype": {
+      "TRULY_MISSING_DEFINITION": 588,
+      "DEFINITION_IN_ANOTHER_DOCUMENT": 3,
+      "FORWARDING_DEFINITION": 4,
+      "INCORRECT_EXTRACTION_BOUNDARY": 0,
+      "ALIAS_OR_PLURALIZATION": 4,
+      "NON_DEFINITION_REFERENCE": 28,
+      "INCORRECT_CANDIDATE_EDGE": 0
+    },
+    "structuralFailClosedMissingDefEdges": 1454
+  },
+  "ckfIntegration": {
+    "status": "BLOCKED",
+    "claimed113CorpusAccessible": false,
+    "infrastructureBlocker": "No CKF 113-document corpus materialized under .local-dependency-atlas/{ckf-corpus,corpus,ckf-canonical}. Peer branch cursor/covenant-knowledge-factory-7327 not imported into this workspace.",
+    "idempotentImport": true,
+    "promotedToLegalTruth": 0
+  },
+  "legalSafetyProbes": {
+    "passed": 7,
+    "failed": 0,
+    "affirmativePermissionCount": 0
+  },
+  "corpus": {
+    "registered": 25,
+    "available": 25,
+    "developmentAvailable": 24,
+    "evaluationAvailable": 1,
+    "issuers": [
+      "CHWY",
+      "CNMD",
+      "DSGR",
+      "FWRG",
+      "LSB",
+      "RIOT",
+      "ROCK",
+      "SXI"
+    ],
+    "targetRange": {
+      "min": 25,
+      "max": 50
+    },
+    "targetMet": true,
+    "holdoutIntegrity": {
+      "gibraltarSplit": "development",
+      "gibraltarDesignation": "DEVELOPMENT \u2014 Arch+Cert 2026-10-07; Phase 2 evaluation label corrected",
+      "knifeRiverBlind": "PRESERVED_UNREAD \u2014 no body registered; no inspection this mission",
+      "evaluationPackage": "cnmd-htm-amd2",
+      "evaluationPackagePolicy": "Extract for measurement only; do not tune Atlas connectives against evaluation docs"
+    },
+    "note": "Local+acquired corpus meets the 25\u201350 authentic-agreement target window."
+  },
+  "structuralDocs": 25,
+  "structuralEdges": 22945,
+  "checksums": {
+    "docs/covenant-dependency-atlas/phase-4/00-summary.json": "6de3de877ee26538749e16736e856377b1b6b62d1e3f84521ef47c3e7834c793",
+    "docs/covenant-dependency-atlas/phase-4/00-frozen-benchmark.json": "a9a0f5fb522113fe2f6ec8ebf212462bec401a61dd7186252c109af0ea2b9810",
+    "docs/covenant-dependency-atlas/phase-4/01-false-negative-dispositions.json": "dc77c1ef0c1c268eb7ce47290064b32f14ab6a10474fda2324598c1b6ac08a00",
+    "docs/covenant-dependency-atlas/phase-4/02-recall-remediation.json": "0d986a4fa3038439741ed6abfae61a49c68693f0dc06d38e51a45d898ffd92c9",
+    "docs/covenant-dependency-atlas/phase-4/03-independent-precision.json": "ca4145c2e23fddcbcafc78e3a6e15d5a096231f874224ac3f65d522ff27d02db",
+    "docs/covenant-dependency-atlas/phase-4/04-controlling-restriction-triage.json": "17f020ba5a6d83ca09787fd3aae036fc6e41dd4ae9782ea41209a5297a8b122d",
+    "docs/covenant-dependency-atlas/phase-4/05-definition-resolution.json": "e6247e521c8dd60bad3844f9e83e70ca129c73344be5340b1e9a10d3b37f6bf9",
+    "docs/covenant-dependency-atlas/phase-4/06-ckf-integration.json": "924cb55adf6d8463b5ace0a7655e5226f6180aca48a17d841a1382736d07183e",
+    "docs/covenant-dependency-atlas/phase-4/07-legal-safety-probes.json": "7bbd6b460b013756ca7798155e457c3292c9295ea536d43584496d5ffe1ce7be"
+  }
+}

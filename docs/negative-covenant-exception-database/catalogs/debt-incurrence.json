@@ -1,0 +1,771 @@
+{
+  "covenantFamily": "DEBT_INCURRENCE",
+  "count": 8,
+  "exceptionIds": [
+    "conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+    "conmed-7.2-d-finance-leases-greater-of",
+    "conmed-7.2-k-foreign-sub-debt",
+    "conmed-7.2-l-permitted-unsecured",
+    "conmed-7.2-trailing-classify-reclassify",
+    "lsb-6.01-chapeau-ratio-and-payment-conditions",
+    "lsb-6.01-i-greater-of-flat-assets",
+    "fwrg-6.01-j-non-loan-party-debt-entity-scope"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "text": "Create, incur, assume or suffer to exist any Indebtedness, except:"
+      },
+      "exceptionSectionRef": "7.2(c)",
+      "exactExceptionText": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(c)"
+      ],
+      "definedTerms": [
+        "Indebtedness",
+        "Liens",
+        "Parent Borrower",
+        "Subsidiaries"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "secured by Liens permitted by Section 7.3(g)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.3(g)",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "pro forma compliance with financial covenants in Section 7.1",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.1",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c3",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "Section 7.2 trailing classify/reclassify authority applies to (a)-(s)",
+          "relatedRefs": [
+            "7.2 trailing paragraph"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "provided that the Parent Borrower shall be in compliance, on a pro forma basis ... with ... Section 7.1",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Pro-forma 7.1 gate is inside the exception but points outside the clause."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.3(g)",
+          "role": "lien-permission prerequisite"
+        },
+        {
+          "targetRef": "7.1",
+          "role": "pro-forma financial covenant gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Capacity exists only if \u00a77.3(g) Liens are available and \u00a77.1 covenants are met on a pro forma basis."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau entity scope (Parent Borrower + Subsidiaries) binds every basket."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Classic remote-condition basket: the exception text looks like a debt permission, but usable capacity depends on a Liens carve-out and Article VII financial covenants outside \u00a77.2(c).",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.2-d-finance-leases-greater-of",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "text": "Create, incur, assume or suffer to exist any Indebtedness, except:"
+      },
+      "exceptionSectionRef": "7.2(d)",
+      "exactExceptionText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(d)"
+      ],
+      "definedTerms": [
+        "Finance Lease Obligations",
+        "Consolidated Total Assets"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$50,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "3.0%",
+          "measurementBasis": "Consolidated Total Assets at incurrence"
+        },
+        {
+          "kind": "AGGREGATION",
+          "value": "greater of (x)/(y) at any one time outstanding"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "May be reclassified among 7.2 baskets under trailing paragraph",
+          "relatedRefs": [
+            "7.2 trailing paragraph"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau binds entity scope."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Quantified greater-of basket; still not unconditional because of Article VII chapeau and classify/reclassify interactions.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.2-k-foreign-sub-debt",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "text": "Create, incur, assume or suffer to exist any Indebtedness, except:"
+      },
+      "exceptionSectionRef": "7.2(k)",
+      "exactExceptionText": "Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as no Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided that (i) the requirements of Section 6.9 are satisfied and (ii) the aggregate principal amount of such Indebtedness at any time outstanding shall not exceed the greater of (A) $150,000,000 and (B) 10.0% of Consolidated Total Tangible Assets (measured on the date of incurrence of such Indebtedness); provided , further , that any Indebtedness permitted by this Section 7.2(k) shall be evidenced by a note or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(k)"
+      ],
+      "definedTerms": [
+        "Foreign Subsidiary",
+        "Foreign Subsidiary Holdco",
+        "Consolidated Total Tangible Assets",
+        "Default",
+        "Event of Default"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default or Event of Default continuing at incurrence",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.2(k) so-long-as",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "requirements of Section 6.9 are satisfied",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.9",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "evidenced by note and pledged per Section 6.9 and GCA",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.9 / Guarantee and Collateral Agreement",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$150,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "10.0%",
+          "measurementBasis": "Consolidated Total Tangible Assets at incurrence"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Foreign Subsidiary debtor",
+          "Foreign Subsidiary Holdco debtor",
+          "Parent Borrower / Subsidiary creditor"
+        ],
+        "excludes": [],
+        "notes": "Debtor class is foreign-side; creditor is Parent Borrower or any other Subsidiary."
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "provided that (i) Section 6.9 satisfied and (ii) greater-of cap",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Primary quantitative + affirmative covenant gate."
+        },
+        {
+          "text": "provided further that evidenced by note and pledged",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Collateralization/mechanics proviso outside the dollar math."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.9",
+          "role": "affirmative collateral/pledge requirements"
+        },
+        {
+          "targetRef": "Guarantee and Collateral Agreement",
+          "role": "pledge mechanics"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "\u00a76.9 affirmative requirements and pledge mechanics are outside Article VII."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau binds."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Dollar/percent cap is necessary but not sufficient; \u00a76.9 and pledge mechanics outside the NC article constrain use.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.2-l-permitted-unsecured",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "text": "Create, incur, assume or suffer to exist any Indebtedness, except:"
+      },
+      "exceptionSectionRef": "7.2(l)",
+      "exactExceptionText": "(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such Indebtedness, no Default or Event of Default shall have occurred and be continuing and (y) the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section 7.1(b) ... and (ii) any guarantee by any Subsidiary in respect of any Permitted Unsecured Indebtedness; provided that (x) no Subsidiary that is not a Loan Party shall guarantee any Permitted Unsecured Indebtedness and (y) any such guarantee in respect of Permitted Unsecured Indebtedness shall be unsecured;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(l)",
+        "Section 7.2(l)(i)/(ii)"
+      ],
+      "definedTerms": [
+        "Permitted Unsecured Indebtedness",
+        "Loan Party",
+        "Default",
+        "Event of Default"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default/EOD at and after incurrence",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.2(l)(i)(x)",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "pro forma compliance with Section 7.1(b) Consolidated Total Leverage Ratio",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.1(b)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c3",
+          "text": "non-Loan Party Subsidiaries may not guarantee",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.2(l)(ii)(x)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c4",
+          "text": "guarantee must be unsecured",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.2(l)(ii)(y)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c5",
+          "text": "Permitted Unsecured Indebtedness defined-term gates",
+          "location": "DEFINED_TERM",
+          "locationRef": "Permitted Unsecured Indebtedness",
+          "computableHint": "QUALITATIVE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO_REF",
+          "value": "Section 7.1(b) Consolidated Total Leverage Ratio (5.50:1.00 base; step-up mechanics elsewhere)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower (incurrence)",
+          "Subsidiary guarantors that are Loan Parties"
+        ],
+        "excludes": [
+          "Subsidiary that is not a Loan Party (as guarantor)"
+        ]
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "provided that (x) no Default and (y) pro forma 7.1(b)",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Incurs limb."
+        },
+        {
+          "text": "provided that (x) only Loan Party Subs may guarantee and (y) unsecured",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Guarantee limb."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.1(b)",
+          "role": "pro-forma CTLR gate"
+        },
+        {
+          "targetRef": "Permitted Unsecured Indebtedness",
+          "role": "defined-term eligibility"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Named defined term may embed maturity, ranking, and other limits outside \u00a77.2(l)."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "\u00a77.1(b) ratio lives outside the exception clause."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Appears uncapped in \u00a77.2(l), but ratio gate + defined-term + guarantor entity limits remove unconditional capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.2-trailing-classify-reclassify",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "text": "Create, incur, assume or suffer to exist any Indebtedness, except:"
+      },
+      "exceptionSectionRef": "7.2 trailing paragraph",
+      "exactExceptionText": "For purposes of determining compliance with this Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section 7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any portion thereof) meets the criteria of one or more of the categories ... the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness ... in any manner that complies with this Section 7.2 ...",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2 trailing compliance paragraph"
+      ],
+      "definedTerms": [
+        "Indebtedness"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "classification must still comply with Section 7.2",
+          "location": "SECTION_WIDE_PROVISO",
+          "locationRef": "7.2 trailing",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower (election rights)"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "Section-wide reclassification among 7.2(a)-(s); not free capacity",
+          "relatedRefs": [
+            "7.2(a)",
+            "7.2(s)"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "section-wide classify/reclassify authority",
+          "attachment": "SECTION_WIDE",
+          "scopeNote": "Hanging after enumerated baskets; applies to all of \u00a77.2."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.2(a)-(s)",
+          "role": "member baskets"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "SECTION_WIDE_LIMITATION",
+          "description": "Trailing paragraph modifies every enumerated debt basket."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Not itself a basket; a section-wide shared-capacity / classification interaction that must be attached to every \u00a77.2 exception.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Create, incur, assume, permit, guarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness; provided, that, the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the incurrence of such Indebtedness, (i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied with respect to such incurrence. The foregoing limitation shall not apply to:"
+      },
+      "exceptionSectionRef": "6.01 chapeau general permission",
+      "exactExceptionText": "the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the incurrence of such Indebtedness, (i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio of the Parent and its Subsidiaries for the most recently ended four full fiscal quarter period is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied with respect to such incurrence.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01 chapeau"
+      ],
+      "definedTerms": [
+        "Fixed Charge Coverage Ratio",
+        "Payment Conditions",
+        "Loan Parties"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "FCCR > 2.0 to 1.0 after giving effect",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "6.01 chapeau (i)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "Fixed Charge Coverage Ratio > 2.0 to 1.0"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties",
+          "their Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions reused by RP 6.11(c), Investments 6.13(k), debt payments 6.08(a)(v)",
+          "relatedRefs": [
+            "6.11(c)",
+            "6.13(k)",
+            "6.08(a)(v)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "defined-term compound gate"
+        },
+        {
+          "targetRef": "6.11(c)",
+          "role": "same Payment Conditions for RP"
+        },
+        {
+          "targetRef": "6.13(k)",
+          "role": "same Payment Conditions for Investments"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Payment Conditions compound liquidity/default/certificate tests live in definitions, not in \u00a76.01."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VI chapeau (until Secured Obligations Paid in Full) binds."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Uncapped general debt permission; Payment Conditions is a shared remote gate across multiple NC families.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.01-i-greater-of-flat-assets",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Create, incur ... any Indebtedness; ... The foregoing limitation shall not apply to:"
+      },
+      "exceptionSectionRef": "6.01(i)",
+      "exactExceptionText": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(i)"
+      ],
+      "definedTerms": [],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Article VI duration chapeau",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VI chapeau",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$70,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "5.5%",
+          "measurementBasis": "total consolidated assets (GAAP balance sheet)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties and Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VI Paid-in-Full duration binds."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Enumerated basket independent of Payment Conditions, but still Article-scoped.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.01-j-non-loan-party-debt-entity-scope",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Indebtedness negative covenant with enumerated exceptions (a)..."
+      },
+      "exceptionSectionRef": "6.01(j)",
+      "exactExceptionText": "Indebtedness of Restricted Subsidiaries that are not Loan Parties, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA (human-ground-truth fwrg-6.01(j)).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(j)"
+      ],
+      "definedTerms": [
+        "Restricted Subsidiary",
+        "Loan Party",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "debtor is Restricted Subsidiary that is not a Loan Party",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(j)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "EBITDA definition/components remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Consolidated Adjusted EBITDA",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Restricted Subsidiaries that are not Loan Parties"
+        ],
+        "excludes": [
+          "Loan Parties (as debtors under this basket)"
+        ],
+        "notes": "Entity-scope gate is the primary constraint; mis-reading as Borrower-wide overstates capacity."
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Consolidated Adjusted EBITDA",
+          "role": "percent limb"
+        },
+        {
+          "targetRef": "Loan Party",
+          "role": "entity exclusion"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "EBITDA add-backs and entity-class definitions are outside 6.01(j)."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Entity-scope-limited debt basket; treating as general debt capacity is a common over-read.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

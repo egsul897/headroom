@@ -1,0 +1,108 @@
+{
+  "artifact": "daily-integration-summary",
+  "date": "2026-10-08",
+  "asOf": "2026-10-08T22:14:30Z",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "coordinatorBranchTip": "a8e5d8859764af0905f6aa26e37f37d4c5f26fc3",
+  "coordinatorPr": "https://github.com/egsul897/headroom/pull/138",
+  "cloudCostsUsd": 0,
+  "paidCallsAuthorized": false,
+  "mergesAuthorized": false,
+  "corpusGrowth": {
+    "accessionBackedLiveEdgarDocuments": {
+      "count": 0,
+      "notes": "No open PR yet publishes bulk live EDGAR-derived document counts into the shared manifest"
+    },
+    "fixtureOrOfflineResearchRecords": {
+      "approximate": "LARGE_BUT_NOT_YET_NORMALIZED",
+      "contributors": [
+        "WS-DEF#139",
+        "WS-CDA#140",
+        "WS-NED#143",
+        "WS-PCI#144"
+      ],
+      "notes": "Counts not summed here until each export carries 06-contract actualRecordCounts"
+    },
+    "heldOutBenchmarkDatasets": {
+      "contributors": [
+        "WS-CKB#145"
+      ],
+      "notes": "Eval-only; not corpus growth for training/tuning"
+    }
+  },
+  "verifiedKnowledgeGrowth": {
+    "verificationStatusVerifiedCount": 0,
+    "notes": "No fleet dataset may claim VERIFIED/APPROVED without verification_record_id; gate G1/G2"
+  },
+  "highRiskDefects": [
+    {
+      "id": "HR-DUP-KF",
+      "summary": "VIC #146 parallel lib/contract-model/covenant-knowledge/** vs CKF knowledge-factory",
+      "severity": "CRITICAL",
+      "gate": "anti-duplication",
+      "resolution": "VIC remove/thin-client before merge"
+    },
+    {
+      "id": "HR-001",
+      "summary": "Parallel SEC access CKF+EHB",
+      "severity": "HIGH",
+      "gate": "G8",
+      "resolution": "CKF scheduler sole HTTP"
+    },
+    {
+      "id": "HR-002",
+      "summary": "Corpus exports pending 06-contract completeness",
+      "severity": "MEDIUM",
+      "gate": "dataset delivery",
+      "resolution": "Add ten fields + counts before CKF import"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "C-DUP-KF",
+      "status": "OPEN_BLOCKER_FOR_INTEGRATION"
+    },
+    {
+      "id": "C-001",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-002",
+      "status": "PROPOSED"
+    },
+    {
+      "id": "C-004",
+      "status": "OPEN"
+    }
+  ],
+  "ci": {
+    "WS-PAR_138": "Vercel tip often pending; focused vitest green",
+    "fleetDraftPrs": [
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147
+    ],
+    "notes": "No merges. VIC C-DUP-KF blocks factory unification."
+  },
+  "integrationQueuePath": "docs/architecture/parallel-agents/08-integration-queue.json",
+  "sharedCorpusManifestPath": "docs/architecture/parallel-agents/13-shared-corpus-manifest.json",
+  "fleetDraftPrs": [
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147
+  ]
+}

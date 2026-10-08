@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "basket-capacity-formula-corpus.v1",
+  "description": "JSON shape for BasketCandidate and AdversarialExample records. Zod mirrors live in lib/basket-formula-corpus/schema.ts.",
+  "BasketCandidate": {
+    "id": "string",
+    "exactSourceSpan": "string (verbatim or whitespace-equivalent substring of cited document)",
+    "governingCovenant": "string",
+    "basketFamily": "one of BASKET_FAMILIES",
+    "secondaryFamilies": "optional BasketFamily[]",
+    "amountOrFormulaCandidate": {
+      "formulaKind": "one of FORMULA_KINDS",
+      "expressionText": "string",
+      "structured": "optional { fixedDollar?, percentage?, metric?, ratioTest?, components? }"
+    },
+    "measurementDate": "string | null",
+    "financialInputs": "string[]",
+    "entityScope": "string",
+    "conditions": "string[]",
+    "sharedCapacityDependencies": "string[]",
+    "reclassificationRights": "string | null",
+    "sourceVersion": {
+      "instrumentId": "string",
+      "documentPath": "repo-relative path to fixture extract",
+      "sourceLabel": "string",
+      "versionNote": "string"
+    },
+    "verificationStatus": "SPAN_GROUNDED | SPAN_GROUNDED_NEEDS_INPUTS | SPAN_GROUNDED_NOT_CAPACITY | NEEDS_REVIEW",
+    "capacitySemantics": "AFFIRMATIVE_CAPACITY | NOT_CAPACITY | INCOMPLETE_SEMANTICS",
+    "capacityComputable": "boolean — true only when affirmative AND all required inputs/conditions are present in-corpus",
+    "capacityComputationBlockers": "string[] — required when affirmative but not computable",
+    "notes": "string"
+  },
+  "AdversarialExample": {
+    "id": "string",
+    "role": "COMPARATOR_THRESHOLD | APPROVAL_OR_CONSENT_TRIGGER | FINANCIAL_MAINTENANCE_TEST | DEFAULT_OR_EVENT_THRESHOLD | INTEREST_RATE_FORMULA | DEFINITION_DE_MINIMIS_EXCLUSION | AFFIRMATIVE_CAPACITY_CONTROL",
+    "exactSourceSpan": "string",
+    "governingProvision": "string",
+    "whyNotAffirmativeCapacity": "string",
+    "lookalikeTrap": "string",
+    "pairedCapacityControlId": "string | null",
+    "sourceVersion": "same as BasketCandidate.sourceVersion",
+    "verificationStatus": "same enum"
+  },
+  "invariants": [
+    "Do not set capacityComputable=true when financial inputs or conditions are missing.",
+    "Do not treat bare dollar/% figures as AFFIRMATIVE_CAPACITY without source-supported permission semantics.",
+    "exactSourceSpan must ground in sourceVersion.documentPath (raw or whitespace-normalized).",
+    "Production capacity engine paths under lib/contract-model/runtime/capacity remain untouched."
+  ]
+}

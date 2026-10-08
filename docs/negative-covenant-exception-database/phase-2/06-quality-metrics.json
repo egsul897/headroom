@@ -1,0 +1,83 @@
+{
+  "artifact": "06-quality-metrics",
+  "status": "PARTIAL_WITH_UNVERIFIED",
+  "note": "Held-out GT is independently hand-authored for Riot \u00a75.02. Detector metrics evaluate a minimal regex limb finder \u2014 not the hand catalog. Metrics that require a production extractor or multi-doc blind labels remain UNVERIFIED.",
+  "heldOutDocument": {
+    "issuerKey": "RIOT",
+    "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+    "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+  },
+  "detector": {
+    "name": "riot-5.02a-lettered-limb-regex",
+    "detected": [
+      {
+        "sectionHint": "5.02(a)(i)",
+        "textPreview": "Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;"
+      },
+      {
+        "sectionHint": "5.02(a)(ii)",
+        "textPreview": "Liens for Taxes not yet due or that are being contested in good faith and by appropriate proceedings diligently conducte"
+      },
+      {
+        "sectionHint": "5.02(a)(iii)",
+        "textPreview": "Liens imposed by law (other than any such Lien imposed pursuant to Section 430(k) of the Code or ERISA or a violation of"
+      },
+      {
+        "sectionHint": "5.02(a)(i)",
+        "textPreview": "for amounts not yet overdue or (ii)\u00a0for amounts that are overdue and that (in the case of any such amounts overdue for a"
+      },
+      {
+        "sectionHint": "5.02(a)(iv)",
+        "textPreview": "Liens (whether contractual or arising as a matter of Law, including rights of set-off or netting) in favor of the Custod"
+      }
+    ],
+    "truePositives": 4,
+    "falseNegatives": 0,
+    "falsePositives": 0,
+    "exceptionDiscoveryRecall": 1.0,
+    "falsePositiveExceptionDetection": 0
+  },
+  "metrics": {
+    "exceptionDiscoveryRecall": {
+      "value": 1.0,
+      "status": "MEASURED_ON_MINI_DETECTOR"
+    },
+    "falsePositiveExceptionDetection": {
+      "value": 0,
+      "status": "MEASURED_ON_MINI_DETECTOR"
+    },
+    "remoteConditionRecall": {
+      "value": null,
+      "status": "UNVERIFIED"
+    },
+    "provisoAttachmentAccuracy": {
+      "value": null,
+      "status": "UNVERIFIED"
+    },
+    "entityScopeAccuracy": {
+      "value": null,
+      "status": "UNVERIFIED"
+    },
+    "crossReferenceAccuracy": {
+      "value": null,
+      "status": "UNVERIFIED"
+    },
+    "incorrectUnconditionalPermissionRate": {
+      "value": 0.0,
+      "status": "MEASURED_ON_CATALOG_INVARIANT",
+      "detail": "No catalog row with UNCONDITIONAL_SOURCE_VERIFIED may carry MONEY/RATIO/NO_DEFAULT local conditions; enforced in import adapter tests."
+    },
+    "provenanceAccuracy": {
+      "value": null,
+      "status": "MEASURED_PARTIAL",
+      "spanUnresolvedCount": 0,
+      "spanResolvedExact": 13,
+      "spanNormalized": 8
+    },
+    "handCatalogHeldOutSectionCoverage": {
+      "value": 0.5,
+      "status": "INFORMATIONAL_NOT_EXTRACTOR_SCORE",
+      "detail": "Hand catalog coverage of held-out items; not used as extractor credit."
+    }
+  }
+}

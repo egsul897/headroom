@@ -1,0 +1,68 @@
+{
+  "recordId": "ba-cnmd-am2-defs-ratio",
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "amendingDocId": "cnmd-second-am-2022",
+  "comparisons": [
+    {
+      "changeClass": "DEFINITION",
+      "target": { "kind": "DEFINITION", "definedTerm": "Consolidated Senior Secured Leverage Ratio", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Cash netting threshold inside CSSLR definition",
+      "beforeText": "...$75,000,000... (within definition; exact surrounding words in Seventh A&R MISSING from package)",
+      "afterText": "reference to $75,000,000 deleted and replaced with $100,000,000",
+      "authority": {
+        "status": "PARTIAL",
+        "accession": "0001193125-22-209154",
+        "exhibit": "EX-10.2",
+        "quote": "The definition of \"Consolidated Senior Secured Leverage Ratio\" is hereby amended by deleting the reference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".",
+        "gapReason": "Seventh A&R full definition body not in package; before-text reconstructable only from amendment's delete/substitute instruction."
+      },
+      "adversarialTags": ["MULTI_AMEND_SAME_DEFINITION", "MISSING_DOCUMENT"]
+    },
+    {
+      "changeClass": "DEFINITION",
+      "target": { "kind": "DEFINITION", "definedTerm": "Consolidated Total Leverage Ratio", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Cash netting threshold inside CTLR definition",
+      "beforeText": "...$75,000,000...",
+      "afterText": "...$100,000,000...",
+      "authority": {
+        "status": "PARTIAL",
+        "accession": "0001193125-22-209154",
+        "exhibit": "EX-10.2",
+        "quote": "The definition of \"Consolidated Total Leverage Ratio\" is hereby amended by deleting the reference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\"."
+      },
+      "adversarialTags": ["MULTI_AMEND_SAME_DEFINITION"]
+    },
+    {
+      "changeClass": "DEFINITION",
+      "target": { "kind": "DEFINITION", "definedTerm": "Indebtedness", "covenantFamily": "INDEBTEDNESS" },
+      "label": "Earn-out proviso added to Indebtedness",
+      "beforeText": null,
+      "afterText": "; provided, further, that no earn-out obligation arising in connection with any other acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness unless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if not paid within five days after the date it is finally determined to be due and payable.",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-22-209154",
+        "exhibit": "EX-10.2",
+        "quote": "The definition of \"Indebtedness\" is hereby amended by inserting the following proviso at the end thereof: \"[earn-out proviso as above]\""
+      }
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": { "kind": "SECTION", "sectionRef": "7.1(b)", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Consolidated Total Leverage Ratio schedule + Material Acquisition step-up",
+      "beforeText": null,
+      "afterText": "Permit the Consolidated Total Leverage Ratio... to exceed (i) ... ending June 30, 2021 and September 30, 2021, 5.25 to 1.00, (ii) ... December 31, 2021 and March 31, 2022, 5.00 to 1.00, (iii) ... June 30, 2022, September 30, 2022 and December 31, 2022, 6.25 to 1.00, (iv) ... March 31, 2023 and June 30, 2023, 6.00 to 1.00, (v) ... September 30, 2023 and December 31, 2023, 5.75 to 1.00 and (vi) otherwise, 5.50 to 1.00. [Material Acquisition step-up +0.50x capped at 6.00x, twice only, ≥2 quarters between.]",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-22-209154",
+        "exhibit": "EX-10.2",
+        "quote": "Section 7.1(b) (Consolidated Total Leverage Ratio) of the Credit Agreement is hereby amended and restated as follows: [full restated paragraph in fixture second-amendment-2022-full.txt]",
+        "gapReason": "Prior §7.1(b) text (Seventh A&R) MISSING — after-text only is fully SOURCE_BACKED."
+      },
+      "adversarialTags": ["RATIO_CHANGE", "MISSING_DOCUMENT", "CONDITIONAL_EFFECTIVENESS"]
+    }
+  ],
+  "waiverSeparation": {
+    "isWaiverOrConsentOnly": false,
+    "evidenceQuote": "this Amendment shall not by implication or otherwise limit, impair, constitute a waiver of or otherwise affect the rights and remedies of the Lenders or the Administrative Agent..."
+  }
+}

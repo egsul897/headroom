@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "precedent-comparison-phase4.v1",
+  "generatedAt": "2026-10-08T22:43:11.355Z",
+  "startingHead": "86cb255cd0737f94a0fc27766a35657310da8001",
+  "phase3CodeSha": "9f2ba8cfe86be3feb2bda8f1280f2dd3c65ba1b9",
+  "contextCompleteness": {
+    "beforeAssemblyIncomplete": 54,
+    "afterAssemblyIncomplete": 52,
+    "sampleSize": 100,
+    "byKind": {
+      "DEFINED_TERM": 25,
+      "PARENT_COVENANT_LANGUAGE": 0,
+      "PROVISO": 3,
+      "ENTITY_RESTRICTION": 12,
+      "CROSS_REFERENCE": 106,
+      "AMENDMENT_VERSION_AUTHORITY": 0,
+      "OTHER_CONTROLLING_DOCUMENT": 0,
+      "SHORT_BASKET_WITHOUT_PARENT": 4
+    },
+    "resolvedByPeer": {
+      "WS-DEF": 1
+    },
+    "spanExactMatchRate": 1,
+    "spanContextCompletenessRate": 0.81
+  },
+  "falseLegalDifferenceDispositions": {
+    "D18": {
+      "rootCause": "Regex ECONOMICS treated '4.00 to 1.00' and '4.00:1.00' as distinct thresholds (unsupported legal-effect from orthography).",
+      "disposition": "FIXED — ratio-format normalization before threshold compare; positive control 4.00 vs 3.50 retained."
+    },
+    "D28": {
+      "rootCause": "ORDINARY_COURSE feature regex required whitespace; missed hyphenated 'ordinary-course' → false STRUCTURE divergence.",
+      "disposition": "FIXED — accept ordinary[\\s-]+course; positive control without ordinary-course retained."
+    },
+    "H02": {
+      "rootCause": "Borrower naming on one side elevated BORROWER_SCOPE as SOURCE_SUPPORTED SCOPE/STRUCTURE; Borrower is default obligor.",
+      "disposition": "FIXED — borrower-only asymmetry → SEMANTIC_HYPOTHESIS; Restricted Subsidiary/Guarantor asymmetries still elevate."
+    }
+  },
+  "phase3MetricsAfterRemediation": {
+    "all": {
+      "split": "ALL",
+      "n": 50,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.95,
+      "materialPrecisionDenominator": 38,
+      "materialRecallDenominator": 40,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 2,
+      "citationCorrectRate": 1,
+      "citationDenominator": 50,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "dev": {
+      "split": "DEV",
+      "n": 35,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.9642857142857143,
+      "materialPrecisionDenominator": 27,
+      "materialRecallDenominator": 28,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 1,
+      "citationCorrectRate": 1,
+      "citationDenominator": 35,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "heldOut": {
+      "split": "HELD_OUT",
+      "n": 15,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.9166666666666666,
+      "materialPrecisionDenominator": 11,
+      "materialRecallDenominator": 12,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 1,
+      "citationCorrectRate": 1,
+      "citationDenominator": 15,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    }
+  },
+  "phase3FalseFindingsAfter": [],
+  "phase4ScenarioCounts": {
+    "total": 50,
+    "dev": 35,
+    "heldOut": 15,
+    "distinctIssuers": 10,
+    "distinctDocuments": 24
+  },
+  "phase4Metrics": {
+    "all": {
+      "split": "ALL",
+      "n": 50,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.9210526315789473,
+      "materialPrecisionDenominator": 35,
+      "materialRecallDenominator": 38,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 3,
+      "citationCorrectRate": 1,
+      "citationDenominator": 50,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "dev": {
+      "split": "DEV",
+      "n": 35,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.9629629629629629,
+      "materialPrecisionDenominator": 26,
+      "materialRecallDenominator": 27,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 1,
+      "citationCorrectRate": 1,
+      "citationDenominator": 35,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    },
+    "heldOut": {
+      "split": "HELD_OUT",
+      "n": 15,
+      "textualAccuracy": 1,
+      "materialPrecision": 1,
+      "materialRecall": 0.8181818181818182,
+      "materialPrecisionDenominator": 9,
+      "materialRecallDenominator": 11,
+      "falseMaterialDifferenceCount": 0,
+      "missedMaterialDifferenceCount": 2,
+      "citationCorrectRate": 1,
+      "citationDenominator": 15,
+      "dependencyClosureReportedRate": 1,
+      "amendmentVersionCorrectRate": 1,
+      "unsupportedConclusionRefusalRate": 1,
+      "qualifiedIncompleteRate": 1
+    }
+  },
+  "ckf": {
+    "probe": {
+      "mounted": false,
+      "pathsTried": [
+        "/workspace/tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.json",
+        "/workspace/docs/knowledge-factory/export/corpus.json",
+        "/workspace/lib/knowledge-factory/export/corpus.json",
+        "/workspace/lib/precedent-comparison/adapters/fixtures/knowledge-factory.sample.json"
+      ],
+      "sampleOnly": false
+    },
+    "import": {
+      "attempted": true,
+      "availability": "UNAVAILABLE",
+      "note": "Knowledge Factory corpus export not present — PCI expands from local authentic fixtures only — PCI will not fabricate a second SEC downloader or treat adapter samples as production CKF integration.",
+      "recordsSeen": 0,
+      "imported": 0,
+      "skippedDuplicateHash": 0,
+      "skippedMissingText": 0,
+      "skippedInvalidIdentity": 0,
+      "contentHashes": [],
+      "documentIds": [],
+      "issuerIds": []
+    }
+  },
+  "authenticDocumentsAdded": 0,
+  "costsUsd": 0,
+  "limitations": [
+    "Peer Atlas/DEF/ACR/FDP exports are largely unmounted in this worktree — assembly often cannot close definitions/cross-docs.",
+    "CKF has acquired SEC documents on its branch but published provision corpus export is not mounted here.",
+    "Context completeness heuristics are not full legal dependency closure.",
+    "No legal certification; SOURCE_SUPPORTED ≠ REVIEWER_VERIFIED."
+  ]
+}

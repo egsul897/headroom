@@ -1,0 +1,228 @@
+{
+  "covenantFamily": "FUNDAMENTAL_CHANGES",
+  "count": 2,
+  "exceptionIds": [
+    "conmed-7.4-a-intercompany-merger",
+    "lsb-6.03-fundamental-changes-carveouts"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.4-a-intercompany-merger",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "FUNDAMENTAL_CHANGES",
+      "parentProhibition": {
+        "sectionRef": "7.4",
+        "text": "Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself ... or Dispose of all or substantially all of its Property or business except:"
+      },
+      "exceptionSectionRef": "7.4(a)",
+      "exactExceptionText": "(i) any Subsidiary may be merged or consolidated with or into the Parent Borrower (provided that the Parent Borrower shall be the continuing or surviving Person), any Subsidiary Guarantor (provided that the Subsidiary Guarantor shall be the continuing or surviving Person) or an entity that will become a Subsidiary Guarantor following a Permitted Business Acquisition; ... (iv) the Parent Borrower may be merged or consolidated with or into any Subsidiary; provided that if the Parent Borrower shall not be the continuing or surviving Person ... [Successor Borrower organizational, assumption, reaffirmation, opinion, KYC conditions]; provided, further, that (1) no Event of Default exists after giving effect ... and (2) if the foregoing requirements are satisfied, the Successor Borrower will succeed to ... the Parent Borrower ...",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.4",
+        "Section 7.4(a)"
+      ],
+      "definedTerms": [
+        "Subsidiary Guarantor",
+        "Permitted Business Acquisition",
+        "Successor Borrower",
+        "Event of Default"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "survivor identity constraints (Parent Borrower / Subsidiary Guarantor)",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.4(a)(i)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Successor Borrower US org + assumption + reaffirmation + opinion",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.4(a)(iv)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "no Event of Default after giving effect",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.4(a) further proviso (1)",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c4",
+          "text": "Division deemed utilization of Section 7.5 baskets",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.5",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Subsidiaries",
+          "Parent Borrower",
+          "Subsidiary Guarantors"
+        ],
+        "excludes": [],
+        "notes": "Division successors must preserve Material Domestic / Pledge Eligible Foreign classes."
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Division under 7.4(a)(iii) deemed utilization of applicable 7.5 baskets",
+          "relatedRefs": [
+            "7.4(a)(iii)",
+            "7.5"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "multiple provided / provided further survivor and EOD provisos",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Nested provisos on merger limbs."
+        },
+        {
+          "text": "Division deemed 7.5 utilization",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Cross-family capacity interaction."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.5",
+          "role": "Division capacity deemed Asset Sale basket use"
+        },
+        {
+          "targetRef": "7.4(d)",
+          "role": "further exception to extent permitted by 7.5"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Division capacity is borrowed from \u00a77.5; \u00a77.4(d) also defers to \u00a77.5."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Fundamental-change permission that can consume Asset Sale capacity \u2014 shared-capacity interaction across families.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.03-fundamental-changes-carveouts",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "FUNDAMENTAL_CHANGES",
+      "parentProhibition": {
+        "sectionRef": "6.03",
+        "text": "(a) Enter into any merger, consolidation, or reorganization... (b) liquidate... (c) convey... all or substantially all of the assets... provided, that the foregoing clauses (a), (b) and (c) shall not apply to ..."
+      },
+      "exceptionSectionRef": "6.03 proviso (i)-(vii)",
+      "exactExceptionText": "provided, that the foregoing clauses (a), (b) and (c) shall not apply to (i) the merger or consolidation of a Loan Party or a Subsidiary of a Loan Party with and into another Loan Party (in each such case, so long as a Borrower (to the extent a Borrower is part of such transaction) is the surviving entity of any such merger), (ii) the sale, transfer, lease or other disposal of any assets of any Loan Party or any of its Subsidiaries to any other Loan Party, (iii) Permitted Dispositions, (iv) Acquisitions and other Investments to the extent permitted hereunder, (v) conveyances... permitted by Section 6.04, (vi) mergers, liquidations, sale of assets of a non-Loan Party Subsidiary into or to another non-Loan Party Subsidiary, and (vii) any liquidation or dissolution of any Subsidiary that is not a Loan Party if the Borrower Representative determines in good faith that such liquidation or dissolution is in the best interests of the Parent and its Subsidiaries, is not materially disadvantageous to the Lenders, and the assets ... are transferred to a Loan Party.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.03"
+      ],
+      "definedTerms": [
+        "Permitted Dispositions",
+        "Loan Party",
+        "Borrower Representative"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Borrower must survive if Borrower is party",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.03(i)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Acquisitions/Investments only to extent permitted hereunder",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.13 / Investment permissions",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "dispositions via Section 6.04",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.04",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "good-faith / not materially disadvantageous for non-Loan Party liquidation",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.03(vii)",
+          "computableHint": "QUALITATIVE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "provided that foregoing clauses shall not apply to (i)-(vii)",
+          "attachment": "SECTION_WIDE",
+          "scopeNote": "Single hanging proviso opens all fundamental-change exceptions."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.04",
+          "role": "disposition pathway"
+        },
+        {
+          "targetRef": "6.13",
+          "role": "Investment pathway"
+        },
+        {
+          "targetRef": "Permitted Dispositions",
+          "role": "defined-term pathway"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "HANGING_PROVISO",
+          "description": "One proviso after (a)-(c) creates the entire exception list."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Several limbs are only as wide as Investments / Asset Sale permissions."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Fundamental-change exceptions are mostly pointers into other NC capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

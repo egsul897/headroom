@@ -1,0 +1,1516 @@
+{
+  "artifact": "financial-definitions-precedent.independent-legal-challenger",
+  "version": "fdp.legal-challenger.v1",
+  "status": "READY_FOR_EXTERNAL_CHALLENGE",
+  "disclaimer": "Package prepares models for independent legal challenge. NONE are marked INDEPENDENTLY_LEGALLY_REVIEWED by WS-FDP.",
+  "independentlyLegallyReviewedCount": 0,
+  "selectedForChallenge": [
+    "CM-CONMED-SSLR-v1",
+    "CM-CONMED-EBITDA-PF-v1",
+    "CM-DSGR-EBITDA-v1",
+    "CM-GIB-AA-BUILDER-v1"
+  ],
+  "selectionRationale": [
+    "CM-CONMED-EBITDA-PF-v1 \u2014 partial PF scope / simplifiedAway (required)",
+    "CM-DSGR-EBITDA-v1 \u2014 combined cap + amendment restatement issues (required)",
+    "CM-CONMED-SSLR-v1 \u2014 amendment survival / cash-netting lineage (materially different)",
+    "CM-GIB-AA-BUILDER-v1 \u2014 citation ambiguity blocker (materially different)"
+  ],
+  "models": [
+    {
+      "modelId": "CM-CONMED-SSLR-v1",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "name": "CONMED Consolidated Senior Secured Leverage Ratio",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": true,
+      "controllingSourceSpans": [
+        {
+          "entryId": "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+          "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+          "charStart": 52954,
+          "charEnd": 53854,
+          "excerptSha256": "84bef9ba9f1fdf25dc657da780a958d6319428d219c344561eff6353c6af8118",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Consolidated Senior Secured Leverage Ratio \u201d: as at the last day of any period of four consecutive fiscal quarters, the ratio of (a) (i) Consolidated Senior Secured Funded Debt on such day plus (ii) to the extent not otherwise included th"
+        },
+        {
+          "entryId": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "charStart": 307,
+          "charEnd": 1907,
+          "excerptSha256": "1f699b71cf3086058bf505d2e6cf1dab295fd0ab5cdac6a1bf0a68c4d2d9f9c0",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "ies to, directly or indirectly:\nSECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal q"
+        },
+        {
+          "entryId": "CONMED-2025-CA::def::Consolidated_EBITDA",
+          "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+          "charStart": 44742,
+          "charEnd": 46942,
+          "excerptSha256": "f6bab4bcbfd93b497bc1b7ad6d2f1a3fb654de1dd922c7f5480c6b11c8ad9cc0",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Consolidated EBITDA \u201d: for any period, Consolidated Net Income for such period plus , without duplication and to the extent reflected as a charge in the statement of such Consolidated Net Income for such period, the sum of (a) income tax "
+        },
+        {
+          "entryId": "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+          "charStart": 1426,
+          "charEnd": 2326,
+          "excerptSha256": "6812722e72848cbccd1540aebf04c545bd12027e1510e01be8aa9f8b52b77d28",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "1.1 ( Defined Terms ) of the Credit Agreement is hereby amended as follows:\n(i) The definition of \" Consolidated Senior Secured Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu t"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Consolidated Senior Secured Leverage Ratio",
+          "Consolidated Senior Secured Funded Debt",
+          "Consolidated EBITDA",
+          "Consolidated Funded Debt",
+          "Funded Debt",
+          "Unrestricted cash and cash equivalents (cash netting)"
+        ],
+        "crossReferences": [
+          "\u00a77.1 Financial Covenants (maintenance max + Material Acquisition step-up)",
+          "Second Amendment cash-netting $75M\u2192$100M (Seventh-era; survival into Eighth REVIEW_REQUIRED)"
+        ],
+        "extractionEntryIds": [
+          "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+          "CONMED-2025-CA::test::Financial_Covenants_7_1",
+          "CONMED-2025-CA::def::Consolidated_EBITDA",
+          "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100"
+        ],
+        "financialInputRequirements": [
+          "consolidated_senior_secured_funded_debt",
+          "rtp_attributed_principal",
+          "unrestricted_cash_and_cash_equivalents",
+          "consolidated_ebitda_covenant_defined",
+          "material_acquisition_election_and_dates"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-CONMED-SSLR-v1",
+        "sourceAgreement": "Eighth Amended and Restated Credit Agreement (Jun 10, 2025) + Article VII curated",
+        "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+        "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+        "applicableChainDocs": [
+          {
+            "docId": "cnmd-seventh-ar",
+            "role": "RESTATEMENT",
+            "executionDate": "2021-07-16",
+            "localFixturePath": null,
+            "retrievalStatus": "MISSING_OR_EXTERNAL"
+          },
+          {
+            "docId": "cnmd-second-am-2022",
+            "role": "AMENDMENT",
+            "executionDate": "2022-08-01",
+            "effectiveDate": {
+              "status": "CONDITIONAL_UNRESOLVED",
+              "namedEffectiveDate": null,
+              "note": "Second Amendment Effective Date = conditions precedent satisfaction"
+            },
+            "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+            "supersededTerms": [
+              "cash netting $75,000,000 inside CSSLR/CTLR"
+            ],
+            "currentOperativeClaim": "Substitutes $100,000,000; survival into Eighth A&R is PARENT_CHILD_CONFLICT_RISK per Amendment Intelligence"
+          },
+          {
+            "docId": "cnmd-eighth-ar",
+            "role": "RESTATEMENT",
+            "executionDate": "2025-06-10",
+            "localFixturePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+            "retrievalStatus": "FIXTURE_PRESENT",
+            "currentOperativeText": "Eighth A&R definitions + \u00a77.1 \u2014 primary operative for SSLR model"
+          }
+        ],
+        "effectiveDate": {
+          "status": "MIXED",
+          "primaryOperativeAsOf": "2025-06-10 (Eighth A&R dating)",
+          "conditionalItems": [
+            "Second Amendment Effective Date",
+            "First Omnibus Effective Date"
+          ]
+        },
+        "supersededTerms": [
+          "Pre-Amd2 $75M cash netting (and earlier $25M\u2192$75M Amd1 chain noted by Amendment Intelligence)"
+        ],
+        "currentOperativeTextRefs": [
+          "CONMED-2025-PLAIN CSSLR definition",
+          "CONMED-2025-ART7 \u00a77.1"
+        ],
+        "unresolvedAuthority": [
+          "cnmd-ua-3: Whether Second Amendment effects survive into Eighth A&R \u2014 do not auto-apply",
+          "cnmd-ua-4: First Omnibus Effective Date calendar date CONDITIONAL_UNRESOLVED"
+        ],
+        "authorityStatus": "REVIEW_REQUIRED",
+        "peerBeforeAfterRefs": [
+          "docs/amendment-chain-research/before-after/cnmd-am2-definitions-and-ratio.json",
+          "docs/amendment-chain-research/before-after/cnmd-am1-am2-cash-netting-chain.json"
+        ],
+        "asOfRefusalRule": "Amd2 survival unresolved or Seventh parent on Eighth date \u2192 refuse; Omnibus effectiveness unproven \u2192 REVIEW_REQUIRED"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "Cash netting capped (operative Eighth text uses $100,000,000; do not silently ignore Amd2 lineage)",
+          "Material Acquisition election +0.50x step-up \u2014 optional, time-bounded; not capacity",
+          "RTP attributed principal inclusion if applicable"
+        ],
+        "entityRestrictions": "Parent Borrower and Subsidiaries on a consolidated basis per definitions",
+        "measurementDates": "as of / for the Test Period ending on the determination date under \u00a77.1"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-CONMED-SSLR-v1",
+        "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "Typed arithmetic under attested required inputs"
+          ],
+          "partiallyRepresented": [],
+          "unsupportedLegalSemantics": [],
+          "requiredExternalFinancialAttestations": [
+            "consolidated_senior_secured_funded_debt",
+            "rtp_attributed_principal",
+            "unrestricted_cash_and_cash_equivalents",
+            "consolidated_ebitda_covenant_defined",
+            "material_acquisition_election_and_dates"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [],
+      "missingInputRequirements": [
+        "consolidated_senior_secured_funded_debt",
+        "rtp_attributed_principal",
+        "unrestricted_cash_and_cash_equivalents",
+        "consolidated_ebitda_covenant_defined",
+        "material_acquisition_election_and_dates"
+      ],
+      "refusalConditions": [
+        "AMENDMENT_SURVIVAL_UNRESOLVED_cnmd-ua-3",
+        "CURRENCY_UNIT_MISMATCH",
+        "INCORRECT_PARENT_AGREEMENT",
+        "MISSING_INPUT",
+        "NEGATIVE_DENOMINATOR",
+        "OMNIBUS_EFFECTIVE_DATE_CONDITIONAL_UNRESOLVED",
+        "ZERO_DENOMINATOR"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 25,
+        "caseIds": [
+          "ARITH-CONMED-SSLR-001",
+          "ARITH-CONMED-SSLR-002",
+          "ARITH-CONMED-SSLR-MISSING-001",
+          "ARITH-NEG-MAINTENANCE-NOT-CAPACITY-001",
+          "ARITH-P4-CONMED-SSLR-001",
+          "ARITH-P4-CONMED-SSLR-002",
+          "ARITH-P4-CONMED-SSLR-003",
+          "ARITH-P4-CONMED-SSLR-004",
+          "ARITH-P4-CONMED-SSLR-005",
+          "ARITH-P4-CONMED-SSLR-006",
+          "ARITH-P4-CONMED-SSLR-007",
+          "ARITH-P4-CONMED-SSLR-008",
+          "ARITH-P4-CONMED-SSLR-009",
+          "ARITH-P4-CONMED-SSLR-010",
+          "ARITH-P4-CONMED-SSLR-011",
+          "ARITH-P4-CONMED-SSLR-MISSING-DEBT",
+          "ARITH-P4-CONMED-AMD-DATE-001",
+          "ARITH-P4-CONMED-AMD-DATE-002",
+          "ARITH-P4-CONMED-AMD-DATE-003",
+          "ARITH-P4-NEG-SSLR-HEADROOM",
+          "ARITH-P5-CONMED-AMD-SURVIVAL-UNRESOLVED",
+          "ARITH-P5-CONMED-WRONG-PARENT",
+          "ARITH-P5-CONMED-OMNIBUS-EFFECTIVENESS",
+          "ARITH-P5-NEG-MAINTENANCE-NOT-PERMISSION",
+          "ARITH-P5-CURRENCY-MISMATCH-CONMED"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "cnmd-ua-3: Whether Second Amendment effects survive into Eighth A&R \u2014 do not auto-apply",
+        "cnmd-ua-4: First Omnibus Effective Date calendar date CONDITIONAL_UNRESOLVED"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 25,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 6
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "REVIEW_REQUIRED",
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Parent Borrower and Subsidiaries on a consolidated basis per definitions"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "name": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": true,
+      "controllingSourceSpans": [
+        {
+          "entryId": "CONMED-2025-CA::def::Consolidated_EBITDA",
+          "sourcePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+          "charStart": 44742,
+          "charEnd": 46942,
+          "excerptSha256": "f6bab4bcbfd93b497bc1b7ad6d2f1a3fb654de1dd922c7f5480c6b11c8ad9cc0",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Consolidated EBITDA \u201d: for any period, Consolidated Net Income for such period plus , without duplication and to the extent reflected as a charge in the statement of such Consolidated Net Income for such period, the sum of (a) income tax "
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Consolidated EBITDA",
+          "Consolidated Net Income",
+          "Pro Forma Basis / Pro Forma Adjustments",
+          "Material Acquisition"
+        ],
+        "crossReferences": [
+          "Consolidated EBITDA clause (i) PF adjustments",
+          "$30,000,000 Transaction/Material Acquisition cost cap (distinct from 15% PF cap)"
+        ],
+        "extractionEntryIds": [
+          "CONMED-2025-CA::def::Consolidated_EBITDA"
+        ],
+        "financialInputRequirements": [
+          "ebitda_before_pf_clause_i",
+          "pro_forma_adjustment_gross",
+          "benefits_realized",
+          "transaction_costs_material_acquisition"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-CONMED-EBITDA-PF-v1",
+        "sourceAgreement": "Eighth A&R Consolidated EBITDA",
+        "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+        "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+        "applicableChainDocs": [
+          {
+            "docId": "cnmd-eighth-ar",
+            "role": "RESTATEMENT",
+            "executionDate": "2025-06-10",
+            "localFixturePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt"
+          }
+        ],
+        "effectiveDate": {
+          "status": "EXPLICIT_IN_FIXTURE",
+          "namedEffectiveDate": "2025-06-10"
+        },
+        "supersededTerms": [
+          "Prior Seventh-era EBITDA text (not fully reconstructed here)"
+        ],
+        "currentOperativeTextRefs": [
+          "CONMED-2025-CA::def::Consolidated_EBITDA"
+        ],
+        "unresolvedAuthority": [
+          "Full Seventh\u2192Eighth EBITDA redline not independently verified in this pack"
+        ],
+        "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+        "peerBeforeAfterRefs": []
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "15% of Consolidated EBITDA after giving effect to clause (i) adjustments",
+          "net of benefits realized",
+          "without duplication"
+        ],
+        "entityRestrictions": "Consolidated Borrower group",
+        "measurementDates": "Test Period; PF as-if from first day of period for qualifying transactions"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+        "modelStatus": "PARTIAL_SEMANTIC_MODEL",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "clause (i) PF net-of-benefits arithmetic under attested inputs",
+            "15% after-giving-effect cap math under stated assumptions"
+          ],
+          "partiallyRepresented": [
+            "Interaction of clause (i) with other Consolidated EBITDA add-backs",
+            "$30M Transaction/Material Acquisition cost cap (declared, not fully arith suite)"
+          ],
+          "unsupportedLegalSemantics": [
+            "Full multi-clause EBITDA reconstruction as a single certified figure",
+            "Material Acquisition qualification without attested election facts"
+          ],
+          "requiredExternalFinancialAttestations": [
+            "ebitda_before_pf_clause_i",
+            "pro_forma_adjustment_gross",
+            "benefits_realized",
+            "transaction_costs_material_acquisition"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [
+        "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+        "Cross-clause without-duplication identity across all EBITDA prongs",
+        "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
+      ],
+      "missingInputRequirements": [
+        "ebitda_before_pf_clause_i",
+        "pro_forma_adjustment_gross",
+        "benefits_realized",
+        "transaction_costs_material_acquisition"
+      ],
+      "refusalConditions": [
+        "MISSING_INPUT",
+        "NEGATIVE_BASE_BEFORE_PF",
+        "ZERO_BASE_BEFORE_PF"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 13,
+        "caseIds": [
+          "ARITH-CONMED-PF-CAP-001",
+          "ARITH-P4-CONMED-PF-001",
+          "ARITH-P4-CONMED-PF-002",
+          "ARITH-P4-CONMED-PF-003",
+          "ARITH-P4-CONMED-PF-004",
+          "ARITH-P4-CONMED-PF-005",
+          "ARITH-P4-CONMED-PF-006",
+          "ARITH-P4-CONMED-PF-007",
+          "ARITH-P4-CONMED-PF-008",
+          "ARITH-P4-CONMED-PF-DISPOSITION",
+          "ARITH-P5-CONMED-PF-MISSING-GROSS",
+          "ARITH-P5-CONMED-PF-MISSING-BEFORE",
+          "ARITH-P5-CONMED-PF-SILENT-ZERO-TRAP"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "Full Seventh\u2192Eighth EBITDA redline not independently verified in this pack"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PARTIAL",
+          "caseCount": 13,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+            "Cross-clause without-duplication identity across all EBITDA prongs",
+            "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": "cnmd-seventh-ar-to-eighth-ar",
+          "unresolvedCount": 1
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Consolidated Borrower group"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "name": "DSGR EBITDA with Combined Cap (Second A&R doc-d)",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": true,
+      "controllingSourceSpans": [
+        {
+          "entryId": "DSGR-2025-AR2::def::EBITDA",
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "charStart": 87926,
+          "charEnd": 91126,
+          "excerptSha256": "ed48307900df8a1b2467514ef5b92d12308de32f6089dfea637967830d85af6c",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c EBITDA \u201d means, for any period, Net Income for such period\nplus\n\n(a) without duplication and to the extent deducted (and not added back or excluded) in determining Net\nIncome for such period, the sum of:\n\n(i)\nInterest Expense for such per"
+        },
+        {
+          "entryId": "DSGR-2025-AR2::adj::Cost_Savings",
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "charStart": 90175,
+          "charEnd": 91275,
+          "excerptSha256": "85c66fb14152516ef944a86ee912822df918a100aa3530c96d9ec26cc80e2e56",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "amount of \u201crun-rate\u201d cost savings (the \u201c Cost\nSavings \u201d) projected by the Company in good faith to result from actions taken prior to the last day of such period with respect to integrating, consolidating or discontinuing operations, headco"
+        },
+        {
+          "entryId": "DSGR-2025-AR2::adj::Combined_Cap_20pct",
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "charStart": 98355,
+          "charEnd": 98575,
+          "excerptSha256": "7a6857acae7ebcac624027bafea8f9010012974b4f0a2d0169ae0b480cde2394",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "d in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the \u201c Combined Cap \u201d).\n\n\u201c ECP \u201d means an \u201celigible\ncontract participant\u201d as defined in Secti"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "EBITDA",
+          "Cost Savings",
+          "Combined Cap",
+          "Net Income"
+        ],
+        "crossReferences": [
+          "EBITDA (a)(vii)/(a)(viii)/(a)(xviii)(b) share Combined Cap",
+          "Cost Savings 24-month lookforward",
+          "Doc-d Second A&R supersedes prior targeted amendment text for these defs"
+        ],
+        "extractionEntryIds": [
+          "DSGR-2025-AR2::def::EBITDA",
+          "DSGR-2025-AR2::adj::Cost_Savings",
+          "DSGR-2025-AR2::adj::Combined_Cap_20pct"
+        ],
+        "financialInputRequirements": [
+          "net_income",
+          "interest_expense",
+          "income_tax_expense_net",
+          "depreciation_amortization",
+          "nonrecurring_unusual_expenses",
+          "cost_savings_projected",
+          "cost_savings_benefits_realized",
+          "clause_a_xviii_b",
+          "cost_savings_action_dates"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-DSGR-EBITDA-v1",
+        "sourceAgreement": "Second Amended and Restated Credit Agreement (Doc D, Dec 18, 2025)",
+        "instrumentIdentity": "dsgr-ar-ca-2022-04-01",
+        "amendmentChainId": "dsgr-2022-04-01-ar-credit",
+        "applicableChainDocs": [
+          {
+            "docId": "dsgr-doc-a",
+            "role": "RESTATEMENT",
+            "executionDate": "2022-04-01",
+            "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt"
+          },
+          {
+            "docId": "dsgr-doc-b",
+            "role": "AMENDMENT",
+            "executionDate": "2024-08-14",
+            "effectiveDate": {
+              "status": "CONDITIONAL_UNRESOLVED"
+            },
+            "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+            "note": "Combined Cap / AA patterns appear here; superseded for EBITDA defs by Doc D restatement"
+          },
+          {
+            "docId": "dsgr-doc-d",
+            "role": "RESTATEMENT",
+            "executionDate": "2025-12-18",
+            "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+            "currentOperativeText": "Doc D EBITDA / Cost Savings / Combined Cap \u2014 operative for this model"
+          }
+        ],
+        "effectiveDate": {
+          "status": "RESTATEMENT_DATING",
+          "primaryOperativeAsOf": "2025-12-18 (Doc D)",
+          "conditionalItems": [
+            "Third Amendment Effective Date",
+            "Fourth Amendment Effective Date"
+          ]
+        },
+        "supersededTerms": [
+          "Doc B targeted amendment blocks for Articles I\u2013XII as to restated definitions in Doc D"
+        ],
+        "currentOperativeTextRefs": [
+          "DSGR-2025-AR2::def::EBITDA",
+          "DSGR-2025-AR2::adj::Cost_Savings",
+          "DSGR-2025-AR2::adj::Combined_Cap_20pct"
+        ],
+        "unresolvedAuthority": [
+          "First/Second Amendments between 2022 A&R and Third Amendment MISSING from fixture package",
+          "Third Amendment Effective Date conditions not proven satisfied beyond dating"
+        ],
+        "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+        "peerBeforeAfterRefs": [
+          "docs/amendment-chain-research/before-after/dsgr-am4-restricted-payments.json"
+        ],
+        "asOfRefusalRule": "Missing Am1/Am2 authority or Doc B without restatement check \u2192 refuse"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "Combined Cap = 20% of EBITDA before giving effect to capped add-backs",
+          "Cost Savings net of benefits realized",
+          "without duplication lead-in",
+          "actions taken prior to last day of period for Cost Savings"
+        ],
+        "entityRestrictions": "Borrower and Restricted Subsidiaries (per Doc D)",
+        "measurementDates": "period of determination / Test Period under Doc D"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-DSGR-EBITDA-v1",
+        "modelStatus": "PARTIAL_SEMANTIC_MODEL",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "Combined Cap 20% before capped add-backs (simplified bucket)",
+            "Cost Savings net-of-benefits when action dates attested"
+          ],
+          "partiallyRepresented": [
+            "Uncapped EBITDA (a)/(b) prongs as attested aggregates"
+          ],
+          "unsupportedLegalSemantics": [
+            "Unmodeled addback clauses",
+            "Applying Doc B text without Doc D restatement authority",
+            "Cost Savings without attested action dates"
+          ],
+          "requiredExternalFinancialAttestations": [
+            "net_income",
+            "interest_expense",
+            "income_tax_expense_net",
+            "depreciation_amortization",
+            "nonrecurring_unusual_expenses",
+            "cost_savings_projected",
+            "cost_savings_benefits_realized",
+            "clause_a_xviii_b",
+            "cost_savings_action_dates"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [
+        "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
+      ],
+      "missingInputRequirements": [
+        "net_income",
+        "interest_expense",
+        "income_tax_expense_net",
+        "depreciation_amortization",
+        "nonrecurring_unusual_expenses",
+        "cost_savings_projected",
+        "cost_savings_benefits_realized",
+        "clause_a_xviii_b",
+        "cost_savings_action_dates"
+      ],
+      "refusalConditions": [
+        "MISSING_AMENDMENT_AUTHORITY_DSGR_AM1_AM2",
+        "MISSING_INPUT",
+        "MISSING_SOURCE_AUTHORITY_RESTATEMENT_CHECK",
+        "UNMODELED_ADDBACK_CLAUSE",
+        "UNMODELED_PROVISO_ACTION_DATES",
+        "UNSUPPORTED_CALCULATION_BRANCH_FULL_EBITDA"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 19,
+        "caseIds": [
+          "ARITH-DSGR-COMBINED-CAP-001",
+          "ARITH-DSGR-COMBINED-CAP-002",
+          "ARITH-DSGR-COST-SAVINGS-NET-001",
+          "ARITH-P4-DSGR-CAP-001",
+          "ARITH-P4-DSGR-CAP-002",
+          "ARITH-P4-DSGR-CAP-003",
+          "ARITH-P4-DSGR-CAP-004",
+          "ARITH-P4-DSGR-CAP-005",
+          "ARITH-P4-DSGR-CAP-006",
+          "ARITH-P4-DSGR-CAP-007",
+          "ARITH-P4-DSGR-CAP-008",
+          "ARITH-P4-DSGR-CAP-009",
+          "ARITH-P4-DSGR-CAP-010",
+          "ARITH-P4-DSGR-MISSING-NI",
+          "ARITH-P5-DSGR-UNSUPPORTED-ADDBACK",
+          "ARITH-P5-DSGR-MISSING-SOURCE-AUTHORITY",
+          "ARITH-P5-DSGR-UNMODELED-PROVISO",
+          "ARITH-P5-DSGR-UNSUPPORTED-BRANCH",
+          "ARITH-P5-DSGR-MISSING-AM1-AM2"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "First/Second Amendments between 2022 A&R and Third Amendment MISSING from fixture package",
+        "Third Amendment Effective Date conditions not proven satisfied beyond dating"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PARTIAL",
+          "caseCount": 19,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": "dsgr-2022-04-01-ar-credit",
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 4
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower and Restricted Subsidiaries (per Doc D)"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-CHWY-TLR-v1",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "name": "CHWY Total Leverage Ratio",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": false,
+      "controllingSourceSpans": [
+        {
+          "entryId": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 350203,
+          "charEnd": 350653,
+          "excerptSha256": "4548e655dafd511c648b4f77ccab257631d655c63a8318df22027c69d12c63ff",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Total Leverage Ratio \u201d means, on any date, the\nratio of (a) Consolidated Total Debt (excluding any Excluded Revolving Loans) as of such date and to (b) Consolidated EBITDA for the Test Period as of such date.\n\n\u201c Total Revolving Commitment"
+        },
+        {
+          "entryId": "CHWY-2026-CA::def::Consolidated_Total_Debt",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 114736,
+          "charEnd": 116536,
+          "excerptSha256": "c70945353b021d2724e4a1e9fccc4a1a57ee5f692c6e629930198275a8cb5a94",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Consolidated Total Debt \u201d means, as of any date of determination (i) the outstanding\nprincipal amount of all third-party Indebtedness for borrowed money (including purchase money Indebtedness), unreimbursed drawings under letters of credi"
+        },
+        {
+          "entryId": "CHWY-2026-CA::def::Consolidated_EBITDA",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 79182,
+          "charEnd": 81982,
+          "excerptSha256": "ac87b73dae4c9650cb5885be7df52430f7fb7f2e622b9086129b7a5808a4cc8d",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Consolidated EBITDA \u201d means, for any\nTest Period, with respect to any Person for any period, the Consolidated Net Income of such Person and its Restricted Subsidiaries for such Test Period plus:\n\n(a)\nwithout duplication, including without"
+        },
+        {
+          "entryId": "CHWY-2026-CA::def::Test_Period",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 349461,
+          "charEnd": 350011,
+          "excerptSha256": "034ef41b82227f923bf0ddac17f9f7402020b9db16fb1ad23d5143ce40355ce0",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c Test Period \u201d\nmeans, at any date of determination, (a) the period of four (4) consecutive fiscal quarters of the Initial Borrower or (b) twelve (12)-month period, in the case of clauses (a) and (b), then most recently ended on or prior to"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Total Leverage Ratio",
+          "Consolidated Total Debt",
+          "Consolidated EBITDA",
+          "Excluded Revolving Loans",
+          "Test Period"
+        ],
+        "crossReferences": [
+          "CTD embeds unrestricted cash netting per CTD definition",
+          "Test Period election (Four Quarters / TTM mechanics)"
+        ],
+        "extractionEntryIds": [
+          "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+          "CHWY-2026-CA::def::Consolidated_Total_Debt",
+          "CHWY-2026-CA::def::Consolidated_EBITDA",
+          "CHWY-2026-CA::def::Test_Period"
+        ],
+        "financialInputRequirements": [
+          "consolidated_total_debt",
+          "excluded_revolving_loans_balance",
+          "consolidated_ebitda_covenant_defined",
+          "test_period_election",
+          "unrestricted_cash_and_cash_equivalents"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-CHWY-TLR-v1",
+        "sourceAgreement": "Chewy 2026 Credit Agreement (Doc A)",
+        "instrumentIdentity": "chwy-2026-credit-agreement",
+        "amendmentChainId": null,
+        "applicableChainDocs": [
+          {
+            "docId": "chwy-doc-a",
+            "role": "ORIGINAL_OR_RESTATEMENT",
+            "executionDate": "2026-06-23",
+            "localFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+          }
+        ],
+        "effectiveDate": {
+          "status": "FIXTURE_DATED",
+          "namedEffectiveDate": "2026-06-23"
+        },
+        "supersededTerms": [],
+        "currentOperativeTextRefs": [
+          "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+          "CHWY-2026-CA::def::Consolidated_Total_Debt"
+        ],
+        "unresolvedAuthority": [
+          "No Amendment Chain Research chainId for CHWY 2026 \u2014 single-doc authority assumed for fixture"
+        ],
+        "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+        "peerBeforeAfterRefs": [],
+        "asOfRefusalRule": "Do not infer complete amendment history from single instrument; claim_complete_amendment_history \u2192 REVIEW_REQUIRED"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "Exclude Excluded Revolving Loans from numerator",
+          "CTD cash netting is definitional \u2014 do not double-apply CONMED-style capped netting"
+        ],
+        "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs",
+        "measurementDates": "Test Period ending on determination date"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-CHWY-TLR-v1",
+        "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "Typed arithmetic under attested required inputs"
+          ],
+          "partiallyRepresented": [],
+          "unsupportedLegalSemantics": [],
+          "requiredExternalFinancialAttestations": [
+            "consolidated_total_debt",
+            "excluded_revolving_loans_balance",
+            "consolidated_ebitda_covenant_defined",
+            "test_period_election",
+            "unrestricted_cash_and_cash_equivalents"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [],
+      "missingInputRequirements": [
+        "consolidated_total_debt",
+        "excluded_revolving_loans_balance",
+        "consolidated_ebitda_covenant_defined",
+        "test_period_election",
+        "unrestricted_cash_and_cash_equivalents"
+      ],
+      "refusalConditions": [
+        "CURRENCY_UNIT_MISMATCH",
+        "MISSING_INPUT",
+        "NEGATIVE_DENOMINATOR",
+        "NEGATIVE_EXCLUDED_REVOLVERS",
+        "NO_AMENDMENT_CHAIN_DO_NOT_INFER_COMPLETE_HISTORY",
+        "ZERO_DENOMINATOR"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 13,
+        "caseIds": [
+          "ARITH-CHWY-TLR-001",
+          "ARITH-P4-CHWY-TLR-001",
+          "ARITH-P4-CHWY-TLR-002",
+          "ARITH-P4-CHWY-TLR-003",
+          "ARITH-P4-CHWY-TLR-004",
+          "ARITH-P4-CHWY-TLR-005",
+          "ARITH-P4-CHWY-TLR-006",
+          "ARITH-P4-CHWY-TLR-007",
+          "ARITH-P4-CHWY-TLR-CURRENCY",
+          "ARITH-P5-CHWY-TLR-MISSING-CTD",
+          "ARITH-P5-CHWY-TLR-MISSING-EBITDA",
+          "ARITH-P5-CHWY-TLR-SILENT-ZERO-TRAP",
+          "ARITH-P5-CHWY-NO-AMENDMENT-HISTORY"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "No Amendment Chain Research chainId for CHWY 2026 \u2014 single-doc authority assumed for fixture"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 13,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 5
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+          "chainId": null,
+          "unresolvedCount": 1
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 2
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "name": "CHWY Anti-duplication \u00a71.08(d)(ii)",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": false,
+      "controllingSourceSpans": [
+        {
+          "entryId": "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 385506,
+          "charEnd": 385856,
+          "excerptSha256": "df93d335aa0c77860264c55a21da5abb4b107accae89e47bbe923d0b9709b276",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "ent\noccurs and (ii) no amounts shall be added pursuant to this clause (d) to the extent duplicative of any amounts that are otherwise added back in calculating Consolidated EBITDA, whether through a pro forma adjustment or otherwise,\nwith r"
+        },
+        {
+          "entryId": "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "charStart": 89524,
+          "charEnd": 91724,
+          "excerptSha256": "1550c58b122e71654b4951439a2eba4c83787152d8f09bb173fa98c41dd330f5",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "ments, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial\nBorrower in good faith to result from actions taken, committed to be"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Consolidated EBITDA",
+          "\u00a71.08(d)(ii) anti-duplication",
+          "Expected Run Rate Benefit / clause (d) add-backs"
+        ],
+        "crossReferences": [
+          "\u00a71.08 calculation principles",
+          "Consolidated EBITDA add-back clauses"
+        ],
+        "extractionEntryIds": [
+          "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+          "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
+        ],
+        "financialInputRequirements": [
+          "addback_amount_clause_d",
+          "addback_amount_already_in_ebitda"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-CHWY-ANTIDUPE-v1",
+        "sourceAgreement": "Chewy 2026 Credit Agreement (Doc A)",
+        "instrumentIdentity": "chwy-2026-credit-agreement",
+        "amendmentChainId": null,
+        "applicableChainDocs": [
+          {
+            "docId": "chwy-doc-a",
+            "role": "ORIGINAL_OR_RESTATEMENT",
+            "executionDate": "2026-06-23",
+            "localFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+          }
+        ],
+        "effectiveDate": {
+          "status": "FIXTURE_DATED",
+          "namedEffectiveDate": "2026-06-23"
+        },
+        "supersededTerms": [],
+        "currentOperativeTextRefs": [
+          "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii"
+        ],
+        "unresolvedAuthority": [],
+        "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+        "peerBeforeAfterRefs": [],
+        "asOfRefusalRule": "Do not infer complete amendment history from single instrument; claim_complete_amendment_history \u2192 REVIEW_REQUIRED"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA"
+        ],
+        "entityRestrictions": "Restricted Parties",
+        "measurementDates": "same period as Consolidated EBITDA"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+        "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "Typed arithmetic under attested required inputs"
+          ],
+          "partiallyRepresented": [],
+          "unsupportedLegalSemantics": [],
+          "requiredExternalFinancialAttestations": [
+            "addback_amount_clause_d",
+            "addback_amount_already_in_ebitda"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [],
+      "missingInputRequirements": [
+        "addback_amount_clause_d",
+        "addback_amount_already_in_ebitda"
+      ],
+      "refusalConditions": [
+        "LOOKFORWARD_WINDOW_EXCEEDED",
+        "MISSING_INPUT",
+        "NEGATIVE_ADDBACK",
+        "PARTIAL_OVERLAP_IDENTITY_NOT_RESOLVED"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 12,
+        "caseIds": [
+          "ARITH-CHWY-ANTIDUPE-001",
+          "ARITH-P4-CHWY-ANTIDUPE-001",
+          "ARITH-P4-CHWY-ANTIDUPE-002",
+          "ARITH-P4-CHWY-ANTIDUPE-003",
+          "ARITH-P4-CHWY-ANTIDUPE-004",
+          "ARITH-P4-CHWY-ANTIDUPE-005",
+          "ARITH-P4-CHWY-ANTIDUPE-006",
+          "ARITH-P4-CHWY-LOOKFORWARD-001",
+          "ARITH-P4-CHWY-LOOKFORWARD-002",
+          "ARITH-P5-CHWY-ANTIDUPE-MISSING-CLAUSE-D",
+          "ARITH-P5-CHWY-ANTIDUPE-MISSING-ALREADY",
+          "ARITH-P5-CHWY-PARTIAL-OVERLAP"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 12,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 3
+        },
+        "definitionClosure": {
+          "status": "PASS",
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+          "chainId": null,
+          "unresolvedCount": 0
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 1
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Restricted Parties"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "name": "Riot Actual LTV + Margin Demand Additional Collateral",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": false,
+      "controllingSourceSpans": [
+        {
+          "entryId": "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "charStart": 4327,
+          "charEnd": 4647,
+          "excerptSha256": "fcb77542a7d55d3dd2b03734676f1c83cd85706bf1999d2caab3498d0b68e0bb",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201cActual LTV Ratio\u201d means, at any time, the ratio (expressed as a percentage) of (a)\u00a0the principal amount of the Loan outstanding at such time to (b)\u00a0the Prevailing Market Value of the Collateral at such time.\n\n\u201cAdditional Collateral\u201d has th"
+        },
+        {
+          "entryId": "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "charStart": 64899,
+          "charEnd": 67099,
+          "excerptSha256": "300647ac3893cfe1d9bafea6cb1713df09e44af36ce5fca8fd48ad96fd77c466",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "Section 2.06.Collateral Adjustments.\n\n(a)Margin Demands.\n\n(i)If the Actual LTV Ratio is on any Business Day equal to or in excess of the Top Up LTV (a \u201cMargin Call Event\u201d), the Administrative Agent may, within (2) Business Days following th"
+        },
+        {
+          "entryId": "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "charStart": 185976,
+          "charEnd": 186256,
+          "excerptSha256": "7877271ac1a6e776ec358ec03e487165ac7aa8a19a5662b5241982f76f5ee02e",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\n\u200b\n\n\u200b\n\nSchedule 1 to Margin Funding Notice\n\nMargin Call Issue Time: [date][time]\n\nLoan Amount (U.S.$): [\u25cf]\n\nCurrent Collateral (BTC): [\u25cf]\n\nBTC Price: [\u25cf]\n\n[Actual LTV Ratio]: [\u25cf]\n\nCure Amount (BTC): [\u25cf]\n\nMargin Funding Deadline: [\u25cf]\n\nMargin"
+        },
+        {
+          "entryId": "RIOT-2026-CA::def::Initial_LTV",
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "charStart": 28791,
+          "charEnd": 29141,
+          "excerptSha256": "5ef4d8d27d081099882de97396532e4c5e59438ac5ac6b90503544d0b879cedd",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201cInitial LTV\u201d means, during any period specified in the LTV Table, the applicable percentage set forth opposite \u201cInitial LTV\u201d in such table for such period.\n\n\u201cInitial Prevailing Market Value\u201d means the Prevailing Market Value of the Collate"
+        },
+        {
+          "entryId": "RIOT-2026-CA::def::Release_LTV",
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "charStart": 43051,
+          "charEnd": 43401,
+          "excerptSha256": "1a1980f1d3d49b6ae626799fa618552d284a651728ae975bea824975bfd3c0ef",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201cRelease LTV\u201d means, during any period specified in the LTV Table, the applicable percentage set forth opposite \u201cRelease LTV\u201d in such table for such period.\n\n\u201cRelease Request Notice\u201d has the meaning given to it in Section 2.06(b)(ii).\n\n\u201cRel"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Actual LTV Ratio",
+          "Initial LTV",
+          "Release LTV",
+          "Cure Amount (BTC)",
+          "Prevailing Market Value of Collateral"
+        ],
+        "crossReferences": [
+          "\u00a72.06 Margin Funding Notice / Additional Collateral demand",
+          "Schedule fields for Initial LTV / Cure Amount (BTC)"
+        ],
+        "extractionEntryIds": [
+          "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+          "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+          "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+          "RIOT-2026-CA::def::Initial_LTV",
+          "RIOT-2026-CA::def::Release_LTV"
+        ],
+        "financialInputRequirements": [
+          "loan_principal",
+          "collateral_pmv",
+          "initial_ltv",
+          "btc_price",
+          "margin_call_event"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-RIOT-LTV-MARGIN-v1",
+        "sourceAgreement": "Riot Second A&R Credit Agreement (Doc C, Apr 21, 2026)",
+        "instrumentIdentity": "riot-2025-2026-credit-facility",
+        "amendmentChainId": null,
+        "applicableChainDocs": [
+          {
+            "docId": "riot-doc-a",
+            "role": "ORIGINAL",
+            "executionDate": "2025-04-22",
+            "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+            "supersededBy": "riot-doc-c"
+          },
+          {
+            "docId": "riot-doc-b",
+            "role": "RESTATEMENT",
+            "executionDate": "2025-05-19",
+            "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+            "supersededBy": "riot-doc-c"
+          },
+          {
+            "docId": "riot-doc-c",
+            "role": "RESTATEMENT",
+            "executionDate": "2026-04-21",
+            "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+            "currentOperativeText": "Operative for LTV / \u00a72.06 / Cure Amount (BTC)"
+          }
+        ],
+        "effectiveDate": {
+          "status": "RESTATEMENT_DATING",
+          "primaryOperativeAsOf": "2026-04-21"
+        },
+        "supersededTerms": [
+          "Doc A and Doc B LTV/margin mechanics as to restated Doc C provisions"
+        ],
+        "currentOperativeTextRefs": [
+          "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+          "RIOT-2026-CA::cure::Section_2_06_Margin_Demand"
+        ],
+        "unresolvedAuthority": [
+          "No Amendment Chain Research chainId; fixture restatement order used",
+          "Initial LTV schedule numeric attestation still open"
+        ],
+        "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+        "peerBeforeAfterRefs": [],
+        "asOfRefusalRule": "Initial LTV schedule numeric must be attested; else MISSING_INPUT"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "Margin Call Event \u2192 deliver Additional Collateral so Actual LTV \u2264 Initial LTV",
+          "Deadline 1 Business Day after Margin Funding Notice",
+          "Not an EBITDA equity cure"
+        ],
+        "entityRestrictions": "Borrower / Collateral under Riot CA",
+        "measurementDates": "point-in-time LTV; cure deadline 1 Business Day"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+        "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+        "legalReviewState": "SEMANTIC_HYPOTHESIS",
+        "completenessTaxonomy": {
+          "fullyRepresented": [
+            "Typed arithmetic under attested required inputs"
+          ],
+          "partiallyRepresented": [],
+          "unsupportedLegalSemantics": [],
+          "requiredExternalFinancialAttestations": [
+            "loan_principal",
+            "collateral_pmv",
+            "initial_ltv",
+            "btc_price",
+            "margin_call_event"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [
+        "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
+      ],
+      "missingInputRequirements": [
+        "loan_principal",
+        "collateral_pmv",
+        "initial_ltv",
+        "btc_price",
+        "margin_call_event"
+      ],
+      "refusalConditions": [
+        "MISSING_INPUT",
+        "NEGATIVE_COLLATERAL_PMV",
+        "SCHEDULE_NUMERIC_UNATTESTED",
+        "ZERO_COLLATERAL_PMV"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 12,
+        "caseIds": [
+          "ARITH-RIOT-LTV-001",
+          "ARITH-RIOT-LTV-MISSING-001",
+          "ARITH-P4-RIOT-LTV-001",
+          "ARITH-P4-RIOT-LTV-002",
+          "ARITH-P4-RIOT-LTV-003",
+          "ARITH-P4-RIOT-LTV-004",
+          "ARITH-P4-RIOT-LTV-005",
+          "ARITH-P4-RIOT-LTV-006",
+          "ARITH-P4-RIOT-LTV-007",
+          "ARITH-P4-RIOT-LTV-008",
+          "ARITH-P4-RIOT-MISSING-COLLATERAL-PRICE",
+          "ARITH-P5-RIOT-SCHEDULE-UNRESOLVED"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "No Amendment Chain Research chainId; fixture restatement order used",
+        "Initial LTV schedule numeric attestation still open"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "PASS",
+          "caseCount": 12,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 5
+        },
+        "definitionClosure": {
+          "status": "PARTIAL",
+          "simplifiedAway": [
+            "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "PARTIAL_REVIEW_REQUIRED",
+          "chainId": null,
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower / Collateral under Riot CA"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    },
+    {
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "name": "Gibraltar Available Amount Builder Basket",
+      "independentlyLegallyReviewed": false,
+      "selectedForIndependentLegalChallenge": true,
+      "controllingSourceSpans": [
+        {
+          "entryId": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "charStart": 37216,
+          "charEnd": 37356,
+          "excerptSha256": "7bdf98c8bfd8bf525d28bebd1dec3fe9d9c4810c396df3720ecb1976bb384cb6",
+          "verificationStatus": "CROSS_REF_ONLY",
+          "excerptPreview": "\u201c Available Amount Builder Basket \u201d has the meaning specified in Section 7.05(a)(y) .\n\n\u201c Available Tenor \u201d means, as of any date of determin"
+        },
+        {
+          "entryId": "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "charStart": 776996,
+          "charEnd": 782942,
+          "excerptSha256": "d0d315a007599e2e6e5e0e4d9a1c34fbbe4662b46e0c82b144af609c189afc54",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "(y)\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0the aggregate amount of such Restricted Payment and all other Restricted Payments made subsequent to the Closing Date (and not returned or rescinded)\n(including Permitted Payments made pursuant to clause (1) (without duplicatio"
+        },
+        {
+          "entryId": "GIB-2026-CA::def::LTM_EBITDA",
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "charStart": 231335,
+          "charEnd": 231935,
+          "excerptSha256": "8088feb9e55a66de199684402cd6c0a8ec688174156cdf32788f6cfede82c2a8",
+          "verificationStatus": "SOURCE_SPAN_VERIFIED",
+          "excerptPreview": "\u201c LTM EBITDA \u201d means, as of any date of determination, Consolidated EBITDA of\nthe Borrower measured for the period of the most recent four consecutive fiscal quarters ending prior to the date of such determination for which consolidated fin"
+        }
+      ],
+      "completeDependencyList": {
+        "controllingDefinitions": [
+          "Available Amount Builder Basket",
+          "LTM EBITDA",
+          "Consolidated Net Income",
+          "\u00a77.05(a)(y) Restricted Payments builder"
+        ],
+        "crossReferences": [
+          "Article I definitional xref to Section 7.05(a)(y)",
+          "Operative \u00a77.05(a)(y)(i)\u2013(vi)",
+          "Loose 'Section 7.05(y)' cites",
+          "\u00a77.05(a)(x) Event of Default gates"
+        ],
+        "extractionEntryIds": [
+          "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+          "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+          "GIB-2026-CA::def::LTM_EBITDA"
+        ],
+        "financialInputRequirements": [
+          "consolidated_net_income_cumulative",
+          "equity_proceeds_since_closing",
+          "converted_debt_equity_proceeds",
+          "restricted_investment_returns",
+          "unrestricted_sub_redesignation_fmv",
+          "ltm_ebitda",
+          "event_of_default_status",
+          "citation_scope_resolution"
+        ]
+      },
+      "amendmentVersionAuthority": {
+        "modelId": "CM-GIB-AA-BUILDER-v1",
+        "sourceAgreement": "Gibraltar 2026 Credit Agreement",
+        "instrumentIdentity": "gibraltar-2026-credit-agreement",
+        "amendmentChainId": null,
+        "applicableChainDocs": [
+          {
+            "docId": "gib-ca-2026",
+            "role": "ORIGINAL_OR_RESTATEMENT",
+            "localFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+          }
+        ],
+        "effectiveDate": {
+          "status": "FIXTURE_PRESENT_DATE_NOT_JOINED"
+        },
+        "supersededTerms": [],
+        "currentOperativeTextRefs": [
+          "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+          "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y"
+        ],
+        "unresolvedAuthority": [
+          "UQ-GIB-705AY-CITATION \u2014 citation/scope conflict blocks certified operative formula",
+          "No Amendment Chain Research chainId for Gibraltar in peer export"
+        ],
+        "authorityStatus": "REVIEW_REQUIRED",
+        "peerBeforeAfterRefs": [],
+        "forcedResolutionForbidden": true,
+        "asOfRefusalRule": "UQ-GIB-705AY-CITATION blocks any capacity figure"
+      },
+      "provisoAndEntityScope": {
+        "provisos": [
+          "Do not force unique citation target",
+          "Do not certify whether Builder Basket is entire (y) or only (vi)",
+          "Event of Default gates by RP type"
+        ],
+        "entityRestrictions": "Borrower Restricted Payments context",
+        "measurementDates": "cumulative / LTM components per prong \u2014 uncertified"
+      },
+      "calculationSpecification": {
+        "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+        "modelStatus": "BLOCKED_REVIEW_REQUIRED",
+        "legalReviewState": "REVIEW_REQUIRED",
+        "completenessTaxonomy": {
+          "fullyRepresented": [],
+          "partiallyRepresented": [
+            "Component extraction as EXTRACTED_NOT_CERTIFIED"
+          ],
+          "unsupportedLegalSemantics": [
+            "Any certified Available Amount / builder capacity figure"
+          ],
+          "requiredExternalFinancialAttestations": [
+            "consolidated_net_income_cumulative",
+            "equity_proceeds_since_closing",
+            "converted_debt_equity_proceeds",
+            "restricted_investment_returns",
+            "unrestricted_sub_redesignation_fmv",
+            "ltm_ebitda",
+            "event_of_default_status",
+            "citation_scope_resolution"
+          ],
+          "representationClass": "BLOCKED_REVIEW_REQUIRED",
+          "doNotUpgradeToLegallyCompleteFromArithmetic": true
+        }
+      },
+      "knownSimplifications": [],
+      "missingInputRequirements": [
+        "consolidated_net_income_cumulative",
+        "equity_proceeds_since_closing",
+        "converted_debt_equity_proceeds",
+        "restricted_investment_returns",
+        "unrestricted_sub_redesignation_fmv",
+        "ltm_ebitda",
+        "event_of_default_status",
+        "citation_scope_resolution"
+      ],
+      "refusalConditions": [
+        "UQ-GIB-705AY-CITATION",
+        "UQ-GIB-705AY-CITATION \u2014 builder-basket source ambiguity; do not certify formula",
+        "UQ-GIB-705AY-CITATION \u2014 do not certify whether Builder Basket is entire \u00a77.05(a)(y) or only (vi)",
+        "UQ-GIB-705AY-CITATION_UNRESOLVED"
+      ],
+      "arithmeticTestEvidence": {
+        "caseCount": 6,
+        "caseIds": [
+          "ARITH-GIB-AA-BLOCKED-001",
+          "ARITH-P4-GIB-AA-001",
+          "ARITH-P4-GIB-AA-002",
+          "ARITH-P4-GIB-AA-003",
+          "ARITH-P5-GIB-NO-CAPACITY",
+          "ARITH-P5-GIB-MISSING-CITATION-SCOPE"
+        ],
+        "note": "ARITHMETICALLY_TESTED \u2260 legally verified"
+      },
+      "explicitUnresolvedQuestions": [
+        "UQ-GIB-705AY-CITATION \u2014 citation/scope conflict blocks certified operative formula",
+        "No Amendment Chain Research chainId for Gibraltar in peer export",
+        "UQ-GIB-705AY-CITATION"
+      ],
+      "legalCompletenessSnapshot": {
+        "arithmeticCorrectness": {
+          "status": "BLOCKED",
+          "caseCount": 6,
+          "note": "Arithmetic under stated assumptions only; not legal verification"
+        },
+        "controllingSourceCompleteness": {
+          "status": "PASS",
+          "count": 4
+        },
+        "definitionClosure": {
+          "status": "BLOCKED",
+          "simplifiedAway": [],
+          "representationClass": "BLOCKED_REVIEW_REQUIRED"
+        },
+        "amendmentVersionCorrectness": {
+          "status": "REVIEW_REQUIRED",
+          "chainId": null,
+          "unresolvedCount": 2
+        },
+        "provisoAttachment": {
+          "status": "PASS",
+          "count": 3
+        },
+        "entityScopeFidelity": {
+          "status": "PASS",
+          "entityRestrictions": "Borrower Restricted Payments context"
+        },
+        "missingInputRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        },
+        "unsupportedCaseRefusal": {
+          "status": "PASS",
+          "demonstrated": true
+        }
+      }
+    }
+  ],
+  "generatedAt": "2026-10-08T22:53:30Z",
+  "startingShaPhase5": "b234d4688f65c484c595771d87fd1b49ba33d52c"
+}
