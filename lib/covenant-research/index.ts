@@ -33,4 +33,10 @@ export {
   researchEntryFromSemanticTruth,
   DEFAULT_RESEARCH_CORPUS_PATH,
 } from "./corpus";
+export {
+  ingestDiscoveryRun,
+  ingestDefaultDiscoveryPackages,
+  defaultDiscoveryIngestSpecs,
+  type PackageIngestSpec,
+} from "./ingest-discovery";
 export { formatResearchResponse } from "./format";

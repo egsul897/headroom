@@ -13,6 +13,7 @@
 import {
   DEFAULT_RESEARCH_CORPUS_PATH,
   formatResearchResponse,
+  ingestDefaultDiscoveryPackages,
   loadResearchCorpusFromFile,
   parseResearchQuery,
   retrieveResearch,
@@ -40,6 +41,7 @@ Options:
   --limit <n>                   Max hits (default 10)
   --corpus <path>               Corpus JSON path (default fixture corpus)
   --from-db                     Also try SemanticTruthRecord projection (falls back if empty)
+  --with-discovery-ingest       Merge FWRG/LSB discovery-candidate fixtures into the corpus
   --json                        Emit JSON instead of text
   --help                        Show this help
 
@@ -53,12 +55,14 @@ function parseArgs(argv: string[]): {
   limit: number;
   corpusPath: string;
   fromDb: boolean;
+  withDiscoveryIngest: boolean;
   asJson: boolean;
 } {
   const structured: StructuredQueryInput = {};
   let limit = 10;
   let corpusPath = DEFAULT_RESEARCH_CORPUS_PATH;
   let fromDb = false;
+  let withDiscoveryIngest = false;
   let asJson = false;
   const issuers: string[] = [];
   const agreementTypes: string[] = [];
@@ -114,6 +118,9 @@ function parseArgs(argv: string[]): {
       case "--from-db":
         fromDb = true;
         break;
+      case "--with-discovery-ingest":
+        withDiscoveryIngest = true;
+        break;
       case "--json":
         asJson = true;
         break;
@@ -137,13 +144,23 @@ function parseArgs(argv: string[]): {
     usage();
   }
 
-  return { structured, limit, corpusPath, fromDb, asJson };
+  return { structured, limit, corpusPath, fromDb, withDiscoveryIngest, asJson };
 }
 
 async function main() {
-  const { structured, limit, corpusPath, fromDb, asJson } = parseArgs(process.argv.slice(2));
+  const { structured, limit, corpusPath, fromDb, withDiscoveryIngest, asJson } = parseArgs(process.argv.slice(2));
 
   let corpus = loadResearchCorpusFromFile(corpusPath);
+  if (withDiscoveryIngest) {
+    const ingested = ingestDefaultDiscoveryPackages();
+    const seen = new Set(corpus.map((e) => e.entryId));
+    for (const e of ingested) {
+      if (!seen.has(e.entryId)) {
+        corpus.push(e);
+        seen.add(e.entryId);
+      }
+    }
+  }
   if (fromDb) {
     const dbEntries = await tryLoadResearchCorpusFromDb();
     if (dbEntries.length > 0) {
