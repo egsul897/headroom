@@ -1,0 +1,496 @@
+{
+  "cycleCount": 7,
+  "cycles": [
+    {
+      "motifId": "motif:genuine_cycle:682863518d760cab",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:combined_cap",
+        "node:doc-a:term:ebitda"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:combined_cap::node:doc-a:term:ebitda",
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:ebitda::node:doc-a:term:combined_cap"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "classification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Directed cycle among definition/reference inventory edges without FINANCIAL_INPUT/RATIO_CALCULATION edges — textual mutual reference, not proven circular calculation."
+    },
+    {
+      "motifId": "motif:genuine_cycle:906a7274d60332b7",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:indebtedness",
+        "node:doc-a:term:off-balance_sheet_liability"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:indebtedness::node:doc-a:term:off-balance_sheet_liability",
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:off-balance_sheet_liability::node:doc-a:term:indebtedness"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "classification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Directed cycle among definition/reference inventory edges without FINANCIAL_INPUT/RATIO_CALCULATION edges — textual mutual reference, not proven circular calculation."
+    },
+    {
+      "motifId": "motif:genuine_cycle:093265dde9bd2e8c",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:subsidiary"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:subsidiary::node:doc-a:term:subsidiary"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "classification": "STRUCTURAL_EXTRACTION_ARTIFACT",
+      "rationale": "Self-loop without a financial/ratio calculation edge — likely inventory self-reference / extraction artifact rather than a circular formula."
+    },
+    {
+      "motifId": "motif:genuine_cycle:7143366592323b72",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:net_proceeds",
+        "node:doc-a:term:prepayment_event"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:net_proceeds::node:doc-a:term:prepayment_event",
+        "DEFINITION_TO_DEFINITION::node:doc-a:term:prepayment_event::node:doc-a:term:net_proceeds"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "classification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Directed cycle among definition/reference inventory edges without FINANCIAL_INPUT/RATIO_CALCULATION edges — textual mutual reference, not proven circular calculation."
+    },
+    {
+      "motifId": "motif:genuine_cycle:8682de8439a64b4d",
+      "documentId": "doc-b",
+      "nodeIds": [
+        "node:doc-b:term:material_acquisition",
+        "node:doc-b:term:total_net_leverage_ratio_adjustment"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-b:term:material_acquisition::node:doc-b:term:total_net_leverage_ratio_adjustment",
+        "RATIO_CALCULATION::node:doc-b:term:total_net_leverage_ratio_adjustment::node:doc-b:term:material_acquisition"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "classification": "GENUINE_SEMANTIC_DEPENDENCY_CYCLE",
+      "rationale": "Cycle involves ratio/financial calculation edges among definitions — treated as a genuine semantic dependency cycle pending legal review."
+    },
+    {
+      "motifId": "motif:genuine_cycle:086159b7ffc809da",
+      "documentId": "doc-d",
+      "nodeIds": [
+        "node:doc-d:term:net_proceeds",
+        "node:doc-d:term:prepayment_event"
+      ],
+      "edgeIds": [
+        "DEFINITION_TO_DEFINITION::node:doc-d:term:net_proceeds::node:doc-d:term:prepayment_event",
+        "DEFINITION_TO_DEFINITION::node:doc-d:term:prepayment_event::node:doc-d:term:net_proceeds"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "classification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Directed cycle among definition/reference inventory edges without FINANCIAL_INPUT/RATIO_CALCULATION edges — textual mutual reference, not proven circular calculation."
+    },
+    {
+      "motifId": "motif:genuine_cycle:5284c2ce615a8604",
+      "documentId": "doc-d",
+      "nodeIds": [
+        "node:doc-d:unit:doc-d::VI::6-01-p",
+        "node:doc-d:unit:doc-d::VI::6-02-j"
+      ],
+      "edgeIds": [
+        "COVENANT_TO_EXCEPTION::node:doc-d:unit:doc-d::VI::6-01-p::node:doc-d:unit:doc-d::VI::6-02-j::connective",
+        "COVENANT_TO_EXCEPTION::node:doc-d:unit:doc-d::VI::6-02-j::node:doc-d:unit:doc-d::VI::6-01-p::connective"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_EXCEPTION"
+      ],
+      "classification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Mixed edge kinds [COVENANT_TO_EXCEPTION] form a directed cycle without a clear circular calculation signature."
+    }
+  ],
+  "diamondSampleSize": 25,
+  "diamondSample": [
+    {
+      "motifId": "motif:diamond_shared_dependency:063af8661d8a1a36",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::I::available-amount-builder-basket",
+        "node:doc-a:unit:doc-a::VI::6.04q"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:308d8d975bcd144c",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::I::available-amount-builder-basket",
+        "node:doc-a:unit:doc-a::VI::6.08a-iv"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:d020a67af9b373d6",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::I::available-amount-builder-basket",
+        "node:doc-a:unit:doc-a::VII::7.03b-equity-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:c63fbb2138bd9eb4",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::VI::6.04q",
+        "node:doc-a:unit:doc-a::VI::6.08a-iv"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:138b3cdd0dda223d",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::VI::6.04q",
+        "node:doc-a:unit:doc-a::VII::7.03b-equity-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:66b93770ed8167a0",
+      "nodeIds": [
+        "node:doc-a:term:available_amount",
+        "node:doc-a:unit:doc-a::VI::6.08a-iv",
+        "node:doc-a:unit:doc-a::VII::7.03b-equity-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:4139e48e4fbe1023",
+      "nodeIds": [
+        "node:doc-d:term:applicable_ebitda",
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::VI::6-12-b-total-net-leverage"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:e58a947beee971c2",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::I::def-available-amount",
+        "node:doc-d:unit:doc-d::VI::6-04-q"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:6201cff2ea475c6c",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::I::def-available-amount",
+        "node:doc-d:unit:doc-d::VI::6-08-a-iv"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:8d1840366089443f",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::I::def-available-amount",
+        "node:doc-d:unit:doc-d::VII::7-03-b-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:5789fa5bd43067f6",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::VI::6-04-q",
+        "node:doc-d:unit:doc-d::VI::6-08-a-iv"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:f4015f1c431e7fa0",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::VI::6-04-q",
+        "node:doc-d:unit:doc-d::VII::7-03-b-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:45a8ffe86244afc7",
+      "nodeIds": [
+        "node:doc-d:term:available_amount",
+        "node:doc-d:unit:doc-d::VI::6-08-a-iv",
+        "node:doc-d:unit:doc-d::VII::7-03-b-cure-conditions"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "COVENANT_TO_SHARED_BASKET"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "SHARED_BASKET",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:a82424cc341681e1",
+      "nodeIds": [
+        "node:doc-a:term:interest_coverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.12a-interest-coverage"
+      ],
+      "edgeKinds": [
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:61fc37af543ec3a7",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::V::5.08-use-of-proceeds"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:a82aaecb10a7d4e7",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.01m"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:bbfff900525094b7",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.01n"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:b71d5e3150d23d63",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.04h"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:c757a5e24bb6e64d",
+      "nodeIds": [
+        "node:doc-a:term:applicable_rate",
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:05c4a470db532bec",
+      "nodeIds": [
+        "node:doc-a:term:applicable_rate",
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::VI::6.12b-total-net-leverage"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:3bb8625382f12d7e",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:697ef8352b667953",
+      "nodeIds": [
+        "node:doc-a:term:permitted_acquisition",
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::VI::6.12b-total-net-leverage"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:9dedff5d07b08316",
+      "nodeIds": [
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.04q"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:5d6bdc523d8dfe32",
+      "nodeIds": [
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.08a-iv"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    },
+    {
+      "motifId": "motif:diamond_shared_dependency:33993f4ec864097e",
+      "nodeIds": [
+        "node:doc-a:term:total_net_leverage_ratio",
+        "node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments",
+        "node:doc-a:unit:doc-a::VI::6.08a-v"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "isCycle": false,
+      "sharedChildKind": "DEFINITION",
+      "rationale": "Shared fan-in only; no directed cycle among the diamond nodes."
+    }
+  ],
+  "falseCycleFromSharedDependency": 0,
+  "proofSharedDependencyNotCycle": "Audited 25 material diamonds; none were also classified as cycles. Shared-dependency fan-in (e.g. Available Amount) is distinct from directed circular dependency."
+}

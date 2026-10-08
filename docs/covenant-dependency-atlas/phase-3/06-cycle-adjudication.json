@@ -1,0 +1,119 @@
+{
+  "cycleCount": 7,
+  "diamondCountSampled": 25,
+  "adjudications": [
+    {
+      "motifId": "motif:genuine_cycle:682863518d760cab",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:combined_cap",
+        "node:doc-a:term:ebitda"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "priorClassification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "adjudication": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Independent review: textual mutual reference among definition/section edges — not a proven mathematical or legal dependency cycle.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    },
+    {
+      "motifId": "motif:genuine_cycle:906a7274d60332b7",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:indebtedness",
+        "node:doc-a:term:off-balance_sheet_liability"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "priorClassification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "adjudication": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Independent review: textual mutual reference among definition/section edges — not a proven mathematical or legal dependency cycle.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    },
+    {
+      "motifId": "motif:genuine_cycle:093265dde9bd2e8c",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:subsidiary"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "priorClassification": "STRUCTURAL_EXTRACTION_ARTIFACT",
+      "adjudication": "STRUCTURAL_EXTRACTION_ARTIFACT",
+      "rationale": "Independent review: self-loop / extraction artifact without circular calculation evidence.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    },
+    {
+      "motifId": "motif:genuine_cycle:7143366592323b72",
+      "documentId": "doc-a",
+      "nodeIds": [
+        "node:doc-a:term:net_proceeds",
+        "node:doc-a:term:prepayment_event"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "priorClassification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "adjudication": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Independent review: textual mutual reference among definition/section edges — not a proven mathematical or legal dependency cycle.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    },
+    {
+      "motifId": "motif:genuine_cycle:8682de8439a64b4d",
+      "documentId": "doc-b",
+      "nodeIds": [
+        "node:doc-b:term:material_acquisition",
+        "node:doc-b:term:total_net_leverage_ratio_adjustment"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION",
+        "RATIO_CALCULATION"
+      ],
+      "priorClassification": "GENUINE_SEMANTIC_DEPENDENCY_CYCLE",
+      "adjudication": "GENUINE_SEMANTIC_DEPENDENCY_CYCLE",
+      "rationale": "Independent review: cycle involves ratio/financial calculation edges — genuine semantic dependency cycle pending legal review (not certified).",
+      "ipv21Note": "IPV-21: review whether calculation is circular in legal effect or only mutually referential drafting."
+    },
+    {
+      "motifId": "motif:genuine_cycle:086159b7ffc809da",
+      "documentId": "doc-d",
+      "nodeIds": [
+        "node:doc-d:term:net_proceeds",
+        "node:doc-d:term:prepayment_event"
+      ],
+      "edgeKinds": [
+        "DEFINITION_TO_DEFINITION"
+      ],
+      "priorClassification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "adjudication": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Independent review: textual mutual reference among definition/section edges — not a proven mathematical or legal dependency cycle.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    },
+    {
+      "motifId": "motif:genuine_cycle:5284c2ce615a8604",
+      "documentId": "doc-d",
+      "nodeIds": [
+        "node:doc-d:unit:doc-d::VI::6-01-p",
+        "node:doc-d:unit:doc-d::VI::6-02-j"
+      ],
+      "edgeKinds": [
+        "COVENANT_TO_EXCEPTION"
+      ],
+      "priorClassification": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "adjudication": "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION",
+      "rationale": "Independent review: textual mutual reference among definition/section edges — not a proven mathematical or legal dependency cycle.",
+      "ipv21Note": "IPV-21: do not remediate textual cycles as if they were circular financial formulas without evidence."
+    }
+  ],
+  "counts": {
+    "TEXTUAL_REFERENCE_CYCLE_WITHOUT_CIRCULAR_CALCULATION": 5,
+    "STRUCTURAL_EXTRACTION_ARTIFACT": 1,
+    "GENUINE_SEMANTIC_DEPENDENCY_CYCLE": 1,
+    "DIAMOND_SHARED_DEPENDENCY_ACYCLIC": 25
+  },
+  "diamondProof": "Audited 25 material diamonds; none were also classified as cycles. Shared-dependency fan-in (e.g. Available Amount) is distinct from directed circular dependency.",
+  "ipv21Coordination": "Coordinate with IPV-21 remediation owner: textual cycles ≠ mathematical cycles; preserve shared-dependency diamonds as acyclic unless directed edges prove otherwise. False cycles from diamonds: 0."
+}

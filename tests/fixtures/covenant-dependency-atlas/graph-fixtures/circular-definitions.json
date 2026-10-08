@@ -1,0 +1,82 @@
+{
+  "fixtureId": "circular-definitions",
+  "purpose": "Genuine directed cycle between two definitions. Must NOT be classified as a shared-dependency diamond.",
+  "nodes": [
+    {
+      "nodeId": "node:fixture:term:adjusted_ebitda",
+      "kind": "DEFINITION",
+      "documentId": "fixture-cycle",
+      "label": "Adjusted EBITDA",
+      "sectionRef": "1.01",
+      "unitId": "fixture::adjusted-ebitda",
+      "termName": "Adjusted EBITDA",
+      "materiality": "CRITICAL",
+      "notes": "Defined by reference to Consolidated EBITDA."
+    },
+    {
+      "nodeId": "node:fixture:term:consolidated_ebitda",
+      "kind": "DEFINITION",
+      "documentId": "fixture-cycle",
+      "label": "Consolidated EBITDA",
+      "sectionRef": "1.01",
+      "unitId": "fixture::consolidated-ebitda",
+      "termName": "Consolidated EBITDA",
+      "materiality": "CRITICAL",
+      "notes": "Circularly incorporates Adjusted EBITDA add-backs."
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "DEFINITION_TO_DEFINITION::node:fixture:term:adjusted_ebitda::node:fixture:term:consolidated_ebitda",
+      "kind": "DEFINITION_TO_DEFINITION",
+      "fromNodeId": "node:fixture:term:adjusted_ebitda",
+      "toNodeId": "node:fixture:term:consolidated_ebitda",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Fixture: Adjusted EBITDA means Consolidated EBITDA plus enumerated add-backs.",
+      "sourceSpans": [
+        {
+          "documentId": "fixture-cycle",
+          "sourceFile": null,
+          "sectionRef": "1.01",
+          "unitId": "fixture::adjusted-ebitda",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Adjusted EBITDA means Consolidated EBITDA plus…"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": null,
+      "financialInputKey": null
+    },
+    {
+      "edgeId": "DEFINITION_TO_DEFINITION::node:fixture:term:consolidated_ebitda::node:fixture:term:adjusted_ebitda",
+      "kind": "DEFINITION_TO_DEFINITION",
+      "fromNodeId": "node:fixture:term:consolidated_ebitda",
+      "toNodeId": "node:fixture:term:adjusted_ebitda",
+      "resolution": "RESOLVED",
+      "confidence": "HIGH",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Fixture: Consolidated EBITDA circularly includes Adjusted EBITDA components.",
+      "sourceSpans": [
+        {
+          "documentId": "fixture-cycle",
+          "sourceFile": null,
+          "sectionRef": "1.01",
+          "unitId": "fixture::consolidated-ebitda",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Consolidated EBITDA… including Adjusted EBITDA add-backs…"
+        }
+      ],
+      "unresolvedReason": null,
+      "sharedBasketKey": null,
+      "financialInputKey": null
+    }
+  ],
+  "expectedMotifs": {
+    "DIAMOND_SHARED_DEPENDENCY": 0,
+    "GENUINE_CYCLE": 1
+  }
+}

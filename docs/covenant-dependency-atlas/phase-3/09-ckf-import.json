@@ -1,0 +1,42 @@
+{
+  "status": "OK",
+  "sourceVersionId": "srcver:a707f65f9c542f265b7d5f88",
+  "pass1": {
+    "status": "OK",
+    "importPass": 1,
+    "sourceVersionId": "srcver:a707f65f9c542f265b7d5f88",
+    "nodesUpserted": 14145,
+    "edgesUpserted": 20328,
+    "unresolvedPreserved": 1085,
+    "duplicatesSkipped": 0,
+    "promotedToLegalTruth": 0,
+    "idempotent": null,
+    "notes": [
+      "No unsupported promotion to legal truth — RESOLVED edges remain candidates; UNRESOLVED/AMBIGUOUS preserved as-is."
+    ]
+  },
+  "pass2": {
+    "status": "OK",
+    "importPass": 2,
+    "sourceVersionId": "srcver:a707f65f9c542f265b7d5f88",
+    "nodesUpserted": 0,
+    "edgesUpserted": 0,
+    "unresolvedPreserved": 1085,
+    "duplicatesSkipped": 34473,
+    "promotedToLegalTruth": 0,
+    "idempotent": true,
+    "notes": [
+      "No unsupported promotion to legal truth — RESOLVED edges remain candidates; UNRESOLVED/AMBIGUOUS preserved as-is.",
+      "Second import against same source-version identity was idempotent (no new upserts)."
+    ]
+  },
+  "storePath": ".local-dependency-atlas/ckf-demo-store/store.json",
+  "peerBranch": "cursor/covenant-knowledge-factory-7327",
+  "guarantees": [
+    "Idempotent second import (same source-version identity)",
+    "Unresolved/ambiguous edges preserved",
+    "Source-version identity hashed from schema + node/edge ids",
+    "Duplicate node/edge ids skipped on re-import",
+    "promotedToLegalTruth always 0"
+  ]
+}
