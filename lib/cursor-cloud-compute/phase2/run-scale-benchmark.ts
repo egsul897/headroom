@@ -209,7 +209,8 @@ async function drainQueue(params: {
     if (!item) break;
     let attempt = 0;
     let result: DocumentProcessResult | null = null;
-    while (attempt < 3) {
+    const maxAttempts = 3;
+    while (attempt < maxAttempts) {
       result = await processQueueItem({
         item,
         corpusRoot: params.state.corpusRoot,
@@ -220,7 +221,9 @@ async function drainQueue(params: {
       if (result.status !== "FAILED" || result.errorClass !== "DOWNLOAD_FAILURE") break;
       attempt += 1;
       retryCount += 1;
+      if (attempt >= maxAttempts) break;
       // Reset the whole stage map so a successful retry can continue past download.
+      // Do NOT reset after the final attempt — that re-queues the item forever.
       for (const stage of ["download", "parse", "dedupe", "structure", "definitions", "references", "passA", "storage"] as const) {
         item.stages[stage] = "PENDING";
       }
