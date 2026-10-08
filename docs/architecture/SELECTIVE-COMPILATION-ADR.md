@@ -160,6 +160,10 @@ No algorithm version, certified config, or certification predicate changes in th
 
 The test is offline. It uses the existing xref fixture, the structural parser, Pass A, and the reference and definition indexes. It asserts the three populations above and re-reads the sealed Gibraltar counts without multiplying them into a cost.
 
+`lib/contract-model/compiler/question-plan.ts` is a second offline proof of concept. It turns one compliance question into a dry-run plan: family cues, operative entries, the same closure, evidence-store reuse, and a refusal when the model has no rate card. A contents listing is not a planned dispatch. A discovery-labeled same-action section the closure does not reach is listed and not compiled. Any operative section left out keeps the plan at `REVIEW_REQUIRED`. A dollar amount in the question is stored as a parameter. `capacityComputed`, `permitsCapacity`, and `advancesCertification` stay false. `measuredBillingUsd` stays null.
+
+That planner does not replace `package-compile.ts`. The production default is still every eligible discovered candidate except representations.
+
 ## Acceptance criteria for a later implementation
 
 - The package inventory still lists every Pass A section and every unresolved reference.

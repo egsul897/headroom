@@ -46,7 +46,7 @@ Supersession on these rows remains unresolved. Selection for a diagnostic read i
 - `npx tsc --noEmit -p .` exited 0.
 - `tests/contract-model/compiler/operative-authority.test.ts` 11 passed.
 - `tests/contract-model/certified/golden-map.test.ts` passed.
-- `npm run test:phase3-certification`: 453 passed, 3 failed. The 3 failures are `tests/contract-model/semantic-verification-verify.test.ts` timeouts or `semanticReviewInvoked === false` under the local 5s default. The same assertion fails on `481b19fe91137f0be6a552d2ec06925a0bcaf27d` with these edits stashed, so it is not caused by the definition-declaration change. GitHub Actions run `37793529670` on `481b19f` failed the certified path with 13 `OPERATIVE_AUTHORITY_REFUSED` failures in certification, golden-map, edge-authority, and xref fixtures. Those four files pass locally after the definition-declaration fix. That Actions run has not been re-executed on the new commit.
+- `npm run test:phase3-certification`: 453 passed, 3 failed. The 3 failures are `tests/contract-model/semantic-verification-verify.test.ts` timeouts or `semanticReviewInvoked === false` under the local 5s default. The same assertion fails on `481b19fe91137f0be6a552d2ec06925a0bcaf27d` with these edits stashed, so it is not caused by the definition-declaration change. GitHub Actions run `37793529670` on `481b19f` failed the certified path with 13 `OPERATIVE_AUTHORITY_REFUSED` failures in certification, golden-map, edge-authority, and xref fixtures. Those four files pass locally after the definition-declaration fix. On `011e19c`, Actions runs `37796297553` and `37796289447` concluded success for `certified path (provider-free)`.
 
 ## Evidence engine
 
@@ -64,10 +64,15 @@ ADR: `docs/architecture/SELECTIVE-COMPILATION-ADR.md`. Decision: hybrid. Package
 
 Proof of concept: `lib/contract-model/compiler/compilation-scope.ts`. Offline test on the xref fixture: seed `7.02` compiles `7.01`, `7.02`, `7.03`, and `7.04` under closure, leaves `7.05` and `7.06` listed and not compiled, and does not compile `1.01` when its definition text is retrieved. No dollar saving is claimed from those counts.
 
+`question-plan.ts` is a dry-run in front of that closure. It does not call a model and it does not replace `package-compile.ts`. A contents line is refused. A discovery-labeled same-action section outside the closure is disclosed. Unexamined operative sections, missing definitions, unresolved references, ambiguous duplicate bodies, unknown operative version, and an unpriceable model stay `REVIEW_REQUIRED` or `BLOCKED`. `$75 million` in the question is a parameter. Capacity is not computed. `measuredBillingUsd` is null.
+
+Offline: `tests/contract-model/compiler/question-plan.test.ts` 10 passed. Economics write-up: `docs/agent-operations/offline-economics.md`. Defect register: `docs/agent-operations/defect-register.md`. Acceptance handoff: `docs/agent-operations/claude-integration-requirements.md`.
+
 No Phase 3 gate was moved. Pass B is not retired.
 
 ## Open, still in this owner's scope
 
-- Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix and this evidence engine.
+- Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix, the evidence engine, and the question planner. Do not describe a pending or absent job as green.
 - Do not recompile Article VII and do not rerun the 788-row verification. The smallest future spend test is the single-section experiment in the cost report, and it is not authorized by this change.
 - Do not treat a cache hit or a dry selection as certification.
+- Wiring `package-compile.ts` to the closure remains deferred. It needs an explicit architecture change and must not move Phase 3 gates.
