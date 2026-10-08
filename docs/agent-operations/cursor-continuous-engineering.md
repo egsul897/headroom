@@ -167,9 +167,13 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Exotic shared-pool phrasing outside the LCQG relationship regex under-recalls to `aggregate_amount`. A real pool that is only a ceiling is not an independent basket.
 - An unclassified override does not invent the side-letter amount. The last authoritative text stays, with `REVIEW_REQUIRED`. A genuine deletion still clears the text.
 
-## §7.04 — the IR cannot verify an aggregate limit that is not capacity
+## §7.04 — IR_CAPABILITY_BLOCKED
 
-Adjudication at `ad7955c`: `CURRENT_REVIEW_REQUIRED_BEHAVIOR_CORRECT`. §7.02(c) is the INCUR_DEBT permission. §7.04 is the aggregate MAX ceiling. The scripted `QUANTITATIVE_PERMISSION` / `PERMISSION` / `COMPLETE` rule is unsupported. Figure-role and the certification gate were not changed. No certification was advanced. This is separate from IPV-16.
+Verdict on `0e31c36` and the tests added after it: `IR_CAPABILITY_BLOCKED`. Adjudication at `ad7955c` remains `CURRENT_REVIEW_REQUIRED_BEHAVIOR_CORRECT`. §7.02(c) is the INCUR_DEBT permission. §7.04 is the aggregate MAX ceiling. The scripted `QUANTITATIVE_PERMISSION` / `PERMISSION` / `COMPLETE` rule is unsupported. Figure-role and the certification gate were not changed. The frozen xref expectations were not rewritten. No certification was advanced. This is separate from IPV-16.
+
+Missing capability, precisely: a rule-level limit expression that is not `capacityExpression`. It must not be walked as available capacity and must not emit `RULE_CAPACITY`. `LIMITED_BY` must be able to name it without the limit itself being a capacity node. It needs an operand for the aggregate principal amount incurred under that section, distinct from a financial metric and from `RULE_REFERENCE` / `LEDGER_USAGE_REFERENCE`. Certification of that limit requires the source figure to be a `PROHIBITION_THRESHOLD`, the tree to be the stated MAX, Total Assets resolved, scope safe to rely on, and §7.02(c) remaining the only incurrence permission. None of those slots exist. `QUANTITATIVE_RESTRICTION` does not create one. A condition can hold the MAX and stay silent; silence is not that verification. Supplying Total Assets makes the runtime publish the MAX as `AVAILABLE` capacity (`170000000` on a $1,000,000,000 base in the non-frozen test). That publication is the second basket, and figure-role still returns `MATERIAL_DISCREPANCY`, so it is not certifiable.
+
+The frozen CERTIFIED expectations are obsolete relative to this verifier. They are not a license to certify the scripted permission. The controlled migration remains the one recorded below. It was not applied.
 
 Existing pieces, none of which is a verified non-permission limit:
 
@@ -208,7 +212,7 @@ Until a separately authorized non-capacity limit slot exists, §7.04 remains `RE
 | P0-C IPV-16 notwithstanding side letter | P0 | PRODUCT assertions pass on replay | Override stays REVIEW_REQUIRED and does not erase authoritative text. Five GAP kill predictions are now KILLED. Expectations were not edited. Next owner: challenger harness |
 | IPV-21 false definition cycle | P0 | FIXED, indenture control disagreed | Spans prove one direction only. `true-cycle-still-reported` and `genuine-cycles-reported` still fail. Expectations were not edited. Next owner: challenger expectation author |
 | IPV-22 comparator as capacity | P0 | CLAUSE BOUNDARY | Capacity requires the figure's own permission or exception. xref 7.04 ceiling stays REVIEW_REQUIRED. L-P2, H-T2, A-T1, and B-T1 refuse |
-| §7.04 aggregate limit slot | P0 | GAP, expectation not edited | No non-capacity limit slot. Scripted PERMISSION stays REVIEW_REQUIRED. Frozen CERTIFIED migration is recorded and not applied |
+| §7.04 aggregate limit slot | P0 | IR_CAPABILITY_BLOCKED | No non-capacity limit slot. Scripted PERMISSION stays REVIEW_REQUIRED. Frozen CERTIFIED migration is recorded and not applied |
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |

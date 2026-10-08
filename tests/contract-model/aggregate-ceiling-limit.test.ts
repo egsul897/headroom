@@ -19,9 +19,11 @@ import type { VerificationInput } from "../../lib/contract-model/compiler/semant
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
 import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import type { IRRule } from "../../lib/contract-model/ir/types";
-import { buildCapacityGraph } from "../../lib/contract-model/runtime/capacity/graph";
+import { certifyCandidate } from "../../lib/contract-model/phase3-certification/certify";
+import { buildCapacityGraph, evaluateCapacityState } from "../../lib/contract-model/runtime/capacity";
+import { EMPTY_RESOLVER } from "../../lib/contract-model/runtime/input-resolver";
 import { testCompilerInput } from "./semantic-compiler/test-helpers";
-import { AS_OF, CO, INST, MAX, METRIC, MONEY, MUL, PCT, UNLIMITED, resetIds, rule } from "./runtime/capacity/helpers";
+import { AS_OF, CO, INST, MAX, METRIC, MONEY, MUL, PCT, UNLIMITED, amountString, fact, resetIds, resolver, rule } from "./runtime/capacity/helpers";
 
 const AMOUNT = 5_000_000;
 const CEILING = "The aggregate principal amount of Indebtedness incurred under this Section shall not at any time exceed the greater of $5,000,000 and 10% of Total Assets.";
@@ -59,15 +61,35 @@ function ceilingRule(capacity: IRRule["capacityExpression"], over: Partial<IRRul
   return rule("ceiling", capacity, { sourceSectionRef: "9.04", ruleType: "QUANTITATIVE_RESTRICTION", posture: "PROHIBITION", action: "INCUR_DEBT", ...over });
 }
 
-async function verify(text: string, compiledRule: IRRule) {
-  const compiled: SemanticCompilationResult = {
-    status: "COMPLETED", failureReasons: [], errorDetail: null,
-    rules: [compiledRule],
+function compiledResult(rules: IRRule[]): SemanticCompilationResult {
+  return {
+    status: "COMPLETED", failureReasons: [], errorDetail: null, rules,
     definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {},
     provider: "test", model: "test", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(),
   };
-  const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text, sourceSectionRef: compiledRule.sourceSectionRef ?? "9.04" }), compilationResult: compiled };
+}
+
+async function verify(text: string, compiledRule: IRRule) {
+  const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text, sourceSectionRef: compiledRule.sourceSectionRef ?? "9.04" }), compilationResult: compiledResult([compiledRule]) };
   return verifyCompiledCandidate(input, { reviewCaller: caller(), conditionSuspicionCaller: caller() });
+}
+
+function certify(compiledRule: IRRule, verification: Awaited<ReturnType<typeof verify>> | null) {
+  return certifyCandidate({
+    candidate: { discoveryId: "candidate-ceiling", structuralNodeIds: ["node-ceiling"], normalizedSourceRef: compiledRule.sourceSectionRef ?? "9.04" },
+    anchored: true,
+    operativeSourceVersion: "scv1-test",
+    operativeIdentityStrength: "STRONG",
+    semanticSourceContract: { strength: "STRONG", attributionMode: "ATTRIBUTED", version: "sscv1-test" } as never,
+    bundle: null,
+    compilation: compiledResult([compiledRule]),
+    verification,
+    operativeProvision: null,
+    operativeLineage: null,
+    snapshot: null,
+    verifiedPackage: null,
+    currentUnits: [compiledRule],
+  });
 }
 
 beforeEach(resetIds);
@@ -146,5 +168,66 @@ describe("aggregate ceiling without a governing permission", () => {
     const silent = buildCapacityGraph({ rules: [permission, conditionOnly], companyId: CO, instrumentKey: INST, asOf: AS_OF });
     expect(silent.nodes.filter((node) => node.kind === "RULE_CAPACITY").map((node) => node.ruleId)).toEqual(["permission"]);
     expect(silent.edges.some((edge) => edge.sourceRelationship === "LIMITED_BY")).toBe(false);
+  });
+
+  it("keeps §7.02(c) as the permission and refuses to certify or apply §7.04 as a second basket", async () => {
+    const text = [
+      "SECTION 7.02 Indebtedness . The Borrower shall not create, incur or assume any Indebtedness, except:",
+      "",
+      "(c) other Indebtedness incurred subject to Section 7.04.",
+      "",
+      "SECTION 7.04 General Debt Basket . The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+    ].join("\n");
+    const figure = classifyFigures(text).find((item) => item.kind === "MONEY" && item.value === 123_000_000);
+    expect(figure?.role).toBe("PROHIBITION_THRESHOLD");
+    expect(figure?.capacity).toBe(false);
+    expect(classifyFigures("(c) other Indebtedness incurred subject to Section 7.04.").some((item) => item.kind === "MONEY")).toBe(false);
+
+    const permission = rule("7.02(c)", UNLIMITED(null), {
+      sourceSectionRef: "7.02(c)", posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION", action: "INCUR_DEBT",
+      dependsOn: [{ relationshipType: "LIMITED_BY", targetRuleId: "7.04", description: "subject to Section 7.04" }],
+    });
+    expect(figureRoleIssues(text, [permission])).toEqual([]);
+    const separated = buildCapacityGraph({
+      rules: [permission, ceilingRule(null, { ruleId: "7.04", sourceSectionRef: "7.04" })],
+      companyId: CO, instrumentKey: INST, asOf: AS_OF,
+    });
+    expect(separated.nodes.filter((node) => node.kind === "RULE_CAPACITY").map((node) => node.ruleId)).toEqual(["7.02(c)"]);
+
+    const claimed = rule("7.04", MAX(MONEY(123_000_000), MUL(PCT(0.17), METRIC("Total Assets"))), {
+      sourceSectionRef: "7.04", posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION", action: "INCUR_DEBT",
+    });
+    const refused = await verify(text, claimed);
+    expect(refused.status).toBe("MATERIAL_DISCREPANCY");
+    expect(refused.findings.some((finding) => finding.findingType === "WRONG_AMOUNT")).toBe(true);
+    const refusedCert = certify(claimed, refused);
+    expect(refusedCert.status).not.toBe("CERTIFIED");
+    expect(refusedCert.blockers.map((blocker) => blocker.code)).toContain("VERIFICATION_NOT_CLEAN");
+
+    const unresolved = ceilingRule(MAX(MONEY(123_000_000), MUL(PCT(0.17), METRIC("Total Assets"))), {
+      ruleId: "7.04", sourceSectionRef: "7.04", sufficiency: "PARTIAL",
+      sufficiencyReasons: ["the aggregate measured by this ceiling is not a resolved non-capacity input"],
+    });
+    const partialCert = certify(unresolved, null);
+    expect(partialCert.status).not.toBe("CERTIFIED");
+    expect(partialCert.blockers.map((blocker) => blocker.code)).toEqual(expect.arrayContaining(["UNIT_SUFFICIENCY_INCOMPLETE", "VERIFICATION_MISSING"]));
+    const withheld = evaluateCapacityState({
+      graph: buildCapacityGraph({ rules: [unresolved], companyId: CO, instrumentKey: INST, asOf: AS_OF }),
+      rules: [unresolved], inputs: EMPTY_RESOLVER, ledger: [], asOf: AS_OF,
+    });
+    expect(withheld.capacities[0]?.status).not.toBe("AVAILABLE");
+    expect(withheld.capacities[0]?.grossCapacity.kind).toBe("NOT_DETERMINED");
+
+    const supplied = ceilingRule(MAX(MONEY(123_000_000), MUL(PCT(0.17), METRIC("Total Assets"))), {
+      ruleId: "7.04-supplied", sourceSectionRef: "7.04", sufficiency: "COMPLETE", entityScope: ["BORROWER"],
+      entityScopeAudit: { status: "SOURCE_MATCH_CONFIRMED", safeToRely: true } as IRRule["entityScopeAudit"],
+    });
+    const computed = evaluateCapacityState({
+      graph: buildCapacityGraph({ rules: [supplied], companyId: CO, instrumentKey: INST, asOf: AS_OF }),
+      rules: [supplied], inputs: resolver([fact("Total Assets", "1000000000")]), ledger: [], asOf: AS_OF,
+    });
+    expect(computed.capacities[0]?.status).toBe("AVAILABLE");
+    expect(amountString(computed.capacities[0]!.grossCapacity)).toBe("170000000");
+    expect(figureRoleIssues(text, [supplied]).map((issue) => issue.kind)).toEqual(["THRESHOLD_AS_CAPACITY"]);
   });
 });
