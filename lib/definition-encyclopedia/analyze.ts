@@ -4,7 +4,7 @@
  */
 
 import type { DetectedDefinition } from "@/lib/contract-model/compiler/structural-definitions";
-import { canonicalFamilyFor } from "./priority-terms";
+import { canonicalFamilyForExpanded as canonicalFamilyFor } from "./phase2-terms";
 import type {
   AmendmentChange,
   AlternativeFormulation,

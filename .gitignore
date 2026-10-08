@@ -9,3 +9,7 @@ coverage
 .claude/worktrees/
 # LocalFilesystemStorageProvider's dev/test fallback (lib/document-storage/local-fs-provider.ts)
 .local-blob-storage/
+# WS-DEF runtime acquired EDGAR bodies (summaries committed under docs/definition-encyclopedia/)
+data/definition-encyclopedia/
+# Local copy of WS-EHB runtime discovery outputs (not owned; not committed)
+data/edgar-historical-backfill/
