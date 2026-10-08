@@ -105,6 +105,19 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Extra canonical-compiler suites: condition-suspicion and condition-remediation routing tests, plus two `phase-2g-amendment-precedence` tests, timed out at 5000ms when run together and the two amendment tests still timed out alone. They do not call `compileCovenantToIR`. Not attributed to this gate. Not weakened.
 - Paid calls: none. Certification: not advanced. Sealed evidence: not rewritten. PR #136 is not merge-ready until the checks on this head conclude.
 
+## Milestone — independent false permissions and Pass A count
+
+- Starting SHA: `f9f402c6e458103352b9fa83805767d997ca6552`. PR #136 at that SHA was `f9f402c`, not the cited `b5a0f778`. PR #137 head was `0edfd951` on `claude/independent-product-validation`, not the cited `bd45b95`.
+- IPV-01: a clause whose own words name a narrower obligor set no longer stays `SOURCE_MATCH_CONFIRMED` when the model emits the governing section's wider set. The scope becomes the clause's own tags and the rule is not COMPLETE.
+- IPV-02: `together with … pursuant to Section` is a shared-capacity marker. The omission stays `MISSING_SHARED_CAP` and is not downgraded by a silent review.
+- IPV-03: a condition, exception, or shared-capacity inventory item cited only on the rule is `MISSING_FROM_COMPOSITION`. A quantitative condition cited on the capacity expression that carries its value stays represented. A condition with no amount cited only on a capacity expression stays missing. The xref parent prohibition places the child condition items on the exception's condition nodes.
+- Spending: `DEVELOPMENT_EXPERIMENT` does not authorize a paid call. Founder authorization is required for every nonzero dispatch.
+- Pass A: sealed `f5d57ab` is 946 / 2087. Current parser is 901 / 1978. The 45 are the letter-run guard (`8590be6`): −55 definition-tree candidates, +10 restored operative clauses. Signal patterns did not change. `execution.json` was not rewritten. See `docs/agent-operations/gibraltar-pass-a-delta.md`.
+- Missing index and missing anchor still refuse unless `syntheticRawTextFixture` is exactly true, and only the semantic-compiler test helper sets that flag.
+- Claude-owned acceptance fixtures were not edited.
+- `7.05(a)(y)` resolves UNIQUE. The Available Amount Builder Basket sentence is `7.05(a)(y)(vi)(B)`. The sealed path `7.05(a)(4)(ii)(vi)(B)` was the swallowed letter run.
+- Local checks on this tree: `npx tsc --noEmit -p .` exited 0. `npm run test:phase3-certification` 459 passed. `npx vitest run tests/stratified-cert` 58 passed. Pass B accountability corpus 67 passed. The frozen entity-scope replay still fails on the committed guard: `ir-rule:01c9a005fd9c7649ddc26012` becomes `SOURCE_SCOPE_DERIVED` with `["BORROWER","GUARANTOR_RS","NON_GUARANTOR_RS"]` and stays COMPLETE. That failure is present with the MODEL_WIDER branch removed. It is not this narrowing fix.
+
 ## NEXT_TASK
 
 - Objective: decide whether `compileCovenantToIR` can consult a complete evidence-engine record before a model call without treating a cache hit as correctness.
@@ -112,7 +125,7 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - First step: read the compile cache key and the evidence-engine identity. List every field that must match. Do not wire the store into `package-compile.ts`. Do not dispatch a paid call.
 - Expected output: either a refusal to wire because an identity field is missing, or a bounded lookup that returns the stored result only on COMPLETE plus a matching payload hash and never sets `advancesCertification`.
 - Acceptance: existing evidence-engine tests pass. A contents listing and a missing anchor still refuse before any lookup. No provider call.
-- Dependency: do not raise the semantic-review timeout. Do not merge `origin/main`.
+- Dependency: do not raise the semantic-review timeout. Do not merge `origin/main`. Do not edit `tests/product-acceptance/`, `tests/fixtures/product-acceptance/`, `scripts/product-acceptance/`, or `docs/product-readiness/`.
 
 ## Milestone
 

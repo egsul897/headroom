@@ -85,7 +85,9 @@ const PATTERNS: PatternDef[] = [
   ...CONDITION_SUSPICION_PATTERNS.map((p) => ({ kind: p.kind, re: p.re }) as PatternDef),
   { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding|with\s+the\s+exception\s+of)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
-  { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },
+  // "together with … pursuant to Section" / "under Section" is a cross-basket cap.
+  // An ordinary "aggregate amount" with no companion citation is not.
+  { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under)|together with\b[^.]{0,240}?\b(?:pursuant to|under)\s+(?:Sections?|§|Articles?|Clauses?))\b/gi },
   { kind: "BUILDER_SIGNAL", re: /\b(?:cumulative(?:ly)?|builder|Retained (?:Excess )?Cash Flow|Available Amount)\b/gi },
   { kind: "RECLASSIFICATION_SIGNAL", re: /\breclassif(?:y|ied|ication)|redesignat(?:e|ed|ion)\b/gi },
   { kind: "ENTITY_SCOPE_TERM", re: /\b(?:Restricted Subsidiary|Restricted Subsidiaries|Unrestricted Subsidiary|Unrestricted Subsidiaries|Borrower|Guarantor|Loan Part(?:y|ies)|domestic subsidiary|foreign subsidiary)\b/gi },

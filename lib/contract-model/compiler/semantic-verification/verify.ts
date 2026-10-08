@@ -161,6 +161,11 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
  * happens to notice it, preserving BLOCKER-9's own recall guarantee
  * unconditionally.
  */
+/** A shared-capacity omission stays open. A silent review must not turn it into an independent basket. */
+export function selectAmbiguousReasonsEligibleForDowngrade(reasons: readonly string[]): string[] {
+  return reasons.filter((reason) => !reason.includes("missing shared cap"));
+}
+
 function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFinding[], reconciliation: ReconciliationResult, review: SemanticReviewResult): SemanticVerificationFinding[] {
   if (review.failed || review.isSynthetic) return findings;
   // FIX B: a numeric assertion whose own magnitude could not be read safely is AMBIGUOUS for a
@@ -168,7 +173,7 @@ function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFin
   // numeric evidence, and like every other numeric-evidence item it keeps its severity whether or
   // not a model call happens to notice it. Only buildAggregateSignals' coarse presence-vs-absence
   // reasons are eligible for this downgrade.
-  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason));
+  const ambiguousReasons = new Set(selectAmbiguousReasonsEligibleForDowngrade(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason)));
   if (ambiguousReasons.size === 0) return findings;
   const semanticFindingTypes = new Set(review.findings.map((f) => f.findingType));
 

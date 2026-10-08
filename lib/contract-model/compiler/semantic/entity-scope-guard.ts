@@ -478,6 +478,17 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
       witnessOut.decidedBy = tiersOf(binding.filter((s) => s.partialOnly));
       codes.push("ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE");
       reasons.push(reasonText("ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE", `entityScope ${JSON.stringify(entityScope)} covers source binding ${[...new Set(binding.filter((s) => s.partialOnly).map((s) => `"${s.phrase}"`))].join(", ")} only through a qualified subset class; not provably inconsistent, so the scope is kept but is not safe to rely on`));
+    } else if (ownDerived && relationOf(entityScope, ownDerived) === "MODEL_WIDER") {
+      // The clause's own actor language is an exact set. A submitted scope that adds classes the clause
+      // does not name is wider than that set, even when every required atom is touched. Covering the
+      // narrower set is not confirmation of the wider set. The governing lead-in does not widen it.
+      status = "SOURCE_SCOPE_DERIVED";
+      precedence = "OWN_OPERATIVE_LANGUAGE";
+      modelDiscrepancy = { modelScope: [...before.entityScope], rawEmitted, governingScope: [...ownDerived], relation: "MODEL_WIDER" };
+      entityScope = [...ownDerived];
+      witnessOut.decidedBy = tiersOf(binding);
+      codes.push("ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
+      limit("ENTITY_SCOPE_SOURCE_DERIVED", `entityScope ${JSON.stringify(entityScope)} - the clause's own operative language names a narrower obligor set than the submitted scope ${JSON.stringify(before.entityScope)}; the wider scope is recorded as a discrepancy and did not control the result`);
     } else {
       status = "SOURCE_MATCH_CONFIRMED";
       precedence = ownDerived ? "OWN_OPERATIVE_LANGUAGE" : "MODEL_EMITTED";

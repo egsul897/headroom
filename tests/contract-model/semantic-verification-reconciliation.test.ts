@@ -10,6 +10,9 @@ import { describe, expect, it } from "vitest";
 import { buildSourceInventory } from "../../lib/contract-model/compiler/semantic-verification/source-inventory";
 import { buildIrInventory } from "../../lib/contract-model/compiler/semantic-verification/ir-inventory";
 import { reconcileInventories } from "../../lib/contract-model/compiler/semantic-verification/reconciliation";
+import { buildFindingsFromReconciliation } from "../../lib/contract-model/compiler/semantic-verification/findings";
+import { selectAmbiguousReasonsEligibleForDowngrade } from "../../lib/contract-model/compiler/semantic-verification/verify";
+import type { VerificationInput } from "../../lib/contract-model/compiler/semantic-verification/types";
 import type { IRRule } from "../../lib/contract-model/ir/types";
 
 let ruleCounter = 0;
@@ -131,5 +134,24 @@ describe("Phase 3C Layer 1c - deterministic reconciliation", () => {
     const irInv = buildIrInventory("case-7", [r], []);
     const recon = reconcileInventories(src, irInv);
     expect(recon.items.some((i) => i.classification === "AMBIGUOUS" && i.reason.includes("missing condition/exception"))).toBe(true);
+  });
+
+  it("together with a section citation is a shared-capacity omission, and an ordinary aggregate basket is not", () => {
+    const shared = "Restricted Payments in an aggregate amount, together with Investments made pursuant to Section 4.02, not to exceed $20,000,000.";
+    const ordinary = "Indebtedness in an aggregate principal amount not to exceed $20,000,000 at any time outstanding.";
+    const sharedSrc = buildSourceInventory("shared", shared, "doc-1", "§7.06", null);
+    const ordinarySrc = buildSourceInventory("ordinary", ordinary, "doc-1", "§7.01", null);
+    expect(sharedSrc.items.some((item) => item.kind === "SHARED_CAP_MARKER")).toBe(true);
+    expect(ordinarySrc.items.some((item) => item.kind === "SHARED_CAP_MARKER")).toBe(false);
+    const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 20_000_000, currency: "USD" } });
+    const recon = reconcileInventories(sharedSrc, buildIrInventory("shared", [r], [], []));
+    const signal = recon.items.find((item) => item.reason.includes("missing shared cap"));
+    expect(signal?.classification).toBe("AMBIGUOUS");
+    const findings = buildFindingsFromReconciliation({
+      compilerInput: { companyId: "c", instrumentKey: "i", candidateRef: "shared", sourceDocumentId: "doc-1", sourceSectionRef: "7.06" },
+      compilationResult: { rules: [r], definitions: [] },
+    } as unknown as VerificationInput, recon);
+    expect(findings.some((finding) => finding.findingType === "MISSING_SHARED_CAP" && finding.severity === "UNCERTAIN")).toBe(true);
+    expect(selectAmbiguousReasonsEligibleForDowngrade([signal!.reason, "possible missing condition/exception"])).toEqual(["possible missing condition/exception"]);
   });
 });

@@ -198,6 +198,20 @@ describe("entity-scope guard - §10 do not over-guard (tests 3, 4)", () => {
     expect(g.entityScopeAudit!.safeToRely).toBe(false);
   });
 
+  it("a clause that names only the Borrower does not keep a scope widened to the governing section", () => {
+    const clause = "Indebtedness of the Borrower, so long as on the date of incurrence the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00.";
+    const sectionLeadIn = "The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:";
+    const submitted = rule({ sourceSectionRef: "7.01(c)", entityScope: ["BORROWER", "ANY_SUBSIDIARY"], excerpt: clause });
+    const g = applyEntityScopeGuard(submitted, { ownExcerpt: clause, citedUnitLeadIn: clause, parentScopeLeadIn: sectionLeadIn, operativeText: `${sectionLeadIn}\n(c) ${clause}` }, noTags);
+    expect(g.entityScope).toEqual(["BORROWER"]);
+    expect(g.entityScope).not.toContain("ANY_SUBSIDIARY");
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(g.entityScopeAudit!.precedence).toBe("OWN_OPERATIVE_LANGUAGE");
+    expect(g.entityScopeAudit!.modelDiscrepancy).toMatchObject({ relation: "MODEL_WIDER", modelScope: ["BORROWER", "ANY_SUBSIDIARY"], governingScope: ["BORROWER"] });
+    expect(g.sufficiency).toBe("PARTIAL");
+    expect(g.sufficiencyReasons.some((s) => s.startsWith("ENTITY_SCOPE_SOURCE_DERIVED:"))).toBe(true);
+  });
+
   it("an empty scope claims nothing: UNSPECIFIED, untouched", () => {
     const g = guard(rule({ entityScope: [], excerpt: "The Borrower shall not permit any Restricted Subsidiary to incur Indebtedness." }));
     expect(g.entityScope).toEqual([]);

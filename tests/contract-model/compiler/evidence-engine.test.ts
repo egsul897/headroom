@@ -72,7 +72,7 @@ function policy() {
 }
 
 function ready<T>(over: Record<string, unknown> = {}) {
-  const opened = openAuthorizedBudget({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd: PROPOSED_DEVELOPMENT_EXPERIMENT_CEILING_USD });
+  const opened = openAuthorizedBudget({ kind: "FOUNDER_AUTHORIZED", ceilingUsd: PROPOSED_DEVELOPMENT_EXPERIMENT_CEILING_USD, authorizationId: "grant-test" });
   const store = new ContentAddressedEvidenceStore();
   const request = {
     structuralIdentityPresent: true,
@@ -215,7 +215,10 @@ describe("evidence engine", () => {
     const { request } = ready({ authorization: blocked.decision, budget: blocked.budget });
     expect(preflight(request).disposition).toBe("REJECT");
     expect(blocked.budget.snapshot().calls).toBe(0);
+    expect(resolveSpendAuthorization({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd: 5 }).paidCallsAllowed).toBe(false);
+    expect(resolveSpendAuthorization({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd: 5 }).reason).toBe("DEVELOPMENT_EXPERIMENT_IS_NOT_AUTHORIZATION");
     expect(resolveSpendAuthorization({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd: 5.01 }).paidCallsAllowed).toBe(false);
+    expect(resolveSpendAuthorization({ kind: "FOUNDER_AUTHORIZED", ceilingUsd: 20, authorizationId: "  " }).paidCallsAllowed).toBe(false);
     expect(resolveSpendAuthorization({ kind: "FOUNDER_AUTHORIZED", ceilingUsd: 20, authorizationId: "grant-1" }).paidCallsAllowed).toBe(true);
     const haiku = ready({ policy: { modelByClass: { STRAIGHTFORWARD_EXTRACTION: HAIKU } } });
     const refused = preflight(haiku.request);
@@ -224,8 +227,22 @@ describe("evidence engine", () => {
     expect(priceUsage({ inputTokens: 1, outputTokens: 1 }, HAIKU).pricingStatus).toBe("UNKNOWN_MODEL");
   });
 
-  it("keeps an unbilled retry reserved and stops a second outstanding dispatch from crossing the ceiling", () => {
-    const opened = openAuthorizedBudget({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd: 0.001 });
+  it("refuses experiment mode, including the proposed five-dollar ceiling, and does not reserve", () => {
+    for (const ceilingUsd of [PROPOSED_DEVELOPMENT_EXPERIMENT_CEILING_USD, 0.001]) {
+      const opened = openAuthorizedBudget({ kind: "DEVELOPMENT_EXPERIMENT", ceilingUsd });
+      expect(opened.decision.paidCallsAllowed).toBe(false);
+      expect(opened.decision.proposedCeilingIsAuthorization).toBe(false);
+      expect(opened.decision.ceilingUsd).toBe(0);
+      const dispatch = authorizeDispatch(opened.budget, opened.decision, { stage: "semantic-compile", model: MODEL, maxInputTokens: 4_000, maxOutputTokens: 1_000 });
+      expect(dispatch.allowed).toBe(false);
+      if (!dispatch.allowed) expect(dispatch.reason).toBe("DEVELOPMENT_EXPERIMENT_IS_NOT_AUTHORIZATION");
+      expect(opened.budget.snapshot().calls).toBe(0);
+      expect(opened.budget.snapshot().outstandingUsd).toBe(0);
+    }
+  });
+
+  it("keeps an unbilled retry reserved and stops a second outstanding founder-authorized dispatch from crossing the ceiling", () => {
+    const opened = openAuthorizedBudget({ kind: "FOUNDER_AUTHORIZED", ceilingUsd: 0.001, authorizationId: "grant-concurrent" });
     const estimate = { stage: "semantic-compile", model: MODEL, maxInputTokens: 4_000, maxOutputTokens: 1_000 };
     const first = authorizeDispatch(opened.budget, opened.decision, estimate);
     expect(first.allowed).toBe(true);
@@ -233,10 +250,12 @@ describe("evidence engine", () => {
     const parallel = authorizeDispatch(opened.budget, opened.decision, estimate);
     expect(parallel.allowed).toBe(false);
     if (!parallel.allowed) expect(parallel.reason).toContain("HARD_CEILING");
+    expect(opened.budget.snapshot().outstandingUsd).toBeGreaterThan(0);
     settleUnbilledRetry(opened.budget, first.ticket);
     const retry = authorizeDispatch(opened.budget, opened.decision, estimate);
     expect(retry.allowed).toBe(false);
     expect(opened.budget.snapshot().retainedUsd).toBeGreaterThan(0);
+    expect(opened.budget.snapshot().exactUsd).toBe(0);
   });
 
   it("detects a corrupted payload and does not treat a partial record as complete", () => {

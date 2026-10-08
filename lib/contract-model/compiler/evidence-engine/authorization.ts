@@ -2,9 +2,11 @@
  * Hard spend authorization.
  *
  * The default is no paid calls. Five dollars is a proposed experiment cap,
- * not an authorization that is already in force. A larger ceiling requires
- * a founder authorization id. Reservations are worst-case and concurrent
- * outstanding reservations count. An unbilled retry keeps its reservation.
+ * not an authorization. Every nonzero paid dispatch requires a founder
+ * authorization id. A development-experiment label does not authorize a
+ * call at any ceiling, including a ceiling at or under five dollars.
+ * Reservations are worst-case and concurrent outstanding reservations
+ * count. An unbilled retry keeps its reservation.
  *
  * Direct-provider cache discounts are not assumed for Vercel AI Gateway
  * traffic. Haiku remains off the rate card; an unpriceable model is not sent.
@@ -39,10 +41,7 @@ export function resolveSpendAuthorization(authorization: SpendAuthorization = { 
     return { ...proposed, paidCallsAllowed: false, ceilingUsd: 0, reason: "NO_PAID_CALLS_DEFAULT" };
   }
   if (authorization.kind === "DEVELOPMENT_EXPERIMENT") {
-    if (!(authorization.ceilingUsd > 0) || authorization.ceilingUsd > PROPOSED_DEVELOPMENT_EXPERIMENT_CEILING_USD) {
-      return { ...proposed, paidCallsAllowed: false, ceilingUsd: 0, reason: "EXPERIMENT_ABOVE_PROPOSED_CAP_REQUIRES_FOUNDER_AUTHORIZATION" };
-    }
-    return { ...proposed, paidCallsAllowed: true, ceilingUsd: authorization.ceilingUsd, reason: "DEVELOPMENT_EXPERIMENT" };
+    return { ...proposed, paidCallsAllowed: false, ceilingUsd: 0, reason: "DEVELOPMENT_EXPERIMENT_IS_NOT_AUTHORIZATION" };
   }
   if (!authorization.authorizationId.trim() || !(authorization.ceilingUsd > 0)) {
     return { ...proposed, paidCallsAllowed: false, ceilingUsd: 0, reason: "FOUNDER_AUTHORIZATION_ID_REQUIRED" };

@@ -443,6 +443,24 @@ function buildDigestIndex(items: SemanticInventoryItem[]): Map<string, string> {
   for (const it of items) map.set(digestOf(it.inventoryItemId), it.inventoryItemId);
   return map;
 }
+type ConstrainedNodeRole = "CONDITION" | "EXCEPTION" | "SHARED_CAP";
+
+function constrainedNodeRoles(item: SemanticInventoryItem): ConstrainedNodeRole[] {
+  const declared = (item.declaredRoles ?? []).filter((role): role is ConstrainedNodeRole => role === "CONDITION" || role === "EXCEPTION" || role === "SHARED_CAP");
+  const legacy: ConstrainedNodeRole[] = item.semanticRole === "CONDITION" || item.semanticRole === "EXCEPTION" || item.semanticRole === "SHARED_CAP" ? [item.semanticRole] : [];
+  return [...new Set([...declared, ...legacy])];
+}
+
+function rolePathCompatible(role: ConstrainedNodeRole, path: string, item: SemanticInventoryItem): boolean {
+  if (role === "EXCEPTION") return /\.exceptions\[\d+\]$/.test(path);
+  if (role === "SHARED_CAP") return path.startsWith("sharedCapacities[");
+  if (/\.conditions\[\d+\]/.test(path)) return true;
+  // A quantitative condition can be the capacity itself (a refinancing cap is the
+  // condition). A condition with no quantitative value is not preserved by citing
+  // it on a capacity expression, and a citation on the bare rule never is.
+  return item.quantitativeValues.length > 0 && /\.(?:capacityExpression|gatedBy)(?:\.|$)/.test(path);
+}
+
 function canonicalizeId(raw: string, knownIds: Set<string>, digestIndex: Map<string, string>): { id: string; canonicalized: boolean } {
   if (knownIds.has(raw)) return { id: raw, canonicalized: false };
   const mapped = digestIndex.get(digestOf(raw));
@@ -547,6 +565,20 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       } else {
         disposition = "MISSING_FROM_COMPOSITION";
         reasons.push(`no lineage, no explicit disposition, and no deterministic correspondence in the composed IR${item.quantitativeValues.length > 0 ? ` (value(s) ${item.quantitativeValues.map((v) => v.rawText).join(", ")} absent)` : ""}`);
+      }
+    }
+
+    // A citation is not the legal meaning. A condition, exception, or shared-capacity
+    // item is represented only by a node of that kind. A rule that lists the item id
+    // and then omits the node has not preserved it. Definitional items stay with the
+    // definition that carries them; this check is for operative propositions.
+    if (disposition === "REPRESENTED" && item.operative !== "DEFINITIONAL") {
+      const required = constrainedNodeRoles(item);
+      const representedPaths = lineage.filter((e) => e.kind === "REPRESENTED").map((e) => e.irPath);
+      const unmet = required.filter((role) => !representedPaths.some((path) => rolePathCompatible(role, path, item)));
+      if (unmet.length > 0) {
+        disposition = "MISSING_FROM_COMPOSITION";
+        reasons.push(`citing ${representedPaths.join(", ") || "no compatible node"} does not preserve ${unmet.join("/")} legal meaning; a ${unmet.join("/")} item requires a semantically compatible node`);
       }
     }
 
