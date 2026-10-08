@@ -111,12 +111,46 @@ function sectionNodes(nodes: StructuralNode[]): StructuralNode[] {
 
 function isCovenantishSection(sectionRef: string, heading: string | null | undefined): boolean {
   const h = `${sectionRef} ${heading ?? ""}`.toLowerCase();
+  const ref = sectionRef.trim();
   return (
-    /\b6\.\d+|\b7\.\d+|\barticle\s+[vi]+|\bnegative\s+covenant|\bindemitedness|\bliens?\b|\binvestments?\b|\brestricted\s+payments?\b|\bfinancial\s+covenant|\baffirmative\s+covenant/.test(
+    /\b6\.\d+|\b7\.\d+|\barticle\s+[vi]+|\bnegative\s+covenant|\bindebtedness\b|\bliens?\b|\binvestments?\b|\brestricted\s+payments?\b|\bfinancial\s+(?:covenant|condition)\b|\baffirmative\s+covenant|\blimitation on\b/.test(
       h,
-    ) || /^6\./.test(sectionRef) || /^7\./.test(sectionRef) || /^5\./.test(sectionRef)
+    ) ||
+    /^6\./.test(ref) ||
+    /^7\./.test(ref) ||
+    /^5\./.test(ref) ||
+    /^(?:VI|VII|6|7)$/i.test(ref)
   );
 }
+
+/**
+ * High-value defined-term candidates commonly controlling negative-covenant meaning.
+ * Used only when a covenantish section contains the term but no local structural
+ * definition exists — emit UNRESOLVED COVENANT_TO_DEFINITION (fail-closed).
+ * Does not fabricate definition bodies.
+ */
+const UNRESOLVED_DEFINED_TERM_CANDIDATES = [
+  "Indebtedness",
+  "EBITDA",
+  "Consolidated EBITDA",
+  "Available Amount",
+  "Permitted Lien",
+  "Permitted Liens",
+  "Restricted Subsidiary",
+  "Restricted Subsidiaries",
+  "Unrestricted Subsidiary",
+  "Investment",
+  "Investments",
+  "Leverage Ratio",
+  "Total Leverage Ratio",
+  "Consolidated Net Income",
+  "Net Income",
+  "Guarantor",
+  "Guarantors",
+  "Collateral",
+  "Loan Party",
+  "Loan Parties",
+];
 
 export function loadTextDocument(path: string): string {
   const raw = readFileSync(path, "utf-8");
@@ -316,6 +350,54 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
         controllingRestrictionRisk: false,
       });
     }
+
+    // Fail-closed: controlling defined-term candidates present in covenant text but
+    // missing from local structural definitions (common in neg-covenant excerpts).
+    // Do NOT fabricate definition bodies — leave UNRESOLVED with MISSING_DEFINITION.
+    for (const term of UNRESOLVED_DEFINED_TERM_CANDIDATES) {
+      if (defByNorm.has(term.toLowerCase())) continue;
+      const termRe = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`);
+      const m = body.match(termRe);
+      if (!m || m.index == null) continue;
+      const toId = nodeIdForUnresolved(documentId, `missing-def-${term}`);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "UNRESOLVED_TARGET",
+        documentId,
+        label: term,
+        sectionRef: null,
+        unitId: null,
+        termName: term,
+        materiality: null,
+        notes: "Defined-term candidate in covenantish section without local structural definition — not fabricated.",
+      });
+      addEdge(edges, {
+        edgeId: edgeIdOf("COVENANT_TO_DEFINITION", fromId, toId, term),
+        kind: "COVENANT_TO_DEFINITION",
+        fromNodeId: fromId,
+        toNodeId: toId,
+        resolution: "UNRESOLVED",
+        confidence: "LOW",
+        evidenceClass: "STRUCTURAL_DEFINITION_OCCURRENCE",
+        rationale: `Section ${sn.sectionRef} contains controlling term '${term}' with no local structural definition (fail-closed; definition may live in another document).`,
+        sourceSpans: [
+          {
+            documentId,
+            sourceFile,
+            sectionRef: sn.sectionRef,
+            unitId: sn.nodeId,
+            charStart: sn.charStart + m.index,
+            charEnd: sn.charStart + m.index + term.length,
+            excerpt: body.slice(Math.max(0, m.index - 30), m.index + term.length + 30).slice(0, 200),
+          },
+        ],
+        unresolvedReason: `Term '${term}' not declared by any structural definition in this document text.`,
+        sharedBasketKey: null,
+        financialInputKey: null,
+        rootCause: "MISSING_DEFINITION",
+        controllingRestrictionRisk: true,
+      });
+    }
   }
 
   // Section-body high-risk family scan (Atlas-owned): cross-document instruments,
@@ -476,6 +558,125 @@ export function extractFromStructural(input: StructuralDocInput): AtlasDocument 
         bodyStart,
         bodyStart + Math.min(200, body.length),
         "Reclassification connective found; destination provision not uniquely resolved.",
+      );
+    }
+
+    // Remote condition / exception / amendment connectives in section body
+    // (not only adjacent to typed structural cross-references). Cap per section
+    // to avoid combinatorial explosion while preserving fail-closed coverage.
+    const subjectRe = /\bsubject\s+to\b/gi;
+    let sm: RegExpExecArray | null;
+    let subjectCount = 0;
+    while ((sm = subjectRe.exec(body)) !== null && subjectCount < 3) {
+      subjectCount += 1;
+      const toId = nodeIdForUnresolved(documentId, `subject-to-${sn.sectionRef}-${sm.index}`);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "UNRESOLVED_TARGET",
+        documentId,
+        label: `subject-to @ ${sn.sectionRef}`,
+        sectionRef: sn.sectionRef,
+        unitId: null,
+        termName: null,
+        materiality: null,
+        notes: "Remote condition connective in section body; target not uniquely resolved without section-ref binding.",
+      });
+      pushSectionEdge(
+        "COVENANT_TO_CONDITION",
+        toId,
+        "UNRESOLVED",
+        `Section ${sn.sectionRef} contains remote-condition connective 'subject to' (fail-closed; target unresolved).`,
+        body.slice(Math.max(0, sm.index - 40), sm.index + 80),
+        bodyStart + sm.index,
+        bodyStart + sm.index + sm[0]!.length,
+        "Remote condition connective found; destination provision not uniquely resolved.",
+      );
+    }
+
+    const exceptRe = /\bexcept\s+as\s+(?:provided|set\s+forth|permitted)\b|\bpermitted\s+by\b/gi;
+    let em: RegExpExecArray | null;
+    let exceptCount = 0;
+    while ((em = exceptRe.exec(body)) !== null && exceptCount < 3) {
+      exceptCount += 1;
+      const toId = nodeIdForUnresolved(documentId, `except-${sn.sectionRef}-${em.index}`);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "UNRESOLVED_TARGET",
+        documentId,
+        label: `exception @ ${sn.sectionRef}`,
+        sectionRef: sn.sectionRef,
+        unitId: null,
+        termName: null,
+        materiality: null,
+        notes: null,
+      });
+      pushSectionEdge(
+        "COVENANT_TO_EXCEPTION",
+        toId,
+        "UNRESOLVED",
+        `Section ${sn.sectionRef} contains exception connective '${em[0]}' (fail-closed; target unresolved).`,
+        body.slice(Math.max(0, em.index - 40), em.index + 80),
+        bodyStart + em.index,
+        bodyStart + em.index + em[0]!.length,
+        "Exception connective found; destination provision not uniquely resolved.",
+      );
+    }
+
+    if (/\bas\s+amended\b/i.test(body)) {
+      const toId = nodeIdForUnresolved(documentId, `amended-${sn.sectionRef}`);
+      ensureNode(nodes, {
+        nodeId: toId,
+        kind: "UNRESOLVED_TARGET",
+        documentId,
+        label: `as amended @ ${sn.sectionRef}`,
+        sectionRef: sn.sectionRef,
+        unitId: null,
+        termName: null,
+        materiality: null,
+        notes: "Amendment connective local to section; chain resolution coordinates with PR #150.",
+      });
+      pushSectionEdge(
+        "COVENANT_TO_AMENDMENT",
+        toId,
+        "UNRESOLVED",
+        `Section ${sn.sectionRef} contains amendment connective 'as amended' (fail-closed; amendment target not uniquely resolved).`,
+        body.slice(0, 200),
+        bodyStart,
+        bodyStart + Math.min(200, body.length),
+        "Amendment connective found; amendment-chain target resolution deferred (coordinate PR #150).",
+      );
+    }
+
+    // Ratio references in covenantish bodies (financial covenant / basket tests).
+    const ratioRe = /\b(?:Total\s+Net\s+|First\s+Lien\s+|Senior\s+Secured\s+)?Leverage\s+Ratio\b|\bInterest\s+Coverage\s+Ratio\b|\bFixed\s+Charge\s+Coverage(?:\s+Ratio)?\b/gi;
+    let rm: RegExpExecArray | null;
+    while ((rm = ratioRe.exec(body)) !== null) {
+      const label = rm[0]!.replace(/\s+/g, " ");
+      const toId = defByNorm.has(label.toLowerCase())
+        ? nodeIdForTerm(documentId, label)
+        : nodeIdForUnresolved(documentId, `ratio-ref-${label}`);
+      if (!defByNorm.has(label.toLowerCase())) {
+        ensureNode(nodes, {
+          nodeId: toId,
+          kind: "UNRESOLVED_TARGET",
+          documentId,
+          label,
+          sectionRef: null,
+          unitId: null,
+          termName: label,
+          materiality: null,
+          notes: "Ratio reference in covenant body without local ratio definition.",
+        });
+      }
+      pushSectionEdge(
+        "RATIO_CALCULATION",
+        toId,
+        defByNorm.has(label.toLowerCase()) ? "RESOLVED" : "UNRESOLVED",
+        `Section ${sn.sectionRef} references ratio '${label}'.`,
+        body.slice(Math.max(0, rm.index - 40), rm.index + label.length + 40),
+        bodyStart + rm.index,
+        bodyStart + rm.index + rm[0]!.length,
+        defByNorm.has(label.toLowerCase()) ? null : `Ratio '${label}' not located as a structural definition in this document.`,
       );
     }
   }
