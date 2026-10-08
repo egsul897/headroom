@@ -22,6 +22,8 @@ export interface RemediationContract {
   originalFailingSha: string;
   proposedFixSha: string | null;
   proposedFixBranch: string | null;
+  /** Additional SHAs that are complementary, adjacent, or partial — not alone sufficient to CLOSE. */
+  relatedShas: string[];
   minimalReproduction: string[];
   frozenExpectedBehavior: string;
   independentTestCommand: string;
@@ -39,11 +41,26 @@ export const ORIGINAL_FAILING_SHA = "084405770a02f5eebe88b0b7ffb192a46fd7960c";
 /** Classifier whitespace fix that unblocks SUP RESTATES (ancestor of main). */
 export const SUP_RESTATES_FIX_SHA = "e6c85cd8e3d26db6ad867300bccd8f3eefc088af";
 
+/** Relationship surfacing / preamble-boundary work that completes RESTATES candidate emission. */
+export const SUP_RESTATES_RELATIONSHIP_SHA = "db7f32a1b737e02a251c23989b750ba2fec602b8";
+
 /** Main tip independently replayed for SUP RESTATES. */
 export const MAIN_REPLAY_SHA = "9de4e5737166fcec84a35fdc9a3404870549211f";
 
-/** Architecture remediation tip — contents-listing refusal + comparator-as-capacity refusal. */
+/** Architecture remediation tip (checkout point; includes TOC cluster + later figure-role). */
 export const ARCH_REMED_SHA = "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8";
+
+/** Substantive TOC/contents-listing refusal cluster on architecture-remediation (ancestors of tip). */
+export const TOC_CONTENTS_CLUSTER_SHAS = [
+  "481b19fe91137f0be6a552d2ec06925a0bcaf27d",
+  "f9f402c6e458103352b9fa83805767d997ca6552",
+] as const;
+
+/** Partial xref/resolve work on Gibraltar pipeline / arch (unproven resolve-rate lift). */
+export const XREF_PARTIAL_SHA = "fc530e18294c90c6a8f2b31acb93f5400e14ff5a";
+
+/** Adjacent semantic-inventory note that ordinary aggregate amount is not SHARED_CAP_MARKER — not a Pass A fix. */
+export const SHARED_CAP_ADJACENT_SHA = "34af49b6d7222d7b13db6add3cd1c0d1531715dd";
 
 /** Pre-whitespace baseline where SUP doc-b misclassifies as CREDIT_AGREEMENT. */
 export const PRE_WHITESPACE_SHA = "4331cf8"; // full resolved at replay time
@@ -60,6 +77,7 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: null,
       proposedFixBranch: null,
+      relatedShas: [SHARED_CAP_ADJACENT_SHA],
       minimalReproduction: [
         "Worktree isolation: checkout any production tip without editing phase1-freeze.",
         "Inspect pass-a-signals shared_cap regex: aggregate(?:d)? (?:amount|basket)|combined|shared.",
@@ -79,10 +97,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       regressionRisks: [
         "Over-narrowing may miss real shared baskets that use atypical phrasing.",
         "Downstream Pass B/C consumers that treated shared_cap as soft recall signal may need recalibration.",
+        "Do not mistake adjacent semantic-inventory exclusions (34af49b) or coverage-audit's narrower shared_cap for a Pass A fix.",
       ],
       status: overrides?.["LCQG-GIB-FALSE-AFFIRM-SHARED-CAP"] ?? "OPEN",
       statusRationale:
-        "No production branch narrows shared_cap away from aggregate-amount alone (main, architecture-remediation, knowledge-factory still identical pattern). Left OPEN.",
+        "Pass A pattern identical on main / architecture-remediation / knowledge-factory. Adjacent SHA 34af49b documents ordinary aggregate amount ≠ SHARED_CAP_MARKER in semantic-inventory only — not Pass A. Left OPEN.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
@@ -96,9 +115,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: SUP_RESTATES_FIX_SHA,
       proposedFixBranch: "main",
+      relatedShas: [SUP_RESTATES_RELATIONSHIP_SHA, MAIN_REPLAY_SHA],
       minimalReproduction: [
         "Baseline worktree at pre-fix SHA (parent of e6c85cd): classifyDocument(sup-doc-b) → CREDIT_AGREEMENT; buildPackageGraph RESTATES count=0.",
         "Candidate worktree at e6c85cd or main tip: classifyDocument → AMENDED_AND_RESTATED_AGREEMENT; RESTATES candidate sup-doc-b→sup-doc-a surfaced (REVIEW_REQUIRED acceptable).",
+        "Complementary relationship/preamble work: db7f32a (Unit A+B structural relationship retrieval).",
         "Do not mutate phase1-freeze oracle.",
       ],
       frozenExpectedBehavior:
@@ -117,7 +138,7 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       ],
       status: overrides?.["LCQG-SUP-AMEND-RESTATES-MISSING"] ?? "INDEPENDENTLY_ADJUDICATED",
       statusRationale:
-        "Independent worktree replay: pre-fix CREDIT_AGREEMENT + 0 RESTATES; post-fix (e6c85cd / main 9de4e57 / eval tip) AMENDED_AND_RESTATED_AGREEMENT + RESTATES REVIEW_REQUIRED. Acceptance criteria met. Not CLOSED — freeze epoch not advanced; certification unchanged.",
+        "Independent worktree replay: pre-fix CREDIT_AGREEMENT + 0 RESTATES; post-fix (classifier e6c85cd + relationship db7f32a on main 9de4e57 / eval tip) AMENDED_AND_RESTATED_AGREEMENT + RESTATES REVIEW_REQUIRED. Acceptance criteria met. Not CLOSED — freeze epoch not advanced; certification unchanged.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
@@ -131,6 +152,7 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: null,
       proposedFixBranch: null,
+      relatedShas: [],
       minimalReproduction: [
         "Locate definition cite Section 7.05(a)(y) and operative printed marker (vi) / parenthetical clause (y) in Gibraltar source.",
         "Confirm dual-cite disagreement is in the filed HTML itself.",
@@ -148,10 +170,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       regressionRisks: [
         "Over-refusing unique cites that are merely layout-odd but consistent.",
         "Consumers must handle dual-cite REVIEW_REQUIRED without inventing capacity.",
+        "Letter/roman clause-hierarchy work may make resolveUniqueNodeByRef('7.05(a)(y)') UNIQUE — that is the opposite of dual-cite UNRESOLVED and must not be treated as this defect's fix.",
       ],
       status: overrides?.["LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT"] ?? "OPEN",
       statusRationale:
-        "SOURCE_INCONSISTENCY primary. No production SHA found that implements dual-cite UNRESOLVED handling for this pattern. Left OPEN.",
+        "SOURCE_INCONSISTENCY primary. No production SHA implements dual-cite UNRESOLVED for definition cite vs printed marker. Related clause-hierarchy SHAs are not acceptance. Left OPEN.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
@@ -165,9 +188,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: ARCH_REMED_SHA,
       proposedFixBranch: "cursor/architecture-remediation-7cc2",
+      relatedShas: [...TOC_CONTENTS_CLUSTER_SHAS],
       minimalReproduction: [
         "Frozen structure health: AMBIGUOUS_LEGAL_REFERENCE=306 / DUPLICATE_LABEL_EXPECTED=306.",
-        "Candidate: architecture-remediation tip — CONTENTS_LISTING refusal in operative-authority + reference-context.",
+        "Substantive TOC/contents cluster on architecture-remediation: 481b19f … f9f402c (ancestors of tip ec7d5df).",
+        "Tip ec7d5df is the branch checkout point (also adds figure-role); TOC commits are earlier on the same branch.",
         "Independent test: contents listing must refuseModelDispatch; never silently bind TOC stub as operative body.",
       ],
       frozenExpectedBehavior:
@@ -185,7 +210,7 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       ],
       status: overrides?.["LCQG-GIB-STRUCT-AMBIGUOUS-TOC"] ?? "INDEPENDENTLY_ADJUDICATED",
       statusRationale:
-        "Candidate SHA ec7d5df (architecture-remediation). Independent worktree vitest: operative-authority + contents-listing refusal 25/25 PASSED. Adjudication: consumer fail-closed (never silent TOC bind) meets frozen expected behavior; structural AMBIGUOUS counts unchanged (honest). Not CLOSED — Gibraltar index regeneration not re-run; freeze epoch not advanced.",
+        "Checkout tip ec7d5df includes TOC/contents cluster (481b19f→f9f402c). Independent worktree vitest: operative-authority + contents-listing refusal 25/25 PASSED. Consumer fail-closed meets frozen expected behavior; structural AMBIGUOUS counts unchanged (honest). Not CLOSED — Gibraltar index regeneration not re-run; freeze epoch not advanced.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
@@ -199,9 +224,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: null,
       proposedFixBranch: null,
+      relatedShas: [XREF_PARTIAL_SHA, ARCH_REMED_SHA],
       minimalReproduction: [
         "structure-summary.json: detected=1459 resolved=491 unresolved=968 resolveRate≈0.337.",
         "Confirm unresolved remain explicit; no force-bind to TOC stubs.",
+        "Partial unproven candidate: fc530e1 on architecture-remediation / Gibraltar Track D (degenerate TOC exclusion); atlas tip is diagnostic-only.",
       ],
       frozenExpectedBehavior:
         "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
@@ -215,10 +242,11 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       regressionRisks: [
         "Aggressive resolution against AMBIGUOUS labels would be a legal-safety regression.",
         "Contents-listing refusal alone does not raise the frozen 33.7% rate without re-index.",
+        "Treating atlas diagnostics or unmeasured arch resolve changes as CLOSED would contaminate adjudication.",
       ],
       status: overrides?.["LCQG-GIB-XREF-LOW-RESOLVE"] ?? "OPEN",
       statusRationale:
-        "Related contents-listing refusal on architecture-remediation reduces silent TOC bind risk but does not provide a measured resolve-rate fix SHA for Gibraltar. Left OPEN.",
+        "fc530e1 / TOC exclusion may help unique operative resolution but no measured Gibraltar resolve-rate lift was independently verified. Dependency-atlas tip has no production resolver edits. Left OPEN (not FIX_PROPOSED — no proven candidate).",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
@@ -232,6 +260,7 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       originalFailingSha: ORIGINAL_FAILING_SHA,
       proposedFixSha: null, // filled at run tip
       proposedFixBranch: "cursor/live-corpus-quality-gate-7f51",
+      relatedShas: [],
       minimalReproduction: [
         "Load phase1-freeze/01-findings.json — 46 findings, 45 unique findingIds.",
         "Collision: gib-doc-a:exception_and_condition_recall:legally_verified:pass (§7.02 vs §7.08).",

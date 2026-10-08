@@ -5,7 +5,7 @@
 **Starting PR:** #153
 **Starting SHA:** `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
 **Frozen evaluation content SHA:** `cebec8ab3aaecd894b1903ac0b758828655a88df`
-**Generation HEAD:** `893a52f86b8d8067389f03e965cb620a374cc65b`
+**Generation HEAD:** `a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
 **Production fixes in this branch:** `false`
@@ -56,8 +56,10 @@ See `26-legal-safety-metrics.json`. Unavailable GT never converted to PASS.
 
 ## 9. SHA / tests / CI / PR
 
-- HEAD: `893a52f86b8d8067389f03e965cb620a374cc65b`
+- HEAD: `a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd`
 - Tests: `npm run live-corpus-quality-gate:phase3` · `npx vitest run tests/live-corpus-quality-gate/`
 - PR: #153 draft — do not merge
 
-**Branch tip SHA:** `fa0afdf3893386d11f61f28f4400d9d296d7b088` (report generation content SHA: `893a52f86b8d8067389f03e965cb620a374cc65b`)
+## Probe enrichment (independent SHA catalog)
+
+Supplemental production-SHA catalog from independent branch probe folded into `22-remediation-contracts.json` `relatedShas` without changing status rollup: SUP relationship `db7f32a`; TOC cluster `481b19f`→`f9f402c` (tip checkout `ec7d5df`); shared_cap adjacent-only `34af49b`; xref partial unproven `fc530e1`. Statuses unchanged (OPEN 3 / INDEPENDENTLY_ADJUDICATED 3 / CLOSED 0).

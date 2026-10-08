@@ -23,7 +23,7 @@
     },
     {
       "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
-      "candidateSha": "893a52f86b8d8067389f03e965cb620a374cc65b",
+      "candidateSha": "a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd",
       "baselineSha": null,
       "worktreeUsed": "current-eval",
       "reproductionPassed": true,
@@ -70,13 +70,13 @@
       "observations": {
         "vitestTail": [
           "",
-          " ✓ tests/contract-model/context-retrieval-definition-contents.test.ts (4 tests) 8ms",
+          " ✓ tests/contract-model/context-retrieval-definition-contents.test.ts (4 tests) 7ms",
           " ✓ tests/contract-model/compiler/operative-authority.test.ts (21 tests) 16ms",
           "",
           " Test Files  2 passed (2)",
           "      Tests  25 passed (25)",
-          "   Start at  22:34:11",
-          "   Duration  875ms (transform 515ms, setup 0ms, collect 900ms, tests 24ms, environment 0ms, prepare 85ms)"
+          "   Start at  22:36:44",
+          "   Duration  851ms (transform 518ms, setup 0ms, collect 883ms, tests 23ms, environment 0ms, prepare 81ms)"
         ],
         "acceptance": "CONTENTS_LISTING refuseModelDispatch; never silent TOC bind; AMBIGUOUS exposure preserved"
       },
