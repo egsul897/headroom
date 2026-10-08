@@ -7,6 +7,7 @@ import { buildCandidateCompilerInput } from "../../lib/contract-model/covenant-m
 import { resolveUniqueDefinitionByRef, getNodeSupersessionStatus } from "../../lib/contract-model/compiler/amendment/operative-state";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
 import type { StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
+import { sha256 } from "./corpus";
 import type { CorpusPackage, Severity, ExpectationsManifest } from "./corpus";
 import type { Check, Finding, OutcomeClass, StageMode, StageName } from "./report-types";
 import type { DeterministicStages } from "./stages";
@@ -74,6 +75,18 @@ export function auditStructure(pkg: CorpusPackage, s: DeterministicStages, L: Le
     for (const t of e.fullTextContains ?? []) if (!full.includes(ws(t))) problems.push(`full text lacks "${t}"`);
     if (problems.length === 0) L.pass("STRUCTURE", "PRODUCTION", "EXACT", ref, `UNIQUE ${node.nodeType} under ${parent?.sectionRef ?? "root"}`);
     else L.fail("STRUCTURE", "PRODUCTION", "EXACT", ref, { severity: problems.some((p) => p.includes("lacks")) ? "SOURCE_PROVENANCE_FAILURE" : "WRONG_OPERATIVE_SOURCE", outcomeClass: "INCORRECT_RESULT", expected: `${e.nodeType} under ${e.parentSectionRef} with the listed text`, actual: problems.join("; "), repro, deterministic: true });
+  }
+  // pinned covenant text: the whitespace-normalised DESCENDANTS text of each covenant node must hash to the manifest's
+  // textSha256 (pin-corpus.ts). Any textual change to an operative clause is a deterministic failure here, which is what
+  // makes an added proviso or a re-scoped entity visible without a model (mutation suite MUT-02 class).
+  for (const c of m.covenants.filter((c) => c.textSha256)) {
+    const ref = `structure:text:${c.id}`;
+    const nodes = index.findNodesByRef(c.documentId, c.sectionRef);
+    const node = c.occurrence ? nodes[c.occurrence - 1] : nodes.length === 1 ? nodes[0] : undefined;
+    if (!node) { L.notTested("STRUCTURE", "PRODUCTION", "EXACT", ref, "covenant node not uniquely resolvable (see structure:<ref>)"); continue; }
+    const actual = sha256(ws(index.getNodeText(node.nodeId, "DESCENDANTS")));
+    if (actual === c.textSha256) L.pass("STRUCTURE", "PRODUCTION", "EXACT", ref, `node text hash ${actual.slice(0, 12)} matches the pinned clause text`);
+    else L.fail("STRUCTURE", "PRODUCTION", "EXACT", ref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: `clause text hash ${c.textSha256!.slice(0, 12)} (pinned from the fixture bytes)`, actual: `${actual.slice(0, 12)}: the parsed clause text differs from the pinned text`, repro: `sha256(ws(index.getNodeText(findNodesByRef("${c.documentId}","${c.sectionRef}")[${(c.occurrence ?? 1) - 1}].nodeId,"DESCENDANTS")))`, deterministic: true });
   }
   // generic structural invariants
   const orphans = index.orphans();
@@ -241,19 +254,22 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
     // declared target must exist, resolve, and land in the declared document - a dangling pointer is a MISSING_DEPENDENCY
     // (mutation suite MUT-10 found this expectation was declared in every manifest but audited nowhere)
     const danglingRefs: string[] = [];
+    const reachedVia: string[] = [];
     for (const x of c.crossReferences ?? []) {
       if (!x.mustResolve) continue;
       const refs = index.findReferencesFrom(cand.structuralNodeIds[0]!, true).filter((r) => r.normalizedTarget === x.sectionRef || r.referenceText.replace(/^section\s+/i, "") === x.sectionRef);
       const landed = refs.filter((r) => r.resolved && r.targetNodeId && index.allNodes().some((n) => n.nodeId === r.targetNodeId && n.documentId === x.documentId));
-      // a reference reached through a retrieved definition (J: Available Amount names 7.06(c)/7.08(d)) arrives as a CROSS_REFERENCE bundle item
-      const viaBundle = build.bundle.items.filter((i) => i.type === "CROSS_REFERENCE" && i.documentId === x.documentId && i.normalizedRef === x.sectionRef);
-      if (landed.length > 0 || viaBundle.length > 0) continue;
+      // a reference reached through a retrieved definition (J/K: Available Amount names the sibling baskets) arrives as a bundle item;
+      // its TYPE varies with the sibling's own content (CROSS_REFERENCE in K; CALCULATION_PROVISION for J's ratio-bearing 7.06(c) -
+      // the first version of this check accepted only CROSS_REFERENCE and mis-reported J as a missing dependency, see IPV-17 CLOSED)
+      const viaBundle = build.bundle.items.filter((i) => i.type !== "OPERATIVE_SOURCE" && i.type !== "PARENT_SCOPE" && i.documentId === x.documentId && i.normalizedRef === x.sectionRef);
+      if (landed.length > 0 || viaBundle.length > 0) { reachedVia.push(`${x.sectionRef}:${landed.length > 0 ? "structural reference" : viaBundle.map((i) => i.type).join("/")}`); continue; }
       if (refs.length === 0) danglingRefs.push(`no structural reference to ${x.sectionRef} from ${c.sectionRef} and no CROSS_REFERENCE bundle item for it (refs seen: ${index.findReferencesFrom(cand.structuralNodeIds[0]!, true).map((r) => `${r.referenceText}→${r.resolved ? "ok" : r.unresolvedReason ?? "unresolved"}`).join(", ") || "none"}; bundle cross-references: ${build.bundle.items.filter((i) => i.type === "CROSS_REFERENCE").map((i) => i.normalizedRef).join(", ") || "none"})`);
       else danglingRefs.push(`reference to ${x.sectionRef} does not resolve into ${x.documentId} (${refs.map((r) => `${r.referenceText}: ${r.resolved ? "resolved elsewhere" : r.targetAmbiguous ? "ambiguous" : r.unresolvedReason ?? "unresolved"}`).join("; ")})`);
     }
     const detail = `${defs.length} definition item(s) [${[...new Set(defs.map((d) => d.documentId))].join(",")}], ${unresolved.length} unresolved, sufficiency ${build.bundle.sufficiencyState}, operative text ${build.operativeSourceText.length} chars`;
     if (danglingRefs.length > 0) L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:cross-references`, { severity: "MISSING_DEPENDENCY", outcomeClass: "INCORRECT_RESULT", expected: `declared cross-reference(s) resolve: ${(c.crossReferences ?? []).filter((x) => x.mustResolve).map((x) => `${x.documentId}#${x.sectionRef}`).join(", ")}`, actual: danglingRefs.join("; "), repro: `index.findReferencesFrom(candidateFor("${c.documentId}","${c.sectionRef}").structuralNodeIds[0], true)`, deterministic: true });
-    else if ((c.crossReferences ?? []).some((x) => x.mustResolve)) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:cross-references`, `${(c.crossReferences ?? []).filter((x) => x.mustResolve).length} declared cross-reference(s) reachable (structural reference from the clause, or a CROSS_REFERENCE bundle item reached through a retrieved definition) in the declared document`);
+    else if ((c.crossReferences ?? []).some((x) => x.mustResolve)) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:cross-references`, `${(c.crossReferences ?? []).filter((x) => x.mustResolve).length} declared cross-reference(s) reachable in the declared document (${reachedVia.join("; ")})`);
     if (missing.length > 0) L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:definitions`, { severity: "NONMATERIAL_OMISSION", outcomeClass: "INCORRECT_RESULT", expected: `same-document definition(s) used by the operative text are retrieved: ${missing.join(", ")}`, actual: `not in bundle (retrieved: ${defs.filter((d) => d.documentId === c.documentId).map((d) => d.normalizedRef).join(", ") || "none"}); operative text uses the term as "${missing.map((t) => (build.operativeSourceText.match(new RegExp(`\\b${t}s?\\b`)) ?? [t])[0]).join('", "')}"`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}")).bundle.items`, deterministic: true });
     if (problems.length === 0) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, detail);
     else L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, { severity: problems.some((p) => p.includes("resolved to") || p.includes("retrieved from")) ? "WRONG_OPERATIVE_SOURCE" : "UNSUPPORTED_AS_COMPLETE", outcomeClass: "INCORRECT_RESULT", expected: "definitions sourced from the covenant's own document; undefined terms reported unresolved", actual: `${problems.join("; ")} (${detail})`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}"))`, deterministic: true });

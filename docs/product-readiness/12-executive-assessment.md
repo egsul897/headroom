@@ -34,8 +34,9 @@ Written from the artefacts on branch `claude/independent-product-validation` at 
    leaves the instrument RESOLVED (IPV-05).
 4. **Real-world formatting breaks the parser**: tables of contents, dropped enumeration letters, inline enumerations
    inside definitions, exhibit term lists (IPV-06/07/08/11). Two of these fail closed, two fail silently.
-5. **Definition-mediated relationships** (builder baskets netting across sections) have neither a retrieval closure
-   that is symmetric (IPV-17) nor a representation the compiler accepts (IPV-15).
+5. **Definition-mediated relationships** (builder baskets netting across sections) are retrieved correctly (J and K
+   controls) but have no representation the compiler accepts (IPV-15), and a junior-debt prepayment basket has no
+   covenant family at all (IPV-18).
 6. **Nothing is known about model-stage quality**: discovery Pass B–D, extraction accuracy, Layer-2 reviewer
    effectiveness, cost and latency are unmeasured on this branch.
 7. **No persistence, no application wiring** for Phase 4 (North Star reconciliation).

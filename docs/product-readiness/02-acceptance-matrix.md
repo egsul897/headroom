@@ -61,8 +61,9 @@ rule; "pure omission" variants strip it.
 | F | 1/3 | F-P3 both variants (dropped "together with" shared cap) |
 | G | 5/5 | — |
 | H | 5/6 | H-P3 lineage-on-rule (dropped Payment Conditions gate) |
-| I | 0 cases | prohibited claims declared in the manifest (I-P1…) but no scripted adversarial submission authored yet — backlog item, not evidence either way |
-| J | 0 cases | as I (J-P1/J-P2 declared; J-P2 "two independent $20m pools" is the claim IPV-15/IPV-17 would let through) |
+| I | 1/1 | — (I-P2 scope widening refused, but by CONTEXT_CONTRACT_UNACCEPTABLE from the Subsidiary definition cycle, not by the scope guard; I-P1/I-P3 are question-level claims covered by BM-01/BM-14) |
+| J | 3/3 | — (J-P1 both variants refused with MATERIAL_DISCREPANCY: the definition-sourced Default kill-switch is accounted for; J-P2 is the IPV-15 representation gap, not expressible) |
+| K | 2/2 | — (K-P2 both variants refused; K-P1 as J-P2) |
 
 Refusals worth noting because they are the product doing the right thing: a non-operative recital/exhibit figure
 (G-P1), a stale amendment's figure (G-P2), a superseded amount at a later date (C-P1), a figure invented for a
@@ -82,7 +83,8 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | G | FAILED | 7.04 truncated and 7.01(c) undefined term fail closed (expected); duplicate 7.01 ambiguous (expected); 7.03 review (IPV-07 merged clause) |
 | H | FAILED | 7.03 CERTIFIED; 7.11 springing covenant review (expected: undefined FCCR inputs); 7.02 review (undefined Eligible Receivables - expected) |
 | I | FAILED | 7.01, 7.02, 7.04 NOT_CERTIFIED (CONTEXT_CONTRACT_UNACCEPTABLE: DEFINITION_CYCLE on "Subsidiary"/"Guarantor" — IPV-12 class); 9.15 Article IX secured cap REVIEW (UNACCOUNTED_MATERIAL_SOURCE — IPV-14) |
-| J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented; deterministic root IPV-17) |
+| J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented) |
+| K | FAILED | 7.06 and 7.08 review (IPV-14 class: mock did not represent one sibling unit each); 7.09 review (IPV-18: family unrecognised, relabelled) |
 
 ## Runtime (package F, production Phase-4 runtime over fixture IR): 14/14
 

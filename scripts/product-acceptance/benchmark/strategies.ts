@@ -169,6 +169,11 @@ export function hybridScope(pkg: CorpusPackage, s: DeterministicStages, c: Bench
     const text = index.getNodeText(n.nodeId, "DESCENDANTS");
     if (/notwithstanding anything to the contrary in article/i.test(text)) add(n, "override clause (\"notwithstanding … Article\") anywhere in the document");
     if ([...chosen.values()].some((u) => u.documentId === doc && new RegExp(`Section ${u.sectionRef.replace(/[().]/g, "\\$&")}`).test(text))) add(n, "names an in-scope section (shared cap / back-reference)");
+    // a section of ANOTHER operative document that names an in-scope section of a document it refers to (a side letter, consent or
+    // waiver saying "notwithstanding Section 7.02(b) of the Credit Agreement") is in the universe whether or not it uses a modal
+    // verb - MUT-16 (a lender consent reading "hereby consent to …") showed the normative-verb scan alone misses it
+    const leadsFrom = s.packageGraph.crossDocumentReferenceLeads.filter((l) => l.sourceDocumentId === doc && l.targetDocumentId);
+    if (leadsFrom.length > 0 && [...chosen.values()].some((u) => u.documentId !== doc && leadsFrom.some((l) => l.targetDocumentId === u.documentId) && new RegExp(`Section ${u.sectionRef.replace(/[().]/g, "\\$&")}`).test(text))) add(n, `names an in-scope section of ${leadsFrom[0]!.targetDocumentId} from another document (override / consent / waiver back-reference)`);
   }
   // 4. definitions: production context retrieval for each chosen unit (what the compiler would be handed) + definition→definition chains; undefined terms flagged
   const r = retrievalFor(pkg, s, [...chosen.values()], c.family, c.asOfDate);

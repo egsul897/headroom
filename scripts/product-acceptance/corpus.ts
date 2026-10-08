@@ -136,6 +136,8 @@ const Covenant = z.object({
   crossReferences: z.array(CrossReference),
   sourceNote: z.string().optional(),
   truncated: z.boolean().optional(),
+  /** sha256 of the whitespace-normalised DESCENDANTS text of the covenant's node, pinned by pin-corpus.ts; any textual change to the clause (a new proviso, a changed figure, a re-scoped entity) is then a deterministic STRUCTURE failure. Absent when the node is not uniquely resolvable. */
+  textSha256: z.string().optional(),
 });
 
 const SharedCap = z.object({

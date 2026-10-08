@@ -14,16 +14,18 @@ collaboration contract: Cursor owns `lib/` remediation; this track owns fixtures
 | 5 | Operative-authority gate: TOC-title modal, no-modal covenants, stale descendants | PR136-F1/F2/F4 | `source-authority.test.ts` 28/28 in the PR #136 worktree |
 | 6 | Section-level candidate over amended agreement uses current text with lineage | IPV-04 | C `certification:credit-agreement::7.01` |
 | 7 | Unresolved amendment → instrument not RESOLVED | IPV-05 | H operative-state row |
-| 8 | Definition-mediated cross-reference closure symmetric; definition-level shared capacity representable | IPV-17, IPV-15 | `context:J-7.08(d):cross-references`, J 7.08 certification |
+| 8 | Definition-level shared capacity representable; a covenant family for restricted debt payments | IPV-15, IPV-18 | J 7.08 certification; K `semantic:K-7.09(b)` and 7.09 certification |
 | 9 | Parser: TOC on certified path, dropped letter, inline enumerations, exhibit term lists | IPV-11/07/06/08 | E/G/H STRUCTURE rows |
 | 10 | Plural defined terms; depth-2 undefined terms surfaced | IPV-09/10 | D/E/F/G/H CONTEXT_RETRIEVAL rows |
 
 ## This track (harness, fixtures, docs)
 
-1. Per-covenant normalised text hash in manifests (deterministic kill for added/changed conditions; MUT-02 class).
-2. Side-letter / waiver / consent fixture family across packages A, C, H, I (IPV-16 breadth) with expectations that the
-   operative state is not RESOLVED for the named sections.
-3. Three-section definition fixture (IPV-17 acceptance) and adversarial submission plans for packages I and J.
+1. ~~Per-covenant normalised text hash in manifests~~ done (`textSha256`, doc 09 §7).
+2. ~~Side-letter / waiver / consent mutants across A, C, H, I~~ done (MUT-13…16); next: on-disk side-letter documents in
+   a package whose manifest expects the override to be surfaced, so the acceptance run (not only the mutation suite)
+   carries IPV-16.
+3. ~~Package K and adversarial plans for I/J/K~~ done; next: a package with a ratio-bearing sibling on the *other*
+   side (to pin the CALCULATION_PROVISION vs CROSS_REFERENCE typing observation from IPV-17's closure).
 4. Content-addressed node identity experiment (doc 09 §3): measure what a text-hash + occurrence identity would keep
    stable across the 12 mutants; propose the mapping to Cursor.
 5. Continuous-loop invariants (directive's 40): next ten — hanging proviso attaches to every preceding clause; "greater

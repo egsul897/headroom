@@ -1,7 +1,7 @@
 # Mutation suite and anti-overfitting audit
 
-Branch `claude/independent-product-validation`; code SHA `83e6bf1d3ce044bf56c38083b5940e43d92adcd5`; committed run
-`mutation-runs/83e6bf1d3ce0/` (`mutations.json` machine-readable, `mutations.md` per-verdict). Runner:
+Branch `claude/independent-product-validation`; first run at code SHA `83e6bf1d3ce044bf56c38083b5940e43d92adcd5`
+(`mutation-runs/83e6bf1d3ce0/`), re-run after the harness strengthening of §8 (see the latest `mutation-runs/<sha12>/`) (`mutations.json` machine-readable, `mutations.md` per-verdict). Runner:
 `npx tsx scripts/product-acceptance/run-mutations.ts` (≈6 s, zero provider calls). Pinned by
 `tests/product-acceptance/mutations.test.ts` (22 tests). Nothing under `lib/` was modified; fixtures on disk were not
 modified (every mutation is applied in memory and the corpus-integrity test re-pins the bytes).
@@ -53,9 +53,10 @@ mutants were killed at STRUCTURE. The predictions were corrected and the correct
 stage; what the deterministic layer sees is a text fragment.
 
 ² First run: SURVIVED. Every manifest declares `crossReferences[].mustResolve`, but `auditContextRetrieval` never
-checked it. The audit was added (structural reference from the clause, or a `CROSS_REFERENCE` bundle item reached
-through a retrieved definition, landing in the declared document). Re-running the unchanged manifests with the new
-check exposed IPV-17 in package J (§4).
+checked it. The audit was added (structural reference from the clause, or a bundle item reached through a retrieved
+definition, landing in the declared document). Its first version accepted only `CROSS_REFERENCE`-typed items and
+reported package J's 7.08(d) as missing its sibling (registered as IPV-17); the package-K control in §8 showed the
+sibling was present under a different item type, and IPV-17 was closed as a harness false positive.
 
 ### 2.1 Survivors, one by one
 
@@ -102,12 +103,13 @@ Consequences, stated without modifying anything:
 | id | severity | stage | found by | one line |
 |---|---|---|---|---|
 | IPV-16 | CRITICAL_FALSE_PERMISSION (tightening) / UNSUPPORTED_AS_COMPLETE (loosening) | OPERATIVE_STATE | MUT-12, MUT-08 | a "notwithstanding … shall not … exceeding $10,000,000" side letter is not a modification candidate; 0 effects, 0 unattached, instrument RESOLVED on the base text |
-| IPV-17 | MISSING_DEPENDENCY | CONTEXT_RETRIEVAL | the cross-reference audit MUT-10 forced | compiling 7.08(d) retrieves its own self-reference from the Available Amount definition but not sibling 7.06(c); bundle SUFFICIENT; the deterministic root under IPV-15 |
+| IPV-17 | — (CLOSED, harness false positive) | CONTEXT_RETRIEVAL | the cross-reference audit MUT-10 forced | first reported as 7.08(d) missing its sibling; the sibling was in the bundle as a CALCULATION_PROVISION item (7.06(c) carries a ratio test), not as CROSS_REFERENCE; the package-K control is symmetric. Residual observation: a definition-mediated sibling's bundle item type depends on the sibling's own content |
+| IPV-18 | UNSUPPORTED_AS_COMPLETE (fail-closed) | SEMANTIC_COMPOSITION | package K | no covenant family for prepayments of junior debt; the normalizer relabels the unit QUALITATIVE_NEGATIVE_COVENANTS with action null, so a three-way builder pool cannot be represented |
 
-Both are deterministic, reproduce from the register's `repro`, and are handed to the Cursor track with the handoff
-fields in `03-defect-register.json`. IPV-16's hypothesis (override/waiver drafting forms are outside
-`modification-candidates.ts`'s vocabulary) and IPV-17's hypothesis (reference expansion drops a reference by position
-rather than by identity with the citing candidate) are hypotheses from observed behaviour, not traced fixes.
+IPV-16 and IPV-18 are deterministic, reproduce from the register's `repro`, and are handed to the Cursor track with the
+handoff fields in `03-defect-register.json`. IPV-16's hypothesis (override/waiver drafting forms are outside
+`modification-candidates.ts`'s vocabulary) is a hypothesis from observed behaviour, not a traced fix. IPV-17 is kept
+in the register as a closed entry so the false positive and its correction are on the record.
 
 ## 5. Anti-overfitting audit of production code
 
@@ -145,17 +147,40 @@ delete, markup exhibit, schedule modification) and not a waiver/side-letter over
 
 - Acceptance run refreshed at `acceptance-runs/83e6bf1d3ce0/`: 444 checks, 388 pass / 42 fail / 14 not tested
   (was 431: 376/41/14). The 13 new checks are the cross-reference audits (12 pass, 1 fail = IPV-17).
-- Register: IPV-01…IPV-17 (two new, both deterministic). Priority-0 class (false permission / dangerous omission /
-  source authority) now holds IPV-01, IPV-02, IPV-03, IPV-16; F-R runtime cases unchanged.
+- Register: IPV-01…IPV-18 (IPV-16 and IPV-18 new and deterministic; IPV-17 opened and closed as a harness false
+  positive). Priority-0 class (false permission / dangerous omission / source authority) now holds IPV-01, IPV-02,
+  IPV-03, IPV-16; F-R runtime cases unchanged.
 - The "can Headroom cheaply establish the legal universe" answer from doc 08 gets one qualification: the
   deterministic closure finds the override document (hybrid scope includes `side-letter#1`) but the operative-state
   layer, which the certified path consumes for lineage, does not. Until IPV-16 is fixed, any package containing a
   waiver, consent or side letter must be treated as `OPERATIVE_STATE` unknown for the sections it names.
 
-## 7. Repro
+## 7. Harness strengthening after the first run (same day)
+
+1. **Text-hash pinning.** Every manifest covenant now carries `textSha256` (sha256 of the whitespace-normalised
+   DESCENDANTS text of its node, written by `pin-corpus.ts`, checked by `auditStructure` as `structure:text:<id>`).
+   MUT-02 (added proviso) is now KILLED at STRUCTURE; the catalogue records the first-run survival and the fix.
+2. **Side-letter / consent family** (MUT-13 A, MUT-14 C after two real amendments, MUT-15 H, MUT-16 I consent). All
+   four behave like MUT-08/12: zero amendment effects, instrument RESOLVED on the base text. Registered as additional
+   IPV-16 signatures (packages A, B, C, H, I). MUT-16 also found a gap in the *evaluation model*: the hybrid closure's
+   family-cue + normative-verb scan missed a consent that reads "hereby consent to …" (no modal verb); the closure now
+   also pulls in a section of another operative document that names an in-scope section of a document it refers to.
+   The benchmark results did not change.
+3. **Package K** (`pkg-k-three-way-builder`): one Available Amount shared by 7.06(c), 7.08(d) and 7.09(b) (prepayments
+   of junior debt). Control for IPV-17: every basket retrieves the other two symmetrically (as CROSS_REFERENCE items),
+   which exposed the J report as a false positive. K also surfaced IPV-18 (no family for junior-debt prepayments) and
+   two more IPV-09 plural-term omissions.
+4. **Adversarial plans for I, J, K.** I-P2 (scope widening on 7.01(b)) is refused, but for an unrelated reason (the
+   context contract is unacceptable because of the DEFINITION_CYCLE on "Subsidiary"), so it is not evidence that the
+   scope guard would catch it; J-P1 (dropping the ratio test and the definition-sourced Default kill-switch) is refused
+   in both variants (MATERIAL_DISCREPANCY), unlike A-P1 where the lineage-on-rule variant certifies (IPV-03); J-P3 and
+   K-P2 refused. I-P1/I-P3 and J-P2/K-P1 are question-level or representation-gap claims and are exercised by the
+   benchmark (BM-01, BM-14) and IPV-15 respectively, not by a Pass B submission.
+
+## 8. Repro
 
 ```
-npx vitest run tests/product-acceptance/mutations.test.ts      # 22 tests
+npx vitest run tests/product-acceptance/mutations.test.ts      # 26 tests
 npx tsx scripts/product-acceptance/run-mutations.ts            # writes mutation-runs/<sha12>/
 npx tsx scripts/product-acceptance/run-all.ts                  # writes acceptance-runs/<sha12>/
 ```

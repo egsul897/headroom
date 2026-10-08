@@ -256,7 +256,8 @@
         "pkg-e-structural-ambiguity",
         "pkg-f-capacity-ledger-honesty",
         "pkg-g-adversarial-evidence",
-        "pkg-i-secured-debt-lien"
+        "pkg-i-secured-debt-lien",
+        "pkg-k-three-way-builder"
       ],
       "signatures": [
         {
@@ -298,6 +299,14 @@
         {
           "packageId": "pkg-i-secured-debt-lien",
           "expectationRef": "context:I-7.02(c):definitions"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "context:K-7.06(c):definitions"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "context:K-7.08(d):definitions"
         }
       ],
       "failingInput": "\"Dispositions of property …\", \"Investments in Subsidiaries …\", \"Restricted Payments in an aggregate amount …\" with singular definitions \"Disposition\", \"Investment\", \"Restricted Payment\".",
@@ -457,7 +466,8 @@
       "packages": [
         "pkg-d-qualitative-restrictions",
         "pkg-g-adversarial-evidence",
-        "pkg-i-secured-debt-lien"
+        "pkg-i-secured-debt-lien",
+        "pkg-k-three-way-builder"
       ],
       "signatures": [
         {
@@ -471,6 +481,14 @@
         {
           "packageId": "pkg-i-secured-debt-lien",
           "expectationRef": "certification:credit-agreement::9.15"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "certification:credit-agreement::7.06"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "certification:credit-agreement::7.08"
         }
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
@@ -515,7 +533,11 @@
       "stage": "OPERATIVE_STATE",
       "title": "A side letter that overrides a covenant cap 'notwithstanding' the credit agreement produces no amendment effect; the operative state stays RESOLVED with the base-agreement text",
       "packages": [
-        "pkg-b-multi-document"
+        "pkg-b-multi-document",
+        "pkg-a-basic-credit-agreement",
+        "pkg-c-amendment-supersession",
+        "pkg-h-unseen-composition",
+        "pkg-i-secured-debt-lien"
       ],
       "evidence": "MUTATION",
       "signatures": [
@@ -542,11 +564,59 @@
           "expectationRef": "mutation:MUT-08:effects:side-letter",
           "severity": "MISSING_DEPENDENCY",
           "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "mutation:MUT-13:instrument-status:2026-06-30",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "mutation:MUT-13:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-c-amendment-supersession",
+          "expectationRef": "mutation:MUT-14:instrument-status:2026-06-30",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-c-amendment-supersession",
+          "expectationRef": "mutation:MUT-14:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "expectationRef": "mutation:MUT-15:instrument-status:2027-03-31",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "expectationRef": "mutation:MUT-15:effects:side-letter",
+          "severity": "MISSING_DEPENDENCY",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "mutation:MUT-16:instrument-status:2026-12-31",
+          "severity": "UNSUPPORTED_AS_COMPLETE",
+          "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-i-secured-debt-lien",
+          "expectationRef": "mutation:MUT-16:effects:consent",
+          "severity": "MISSING_DEPENDENCY",
+          "evidence": "MUTATION"
         }
       ],
-      "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000).",
+      "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state.",
+      "actual": "runAmendmentPipeline yields 0 effects and 0 unattached effects from the side letter (0 interpreter calls: the deterministic parser produces no modification candidate for 'notwithstanding … shall not … exceeding'); computeOperativeContractState(2026-06-30) is OPERATIVE_STATE_RESOLVED with no provision view for 7.01(b), so 7.01(b) reads $30,000,000 CURRENT. The package graph does record a cross-document lead side-letter→credit-agreement (REVIEW_REQUIRED) and the hybrid closure includes side-letter#1, but neither is propagated to the operative state. Breadth (mutants MUT-13…16, same mechanism): a tightening side letter on the single-agreement package A, on package C after two real amendments (the amendments still apply; the override is dropped), on the ABL package H (7.02(d)), and a lender CONSENT on package I ('The Required Lenders hereby consent to … notwithstanding the limitation in Section 7.02(b)') - 0 effects in every case.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
@@ -554,12 +624,12 @@
     },
     {
       "id": "IPV-17",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "MISSING_DEPENDENCY",
       "outcomeClass": "INCORRECT_RESULT",
       "deterministic": true,
       "stage": "CONTEXT_RETRIEVAL",
-      "title": "Definition-mediated cross-reference closure is asymmetric: compiling 7.08(d) retrieves its own self-reference from the Available Amount definition but not the sibling 7.06(c) the same definition names",
+      "title": "[CLOSED - harness false positive] Definition-mediated cross-reference closure appeared asymmetric for J 7.08(d); the sibling was present under a different bundle item type",
       "packages": [
         "pkg-j-restricted-payments-builder"
       ],
@@ -573,9 +643,46 @@
       "expected": "The context bundle for 7.08(d) carries a CROSS_REFERENCE item for 7.06(c) (reached through the retrieved Available Amount definition), exactly as the bundle for 7.06(c) carries one for 7.08(d). The structural index resolves both references from 1.01 (Section 7.06(c)→7.06(c):resolved, Section 7.08(d)→7.08(d):resolved).",
       "actual": "buildCandidateCompilerInput(7.08(d)).bundle.items contains CROSS_REFERENCE 7.08(d) (depth 2, 'Referenced within a definition's own text (\"Section 7.08(d)\")' - the candidate's own section) and no item for 7.06(c); sufficiencyState SUFFICIENT with zero unresolved dependencies. For 7.06(c) the bundle contains CROSS_REFERENCE 7.08(d), VII, 7.06, 7.08 and (correctly) no self item. The same definition therefore yields a different reference set depending on which sibling is being compiled, and the one it drops is the earlier-named sibling.",
       "repro": "npx tsx: loadPackage('pkg-j-restricted-payments-builder') → runDeterministicStages → buildCandidateCompilerInput(candidateFor(index,'credit-agreement','7.08(d)',…), candidatePkg).bundle.items.filter(i=>i.type==='CROSS_REFERENCE') (see acceptance check context:J-7.08(d):cross-references)",
-      "impact": "A compile of 7.08(d) alone never sees that 7.06(c) draws on the same Available Amount pool, and the bundle is labelled SUFFICIENT, so no fail-closed signal exists at the deterministic layer. This is the deterministic root under IPV-15: with the reference absent from the bundle, a model-stated dependsOn to 7.06(c) is rejected as invented, and a model that complies reports two independent $20,000,000 pools (prohibited claim J-P2).",
-      "hypothesis": "The definition-text reference expansion in candidate-input.ts excludes one reference by position rather than by identity with the citing candidate (first-named section dropped regardless of which sibling is compiled: 7.06(c) is dropped for both candidates, the self-reference 7.08(d) is kept for 7.08(d)). Stated as a hypothesis from the observed pattern; the expansion code was not modified or traced line-by-line.",
-      "acceptance": "For every covenant that depends on a definition naming N sections, the bundle carries CROSS_REFERENCE items for all N minus the candidate's own section; verified by context:J-7.06(c):cross-references and context:J-7.08(d):cross-references both passing, and by a new fixture where the definition names three sections."
+      "impact": "None (false positive). The deterministic root claimed under IPV-15 does not exist at the retrieval layer; IPV-15 remains a representation gap at the semantic layer only.",
+      "hypothesis": "Withdrawn: the positional-drop hypothesis was wrong (K control symmetric).",
+      "acceptance": "Met: context:J-7.08(d):cross-references and context:K-*:cross-references pass.",
+      "resolution": "HARNESS FALSE POSITIVE (closed 2026-10-08 at the package-K control). The sibling IS in the 7.08(d) bundle: as a CALCULATION_PROVISION item (7.06(c) carries the leverage-ratio test), not as a CROSS_REFERENCE item, and the first version of the cross-reference audit accepted only CROSS_REFERENCE. Package K (one definition naming three baskets without ratio text) retrieves all three as CROSS_REFERENCE items for every candidate, symmetrically. The audit now accepts any non-source bundle item landing on the declared section. Residual observation (not a defect): the item TYPE a definition-mediated sibling receives depends on the sibling's own content, so consumers must not key on CROSS_REFERENCE alone."
+    },
+    {
+      "id": "IPV-18",
+      "status": "OPEN",
+      "severity": "UNSUPPORTED_AS_COMPLETE",
+      "outcomeClass": "CORRECT_FAIL_CLOSED",
+      "deterministic": true,
+      "stage": "SEMANTIC_COMPOSITION",
+      "title": "No covenant family exists for voluntary prepayments / redemptions of junior (subordinated) debt; the normalizer silently relabels the unit QUALITATIVE_NEGATIVE_COVENANTS",
+      "packages": [
+        "pkg-k-three-way-builder"
+      ],
+      "signatures": [
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "semantic:K-7.09",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "semantic:K-7.09(b)",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "packageId": "pkg-k-three-way-builder",
+          "expectationRef": "certification:credit-agreement::7.09",
+          "severity": "NONMATERIAL_OMISSION"
+        }
+      ],
+      "failingInput": "SECTION 7.09 Prepayments of Junior Indebtedness. The Borrower shall not prepay, redeem or repurchase any Junior Indebtedness, except: (a) … equity proceeds; (b) prepayments in an aggregate amount not to exceed the Available Amount. Submission labels the family PREPAYMENTS_OF_JUNIOR_DEBT (no production family fits: the Prisma CovenantFamily enum has RESTRICTED_PAYMENTS, MANDATORY_PREPAYMENTS, … but nothing for restricted debt payments).",
+      "expected": "A family for restricted debt payments (junior / subordinated debt prepayment covenants are standard in leveraged credit agreements and share builder pools with Restricted Payments and Investments), or an explicit UNSUPPORTED_FAMILY refusal that names the gap.",
+      "actual": "normalize.ts: matchEnum fails and defaults to QUALITATIVE_NEGATIVE_COVENANTS with a 'verify manually' issue; compilation REVIEW_REQUIRED; certification REVIEW_REQUIRED [COMPILATION_NOT_COMPLETED, UNIT_SUFFICIENCY_INCOMPLETE]. The harness's semantic audit records the family mismatch as WRONG_OPERATIVE_SOURCE (its label for 'representation does not match the source'); the product outcome is fail-closed.",
+      "repro": "pkg-k faithful submission for credit-agreement::7.09 → compilation.unresolvedIssues ('covenantFamily \"PREPAYMENTS_OF_JUNIOR_DEBT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS')",
+      "impact": "Fail-closed today (REVIEW). The relabelled unit loses its action (null) and family cue, so a builder pool shared with 7.06(c)/7.08(d) cannot be represented across all three members even once IPV-15 is fixed; the runtime's shared-pool arithmetic would exclude 7.09(b).",
+      "hypothesis": "The family enum was grown from the covenant families seen in the evaluation packages; junior-debt prepayment covenants were absent from them.",
+      "acceptance": "A family (e.g. RESTRICTED_DEBT_PAYMENTS) with an action, or an explicit refusal naming an unsupported family; verified by semantic:K-7.09(b) and certification:credit-agreement::7.09 passing with the faithful submission."
     }
   ],
   "observations": [

@@ -14,13 +14,13 @@ met and none can be met from offline evidence. Numbers below are gates on the co
 | D4 | Omission audit present on every answer, listing signalled-but-unexamined units | hybrid `notExamined` | met in the evaluation model; **not implemented** in product code |
 | D5 | Operative-source gate: contents lines never dispatched; stale parent spans never authenticated | doc 07 | **not met** (PR136-F1, F4) |
 | D6 | Structural identity: no node-id-keyed state crosses document versions | doc 09 §3 | no such feature exists yet; gate applies to the amendment-diff feature when built |
-| D7 | Cross-reference closure symmetric through definitions | `context:*:cross-references` | **not met** (IPV-17) |
+| D7 | Cross-reference closure symmetric through definitions | `context:*:cross-references` | met (J and K controls; IPV-17 closed as a harness false positive) |
 | D8 | Mutation suite: every operator killed or explicitly declared equivalent/gap with a registered product finding | `mutations.test.ts` | met (8 killed, 1 equivalent, 3 gaps registered) |
 | D9 | Reviewer workflow shows source text, lineage and every unresolved dependency for each unit before approval | MVP spec §3 steps 5–7 | **not testable offline**; UI not in scope of this branch |
 | D10 | Partner package runs the deterministic stages with zero structural findings of IPV-06/07/08/11 class, or each finding is triaged by a human before any model call | acceptance runner on the partner package | per-partner |
 
-Pilot may start when D1–D8 are met on the corpus and D10 holds on the partner package. Today: D3, D8 met; D2 partial;
-D1, D5, D7 blocked on the register; D4 needs product code.
+Pilot may start when D1–D8 are met on the corpus and D10 holds on the partner package. Today: D3, D7, D8 met; D2 partial;
+D1, D5 blocked on the register; D4 needs product code; D7 met.
 
 ## Certification gates (not proposed as achievable from this branch)
 

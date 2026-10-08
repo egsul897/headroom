@@ -32,7 +32,7 @@ describe("mutation suite contract", () => {
       expect(pkg.documents.map((d) => [d.documentId, d.text, d.sha256] as const)).toEqual(before);
       for (const d of pkg.documents) expect(fs.readFileSync(path.join(pkg.dir, d.file), "utf8")).toBe(d.text);
     }
-    expect(listPackageIds().length).toBe(10);
+    expect(listPackageIds().length).toBe(11);
   });
   it("every mutation is applicable (no edit anchor drifted)", () => { for (const m of MUTATIONS) expect(obs.get(m.id), m.id).toBeDefined(); });
 });
@@ -47,7 +47,7 @@ describe("HARNESS verdicts: expectation deltas and kill predictions", () => {
   it("mutants that change legal content are killed by the unchanged manifest; only the equivalent and the declared-gap mutants survive", () => {
     const survivors = MUTATIONS.filter((m) => obs.get(m.id)!.kill.verdict === "SURVIVED").map((m) => m.id).sort();
     expect(survivors).toEqual(MUTATIONS.filter((m) => m.expect.survival !== "KILLED").map((m) => m.id).sort());
-    expect(survivors).toEqual(["MUT-02", "MUT-08", "MUT-09", "MUT-12"]);
+    expect(survivors).toEqual(["MUT-08", "MUT-09", "MUT-12", "MUT-13", "MUT-14", "MUT-15", "MUT-16"]); // MUT-02 was a survivor at 83e6bf1; text-hash pinning now kills it
   });
   it("a killed mutant never makes a baseline failure vanish for free (no expectation was weakened by the mutation)", () => {
     for (const m of MUTATIONS) { const o = obs.get(m.id)!; if (o.kill.verdict === "KILLED") expect(o.kill.vanishedFailures.filter((r) => !r.startsWith("context:")), `${m.id} vanished: ${o.kill.vanishedFailures.join(", ")}`).toEqual([]); }

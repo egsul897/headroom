@@ -247,6 +247,19 @@ export function adversarialCases(m: ExpectationsManifest, specs: CandidateSpec[]
       add("H-P4", { kind: "DROP_CONDITIONS", sectionRef: "7.03(c)" }, sec("7.03(c)"));
       add("H-P5", { kind: "DROP_CONDITIONS", sectionRef: "7.11" }, sec("7.11"));
       break;
+    case "pkg-i-secured-debt-lien":
+      // I-P1 ($40m secured) and I-P3 (Article VII complete) are question-level claims exercised by the benchmark (BM-01, BM-14), not expressible as one Pass B submission
+      add("I-P2", { kind: "SET_SCOPE", sectionRef: "7.01(b)", entityScope: ["BORROWER", "ANY_SUBSIDIARY"] }, sec("7.01(b)"));
+      break;
+    case "pkg-j-restricted-payments-builder":
+      // J-P2 (independent pools) cannot be expressed by dropping a shared cap: a BUILDER-kind shared cap has no wire representation to drop (IPV-15)
+      add("J-P1", { kind: "DROP_CONDITIONS", sectionRef: "7.06(c)" }, sec("7.06(c)"));
+      add("J-P3", { kind: "CLAIM_COMPLETE", sectionRef: "7.06(c)" }, sec("7.06(c)"));
+      break;
+    case "pkg-k-three-way-builder":
+      // K-P1 (three independent pools) is the IPV-15 representation gap again; K-P2 drops the definition-sourced Default kill-switch on the third basket
+      add("K-P2", { kind: "DROP_CONDITIONS", sectionRef: "7.09(b)" }, sec("7.09(b)"));
+      break;
   }
   return out;
 }
