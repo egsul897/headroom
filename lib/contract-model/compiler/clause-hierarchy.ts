@@ -118,15 +118,40 @@ export interface RawMarkerOccurrence {
  * horizontal whitespace; a label that begins a new line after a lead-in ending in a comma
  * ("in each case without duplication,\n(a) franchise ...") is a list item, never an inline reference.
  */
-const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
+/**
+ * Whitespace-anchored marker. The first label of a list item must still be
+ * preceded by start-of-text or whitespace so compound citations like
+ * "Section 6.01(a)(i)" (digit glued to the paren) never match.
+ *
+ * Adjacent nested labels written without a space — "(i)(A)", "(i)(A)(1)" —
+ * are recovered after a whitespace-anchored head match (see
+ * findRawMarkerOccurrences). The former (?!\() guard rejected the head of
+ * those chains and left Chewy §6.08(a)(3)(b) without (i)/(A)/(B)/(ii) nodes
+ * while fabricating (b)(x)/(b)(y) as siblings of (b).
+ */
+const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)/g;
+const ADJACENT_MARKER = /^\(([a-zA-Z]{1,7}|\d{1,3})\)/;
 
 export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const out: RawMarkerOccurrence[] = [];
   const re = new RegExp(MARKER_OCCURRENCE.source, MARKER_OCCURRENCE.flags);
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
-    out.push({ token: m[1] ?? "", charStart: m.index, charEnd: m.index + m[0].length });
-    if (m.index === re.lastIndex) re.lastIndex++;
+    let charStart = m.index;
+    let token = m[1] ?? "";
+    let charEnd = m.index + m[0].length;
+    out.push({ token, charStart, charEnd });
+    // Immediate ")(token)" continuations after a whitespace-anchored head are
+    // nested labels (general drafting convention), not citation glue.
+    for (;;) {
+      const adj = ADJACENT_MARKER.exec(text.slice(charEnd));
+      if (!adj) break;
+      charStart = charEnd;
+      token = adj[1] ?? "";
+      charEnd = charStart + adj[0].length;
+      out.push({ token, charStart, charEnd });
+    }
+    re.lastIndex = Math.max(re.lastIndex, charEnd);
   }
   return out;
 }
@@ -165,14 +190,19 @@ export function isInlineReferenceMarker(text: string, occ: RawMarkerOccurrence):
   return false;
 }
 
-/** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)"). */
+/** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)") and along immediate adjacency ("clause (i)(A)"). */
 export function structuralMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const all = findRawMarkerOccurrences(text);
   const out: RawMarkerOccurrence[] = [];
   let prev: RawMarkerOccurrence | null = null;
   let prevWasReference = false;
   for (const occ of all) {
-    const chained: boolean = prev !== null && prevWasReference && REFERENCE_CHAIN_JOIN.test(text.slice(prev.charEnd, occ.charStart));
+    const gap = prev !== null ? text.slice(prev.charEnd, occ.charStart) : null;
+    const adjacentContinuation = gap === "";
+    const chained: boolean =
+      prev !== null &&
+      prevWasReference &&
+      (adjacentContinuation || REFERENCE_CHAIN_JOIN.test(gap ?? ""));
     const isReference: boolean = chained || isInlineReferenceMarker(text, occ);
     if (!isReference) out.push(occ);
     prev = occ;

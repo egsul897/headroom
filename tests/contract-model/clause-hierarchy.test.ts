@@ -48,6 +48,43 @@ describe("buildClauseTree", () => {
     expect(i.parentMarkerPath).toEqual(["(d)"]);
   });
 
+  it("recognizes adjacent nested markers '(i)(A)' / '(B)' / '(ii)' without fabricating sibling (x)/(y) under the parent", () => {
+    // Generalizable Chewy §6.08(a)(3)(b) shape: issue-or-sale limbs (i)(A)/(B)/(ii)
+    // with exclusions (x)/(y) inside (A) — not letter siblings of the outer (b).
+    const text = [
+      "(a) reserved builder limb; plus",
+      "(b) proceeds from the issue or sale of:",
+      "",
+      "(i)(A) Equity Interests, excluding proceeds from the sale of:",
+      "(x) Equity Interests to employees; or",
+      "(y) Designated Preferred Stock; and",
+      "",
+      "(B) Equity Interests of Parent Entities actually contributed; or",
+      "",
+      "(ii) Indebtedness converted into Equity Interests;",
+      "(c) trailing sibling.",
+    ].join("\n");
+    const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(refs).toEqual([
+      "(a)",
+      "(b)",
+      "(b)(i)",
+      "(b)(i)(A)",
+      "(b)(i)(A)(x)",
+      "(b)(i)(A)(y)",
+      "(b)(i)(B)",
+      "(b)(ii)",
+      "(c)",
+    ]);
+    expect(refs).not.toContain("(b)(x)");
+    expect(refs).not.toContain("(b)(y)");
+  });
+
+  it("keeps adjacent reference chains like 'clause (i)(A)' as prose, not structure", () => {
+    const tree = buildClauseTree("(a) first as described in clause (i)(A) hereof; (b) second.");
+    expect(tree.map((n) => n.marker)).toEqual(["(a)", "(b)"]);
+  });
+
   it("does not treat an incidental parenthetical as a clause marker", () => {
     const tree = buildClauseTree("(a) first; this includes (the foregoing) and (other items); (b) second.");
     expect(tree.map((n) => n.marker)).toEqual(["(a)", "(b)"]);
