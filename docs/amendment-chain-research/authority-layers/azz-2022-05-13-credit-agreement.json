@@ -1,0 +1,52 @@
+{
+  "chainId": "azz-2022-05-13-credit-agreement",
+  "generatedAt": "2026-10-08T22:22:47Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "azz-ca-orig",
+      "acquiredBody": "ACQUIRED_PHASE1",
+      "note": "Phase1 retrieval; re-hash optional"
+    },
+    {
+      "docId": "azz-am1",
+      "acquiredBody": "ACQUIRED_PHASE1"
+    },
+    {
+      "docId": "azz-am2",
+      "acquiredBody": "ACQUIRED_PHASE1"
+    },
+    {
+      "docId": "azz-am3",
+      "acquiredBody": "ACQUIRED_PHASE1"
+    },
+    {
+      "docId": "azz-am4",
+      "acquiredBody": "ACQUIRED_PHASE1",
+      "targetsVerified": [
+        "Applicable Margin"
+      ],
+      "afterText": "SOURCE_BACKED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "named": "Fourth Amendment Effective Date",
+        "conditionsVerified": false
+      }
+    }
+  ]
+}

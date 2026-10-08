@@ -1,0 +1,74 @@
+{
+  "chainId": "dsgr-2022-04-01-ar-credit",
+  "generatedAt": "2026-10-08T22:22:47Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "dsgr-doc-a",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": null
+    },
+    {
+      "docId": "dsgr-am1",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "dsgr-doc-a",
+      "executionDate": "2023-06-08",
+      "accession": "0001193125-23-163984",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "dsgr-am2",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED_CONFORMED_EXHIBIT_A",
+      "parent": "dsgr-am1",
+      "executionDate": "2024-06-13",
+      "accession": "0000703604-24-000079",
+      "notes": "Conformed CA exhibit; amendment wrapper PARTIAL",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "dsgr-doc-b",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-am2"
+    },
+    {
+      "docId": "dsgr-doc-c",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-doc-b",
+      "effectiveDate": {
+        "status": "DEEMED_RETROACTIVE",
+        "deemedAsOf": "2025-01-01",
+        "executionDate": "2025-03-31",
+        "conditionsVerified": false
+      },
+      "afterText": "SOURCE_BACKED",
+      "beforeText": "MISSING_PRIOR_EXTRACTION",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "dsgr-doc-d",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-doc-c",
+      "role": "RESTATEMENT"
+    }
+  ]
+}

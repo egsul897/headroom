@@ -1,0 +1,176 @@
+{
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "chains": {
+    "cohr-2022-07-01-credit-agreement": [
+      {
+        "scenarioId": "COHR-S1",
+        "asOf": "2025-09-25",
+        "expect": "Am4/Am5 not effective (pre same-day cluster)",
+        "status": "OPERATIVE_PRE_AM4",
+        "authority": "Am4/Am5 Effective Dates CONDITIONAL_UNRESOLVED \u2014 if unresolved, REVIEW_REQUIRED rather than inventing pre/post"
+      },
+      {
+        "scenarioId": "COHR-S2",
+        "asOf": "2025-09-26",
+        "expect": "Same-day Am4 then Am5 ordering must follow each Effective Date, not accession sequence",
+        "status": "REVIEW_REQUIRED_IF_CONDITIONS_UNRESOLVED",
+        "tests": [
+          "SAME_DAY"
+        ],
+        "vc": "VC-001"
+      },
+      {
+        "scenarioId": "COHR-S3",
+        "asOf": "2025-09-27",
+        "expect": "If both Effective Dates satisfied on 9/26, General Debt Basket $786M/55% and Incremental Cash-Capped $1.428B+Reallocated Amount operative",
+        "status": "SOURCE_BACKED_AFTER_TEXT_IF_EFFECTIVE",
+        "authority": "Am5 clean restatement quotes"
+      }
+    ],
+    "cnmd-seventh-ar-to-eighth-ar": [
+      {
+        "scenarioId": "CNMD-S1",
+        "asOf": "2022-06-05",
+        "expect": "CSSLR/CTLR cash netting lesser of $25M",
+        "status": "SOURCE_BACKED",
+        "authority": "Seventh A&R EX-10.1"
+      },
+      {
+        "scenarioId": "CNMD-S2",
+        "asOf": "2022-06-06",
+        "expect": "If Am1 Effective Date satisfied: $75M; else still $25M",
+        "status": "CONDITIONAL",
+        "authority": "Am1 EX-10.25"
+      },
+      {
+        "scenarioId": "CNMD-S3",
+        "asOf": "2022-07-31",
+        "expect": "$75M (post-Am1, pre-Am2) \u2014 NOT $100M and NOT apply Am2 against $25M parent",
+        "status": "SOURCE_BACKED_IF_AM1_EFFECTIVE"
+      },
+      {
+        "scenarioId": "CNMD-S4",
+        "asOf": "2022-08-01",
+        "expect": "If Am2 Effective Date satisfied: $100M; \u00a77.1(b) restated schedule",
+        "status": "CONDITIONAL"
+      },
+      {
+        "scenarioId": "CNMD-S5",
+        "asOf": "2025-06-10",
+        "expect": "Eighth A&R restatement \u2014 Seventh-era Am1/Am2 effects must not silently attach without Eighth text authority",
+        "status": "WRONG_PARENT_GUARD",
+        "vc": "VC-003"
+      },
+      {
+        "scenarioId": "CNMD-S6",
+        "asOf": "2026-05-27",
+        "expect": "Omnibus: multi-target CA+GCA; blackline available in EX-10.1 body but must not invent if engine only has curated short text",
+        "status": "INCORPORATION_BY_REFERENCE",
+        "vc": "VC-006"
+      }
+    ],
+    "dsgr-2022-04-01-ar-credit": [
+      {
+        "scenarioId": "DSGR-S1",
+        "asOf": "2024-12-31",
+        "expect": "\u00a76.08(a)(v) pre-Fourth Amendment",
+        "status": "PRIOR_TEXT_PARTIAL"
+      },
+      {
+        "scenarioId": "DSGR-S2",
+        "asOf": "2025-01-01",
+        "expect": "Deemed effect of Fourth Amendment clauses (a)(b) IF engine models deemed-effect; else REVIEW_REQUIRED",
+        "status": "DEEMED_RETROACTIVE",
+        "vc": "VC-002"
+      },
+      {
+        "scenarioId": "DSGR-S3",
+        "asOf": "2025-03-30",
+        "expect": "Same as S2 \u2014 execution not yet; deemed clause is the only path",
+        "status": "DEEMED_RETROACTIVE"
+      },
+      {
+        "scenarioId": "DSGR-S4",
+        "asOf": "2025-03-31",
+        "expect": "Fourth Amendment Effective Date conditions; non-waiver clause active",
+        "status": "CONDITIONAL",
+        "vc": "VC-007"
+      },
+      {
+        "scenarioId": "DSGR-S5",
+        "asOf": "2025-12-18",
+        "expect": "Second A&R restatement supersedes prior targeted amendments for operative base",
+        "status": "RESTATEMENT_SUPERSESSION"
+      }
+    ],
+    "azz-2022-05-13-credit-agreement": [
+      {
+        "scenarioId": "AZZ-S1",
+        "asOf": "2023-08-01",
+        "expect": "Applicable Margin era A (pre-First): SOFR 4.25% / Base 3.25%",
+        "status": "SOURCE_BACKED_FROM_AM4_HISTORICAL_GRID",
+        "vc": "VC-005"
+      },
+      {
+        "scenarioId": "AZZ-S2",
+        "asOf": "2023-08-17",
+        "expect": "Era B only if First Amendment Effective Date satisfied",
+        "status": "CONDITIONAL"
+      },
+      {
+        "scenarioId": "AZZ-S3",
+        "asOf": "2024-03-20",
+        "expect": "Era C if Third Amendment Effective Date satisfied",
+        "status": "CONDITIONAL"
+      },
+      {
+        "scenarioId": "AZZ-S4",
+        "asOf": "2024-09-24",
+        "expect": "Era D if Fourth Amendment Effective Date satisfied: SOFR 2.50% / Base 1.50%",
+        "status": "CONDITIONAL"
+      }
+    ],
+    "matw-2020-03-27-third-ar-loan": [
+      {
+        "scenarioId": "MATW-S1",
+        "asOf": "2024-09-01",
+        "expect": "\u00a76.01(j) general Permitted Amount $50M basket still operative (if not earlier amended \u2014 Am2\u2013Am5 not fully re-diffed for 6.01(j))",
+        "status": "PARTIAL"
+      },
+      {
+        "scenarioId": "MATW-S2",
+        "asOf": "2024-09-23",
+        "expect": "If Sixth Amendment Effective Date satisfied: Notes-only subordinate lien; general basket gone",
+        "status": "CONDITIONAL_PERMISSION_NARROWING",
+        "vc": "VC-004"
+      },
+      {
+        "scenarioId": "MATW-S3",
+        "asOf": "2021-12-27",
+        "expect": "Second Amendment now acquired \u2014 targeted changes apply only to its verified targets, not whole agreement",
+        "status": "ACQUIRED_AM2_AVAILABLE"
+      }
+    ],
+    "inap-2017-04-06-credit-agreement": [
+      {
+        "scenarioId": "INAP-S1",
+        "asOf": "2017-04-06",
+        "expect": "Original CA operative",
+        "status": "SOURCE_BACKED"
+      },
+      {
+        "scenarioId": "INAP-S2",
+        "asOf": "2019-10-28",
+        "expect": "Pre-Seventh Amendment basket/ratio levels from Am6 state (chain Am1\u2013Am6 acquired)",
+        "status": "CHAIN_AVAILABLE_FOR_DIFF"
+      },
+      {
+        "scenarioId": "INAP-S3",
+        "asOf": "2019-10-29",
+        "expect": "If Seventh Amendment Effective Date satisfied: narrowed baskets + new \u00a76.10 tables",
+        "status": "CONDITIONAL",
+        "vc": "VC-008"
+      }
+    ]
+  }
+}

@@ -33,3 +33,8 @@ No peer cloud agent is currently titled “Amendment Intelligence.” This corpu
 - No inferred legal conclusions without sufficient source authority.
 - Waivers/consents are tagged separately from permanent amendments.
 - Conditional effectiveness is never collapsed to execution date.
+
+
+## Phase 2
+
+See `MISSION-REPORT-PHASE2.md`, `phase2/`, `authority-layers/`, `as-of-scenarios/`, `test-specs/`, `knowledge-factory-export/`, and `independent-review-handoff/`.

@@ -1,0 +1,83 @@
+{
+  "chainId": "matw-2020-03-27-third-ar-loan",
+  "generatedAt": "2026-10-08T22:22:47Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "matw-third-ar",
+      "acquiredBody": "ACQUIRED",
+      "parent": null,
+      "afterText": "SOURCE_BACKED"
+    },
+    {
+      "docId": "matw-am1",
+      "discoveredEvent": true,
+      "acquiredBody": "PRIOR_RETRIEVED_PARTIAL",
+      "parent": "matw-third-ar",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "matw-am2",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "matw-am1",
+      "executionDate": "2021-12-27",
+      "accession": "0000063296-22-000060",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "beforeText": "PARENT_AVAILABLE",
+      "afterText": "SOURCE_BACKED",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "matw-am3",
+      "discoveredEvent": true,
+      "acquiredBody": "PARTIAL",
+      "parent": "matw-am2"
+    },
+    {
+      "docId": "matw-am4",
+      "discoveredEvent": true,
+      "acquiredBody": "PARTIAL",
+      "parent": "matw-am3"
+    },
+    {
+      "docId": "matw-am5",
+      "discoveredEvent": true,
+      "acquiredBody": "PRIOR_RETRIEVED_PARTIAL",
+      "parent": "matw-am4"
+    },
+    {
+      "docId": "matw-am6",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "matw-am5",
+      "targetsVerified": [
+        "6.01(j)"
+      ],
+      "beforeText": "SOURCE_BACKED",
+      "afterText": "SOURCE_BACKED",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

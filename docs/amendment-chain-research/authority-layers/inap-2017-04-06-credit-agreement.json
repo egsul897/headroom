@@ -1,0 +1,74 @@
+{
+  "chainId": "inap-2017-04-06-credit-agreement",
+  "generatedAt": "2026-10-08T22:22:47Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "inap-ca-orig",
+      "acquiredBody": "ACQUIRED",
+      "afterText": "SOURCE_BACKED"
+    },
+    {
+      "docId": "inap-am1",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-ca-orig"
+    },
+    {
+      "docId": "inap-am2",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am1"
+    },
+    {
+      "docId": "inap-am3",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am2"
+    },
+    {
+      "docId": "inap-am4",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am3"
+    },
+    {
+      "docId": "inap-am5",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am4"
+    },
+    {
+      "docId": "inap-am6",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am5"
+    },
+    {
+      "docId": "inap-am7",
+      "acquiredBody": "ACQUIRED",
+      "parent": "inap-am6",
+      "targetsVerified": [
+        "6.04(m)",
+        "6.01(k)",
+        "6.10(a)",
+        "6.10(b)"
+      ],
+      "beforeText": "NOW_EXTRACTABLE_FROM_PRIOR_CHAIN",
+      "afterText": "SOURCE_BACKED",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

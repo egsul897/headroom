@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "chains": [
+    {
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "status": "SOURCE_COMPLETE_FOR_CORE_CHAIN",
+      "acquired": "orig+Am1-5",
+      "gaps": [
+        "Effective Date condition satisfaction calendar dates not proven",
+        "\u00a76.01(p) cross-ref not re-extracted"
+      ]
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "status": "IMPROVED_INCOMPLETE",
+      "acquired": "base+Am2+Am6 (+Am1/Am5 prior)",
+      "gaps": [
+        "Am3/Am4 not re-fetched this phase",
+        "\u00a75.14 after Am1-Am5 not fully re-diffed",
+        "Am6 Effective Date conditional"
+      ]
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "status": "SOURCE_COMPLETE_PHASE1_BODIES",
+      "acquired": "orig+Am1-4 (phase1)",
+      "gaps": [
+        "Effective Date condition satisfaction not proven",
+        "Am2 non-pricing targets not fully logged"
+      ]
+    },
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "status": "IMPROVED_PARTIAL",
+      "acquired": "Am1+Am2+fixture Am3+Am4+Second A&R",
+      "gaps": [
+        "Am2 filed as conformed Exhibit A (wrapper PARTIAL)",
+        "prior \u00a76.08(a)(v) text not extracted"
+      ]
+    },
+    {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "status": "SOURCE_COMPLETE_FOR_SEVENTH_ERA_DEFINITION_CHAIN",
+      "acquired": "Seventh A&R+Am1+Am2+Eighth curated+Omnibus raw (embedded blacklines)",
+      "gaps": [
+        "Eighth full raw not re-hashed in ledger this pass (fixture present)",
+        "Omnibus Effective Date conditions not proven satisfied"
+      ]
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "status": "SOURCE_COMPLETE_AM1_THROUGH_AM7",
+      "acquired": "orig+Am1-Am7",
+      "gaps": [
+        "Per-amendment before/after diffs beyond Am7 not exhaustively extracted this phase"
+      ]
+    }
+  ]
+}
