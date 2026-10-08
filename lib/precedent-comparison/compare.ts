@@ -20,6 +20,13 @@ function comparisonId(leftId: string, rightId: string, leftHash: string, rightHa
 export interface CompareOptions {
   /** Optional claim-level reviews to apply after automatic claim generation. */
   claimReviews?: ClaimReviewRecord[];
+  /**
+   * Optional definition overlays supplied by the caller (not inferred by the engine).
+   * Used to surface missing/divergent controlling definitions as qualified DEPENDENCY claims.
+   */
+  definitionOverlays?: { left: string | null; right: string | null };
+  /** Force qualification (e.g. Atlas/Encyclopedia unavailable). */
+  forceQualifiedReasons?: string[];
 }
 
 export function compareProvisions(
@@ -201,6 +208,148 @@ export function compareProvisions(
     }
   }
 
+  // Numeric / ratio threshold asymmetries (source-backed economics).
+  const moneyRe = /\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?|\b\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\s*(?:to\s*)?1\.0{0,2}\b|\b\d+(?:\.\d+)?x\b/gi;
+  const leftMoney = [...left.sourceText.matchAll(moneyRe)].map((m) => m[0]!.replace(/\s+/g, " "));
+  const rightMoney = [...right.sourceText.matchAll(moneyRe)].map((m) => m[0]!.replace(/\s+/g, " "));
+  const normM = (s: string) => s.toLowerCase().replace(/,/g, "");
+  const leftMSet = new Set(leftMoney.map(normM));
+  const rightMSet = new Set(rightMoney.map(normM));
+  const moneyOnlyLeft = leftMoney.filter((m) => !rightMSet.has(normM(m)));
+  const moneyOnlyRight = rightMoney.filter((m) => !leftMSet.has(normM(m)));
+  if (moneyOnlyLeft.length || moneyOnlyRight.length) {
+    claims.push(
+      makeClaim({
+        standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        dimension: "ECONOMICS",
+        summary: `Numerical thresholds differ — left-only: [${moneyOnlyLeft.slice(0, 4).join("; ") || "none"}]; right-only: [${moneyOnlyRight.slice(0, 4).join("; ") || "none"}].`,
+        evidence: evidenceFromExcerpts(
+          [
+            ...moneyOnlyLeft.slice(0, 2).map((m) => ex(left, m)),
+            ...moneyOnlyRight.slice(0, 2).map((m) => ex(right, m)),
+          ],
+          "dollar/ratio/percent tokens differ in source text",
+          ["numeric-threshold"],
+        ),
+      }),
+    );
+  }
+
+  if (left.documentRole !== right.documentRole || left.amendsProvisionId || right.amendsProvisionId) {
+    claims.push(
+      makeClaim({
+        standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+        dimension: "AMENDMENT",
+        summary: `Amendment/version status differs (left=${left.documentRole}, right=${right.documentRole}; amends=${right.amendsProvisionId ?? left.amendsProvisionId ?? "none"}).`,
+        evidence: evidenceFromExcerpts(
+          [ex(left, left.sourceText.slice(0, 120)), ex(right, right.sourceText.slice(0, 160))],
+          "documentRole / amendsProvisionId asymmetry from source records",
+          ["amendment-status"],
+        ),
+      }),
+    );
+  }
+
+  const qualificationReasons: string[] = [...(options.forceQualifiedReasons ?? [])];
+  const overlays = options.definitionOverlays;
+  if (overlays && (overlays.left || overlays.right)) {
+    const lDef = overlays.left ?? "";
+    const rDef = overlays.right ?? "";
+    if (lDef && rDef && normalizeLoose(lDef) !== normalizeLoose(rDef)) {
+      claims.push(
+        makeClaim({
+          standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+          dimension: "DEFINITIONS",
+          summary:
+            "Caller-supplied controlling definitions diverge while operative provision text may match — legal effect may differ; comparison is qualified pending definition closure.",
+          evidence: evidenceFromExcerpts(
+            [
+              ex({ ...left, sourceText: lDef, sourceVersionHash: left.sourceVersionHash }, lDef.slice(0, 200)),
+              ex({ ...right, sourceText: rDef, sourceVersionHash: right.sourceVersionHash }, rDef.slice(0, 200)),
+            ],
+            "definition overlays supplied by caller; not inferred by PCI",
+            ["definition-overlay"],
+          ),
+        }),
+      );
+      qualificationReasons.push("controlling definitions diverge (caller overlay)");
+    } else if (!lDef || !rDef) {
+      claims.push(
+        makeClaim({
+          standing: "SEMANTIC_HYPOTHESIS",
+          dimension: "DEPENDENCY",
+          summary:
+            "Controlling definition context is missing on at least one side — comparison is qualified; no definitive legal-effect conclusion.",
+          evidence: evidenceFromExcerpts(
+            [ex(left, left.sourceText.slice(0, 100)), ex(right, right.sourceText.slice(0, 100))],
+            "missing definition overlay",
+            ["missing-definition"],
+          ),
+        }),
+      );
+      qualificationReasons.push("missing controlling definition overlay");
+    }
+  }
+
+  // Cross-document references without resolution → qualify
+  const controllingTerms = [
+    "Available Amount",
+    "Available Equity Amount",
+    "Maximum Incremental Amount",
+    "Free and Clear Amount",
+    "Ratio Amount",
+    "Consolidated EBITDA",
+    "First Lien Net Leverage",
+  ];
+  for (const term of controllingTerms) {
+    const hit = left.sourceText.includes(term) || right.sourceText.includes(term);
+    if (!hit) continue;
+    const overlayCovers =
+      overlays &&
+      ((overlays.left && overlays.left.includes(term.split(" ")[0]!)) ||
+        (overlays.right && overlays.right.includes(term.split(" ")[0]!)));
+    if (!overlayCovers) {
+      qualificationReasons.push(`controlling definition for "${term}" not closed in comparison inputs`);
+    }
+  }
+  if (qualificationReasons.some((r) => r.includes("controlling definition"))) {
+    claims.push(
+      makeClaim({
+        standing: "SEMANTIC_HYPOTHESIS",
+        dimension: "DEPENDENCY",
+        summary:
+          "Operative text references financial/builder defined terms whose controlling definitions are not closed here — qualified comparison only; not a definitive legal conclusion.",
+        evidence: evidenceFromExcerpts(
+          [ex(left, left.sourceText.slice(0, 120)), ex(right, right.sourceText.slice(0, 120))],
+          "missing closed definition context for builder/financial terms",
+          ["unclosed-definition"],
+        ),
+      }),
+    );
+  }
+
+  if (/\bIntercreditor Agreement\b|\bGuarantee and Collateral Agreement\b|\bCollateral Documents\b/i.test(left.sourceText + " " + right.sourceText)) {
+    const leftHas = /\bIntercreditor Agreement\b|\bGuarantee and Collateral Agreement\b|\bCollateral Documents\b/i.test(left.sourceText);
+    const rightHas = /\bIntercreditor Agreement\b|\bGuarantee and Collateral Agreement\b|\bCollateral Documents\b/i.test(right.sourceText);
+    if (leftHas !== rightHas) {
+      claims.push(
+        makeClaim({
+          standing: "SOURCE_SUPPORTED_LEGAL_DIFFERENCE",
+          dimension: "DEPENDENCY",
+          summary: "Cross-document restriction appears on only one side; controlling instrument text is not closed in this comparison.",
+          evidence: evidenceFromExcerpts(
+            [ex(leftHas ? left : right, (leftHas ? left : right).sourceText.slice(0, 180))],
+            "cross-document reference asymmetry",
+            ["cross-document"],
+          ),
+        }),
+      );
+      qualificationReasons.push("cross-document controlling instrument not closed");
+    } else {
+      qualificationReasons.push("cross-document reference present — Atlas/ACR closure required for definitive conclusion");
+    }
+  }
+
   if (textual.tokenJaccard >= 0.35 && overlap.shared.length >= 2) {
     claims.push(
       makeClaim({
@@ -230,6 +379,7 @@ export function compareProvisions(
   );
 
   const maxStanding = maxStandingAmongClaims(finalClaims);
+  const comparisonQualified = qualificationReasons.length > 0;
   return {
     comparisonId: cmpId,
     schemaVersion: PRECEDENT_COMPARISON_SCHEMA_VERSION,
@@ -254,7 +404,15 @@ export function compareProvisions(
         r.leftSourceVersionHash === left.sourceVersionHash &&
         r.rightSourceVersionHash === right.sourceVersionHash,
     ),
-    disclaimer: COMPARISON_DISCLAIMER,
+    disclaimer: comparisonQualified
+      ? `${COMPARISON_DISCLAIMER} QUALIFIED COMPARISON: controlling context incomplete (${qualificationReasons.join("; ")}).`
+      : COMPARISON_DISCLAIMER,
     createdAt: new Date().toISOString(),
+    comparisonQualified,
+    qualificationReasons,
   };
+}
+
+function normalizeLoose(s: string): string {
+  return s.toLowerCase().replace(/\s+/g, " ").trim();
 }

@@ -1,10 +1,13 @@
 /**
  * Precedent Comparison API — public facade (Phase 2).
  */
+import { loadAmendmentChainResearch } from "./adapters/amendment-chain";
 import { loadDependencyAtlas } from "./adapters/dependency-atlas";
 import { loadDefinitionEncyclopedia } from "./adapters/definition-encyclopedia";
 import { loadEdgarAcquisitionQueue } from "./adapters/edgar-backfill";
+import { loadFinancialDefinitionsPrecedent } from "./adapters/financial-definitions-precedent";
 import { loadKnowledgeFactoryCorpus } from "./adapters/knowledge-factory";
+import { loadNegativeCovenantExceptionDatabase } from "./adapters/negative-covenant-exceptions";
 import { compareOriginalAndAmendment, listAmendmentPairs } from "./amendments";
 import { compareProvisions, type CompareOptions } from "./compare";
 import { getDefaultCorpus, PrecedentCorpus, type CorpusFile } from "./corpus";
@@ -48,6 +51,9 @@ export interface PrecedentComparisonApi {
     definitionEncyclopedia: ReturnType<typeof loadDefinitionEncyclopedia>;
     edgarBackfill: ReturnType<typeof loadEdgarAcquisitionQueue>;
     knowledgeFactory: ReturnType<typeof loadKnowledgeFactoryCorpus>;
+    amendmentChain: ReturnType<typeof loadAmendmentChainResearch>;
+    financialDefinitionsPrecedent: ReturnType<typeof loadFinancialDefinitionsPrecedent>;
+    negativeCovenantExceptions: ReturnType<typeof loadNegativeCovenantExceptionDatabase>;
   };
 }
 
@@ -84,6 +90,9 @@ export function createPrecedentComparisonApi(corpus?: PrecedentCorpus): Preceden
       definitionEncyclopedia: loadDefinitionEncyclopedia(),
       edgarBackfill: loadEdgarAcquisitionQueue(),
       knowledgeFactory: loadKnowledgeFactoryCorpus(),
+      amendmentChain: loadAmendmentChainResearch(),
+      financialDefinitionsPrecedent: loadFinancialDefinitionsPrecedent(),
+      negativeCovenantExceptions: loadNegativeCovenantExceptionDatabase(),
     }),
   };
 }

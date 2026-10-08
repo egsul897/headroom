@@ -26,6 +26,15 @@ export { loadDependencyAtlas, atlasEdgesForSection } from "./adapters/dependency
 export { loadDefinitionEncyclopedia, encyclopediaHitsForTerm } from "./adapters/definition-encyclopedia";
 export { loadEdgarAcquisitionQueue } from "./adapters/edgar-backfill";
 export { loadKnowledgeFactoryCorpus } from "./adapters/knowledge-factory";
+export { loadAmendmentChainResearch } from "./adapters/amendment-chain";
+export { loadFinancialDefinitionsPrecedent } from "./adapters/financial-definitions-precedent";
+export { loadNegativeCovenantExceptionDatabase } from "./adapters/negative-covenant-exceptions";
+export { auditCorpus, clusterDuplicateSpans, stratifiedSample } from "./validation/corpus-audit";
+export type { CorpusAuditReport } from "./validation/corpus-audit";
+export { ALL_BENCHMARK_SCENARIOS, DEV_SCENARIOS, HELD_OUT_SCENARIOS, benchmarkScenarioCounts } from "./benchmark/scenarios";
+export { runBenchmarkSuite, evaluateScenario, aggregateMetrics } from "./benchmark/evaluate";
+export type { BenchmarkScenario, BenchmarkMetrics, ScenarioEvaluation } from "./benchmark/types";
+export { runDiffBenchmarkSuite, buildDiffBenchmarkCases } from "./diff-benchmark";
 export {
   ALL_QUALITY_SCENARIOS,
   reviewForClaim,

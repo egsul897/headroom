@@ -8,7 +8,7 @@
 export type PeerAvailability = "AVAILABLE" | "UNAVAILABLE" | "SCHEMA_MISMATCH";
 
 export interface PeerLoadResult<T> {
-  peer: "WS-CDA" | "WS-DEF" | "WS-EHB" | "WS-CKF";
+  peer: "WS-CDA" | "WS-DEF" | "WS-EHB" | "WS-CKF" | "WS-ACR" | "WS-FDP" | "WS-NCED";
   availability: PeerAvailability;
   pathTried: string[];
   data: T | null;

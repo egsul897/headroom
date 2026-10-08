@@ -241,6 +241,12 @@ export interface PrecedentComparisonRecord {
   claimReviews: ClaimReviewRecord[];
   disclaimer: string;
   createdAt: string;
+  /**
+   * True when controlling context is incomplete — comparison is qualified,
+   * not a definitive legal conclusion.
+   */
+  comparisonQualified: boolean;
+  qualificationReasons: string[];
 }
 
 export interface PatternFrequency {
