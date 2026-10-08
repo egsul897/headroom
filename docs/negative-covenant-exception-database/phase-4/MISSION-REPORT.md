@@ -1,6 +1,7 @@
 # NCEDB Phase 4 — Mission Report
 
 Starting SHA: `1456000040f03faeb2beca3c9f46bc2db91ac960`
+Ending SHA: `0891cd05312eaa2b4172ef281a253e1ab14dd1c2`
 Dataset: `ncedb.phase4.v1`
 
 ## Root causes (Phase 3 failures)
@@ -25,3 +26,10 @@ Status: **ALIGNED_FOR_REVIEW** — productionCapacityApproved always false.
 
 ## Costs
 actualPaidSpendUsd: **0**
+
+## SHA / tests / PR
+
+- Ending SHA: `0891cd05312eaa2b4172ef281a253e1ab14dd1c2`
+- Tests: 25/25 local
+- PR: #143 draft
+- Costs: $0

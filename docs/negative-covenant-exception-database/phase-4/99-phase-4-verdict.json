@@ -146,5 +146,15 @@
   "ckfStatus": "ALIGNED_FOR_REVIEW",
   "productionCapacityApproved": false,
   "readyForMerge": false,
-  "actualPaidSpendUsd": 0
+  "actualPaidSpendUsd": 0,
+  "endingSha": "0891cd05312eaa2b4172ef281a253e1ab14dd1c2",
+  "tests": {
+    "command": "npx vitest run tests/negative-covenant-exception-database/phase2-catalog.test.ts tests/negative-covenant-exception-database/phase3-catalog.test.ts tests/negative-covenant-exception-database/phase4-analyzer.test.ts",
+    "local": "25/25 passed"
+  },
+  "pr": {
+    "number": 143,
+    "status": "draft open",
+    "url": "https://github.com/egsul897/headroom/pull/143"
+  }
 }
