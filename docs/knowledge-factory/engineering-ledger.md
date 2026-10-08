@@ -33,17 +33,33 @@ Living progress log for the Cursor-owned knowledge-factory branch.
 
 ## Blockers
 
-- Live 100/500/2000-document acquisition depends on SEC.gov availability and session time under fair-access rate limits. Fixture path remains fully reproducible offline.
+- Recent-filing windows for many large IG issuers contain few debt exhibits; need deeper historical submission chunks + form 424B/S-4 coverage.
+- Some ticker symbols unresolved in SEC company_tickers.json (e.g. HOLX, SEE under those symbols).
+- Early acquisition admitted auditor consents / bylaws / employment agreements (now hard-negatived); 6 false positives remain in local corpus and are excluded from debt counts.
+- Paid semantic compilation disabled by mandate — semantic hypotheses and verified representations remain 0.
+
+## Measured live acquisition (this session)
+
+See `docs/knowledge-factory/manifests/data-production-checkpoint.json`.
+
+- Real SEC debt documents acquired: **45** (plus 6 false-positive exhibits quarantined from debt counts)
+- Real SEC filings (accessions) with acquired exhibits: **35**
+- Fixture documents: **12** (synthetic/recorded public excerpts — not live SEC)
+- SEC debt issuers: **13**; combined issuers with fixtures: **17**
+- Structural nodes (debt+fixture): **18,062**; covenant candidates: **2,214**
+- Independently verified representations: **0**
+- Actual paid AI spend: **$0**
+- Live batch wall clocks: ~110s + ~126s + ~520s under SEC rate limits
 
 ## Next ten implementation tasks
 
-1. Persist structural nodes / candidates into Postgres (not only file manifests).
-2. Expand live pilot to full 100-issuer stratified run with resume checkpoints.
-3. Stratified 500-issuer expansion with diversity guards against near-identical contracts.
-4. Scale acquisition toward 2,000 distinct debt documents with dedupe accounting.
-5. Wire optional `Company`/`SourceArtifact` linkage for onboarding convergence.
-6. Add Postgres full-text search over provision excerpts (evaluate pgvector only if justified).
-7. Deepen amendment-chain linking with exhibit description crosswalks (still no chronology-only effectiveness).
-8. Grow pattern library with counterexample fixtures from uncertainty queue.
-9. Export Claude-owned acceptance candidates as sealed fixture packs (without editing Claude gates).
-10. Benchmark throughput on 50 representative public filings and optimize hot paths.
+1. Purge/quarantine the 6 known false-positive SEC exhibits from the active debt corpus.
+2. Expand live run to full 100-issuer stratified plan with filingLimit≥200 and older submission files.
+3. Add 424B5/S-4 exhibit paths and deepen indenture discovery.
+4. Persist KnowledgeSource rows + structural/candidate JSON into Postgres.
+5. Scale toward 500 issuers / 2,000 distinct debt documents with diversity guards.
+6. Improve amendment-chain linking from exhibit descriptions (no chronology-only effectiveness).
+7. Postgres FTS over provision excerpts; defer pgvector unless justified.
+8. Mine uncertainty queue into new pattern counterexamples (still unverified).
+9. Hand off sealed fixture packs to Claude acceptance without editing Claude gates.
+10. Throughput benchmark + optimize structural parse on multi-MB HTML exhibits.

@@ -27,7 +27,11 @@ const RULES: Rule[] = [
     documentClass: "RESTATEMENT",
     weight: 0.95,
     signal: "amended_and_restated",
-    test: (c) => /\bamended\s+and\s+restated\b/i.test(c.title + " " + c.description + " " + c.headingSample),
+    test: (c) => {
+      const hay = `${c.title} ${c.description} ${c.headingSample}`;
+      if (/\b(?:employment|bylaws?|certificate of incorporation|stock|equity incentive)\b/i.test(hay)) return false;
+      return /\bamended\s+and\s+restated\b/i.test(hay) && /\b(?:credit|loan|facility|indenture|agreement)\b/i.test(hay);
+    },
   },
   {
     documentClass: "SUPPLEMENTAL_INDENTURE",
@@ -93,7 +97,11 @@ const RULES: Rule[] = [
     documentClass: "CONSENT",
     weight: 0.78,
     signal: "consent",
-    test: (c) => /\bconsent\b/i.test(c.title + " " + c.description) && !/\bcredit\s+agreement\b/i.test(c.title),
+    test: (c) => {
+      const hay = `${c.title} ${c.description} ${c.exhibitType}`;
+      if (/\b(?:independent\s+registered\s+public\s+accounting|EX-23|pwc consent)\b/i.test(hay)) return false;
+      return /\bconsent\b/i.test(hay) && /\b(?:credit|loan|facility|indenture|lender|amendment)\b/i.test(hay);
+    },
   },
   {
     documentClass: "SIDE_LETTER",

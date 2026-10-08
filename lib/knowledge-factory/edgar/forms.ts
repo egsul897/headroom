@@ -41,7 +41,8 @@ export const DEBT_EXHIBIT_SIGNALS: { name: string; re: RegExp }[] = [
   { name: "security_agreement", re: /\bsecurity\s+agreement\b|\bcollateral\s+agreement\b/i },
   { name: "guarantee", re: /\bguarant(?:y|ee)\b/i },
   { name: "waiver", re: /\bwaiver\b/i },
-  { name: "consent", re: /\bconsent\b/i },
+  // Debt-package consents only — exclude auditor/EX-23 consents.
+  { name: "consent", re: /\bconsent\b(?!.*\b(?:independent\s+registered\s+public\s+accounting|pwc|ey|kpmg|deloit)\b)/i },
   { name: "side_letter", re: /\bside\s+letter\b/i },
   { name: "amendment_to_credit", re: /\bamendment\b.*\b(?:credit|loan|facility|indenture)\b|\b(?:credit|loan|facility|indenture)\b.*\bamendment\b/i },
   { name: "restatement", re: /\bamended\s+and\s+restated\b|\brestatement\b/i },
@@ -53,6 +54,17 @@ export const DEBT_EXHIBIT_SIGNALS: { name: string; re: RegExp }[] = [
 export const PROSE_EXTENSIONS = new Set(["htm", "html", "txt", "pdf"]);
 
 export function collectDebtSignals(haystack: string): string[] {
+  // Hard negatives: auditor consents, employment agreements, bylaws, etc.
+  if (
+    /\b(?:consent of independent|independent registered public accounting|EX-23|employment agreement|bylaws?|certificate of incorporation|stock incentive|equity incentive|offer letter)\b/i.test(
+      haystack,
+    )
+  ) {
+    return [];
+  }
+  if (/\bEX-23\b/i.test(haystack) && /\bconsent\b/i.test(haystack)) {
+    return [];
+  }
   return DEBT_EXHIBIT_SIGNALS.filter((s) => s.re.test(haystack)).map((s) => s.name);
 }
 

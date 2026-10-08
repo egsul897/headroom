@@ -1,0 +1,591 @@
+{
+  "generatedAt": "2026-10-08T22:19:59.878Z",
+  "distinction": {
+    "note": "Fixture documents are recorded public excerpts already in-repo. SEC documents were acquired live from sec.gov in this session. False-positive SEC exhibits are listed separately and excluded from debt-document counts."
+  },
+  "realSecFilingsDiscoveredAccessions": 35,
+  "realSecDebtDocumentsAcquired": 45,
+  "realSecFalsePositiveExhibitsAcquired": 6,
+  "fixtureDocuments": 12,
+  "uniqueIssuers": {
+    "secDebt": 13,
+    "fixtures": 5,
+    "combinedDebtAndFixture": 17
+  },
+  "uniqueInstrumentsApprox": 53,
+  "provisionsStructurallyIndexed": 18062,
+  "ambiguousStructuralNodes": 3296,
+  "covenantCandidatesExtracted": 2214,
+  "sourceBackedDefinitions": 60,
+  "dependencyEdgesCrossReferences": 11449,
+  "documentRelationships": 18,
+  "semanticHypothesesProduced": 0,
+  "independentlyVerifiedRepresentations": 0,
+  "unresolvedOrAmbiguousLegalIssues": {
+    "uncertaintyQueueItems": 1687,
+    "ambiguousStructuralNodes": 3296,
+    "unlinkedAmendments": 11,
+    "missingOperativeAuthorityDocs": 47,
+    "note": "These are unresolved discovery/ambiguity items — not independently verified legal conclusions."
+  },
+  "draftingPatterns": {
+    "seedLibrarySize": 17,
+    "observedInCorpus": [
+      "builder-basket",
+      "refinancing-debt",
+      "ratio-basket",
+      "shared-capacity",
+      "greater-of-basket",
+      "fixed-dollar-basket",
+      "no-default-condition",
+      "incremental-equivalent-debt",
+      "acquisition-debt",
+      "permitted-liens",
+      "purchase-money-debt",
+      "general-debt-basket",
+      "reclassification",
+      "conditional-amendment-effectiveness",
+      "asset-sale-reinvestment",
+      "pro-forma-compliance"
+    ],
+    "newlyDiscoveredBeyondSeed": []
+  },
+  "dangerousOmissionsOrFalsePermissionsDetected": {
+    "count": 0,
+    "note": "No semantic compilation / capacity-rule execution was run. False permissions cannot be asserted from discovery labels alone. Auditor-consent and employment/bylaw false-positive acquisitions were detected at the acquisition layer (listed below).",
+    "acquisitionFalsePositives": [
+      {
+        "sourceId": "edgar:0000006201-25-000042:aal-20250806.htm",
+        "title": "8-K 08.06.2025 FIFTH AMENDED AND RESTATED BYLAWS",
+        "url": "https://www.sec.gov/ix?doc=/Archives/edgar/data/6201/000000620125000042/aal-20250806.htm"
+      },
+      {
+        "sourceId": "edgar:0000018230-25-000008:cat_exx23x12312024.htm",
+        "title": "EX-23 PWC CONSENT",
+        "url": "https://www.sec.gov/Archives/edgar/data/18230/000001823025000008/cat_exx23x12312024.htm"
+      },
+      {
+        "sourceId": "edgar:0000018230-26-000008:cat_exx23x12312025.htm",
+        "title": "EX-23 PWC CONSENT",
+        "url": "https://www.sec.gov/Archives/edgar/data/18230/000001823026000008/cat_exx23x12312025.htm"
+      },
+      {
+        "sourceId": "edgar:0000063908-25-000012:mcd-ex2310xk.htm",
+        "title": "CONSENT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM",
+        "url": "https://www.sec.gov/Archives/edgar/data/63908/000006390825000012/mcd-ex2310xk.htm"
+      },
+      {
+        "sourceId": "edgar:0000063908-26-000035:mcd-ex2310xk.htm",
+        "title": "CONSENT OF INDEPENDENT REGISTERED PUBLIC ACCOUNTING FIRM",
+        "url": "https://www.sec.gov/Archives/edgar/data/63908/000006390826000035/mcd-ex2310xk.htm"
+      },
+      {
+        "sourceId": "edgar:0001335258-26-000041:ex101-rapinoamendedandrest.htm",
+        "title": "EX-10.1 RAPINO AMENDED AND RESTATED EMPLOYMENT AGREEMENT",
+        "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000041/ex101-rapinoamendedandrest.htm"
+      }
+    ]
+  },
+  "processing": {
+    "measuredParsingMsFromLedger": 1480,
+    "secRequests": 124,
+    "downloadBytes": 26948617,
+    "storageBytes": 26948617,
+    "actualPaidProviderUsd": 0,
+    "estimatedModelCostUsdIfEnabled": 35.367891000000014,
+    "estimatedModelTokensIfEnabled": 11789297,
+    "note": "Actual paid AI spend is $0. Estimated model figures are NOT actual spend."
+  },
+  "secDebtDocuments": [
+    {
+      "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+      "ticker": "AAL",
+      "class": "UNKNOWN",
+      "title": "8-K 12.19.22 TERM LOAN REPAYMENT",
+      "form": "8-K",
+      "filingDate": "2022-12-19",
+      "bytes": 6465,
+      "url": "https://www.sec.gov/ix?doc=/Archives/edgar/data/4515/000000620122000097/aal-20221219.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
+      "ticker": "BA",
+      "class": "UNKNOWN",
+      "title": "BY-LAWS OF THE BOEING COMPANY, AS AMENDED AND RESTATED, EFFECTIVE JUNE 28, 2022",
+      "form": "10-Q",
+      "filingDate": "2022-07-27",
+      "bytes": 216085,
+      "url": "https://www.sec.gov/Archives/edgar/data/12927/000001292722000058/a202206jun3010qex32.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000009:ex-21ye2023.htm",
+      "ticker": "T",
+      "class": "RESTATEMENT",
+      "title": "EX-10.Y AMENDED AND RESTATED CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2024-02-23",
+      "bytes": 25949,
+      "url": "https://www.sec.gov/Archives/edgar/data/732717/000073271724000009/ex-21ye2023.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
+      "ticker": "T",
+      "class": "RESTATEMENT",
+      "title": "EX-10.1 THIRD AMENDED AND RESTATED LIMITED LIABILITY CORPORATION",
+      "form": "10-Q",
+      "filingDate": "2024-10-29",
+      "bytes": 915322,
+      "url": "https://www.sec.gov/Archives/edgar/data/732717/000073271724000059/exhibit1013q24.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000885725-20-000024:exhibit101amendedandre.htm",
+      "class": "UNKNOWN",
+      "title": "EXHIBIT 10.1 AMENDED AND RESTATED 2011 LONG-TERM INCENTIVE PLAN",
+      "form": "8-K",
+      "filingDate": "2020-05-12",
+      "bytes": 121362,
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572520000024/exhibit101amendedandre.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
+      "class": "CREDIT_AGREEMENT",
+      "title": "CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2020-04-21",
+      "bytes": 443189,
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000397/ss171930_ex1001.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1002.htm",
+      "class": "AMENDMENT",
+      "title": "FIRST AMENDMENT TO TERM LOAN CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2020-04-21",
+      "bytes": 45166,
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000397/ss171930_ex1002.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1001.htm",
+      "class": "AMENDMENT",
+      "title": "SECOND AMENDMENT, DATED AS OF MAY 28, 2020, TO FEBRUARY TERM LOAN CREDIT AGREEME",
+      "form": "8-K",
+      "filingDate": "2020-05-29",
+      "bytes": 28518,
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000527/ss174648_ex1001.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1002.htm",
+      "class": "AMENDMENT",
+      "title": "SECOND AMENDMENT, DATED AS OF MAY 28, 2020, TO REVOLVING CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2020-05-29",
+      "bytes": 76669,
+      "url": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000527/ss174648_ex1002.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+      "ticker": "IBM",
+      "class": "CREDIT_AGREEMENT",
+      "title": "THREE-YEAR CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2021-06-25",
+      "bytes": 826760,
+      "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015721000696/ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "ticker": "IBM",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT NO. 1 TO THREE-YEAR CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2022-07-01",
+      "bytes": 953563,
+      "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015722000765/ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+      "ticker": "IBM",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT NO. 1 TO FIVE-YEAR CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2022-07-01",
+      "bytes": 930356,
+      "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015722000765/ex10-2.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-1.htm",
+      "ticker": "IBM",
+      "class": "RESTATEMENT",
+      "title": "AMENDMENT NO. 2 TO THREE-YEAR CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2025-06-20",
+      "bytes": 142931,
+      "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015725000533/ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
+      "ticker": "IBM",
+      "class": "RESTATEMENT",
+      "title": "AMENDMENT NO. 2 TO FIVE-YEAR CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2025-06-20",
+      "bytes": 140904,
+      "url": "https://www.sec.gov/Archives/edgar/data/51143/000095015725000533/ex10-2.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex51.htm",
+      "ticker": "WBD",
+      "class": "UNKNOWN",
+      "title": "OPINION AND CONSENT OF WILMER CUTLER PICKERING HALE AND DORR LLP",
+      "form": "S-4",
+      "filingDate": "2021-02-23",
+      "bytes": 20761,
+      "url": "https://www.sec.gov/Archives/edgar/data/1430602/000120677421000500/discovery3870321-ex51.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex52.htm",
+      "ticker": "WBD",
+      "class": "UNKNOWN",
+      "title": "OPINION AND CONSENT OF ICE MILLER LLP",
+      "form": "S-4",
+      "filingDate": "2021-02-23",
+      "bytes": 30842,
+      "url": "https://www.sec.gov/Archives/edgar/data/1430602/000120677421000500/discovery3870321-ex52.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-3_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF THOMAS D. HENNESSY",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2591,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-3_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-4_7gcholdings.htm",
+      "ticker": "PARA",
+      "class": "UNKNOWN",
+      "title": "CONSENT OF M. JOSEPH BECK",
+      "form": "S-1",
+      "filingDate": "2020-12-07",
+      "bytes": 2579,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390020041190/fs12020ex99-4_7gcholdings.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
+      "ticker": "PARA",
+      "class": "RESTATEMENT",
+      "title": "FORM OF AMENDED AND RESTATED REGISTRATION RIGHTS AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2022-12-08",
+      "bytes": 151815,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390022078344/ea169690ex10-3_7gcandcohold.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+      "ticker": "PARA",
+      "class": "RESTATEMENT",
+      "title": "AMENDED AND RESTATED COMPANY SUPPORT AGREEMENT, DATED AS OF AUGUST 4, 2023, BY A",
+      "form": "8-K",
+      "filingDate": "2023-08-07",
+      "bytes": 96852,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390023063838/ea182915ex10-1_7gcandco.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+      "ticker": "PARA",
+      "class": "RESTATEMENT",
+      "title": "FORM OF AMENDED AND RESTATED REGISTRATION RIGHTS AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2023-08-07",
+      "bytes": 131108,
+      "url": "https://www.sec.gov/Archives/edgar/data/1826011/000121390023063838/ea182915ex10-2_7gcandco.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
+      "ticker": "SBUX",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "ELEVENTH SUPPLEMENTAL INDENTURE, DATED AS OF MAY 8, 2025, BY AND BETWEEN STARBUC",
+      "form": "8-K",
+      "filingDate": "2025-05-08",
+      "bytes": 313455,
+      "url": "https://www.sec.gov/Archives/edgar/data/829224/000121390025041096/ea024138601ex4-2_starbucks.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "ticker": "SBUX",
+      "class": "CREDIT_AGREEMENT",
+      "title": "CREDIT AGREEMENT, DATED JUNE 13, 2025, AMONG STARBUCKS CORPORATION, BANK OF AMER",
+      "form": "8-K",
+      "filingDate": "2025-06-16",
+      "bytes": 1017865,
+      "url": "https://www.sec.gov/Archives/edgar/data/829224/000121390025054811/ea024579601ex10-1_starbucks.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000002:cck8kjan2018.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "8-K AMENDMENT TO CREDIT AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2018-01-03",
+      "bytes": 34887,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000002/cck8kjan2018.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex41dec2017.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "INCREMENTAL AMENDMENT TO CREDIT FACILITY",
+      "form": "10-K",
+      "filingDate": "2018-02-26",
+      "bytes": 931087,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000009/ex41dec2017.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex4dec2017.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT TO CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2018-02-26",
+      "bytes": 525401,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000009/ex4dec2017.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-19-000005:ex4dec2018.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT TO CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2019-02-28",
+      "bytes": 578804,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960119000005/ex4dec2018.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT TO CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2022-02-28",
+      "bytes": 2286721,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960122000011/exhibit4.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+      "ticker": "CCK",
+      "class": "AMENDMENT",
+      "title": "SEVENTH AMENDMENT CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2025-03-03",
+      "bytes": 2653210,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/a4ff-crownseventhamendment.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
+      "ticker": "CCK",
+      "class": "CONSENT",
+      "title": "CONSENT",
+      "form": "10-K",
+      "filingDate": "2025-03-03",
+      "bytes": 4191,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/ex23-12312024.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "ticker": "LYV",
+      "class": "RESTATEMENT",
+      "title": "EX-10.19 AMENDED AND RESTATED CREDIT AGREEMENT",
+      "form": "10-K",
+      "filingDate": "2026-02-19",
+      "bytes": 2737656,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1019amended.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1023xthirds.htm",
+      "ticker": "LYV",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "EX-10.23 THIRD SUPPLEMENTAL INDENTURE 4.75% SENIOR NOTES DUE 2027",
+      "form": "10-K",
+      "filingDate": "2026-02-19",
+      "bytes": 130354,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1023xthirds.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1026xsecond.htm",
+      "ticker": "LYV",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "EX-10.26 SECOND SUPPLEMENTAL INDENTURE 6.5% SENIOR SECURED NOTES DUE 2027",
+      "form": "10-K",
+      "filingDate": "2026-02-19",
+      "bytes": 132608,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1026xsecond.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1029xsecond.htm",
+      "ticker": "LYV",
+      "class": "SUPPLEMENTAL_INDENTURE",
+      "title": "EX-10.29 SECOND SUPPLEMENTAL INDENTURE 3.75% SENIOR SECURED NOTES DUE 2028",
+      "form": "10-K",
+      "filingDate": "2026-02-19",
+      "bytes": 132808,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1029xsecond.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+      "ticker": "LYV",
+      "class": "INDENTURE",
+      "title": "EX-10.34 INDENTURE 2.875% CONVERTIBLE SENIOR NOTES DUE 2031",
+      "form": "10-K",
+      "filingDate": "2026-02-19",
+      "bytes": 836993,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1034xindent.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+      "ticker": "LYV",
+      "class": "OTHER_DEBT_RELATED",
+      "title": "EX-10.1 NOTE PURCHASE AGREEMENT",
+      "form": "10-Q",
+      "filingDate": "2026-07-30",
+      "bytes": 1081926,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000035/lyv-20260630xex101xnotepur.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "ticker": "LYV",
+      "class": "INDENTURE",
+      "title": "EX-10.2 MASTER TRUST INDENTURE",
+      "form": "10-Q",
+      "filingDate": "2026-07-30",
+      "bytes": 1168861,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000035/lyv-20260630xex102xmastert.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex103xfirstsu.htm",
+      "ticker": "LYV",
+      "class": "OTHER_DEBT_RELATED",
+      "title": "EX-10.3 FIRST SUPPLEMENTAL MASTER INDENTURE",
+      "form": "10-Q",
+      "filingDate": "2026-07-30",
+      "bytes": 249921,
+      "url": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000035/lyv-20260630xex103xfirstsu.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "ticker": "GM",
+      "class": "RESTATEMENT",
+      "title": "EXHIBIT 10.1 - AMENDED AND RESTATED LLC AGREEMENT OF GM CRUISE HOLDINGS LLC",
+      "form": "10-Q",
+      "filingDate": "2018-07-25",
+      "bytes": 1045552,
+      "url": "https://www.sec.gov/Archives/edgar/data/1467858/000146785818000089/ex10106282018cruise.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001467858-19-000033:ex-1023amendedgmexecutives.htm",
+      "ticker": "GM",
+      "class": "UNKNOWN",
+      "title": "EXHIBIT 10.23 - AMENDED AND RESTATED GM U.S. EXECUTIVE SEVERANCE PROGRAM",
+      "form": "10-K",
+      "filingDate": "2019-02-06",
+      "bytes": 103313,
+      "url": "https://www.sec.gov/Archives/edgar/data/1467858/000146785819000033/ex-1023amendedgmexecutives.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
+      "ticker": "CCK",
+      "class": "CONSENT",
+      "title": "CONSENT",
+      "form": "10-K",
+      "filingDate": "2026-02-27",
+      "bytes": 4578,
+      "url": "https://www.sec.gov/Archives/edgar/data/1219601/000162828026012904/ex23-12312025.htm",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+      "ticker": "DAL",
+      "class": "INDENTURE",
+      "title": "INDENTURE",
+      "form": "8-K",
+      "filingDate": "2020-09-25",
+      "bytes": 1103758,
+      "url": "https://www.sec.gov/Archives/edgar/data/27904/000168316820003281/delta_8k-ex0401.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
+      "ticker": "DAL",
+      "class": "TERM_LOAN_AGREEMENT",
+      "title": "TERM LOAN CREDIT AND GUARANTY AGREEMENT",
+      "form": "8-K",
+      "filingDate": "2020-09-25",
+      "bytes": 1084669,
+      "url": "https://www.sec.gov/Archives/edgar/data/27904/000168316820003281/delta_8k-ex1001.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
+      "ticker": "DAL",
+      "class": "AMENDMENT",
+      "title": "AMENDMENT NO. 3 TO CREDIT AGREEMENT, DATED AS OF NOVEMBER 18, 2022, AMONG DELTA",
+      "form": "8-K",
+      "filingDate": "2022-11-21",
+      "bytes": 1038824,
+      "url": "https://www.sec.gov/Archives/edgar/data/27904/000168316822007951/delta_ex1001.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    },
+    {
+      "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+      "ticker": "CNMD",
+      "class": "AMENDMENT",
+      "title": "FIRST OMNIBUS AMENDMENT AND INCREASED FACILITY ACTIVATION NOTICE, DATED AS OF MA",
+      "form": "8-K",
+      "filingDate": "2026-06-01",
+      "bytes": 1268244,
+      "url": "https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE"
+    }
+  ]
+}
