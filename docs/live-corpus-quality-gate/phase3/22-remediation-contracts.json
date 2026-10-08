@@ -1,0 +1,200 @@
+{
+  "contracts": [
+    {
+      "ticketId": "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "title": "Pass A shared_cap over-fires on aggregate-amount nodes",
+      "priority": "CRITICAL",
+      "owningProductionBranch": "cursor/covenant-knowledge-factory-7327",
+      "owningAgent": "Covenant Knowledge Factory",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": null,
+      "proposedFixBranch": null,
+      "minimalReproduction": [
+        "Worktree isolation: checkout any production tip without editing phase1-freeze.",
+        "Inspect pass-a-signals shared_cap regex: aggregate(?:d)? (?:amount|basket)|combined|shared.",
+        "Count pattern hits on Gibraltar credit-agreement.txt (expect dozens; phrase 'shared capacity' absent).",
+        "Confirm fixture tests/fixtures/.../structure/pass-a-shared-cap.json length=51."
+      ],
+      "frozenExpectedBehavior": "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
+      "independentTestCommand": "npx tsx scripts/live-corpus-quality-gate/phase3-run.ts  # contract LCQG-GIB-FALSE-AFFIRM-SHARED-CAP replay",
+      "acceptanceCriteria": [
+        "shared_cap signal no longer fires on ordinary aggregate-amount nodes lacking shared-pool semantics.",
+        "Explicit shared capacity / combined basket / reallocation language still detectable.",
+        "No package-specific hardcoding (Invariant #29).",
+        "Independent evaluator REPLAY_PASSED before any CLOSED status."
+      ],
+      "regressionRisks": [
+        "Over-narrowing may miss real shared baskets that use atypical phrasing.",
+        "Downstream Pass B/C consumers that treated shared_cap as soft recall signal may need recalibration."
+      ],
+      "status": "OPEN",
+      "statusRationale": "No production branch narrows shared_cap away from aggregate-amount alone (main, architecture-remediation, knowledge-factory still identical pattern). Left OPEN.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    },
+    {
+      "ticketId": "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING",
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace)",
+      "priority": "CRITICAL",
+      "owningProductionBranch": "main",
+      "owningAgent": "Amendment Intelligence",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": "e6c85cd8e3d26db6ad867300bccd8f3eefc088af",
+      "proposedFixBranch": "main",
+      "minimalReproduction": [
+        "Baseline worktree at pre-fix SHA (parent of e6c85cd): classifyDocument(sup-doc-b) → CREDIT_AGREEMENT; buildPackageGraph RESTATES count=0.",
+        "Candidate worktree at e6c85cd or main tip: classifyDocument → AMENDED_AND_RESTATED_AGREEMENT; RESTATES candidate sup-doc-b→sup-doc-a surfaced (REVIEW_REQUIRED acceptable).",
+        "Do not mutate phase1-freeze oracle."
+      ],
+      "frozenExpectedBehavior": "Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission.",
+      "independentTestCommand": "npx tsx scripts/live-corpus-quality-gate/phase3-run.ts  # + isolated worktree replay for SUP graph",
+      "acceptanceCriteria": [
+        "Line-wrapped 'AMENDED AND RESTATED\\nCREDIT AGREEMENT' classifies as AMENDED_AND_RESTATED_AGREEMENT.",
+        "RESTATES relationship candidate exists for doc-b→doc-a (RESOLVED or REVIEW_REQUIRED).",
+        "Pre-fix baseline still fails (proves the fix is causal).",
+        "Independent evaluator adjudication recorded; freeze epoch unchanged."
+      ],
+      "regressionRisks": [
+        "Whitespace-tolerant matching could over-match referential A&R mentions inside amendments (mitigated by self-reference / position logic).",
+        "REVIEW_REQUIRED vs RESOLVED confidence may still require human confirmation for operative supersession."
+      ],
+      "status": "INDEPENDENTLY_ADJUDICATED",
+      "statusRationale": "Independent worktree replay: pre-fix CREDIT_AGREEMENT + 0 RESTATES; post-fix (e6c85cd / main 9de4e57 / eval tip) AMENDED_AND_RESTATED_AGREEMENT + RESTATES REVIEW_REQUIRED. Acceptance criteria met. Not CLOSED — freeze epoch not advanced; certification unchanged.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "title": "Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "priority": "CRITICAL",
+      "owningProductionBranch": "cursor/covenant-dependency-atlas-5021",
+      "owningAgent": "Dependency Atlas",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": null,
+      "proposedFixBranch": null,
+      "minimalReproduction": [
+        "Locate definition cite Section 7.05(a)(y) and operative printed marker (vi) / parenthetical clause (y) in Gibraltar source.",
+        "Confirm dual-cite disagreement is in the filed HTML itself.",
+        "Expected: UNRESOLVED / dual-cite REVIEW_REQUIRED — never unique forced bind."
+      ],
+      "frozenExpectedBehavior": "Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement.",
+      "independentTestCommand": "npx tsx scripts/live-corpus-quality-gate/phase3-run.ts  # builder dual-cite probe",
+      "acceptanceCriteria": [
+        "Compiler exposes dual-cite / source inconsistency explicitly.",
+        "No unique resolved target invented when definition cite and printed marker disagree.",
+        "Generalized handling — not Gibraltar-hardcoded."
+      ],
+      "regressionRisks": [
+        "Over-refusing unique cites that are merely layout-odd but consistent.",
+        "Consumers must handle dual-cite REVIEW_REQUIRED without inventing capacity."
+      ],
+      "status": "OPEN",
+      "statusRationale": "SOURCE_INCONSISTENCY primary. No production SHA found that implements dual-cite UNRESOLVED handling for this pattern. Left OPEN.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "priority": "HIGH",
+      "owningProductionBranch": "cursor/architecture-remediation-7cc2",
+      "owningAgent": "Structural Compiler",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8",
+      "proposedFixBranch": "cursor/architecture-remediation-7cc2",
+      "minimalReproduction": [
+        "Frozen structure health: AMBIGUOUS_LEGAL_REFERENCE=306 / DUPLICATE_LABEL_EXPECTED=306.",
+        "Candidate: architecture-remediation tip — CONTENTS_LISTING refusal in operative-authority + reference-context.",
+        "Independent test: contents listing must refuseModelDispatch; never silently bind TOC stub as operative body."
+      ],
+      "frozenExpectedBehavior": "Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers.",
+      "independentTestCommand": "cd <arch-remed-worktree> && npx vitest run tests/contract-model/compiler/operative-authority.test.ts tests/contract-model/context-retrieval-definition-contents.test.ts",
+      "acceptanceCriteria": [
+        "TOC/contents occurrence classified CONTENTS_LISTING and refused for model dispatch.",
+        "When TOC + body share a label, operative body preferred or ambiguity explicit — never silent TOC bind.",
+        "Gibraltar structural AMBIGUOUS exposure remains honest (not force-resolved)."
+      ],
+      "regressionRisks": [
+        "False CONTENTS_LISTING on short operative stubs.",
+        "Structural index still reports AMBIGUOUS at scale — resolve-rate metrics may not improve until index-side dedup."
+      ],
+      "status": "INDEPENDENTLY_ADJUDICATED",
+      "statusRationale": "Candidate SHA ec7d5df (architecture-remediation). Independent worktree vitest: operative-authority + contents-listing refusal 25/25 PASSED. Adjudication: consumer fail-closed (never silent TOC bind) meets frozen expected behavior; structural AMBIGUOUS counts unchanged (honest). Not CLOSED — Gibraltar index regeneration not re-run; freeze epoch not advanced.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-LOW-RESOLVE",
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "title": "Gibraltar cross-reference resolve rate ~33.7%",
+      "priority": "HIGH",
+      "owningProductionBranch": "cursor/covenant-dependency-atlas-5021",
+      "owningAgent": "Dependency Atlas",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": null,
+      "proposedFixBranch": null,
+      "minimalReproduction": [
+        "structure-summary.json: detected=1459 resolved=491 unresolved=968 resolveRate≈0.337.",
+        "Confirm unresolved remain explicit; no force-bind to TOC stubs."
+      ],
+      "frozenExpectedBehavior": "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
+      "independentTestCommand": "npx tsx scripts/live-corpus-quality-gate/phase3-run.ts  # xref resolve probe",
+      "acceptanceCriteria": [
+        "Material unresolved refs stay explicit.",
+        "No silent TOC force-bind.",
+        "Measurable resolve-rate improvement on unique operative targets without inventing certainty."
+      ],
+      "regressionRisks": [
+        "Aggressive resolution against AMBIGUOUS labels would be a legal-safety regression.",
+        "Contents-listing refusal alone does not raise the frozen 33.7% rate without re-index."
+      ],
+      "status": "OPEN",
+      "statusRationale": "Related contents-listing refusal on architecture-remediation reduces silent TOC bind risk but does not provide a measured resolve-rate fix SHA for Gibraltar. Left OPEN.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    },
+    {
+      "ticketId": "TICKET-LCQG-HARNESS-FINDING-ID-COLLISION",
+      "defectId": "LCQG-HARNESS-FINDING-ID-COLLISION",
+      "title": "Phase-1 findingId collision (46 listed / 45 unique)",
+      "priority": "MEDIUM",
+      "owningProductionBranch": "cursor/live-corpus-quality-gate-7f51",
+      "owningAgent": "Evaluation Harness",
+      "originalFailingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+      "proposedFixSha": null,
+      "proposedFixBranch": "cursor/live-corpus-quality-gate-7f51",
+      "minimalReproduction": [
+        "Load phase1-freeze/01-findings.json — 46 findings, 45 unique findingIds.",
+        "Collision: gib-doc-a:exception_and_condition_recall:legally_verified:pass (§7.02 vs §7.08).",
+        "Phase-3 harness assigns LCQG-F-NNN stable IDs without mutating freeze."
+      ],
+      "frozenExpectedBehavior": "All 46 findings individually addressable via stable IDs; freeze oracle bytes unchanged; mapping to original findingIds preserved.",
+      "independentTestCommand": "npx vitest run tests/live-corpus-quality-gate/phase3.test.ts",
+      "acceptanceCriteria": [
+        "46 distinct stableFindingIds.",
+        "Collision group maps to 2 distinct stable IDs.",
+        "Freeze artifact SHA256 matches FREEZE-MANIFEST."
+      ],
+      "regressionRisks": [
+        "Downstream tools that keyed only on original findingId must migrate to stable IDs for collision members."
+      ],
+      "status": "INDEPENDENTLY_ADJUDICATED",
+      "statusRationale": "Harness-only fix in Phase-3 versioned artifacts. Freeze untouched. Stable IDs prove individual addressability.",
+      "freezeEpochPreserved": true,
+      "closedOnlyByIndependentAdjudication": true
+    }
+  ],
+  "statusRollup": {
+    "OPEN": 3,
+    "FIX_PROPOSED": 0,
+    "REPLAY_FAILED": 0,
+    "REPLAY_PASSED": 0,
+    "INDEPENDENTLY_ADJUDICATED": 3,
+    "CLOSED": 0
+  },
+  "note": "Statuses assigned by independent evaluation — not by production agent self-report."
+}

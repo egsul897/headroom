@@ -1,0 +1,117 @@
+{
+  "cases": [
+    {
+      "caseId": "ADV-FP-01",
+      "category": "shared_capacity_without_affirmative_permission",
+      "description": "Aggregate-amount language without shared-pool / permission-pooling semantics must not affirm shared capacity.",
+      "stimulus": "Indebtedness in an aggregate amount not to exceed $25,000,000 incurred by the Borrower.",
+      "expectedFailClosedBehavior": "Do not emit affirmative shared_capacity permission from aggregate-amount alone.",
+      "verdict": "FAIL_UNSAFE",
+      "evidence": {
+        "sharedCapPatternMatched": true,
+        "sharedCapacityPhrasePresent": false,
+        "productionPatternStillBroad": true
+      },
+      "groundTruthAvailable": true,
+      "note": "Confirms LCQG-GIB-FALSE-AFFIRM-SHARED-CAP still open at signal layer."
+    },
+    {
+      "caseId": "ADV-FP-02",
+      "category": "aggregate_limit_not_shared_basket",
+      "description": "Standalone aggregate limit is a single-basket ceiling, not a shared basket across permissions.",
+      "stimulus": "Indebtedness in an aggregate amount not to exceed $25,000,000 incurred by the Borrower.",
+      "expectedFailClosedBehavior": "Treat as non-shared aggregate ceiling unless combined/shared-pool language present.",
+      "verdict": "FAIL_UNSAFE",
+      "evidence": {
+        "aggregateOnlyMatchedSharedCapSignal": true,
+        "authenticSharedPoolMatched": true,
+        "distinctionHonored": false
+      },
+      "groundTruthAvailable": true,
+      "note": "Signal cannot distinguish aggregate ceiling from shared basket — unsafe if promoted to affirmative shared capacity."
+    },
+    {
+      "caseId": "ADV-FP-03",
+      "category": "comparator_threshold_mistaken_for_capacity",
+      "description": "Ratio comparator threshold must not be treated as basket capacity.",
+      "stimulus": "so long as the Consolidated Leverage Ratio would not be greater than 4.50 to 1.00 after giving effect thereto",
+      "expectedFailClosedBehavior": "Classify as CONDITION/RATIO threshold; capacity=false.",
+      "verdict": "PASS_FAIL_CLOSED",
+      "evidence": {
+        "isComparator": true,
+        "mistakenAsAffirmativeCapPhrase": false,
+        "affirmativeControl": "the Borrower may incur Indebtedness in an amount not to exceed $10,000,000",
+        "figureRoleModulePresentLocal": false,
+        "figureRoleModulePresentArchRemed": true,
+        "archRemedIndependentVitest": "tests/contract-model/figure-role.test.ts 5/5 passed at ec7d5df",
+        "proposedFixSha": "ec7d5df7f7e7c0a0f32221d682d957f5acd3d8d8"
+      },
+      "groundTruthAvailable": true,
+      "note": "Independent replay of figure-role refusal on architecture-remediation worktree PASSED. Eval branch lacks the module — production fix not merged to main."
+    },
+    {
+      "caseId": "ADV-FP-04",
+      "category": "unresolved_amendment_authority",
+      "description": "Amendment/restatement authority must not be silently omitted when caption evidence exists.",
+      "stimulus": "SUP doc-b line-wrapped A&R caption + recital to Dec 15, 2022 credit agreement",
+      "expectedFailClosedBehavior": "Surface RESTATES or REVIEW_REQUIRED; never silent omission of amendment authority.",
+      "verdict": "PASS_FAIL_CLOSED",
+      "evidence": {
+        "classification": "AMENDED_AND_RESTATED_AGREEMENT",
+        "restatesStatuses": [
+          "REVIEW_REQUIRED"
+        ]
+      },
+      "groundTruthAvailable": true,
+      "note": "Independent GT from final-lightweight-unseen claims C2/D1."
+    },
+    {
+      "caseId": "ADV-FP-05",
+      "category": "incorrect_operative_agreement_selection",
+      "description": "Selecting a superseded original as operative after A&R is a dangerous false permission surface.",
+      "stimulus": "Package with ORIGINAL + A&R where A&R RESTATES ORIGINAL",
+      "expectedFailClosedBehavior": "Do not treat superseded original provisions as CURRENT_OPERATIVE without resolved RESTATES/supersession.",
+      "verdict": "UNVERIFIED",
+      "evidence": {
+        "requires": "Full operative-state supersession index with independent GT on post-restatement currentness",
+        "relatedDefect": "LCQG-SUP-AMEND-RESTATES-MISSING (edge now surfaced REVIEW_REQUIRED; supersession CURRENT marking not independently re-certified)"
+      },
+      "groundTruthAvailable": false,
+      "note": "Never convert unavailable supersession GT into PASS. Edge surfacing ≠ operative-version certification."
+    },
+    {
+      "caseId": "ADV-FP-06",
+      "category": "ambiguous_cross_reference",
+      "description": "Ambiguous TOC/body refs must not silently resolve to a unique permission target.",
+      "stimulus": "as set forth in Section 7.05 (see also Section 7.05 in the Table of Contents)",
+      "expectedFailClosedBehavior": "Expose AMBIGUOUS / UNRESOLVED; refuse unique bind to TOC stub.",
+      "verdict": "PASS_FAIL_CLOSED",
+      "evidence": {
+        "gibraltarAmbiguousLegalReference": 306,
+        "syntheticStimulus": "as set forth in Section 7.05 (see also Section 7.05 in the Table of Contents)"
+      },
+      "groundTruthAvailable": true,
+      "note": "Frozen Gibraltar health still exposes AMBIGUOUS at scale — fail-closed at index layer. Consumer TOC refusal separately proposed on architecture-remediation."
+    },
+    {
+      "caseId": "ADV-FP-07",
+      "category": "missing_remote_restrictions",
+      "description": "Entity-scope remote restrictions (e.g. Foreign Subsidiaries carve-outs) must not be dropped when affirming capacity.",
+      "stimulus": "No Subsidiary shall incur Indebtedness; provided that Foreign Subsidiaries may incur unlimited Indebtedness under local facilities.",
+      "expectedFailClosedBehavior": "If entity-scope IR is absent, leave capacity UNVERIFIED/fail-closed rather than borrower-only affirmative.",
+      "verdict": "UNVERIFIED",
+      "evidence": {
+        "gibraltarEntityScopeExtraction": "UNVERIFIED for IR population (Phase-1/2)",
+        "stimulusHasForeignSubsidiaryCarveOut": true
+      },
+      "groundTruthAvailable": false,
+      "note": "No independent entity-scope IR GT for Gibraltar DEVELOPMENT batch. Not PASS."
+    }
+  ],
+  "summary": {
+    "passFailClosed": 3,
+    "failUnsafe": 2,
+    "unverified": 2,
+    "denominator": 7
+  }
+}

@@ -4,3 +4,8 @@ export * from "./phase2-replay";
 export * from "./phase2-adjudication";
 export * from "./phase2-corpus";
 export * from "./phase2-tickets";
+export * from "./phase3-harness";
+export * from "./phase3-contracts";
+export * from "./phase3-replay";
+export * from "./phase3-adversarial";
+export * from "./phase3-metrics";
