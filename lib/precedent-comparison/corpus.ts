@@ -11,9 +11,11 @@ import type {
   ComparableCovenantFamily,
   CorpusStatistics,
   DocumentRole,
+  EvalIsolation,
   PrecedentProvision,
   ProvisionReviewStatus,
 } from "./types";
+import { HELD_OUT_CKG_TAG } from "./types";
 
 export interface CorpusProvisionJson {
   provisionId: string;
@@ -33,6 +35,11 @@ export interface CorpusProvisionJson {
   reviewStatus: ProvisionReviewStatus;
   financialDefinitionTerms?: string[];
   sourceVersionHash?: string;
+  evalIsolation?: EvalIsolation;
+}
+
+export function isHeldOutEval(p: Pick<PrecedentProvision, "evalIsolation" | "tags">): boolean {
+  return p.evalIsolation === "HELD_OUT_CKG" || p.tags.includes(HELD_OUT_CKG_TAG);
 }
 
 export interface CorpusFile {
@@ -66,6 +73,11 @@ function toProvision(row: CorpusProvisionJson): PrecedentProvision {
     reviewedBy: null,
     reviewNote: null,
     financialDefinitionTerms: row.financialDefinitionTerms ?? [],
+    evalIsolation:
+      row.evalIsolation ??
+      (row.tags.includes(HELD_OUT_CKG_TAG) || row.issuerId === "superior" || (row.issuerId ?? "").startsWith("gibraltar")
+        ? "HELD_OUT_CKG"
+        : "NONE"),
   };
 }
 
@@ -144,7 +156,8 @@ export class PrecedentCorpus {
       samplingBiasNotes: [
         "Corpus is built from Headroom research fixtures and peer knowledge-factory exports when available.",
         "Issuer set is not a stratified market sample of all public credit agreements/indentures.",
-        "Over-represents packages already used in Phase 2/3 development (CONMED, FWRG, LSB, Chewy, DSGR, Riot, Gibraltar).",
+        "Over-represents packages already used in Phase 2/3 development (CONMED, FWRG, LSB, Chewy, DSGR, Riot).",
+        "Superior (and designated Gibraltar blind rows) are tagged HELD_OUT_CKG — readable SOURCE_ONLY, excluded from pattern-frequency stats and default retrieval.",
         "EDGAR Backfill / Covenant Knowledge Factory bulk acquisition is required to approach the 100-agreement / 50-issuer targets.",
       ],
       marketPrevalenceClaim: "FORBIDDEN_WITHOUT_REPRESENTATIVE_SAMPLE",

@@ -1,7 +1,7 @@
 /**
  * Source-backed retrieval across the precedent corpus.
  */
-import type { PrecedentCorpus } from "./corpus";
+import { isHeldOutEval, type PrecedentCorpus } from "./corpus";
 import { profileProvision } from "./features";
 import type { ComparisonStanding, RetrievalHit, RetrievalQuery } from "./types";
 
@@ -23,8 +23,11 @@ export function retrieveComparableProvisions(corpus: PrecedentCorpus, query: Ret
   const finTerms = (query.financialDefinitionTerms ?? []).map((t) => t.toLowerCase());
 
   const hits: RetrievalHit[] = [];
+  const includeHeldOut = query.includeHeldOutEval === true;
+
   for (const provision of corpus.list()) {
     if (exclude.has(provision.provisionId)) continue;
+    if (!includeHeldOut && isHeldOutEval(provision)) continue;
     if (query.covenantFamily && provision.covenantFamily !== query.covenantFamily) continue;
     if (query.documentRole && provision.documentRole !== query.documentRole) continue;
     if (query.agreementType && provision.agreementType !== query.agreementType) continue;

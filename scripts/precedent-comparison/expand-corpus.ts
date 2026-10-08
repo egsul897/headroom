@@ -53,6 +53,21 @@ interface ProvisionOut {
   reviewStatus: "SOURCE_ONLY";
   financialDefinitionTerms: string[];
   sourceVersionHash: string;
+  evalIsolation: "NONE" | "HELD_OUT_CKG";
+}
+
+/** Issuers designated held-out for CKG / blind eval — do not drive pattern tuning. */
+const HELD_OUT_ISSUERS = new Set(["superior", "gibraltar"]);
+
+function isolationFor(issuerId: string): "NONE" | "HELD_OUT_CKG" {
+  return HELD_OUT_ISSUERS.has(issuerId) ? "HELD_OUT_CKG" : "NONE";
+}
+
+function finalizeProvision(row: ProvisionOut): ProvisionOut {
+  const evalIsolation = isolationFor(row.issuerId);
+  const tags = [...row.tags];
+  if (evalIsolation === "HELD_OUT_CKG" && !tags.includes("held-out-ckg")) tags.push("held-out-ckg");
+  return { ...row, tags, evalIsolation };
 }
 
 const FAMILY_TITLE_RULES: Array<{ re: RegExp; family: Family; tags?: string[] }> = [
@@ -249,6 +264,7 @@ function buildFromSource(spec: SourceSpec, root: string): ProvisionOut[] {
         reviewStatus: "SOURCE_ONLY",
         financialDefinitionTerms: [d.term],
         sourceVersionHash: sha256(sourceText),
+        evalIsolation: "NONE",
       });
     }
   }
@@ -277,6 +293,7 @@ function buildFromSource(spec: SourceSpec, root: string): ProvisionOut[] {
       reviewStatus: "SOURCE_ONLY",
       financialDefinitionTerms: [],
       sourceVersionHash: sha256(body),
+      evalIsolation: "NONE",
     });
 
     // basket-level slices for density on core negative covenants
@@ -301,6 +318,7 @@ function buildFromSource(spec: SourceSpec, root: string): ProvisionOut[] {
           reviewStatus: "SOURCE_ONLY",
           financialDefinitionTerms: [],
           sourceVersionHash: sha256(b.text.slice(0, 1200)),
+          evalIsolation: "NONE",
         });
       }
     }
@@ -328,11 +346,12 @@ function buildFromSource(spec: SourceSpec, root: string): ProvisionOut[] {
         reviewStatus: "SOURCE_ONLY",
         financialDefinitionTerms: [d.term],
         sourceVersionHash: sha256(sourceText),
+        evalIsolation: "NONE",
       });
     }
   }
 
-  return out;
+  return out.map(finalizeProvision);
 }
 
 function slug(s: string): string {
@@ -390,25 +409,29 @@ function main(): void {
     if (m >= 0) {
       const sourceText = clean(at.slice(m, m + 1800));
       const target = [...byId.keys()].find((id) => id === "conmed-2025:7.1") ?? null;
-      byId.set("conmed-2025:amend-c-2b", {
-        provisionId: "conmed-2025:amend-c-2b",
-        packageId: "conmed-2025",
-        documentId: "conmed-doc-c-second-amendment-2022",
-        sourcePath: amendPath,
-        sourceSectionRef: "SECTION 2(b)",
-        covenantFamily: "FINANCIAL_COVENANTS",
-        charStart: m,
-        charEnd: m + sourceText.length,
-        sourceText,
-        documentRole: "AMENDMENT",
-        agreementType: "AMENDMENT",
-        issuerId: "conmed",
-        amendsProvisionId: target,
-        tags: ["leverage ratio", "step schedule amendment"],
-        reviewStatus: "SOURCE_ONLY",
-        financialDefinitionTerms: [],
-        sourceVersionHash: sha256(sourceText),
-      });
+      byId.set(
+        "conmed-2025:amend-c-2b",
+        finalizeProvision({
+          provisionId: "conmed-2025:amend-c-2b",
+          packageId: "conmed-2025",
+          documentId: "conmed-doc-c-second-amendment-2022",
+          sourcePath: amendPath,
+          sourceSectionRef: "SECTION 2(b)",
+          covenantFamily: "FINANCIAL_COVENANTS",
+          charStart: m,
+          charEnd: m + sourceText.length,
+          sourceText,
+          documentRole: "AMENDMENT",
+          agreementType: "AMENDMENT",
+          issuerId: "conmed",
+          amendsProvisionId: target,
+          tags: ["leverage ratio", "step schedule amendment"],
+          reviewStatus: "SOURCE_ONLY",
+          financialDefinitionTerms: [],
+          sourceVersionHash: sha256(sourceText),
+          evalIsolation: "NONE",
+        }),
+      );
     }
   }
 
@@ -435,25 +458,29 @@ function main(): void {
     if (m < 0) return;
     const sourceText = clean(text.slice(m, m + (opts.window ?? 1800)));
     if (sourceText.length < 80) return;
-    byId.set(opts.provisionId, {
-      provisionId: opts.provisionId,
-      packageId: opts.packageId,
-      documentId: opts.documentId,
-      sourcePath: opts.sourcePath,
-      sourceSectionRef: opts.sourceSectionRef,
-      covenantFamily: opts.covenantFamily,
-      charStart: m,
-      charEnd: m + sourceText.length,
-      sourceText,
-      documentRole: opts.documentRole,
-      agreementType: opts.agreementType,
-      issuerId: opts.issuerId,
-      amendsProvisionId: opts.amendsProvisionId ?? null,
-      tags: opts.tags,
-      reviewStatus: "SOURCE_ONLY",
-      financialDefinitionTerms: [],
-      sourceVersionHash: sha256(sourceText),
-    });
+    byId.set(
+      opts.provisionId,
+      finalizeProvision({
+        provisionId: opts.provisionId,
+        packageId: opts.packageId,
+        documentId: opts.documentId,
+        sourcePath: opts.sourcePath,
+        sourceSectionRef: opts.sourceSectionRef,
+        covenantFamily: opts.covenantFamily,
+        charStart: m,
+        charEnd: m + sourceText.length,
+        sourceText,
+        documentRole: opts.documentRole,
+        agreementType: opts.agreementType,
+        issuerId: opts.issuerId,
+        amendsProvisionId: opts.amendsProvisionId ?? null,
+        tags: opts.tags,
+        reviewStatus: "SOURCE_ONLY",
+        financialDefinitionTerms: [],
+        sourceVersionHash: sha256(sourceText),
+        evalIsolation: "NONE",
+      }),
+    );
   }
 
   addHandSpan({
@@ -532,31 +559,35 @@ function main(): void {
       if (byId.has(provisionId)) continue;
       const sourceText = clean(rec.sourceText).slice(0, 2400);
       const family = (rec.covenantFamily as Family | undefined) ?? "QUALITATIVE_NEGATIVE_COVENANTS";
-      byId.set(provisionId, {
+      byId.set(
         provisionId,
-        packageId: `ckf-${rec.issuerId ?? "unknown"}`,
-        documentId: rec.documentId ?? `ckf-doc-${rec.recordId ?? provisionId}`,
-        sourcePath: `peer://ws-ckf/${rec.recordId ?? provisionId}`,
-        sourceSectionRef: rec.sourceSectionRef ?? "unknown",
-        covenantFamily: family,
-        charStart: 0,
-        charEnd: sourceText.length,
-        sourceText,
-        documentRole: /amend/i.test(rec.agreementType ?? "") ? "AMENDMENT" : "ORIGINAL",
-        agreementType: (rec.agreementType as SourceSpec["agreementType"] | undefined) ?? "CREDIT_AGREEMENT",
-        issuerId: rec.issuerId ?? "ckf-unknown",
-        amendsProvisionId: null,
-        tags: ["ckf-export"],
-        reviewStatus: "SOURCE_ONLY",
-        financialDefinitionTerms: [],
-        sourceVersionHash: sha256(sourceText),
-      });
+        finalizeProvision({
+          provisionId,
+          packageId: `ckf-${rec.issuerId ?? "unknown"}`,
+          documentId: rec.documentId ?? `ckf-doc-${rec.recordId ?? provisionId}`,
+          sourcePath: `peer://ws-ckf/${rec.recordId ?? provisionId}`,
+          sourceSectionRef: rec.sourceSectionRef ?? "unknown",
+          covenantFamily: family,
+          charStart: 0,
+          charEnd: sourceText.length,
+          sourceText,
+          documentRole: /amend/i.test(rec.agreementType ?? "") ? "AMENDMENT" : "ORIGINAL",
+          agreementType: (rec.agreementType as SourceSpec["agreementType"] | undefined) ?? "CREDIT_AGREEMENT",
+          issuerId: rec.issuerId ?? "ckf-unknown",
+          amendsProvisionId: null,
+          tags: ["ckf-export"],
+          reviewStatus: "SOURCE_ONLY",
+          financialDefinitionTerms: [],
+          sourceVersionHash: sha256(sourceText),
+          evalIsolation: "NONE",
+        }),
+      );
       ingested += 1;
     }
     console.log("CKF ingested records:", ingested);
   }
 
-  const provisions = [...byId.values()].sort((a, b) => a.provisionId.localeCompare(b.provisionId));
+  const provisions = [...byId.values()].map(finalizeProvision).sort((a, b) => a.provisionId.localeCompare(b.provisionId));
   const issuers = new Set(provisions.map((p) => p.issuerId));
   const agreements = new Set(provisions.map((p) => p.documentId));
   const outPath = join(root, "lib/precedent-comparison/corpus/public-credit-provisions.json");
@@ -583,6 +614,7 @@ function main(): void {
       samplingBiasNotes: [
         "Expanded from local authentic Headroom fixtures only; no live EDGAR download in PCI.",
         "Includes Superior Industries, CONMED omnibus amendment, DSGR fourth amendment, LSB intercreditor when present on disk.",
+        "Superior and Gibraltar rows are tagged HELD_OUT_CKG (eval-isolated) — excluded from pattern stats and default retrieval.",
         "100-agreement / 50-issuer targets require WS-EHB queue + WS-CKF acquisition delivery.",
         "Corpus frequency ≠ market prevalence.",
       ],

@@ -6,7 +6,7 @@
  * prevalence (always NOT_ESTIMATED here).
  */
 import type { CovenantFamily } from "@prisma/client";
-import type { PrecedentCorpus } from "./corpus";
+import { isHeldOutEval, type PrecedentCorpus } from "./corpus";
 import { profileProvision } from "./features";
 import type { ComparableCovenantFamily, DraftingFeature, PatternFrequency } from "./types";
 
@@ -47,11 +47,16 @@ export function identifyDraftingPatterns(
   corpus: PrecedentCorpus,
   family?: CovenantFamily | ComparableCovenantFamily,
 ): PatternFrequency[] {
-  const provisions = family ? corpus.byFamily(family) : corpus.list();
+  // Never let CKG held-out packages drive "common in corpus" labels.
+  const base = (family ? corpus.byFamily(family) : corpus.list()).filter((p) => !isHeldOutEval(p));
+  const provisions = base;
   const total = provisions.length;
   if (total === 0) return [];
   const distinctIssuers = new Set(provisions.map((p) => p.issuerId)).size;
-  const bias = corpus.statistics().samplingBiasNotes;
+  const bias = [
+    ...corpus.statistics().samplingBiasNotes,
+    "Pattern frequencies exclude HELD_OUT_CKG provisions (Superior / designated blind).",
+  ];
 
   const counts = new Map<DraftingFeature, { count: number; examples: string[] }>();
   for (const p of provisions) {

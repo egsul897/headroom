@@ -43,6 +43,17 @@ export type AgreementType =
   | "DEFINITIONS_EXCERPT"
   | "OTHER";
 
+/**
+ * Eval-isolation class for corpus rows.
+ * HELD_OUT_CKG = Superior / designated blind packages — readable SOURCE_ONLY
+ * precedent, but excluded from pattern-frequency / "common drafting" stats by
+ * default so PCI does not contaminate CKG held-out evaluation.
+ */
+export type EvalIsolation = "NONE" | "HELD_OUT_CKG";
+
+/** Tag written onto held-out rows (also mirrored in tags[]). */
+export const HELD_OUT_CKG_TAG = "held-out-ckg";
+
 /** Covenant families this system is required to compare. */
 export const COMPARABLE_COVENANT_FAMILIES = [
   "INDEBTEDNESS",
@@ -112,6 +123,8 @@ export interface PrecedentProvision {
   reviewNote: string | null;
   /** Optional financial-definition term names when this is a definition excerpt. */
   financialDefinitionTerms: string[];
+  /** Default NONE. HELD_OUT_CKG rows stay SOURCE_ONLY but are eval-isolated. */
+  evalIsolation: EvalIsolation;
 }
 
 export interface DraftingFeatureProfile {
@@ -294,6 +307,11 @@ export interface RetrievalQuery {
   financialDefinitionTerms?: string[];
   textContains?: string;
   reviewStatus?: ProvisionReviewStatus;
+  /**
+   * When false (default), omit HELD_OUT_CKG rows from retrieval.
+   * Set true only for explicit held-out research — never for pattern tuning.
+   */
+  includeHeldOutEval?: boolean;
   limit?: number;
 }
 

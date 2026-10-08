@@ -38,6 +38,7 @@ function sourceOnly(
     reviewedBy: null,
     reviewNote: null,
     financialDefinitionTerms: [],
+    evalIsolation: "NONE",
     ...overrides,
     sourceText,
   };

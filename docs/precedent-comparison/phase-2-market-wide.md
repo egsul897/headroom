@@ -36,12 +36,15 @@
 
 Harvested previously unused authentic on-disk packages without modifying Claude-owned fixtures:
 
-- Superior Industries term loan + A&R + first amendment
+- Superior Industries term loan + A&R + first amendment (**HELD_OUT_CKG** — eval-isolated)
+- Gibraltar credit agreement (**HELD_OUT_CKG** — eval-isolated)
 - CONMED first omnibus amendment (hand span)
 - DSGR fourth amendment (hand span)
 - LSB intercreditor joinder (hand span)
 
 Harvest improvements: multiline `SECTION` headers, TOC-vs-body dedupe, roman-numeral baskets, amendment `SECTION N. Title` headers, CKF ingest path when export available.
+
+Held-out rows remain readable `SOURCE_ONLY` precedent for explicit research (`includeHeldOutEval: true`) but are excluded from pattern-frequency stats and default retrieval so PCI does not contaminate CKG evaluation ([Find knowledge infra APIs](bc-c0e2d907-8763-5a7f-b990-45fb7113cfea)).
 
 ## Epistemic boundaries (Phase 2)
 

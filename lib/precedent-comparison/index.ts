@@ -3,8 +3,10 @@
  */
 export { createPrecedentComparisonApi, compareFamilyFeatureSlice, loadCorpusFromJson } from "./api";
 export type { PrecedentComparisonApi } from "./api";
-export { PrecedentCorpus, getDefaultCorpus, setDefaultCorpusForTests } from "./corpus";
+export { PrecedentCorpus, getDefaultCorpus, setDefaultCorpusForTests, isHeldOutEval } from "./corpus";
 export type { CorpusFile, CorpusProvisionJson } from "./corpus";
+export { HELD_OUT_CKG_TAG } from "./types";
+export type { EvalIsolation } from "./types";
 export { compareProvisions } from "./compare";
 export type { CompareOptions } from "./compare";
 export { exactTextDiff, asymmetricPhraseDiff, benchmarkDiff, myersLineDiff } from "./diff";

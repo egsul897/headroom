@@ -46,6 +46,22 @@ describe("Precedent Comparison API (Phase 2)", () => {
     expect(credit.length).toBeGreaterThan(0);
   });
 
+  it("eval-isolates Superior/Gibraltar from default retrieval and pattern stats", () => {
+    const heldOut = api.corpus.list().filter((p) => p.evalIsolation === "HELD_OUT_CKG");
+    expect(heldOut.length).toBeGreaterThan(0);
+    expect(heldOut.every((p) => p.issuerId === "superior" || p.issuerId === "gibraltar")).toBe(true);
+
+    const defaultHits = api.retrieve({ covenantFamily: "INDEBTEDNESS", limit: 50 });
+    expect(defaultHits.every((h) => h.provision.evalIsolation === "NONE")).toBe(true);
+
+    const explicit = api.retrieve({ covenantFamily: "INDEBTEDNESS", includeHeldOutEval: true, issuerIds: ["superior"], limit: 10 });
+    expect(explicit.length).toBeGreaterThan(0);
+
+    const patterns = api.patterns("INDEBTEDNESS");
+    expect(patterns.every((p) => p.samplingBiasNotes.some((n) => /HELD_OUT_CKG/i.test(n)))).toBe(true);
+    expect(patterns.every((p) => !p.exampleProvisionIds.some((id) => id.startsWith("superior-") || id.startsWith("gibraltar-")))).toBe(true);
+  });
+
   it("compares provisions with exact textual diffs and stratified claims", () => {
     const debt = api.corpus.byFamily("INDEBTEDNESS");
     expect(debt.length).toBeGreaterThanOrEqual(2);
