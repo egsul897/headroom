@@ -1,7 +1,7 @@
 {
   "artifact": "financial-definitions-precedent.negative-examples",
   "version": "fdp.v1",
-  "count": 6,
+  "count": 9,
   "examples": [
     {
       "id": "NEG-CONMED-7_1-SSLR-3_75",
@@ -85,6 +85,48 @@
       "charEnd": 1024,
       "whyNotCapacity": "FCCR threshold is a Payment Conditions gate for certain transactions, not a dollar basket.",
       "correctClassification": "PAYMENT_CONDITIONS_GATE",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-GIB-ICR-Maintenance",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Consolidated Interest Coverage Ratio maintenance (Pro Rata facility)",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 819234,
+      "charEnd": 819554,
+      "excerpt": "nsent of\nthe Required Pro Rata Lenders, permit the Consolidated Interest Coverage Ratio of the Borrower as of the last day of any Test Period (commencing with the Test Period for the fiscal quarter ending June 30, 2026) to be less than 3.00 to 1.00.\n\n249\n\nARTICLE\u00a0VIII\n\nEVENTS OF DEFAULT AND REMEDIES\n\nSection\u00a08.01\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "excerptSha256": "0abaed9d0866c493586bb39122e2d33c6e428ee2ed3fff8f213444e88766d34e",
+      "whyNotCapacity": "Maintenance / permit-not-to-fall-below coverage covenant for the Pro Rata facilities. Numerical ratio floor is a condition, not a basket.",
+      "correctClassification": "MAINTENANCE_FINANCIAL_COVENANT_CONDITION",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-DSGR-TNLR-Pricing_Grid",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Total Net Leverage Ratio used for Applicable Margin / fee grid",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 51350,
+      "charEnd": 51630,
+      "excerpt": "\u201cTicking Fee Rate\u201d, as the case may be, based upon the Total Net Leverage Ratio as of the most recent determination date, provided that until the delivery to the Administrative Agent,\npursuant to Section 5.01, of the Company\u2019s consolidated financial information and Compliance Cer",
+      "excerptSha256": "bbb223930405123e2aa9abc6d9358ff8326462536664724374e8dd3e296a23f7",
+      "whyNotCapacity": "Ratio selects pricing category. It does not itself create debt/RP capacity.",
+      "correctClassification": "PRICING_GRID_INPUT",
+      "verificationStatus": "NEGATIVE_EXAMPLE"
+    },
+    {
+      "id": "NEG-GIB-FLNLR-Pricing_Grid",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "termLabel": "Consolidated First Lien Net Leverage Ratio Applicable Rate grid",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 22233,
+      "charEnd": 22493,
+      "excerpt": "entage per annum as determined by reference to the Consolidated First Lien Net Leverage Ratio of the Borrower in effect from time to time as set\nforth below:\n\nLevel\n\nConsolidated First Lien Net\n\nLeverage Ratio\n\nApplicable Rate for\n\nSOFR Loans\n\nApplicable Rate ",
+      "excerptSha256": "e57dbf79d0690289d5dd8363ce2e0b16dbe4255fabf0335950488a5c9a65e91a",
+      "whyNotCapacity": "Ratio selects Applicable Rate / SOFR margin level. Not affirmative debt or RP capacity.",
+      "correctClassification": "PRICING_GRID_INPUT",
       "verificationStatus": "NEGATIVE_EXAMPLE"
     }
   ]

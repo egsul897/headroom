@@ -163,9 +163,12 @@ describe("financial-definitions-precedent dataset integrity", () => {
       edges: Array<{ edgeType: string; from: string; to: string }>;
     }>("03-calculation-dependency-graph.json");
     const nonEq = graph.edges.filter((e) =>
-      ["SAME_LABEL_NOT_EQUIVALENT", "RELATED_LABEL_NOT_EQUIVALENT", "CASH_NETTING_MECHANICS_DIFFER"].includes(
-        e.edgeType,
-      ),
+      [
+        "SAME_LABEL_NOT_EQUIVALENT",
+        "RELATED_LABEL_NOT_EQUIVALENT",
+        "RELATED_MECHANIC_NOT_EQUIVALENT",
+        "CASH_NETTING_MECHANICS_DIFFER",
+      ].includes(e.edgeType),
     );
     expect(nonEq.length).toBeGreaterThanOrEqual(4);
   });

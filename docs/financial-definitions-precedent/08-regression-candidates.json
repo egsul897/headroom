@@ -79,6 +79,27 @@
         "CONMED-2025-CA::test::Financial_Covenants_7_1"
       ],
       "failureClass": "STEP_UP_CONSTRAINT_DROP"
+    },
+    {
+      "id": "REG-FDP-009",
+      "title": "Add-back cap percent is instrument-specific",
+      "assertion": "Must not apply CONMED 15% or DSGR 20% Combined Cap or GIB 1.10 caps interchangeably.",
+      "fixtures": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA",
+        "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+        "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10"
+      ],
+      "failureClass": "FALSE_EQUIVALENCE"
+    },
+    {
+      "id": "REG-FDP-010",
+      "title": "ECF step-down \u2260 leverage step-up",
+      "assertion": "GIB ECF prepay % step-down must not be modeled as CONMED Material Acquisition leverage step-up.",
+      "fixtures": [
+        "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ],
+      "failureClass": "FALSE_EQUIVALENCE"
     }
   ]
 }

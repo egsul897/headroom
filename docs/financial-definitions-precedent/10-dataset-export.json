@@ -624,6 +624,298 @@
       "verificationStatus": "SOURCE_SPAN_VERIFIED"
     },
     {
+      "id": "GIB-2026-CA::def::Consolidated_EBITDA",
+      "termLabel": "Consolidated EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 11842,
+      "charEnd": 12242,
+      "excerptSha256": "3f46b685f6057eb6497a012e7512aeff1f69622451800775af72bafa7f98b364",
+      "units": "MONEY",
+      "measurementPeriod": "Test Period / LTM as used",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "CNI-based build with add-backs; synergies/cost savings subject to Section 1.10(b) aggregate caps (see nearby pro forma calc)",
+      "dependencies": [
+        "Consolidated Net Income"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::def::Consolidated_Net_Income",
+      "termLabel": "Consolidated Net Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 81386,
+      "charEnd": 81786,
+      "excerptSha256": "ba27cf2f8834789462e95fd2a0737ffa40af16eec3508003a94bdac980d91d28",
+      "units": "MONEY",
+      "measurementPeriod": "any period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Consolidated Net Income",
+      "dependencies": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
+      "termLabel": "Consolidated Interest Coverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 104337,
+      "charEnd": 105037,
+      "excerptSha256": "d9fba7698d62b393048121eaa3fc55ce6840bdbc2df67df753d445f4cb5c024e",
+      "units": "RATIO",
+      "measurementPeriod": "Test Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::def::Excess_Cash_Flow",
+      "termLabel": "Excess Cash Flow",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 154816,
+      "charEnd": 156816,
+      "excerptSha256": "59ea2342de05a11e6f6c6d345e53b4acc8f5eabd2550848a1db3b607865e633b",
+      "units": "MONEY",
+      "measurementPeriod": "Excess Cash Flow Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Excess Cash Flow",
+      "dependencies": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
+      "termLabel": "Retained Excess Cash Flow Amount",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 466885,
+      "charEnd": 467285,
+      "excerptSha256": "a87bef7858f3973ebe075052d164ed0f56251b5deeef0c01eaa1193f43d009fc",
+      "units": "MONEY",
+      "measurementPeriod": "ECF Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Excess Cash Flow for period minus ECF Prepayment Amount",
+      "dependencies": [
+        "Excess Cash Flow",
+        "ECF Prepayment Amount"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
+      "termLabel": "Available Amount Builder Basket",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 37216,
+      "charEnd": 37716,
+      "excerptSha256": "ecb313a5a36da1da5474277e8ecc462cb762169d3dcdc7efb5fdf00669d192ec",
+      "units": "MONEY",
+      "measurementPeriod": "as specified in Section 7.05(a)(y)",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Cross-ref or inline builder basket tied to Section 7.05(a)(y); includes 40% LTM EBITDA prong in nearby drafting",
+      "dependencies": [
+        "LTM EBITDA",
+        "Section 7.05(a)(y)"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::def::LTM_EBITDA",
+      "termLabel": "LTM EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 231335,
+      "charEnd": 231935,
+      "excerptSha256": "8088feb9e55a66de199684402cd6c0a8ec688174156cdf32788f6cfede82c2a8",
+      "units": "MONEY",
+      "measurementPeriod": "last twelve months",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for LTM EBITDA",
+      "dependencies": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
+      "termLabel": "Pro forma synergies/cost savings add-back cap (Section 1.10)",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 396039,
+      "charEnd": 396939,
+      "excerptSha256": "715523cfb026d11b66d7dd3a8e4def5e20b749de5b4e1ea143059e417f2608b1",
+      "units": "CONSTRAINT",
+      "measurementPeriod": "pro forma period being tested",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "Cost savings, opex reductions, synergies given pro forma effect subject to aggregate cap combined with other named clauses (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Section 1.10"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+      "termLabel": "Excess Cash Flow prepayment percentage step-down by First Lien Net Leverage",
+      "kind": "STEP_CHANGE_TEST",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 466271,
+      "charEnd": 466721,
+      "excerptSha256": "e233dc8ad87d250a7a5f3627568aa6f19362ed2b9f95215db0a156bf45f56374",
+      "units": "PERCENT",
+      "measurementPeriod": "Excess Cash Flow Period / fiscal year-end FLNLR",
+      "entityScope": "Borrower",
+      "formulaSketch": "ECF prepay % steps down to 25% / 0% when Consolidated First Lien Net Leverage Ratio \u2264 3.35x / 2.85x (per excerpt thresholds)",
+      "dependencies": [
+        "Excess Cash Flow",
+        "Consolidated First Lien Net Leverage Ratio"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "DSGR-2024-AMD::builder::Available_Amount",
+      "termLabel": "Available Amount",
+      "kind": "BUILDER_OR_POOL",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 57195,
+      "charEnd": 58795,
+      "excerptSha256": "234d6f5b95961f9fd8d41441101296c976358db42541f64a5c4ba4d474536dea",
+      "units": "MONEY",
+      "measurementPeriod": "Reference Date cumulative builder",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Cumulative builder from day after Effective Date through Reference Date (see excerpt components: CNI/retained amounts, equity, returns on AA investments, redesignations, minus usage)",
+      "dependencies": [
+        "Net Income / builder components per excerpt"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
+      "termLabel": "Interest Coverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 155423,
+      "charEnd": 155923,
+      "excerptSha256": "65bbc29861c2f67d7f03394aa7897d718bc5e6bde351fbe42b8067ae73cef04d",
+      "units": "RATIO",
+      "measurementPeriod": "as defined / tested under \u00a76.12",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "EBITDA / Interest Expense style coverage (see excerpt)",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
+      "termLabel": "Total Net Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 222458,
+      "charEnd": 223158,
+      "excerptSha256": "1bf200505225d63b32fce470576dd24d712fb77e1483097a681edcbeb6002299",
+      "units": "RATIO",
+      "measurementPeriod": "most recent determination date",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Net debt / EBITDA with Total Net Leverage Ratio Adjustment mechanics referenced",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+      "termLabel": "Combined Cap (20% of EBITDA before add-backs)",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 129501,
+      "charEnd": 130001,
+      "excerptSha256": "d257c6f6d3ea654dda9eaf72717695caee6fdf60a0772c61723939281667c373",
+      "units": "PERCENT_OF_EBITDA",
+      "measurementPeriod": "any four fiscal quarter measurement period",
+      "entityScope": "Company consolidated",
+      "formulaSketch": "Aggregate add-backs under named clauses (a)(vii), (a)(viii), (a)(xviii)(b) \u2264 20% of EBITDA before those add-backs",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
+      "termLabel": "Consolidated First Lien Net Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 101260,
+      "charEnd": 101810,
+      "excerptSha256": "01cee25c07ca3b2ab33b7a69aa20f9152c99d5bfed988f84ac59741fcee8bbd0",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded First Lien Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded First Lien Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
+      "termLabel": "Consolidated Secured Net Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 128077,
+      "charEnd": 128627,
+      "excerptSha256": "2c4a26c0be01ff7a8d705b06863a361e0d6b6b356b95cc6fa85c24d8d9db3d87",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Senior Secured Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Senior Secured Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
+      "termLabel": "Consolidated Total Net Leverage Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 128381,
+      "charEnd": 128931,
+      "excerptSha256": "63af79f5d72e734550bacd9f70345aa7da37a8cf83246197067755a2d2e21e00",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED"
+    },
+    {
       "id": "NEG-CONMED-7_1-SSLR-3_75",
       "termLabel": "Consolidated Senior Secured Leverage Ratio \u2264 3.75 to 1.00",
       "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
@@ -694,6 +986,42 @@
       "excerptSha256": "7a3e44338379f6d3769d2fb59b175ec53e2b949164727d8e263328a5c66751fd",
       "verificationStatus": "NEGATIVE_EXAMPLE",
       "correctClassification": "PAYMENT_CONDITIONS_GATE"
+    },
+    {
+      "id": "NEG-GIB-ICR-Maintenance",
+      "termLabel": "Consolidated Interest Coverage Ratio maintenance (Pro Rata facility)",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 819234,
+      "charEnd": 819554,
+      "excerptSha256": "0abaed9d0866c493586bb39122e2d33c6e428ee2ed3fff8f213444e88766d34e",
+      "verificationStatus": "NEGATIVE_EXAMPLE",
+      "correctClassification": "MAINTENANCE_FINANCIAL_COVENANT_CONDITION"
+    },
+    {
+      "id": "NEG-DSGR-TNLR-Pricing_Grid",
+      "termLabel": "Total Net Leverage Ratio used for Applicable Margin / fee grid",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "charStart": 51350,
+      "charEnd": 51630,
+      "excerptSha256": "bbb223930405123e2aa9abc6d9358ff8326462536664724374e8dd3e296a23f7",
+      "verificationStatus": "NEGATIVE_EXAMPLE",
+      "correctClassification": "PRICING_GRID_INPUT"
+    },
+    {
+      "id": "NEG-GIB-FLNLR-Pricing_Grid",
+      "termLabel": "Consolidated First Lien Net Leverage Ratio Applicable Rate grid",
+      "kind": "NEGATIVE_EXAMPLE_CONDITION_NOT_CAPACITY",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "charStart": 22233,
+      "charEnd": 22493,
+      "excerptSha256": "e57dbf79d0690289d5dd8363ce2e0b16dbe4255fabf0335950488a5c9a65e91a",
+      "verificationStatus": "NEGATIVE_EXAMPLE",
+      "correctClassification": "PRICING_GRID_INPUT"
     }
   ]
 }

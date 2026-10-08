@@ -4,7 +4,7 @@
   "status": "DRAFT_DATASET",
   "workstreamId": "WS-FDP",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "generatedAt": "2026-10-08T22:13:54Z",
+  "generatedAt": "2026-10-08T22:17:26Z",
   "sourceRegistry": {
     "CHWY-2026-CA": {
       "packageId": "chwy-2026-credit-agreement",
@@ -41,29 +41,47 @@
       "sourceKind": "CURATED_DEFINITIONS_EXCERPT",
       "issuer": "LSB Industries (fixture package)",
       "asOf": "2023"
+    },
+    "GIB-2026-CA": {
+      "packageId": "gibraltar-2026-credit-agreement",
+      "instrumentName": "Gibraltar Industries Credit Agreement (2026 fixture package)",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Gibraltar Industries (fixture package)",
+      "asOf": "2026"
+    },
+    "DSGR-2024-AMD": {
+      "packageId": "dsgr-2022-2025-credit-facility",
+      "instrumentName": "Distribution Solutions Group Third Amendment 2024 (definitions in restated CA text)",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sourceKind": "EXTRACTED_TEXT_FIXTURE",
+      "issuer": "Distribution Solutions Group (fixture package)",
+      "asOf": "2024"
     }
   },
   "counts": {
-    "entries": 31,
+    "entries": 47,
     "byKind": {
-      "FINANCIAL_DEFINITION": 13,
-      "ADJUSTMENT_MECHANIC": 4,
-      "LEVERAGE_OR_COVERAGE_TEST": 8,
-      "BUILDER_OR_POOL": 3,
+      "FINANCIAL_DEFINITION": 17,
+      "ADJUSTMENT_MECHANIC": 6,
+      "LEVERAGE_OR_COVERAGE_TEST": 14,
+      "BUILDER_OR_POOL": 6,
       "CURE_RIGHT": 2,
-      "STEP_CHANGE_TEST": 1
+      "STEP_CHANGE_TEST": 2
     },
     "bySource": {
       "CHWY-2026-CA": 17,
       "CONMED-2025-CA": 9,
       "FWRG-2021-CA": 4,
-      "LSB-2023-ABL": 1
+      "LSB-2023-ABL": 1,
+      "GIB-2026-CA": 12,
+      "DSGR-2024-AMD": 4
     },
-    "negativeExamples": 6,
-    "missingInputKeys": 12,
-    "unresolvedItems": 6,
-    "regressionCandidates": 8,
-    "divergencePairs": 5,
+    "negativeExamples": 9,
+    "missingInputKeys": 14,
+    "unresolvedItems": 8,
+    "regressionCandidates": 10,
+    "divergencePairs": 8,
     "addbackFamilies": 18
   },
   "entries": [
@@ -1106,7 +1124,467 @@
       "verificationStatus": "SOURCE_SPAN_VERIFIED",
       "notes": "Uses bare 'EBITDA' not 'Consolidated EBITDA'/'Consolidated Adjusted EBITDA'. Formula \u2260 FWRG FCCR. Negative example: 2.0x Payment Conditions threshold is a condition, not a basket.",
       "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Consolidated_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated EBITDA",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 11842,
+      "charEnd": 12242,
+      "excerpt": "\u201cConsolidated EBITDA\u201d.\n\n1\n\n\u201c Acquired \u00a0 Indebtedness \u201d means, with respect to any Person, (x) Indebtedness of any other Person or any of its Subsidiaries existing at the time such other Person becomes a Restricted\nSubsidiary or merges or amalgamates with or into or consolidates or otherwise combines with the Borrower or any Restricted Subsidiary and (y) Indebtedness secured by a Lien encumbering a",
+      "excerptSha256": "3f46b685f6057eb6497a012e7512aeff1f69622451800775af72bafa7f98b364",
+      "units": "MONEY",
+      "measurementPeriod": "Test Period / LTM as used",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "CNI-based build with add-backs; synergies/cost savings subject to Section 1.10(b) aggregate caps (see nearby pro forma calc)",
+      "dependencies": [
+        "Consolidated Net Income"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Consolidated_Net_Income",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Consolidated Net Income",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 81386,
+      "charEnd": 81786,
+      "excerpt": "\u201cConsolidated Net Income\u201d in each case, to the extent deducted (and not added back) in computing Consolidated Net Income;\nplus\n\n(c)\u00a0\u00a0\u00a0\u00a0 Consolidated Depreciation and Amortization\nExpense of such Person for such period to the extent deducted (and not added back) in computing Consolidated Net Income; plus\n\n(d)\u00a0\u00a0\u00a0\u00a0 any fees, costs, expenses or charges (other\nthan Consolidated Depreciation and Amortiz",
+      "excerptSha256": "ba27cf2f8834789462e95fd2a0737ffa40af16eec3508003a94bdac980d91d28",
+      "units": "MONEY",
+      "measurementPeriod": "any period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Consolidated Net Income",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Interest Coverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 104337,
+      "charEnd": 105037,
+      "excerpt": "\u201c Consolidated Interest Coverage Ratio \u201d means, as of any date of\ndetermination, the ratio of (a) LTM EBITDA to (b) Consolidated Cash Interest Expense of the Restricted Group on a consolidated basis for the Test Period ended on such date, in each case, calculated on a pro forma basis in a manner consistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Interest \u00a0 Expense \u201d\nmeans, with respect to any Person for any period, without duplication, the sum of:\n\n(1) \u00a0\u00a0\u00a0\u00a0\u00a0 consolidated interest expense of such Person and its Restricted Subsidiaries for such period, to the extent such expense was deducted (and not added back) in computing Consolidated Net Income, which shall\ninclude:\n\n(a)\u00a0\u00a0\u00a0\u00a0 amortization of ",
+      "excerptSha256": "d9fba7698d62b393048121eaa3fc55ce6840bdbc2df67df753d445f4cb5c024e",
+      "units": "RATIO",
+      "measurementPeriod": "Test Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Consolidated EBITDA / Consolidated Interest Expense (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::Excess_Cash_Flow",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "Excess Cash Flow",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 154816,
+      "charEnd": 156816,
+      "excerpt": "\u201c Excess Cash Flow \u201d means, with respect to any\nExcess Cash Flow Period, an amount, not less than zero, equal to:\n\n(a) \u00a0\u00a0\u00a0\u00a0 Consolidated\nNet Income of the Restricted Group for such Excess Cash Flow Period,\n\n(b) \u00a0\u00a0\u00a0\u00a0 without\nduplication (in each case, for the Restricted Group on a consolidated basis):\n\n(i) \u00a0\u00a0\u00a0\u00a0 minus , repayments, prepayments, repurchases, redemptions and other cash payments made with respect to the principal of any Indebtedness (including principal\nrepresenting capitalized interest) or the principal component of any Finance Lease Obligations of such Person or any of its Restricted Subsidiaries during such period (excluding (A) repayments and prepayments of Indebtedness deducted from the\namount of Term Loans required to be prepaid pursuant to clause (1) or (4) of Section 2.05(b)(i)(B) and (B) voluntary and mandatory prepayments of Term Loans), but including all premium, make-whole or penalty payments paid in cash (to the extent such payments are not expensed during such period\nor are not deducted in calculating Consolidated Net Income and such payments are not otherwise prohibited under this Agreement) and all repayments with respect to revolving Indebtedness to the extent accompanied by a corresponding permanent\nreduction in commitments (excluding repayments of Indebtedness deducted from the amount of Term Loans required to be prepaid pursuant to clause (1) or (4) of Section 2.05(b)(i)(B) ) ; minus\n\n(ii)\u00a0\u00a0\u00a0\u00a0 (A) payments\nmade in cash or accrued by such Person or any of its Restricted Subsidiaries during such period in respect of Restricted Payments (excluding Restricted Payments made pursuant to clause\n(17)(ii) of Section\u00a07.05(b) ) and (B) payments made in cash or accrued in respect of Restricted Payments reducing mandatory prepayments of the Term Loans pursuant to clause\u00a0(8) of Section 2.05(b)(i)(B) , in each case other than to the extent that any such Restricted Payments are funded with\nlong-term Indebtedness or Capital Stock; minus\n\n(iii)\n(A) cas",
+      "excerptSha256": "59ea2342de05a11e6f6c6d345e53b4acc8f5eabd2550848a1db3b607865e633b",
+      "units": "MONEY",
+      "measurementPeriod": "Excess Cash Flow Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for Excess Cash Flow",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Retained Excess Cash Flow Amount",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 466885,
+      "charEnd": 467285,
+      "excerpt": "\u201c Retained Excess Cash Flow Amount \u201d which Retained Excess Cash Flow Amount may be used for any purpose not prohibited hereunder);\n\nprovided , further , that no prepayment shall be required with respect to any Excess Cash Flow Period unless the ECF Prepayment Amount exceeds the greater of $51,600,000 and 15.0% of LTM EBITDA, and in such case, the ECF\nPrepayment Amount shall be the amount in excess",
+      "excerptSha256": "a87bef7858f3973ebe075052d164ed0f56251b5deeef0c01eaa1193f43d009fc",
+      "units": "MONEY",
+      "measurementPeriod": "ECF Period",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Excess Cash Flow for period minus ECF Prepayment Amount",
+      "dependencies": [
+        "Excess Cash Flow",
+        "ECF Prepayment Amount"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount Builder Basket",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 37216,
+      "charEnd": 37716,
+      "excerpt": "\u201c Available Amount Builder Basket \u201d has the meaning specified in Section 7.05(a)(y) .\n\n\u201c Available Tenor \u201d means, as of any date of determination and with respect to\nthe then-current Benchmark, as applicable, any tenor for such Benchmark (or component thereof) or payment period for interest calculated with reference to such Benchmark (or component thereof), as applicable, that is or may be used for determining\nthe length of an Interest Period for any term rate or otherwise, for determining any f",
+      "excerptSha256": "ecb313a5a36da1da5474277e8ecc462cb762169d3dcdc7efb5fdf00669d192ec",
+      "units": "MONEY",
+      "measurementPeriod": "as specified in Section 7.05(a)(y)",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "Cross-ref or inline builder basket tied to Section 7.05(a)(y); includes 40% LTM EBITDA prong in nearby drafting",
+      "dependencies": [
+        "LTM EBITDA",
+        "Section 7.05(a)(y)"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::def::LTM_EBITDA",
+      "kind": "FINANCIAL_DEFINITION",
+      "termLabel": "LTM EBITDA",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I / related calculation sections",
+      "charStart": 231335,
+      "charEnd": 231935,
+      "excerpt": "\u201c LTM EBITDA \u201d means, as of any date of determination, Consolidated EBITDA of\nthe Borrower measured for the period of the most recent four consecutive fiscal quarters ending prior to the date of such determination for which consolidated financial statements are available (which may, at the election of the Borrower, be\ninternal financial statements), in each case with such pro forma adjustments as are consistent with the pro forma adjustments set forth in Section\u00a01.10 .\n\n\u201c Majority \u00a0 Lenders \u201d of any Tranche or class of Loans, as applicable, means those Non-Defaulting Lenders of such Tranche or",
+      "excerptSha256": "8088feb9e55a66de199684402cd6c0a8ec688174156cdf32788f6cfede82c2a8",
+      "units": "MONEY",
+      "measurementPeriod": "last twelve months",
+      "entityScope": "Borrower and Restricted Subsidiaries (as drafted)",
+      "formulaSketch": "See excerpt; instrument-specific drafting for LTM EBITDA",
+      "dependencies": [],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Batch-2 expansion from gibraltar-2026 fixture. Do not equate Net Leverage ratios here with CHWY gross-then-net CTD mechanics or CONMED capped cash netting without reading this instrument.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Pro forma synergies/cost savings add-back cap (Section 1.10)",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Section 1.10 Pro Forma Calculations",
+      "charStart": 396039,
+      "charEnd": 396939,
+      "excerpt": "from such transactions which is being given pro forma effect; provided that the aggregate amount of cost savings, operating expense reductions and synergies added to Consolidated EBITDA pursuant to this Section 1.10(b) (combined with the\naggregate amount of adjustments made pursuant to clause s (1)(e)(i),\n(g) , (u) , (v)\nand (w) of the definition of Consolidated EBITDA) shall not exceed 30.0% of Consolidated EBITDA for any four fiscal quarter period (determined after giving effect thereto and all other adjustments and addbacks ); provided , further , that such 30.0% cap shall not apply to any such adjustments that are of the type that would be permitted to be included in pro forma financial\nstatements prepared in accordance with Regulation S-X under the Securities Act) .\u00a0 If any Indebtedness bears a floating rate of interest and is being given pro forma effect, the interest on such Indeb",
+      "excerptSha256": "715523cfb026d11b66d7dd3a8e4def5e20b749de5b4e1ea143059e417f2608b1",
+      "units": "CONSTRAINT",
+      "measurementPeriod": "pro forma period being tested",
+      "entityScope": "Borrower / Restricted Subsidiaries",
+      "formulaSketch": "Cost savings, opex reductions, synergies given pro forma effect subject to aggregate cap combined with other named clauses (see excerpt)",
+      "dependencies": [
+        "Consolidated EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        },
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        }
+      ],
+      "caps": [
+        {
+          "type": "AGGREGATE_WITH_SISTER_CLAUSES",
+          "note": "combined with other 1.10 clauses \u2014 read full section for numeric %"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Documents capped synergy add-backs distinct from CONMED 15% Pro Forma Adjustments and CHWY Expected Run Rate Benefit 36-month lookforward.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+      "kind": "STEP_CHANGE_TEST",
+      "termLabel": "Excess Cash Flow prepayment percentage step-down by First Lien Net Leverage",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "ECF mandatory prepayment",
+      "charStart": 466271,
+      "charEnd": 466721,
+      "excerpt": "-term\nIndebtedness or Capital Stock);\n\nprovided that such percentage in respect of any\nExcess Cash Flow Period shall be reduced to 25.0% and to 0.0% if the Consolidated First Lien Net Leverage Ratio as of the last day of the fiscal year to which such Excess Cash Flow\nPeriod relates was equal to or less than 3.35 to 1.00 or 2.85 to 1.00, respectively (the amount described in this clause (i) , the \u201c ECF Prepayment Amount \u201d and with respect to any E",
+      "excerptSha256": "e233dc8ad87d250a7a5f3627568aa6f19362ed2b9f95215db0a156bf45f56374",
+      "units": "PERCENT",
+      "measurementPeriod": "Excess Cash Flow Period / fiscal year-end FLNLR",
+      "entityScope": "Borrower",
+      "formulaSketch": "ECF prepay % steps down to 25% / 0% when Consolidated First Lien Net Leverage Ratio \u2264 3.35x / 2.85x (per excerpt thresholds)",
+      "dependencies": [
+        "Excess Cash Flow",
+        "Consolidated First Lien Net Leverage Ratio"
+      ],
+      "adjustments": [
+        {
+          "family": "STEP_UP",
+          "direction": "STEP_DOWN_PREPAY_PERCENT"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Step-DOWN of prepayment percentage (not leverage maintenance step-up). Distinct from CONMED Material Acquisition leverage step-up.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::builder::Available_Amount",
+      "kind": "BUILDER_OR_POOL",
+      "termLabel": "Available Amount",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 57195,
+      "charEnd": 58795,
+      "excerpt": "\u201c Available Amount \u201d means, at any time (the \u201c Reference\nDate \u201d), the sum (without duplication) of:\n\n(i)\n25% of Applicable EBITDA (calculated on a pro forma basis) as of the last day of the most recently ended four\nfiscal-quarter period on or prior to the date of determination; plus\n\n(ii)\nwithout duplication, the net cash proceeds of any issuance of Qualified Stock received by the Company during\nthe period from and including the Business Day immediately following the Effective Date through and including the Reference Date, in each case, to the extent not included in the definition of \u201cSpecified Equity Contribution\u201d and Not\nOtherwise Applied; plus\n\n(iii)\nthe principal amount of any Indebtedness issued by the Company after the Effective Date that has been exchanged\nfor or converted into Qualified Stock of the Company during the period from and including the Business Day immediately following the Effective Date through and including the Reference Date and Not Otherwise Applied; plus\n\n(iv)\nto the extent not already reflected as a return of capital with respect to such investment for purposes of\ndetermining the amount of such investment, the aggregate amount of all Returns (including all cash repayment of principal) received in cash or Permitted Investments by the Company or any Restricted Subsidiary from any investment or Unrestricted\nSubsidiary during the period from and including the Business Day immediately following the Effective Date through and including the Reference Date, in each case, to the extent any such investment was made using the Available Amount pursuant to\nSec",
+      "excerptSha256": "234d6f5b95961f9fd8d41441101296c976358db42541f64a5c4ba4d474536dea",
+      "units": "MONEY",
+      "measurementPeriod": "Reference Date cumulative builder",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Cumulative builder from day after Effective Date through Reference Date (see excerpt components: CNI/retained amounts, equity, returns on AA investments, redesignations, minus usage)",
+      "dependencies": [
+        "Net Income / builder components per excerpt"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "DSGR Available Amount shape differs from CHWY greater-of and FWRG CNI Growth Amount.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Interest Coverage Ratio",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 155423,
+      "charEnd": 155923,
+      "excerpt": "\u201c Interest Coverage Ratio \u201d means,\nfor any period of four consecutive fiscal quarters of the Company, the ratio of (a) EBITDA for such period to (b) Consolidated Interest Expense for such period. Notwithstanding the foregoing, solely for purposes of determining the Interest\nCoverage Ratio for any period of four consecutive fiscal quarters ending as of March 31, 2022, June 30, 2022, September 30, 2022 or December 31, 2022 (each such fiscal quarter being referred to as an \u201c Annualized\nQuarter \u201d), ",
+      "excerptSha256": "65bbc29861c2f67d7f03394aa7897d718bc5e6bde351fbe42b8067ae73cef04d",
+      "units": "RATIO",
+      "measurementPeriod": "as defined / tested under \u00a76.12",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "EBITDA / Interest Expense style coverage (see excerpt)",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Label Interest Coverage Ratio \u2014 confirm numerator is EBITDA not Consolidated EBITDA naming.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Total Net Leverage Ratio",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "Article I definitions in Third Amendment restated text",
+      "charStart": 222458,
+      "charEnd": 223158,
+      "excerpt": "\u201c Total Net Leverage Ratio \u201d means, on any date, the ratio of (a) Total Indebtedness on such date minus\nUnrestricted Cash as of such date in an amount not to exceed $50,000,000 to (b) EBITDA for the period of four consecutive fiscal quarters of the Company most recently ended on or prior to such date. Operating leases that are reflected on the\nconsolidated balance sheet of the Company shall be excluded for purposes of calculating the Total Net Leverage Ratio.\n\n51\n\n\u201c Total Net Leverage Ratio Adjustment \u201d has the meaning assigned to such term\nin Section 6.12(b).\n\n\u201c Transactions \u201d means (a) the consummation of each Closing Date Acquisition, (b) the\nrepayment on the Effective Date of the Closing",
+      "excerptSha256": "1bf200505225d63b32fce470576dd24d712fb77e1483097a681edcbeb6002299",
+      "units": "RATIO",
+      "measurementPeriod": "most recent determination date",
+      "entityScope": "Company and Subsidiaries / Restricted Subsidiaries as drafted",
+      "formulaSketch": "Net debt / EBITDA with Total Net Leverage Ratio Adjustment mechanics referenced",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "CASH_NETTING",
+          "direction": "SUBTRACT"
+        }
+      ],
+      "caps": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Pricing grid and covenant uses Total Net Leverage Ratio; not equivalent to CHWY Total Leverage Ratio.",
+      "amendments": []
+    },
+    {
+      "id": "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+      "kind": "ADJUSTMENT_MECHANIC",
+      "termLabel": "Combined Cap (20% of EBITDA before add-backs)",
+      "sourceId": "DSGR-2024-AMD",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "sectionHint": "EBITDA definition",
+      "charStart": 129501,
+      "charEnd": 130001,
+      "excerpt": "ded that, notwithstanding any of the\nforegoing, the aggregate amount all items added back to Net Income during any period in respect of clauses (a)(vii), (a)(viii), and (a)(xviii)(b) shall not exceed 20% of EBITDA calculated before such add-backs (the \u201c Combined Cap \u201d).\n\nNotwithstanding anything to the contrary set forth in this Agreement, EBITDA shall, in each case, be deemed to be the amount set forth below opposite\nsuch period, and any adjustments taken into account in calculating the amounts",
+      "excerptSha256": "d257c6f6d3ea654dda9eaf72717695caee6fdf60a0772c61723939281667c373",
+      "units": "PERCENT_OF_EBITDA",
+      "measurementPeriod": "any four fiscal quarter measurement period",
+      "entityScope": "Company consolidated",
+      "formulaSketch": "Aggregate add-backs under named clauses (a)(vii), (a)(viii), (a)(xviii)(b) \u2264 20% of EBITDA before those add-backs",
+      "dependencies": [
+        "EBITDA"
+      ],
+      "adjustments": [
+        {
+          "family": "SYNERGIES_RUN_RATE",
+          "direction": "ADD"
+        },
+        {
+          "family": "RESTRUCTURING_OPTIMIZATION",
+          "direction": "ADD"
+        }
+      ],
+      "caps": [
+        {
+          "type": "PERCENT_OF_EBITDA_BEFORE_ADDBACKS",
+          "percent": 20,
+          "appliesTo": "combined named add-back clauses"
+        }
+      ],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Third add-back cap pattern: DSGR 20% Combined Cap vs CONMED 15% Pro Forma Adjustments vs GIB \u00a71.10 combined synergy caps.",
+      "amendments": []
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated First Lien Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 101260,
+      "charEnd": 101810,
+      "excerpt": "\u201c Consolidated \u00a0 First \u00a0 Lien \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d\nmeans, as of any date of determination, the ratio of (a) Consolidated Funded First Lien Indebtedness of the Restricted Group as of such date to (b) LTM EBITDA, in each case, calculated on a pro forma basis in a manner consistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Funded \u00a0 First \u00a0 Lien \u00a0 Indebtedness \u201d means Consolidated Funded Indebtedness of the Restricted Group that is secured by a Lien on the Collateral on an equivalent priority basis (but, in each case, without regard to control\nof",
+      "excerptSha256": "01cee25c07ca3b2ab33b7a69aa20f9152c99d5bfed988f84ac59741fcee8bbd0",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded First Lien Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded First Lien Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Secured Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 128077,
+      "charEnd": 128627,
+      "excerpt": "\u201c Consolidated Secured \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a)\nConsolidated Funded Senior Secured Indebtedness of the Restricted Group as of such date to (b) LTM EBITDA, in each case, calculated on a pro forma basis in a manner\nconsistent with Section 1.10 .\n\n\u201c Consolidated \u00a0 Total \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a) Consolidated Funded Indebtedness of the Restricted Group as of such date to (b)\u00a0LTM EBITDA, in each case,\ncalculated on a pro forma basis i",
+      "excerptSha256": "2c4a26c0be01ff7a8d705b06863a361e0d6b6b356b95cc6fa85c24d8d9db3d87",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Senior Secured Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Senior Secured Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
+    },
+    {
+      "id": "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
+      "kind": "LEVERAGE_OR_COVERAGE_TEST",
+      "termLabel": "Consolidated Total Net Leverage Ratio",
+      "sourceId": "GIB-2026-CA",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sectionHint": "Article I Definitions (NBSP-separated headword)",
+      "charStart": 128381,
+      "charEnd": 128931,
+      "excerpt": "\u201c Consolidated \u00a0 Total \u00a0 Net \u00a0 Leverage \u00a0 Ratio \u201d means, as of any date of determination, the ratio of (a) Consolidated Funded Indebtedness of the Restricted Group as of such date to (b)\u00a0LTM EBITDA, in each case,\ncalculated on a pro forma basis in a manner consistent with Section\u00a01.10 .\n\n\u201c Contingent \u00a0 Obligations \u201d means, with respect to any Person, any obligation of such Person guaranteeing in any manner, whether directly or indirectly, any Non-Financing Lease Obligation,\ndividend or other obligation that does not constitute Indebtedness (\u201c p",
+      "excerptSha256": "63af79f5d72e734550bacd9f70345aa7da37a8cf83246197067755a2d2e21e00",
+      "units": "RATIO",
+      "measurementPeriod": "as of any date of determination / LTM EBITDA",
+      "entityScope": "Restricted Group",
+      "formulaSketch": "Consolidated Funded Indebtedness / LTM EBITDA, on pro forma basis consistent with Section 1.10",
+      "dependencies": [
+        "Consolidated Funded Indebtedness",
+        "LTM EBITDA",
+        "Section 1.10"
+      ],
+      "adjustments": [
+        {
+          "family": "PRO_FORMA",
+          "direction": "RESTATE_PERIOD"
+        },
+        {
+          "family": "CASH_NETTING",
+          "direction": "IN_FUNDED_INDEBTEDNESS_DEFS"
+        }
+      ],
+      "caps": [],
+      "amendments": [],
+      "verificationStatus": "SOURCE_SPAN_VERIFIED",
+      "notes": "Headword uses non-breaking spaces between words in source PDF extract. Numerator is Funded * Indebtedness (netting lives in those debt defs / cash netting rules), denominator is LTM EBITDA \u2014 not CHWY Consolidated EBITDA/Test Period stack."
     }
   ],
-  "disclaimer": "Source-backed draft atlas. Excerpts may be truncated; re-open sourcePath for full clauses. No legal equivalence claimed across instruments. No financial results invented."
+  "disclaimer": "Source-backed draft atlas. Excerpts may be truncated; re-open sourcePath for full clauses. No legal equivalence claimed across instruments. No financial results invented.",
+  "batch": "batch-2-gibraltar-dsgr-expansion"
 }

@@ -49,6 +49,34 @@
         "Same instrument: First Lien Debt requires equal/senior priority vs Secured Obligations; Senior Secured Debt requires security on material Collateral without that equal/senior filter",
         "Both exclude Excluded Revolving Loans and inherit CTD cash netting"
       ]
+    },
+    {
+      "termLabel": "Add-back / synergy caps",
+      "left": "CONMED-2025-CA::def::Consolidated_EBITDA",
+      "right": "DSGR-2024-AMD::adj::Combined_Cap_20pct",
+      "differences": [
+        "CONMED: Pro Forma Adjustments capped at 15% of Consolidated EBITDA (after giving effect), net of benefits realized",
+        "DSGR: Combined Cap 20% of EBITDA before specified add-back clauses",
+        "GIB: Section 1.10 aggregate synergy/cost-savings caps combined with sister clauses"
+      ]
+    },
+    {
+      "termLabel": "Net leverage labeling",
+      "left": "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+      "right": "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
+      "differences": [
+        "CHWY Total Leverage Ratio uses Consolidated Total Debt (cash already netted in CTD) / Consolidated EBITDA",
+        "GIB uses Consolidated Total Net Leverage Ratio naming with explicit net leverage + Unrestricted Cash mechanics in ratio/pro forma sections"
+      ]
+    },
+    {
+      "termLabel": "ECF step mechanics",
+      "left": "CONMED-2025-CA::test::Financial_Covenants_7_1",
+      "right": "GIB-2026-CA::test::ECF_Prepay_Step_Down",
+      "differences": [
+        "CONMED: Material Acquisition step-UP of maximum leverage ratios",
+        "GIB: ECF mandatory prepayment percentage step-DOWN as First Lien Net Leverage improves"
+      ]
     }
   ]
 }

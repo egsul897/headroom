@@ -117,6 +117,24 @@
       "valueType": "MONEY",
       "periodicity": "AS_OF",
       "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "gib_section_7_05_a_y_builder_components",
+      "requiredBy": [
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket"
+      ],
+      "valueType": "STRUCTURED",
+      "periodicity": "AS_OF",
+      "status": "MISSING_UNLESS_ATTESTED"
+    },
+    {
+      "key": "dsgr_combined_cap_clause_amounts",
+      "requiredBy": [
+        "DSGR-2024-AMD::adj::Combined_Cap_20pct"
+      ],
+      "valueType": "MONEY",
+      "periodicity": "FOUR_QUARTERS",
+      "status": "MISSING_UNLESS_ATTESTED"
     }
   ]
 }

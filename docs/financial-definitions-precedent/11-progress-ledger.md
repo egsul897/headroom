@@ -16,3 +16,10 @@
 - Added `source-normalize/conmed-2025-eighth-ar-ca.plain.txt` (html.unescape + tag strip + whitespace collapse).
 - Rebound CONMED definition atlas entries to the owned sidecar so vitest span checks do not depend on divergent HTML-entity decoders.
 - Focused tests: `npx vitest run tests/financial-definitions-precedent`.
+
+## 2026-10-08 — data-production checkpoint + batch-2 expansion
+
+- Published `13-data-production-checkpoint.json` with honest live-acquisition zeros (EDGAR owned by CKF) vs fixture-backed measured counts.
+- Batch-2: ingested Gibraltar 2026 + DSGR 2024 Third Amendment fixtures (no network acquisition).
+- Atlas grew 31 → 47 entries; negatives 6 → 9; added NBSP-tolerant GIB net leverage definitions, DSGR 20% Combined Cap, GIB ECF prepay step-down, synergy/pro forma cap patterns.
+- Still no paid model calls; interpretations remain unverified legally.

@@ -39,21 +39,21 @@ Deep, source-backed precedent dataset focused on **financial definitions**, **le
 
 | Target | Coverage |
 | --- | --- |
-| Consolidated EBITDA / Adjusted EBITDA | CHWY, CONMED, FWRG |
-| Consolidated Net Income | CHWY, CONMED |
-| Consolidated Total Debt / Funded Debt | CHWY, CONMED |
-| Consolidated Secured / First Lien Debt | CHWY |
-| Net debt / cash netting | CHWY (inside CTD); CONMED (capped netting in ratios) |
-| First-lien / secured / total leverage | CHWY ratios; CONMED SSLR/TLR |
+| Consolidated EBITDA / Adjusted EBITDA | CHWY, CONMED, FWRG, GIB, DSGR (EBITDA) |
+| Consolidated Net Income | CHWY, CONMED, GIB |
+| Consolidated Total Debt / Funded Debt | CHWY, CONMED, GIB funded-indebtedness family |
+| Consolidated Secured / First Lien Debt | CHWY; GIB Funded First Lien / Senior Secured Indebtedness |
+| Net debt / cash netting | CHWY (inside CTD); CONMED (capped netting in ratios); GIB net leverage |
+| First-lien / secured / total leverage | CHWY ratios; CONMED SSLR/TLR; GIB FL/Secured/Total Net Leverage; DSGR TNLR |
 | Fixed charge coverage | FWRG, LSB (divergent formulas) |
-| Interest coverage | CONMED; CHWY definition locus unresolved |
-| Excess Cash Flow / Retained ECF | CHWY |
-| Available Amount | CHWY §6.08(a)(3); FWRG Article I builder |
-| Pro forma / acquisition add-backs / synergies / run-rate | CHWY Expected Run Rate Benefit; CONMED Pro Forma Adjustments |
+| Interest coverage | CONMED, GIB, DSGR; CHWY definition locus unresolved |
+| Excess Cash Flow / Retained ECF | CHWY; GIB ECF + Retained Excess Cash Flow Amount |
+| Available Amount | CHWY §6.08(a)(3); FWRG; GIB Available Amount Builder Basket; DSGR AA |
+| Pro forma / acquisition add-backs / synergies / run-rate | CHWY Expected Run Rate Benefit; CONMED PF Adjustments; GIB §1.10; DSGR Cost Savings / Combined Cap |
 | Restructuring charges | CHWY CNI exclusions |
-| Add-back caps / lookbacks | CONMED 15% / $30M; CHWY 36-month lookforward |
+| Add-back caps / lookbacks | CONMED 15% / $30M; CHWY 36-month lookforward; DSGR 20% Combined Cap; GIB §1.10 aggregate |
 | Cure rights | Cross-ref / partial (ABL & FWRG §6.10 gaps queued) |
-| Step-up / step-down leverage tests | CONMED §7.1 + Second Amendment history |
+| Step-up / step-down leverage tests | CONMED §7.1 step-up; GIB ECF prepay % step-down |
 
 ## Tests
 

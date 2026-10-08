@@ -1,0 +1,85 @@
+{
+  "artifact": "financial-definitions-precedent.data-production-checkpoint",
+  "version": "fdp.v1",
+  "asOf": "2026-10-08T22:17:26Z",
+  "workstreamId": "WS-FDP",
+  "scopeNote": "WS-FDP is a calculation-precedent dataset workstream. It does NOT run live SEC EDGAR acquisition (owned by Covenant Knowledge Factory). Measurements below distinguish live acquisition (zero for this workstream) from in-repo fixture-backed dataset production.",
+  "liveAcquisition": {
+    "realSecFilingsDiscovered": 0,
+    "distinctDebtDocumentsAcquired": 0,
+    "externalAcquisitionAttempted": false,
+    "externalAcquisitionFailed": false,
+    "reason": "Out of WS-FDP ownership; no paid/network EDGAR harvest in this mission. CKF owns acquisition."
+  },
+  "fixtureBackedDataset": {
+    "distinctDebtDocumentFixturesUsed": 6,
+    "uniqueIssuersInRegistry": 6,
+    "uniqueInstrumentsInRegistry": 6,
+    "sourceIds": [
+      "CHWY-2026-CA",
+      "CONMED-2025-CA",
+      "FWRG-2021-CA",
+      "LSB-2023-ABL",
+      "GIB-2026-CA",
+      "DSGR-2024-AMD"
+    ],
+    "provisionsStructurallyIndexed": 0,
+    "provisionsStructurallyIndexedNote": "WS-FDP does not run structural indexer; 0 for this workstream. Gibraltar package has pre-existing structure/ JSON produced by other tracks \u2014 not counted as this workstream output.",
+    "covenantCandidatesExtracted": 0,
+    "covenantCandidatesExtractedNote": "Not a covenant-candidate extractor. Negative examples and tests are calculation/condition classifications, not candidate extraction.",
+    "sourceBackedDefinitionEntries": 47,
+    "sourceSpanVerifiedEntries": 43,
+    "sourceSpanPartialEntries": 2,
+    "crossRefOnlyEntries": 2,
+    "dependencyGraphNodes": 112,
+    "dependencyGraphEdges": 120,
+    "usesEdges": 112,
+    "nonEquivalenceEdges": 8,
+    "semanticHypothesesProduced": 0,
+    "semanticHypothesesNote": "No model/semantic hypothesis compiler run. formulaSketch fields are human/agent drafting summaries tied to excerpts \u2014 NOT independently verified legal interpretations.",
+    "independentlyVerifiedRepresentations": 0,
+    "independentlyVerifiedNote": "Span+hash integrity verified by tests. No second-counsel or adversarial legal verification. Do not treat as legally validated knowledge.",
+    "unresolvedAmbiguousLegalIssues": 8,
+    "newlyDiscoveredDraftingPatterns": 8,
+    "newlyDiscoveredDraftingPatternsNote": "Pattern catalog entries (mechanic divergences), not population discovery from EDGAR.",
+    "dangerousOmissionsOrFalsePermissionsDetected": 9,
+    "dangerousOmissionsNote": "Condition-not-capacity negatives and related regression candidates \u2014 synthetic classification fixtures over real source spans, not live false-permission findings in production."
+  },
+  "compute": {
+    "batch2WallClockSeconds": 0.12,
+    "modelApiCalls": 0,
+    "modelCostUsd": 0.0,
+    "paidInfrastructureCostUsd": 0.0,
+    "note": "Local fixture reads + Python generation + vitest only."
+  },
+  "git": {
+    "branch": "cursor/financial-definitions-precedent-43af",
+    "priorTipSha": "41c00d635926cfca08903a7fbd675a27167d4378",
+    "pr": "https://github.com/egsul897/headroom/pull/151"
+  },
+  "countsAfterBatch2": {
+    "entries": 47,
+    "byKind": {
+      "FINANCIAL_DEFINITION": 17,
+      "ADJUSTMENT_MECHANIC": 6,
+      "LEVERAGE_OR_COVERAGE_TEST": 14,
+      "BUILDER_OR_POOL": 6,
+      "CURE_RIGHT": 2,
+      "STEP_CHANGE_TEST": 2
+    },
+    "bySource": {
+      "CHWY-2026-CA": 17,
+      "CONMED-2025-CA": 9,
+      "FWRG-2021-CA": 4,
+      "LSB-2023-ABL": 1,
+      "GIB-2026-CA": 12,
+      "DSGR-2024-AMD": 4
+    },
+    "negativeExamples": 9,
+    "missingInputKeys": 14,
+    "unresolvedItems": 8,
+    "regressionCandidates": 10,
+    "divergencePairs": 8,
+    "addbackFamilies": 18
+  }
+}
