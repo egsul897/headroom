@@ -3,7 +3,8 @@
 Offline, source-backed research dataset of exceptions, provisos, carve-outs, and
 limitations in negative covenants.
 
-**Status:** `OFFLINE_RESEARCH_DATASET`  
+**Status:** `OFFLINE_RESEARCH_DATASET` (research milestone — not certified legal interpretation)  
+**Phase 2:** see [`phase-2/`](./phase-2/) for classification upgrade, multi-issuer expansion, negative controls, source spans, held-out metrics, and KF import adapter.  
 **Production boundary:** must not be imported by `lib/contract-model/**`,
 `app/**`, or runtime capacity paths. No paid inference, merges, or certification
 advancement.
