@@ -357,4 +357,40 @@ describe("section operative text follows clause amendments", () => {
     expect(section.withheld).toBe(true);
     expect(section.origin).not.toBe("OPERATIVE_STATE_CURRENT_TEXT");
   });
+
+  it("withholds the parent section for an unresolved side-letter override on a child clause, retains the child as CHILD_RULE, and names the override", async () => {
+    const sideLetter = `SIDE LETTER dated as of March 1, 2026 to the Credit Agreement dated as of January 15, 2026, among Harbor Lane Industries, Inc., as Borrower.
+
+SECTION 1. Agreement. Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) of the Credit Agreement in an aggregate principal amount exceeding $10,000,000 at any time outstanding.
+
+SECTION 2. Effectiveness. This letter shall become effective on March 1, 2026.
+`;
+    const { state, index } = await compile([doc("credit-agreement", "Credit Agreement", CREDIT), doc("side-letter", "Side Letter", sideLetter)]);
+    const clauseView = state.provisions.find((p) => p.sectionRef === "7.01(b)");
+    expect(clauseView?.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
+    expect(clauseView?.currentText).toContain("$25,000,000");
+    expect(clauseView?.unresolvedIssues.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
+
+    const section = source(index, state, "7.01");
+    expect(section.withheld).toBe(true);
+    expect(section.text).toBe("");
+    expect(section.withheldReasons.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
+
+    const clause = source(index, state, "7.01(b)");
+    expect(clause.withheld).toBe(true);
+    expect(clause.withheldReasons.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
+
+    const bundle = buildCovenantContextBundle(
+      { candidate: candidate(index, "7.01"), packageKey: "pkg", companyId: "co", instrumentKey: state.instrumentKey },
+      { index, packageGraph: null, exactTermsByDocument: new Map(), operativeState: state },
+    );
+    const operative = bundle.items.find((item) => item.type === "OPERATIVE_SOURCE");
+    const childB = bundle.items.find((item) => item.type === "CHILD_RULE" && item.normalizedRef === "7.01(b)");
+    expect(operative?.evidenceState?.isCurrentTruth).toBe(false);
+    expect(operative?.excerptText).toBe("");
+    expect(childB).toBeDefined();
+    expect(childB?.evidenceState?.isCurrentTruth).toBe(false);
+    expect(JSON.stringify(bundle)).toMatch(/UNCLASSIFIED_OVERRIDE/);
+    expect(bundle.hasUnresolvedOperativeEvidence).toBe(true);
+  });
 });

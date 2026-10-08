@@ -1121,6 +1121,18 @@ export interface ResolveOperativeSectionEvidenceInput {
 }
 
 /**
+ * True when `childRef` is a nested clause under `parentRef` (e.g. 7.01(b) under
+ * 7.01). Exact equality is excluded — callers that need the section's own view
+ * already matched it. Uses a structural '(' boundary so 7.01 does not match 7.010.
+ */
+export function isNestedSectionRef(parentRef: string, childRef: string): boolean {
+  const parent = parentRef.replace(/\s+/g, "");
+  const child = childRef.replace(/\s+/g, "");
+  if (!parent || !child || parent === child) return false;
+  return child.startsWith(`${parent}(`);
+}
+
+/**
  * The single canonical primitive for "what is this SECTION's real operative
  * evidence, right now" - mirrors resolveOperativeDefinitionEvidence's own
  * two-branch structure exactly (a real, on-file OperativeProvisionView for
@@ -1154,7 +1166,33 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
     else if (view.status === "OPERATIVE_STATE_PARTIAL") status = "PARTIAL_AMENDMENT";
     else if (view.status === "OPERATIVE_STATE_REVIEW_REQUIRED") status = "OPERATIVE_STATE_UNRESOLVED";
     else status = "CURRENT";
+    // Even a RESOLVED parent view cannot claim CURRENT truth when a nested clause
+    // under it still carries an unresolved override / conflict / partial state.
+    if (status === "CURRENT") {
+      const nested = unresolvedNestedSectionProvisions(operativeState, node.sectionRef);
+      if (nested.length > 0) {
+        return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: nested.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
+      }
+    }
     return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+  }
+
+  // No exact provision view for this section — but a nested clause under it may
+  // still carry REVIEW_REQUIRED / CONFLICTED / PARTIAL evidence (side letter on
+  // 7.01(b) while the candidate is section 7.01). Never report CURRENT for the
+  // parent while that nested material override remains unresolved.
+  const nestedUnresolved = unresolvedNestedSectionProvisions(operativeState, node.sectionRef);
+  if (nestedUnresolved.length > 0) {
+    return {
+      outcome: "FOUND",
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      text: null,
+      documentId,
+      source: "amended",
+      isCurrentTruth: false,
+      unresolvedIssues: nestedUnresolved.flatMap((p) => p.unresolvedIssues),
+      legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
+    };
   }
 
   // No recorded amendment activity for this section at all - the caller
@@ -1172,4 +1210,9 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
     }
   }
   return { outcome: "FOUND", status: "CURRENT", text: null, documentId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
+}
+
+function unresolvedNestedSectionProvisions(operativeState: OperativeContractState | null | undefined, parentSectionRef: string): OperativeProvisionView[] {
+  if (!operativeState) return [];
+  return operativeState.provisions.filter((p) => p.kind === "SECTION" && p.sectionRef != null && isNestedSectionRef(parentSectionRef, p.sectionRef) && p.status !== "OPERATIVE_STATE_RESOLVED");
 }
