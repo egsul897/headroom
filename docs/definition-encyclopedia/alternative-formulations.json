@@ -1,0 +1,498 @@
+{
+  "schemaVersion": "headroom-definition-encyclopedia.v1",
+  "equivalenceClaim": false,
+  "groups": [
+    {
+      "groupId": "alt-group:Available Amount",
+      "canonicalTerm": "Available Amount",
+      "exampleIds": [
+        "defex:chwy-2026-ca:available-amount:c0fe75978dfd",
+        "defex:chwy-2026-ca:available-rp-capacity-amount:e72bd6aafef2",
+        "defex:dsgr-2022-arca:available-amount:05de7989dd48",
+        "defex:dsgr-2024-third-amd:available-amount:89daa511a056",
+        "defex:dsgr-2025-second-arca:available-amount:d0acd05e4a5b"
+      ],
+      "exactTerms": [
+        "Available Amount",
+        "Available RP Capacity Amount"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 2 distinct exact labels under \"Available Amount\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Consolidated EBITDA",
+      "canonicalTerm": "Consolidated EBITDA",
+      "exampleIds": [
+        "defex:chwy-2026-ca:consolidated-ebitda:470f4733e713",
+        "defex:conmed-2025-defs:consolidated-ebitda:2265bb2169f7",
+        "defex:dsgr-2022-arca:ebitda:19c860b1ed49",
+        "defex:dsgr-2024-third-amd:ebitda:23a5fece8a0b",
+        "defex:dsgr-2025-second-arca:ebitda:79dc4f0cbfea",
+        "defex:gibraltar-2026-ca:consolidated-ebitda:f626cacf57d0",
+        "defex:sup-2022-tlca:consolidated-ebitda:55a93e3b84cd",
+        "defex:sup-2024-artlca:consolidated-ebitda:f28e887cdad4"
+      ],
+      "exactTerms": [
+        "Consolidated EBITDA",
+        "EBITDA"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "conmed-2025-defs",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 2 distinct exact labels under \"Consolidated EBITDA\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Consolidated Net Income",
+      "canonicalTerm": "Consolidated Net Income",
+      "exampleIds": [
+        "defex:chwy-2026-ca:consolidated-net-income:3b35d8e87d99",
+        "defex:gibraltar-2026-ca:consolidated-net-income:f020f1f24ebf",
+        "defex:sup-2022-tlca:consolidated-net-income:f1769f5740af",
+        "defex:sup-2024-artlca:consolidated-net-income:46a51ef0480e"
+      ],
+      "exactTerms": [
+        "Consolidated Net Income"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Consolidated Net Income\" across 4 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Consolidated Secured Debt",
+      "canonicalTerm": "Consolidated Secured Debt",
+      "exampleIds": [
+        "defex:chwy-2026-ca:secured-indebtedness:01738de4a662",
+        "defex:sup-2022-tlca:consolidated-secured-debt:99715a52ccc5",
+        "defex:sup-2022-tlca:secured-indebtedness:0f88db41112b",
+        "defex:sup-2024-artlca:consolidated-secured-debt:031f1a3fb0b3",
+        "defex:sup-2024-artlca:secured-indebtedness:4c9103ab2d86"
+      ],
+      "exactTerms": [
+        "Secured Indebtedness",
+        "Consolidated Secured Debt"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 2 distinct exact labels under \"Consolidated Secured Debt\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Consolidated Total Debt",
+      "canonicalTerm": "Consolidated Total Debt",
+      "exampleIds": [
+        "defex:chwy-2026-ca:consolidated-total-debt:4ea7dbd078f2",
+        "defex:sup-2022-tlca:consolidated-total-debt:b5e7dadc1eab",
+        "defex:sup-2024-artlca:consolidated-total-debt:b2cc829933d9"
+      ],
+      "exactTerms": [
+        "Consolidated Total Debt"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Consolidated Total Debt\" across 3 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Default",
+      "canonicalTerm": "Default",
+      "exampleIds": [
+        "defex:chwy-2026-ca:default:7c2123922379",
+        "defex:conmed-2025-defs:default:1b3ce922339e",
+        "defex:dsgr-2022-arca:default:bbd9d7d57c1a",
+        "defex:dsgr-2024-third-amd:default:7f4932204e91",
+        "defex:dsgr-2025-second-arca:default:f3eff7b34d68",
+        "defex:gibraltar-2026-ca:default:1d910f7c5f9d",
+        "defex:riot-2025a-ca:default:3548eeb50b84",
+        "defex:riot-2025b-arca:default:55b0665553c9",
+        "defex:riot-2026-second-arca:default:adbef823a71e",
+        "defex:sup-2022-tlca:default:a642aef3e073",
+        "defex:sup-2024-artlca:default:64327c3b8a33"
+      ],
+      "exactTerms": [
+        "Default"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "conmed-2025-defs",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "riot-2025a-ca",
+        "riot-2025b-arca",
+        "riot-2026-second-arca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Default\" across 11 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Event of Default",
+      "canonicalTerm": "Event of Default",
+      "exampleIds": [
+        "defex:chwy-2026-ca:event-of-default:94aae9082d04",
+        "defex:conmed-2025-defs:event-of-default:a636c3ecfcc3",
+        "defex:dsgr-2022-arca:event-of-default:aa5cafc82112",
+        "defex:dsgr-2024-third-amd:event-of-default:227c4339c22c",
+        "defex:dsgr-2025-second-arca:event-of-default:40d19f62dd46",
+        "defex:gibraltar-2026-ca:event-of-default:5f3d2c236db5",
+        "defex:riot-2025a-ca:event-of-default:d24e4fdaae0f",
+        "defex:riot-2025b-arca:event-of-default:2ed682cd79e1",
+        "defex:riot-2026-second-arca:event-of-default:9d32140375ee"
+      ],
+      "exactTerms": [
+        "Event of Default"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "conmed-2025-defs",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "riot-2025a-ca",
+        "riot-2025b-arca",
+        "riot-2026-second-arca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Event of Default\" across 9 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Excess Cash Flow",
+      "canonicalTerm": "Excess Cash Flow",
+      "exampleIds": [
+        "defex:chwy-2026-ca:excess-cash-flow:1f6ae8e7f67f",
+        "defex:gibraltar-2026-ca:excess-cash-flow:63ebef6194a1",
+        "defex:sup-2022-tlca:excess-cash-flow:c0b544184793",
+        "defex:sup-2024-artlca:excess-cash-flow:d9b7849df79f"
+      ],
+      "exactTerms": [
+        "Excess Cash Flow"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Excess Cash Flow\" across 4 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:First Lien Net Leverage Ratio",
+      "canonicalTerm": "First Lien Net Leverage Ratio",
+      "exampleIds": [
+        "defex:chwy-2026-ca:first-lien-leverage-ratio:738671337141",
+        "defex:chwy-2026-ca:senior-secured-leverage-ratio:e82a2ccb17df",
+        "defex:dsgr-2025-second-arca:first-lien-net-leverage-ratio:a0236ff824af",
+        "defex:sup-2022-tlca:first-lien-net-leverage-ratio:746239b3ad81",
+        "defex:sup-2024-artlca:first-lien-net-leverage-ratio:aed219c1146c"
+      ],
+      "exactTerms": [
+        "First Lien Leverage Ratio",
+        "Senior Secured Leverage Ratio",
+        "First Lien Net Leverage Ratio"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2025-second-arca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 3 distinct exact labels under \"First Lien Net Leverage Ratio\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Fixed Charge Coverage Ratio",
+      "canonicalTerm": "Fixed Charge Coverage Ratio",
+      "exampleIds": [
+        "defex:lsb-2023-defs:fixed-charge-coverage-ratio:1698a976a269",
+        "defex:sup-2024-artlca:fixed-charge-coverage-ratio:4fe6ea83819a"
+      ],
+      "exactTerms": [
+        "Fixed Charge Coverage Ratio"
+      ],
+      "sourceIds": [
+        "lsb-2023-defs",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Fixed Charge Coverage Ratio\" across 2 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Incremental Amount",
+      "canonicalTerm": "Incremental Amount",
+      "exampleIds": [
+        "defex:chwy-2026-ca:fixed-incremental-amount:56cc1ffc602d",
+        "defex:chwy-2026-ca:incremental-cap:b7499630c3b1",
+        "defex:fwrg-2021-defs:fixed-incremental-amount:aa2db6132531",
+        "defex:gibraltar-2026-ca:incremental-amount:c3113c6e7c81"
+      ],
+      "exactTerms": [
+        "Fixed Incremental Amount",
+        "Incremental Cap",
+        "Incremental Amount"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "fwrg-2021-defs",
+        "gibraltar-2026-ca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 3 distinct exact labels under \"Incremental Amount\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Loan Party",
+      "canonicalTerm": "Loan Party",
+      "exampleIds": [
+        "defex:chwy-2026-ca:loan-parties:23c7b6669fa1",
+        "defex:chwy-2026-ca:subsidiary-loan-party:5ace3459e27b",
+        "defex:dsgr-2022-arca:credit-party:6c31fe0d44bf",
+        "defex:dsgr-2022-arca:loan-parties:6545c8e78217",
+        "defex:dsgr-2024-third-amd:credit-party:3ed7fc16915e",
+        "defex:dsgr-2024-third-amd:loan-parties:df0a6a347d1b",
+        "defex:dsgr-2025-second-arca:credit-party:a5b1ab2284ba",
+        "defex:dsgr-2025-second-arca:loan-parties:3c0ac4d1ca01",
+        "defex:gibraltar-2026-ca:loan-parties:cff2ecafedc6",
+        "defex:sup-2022-tlca:loan-parties:c2edc52019c0",
+        "defex:sup-2024-artlca:loan-parties:4cbfe2814425"
+      ],
+      "exactTerms": [
+        "Loan Parties",
+        "Subsidiary Loan Party",
+        "Credit Party"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 3 distinct exact labels under \"Loan Party\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Material Subsidiary",
+      "canonicalTerm": "Material Subsidiary",
+      "exampleIds": [
+        "defex:chwy-2026-ca:material-subsidiary:b28ab43a97e3",
+        "defex:conmed-2025-defs:material-domestic-subsidiary:d395c153b6c2",
+        "defex:conmed-2025-defs:material-foreign-subsidiary:070ab7c9e080",
+        "defex:dsgr-2022-arca:material-subsidiary:18d1db9b90f8",
+        "defex:dsgr-2024-third-amd:material-subsidiary:0c147b4bc71b",
+        "defex:dsgr-2025-second-arca:material-subsidiary:a12d5d77493b",
+        "defex:gibraltar-2026-ca:material-subsidiary:c24205ec8888",
+        "defex:sup-2022-tlca:material-subsidiary:fb396142eb8f",
+        "defex:sup-2024-artlca:material-subsidiary:f8ef0807dc29"
+      ],
+      "exactTerms": [
+        "Material Subsidiary",
+        "Material Domestic Subsidiary",
+        "Material Foreign Subsidiary"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "conmed-2025-defs",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 3 distinct exact labels under \"Material Subsidiary\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Permitted Investments",
+      "canonicalTerm": "Permitted Investments",
+      "exampleIds": [
+        "defex:chwy-2026-ca:permitted-investments:4bfd6904b5ef",
+        "defex:dsgr-2022-arca:permitted-investments:e476278caa5e",
+        "defex:dsgr-2024-third-amd:permitted-investments:a4d23d5e0c60",
+        "defex:dsgr-2025-second-arca:permitted-investments:0992bbca1ede",
+        "defex:gibraltar-2026-ca:permitted-investments:d78e7c74c983",
+        "defex:sup-2022-tlca:permitted-investments:171c33d8eca1",
+        "defex:sup-2024-artlca:permitted-investments:df4a876eaad2"
+      ],
+      "exactTerms": [
+        "Permitted Investments"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Permitted Investments\" across 7 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Permitted Liens",
+      "canonicalTerm": "Permitted Liens",
+      "exampleIds": [
+        "defex:chwy-2026-ca:permitted-liens:2edd21c2ff55",
+        "defex:dsgr-2022-arca:permitted-encumbrances:7f759ba65aab",
+        "defex:dsgr-2024-third-amd:permitted-encumbrances:67330edf4287",
+        "defex:dsgr-2025-second-arca:permitted-encumbrances:9c534d61f5cc",
+        "defex:gibraltar-2026-ca:permitted-liens:eba4146365b4",
+        "defex:lsb-2023-defs:permitted-liens:5b1a526a6e4c",
+        "defex:riot-2025a-ca:permitted-liens:5f3d2afeeced",
+        "defex:riot-2025b-arca:permitted-liens:95833d4b9b9c",
+        "defex:riot-2026-second-arca:permitted-liens:2eaa8db99cb3",
+        "defex:sup-2022-tlca:permitted-liens:74ecdb223112",
+        "defex:sup-2024-artlca:permitted-liens:b2c9580f0129"
+      ],
+      "exactTerms": [
+        "Permitted Liens",
+        "Permitted Encumbrances"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "lsb-2023-defs",
+        "riot-2025a-ca",
+        "riot-2025b-arca",
+        "riot-2026-second-arca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 2 distinct exact labels under \"Permitted Liens\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Permitted Refinancing Indebtedness",
+      "canonicalTerm": "Permitted Refinancing Indebtedness",
+      "exampleIds": [
+        "defex:chwy-2026-ca:refinancing-indebtedness:f612bb930a0c",
+        "defex:conmed-2025-defs:permitted-refinancing:5881eddc7131",
+        "defex:gibraltar-2026-ca:refinancing-indebtedness:99a107b7d50c",
+        "defex:sup-2022-tlca:refinancing-indebtedness:fa4657cef4df",
+        "defex:sup-2024-artlca:refinancing-indebtedness:1548f1ca1619"
+      ],
+      "exactTerms": [
+        "Refinancing Indebtedness",
+        "Permitted Refinancing"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "conmed-2025-defs",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 2 distinct exact labels under \"Permitted Refinancing Indebtedness\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Restricted Subsidiary",
+      "canonicalTerm": "Restricted Subsidiary",
+      "exampleIds": [
+        "defex:chwy-2026-ca:restricted-subsidiary:c8769b1dd301",
+        "defex:dsgr-2022-arca:restricted-subsidiary:0974a973740c",
+        "defex:dsgr-2024-third-amd:restricted-subsidiary:3a806e764e17",
+        "defex:dsgr-2025-second-arca:restricted-subsidiary:3079b08359f0",
+        "defex:gibraltar-2026-ca:restricted-subsidiary:97c895edb186"
+      ],
+      "exactTerms": [
+        "Restricted Subsidiary"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Restricted Subsidiary\" across 5 independently sourced example(s); instrument-level text still may differ."
+    },
+    {
+      "groupId": "alt-group:Total Net Leverage Ratio",
+      "canonicalTerm": "Total Net Leverage Ratio",
+      "exampleIds": [
+        "defex:chwy-2026-ca:total-leverage-ratio:289da8b1f1b2",
+        "defex:dsgr-2022-arca:total-net-leverage-ratio:2d46c4a9616e",
+        "defex:dsgr-2024-third-amd:total-net-leverage-ratio:618f9f28400a",
+        "defex:dsgr-2025-second-arca:total-net-leverage-ratio:1e507bd0f5a9",
+        "defex:gibraltar-2026-ca:consolidated-total-net-leverage-ratio:3906f4e2d1e0",
+        "defex:sup-2022-tlca:total-net-leverage-ratio:3b01a6d1fe54",
+        "defex:sup-2024-artlca:total-net-leverage-ratio:366beaa01076"
+      ],
+      "exactTerms": [
+        "Total Leverage Ratio",
+        "Total Net Leverage Ratio",
+        "Consolidated Total Net Leverage Ratio"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca",
+        "sup-2022-tlca",
+        "sup-2024-artlca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Grouped 3 distinct exact labels under \"Total Net Leverage Ratio\" for comparison only; do not treat as legally equivalent."
+    },
+    {
+      "groupId": "alt-group:Unrestricted Subsidiary",
+      "canonicalTerm": "Unrestricted Subsidiary",
+      "exampleIds": [
+        "defex:chwy-2026-ca:unrestricted-subsidiary:782e6d5ce49b",
+        "defex:dsgr-2022-arca:unrestricted-subsidiary:946d47422be2",
+        "defex:dsgr-2024-third-amd:unrestricted-subsidiary:42fbe3301ae4",
+        "defex:dsgr-2025-second-arca:unrestricted-subsidiary:56bf65687ab1",
+        "defex:gibraltar-2026-ca:unrestricted-subsidiary:fde4eb56dd88"
+      ],
+      "exactTerms": [
+        "Unrestricted Subsidiary"
+      ],
+      "sourceIds": [
+        "chwy-2026-ca",
+        "dsgr-2022-arca",
+        "dsgr-2024-third-amd",
+        "dsgr-2025-second-arca",
+        "gibraltar-2026-ca"
+      ],
+      "equivalenceClaim": false,
+      "note": "Single exact label \"Unrestricted Subsidiary\" across 5 independently sourced example(s); instrument-level text still may differ."
+    }
+  ]
+}
