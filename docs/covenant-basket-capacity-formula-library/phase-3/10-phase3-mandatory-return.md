@@ -104,7 +104,7 @@ All retained affirmatives remain `capacityComputable=false` / `executable=false`
 | Item | Value |
 |---|---|
 | Tests | `npx vitest run tests/basket-formula-corpus/` → **21 passed** |
-| CI | reported after push / PR checks |
+| CI (head) | **success** — 2/2 checks passed on `ab64d36c33cc43e1f79794bbf39a8d5f8a436977` |
 
 ## 9. Remaining legal-safety blockers
 
