@@ -77,10 +77,22 @@ function promoteToV2(
   };
 }
 
+export type Phase2Artifacts = {
+  integrityReport: string;
+  provenance: string;
+  quality: string;
+  duplicates: string;
+  benchmark: string;
+  kfImport: string;
+  sftJsonl: string;
+  sftBlockNotice: string;
+  versionPins: string;
+};
+
 export function buildPhase2Dataset(repoRoot: string): {
   records: SourceToCovenantRecordV2[];
   integrityReport: Phase2IntegrityReport;
-  artifacts: Record<string, string>;
+  artifacts: Phase2Artifacts;
 } {
   // Seed from Phase-1 catalog
   const seed = EXAMPLE_CATALOG.map((spec) => buildRecord(repoRoot, spec));

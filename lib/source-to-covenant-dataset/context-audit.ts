@@ -158,7 +158,7 @@ export function auditControllingContext(record: SourceToCovenantRecord): Control
 
   // Reserved / negative boilerplate can be complete with a tiny window.
   let status: ControllingContextAudit["status"] = "SOURCE_WINDOW_PRESENT";
-  if (record.role === "BOILERPLATE_OR_RESERVED" || record.polarity === "NEGATIVE" && record.role === "BOILERPLATE_OR_RESERVED") {
+  if (record.role === "BOILERPLATE_OR_RESERVED") {
     status = missing.length === 0 ? "CONTROLLING_CONTEXT_COMPLETE" : "CONTEXT_INCOMPLETE";
   } else if (missing.length === 0 && govPresent && (defs.length > 0 || xrefs.length === 0)) {
     // Strict: only mark COMPLETE when governing prohibition recorded and no missing deps.

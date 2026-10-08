@@ -82,7 +82,7 @@ export function toKnowledgeFactoryImportRecord(r: SourceToCovenantRecordV2): Kno
       sourceTextSha256: r.input.sourceTextSha256,
       windowSha256: r.input.windowSha256,
     },
-    compilerOrModelVersions: r.toolVersions,
+    compilerOrModelVersions: { ...r.toolVersions },
     confidenceAndUncertaintyLabels: r.output.uncertainty,
     verificationStatus: r.deliveryVerificationStatus,
     duplicateDetection: {
