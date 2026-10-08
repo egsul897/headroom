@@ -74,10 +74,19 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## B2 — IPV-06 definition enumerations swallow later definitions
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `1b19520`.
 - Reproduction: `"Payment Conditions" means ... (i) ... (ii) ... (A) ... (B) ...` then `"Subsidiary" means`. The clause parser made `1.01(ii)(B)` run through Subsidiary and Term Loan Agreement. Both later definitions were attributed to that clause.
 - Fix: a marker inside a definition's own list is not a covenant clause. The list runs from the declaration through lines that continue it, and stops before the next definition or before a line-start marker that does not continue that list. Quoted-colon and unquoted-colon declarations use the same grammar. A covenant list with no definition in front of it is unchanged. A lettered definition entry (`(a) "Term" means`) stays a clause because the marker precedes the declaration.
 - Tests: `tests/contract-model/definition-inline-enumeration.test.ts` 8 passed. Clause hierarchy 17, F-2 nesting (including Chewy 6.08) 16, structural definitions 9, structural index 17, phase-2f1 robustness 31, node-identity invariants 24, structural references 8 passed. `npx tsc --noEmit -p .` clean. `coverage-structural.test.ts` still needs `DATABASE_URL` and was not run as a regression signal.
+
+## B3 — CONMED Section 7.4(a)(iii) and (iv)
+
+- Status: local tests passed; push follows this entry.
+- Reproduction: Section 7.4(a) reads `(ii) ... Person), (iii) any Subsidiary ... and (iv) the Parent Borrower may be merged`. The citation exclusion dropped `(iii)` because a comma and a space precede it. `(iv)` then failed the sequence check, and the successor proviso `(1)`/`(2)` was parented under `(ii)`.
+- Fix: a comma-space marker is a clause only when the text before it and the text after it are both clause bodies. A bare citation (`clauses (a), (b) and (c)`, or `(a), (i), (j), (m)`) has no body and stays excluded. A parenthetical gloss between citations stays excluded. `findRawMarkerOccurrences` itself still rejects comma-space markers.
+- Also recovered other comma-joined clause bodies in the same Article VII excerpt (for example 7.13(b)/(c) and 7.9's roman items). Section 7.14's exceptions moved from `7.14(a)(i)` to `7.14(c)(i)` because `(b)` and `(c)` are now siblings of `(a)`.
+- Live population denominator: empty operative text 0, attemptable 135. Bands SHORT 105, MID 17, LONG 13. `7.4(a)(iii)` is MID (1,347 chars). `7.4(a)(iv)` is LONG (2,343 chars). The sealed calibration file still records attemptable 133. The recommended spend ceiling assertion still matches the existing constant. Sealed run plans still list the historical empty skips.
+- Tests: `tests/contract-model/comma-clause-marker.test.ts` 4 passed. Clause hierarchy, F-2 (including Chewy 6.08), definition enumerations, phase-2f1 robustness 31, offline maps 2 passed. Resume denominator assertion updated for the live counts. Dry-run plan still requires `/tmp/claude-0/pilot/models.json`, which is absent here. `npx tsc --noEmit -p .` clean.
 
 ## Queue
 
@@ -93,7 +102,8 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | A1 failed definition splice returns base section | P0 | PUSHED `f0bc31e` | Unspliceable definition amendment withholds the section |
 | A2 parent/child amendment precedence | P0 | PUSHED `f0bc31e` | Later or same-day child amendment withholds the parent text |
 | IPV-08 exhibit term sheet as a definition | P0 | PUSHED `12c858e` | Non-operative summary does not supply definitions |
-| IPV-06 inline definition enumeration | P0 | VERIFIED locally | Definition-internal markers do not swallow the next term |
+| IPV-06 inline definition enumeration | P0 | PUSHED `1b19520` | Definition-internal markers do not swallow the next term |
+| B3 comma-separated clause vs citation | P0 | VERIFIED locally | 7.4(a)(iii) and (iv) parse; bare citations do not |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
 

@@ -106,21 +106,20 @@ export interface RawMarkerOccurrence {
  * "Company")") is silently rejected later by buildClauseTree's own strict
  * sequence check, so over-detecting candidates here costs nothing.
  */
-// Excludes a marker immediately preceded by ", " (comma-space): real
-// fixture evidence (FWRG's own text) shows a comma-separated CITATION list
-// referencing several already-existing clauses by letter ("...permitted
-// under clauses (a) , (i) , (j) , (m) ... of this Section 6.01") is
-// textually indistinguishable from a genuine new list item UNLESS this
-// distinction is made - real new list items in this corpus are
-// consistently semicolon-separated ("(a) ...; (b) ...; (c) ..."), never
-// comma-separated. A disclosed, real limitation: a document that DOES use
-// commas to separate genuine list items would not be handled by this rule.
+// The default scan excludes a marker immediately preceded by ", " (comma-space).
+// A bare citation list ("permitted under clauses (a), (b) and (c) of this Section",
+// or "(a) , (i) , (j) , (m)") has no clause body between the markers. A genuine
+// comma-separated item ("Person), (iii) any Subsidiary may...") has a clause body
+// on both sides and is admitted by admittedCommaClauseMarkers. The exclusion stays
+// in this regex so findRawMarkerOccurrences itself never promotes a citation.
 /**
  * F-2: the comma exclusion targets INLINE enumeration ("..., (b) the declaration ...") and is limited to
  * horizontal whitespace; a label that begins a new line after a lead-in ending in a comma
  * ("in each case without duplication,\n(a) franchise ...") is a list item, never an inline reference.
  */
 const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
+/** A comma-space marker is scanned separately and admitted only when both neighboring spans are clause bodies. A bare citation ("clauses (a), (b) and (c)") has no body between the markers and stays excluded. */
+const COMMA_CLAUSE_MARKER = /,[ \t]\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
 
 export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const out: RawMarkerOccurrence[] = [];
@@ -256,9 +255,60 @@ function endOfDefinitionEnumeration(text: string, from: number, limit: number): 
   return limit;
 }
 
+const CLAUSE_BODY_GLUE = new Set(["and", "or", "andor", "through", "thru", "to", "of", "this", "the", "section", "sections", "clause", "clauses", "paragraph", "paragraphs", "subsection", "subsections", "above", "below", "hereof", "thereof", "such", "any", "its", "under", "pursuant", "with", "that", "for", "from"]);
+
+function clauseBodyWords(fragment: string): string[] {
+  const trimmed = fragment.trim();
+  if (!/^[A-Za-z]/.test(trimmed)) return [];
+  return trimmed.split(/[^A-Za-z0-9]+/).filter((word) => word.length >= 3 && !CLAUSE_BODY_GLUE.has(word.toLowerCase()));
+}
+
+/** A span is a clause body when it opens with a word and contains operative words, not only "and" / "of this Section". */
+function hasClauseBody(fragment: string): boolean {
+  const words = clauseBodyWords(fragment);
+  return words.length >= 2 || words.some((word) => word.length >= 8);
+}
+
+function commaSeparatedClauseMarkers(text: string): RawMarkerOccurrence[] {
+  const out: RawMarkerOccurrence[] = [];
+  const re = new RegExp(COMMA_CLAUSE_MARKER.source, COMMA_CLAUSE_MARKER.flags);
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(text)) !== null) {
+    const token = match[1] ?? "";
+    const charStart = match.index + match[0].indexOf("(");
+    out.push({ token, charStart, charEnd: match.index + match[0].length });
+    if (match.index === re.lastIndex) re.lastIndex++;
+  }
+  return out;
+}
+
+/**
+ * Comma-space markers are citations when either neighbor is only glue ("(a), (b) and (c)").
+ * They are list items when the previous marker's clause and this marker's own clause both have a body
+ * ("Person), (iii) any Subsidiary may..."). A marker chained to an inline reference stays a citation.
+ */
+function admittedCommaClauseMarkers(text: string): RawMarkerOccurrence[] {
+  const commas = commaSeparatedClauseMarkers(text);
+  if (commas.length === 0) return [];
+  const neighbors = [...findRawMarkerOccurrences(text), ...commas].sort((a, b) => a.charStart - b.charStart);
+  const admitted: RawMarkerOccurrence[] = [];
+  for (const occ of commas) {
+    if (isInlineReferenceMarker(text, occ)) continue;
+    const index = neighbors.findIndex((candidate) => candidate.charStart === occ.charStart);
+    const previous = index > 0 ? neighbors[index - 1] : null;
+    const next = index >= 0 && index + 1 < neighbors.length ? neighbors[index + 1] : null;
+    if (!previous || isInlineReferenceMarker(text, previous)) continue;
+    const before = text.slice(previous.charEnd, occ.charStart);
+    const after = text.slice(occ.charEnd, next ? next.charStart : Math.min(text.length, occ.charEnd + 240));
+    if (!hasClauseBody(before) || !hasClauseBody(after)) continue;
+    admitted.push(occ);
+  }
+  return admitted;
+}
+
 /** The marker occurrences that are structural labels: every occurrence minus inline references, where reference status propagates along a comma/conjunction/range chain ("clauses (9) or (10)"). */
 export function structuralMarkerOccurrences(text: string): RawMarkerOccurrence[] {
-  const all = findRawMarkerOccurrences(text);
+  const all = [...findRawMarkerOccurrences(text), ...admittedCommaClauseMarkers(text)].sort((a, b) => a.charStart - b.charStart);
   const definitionRanges = definitionEnumerationRanges(text);
   const out: RawMarkerOccurrence[] = [];
   let prev: RawMarkerOccurrence | null = null;

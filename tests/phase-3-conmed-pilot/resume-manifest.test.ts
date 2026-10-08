@@ -60,22 +60,23 @@ describe("model lock and execution policy", () => {
 });
 
 describe("the real denominator (offline, from the sealed population through the repaired pipeline)", () => {
-  it("is 163 discovered -> 135 exact-dedup -> 133 attemptable, and the file says the same", async () => {
+  it("is 163 discovered -> 135 exact-dedup -> 135 attemptable; the sealed calibration file still records the earlier 133", async () => {
     const d = await denominator();
-    expect(d).toMatchObject({ discovered: 163, eligible: 163, exactDuplicatesRemoved: 28, dedupDenominator: 135, emptyOperativeText: 2, attemptable: 133 });
-    expect(d.bands).toEqual({ SHORT: 101, MID: 19, LONG: 13, EMPTY: 2 });
+    expect(d).toMatchObject({ discovered: 163, eligible: 163, exactDuplicatesRemoved: 28, dedupDenominator: 135, emptyOperativeText: 0, attemptable: 135 });
+    expect(d.bands).toEqual({ SHORT: 105, MID: 17, LONG: 13 });
     expect(calibrationFile.denominator).toMatchObject({ discovered: 163, dedupDenominator: 135, attemptable: 133 });
     expect(calibrationFile.candidates).toHaveLength(135);
-    expect(d.rows.filter((r) => r.band === "EMPTY").map((r) => r.ref)).toEqual(["7.4(a)(iii)", "7.4(a)(iv)"]);
+    expect(d.rows.filter((r) => r.band === "EMPTY").map((r) => r.ref)).toEqual([]);
+    expect(d.rows.filter((r) => r.ref === "7.4(a)(iii)" || r.ref === "7.4(a)(iv)").every((r) => r.operativeChars > 0)).toBe(true);
     expect(d.rows.filter((r) => r.band === "LONG").every((r) => r.operativeChars >= 1886)).toBe(true);
     expect(d.rows.filter((r) => r.band === "SHORT").every((r) => r.operativeChars <= 776 && r.operativeChars > 0)).toBe(true);
   }, 120_000);
   it("the dry-run plan lists exactly the attemptable candidates in deterministic order and dispatches nothing", async () => {
     const p = await main(["--dry-run"]);
     expect(p).toBeDefined();
-    expect(p!.attemptable).toBe(133);
+    expect(p!.attemptable).toBe(135);
     expect(p!.dedupDenominator).toBe(135);
-    expect(p!.skippedEmpty.map((s) => s.ref)).toEqual(["7.4(a)(iii)", "7.4(a)(iv)"]);
+    expect(p!.skippedEmpty.map((s) => s.ref)).toEqual([]);
     expect(p!.ceilingUsd).toBe(SPEND_CEILING_USD);
     expect(p!.stopAtUsd).toBe(SPEND_STOP_AT_USD);
     // P-7: the reservation is now derived from the execution shape the runner permits at the population's
