@@ -33,7 +33,7 @@ path. All research-corpus `verificationStatus` values are `FIXTURE` or
 
 | Metric | Curated JSON | + discovery ingest (FWRG/LSB) |
 |---|---:|---:|
-| Entries | 12 | ≥ curated + 50 (ingest-selected) |
+| Entries | 12 | **192** merged (12 curated + **180** ingested) |
 | Real-issuer entries | 10 | same issuers + ingested candidates |
 | Synthetic fixture entries | 2 (RFIC amendment pair) | unchanged |
 | Distinct issuers (incl. synthetic) | 7 | 7 |
