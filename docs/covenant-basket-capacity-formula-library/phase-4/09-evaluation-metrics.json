@@ -1,0 +1,51 @@
+{
+  "evaluationSetSize": 145,
+  "groundTruthSource": "preserved_phase3_independent_reviews_plus_phase4_adversarial_tests",
+  "confusion": {
+    "tp": 25,
+    "fp": 0,
+    "fn": 0,
+    "tn": 120
+  },
+  "precisionAffirmativePermission": {
+    "value": 1,
+    "numerator": 25,
+    "denominator": 25
+  },
+  "recallAffirmativePermission": {
+    "value": 1,
+    "numerator": 25,
+    "denominator": 25
+  },
+  "falsePermissionRate": {
+    "value": 0,
+    "numerator": 0,
+    "denominator": 145,
+    "releaseBlockerIfPositive": false
+  },
+  "falseRefusalRate": {
+    "value": 0,
+    "numerator": 0,
+    "denominator": 25
+  },
+  "sourceSpanFidelity": {
+    "operativeSpanRate": {
+      "value": 0.8827586206896552,
+      "numerator": 128,
+      "denominator": 145
+    },
+    "corpusOperativeSpanRate": {
+      "value": 0.8538461538461538,
+      "numerator": 333,
+      "denominator": 390
+    }
+  },
+  "dependencyClosure": {
+    "fullyClosedRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 390
+    }
+  },
+  "note": "Independent review JSON is not rewritten. Outputs are constrained so known false affirmative permissions are release blockers for legal promotion."
+}

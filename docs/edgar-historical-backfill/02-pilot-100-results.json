@@ -1,0 +1,73 @@
+{
+  "artifact": "edgar-historical-backfill-pilot-results",
+  "generatedAt": "2026-10-08T22:22:00Z",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "secFairAccess": {
+    "userAgent": "HeadroomHistoricalBackfill/1.0 (contact: engineering@headroom-app.example; research; respectful fair-access)",
+    "maxConcurrency": 2,
+    "maxRequestsPerSecond": 6,
+    "evasion": false
+  },
+  "pilot100": {
+    "runDir": "data/edgar-historical-backfill/pilot-100",
+    "issuerSlots": 100,
+    "distinctIssuersCompleted": 81,
+    "universeNote": "Initial company_tickers.json selection had CIK collisions across share-class ticker rows (81 unique). Fixed in selectIssuerUniverse.",
+    "filingsScanned": 42258,
+    "indexesFetched": 473,
+    "secRequests": 636,
+    "exhibitsDiscoveredAfterDedupe": 439,
+    "duplicatesCollapsed": 306,
+    "distinctAgreements": 439,
+    "queuedForAcquisition": 126,
+    "byDocumentKindQueued": {
+      "RESTATEMENT": 34,
+      "CREDIT_AGREEMENT": 23,
+      "AMENDMENT": 21,
+      "OTHER_DEBT_AGREEMENT": 16,
+      "INDENTURE": 13,
+      "SUPPLEMENTAL_INDENTURE": 10,
+      "SECURITY_AGREEMENT": 7,
+      "CONSENT": 2
+    },
+    "coverageGaps": {
+      "NO_DEBT_EXHIBITS": 53,
+      "NO_INDEX_FETCH": 3,
+      "YEAR_WITHOUT_CREDIT_OR_INDENTURE": 399
+    },
+    "ibrInThisRun": 0,
+    "ibrNote": "Index budget was 8-K-dominated; primary-document Item 15 IBR parsing landed after this run."
+  },
+  "smoke5WithIbr": {
+    "runDir": "data/edgar-historical-backfill/smoke-ibr",
+    "issuers": ["CNMD", "MATW", "AAL", "ROCK", "F"],
+    "filingsScanned": 3362,
+    "indexesFetched": 67,
+    "secRequests": 79,
+    "exhibitsDiscoveredAfterDedupe": 143,
+    "duplicatesCollapsed": 111,
+    "distinctAgreements": 143,
+    "queuedForAcquisition": 25,
+    "ibrTotal": 67,
+    "ibrResolved": 1,
+    "ibrPartial": 66,
+    "exampleResolvedIbr": {
+      "ticker": "CNMD",
+      "exhibitType": "EX-4.2",
+      "documentKind": "INDENTURE",
+      "resolvedAccessionNumber": "0001193125-22-169336",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320..."
+    },
+    "exampleQueuedInline": {
+      "ticker": "ROCK",
+      "kind": "RESTATEMENT",
+      "description": "AMENDED & RESTATED CREDIT AGREEMENT DEC 8/05",
+      "sourceUri": "https://www.sec.gov/Archives/edgar/data/912562/000119439605000199/gibraltarex101_93736.htm"
+    }
+  },
+  "focusedTests": {
+    "command": "npx vitest run tests/edgar-historical-backfill",
+    "passed": 21,
+    "failed": 0
+  }
+}
