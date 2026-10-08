@@ -96,8 +96,31 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Narrow comma rule: admit `), (next)` only when it continues the preceding structural marker, a depth-0 raw label continues it, and proviso `(1)` follows that label before the next non-continuing line-start item. CONMED `7.4(a)(iii)` / `7.4(a)(iv)` / `7.4(a)(iv)(1)` / `7.4(a)(iv)(2)` return. `7.4(a)(ii)(1)` is gone. Gibraltar's extracted-text node multiset matches `12c858e` (1978). Chewy `6.05(a)(2)(c)` matches the baseline path.
 - Section 7.14 exceptions stay `7.14(a)(i)`, the baseline parent. Promoting them onto the section requires admitting `(b)` and `(c)`, and that admission is the same comma pattern that reparented Gibraltar. No separate safe rule.
 - Live CONMED denominator stays attemptable 135, empty 0. Bands are SHORT 102 / MID 20 / LONG 13. The sealed calibration file still records attemptable 133. `7.13`, `7.14`, and `7.16` are MID again because `(b)`/`(c)` are not split out.
-- Local `npx vitest run tests/stratified-cert`: Gibraltar 901/1978 passed. Chewy `6.05(a)(2)(c)` pin passed. CONMED `7.8(d)` operative sha `4e5b6f9b…` and 389 chars passed. `00-preflight.json` still differs in one field: `inputs.rehydrationUnresolved` is 0, canonical pin is 2. At `12c858e` those two unresolved rows are `7.4(a)(iii)` and `7.4(a)(iv)` `NOT_FOUND`. The pin file was not rewritten.
+- Local `npx vitest run tests/stratified-cert` on `554c42e`: Gibraltar 901/1978 passed. Chewy `6.05(a)(2)(c)` pin passed. CONMED `7.8(d)` operative sha `4e5b6f9b…` and 389 chars passed. `00-preflight.json` differed in one field: `inputs.rehydrationUnresolved` is 0 live, canonical pin is 2. At `12c858e` those two unresolved rows are `7.4(a)(iii)` and `7.4(a)(iv)` `NOT_FOUND`. The pin file was not rewritten.
 - `npx tsc --noEmit -p .` clean. Paid spend $0.
+
+## Evidence contract — historical pin vs current rehydration
+
+- The §7.8(d) pin test was doing both jobs at once: it hashed nothing, and it required a fresh emission to be byte-identical to the frozen pin. That emission now records `rehydrationUnresolved: 0` because the parser resolves the two refs. The frozen file still records `2`.
+- The canonical directory is hash-locked (`FOLLOWON_CANONICAL_SHA256`). The test reads those bytes and requires `rehydrationUnresolved === 2`. It does not rewrite the pin and does not treat 0 as the historical result.
+- A separate test resolves `discovery-candidate:90d9d73e1fda41693532da4a` to clause `7.4(a)(iii)` under `7.4(a)`, opening `any Subsidiary that is a limited liability company may consummate a Division`, and `discovery-candidate:179a1f3046d17abc490af6b9` to clause `7.4(a)(iv)` under `7.4(a)`, opening `the Parent Borrower may be merged`. Proviso `(1)` stays under `(iv)`. The sealed population rehydrates with an empty unresolved list, so no other formerly unresolved ref was attached.
+- Live preflight may differ from the frozen preflight only in `inputs.rehydrationUnresolved` (0 vs 2). Manifest, identity, operative state, and eligibility stay byte-identical to the pin. `PINNED_OFFLINE` is not `CERTIFIED`.
+
+## Section 7.14 exception parentage
+
+- Source order is the section prohibition, then abilities `(a)` / `(b)` / `(c)`, then `except ... (i)` / `(ii)` / `(iii)`. The exceptions modify the encumbrance prohibition, not the dividend limb.
+- `(b)` and `(c)` are comma-joined. Admitting that pattern is the rule that moved Gibraltar and Chewy. They stay unparsed. `7.14(a)(i)` still owns `(ii)` and `(iii)`. `7.14(b)`, `7.14(c)`, and `7.14(i)` are `NOT_FOUND`.
+- `unparsedExceptionParentage` does not move nodes. When a clause's own text still contains the next marker of its list and an `except` introduces that list, context retrieval marks the operative item `AMBIGUOUS_TARGET` and `isCurrentTruth: false`. The text stays. `hasUnresolvedOperativeEvidence` blocks a completed compile. `7.4(a)(iii)` is not flagged. A line-start `except:` list whose siblings parsed is not flagged.
+
+## B4 — duplicate structural identities
+
+- The live index already addresses occurrences by `nodeId` and returns `AMBIGUOUS` for a repeated section ref. The seeded property suite (1500 documents) still passes.
+- Added assertion: the two synthetic `6.04` occurrences keep different descendant text. Neither span is overwritten by the other.
+
+## A6 — operative-state order
+
+- Reversing a dated replacement chain does not change status or current text. Two same-day replacements stay `OPERATIVE_STATE_CONFLICTED` with `currentText` null in either order. An effect with a null instrument key is unattached and is not an applied amendment.
+- Pre-existing `phase-3f1-operative-state-honesty` test 40 still expects a null-instrument effect passed only in `allEffects` to stay off a different instrument. IPV-05 attaches every null-instrument effect to the computed instrument. This pass did not change that rule.
 
 ## Queue
 
@@ -115,10 +138,13 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | IPV-08 exhibit term sheet as a definition | P0 | PUSHED `12c858e` | Non-operative summary does not supply definitions |
 | IPV-06 inline definition enumeration | P0 | NARROWED | Later line-start terms stay on the section. Definition lists stay in the certified tree |
 | B3 comma-separated clause vs citation | P0 | NARROWED | 7.4(a)(iii)/(iv) only when they bridge proviso (1). Chewy 6.05(a)(2)(c) restored |
-| stratified-cert 7.8(d) preflight | P0 | OPEN | Canonical `rehydrationUnresolved` is 2 because 7.4(iii)/(iv) were missing. Pin not rewritten |
+| stratified-cert 7.8(d) preflight | P0 | SPLIT | Canonical bytes still say rehydrationUnresolved 2. Live parser test expects 0 and checks the two refs |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
+| 7.14 exception parent | P1 | LIMITED | Tree unchanged. Unparsed except-list is AMBIGUOUS_TARGET, not current truth |
+| B4 duplicate identities | P1 | LOCKED | nodeId index plus distinct text for repeated 6.04 |
+| A6 operative-state order | P1 | TESTED | Date order, same-day conflict, null instrument key stays unattached |
 
 ## Blockers
 
-CONMED `7.8(d)` `00-preflight.json` byte pin still records `rehydrationUnresolved: 2`. The corrected parser resolves `7.4(a)(iii)` and `7.4(a)(iv)`, so the emitted count is 0. Operative text of `7.8(d)` is unchanged. Section 7.14 exceptions remain under `7.14(a)`. Do not merge. Do not spend. Do not edit Claude-owned fixtures. Do not rewrite the canonical pin.
+The frozen §7.8(d) pin still records `rehydrationUnresolved: 2`. The live parser resolves `7.4(a)(iii)` and `7.4(a)(iv)` and emits 0. Those are different claims. Section 7.14 exceptions remain under `7.14(a)` and are marked not current truth. Do not merge. Do not spend. Do not edit Claude-owned fixtures. Do not rewrite the canonical pin.

@@ -11,6 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { pinCandidate } from "../../scripts/stratified-cert/lib/emit-pin-packet";
+import { buildDeterministicStages, rehydrateNodeIds, sealedPopulation } from "../../scripts/p3-conmed-pilot/pipeline";
 
 const DISCOVERY_ID = "discovery-candidate:3476b082d53dec709a3dca23";
 const FOLLOWON_DISCOVERY_ID = "discovery-candidate:8aaa7b743717492d1a9fa0b2";
@@ -51,6 +52,19 @@ const FILES = [
   "01b-operative-state.json",
   "01c-target-eligibility.json",
 ];
+/** Byte identity of the frozen §7.8(d) pin. These digests lock the historical artifact, including rehydrationUnresolved = 2. */
+const FOLLOWON_CANONICAL_SHA256: Record<string, string> = {
+  "00-pin-manifest.json": "4ecffc33a05a4accb9bb72bd8140a6b91cf6ed5a27647eec8aeaa4eb4e3724cb",
+  "00-preflight.json": "8977ec65d968fa61d8aa7b0572e30d7dfedb3da6ce5943e3b642abb48d968cb9",
+  "01-target-identity.json": "0b794a3cd3f70977cacff2f90c1a914f84bce9f5ff5bfeb6b00d165adbd1cb69",
+  "01b-operative-state.json": "f5c064d27949db627b64873350fe2e33523c3d6387270737b6a5838c698ad2ae",
+  "01c-target-eligibility.json": "17dab8c1e170df73e361a6491345ecc61287ffb58df7e7ed63cc4e146e53468f",
+};
+const HISTORICAL_UNRESOLVED = [
+  { discoveryId: "discovery-candidate:90d9d73e1fda41693532da4a", sectionRef: "7.4(a)(iii)", parentRef: "7.4(a)", opening: "(iii) any Subsidiary that is a limited liability company may consummate a Division" },
+  { discoveryId: "discovery-candidate:179a1f3046d17abc490af6b9", sectionRef: "7.4(a)(iv)", parentRef: "7.4(a)", opening: "(iv) the Parent Borrower may be merged or consolidated with or into any Subsidiary" },
+] as const;
+const DOC_A = "conmed-doc-a-eighth-ar-credit-agreement";
 
 const tmpDirs: string[] = [];
 afterEach(() => {
@@ -280,10 +294,17 @@ describe("pinCandidate CONMED INVESTMENTS §7.8(d)", () => {
     expect(canonicalIdentity.identity.role).toBe("BASKET");
     expect(canonicalIdentity.baseSha).toBe(FOLLOWON_PACKET_BASE);
     for (const name of FILES) {
+      if (name === "00-preflight.json") continue;
       const emitted = fs.readFileSync(path.join(outDir, name));
       const canonical = fs.readFileSync(path.join(PIN_78D, name));
       expect(emitted.equals(canonical), `${name} differs from canonical pin`).toBe(true);
     }
+    const canonicalPreflight = JSON.parse(fs.readFileSync(path.join(PIN_78D, "00-preflight.json"), "utf8"));
+    expect(canonicalPreflight.inputs.rehydrationUnresolved).toBe(2);
+    const emittedPreflight = JSON.parse(fs.readFileSync(path.join(outDir, "00-preflight.json"), "utf8"));
+    expect(emittedPreflight.inputs.rehydrationUnresolved).toBe(0);
+    const historicalInputs = { ...canonicalPreflight.inputs, rehydrationUnresolved: 0 };
+    expect(emittedPreflight).toEqual({ ...canonicalPreflight, inputs: historicalInputs });
 
     const discovery = JSON.parse(fs.readFileSync(DISCOVERY_FIXTURE, "utf8"));
     const candidates = Array.isArray(discovery) ? discovery : discovery.candidates ?? discovery.items;
@@ -374,6 +395,48 @@ describe("pinCandidate CONMED INVESTMENTS §7.8(d)", () => {
       const left = fs.readFileSync(path.join(a, name));
       const right = fs.readFileSync(path.join(b, name));
       expect(left.equals(right), `${name} differs across runs`).toBe(true);
+    }
+  });
+
+  it("keeps the historical §7.8(d) pin byte-identical, including rehydrationUnresolved 2", () => {
+    for (const [name, digest] of Object.entries(FOLLOWON_CANONICAL_SHA256)) {
+      const bytes = fs.readFileSync(path.join(PIN_78D, name));
+      expect(crypto.createHash("sha256").update(bytes).digest("hex"), `${name} canonical pin mutated`).toBe(digest);
+    }
+    const preflight = JSON.parse(fs.readFileSync(path.join(PIN_78D, "00-preflight.json"), "utf8"));
+    expect(preflight.inputs.rehydrationUnresolved).toBe(HISTORICAL_UNRESOLVED.length);
+    expect(preflight.inputs.rehydrationUnresolved).toBe(2);
+    expect(preflight.mode).toBe("DRY_RUN_OFFLINE_PIN");
+  });
+
+  it("resolves the two historically unresolved §7.4 references and no others", () => {
+    const stages = buildDeterministicStages();
+    const pop = sealedPopulation();
+    const { unresolved } = rehydrateNodeIds(pop.all, stages.index);
+    expect(unresolved).toEqual([]);
+
+    for (const row of HISTORICAL_UNRESOLVED) {
+      const resolution = stages.index.resolveUniqueNodeByRef(DOC_A, row.sectionRef);
+      expect(resolution.status, row.sectionRef).toBe("UNIQUE");
+      if (resolution.status !== "UNIQUE") continue;
+      const node = resolution.node;
+      const parent = node.parentNodeId ? stages.index.getNodeById(node.parentNodeId) : undefined;
+      expect(node.nodeType).toBe("CLAUSE");
+      expect(parent?.sectionRef).toBe(row.parentRef);
+      expect(node.charEnd).toBeGreaterThan(node.charStart);
+      const owned = stages.index.getNodeText(node.nodeId, "DESCENDANTS").replace(/\s+/g, " ");
+      expect(owned.startsWith(row.opening)).toBe(true);
+      expect(owned.startsWith("(iii) above")).toBe(false);
+      const candidate = pop.all.find((c) => c.discoveryId === row.discoveryId);
+      expect(candidate?.structuralNodeKeys).toEqual([`${DOC_A}::${row.sectionRef}`]);
+      expect(candidate?.normalizedSourceRef).toBe(row.sectionRef);
+    }
+
+    const proviso = stages.index.resolveUniqueNodeByRef(DOC_A, "7.4(a)(iv)(1)");
+    expect(proviso.status).toBe("UNIQUE");
+    if (proviso.status === "UNIQUE") {
+      const parent = proviso.node.parentNodeId ? stages.index.getNodeById(proviso.node.parentNodeId) : undefined;
+      expect(parent?.sectionRef).toBe("7.4(a)(iv)");
     }
   });
 });

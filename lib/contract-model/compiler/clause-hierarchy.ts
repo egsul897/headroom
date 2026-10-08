@@ -571,3 +571,45 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
 
   return nodes;
 }
+
+const EXCEPTION_LIST_ROMANS = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii"];
+
+function continuesSameList(current: string, next: string): boolean {
+  const left = current.toLowerCase();
+  const right = next.toLowerCase();
+  if (/^[a-z]$/.test(left) && /^[a-z]$/.test(right)) {
+    const step = right.charCodeAt(0) - left.charCodeAt(0);
+    return step === 1 || step === 2;
+  }
+  if (/^\d+$/.test(left) && /^\d+$/.test(right)) {
+    const step = Number(right) - Number(left);
+    return step === 1 || step === 2;
+  }
+  const leftRoman = EXCEPTION_LIST_ROMANS.indexOf(left);
+  const rightRoman = EXCEPTION_LIST_ROMANS.indexOf(right);
+  if (leftRoman >= 0 && rightRoman >= 0) return rightRoman - leftRoman === 1 || rightRoman - leftRoman === 2;
+  return false;
+}
+
+/**
+ * The node's own text still contains the next marker of its list, and an "except"
+ * introduces that list (in this text, or in the parent text that leads into this node).
+ * The structural parent is then not a definitive exception parent: a later sibling was
+ * left inside the span. Callers keep the text and must not treat the span as settled scope.
+ */
+export function unparsedExceptionParentage(ownText: string, parentOwnText: string | null): boolean {
+  const open = ownText.match(/^\s*\(([ivxlcdm]+|\d+|[a-z])\)/i);
+  if (!open?.[1]) return false;
+  const rest = ownText.slice(open[0].length);
+  const continuation = /(?:,|\bor\b|\band\b)\s+\(([ivxlcdm]+|\d+|[a-z])\)/gi;
+  let swallowed = false;
+  for (let match = continuation.exec(rest); match; match = continuation.exec(rest)) {
+    if (match[1] && continuesSameList(open[1], match[1])) {
+      swallowed = true;
+      break;
+    }
+  }
+  if (!swallowed) return false;
+  if (/\bexcept\b/i.test(rest)) return true;
+  return parentOwnText !== null && /\bexcept\b/i.test(parentOwnText.slice(-180));
+}

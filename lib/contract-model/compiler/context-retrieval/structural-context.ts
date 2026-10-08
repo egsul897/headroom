@@ -8,6 +8,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import { resolveOperativeSource } from "../candidate-span";
+import { unparsedExceptionParentage } from "../clause-hierarchy";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import type { ContextItem, ContextItemEvidenceState } from "./types";
 
@@ -136,6 +137,20 @@ function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documen
     return { text: "", evidenceState: { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason: "An amendment to a clause inside this text could not be applied without guessing, so the base text is not current operative text." } };
   }
   const text = resolved.origin === "OPERATIVE_STATE_CURRENT_TEXT" || !ownWhenUnamended ? resolved.text : index.getNodeText(node.nodeId, "OWN");
+  const structural = index.getNodeById(node.nodeId);
+  const parent = structural ? index.getParent(structural.nodeId) : undefined;
+  const own = structural ? index.getNodeText(structural.nodeId, "OWN") : "";
+  const parentOwn = parent ? index.getNodeText(parent.nodeId, "OWN") : null;
+  if (structural && unparsedExceptionParentage(own, parentOwn)) {
+    return {
+      text,
+      evidenceState: {
+        status: "AMBIGUOUS_TARGET",
+        isCurrentTruth: false,
+        reason: "This clause still contains the next marker of its own list, and an except introduces that list. The structural parent is not the definitive exception scope.",
+      },
+    };
+  }
   return { text, evidenceState: resolveSectionEvidenceState(state, documentId, node) };
 }
 
