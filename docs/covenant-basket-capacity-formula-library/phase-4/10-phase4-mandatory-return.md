@@ -6,7 +6,7 @@
 |---|---|
 | Starting SHA (`origin/main` at branch cut) | `caa08f8b1c68d9656b30cabb6a866f8cf9b23b1d` |
 | Ending SHA (Phase 4 content) | `946925b74d8e8560ba7624e766e37f3731b37b55` |
-| Branch tip | `2dac5f637eb06c638a05dd2f36081862fca72fad` |
+| Branch tip | `e7195e019e8cba22d8bc87d316b7a0f6545ddbd0` |
 | Prior merged PR #148 head | `01a1972817091f6bd4c074d2d8b9c75dfb6fcd18` |
 
 ## 2. PR URL and integration status
@@ -15,7 +15,7 @@
 |---|---|
 | PR | https://github.com/egsul897/headroom/pull/170 |
 | Base | `main` |
-| Merge recommendation | Merge when CI green — non-promoting library completion; no executable-capacity claims |
+| Merge recommendation | **CI green — request Integration Lead merge now** (non-promoting; no executable-capacity claims) |
 
 ## 3. Production files changed
 
@@ -119,7 +119,7 @@ Known false affirmative permissions: **0** (release blocker clear for *library* 
 | Item | Value |
 |---|---|
 | Tests | `npx vitest run tests/basket-formula-corpus/` → **34 passed** |
-| CI | subscribed — awaiting terminal checks on PR #170 |
+| CI | **success** — 2/2 checks on `e7195e019e8cba22d8bc87d316b7a0f6545ddbd0` |
 
 ## 12. Remaining blockers and exact owners
 
