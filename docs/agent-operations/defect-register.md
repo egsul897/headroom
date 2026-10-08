@@ -19,6 +19,7 @@ DEVELOPMENT ≠ CERTIFIED. This register does not change certification status.
 | A long contents title outranked a shorter operative body in reference resolution. | `resolveReferenceTarget` treats a contents listing as degenerate at any length. Two operative bodies stay `AMBIGUOUS`. |
 | `getOperativeProvision` served a contents listing when it was the only node for the label. | The raw fallback refuses a contents listing. A unique operative body is still returned. |
 | `getReferencedProvision` followed a stored target id into a contents listing. | A contents-listing target is skipped. The operative body is returned when one exists. A label whose only node is a contents listing is refused. |
+| A definition mention, and a detected cross-reference edge, withheld the operative section because a contents row shared the label. | Definition-text retrieval and `retrieveCrossReferencesFromNode` use the contents-aware resolver. The operative body is retrieved. Two operative bodies stay unresolved. A contents listing alone is not retrieved. |
 | An independent qualitative condition was deleted, and an unattributed unlimited pair was copied onto siblings. | `semantic-accountability-compiler.v12` qualitative redundancy and ambiguous attribution. |
 | Missing token telemetry was treated as zero spend. | `mayDispatchUnderSpendingTarget` blocks the next dispatch when tokens are unknown. |
 | The five-conversation reservation shape was filtered only for Gibraltar. | The Gibraltar-only stop was removed. The shape applies generally. |

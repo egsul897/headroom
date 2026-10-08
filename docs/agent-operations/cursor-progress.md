@@ -82,8 +82,8 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Mission: source-backed compilation without false operative text, silent condition loss, or unanchored authority.
 - Branch: `cursor/architecture-remediation-7cc2`. Base: `cursor/gibraltar-haiku-verify-7cc2`. PR #136 draft.
 - Last verified SHA before the unanchored decision: `044d1b32052d5d75c1bfb57d26fdbd183a0804b5`. Certified path on `4a7a477` succeeded (Actions `37798576897`). Actions on `8590be6` and `044d1b3` were not observed.
-- Current task: `getReferencedProvision` followed a stored target id into a contents listing.
-- Status: a contents-listing target is skipped. The operative body is returned when one exists. A contents-only label is refused. `semantic-tools-operative-state-discipline.test.ts` 19 passed. Prior cycle on `825aacf`: the same file had 17 passed for the `getOperativeProvision` refusal.
+- Current task: a definition mention withheld the operative section because a contents row shared the label.
+- Status: definition-text retrieval and `retrieveCrossReferencesFromNode` both skip a contents listing and retrieve the operative body when one shares the label. Two operative bodies stay unresolved. `context-retrieval-definition-contents.test.ts` 4 passed. `context-retrieval-pipeline.test.ts` 36 passed.
 - Known defects still open: `package-compile.ts` still compiles every eligible non-representation candidate. Local semantic-review timeouts under the 5s default are not a certification result. Actions on `8590be6` and `044d1b3` are unobserved.
 - Unanchored compile: every production caller that reaches `compileCovenantToIR` with a real package index also passes a non-empty anchor. Discovery Pass C sets `structuralNodeIds` to a node id from that index. `compileCandidateToVerifiedIR` returns `NO_STRUCTURAL_ANCHOR` before compile when the list is empty or the id is missing. Gibraltar `candidateFor` and `rehydrate` skip a row with no resolvable node id. `operativeModelDispatchBlock` still returns null when the index is absent or the anchor id is absent, because `testCompilerInput` and certified bounded-execution fixtures compile raw operative text with an index attached and `originatingStructuralNodeIds` empty. An anchor id that is present and missing from the index is still refused.
 - `7.4(a)(iii)` and `7.4(a)(iv)` are not nodes. The marker scanner rejects a parenthesis that is immediately preceded by a comma and a space (`MARKER_OCCURRENCE` in `clause-hierarchy.ts`). The Section 7.4 text is "), (iii)" and "), (iv)". That exclusion is the documented citation-list rule. Those two discovery ids have no run-original evidence file. The same two keys were already unresolved on the parser before the letter-run guard. Do not accept every comma-separated marker; that was the FWRG citation false-positive the rule exists to stop.
@@ -97,11 +97,20 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: decide whether definition-text cross-reference retrieval still withholds an operative section because a contents listing shares its label.
-- Relevant files: `lib/contract-model/compiler/context-retrieval/reference-context.ts` (`retrieveCrossReferencesFromDefinitionText`), `lib/contract-model/compiler/semantic-accountability/reference-resolver.ts`.
-- First step: read the `resolveUniqueNodeByRef` branch. It records AMBIGUOUS and does not call `resolveReferenceTarget`. If a definition mention of a label that has one contents row and one operative body stays unresolved, retrieve the operative body through `resolveReferenceTarget` and keep two operative bodies unresolved.
-- Acceptance: existing context-retrieval tests pass, plus a regression for the contents-plus-body case. No provider call.
-- Dependency: do not retrieve a contents listing as the definition's cross-reference target. Do not guess between two operative bodies.
+- Objective: decide whether `resolveSourceContext` still expands a contents listing when structural reference detection resolved `targetNodeId` to that listing alone.
+- Relevant files: `lib/contract-model/compiler/semantic-accountability/source-context.ts` (the branch `if (ref.resolved && ref.targetNodeId && !ref.targetAmbiguous)` around the cross-reference expansion). `retrieveCrossReferencesFromNode` already skips a contents listing and retrieves the operative body when the other occurrence is a contents row.
+- First step: read that branch. If a resolved contents-listing target is pushed as status `UNIQUE` and its text is added as a cross-reference region, skip it the same way retrieval does, and keep an operative body.
+- Expected output: a regression if the region was the contents text. If the branch already refuses that node, record the line and do not change it.
+- Acceptance: existing reference and context-retrieval tests pass. No provider call. No sealed-evidence edit.
+- Dependency: do not guess between two operative bodies. Do not raise the semantic-review timeout.
+
+## Milestone
+
+- Starting SHA this continuation: `044d1b32052d5d75c1bfb57d26fdbd183a0804b5`.
+- Commits: `982c3bc` contents titles and the unanchored-fixture decision; `be9b01c` long contents titles are not reference targets; `825aacf` `getOperativeProvision` refuses a contents listing; `b5a0f77` `getReferencedProvision` skips a contents-listing edge. The commit that contains this note is the definition-text retrieval change.
+- `npm run test:phase3-certification` after the retrieval change: 455 passed, 3 failed, all in `tests/contract-model/semantic-verification-verify.test.ts`. Two are `Test timed out in 5000ms`. One finished and asserted `conditionSuspicion.status` `UNCERTAIN` but received `MATERIAL_CONDITION_POSSIBLE` on the no-key synthetic path. An earlier run of the same suite on this tree timed that test out before the assertion. The timeout was not raised and the assertion was not changed. Certified files in that run, including golden-map and offline-maps, passed. Actions on this head are unobserved.
+- Other tests this milestone: operative-authority 13 passed; reference-resolver contents 2 passed; semantic-tool discipline 19 passed; definition-contents 3 passed; context-retrieval pipeline 36 passed.
+- Blockers: `package-compile.ts` is still the broad set. Local semantic-review timeouts under the 5s default are not a certification result. Paid calls: none. Certification: not advanced. Sealed evidence: not rewritten.
 
 ## Milestone
 
