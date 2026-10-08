@@ -18,11 +18,13 @@ const PROBE_SCRIPT = `
 import json, time
 import numpy as np
 
-def matmul_gflops(n=1024, repeats=8):
+def matmul_gflops(n=2048, repeats=6):
+    # Larger GEMM + more repeats so BLAS warmup does not dominate; still a
+    # peak-compute proxy, not end-to-end transformer decode (no KV/bandwidth).
     a = np.random.randn(n, n).astype(np.float32)
     b = np.random.randn(n, n).astype(np.float32)
-    # warmup
-    _ = a @ b
+    for _ in range(2):
+        _ = a @ b
     t0 = time.perf_counter()
     for _ in range(repeats):
         _ = a @ b
@@ -31,10 +33,11 @@ def matmul_gflops(n=1024, repeats=8):
     gflops = (flops / elapsed) / 1e9
     return {"n": n, "repeats": repeats, "elapsed_s": elapsed, "gflops": gflops}
 
-# ~2 * params FLOPs per token for decode (order-of-magnitude; ignores KV/cache/IO).
-def tokens_per_sec(gflops, params_b):
+# ~2 * params FLOPs per token for decode (order-of-magnitude). Apply a 0.15x
+# efficiency factor for memory-bound decode vs peak GEMM.
+def tokens_per_sec(gflops, params_b, efficiency=0.15):
     flops_per_token = 2.0 * params_b * 1e9
-    return (gflops * 1e9) / flops_per_token
+    return (gflops * efficiency * 1e9) / flops_per_token
 
 m = matmul_gflops()
 out = {
@@ -46,7 +49,8 @@ out = {
     "1b": tokens_per_sec(m["gflops"], 1.0),
     "3b": tokens_per_sec(m["gflops"], 3.0),
     "7b": tokens_per_sec(m["gflops"], 7.0),
-  }
+  },
+  "caveat": "Peak GEMM * 0.15 efficiency ≠ installed LLM; no weights downloaded."
 }
 print(json.dumps(out))
 `;
@@ -103,14 +107,14 @@ export async function runLocalModelProbe(options?: { gpuPresent?: boolean }): Pr
 
   const probes: LocalModelProbeResult["probes"] = [
     {
-      name: "numpy_f32_matmul_1024",
-      description: `Sustained float32 matmul throughput probe (${gflops.toFixed(2)} GFLOP/s)`,
+      name: "numpy_f32_matmul_2048",
+      description: `Sustained float32 matmul throughput probe (${gflops.toFixed(2)} GFLOP/s peak GEMM)`,
       wallMs: numpy.wallMs,
       estimatedTokensPerSecond: null,
       peakRssBytes: peakRss,
       practicalOnThisVm: numpy.ok && gflops >= 5,
       notes: numpy.ok
-        ? `NumPy ${numpy.payload.numpy_version}; ${numpy.payload.matmul?.elapsed_s?.toFixed(3)}s for ${numpy.payload.matmul?.repeats}× ${numpy.payload.matmul?.n}³`
+        ? `NumPy ${numpy.payload.numpy_version}; ${numpy.payload.matmul?.elapsed_s?.toFixed(3)}s for ${numpy.payload.matmul?.repeats}× ${numpy.payload.matmul?.n}³; tok/s estimates apply 0.15× decode efficiency vs peak GEMM; no weights downloaded`
         : `NumPy probe failed: ${numpy.payload.error}`,
     },
     {
@@ -120,7 +124,7 @@ export async function runLocalModelProbe(options?: { gpuPresent?: boolean }): Pr
       estimatedTokensPerSecond: estimates["120m"] ?? null,
       peakRssBytes: peakRss,
       practicalOnThisVm: (estimates["120m"] ?? 0) >= 5,
-      notes: "Practical for light classification if weights fit in ~1–2GB RAM; not installed in this probe.",
+      notes: "Capacity-only estimate. Practical for light classification if weights fit in ~1–2GB RAM; not installed in this probe.",
     },
     {
       name: "estimate_1b_decode",
@@ -128,8 +132,8 @@ export async function runLocalModelProbe(options?: { gpuPresent?: boolean }): Pr
       wallMs: 0,
       estimatedTokensPerSecond: estimates["1b"] ?? null,
       peakRssBytes: peakRss,
-      practicalOnThisVm: (estimates["1b"] ?? 0) >= 2,
-      notes: "Borderline for interactive use; batch offline labeling may be acceptable.",
+      practicalOnThisVm: (estimates["1b"] ?? 0) >= 2 && (estimates["1b"] ?? 0) < 100,
+      notes: "Borderline for interactive use; batch offline labeling may be acceptable. Not a substitute for Pass B quality models.",
     },
     {
       name: "estimate_7b_decode",
