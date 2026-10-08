@@ -46,3 +46,41 @@ export {
 } from "./legal-safety/promotion-guards";
 export { buildReviewerDataset } from "./corpus/reviewer-dataset";
 export { PILOT_ISSUER_SEEDS, stratifiedPilotPlan, expansionPlan, diversityReport } from "./corpus/issuer-sample";
+export {
+  NON_DEBT_TITLE,
+  isDebtSource,
+  isFinancingDoc,
+  isFixtureDoc,
+  isFalsePositiveDebtExhibit,
+} from "./corpus/financing-filter";
+
+export { probeDurability } from "./preservation/durability";
+export { buildSourceInventory, SOURCE_INVENTORY_SCHEMA_VERSION } from "./preservation/inventory";
+export {
+  buildAcquisitionManifest,
+  ACQUISITION_MANIFEST_SCHEMA_VERSION,
+} from "./preservation/acquisition-manifest";
+export {
+  measureReplayCounts,
+  replayAgainstPilotTargets,
+  PILOT_REPLAY_TARGETS,
+} from "./preservation/replay";
+
+export {
+  CONSUMER_EXPORT_SCHEMA_VERSION,
+  CONSUMER_EXPORT_KIND,
+  CONSUMER_EXPORT_SAFETY,
+  consumerContractIdentity,
+} from "./export/consumer-contract";
+export { buildCanonicalConsumerExport, writeCanonicalExport } from "./export/build-canonical-export";
+
+export {
+  DefinitionEncyclopediaImportStore,
+  runDefinitionEncyclopediaImport,
+  DEFINITION_ENCYCLOPEDIA_ADAPTER_VERSION,
+} from "./consumers/definition-encyclopedia-import";
+export {
+  DependencyAtlasImportStore,
+  runDependencyAtlasImport,
+  DEPENDENCY_ATLAS_ADAPTER_VERSION,
+} from "./consumers/dependency-atlas-import";

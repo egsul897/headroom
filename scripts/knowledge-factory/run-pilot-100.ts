@@ -25,10 +25,12 @@ import {
 import { loadEhbHandoffPackage, handoffToDiscovered } from "../../lib/knowledge-factory/coordination/ehb-handoff";
 import { attachInstrumentIdentity } from "../../lib/knowledge-factory/pipeline/instrument-identity";
 import { stratifiedPilotPlan } from "../../lib/knowledge-factory/corpus/issuer-sample";
-import type { DiscoveredFilingDocument, KnowledgeSourceRecord } from "../../lib/knowledge-factory/types";
-
-const NON_DEBT =
-  /\b(?:consent of independent|independent registered public accounting|pwc consent|ex-23|employment agreement|bylaws?|certificate of incorporation)\b/i;
+import type { DiscoveredFilingDocument } from "../../lib/knowledge-factory/types";
+import {
+  NON_DEBT_TITLE as NON_DEBT,
+  isDebtSource,
+  isFinancingDoc,
+} from "../../lib/knowledge-factory/corpus/financing-filter";
 
 function arg(name: string): string | undefined {
   const idx = process.argv.indexOf(name);
@@ -36,17 +38,6 @@ function arg(name: string): string | undefined {
 }
 function flag(name: string): boolean {
   return process.argv.includes(name);
-}
-
-function isDebtSource(s: KnowledgeSourceRecord): boolean {
-  return s.provenance === "sec-edgar" || s.provenance.startsWith("ehb") || s.sourceId.startsWith("ehb:");
-}
-
-function isFinancingDoc(s: KnowledgeSourceRecord): boolean {
-  if (!isDebtSource(s) && !s.provenance.startsWith("fixture")) return false;
-  if (NON_DEBT.test(`${s.documentTitle} ${s.exhibitFilename}`)) return false;
-  // Count only live/EHB financing docs toward the 100 target (fixtures reported separately).
-  return isDebtSource(s);
 }
 
 async function reprocessExisting(store: CorpusStore): Promise<number> {

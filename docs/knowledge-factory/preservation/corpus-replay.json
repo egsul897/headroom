@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "knowledgeFactoryVersion": "knowledge-factory.v1",
+  "structuralParserVersion": "phase-3f1-open1-wiring-structural-ambiguity.v1",
+  "counts": {
+    "acquiredFinancingDocuments": 113,
+    "uniqueInstrumentIdentities": 112,
+    "structuralNodes": 37789,
+    "covenantCandidates": 4590,
+    "definitions": 257,
+    "dependencyEdges": 23876,
+    "conditionExceptionRecords": 14975,
+    "fixtureDocuments": 12,
+    "ambiguousStructuralNodes": 6913,
+    "documentRelationships": 46,
+    "unresolvedUncertaintyItems": 3333
+  },
+  "targets": {
+    "acquiredFinancingDocuments": 113,
+    "uniqueInstrumentIdentities": 112,
+    "structuralNodes": 37789,
+    "covenantCandidates": 4590,
+    "definitions": 257,
+    "dependencyEdges": 23876,
+    "conditionExceptionRecords": 14975
+  },
+  "drift": [],
+  "methodology": "Financing = sec-edgar|ehb sources excluding non-debt title false positives. Structural/candidate/definition/edge/condition totals sum financing + fixtures (fixtures reported separately). Instruments = distinct instrumentIdentity among that union."
+}

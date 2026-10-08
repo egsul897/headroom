@@ -23,6 +23,8 @@ Additive, Cursor-owned workstream to build the cheapest legally defensible, cont
 | `tests/knowledge-factory/` | Unit + fixture pipeline tests |
 | `.local-knowledge-corpus/` | Local bytes, cache, checkpoints, manifests (gitignored) |
 | `docs/knowledge-factory/manifests/` | Git-safe stats / audit / economics manifests |
+| `docs/knowledge-factory/preservation/` | Source inventory, acquisition manifest, recovery procedure, replay |
+| `docs/knowledge-factory/export/v1/` | Canonical read-only consumer export shards + import results |
 
 ## Reproducible commands
 
@@ -45,10 +47,23 @@ npx tsx scripts/knowledge-factory/download-documents.ts --ticker AAL --max 3
 npx tsx scripts/knowledge-factory/download-documents.ts --pilot --issuers 20 --max-per-issuer 2
 npx tsx scripts/knowledge-factory/refresh-corpus.ts --tickers AAL,F --max 2
 
+# Phase 3: inventory + acquisition manifest + consumer export + peer imports
+npx tsx scripts/knowledge-factory/phase3-preserve-and-export.ts
+
+# Recover SEC bytes from committed acquisition manifest (fair-access; not durability)
+HEADROOM_SEC_FETCH_OWNER=WS-CKF npx tsx scripts/knowledge-factory/recover-from-manifest.ts --dry-run
+
 # Focused tests
 npx vitest run tests/knowledge-factory
 npx tsc --noEmit
 ```
+
+## Phase 3 durability honesty
+
+This environment has **no** shared Postgres (`DATABASE_URL`) and **no** object-storage token.
+Local `.local-knowledge-corpus/` bytes are **not** cross-VM durable. Peers consume
+`docs/knowledge-factory/export/v1/` (canonical schema `knowledge-factory.consumer-export.v1`)
+and can re-acquire source bytes via `docs/knowledge-factory/preservation/acquisition-manifest.json`.
 
 ## Representation levels
 
