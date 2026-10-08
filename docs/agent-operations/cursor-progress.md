@@ -70,6 +70,12 @@ Offline: `tests/contract-model/compiler/question-plan.test.ts` 10 passed. Econom
 
 No Phase 3 gate was moved. Pass B is not retired.
 
+## Qualitative description narrowing
+
+An exact qualitative gate whose description only restates the other gate is rewritten to that one gate. A description that also states an independent qualifier is left unchanged. Substring folding from `origin/main` was not adopted. The third-qualifier and ambiguous-sibling tests still pass.
+
+The open parser change in PR #132 was tried and reverted. It removes structural anchors for CONMED `7.1(c)` and `7.1(d)` and drops the offline map from 104 represented evidence records to 102. `tests/contract-model/certified/offline-maps.test.ts` passes again with the parser restored.
+
 ## Open, still in this owner's scope
 
 - Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix, the evidence engine, and the question planner. Do not describe a pending or absent job as green.

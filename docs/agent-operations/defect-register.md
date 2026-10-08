@@ -51,3 +51,11 @@ DEVELOPMENT ≠ CERTIFIED. This register does not change certification status.
 ## NOT_REPRODUCIBLE / SUPERSEDED
 
 No prior defect on this list was reclassified as not reproducible. The Gibraltar-only conversation filter and the summary-only Article VII file are superseded by the fixes above; the historical failure records remain.
+
+## Audit against origin/main `9de4e57` (2026-10-08)
+
+This branch's merge-base with `origin/main` is `554698a`. Commits on main that are not in this branch: `#129` operative-subwindow seal (`1c0a4fc`), `#131` CONMED blocker classification (docs), `#133` mention-is-not-reliance (comment plus `defined-term-mention-not-reliance.test.ts`), `#134` qualitative-description narrowing (`9de4e57`).
+
+`#134`'s narrowing is now on this branch, on top of the stricter independent-qualifier rule. Main's `isFoldedQualitative` substring deletion was not copied. `#133`'s behavior is already locked here by `unlimited-carveout-qualitative-gates.test.ts` ("does not synthesize defined-term reliance from a capitalized mention"). The separate main test file is not on this branch. `#129`'s `operative-subwindow-seal.ts` is absent here. It was not reimplemented, because it is already merged on main and a merge of main into this branch conflicts in `unlimited-carveout-honesty.ts`.
+
+`#132` (open, `db53bc1`) parses a restarted letter run without taking `(x)` as roman ten. That change is not on main and was not kept on this branch. Applying it to the current clause parser makes the CONMED offline map drop structural anchors for `7.1(c)` (`discovery-candidate:5f83b15ed6cd0ea8b06289a0`) and `7.1(d)` (`discovery-candidate:1b08da2e952127a1caebe77d`). `offline-maps.test.ts` then sees 102 represented evidence records instead of 104. The parser file was restored. The defect stays open. Landing it needs those two anchors reconciled without rewriting sealed CONMED evidence.

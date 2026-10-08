@@ -215,6 +215,32 @@ describe("unlimited carve-out dual qualitative gates", () => {
     expect(again.conditions).toBe(surplus.conditions);
   });
 
+  it("narrows an exact manner gate whose description only restates the object class", () => {
+    const [out] = compile(SURPLUS, [rule({ conditions: [folded("surplus or damaged equipment")] })]);
+    const manner = out!.conditions.find((condition) => condition.provenance?.excerpt === "in the ordinary course of business");
+    const objectGate = out!.conditions.find((condition) => condition.provenance?.excerpt === "surplus or damaged equipment");
+    expect(manner?.description).toBe("The unlimited carve-out applies only when it is in the ordinary course of business. This manner test has no licensed computable condition type.");
+    expect(manner?.description).not.toContain("surplus or damaged equipment");
+    expect(objectGate?.description).toContain("surplus or damaged equipment");
+  });
+
+  it("keeps an independent qualifier that shares a description with both gates", () => {
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        description: "The exception for the transfer of surplus or damaged equipment applies only if the transfer occurs in the ordinary course of business and no Default has occurred",
+        citation: "§9.07(a)",
+        excerpt: "in the ordinary course of business",
+      }],
+    })]);
+    const manner = out!.conditions.find((condition) => condition.provenance?.excerpt === "in the ordinary course of business");
+    expect(manner?.description).toContain("no Default has occurred");
+    expect(manner?.description).toContain("surplus or damaged equipment");
+    expect(out!.conditions.some((condition) => condition.provenance?.excerpt === "surplus or damaged equipment")).toBe(true);
+  });
+
   it("teaches the emitter the residual shape and does not add a condition type", () => {
     const prompt = buildSystemPrompt({ irSchemaVersion: "x", toolPolicyVersion: "y" });
     const examples = buildFewShotExamplesBlock();

@@ -16,9 +16,12 @@
  *
  * A pre-existing condition is removed only when every non-empty surface is
  * redundant with the two gates. Substring containment is not equivalence: a
- * third independent qualifier is kept. An operative pair that cannot be
- * uniquely attributed is not copied onto a sibling, and sufficiency is
- * AMBIGUOUS. Unknown attribution is not COMPLETE.
+ * third independent qualifier is kept. An exact gate whose description only
+ * narrates both gates is narrowed to the gate its excerpt already states. A
+ * description that also states an independent qualifier is left as written.
+ * An operative pair that cannot be uniquely attributed is not copied onto a
+ * sibling, and sufficiency is AMBIGUOUS. Unknown attribution is not COMPLETE.
+ * A capitalized act name is not synthesized into a DEFINED_TERM_REFERENCE.
  *
  * Soft gate. invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  */
@@ -164,6 +167,46 @@ function mannerDescription(excerpt: string): string {
   return `The unlimited carve-out applies only when it is ${excerpt.replace(/\s+/g, " ").trim()}. This manner test has no licensed computable condition type.`;
 }
 
+/** Sentence glue around the two gate phrases. An independent qualifier is any other word. */
+const DESCRIPTION_GLUE = new Set(["a", "an", "the", "of", "for", "or", "and", "if", "in", "to", "on", "by", "with", "only", "applies", "apply", "applied", "exception", "occurs", "occur", "occurring", "when", "that", "this", "such", "its", "it", "is", "be", "may", "shall"]);
+
+function actTokenBefore(operativeText: string, objectExcerpt: string): string | null {
+  const text = operativeText.replace(/\s+/g, " ");
+  const objectNorm = norm(objectExcerpt);
+  const idx = norm(text).indexOf(objectNorm);
+  if (idx < 0) return null;
+  const before = text.slice(0, idx);
+  const match = before.match(/\b([A-Za-z]+)\s+of\s*$/);
+  return match?.[1] ?? null;
+}
+
+/** Words left after the two gate phrases and the act token are removed. Empty means the description narrates the pair and nothing else. */
+function qualifiersBeyondPair(description: string, objectExcerpt: string, mannerExcerpt: string, actToken: string | null): string[] {
+  let text = norm(description);
+  for (const phrase of [norm(objectExcerpt), norm(mannerExcerpt)].sort((a, b) => b.length - a.length)) {
+    if (phrase.length > 0) text = text.split(phrase).join(" ");
+  }
+  const act = actToken ? norm(actToken) : null;
+  return text.split(/[^a-z0-9]+/).filter((token) => token.length > 0 && !DESCRIPTION_GLUE.has(token) && token !== act);
+}
+
+/**
+ * An exact object or manner gate whose description also narrates the other
+ * gate, and no independent qualifier, is restated as that one gate. A
+ * description with any other word is returned unchanged so the qualifier stays.
+ */
+function narrowExactGateDescription(condition: IRCondition, pair: QualitativePair, operativeText: string): IRCondition {
+  const exactObject = isExactGate(condition, pair.objectExcerpt);
+  const exactManner = isExactGate(condition, pair.mannerExcerpt);
+  if (exactObject === exactManner) return condition;
+  const other = exactObject ? pair.mannerExcerpt : pair.objectExcerpt;
+  if (!norm(condition.description).includes(norm(other))) return condition;
+  const act = actTokenBefore(operativeText, pair.objectExcerpt);
+  if (qualifiersBeyondPair(condition.description, pair.objectExcerpt, pair.mannerExcerpt, act).length > 0) return condition;
+  const description = exactObject ? objectDescription(pair.objectExcerpt) : mannerDescription(pair.mannerExcerpt);
+  return description === condition.description ? condition : { ...condition, description };
+}
+
 function qualitativeLeaf(excerpt: string, description: string, provenance: SourceProvenance | null): IRExpression {
   return withExpressionId({
     kind: "UNSUPPORTED",
@@ -226,13 +269,25 @@ export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutH
   const hasMannerCondition = input.conditions.some((condition) => isExactGate(condition, pair.mannerExcerpt));
   const gated = capacity.gatedBy ?? null;
   const composed = gated?.kind === "AND" && hasEvidence(gated, pair.objectExcerpt) && hasEvidence(gated, pair.mannerExcerpt);
-  if (!redundant && hasObjectCondition && hasMannerCondition && composed) return unchanged(input);
+  if (!redundant && hasObjectCondition && hasMannerCondition && composed) {
+    const narrowed = input.conditions.map((condition) => narrowExactGateDescription(condition, pair, input.operativeText));
+    if (narrowed.every((condition, index) => condition === input.conditions[index])) return unchanged(input);
+    return {
+      capacity: input.capacity,
+      conditions: narrowed.map((condition, index) => ({ ...condition, conditionId: `${input.scopePath}.condition[${index}]` })),
+      applied: true,
+      ambiguousAttribution: false,
+      reason: UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON,
+    };
+  }
 
   const objectProvenance = input.bindExcerpt(pair.objectExcerpt);
   const mannerProvenance = input.bindExcerpt(pair.mannerExcerpt);
   if (!objectProvenance?.excerpt || !mannerProvenance?.excerpt) return unchanged(input);
 
-  const kept = input.conditions.filter((condition) => !isQualitativelyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt));
+  const kept = input.conditions
+    .filter((condition) => !isQualitativelyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt))
+    .map((condition) => narrowExactGateDescription(condition, pair, input.operativeText));
   const next: IRCondition[] = [...kept];
   if (!next.some((condition) => isExactGate(condition, pair.objectExcerpt))) {
     next.push({
