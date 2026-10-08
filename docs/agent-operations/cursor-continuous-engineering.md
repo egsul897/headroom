@@ -60,10 +60,17 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## A1 / A2 — Failed definition splice and parent/child precedence
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `f0bc31e`.
 - A1: a resolved definition replacement whose old span is missing or repeated used to emit no section view. The section candidate then compiled the base section, including the pre-amendment definition. A definition amendment that cannot be spliced now produces a review-required section view, and operative source for that section is withheld.
 - A2: a resolved parent restatement used to win even when a child amendment was later or on the same day. The parent text is operative only when every related amendment is strictly earlier. A later or same-day child amendment, and a child amendment after a parent deletion, withholds the section text.
 - Tests: definition-level 7, section splice 10, phase-2g 48, architecture 17. `npm run test:phase3-certification` 459 passed. `npx tsc --noEmit -p .` clean.
+
+## B1 — IPV-08 non-operative exhibit definitions
+
+- Status: local tests passed; push follows this entry.
+- Reproduction: an exhibit captioned `SUMMARY OF PRINCIPAL TERMS` says the summary is for convenience only and is not an operative provision, then lists `Indebtedness: ... $100,000,000`. Unquoted colon detection recorded that line as a definition.
+- Fix: a summary or exhibit that disclaims operative effect in its own opening is not a definition source. A headings-convenience clause does not match. A definitions exhibit that gives terms meanings still does.
+- Tests: `tests/contract-model/nonoperative-exhibit-definitions.test.ts` 3 passed. `npx tsc --noEmit -p .` clean.
 
 ## Queue
 
@@ -76,7 +83,9 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
 | IPV-05 ABL amendment target unresolved | P0 | PUSHED `70023f7` | CI 9 checks passed on that SHA |
 | A1 failed definition splice returns base section | P0 | VERIFIED locally | Unspliceable definition amendment withholds the section |
-| A2 parent/child amendment precedence | P0 | VERIFIED locally | Later or same-day child amendment withholds the parent text |
+| A1 failed definition splice returns base section | P0 | PUSHED `f0bc31e` | Unspliceable definition amendment withholds the section |
+| A2 parent/child amendment precedence | P0 | PUSHED `f0bc31e` | Later or same-day child amendment withholds the parent text |
+| IPV-08 exhibit term sheet as a definition | P0 | VERIFIED locally | Non-operative summary does not supply definitions |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
 

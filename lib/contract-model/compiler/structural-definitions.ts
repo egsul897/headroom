@@ -150,6 +150,18 @@ const UNQUOTED_COLON_DEFINITION = /^([A-Z][a-z][A-Za-z'-]*(?:\s+(?:[A-Z][a-z][A-
 const EXCERPT_LENGTH = 200;
 
 /**
+ * A summary, term sheet, or exhibit that says it is not an operative provision
+ * is not a source of controlling definitions. A headings-convenience clause
+ * ("section headings are for convenience of reference only") does not match:
+ * the subject has to be the summary or exhibit itself.
+ */
+const NON_OPERATIVE_SUMMARY_RE = /\b(?:this\s+(?:summary|exhibit|annex|term\s+sheet)|summary\s+of\s+principal\s+terms)\b[\s\S]{0,500}\b(?:not\s+an?\s+operative|for\s+convenience(?:\s+of\s+reference)?\s+only|does\s+not\s+amend|shall\s+not\s+(?:amend|constitute\s+a\s+part))\b/i;
+
+export function documentDisclaimsOperativeDefinitions(text: string): boolean {
+  return NON_OPERATIVE_SUMMARY_RE.test(text.slice(0, 2500));
+}
+
+/**
  * Scans one document's text for defined-term declarations and attributes
  * each to its enclosing structural node. `nodes` must be this document's
  * own structural nodes only.
@@ -201,6 +213,7 @@ export function spanContainsDefinitionDeclaration(text: string): boolean {
 }
 
 export function detectStructuralDefinitions(documentId: string, text: string, nodes: StructuralNode[]): DetectedDefinition[] {
+  if (documentDisclaimsOperativeDefinitions(text)) return [];
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
 
   const meansMatches = scanPattern(DEFINITION_DECLARATION, text, 1, 100);
