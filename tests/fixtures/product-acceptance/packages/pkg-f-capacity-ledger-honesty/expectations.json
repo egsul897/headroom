@@ -1,0 +1,552 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-f-capacity-ledger-honesty",
+  "title": "Package F — capacity, ledger usage, shared caps, foreign currency and reclassification",
+  "issuer": "Summit Ridge Foods LLC (synthetic)",
+  "scenario": "Capacity computation honesty. 7.01(b) is a $50,000,000 general basket with $18,000,000 of recorded prior usage. 7.01(c) is 20% of Consolidated EBITDA (needs an approved metric input). 7.06(b) and 7.08(c) share a single $20,000,000 cap. 7.01(f) is EUR 10,000,000 with no FX rate in the package. 7.01(g) is a reclassification election. Expected outcomes are stated as what an honest system must say — including 'I cannot compute this'.",
+  "authorship": "Expectations written by reading the source text. Runtime expectations hand-computed. Not derived from compiler output.",
+  "companyId": "company:summit-ridge",
+  "instrumentKey": "summit-ridge-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "b78806bd71e5a4ee34c96f28ef2710560640fd238050e0d3ac1ba44326e56964"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-09-30"
+    ],
+    "exact": []
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$50,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "20% of Consolidated EBITDA"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(f)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "EUR 10,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(g)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "reclassify"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.06",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "fullTextContains": [
+          "Section 7.08(c)",
+          "$20,000,000"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.08",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "fullTextContains": [
+          "Section 7.06(b)",
+          "$20,000,000"
+        ]
+      }
+    ],
+    "invariants": []
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Investment",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Restricted Payment",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Foreign Subsidiaries",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Used in 7.01(f) but never defined."
+      }
+    ]
+  },
+  "covenants": [
+    {
+      "id": "F-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$50,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 50000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "F-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "20% of Consolidated EBITDA"
+      ],
+      "value": {
+        "kind": "PERCENT_OF_METRIC",
+        "percent": 20,
+        "metric": "Consolidated EBITDA",
+        "period": "LTM"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Consolidated EBITDA"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "F-7.01(f)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(f)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "EUR 10,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 10000000,
+        "currency": "EUR",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "entityScope": [
+        "FOREIGN_RS"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "unresolvedTerms": [
+        "Foreign Subsidiaries"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "F-7.01(g)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(g)",
+      "family": "INDEBTEDNESS",
+      "role": "DESIGNATION_RULE",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "reclassify",
+        "$10,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 10000000,
+        "currency": "USD",
+        "basis": "AGGREGATE"
+      },
+      "conditions": [
+        {
+          "kind": "ELECTION",
+          "textContains": "by written notice to the Administrative Agent",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ]
+    },
+    {
+      "id": "F-7.06(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.06",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$20,000,000",
+        "Section 7.08(c)"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 20000000,
+        "currency": "USD",
+        "basis": "AGGREGATE_SHARED"
+      },
+      "conditions": [
+        {
+          "kind": "SHARED_CAP",
+          "textContains": "together with Investments made pursuant to Section 7.08(c)",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Restricted Payment",
+        "Investment"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.08",
+          "mustResolve": true
+        }
+      ]
+    },
+    {
+      "id": "F-7.08(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.08",
+      "family": "INVESTMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$20,000,000",
+        "Section 7.06(b)"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 20000000,
+        "currency": "USD",
+        "basis": "AGGREGATE_SHARED"
+      },
+      "conditions": [
+        {
+          "kind": "SHARED_CAP",
+          "textContains": "together with Restricted Payments made pursuant to Section 7.06(b)",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Investment",
+        "Restricted Payment"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.06",
+          "mustResolve": true
+        }
+      ]
+    }
+  ],
+  "sharedCaps": [
+    {
+      "id": "F-SC-1",
+      "documentId": "credit-agreement",
+      "where": "7.06(b) and 7.08(c)",
+      "participants": [
+        "7.06(b)",
+        "7.08(c)"
+      ],
+      "cap": {
+        "kind": "MONEY",
+        "amount": 20000000,
+        "currency": "USD"
+      },
+      "textContains": "together with"
+    }
+  ],
+  "ambiguities": [],
+  "unsupported": [
+    {
+      "id": "F-U1",
+      "where": "7.01(f)",
+      "construct": "EUR-denominated basket with no exchange-rate convention in the package.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED"
+      ],
+      "unacceptableOutcomes": [
+        "AVAILABLE $10,000,000 USD",
+        "silently converting at an assumed rate"
+      ]
+    },
+    {
+      "id": "F-U2",
+      "where": "7.01(g)",
+      "construct": "Reclassification election moving usage between clauses.",
+      "acceptableOutcomes": [
+        "REVIEW_REQUIRED",
+        "UNSUPPORTED",
+        "AVAILABLE only with an explicit, recorded election"
+      ],
+      "unacceptableOutcomes": [
+        "freeing (b) capacity without a recorded election"
+      ]
+    }
+  ],
+  "runtime": {
+    "note": "Hand-computed expectations for the capacity engine, assuming the hand-built IR in the acceptance runner reproduces these rules exactly. Inputs described here are what the runner feeds; the ledger entries are synthetic.",
+    "ledger": [
+      {
+        "ruleRef": "7.01(b)",
+        "usages": [
+          {
+            "usageId": "usage-f-1",
+            "amount": 12000000,
+            "currency": "USD",
+            "asOf": "2026-03-15"
+          },
+          {
+            "usageId": "usage-f-2",
+            "amount": 6000000,
+            "currency": "USD",
+            "asOf": "2026-07-01"
+          }
+        ]
+      },
+      {
+        "ruleRef": "7.06(b)",
+        "usages": [
+          {
+            "usageId": "usage-f-3",
+            "amount": 4000000,
+            "currency": "USD",
+            "asOf": "2026-05-01"
+          }
+        ]
+      },
+      {
+        "ruleRef": "7.08(c)",
+        "usages": [
+          {
+            "usageId": "usage-f-4",
+            "amount": 9000000,
+            "currency": "USD",
+            "asOf": "2026-06-01"
+          }
+        ]
+      }
+    ],
+    "snapshots": [
+      {
+        "snapshotId": "snap-f-approved",
+        "status": "APPROVED",
+        "asOf": "2026-06-30",
+        "metrics": {
+          "Consolidated EBITDA": 80000000
+        }
+      },
+      {
+        "snapshotId": "snap-f-draft",
+        "status": "DRAFT",
+        "asOf": "2026-09-30",
+        "metrics": {
+          "Consolidated EBITDA": 120000000
+        }
+      }
+    ],
+    "cases": [
+      {
+        "id": "F-R1",
+        "rule": "7.01(b)",
+        "inputs": "ledger only",
+        "expected": {
+          "status": "AVAILABLE",
+          "capacity": 50000000,
+          "used": 18000000,
+          "remaining": 32000000
+        },
+        "invariant": "remaining = cap − sum(unsuperseded usage); never ignore ledger usage."
+      },
+      {
+        "id": "F-R2",
+        "rule": "7.01(c)",
+        "inputs": "approved snapshot (EBITDA 80,000,000)",
+        "expected": {
+          "status": "AVAILABLE",
+          "capacity": 16000000,
+          "used": 0,
+          "remaining": 16000000
+        },
+        "invariant": "20% × approved EBITDA; the DRAFT snapshot's 120,000,000 must not be used under the default policy."
+      },
+      {
+        "id": "F-R3",
+        "rule": "7.01(c)",
+        "inputs": "no snapshot",
+        "expected": {
+          "status": "NEEDS_INPUT"
+        },
+        "invariant": "No metric → no number."
+      },
+      {
+        "id": "F-R4",
+        "rule": "7.01(c)",
+        "inputs": "DRAFT snapshot only",
+        "expected": {
+          "status": "NEEDS_INPUT"
+        },
+        "invariant": "An unapproved snapshot must not silently supply the metric under the default resolution policy."
+      },
+      {
+        "id": "F-R5",
+        "rule": "7.06(b)",
+        "inputs": "ledger (4,000,000 on 7.06(b) + 9,000,000 on 7.08(c))",
+        "expected": {
+          "status": "AVAILABLE",
+          "capacity": 20000000,
+          "used": 13000000,
+          "remaining": 7000000
+        },
+        "invariant": "Shared-cap usage from the sibling clause must count."
+      },
+      {
+        "id": "F-R6",
+        "rule": "7.08(c)",
+        "inputs": "same ledger",
+        "expected": {
+          "status": "AVAILABLE",
+          "capacity": 20000000,
+          "used": 13000000,
+          "remaining": 7000000
+        },
+        "invariant": "Same remaining as F-R5 — one pool, two doors."
+      },
+      {
+        "id": "F-R7",
+        "rule": "7.01(f)",
+        "inputs": "no FX",
+        "expected": {
+          "status": "NEEDS_INPUT|UNSUPPORTED"
+        },
+        "invariant": "No USD figure may be emitted for a EUR basket without an FX input."
+      },
+      {
+        "id": "F-R8",
+        "rule": "7.01(b) after proposing 35,000,000 new usage",
+        "inputs": "ledger",
+        "expected": {
+          "status": "EXCEEDS|NOT_AVAILABLE",
+          "remainingAfter": -3000000
+        },
+        "invariant": "32,000,000 remaining < 35,000,000 proposed → the simulation must not report headroom."
+      },
+      {
+        "id": "F-R9",
+        "rule": "7.01(b) with usage-f-1 superseded by a 10,000,000 correction",
+        "inputs": "ledger with explicit supersession",
+        "expected": {
+          "status": "AVAILABLE",
+          "used": 16000000,
+          "remaining": 34000000
+        },
+        "invariant": "Superseded usage must not double count; the correction replaces, not adds."
+      }
+    ]
+  },
+  "prohibitedClaims": [
+    {
+      "id": "F-P1",
+      "claim": "7.01(b) has $50,000,000 of headroom",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "$18,000,000 is already used."
+    },
+    {
+      "id": "F-P2",
+      "claim": "7.01(c) capacity is $24,000,000",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "That figure uses the DRAFT snapshot (120,000,000); the approved figure gives $16,000,000."
+    },
+    {
+      "id": "F-P3",
+      "claim": "7.06(b) has $16,000,000 remaining",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "Ignores $9,000,000 of shared usage under 7.08(c)."
+    },
+    {
+      "id": "F-P4",
+      "claim": "7.01(f) permits $10,000,000",
+      "severityIfAsserted": "UNSUPPORTED_AS_COMPLETE",
+      "reason": "The basket is EUR-denominated; the USD equivalent is unknown."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Every capacity figure must trace to (rule, inputs used, ledger entries used) — a number without its inputs is not acceptable.",
+    "An unapproved financial snapshot must never supply a value under the default policy.",
+    "Shared capacity must be reported identically from each participating clause."
+  ]
+}

@@ -1,0 +1,376 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-d-qualitative-restrictions",
+  "title": "Package D — unlimited carve-out with gating conditions, hanging proviso and an undefined term",
+  "issuer": "Pinecrest Medical Supply, Inc. (synthetic)",
+  "scenario": "7.05(k) permits 'any other Disposition' subject to three independent gates (no Default, 75% cash consideration, proceeds applied under 2.05(b)). A 'provided further' paragraph follows (l) and by its own words applies to 'the foregoing' (all of 7.05), carving out the principal manufacturing facility. 7.05(l) relies on 'Specified Strategic Transaction', which is never defined.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:pinecrest",
+  "instrumentKey": "pinecrest-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "0d1a9c37e1079cf0bb21a91b3a1ad6a97c452b353cf96bca117fedf40a563004"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-09-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-09-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.05(k)",
+        "status": "CURRENT",
+        "mustContain": [
+          "no Default",
+          "75%",
+          "Section 2.05(b)"
+        ],
+        "mustNotContain": []
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.05",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.05(j)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.05",
+        "unique": true,
+        "ownTextContains": [
+          "$10,000,000",
+          "fiscal year"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.05(k)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.05",
+        "unique": true,
+        "fullTextContains": [
+          "no Default has occurred",
+          "75% of the consideration",
+          "Section 2.05(b)"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.05(l)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.05",
+        "unique": true,
+        "ownTextContains": [
+          "Specified Strategic Transaction"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "2.05(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "2.05",
+        "unique": true,
+        "ownTextContains": [
+          "100% of the Net Cash Proceeds",
+          "Section 7.05(k)"
+        ]
+      }
+    ],
+    "invariants": [
+      "All twelve lettered subsections (a)–(l) of 7.05 must be present, each with 7.05 as parent.",
+      "The 'provided further' paragraph must be physically reachable from 7.05 (either as part of 7.05's full text or as a trailing child), never lost."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Disposition",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Net Cash Proceeds",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Cash Equivalents",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Default",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Specified Strategic Transaction",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Never defined anywhere in the package; must be reported as unresolved."
+      }
+    ]
+  },
+  "covenants": [
+    {
+      "id": "D-7.05",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.05",
+      "family": "ASSET_SALES",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Subsidiary to, make any Disposition"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Disposition",
+        "Subsidiary"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "D-7.05(j)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.05(j)",
+      "family": "ASSET_SALES",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$10,000,000",
+        "in any fiscal year"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 10000000,
+        "currency": "USD",
+        "basis": "PER_FISCAL_YEAR"
+      },
+      "conditions": [
+        {
+          "kind": "SCOPE_CARVEOUT",
+          "textContains": "principal manufacturing facility",
+          "independent": true,
+          "material": true,
+          "source": "hanging proviso after (l)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Disposition"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "D-7.05(k)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.05(k)",
+      "family": "ASSET_SALES",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "any other Disposition"
+      ],
+      "value": {
+        "kind": "UNLIMITED_SUBJECT_TO_CONDITIONS"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing or would result therefrom",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "CONSIDERATION_FORM",
+          "textContains": "at least 75% of the consideration received is in the form of cash or Cash Equivalents",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "PROCEEDS_APPLICATION",
+          "textContains": "Net Cash Proceeds thereof are applied in accordance with Section 2.05(b)",
+          "independent": true,
+          "material": true,
+          "crossReference": {
+            "documentId": "credit-agreement",
+            "sectionRef": "2.05(b)"
+          }
+        },
+        {
+          "kind": "SCOPE_CARVEOUT",
+          "textContains": "principal manufacturing facility",
+          "independent": true,
+          "material": true,
+          "source": "hanging proviso after (l)"
+        }
+      ],
+      "dependsOnTerms": [
+        "Disposition",
+        "Default",
+        "Cash Equivalents",
+        "Net Cash Proceeds"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "2.05(b)",
+          "mustResolve": true
+        }
+      ]
+    },
+    {
+      "id": "D-7.05(l)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.05(l)",
+      "family": "ASSET_SALES",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Specified Strategic Transaction"
+      ],
+      "value": {
+        "kind": "UNRESOLVABLE"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Specified Strategic Transaction"
+      ],
+      "unresolvedTerms": [
+        "Specified Strategic Transaction"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "D-2.05(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "2.05(b)",
+      "family": "MANDATORY_PREPAYMENTS",
+      "role": "OTHER_RELEVANT_RULE",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "100% of the Net Cash Proceeds",
+        "five Business Days"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Net Cash Proceeds",
+        "Disposition"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.05(k)",
+          "mustResolve": true
+        }
+      ]
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [
+    {
+      "id": "D-AMB-1",
+      "where": "7.05 hanging paragraph after (l)",
+      "description": "The 'provided further' paragraph is physically adjacent to (l) but by its words ('the foregoing') restricts every clause of 7.05. Attribution to (l) alone would be wrong; attribution to the whole section is the plain reading, but a system that cannot decide must say so.",
+      "mustBePreservedAs": [
+        "SECTION_WIDE_CONDITION",
+        "AMBIGUOUS",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "silently attaching the proviso only to (l)",
+        "dropping the proviso"
+      ]
+    },
+    {
+      "id": "D-AMB-2",
+      "where": "7.05(l)",
+      "description": "'Specified Strategic Transaction' is undefined.",
+      "mustBePreservedAs": [
+        "UNRESOLVED_TERM",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptable": [
+        "treating (l) as an unlimited permission",
+        "treating (l) as a nullity"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "id": "D-U1",
+      "where": "7.05(k)",
+      "construct": "Unlimited permission gated by qualitative conditions (consideration form, proceeds application) that cannot be evaluated from financial inputs alone.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "AVAILABLE with unlimited capacity and no conditions recorded"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "D-P1",
+      "claim": "7.05(k) permits any Disposition without conditions",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "Three gating conditions plus the section-wide carve-out."
+    },
+    {
+      "id": "D-P2",
+      "claim": "7.05(k) has two conditions",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "There are three enumerated gates; omitting any one is material."
+    },
+    {
+      "id": "D-P3",
+      "claim": "The principal manufacturing facility may be sold under 7.05(j) within the $10,000,000 cap",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The hanging proviso removes the facility from every 7.05 permission."
+    },
+    {
+      "id": "D-P4",
+      "claim": "7.05(l) permits strategic transactions",
+      "severityIfAsserted": "UNSUPPORTED_AS_COMPLETE",
+      "reason": "The governing term is undefined; the permission's scope is unknowable from the package."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "All three (k) gates must be recovered as independent conditions, not merged into one.",
+    "The 2.05(b) cross-reference inside (k)(iii) must resolve to the prepayment covenant and be recorded as a dependency.",
+    "The undefined term must surface as an unresolved dependency, not as a resolved definition from any document."
+  ]
+}

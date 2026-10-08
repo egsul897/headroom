@@ -1,0 +1,588 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-h-unseen-composition",
+  "title": "Package H — unseen composition: ABL agreement, intercreditor agreement and a definition-changing amendment",
+  "issuer": "Copperline Energy Services, Inc. (synthetic)",
+  "scenario": "Constructs not present in any other package: Payment Conditions (availability-based gate defined with inline (i)/(ii)/(A)/(B)), a springing financial covenant (7.11), a builder basket gated by Payment Conditions (7.03(b)), a stacked double proviso under 7.03(c), a proviso after 7.02(d) that restricts (d) only, an intercreditor payment block (ICA 4.01) that restricts a different instrument's payments, and an amendment that changes a definition rather than a covenant.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:copperline",
+  "instrumentKey": "copperline-abl-2026",
+  "documents": [
+    {
+      "documentId": "abl-credit-agreement",
+      "label": "ABL Credit Agreement",
+      "file": "documents/abl-credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "471c096368cb16076422196a8ab44d50c561d945aa58a5230c8ec37bda30eebb"
+    },
+    {
+      "documentId": "intercreditor-agreement",
+      "label": "Intercreditor Agreement",
+      "file": "documents/intercreditor-agreement.txt",
+      "role": "INTERCREDITOR",
+      "operative": true,
+      "sha256": "8dcf8106fb9fe2f06dcdbbb6da733b313d6ce2c72815454cf86c4da7f1332634"
+    },
+    {
+      "documentId": "amendment-1",
+      "label": "First Amendment",
+      "file": "documents/amendment-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "effectiveDate": "2026-12-01",
+      "amends": "abl-credit-agreement",
+      "sha256": "c2b82f5b40863d2a61a8613f4b07a26c087120162f5b35dc377bfc206eee8931"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-10-31",
+      "2027-03-31"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-10-31",
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Available Amount",
+        "status": "CURRENT",
+        "mustContain": [
+          "$10,000,000"
+        ],
+        "mustNotContain": [
+          "$15,000,000"
+        ]
+      },
+      {
+        "asOfDate": "2027-03-31",
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "1.01",
+        "definitionTerm": "Available Amount",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$15,000,000"
+        ],
+        "mustNotContain": [
+          "$10,000,000"
+        ],
+        "supersededBy": "amendment-1"
+      },
+      {
+        "asOfDate": "2027-03-31",
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.03(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "Available Amount",
+          "Payment Conditions"
+        ],
+        "mustNotContain": []
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.02(d)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.02",
+        "unique": true,
+        "ownTextContains": [
+          "$7,500,000"
+        ]
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.03(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.03",
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount",
+          "Payment Conditions"
+        ]
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.03(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.03",
+        "unique": true,
+        "ownTextContains": [
+          "$3,000,000"
+        ]
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.03(c)(i)",
+        "nodeType": "CLAUSE",
+        "parentSectionRef": "7.03(c)",
+        "unique": true,
+        "ownTextContains": [
+          "no Default"
+        ]
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.03(c)(ii)",
+        "nodeType": "CLAUSE",
+        "parentSectionRef": "7.03(c)",
+        "unique": true,
+        "ownTextContains": [
+          "in cash"
+        ]
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "sectionRef": "7.11",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "fullTextContains": [
+          "Fixed Charge Coverage Ratio",
+          "1.00 to 1.00",
+          "thirty consecutive days"
+        ]
+      },
+      {
+        "documentId": "intercreditor-agreement",
+        "sectionRef": "4.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "IV",
+        "unique": true,
+        "ownTextContains": [
+          "$15,000,000"
+        ]
+      },
+      {
+        "documentId": "amendment-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Available Amount",
+          "$15,000,000"
+        ]
+      }
+    ],
+    "invariants": [
+      "The inline (i)/(ii)/(A)/(B) inside the 'Payment Conditions' definition are definition components; the definitions 'Subsidiary' and 'Term Loan Agreement' that follow must still be attributed to Section 1.01, not to a synthetic clause node.",
+      "The 'greater of (a) … and (b) …' inside 7.11 is a formula, not two subsections; 7.11 is one covenant."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Payment Conditions",
+        "unique": true,
+        "excerptContains": "$12,500,000"
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Available Amount",
+        "unique": true,
+        "excerptContains": "$10,000,000"
+      },
+      {
+        "documentId": "amendment-1",
+        "term": "Available Amount",
+        "unique": true,
+        "excerptContains": "$15,000,000"
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Availability",
+        "unique": true
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Borrowing Base",
+        "unique": true
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Fixed Charge Coverage Ratio",
+        "unique": true
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Subsidiary",
+        "unique": true,
+        "expectedSourceSectionRef": "1.01"
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Term Loan Agreement",
+        "unique": true,
+        "expectedSourceSectionRef": "1.01"
+      }
+    ],
+    "mustNotResolveFrom": [
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Eligible Receivables",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Used in Borrowing Base and 7.02 proviso but never defined."
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Consolidated EBITDA",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Used in Fixed Charge Coverage Ratio but never defined."
+      },
+      {
+        "documentId": "abl-credit-agreement",
+        "term": "Fixed Charges",
+        "forbiddenSourceDocumentId": "*",
+        "reason": "Never defined."
+      }
+    ]
+  },
+  "covenants": [
+    {
+      "id": "H-7.02(b)",
+      "documentId": "abl-credit-agreement",
+      "sectionRef": "7.02(b)",
+      "family": "LIENS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Term Loan Agreement",
+        "Intercreditor Agreement"
+      ],
+      "conditions": [
+        {
+          "kind": "SUBJECT_TO_INSTRUMENT",
+          "textContains": "subject to the Intercreditor Agreement",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Term Loan Agreement"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "intercreditor-agreement",
+          "sectionRef": null,
+          "mustResolve": false
+        }
+      ]
+    },
+    {
+      "id": "H-7.02(d)",
+      "documentId": "abl-credit-agreement",
+      "sectionRef": "7.02(d)",
+      "family": "LIENS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$7,500,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 7500000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "SCOPE_CARVEOUT",
+          "textContains": "shall attach to any Eligible Receivables or Eligible Inventory",
+          "independent": true,
+          "material": true,
+          "source": "proviso after (d), applies to (d) only"
+        }
+      ],
+      "dependsOnTerms": [
+        "Lien"
+      ],
+      "unresolvedTerms": [
+        "Eligible Receivables",
+        "Eligible Inventory"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "H-7.03(b)",
+      "documentId": "abl-credit-agreement",
+      "sectionRef": "7.03(b)",
+      "family": "INVESTMENTS",
+      "role": "BUILDER",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Available Amount",
+        "Payment Conditions"
+      ],
+      "value": {
+        "kind": "BUILDER",
+        "formulaTerm": "Available Amount",
+        "components": [
+          {
+            "kind": "STARTER",
+            "amount": 10000000,
+            "amountAfterAmendment": 15000000
+          },
+          {
+            "kind": "PERCENT_OF_METRIC",
+            "percent": 50,
+            "metric": "Consolidated Net Income",
+            "period": "cumulative from Closing Date"
+          }
+        ]
+      },
+      "conditions": [
+        {
+          "kind": "PAYMENT_CONDITIONS",
+          "textContains": "the Payment Conditions are satisfied",
+          "independent": true,
+          "material": true,
+          "expands": [
+            {
+              "kind": "NO_DEFAULT"
+            },
+            {
+              "kind": "AVAILABILITY_TEST",
+              "threshold": "greater of $12,500,000 and 12.5% of the Borrowing Base"
+            }
+          ]
+        }
+      ],
+      "dependsOnTerms": [
+        "Available Amount",
+        "Payment Conditions",
+        "Availability",
+        "Borrowing Base",
+        "Consolidated Net Income"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "H-7.03(c)",
+      "documentId": "abl-credit-agreement",
+      "sectionRef": "7.03(c)",
+      "family": "INVESTMENTS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$3,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 3000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "CONSIDERATION_FORM",
+          "textContains": "such Investments are made in cash",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Investment",
+        "Default"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "H-7.11",
+      "documentId": "abl-credit-agreement",
+      "sectionRef": "7.11",
+      "family": "SPRINGING_COVENANTS",
+      "role": "FINANCIAL_TEST",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Fixed Charge Coverage Ratio",
+        "1.00 to 1.00"
+      ],
+      "value": {
+        "kind": "RATIO_THRESHOLD",
+        "metric": "Fixed Charge Coverage Ratio",
+        "comparator": "GTE",
+        "numerator": 1,
+        "denominator": 1
+      },
+      "conditions": [
+        {
+          "kind": "TRIGGER",
+          "textContains": "If Availability is less than the greater of",
+          "independent": true,
+          "material": true,
+          "threshold": "greater of $10,000,000 and 10% of the Borrowing Base"
+        },
+        {
+          "kind": "CURE",
+          "textContains": "until Availability has exceeded such amount for thirty consecutive days",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Availability",
+        "Borrowing Base",
+        "Fixed Charge Coverage Ratio"
+      ],
+      "unresolvedTerms": [
+        "Consolidated EBITDA",
+        "Fixed Charges"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "H-ICA-4.01",
+      "documentId": "intercreditor-agreement",
+      "sectionRef": "4.01",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not make any payment of principal of the Term Loan Obligations",
+        "$15,000,000"
+      ],
+      "familyNote": "Payment block on junior/other debt — closest production family is RESTRICTED_PAYMENTS (PAY_JUNIOR_DEBT action); an honest system may instead classify as OTHER/UNSUPPORTED.",
+      "conditions": [
+        {
+          "kind": "AVAILABILITY_TEST",
+          "textContains": "Availability would be less than $15,000,000",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Availability"
+      ],
+      "unresolvedTerms": [
+        "Term Loan Obligations",
+        "ABL Obligations"
+      ],
+      "crossReferences": []
+    },
+    {
+      "id": "H-ICA-2.01",
+      "documentId": "intercreditor-agreement",
+      "sectionRef": "2.01",
+      "family": "COLLATERAL_SECURITY",
+      "role": "OTHER_RELEVANT_RULE",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": false,
+      "mustContain": [
+        "senior and prior"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": []
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [
+    {
+      "id": "H-AMB-1",
+      "where": "7.02 proviso after (d)",
+      "description": "'no Lien permitted under clause (d)' expressly scopes the proviso to (d); it must not be applied to (a)–(c).",
+      "mustBePreservedAs": [
+        "CLAUSE_SCOPED_CONDITION"
+      ],
+      "unacceptable": [
+        "applying the collateral carve-out to Term Loan liens under (b)"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "id": "H-U1",
+      "where": "7.11",
+      "construct": "Springing financial covenant with an availability trigger and a thirty-day cure window.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED",
+        "REVIEW_REQUIRED"
+      ],
+      "unacceptableOutcomes": [
+        "reporting the FCCR test as always-on",
+        "reporting it as never applicable"
+      ]
+    },
+    {
+      "id": "H-U2",
+      "where": "Payment Conditions",
+      "construct": "Availability-based gate needing Borrowing Base and outstanding Loans as inputs.",
+      "acceptableOutcomes": [
+        "NEEDS_INPUT",
+        "UNSUPPORTED"
+      ],
+      "unacceptableOutcomes": [
+        "7.03(b) AVAILABLE without recording the Payment Conditions dependency"
+      ]
+    }
+  ],
+  "prohibitedClaims": [
+    {
+      "id": "H-P1",
+      "claim": "The Available Amount starter is $15,000,000 as of 2026-10-31",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The amendment is effective 2026-12-01."
+    },
+    {
+      "id": "H-P2",
+      "claim": "The Available Amount starter is $10,000,000 as of 2027-03-31",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "Superseded by the First Amendment."
+    },
+    {
+      "id": "H-P3",
+      "claim": "7.03(b) Investments are permitted up to the Available Amount with no other condition",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "Payment Conditions gate (no Default + availability test)."
+    },
+    {
+      "id": "H-P4",
+      "claim": "7.03(c) has one condition",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "Two stacked provisos: no Default and cash-only."
+    },
+    {
+      "id": "H-P5",
+      "claim": "The FCCR covenant must be met at all times",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "It springs only when Availability falls below the trigger."
+    },
+    {
+      "id": "H-P6",
+      "claim": "The ABL agreement restricts Term Loan principal payments",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "That restriction is in the Intercreditor Agreement 4.01, not the ABL agreement."
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "A definition amendment must change the operative definition text as of its effective date without touching any covenant node.",
+    "Conditions expressed through a defined term (Payment Conditions) must be recorded as a dependency on that term; expanding them is optional, dropping them is not.",
+    "A covenant in one package document that restricts payments under another instrument must be attributed to the document that contains it."
+  ]
+}
