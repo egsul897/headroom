@@ -170,7 +170,9 @@ export type Mutation =
   | { kind: "SET_SCOPE"; sectionRef: string; entityScope: string[] }
   | { kind: "SET_FAMILY"; sectionRef: string; family: string; action: string }
   | { kind: "CLAIM_COMPLETE"; sectionRef: string; amount?: number; excerpt?: string }
-  | { kind: "DROP_SHARED_CAPS" };
+  | { kind: "DROP_SHARED_CAPS" }
+  /** Rewrites the ratio test on a rule: its gatedBy COMPARE and every COMPARE condition expression (operator and/or threshold). */
+  | { kind: "SET_RATIO"; sectionRef: string; operator?: string; value?: number; excerpt?: string };
 
 export interface AdversarialCase { id: string; prohibitedClaimId: string; mutation: Mutation; candidateKey: string; claim: string; severity: string }
 
@@ -198,6 +200,13 @@ export function mutate(plan: SubmissionPlan, mutation: Mutation, opts: { stripLi
       case "SET_FAMILY": { const r = rule(mutation.sectionRef); if (r) { r.covenantFamily = mutation.family; r.action = mutation.action; } break; }
       case "CLAIM_COMPLETE": { const r = rule(mutation.sectionRef); if (r) { r.sufficiency = "COMPLETE"; r.sufficiencyReasons = []; if (mutation.amount !== undefined) r.capacityExpression = { kind: "MONEY", amount: mutation.amount, currency: "USD", citation: mutation.sectionRef, excerpt: mutation.excerpt ?? r.excerpt, inventoryItemIds: inventoryIdsFor(user, String(mutation.excerpt ?? r.excerpt)) }; else if (!r.capacityExpression) r.capacityExpression = { kind: "UNLIMITED_CAPACITY", citation: mutation.sectionRef, excerpt: r.excerpt, inventoryItemIds: r.inventoryItemIds }; } break; }
       case "DROP_SHARED_CAPS": { const dropped = s.sharedCapacities; s.sharedCapacities = []; dropLineageOf(dropped); break; }
+      case "SET_RATIO": {
+        const r = rule(mutation.sectionRef); if (!r) break;
+        const rewrite = (cmp: Record<string, unknown> | null | undefined) => { if (!cmp || cmp.kind !== "COMPARE") return; if (mutation.operator) cmp.operator = mutation.operator; const right = cmp.right as Record<string, unknown> | undefined; if (right && mutation.value !== undefined) { right.value = mutation.value; if (mutation.excerpt) { right.excerpt = mutation.excerpt; cmp.excerpt = mutation.excerpt; } } };
+        rewrite((r.capacityExpression as { gatedBy?: Record<string, unknown> } | undefined)?.gatedBy);
+        for (const c of (r.conditions as Array<{ expression?: Record<string, unknown> | null }>)) rewrite(c.expression ?? null);
+        break;
+      }
     }
     return s;
   };
@@ -273,6 +282,7 @@ export function adversarialCases(m: ExpectationsManifest, specs: CandidateSpec[]
       : a.kind === "SET_AMOUNT" ? { kind: "SET_AMOUNT", sectionRef: a.sectionRef, amount: a.amount ?? 0, excerpt: a.excerpt ?? "" }
       : a.kind === "SET_SCOPE" ? { kind: "SET_SCOPE", sectionRef: a.sectionRef, entityScope: a.entityScope ?? ["BORROWER"] }
       : a.kind === "CLAIM_COMPLETE" ? { kind: "CLAIM_COMPLETE", sectionRef: a.sectionRef, amount: a.amount, excerpt: a.excerpt }
+      : a.kind === "SET_RATIO" ? { kind: "SET_RATIO", sectionRef: a.sectionRef, operator: a.operator, value: a.value, excerpt: a.excerpt }
       : { kind: "DROP_SHARED_CAPS" };
     add(pc.id, mutation, sec(a.sectionRef, a.documentId));
   }

@@ -313,6 +313,29 @@ INVARIANTS.push(
     } },
 );
 
+INVARIANTS.push(
+  { id: "INV-09b", title: "A ratio test's comparator and threshold are part of the source: a flipped comparator or a changed threshold must not certify", packageId: "pkg-a-basic-credit-agreement",
+    legalStatement: "B indenture 4.09: Indebtedness may be incurred if the FCCR 'would have been at least 2.00 to 1.00'. A 7.01(c): the ratio basket is available 'so long as … the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00'. Representations that flip 'at least' to 'at most', 'does not exceed' to 'is at least', or raise 3.50 to 4.50 assert tests the text does not state and must not certify.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const cases: Array<{ pkg: string; id: string; claim: string; adversarial: Record<string, unknown> }> = [
+        { pkg: "pkg-b-multi-document", id: "B-T1", claim: "4.09 ratio test is satisfied when the FCCR is at most 2.00 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "4.09", documentId: "indenture", operator: "LTE" } },
+        { pkg: "pkg-a-basic-credit-agreement", id: "A-T1", claim: "7.01(c) is available when the leverage ratio is at least 3.50 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "7.01(c)", operator: "GTE" } },
+        { pkg: "pkg-a-basic-credit-agreement", id: "A-T2", claim: "7.01(c) is available when the leverage ratio does not exceed 4.50 to 1.00 (threshold raised)", adversarial: { kind: "SET_RATIO", sectionRef: "7.01(c)", value: 4.5, excerpt: "4.50 to 1.00" } },
+      ];
+      for (const pid of [...new Set(cases.map((c) => c.pkg))]) {
+        const base = loadPackage(pid); const manifest = JSON.parse(JSON.stringify(base.manifest)) as typeof base.manifest;
+        for (const c of cases.filter((c) => c.pkg === pid)) manifest.prohibitedClaims.push({ id: c.id, claim: c.claim, severityIfAsserted: "CRITICAL_FALSE_PERMISSION", reason: "the comparator / threshold is stated in the source text", adversarial: c.adversarial as never });
+        const r = await runPackage({ ...base, manifest });
+        for (const c of cases.filter((c) => c.pkg === pid)) {
+          const ch = r.checks.find((x) => x.expectationRef === `adversarial:${c.id}`);
+          out.push({ ref: `invariant:INV-09b:${c.id}-refused`, check: `${c.id} (${c.claim}) is refused`, ok: ch?.result === "PASS", detail: (ch?.detail ?? "check absent").slice(0, 260), kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+        }
+      }
+      return out;
+    } },
+);
+
 export async function runInvariants(): Promise<InvariantResult[]> {
   const out: InvariantResult[] = [];
   for (const inv of INVARIANTS) out.push({ id: inv.id, title: inv.title, legalStatement: inv.legalStatement, packageId: inv.packageId, verdicts: await inv.run() });

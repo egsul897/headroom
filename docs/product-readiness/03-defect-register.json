@@ -850,10 +850,11 @@
       "outcomeClass": "INCORRECT_RESULT",
       "deterministic": true,
       "stage": "CERTIFICATION",
-      "title": "A numeric threshold that triggers a qualitative gate ('aggregate consideration in excess of $5,000,000, so long as … approved by … disinterested directors') is certified as a $5,000,000 basket cap",
+      "title": "A figure's role and direction are not verified: a comparator-introduced threshold is certified as a basket cap, and a ratio test with its comparator flipped is certified",
       "packages": [
-        "pkg-l-affiliate-transactions",
-        "pkg-h-unseen-composition"
+        "pkg-a-basic-credit-agreement",
+        "pkg-h-unseen-composition",
+        "pkg-l-affiliate-transactions"
       ],
       "evidence": "INVARIANT",
       "signatures": [
@@ -868,15 +869,21 @@
           "expectationRef": "invariant:INV-25b:H-T2-refused",
           "severity": "CRITICAL_FALSE_PERMISSION",
           "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "invariant:INV-09b:A-T1-refused",
+          "severity": "CRITICAL_FALSE_PERMISSION",
+          "evidence": "INVARIANT"
         }
       ],
       "failingInput": "L 7.07(d): '(d) any other transaction with an Affiliate involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved by a majority of the disinterested members of the board of directors of the Borrower.' Submission (adversarial L-P2, CLAIM_COMPLETE): rule for 7.07(d) with capacityExpression MONEY 5,000,000 (excerpt '$5,000,000', verbatim in the source), one APPROVAL condition, sufficiency COMPLETE. Run on the in-memory L variant without the Loan-Parties diamond so IPV-21 does not mask the result.",
       "expected": "Not CERTIFIED: the figure is the lower bound of the gate ('in excess of'), not a cap; the clause has no quantitative capacity at all. At minimum REVIEW_REQUIRED with a numeric-direction or 'threshold vs cap' finding.",
-      "actual": "certification CERTIFIED []; verification VERIFIED_NO_MATERIAL_GAP_FOUND []; compilation COMPLETED; the deterministic numeric assertion check finds the $5,000,000 figure in the source and the excerpt is verbatim, so nothing objects. Layer-2 reviewer is mocked (silent); whether a live reviewer would catch it is untested (doc 15 E3). Breadth (INV-25b, every comparator-introduced dollar figure in the corpus): H intercreditor 4.01 'shall not make any payment … if Availability would be less than $15,000,000' submitted as a $15,000,000 payment basket is CERTIFIED (second instance, different document type); H 7.11's springing trigger ($10,000,000) and H 7.03(b) with the Payment Conditions floor ($12,500,000, a figure that lives in a definition) are refused - the latter two for Layer-1 accountability reasons (missing baskets / figure not in the clause's own text), not because the comparator was understood.",
+      "actual": "certification CERTIFIED []; verification VERIFIED_NO_MATERIAL_GAP_FOUND []; compilation COMPLETED; the deterministic numeric assertion check finds the $5,000,000 figure in the source and the excerpt is verbatim, so nothing objects. Layer-2 reviewer is mocked (silent); whether a live reviewer would catch it is untested (doc 15 E3). Breadth (INV-25b, every comparator-introduced dollar figure in the corpus): H intercreditor 4.01 'shall not make any payment … if Availability would be less than $15,000,000' submitted as a $15,000,000 payment basket is CERTIFIED (second instance, different document type); H 7.11's springing trigger ($10,000,000) and H 7.03(b) with the Payment Conditions floor ($12,500,000, a figure that lives in a definition) are refused - the latter two for Layer-1 accountability reasons (missing baskets / figure not in the clause's own text), not because the comparator was understood. INV-09b (ratio direction): A 7.01(c) 'so long as … the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00' submitted with the COMPARE operator flipped to GTE ('available when the ratio is at least 3.50') is CERTIFIED with VERIFIED_NO_MATERIAL_GAP_FOUND; the same clause with the threshold raised to 4.50 is refused (the figure is absent from the source), and B 4.09 flipped is refused only because of its genuine definition cycle (IPV-12), so that case is masked.",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-25 (scripts/product-acceptance/invariants.ts); the same submission on the on-disk package L is refused only because of IPV-21.",
-      "impact": "A treasury user would be told 7.07(d) gives $5,000,000 of Affiliate-transaction room without board approval; the clause gives none. Same class as IPV-01/02/03: the deterministic gates verify figures and excerpts, not the comparator or the role of the figure (threshold vs cap). Two of five comparator-introduced figures in the corpus certify as caps (L 7.07(d), H ICA 4.01).",
-      "hypothesis": "semantic-verification/numeric-assertion.ts matches currency amounts by value and the verifier's reconciliation accepts any source figure as accounting for a capacity expression; no check relates the figure's comparator phrase ('in excess of', 'not less than', 'greater than') to the capacity direction.",
-      "acceptance": "invariant:INV-25:L-P2-refused passes: a MONEY capacity whose only source figure is introduced by 'in excess of' / 'exceeding' / 'greater than' is refused or forced to REVIEW with a named finding."
+      "impact": "A treasury user would be told 7.07(d) gives $5,000,000 of Affiliate-transaction room without board approval; the clause gives none. Same class as IPV-01/02/03: the deterministic gates verify figures and excerpts, not the comparator or the role of the figure (threshold vs cap). Two of five comparator-introduced figures in the corpus certify as caps (L 7.07(d), H ICA 4.01). A flipped ratio comparator inverts when a ratio basket is available (open when leverage is high instead of low) and passes every deterministic gate.",
+      "hypothesis": "semantic-verification/numeric-assertion.ts matches currency amounts by value and the verifier's reconciliation accepts any source figure as accounting for a capacity expression; no check relates the figure's comparator phrase ('in excess of', 'not less than', 'greater than') to the capacity direction. The same gap covers COMPARE operators: numeric-assertion / reconciliation verify that each figure in the IR appears in the source, never that the operator matches the source's comparator phrase.",
+      "acceptance": "invariant:INV-25:L-P2-refused passes: a MONEY capacity whose only source figure is introduced by 'in excess of' / 'exceeding' / 'greater than' is refused or forced to REVIEW with a named finding. And: invariant:INV-09b:A-T1-refused passes (a COMPARE operator inconsistent with the clause's comparator phrase is refused or forced to REVIEW)."
     }
   ],
   "observations": [
