@@ -2,7 +2,7 @@
   "artifact": "financial-definitions-precedent.arithmetic-evaluation",
   "version": "fdp.arith.v1",
   "status": "DRAFT",
-  "disclaimer": "ARITHMETICALLY_TESTED means the numeric procedure in the case matches expected intermediates/outputs under the case assumptions. It does NOT mean legal correctness or INDEPENDENTLY_LEGALLY_REVIEWED.",
+  "disclaimer": "ARITHMETICALLY_TESTED means the numeric procedure in the case matches expected intermediates/outputs under the case assumptions. It does NOT mean legal correctness or INDEPENDENTLY_LEGALLY_REVIEWED. Expected outputs are independently specified in this file; atlas formulaSketch must not be used as the oracle.",
   "cases": [
     {
       "id": "ARITH-CONMED-SSLR-001",
@@ -22,7 +22,8 @@
       "expectedOutput": {
         "ratio": 2.3
       },
-      "controlType": "POSITIVE"
+      "controlType": "POSITIVE",
+      "phase": 3
     },
     {
       "id": "ARITH-CONMED-SSLR-002",
@@ -42,7 +43,8 @@
       "expectedOutput": {
         "ratio": 2.0
       },
-      "controlType": "POSITIVE"
+      "controlType": "POSITIVE",
+      "phase": 3
     },
     {
       "id": "ARITH-CONMED-SSLR-MISSING-001",
@@ -65,7 +67,8 @@
         "zero_ebitda",
         "unlimited_capacity",
         "available_capacity"
-      ]
+      ],
+      "phase": 3
     },
     {
       "id": "ARITH-DSGR-COMBINED-CAP-001",
@@ -91,7 +94,8 @@
       "expectedOutput": {
         "ebitda": 156.0
       },
-      "controlType": "ADDBACK_CAP"
+      "controlType": "ADDBACK_CAP",
+      "phase": 3
     },
     {
       "id": "ARITH-DSGR-COMBINED-CAP-002",
@@ -117,7 +121,8 @@
       "expectedOutput": {
         "ebitda": 140.0
       },
-      "controlType": "POSITIVE"
+      "controlType": "POSITIVE",
+      "phase": 3
     },
     {
       "id": "ARITH-DSGR-COST-SAVINGS-NET-001",
@@ -143,7 +148,8 @@
       "expectedOutput": {
         "ebitda": 120.0
       },
-      "controlType": "PRO_FORMA_TIMING"
+      "controlType": "PRO_FORMA_TIMING",
+      "phase": 3
     },
     {
       "id": "ARITH-CHWY-ANTIDUPE-001",
@@ -158,7 +164,8 @@
         "allowed_clause_d_add": 0.0,
         "status": "DOUBLE_COUNT_BLOCKED"
       },
-      "controlType": "DOUBLE_COUNTING_TRAP"
+      "controlType": "DOUBLE_COUNTING_TRAP",
+      "phase": 3
     },
     {
       "id": "ARITH-CHWY-TLR-001",
@@ -177,7 +184,8 @@
       "expectedOutput": {
         "ratio": 4.0
       },
-      "controlType": "POSITIVE"
+      "controlType": "POSITIVE",
+      "phase": 3
     },
     {
       "id": "ARITH-RIOT-LTV-001",
@@ -199,7 +207,8 @@
         "cure_amount_btc": 45.714285714285744
       },
       "controlType": "POSITIVE",
-      "notes": "Arithmetic under stated Initial LTV assumption; confirm Initial LTV numeric from definition separately before legal use."
+      "notes": "Arithmetic under stated Initial LTV assumption; confirm Initial LTV numeric from definition separately before legal use.",
+      "phase": 3
     },
     {
       "id": "ARITH-RIOT-LTV-MISSING-001",
@@ -221,7 +230,8 @@
       "forbidInference": [
         "zero_cure",
         "available_capacity"
-      ]
+      ],
+      "phase": 3
     },
     {
       "id": "ARITH-GIB-AA-BLOCKED-001",
@@ -243,7 +253,8 @@
         "available_capacity",
         "137600000_only",
         "0.4_ltm_ebitda_only"
-      ]
+      ],
+      "phase": 3
     },
     {
       "id": "ARITH-CONMED-PF-CAP-001",
@@ -263,7 +274,8 @@
         "ebitda_after": 235.29411764705884
       },
       "controlType": "ADDBACK_CAP",
-      "notes": "Simplified model treating only clause (i) as the after-giving-effect delta. Legal interaction with other add-backs remains SEMANTIC_HYPOTHESIS."
+      "notes": "Simplified model treating only clause (i) as the after-giving-effect delta. Legal interaction with other add-backs remains SEMANTIC_HYPOTHESIS.",
+      "phase": 3
     },
     {
       "id": "ARITH-NEG-MAINTENANCE-NOT-CAPACITY-001",
@@ -286,7 +298,1518 @@
         "is_capacity_basket": false,
         "capacity_amount": null
       },
-      "controlType": "NEGATIVE_CONTROL_NOT_CAPACITY"
+      "controlType": "NEGATIVE_CONTROL_NOT_CAPACITY",
+      "phase": 3
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-001",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "cash netting exact $100M boundary",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 100000000,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 100000000,
+        "numerator": 400000000
+      },
+      "expectedOutput": {
+        "ratio": 2.0
+      },
+      "controlType": "CAP_BOUNDARY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-002",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "cash netting $1 below cap",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 99999999,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 99999999,
+        "numerator": 400000001
+      },
+      "expectedOutput": {
+        "ratio": 2.000000005
+      },
+      "controlType": "BELOW_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-003",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "cash netting $1 above cap",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 100000001,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 100000000,
+        "numerator": 400000000
+      },
+      "expectedOutput": {
+        "ratio": 2.0
+      },
+      "controlType": "ABOVE_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-004",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "zero cash",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 0,
+        "numerator": 500000000
+      },
+      "expectedOutput": {
+        "ratio": 2.5
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-005",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "ratio equals 3.75 maintenance max",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 750000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 0,
+        "numerator": 750000000
+      },
+      "expectedOutput": {
+        "ratio": 3.75,
+        "maintenance_max": 3.75,
+        "maintenance_compliant": true
+      },
+      "controlType": "RATIO_THRESHOLD_EQUALITY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-006",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "ratio just below 3.75",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 749999999,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 0,
+        "numerator": 749999999
+      },
+      "expectedOutput": {
+        "ratio": 3.749999995,
+        "maintenance_max": 3.75,
+        "maintenance_compliant": true
+      },
+      "controlType": "RATIO_THRESHOLD_EQUALITY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-007",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "ratio just above 3.75",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 750000001,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 0,
+        "numerator": 750000001
+      },
+      "expectedOutput": {
+        "ratio": 3.750000005,
+        "maintenance_max": 3.75,
+        "maintenance_compliant": false
+      },
+      "controlType": "RATIO_THRESHOLD_EQUALITY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-008",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "RTP principal inclusion",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 400000000,
+        "rtp_attributed_principal": 50000000,
+        "unrestricted_cash_and_cash_equivalents": 80000000,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 80000000,
+        "numerator": 370000000
+      },
+      "expectedOutput": {
+        "ratio": 1.85
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-009",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "zero EBITDA denominator",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 40000000,
+        "consolidated_ebitda_covenant_defined": 0
+      },
+      "expectedIntermediates": {
+        "cash_netting": 40000000,
+        "numerator": 460000000
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "ZERO_DENOMINATOR"
+      },
+      "controlType": "ZERO_DENOMINATOR",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-010",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "negative EBITDA denominator",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 40000000,
+        "consolidated_ebitda_covenant_defined": -50000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 40000000,
+        "numerator": 460000000
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_DENOMINATOR",
+        "ratio_raw": -9.2
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-011",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "negative funded debt input",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": -10000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedIntermediates": {
+        "cash_netting": 0,
+        "numerator": -10000000
+      },
+      "expectedOutput": {
+        "ratio": -0.05
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-SSLR-MISSING-DEBT",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "missing senior secured funded debt",
+      "inputs": {
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 40000000,
+        "consolidated_ebitda_covenant_defined": 200000000
+      },
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "consolidated_senior_secured_funded_debt"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_debt",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-AMD-DATE-001",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "pre-Amd2 effective: $75M cap binds",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 90000000,
+        "consolidated_ebitda_covenant_defined": 200000000,
+        "assumed_cash_netting_cap": 75000000,
+        "as_of_date": "2022-07-31",
+        "authorityNote": "HYPOTHETICAL as-of under stated cap; Amd2 survival into Eighth is REVIEW_REQUIRED"
+      },
+      "expectedIntermediates": {
+        "cash_netting": 75000000,
+        "numerator": 425000000,
+        "cap_used": 75000000
+      },
+      "expectedOutput": {
+        "ratio": 2.125
+      },
+      "controlType": "AMENDMENT_EFFECTIVE_DATE_TRANSITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "notes": "Arithmetic under assumed cap only \u2014 not a legal determination that Amd2 applies on as_of_date to Eighth text.",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-AMD-DATE-002",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "post-Amd2 dating: $100M cap; cash below",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 90000000,
+        "consolidated_ebitda_covenant_defined": 200000000,
+        "assumed_cash_netting_cap": 100000000,
+        "as_of_date": "2022-08-02",
+        "authorityNote": "HYPOTHETICAL as-of under stated cap; Amd2 survival into Eighth is REVIEW_REQUIRED"
+      },
+      "expectedIntermediates": {
+        "cash_netting": 90000000,
+        "numerator": 410000000,
+        "cap_used": 100000000
+      },
+      "expectedOutput": {
+        "ratio": 2.05
+      },
+      "controlType": "AMENDMENT_EFFECTIVE_DATE_TRANSITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "notes": "Arithmetic under assumed cap only \u2014 not a legal determination that Amd2 applies on as_of_date to Eighth text.",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-AMD-DATE-003",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "post-Amd2 dating: $100M cap binds",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 110000000,
+        "consolidated_ebitda_covenant_defined": 200000000,
+        "assumed_cash_netting_cap": 100000000,
+        "as_of_date": "2022-08-02",
+        "authorityNote": "HYPOTHETICAL as-of under stated cap; Amd2 survival into Eighth is REVIEW_REQUIRED"
+      },
+      "expectedIntermediates": {
+        "cash_netting": 100000000,
+        "numerator": 400000000,
+        "cap_used": 100000000
+      },
+      "expectedOutput": {
+        "ratio": 2.0
+      },
+      "controlType": "AMENDMENT_EFFECTIVE_DATE_TRANSITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "notes": "Arithmetic under assumed cap only \u2014 not a legal determination that Amd2 applies on as_of_date to Eighth text.",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-001",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "exact 20% Combined Cap boundary",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15,
+        "nonrecurring_unusual_expenses": 13,
+        "cost_savings_projected": 13,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130,
+        "cost_savings_net": 13,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 26,
+        "allowed_capped_bucket_sum": 26
+      },
+      "expectedOutput": {
+        "ebitda": 156
+      },
+      "controlType": "CAP_BOUNDARY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-002",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "combined bucket $1 below 20% cap",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15,
+        "nonrecurring_unusual_expenses": 12.9,
+        "cost_savings_projected": 13,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130,
+        "cost_savings_net": 13,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 25.9,
+        "allowed_capped_bucket_sum": 25.9
+      },
+      "expectedOutput": {
+        "ebitda": 155.9
+      },
+      "controlType": "BELOW_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-003",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "combined bucket $1 above 20% cap",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15,
+        "nonrecurring_unusual_expenses": 13.1,
+        "cost_savings_projected": 13,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130,
+        "cost_savings_net": 13,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 26.1,
+        "allowed_capped_bucket_sum": 26.0
+      },
+      "expectedOutput": {
+        "ebitda": 156.0
+      },
+      "controlType": "ABOVE_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-004",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "three simultaneous capped add-backs",
+      "inputs": {
+        "net_income": 80,
+        "interest_expense": 20,
+        "income_tax_expense_net": 10,
+        "depreciation_amortization": 20,
+        "nonrecurring_unusual_expenses": 15,
+        "cost_savings_projected": 25,
+        "cost_savings_benefits_realized": 5,
+        "clause_a_xviii_b": 10
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130,
+        "cost_savings_net": 20,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 45,
+        "allowed_capped_bucket_sum": 26.0
+      },
+      "expectedOutput": {
+        "ebitda": 156.0
+      },
+      "controlType": "MULTIPLE_ADDBACKS",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-005",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "cost savings fully realized \u2192 net zero",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 0,
+        "income_tax_expense_net": 0,
+        "depreciation_amortization": 0,
+        "nonrecurring_unusual_expenses": 0,
+        "cost_savings_projected": 30,
+        "cost_savings_benefits_realized": 30,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 100,
+        "cost_savings_net": 0.0,
+        "combined_cap": 20.0,
+        "uncapped_capped_bucket_sum": 0.0,
+        "allowed_capped_bucket_sum": 0.0
+      },
+      "expectedOutput": {
+        "ebitda": 100.0
+      },
+      "controlType": "PRO_FORMA_TIMING",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-006",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "cost savings over-realized clamped at 0",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 0,
+        "income_tax_expense_net": 0,
+        "depreciation_amortization": 0,
+        "nonrecurring_unusual_expenses": 0,
+        "cost_savings_projected": 10,
+        "cost_savings_benefits_realized": 25,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 100,
+        "cost_savings_net": 0.0,
+        "combined_cap": 20.0,
+        "uncapped_capped_bucket_sum": 0.0,
+        "allowed_capped_bucket_sum": 0.0
+      },
+      "expectedOutput": {
+        "ebitda": 100.0
+      },
+      "controlType": "PRO_FORMA_TIMING",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-007",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "negative net income base",
+      "inputs": {
+        "net_income": -20,
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15,
+        "nonrecurring_unusual_expenses": 5,
+        "cost_savings_projected": 5,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 10,
+        "cost_savings_net": 5,
+        "combined_cap": 2.0,
+        "uncapped_capped_bucket_sum": 10,
+        "allowed_capped_bucket_sum": 2.0
+      },
+      "expectedOutput": {
+        "ebitda": 12.0
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-008",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "all capped add-backs zero",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15,
+        "nonrecurring_unusual_expenses": 0,
+        "cost_savings_projected": 0,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 130,
+        "cost_savings_net": 0.0,
+        "combined_cap": 26.0,
+        "uncapped_capped_bucket_sum": 0.0,
+        "allowed_capped_bucket_sum": 0.0
+      },
+      "expectedOutput": {
+        "ebitda": 130.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-009",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "only (a)(xviii)(b) fills cap",
+      "inputs": {
+        "net_income": 50,
+        "interest_expense": 10,
+        "income_tax_expense_net": 10,
+        "depreciation_amortization": 10,
+        "nonrecurring_unusual_expenses": 0,
+        "cost_savings_projected": 0,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 20
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 80,
+        "cost_savings_net": 0.0,
+        "combined_cap": 16.0,
+        "uncapped_capped_bucket_sum": 20.0,
+        "allowed_capped_bucket_sum": 16.0
+      },
+      "expectedOutput": {
+        "ebitda": 96.0
+      },
+      "controlType": "MULTIPLE_ADDBACKS",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-CAP-010",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "lookforward timing: projected within 24m assumed",
+      "inputs": {
+        "net_income": 100,
+        "interest_expense": 0,
+        "income_tax_expense_net": 0,
+        "depreciation_amortization": 0,
+        "nonrecurring_unusual_expenses": 0,
+        "cost_savings_projected": 40,
+        "cost_savings_benefits_realized": 0,
+        "clause_a_xviii_b": 0
+      },
+      "expectedIntermediates": {
+        "ebitda_before_capped_addbacks": 100,
+        "cost_savings_net": 40,
+        "combined_cap": 20.0,
+        "uncapped_capped_bucket_sum": 40,
+        "allowed_capped_bucket_sum": 20.0
+      },
+      "expectedOutput": {
+        "ebitda": 120.0
+      },
+      "controlType": "LOOKFORWARD_TIMING",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-DSGR-MISSING-NI",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "title": "missing net income",
+      "inputs": {
+        "interest_expense": 10,
+        "income_tax_expense_net": 5,
+        "depreciation_amortization": 15
+      },
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "net_income"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_net_income",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-001",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "no excluded revolvers",
+      "inputs": {
+        "consolidated_total_debt": 800,
+        "excluded_revolving_loans_balance": 0,
+        "consolidated_ebitda_covenant_defined": 200,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 800
+      },
+      "expectedOutput": {
+        "ratio": 4.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-002",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "excluded revolvers reduce numerator",
+      "inputs": {
+        "consolidated_total_debt": 900,
+        "excluded_revolving_loans_balance": 100,
+        "consolidated_ebitda_covenant_defined": 200,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 800
+      },
+      "expectedOutput": {
+        "ratio": 4.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-003",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "zero EBITDA denominator",
+      "inputs": {
+        "consolidated_total_debt": 800,
+        "excluded_revolving_loans_balance": 0,
+        "consolidated_ebitda_covenant_defined": 0,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 800
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "ZERO_DENOMINATOR"
+      },
+      "controlType": "ZERO_DENOMINATOR",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-004",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "negative EBITDA",
+      "inputs": {
+        "consolidated_total_debt": 800,
+        "excluded_revolving_loans_balance": 0,
+        "consolidated_ebitda_covenant_defined": -100,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 800
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_DENOMINATOR",
+        "ratio_raw": -8.0
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-005",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "zero CTD",
+      "inputs": {
+        "consolidated_total_debt": 0,
+        "excluded_revolving_loans_balance": 0,
+        "consolidated_ebitda_covenant_defined": 200,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 0
+      },
+      "expectedOutput": {
+        "ratio": 0.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-006",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "excluded equals CTD \u2192 zero numerator",
+      "inputs": {
+        "consolidated_total_debt": 1000,
+        "excluded_revolving_loans_balance": 1000,
+        "consolidated_ebitda_covenant_defined": 200,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {
+        "numerator": 0
+      },
+      "expectedOutput": {
+        "ratio": 0.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-007",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "negative excluded revolvers input",
+      "inputs": {
+        "consolidated_total_debt": 800,
+        "excluded_revolving_loans_balance": -50,
+        "consolidated_ebitda_covenant_defined": 200,
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedIntermediates": {},
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_EXCLUDED_REVOLVERS"
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-TLR-CURRENCY",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "modelId": "CM-CHWY-TLR-v1",
+      "title": "currency/unit mismatch debt USD vs EBITDA EUR",
+      "inputs": {
+        "consolidated_total_debt": 800,
+        "excluded_revolving_loans_balance": 0,
+        "consolidated_ebitda_covenant_defined": 200,
+        "debt_currency": "USD",
+        "ebitda_currency": "EUR",
+        "test_period_election": "FOUR_QUARTERS"
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "CURRENCY_UNIT_MISMATCH"
+      },
+      "controlType": "CURRENCY_UNIT_MISMATCH",
+      "forbidInference": [
+        "ignore_currency",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-001",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "full overlap blocked",
+      "inputs": {
+        "addback_amount_clause_d": 25,
+        "addback_amount_already_in_ebitda": 25
+      },
+      "expectedOutput": {
+        "status": "DOUBLE_COUNT_BLOCKED",
+        "allowed_clause_d_add": 0.0
+      },
+      "controlType": "DOUBLE_COUNTING_TRAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-002",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "partial overlap \u2014 refuse silent split",
+      "inputs": {
+        "addback_amount_clause_d": 25,
+        "addback_amount_already_in_ebitda": 10
+      },
+      "expectedOutput": {
+        "status": "REVIEW_REQUIRED",
+        "reason": "PARTIAL_OVERLAP_IDENTITY_NOT_RESOLVED"
+      },
+      "controlType": "DOUBLE_COUNTING_TRAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-003",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "no overlap \u2014 full clause (d)",
+      "inputs": {
+        "addback_amount_clause_d": 25,
+        "addback_amount_already_in_ebitda": 0
+      },
+      "expectedOutput": {
+        "status": "OK",
+        "allowed_clause_d_add": 25.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-004",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "zero clause (d)",
+      "inputs": {
+        "addback_amount_clause_d": 0,
+        "addback_amount_already_in_ebitda": 25
+      },
+      "expectedOutput": {
+        "status": "OK",
+        "allowed_clause_d_add": 0.0
+      },
+      "controlType": "POSITIVE",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-005",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "larger duplicate blocked",
+      "inputs": {
+        "addback_amount_clause_d": 40,
+        "addback_amount_already_in_ebitda": 40
+      },
+      "expectedOutput": {
+        "status": "DOUBLE_COUNT_BLOCKED",
+        "allowed_clause_d_add": 0.0
+      },
+      "controlType": "DOUBLE_COUNTING_TRAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-ANTIDUPE-006",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "negative clause (d)",
+      "inputs": {
+        "addback_amount_clause_d": -5,
+        "addback_amount_already_in_ebitda": 0
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_ADDBACK"
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-001",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "exact Initial LTV \u2014 zero cure",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 14285714.285714287,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 0.7,
+        "target_collateral_pmv": 14285714.285714287,
+        "additional_collateral_usd": 0.0
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 0.0,
+        "additional_collateral_usd": 0.0
+      },
+      "controlType": "CAP_BOUNDARY",
+      "forbidInference": null,
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-002",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "below Initial LTV \u2014 no additional collateral",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 20000000,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 0.5,
+        "target_collateral_pmv": 14285714.285714287,
+        "additional_collateral_usd": 0.0
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 0.0,
+        "additional_collateral_usd": 0.0
+      },
+      "controlType": "BELOW_CAP",
+      "forbidInference": null,
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-003",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "LTV 1.0 \u2014 cure to Initial",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 10000000,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 1.0,
+        "target_collateral_pmv": 14285714.285714287,
+        "additional_collateral_usd": 4285714.285714287
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 85.71428571428575,
+        "additional_collateral_usd": 4285714.285714287
+      },
+      "controlType": "ABOVE_CAP",
+      "forbidInference": null,
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-004",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "zero BTC price",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 12000000,
+        "initial_ltv": 0.7,
+        "btc_price": 0
+      },
+      "expectedIntermediates": {},
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "btc_price"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_cure",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-005",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "zero collateral PMV",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 0,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {},
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "ZERO_COLLATERAL_PMV"
+      },
+      "controlType": "ZERO_DENOMINATOR",
+      "forbidInference": [
+        "zero_cure",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-006",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "negative collateral",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": -1000000,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {},
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_COLLATERAL_PMV"
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "forbidInference": [
+        "zero_cure",
+        "available_capacity"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-007",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "zero principal",
+      "inputs": {
+        "loan_principal": 0,
+        "collateral_pmv": 12000000,
+        "initial_ltv": 0.7,
+        "btc_price": 50000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 0.0,
+        "target_collateral_pmv": 0.0,
+        "additional_collateral_usd": 0.0
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 0.0,
+        "additional_collateral_usd": 0.0
+      },
+      "controlType": "POSITIVE",
+      "forbidInference": null,
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-LTV-008",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "higher BTC price reduces BTC cure",
+      "inputs": {
+        "loan_principal": 10000000,
+        "collateral_pmv": 12000000,
+        "initial_ltv": 0.7,
+        "btc_price": 100000
+      },
+      "expectedIntermediates": {
+        "actual_ltv": 0.8333333333333334,
+        "target_collateral_pmv": 14285714.285714287,
+        "additional_collateral_usd": 2285714.2857142873
+      },
+      "expectedOutput": {
+        "cure_amount_btc": 22.857142857142872,
+        "additional_collateral_usd": 2285714.2857142873
+      },
+      "controlType": "POSITIVE",
+      "forbidInference": null,
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-RIOT-MISSING-COLLATERAL-PRICE",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "title": "missing collateral PMV and BTC price",
+      "inputs": {
+        "loan_principal": 10000000,
+        "initial_ltv": 0.7
+      },
+      "expectedOutput": {
+        "status": "MISSING_INPUT",
+        "missingKeys": [
+          "collateral_pmv",
+          "btc_price"
+        ]
+      },
+      "controlType": "MISSING_INPUT",
+      "forbidInference": [
+        "zero_cure",
+        "invent_pmv"
+      ],
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-001",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "exact 15% AGE boundary",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 35.294117647058826,
+        "benefits_realized": 0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 35.294117647058826,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 35.294117647058826,
+        "ebitda_after": 235.29411764705884
+      },
+      "controlType": "CAP_BOUNDARY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-002",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "PF below 15% AGE",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 20,
+        "benefits_realized": 0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 20,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 20,
+        "ebitda_after": 220
+      },
+      "controlType": "BELOW_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-003",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "PF above 15% AGE",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 80,
+        "benefits_realized": 0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 80,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 35.294117647058826,
+        "ebitda_after": 235.29411764705884
+      },
+      "controlType": "ADDBACK_CAP",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-004",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "net of benefits realized then cap",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 50,
+        "benefits_realized": 5
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 45,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 35.294117647058826,
+        "ebitda_after": 235.29411764705884
+      },
+      "controlType": "PRO_FORMA_ACQUISITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-005",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "benefits fully offset gross",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 50,
+        "benefits_realized": 50
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 0.0,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 0.0,
+        "ebitda_after": 200.0
+      },
+      "controlType": "PRO_FORMA_ACQUISITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-006",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "benefits exceed gross \u2192 zero PF",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200,
+        "pro_forma_adjustment_gross": 50,
+        "benefits_realized": 60
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 0.0,
+        "age_cap": 35.294117647058826
+      },
+      "expectedOutput": {
+        "pf_allowed": 0.0,
+        "ebitda_after": 200.0
+      },
+      "controlType": "PRO_FORMA_ACQUISITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-007",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "zero base before PF",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 0,
+        "pro_forma_adjustment_gross": 50,
+        "benefits_realized": 0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 50
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "ZERO_BASE_BEFORE_PF"
+      },
+      "controlType": "ZERO_DENOMINATOR",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-008",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "negative base before PF",
+      "inputs": {
+        "ebitda_before_pf_clause_i": -50,
+        "pro_forma_adjustment_gross": 20,
+        "benefits_realized": 0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": 20
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "NEGATIVE_BASE_BEFORE_PF"
+      },
+      "controlType": "NEGATIVE_INPUT",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CONMED-PF-DISPOSITION",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "title": "pro forma disposition reduces EBITDA (no add-back cap)",
+      "inputs": {
+        "ebitda_before_pf_clause_i": 200.0,
+        "pro_forma_adjustment_gross": -30.0,
+        "benefits_realized": 0.0
+      },
+      "expectedIntermediates": {
+        "pf_net_uncapped": -30.0
+      },
+      "expectedOutput": {
+        "pf_allowed": -30.0,
+        "ebitda_after": 170.0
+      },
+      "controlType": "PRO_FORMA_DISPOSITION",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-GIB-AA-001",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "title": "refuse AA under citation ambiguity with full inputs",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "inputs": {
+        "ltm_ebitda": 400000000,
+        "consolidated_net_income_cumulative": 50000000,
+        "equity_proceeds_since_closing": 10000000
+      },
+      "expectedOutput": {
+        "status": "REVIEW_REQUIRED",
+        "reason": "UQ-GIB-705AY-CITATION \u2014 builder-basket source ambiguity; do not certify formula"
+      },
+      "controlType": "BUILDER_BASKET_SOURCE_AMBIGUITY",
+      "forbidInference": [
+        "zero",
+        "unlimited",
+        "available_capacity",
+        "137600000_only",
+        "0.4_ltm_ebitda_only",
+        "sum_of_y_prongs"
+      ],
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-GIB-AA-002",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "title": "refuse AA when only (vi) grower inputs supplied",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "inputs": {
+        "ltm_ebitda": 400000000,
+        "consolidated_net_income_cumulative": 50000000,
+        "equity_proceeds_since_closing": 10000000
+      },
+      "expectedOutput": {
+        "status": "REVIEW_REQUIRED",
+        "reason": "UQ-GIB-705AY-CITATION \u2014 builder-basket source ambiguity; do not certify formula"
+      },
+      "controlType": "BUILDER_BASKET_SOURCE_AMBIGUITY",
+      "forbidInference": [
+        "zero",
+        "unlimited",
+        "available_capacity",
+        "137600000_only",
+        "0.4_ltm_ebitda_only",
+        "sum_of_y_prongs"
+      ],
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-GIB-AA-003",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "title": "refuse AA when CNI builder inputs supplied",
+      "legalReviewState": "REVIEW_REQUIRED",
+      "inputs": {
+        "ltm_ebitda": 400000000,
+        "consolidated_net_income_cumulative": 50000000,
+        "equity_proceeds_since_closing": 10000000
+      },
+      "expectedOutput": {
+        "status": "REVIEW_REQUIRED",
+        "reason": "UQ-GIB-705AY-CITATION \u2014 builder-basket source ambiguity; do not certify formula"
+      },
+      "controlType": "BUILDER_BASKET_SOURCE_AMBIGUITY",
+      "forbidInference": [
+        "zero",
+        "unlimited",
+        "available_capacity",
+        "137600000_only",
+        "0.4_ltm_ebitda_only",
+        "sum_of_y_prongs"
+      ],
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-LOOKFORWARD-001",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "lookforward: action date outside 36-month window \u2192 refuse silent include",
+      "inputs": {
+        "addback_amount_clause_d": 20.0,
+        "addback_amount_already_in_ebitda": 0.0,
+        "action_date": "2020-01-01",
+        "period_end": "2026-06-30",
+        "lookforward_months": 36
+      },
+      "expectedOutput": {
+        "status": "UNSUPPORTED_CASE",
+        "reason": "LOOKFORWARD_WINDOW_EXCEEDED",
+        "allowed_clause_d_add": 0.0
+      },
+      "controlType": "LOOKFORWARD_TIMING",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-CHWY-LOOKFORWARD-002",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "title": "lookforward: action within 36 months + no dupe",
+      "inputs": {
+        "addback_amount_clause_d": 20.0,
+        "addback_amount_already_in_ebitda": 0.0,
+        "action_date": "2025-01-01",
+        "period_end": "2026-06-30",
+        "lookforward_months": 36
+      },
+      "expectedOutput": {
+        "status": "OK",
+        "allowed_clause_d_add": 20.0
+      },
+      "controlType": "LOOKFORWARD_TIMING",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
+    },
+    {
+      "id": "ARITH-P4-NEG-SSLR-HEADROOM",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "modelId": "CM-CONMED-SSLR-v1",
+      "title": "SSLR headroom math is not RP capacity",
+      "inputs": {
+        "consolidated_senior_secured_funded_debt": 500000000,
+        "rtp_attributed_principal": 0,
+        "unrestricted_cash_and_cash_equivalents": 0,
+        "consolidated_ebitda_covenant_defined": 200000000,
+        "maintenance_max": 3.75
+      },
+      "expectedIntermediates": {
+        "ratio": 2.5,
+        "ratio_headroom_vs_max": 1.25
+      },
+      "expectedOutput": {
+        "maintenance_compliant": true,
+        "is_capacity_basket": false,
+        "capacity_amount": null
+      },
+      "controlType": "NEGATIVE_CONTROL_NOT_CAPACITY",
+      "legalReviewState": "ARITHMETICALLY_TESTED",
+      "phase": 4
     }
-  ]
+  ],
+  "phase4NewCaseCount": 64,
+  "totalCaseCount": 77
 }

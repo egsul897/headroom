@@ -1,0 +1,340 @@
+{
+  "artifact": "financial-definitions-precedent.calculation-models",
+  "version": "fdp.calc-model.v1",
+  "status": "DRAFT",
+  "disclaimer": "Dependency-complete structured readings. SEMANTIC_HYPOTHESIS unless blocked. Not INDEPENDENTLY_LEGALLY_REVIEWED. Not production-approved calculations.",
+  "models": [
+    {
+      "id": "CM-CONMED-SSLR-v1",
+      "typedCalcId": "TC-CONMED-SSLR-v1",
+      "name": "CONMED Consolidated Senior Secured Leverage Ratio",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "operativeSourceDocIds": [
+        "CONMED-2025-PLAIN",
+        "CONMED-2025-ART7",
+        "CONMED-2022-AMD2"
+      ],
+      "controllingDefinitions": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Senior Secured Funded Debt",
+        "Consolidated EBITDA",
+        "Consolidated Funded Debt",
+        "Funded Debt",
+        "Unrestricted cash and cash equivalents (cash netting)"
+      ],
+      "crossReferences": [
+        "\u00a77.1 Financial Covenants (maintenance max + Material Acquisition step-up)",
+        "Second Amendment cash-netting $75M\u2192$100M (Seventh-era; survival into Eighth REVIEW_REQUIRED)"
+      ],
+      "provisos": [
+        "Cash netting capped (operative Eighth text uses $100,000,000; do not silently ignore Amd2 lineage)",
+        "Material Acquisition election +0.50x step-up \u2014 optional, time-bounded; not capacity",
+        "RTP attributed principal inclusion if applicable"
+      ],
+      "entityRestrictions": "Parent Borrower and Subsidiaries on a consolidated basis per definitions",
+      "measurementDates": "as of / for the Test Period ending on the determination date under \u00a77.1",
+      "financialInputRequirements": [
+        "consolidated_senior_secured_funded_debt",
+        "rtp_attributed_principal",
+        "unrestricted_cash_and_cash_equivalents",
+        "consolidated_ebitda_covenant_defined",
+        "material_acquisition_election_and_dates"
+      ],
+      "extractionEntryIds": [
+        "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
+        "CONMED-2025-CA::test::Financial_Covenants_7_1",
+        "CONMED-2025-CA::def::Consolidated_EBITDA",
+        "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100"
+      ],
+      "simplifiedAway": [],
+      "notes": "Cash-netting dollar figure lineage requires amendment-authority join; Seventh A&R before-text partially missing from package."
+    },
+    {
+      "id": "CM-CONMED-EBITDA-PF-v1",
+      "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
+      "name": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "operativeSourceDocIds": [
+        "CONMED-2025-PLAIN"
+      ],
+      "controllingDefinitions": [
+        "Consolidated EBITDA",
+        "Consolidated Net Income",
+        "Pro Forma Basis / Pro Forma Adjustments",
+        "Material Acquisition"
+      ],
+      "crossReferences": [
+        "Consolidated EBITDA clause (i) PF adjustments",
+        "$30,000,000 Transaction/Material Acquisition cost cap (distinct from 15% PF cap)"
+      ],
+      "provisos": [
+        "15% of Consolidated EBITDA after giving effect to clause (i) adjustments",
+        "net of benefits realized",
+        "without duplication"
+      ],
+      "entityRestrictions": "Consolidated Borrower group",
+      "measurementDates": "Test Period; PF as-if from first day of period for qualifying transactions",
+      "financialInputRequirements": [
+        "ebitda_before_pf_clause_i",
+        "pro_forma_adjustment_gross",
+        "benefits_realized",
+        "transaction_costs_material_acquisition"
+      ],
+      "extractionEntryIds": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ],
+      "simplifiedAway": [
+        "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model remains open for future expansion"
+      ],
+      "notes": "Arithmetic model treats clause (i) AGE delta only; other add-backs not silently zeroed \u2014 missing schedule \u2192 MISSING_INPUT for full EBITDA."
+    },
+    {
+      "id": "CM-DSGR-EBITDA-v1",
+      "typedCalcId": "TC-DSGR-EBITDA-v1",
+      "name": "DSGR EBITDA with Combined Cap (Second A&R doc-d)",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "dsgr-ar-ca-2022-04-01",
+      "amendmentChainId": "dsgr-2022-04-01-ar-credit",
+      "operativeSourceDocIds": [
+        "DSGR-2025-AR2"
+      ],
+      "controllingDefinitions": [
+        "EBITDA",
+        "Cost Savings",
+        "Combined Cap",
+        "Net Income"
+      ],
+      "crossReferences": [
+        "EBITDA (a)(vii)/(a)(viii)/(a)(xviii)(b) share Combined Cap",
+        "Cost Savings 24-month lookforward",
+        "Doc-d Second A&R supersedes prior targeted amendment text for these defs"
+      ],
+      "provisos": [
+        "Combined Cap = 20% of EBITDA before giving effect to capped add-backs",
+        "Cost Savings net of benefits realized",
+        "without duplication lead-in",
+        "actions taken prior to last day of period for Cost Savings"
+      ],
+      "entityRestrictions": "Borrower and Restricted Subsidiaries (per Doc D)",
+      "measurementDates": "period of determination / Test Period under Doc D",
+      "financialInputRequirements": [
+        "net_income",
+        "interest_expense",
+        "income_tax_expense_net",
+        "depreciation_amortization",
+        "nonrecurring_unusual_expenses",
+        "cost_savings_projected",
+        "cost_savings_benefits_realized",
+        "clause_a_xviii_b",
+        "cost_savings_action_dates"
+      ],
+      "extractionEntryIds": [
+        "DSGR-2025-AR2::def::EBITDA",
+        "DSGR-2025-AR2::adj::Cost_Savings",
+        "DSGR-2025-AR2::adj::Combined_Cap_20pct"
+      ],
+      "simplifiedAway": [
+        "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
+      ],
+      "notes": "Operative text is Doc D restatement; do not apply Doc B Combined Cap language as if still controlling without restatement check."
+    },
+    {
+      "id": "CM-CHWY-TLR-v1",
+      "typedCalcId": "TC-CHWY-TLR-v1",
+      "name": "CHWY Total Leverage Ratio",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "chwy-2026-credit-agreement",
+      "amendmentChainId": null,
+      "operativeSourceDocIds": [
+        "CHWY-2026-CA"
+      ],
+      "controllingDefinitions": [
+        "Total Leverage Ratio",
+        "Consolidated Total Debt",
+        "Consolidated EBITDA",
+        "Excluded Revolving Loans",
+        "Test Period"
+      ],
+      "crossReferences": [
+        "CTD embeds unrestricted cash netting per CTD definition",
+        "Test Period election (Four Quarters / TTM mechanics)"
+      ],
+      "provisos": [
+        "Exclude Excluded Revolving Loans from numerator",
+        "CTD cash netting is definitional \u2014 do not double-apply CONMED-style capped netting"
+      ],
+      "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs",
+      "measurementDates": "Test Period ending on determination date",
+      "financialInputRequirements": [
+        "consolidated_total_debt",
+        "excluded_revolving_loans_balance",
+        "consolidated_ebitda_covenant_defined",
+        "test_period_election",
+        "unrestricted_cash_and_cash_equivalents"
+      ],
+      "extractionEntryIds": [
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+        "CHWY-2026-CA::def::Consolidated_Total_Debt",
+        "CHWY-2026-CA::def::Consolidated_EBITDA",
+        "CHWY-2026-CA::def::Test_Period"
+      ],
+      "simplifiedAway": [],
+      "notes": "No amendment chain in Amendment Intelligence for CHWY 2026 package; single-instrument authority."
+    },
+    {
+      "id": "CM-CHWY-ANTIDUPE-v1",
+      "typedCalcId": "TC-CHWY-ANTIDUPE-v1",
+      "name": "CHWY Anti-duplication \u00a71.08(d)(ii)",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "chwy-2026-credit-agreement",
+      "amendmentChainId": null,
+      "operativeSourceDocIds": [
+        "CHWY-2026-CA"
+      ],
+      "controllingDefinitions": [
+        "Consolidated EBITDA",
+        "\u00a71.08(d)(ii) anti-duplication",
+        "Expected Run Rate Benefit / clause (d) add-backs"
+      ],
+      "crossReferences": [
+        "\u00a71.08 calculation principles",
+        "Consolidated EBITDA add-back clauses"
+      ],
+      "provisos": [
+        "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA"
+      ],
+      "entityRestrictions": "Restricted Parties",
+      "measurementDates": "same period as Consolidated EBITDA",
+      "financialInputRequirements": [
+        "addback_amount_clause_d",
+        "addback_amount_already_in_ebitda"
+      ],
+      "extractionEntryIds": [
+        "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
+        "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
+      ],
+      "simplifiedAway": [],
+      "notes": "Identity of 'same amount' is a legal/factual question; arithmetic cases assume attested overlap."
+    },
+    {
+      "id": "CM-RIOT-LTV-MARGIN-v1",
+      "typedCalcId": "TC-RIOT-LTV-MARGIN-v1",
+      "name": "Riot Actual LTV + Margin Demand Additional Collateral",
+      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "blockedReasons": [],
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "instrumentIdentity": "riot-2025-2026-credit-facility",
+      "amendmentChainId": null,
+      "operativeSourceDocIds": [
+        "RIOT-2026-CA"
+      ],
+      "controllingDefinitions": [
+        "Actual LTV Ratio",
+        "Initial LTV",
+        "Release LTV",
+        "Cure Amount (BTC)",
+        "Prevailing Market Value of Collateral"
+      ],
+      "crossReferences": [
+        "\u00a72.06 Margin Funding Notice / Additional Collateral demand",
+        "Schedule fields for Initial LTV / Cure Amount (BTC)"
+      ],
+      "provisos": [
+        "Margin Call Event \u2192 deliver Additional Collateral so Actual LTV \u2264 Initial LTV",
+        "Deadline 1 Business Day after Margin Funding Notice",
+        "Not an EBITDA equity cure"
+      ],
+      "entityRestrictions": "Borrower / Collateral under Riot CA",
+      "measurementDates": "point-in-time LTV; cure deadline 1 Business Day",
+      "financialInputRequirements": [
+        "loan_principal",
+        "collateral_pmv",
+        "initial_ltv",
+        "btc_price",
+        "margin_call_event"
+      ],
+      "extractionEntryIds": [
+        "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+        "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
+        "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
+        "RIOT-2026-CA::def::Initial_LTV",
+        "RIOT-2026-CA::def::Release_LTV"
+      ],
+      "simplifiedAway": [
+        "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
+      ],
+      "notes": "Restatement lineage Doc A\u2192B\u2192C present in fixture; operative calc uses Doc C. No Amendment Intelligence chain ID for Riot."
+    },
+    {
+      "id": "CM-GIB-AA-BUILDER-v1",
+      "typedCalcId": "TC-GIB-AA-BUILDER-v1",
+      "name": "Gibraltar Available Amount Builder Basket",
+      "status": "BLOCKED_REVIEW_REQUIRED",
+      "blockedReasons": [
+        "UQ-GIB-705AY-CITATION \u2014 definition cites \u00a77.05(a)(y); naming parenthetical after (vi) ambiguous",
+        "Builder formula not certified; capacity must not be inferred"
+      ],
+      "legalReviewState": "REVIEW_REQUIRED",
+      "instrumentIdentity": "gibraltar-2026-credit-agreement",
+      "amendmentChainId": null,
+      "operativeSourceDocIds": [
+        "GIB-2026-CA"
+      ],
+      "controllingDefinitions": [
+        "Available Amount Builder Basket",
+        "LTM EBITDA",
+        "Consolidated Net Income",
+        "\u00a77.05(a)(y) Restricted Payments builder"
+      ],
+      "crossReferences": [
+        "Article I definitional xref to Section 7.05(a)(y)",
+        "Operative \u00a77.05(a)(y)(i)\u2013(vi)",
+        "Loose 'Section 7.05(y)' cites",
+        "\u00a77.05(a)(x) Event of Default gates"
+      ],
+      "provisos": [
+        "Do not force unique citation target",
+        "Do not certify whether Builder Basket is entire (y) or only (vi)",
+        "Event of Default gates by RP type"
+      ],
+      "entityRestrictions": "Borrower Restricted Payments context",
+      "measurementDates": "cumulative / LTM components per prong \u2014 uncertified",
+      "financialInputRequirements": [
+        "consolidated_net_income_cumulative",
+        "equity_proceeds_since_closing",
+        "converted_debt_equity_proceeds",
+        "restricted_investment_returns",
+        "unrestricted_sub_redesignation_fmv",
+        "ltm_ebitda",
+        "event_of_default_status",
+        "citation_scope_resolution"
+      ],
+      "extractionEntryIds": [
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
+        "GIB-2026-CA::def::LTM_EBITDA"
+      ],
+      "simplifiedAway": [],
+      "notes": "Arithmetic evaluation refused. Components extracted as EXTRACTED_NOT_CERTIFIED only."
+    }
+  ],
+  "counts": {
+    "total": 7,
+    "completeSemanticHypothesis": 6,
+    "blockedReviewRequired": 1
+  }
+}

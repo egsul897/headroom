@@ -84,6 +84,10 @@ describe("financial-definitions-precedent dataset integrity", () => {
       "16-legal-review-states.json",
       "17-source-document-registry.json",
       "18-canonical-export-v2.json",
+      "20-calculation-models.json",
+      "21-amendment-authority.json",
+      "22-canonical-export-v3.json",
+      "23-legal-completeness.json",
       "README.md",
     ];
     for (const f of required) {
@@ -503,5 +507,187 @@ describe("financial-definitions-precedent dataset integrity", () => {
       expect.arrayContaining(["termLabel", "sourcePath", "excerptSha256"]),
     );
     expect(canon.sourceDocuments.every((d) => d.newSecAcquisition === false)).toBe(true);
+  });
+
+  it("phase-4 calculation models close controlling defs without silent simplification", () => {
+    const models = readJson<{
+      version: string;
+      models: Array<{
+        id: string;
+        typedCalcId: string;
+        status: string;
+        controllingDefinitions: string[];
+        crossReferences: string[];
+        provisos: string[];
+        entityRestrictions: string;
+        measurementDates: string;
+        financialInputRequirements: string[];
+        simplifiedAway: string[];
+        blockedReasons: string[];
+      }>;
+      counts: { total: number; blockedReviewRequired: number };
+    }>("20-calculation-models.json");
+    expect(models.version).toBe("fdp.calc-model.v1");
+    expect(models.counts.total).toBe(7);
+    expect(models.counts.blockedReviewRequired).toBe(1);
+    for (const m of models.models) {
+      expect(m.controllingDefinitions.length).toBeGreaterThanOrEqual(3);
+      expect(m.crossReferences.length).toBeGreaterThanOrEqual(1);
+      expect(m.provisos.length).toBeGreaterThanOrEqual(1);
+      expect(m.entityRestrictions.length).toBeGreaterThan(0);
+      expect(m.measurementDates.length).toBeGreaterThan(0);
+      expect(m.financialInputRequirements.length).toBeGreaterThanOrEqual(2);
+      if (m.id === "CM-GIB-AA-BUILDER-v1") {
+        expect(m.status).toBe("BLOCKED_REVIEW_REQUIRED");
+        expect(m.blockedReasons.join(" ")).toMatch(/UQ-GIB-705AY-CITATION/);
+      } else {
+        expect(m.status).toBe("MODEL_COMPLETE_SEMANTIC_HYPOTHESIS");
+      }
+    }
+  });
+
+  it("amendment authority records preserve REVIEW_REQUIRED when incomplete", () => {
+    const auth = readJson<{
+      version: string;
+      peerCoordination: { amendmentChainResearch: { branch: string; schemaVersion: string } };
+      records: Array<{
+        modelId: string;
+        amendmentChainId: string | null;
+        authorityStatus: string;
+        unresolvedAuthority: string[];
+        forcedResolutionForbidden?: boolean;
+      }>;
+    }>("21-amendment-authority.json");
+    expect(auth.version).toBe("fdp.amend-auth.v1");
+    expect(auth.peerCoordination.amendmentChainResearch.branch).toMatch(/amendment-chain-research/);
+    expect(auth.records.length).toBe(7);
+    const conmed = auth.records.find((r) => r.modelId === "CM-CONMED-SSLR-v1");
+    expect(conmed?.amendmentChainId).toBe("cnmd-seventh-ar-to-eighth-ar");
+    expect(conmed?.authorityStatus).toBe("REVIEW_REQUIRED");
+    expect(conmed!.unresolvedAuthority.length).toBeGreaterThan(0);
+    const gib = auth.records.find((r) => r.modelId === "CM-GIB-AA-BUILDER-v1");
+    expect(gib?.authorityStatus).toBe("REVIEW_REQUIRED");
+    expect(gib?.forcedResolutionForbidden).toBe(true);
+  });
+
+  it("phase-4 adds at least 50 independent arithmetic scenarios covering required control types", () => {
+    const arith = readJson<{
+      phase4NewCaseCount: number;
+      totalCaseCount: number;
+      cases: Array<{
+        id: string;
+        phase?: number;
+        controlType: string;
+        typedCalcId: string;
+        inputs: Record<string, unknown>;
+        expectedOutput: Record<string, unknown>;
+      }>;
+    }>("15-arithmetic-evaluation.json");
+    expect(arith.phase4NewCaseCount).toBeGreaterThanOrEqual(50);
+    expect(arith.totalCaseCount).toBe(arith.cases.length);
+    const p4 = arith.cases.filter((c) => c.phase === 4);
+    expect(p4.length).toBe(arith.phase4NewCaseCount);
+    const types = new Set(p4.map((c) => c.controlType));
+    for (const need of [
+      "CAP_BOUNDARY",
+      "ABOVE_CAP",
+      "BELOW_CAP",
+      "MISSING_INPUT",
+      "ZERO_DENOMINATOR",
+      "NEGATIVE_INPUT",
+      "MULTIPLE_ADDBACKS",
+      "DOUBLE_COUNTING_TRAP",
+      "PRO_FORMA_ACQUISITION",
+      "LOOKFORWARD_TIMING",
+      "RATIO_THRESHOLD_EQUALITY",
+      "AMENDMENT_EFFECTIVE_DATE_TRANSITION",
+      "CURRENCY_UNIT_MISMATCH",
+      "BUILDER_BASKET_SOURCE_AMBIGUITY",
+    ]) {
+      expect(types.has(need), need).toBe(true);
+    }
+    // Independent evaluator sample — CONMED exact cash-netting boundary
+    const boundary = p4.find((c) => c.id === "ARITH-P4-CONMED-SSLR-001");
+    expect(boundary).toBeTruthy();
+    const debt = Number(boundary!.inputs.consolidated_senior_secured_funded_debt);
+    const cash = Number(boundary!.inputs.unrestricted_cash_and_cash_equivalents);
+    const ebitda = Number(boundary!.inputs.consolidated_ebitda_covenant_defined);
+    const cashN = Math.min(100_000_000, cash);
+    expect(cashN).toBe(100_000_000);
+    expect(Number(boundary!.expectedOutput.ratio)).toBeCloseTo((debt - cashN) / ebitda, 9);
+    // Gibraltar still refuses capacity
+    const gibCases = p4.filter((c) => c.controlType === "BUILDER_BASKET_SOURCE_AMBIGUITY");
+    expect(gibCases.length).toBeGreaterThanOrEqual(3);
+    expect(gibCases.every((c) => c.expectedOutput.status === "REVIEW_REQUIRED")).toBe(true);
+    // Zero denominator refusal
+    const zd = p4.find((c) => c.controlType === "ZERO_DENOMINATOR" && c.typedCalcId === "TC-CONMED-SSLR-v1");
+    expect(zd?.expectedOutput.status).toBe("UNSUPPORTED_CASE");
+  });
+
+  it("legal-completeness metrics are separate from arithmetic and never claim legal verification", () => {
+    const legal = readJson<{
+      version: string;
+      disclaimer: string;
+      models: Array<{
+        modelId: string;
+        independentlyLegallyReviewed: boolean;
+        legalVerificationClaimedFromArithmetic: boolean;
+        dimensions: Record<string, { status: string }>;
+      }>;
+      summary: { independentlyLegallyReviewedCount: number; blockedModels: number };
+    }>("23-legal-completeness.json");
+    expect(legal.version).toBe("fdp.legal-complete.v1");
+    expect(legal.disclaimer).toMatch(/do NOT constitute independent legal review/i);
+    expect(legal.summary.independentlyLegallyReviewedCount).toBe(0);
+    expect(legal.summary.blockedModels).toBe(1);
+    for (const m of legal.models) {
+      expect(m.independentlyLegallyReviewed).toBe(false);
+      expect(m.legalVerificationClaimedFromArithmetic).toBe(false);
+      for (const dim of [
+        "arithmeticCorrectness",
+        "controllingSourceCompleteness",
+        "definitionClosure",
+        "amendmentVersionCorrectness",
+        "provisoAttachment",
+        "entityScopeFidelity",
+        "missingInputRefusal",
+        "unsupportedCaseRefusal",
+      ]) {
+        expect(m.dimensions[dim]?.status?.length).toBeGreaterThan(0);
+      }
+    }
+    const gib = legal.models.find((m) => m.modelId === "CM-GIB-AA-BUILDER-v1");
+    expect(gib?.dimensions.arithmeticCorrectness.status).toBe("BLOCKED");
+  });
+
+  it("canonical export v3 integrates peers without competing production schemas", () => {
+    const canon = readJson<{
+      schemaVersion: string;
+      doesNotCompeteWith: string[];
+      joinKeys: Record<string, string[]>;
+      counts: { arithmeticCasesPhase4New: number; calculationModels: number };
+      gibraltarCitationStatus: {
+        status: string;
+        certifiedBuilderFormula: boolean;
+        capacityInferred: boolean;
+        forcedResolutionForbidden: boolean;
+      };
+      independentlyLegallyReviewedCount: number;
+    }>("22-canonical-export-v3.json");
+    expect(canon.schemaVersion).toBe("fdp.canonical-export.v3");
+    expect(canon.independentlyLegallyReviewedCount).toBe(0);
+    expect(canon.counts.arithmeticCasesPhase4New).toBeGreaterThanOrEqual(50);
+    expect(canon.counts.calculationModels).toBe(7);
+    expect(canon.gibraltarCitationStatus.status).toBe("OPEN_REVIEW_REQUIRED");
+    expect(canon.gibraltarCitationStatus.certifiedBuilderFormula).toBe(false);
+    expect(canon.gibraltarCitationStatus.capacityInferred).toBe(false);
+    expect(canon.gibraltarCitationStatus.forcedResolutionForbidden).toBe(true);
+    const banned = canon.doesNotCompeteWith.join(" ");
+    expect(banned).toMatch(/amendment-chain-research/);
+    expect(banned).toMatch(/covenant-dependency-atlas/);
+    expect(banned).toMatch(/covenant-engine/);
+    expect(canon.joinKeys.amendmentIntelligence).toEqual(
+      expect.arrayContaining(["amendmentChainId", "docId", "accession"]),
+    );
   });
 });

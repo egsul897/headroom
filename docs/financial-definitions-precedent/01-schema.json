@@ -90,6 +90,20 @@
         "tests/knowledge-factory/**"
       ],
       "branch": "cursor/covenant-knowledge-factory-7327"
+    },
+    "amendmentChainResearch": {
+      "agent": "Amendment Chain Research / Amendment Intelligence",
+      "branch": "cursor/amendment-chain-research-2926",
+      "boundary": "Owns amendment chronology, authority layers, before/after, unresolved authority. WS-FDP joins via chainId/docId/accession only; does not rewrite peer packs.",
+      "exportPath": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+      "exclusivePathsObserved": ["docs/amendment-chain-research/**"]
+    },
+    "dependencyAtlas": {
+      "agent": "Covenant Dependency Atlas",
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "boundary": "Owns structural dependency edges. WS-FDP publishes typedCalcId/calculationModelId join keys; does not fork atlas schema.",
+      "exclusivePathsObserved": ["docs/covenant-dependency-atlas/**"]
     }
   }
 }
+

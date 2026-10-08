@@ -1,16 +1,20 @@
 {
-  "schemaVersion": "fdp.canonical-export.v2",
+  "schemaVersion": "fdp.canonical-export.v3",
   "exportKind": "financial-definitions-precedent-canonical",
-  "generatedAt": "2026-10-08T22:29:35Z",
+  "generatedAt": "2026-10-08T22:45:26Z",
   "workstreamId": "WS-FDP",
-  "reconciledStartingSha": "23e42a56973cd399e9150399e269092a5c6cf715",
+  "startingShaPhase4": "153d33a1883eecbd9cde2e96aaf6320edcc38a44",
   "branch": "cursor/financial-definitions-precedent-43af",
+  "supersedes": "fdp.canonical-export.v2",
   "doesNotCompeteWith": [
     "docs/definition-encyclopedia/knowledge-factory-export.json",
     "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json",
     "docs/knowledge-factory/**",
-    "cursor/covenant-dependency-atlas-5021 (Dependency Atlas)",
-    "cursor/amendment-chain-research-2926 (Amendment Intelligence)"
+    "docs/covenant-dependency-atlas/**",
+    "docs/amendment-chain-research/**",
+    "lib/covenant-engine.ts",
+    "lib/solver/**",
+    "lib/contract-model/runtime/capacity/**"
   ],
   "joinKeys": {
     "definitionEncyclopedia": [
@@ -26,16 +30,51 @@
     "dependencyAtlas": [
       "entryId",
       "typedCalcId",
+      "calculationModelId",
       "dependency edges"
     ],
     "amendmentIntelligence": [
-      "amendments[].sourcePath",
+      "amendmentChainId",
+      "docId",
+      "sourceId",
+      "accession",
       "sourceFileSha256"
     ],
     "covenantKnowledgeFactory": [
       "sourceFileSha256",
-      "packageId"
+      "packageId",
+      "sourceDocId"
     ]
+  },
+  "peerExportsConsumed": {
+    "amendmentChainResearch": {
+      "branch": "cursor/amendment-chain-research-2926",
+      "export": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+      "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
+      "joinKeys": [
+        "chainId",
+        "docId",
+        "sourceId",
+        "accession"
+      ]
+    },
+    "dependencyAtlas": {
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "exportReadme": "docs/covenant-dependency-atlas/export/README.md",
+      "portableDataset": "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json"
+    },
+    "definitionEncyclopedia": {
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "export": "docs/definition-encyclopedia/knowledge-factory-export.json"
+    },
+    "basketFormulaLibrary": {
+      "branch": "cursor/covenant-basket-capacity-formula-library-ae51",
+      "manifest": "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json"
+    },
+    "covenantKnowledgeFactory": {
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "manifests": "docs/knowledge-factory/manifests/"
+    }
   },
   "sourceDocuments": [
     {
@@ -153,68 +192,21 @@
   "counts": {
     "atlasEntries": 57,
     "typedCalculations": 7,
-    "arithmeticCases": 13,
+    "calculationModels": 7,
+    "arithmeticCases": 77,
+    "arithmeticCasesPhase4New": 64,
     "unresolvedItems": 10,
-    "sourceDocuments": 11
+    "sourceDocuments": 11,
+    "amendmentAuthorityRecords": 7
   },
-  "atlasEntryIds": [
-    "CHWY-2026-CA::def::Consolidated_EBITDA",
-    "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit",
-    "CHWY-2026-CA::def::Consolidated_Net_Income",
-    "CHWY-2026-CA::def::Consolidated_Total_Debt",
-    "CHWY-2026-CA::def::Consolidated_First_Lien_Debt",
-    "CHWY-2026-CA::def::Consolidated_Senior_Secured_Debt",
-    "CHWY-2026-CA::ratio::First_Lien_Leverage_Ratio",
-    "CHWY-2026-CA::ratio::Senior_Secured_Leverage_Ratio",
-    "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
-    "CHWY-2026-CA::def::Fixed_Charges",
-    "CHWY-2026-CA::def::Excess_Cash_Flow",
-    "CHWY-2026-CA::def::Retained_Excess_Cash_Flow",
-    "CHWY-2026-CA::builder::Available_Amount",
-    "CHWY-2026-CA::adj::Pro_Forma_Basis",
-    "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii",
-    "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF",
-    "CHWY-2026-CA::def::Test_Period",
-    "CONMED-2025-CA::def::Consolidated_EBITDA",
-    "CONMED-2025-CA::def::Consolidated_Net_Income",
-    "CONMED-2025-CA::def::Consolidated_Funded_Debt",
-    "CONMED-2025-CA::def::Consolidated_Senior_Secured_Leverage_Ratio",
-    "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio",
-    "CONMED-2025-CA::def::Interest_Coverage_Ratio",
-    "CONMED-2025-CA::def::Funded_Debt",
-    "CONMED-2025-CA::test::Financial_Covenants_7_1",
-    "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100",
-    "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA",
-    "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio",
-    "FWRG-2021-CA::builder::Available_Amount",
-    "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
-    "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
-    "GIB-2026-CA::def::Consolidated_EBITDA",
-    "GIB-2026-CA::def::Consolidated_Net_Income",
-    "GIB-2026-CA::ratio::Consolidated_Interest_Coverage_Ratio",
-    "GIB-2026-CA::def::Excess_Cash_Flow",
-    "GIB-2026-CA::builder::Retained_Excess_Cash_Flow_Amount",
-    "GIB-2026-CA::builder::Available_Amount_Builder_Basket",
-    "GIB-2026-CA::def::LTM_EBITDA",
-    "GIB-2026-CA::adj::Synergy_ProForma_Cap_1_10",
-    "GIB-2026-CA::test::ECF_Prepay_Step_Down",
-    "DSGR-2024-AMD::builder::Available_Amount",
-    "DSGR-2024-AMD::ratio::Interest_Coverage_Ratio",
-    "DSGR-2024-AMD::ratio::Total_Net_Leverage_Ratio",
-    "DSGR-2024-AMD::adj::Combined_Cap_20pct",
-    "GIB-2026-CA::ratio::Consolidated_First_Lien_Net_Leverage_Ratio",
-    "GIB-2026-CA::ratio::Consolidated_Secured_Net_Leverage_Ratio",
-    "GIB-2026-CA::ratio::Consolidated_Total_Net_Leverage_Ratio",
-    "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
-    "RIOT-2026-CA::cure::Cure_Amount_BTC_Margin",
-    "DSGR-2025-AR2::def::EBITDA",
-    "DSGR-2025-AR2::adj::Cost_Savings",
-    "DSGR-2025-AR2::adj::Combined_Cap_20pct",
-    "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
-    "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y",
-    "RIOT-2026-CA::cure::Section_2_06_Margin_Demand",
-    "RIOT-2026-CA::def::Initial_LTV",
-    "RIOT-2026-CA::def::Release_LTV"
+  "calculationModelIds": [
+    "CM-CONMED-SSLR-v1",
+    "CM-CONMED-EBITDA-PF-v1",
+    "CM-DSGR-EBITDA-v1",
+    "CM-CHWY-TLR-v1",
+    "CM-CHWY-ANTIDUPE-v1",
+    "CM-RIOT-LTV-MARGIN-v1",
+    "CM-GIB-AA-BUILDER-v1"
   ],
   "typedCalculationIds": [
     "TC-CONMED-SSLR-v1",
@@ -225,38 +217,15 @@
     "TC-RIOT-LTV-MARGIN-v1",
     "TC-CONMED-EBITDA-PF-CAP-v1"
   ],
-  "arithmeticCaseIds": [
-    "ARITH-CONMED-SSLR-001",
-    "ARITH-CONMED-SSLR-002",
-    "ARITH-CONMED-SSLR-MISSING-001",
-    "ARITH-DSGR-COMBINED-CAP-001",
-    "ARITH-DSGR-COMBINED-CAP-002",
-    "ARITH-DSGR-COST-SAVINGS-NET-001",
-    "ARITH-CHWY-ANTIDUPE-001",
-    "ARITH-CHWY-TLR-001",
-    "ARITH-RIOT-LTV-001",
-    "ARITH-RIOT-LTV-MISSING-001",
-    "ARITH-GIB-AA-BLOCKED-001",
-    "ARITH-CONMED-PF-CAP-001",
-    "ARITH-NEG-MAINTENANCE-NOT-CAPACITY-001"
-  ],
-  "unresolvedIds": [
-    "UQ-001",
-    "UQ-002",
-    "UQ-003",
-    "UQ-004",
-    "UQ-005",
-    "UQ-006",
-    "UQ-007",
-    "UQ-008",
-    "UQ-009",
-    "UQ-GIB-705AY-CITATION"
+  "blockedModelIds": [
+    "CM-GIB-AA-BUILDER-v1"
   ],
   "gibraltarCitationStatus": {
     "id": "UQ-GIB-705AY-CITATION",
     "status": "OPEN_REVIEW_REQUIRED",
     "certifiedBuilderFormula": false,
-    "capacityInferred": false
+    "capacityInferred": false,
+    "forcedResolutionForbidden": true
   },
   "artifacts": {
     "atlas": "02-precedent-atlas.json",
@@ -264,8 +233,10 @@
     "arithmeticEvaluation": "15-arithmetic-evaluation.json",
     "legalReviewStates": "16-legal-review-states.json",
     "sourceDocumentRegistry": "17-source-document-registry.json",
-    "unresolvedQueue": "07-unresolved-interpretation-queue.json",
-    "datasetExportV1": "10-dataset-export.json"
-  },
-  "supersededBy": "22-canonical-export-v3.json"
+    "canonicalExportV2": "18-canonical-export-v2.json",
+    "calculationModels": "20-calculation-models.json",
+    "amendmentAuthority": "21-amendment-authority.json",
+    "legalCompleteness": "23-legal-completeness.json",
+    "unresolvedQueue": "07-unresolved-interpretation-queue.json"
+  }
 }

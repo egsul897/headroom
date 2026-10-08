@@ -37,8 +37,13 @@ Deep, source-backed precedent dataset focused on **financial definitions**, **le
 | `15-arithmetic-evaluation.json` | Independent arithmetic cases (`fdp.arith.v1`) |
 | `16-legal-review-states.json` | Legal-review state vocabulary + promotion rule |
 | `17-source-document-registry.json` | Immutable source file hashes (no new SEC acquisition) |
-| `18-canonical-export-v2.json` | Versioned canonical export for peer joins |
+| `18-canonical-export-v2.json` | Canonical export v2 (superseded by v3) |
 | `19-sha-reconciliation.json` | PR SHA reconciliation record |
+| `20-calculation-models.json` | Dependency-complete calc models (`fdp.calc-model.v1`) |
+| `21-amendment-authority.json` | Amendment-authority join to Amendment Intelligence |
+| `22-canonical-export-v3.json` | Canonical export v3 with model + amend joins |
+| `23-legal-completeness.json` | Structural legal-completeness metrics (not legal review) |
+| `scripts/generate_phase4.py` | Deterministic Phase 4 artifact generator |
 | `examples/` | Human-readable source-backed vignettes |
 | `source-normalize/` | Deterministic plaintext sidecars for HTML fixtures (citation offsets) |
 

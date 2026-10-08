@@ -1,22 +1,17 @@
-# WS-FDP mission report — Phase 3
+# WS-FDP mission report — Phase 4
 
 **Branch:** `cursor/financial-definitions-precedent-43af`  
 **PR:** #151  
-**Reconciled starting SHA:** `23e42a56973cd399e9150399e269092a5c6cf715`
+**Starting SHA:** `153d33a1883eecbd9cde2e96aaf6320edcc38a44`
 
-## SHA reconciliation
+## Deliverables
 
-Prompt-reported SHA `ead0fc1` was batch-2 checkpoint. GitHub PR head `23e42a5` is the next same-branch commit (peer ownership path sync + Riot Cure Amount ≠ equity cure). Intervening diff is WS-FDP-owned paths only. No HOLD.
+- Seven calculation models with controlling definitions, cross-refs, provisos, entity scope, measurement dates, amendment joins, and financial-input requirements.
+- Amendment-authority records coordinated with Amendment Chain Research (join only).
+- +64 independent arithmetic scenarios (total 77).
+- Legal-completeness metrics separate from arithmetic.
+- Canonical export v3; Gibraltar citation remains OPEN / capacity not inferred.
 
-## Phase 3 deliverables
+## Boundaries
 
-- Atlas 49 → 57 (Riot cure drafting, DSGR doc-d EBITDA/Cost Savings, Gibraltar builder DEF+operative).
-- Typed calculations: `fdp.typed-calc.v1` (7).
-- Independent arithmetic: `fdp.arith.v1` (13).
-- Legal-review states vocabulary; `INDEPENDENTLY_LEGALLY_REVIEWED` count = 0.
-- Canonical export `fdp.canonical-export.v2` with peer join keys only.
-- Gibraltar §7.05(a)(y) citation conflict retained as `UQ-GIB-705AY-CITATION` / `REVIEW_REQUIRED`.
-
-## Boundaries observed
-
-No paid inference, merges, certification advancement, production legal-rule edits, peer production schema competition, or new SEC acquisition.
+No paid inference, merge, certification advancement, production legal-rule/calc-engine edits, or peer production schema competition.

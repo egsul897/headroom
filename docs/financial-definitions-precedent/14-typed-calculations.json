@@ -71,7 +71,29 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-CONMED-SSLR-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-CONMED-SSLR-v1",
+      "controllingDefinitions": [
+        "Consolidated Senior Secured Leverage Ratio",
+        "Consolidated Senior Secured Funded Debt",
+        "Consolidated EBITDA",
+        "Consolidated Funded Debt",
+        "Funded Debt",
+        "Unrestricted cash and cash equivalents (cash netting)"
+      ],
+      "crossReferences": [
+        "\u00a77.1 Financial Covenants (maintenance max + Material Acquisition step-up)",
+        "Second Amendment cash-netting $75M\u2192$100M (Seventh-era; survival into Eighth REVIEW_REQUIRED)"
+      ],
+      "provisos": [
+        "Cash netting capped (operative Eighth text uses $100,000,000; do not silently ignore Amd2 lineage)",
+        "Material Acquisition election +0.50x step-up \u2014 optional, time-bounded; not capacity",
+        "RTP attributed principal inclusion if applicable"
+      ],
+      "entityRestrictions": "Parent Borrower and Subsidiaries on a consolidated basis per definitions",
+      "measurementDates": "as of / for the Test Period ending on the determination date under \u00a77.1",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     },
     {
       "name": "EBITDA with Combined Cap (DSGR Second A&R)",
@@ -169,7 +191,29 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-DSGR-EBITDA-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-DSGR-EBITDA-v1",
+      "controllingDefinitions": [
+        "EBITDA",
+        "Cost Savings",
+        "Combined Cap",
+        "Net Income"
+      ],
+      "crossReferences": [
+        "EBITDA (a)(vii)/(a)(viii)/(a)(xviii)(b) share Combined Cap",
+        "Cost Savings 24-month lookforward",
+        "Doc-d Second A&R supersedes prior targeted amendment text for these defs"
+      ],
+      "provisos": [
+        "Combined Cap = 20% of EBITDA before giving effect to capped add-backs",
+        "Cost Savings net of benefits realized",
+        "without duplication lead-in",
+        "actions taken prior to last day of period for Cost Savings"
+      ],
+      "entityRestrictions": "Borrower and Restricted Subsidiaries (per Doc D)",
+      "measurementDates": "period of determination / Test Period under Doc D",
+      "amendmentChainId": "dsgr-2022-04-01-ar-credit",
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     },
     {
       "name": "Total Leverage Ratio (CHWY)",
@@ -208,7 +252,27 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-CHWY-TLR-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-CHWY-TLR-v1",
+      "controllingDefinitions": [
+        "Total Leverage Ratio",
+        "Consolidated Total Debt",
+        "Consolidated EBITDA",
+        "Excluded Revolving Loans",
+        "Test Period"
+      ],
+      "crossReferences": [
+        "CTD embeds unrestricted cash netting per CTD definition",
+        "Test Period election (Four Quarters / TTM mechanics)"
+      ],
+      "provisos": [
+        "Exclude Excluded Revolving Loans from numerator",
+        "CTD cash netting is definitional \u2014 do not double-apply CONMED-style capped netting"
+      ],
+      "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs",
+      "measurementDates": "Test Period ending on determination date",
+      "amendmentChainId": null,
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     },
     {
       "name": "Anti-duplication of add-backs \u00a71.08(d)(ii) (CHWY)",
@@ -231,7 +295,24 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-CHWY-ANTIDUPE-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-CHWY-ANTIDUPE-v1",
+      "controllingDefinitions": [
+        "Consolidated EBITDA",
+        "\u00a71.08(d)(ii) anti-duplication",
+        "Expected Run Rate Benefit / clause (d) add-backs"
+      ],
+      "crossReferences": [
+        "\u00a71.08 calculation principles",
+        "Consolidated EBITDA add-back clauses"
+      ],
+      "provisos": [
+        "No add pursuant to clause (d) if duplicative of amounts otherwise added back in Consolidated EBITDA"
+      ],
+      "entityRestrictions": "Restricted Parties",
+      "measurementDates": "same period as Consolidated EBITDA",
+      "amendmentChainId": null,
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     },
     {
       "name": "Available Amount Builder Basket (GIB) \u2014 UNRESOLVED CITATION SCOPE",
@@ -313,7 +394,29 @@
       "arithmeticBlockedReason": "Citation/scope ambiguity: refuse to certify whether Builder Basket is entire (y) sum or only (vi). No capacity inferred.",
       "legalCertified": false,
       "legalReviewState": "REVIEW_REQUIRED",
-      "id": "TC-GIB-AA-BUILDER-v1"
+      "id": "TC-GIB-AA-BUILDER-v1",
+      "calculationModelId": "CM-GIB-AA-BUILDER-v1",
+      "controllingDefinitions": [
+        "Available Amount Builder Basket",
+        "LTM EBITDA",
+        "Consolidated Net Income",
+        "\u00a77.05(a)(y) Restricted Payments builder"
+      ],
+      "crossReferences": [
+        "Article I definitional xref to Section 7.05(a)(y)",
+        "Operative \u00a77.05(a)(y)(i)\u2013(vi)",
+        "Loose 'Section 7.05(y)' cites",
+        "\u00a77.05(a)(x) Event of Default gates"
+      ],
+      "provisos": [
+        "Do not force unique citation target",
+        "Do not certify whether Builder Basket is entire (y) or only (vi)",
+        "Event of Default gates by RP type"
+      ],
+      "entityRestrictions": "Borrower Restricted Payments context",
+      "measurementDates": "cumulative / LTM components per prong \u2014 uncertified",
+      "amendmentChainId": null,
+      "modelStatus": "BLOCKED_REVIEW_REQUIRED"
     },
     {
       "name": "Actual LTV + margin Additional Collateral cure (Riot)",
@@ -367,7 +470,28 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-RIOT-LTV-MARGIN-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-RIOT-LTV-MARGIN-v1",
+      "controllingDefinitions": [
+        "Actual LTV Ratio",
+        "Initial LTV",
+        "Release LTV",
+        "Cure Amount (BTC)",
+        "Prevailing Market Value of Collateral"
+      ],
+      "crossReferences": [
+        "\u00a72.06 Margin Funding Notice / Additional Collateral demand",
+        "Schedule fields for Initial LTV / Cure Amount (BTC)"
+      ],
+      "provisos": [
+        "Margin Call Event \u2192 deliver Additional Collateral so Actual LTV \u2264 Initial LTV",
+        "Deadline 1 Business Day after Margin Funding Notice",
+        "Not an EBITDA equity cure"
+      ],
+      "entityRestrictions": "Borrower / Collateral under Riot CA",
+      "measurementDates": "point-in-time LTV; cure deadline 1 Business Day",
+      "amendmentChainId": null,
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     },
     {
       "name": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
@@ -417,7 +541,28 @@
       "arithmeticEvaluable": true,
       "legalCertified": false,
       "id": "TC-CONMED-EBITDA-PF-CAP-v1",
-      "legalReviewState": "SEMANTIC_HYPOTHESIS"
+      "legalReviewState": "SEMANTIC_HYPOTHESIS",
+      "calculationModelId": "CM-CONMED-EBITDA-PF-v1",
+      "controllingDefinitions": [
+        "Consolidated EBITDA",
+        "Consolidated Net Income",
+        "Pro Forma Basis / Pro Forma Adjustments",
+        "Material Acquisition"
+      ],
+      "crossReferences": [
+        "Consolidated EBITDA clause (i) PF adjustments",
+        "$30,000,000 Transaction/Material Acquisition cost cap (distinct from 15% PF cap)"
+      ],
+      "provisos": [
+        "15% of Consolidated EBITDA after giving effect to clause (i) adjustments",
+        "net of benefits realized",
+        "without duplication"
+      ],
+      "entityRestrictions": "Consolidated Borrower group",
+      "measurementDates": "Test Period; PF as-if from first day of period for qualifying transactions",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "modelStatus": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS"
     }
-  ]
+  ],
+  "phase": 4
 }

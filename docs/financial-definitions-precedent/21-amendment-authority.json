@@ -1,0 +1,311 @@
+{
+  "artifact": "financial-definitions-precedent.amendment-authority",
+  "version": "fdp.amend-auth.v1",
+  "status": "DRAFT",
+  "disclaimer": "Consumes Amendment Chain Research join keys (chainId, docId, research paths). Does not modify Amendment Intelligence or production engine. Incomplete authority \u2192 REVIEW_REQUIRED.",
+  "peerCoordination": {
+    "amendmentChainResearch": {
+      "branch": "cursor/amendment-chain-research-2926",
+      "export": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+      "schemaVersion": "knowledge-factory.amendment-chain-research-export.v1",
+      "joinKeys": [
+        "chainId",
+        "docId",
+        "sourceId",
+        "accession"
+      ]
+    },
+    "dependencyAtlas": {
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "exportReadme": "docs/covenant-dependency-atlas/export/README.md",
+      "portableDataset": "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json"
+    },
+    "definitionEncyclopedia": {
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "export": "docs/definition-encyclopedia/knowledge-factory-export.json"
+    },
+    "basketFormulaLibrary": {
+      "branch": "cursor/covenant-basket-capacity-formula-library-ae51",
+      "manifest": "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json"
+    },
+    "covenantKnowledgeFactory": {
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "manifests": "docs/knowledge-factory/manifests/"
+    }
+  },
+  "records": [
+    {
+      "modelId": "CM-CONMED-SSLR-v1",
+      "sourceAgreement": "Eighth Amended and Restated Credit Agreement (Jun 10, 2025) + Article VII curated",
+      "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "applicableChainDocs": [
+        {
+          "docId": "cnmd-seventh-ar",
+          "role": "RESTATEMENT",
+          "executionDate": "2021-07-16",
+          "localFixturePath": null,
+          "retrievalStatus": "MISSING_OR_EXTERNAL"
+        },
+        {
+          "docId": "cnmd-second-am-2022",
+          "role": "AMENDMENT",
+          "executionDate": "2022-08-01",
+          "effectiveDate": {
+            "status": "CONDITIONAL_UNRESOLVED",
+            "namedEffectiveDate": null,
+            "note": "Second Amendment Effective Date = conditions precedent satisfaction"
+          },
+          "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+          "supersededTerms": [
+            "cash netting $75,000,000 inside CSSLR/CTLR"
+          ],
+          "currentOperativeClaim": "Substitutes $100,000,000; survival into Eighth A&R is PARENT_CHILD_CONFLICT_RISK per Amendment Intelligence"
+        },
+        {
+          "docId": "cnmd-eighth-ar",
+          "role": "RESTATEMENT",
+          "executionDate": "2025-06-10",
+          "localFixturePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt",
+          "retrievalStatus": "FIXTURE_PRESENT",
+          "currentOperativeText": "Eighth A&R definitions + \u00a77.1 \u2014 primary operative for SSLR model"
+        }
+      ],
+      "effectiveDate": {
+        "status": "MIXED",
+        "primaryOperativeAsOf": "2025-06-10 (Eighth A&R dating)",
+        "conditionalItems": [
+          "Second Amendment Effective Date",
+          "First Omnibus Effective Date"
+        ]
+      },
+      "supersededTerms": [
+        "Pre-Amd2 $75M cash netting (and earlier $25M\u2192$75M Amd1 chain noted by Amendment Intelligence)"
+      ],
+      "currentOperativeTextRefs": [
+        "CONMED-2025-PLAIN CSSLR definition",
+        "CONMED-2025-ART7 \u00a77.1"
+      ],
+      "unresolvedAuthority": [
+        "cnmd-ua-3: Whether Second Amendment effects survive into Eighth A&R \u2014 do not auto-apply",
+        "cnmd-ua-4: First Omnibus Effective Date calendar date CONDITIONAL_UNRESOLVED"
+      ],
+      "authorityStatus": "REVIEW_REQUIRED",
+      "peerBeforeAfterRefs": [
+        "docs/amendment-chain-research/before-after/cnmd-am2-definitions-and-ratio.json",
+        "docs/amendment-chain-research/before-after/cnmd-am1-am2-cash-netting-chain.json"
+      ]
+    },
+    {
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "sourceAgreement": "Eighth A&R Consolidated EBITDA",
+      "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
+      "amendmentChainId": "cnmd-seventh-ar-to-eighth-ar",
+      "applicableChainDocs": [
+        {
+          "docId": "cnmd-eighth-ar",
+          "role": "RESTATEMENT",
+          "executionDate": "2025-06-10",
+          "localFixturePath": "docs/financial-definitions-precedent/source-normalize/conmed-2025-eighth-ar-ca.plain.txt"
+        }
+      ],
+      "effectiveDate": {
+        "status": "EXPLICIT_IN_FIXTURE",
+        "namedEffectiveDate": "2025-06-10"
+      },
+      "supersededTerms": [
+        "Prior Seventh-era EBITDA text (not fully reconstructed here)"
+      ],
+      "currentOperativeTextRefs": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ],
+      "unresolvedAuthority": [
+        "Full Seventh\u2192Eighth EBITDA redline not independently verified in this pack"
+      ],
+      "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+      "peerBeforeAfterRefs": []
+    },
+    {
+      "modelId": "CM-DSGR-EBITDA-v1",
+      "sourceAgreement": "Second Amended and Restated Credit Agreement (Doc D, Dec 18, 2025)",
+      "instrumentIdentity": "dsgr-ar-ca-2022-04-01",
+      "amendmentChainId": "dsgr-2022-04-01-ar-credit",
+      "applicableChainDocs": [
+        {
+          "docId": "dsgr-doc-a",
+          "role": "RESTATEMENT",
+          "executionDate": "2022-04-01",
+          "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt"
+        },
+        {
+          "docId": "dsgr-doc-b",
+          "role": "AMENDMENT",
+          "executionDate": "2024-08-14",
+          "effectiveDate": {
+            "status": "CONDITIONAL_UNRESOLVED"
+          },
+          "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+          "note": "Combined Cap / AA patterns appear here; superseded for EBITDA defs by Doc D restatement"
+        },
+        {
+          "docId": "dsgr-doc-d",
+          "role": "RESTATEMENT",
+          "executionDate": "2025-12-18",
+          "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "currentOperativeText": "Doc D EBITDA / Cost Savings / Combined Cap \u2014 operative for this model"
+        }
+      ],
+      "effectiveDate": {
+        "status": "RESTATEMENT_DATING",
+        "primaryOperativeAsOf": "2025-12-18 (Doc D)",
+        "conditionalItems": [
+          "Third Amendment Effective Date",
+          "Fourth Amendment Effective Date"
+        ]
+      },
+      "supersededTerms": [
+        "Doc B targeted amendment blocks for Articles I\u2013XII as to restated definitions in Doc D"
+      ],
+      "currentOperativeTextRefs": [
+        "DSGR-2025-AR2::def::EBITDA",
+        "DSGR-2025-AR2::adj::Cost_Savings",
+        "DSGR-2025-AR2::adj::Combined_Cap_20pct"
+      ],
+      "unresolvedAuthority": [
+        "First/Second Amendments between 2022 A&R and Third Amendment MISSING from fixture package",
+        "Third Amendment Effective Date conditions not proven satisfied beyond dating"
+      ],
+      "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+      "peerBeforeAfterRefs": [
+        "docs/amendment-chain-research/before-after/dsgr-am4-restricted-payments.json"
+      ]
+    },
+    {
+      "modelId": "CM-CHWY-TLR-v1",
+      "sourceAgreement": "Chewy 2026 Credit Agreement (Doc A)",
+      "instrumentIdentity": "chwy-2026-credit-agreement",
+      "amendmentChainId": null,
+      "applicableChainDocs": [
+        {
+          "docId": "chwy-doc-a",
+          "role": "ORIGINAL_OR_RESTATEMENT",
+          "executionDate": "2026-06-23",
+          "localFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+        }
+      ],
+      "effectiveDate": {
+        "status": "FIXTURE_DATED",
+        "namedEffectiveDate": "2026-06-23"
+      },
+      "supersededTerms": [],
+      "currentOperativeTextRefs": [
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio",
+        "CHWY-2026-CA::def::Consolidated_Total_Debt"
+      ],
+      "unresolvedAuthority": [
+        "No Amendment Chain Research chainId for CHWY 2026 \u2014 single-doc authority assumed for fixture"
+      ],
+      "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+      "peerBeforeAfterRefs": []
+    },
+    {
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "sourceAgreement": "Chewy 2026 Credit Agreement (Doc A)",
+      "instrumentIdentity": "chwy-2026-credit-agreement",
+      "amendmentChainId": null,
+      "applicableChainDocs": [
+        {
+          "docId": "chwy-doc-a",
+          "role": "ORIGINAL_OR_RESTATEMENT",
+          "executionDate": "2026-06-23",
+          "localFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+        }
+      ],
+      "effectiveDate": {
+        "status": "FIXTURE_DATED",
+        "namedEffectiveDate": "2026-06-23"
+      },
+      "supersededTerms": [],
+      "currentOperativeTextRefs": [
+        "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii"
+      ],
+      "unresolvedAuthority": [],
+      "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
+      "peerBeforeAfterRefs": []
+    },
+    {
+      "modelId": "CM-RIOT-LTV-MARGIN-v1",
+      "sourceAgreement": "Riot Second A&R Credit Agreement (Doc C, Apr 21, 2026)",
+      "instrumentIdentity": "riot-2025-2026-credit-facility",
+      "amendmentChainId": null,
+      "applicableChainDocs": [
+        {
+          "docId": "riot-doc-a",
+          "role": "ORIGINAL",
+          "executionDate": "2025-04-22",
+          "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+          "supersededBy": "riot-doc-c"
+        },
+        {
+          "docId": "riot-doc-b",
+          "role": "RESTATEMENT",
+          "executionDate": "2025-05-19",
+          "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+          "supersededBy": "riot-doc-c"
+        },
+        {
+          "docId": "riot-doc-c",
+          "role": "RESTATEMENT",
+          "executionDate": "2026-04-21",
+          "localFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "currentOperativeText": "Operative for LTV / \u00a72.06 / Cure Amount (BTC)"
+        }
+      ],
+      "effectiveDate": {
+        "status": "RESTATEMENT_DATING",
+        "primaryOperativeAsOf": "2026-04-21"
+      },
+      "supersededTerms": [
+        "Doc A and Doc B LTV/margin mechanics as to restated Doc C provisions"
+      ],
+      "currentOperativeTextRefs": [
+        "RIOT-2026-CA::ratio::Actual_LTV_Ratio",
+        "RIOT-2026-CA::cure::Section_2_06_Margin_Demand"
+      ],
+      "unresolvedAuthority": [
+        "No Amendment Chain Research chainId; fixture restatement order used",
+        "Initial LTV schedule numeric attestation still open"
+      ],
+      "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
+      "peerBeforeAfterRefs": []
+    },
+    {
+      "modelId": "CM-GIB-AA-BUILDER-v1",
+      "sourceAgreement": "Gibraltar 2026 Credit Agreement",
+      "instrumentIdentity": "gibraltar-2026-credit-agreement",
+      "amendmentChainId": null,
+      "applicableChainDocs": [
+        {
+          "docId": "gib-ca-2026",
+          "role": "ORIGINAL_OR_RESTATEMENT",
+          "localFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+        }
+      ],
+      "effectiveDate": {
+        "status": "FIXTURE_PRESENT_DATE_NOT_JOINED"
+      },
+      "supersededTerms": [],
+      "currentOperativeTextRefs": [
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_DEF_XREF",
+        "GIB-2026-CA::builder::Available_Amount_Builder_Basket_OPERATIVE_7_05_a_y"
+      ],
+      "unresolvedAuthority": [
+        "UQ-GIB-705AY-CITATION \u2014 citation/scope conflict blocks certified operative formula",
+        "No Amendment Chain Research chainId for Gibraltar in peer export"
+      ],
+      "authorityStatus": "REVIEW_REQUIRED",
+      "peerBeforeAfterRefs": [],
+      "forcedResolutionForbidden": true
+    }
+  ]
+}

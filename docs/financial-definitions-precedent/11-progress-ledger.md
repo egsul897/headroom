@@ -39,3 +39,12 @@
 - Independent arithmetic (`15-arithmetic-evaluation.json`, `fdp.arith.v1`): 13 cases (positive, missing-input, double-count trap, addback-cap, PF timing, negative controls). Arithmetic ≠ legal correctness.
 - Legal states: `SOURCE_SPAN_VERIFIED` / `ARITHMETICALLY_TESTED` / `SEMANTIC_HYPOTHESIS` / `INDEPENDENTLY_LEGALLY_REVIEWED` / `REVIEW_REQUIRED`; independently reviewed count = 0.
 - Canonical export v2 + source registry; join keys only; no competing production schemas; no new SEC acquisition; no production calc-engine edits.
+
+## 2026-10-08 — Phase 4: complete models, amendment authority, ≥50 arith scenarios
+
+- Starting SHA `153d33a`. Consumed Amendment Chain Research join keys (`cnmd-seventh-ar-to-eighth-ar`, `dsgr-2022-04-01-ar-credit`) + peer export paths without modifying peer trees or production calc engine.
+- `20-calculation-models.json`: 7 models — 6 `MODEL_COMPLETE_SEMANTIC_HYPOTHESIS`, GIB AA `BLOCKED_REVIEW_REQUIRED` (`UQ-GIB-705AY-CITATION` retained).
+- `21-amendment-authority.json`: per-model instrument identity, chain, effective-date status, superseded terms, unresolved authority.
+- Arithmetic: +64 independently specified Phase-4 cases (total 77) covering cap boundaries, zero/neg denominators, multi-addbacks, double-count, PF acq/disposition, lookforward, threshold equality, amendment as-of transitions, currency mismatch, missing collateral prices, builder ambiguity.
+- `23-legal-completeness.json`: eight structural dimensions; independently legally reviewed = 0; arithmetic ≠ legal verification.
+- Canonical export v3 published.
