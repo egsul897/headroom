@@ -158,3 +158,11 @@
 - Root cause: `noUncheckedIndexedAccess` error in `check-ownership-boundaries.ts` (`argv[i+1]` possibly undefined).
 - Fixed parse loop; cleaned strict TS in parallel-agents tests.
 - Local `npm run build` green after fix.
+
+---
+
+## 2026-10-08T22:29:00Z — CI green on tip
+
+- **branchTipSha:** `de57b718f1b8f5f7cca664c7896732e7bc3fe667`
+- **ciStatus:** success (2/2 checks; Vercel failure cleared after strict-TS fix)
+- ownershipViolations: []
