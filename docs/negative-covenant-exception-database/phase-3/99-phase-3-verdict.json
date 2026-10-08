@@ -20,5 +20,15 @@
   "importStatus": "ALIGNED_FOR_REVIEW",
   "sourceSpanFailures": 0,
   "productionCapacityConclusions": false,
-  "readyForMerge": false
+  "readyForMerge": false,
+  "exactSha": "26f1082a4f91abde1a335a3569eecc2e8ef9b307",
+  "tests": {
+    "command": "npx vitest run tests/negative-covenant-exception-database/phase2-catalog.test.ts tests/negative-covenant-exception-database/phase3-catalog.test.ts",
+    "local": "16/16 passed"
+  },
+  "pr": {
+    "number": 143,
+    "status": "draft open",
+    "url": "https://github.com/egsul897/headroom/pull/143"
+  }
 }
