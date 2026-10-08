@@ -238,5 +238,96 @@
     "amendmentAuthority": "21-amendment-authority.json",
     "legalCompleteness": "23-legal-completeness.json",
     "unresolvedQueue": "07-unresolved-interpretation-queue.json"
-  }
+  },
+  "joinFieldAliases": {
+    "note": "Peer field names do not always match FDP declared joins 1:1. Consumers must map via these aliases. Inventory from Amendment peer research explore @ 2026-10-08; peers remain remote-only (not copied into this branch).",
+    "definitionEncyclopedia": {
+      "fdp": [
+        "termLabel",
+        "sourcePath",
+        "excerptSha256",
+        "packageId"
+      ],
+      "peer": [
+        "canonicalTerm|exactTerm|normalizedTerm",
+        "retrievalPath|source.sourceId",
+        "exactTextSha256|textSha256",
+        "packageKey"
+      ],
+      "peerExport": "docs/definition-encyclopedia/knowledge-factory-export.json",
+      "peerSchema": "headroom-definition-encyclopedia.v1"
+    },
+    "basketFormulaLibrary": {
+      "fdp": [
+        "termLabel",
+        "packageId",
+        "kind=BUILDER_OR_POOL"
+      ],
+      "peer": [
+        "basketFamily|id",
+        "sourceVersion.instrumentId",
+        "capacitySemantics / record kind"
+      ],
+      "peerExport": "docs/covenant-basket-capacity-formula-library/export/dataset-manifest.json",
+      "peerSchema": "basket-capacity-formula-corpus.v1",
+      "note": "Basket candidates use instrumentId + documentPath; no packageId/termLabel on candidate rows."
+    },
+    "dependencyAtlas": {
+      "fdp": [
+        "entryId",
+        "typedCalcId",
+        "calculationModelId",
+        "sourcePath",
+        "excerptSha256"
+      ],
+      "peer": [
+        "nodeId|edgeId",
+        "documentId",
+        "packageId",
+        "sourcePath",
+        "sha256"
+      ],
+      "peerExport": "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json",
+      "peerSchema": "knowledge-factory.dependency-dataset.v1 / covenant-dependency-atlas.v2"
+    },
+    "amendmentIntelligence": {
+      "fdp": [
+        "amendmentChainId",
+        "docId",
+        "sourceId",
+        "accession",
+        "sourceFileSha256"
+      ],
+      "peer": [
+        "chainId",
+        "researchDocId|docId",
+        "sourceId (edgar:\u2026)",
+        "accessionNumber",
+        "originalBytesHash"
+      ],
+      "peerExport": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+      "peerSchema": "knowledge-factory.amendment-chain-research-export.v1",
+      "packageCoverage": {
+        "CONMED": "cnmd-seventh-ar-to-eighth-ar",
+        "DSGR": "dsgr-2022-04-01-ar-credit",
+        "CHWY": null,
+        "RIOT": null,
+        "GIB": null
+      }
+    },
+    "covenantKnowledgeFactory": {
+      "fdp": [
+        "sourceFileSha256",
+        "packageId",
+        "sourceDocId"
+      ],
+      "peer": [
+        "sourceId (ehb:\u2026)",
+        "ehbDedupeIdentity",
+        "cik/ticker/accessionNumber"
+      ],
+      "peerManifests": "docs/knowledge-factory/manifests/"
+    }
+  },
+  "peerInventoryNote": "Peer exclusive trees are not checked out on this branch; join metadata consumed from origin/cursor/{amendment-chain-research-2926,covenant-dependency-atlas-5021,definition-encyclopedia-2a50,covenant-basket-capacity-formula-library-ae51,covenant-knowledge-factory-7327} via fetch. productionEngineUntouched / productionResolverTouched / productionCodeModified remain true on peers; WS-FDP does not modify lib/covenant-engine.ts or capacity runtime."
 }

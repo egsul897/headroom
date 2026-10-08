@@ -307,5 +307,57 @@
       "peerBeforeAfterRefs": [],
       "forcedResolutionForbidden": true
     }
-  ]
+  ],
+  "joinFieldAliases": {
+    "amendmentIntelligence": {
+      "fdp": [
+        "amendmentChainId",
+        "docId",
+        "sourceId",
+        "accession",
+        "sourceFileSha256"
+      ],
+      "peer": [
+        "chainId",
+        "researchDocId|docId",
+        "sourceId (edgar:\u2026)",
+        "accessionNumber",
+        "originalBytesHash"
+      ],
+      "peerExport": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+      "peerSchema": "knowledge-factory.amendment-chain-research-export.v1",
+      "packageCoverage": {
+        "CONMED": "cnmd-seventh-ar-to-eighth-ar",
+        "DSGR": "dsgr-2022-04-01-ar-credit",
+        "CHWY": null,
+        "RIOT": null,
+        "GIB": null
+      }
+    },
+    "dependencyAtlas": {
+      "fdp": [
+        "entryId",
+        "typedCalcId",
+        "calculationModelId",
+        "sourcePath",
+        "excerptSha256"
+      ],
+      "peer": [
+        "nodeId|edgeId",
+        "documentId",
+        "packageId",
+        "sourcePath",
+        "sha256"
+      ],
+      "peerExport": "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.portable.json",
+      "peerSchema": "knowledge-factory.dependency-dataset.v1 / covenant-dependency-atlas.v2"
+    }
+  },
+  "peerPackageCoverage": {
+    "CONMED": "cnmd-seventh-ar-to-eighth-ar",
+    "DSGR": "dsgr-2022-04-01-ar-credit",
+    "CHWY": null,
+    "RIOT": null,
+    "GIB": null
+  }
 }

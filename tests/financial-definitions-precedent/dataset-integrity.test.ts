@@ -689,5 +689,19 @@ describe("financial-definitions-precedent dataset integrity", () => {
     expect(canon.joinKeys.amendmentIntelligence).toEqual(
       expect.arrayContaining(["amendmentChainId", "docId", "accession"]),
     );
+    const withAliases = readJson<{
+      joinFieldAliases: {
+        definitionEncyclopedia: { peer: string[]; fdp: string[] };
+        amendmentIntelligence: { packageCoverage: Record<string, string | null> };
+      };
+    }>("22-canonical-export-v3.json");
+    expect(withAliases.joinFieldAliases.definitionEncyclopedia.peer.join(" ")).toMatch(
+      /canonicalTerm/,
+    );
+    expect(withAliases.joinFieldAliases.amendmentIntelligence.packageCoverage.CONMED).toBe(
+      "cnmd-seventh-ar-to-eighth-ar",
+    );
+    expect(withAliases.joinFieldAliases.amendmentIntelligence.packageCoverage.CHWY).toBeNull();
+    expect(withAliases.joinFieldAliases.amendmentIntelligence.packageCoverage.GIB).toBeNull();
   });
 });

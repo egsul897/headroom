@@ -48,3 +48,9 @@
 - Arithmetic: +64 independently specified Phase-4 cases (total 77) covering cap boundaries, zero/neg denominators, multi-addbacks, double-count, PF acq/disposition, lookforward, threshold equality, amendment as-of transitions, currency mismatch, missing collateral prices, builder ambiguity.
 - `23-legal-completeness.json`: eight structural dimensions; independently legally reviewed = 0; arithmetic ≠ legal verification.
 - Canonical export v3 published.
+
+## 2026-10-08 — Phase 4 follow-up: peer join field aliases
+
+- Incorporated peer-inventory findings: encyclopedia/basket/atlas/amendment/CKF field names do not 1:1 match FDP declared joins; recorded `joinFieldAliases` in canonical export v3 + amendment-authority.
+- Confirmed ACR coverage: CONMED + DSGR only; CHWY/RIOT/GIB have no amendment-chain IDs (already reflected as gap notes / REVIEW_REQUIRED).
+- Peer trees remain remote-only; production calc engine untouched.
