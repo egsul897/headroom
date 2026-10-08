@@ -1,8 +1,9 @@
 # Product readiness scorecard — independent view
 
 Categories (mission vocabulary): VERIFIED_ON_TESTED_SCOPE · PARTIALLY_VERIFIED · IMPLEMENTED_UNVERIFIED ·
-UNSUPPORTED · BLOCKED_BY_EVIDENCE · NOT_TESTED. No percentages. No certification claims. Scope = the eight synthetic
-packages, offline, model stages mocked (see `02-acceptance-matrix.md`).
+UNSUPPORTED · BLOCKED_BY_EVIDENCE · NOT_TESTED. No percentages. No certification claims. Scope = the ten synthetic
+packages, offline, model stages mocked (see `02-acceptance-matrix.md`); refreshed at `83e6bf1` with the mutation suite
+(doc 09) and the benchmark (doc 08).
 
 | capability | status | basis (tested scope) | what stops a higher status |
 |---|---|---|---|
@@ -14,13 +15,19 @@ packages, offline, model stages mocked (see `02-acceptance-matrix.md`).
 | Deterministic amendment effects (restate / delete, explicit effective dates) | VERIFIED_ON_TESTED_SCOPE | C: RESOLVED effects with the right dates; G stale amendment UNRESOLVED (correct) | — |
 | Operative state per as-of date (clause-level) | VERIFIED_ON_TESTED_SCOPE | C: 7/7 across three dates incl. historical, superseded and deleted | — |
 | Operative state honesty when an amendment cannot be attached | UNSUPPORTED | H: RESOLVED with zero unattached effects while the pipeline holds an UNRESOLVED effect | IPV-05 |
+| Operative state when a side letter / waiver overrides a covenant | UNSUPPORTED (silent) | MUT-08/MUT-12: zero effects, instrument RESOLVED on the base text; tightening direction is a false permission | IPV-16 |
+| Operative state after a new amendment / changed amendment amount | VERIFIED_ON_TESTED_SCOPE | MUT-05, MUT-11: propagate correctly at every as-of date | — |
 | Operative text for a section whose sub-clauses were amended | UNSUPPORTED (wrong) | C: section-level candidate compiled from stale text, no lineage; Layer-1 demands the stale baskets | IPV-04 |
 | Discovery (Pass A deterministic signals) | PARTIALLY_VERIFIED | every material covenant node carries a signal in A–H except the merged G clause; over-inclusive by design | discovery Pass B–D NOT_TESTED |
 | Discovery (semantic passes) | NOT_TESTED | requires a provider | — |
-| Context retrieval: same-document definitions, cross-references | PARTIALLY_VERIFIED | singular terms and section cross-references resolve; plural forms do not (D/E/F/G); undefined terms inside retrieved definitions not surfaced (H); amended text's new term not retrieved (C) | IPV-09, IPV-10, IPV-04 |
+| Context retrieval: same-document definitions, cross-references | PARTIALLY_VERIFIED | singular terms and section cross-references resolve (12/13 declared cross-references reachable, incl. through definitions); plural forms do not (D/E/F/G); undefined terms inside retrieved definitions not surfaced (H); amended text's new term not retrieved (C); definition-mediated closure asymmetric (J) | IPV-09, IPV-10, IPV-04, IPV-17 |
+| Dangling cross-reference (target section does not exist) | VERIFIED_ON_TESTED_SCOPE | MUT-10: index reports no node; hybrid closure flags it; cross-reference audit fails closed | — |
+| Establishing the legal universe for a question without a model | VERIFIED_ON_TESTED_SCOPE (evaluation model) | benchmark: hybrid closure 18/18 restrictions, 16/16 conditions, 0 false permissions on 14 cases; naive top-k 5 false permissions | not product code yet (doc 08) |
+| Structural identity across document versions | UNSUPPORTED | node ids positional; any insertion shifts later ids, a swap re-labels (doc 09 §3) | no cross-version mapping exists |
+| Freedom from issuer-specific logic | PARTIALLY_VERIFIED | static audit: no company-specific branches/ids in compiler or runtime; vocabularies grown on one issuer's drafting | doc 09 §5 |
 | Context retrieval across documents (indenture vs credit agreement definitions) | VERIFIED_ON_TESTED_SCOPE | B: no cross-document definition leakage observed; Restricted Subsidiary never imported into the CA | — |
 | Semantic normalizer + accountability + provenance binding on a faithful submission | PARTIALLY_VERIFIED | A/B/C/F/H faithful units certify or review for stated reasons; definitions candidates with embedded numbers review (mock limitation) | mocked model |
-| Refusal of wrong-amount / non-operative-source / truncated / undefined-term claims | VERIFIED_ON_TESTED_SCOPE | 24 of 29 adversarial cases refused (see matrix) | — |
+| Refusal of wrong-amount / non-operative-source / truncated / undefined-term claims | VERIFIED_ON_TESTED_SCOPE | 24 of 29 adversarial cases refused (see matrix); packages I/J have no adversarial plan yet | — |
 | Refusal of a dropped material condition | PARTIALLY_VERIFIED | refused as a pure omission; accepted when the proviso item is cited on the rule (A, H) | IPV-03 |
 | Refusal of a dropped "together with" shared cap | UNSUPPORTED | accepted in both variants (F) | IPV-02 |
 | Refusal of a widened entity scope | UNSUPPORTED | accepted and confirmed by the scope guard (A) | IPV-01 |
@@ -34,7 +41,7 @@ packages, offline, model stages mocked (see `02-acceptance-matrix.md`).
 | Live end-to-end on a real agreement | NOT_TESTED (this mission) | prior live evidence exists under docs/phase-3-live-validation (immutable); not re-run | — |
 
 Reading: the deterministic substrate (structure, amendments at clause level, operative state, runtime arithmetic) is
-solid on clean input and fails closed on most adversarial input. The three places it does **not** fail closed
-(entity-scope widening, shared-cap omission, lineage-laundered condition omission) are exactly where a reviewer-free
+solid on clean input and fails closed on most adversarial input. The four places it does **not** fail closed
+(entity-scope widening, shared-cap omission, lineage-laundered condition omission, side-letter override) are exactly where a reviewer-free
 pipeline would show a borrower more room than the contract gives, and the stale-text section candidate (IPV-04) is
 the one place it can verify against the wrong source.

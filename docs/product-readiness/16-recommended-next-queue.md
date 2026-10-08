@@ -1,0 +1,40 @@
+# Recommended next queue
+
+Priority 0 = false permissions, dangerous omissions, source authority, evidence corruption. Ownership per the
+collaboration contract: Cursor owns `lib/` remediation; this track owns fixtures, harness, docs.
+
+## Cursor track (remediation, deterministic, pinned by tests on this branch)
+
+| # | item | register | acceptance (test that flips) |
+|---|---|---|---|
+| 1 | Entity-scope widening refused when the clause narrows the section lead-in | IPV-01 | `adversarial:A-P2` passes |
+| 2 | "together with … pursuant to Section X" shared cap required in the IR | IPV-02 | `adversarial:F-P3` both variants pass |
+| 3 | Lineage-cited omission of a material proviso refused | IPV-03 | `adversarial:A-P1`, `H-P3` lineage-on-rule pass |
+| 4 | Override / waiver / side-letter documents reach the operative state (at least unattached or REVIEW) | IPV-16 | `mutation:MUT-12:*`, `MUT-08:*` PRODUCT verdicts pass |
+| 5 | Operative-authority gate: TOC-title modal, no-modal covenants, stale descendants | PR136-F1/F2/F4 | `source-authority.test.ts` 28/28 in the PR #136 worktree |
+| 6 | Section-level candidate over amended agreement uses current text with lineage | IPV-04 | C `certification:credit-agreement::7.01` |
+| 7 | Unresolved amendment → instrument not RESOLVED | IPV-05 | H operative-state row |
+| 8 | Definition-mediated cross-reference closure symmetric; definition-level shared capacity representable | IPV-17, IPV-15 | `context:J-7.08(d):cross-references`, J 7.08 certification |
+| 9 | Parser: TOC on certified path, dropped letter, inline enumerations, exhibit term lists | IPV-11/07/06/08 | E/G/H STRUCTURE rows |
+| 10 | Plural defined terms; depth-2 undefined terms surfaced | IPV-09/10 | D/E/F/G/H CONTEXT_RETRIEVAL rows |
+
+## This track (harness, fixtures, docs)
+
+1. Per-covenant normalised text hash in manifests (deterministic kill for added/changed conditions; MUT-02 class).
+2. Side-letter / waiver / consent fixture family across packages A, C, H, I (IPV-16 breadth) with expectations that the
+   operative state is not RESOLVED for the named sections.
+3. Three-section definition fixture (IPV-17 acceptance) and adversarial submission plans for packages I and J.
+4. Content-addressed node identity experiment (doc 09 §3): measure what a text-hash + occurrence identity would keep
+   stable across the 12 mutants; propose the mapping to Cursor.
+5. Continuous-loop invariants (directive's 40): next ten — hanging proviso attaches to every preceding clause; "greater
+   of" baskets need the metric input; "notwithstanding" clauses override within the same document; Article IX-style caps
+   outside the covenant article; definitions amended by a later amendment; effective-date conditions precedent;
+   reclassification elections; currency baskets without FX; springing covenants on availability; guarantees by
+   non-guarantor subsidiaries.
+6. Product backlog slices (CFO/treasury/legal): evidence-pack export format; "what changed since last compile" view
+   (blocked on identity); question log with refusal reasons; counsel review queue.
+
+## Founder decisions
+
+- Authorise doc 15 (≈$0.20 expected, $1.00 ceiling) — E3 first.
+- Decide whether PR #136 is merged before or after F1/F4; this track's recommendation is after.
