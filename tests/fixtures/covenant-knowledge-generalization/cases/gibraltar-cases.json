@@ -1,0 +1,451 @@
+{
+  "packageId": "gibraltar-2026-credit-agreement",
+  "labelMethod": "Direct reading of public EDGAR extracted text at the cited char spans / section refs. Labels authored for this CKG benchmark; not copied from model output. Authority SOURCE_VERIFIED unless noted.",
+  "cases": [
+    {
+      "caseId": "gib-fam-indebtedness",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.01",
+        "excerpt": "Section 7.01 Indebtedness. (a) Incur any Indebtedness (including Acquired Indebtedness); provided that the Borrower and any Restricted Subsidiary may incur Indebtedness...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 742285,
+        "charEnd": 763776
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": ["INDEBTEDNESS"] },
+        "notes": "Article VII negative covenant headed Indebtedness."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-liens",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.02",
+        "excerpt": "Section 7.02 Limitations on Liens. Create, incur or permit to exist any Lien on any of its assets or properties (each, a \"Subject Lien\"), except if such Subject Lien is a Permitted Lien.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 763776,
+        "charEnd": 764191
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": ["LIENS"] }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-asset-sales",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "ASSET_SALES",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.04",
+        "excerpt": "Section 7.04 Asset Dispositions. (a) Cause or make any Asset Disposition, unless:",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 768425,
+        "charEnd": 774192
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": ["ASSET_SALES"] },
+        "notes": "Heading is Asset Dispositions; family maps to ASSET_SALES."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-rp",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.05",
+        "excerpt": "Section 7.05 Restricted Payments.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 774192,
+        "charEnd": 808797
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": ["RESTRICTED_PAYMENTS"] }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-fincov",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08",
+        "excerpt": "Section 7.08 Financial Covenants.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": ["FINANCIAL_COVENANTS"] }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-investments-absent",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INVESTMENTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "VII",
+        "excerpt": "No Article VII section is headed Investments. Restricted Investment sits inside §7.05(a)(4); Permitted Investment is a defined term.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "families": [] },
+        "notes": "Standalone INVESTMENTS family section is absent. Correct discovery must not invent a top-level Investments negative covenant family from §7.05 alone for this case's expected set (empty)."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-def-ctnlr",
+      "metric": "definition_extraction_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "1.01",
+        "excerpt": "Consolidated Total Net Leverage Ratio means, as of any date of determination, the ratio of (a) Consolidated Funded Indebtedness of the Restricted Group as of such date to (b) LTM EBITDA...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": {
+          "terms": ["Consolidated Total Net Leverage Ratio"],
+          "requireExact": false
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-xref-builder-basket",
+      "metric": "cross_reference_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "1.01 / 7.05(a)(y)",
+        "excerpt": "Available Amount Builder Basket has the meaning specified in Section 7.05(a)(y).",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": {
+          "resolvedTargets": ["7.05(a)(y)"],
+          "allowUnresolved": true,
+          "notes": "Filed HTML also prints the operative prong as clause (vi) with parenthetical 'clause (y)'. Honest unresolved or dual-citation is acceptable; inventing a clean unique target without acknowledging marker conflict is not required here — allowUnresolved=true credits surfacing the ambiguity."
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-cond-7.08a-qma",
+      "metric": "condition_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08(a)",
+        "excerpt": "provided that the Leverage Covenant Ratio may be increased... solely with respect to the Test Period for each of the four immediately succeeding fiscal quarters ending on or after the consummation of a Qualifying Material Acquisition...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": {
+          "conditions": [
+            "revolving_and_tranche_a_only",
+            "qualifying_material_acquisition_for_leverage_increase",
+            "written_notice_within_15_business_days",
+            "no_more_than_one_leverage_increase_at_a_time"
+          ]
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-exc-7.02-permitted-lien",
+      "metric": "exception_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.02",
+        "excerpt": "except if such Subject Lien is a Permitted Lien.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 763776,
+        "charEnd": 764191
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "exceptions": ["Permitted Lien"] },
+        "notes": "Basket inventory lives in the Permitted Liens definition, not in §7.02 body."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-scope-7.08",
+      "metric": "entity_scope_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08(a)/(b)",
+        "excerpt": "With respect to the Revolving Credit Facility and Initial Tranche A Facility only...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "entityScope": "revolving_credit_facility_and_initial_tranche_a_facility_only" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-shared-ebitda-addback-cap",
+      "metric": "shared_capacity_recognition",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "1.01 Consolidated EBITDA",
+        "excerpt": "provided that the aggregate amount of adjustments made pursuant to this clause (v) (combined with the aggregate amount of adjustments made pursuant to clauses (e)(i), (g), (u) and (w) of this definition and cost savings... pursuant to Section 1.10(b)) shall not exceed 30.0% of Consolidated EBITDA...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": {
+          "isSharedCapacity": true,
+          "memberRefs": ["(e)(i)", "(g)", "(u)", "(v)", "(w)"]
+        },
+        "notes": "Real shared add-back cap across EBITDA adjustment clauses — not the Pass A false-positive 'aggregate amount' noise."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-shared-pass-a-false-positive-control",
+      "metric": "shared_capacity_recognition",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "pass-a-shared-cap noise",
+        "excerpt": "Pass A shared_cap signal fires on many 'aggregate amount' nodes that are not shared baskets.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "isSharedCapacity": false },
+        "notes": "Control: treating every aggregate-amount hit as shared capacity is incorrect."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-comp-7.08a-leverage",
+      "metric": "comparator_correctness",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08(a)",
+        "excerpt": "permit the Consolidated Total Net Leverage Ratio ... to be greater than the ratio set forth below ... For any fiscal quarter ending on or after June 30, 2026 but on or prior to December 31, 2026: 5.25 to 1.00",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "comparator": "MUST_NOT_EXCEED", "threshold": "5.25:1.00_through_2026-12-31" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-comp-7.08b-interest-coverage",
+      "metric": "comparator_correctness",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08(b)",
+        "excerpt": "permit the Consolidated Interest Coverage Ratio of the Borrower ... to be less than 3.00 to 1.00.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "comparator": "MUST_NOT_FALL_BELOW", "threshold": "3.00:1.00" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-prov-7.08a",
+      "metric": "provenance_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.08(a)",
+        "excerpt": "Section 7.08 Financial Covenants. (a) With respect to the Revolving Credit Facility and Initial Tranche A Facility only...",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 816796,
+        "charEnd": 819490
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "citationSectionRef": "7.08(a)", "requiresExcerpt": true }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-amend-no-post-closing-amendment",
+      "metric": "amendment_reconstruction",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "package",
+        "excerpt": "No Gibraltar 8-K/10-Q/10-K after 2026-02-02 contains a credit-agreement amendment exhibit. Package is a single ORIGINAL credit agreement.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/provenance.json"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "relationship": "NONE", "status": "resolved" },
+        "notes": "Correct reconstruction is absence of in-package amendment/restatement edges, not inventing one."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-unlabeled-deep-7.01-baskets",
+      "metric": "exception_recall",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "documentId": "doc-a",
+        "sectionRef": "7.01(b)",
+        "excerpt": "Full lettered Indebtedness basket inventory under §7.01(b) is reserved for future independent labeling.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 742285,
+        "charEnd": 763776
+      },
+      "expected": {
+        "authority": "UNLABELED",
+        "value": { "exceptions": [] },
+        "notes": "UNLABELED by design — deep basket inventory not yet independently enumerated. Must not count as failure."
+      },
+      "attributedCostUsd": 0
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "ckg-benchmark.v1",
+  "dimensions": {
+    "agreementType": ["CREDIT_AGREEMENT", "AMENDED_AND_RESTATED_AGREEMENT", "AMENDMENT", "SYNTHETIC_MICRO"],
+    "issuer": [
+      "Gibraltar Industries, Inc.",
+      "Superior Industries International, Inc.",
+      "SYNTHETIC"
+    ],
+    "covenantFamily": [
+      "INDEBTEDNESS",
+      "LIENS",
+      "RESTRICTED_PAYMENTS",
+      "INVESTMENTS",
+      "ASSET_SALES",
+      "FUNDAMENTAL_CHANGES",
+      "FINANCIAL_COVENANTS",
+      "QUALITATIVE_NEGATIVE_COVENANTS",
+      "DEFINITIONS",
+      "OTHER"
+    ],
+    "draftingComplexity": ["LOW", "MEDIUM", "HIGH"]
+  },
+  "notes": "Every CKG case carries all four stratum fields. Report aggregation is produced by lib/evaluation/ckg-benchmark/score.ts stratify()."
+}

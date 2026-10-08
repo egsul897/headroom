@@ -1,0 +1,886 @@
+{
+  "schemaVersion": "ckg-benchmark.v1",
+  "generatedAt": "2026-10-08T22:09:55.503Z",
+  "headSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+  "paidCalls": 0,
+  "dataset": {
+    "packageCount": 3,
+    "caseCount": 36,
+    "labeledCaseCount": 34,
+    "unlabeledCaseCount": 2
+  },
+  "metrics": [
+    {
+      "metric": "amendment_reconstruction",
+      "evaluated": 3,
+      "success": 2,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.6666666666666666,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 2
+    },
+    {
+      "metric": "comparator_correctness",
+      "evaluated": 3,
+      "success": 3,
+      "failure": 0,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 2
+    },
+    {
+      "metric": "condition_recall",
+      "evaluated": 1,
+      "success": 0,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 1,
+      "rate": 0,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 0
+    },
+    {
+      "metric": "cost_per_source_verified_representation",
+      "evaluated": 1,
+      "success": 1,
+      "failure": 0,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "covenant_family_discovery_recall",
+      "evaluated": 6,
+      "success": 6,
+      "failure": 0,
+      "unlabeled": 1,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 6
+    },
+    {
+      "metric": "cross_reference_accuracy",
+      "evaluated": 2,
+      "success": 1,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.5,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "definition_extraction_accuracy",
+      "evaluated": 3,
+      "success": 1,
+      "failure": 2,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.3333333333333333,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "entity_scope_accuracy",
+      "evaluated": 2,
+      "success": 2,
+      "failure": 0,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "exception_recall",
+      "evaluated": 2,
+      "success": 2,
+      "failure": 0,
+      "unlabeled": 1,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "false_permission_rate",
+      "evaluated": 2,
+      "success": 1,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.5,
+      "lowerIsBetter": true,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 0
+    },
+    {
+      "metric": "provenance_accuracy",
+      "evaluated": 2,
+      "success": 2,
+      "failure": 0,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 1,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 2
+    },
+    {
+      "metric": "shared_capacity_recognition",
+      "evaluated": 3,
+      "success": 1,
+      "failure": 2,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.3333333333333333,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 1
+    },
+    {
+      "metric": "unseen_document_performance",
+      "evaluated": 1,
+      "success": 0,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 0
+    },
+    {
+      "metric": "unsupported_semantic_refusal",
+      "evaluated": 2,
+      "success": 1,
+      "failure": 1,
+      "unlabeled": 0,
+      "notEvaluated": 0,
+      "rate": 0.5,
+      "lowerIsBetter": false,
+      "costUsdOnSourceVerifiedSuccesses": 0,
+      "sourceVerifiedSuccesses": 0
+    }
+  ],
+  "stratified": [
+    {
+      "key": "agreementType=AMENDED_AND_RESTATED_AGREEMENT",
+      "dimension": "agreementType",
+      "value": "AMENDED_AND_RESTATED_AGREEMENT",
+      "cases": 4,
+      "success": 2,
+      "failure": 2,
+      "unlabeled": 0,
+      "rate": 0.5
+    },
+    {
+      "key": "agreementType=AMENDMENT",
+      "dimension": "agreementType",
+      "value": "AMENDMENT",
+      "cases": 3,
+      "success": 1,
+      "failure": 2,
+      "unlabeled": 0,
+      "rate": 0.3333333333333333
+    },
+    {
+      "key": "agreementType=CREDIT_AGREEMENT",
+      "dimension": "agreementType",
+      "value": "CREDIT_AGREEMENT",
+      "cases": 21,
+      "success": 15,
+      "failure": 4,
+      "unlabeled": 1,
+      "rate": 0.7894736842105263
+    },
+    {
+      "key": "agreementType=SYNTHETIC_MICRO",
+      "dimension": "agreementType",
+      "value": "SYNTHETIC_MICRO",
+      "cases": 8,
+      "success": 5,
+      "failure": 2,
+      "unlabeled": 1,
+      "rate": 0.7142857142857143
+    },
+    {
+      "key": "covenantFamily=ASSET_SALES",
+      "dimension": "covenantFamily",
+      "value": "ASSET_SALES",
+      "cases": 1,
+      "success": 1,
+      "failure": 0,
+      "unlabeled": 0,
+      "rate": 1
+    },
+    {
+      "key": "covenantFamily=DEFINITIONS",
+      "dimension": "covenantFamily",
+      "value": "DEFINITIONS",
+      "cases": 6,
+      "success": 2,
+      "failure": 4,
+      "unlabeled": 0,
+      "rate": 0.3333333333333333
+    },
+    {
+      "key": "covenantFamily=FINANCIAL_COVENANTS",
+      "dimension": "covenantFamily",
+      "value": "FINANCIAL_COVENANTS",
+      "cases": 6,
+      "success": 5,
+      "failure": 0,
+      "unlabeled": 0,
+      "rate": 1
+    },
+    {
+      "key": "covenantFamily=INDEBTEDNESS",
+      "dimension": "covenantFamily",
+      "value": "INDEBTEDNESS",
+      "cases": 6,
+      "success": 4,
+      "failure": 1,
+      "unlabeled": 1,
+      "rate": 0.8
+    },
+    {
+      "key": "covenantFamily=INVESTMENTS",
+      "dimension": "covenantFamily",
+      "value": "INVESTMENTS",
+      "cases": 1,
+      "success": 1,
+      "failure": 0,
+      "unlabeled": 0,
+      "rate": 1
+    },
+    {
+      "key": "covenantFamily=LIENS",
+      "dimension": "covenantFamily",
+      "value": "LIENS",
+      "cases": 3,
+      "success": 3,
+      "failure": 0,
+      "unlabeled": 0,
+      "rate": 1
+    },
+    {
+      "key": "covenantFamily=OTHER",
+      "dimension": "covenantFamily",
+      "value": "OTHER",
+      "cases": 9,
+      "success": 4,
+      "failure": 4,
+      "unlabeled": 1,
+      "rate": 0.5
+    },
+    {
+      "key": "covenantFamily=RESTRICTED_PAYMENTS",
+      "dimension": "covenantFamily",
+      "value": "RESTRICTED_PAYMENTS",
+      "cases": 4,
+      "success": 3,
+      "failure": 1,
+      "unlabeled": 0,
+      "rate": 0.75
+    },
+    {
+      "key": "draftingComplexity=HIGH",
+      "dimension": "draftingComplexity",
+      "value": "HIGH",
+      "cases": 12,
+      "success": 5,
+      "failure": 5,
+      "unlabeled": 1,
+      "rate": 0.5
+    },
+    {
+      "key": "draftingComplexity=LOW",
+      "dimension": "draftingComplexity",
+      "value": "LOW",
+      "cases": 13,
+      "success": 10,
+      "failure": 2,
+      "unlabeled": 1,
+      "rate": 0.8333333333333334
+    },
+    {
+      "key": "draftingComplexity=MEDIUM",
+      "dimension": "draftingComplexity",
+      "value": "MEDIUM",
+      "cases": 11,
+      "success": 8,
+      "failure": 3,
+      "unlabeled": 0,
+      "rate": 0.7272727272727273
+    },
+    {
+      "key": "issuer=Gibraltar Industries, Inc.",
+      "dimension": "issuer",
+      "value": "Gibraltar Industries, Inc.",
+      "cases": 18,
+      "success": 15,
+      "failure": 1,
+      "unlabeled": 1,
+      "rate": 0.9375
+    },
+    {
+      "key": "issuer=Superior Industries International, Inc.",
+      "dimension": "issuer",
+      "value": "Superior Industries International, Inc.",
+      "cases": 10,
+      "success": 3,
+      "failure": 7,
+      "unlabeled": 0,
+      "rate": 0.3
+    },
+    {
+      "key": "issuer=SYNTHETIC",
+      "dimension": "issuer",
+      "value": "SYNTHETIC",
+      "cases": 8,
+      "success": 5,
+      "failure": 2,
+      "unlabeled": 1,
+      "rate": 0.7142857142857143
+    }
+  ],
+  "caseResults": [
+    {
+      "caseId": "gib-fam-indebtedness",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "family recall 1/1; predicted=[INDEBTEDNESS] expected=[INDEBTEDNESS]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-liens",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "family recall 1/1; predicted=[LIENS] expected=[LIENS]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-asset-sales",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "ASSET_SALES",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "family recall 1/1; predicted=[ASSET_SALES] expected=[ASSET_SALES]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-rp",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "family recall 1/1; predicted=[RESTRICTED_PAYMENTS] expected=[RESTRICTED_PAYMENTS]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-fincov",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "family recall 1/1; predicted=[FINANCIAL_COVENANTS] expected=[FINANCIAL_COVENANTS]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-fam-investments-absent",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INVESTMENTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "family absence check; predicted=[] expected=[]",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-def-ctnlr",
+      "metric": "definition_extraction_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "defs predicted=1 expected=1 exact=false ok=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-xref-builder-basket",
+      "metric": "cross_reference_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "xref hit=0/1 unresolvedOk=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-cond-7.08a-qma",
+      "metric": "condition_recall",
+      "outcome": "NOT_EVALUATED",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "no system candidate available (offline, unpaid evaluation)",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-exc-7.02-permitted-lien",
+      "metric": "exception_recall",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "exceptions 1/1",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-scope-7.08",
+      "metric": "entity_scope_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "scope predicted=\"revolving_credit_facility_and_initial_tranche_a_facility_only\" expected=\"revolving_credit_facility_and_initial_tranche_a_facility_only\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-shared-ebitda-addback-cap",
+      "metric": "shared_capacity_recognition",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "shared expected=true predicted=true memberOk=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-shared-pass-a-false-positive-control",
+      "metric": "shared_capacity_recognition",
+      "outcome": "FAILURE",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "shared expected=false predicted=true memberOk=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-comp-7.08a-leverage",
+      "metric": "comparator_correctness",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "comparator=\"must_not_exceed\" threshold=\"5.25:1.00_through_2026-12-31\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-comp-7.08b-interest-coverage",
+      "metric": "comparator_correctness",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "comparator=\"must_not_fall_below\" threshold=\"3.00:1.00\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-prov-7.08a",
+      "metric": "provenance_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "citation=\"7.08(a)\" excerptOk=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-amend-no-post-closing-amendment",
+      "metric": "amendment_reconstruction",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "rel=\"none\" status=\"resolved\" vs \"none\"/\"resolved\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "gib-unlabeled-deep-7.01-baskets",
+      "metric": "exception_recall",
+      "outcome": "UNLABELED",
+      "authority": "UNLABELED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Gibraltar Industries, Inc.",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "UNLABELED by design — deep basket inventory not yet independently enumerated. Must not count as failure.",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-def-ebitda-siblings",
+      "metric": "definition_extraction_accuracy",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "defs predicted=0 expected=5 exact=false ok=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-def-amendment-three-terms",
+      "metric": "definition_extraction_accuracy",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "defs predicted=0 expected=3 exact=false ok=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-xref-secured-net-leverage",
+      "metric": "cross_reference_accuracy",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "xref hit=0/2 unresolvedOk=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-cond-cash-sweep-cure",
+      "metric": "condition_recall",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "conditions 0/3",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-shared-ebitda-10pct",
+      "metric": "shared_capacity_recognition",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "shared expected=true predicted=false memberOk=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-amend-doc-b-restates-doc-a",
+      "metric": "amendment_reconstruction",
+      "outcome": "FAILURE",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "rel=\"none\" status=\"missing\" vs \"doc-b restates doc-a\"/\"resolved\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-amend-doc-c-amends-doc-b",
+      "metric": "amendment_reconstruction",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "rel=\"doc-c amends doc-b\" status=\"review_required\" vs \"doc-c amends doc-b\"/\"review_required\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-prov-doc-b-caption",
+      "metric": "provenance_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "citation=\"caption\" excerptOk=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-unseen-aggregate",
+      "metric": "unseen_document_performance",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "unseen subcases 2/3",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-cost-offline",
+      "metric": "cost_per_source_verified_representation",
+      "outcome": "SUCCESS",
+      "authority": "SOURCE_VERIFIED",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "costUsd=0",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-false-perm-general-prohibition",
+      "metric": "false_permission_rate",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "shouldDeny=true systemPermitted=true falsePermission=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-false-perm-carveout-present",
+      "metric": "false_permission_rate",
+      "outcome": "SUCCESS",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "shouldDeny=false systemPermitted=true falsePermission=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unsupported-or-formula",
+      "metric": "unsupported_semantic_refusal",
+      "outcome": "SUCCESS",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "mustRefuse=true refused=true coerced=false",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unsupported-coercion-control",
+      "metric": "unsupported_semantic_refusal",
+      "outcome": "FAILURE",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "detail": "mustRefuse=true refused=false coerced=true",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-comp-greater-of",
+      "metric": "comparator_correctness",
+      "outcome": "SUCCESS",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "comparator=\"greater_of\" threshold=\"25000000_or_10pct_ebitda\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-entity-non-guarantor",
+      "metric": "entity_scope_accuracy",
+      "outcome": "SUCCESS",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "detail": "scope predicted=\"restricted_subsidiaries_that_are_not_loan_parties\" expected=\"restricted_subsidiaries_that_are_not_loan_parties\"",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-exc-lettered-baskets",
+      "metric": "exception_recall",
+      "outcome": "SUCCESS",
+      "authority": "REVIEWER_APPROVED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "exceptions 3/3",
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unlabeled-future-issuer",
+      "metric": "covenant_family_discovery_recall",
+      "outcome": "UNLABELED",
+      "authority": "UNLABELED",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "detail": "UNLABELED placeholder — Blind body unread; must not score as failure.",
+      "attributedCostUsd": 0
+    }
+  ],
+  "costPerSourceVerifiedRepresentationUsd": 0,
+  "outstandingGaps": [
+    "Deep §7.01(b) Indebtedness basket inventory on Gibraltar remains UNLABELED.",
+    "Gibraltar §7.08 Qualifying Material Acquisition condition extraction has no Pass B output (NOT_EVALUATED) — requires unpaid deterministic or separately authorized paid semantic pass.",
+    "Knife River BLIND body remains unread; reserved UNLABELED synthetic slot only.",
+    "Superior formerly-unseen package is permanent regression evidence (invariant 28) — cannot again support a blind generalization claim.",
+    "False-permission and unsupported-semantic rates currently rest on REVIEWER_APPROVED synthetic controls, not yet on adjudicated held-out public clauses at scale.",
+    "Cost-per-source-verified is $0.00 by construction for this unpaid offline run; it does not yet measure live compilation economics on held-out packages.",
+    "No human legal-counsel sign-off on Gibraltar SOURCE_VERIFIED labels yet — posture matches prior Headroom independent-GT disclosures."
+  ],
+  "reproducibleCommands": [
+    "npx tsx scripts/ckg-benchmark/run.ts",
+    "npx tsx scripts/ckg-benchmark/run.ts --json-only",
+    "npx vitest run tests/covenant-knowledge-generalization/"
+  ]
+}
