@@ -1,6 +1,6 @@
 # Covenant Precedent Research Interface — Integration Gate (PR #152)
 
-**Gate head:** see git tip after merge with `origin/main`  
+**Gate head:** `415f90fe1cd2361939043b854889bf8c00392d32`  
 **Phase 3 code tip:** `5434ca302f5441a53129e164ced29d78b4822bec`  
 **Docs tip before main-merge:** `a9ba35d5fc375d64ac6fed7283fe03fd24b50843`
 
