@@ -2,14 +2,15 @@
 
 Soft gate. **DEVELOPMENT ≠ CERTIFIED.** No paid inference. No certification advancement. Frozen evidence untouched.
 
-**Note:** PR #132 merged at defective tip `348bfedb33725d9a00adbf331131c038aa7d5a22`. This branch is the P0 fix against current `main`. Keep this follow-up PR **draft** until independent replay.
+**Note:** PR #132 merged at defective tip `348bfedb33725d9a00adbf331131c038aa7d5a22`. This branch is the P0 fix against current `main`. Follow-up PR: keep **draft** until independent replay.
 
 ## SHAs
 
 | Role | SHA |
 |---|---|
 | Defective #132 merge tip | `348bfedb33725d9a00adbf331131c038aa7d5a22` |
-| This remediation tip | `3d5411c77bdc08930d45d6bdbf043eb98b375135` |
+| Code remediation commit | `6760e31f1735f14416efa05bfc59683153e4be10` |
+| Review branch | `cursor/chewy-a3b-span-remediation-aa25` (use tip / `FETCH_HEAD`) |
 
 ## Root cause
 
@@ -56,14 +57,12 @@ treeIdentitySha256 (Gibraltar nodes after fix): `8152ff739ab5e7ed5f57184b154d0b0
 
 ## Independent review handoff
 
-Please replay on the ending SHA:
-
 ```bash
 git fetch origin cursor/chewy-a3b-span-remediation-aa25
-git checkout 3d5411c77bdc08930d45d6bdbf043eb98b375135
+git checkout FETCH_HEAD
 npx vitest run tests/contract-model/clause-hierarchy.test.ts \
   tests/contract-model/clause-hierarchy-f2-nesting.test.ts --reporter=verbose
 # Expect: 6.08(a)(3)(b) charStart 664123 charEnd 666205; no 6.08(a)(3)(b)(x)/(y)
 ```
 
-Keep this follow-up PR **draft** until that replay passes.
+Keep the follow-up PR **draft** until that replay passes. Do not advance certification.
