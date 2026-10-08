@@ -58,6 +58,13 @@ describe("buildClauseTree", () => {
     expect(tree.map((n) => n.marker)).toEqual(["(a)", "(b)"]);
   });
 
+  it("parses a glued (i)(A) list, nests (x)/(y) under (A), and does not invent (b)(x)/(b)(y)", () => {
+    const text = "(a) builder;\n\n(b) from the issue or sale of:\n\n(i)(A) Equity Interests from the sale of:\n(x) employees; or\n(y) preferred; and\n\n(B) contributed; or\n\n(ii) converted;\n\n(c) next.";
+    const paths = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(paths).toEqual(["(a)", "(b)", "(b)(i)", "(b)(i)(A)", "(b)(i)(A)(x)", "(b)(i)(A)(y)", "(b)(i)(B)", "(b)(ii)", "(c)"]);
+    expect(paths.includes("(b)(x)") || paths.includes("(b)(y)")).toBe(false);
+  });
+
   it("an unrelated leaf item (no children) does not create ambiguity for a sibling container with real children", () => {
     const tree = buildClauseTree("(a) container: (i) child one; and (ii) child two; (b) plain leaf item, no nested list.");
     const b = tree.find((n) => n.marker === "(b)")!;

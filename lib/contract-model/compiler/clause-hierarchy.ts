@@ -94,12 +94,14 @@ export interface RawMarkerOccurrence {
 
 /**
  * Finds candidate clause-marker occurrences in text: a short alphanumeric
- * token in parens, preceded by whitespace, and not immediately followed by
- * another open paren. The whitespace-before requirement is exactly what
- * distinguishes a real clause-marker occurrence (always its own
- * whitespace-separated token: "except: (a)", "of (i) X and (ii) Y") from a
+ * token in parens, preceded by whitespace. The whitespace-before requirement
+ * is exactly what distinguishes a real clause-marker occurrence (always its
+ * own whitespace-separated token: "except: (a)", "of (i) X and (ii) Y") from a
  * compound CITATION like "Section 6.01(a)(i)", which is always written with
- * no space before the parenthesis. Deliberately permissive beyond that: a
+ * no space before the parenthesis. A list label may be glued to the next
+ * label ("(i)(A)"): only the first parenthesis needs the whitespace, and each
+ * following parenthesis is its own marker. A citation never starts that chain.
+ * Deliberately permissive beyond that: a
  * token that doesn't fit any real sequence (e.g. "(other)", "(the
  * "Company")") is silently rejected later by buildClauseTree's own strict
  * sequence check, so over-detecting candidates here costs nothing.
@@ -118,15 +120,35 @@ export interface RawMarkerOccurrence {
  * horizontal whitespace; a label that begins a new line after a lead-in ending in a comma
  * ("in each case without duplication,\n(a) franchise ...") is a list item, never an inline reference.
  */
-const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)(?!\()/g;
+const MARKER_OCCURRENCE = /(?<!,[ \t])(?<=^|\s)\(([a-zA-Z]{1,7}|\d{1,3})\)/g;
+const GLUED_MARKER = /^\(([a-zA-Z]{1,7}|\d{1,3})\)/;
+const ALPHA_MARKER = /^[a-zA-Z]+$/;
 
 export function findRawMarkerOccurrences(text: string): RawMarkerOccurrence[] {
   const out: RawMarkerOccurrence[] = [];
   const re = new RegExp(MARKER_OCCURRENCE.source, MARKER_OCCURRENCE.flags);
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
-    out.push({ token: m[1] ?? "", charStart: m.index, charEnd: m.index + m[0].length });
-    if (m.index === re.lastIndex) re.lastIndex++;
+    const head = m[1] ?? "";
+    let end = m.index + m[0].length;
+    const glued: { token: string; charStart: number; charEnd: number }[] = [];
+    for (;;) {
+      const next = GLUED_MARKER.exec(text.slice(end));
+      if (!next) break;
+      const start = end;
+      end = start + next[0].length;
+      glued.push({ token: next[1] ?? "", charStart: start, charEnd: end });
+    }
+    // "(i)(A)" is two alphabetic labels. A numeric citation tail ("clause (46)(ii)",
+    // "6.01(a)(i)") is not a list: a marker immediately followed by "(" is skipped
+    // unless every token in the glue chain is alphabetic. "6.01(a)(i)" never enters
+    // this loop, because its first parenthesis is not whitespace-preceded.
+    const alphabeticChain = ALPHA_MARKER.test(head) && glued.every((item) => ALPHA_MARKER.test(item.token));
+    if (glued.length === 0 || alphabeticChain) {
+      out.push({ token: head, charStart: m.index, charEnd: m.index + m[0].length });
+      for (const item of glued) if (alphabeticChain) out.push(item);
+    }
+    re.lastIndex = end;
   }
   return out;
 }
@@ -293,7 +315,9 @@ function skipDeepestForOuterLetter(args: {
 /**
  * restartedLetterRun: a line-start single letter past "a", continuing no open sequence, may open
  * a lettered run when the next line-start marker is the following letter and is not the following roman.
- * A lone "(x)" stays unparsed. "(x)" then "(xi)" does not become a letter run.
+ * A lone "(x)" stays unparsed. "(x)" then "(xi)" does not become a letter run. An already-open list
+ * still resumes at its own next item, so "(x)"/"(y)" under a glued "(i)(A)" stay children of "(A)"
+ * and do not become a false "(b)(x)"/"(b)(y)" that swallows "(B)" and "(ii)".
  */
 function restartedLetterCandidate(args: {
   sectionText: string;
@@ -337,8 +361,7 @@ function innerResumesBeforeOuter(sectionText: string, occurrences: RawMarkerOccu
     const later = occurrences[i];
     if (!later || !isLineStart(sectionText, later.charStart)) continue;
     lineStarts += 1;
-    // Chewy §6.08(a)(3)(b) resumes at (c) after the short (x)/(y) run. A continuation
-    // further down a definition section is a different list.
+    // A continuation further down a definition section is a different list.
     if (lineStarts > 4) return false;
     const cands = classifyMarker(later.token);
     const continuesInner = cands.some((c) => c.kind === inner.kind && c.index === expected);
