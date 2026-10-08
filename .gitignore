@@ -9,3 +9,10 @@ coverage
 .claude/worktrees/
 # LocalFilesystemStorageProvider's dev/test fallback (lib/document-storage/local-fs-provider.ts)
 .local-blob-storage/
+
+# Vercel-independent compilation bulk artifacts (model weights, run outputs)
+covenant-knowledge-data/
+.ollama/
+.vllm/
+*.gguf
+

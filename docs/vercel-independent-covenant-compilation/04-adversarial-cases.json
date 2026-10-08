@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "caseId": "adv-seed:IPV-22",
+      "defectClass": "MISCLASSIFIED_THRESHOLD",
+      "operativeText": "Investments in an aggregate amount not to exceed $25,000,000.",
+      "dependencyTexts": [],
+      "assertion": "Threshold is a capacity fact, not a permission verdict."
+    },
+    {
+      "caseId": "adv-seed:IPV-16",
+      "defectClass": "MISSING_LEGAL_RESTRICTION",
+      "operativeText": "The Borrower shall not incur Indebtedness except as permitted by Section 7.02. Notwithstanding the foregoing, Indebtedness under the ABL Facility is prohibited unless the Leverage Ratio is less than 3.00 to 1.00.",
+      "dependencyTexts": [
+        {
+          "ref": "7.02",
+          "text": "Section 7.02 Permitted Indebtedness: (a) Indebtedness under this Agreement; (b) Indebtedness secured by Liens permitted under Section 7.01."
+        }
+      ],
+      "assertion": "Must surface the Leverage Ratio prohibition gate; omission is MISSING_LEGAL_RESTRICTION."
+    },
+    {
+      "caseId": "adv-seed:IPV-21",
+      "defectClass": "INCOMPLETE_DEPENDENCY_CLOSURE",
+      "operativeText": "Subject to the definition of \"Consolidated EBITDA\" and the Combined Cap.",
+      "dependencyTexts": [],
+      "assertion": "Planner must pull definition + shared cap into closure."
+    }
+  ]
+}
