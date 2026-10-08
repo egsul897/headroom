@@ -2,7 +2,8 @@
 
 **Verdict:** `LIVE_CORPUS_QUALITY_GATE_RECORDED_WITH_DEFECTS`
 
-**Head SHA (at generation):** `cebec8ab3aaecd894b1903ac0b758828655a88df`
+**Evaluation content SHA:** `cebec8ab3aaecd894b1903ac0b758828655a88df`
+**Branch tip:** confirm with `git rev-parse origin/cursor/live-corpus-quality-gate-7f51`
 **Branch:** `cursor/live-corpus-quality-gate-7f51`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
