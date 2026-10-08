@@ -26,12 +26,12 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/2b018f8a6719/`, repository SHA `2b018f8a6719`, 571 checks: 508 pass · 48 fail · 15 not tested)
+## Matrix (committed run `acceptance-runs/f182a679394b/`, repository SHA `f182a679394b`, 604 checks: 539 pass · 49 fail · 16 not tested)
 
 Earlier committed runs: `8f51e2981bd2` (8 packages, 360 checks: 318/30/12), `00977b674579` (10 packages, 431:
-376/41/14), `83e6bf1d3ce0` (10 packages + cross-reference audit, 444: 388/42/14). At `2b018f8`: package K added, every
-covenant's clause text pinned (`structure:text:<id>`, 80+ new checks, all pass), adversarial plans for I/J/K. Findings
-are 48, all registered (IPV-01…IPV-18; IPV-17 closed).
+376/41/14), `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 packages + clause-text
+pins + I/J/K adversarial plans, 571: 508/48/15). At `f182a67`: package L (affiliate transactions) added. Findings are
+49, all registered (IPV-01…IPV-20; IPV-17 closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
@@ -46,6 +46,10 @@ are 48, all registered (IPV-01…IPV-18; IPV-17 closed).
 | i-secured-debt-lien | 21/21 | – | 1/1 | 0/1 (1 NT) | 12/17 (5 F) | 12/12 | 1/5 (4 F) | – | 47/57 |
 | j-restricted-payments-builder | 16/16 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 35/38 |
 | k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
+| l-affiliate-transactions | 15/15 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 31/33 |
+
+Invariant checks (`invariant-runs/f182a679394b/`): 15 PRODUCT verdicts pass, 10 fail — all ten are IPV-19/IPV-20
+(definition amendments). Mutation suite (`mutation-runs/f182a679394b/`): 16 mutants, 9 killed, 16/16 predictions held.
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 

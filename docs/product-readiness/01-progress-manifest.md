@@ -17,7 +17,8 @@ Cursor work. Provider calls: none in this workstream.
 | 7 | evidence quality scorecard, pilot acceptance criteria, executive assessment, design-partner package, positioning by maturity, proposed paid experiments, next queue (docs 10–16), scorecard 04 refresh | done (this commit) |
 | 8 | harness strengthening: text-hash pinning, side-letter/consent mutants, package K, I/J/K adversarial plans, IPV-17 closed, IPV-18; runs at `2b018f8a6719` | done (`2b018f8` + this commit) |
 | 9 | invariant ledger (`17-invariant-backlog.md`, forty mapped), invariant checks INV-01/03/04/05/06/37 (`invariants.ts`, `invariants.test.ts`), IPV-19/IPV-20 | done (this commit) |
-| 10 | invariant batch 2: affiliate transactions fixture, designation mechanics, reclassification representation, maintenance test at runtime, add-back-removal definition amendment | next |
+| 10 | invariant batch 2: INV-05b (both directions of the definition-amendment defect), package L (affiliate transactions), ledger rows 8/16/32 assessed; runs at `f182a679394b` | done (`f182a67` + this commit) |
+| 11 | invariant batch 3: package-L variant with the Management Agreement in the package; 'greater of' runtime case; unsupported-effect simulation; citation completeness | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

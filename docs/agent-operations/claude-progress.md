@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `f182a67` + this commit | invariant batch 2: INV-05b (definition amendment removing an add-back → IPV-20 now CRITICAL_FALSE_PERMISSION direction; layered on C keeps section amendments intact), package L affiliate transactions (L-P1/P2/P3; refusals masked by CONTEXT_CONTRACT_UNACCEPTABLE), ledger rows 8/16/32 (runtime has no springing construct); artefacts `acceptance-runs/f182a679394b` (604 checks: 539/49/16), `invariant-runs/f182a679394b` (15 pass / 10 fail all IPV-19/20), `mutation-runs/f182a679394b` (unchanged) | `npx vitest run tests/product-acceptance` → 184 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | this commit | invariant ledger (doc 17: forty invariants mapped, 24 COVERED / 11 PARTIAL / 2 CHECKED / 1 NOT_STARTED + 6 dedicated checks), `invariants.ts` + `run-invariants.ts` + `invariants.test.ts`; IPV-19 (definition amendment applied to the whole of Section 1.01) and IPV-20 (definition retrieval ignores the operative state); INV-01/03/04/06/37 hold; `invariant-runs/<sha>/` | `npx vitest run tests/product-acceptance` → 177 pass / 28 skipped; tsc clean for owned files |
 | 2026-10-08 | `2b018f8` + this commit | harness strengthening: covenant `textSha256` pinning + STRUCTURE audit (MUT-02 now killed), side-letter/consent mutants MUT-13…16 (IPV-16 breadth: A, C, H, I), hybrid closure cross-document back-reference, package K (three-way builder; IPV-17 control), I/J/K adversarial plans, IPV-17 CLOSED (harness false positive), IPV-18 (no family for junior-debt prepayments); artefacts `acceptance-runs/2b018f8a6719` (571 checks: 508/48/15), `mutation-runs/2b018f8a6719` (16 mutants, 9 killed, 16/16 predictions), `benchmark-runs/2b018f8a6719` (unchanged results) | `npx vitest run tests/product-acceptance` → 171 pass / 28 skipped; tsc clean for owned files; `pin-corpus --check` clean |
 | 2026-10-08 | `99255ab` + this commit | mutation/acceptance run artefacts, doc 09, matrix refresh; then docs 10–16 (evidence quality scorecard, pilot acceptance criteria, executive assessment, design-partner package, positioning by maturity, proposed paid experiments, recommended next queue), scorecard 04 refreshed, PR #137 description updated | `npx vitest run tests/product-acceptance` → 160 pass / 28 skipped (unchanged; docs only) |
@@ -22,7 +23,7 @@
 
 ## Current task
 
-Invariant batch 2 (task 6 below). Batch 1 complete: ledger doc 17, six dedicated checks, IPV-19/IPV-20 registered.
+Invariant batch 3 (task 6 below). Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -59,11 +60,11 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: invariant batch 2 — (a) INV-05b: a definition amendment that REMOVES an add-back (false-permission direction of IPV-19/20) and one that amends a definition in a package with two amendments (C), to see whether mis-targeting compounds; (b) INV-07 affiliate-transactions covenant fixture (new family in the corpus; ledger #7 NOT_STARTED); (c) INV-16 unrestricted-subsidiary designation mechanics (B indenture: a designation resolution document and its effect on entity scope); (d) INV-32 reclassification representation (F 7.01(g)): faithful submission with an explicit reclassification election and the refusal/representation outcome; (e) INV-08 maintenance covenant at runtime: H 7.11 springing FCCR evaluated with and without the availability trigger (fixture IR like runtime-f.ts, labelled hand-built).
-- Files: `scripts/product-acceptance/invariants.ts` (INV-05b, INV-16, INV-32), `tests/fixtures/product-acceptance/packages/pkg-l-affiliate-transactions/` (new, with manifest + pins), `scripts/product-acceptance/runtime-h.ts` (if (e) is feasible with the Phase-4 runtime), `docs/product-readiness/17-invariant-backlog.md`, register.
-- First step: INV-05b in `invariants.ts` (copy INV-05 with NEW_EBITDA lacking "income tax expense"); run; register the direction-specific signature under IPV-19/20 or a new entry if the behaviour differs.
-- Expected output: ledger rows 5, 7, 8, 16, 21, 32 updated with artefacts; any new finding registered; runs re-recorded.
-- Acceptance: `npx vitest run tests/product-acceptance` green; `pin-corpus --check` clean; commit + push; checkpoint updated.
+- Objective: invariant batch 3 — (a) package-L variant `pkg-l` + an in-package Management Agreement document (role BASE_AGREEMENT? no: add as a second operative document of a non-covenant type) so the 7.07 faithful compile is not blocked by a missing referenced document and the L-P1/P2/P3 refusals become real evidence (if the document-role vocabulary cannot express a services agreement, record that as a package-graph capability gap instead); (b) runtime 'greater of $X and Y% of metric' basket on package F's fixture IR (ledger #9/#29): AVAILABLE with an approved snapshot, NEEDS_INPUT without, never the fixed floor alone when the metric is missing; (c) ledger #34: simulate a transaction whose effect type the runtime does not support (e.g. a reclassification election) and expect UNSUPPORTED / refusal, never silent capacity movement; (d) ledger #35: citation completeness audit of a faithful submission — every rule, condition and shared cap carries a verbatim excerpt found in the source (extend `auditSemantic` or add an invariant); (e) checkpoint + report if 3–5 tasks complete.
+- Files: `tests/fixtures/product-acceptance/packages/pkg-l-affiliate-transactions/` (variant document or a new package M), `scripts/product-acceptance/runtime-f.ts` (new cases F-R11…), `scripts/product-acceptance/invariants.ts` (INV-35), `docs/product-readiness/17-invariant-backlog.md`, register.
+- First step: check `DocumentRole` in `corpus.ts` and the package-graph classifier for a role that fits a services agreement; if none, add the Management Agreement as `NON_OPERATIVE_EXHIBIT` with operative:false and observe whether the context contract still fails.
+- Expected output: L adversarial evidence unmasked or a recorded capability gap; two new runtime cases; INV-35; ledger rows 9, 29, 34, 35 updated.
+- Acceptance: `npx vitest run tests/product-acceptance` green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 
 Then (P2): harness strengthening (text-hash pinning per covenant, three-section definition fixture, waiver/side-letter fixture family), then the continuous-loop invariant backlog.
