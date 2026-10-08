@@ -107,12 +107,12 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: decide whether `resolveSourceContext` still expands a contents listing when structural reference detection resolved `targetNodeId` to that listing alone.
-- Relevant files: `lib/contract-model/compiler/semantic-accountability/source-context.ts` (the branch `if (ref.resolved && ref.targetNodeId && !ref.targetAmbiguous)` around the cross-reference expansion). `retrieveCrossReferencesFromNode` already skips a contents listing and retrieves the operative body when the other occurrence is a contents row.
-- First step: read that branch. If a resolved contents-listing target is pushed as status `UNIQUE` and its text is added as a cross-reference region, skip it the same way retrieval does, and keep an operative body.
-- Expected output: a regression if the region was the contents text. If the branch already refuses that node, record the line and do not change it.
-- Acceptance: existing reference and context-retrieval tests pass. No provider call. No sealed-evidence edit.
-- Dependency: do not guess between two operative bodies. Do not raise the semantic-review timeout.
+- Objective: find callers of `resolveReferenceTarget` that still treat status `UNIQUE` as operative when `pick()` short-circuits on a single contents listing.
+- Relevant files: `lib/contract-model/compiler/semantic-accountability/reference-resolver.ts` (`pick`, the `matches.length === 1` return). `source-context.ts`, `reference-context.ts`, and `tools.ts` already refuse that node. Other callers may not.
+- First step: grep `resolveReferenceTarget`. For each caller, record whether a sole contents listing can be returned as operative text.
+- Expected output: a caller list. Change a caller only when that read shows it expands or returns the contents text. Do not change `pick()` until every caller is classified.
+- Acceptance: existing resolver and source-context tests pass. No provider call. Two operative bodies stay `AMBIGUOUS`.
+- Dependency: do not raise the semantic-review timeout. Do not wire `package-compile.ts` to the question closure.
 
 ## Milestone
 

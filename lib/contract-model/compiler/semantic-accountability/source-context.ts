@@ -18,6 +18,7 @@
  * Every expansion carries documentId/nodeId/sectionRef/charStart/charEnd.
  * Source-only (independence contract in types.ts).
  */
+import { classifyStructuralOccurrence } from "../operative-authority";
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import { resolveReferenceTarget } from "./reference-resolver";
@@ -112,6 +113,20 @@ function resolveUnitBoundary(index: StructuralIndex, documentId: string, anchor:
   }
   if (anchor) return { start: anchor.charStart, end: anchor.charEnd, kind: "ANCHOR_NODE", label: `anchoring unit ${anchor.sectionRef ?? anchor.nodeId}` };
   return null;
+}
+
+/** A contents listing is not a cross-reference region. The operative body is kept when it is the only substantive occurrence. Two operative bodies stay unresolved. */
+function operativeTargetBesideContents(index: StructuralIndex, documentId: string, referenceText: string, rawRef: string, normalizedKey: string): { referenceText: string; resolvedNodeId: string | null; status: ReferenceResolutionStatus; note: string; candidateNodeIds: string[]; normalizedRef: string } {
+  const r = resolveReferenceTarget(index, documentId, rawRef);
+  const operative = r.node && classifyStructuralOccurrence(r.node, index) !== "CONTENTS_LISTING" ? r.node : null;
+  return {
+    referenceText,
+    resolvedNodeId: operative?.nodeId ?? null,
+    status: operative ? r.status : (r.node ? "NOT_FOUND" : r.status),
+    note: operative ? r.note : (r.node ? "The resolved target is a contents listing. It is not the operative section." : r.note),
+    candidateNodeIds: r.candidateNodeIds,
+    normalizedRef: r.normalizedRef || normalizedKey,
+  };
 }
 
 export function resolveSourceContext(input: ResolveSourceContextInput): SourceContextResult {
@@ -212,10 +227,23 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
       if (seen.has(key)) continue;
       seen.add(key);
       if (ref.resolved && ref.targetNodeId && !ref.targetAmbiguous) {
-        targets.push({ referenceText: ref.referenceText, resolvedNodeId: ref.targetNodeId, status: "UNIQUE", note: "resolved by structural reference detection", candidateNodeIds: [ref.targetNodeId], normalizedRef: key });
+        const detected = index.getNodeById(ref.targetNodeId);
+        if (detected && classifyStructuralOccurrence(detected, index) === "CONTENTS_LISTING") {
+          targets.push(operativeTargetBesideContents(index, documentId, ref.referenceText, ref.normalizedTarget, key));
+        } else {
+          targets.push({ referenceText: ref.referenceText, resolvedNodeId: ref.targetNodeId, status: "UNIQUE", note: "resolved by structural reference detection", candidateNodeIds: [ref.targetNodeId], normalizedRef: key });
+        }
       } else {
         const r = resolveReferenceTarget(index, documentId, ref.normalizedTarget);
-        targets.push({ referenceText: ref.referenceText, resolvedNodeId: r.node?.nodeId ?? null, status: r.status, note: r.note, candidateNodeIds: r.candidateNodeIds, normalizedRef: r.normalizedRef });
+        const resolvedNode = r.node && classifyStructuralOccurrence(r.node, index) === "CONTENTS_LISTING" ? null : r.node;
+        targets.push({
+          referenceText: ref.referenceText,
+          resolvedNodeId: resolvedNode?.nodeId ?? null,
+          status: resolvedNode ? r.status : (r.node ? "NOT_FOUND" : r.status),
+          note: resolvedNode ? r.note : (r.node ? "The resolved target is a contents listing. It is not the operative section." : r.note),
+          candidateNodeIds: r.candidateNodeIds,
+          normalizedRef: r.normalizedRef,
+        });
       }
     }
   }
@@ -223,8 +251,7 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
     const key = m[1]!.replace(/\s+/g, "");
     if (seen.has(key)) continue;
     seen.add(key);
-    const r = resolveReferenceTarget(index, documentId, m[1]!);
-    targets.push({ referenceText: m[0], resolvedNodeId: r.node?.nodeId ?? null, status: r.status, note: r.note, candidateNodeIds: r.candidateNodeIds, normalizedRef: r.normalizedRef });
+    targets.push(operativeTargetBesideContents(index, documentId, m[0], m[1]!, key));
   }
 
   let totalChars = operativeSourceText.length;
@@ -237,6 +264,10 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
     const node = index.getNodeById(t.resolvedNodeId);
     if (!node) {
       unresolved.push({ referenceText: t.referenceText, normalizedRef: t.normalizedRef, status: "NOT_FOUND", reason: "resolved nodeId missing from index", candidateNodeIds: t.candidateNodeIds });
+      continue;
+    }
+    if (classifyStructuralOccurrence(node, index) === "CONTENTS_LISTING") {
+      unresolved.push({ referenceText: t.referenceText, normalizedRef: t.normalizedRef, status: "NOT_FOUND", reason: "The resolved target is a contents listing. It is not the operative section.", candidateNodeIds: t.candidateNodeIds });
       continue;
     }
     // Already inside the operative window (or the anchor itself / its ancestors) - nothing to expand.
