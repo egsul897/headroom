@@ -8,7 +8,8 @@ Starting SHA: `c438de3c12793bdec889936d51249c6edbfee39d`
 | Item | Value |
 |---|---|
 | Starting SHA | `c438de3c12793bdec889936d51249c6edbfee39d` |
-| Ending SHA (Phase 3 content) |  |
+| Ending SHA (Phase 3 content) | `1698f15222e124b2b8ef9d46b839cd6dca7ed9dd` |
+| Branch tip | `136ebb09c8016dc0ab23995855e55d621062cbb4` |
 | PR | https://github.com/egsul897/headroom/pull/148 (draft; **not merged**) |
 
 ## 2. Full 390-candidate classification audit
@@ -102,7 +103,7 @@ All retained affirmatives remain `capacityComputable=false` / `executable=false`
 
 | Item | Value |
 |---|---|
-| Tests | `npx vitest run tests/basket-formula-corpus/` (Phase-3 suite included) |
+| Tests | `npx vitest run tests/basket-formula-corpus/` → **21 passed** |
 | CI | reported after push / PR checks |
 
 ## 9. Remaining legal-safety blockers
