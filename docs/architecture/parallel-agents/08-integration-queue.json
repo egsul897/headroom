@@ -1,9 +1,11 @@
 {
   "artifact": "parallel-agent-integration-queue",
-  "version": 1,
+  "version": 2,
   "status": "ACTIVE_LEDGER",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "updatedAt": "2026-10-08T22:14:30Z",
+  "currentMainSha": "64e5b5c23d153714a78659c408f3078227084a49",
+  "updatedAt": "2026-10-08T23:14:00Z",
+  "dashboard": "14-continuous-main-integration-dashboard.json",
   "items": [
     {
       "id": "IQ-001",
@@ -11,8 +13,8 @@
       "deliverable": "Operating rules, ownership map v2+, identity/SEC/dataset/gate contracts, ownership checker",
       "branch": "cursor/parallel-agent-operating-rules-0e3f",
       "pr": "https://github.com/egsul897/headroom/pull/138",
-      "tipSha": "a8e5d8859764af0905f6aa26e37f37d4c5f26fc3",
-      "status": "IN_PROGRESS",
+      "tipSha": "merged",
+      "status": "MERGED",
       "blockers": [],
       "dependsOn": []
     },
@@ -21,12 +23,13 @@
       "workstreamId": "WS-CKF",
       "deliverable": "Acquisition + corpus registry + production SEC scheduler implementing 05-contract",
       "branch": "cursor/covenant-knowledge-factory-7327",
-      "pr": null,
-      "tipSha": "252f91fbdf3381df536017c32be7d26980bf2815",
-      "status": "BRANCH_NO_PR",
+      "pr": "https://github.com/egsul897/headroom/pull/154",
+      "tipSha": "0e5b3e75b284",
+      "status": "DRAFT_PR_OPEN",
       "blockers": [
-        "Draft PR not opened",
-        "Must expose SecRequestScheduler fa\u00e7ade over lib/knowledge-factory/edgar/*"
+        "DIRTY rebase onto main 64e5b5c2 required",
+        "Must expose SecRequestScheduler facade over lib/knowledge-factory/edgar/*",
+        "Coordinate Prisma/ingest schema ownership before merge"
       ],
       "dependsOn": [
         "IQ-001"
@@ -38,10 +41,11 @@
       "deliverable": "Provider-independent adapters + offline/deterministic compilation path",
       "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
       "pr": "https://github.com/egsul897/headroom/pull/146",
-      "tipSha": "3878e099e81bc96743b76257e2bac3aae0e01834",
+      "tipSha": "0dbe81f4f67a",
       "status": "DRAFT_PR_OPEN",
       "blockers": [
-        "C-DUP-KF: remove or thin-client lib/contract-model/covenant-knowledge/** to WS-CKF"
+        "C-DUP-KF: remove or thin-client lib/contract-model/covenant-knowledge/** to WS-CKF",
+        "DIRTY rebase onto main 64e5b5c2 required"
       ],
       "dependsOn": [
         "IQ-001"
@@ -53,9 +57,12 @@
       "deliverable": "Cursor Cloud compute benchmark measurements (no paid provisioning)",
       "branch": "cursor/maximize-cursor-cloud-compute-3334",
       "pr": "https://github.com/egsul897/headroom/pull/141",
-      "tipSha": "7180ae820a87d56765e90bd25be695290f85792e",
+      "tipSha": "fa2ad9d1fd1a",
       "status": "DRAFT_PR_OPEN",
-      "blockers": [],
+      "blockers": [
+        "DIRTY rebase onto main 64e5b5c2 required",
+        "Soft-gate CI failures on tip"
+      ],
       "dependsOn": [
         "IQ-001"
       ]
