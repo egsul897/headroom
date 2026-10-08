@@ -1,0 +1,50 @@
+{
+  "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+  "derivation": "Hand-crafted adversarial system-output counterparts for REVIEWER_APPROVED controls (evaluation only; never ground truth). Includes both correct and incorrect behaviors so rates are measurable offline.",
+  "candidates": [
+    {
+      "caseId": "syn-false-perm-general-prohibition",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "permitted": true, "status": "PERMITTED" },
+      "notes": "Injected false permission — system invents a general basket. Must count toward false_permission_rate FAILURE."
+    },
+    {
+      "caseId": "syn-false-perm-carveout-present",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "permitted": true, "status": "PERMITTED" },
+      "notes": "Correct permission for Agreement debt carve-out."
+    },
+    {
+      "caseId": "syn-unsupported-or-formula",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "refused": true, "status": "UNSUPPORTED", "coercedRepresentation": false },
+      "notes": "Correct refusal."
+    },
+    {
+      "caseId": "syn-unsupported-coercion-control",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": {
+        "refused": false,
+        "status": "AVAILABLE",
+        "coercedRepresentation": true,
+        "inventedCapacityUsd": 25000000
+      },
+      "notes": "Incorrect coercion of discretionary capacity into a dollar amount."
+    },
+    {
+      "caseId": "syn-comp-greater-of",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "comparator": "GREATER_OF", "threshold": "25000000_or_10pct_ebitda" }
+    },
+    {
+      "caseId": "syn-entity-non-guarantor",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "entityScope": "restricted_subsidiaries_that_are_not_loan_parties" }
+    },
+    {
+      "caseId": "syn-exc-lettered-baskets",
+      "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+      "prediction": { "exceptions": ["6.02(a)", "6.02(b)", "6.02(c)"] }
+    }
+  ]
+}

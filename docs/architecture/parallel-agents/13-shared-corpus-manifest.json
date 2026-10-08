@@ -1,0 +1,105 @@
+{
+  "artifact": "shared-corpus-manifest",
+  "version": 1,
+  "status": "ACTIVE",
+  "ownerWorkstream": "WS-PAR",
+  "schemaOwners": {
+    "identityContract": "WS-PAR",
+    "datasetDeliveryContract": "WS-PAR",
+    "knowledgeFactoryPersistence": "WS-CKF",
+    "secScheduler": "WS-CKF",
+    "modelAdapters": "WS-VIC",
+    "independentBenchmark": "WS-CKB",
+    "productionLegalEngine": "OUT_OF_FLEET"
+  },
+  "contracts": {
+    "identities": "docs/architecture/parallel-agents/04-canonical-identity-contract.json",
+    "datasetDelivery": "docs/architecture/parallel-agents/06-dataset-delivery-contract.json",
+    "secScheduler": "docs/architecture/parallel-agents/05-sec-request-scheduler-contract.md",
+    "integrationGates": "docs/architecture/parallel-agents/07-integration-gates.md",
+    "integrationQueue": "docs/architecture/parallel-agents/08-integration-queue.json"
+  },
+  "requiredLogicalIdentities": [
+    "issuer_id",
+    "filing_id",
+    "source_document_id",
+    "instrument_id",
+    "document_version_id",
+    "structural_provision_id",
+    "covenant_candidate_id",
+    "definition_id",
+    "dependency_edge_id",
+    "amendment_event_id",
+    "precedent_pattern_id",
+    "semantic_representation_id",
+    "verification_record_id"
+  ],
+  "requiredDatasetFields": [
+    "exactSourceProvenance",
+    "stableContentIdentities",
+    "sourceTextHashes",
+    "compilerOrModelVersions",
+    "confidenceAndUncertaintyLabels",
+    "verificationStatus",
+    "duplicateDetection",
+    "deterministicReplay",
+    "actualRecordCounts",
+    "independentQualityMetrics"
+  ],
+  "contributingDatasets": [
+    {
+      "workstreamId": "WS-CKF",
+      "manifestHint": "docs/knowledge-factory/manifests/*",
+      "importReady": false,
+      "notes": "Branch exists; draft PR not open; EDGAR-capable; fixture manifests present"
+    },
+    {
+      "workstreamId": "WS-DEF",
+      "pr": "https://github.com/egsul897/headroom/pull/139",
+      "manifestHint": "docs/definition-encyclopedia/knowledge-factory-export.json",
+      "importReady": "PENDING_06_ALIGN",
+      "dataClass": "SOURCE_BACKED_FROM_EXISTING_FIXTURES"
+    },
+    {
+      "workstreamId": "WS-CDA",
+      "pr": "https://github.com/egsul897/headroom/pull/140",
+      "manifestHint": "tests/fixtures/covenant-dependency-atlas/export/knowledge-factory-dataset.json",
+      "importReady": "PENDING_06_ALIGN",
+      "dataClass": "SOURCE_BACKED_FROM_EXISTING_FIXTURES"
+    },
+    {
+      "workstreamId": "WS-NED",
+      "pr": "https://github.com/egsul897/headroom/pull/143",
+      "manifestHint": "docs/negative-covenant-exception-database/**",
+      "importReady": "PENDING_06_ALIGN",
+      "dataClass": "RESEARCH_DATASET_OFFLINE"
+    },
+    {
+      "workstreamId": "WS-PCI",
+      "pr": "https://github.com/egsul897/headroom/pull/144",
+      "manifestHint": "lib/precedent-comparison/corpus/**",
+      "importReady": "PENDING_06_ALIGN",
+      "dataClass": "SOURCE_BACKED_CORPUS"
+    },
+    {
+      "workstreamId": "WS-CKB",
+      "pr": "https://github.com/egsul897/headroom/pull/145",
+      "manifestHint": "docs/covenant-knowledge-generalization-benchmark/01-dataset-manifest.json",
+      "importReady": false,
+      "notes": "Independent eval — must not be contaminated by tuning workstreams (gate G6)",
+      "dataClass": "HELD_OUT_BENCHMARK"
+    },
+    {
+      "workstreamId": "WS-EHB",
+      "pr": "https://github.com/egsul897/headroom/pull/142",
+      "manifestHint": "discovery/pilot outputs TBD via CKF scheduler",
+      "importReady": false,
+      "dataClass": "INFRASTRUCTURE_PLUS_FIXTURES"
+    }
+  ],
+  "secAccessPolicy": {
+    "singleSchedulerOwner": "WS-CKF",
+    "mockForBlockedPeers": "scripts/parallel-agents/mocks/sec-scheduler-mock.ts",
+    "forbidden": "Independent parallel SEC.gov flooders"
+  }
+}

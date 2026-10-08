@@ -1,0 +1,428 @@
+{
+  "protocol": {
+    "schemaVersion": "ckg-benchmark.v1",
+    "title": "Headroom Covenant Knowledge Generalization Benchmark",
+    "purpose": "Independent measurement of covenant-knowledge coverage and generalization on held-out public agreements. Not a certification gate. Not a Claude-owned acceptance suite.",
+    "hardRules": [
+      "Do not modify Claude-owned acceptance tests or their fixtures.",
+      "Held-out documents in this dataset must not be used for prompt tuning or extraction-rule development.",
+      "Never mark model-generated interpretations as verified ground truth.",
+      "Labels must be SOURCE_VERIFIED (direct public-source adjudication) or REVIEWER_APPROVED (synthetic / prior independent GT). UNLABELED is a first-class outcome, distinct from FAILURE and SUCCESS.",
+      "No paid model calls in the evaluation harness. Offline scoring only.",
+      "No merges, certification status changes, or production extraction-rule changes as part of this benchmark."
+    ],
+    "labelAuthorities": {
+      "SOURCE_VERIFIED": "Adjudicator read the public EDGAR source text and recorded a citation/excerpt before scoring.",
+      "REVIEWER_APPROVED": "Synthetic adversarial case or prior independently authored GT reused with disclosure; not model self-labels.",
+      "UNLABELED": "Case reserved or incomplete; must not be counted as success or failure."
+    },
+    "metrics": [
+      "covenant_family_discovery_recall",
+      "definition_extraction_accuracy",
+      "cross_reference_accuracy",
+      "condition_recall",
+      "exception_recall",
+      "entity_scope_accuracy",
+      "amendment_reconstruction",
+      "shared_capacity_recognition",
+      "comparator_correctness",
+      "false_permission_rate",
+      "unsupported_semantic_refusal",
+      "provenance_accuracy",
+      "unseen_document_performance",
+      "cost_per_source_verified_representation"
+    ],
+    "stratificationDimensions": [
+      "agreementType",
+      "issuer",
+      "covenantFamily",
+      "draftingComplexity"
+    ],
+    "heldOutPolicy": {
+      "eligible": [
+        "Packages designated DEVELOPMENT or BLIND that were not used to author production prompts or extraction rules.",
+        "Packages previously used only for unseen validation scoring (permanent regression under invariant 28) when labels were independently authored from source before pipeline inspection of those claims."
+      ],
+      "ineligibleAsHeldOutGeneralizationEvidence": [
+        "FWRG, LSB, CONMED, DSGR, Chewy — permanent regression / tuning packages.",
+        "Riot — remediated against; permanent regression evidence."
+      ],
+      "contaminationGuard": "scripts/ckg-benchmark/run.ts and tests/covenant-knowledge-generalization/* must not import production prompt templates for mutation, and must not write into Claude-owned acceptance fixture paths."
+    }
+  },
+  "packages": {
+    "schemaVersion": "ckg-benchmark.v1",
+    "packages": [
+      {
+        "packageId": "gibraltar-2026-credit-agreement",
+        "issuer": "Gibraltar Industries, Inc.",
+        "ticker": "ROCK",
+        "cik": "0000912562",
+        "agreementType": "CREDIT_AGREEMENT",
+        "heldOutStatus": "HELD_OUT_DEVELOPMENT_PACKAGE",
+        "heldOutRationale": "Public SEC EDGAR EX-10.1 (accession 0001140361-26-003087). Designated DEVELOPMENT for structural ingestion only. Pass B/C/D never ran; no prompt or extraction-rule tuning against this package. Eligible for independent offline labeling.",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "provenancePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/provenance.json",
+        "usedForPromptTuning": false,
+        "usedForExtractionRuleDevelopment": false,
+        "paidCallsInThisBenchmark": 0
+      },
+      {
+        "packageId": "superior-2022-2025-credit-facility",
+        "issuer": "Superior Industries International, Inc.",
+        "ticker": "SUP",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "heldOutStatus": "FORMERLY_UNSEEN_NOW_REGRESSION",
+        "heldOutRationale": "Selected as genuinely unseen for lightweight confirmation. Independent source-first GT in docs/final-lightweight-unseen/07-targeted-ground-truth.json. Per invariant 28 it is permanent regression evidence and cannot again claim blind generalization, but remains valid for offline CKG metric measurement without further tuning.",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/",
+        "independentGtPath": "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+        "usedForPromptTuning": false,
+        "usedForExtractionRuleDevelopment": false,
+        "paidCallsInThisBenchmark": 0,
+        "invariant28Disclosure": true
+      },
+      {
+        "packageId": "ckg-synthetic-micro",
+        "issuer": "SYNTHETIC",
+        "agreementType": "SYNTHETIC_MICRO",
+        "heldOutStatus": "REVIEWER_APPROVED_CONTROLS",
+        "heldOutRationale": "Controlled micro-agreements for false-permission, unsupported-semantic refusal, and comparator direction. Not derived from model output. REVIEWER_APPROVED labels only.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json",
+        "usedForPromptTuning": false,
+        "usedForExtractionRuleDevelopment": false,
+        "paidCallsInThisBenchmark": 0
+      }
+    ],
+    "reservedBlind": {
+      "issuer": "Knife River",
+      "status": "BLIND_BODY_UNREAD",
+      "note": "Body must remain unread. Not included in this benchmark dataset."
+    }
+  },
+  "caseIds": [
+    {
+      "caseId": "gib-fam-indebtedness",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "gib-fam-liens",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "LIENS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-fam-asset-sales",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "ASSET_SALES",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-fam-rp",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "gib-fam-fincov",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-fam-investments-absent",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "INVESTMENTS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-def-ctnlr",
+      "metric": "definition_extraction_accuracy",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "gib-xref-builder-basket",
+      "metric": "cross_reference_accuracy",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "gib-cond-7.08a-qma",
+      "metric": "condition_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "gib-exc-7.02-permitted-lien",
+      "metric": "exception_recall",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "LIENS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-scope-7.08",
+      "metric": "entity_scope_accuracy",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-shared-ebitda-addback-cap",
+      "metric": "shared_capacity_recognition",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "gib-shared-pass-a-false-positive-control",
+      "metric": "shared_capacity_recognition",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "gib-comp-7.08a-leverage",
+      "metric": "comparator_correctness",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "gib-comp-7.08b-interest-coverage",
+      "metric": "comparator_correctness",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "gib-prov-7.08a",
+      "metric": "provenance_accuracy",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "FINANCIAL_COVENANTS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "gib-amend-no-post-closing-amendment",
+      "metric": "amendment_reconstruction",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "gib-unlabeled-deep-7.01-baskets",
+      "metric": "exception_recall",
+      "authority": "UNLABELED",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "sup-def-ebitda-siblings",
+      "metric": "definition_extraction_accuracy",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "sup-def-amendment-three-terms",
+      "metric": "definition_extraction_accuracy",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "sup-xref-secured-net-leverage",
+      "metric": "cross_reference_accuracy",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "sup-cond-cash-sweep-cure",
+      "metric": "condition_recall",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "sup-shared-ebitda-10pct",
+      "metric": "shared_capacity_recognition",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "covenantFamily": "DEFINITIONS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "sup-amend-doc-b-restates-doc-a",
+      "metric": "amendment_reconstruction",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "sup-amend-doc-c-amends-doc-b",
+      "metric": "amendment_reconstruction",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "sup-prov-doc-b-caption",
+      "metric": "provenance_accuracy",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "sup-unseen-aggregate",
+      "metric": "unseen_document_performance",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "sup-cost-offline",
+      "metric": "cost_per_source_verified_representation",
+      "authority": "SOURCE_VERIFIED",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "syn-false-perm-general-prohibition",
+      "metric": "false_permission_rate",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "syn-false-perm-carveout-present",
+      "metric": "false_permission_rate",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "syn-unsupported-or-formula",
+      "metric": "unsupported_semantic_refusal",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "syn-unsupported-coercion-control",
+      "metric": "unsupported_semantic_refusal",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "draftingComplexity": "HIGH"
+    },
+    {
+      "caseId": "syn-comp-greater-of",
+      "metric": "comparator_correctness",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "syn-entity-non-guarantor",
+      "metric": "entity_scope_accuracy",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "INDEBTEDNESS",
+      "draftingComplexity": "MEDIUM"
+    },
+    {
+      "caseId": "syn-exc-lettered-baskets",
+      "metric": "exception_recall",
+      "authority": "REVIEWER_APPROVED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "LIENS",
+      "draftingComplexity": "LOW"
+    },
+    {
+      "caseId": "syn-unlabeled-future-issuer",
+      "metric": "covenant_family_discovery_recall",
+      "authority": "UNLABELED",
+      "issuer": "SYNTHETIC",
+      "agreementType": "SYNTHETIC_MICRO",
+      "covenantFamily": "OTHER",
+      "draftingComplexity": "LOW"
+    }
+  ]
+}
