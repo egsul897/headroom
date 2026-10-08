@@ -36,7 +36,7 @@ describe("covenant research — db adapter", () => {
 
     expect(entry.entryId).toBe("db:truth-1");
     expect(entry.sourceExcerpt).toContain("$10,000,000");
-    expect(entry.verificationStatus).toBe("COMPILED");
+    expect(entry.verificationStatus).toBe("HYPOTHESIS");
     expect(entry.filing.url).toContain("sec.gov");
     expect(entry.relatedConditions[0]?.type).toBe("NO_DEFAULT");
   });

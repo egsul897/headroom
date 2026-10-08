@@ -1,22 +1,26 @@
 #!/usr/bin/env npx tsx
 /**
- * CLI — Covenant Precedent Research Interface (Phase 2)
+ * CLI — Covenant Precedent Research Interface (Phase 3)
  *
  * Usage:
  *   npx tsx scripts/covenant-precedent-research.ts "Find credit agreements with a $25 million general debt basket"
- *   npx tsx scripts/covenant-precedent-research.ts --phase2-corpus --as-of 2024-06-01 --operative-only "Restricted Payments"
+ *   npx tsx scripts/covenant-precedent-research.ts --phase3-corpus --as-of 2024-06-01 --operative-only "Restricted Payments"
  *   npx tsx scripts/covenant-precedent-research.ts --report-corpus
  *   npx tsx scripts/covenant-precedent-research.ts --eval-held-out
+ *   npx tsx scripts/covenant-precedent-research.ts --eval-independent --phase3-corpus
  */
 
 import {
   DEFAULT_RESEARCH_CORPUS_PATH,
   buildPhase2ResearchCorpus,
+  buildPhase3ResearchCorpus,
   evaluateHeldOutRetrieval,
+  evaluateIndependentRetrieval,
   formatResearchResponse,
   ingestDefaultDiscoveryPackages,
   loadResearchCorpusFromFile,
   parseResearchQuery,
+  probeCanonicalExportAdapters,
   probeKnowledgeFactoryIntegrations,
   retrieveResearch,
   tryLoadResearchCorpusFromDb,
@@ -25,7 +29,7 @@ import {
 } from "../lib/covenant-research";
 
 function usage(): never {
-  console.error(`Covenant Precedent Research Interface (Phase 2)
+  console.error(`Covenant Precedent Research Interface (Phase 3)
 
 Usage:
   npx tsx scripts/covenant-precedent-research.ts [options] "<natural language query>"
@@ -43,11 +47,13 @@ Options:
   --operative-only              Only CURRENT_OPERATIVE (as-of aware)
   --limit <n>                   Max hits (default 10)
   --corpus <path>               Curated corpus JSON path
-  --phase2-corpus               Build corpus from curated + all available discovery/compiled fixtures
+  --phase2-corpus               Build corpus from curated + phase2 discovery/compiled fixtures
+  --phase3-corpus               Build corpus from phase2 + SUP + Gibraltar structure + CKF exports
   --with-discovery-ingest       Legacy: merge FWRG/LSB discovery only
   --from-db                     Try SemanticTruthRecord projection (falls back if empty)
-  --report-corpus               Print corpus build + knowledge-factory status JSON and exit
-  --eval-held-out               Run held-out retrieval metrics JSON and exit
+  --report-corpus               Print corpus build + knowledge-factory + adapter status JSON and exit
+  --eval-held-out               Run Phase-2 held-out retrieval metrics JSON and exit
+  --eval-independent            Run issuer-disjoint independent eval metrics JSON and exit
   --json                        Emit JSON instead of text
   --help                        Show this help
 
@@ -63,8 +69,10 @@ function parseArgs(argv: string[]): {
   fromDb: boolean;
   withDiscoveryIngest: boolean;
   phase2Corpus: boolean;
+  phase3Corpus: boolean;
   reportCorpus: boolean;
   evalHeldOut: boolean;
+  evalIndependent: boolean;
   asJson: boolean;
 } {
   const structured: StructuredQueryInput = {};
@@ -73,8 +81,10 @@ function parseArgs(argv: string[]): {
   let fromDb = false;
   let withDiscoveryIngest = false;
   let phase2Corpus = false;
+  let phase3Corpus = false;
   let reportCorpus = false;
   let evalHeldOut = false;
+  let evalIndependent = false;
   let asJson = false;
   const issuers: string[] = [];
   const agreementTypes: string[] = [];
@@ -139,11 +149,17 @@ function parseArgs(argv: string[]): {
       case "--phase2-corpus":
         phase2Corpus = true;
         break;
+      case "--phase3-corpus":
+        phase3Corpus = true;
+        break;
       case "--report-corpus":
         reportCorpus = true;
         break;
       case "--eval-held-out":
         evalHeldOut = true;
+        break;
+      case "--eval-independent":
+        evalIndependent = true;
         break;
       case "--json":
         asJson = true;
@@ -164,7 +180,15 @@ function parseArgs(argv: string[]): {
   if (families.length) structured.family = families;
   if (conditions.length) structured.conditionType = conditions;
 
-  if (!reportCorpus && !evalHeldOut && !structured.text && structured.amountUsd == null && !structured.intent && !structured.family) {
+  if (
+    !reportCorpus &&
+    !evalHeldOut &&
+    !evalIndependent &&
+    !structured.text &&
+    structured.amountUsd == null &&
+    !structured.intent &&
+    !structured.family
+  ) {
     usage();
   }
 
@@ -175,8 +199,10 @@ function parseArgs(argv: string[]): {
     fromDb,
     withDiscoveryIngest,
     phase2Corpus,
+    phase3Corpus,
     reportCorpus,
     evalHeldOut,
+    evalIndependent,
     asJson,
   };
 }
@@ -186,7 +212,11 @@ async function loadCorpus(opts: {
   fromDb: boolean;
   withDiscoveryIngest: boolean;
   phase2Corpus: boolean;
+  phase3Corpus: boolean;
 }) {
+  if (opts.phase3Corpus) {
+    return buildPhase3ResearchCorpus().entries;
+  }
   if (opts.phase2Corpus) {
     return buildPhase2ResearchCorpus().entries;
   }
@@ -215,13 +245,17 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   if (args.reportCorpus) {
-    const report = buildPhase2ResearchCorpus();
+    const report = args.phase2Corpus ? buildPhase2ResearchCorpus() : buildPhase3ResearchCorpus();
     const { entries: _e, ...summary } = report;
     console.log(
       JSON.stringify(
         {
           corpus: summary,
           knowledgeFactory: probeKnowledgeFactoryIntegrations(),
+          canonicalAdapters: probeCanonicalExportAdapters(),
+          databaseIntegrationStatus: process.env.DATABASE_URL
+            ? "DATABASE_URL_PRESENT_UNVERIFIED_SAFE_TEST"
+            : "DB_INTEGRATION_UNVERIFIED",
         },
         null,
         2,
@@ -231,6 +265,12 @@ async function main() {
   }
 
   const corpus = await loadCorpus(args);
+
+  if (args.evalIndependent) {
+    const evalReport = evaluateIndependentRetrieval(corpus);
+    console.log(JSON.stringify(evalReport, null, 2));
+    return;
+  }
 
   if (args.evalHeldOut) {
     const evalReport = evaluateHeldOutRetrieval(corpus);

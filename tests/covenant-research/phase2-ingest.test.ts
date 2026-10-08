@@ -27,12 +27,13 @@ describe("covenant research phase2 — corpus integration", () => {
     expect(keys.size).toBe(report.entries.length);
   });
 
-  it("preserves FIXTURE / UNVERIFIED / HYPOTHESIS / COMPILED distinctly and never invents VERIFIED", () => {
+  it("preserves FIXTURE / UNVERIFIED / HYPOTHESIS and never invents legal verification", () => {
     const dist = report.verificationStatusDistribution;
     expect(dist.FIXTURE ?? 0).toBeGreaterThan(0);
     expect(dist.UNVERIFIED ?? 0).toBeGreaterThan(0);
-    // Compiled path may emit HYPOTHESIS and/or COMPILED depending on unit status.
-    expect((dist.HYPOTHESIS ?? 0) + (dist.COMPILED ?? 0)).toBeGreaterThan(0);
+    expect(dist.HYPOTHESIS ?? 0).toBeGreaterThan(0);
+    expect(dist.SOURCE_VERIFIED ?? 0).toBe(0);
+    expect(dist.INDEPENDENTLY_LEGALLY_VERIFIED ?? 0).toBe(0);
     expect(dist.VERIFIED ?? 0).toBe(0);
   });
 

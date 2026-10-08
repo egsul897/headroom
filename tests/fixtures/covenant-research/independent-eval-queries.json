@@ -1,0 +1,983 @@
+{
+  "schemaVersion": "covenant-research-independent-eval.v1",
+  "disclaimer": "Independent issuer-disjoint evaluation set (Superior Industries / SUP). Labels authored by human review of pinned discovery fixtures, not model self-labels. Retrieval relevance is not legal correctness. Overlap disclosure: Phase-2 held-out issuers (FWRG, DSGR, CONMED, CHWY, LSB, RFIC) are excluded from positive relevance targets. ROCK/Gibraltar may appear in the broader corpus but is not used as a positive label here. No indenture package was available in-repo.",
+  "issuerDisjointFromPhase2HeldOut": true,
+  "documentDisjointPositiveLabels": true,
+  "primaryEvalIssuer": {
+    "ticker": "SUP",
+    "name": "Superior Industries International, Inc.",
+    "companyId": "sup-term-loan-2022-2025"
+  },
+  "corpusOverlapDisclosure": {
+    "phase2HeldOutIssuersExcludedFromPositiveLabels": [
+      "FWRG",
+      "DSGR",
+      "CNMD",
+      "CHWY",
+      "LXU",
+      "RFIC"
+    ],
+    "evalIssuerPresentInPhase2HeldOut": false,
+    "indentureDocumentsAvailable": false,
+    "notes": "Positive relevance labels target SUP package documents only. Broader Phase-3 corpus also contains Phase-2 issuers; metrics use label matching, not issuer filters, unless query specifies SUP."
+  },
+  "queries": [
+    {
+      "id": "IND-DEBT-01",
+      "category": "DEBT_BASKETS",
+      "query": "Superior Industries term loan: find the general Indebtedness covenant in Section 7.02",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:1456c0e4340b6e60834fc03c",
+        "discovery:sup-term-loan:discovery-candidate:d82d5ec78b54888e44dde3f0"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Indebtedness"
+      ]
+    },
+    {
+      "id": "IND-DEBT-02",
+      "category": "DEBT_BASKETS",
+      "query": "SUP credit agreement non-Guarantor Subsidiary Indebtedness cap",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:0e0bad3456c897c7b9d43516",
+        "discovery:sup-term-loan:discovery-candidate:bf6a28b727373b9acbe218de"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02",
+        "7.02(b)(23)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "not Guarant"
+      ]
+    },
+    {
+      "id": "IND-DEBT-03",
+      "category": "DEBT_BASKETS",
+      "query": "Find Permitted Ratio Debt maturity constraints in Superior Industries agreement",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:d618a99244ae60dd45180e74"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Permitted Ratio Debt"
+      ]
+    },
+    {
+      "id": "IND-DEBT-04",
+      "category": "DEBT_BASKETS",
+      "query": "SUP First Lien Net Leverage Ratio gate for pari passu secured debt",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:25a27a3d821c6c59533071c5"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "First Lien Net Leverage Ratio",
+        "2.00"
+      ]
+    },
+    {
+      "id": "IND-DEBT-05",
+      "category": "DEBT_BASKETS",
+      "query": "Superior Industries prohibition on creating Indebtedness under 7.02(a)",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:0ea605d5915bdd9b9b731b5b",
+        "discovery:sup-term-loan:discovery-candidate:d82d5ec78b54888e44dde3f0"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02(a)",
+        "7.02(a)(i)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ]
+    },
+    {
+      "id": "IND-RP-01",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Find Superior Industries Restricted Payments covenant Section 7.05",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:e6c089ca3e4b2840a61562bc",
+        "discovery:sup-term-loan:discovery-candidate:daeb260d3fb975956c4626f6"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05",
+        "7.05(a)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Restricted Payment"
+      ]
+    },
+    {
+      "id": "IND-RP-02",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "SUP restrictions on dividends or distributions on Equity Interests",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:7a2a797e79aed88f8270fcc2"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(A)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "dividend"
+      ]
+    },
+    {
+      "id": "IND-RP-03",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Superior Industries prohibition on Restricted Investments under RP covenant",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:fc71460d054a35c61477bbf3"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(D)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Restricted Investment"
+      ]
+    },
+    {
+      "id": "IND-RP-04",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "SUP early repayment restrictions on Subordinated Indebtedness in RP section",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:9dbb89c5106096e3aa496c4b"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(C)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Subordinated"
+      ]
+    },
+    {
+      "id": "IND-RP-05",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Find SUP RP carve-out for dividends payable solely in Equity Interests",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:9c1b80b4a97d9bc31e3fb7d1"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(A)(i)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Equity Interests"
+      ]
+    },
+    {
+      "id": "IND-INV-01",
+      "category": "INVESTMENTS",
+      "query": "Superior Industries existing Investments permission",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:8b529448154961c20820df7c"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Existing Investments"
+      ]
+    },
+    {
+      "id": "IND-INV-02",
+      "category": "INVESTMENTS",
+      "query": "SUP defined-term Investment baskets including Cash Equivalents",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:aa1362ae24ac2a8b2971672c"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Investment"
+      ]
+    },
+    {
+      "id": "IND-INV-03",
+      "category": "INVESTMENTS",
+      "query": "Superior Industries ratio-based unlimited Investments if Secured Net Leverage satisfied",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:581c703d1346c0e417cbd95d"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Secured Net Leverage"
+      ]
+    },
+    {
+      "id": "IND-EBITDA-01",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "SUP run-rate cost savings and synergy addback caps for Permitted Acquisitions",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:047235548e8fd86d264b9629"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "synerg"
+      ]
+    },
+    {
+      "id": "IND-EBITDA-02",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "Superior Industries pro forma synergy amounts must be reasonably identifiable",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:14509be053d3d04543559b89",
+        "discovery:sup-term-loan:discovery-candidate:6759d43b16a9aa9a71b5efe7"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.07(3)",
+        "1.07(3)(a)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "factually supportable"
+      ]
+    },
+    {
+      "id": "IND-SHARED-01",
+      "category": "SHARED_CAPACITY",
+      "query": "SUP Article VII compliance reclassification across Lien Investment Indebtedness baskets",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:33b5ee6dd7f2d49092560b02",
+        "discovery:sup-term-loan:discovery-candidate:d2f26f6ce756a2651dce5925"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.02(10)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "classify or reclassify"
+      ]
+    },
+    {
+      "id": "IND-RECLASS-01",
+      "category": "RECLASSIFICATION",
+      "query": "Find Superior Industries Lien reclassification sole-discretion language",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:36abb6da4849ee17c57a0e6d",
+        "discovery:sup-term-loan:discovery-candidate:e8ffdff41c57aefdda012d84"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "reclassify"
+      ]
+    },
+    {
+      "id": "IND-RECLASS-02",
+      "category": "RECLASSIFICATION",
+      "query": "SUP Indebtedness classify divide reclassify basket election",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:f241fa0336615ac1eed621f0",
+        "discovery:sup-term-loan:discovery-candidate:08af8ae401d6ae2be90d0304"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02(c)(1)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "reclassify"
+      ]
+    },
+    {
+      "id": "IND-AMEND-01",
+      "category": "AMENDMENTS",
+      "query": "Superior Industries First Amendment Maintenance Liquidity definitions",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:12d6bada40309acc1607d669"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "2(a)",
+        "2"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Maintenance Liquidity"
+      ]
+    },
+    {
+      "id": "IND-AMEND-02",
+      "category": "AMENDMENTS",
+      "query": "SUP First Amendment mandatory prepayment of Super-Priority Revolving Loans",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:3350d5d98398168dbf8ff541"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "2"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Super-Priority"
+      ]
+    },
+    {
+      "id": "IND-AMEND-03",
+      "category": "AMENDMENTS",
+      "query": "Find SUP prohibition on modifying terms of Subordinated Indebtedness",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:b1e6755db02c39d2cad689f6"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.10"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Subordinated Indebtedness"
+      ]
+    },
+    {
+      "id": "IND-AMEND-04",
+      "category": "AMENDMENTS",
+      "query": "Superior Industries First Amendment monthly factoring report covenant",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:5925aacb37cd1dee2089c7c1"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "2(c)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Monthly Factoring"
+      ]
+    },
+    {
+      "id": "IND-AMEND-ASOF-01",
+      "category": "AMENDMENTS",
+      "query": "As of 2025-06-01, find operative SUP First Amendment Maintenance Liquidity changes",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:12d6bada40309acc1607d669",
+        "discovery:sup-term-loan:discovery-candidate:3350d5d98398168dbf8ff541"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "2"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "asOfDate": "2025-06-01",
+      "operativeOnly": false
+    },
+    {
+      "id": "IND-ENTITY-01",
+      "category": "ENTITY_SCOPE",
+      "query": "SUP caps on Indebtedness of Subsidiaries that are not Guarantors",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:bf6a28b727373b9acbe218de",
+        "discovery:sup-term-loan:discovery-candidate:0e0bad3456c897c7b9d43516"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02(b)(23)",
+        "7.02"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "not Guarant"
+      ]
+    },
+    {
+      "id": "IND-ENTITY-02",
+      "category": "ENTITY_SCOPE",
+      "query": "Superior Industries fundamental changes restrictions on mergers",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:15a3c88a1cc4b97148301a96"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.03"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Fundamental Changes"
+      ]
+    },
+    {
+      "id": "IND-ENTITY-03",
+      "category": "ENTITY_SCOPE",
+      "query": "SUP permission for non-Loan-Party Subsidiary mergers",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:74dedd7beae7c0f68c17507b"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.03(2)(a)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "not a Loan Party"
+      ]
+    },
+    {
+      "id": "IND-LIEN-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "Find Superior Industries Liens negative covenant Section 7.01",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:36abb6da4849ee17c57a0e6d"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Liens"
+      ]
+    },
+    {
+      "id": "IND-ASSET-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "SUP Asset Sale definition exclusions for low fair-market-value dispositions",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:80d3fe45020c91f6bc64053f"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Asset Sale"
+      ]
+    },
+    {
+      "id": "IND-REMOTE-01",
+      "category": "REMOTE_CONDITIONS",
+      "query": "Superior Industries Fixed Charge Coverage Covenant testing carve-outs",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:9dd2f7a1657a26d8cd2d462b",
+        "discovery:sup-term-loan:discovery-candidate:23def69b465c684b0888b1d5"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.12(1)(B)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Fixed Charge"
+      ]
+    },
+    {
+      "id": "IND-REMOTE-02",
+      "category": "REMOTE_CONDITIONS",
+      "query": "SUP Limited Condition Transaction election for ratio dating",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:e8fc7feb853b9da6d7ab8fe6"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.07(8)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Notwithstanding"
+      ]
+    },
+    {
+      "id": "IND-XDOC-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "SUP exceptions referencing Super-Priority Revolving Credit Agreement restrictions",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:d3a61fc035b79fd5a948597e",
+        "discovery:sup-term-loan:discovery-candidate:8e9a9e8439a67bd8184bd0ad"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.08(b)(2)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Super-Priority Revolving"
+      ]
+    },
+    {
+      "id": "IND-XDOC-02",
+      "category": "CROSS_DOCUMENT",
+      "query": "Find SUP Incremental Loan Request mechanics",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:c784e7e72682ba10f086ec36"
+      ],
+      "notes": "Section-ref labeled; entry id resolved via issuer+section match.",
+      "relevantSectionRefs": [
+        "2.14(1)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Incremental"
+      ]
+    },
+    {
+      "id": "IND-DEBT-06",
+      "category": "DEBT_BASKETS",
+      "query": "SUP prohibition on issuing Disqualified Stock under indebtedness covenant",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:248f73e416fae9ea02f86181"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02(a)(ii)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Disqualified Stock"
+      ]
+    },
+    {
+      "id": "IND-DEBT-07",
+      "category": "DEBT_BASKETS",
+      "query": "Superior Industries existing Indebtedness heading/exception",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:c747f8874f7646b33375d1de"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.02"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Existing Indebtedness"
+      ]
+    },
+    {
+      "id": "IND-RP-06",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "SUP RP prohibition on purchasing or redeeming Equity Interests",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:36abcb18cf743422dcd162fb"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(B)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "redeem"
+      ]
+    },
+    {
+      "id": "IND-RP-07",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Superior Industries non-wholly-owned Subsidiary dividend carve-out",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:e572f766bf8b43653d3fe4c9"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(a)(A)(ii)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Subsidiary"
+      ]
+    },
+    {
+      "id": "IND-INV-04",
+      "category": "INVESTMENTS",
+      "query": "SUP LCT Election effects on Investment ratio tests",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:1ce1c6384d921a91009dad3c"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.07(8)(a)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ]
+    },
+    {
+      "id": "IND-EBITDA-03",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "Find SUP Consolidated EBITDA synergy language in definitions",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:047235548e8fd86d264b9629"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "run-rate"
+      ]
+    },
+    {
+      "id": "IND-SHARED-02",
+      "category": "SHARED_CAPACITY",
+      "query": "SUP RP reclassification of Restricted Payments and Investments",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:5713243514b92a3d46a29a71"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.05(c)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "reclass"
+      ]
+    },
+    {
+      "id": "IND-ENTITY-04",
+      "category": "ENTITY_SCOPE",
+      "query": "SUP Change of Control / ownership threshold definition",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:20321f893192d02135ed3b47"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ]
+    },
+    {
+      "id": "IND-ENTITY-05",
+      "category": "ENTITY_SCOPE",
+      "query": "Superior Industries Subsidiary merger into Borrower reorganization permission",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:87e2e53487639bd6bf00312b"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.03(1)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "merge"
+      ]
+    },
+    {
+      "id": "IND-AMEND-05",
+      "category": "AMENDMENTS",
+      "query": "SUP First Amendment effectiveness language",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:3350d5d98398168dbf8ff541",
+        "discovery:sup-term-loan:discovery-candidate:9e8369165f00812e135542cd"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "2"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "First Amendment Effective Date"
+      ]
+    },
+    {
+      "id": "IND-LIEN-02",
+      "category": "CROSS_DOCUMENT",
+      "query": "SUP negative pledge style restriction for non-Guarantor Subsidiaries under 7.08",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:3a7037b6d0a06e941f849391"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "7.08(a)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "not a Guarantor"
+      ]
+    },
+    {
+      "id": "IND-ASSET-02",
+      "category": "CROSS_DOCUMENT",
+      "query": "SUP Asset Sale exclusions for Cash Equivalents and obsolete assets",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:f8cd69fa8dc3f48e33bec2cb"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Cash Equivalents"
+      ]
+    },
+    {
+      "id": "IND-REMOTE-03",
+      "category": "REMOTE_CONDITIONS",
+      "query": "SUP pro forma interest calculation for floating rate Indebtedness",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:1428dd49799dde29e7cb7479"
+      ],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "relevantSectionRefs": [
+        "1.07(5)"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "floating rate"
+      ]
+    },
+    {
+      "id": "IND-NEG-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "Find high-yield indenture restricted payment builder basket for Superior Industries notes",
+      "relevantEntryIds": [],
+      "notes": "No indenture in SUP package; expect empty or non-indenture-only hits. Unanswerable for indenture ask.",
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "expectEmptyOrUnanswerable": true
+    },
+    {
+      "id": "IND-NEG-02",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "Find uncapped synergy addbacks in Superior Industries term loan EBITDA",
+      "relevantEntryIds": [],
+      "notes": "SUP synergies are capped; uncapped ask should not treat capped excerpts as fully relevant.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "expectEmptyOrUnanswerable": true
+    },
+    {
+      "id": "IND-NEG-03",
+      "category": "DEBT_BASKETS",
+      "query": "Find $25 million general debt basket in Superior Industries credit agreement",
+      "relevantEntryIds": [],
+      "notes": "No labeled $25M general debt basket for SUP; unanswerable relative to this corpus.",
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "expectEmptyOrUnanswerable": true
+    },
+    {
+      "id": "IND-NEG-04",
+      "category": "AMENDMENTS",
+      "query": "What is the current operative RP basket amount for SUP after all amendments?",
+      "relevantEntryIds": [],
+      "notes": "Operative amount not established; fail-closed / empty preferred.",
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "expectEmptyOrUnanswerable": true
+    },
+    {
+      "id": "IND-REFUSE-01",
+      "category": "DEBT_BASKETS",
+      "query": "Is this Superior Industries transaction permitted under the credit agreement?",
+      "relevantEntryIds": [],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "expectRefusal": true
+    },
+    {
+      "id": "IND-REFUSE-02",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Approve capacity for a $10 million dividend by Superior Industries",
+      "relevantEntryIds": [],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "expectRefusal": true
+    },
+    {
+      "id": "IND-REFUSE-03",
+      "category": "INVESTMENTS",
+      "query": "Certify that SUP may make this investment without default",
+      "relevantEntryIds": [],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "expectRefusal": true
+    },
+    {
+      "id": "IND-REFUSE-04",
+      "category": "AMENDMENTS",
+      "query": "Promote this SUP discovery candidate to verified legal rule",
+      "relevantEntryIds": [],
+      "notes": "Independent human review of SUP discovery fixtures; labels are not model self-scores.",
+      "expectRefusal": true
+    },
+    {
+      "id": "IND-MISSDEF-01",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "SUP Consolidated EBITDA definition controlling for synergy addbacks \u2014 disclose if definition incomplete",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:047235548e8fd86d264b9629"
+      ],
+      "notes": "Relevant hit expected; missing-definition dependency disclosure must appear on structure/discovery rows.",
+      "relevantSectionRefs": [
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ]
+    },
+    {
+      "id": "IND-MISSDEF-02",
+      "category": "INVESTMENTS",
+      "query": "What does Restricted Investment mean in the SUP agreement?",
+      "relevantEntryIds": [
+        "discovery:sup-term-loan:discovery-candidate:fc71460d054a35c61477bbf3"
+      ],
+      "notes": "May surface RP clause; controlling definition may be missing \u2014 disclosure required.",
+      "relevantSectionRefs": [
+        "7.05(a)(D)",
+        "1.01"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ]
+    },
+    {
+      "id": "IND-SIDE-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "Find SUP side letter altering Restricted Payments capacity",
+      "relevantEntryIds": [],
+      "notes": "No side letter in package; unanswerable.",
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "expectEmptyOrUnanswerable": true
+    },
+    {
+      "id": "IND-COND-01",
+      "category": "AMENDMENTS",
+      "query": "SUP Incremental Amendment effectiveness conditions",
+      "relevantEntryIds": [],
+      "notes": "Section-ref relevance for incremental effectiveness.",
+      "relevantSectionRefs": [
+        "2.14"
+      ],
+      "relevantIssuers": [
+        "SUP"
+      ],
+      "requiredCitationSubstrings": [
+        "Effectiveness of Incremental"
+      ]
+    }
+  ]
+}

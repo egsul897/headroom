@@ -1,7 +1,7 @@
 /**
  * Ingest compiled-IR fixture units (rules + definitions) as research entries.
- * Status mapping: REVIEW_REQUIRED → HYPOTHESIS; otherwise COMPILED.
- * Never promotes to VERIFIED.
+ * Status mapping: all compiled IR → HYPOTHESIS (structural interpretation).
+ * Never promotes to SOURCE_VERIFIED or INDEPENDENTLY_LEGALLY_VERIFIED.
  */
 
 import { readFileSync, existsSync } from "node:fs";
@@ -20,11 +20,9 @@ export interface CompiledIngestSpec {
   documentFilings?: Record<string, ResearchCorpusEntry["filing"]>;
 }
 
-function mapCompileStatus(status: unknown): ResearchVerificationStatus {
-  const s = String(status ?? "").toUpperCase();
-  if (s.includes("REVIEW")) return "HYPOTHESIS";
-  if (s.includes("FAIL") || s.includes("UNSUPPORTED")) return "HYPOTHESIS";
-  return "COMPILED";
+function mapCompileStatus(_status: unknown): ResearchVerificationStatus {
+  // Compiled IR is a structural hypothesis, not source- or legally-verified.
+  return "HYPOTHESIS";
 }
 
 export function ingestCompiledResults(spec: CompiledIngestSpec): ResearchCorpusEntry[] {

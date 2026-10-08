@@ -5,7 +5,12 @@
  */
 
 import { createHash } from "node:crypto";
-import type { OperativeVersionStatus, ResearchCorpusEntry, ResearchVerificationStatus } from "./types";
+import {
+  normalizeVerificationStatus,
+  type OperativeVersionStatus,
+  type ResearchCorpusEntry,
+  type ResearchVerificationStatus,
+} from "./types";
 
 export function excerptHash(text: string): string {
   return createHash("sha256").update(text.trim()).digest("hex").slice(0, 24);
@@ -93,11 +98,16 @@ export function attachIdentityFields(
   };
 }
 
-/** Prefer verified > compiled > hypothesis > unverified > fixture when collapsing dupes. */
+/**
+ * Prefer higher-trust statuses when collapsing exact identity dupes.
+ * Never invent SOURCE_VERIFIED / INDEPENDENTLY_LEGALLY_VERIFIED.
+ */
 const STATUS_RANK: Record<ResearchVerificationStatus, number> = {
-  VERIFIED: 50,
-  COMPILED: 40,
+  INDEPENDENTLY_LEGALLY_VERIFIED: 60,
+  SOURCE_VERIFIED: 50,
+  VERIFIED: 50, // legacy alias → treated like SOURCE_VERIFIED rank
   HYPOTHESIS: 30,
+  COMPILED: 30, // legacy alias
   REVIEW_REQUIRED: 25,
   UNVERIFIED: 20,
   FIXTURE: 10,
@@ -114,7 +124,8 @@ export function dedupeResearchEntries(entries: readonly ResearchCorpusEntry[]): 
   let removedCount = 0;
 
   for (const raw of entries) {
-    const entry = attachIdentityFields(raw);
+    const normalizedStatus = normalizeVerificationStatus(raw.verificationStatus);
+    const entry = attachIdentityFields({ ...raw, verificationStatus: normalizedStatus });
     const key = entry.identityKey!;
     const prev = keptByIdentity.get(key);
     if (!prev) {
@@ -124,7 +135,7 @@ export function dedupeResearchEntries(entries: readonly ResearchCorpusEntry[]): 
     removedCount += 1;
     const prevRank = STATUS_RANK[prev.verificationStatus] ?? 0;
     const nextRank = STATUS_RANK[entry.verificationStatus] ?? 0;
-    // Prefer richer excerpts / higher-trust status; never invent VERIFIED.
+    // Prefer richer excerpts / higher-trust status; never invent legal verification.
     if (nextRank > prevRank || (nextRank === prevRank && entry.sourceExcerpt.length > prev.sourceExcerpt.length)) {
       keptByIdentity.set(key, entry);
     }

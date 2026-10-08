@@ -8,6 +8,7 @@
 export {
   COVENANT_RESEARCH_SCHEMA_VERSION,
   RESEARCH_DISCLAIMER,
+  normalizeVerificationStatus,
   type ResearchCorpusEntry,
   type ResearchResponse,
   type ResearchHit,
@@ -29,6 +30,7 @@ export {
   COVENANT_RESEARCH_RETRIEVAL_VERSION,
   type RetrieveOptions,
 } from "./retrieve";
+export { consolidateSourceSpans, rerankHits, consolidationKey } from "./rerank";
 export {
   loadResearchCorpusFromFile,
   tryLoadResearchCorpusFromDb,
@@ -43,10 +45,15 @@ export {
   type PackageIngestSpec,
 } from "./ingest-discovery";
 export { ingestCompiledResults, type CompiledIngestSpec } from "./ingest-compiled";
+export { ingestNaturalSearchStructure, type StructureIngestSpec } from "./ingest-structure";
 export {
   buildPhase2ResearchCorpus,
+  buildPhase3ResearchCorpus,
   phase2DiscoverySpecs,
   phase2CompiledSpecs,
+  phase3DiscoverySpecs,
+  phase3CompiledSpecs,
+  phase3StructureSpecs,
   type CorpusBuildReport,
 } from "./ingest-registry";
 export { dedupeResearchEntries, attachIdentityFields, researchIdentityKey } from "./identity";
@@ -55,6 +62,19 @@ export {
   knowledgeFactoryBlockers,
   type KnowledgeFactoryIntegrationStatus,
 } from "./knowledge-factory";
+export {
+  CANONICAL_ADAPTER_CONTRACT_VERSION,
+  probeCanonicalExportAdapters,
+  canonicalAdapterBlockers,
+  loadFromSourceToCovenantExport,
+  type CanonicalExportAdapterStatus,
+  type AdapterMaturity,
+} from "./canonical-adapters";
 export { classifyOperativeAsOf, passesAmendmentAwareFilter } from "./amendment-aware";
 export { evaluateHeldOutRetrieval, HELD_OUT_QUERIES_PATH, type EvalReport } from "./evaluate";
+export {
+  evaluateIndependentRetrieval,
+  INDEPENDENT_EVAL_QUERIES_PATH,
+  type IndependentEvalReport,
+} from "./evaluate-independent";
 export { formatResearchResponse } from "./format";

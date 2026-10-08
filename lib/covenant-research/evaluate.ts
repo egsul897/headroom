@@ -54,6 +54,7 @@ export interface QueryMetric {
   recallAt5: number;
   recallAt10: number;
   precisionAt5: number;
+  reciprocalRank: number;
   citationCorrect: boolean | null;
   versionCorrect: boolean | null;
   missingDependencyDisclosed: boolean | null;
@@ -67,6 +68,7 @@ export interface EvalReport {
   macroRecallAt5: number;
   macroRecallAt10: number;
   macroPrecisionAt5: number;
+  mrr: number;
   citationCorrectRate: number;
   versionCorrectRate: number;
   missingDependencyDisclosureRate: number;
@@ -89,6 +91,13 @@ function precisionAt(relevant: Set<string>, hits: string[], k: number): number {
   const top = hits.slice(0, k);
   if (top.length === 0) return 0;
   return top.filter((id) => relevant.has(id)).length / top.length;
+}
+
+function reciprocalRank(relevant: Set<string>, hits: string[]): number {
+  for (let i = 0; i < hits.length; i++) {
+    if (relevant.has(hits[i]!)) return 1 / (i + 1);
+  }
+  return 0;
 }
 
 function avg(nums: number[]): number {
@@ -117,6 +126,7 @@ export function evaluateHeldOutRetrieval(corpus: readonly ResearchCorpusEntry[])
         recallAt5: 0,
         recallAt10: 0,
         precisionAt5: 0,
+        reciprocalRank: 0,
         citationCorrect: null,
         versionCorrect: null,
         missingDependencyDisclosed: null,
@@ -214,6 +224,7 @@ export function evaluateHeldOutRetrieval(corpus: readonly ResearchCorpusEntry[])
       recallAt5: Number(recall(relevant, hitIds, 5).toFixed(4)),
       recallAt10: Number(recall(relevant, hitIds, 10).toFixed(4)),
       precisionAt5: Number(precisionAt(relevant, hitIds, 5).toFixed(4)),
+      reciprocalRank: Number(reciprocalRank(relevant, hitIds).toFixed(4)),
       citationCorrect,
       versionCorrect,
       missingDependencyDisclosed,
@@ -236,6 +247,7 @@ export function evaluateHeldOutRetrieval(corpus: readonly ResearchCorpusEntry[])
     macroRecallAt5: avg(nonRefusal.map((q) => q.recallAt5)),
     macroRecallAt10: avg(nonRefusal.map((q) => q.recallAt10)),
     macroPrecisionAt5: avg(nonRefusal.map((q) => q.precisionAt5)),
+    mrr: avg(nonRefusal.map((q) => q.reciprocalRank)),
     citationCorrectRate: citationMeasured.length
       ? avg(citationMeasured.map((q) => (q.citationCorrect ? 1 : 0)))
       : 0,

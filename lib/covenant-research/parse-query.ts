@@ -8,7 +8,7 @@ import type { ParsedResearchQuery, ResearchFilters, ResearchIntent } from "./typ
 
 const UNSUPPORTED_PATTERNS: { re: RegExp; reason: string }[] = [
   {
-    re: /\b(is (this|that)( transaction)? (allowed|permitted)|is the transaction (allowed|permitted)|can we (do|make|incur|pay)|are we allowed|approve(d)? capacity|legal opinion|should we|recommend|is it safe to)\b/i,
+    re: /\b(is (this|that)(?:\s+\S+){0,6}\s+(allowed|permitted)|is (this|that)( transaction)? (allowed|permitted)|is the transaction (allowed|permitted)|can we (do|make|incur|pay)|are we allowed|approve(d)? capacity|legal opinion|should we|recommend|is it safe to)\b/i,
     reason:
       "This interface retrieves source-backed precedent excerpts only. It does not opine on whether a transaction is permitted or approve capacity.",
   },

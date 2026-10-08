@@ -8,7 +8,11 @@
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { ResearchCorpusEntry, ResearchStructuralFeatures } from "./types";
+import {
+  normalizeVerificationStatus,
+  type ResearchCorpusEntry,
+  type ResearchStructuralFeatures,
+} from "./types";
 
 export const DEFAULT_RESEARCH_CORPUS_PATH = resolve(
   process.cwd(),
@@ -102,13 +106,9 @@ export function researchEntryFromSemanticTruth(input: {
   definedTerms?: { termName: string; excerpt: string | null }[];
   features?: Partial<ResearchStructuralFeatures>;
 }): ResearchCorpusEntry {
-  const verificationStatus = (() => {
-    const v = (input.verificationStatus ?? input.trustStatus ?? "UNVERIFIED").toUpperCase();
-    if (v.includes("VERIFIED")) return "VERIFIED" as const;
-    if (v.includes("COMPILE")) return "COMPILED" as const;
-    if (v.includes("REVIEW")) return "REVIEW_REQUIRED" as const;
-    return "UNVERIFIED" as const;
-  })();
+  const verificationStatus = normalizeVerificationStatus(
+    input.verificationStatus ?? input.trustStatus ?? "UNVERIFIED",
+  );
 
   const operativeStatus = (() => {
     const s = (input.operativeStatus ?? "").toUpperCase();

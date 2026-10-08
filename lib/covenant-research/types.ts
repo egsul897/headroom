@@ -8,7 +8,7 @@
 import type { CovenantFamily, DocumentType } from "@prisma/client";
 import type { ContractConditionType } from "../contract-model/types";
 
-export const COVENANT_RESEARCH_SCHEMA_VERSION = "covenant-precedent-research.v1";
+export const COVENANT_RESEARCH_SCHEMA_VERSION = "covenant-precedent-research.v2";
 
 /** Required disclaimer on every response surface (CLI, JSON, future UI). */
 export const RESEARCH_DISCLAIMER =
@@ -28,13 +28,55 @@ export type OperativeVersionStatus =
   | "MISSING_AMENDMENT_AUTHORITY"
   | "UNRESOLVED_OPERATIVE_STATE";
 
+/**
+ * Provenance / verification taxonomy (research interface).
+ * Retrievability, citation, or structural compilation never promotes status.
+ *
+ * - FIXTURE: curated test/research fixture, not production legal truth
+ * - UNVERIFIED: ingested source span without independent legal review
+ * - HYPOTHESIS: structural/compiled interpretation pending review
+ * - SOURCE_VERIFIED: excerpt/citation matched to authentic source text
+ * - INDEPENDENTLY_LEGALLY_VERIFIED: independent legal review completed
+ *
+ * Legacy aliases COMPILED/VERIFIED/REVIEW_REQUIRED are accepted on ingest
+ * and normalized; they are never auto-assigned by retrieval.
+ */
 export type ResearchVerificationStatus =
-  | "UNVERIFIED"
-  | "COMPILED"
-  | "VERIFIED"
-  | "REVIEW_REQUIRED"
   | "FIXTURE"
-  | "HYPOTHESIS";
+  | "UNVERIFIED"
+  | "HYPOTHESIS"
+  | "SOURCE_VERIFIED"
+  | "INDEPENDENTLY_LEGALLY_VERIFIED"
+  /** @deprecated Prefer HYPOTHESIS — retained for ingest compatibility. */
+  | "COMPILED"
+  /** @deprecated Prefer SOURCE_VERIFIED — never auto-assigned. */
+  | "VERIFIED"
+  /** @deprecated Prefer UNVERIFIED. */
+  | "REVIEW_REQUIRED";
+
+/** Normalize legacy status labels into the Phase-3 taxonomy without promotion. */
+export function normalizeVerificationStatus(
+  status: string | null | undefined,
+): ResearchVerificationStatus {
+  switch ((status ?? "UNVERIFIED").toUpperCase()) {
+    case "FIXTURE":
+      return "FIXTURE";
+    case "HYPOTHESIS":
+    case "COMPILED":
+      return "HYPOTHESIS";
+    case "SOURCE_VERIFIED":
+      return "SOURCE_VERIFIED";
+    case "INDEPENDENTLY_LEGALLY_VERIFIED":
+      return "INDEPENDENTLY_LEGALLY_VERIFIED";
+    case "VERIFIED":
+      // Do not treat legacy VERIFIED as independently legally verified.
+      return "SOURCE_VERIFIED";
+    case "REVIEW_REQUIRED":
+    case "UNVERIFIED":
+    default:
+      return "UNVERIFIED";
+  }
+}
 
 export interface ResearchIssuer {
   companyId: string;

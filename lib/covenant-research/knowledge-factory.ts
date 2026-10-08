@@ -1,6 +1,7 @@
 /**
- * Knowledge-factory integration adapters.
+ * Knowledge-factory integration probes (legacy surface inventory).
  *
+ * Prefer versioned adapters in canonical-adapters.ts for export consumption.
  * Consume canonical exports when present; never duplicate persistent schemas.
  * Where an export is unavailable or incompatible, report a blocker.
  */

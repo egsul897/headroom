@@ -6,6 +6,7 @@
 import { passesAmendmentAwareFilter } from "./amendment-aware";
 import { scoreLexical } from "./lexical";
 import { parseResearchQuery, type StructuredQueryInput } from "./parse-query";
+import { rerankHits } from "./rerank";
 import { passesHardFilters, scoreStructural } from "./structural";
 import {
   COVENANT_RESEARCH_SCHEMA_VERSION,
@@ -17,7 +18,7 @@ import {
   type ResearchResponse,
 } from "./types";
 
-export const COVENANT_RESEARCH_RETRIEVAL_VERSION = "covenant-precedent-research-retrieval.v2";
+export const COVENANT_RESEARCH_RETRIEVAL_VERSION = "covenant-precedent-research-retrieval.v3";
 
 export interface RetrieveOptions {
   corpus: readonly ResearchCorpusEntry[];
@@ -95,8 +96,33 @@ export function retrieveFromParsed(query: ParsedResearchQuery, options: Retrieve
     });
   }
 
+  // Pull a wider candidate pool, then consolidate duplicates / diversify.
+  const poolLimit = Math.max(limit * 8, 40);
   hits.sort((a, b) => b.score - a.score || a.entry.entryId.localeCompare(b.entry.entryId));
-  const limited = hits.slice(0, limit);
+  const limited = rerankHits(hits.slice(0, poolLimit), limit);
+
+  // Surface amendment uncertainty + missing deps on every affected hit.
+  for (const hit of limited) {
+    const notes = [...(hit.uncertaintyNotes ?? [])];
+    const op = hit.operativeClassification ?? hit.entry.operativeVersion.status;
+    if (
+      op === "UNKNOWN_EFFECTIVE_DATE" ||
+      op === "MISSING_AMENDMENT_AUTHORITY" ||
+      op === "UNRESOLVED_OPERATIVE_STATE" ||
+      op === "SUPERSEDED" ||
+      op === "AMENDED"
+    ) {
+      if (!notes.some((n) => /amendment|operative|effective/i.test(n))) {
+        notes.push(`Amendment/operative uncertainty: ${op}`);
+      }
+    }
+    for (const d of hit.entry.missingDependencies ?? []) {
+      if (d.disclosed && !notes.some((n) => n.includes(d.kind))) {
+        notes.push(`Missing dependency disclosed: ${d.kind} — ${d.description}`);
+      }
+    }
+    hit.uncertaintyNotes = notes;
+  }
 
   return {
     schemaVersion: COVENANT_RESEARCH_SCHEMA_VERSION,
