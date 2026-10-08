@@ -2,7 +2,7 @@
 
 **Verdict:** `LIVE_CORPUS_QUALITY_GATE_RECORDED_WITH_DEFECTS`
 
-**Head SHA (at generation):** `9de4e5737166fcec84a35fdc9a3404870549211f`
+**Head SHA (at generation):** `cebec8ab3aaecd894b1903ac0b758828655a88df`
 **Branch:** `cursor/live-corpus-quality-gate-7f51`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
