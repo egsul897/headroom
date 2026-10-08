@@ -138,4 +138,19 @@ describe("buildClauseTree", () => {
     const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
     expect(refs).toEqual(["(a)", "(a)(1)", "(a)(1)(i)", "(a)(1)(ii)", "(a)(2)", "(b)"]);
   });
+
+  it("pops an inner list when the next line-start marker does not resume it", () => {
+    const text = [
+      "(a) outer item:",
+      "(i) roman child.",
+      "(ii) roman child two.",
+      "",
+      "This hanging prose closes the roman list.",
+      "",
+      "(1) numeric attaches to the outer item.",
+      "(b) outer sibling.",
+    ].join("\n");
+    const refs = buildClauseTree(text).map((n) => [...n.parentMarkerPath, n.marker].join(""));
+    expect(refs).toEqual(["(a)", "(a)(i)", "(a)(ii)", "(a)(1)", "(b)"]);
+  });
 });

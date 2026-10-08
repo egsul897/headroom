@@ -306,37 +306,48 @@ function restartedLetterCandidate(args: {
   if (!args.atLineStart || args.token.length !== 1) return null;
   const letter = args.candidates.find((c) => (c.kind === "LOWER_ALPHA" || c.kind === "UPPER_ALPHA") && c.index > 1);
   if (!letter || (letter.kind !== "LOWER_ALPHA" && letter.kind !== "UPPER_ALPHA")) return null;
+  // "(i)" is roman 1 as well as letter 9. A restarted letter run is only the ambiguous
+  // tokens past roman "i" ("v", "x", and the rest). "(i)" stays an index-1 start or a
+  // continuation of an open letter list.
+  const romanKind = letter.kind === "LOWER_ALPHA" ? "LOWER_ROMAN" : "UPPER_ROMAN";
+  const roman = args.candidates.find((c) => c.kind === romanKind);
+  if (!roman || roman.index <= 1) return null;
   const nextLine = nextLineStartOccurrence(args.sectionText, args.occurrences, args.occIndex);
   if (!nextLine) return null;
   const expectedLetter = letterToken(letter.kind, letter.index + 1);
   if (!expectedLetter || nextLine.token !== expectedLetter) return null;
-  const romanKind = letter.kind === "LOWER_ALPHA" ? "LOWER_ROMAN" : "UPPER_ROMAN";
-  const roman = args.candidates.find((c) => c.kind === romanKind);
-  if (roman) {
-    const expectedRoman = romanToken(romanKind, roman.index + 1);
-    const nextMarker = args.occurrences[args.occIndex + 1];
-    if (expectedRoman && ((nextMarker && nextMarker.token === expectedRoman) || nextLine.token === expectedRoman)) return null;
-  }
+  const expectedRoman = romanToken(romanKind, roman.index + 1);
+  const nextMarker = args.occurrences[args.occIndex + 1];
+  if (expectedRoman && ((nextMarker && nextMarker.token === expectedRoman) || nextLine.token === expectedRoman)) return null;
   return letter;
 }
 
 /**
- * A hanging paragraph closes the innermost list only when that list has no later line-start
- * continuation before an outer list resumes. If the inner list resumes, leave it open.
+ * A hanging paragraph closes the innermost list unless that list's own next item is a
+ * line-start marker within the next few line-starts, before an outer list resumes and
+ * before a new index-1 sequence. A continuation further down the section is a different list.
  */
 function innerResumesBeforeOuter(sectionText: string, occurrences: RawMarkerOccurrence[], fromIndex: number, stack: OpenLevel[]): boolean {
   if (stack.length < 2) return false;
   const inner = stack[stack.length - 1];
   if (!inner) return false;
   const expected = inner.lastIndex + 1;
+  let lineStarts = 0;
   for (let i = fromIndex + 1; i < occurrences.length; i++) {
     const later = occurrences[i];
     if (!later || !isLineStart(sectionText, later.charStart)) continue;
+    lineStarts += 1;
+    // Chewy §6.08(a)(3)(b) resumes at (c) after the short (x)/(y) run. A continuation
+    // further down a definition section is a different list.
+    if (lineStarts > 4) return false;
     const cands = classifyMarker(later.token);
     const continuesInner = cands.some((c) => c.kind === inner.kind && c.index === expected);
     const resumesOuter = stack.slice(0, -1).some((outer) => cands.some((c) => c.kind === outer.kind && c.index === outer.lastIndex + 1));
     if (continuesInner) return true;
     if (resumesOuter) return false;
+    // A new sequence (index 1) before the inner list continues means this hanging
+    // paragraph closed the inner list. Do not keep scanning into a later clause.
+    if (cands.some((c) => c.index === 1)) return false;
   }
   return false;
 }
