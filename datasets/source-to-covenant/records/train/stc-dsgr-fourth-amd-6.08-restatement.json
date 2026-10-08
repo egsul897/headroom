@@ -1,0 +1,99 @@
+{
+  "exampleId": "stc-dsgr-fourth-amd-6.08-restatement",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "POSITIVE",
+  "role": "AMENDMENT_EFFECT",
+  "split": "train",
+  "document": {
+    "issuerId": "dsgr",
+    "issuerName": "Distribution Solutions Group, Inc.",
+    "instrumentKey": "dsgr-2022-2025-credit-facility",
+    "documentId": "dsgr-doc-c-fourth-amendment-2025",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+    "agreementDate": "2025-03-31"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "dsgr-doc-c-fourth-amendment-2025",
+    "asOfDate": "2025-03-31",
+    "amendmentIdentity": "dsgr-fourth-amendment-2025-03-31",
+    "isRestatedOperativeText": true
+  },
+  "structural": {
+    "sectionRef": "6.08(a)(v) (as restated)",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "AMENDMENT_EFFECT"
+  },
+  "governingProhibition": "Restricted Payments limitation (Credit Agreement Section 6.08)",
+  "input": {
+    "exactText": "g Credit Agreement is hereby amended and restated in its entirety as\nfollows:\n\n“No Loan Party is engaged and will not engage, principally or as one of its important activities, in the business of\npurchasing or carrying Margin Stock, or extending credit for the purpose of purchasing or carrying Margin Stock, and no part of the proceeds of any Borrowing or Letter of Credit hereunder will be used to buy or carry any Margin Stock in violation of\nthe provisions of Regulation U or Regulation X.”\n\n(b) Section 6.08(a)(v) is hereby amended and restated in its entirety as follows:\n\n“(v) the Company may make Restricted Payments not otherwise permitted to be made by this Section 6.08 in an aggregate amount\nnot to exceed $25,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to any such Restricted\nPayment, and (y) after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith, on a pro forma basis, the Company is in compliance with the covenants set forth in Section 6.12 (without\ngiving effect to any applicable Total Net Leverage Ratio Adjustment); provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing\n\ndollar limitation if, after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage\nRatio is not greater than the lesser of (A) 2.5 to 1.00 and (B) the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12.”\n\n3. Conditions of Effectiveness . The effectiveness of this Amendment is subject to the satisfaction of the following conditions\nprecedent (the date on which such conditions precedent are satisfied (or waived by the Administrative Agent and the Required Lenders), the “ Fourth Amendment Effective Date ”):\n\n(a) the Administrative Agent shall have received counterparts of this Amendment duly executed by (i) each Borrower and each other Loan\nParty, (ii) the Required Lenders and (iii) the Administrative Agent;\n\n(b) immediately after giving effect to this Amendment, the\nrepresentations and warranties contained in Article III of the Credit Agreement and in the other Loan Documents shall be true and correct in all material respects (or in all respects in the case of any representation or warranty qualified by\nmateriality or Material Adverse Effect), except to the extent that such representations and warranties specifically refer to an earlier date, in which case they shall be true a",
+    "charStartInFixture": 2111,
+    "charEndInFixture": 4829,
+    "sourceTextSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+    "windowSha256": "6d30a12293d2c3c2e60784bd2586da7c82f5c880bc1a577e4bec228bff977cf3",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "restated 6.08(a)(v) basket"
+    ],
+    "conditions": [],
+    "crossReferences": [
+      "Section 6.08",
+      "Section 6.12",
+      "Existing Credit Agreement"
+    ],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "RESTRICTED_PAYMENTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "FLAT_CAP_AS_RESTATED",
+      "description": "Fourth Amendment restates §6.08(a)(v) Restricted Payments basket language (includes an aggregate amount not to exceed $25,000,000 in the restated text).",
+      "figures": [
+        "$25,000,000"
+      ],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "AMENDS",
+        "targetRef": "Existing Credit Agreement Section 6.08(a)(v)",
+        "description": "Restatement operative effect"
+      }
+    ],
+    "missingInputs": [
+      "Pre-amendment §6.08(a)(v) text for diff",
+      "Fourth Amendment Effective Date satisfaction evidence"
+    ],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Restated operative language present; effectiveness conditions and deemed-effect dating need the full amendment"
+      ]
+    },
+    "verificationStatus": "HUMAN_SOURCE_VERIFIED",
+    "labelNotes": "Restated RP basket figures verified from DSGR Fourth Amendment source window. Amendment identity recorded."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING"
+}

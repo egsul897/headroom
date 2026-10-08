@@ -1,0 +1,111 @@
+{
+  "exampleId": "stc-fwrg-6.01-g-i-guaranty-grower",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    "filingAccession": "0001193125-21-293207",
+    "cik": "0001789940",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2021-10-06",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": "2021-10-06",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.01(g)(i)",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VI",
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "The Borrower shall not, nor shall it permit any of its Restricted Subsidiaries to create, incur, assume or otherwise become or remain liable with respect to any Indebtedness, except:",
+  "input": {
+    "exactText": "; (f) Indebtedness of the Borrower and/or any Restricted Subsidiary in respect of Banking Services and/or otherwise in connection with Cash management and Deposit Accounts; (g) (i) guaranties by the Borrower and/or any Restricted Subsidiary of the obligations of suppliers, customers, franchisees and licensees in the ordinary course of business in an aggregate outstanding principal amount not to exceed the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA, (ii) Indebtedness incurred in the ordinary course of business in respect of obligations of the Borrower and/or any Restricted Subsidiary to pay the deferred purchase price of goods or services or progress payments in connection with such goods and services and (iii) Indebtedness in respect of letters of credit, bankers&#146; acceptances, bank guaranties or similar instruments supporting trade payables, warehouse receipts or similar fac",
+    "charStartInFixture": 2588,
+    "charEndInFixture": 3498,
+    "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "windowSha256": "88791bc84380ccee09116091e6c776d0f006ae0c6e0a7d01bec861e3a11cd732",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "6.01(g)(i) supplier/customer/franchisee/licensee guaranties"
+    ],
+    "conditions": [
+      "ordinary course"
+    ],
+    "crossReferences": [
+      "Consolidated Adjusted EBITDA"
+    ],
+    "entityScopeNotes": [
+      "Borrower and/or any Restricted Subsidiary"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "INDEBTEDNESS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "description": "Guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course, capped at the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA.",
+      "figures": [
+        "$2,500,000",
+        "5% of Consolidated Adjusted EBITDA"
+      ],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "UNSUPPORTED",
+        "description": "ordinary course of business qualifier",
+        "status": "UNSUPPORTED"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "REQUIRES",
+        "targetRef": "Consolidated Adjusted EBITDA",
+        "description": "Grower metric"
+      }
+    ],
+    "missingInputs": [
+      "Consolidated Adjusted EBITDA"
+    ],
+    "uncertainty": {
+      "level": "LOW",
+      "reasons": [
+        "Dollar/% figures explicit in source window"
+      ]
+    },
+    "verificationStatus": "HUMAN_SOURCE_VERIFIED",
+    "labelNotes": "Grower basket verified from FWRG source around $2,500,000 guaranty limb."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING"
+}

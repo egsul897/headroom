@@ -1,0 +1,271 @@
+{
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "datasetBuilderVersion": "source-to-covenant-builder.v1",
+  "builtAt": "2026-10-08T22:11:55.506Z",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "safety": {
+    "compilerOutputNotUsedAsGroundTruth": true,
+    "noAutomaticSemanticApproval": true,
+    "claudeAcceptanceCorpusNotContaminated": true,
+    "noPaidInferenceUsed": true,
+    "usageRightsReviewRequiredBeforeSftOrDistillation": true
+  },
+  "issuers": [
+    {
+      "issuerId": "chewy",
+      "issuerName": "Chewy, Inc.",
+      "splitRole": "eval_heldout",
+      "instruments": [
+        "chwy-2026-credit-agreement"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/chwy-2026-credit-agreement"
+      ]
+    },
+    {
+      "issuerId": "conmed",
+      "issuerName": "CONMED Corporation",
+      "splitRole": "train_or_dev",
+      "instruments": [
+        "conmed-eighth-ar-credit-agreement"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility"
+      ]
+    },
+    {
+      "issuerId": "dsgr",
+      "issuerName": "Distribution Solutions Group, Inc.",
+      "splitRole": "train_or_dev",
+      "instruments": [
+        "dsgr-2022-2025-credit-facility"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility"
+      ]
+    },
+    {
+      "issuerId": "fwrg",
+      "issuerName": "First Watch Restaurant Group, Inc.",
+      "splitRole": "train_or_dev",
+      "instruments": [
+        "fwrg-2021-credit-agreement"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement"
+      ]
+    },
+    {
+      "issuerId": "gibraltar",
+      "issuerName": "Gibraltar Industries, Inc.",
+      "splitRole": "eval_heldout",
+      "instruments": [
+        "gibraltar-2026-credit-agreement"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement"
+      ]
+    },
+    {
+      "issuerId": "lsb-industries",
+      "issuerName": "LSB Industries, Inc.",
+      "splitRole": "train_or_dev",
+      "instruments": [
+        "lsb-2023-abl-credit-agreement"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement"
+      ]
+    },
+    {
+      "issuerId": "riot-platforms",
+      "issuerName": "Riot Platforms, Inc.",
+      "splitRole": "eval_heldout",
+      "instruments": [
+        "riot-2025-2026-credit-facility"
+      ],
+      "sourceFixtureRoots": [
+        "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility"
+      ]
+    }
+  ],
+  "recordCounts": {
+    "total": 21,
+    "bySplit": {
+      "train": 12,
+      "dev": 6,
+      "eval-heldout": 3
+    },
+    "byPolarity": {
+      "POSITIVE": 19,
+      "NEGATIVE": 2
+    },
+    "byVerificationStatus": {
+      "HUMAN_SOURCE_VERIFIED": 13,
+      "HUMAN_HYPOTHESIS": 2,
+      "NOT_APPLICABLE": 1,
+      "UNRESOLVED": 3,
+      "UNSUPPORTED": 1,
+      "MODEL_HYPOTHESIS": 1
+    }
+  },
+  "sourceTextHashes": [
+    {
+      "exampleId": "stc-lsb-6.01-chapeau-ratio-gated",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6.01-i-greater-of-assets",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6.02-liens-prohibition",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6.11-restricted-payments",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "1c8104d3557ae3e7fe48d010246b35a3dcd3d1d7bdd675f15f8f2a0958da577a",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-payment-conditions-definition",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+      "windowSha256": "7ff3fa92c3561cea0bbe86c9a327169330976d03d1684683fd833708c744021e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6.01-chapeau-prohibition",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "d6fcd79bb0e9922897f48f0499e868824d31d14f191dea37ce29f2ae8d38396e",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6.01-g-i-guaranty-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "88791bc84380ccee09116091e6c776d0f006ae0c6e0a7d01bec861e3a11cd732",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6.04-a-x-rp-grower",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "3fa397c3458a4ff5c033ad403f1c3e3bb73dd8a192d65762f39d1fbbd62ddbc4",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-6.04-a-xi-ratio-unlimited",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "windowSha256": "17a4dfd4f91518af08fcdac722860dd0fdacfe0cdbba5b925d40b2d42a3aec45",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-fwrg-available-amount-builder",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+      "windowSha256": "b3561c2c293a546ddfe34e1e1ddcacec1ae058b18cc879a3a9f25955c404522d",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7.2-indebtedness",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "de732942e7dde586bd40669e7fa3ed676f496cf8d7219b365d84e23da9b72a1b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7.8-investments",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "17b19011b492b681bb8de904b1481b063e7cb77bb1ff6f6e27fec890a248b1ec",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-7.7-reserved-negative",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "windowSha256": "037b627a001b96a13d32f509b8a2fedea7391d3d4c0743e26c9e806f8f0a0378",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-conmed-amd-2022-amendment-identity",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "sourceTextSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+      "windowSha256": "3a0eabfecbf499946b3fcf73fafde23c43c5e63b170845b51d2cbdfc3659a521",
+      "amendmentIdentity": "conmed-second-amendment-2022-08-02"
+    },
+    {
+      "exampleId": "stc-dsgr-fourth-amd-6.08-restatement",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "sourceTextSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "windowSha256": "6d30a12293d2c3c2e60784bd2586da7c82f5c880bc1a577e4bec228bff977cf3",
+      "amendmentIdentity": "dsgr-fourth-amendment-2025-03-31"
+    },
+    {
+      "exampleId": "stc-dsgr-intercreditor-unsupported",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+      "sourceTextSha256": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+      "windowSha256": "afed612a8b5fca4c52076603438caf4caf2349d180c0f885697a40d3e7d0bb88",
+      "amendmentIdentity": "lsb-intercreditor-joinder-2023-12-21"
+    },
+    {
+      "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "a81941927ee2cb065098c222c601bf136014348d45d7e17588f54e93c5aa6bdb",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "windowSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-chwy-6.01-indebtedness-heldout",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "windowSha256": "6b79685c94a08a9d27b484aaac52282ce92dbe9a7c3321bc38ff6504d12ec02a",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-gibraltar-reporting-heldout",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceTextSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "windowSha256": "f04ca8da535db2badf67b7daf3dd6d32e04535dc5d518e7ebfea93fdaed3ce57",
+      "amendmentIdentity": null
+    },
+    {
+      "exampleId": "stc-riot-negative-covenant-article-heldout",
+      "sourceFixturePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+      "sourceTextSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+      "windowSha256": "767a594df2f3b38bb0091e14d32a95bc405359dce880f2e1e62728aa65e91595",
+      "amendmentIdentity": "riot-second-amended-restated-2026-04-21"
+    }
+  ]
+}

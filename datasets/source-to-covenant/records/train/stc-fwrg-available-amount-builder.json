@@ -1,0 +1,123 @@
+{
+  "exampleId": "stc-fwrg-available-amount-builder",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+    "filingAccession": "0001193125-21-293207",
+    "cik": "0001789940",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2021-10-06",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": "2021-10-06",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Available Amount",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Available Amount &#148; means, at any time, an amount equal to, without duplication: (a) the sum of: (i) [reserved]; plus (ii) an amount, not less than zero for any period, equal to the CNI Growth Amount ( provided that no amount shall be available pursuant to this clause (ii) (x) unless the Total Rent Adjusted Net Leverage Ratio does not exceed 4.50:1.00 on a Pro Forma Basis and (y) for any Restricted Payment made in reliance on Section 6.04(a)(iii)(A) if an Event of Default under Section 7.01(a) , (f) or (g) exists); plus (iii) (A) the amount of any capital contribution in respect of Qualified Capital Stock or the proceeds of any issuance of Qualified Capital Stock after the Closing Date that are Not Otherwise Applied (other than any amount (1) constituting a Cure Amount or an Available Excluded Contribution Amount, (2) received from the Borrower or any Restricted Subsidiary or (3) consisting of the proceeds of any loan or advance made 5 pursuant to Section 6.06(h)(ii) ) received or deemed to be received as Cash equity by the Borrower or any of its Restricted Subsidiaries), plus (B) the fair market value, as determined by the Borrower in good faith, of Cash Equivalents, marketable securities or other property received or deemed to be received by the Borrower as a capital contribution in respect of Qualified Capital Stock or in return for any issuance of Qualified Capital Stock that are Not Otherwise Applied (other than any amount (1) constituting a Cure Amount or an Available Excluded Contribution Amount or (2) received from the Borrower or any Restricted Subsidiary), in each case, during the period from and including the day immediately following the Closing Date through and including such time; plus (iv) the aggregate principal amount of any Indebtedness (including any Disqualified Capital Stock), of the Borrower or any Restricted Subsidiary issued after the Closing Date (other than Indebtedness or such Disqualified Capital Stock issued to the Borrower or any Restricted Subsidiary), which has been converted into or exchanged for Capital Stock of the Borrower or any Parent Company that does not constitute Disqualified Capital Stock, together with the fair market value of any Cash Equivalents and the fair market value (as determined by the Borrower in good faith) of any assets received by the Borrower or such Restricted Subsidiary upon such exchange or conversion, in each case, during the period from and including the day immediately following the Closing Date through and including such time; plus (v) the Net Proceeds received by the Borrower or any Restricted Subsidiary during the period from and including the day immediately following the Closing Date through and including such time in connection with the Disposition to any Person (other than the Borrower or any Restricted Subsidiary) of any Investment made pursuant to Section 6.06(r)(i) (up to the original amount of the Investment permitted in reliance on such clause); plus (vi) to the extent not already reflected as a return of capital with respect to such Investment for purposes of determining the amount of such Investment (pursuant to the definition thereof), the proceeds received (or deemed to be re",
+    "charStartInFixture": 0,
+    "charEndInFixture": 3216,
+    "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+    "windowSha256": "b3561c2c293a546ddfe34e1e1ddcacec1ae058b18cc879a3a9f25955c404522d",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "Total Rent Adjusted Net Leverage Ratio ≤ 4.50:1.00 for CNI Growth Amount availability",
+      "Event of Default gates on certain RP reliance"
+    ],
+    "crossReferences": [
+      "CNI Growth Amount",
+      "Section 6.04(a)(iii)(A)",
+      "Section 7.01(a)/(f)/(g)",
+      "Qualified Capital Stock",
+      "Cure Amount"
+    ],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "BUILDER_BASKET",
+      "description": "Cumulative Available Amount builder: CNI Growth Amount (ratio-gated) + Qualified Capital Stock proceeds Not Otherwise Applied + other builder components; deep nesting.",
+      "figures": [
+        "4.50:1.00 Total Rent Adjusted Net Leverage Ratio gate on CNI Growth Amount"
+      ],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "RATIO_SATISFIED",
+        "description": "TRALR ≤ 4.50:1.00 Pro Forma for CNI Growth Amount clause",
+        "status": "PROPOSED"
+      },
+      {
+        "conditionType": "NO_DEFAULT",
+        "description": "EOD gate when Available Amount used for certain RPs",
+        "status": "PROPOSED"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "BASKET_FEEDING",
+        "targetRef": "CNI Growth Amount",
+        "description": "Builder component"
+      },
+      {
+        "edgeType": "PARAMETER_OF",
+        "targetRef": "6.04(a)(iii)",
+        "description": "RP reliance path"
+      }
+    ],
+    "missingInputs": [
+      "CNI Growth Amount mechanics",
+      "historical builder usage ledger",
+      "Not Otherwise Applied tracking"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Deep multi-component builder; excerpt truncates full definition; several sub-clauses require additional defined terms"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Structure hypothesized from definitions excerpt; NOT fully verified end-to-end against every builder sub-clause. Must not be treated as approved semantic ground truth."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG"
+}

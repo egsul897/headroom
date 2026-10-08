@@ -1,0 +1,111 @@
+{
+  "exampleId": "stc-fwrg-6.04-a-x-rp-grower",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    "filingAccession": "0001193125-21-293207",
+    "cik": "0001789940",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2021-10-06",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": "2021-10-06",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.04(a)(x)",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VI",
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Restricted Payments general prohibition (Section 6.04)",
+  "input": {
+    "exactText": "bstantially concurrent sale (other than to the Borrower or a Restricted Subsidiary) of any Refunding Capital Stock; (ix) to the extent constituting a Restricted Payment, the Borrower may consummate any transaction permitted by Section 5.16 (other than Sections 5.16(d) and (j) ), Section 6.06 (other than Sections 6.06(j) and (t) ) and/or Section 6.07 (other than Section 6.07(g) ); (x) so long as no Event of Default exists, the Borrower may make Restricted Payments in an aggregate amount not to exceed the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period; (xi) so long as no Event of Default exists, the Borrower may make Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00 as of the last day of the most recently ended Test Period; (xii) the Borrower may declare and make dividend payments or other Restricted Payments payable solely in the Capital Stock of the Borrower or of any Parent Comp",
+    "charStartInFixture": 48818,
+    "charEndInFixture": 49869,
+    "sourceTextSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+    "windowSha256": "3fa397c3458a4ff5c033ad403f1c3e3bb73dd8a192d65762f39d1fbbd62ddbc4",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "6.04(a)(x)"
+    ],
+    "conditions": [
+      "no continuing Event of Default"
+    ],
+    "crossReferences": [
+      "Consolidated Adjusted EBITDA",
+      "Event of Default"
+    ],
+    "entityScopeNotes": [
+      "Borrower / Restricted Subsidiaries per §6.04"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "RESTRICTED_PAYMENTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "description": "Restricted Payments up to the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, conditioned on no continuing Event of Default.",
+      "figures": [
+        "$21,000,000",
+        "35% of Consolidated Adjusted EBITDA"
+      ],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "NO_DEFAULT",
+        "description": "no continuing Event of Default",
+        "status": "PROPOSED"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "REQUIRES",
+        "targetRef": "Consolidated Adjusted EBITDA",
+        "description": "Grower metric"
+      }
+    ],
+    "missingInputs": [
+      "Consolidated Adjusted EBITDA",
+      "Event of Default status"
+    ],
+    "uncertainty": {
+      "level": "LOW",
+      "reasons": []
+    },
+    "verificationStatus": "HUMAN_SOURCE_VERIFIED",
+    "labelNotes": "Verified from FWRG §6.04(a)(x) source window."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING"
+}

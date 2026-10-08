@@ -1,0 +1,82 @@
+{
+  "exampleId": "stc-conmed-7.7-reserved-negative",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "NEGATIVE",
+  "role": "BOILERPLATE_OR_RESERVED",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+    "cik": "0000816956",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2025-06-16"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": "2025-06-16",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": true
+  },
+  "structural": {
+    "sectionRef": "7.7",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VII",
+    "unitKind": "BOILERPLATE_OR_RESERVED"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "SECTION 7.7 [Reserved]\n",
+    "charStartInFixture": null,
+    "charEndInFixture": null,
+    "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "windowSha256": "037b627a001b96a13d32f509b8a2fedea7391d3d4c0743e26c9e806f8f0a0378",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": null,
+    "candidatePermissionProhibitionClass": "NONE",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Reserved section — no operative permission or prohibition.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "LOW",
+      "reasons": []
+    },
+    "verificationStatus": "NOT_APPLICABLE",
+    "labelNotes": "Negative example: [Reserved] must not be compiled into a covenant rule."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "SYNTHETIC_NEGATIVE"
+}

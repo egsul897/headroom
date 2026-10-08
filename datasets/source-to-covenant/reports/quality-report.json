@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "builtAt": "2026-10-08T22:11:55.586Z",
+  "checks": [
+    {
+      "id": "schema-validation",
+      "status": "PASS",
+      "detail": "all records valid"
+    },
+    {
+      "id": "exact-duplicates",
+      "status": "WARN",
+      "detail": "4 exact duplicate pair(s) recorded"
+    },
+    {
+      "id": "near-duplicates",
+      "status": "PASS",
+      "detail": "0 near-duplicate cluster(s) detected and tracked"
+    },
+    {
+      "id": "heldout-issuer-separation",
+      "status": "PASS",
+      "detail": "no train/dev issuer or window leakage into held-out"
+    },
+    {
+      "id": "positive-and-negative",
+      "status": "PASS",
+      "detail": "positive=true negative=true"
+    },
+    {
+      "id": "unresolved-or-unsupported",
+      "status": "PASS",
+      "detail": "unresolved/unsupported examples present"
+    },
+    {
+      "id": "verified-vs-hypothesis-distinction",
+      "status": "PASS",
+      "detail": "verified=13 hypotheses=3"
+    },
+    {
+      "id": "heldout-issuer-set",
+      "status": "PASS",
+      "detail": "held-out issuers: chewy, gibraltar, riot-platforms"
+    },
+    {
+      "id": "version-pins-recorded",
+      "status": "PASS",
+      "detail": "compiler=semantic-accountability-compiler.v11; ir=headroom-covenant-ir.v1"
+    },
+    {
+      "id": "safety-no-paid-inference",
+      "status": "PASS",
+      "detail": "dataset build used fixture text + human catalog only"
+    },
+    {
+      "id": "safety-no-compiler-as-gt",
+      "status": "PASS",
+      "detail": "labels authored from source reading; compiler pins are provenance only"
+    },
+    {
+      "id": "claude-acceptance-exclusion",
+      "status": "PASS",
+      "detail": "every record excludes Claude acceptance / verifier / compiler few-shot corpora"
+    },
+    {
+      "id": "complete-controlling-context",
+      "status": "PASS",
+      "detail": "windows meet minimum controlling-context length"
+    }
+  ],
+  "summary": {
+    "totalRecords": 21,
+    "verifiedLabelCount": 13,
+    "hypothesisLabelCount": 3,
+    "unresolvedOrUnsupportedCount": 4,
+    "negativeExampleCount": 2,
+    "heldOutIssuerCount": 3,
+    "exactDuplicateCount": 4,
+    "nearDuplicateClusterCount": 0,
+    "readyForImport": true
+  }
+}

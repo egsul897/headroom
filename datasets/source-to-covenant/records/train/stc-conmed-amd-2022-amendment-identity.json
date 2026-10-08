@@ -1,0 +1,103 @@
+{
+  "exampleId": "stc-conmed-amd-2022-amendment-identity",
+  "schemaVersion": "source-to-covenant-dataset.v1",
+  "polarity": "POSITIVE",
+  "role": "AMENDMENT_EFFECT",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-c-second-amendment-2022",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+    "cik": "0000816956",
+    "exhibit": "EX-10.2",
+    "agreementDate": "2022-08-02"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-c-second-amendment-2022",
+    "asOfDate": "2022-08-02",
+    "amendmentIdentity": "conmed-second-amendment-2022-08-02",
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "amendment-preamble",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "AMENDMENT_EFFECT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "SECOND AMENDMENT SECOND\nAMENDMENT, dated as of August 1, 2022 (this \" Amendment \"), to the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021 (as amended, supplemented or otherwise modified from time to time, the\n\" Credit Agreement \"), among CONMED Corporation, a Delaware corporation (the \" Parent Borrower \"), the Foreign Subsidiary Borrowers (as defined therein) from time to time parties thereto, the several banks and other\nfinancial institutions or entities from time to time parties thereto (the \" Lenders \") and JPMorgan Chase Bank, N.A., as administrative agent (in such capacity, the \" Administrative Agent \").\nW I T N E S S E T H\nWHEREAS, pursuant to the Credit Agreement, the Lenders have agreed to make, and have made, certain loans and other extensions of credit to the\nBorrowers; WHEREAS, the Parent Borrower has further requested that the Credit Agreement be amended as set forth herein; and\nWHEREAS, Lenders constituting the Required Lenders are willing to agree to this Amendment on the terms set forth herein.\nNOW, THEREFORE, in consideration of the premises and mutual covenants contained herein, the parties hereto agree as follows:\nSECTION 1. Capitalized Terms . Capitalized terms used herein and not otherwise defined herein shall have the meanings given to them in\nthe Credit Agreement. SECTION 2. Amendments .\n(a) Section 1.1 ( Defined Terms ) of the Credit Agreement is hereby amended as follows:\n(i) The definition of \" Consolidated Senior Secured Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n(ii) The definition of \" Consolidated Total Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n(iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the\nend thereof: \"; provided, further, that no earn-out obligation arising in\nconnection with any other acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness unless and until such obligation is finally determined to be due and payable under the relevant acquisition agreement and solely if\nnot paid within five days after the date it is finally determined to be due and payable.\"\n(b) Section 7.1(b) ( Consolidated Total Leverage Ratio ) of the\nCredit Agreement is hereby amended and restated as follows: \"Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries to exceed (i) with respect to the period of four consecutive fiscal quarters ending June 30, 2021 and September 30, 2021, 5.25 to 1.00, (ii) with respect to the\nperiod of four consecutive fiscal quarters ending December 31, 2021 and March 31, 2022, 5.00 to 1.00, (iii) with respect to the period of four consecutive fiscal quarters ending June 30, 2022, September 30, 2022 and\nDecember 31, 2022, 6.25 to 1.00, (iv) with respect to the four consecutive fiscal quarters ending March 31, 2023 and June 30, 2023, 6.00 to 1.00, (v) with respect to the four consecutive fiscal ",
+    "charStartInFixture": 57,
+    "charEndInFixture": 3273,
+    "sourceTextSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+    "windowSha256": "3a0eabfecbf499946b3fcf73fafde23c43c5e63b170845b51d2cbdfc3659a521",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "effectiveness conditions in amendment"
+    ],
+    "crossReferences": [
+      "Credit Agreement being amended"
+    ],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "AMENDMENT_WAIVER_CONSENT",
+    "candidatePermissionProhibitionClass": "AMENDMENT_MECHANIC",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Amendment identity / effectiveness mechanics — not itself a basket capacity rule.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [
+      {
+        "conditionType": "UNSUPPORTED",
+        "description": "Amendment effectiveness conditions require full amendment body",
+        "status": "MISSING_INPUT"
+      }
+    ],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "AMENDS",
+        "targetRef": "conmed base credit agreement",
+        "description": "Amendment relationship"
+      }
+    ],
+    "missingInputs": [
+      "Full schedule of amended definitions/covenant text",
+      "effectiveness certificate evidence"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Window is preamble/front matter; operative amended covenant text may live later in the amendment"
+      ]
+    },
+    "verificationStatus": "UNRESOLVED",
+    "labelNotes": "Unresolved example: amendment identity is clear, but operative covenant restatement content is not fully resolved from this preamble window alone."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING"
+}
