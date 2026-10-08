@@ -155,6 +155,15 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
   - MUT-16: `CURRENT`, applied 0, source `credit-agreement`, instrument `OPERATIVE_STATE_REVIEW_REQUIRED`, two consent effects. Product assertions pass. Kill verdict `SURVIVED`, predicted `GAP`, prediction held.
   - MUT-08, MUT-12, MUT-13, MUT-14, MUT-15 product assertions pass. Their harness kill prediction is `GAP` and the verdict is now `KILLED` (`CONTEXT_RETRIEVAL`). Those five `kill prediction (GAP) holds` rows fail. The expectations were not edited.
 
+## Remaining false-permission risks after the IPV-22 hardening
+
+- A grant phrase (`not to exceed`, `up to`, and the other `alone` phrases) still establishes capacity on a clause excerpt that does not repeat `may` or `except`. A nearer condition denies it.
+- An amount ceiling (`aggregate` or `principal amount` within 160 characters, then `shall not`) makes the following figure capacity. `shall not exceed` alone does not.
+- The authority window is 220 characters. A `may` or `except` inside that window can still govern a later `greater of` when no closer frame intervenes.
+- A bare comparator's prohibition frame looks back 1,600 characters. An earlier `shall not` can still invert a later ratio when no later condition word intervenes. The financial-covenant fixtures still agree.
+- A condition placed between a grant and `the greater of` refuses the figure. That is a false refusal on that drafting shape, and it is the conservative side of the rule.
+- An unclassified override does not invent the side-letter amount. The last authoritative text stays, with `REVIEW_REQUIRED`. A genuine deletion still clears the text.
+
 ## Queue
 
 | Id | Severity | Status | Next action |
