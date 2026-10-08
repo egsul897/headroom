@@ -48,10 +48,7 @@ function categoryOf(row: ClassifiedUnresolved): DefectCategory {
   if (row.rootCause === "MISSING_EXTERNAL_DOCUMENT" || row.kind === "COVENANT_TO_CROSS_DOCUMENT") return "CROSS_DOCUMENT_RESTRICTIONS";
   if (row.kind === "COVENANT_TO_SHARED_BASKET") return "SHARED_CAPACITY";
   if (row.kind === "RECLASSIFICATION") return "RECLASSIFICATION";
-  if (row.kind === "COVENANT_TO_CONDITION" || row.rootCause === "AMBIGUOUS_REFERENCE") {
-    if (row.kind === "COVENANT_TO_CONDITION") return "REMOTE_CONDITIONS";
-    return "AMBIGUOUS_REFERENCE";
-  }
+  if (row.kind === "COVENANT_TO_CONDITION") return "REMOTE_CONDITIONS";
   if (row.rootCause === "AMBIGUOUS_REFERENCE") return "AMBIGUOUS_REFERENCE";
   return "OTHER";
 }

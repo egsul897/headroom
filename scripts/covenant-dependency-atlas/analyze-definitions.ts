@@ -61,12 +61,11 @@ function classifySubtype(edge: AtlasEdge, nodes: Map<string, AtlasNode>): Defini
 
 export function analyzeMissingDefinitions(edges: AtlasEdge[], nodes: AtlasNode[]): DefinitionSubtypeReport {
   const nodeMap = new Map(nodes.map((n) => [n.nodeId, n]));
-  const missing = edges.filter(
-    (e) =>
-      (e.resolution === "UNRESOLVED" || e.resolution === "AMBIGUOUS") &&
-      (e.rootCause === "MISSING_DEFINITION" ||
-        ((e.kind === "COVENANT_TO_DEFINITION" || e.kind === "DEFINITION_TO_DEFINITION") && e.resolution !== "RESOLVED")),
-  );
+  const missing = edges.filter((e) => {
+    if (e.resolution !== "UNRESOLVED" && e.resolution !== "AMBIGUOUS") return false;
+    if (e.rootCause === "MISSING_DEFINITION") return true;
+    return e.kind === "COVENANT_TO_DEFINITION" || e.kind === "DEFINITION_TO_DEFINITION";
+  });
 
   const bySubtype: Record<DefinitionSubtype, number> = {
     TRULY_MISSING_DEFINITION: 0,
