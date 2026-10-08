@@ -138,3 +138,15 @@ BM-03/13 for the package graph, BM-02/05 for definitions).
 
 Thresholds above are diagnostic: they say when the pilot may proceed with a human reviewer on every unit. They are not
 accuracy claims and must not be marketed as such.
+
+## Re-runs
+
+| SHA | corpus change | broad | naive | hybrid |
+|---|---|---|---|---|
+| `00977b674579` | 10 packages | 380 calls / $0.133 / 0 FP | 210 / $0.070 / 5 FP | 240 / $0.084 / 0 FP |
+| `2b018f8a6719` | 11 packages (K), closure back-reference | unchanged | unchanged | unchanged |
+| `440069481941` | package I gains Amendment No. 1 (definition restated) | 410 / $0.144 / 0 FP | 210 / $0.070 / 5 FP | 270 / $0.094 / 0 FP |
+
+Recall and false-permission counts are identical across re-runs; the amendment adds units to the broad and hybrid
+closures (the amendment document's sections), which is the intended behaviour (doc 09 §7, INV-05). Hybrid stays at
+≈65% of broad's estimated cost.

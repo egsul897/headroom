@@ -29,7 +29,7 @@ NOT_STARTED. Verdicts come from the committed runs (`acceptance-runs/`, `benchma
 | 18 | Defined-term dependencies | COVERED | all manifests dependsOnTerms; context audits | IPV-09 (plurals), IPV-10 (depth-2) |
 | 19 | Circular definitions | CHECKED | INV-19: B indenture true cycle (positive control ✅); A-variation diamond, I 7.01, L 7.07 | **IPV-21**: a diamond dependency is reported as a cycle; I 7.01/7.02/7.04 and L 7.07 certification blocked by a false refusal (previously mis-attributed to IPV-12) |
 | 20 | Missing definitions | COVERED | D 'Specified Strategic Transaction', G 'Permitted Refinancing Indebtedness', J EBITDA/Total Debt | D-P4/G-P4/J-P3 refused ✅ |
-| 21 | Amendment precedence | CHECKED | C (two amendments), MUT-05/11/14, INV-06 (conditional effectiveness ✅), INV-05b (definition amendment layered on C) | ✅ for section restate/delete with dates and the layered case keeps prior section amendments intact; **IPV-19** definition amendment mis-targeted to the whole section in both directions |
+| 21 | Amendment precedence | CHECKED | C (two amendments), MUT-05/11/14, INV-06 (conditional effectiveness ✅), INV-05b (definition amendment layered on C), package I on-disk Amendment No. 1 ('Foreign Subsidiary') | ✅ for section restate/delete with dates and the layered case keeps prior section amendments intact; **IPV-19** definition amendment mis-targeted to the whole section in both directions, now on disk (I: 2 operative-state rows + the 1.01 definitions candidate loses every other definition) |
 | 22 | Superseded language | COVERED | C-P1 refused; IPV-04 stale section text; MUT-11 | IPV-04 open |
 | 23 | TOC contamination | COVERED | E, BM-07, PR136-F1 | fail-closed (IPV-11) on certified path; TOC modal authenticated by PR #136 gate (F1) |
 | 24 | Nested clause numbering | COVERED | E 4-level nesting, G dropped letter, H inline (i)/(ii) in definitions | IPV-06/07 |
@@ -64,6 +64,7 @@ NOT_STARTED. Verdicts come from the committed runs (`acceptance-runs/`, `benchma
 | INV-19b | breadth of IPV-21 across the corpus | all 12 | ❌ 4 of 33 section-level candidates carry a false cycle (I 7.01/7.02/7.04, L 7.07); 1 genuine (B) ✅ |
 | INV-25 | a gate threshold is never a cap | L variant | ❌ L-P2 CERTIFIED (**IPV-22**); L-P1 ×2, L-P3 refused ✅ |
 | INV-09b | ratio comparator / threshold are source facts | A, B | ❌ A-T1 flipped comparator CERTIFIED (**IPV-22**); A-T2 raised threshold refused ✅; B-T1 masked by the genuine cycle |
+| INV-28b | posture flip / changed percentage | F, D | ✅ 2/2 refused (F 7.01(c) at 35%; D 7.05 as a permission) |
 | INV-25b | IPV-22 breadth: every comparator-introduced figure submitted as a cap | H | ❌ intercreditor 4.01 Availability floor certified as a $15m payment basket; 7.11 trigger and 7.03(b) definition floor refused (accountability, not comparator) |
 | INV-16 | designation resolution recognised as acting on the indenture | B variant | observations only (standalone instrument; not in the closure) |
 | INV-09 | 'greater of $X and Y% of metric' | F fixture IR | ✅ 3/3 |

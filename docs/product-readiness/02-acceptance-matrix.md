@@ -26,12 +26,13 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/f182a679394b/`, repository SHA `f182a679394b`, 604 checks: 539 pass · 49 fail · 16 not tested)
+## Matrix (committed run `acceptance-runs/440069481941/`, repository SHA `440069481941`, 609 checks: 539 pass · 53 fail · 17 not tested)
 
-Earlier committed runs: `8f51e2981bd2` (8 packages, 360 checks: 318/30/12), `00977b674579` (10 packages, 431:
-376/41/14), `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 packages + clause-text
-pins + I/J/K adversarial plans, 571: 508/48/15). At `f182a67`: package L (affiliate transactions) added. Findings are
-49, all registered (IPV-01…IPV-20; IPV-17 closed).
+Earlier committed runs: `8f51e2981bd2` (8 packages, 360: 318/30/12), `00977b674579` (10, 431: 376/41/14),
+`83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 + clause-text pins, 571: 508/48/15),
+`f182a679394b` (12, 604: 539/49/16). At `4400694`: package I gains an on-disk definition amendment (IPV-19 now on
+disk: 2 operative-state rows + the 1.01 definitions candidate) and the definition-currency audit carries IPV-05's
+consequence on H. Findings are 53, all registered (IPV-01…IPV-22; IPV-17 closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
@@ -42,14 +43,16 @@ pins + I/J/K adversarial plans, 571: 508/48/15). At `f182a67`: package L (affili
 | e-structural-ambiguity | 19/20 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 45/55 |
 | f-capacity-ledger-honesty | 20/20 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 61/66 |
 | g-adversarial-evidence | 18/20 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 50/57 |
-| h-unseen-composition | 27/29 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/9 (1 F) | 10/10 | 9/10 (1 F) | – | 57/63 |
-| i-secured-debt-lien | 21/21 | – | 1/1 | 0/1 (1 NT) | 12/17 (5 F) | 12/12 | 1/5 (4 F) | – | 47/57 |
+| h-unseen-composition | 27/29 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/10 (2 F) | 10/10 | 9/10 (1 F) | – | 57/64 |
+| i-secured-debt-lien | 22/22 | 0/2 (2 F) | 1/1 | 0/1 (1 NT) | 12/18 (5 F) (1 NT) | 11/12 (1 F) | 1/5 (4 F) | – | 47/61 |
 | j-restricted-payments-builder | 16/16 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 35/38 |
 | k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
 | l-affiliate-transactions | 15/15 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 31/33 |
 
-Invariant checks (`invariant-runs/f182a679394b/`): 15 PRODUCT verdicts pass, 10 fail — all ten are IPV-19/IPV-20
-(definition amendments). Mutation suite (`mutation-runs/f182a679394b/`): 16 mutants, 9 killed, 16/16 predictions held.
+Invariant checks (`invariant-runs/440069481941/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen are
+IPV-19/20/21/22. Mutation suite (`mutation-runs/440069481941/`): 16 mutants, 9 killed, 16/16 predictions held.
+Benchmark (`benchmark-runs/440069481941/`): quality unchanged; the I amendment adds units (broad 410 calls / est.
+$0.144, hybrid 270 / $0.094 — hybrid ≈65% of broad).
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 
@@ -89,7 +92,7 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | F | REVIEW_REQUIRED | 7.06/7.08 CERTIFIED; 7.01 review (7.01(f) EUR / 7.01(g) reclassification units not COMPLETE - expected) |
 | G | FAILED | 7.04 truncated and 7.01(c) undefined term fail closed (expected); duplicate 7.01 ambiguous (expected); 7.03 review (IPV-07 merged clause) |
 | H | FAILED | 7.03 CERTIFIED; 7.11 springing covenant review (expected: undefined FCCR inputs); 7.02 review (undefined Eligible Receivables - expected) |
-| I | FAILED | 7.01, 7.02, 7.04 NOT_CERTIFIED (CONTEXT_CONTRACT_UNACCEPTABLE: a FALSE DEFINITION_CYCLE on "Subsidiary"/"Guarantor" — IPV-21, a diamond dependency, not a self-reference); 9.15 Article IX secured cap REVIEW (UNACCOUNTED_MATERIAL_SOURCE — IPV-14) |
+| I | FAILED | 7.01, 7.02, 7.04 NOT_CERTIFIED (CONTEXT_CONTRACT_UNACCEPTABLE: a FALSE DEFINITION_CYCLE on "Subsidiary"/"Guarantor" — IPV-21); 9.15 REVIEW (IPV-14); 1.01 definitions candidate compiled from the operative text of the replaced section reports every other definition missing (IPV-19 on disk, after Amendment No. 1 restates "Foreign Subsidiary") |
 | J | FAILED | 7.06 review (MISSING_RULE material — mock did not represent one sibling unit); 7.08 review (IPV-15: dependsOn to 7.06(c) rejected as invented) |
 | K | FAILED | 7.06 and 7.08 review (IPV-14 class: mock did not represent one sibling unit each); 7.09 review (IPV-18: family unrecognised, relabelled) |
 | L | REVIEW_REQUIRED | 7.07 review: context contract unacceptable because of a FALSE DEFINITION_CYCLE 'Loan Parties → Subsidiary → Loan Parties' (IPV-21), plus one inventory item the mock did not represent |
