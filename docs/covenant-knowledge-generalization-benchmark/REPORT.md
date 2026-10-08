@@ -2,9 +2,9 @@
 
 **Verdict:** `CKG_BENCHMARK_STANDUP_COMPLETE_OFFLINE_BASELINE_RECORDED`
 
-**Exact tip SHA:** `a8731bbcf687a70c9ae4bfa13c5b5fc91c6fe1b5`
-
 **Evaluation content SHA (harness + baseline fixtures):** `0fe2fbe309fde988e9946c845e7fe50188260553`
+
+**Branch tip SHA:** `0186ca4eed25b79e4ea4b776e3147faa402f116e` (recorded at PR update; confirm with `git rev-parse origin/cursor/covenant-knowledge-generalization-bench-7f51`).
 
 **Branch:** `cursor/covenant-knowledge-generalization-bench-7f51`
 
