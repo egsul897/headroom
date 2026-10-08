@@ -1,0 +1,835 @@
+{
+  "schemaVersion": "covenant-precedent-research.v1",
+  "disclaimer": "Research results are source-backed retrieval hits for comparison only. They are not legal opinions, not approved capacity determinations, and not advice that a proposed transaction is permitted.",
+  "entries": [
+    {
+      "entryId": "dsgr-6.01-q-general-debt-25m",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "dsgr-phase-3f-unseen",
+        "name": "Distribution Solutions Group, Inc.",
+        "ticker": "DSGR",
+        "cik": "0000703604"
+      },
+      "instrument": {
+        "instrumentKey": "dsgr-credit-facility-instrument",
+        "name": "Amended and Restated Credit Agreement (as amended by Third Amendment)",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/703604/000119312524202196/d885541dex101.htm",
+        "accession": "0001193125-24-202196",
+        "filedOn": "2024-08-16",
+        "documentName": "Third Amendment to Amended and Restated Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "INCUR_DEBT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2024-08-14",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "(q) other Indebtedness in an aggregate outstanding principal amount not exceeding at any time the greater of $25,000,000 and 25% of Applicable EBITDA.",
+      "sourceCitation": "Section 6.01(q)",
+      "sourceSectionRef": "6.01(q)",
+      "relevantDefinitions": [
+        {
+          "termName": "Applicable EBITDA",
+          "excerpt": null,
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Indebtedness",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [
+        {
+          "relationshipType": "AMENDS",
+          "relatedEntryId": null,
+          "description": "Restated indebtedness baskets appear in the Third Amendment to the 2022 A&R Credit Agreement."
+        }
+      ],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [25000000],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": ["BORROWER", "RESTRICTED_SUBSIDIARY"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": true,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["general-debt-basket", "grower", "dsgr"]
+    },
+    {
+      "entryId": "chwy-ebitda-uncapped-synergy-addbacks",
+      "kind": "DEFINITION",
+      "issuer": {
+        "companyId": "chwy-2026-credit-agreement",
+        "name": "Chewy, Inc.",
+        "ticker": "CHWY",
+        "cik": "0001766502"
+      },
+      "instrument": {
+        "instrumentKey": "chwy-2026-credit-facility",
+        "name": "Credit Agreement dated June 23, 2026",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1766502/000119312526281042/",
+        "accession": "0001193125-26-281042",
+        "filedOn": "2026-06-24",
+        "documentName": "Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+      "ruleType": "DEFINITION",
+      "action": null,
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2026-06-23",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "at the election of the Initial Borrower, without duplication, (i) the amount of “run rate” synergies, cost savings, operating expense reductions, operating improvements, business optimization, revenue enhancements, revenue synergies, pricing initiatives, restructuring initiatives and other similar initiatives expected by the Initial Borrower in good faith to result from actions taken, committed to be taken or expected to be taken (in the good faith determination of the Initial Borrower) (collectively, the “Expected Run Rate Benefit”)",
+      "sourceCitation": "Section 1.01, Consolidated EBITDA / Expected Run Rate Benefit",
+      "sourceSectionRef": "1.01",
+      "relevantDefinitions": [
+        {
+          "termName": "Expected Run Rate Benefit",
+          "excerpt": "run rate synergies, cost savings, operating expense reductions and similar initiatives expected in good faith to result from actions taken or expected to be taken",
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Consolidated EBITDA",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": true,
+        "conditionTypes": [],
+        "entityScopeTags": [],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": true,
+        "synergyAddbackCapped": false,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["ebitda", "synergy", "uncapped-addback", "chwy"]
+    },
+    {
+      "entryId": "fwrg-6.04-a-rp-no-default",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "fwrg-2021-credit-agreement",
+        "name": "First Watch Restaurant Group, Inc.",
+        "ticker": "FWRG",
+        "cik": "0001789940"
+      },
+      "instrument": {
+        "instrumentKey": "fwrg-2021-credit-facility",
+        "name": "Credit Agreement dated October 6, 2021",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm",
+        "accession": "0001193125-21-293207",
+        "filedOn": "2021-10-06",
+        "documentName": "Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "MAKE_RESTRICTED_PAYMENT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2021-10-06",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "(x) so long as no Event of Default exists, the Borrower may make Restricted Payments in an aggregate amount not to exceed the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA",
+      "sourceCitation": "Section 6.04(a)",
+      "sourceSectionRef": "6.04(a)",
+      "relevantDefinitions": [
+        {
+          "termName": "Consolidated Adjusted EBITDA",
+          "excerpt": null,
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Event of Default",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [
+        {
+          "type": "NO_DEFAULT",
+          "description": "so long as no Event of Default exists"
+        }
+      ],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [21000000],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": ["NO_DEFAULT"],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["restricted-payments", "no-default", "fwrg"]
+    },
+    {
+      "entryId": "fwrg-available-amount-shared-inv-rdp",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "fwrg-2021-credit-agreement",
+        "name": "First Watch Restaurant Group, Inc.",
+        "ticker": "FWRG",
+        "cik": "0001789940"
+      },
+      "instrument": {
+        "instrumentKey": "fwrg-2021-credit-facility",
+        "name": "Credit Agreement dated October 6, 2021",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm",
+        "accession": "0001193125-21-293207",
+        "filedOn": "2021-10-06",
+        "documentName": "Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "INVESTMENTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "MAKE_INVESTMENT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2021-10-06",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "Restricted Debt Payments in an aggregate amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (vi)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date that the Borrower elects to apply to this clause (vi)(B); ... Restricted Subsidiaries in an aggregate outstanding amount not to exceed (i) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (r)(i)",
+      "sourceCitation": "Sections 6.04(b)(vi) and 6.06(r) — Available Amount builder shared across Restricted Debt Payments and Investments",
+      "sourceSectionRef": "6.06(r)",
+      "relevantDefinitions": [
+        {
+          "termName": "Available Amount",
+          "excerpt": "builder basket electable to Restricted Payments, Investments, and Restricted Debt Payments",
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Restricted Debt Payments",
+          "excerpt": "purchase, defeasance, redemption, refinancing, repurchase, repayment or other acquisition or retirement of Restricted Debt",
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": ["BORROWER", "RESTRICTED_SUBSIDIARY"],
+        "hasSharedCapacity": true,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": true,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": true,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["available-amount", "shared-capacity", "junior-debt-prepay", "investments", "fwrg"]
+    },
+    {
+      "entryId": "fwrg-incremental-ratio-debt",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "fwrg-2021-credit-agreement",
+        "name": "First Watch Restaurant Group, Inc.",
+        "ticker": "FWRG",
+        "cik": "0001789940"
+      },
+      "instrument": {
+        "instrumentKey": "fwrg-2021-credit-facility",
+        "name": "Credit Agreement dated October 6, 2021",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1789940/000119312521293207/d212487dex101.htm",
+        "accession": "0001193125-21-293207",
+        "filedOn": "2021-10-06",
+        "documentName": "Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "INCUR_DEBT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2021-10-06",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "and (z) an additional unlimited amount, so long as, in the case of this clause (z), on a Pro Forma Basis: (A) if such Ratio Debt constitutes First Lien Debt, the First Lien Rent Adjusted Net Leverage Ratio does not exceed 4.50:1.00; (B) if such Ratio Debt constitutes Junior Lien Debt, the Secured Rent Adjusted Net Leverage Ratio does not exceed 5.00:1.00",
+      "sourceCitation": "Incremental Cap / Ratio Debt clause (z)",
+      "sourceSectionRef": "Incremental Cap",
+      "relevantDefinitions": [
+        {
+          "termName": "Incremental Cap",
+          "excerpt": null,
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Ratio Debt",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [
+        {
+          "type": "RATIO_SATISFIED",
+          "description": "First Lien Rent Adjusted Net Leverage Ratio ≤ 4.50x or Secured Rent Adjusted Net Leverage Ratio ≤ 5.00x on a Pro Forma Basis"
+        }
+      ],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": true,
+        "hasUnlimitedCapacity": true,
+        "conditionTypes": ["RATIO_SATISFIED"],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["incremental", "ratio-debt", "fwrg"]
+    },
+    {
+      "entryId": "fixture-amendment-reduces-rp-capacity",
+      "kind": "AMENDMENT_EFFECT",
+      "issuer": {
+        "companyId": "research-fixture-issuer",
+        "name": "Research Fixture Issuer Corp.",
+        "ticker": "RFIC",
+        "cik": null
+      },
+      "instrument": {
+        "instrumentKey": "research-fixture-credit-facility",
+        "name": "Second Amendment to Credit Agreement (research fixture)",
+        "agreementType": "AMENDMENT"
+      },
+      "filing": {
+        "url": null,
+        "accession": null,
+        "filedOn": "2024-03-15",
+        "documentName": "Second Amendment (research corpus fixture)"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "MAKE_RESTRICTED_PAYMENT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2024-03-15",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "Section 6.08(b)(12) of the Credit Agreement is hereby amended by deleting the reference therein to \"$50,000,000\" and substituting in lieu thereof the dollar amount \"$25,000,000\". After giving effect to this Amendment, Restricted Payments under Section 6.08(b)(12) may not exceed $25,000,000 in the aggregate.",
+      "sourceCitation": "Second Amendment §2 (Restricted Payment basket reduction)",
+      "sourceSectionRef": "6.08(b)(12)",
+      "relevantDefinitions": [
+        {
+          "termName": "Restricted Payment",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [
+        {
+          "relationshipType": "AMENDS",
+          "relatedEntryId": "fixture-rp-basket-pre-amendment",
+          "description": "Reduces the Section 6.08(b)(12) Restricted Payment basket from $50,000,000 to $25,000,000."
+        },
+        {
+          "relationshipType": "SUPERSEDES",
+          "relatedEntryId": "fixture-rp-basket-pre-amendment",
+          "description": "Prior $50,000,000 capacity is superseded as of the Second Amendment effective date."
+        }
+      ],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [25000000, 50000000],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": true,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["amendment", "restricted-payments", "capacity-reduction", "fixture"]
+    },
+    {
+      "entryId": "fixture-rp-basket-pre-amendment",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "research-fixture-issuer",
+        "name": "Research Fixture Issuer Corp.",
+        "ticker": "RFIC",
+        "cik": null
+      },
+      "instrument": {
+        "instrumentKey": "research-fixture-credit-facility",
+        "name": "Credit Agreement (research fixture base)",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": null,
+        "accession": null,
+        "filedOn": "2022-01-10",
+        "documentName": "Credit Agreement (research corpus fixture)"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "MAKE_RESTRICTED_PAYMENT",
+      "operativeVersion": {
+        "status": "SUPERSEDED",
+        "effectiveFrom": "2022-01-10",
+        "effectiveTo": "2024-03-15",
+        "supersededByEntryId": "fixture-amendment-reduces-rp-capacity"
+      },
+      "sourceExcerpt": "(12) Restricted Payments in an aggregate amount not to exceed $50,000,000.",
+      "sourceCitation": "Section 6.08(b)(12) (pre-Second Amendment)",
+      "sourceSectionRef": "6.08(b)(12)",
+      "relevantDefinitions": [],
+      "relatedConditions": [],
+      "amendmentRelationships": [
+        {
+          "relationshipType": "SUPERSEDED_BY",
+          "relatedEntryId": "fixture-amendment-reduces-rp-capacity",
+          "description": "Superseded by Second Amendment reducing basket to $25,000,000."
+        }
+      ],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [50000000],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["restricted-payments", "superseded", "fixture"]
+    },
+    {
+      "entryId": "lsb-6.15-springing-fccr",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "lsb-2023-abl-credit-agreement",
+        "name": "LSB Industries, Inc.",
+        "ticker": "LXU",
+        "cik": "0000060714"
+      },
+      "instrument": {
+        "instrumentKey": "lsb-2023-abl-facility",
+        "name": "ABL Credit Agreement dated December 21, 2023",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/60714/000119312523303035/d614151dex101.htm",
+        "accession": "0001193125-23-303035",
+        "filedOn": "2023-12-26",
+        "documentName": "Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "SPRINGING_COVENANTS",
+      "ruleType": "RATIO_TEST",
+      "action": null,
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2023-12-21",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "SECTION 6.15 Financial Covenant. Solely during any Availability Block Removal Period, fail to maintain a Fixed Charge Coverage Ratio of not less than 1.00:1.00, measured monthly as of the last day of each month on a trailing twelve-month basis",
+      "sourceCitation": "Section 6.15",
+      "sourceSectionRef": "6.15",
+      "relevantDefinitions": [
+        {
+          "termName": "Availability Block Removal Period",
+          "excerpt": null,
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Fixed Charge Coverage Ratio",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [
+        {
+          "type": "OTHER_RULE_SATISFIED",
+          "description": "Test applies solely during an Availability Block Removal Period (springing activation)."
+        }
+      ],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": true,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": ["OTHER_RULE_SATISFIED"],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": true,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["springing", "leverage", "fccr", "lsb"]
+    },
+    {
+      "entryId": "conmed-7.2-j-non-guarantor-debt",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "conmed-2025-credit-facility",
+        "name": "CONMED Corporation",
+        "ticker": "CNMD",
+        "cik": "0000816956"
+      },
+      "instrument": {
+        "instrumentKey": "conmed-eighth-ar-credit-facility",
+        "name": "Eighth Amended and Restated Credit Agreement",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm",
+        "accession": "0001174947-25-000941",
+        "filedOn": "2025-06-16",
+        "documentName": "Eighth A&R Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "INCUR_DEBT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2025-06-10",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "(j) Indebtedness of (i) any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party and (ii) any Subsidiary Guarantor to any Subsidiary that is not a Loan Party; (k) Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as no Default or Event of Default shall have occurred and be continuing",
+      "sourceCitation": "Section 7.2(j)–(k)",
+      "sourceSectionRef": "7.2(j)",
+      "relevantDefinitions": [
+        {
+          "termName": "Loan Party",
+          "excerpt": null,
+          "definitionEntryId": null
+        },
+        {
+          "termName": "Subsidiary Guarantor",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [
+        {
+          "type": "NO_DEFAULT",
+          "description": "clause (k) requires no Default or Event of Default continuing"
+        },
+        {
+          "type": "ENTITY_TYPE",
+          "description": "limited to Subsidiaries that are not Loan Parties / Foreign Subsidiaries"
+        }
+      ],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": ["NO_DEFAULT", "ENTITY_TYPE"],
+        "entityScopeTags": ["NON_GUARANTOR_RS", "NOT_A_LOAN_PARTY"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["non-guarantor", "subsidiary-debt", "conmed"]
+    },
+    {
+      "entryId": "conmed-7.2-reclassification-overlapping",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "conmed-2025-credit-facility",
+        "name": "CONMED Corporation",
+        "ticker": "CNMD",
+        "cik": "0000816956"
+      },
+      "instrument": {
+        "instrumentKey": "conmed-eighth-ar-credit-facility",
+        "name": "Eighth Amended and Restated Credit Agreement",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm",
+        "accession": "0001174947-25-000941",
+        "filedOn": "2025-06-16",
+        "documentName": "Eighth A&R Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "INDEBTEDNESS",
+      "ruleType": "RECLASSIFICATION_RULE",
+      "action": "INCUR_DEBT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2025-06-10",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "the Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness (or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of such item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having been incurred or existing pursuant to only one of such clauses",
+      "sourceCitation": "Section 7.2 (reclassification / overlapping basket election)",
+      "sourceSectionRef": "7.2",
+      "relevantDefinitions": [
+        {
+          "termName": "Indebtedness",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": true,
+        "hasReclassification": true,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": true,
+        "unusualReclassification": true
+      },
+      "searchText": "",
+      "tags": ["reclassification", "overlapping-baskets", "unusual-reclass", "conmed"]
+    },
+    {
+      "entryId": "conmed-7.6-rp-ratio-no-default",
+      "kind": "RULE",
+      "issuer": {
+        "companyId": "conmed-2025-credit-facility",
+        "name": "CONMED Corporation",
+        "ticker": "CNMD",
+        "cik": "0000816956"
+      },
+      "instrument": {
+        "instrumentKey": "conmed-eighth-ar-credit-facility",
+        "name": "Eighth Amended and Restated Credit Agreement",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm",
+        "accession": "0001174947-25-000941",
+        "filedOn": "2025-06-16",
+        "documentName": "Eighth A&R Credit Agreement (EX-10.1)"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "action": "MAKE_RESTRICTED_PAYMENT",
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": "2025-06-10",
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "is no greater than 3.50 to 1.00 and (ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may make Restricted Payment",
+      "sourceCitation": "Section 7.6 (ratio-gated RP with no-default condition)",
+      "sourceSectionRef": "7.6",
+      "relevantDefinitions": [
+        {
+          "termName": "Consolidated Senior Secured Leverage Ratio",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [
+        {
+          "type": "RATIO_SATISFIED",
+          "description": "Consolidated Senior Secured Leverage Ratio ≤ 3.50 to 1.00"
+        },
+        {
+          "type": "NO_DEFAULT",
+          "description": "no Event of Default has occurred and is continuing or would result therefrom"
+        }
+      ],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": true,
+        "hasUnlimitedCapacity": true,
+        "conditionTypes": ["RATIO_SATISFIED", "NO_DEFAULT"],
+        "entityScopeTags": ["BORROWER"],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": false,
+        "synergyAddbackCapped": null,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["restricted-payments", "no-default", "ratio-gated", "conmed"]
+    },
+    {
+      "entryId": "gibraltar-ebitda-capped-synergy",
+      "kind": "DEFINITION",
+      "issuer": {
+        "companyId": "gibraltar-2026-credit-agreement",
+        "name": "Gibraltar Industries, Inc.",
+        "ticker": "ROCK",
+        "cik": "0000912562"
+      },
+      "instrument": {
+        "instrumentKey": "gibraltar-2026-credit-facility",
+        "name": "Credit Agreement (2026)",
+        "agreementType": "CREDIT_AGREEMENT"
+      },
+      "filing": {
+        "url": null,
+        "accession": null,
+        "filedOn": "2026-01-01",
+        "documentName": "Credit Agreement"
+      },
+      "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+      "ruleType": "DEFINITION",
+      "action": null,
+      "operativeVersion": {
+        "status": "CURRENT_OPERATIVE",
+        "effectiveFrom": null,
+        "effectiveTo": null,
+        "supersededByEntryId": null
+      },
+      "sourceExcerpt": "cost savings, operating expense reductions and synergies added to Consolidated EBITDA pursuant to Section 1.10(b) ) shall not exceed 30.0% of Consolidated EBITDA for any four fiscal quarter period (determined after giving effect thereto and all other adjustments and addbacks); provided, further, that such 30.0% cap shall not apply to any such adjustments that would be permitted to be included in pro forma financial statements prepared in accordance with Regulation S-X under the Securities Act",
+      "sourceCitation": "Consolidated EBITDA synergy/cost-savings add-back with 30% cap",
+      "sourceSectionRef": "1.01 / 1.10(b)",
+      "relevantDefinitions": [
+        {
+          "termName": "Consolidated EBITDA",
+          "excerpt": null,
+          "definitionEntryId": null
+        }
+      ],
+      "relatedConditions": [],
+      "amendmentRelationships": [],
+      "verificationStatus": "FIXTURE",
+      "structuralFeatures": {
+        "moneyAmountsUsd": [],
+        "hasRatioGate": false,
+        "hasUnlimitedCapacity": false,
+        "conditionTypes": [],
+        "entityScopeTags": [],
+        "hasSharedCapacity": false,
+        "hasReclassification": false,
+        "hasSpringingTest": false,
+        "hasSynergyAddback": true,
+        "synergyAddbackCapped": true,
+        "sharesWithJuniorDebtPrepay": false,
+        "isGeneralDebtBasket": false,
+        "amendmentReducesRpCapacity": false,
+        "hasOverlappingBaskets": false,
+        "unusualReclassification": false
+      },
+      "searchText": "",
+      "tags": ["ebitda", "synergy", "capped-addback", "negative-control"]
+    }
+  ]
+}
