@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `ade5386` + this commit | INV-18 inflected-term breadth (IPV-09 93% miss, MATERIAL), scan-noise mutants MUT-17…20 (silent merges IPV-07; bogus '7.0' node IPV-23), doc 20 inventory/citation spec; `invariant-runs/ade5386` (17 invariants), `mutation-runs/ade5386` (20 mutants) | `npx vitest run tests/product-acceptance` green (see run); tsc clean; pin-check clean |
 | 2026-10-08 | `731f34e` + this commit | T3 package M (definition amendment + side letter + Guarantor/Subsidiary): IPV-19's fail-closed REVIEW masks IPV-16 and IPV-20 false permissions; IPV-21 does not fire (plural 'Guarantors', IPV-09); first acceptance-run signatures for IPV-16 and IPV-20; artefacts `acceptance-runs/731f34e2f9ae` (657: 577/62/18), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 193 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `dcfd931` + this commit | T4 First Supplemental Indenture on B (second-instrument amendment resolves ✅; indenture::4.09 stale text → IPV-04 breadth), T5 prompt-size measurement (≈8,400 user-content tokens per unit median; doc 08 estimates low ≈2–3× on input), T6 onboarding doc 19; artefacts `acceptance-runs/dcfd931004c6` (614: 543/54/17), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `4400694` + this commit | T1: package I on-disk definition amendment (IPV-19 now in the acceptance run incl. the 1.01 definitions candidate losing every other definition); F amendment tried and reverted (masked IPV-02); definition-currency audit (IPV-05 consequence on H); T2: SET_POSTURE / SET_PERCENT, INV-28b refused ×2; artefacts `acceptance-runs/440069481941` (609: 539/53/17), `invariant-runs/…` (16 invariants, 33/16), `mutation-runs/…`, `benchmark-runs/…` (410/270 calls) | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
@@ -31,7 +32,7 @@
 
 ## Current task
 
-Second self-replenishing pass (task 6 below). T1–T6 complete at `731f34e`. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+Milestone report 3, then ratio-comparator / reclassification cases (task 6 below). Second self-replenishing pass items (a)–(c) complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -68,10 +69,10 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: (a) IPV-09 breadth, now load-bearing: a corpus-wide invariant (INV-18) that, for every covenant whose own text uses a defined term in plural / possessive form ("Guarantors", "Subsidiaries", "Investments", "Liens", "Restricted Payments", "Affiliate of"), checks that the bundle carries the definition; count the misses; record which other findings they suppress (M: IPV-21). (b) an OCR-noise variation (in memory, mutation kind OCR_NOISE on package A: ligatures, broken line wraps inside section headings, "S E C T I O N 7.01", "7 .01(b)") with expectations that structure either survives or fails closed (never silently merges clauses) — ledger #23/#24 breadth and doc 19 assumption 1. (c) directive product backlog 5–6: `20-covenant-inventory-and-citation-spec.md` — the covenant inventory data contract (fields the acceptance report already carries per unit) and the evidence-citation interface requirements (what a citation must show: document, section, occurrence, char span, lineage, as-of), tied to W7–W9.
-- Files: `scripts/product-acceptance/invariants.ts` (INV-18), `scripts/product-acceptance/mutations.ts` (OCR_NOISE mutants MUT-17…), `docs/product-readiness/20-covenant-inventory-and-citation-spec.md`, ledger, register, checkpoint.
-- First step: INV-18 — iterate all manifest covenants, regex the own text for defined-term plurals/possessives, compare with the bundle's DEFINITION items; print the miss table.
-- Expected output: IPV-09 breadth number with the suppressed-finding note; OCR mutants with verdicts (new structural finding if a clause merges silently); doc 20.
+- Objective: (a) ledger #32/#34: simulateTransaction with an APPLY_RECLASSIFICATION effect and no recorded election on F (7.01(g) reclassifies usage from (b)); expectation: refused / REVIEW, never capacity freed (F-U2); (b) ratio-comparator breadth: SET_RATIO on every RATIO_THRESHOLD covenant in the corpus (A 7.01(c), B 4.09, H 7.11, J 7.06(c), M 7.01(c)) recording which refusals are masked by IPV-21/IPV-12/IPV-19 and which certify (IPV-22 breadth); (c) milestone report 3 with the required return fields; (d) third self-replenishing pass.
+- Files: `scripts/product-acceptance/invariants.ts` (INV-32, INV-09c), register, ledger, checkpoint.
+- First step: INV-32 — read `transaction/types.ts` for the APPLY_RECLASSIFICATION effect shape and the election type; build the effect against rule:f-7.01(b) → rule:f-7.01(g) is not in the fixture IR, so add a reclassification-target rule to a local IR copy (labelled) and simulate without an election.
+- Expected output: INV-32 verdicts; comparator breadth table; milestone report.
 - Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 
