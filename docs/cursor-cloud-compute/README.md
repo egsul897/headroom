@@ -66,3 +66,20 @@ npm run compute:phase2-real-edgar -- \
 
 Consumes WS-EHB manifests (no competing registry). Downloads via peer SEC transport.
 Raw corpora stay under gitignored `data/`.
+
+## Phase 3 — durable handoff + failure forensics
+
+See [`measured-results-phase3.md`](./measured-results-phase3.md).
+
+```bash
+export HEADROOM_CKF_ROOT=/tmp/peer-worktrees/ckf
+export HEADROOM_EHB_ROOT=/tmp/peer-worktrees/ehb
+export HEADROOM_SEC_FETCH_OWNER=WS-EHB
+export SEC_EDGAR_CONTACT_EMAIL='AUTHORIZED_OPERATOR@email'
+npm run compute:phase3-forensic
+npm run compute:phase3
+```
+
+Content-addressed handoff (`cca-handoff-v1`) exports a durable artifact tarball under
+`/opt/cursor/artifacts/cursor-cloud-compute/`. Git tracks hash/provenance indexes only.
+WS-EHB owns live SEC acquisition; process-local limiters are not fleet-wide.
