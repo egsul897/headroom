@@ -7,7 +7,7 @@ Soft gate. **DEVELOPMENT ≠ CERTIFIED.** No paid inference. No certification ad
 | Role | SHA |
 |---|---|
 | Starting (defect) | `348bfedb33725d9a00adbf331131c038aa7d5a22` |
-| Ending | `ad5375cf669810eff573423efa42e11163149fbd` |
+| Ending | `32e364e444e8f3d3540ced7fa50ed3398e556a52` |
 
 ## Root cause
 
