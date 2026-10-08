@@ -97,7 +97,7 @@ async function acquireOne(t: Target) {
     artifactType: "DOCUMENT",
     sourceIdentifier: t.accession,
     sourceUri: t.sourceUri,
-    effectiveDate: null,
+    effectiveDate: undefined,
     summary: t.title,
   };
   const destDir = join(BYTE_ROOT, t.chainId);
