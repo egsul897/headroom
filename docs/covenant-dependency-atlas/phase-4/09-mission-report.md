@@ -3,6 +3,7 @@
 **PR:** #140 (draft, do not merge)  
 **Starting SHA (observed GitHub head):** `9c6f56c810fef1fdaa985155163c96560c2bae00`  
 **Reported Phase 3 SHA:** `3a41dbfd34835689a301075a0bbfb43b3c46cfc6`  
+**Phase 4 content commit:** `fadb09ae6afe671aae850005afe78439eca8df0f`  
 **Paid inference / merges / certification / Knife River inspection:** none  
 
 ## SHA drift
