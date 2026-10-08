@@ -85,7 +85,8 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Current task: letter/roman parser that keeps CONMED 7.1(c) and 7.1(d).
 - Status: implemented locally, tests below, commit follows this file.
 - Exact tests this cycle: `tsc --noEmit` exit 0. Clause hierarchy 17 passed. F2 nesting 18 passed. Structural index 17, references 8, phase-2f1 31 passed. `npm run test:phase3-certification`: 456 passed, 2 failed. Both failures are 5s timeouts in `semantic-verification-verify.test.ts` (no-key review routing, and IR mutation). Offline maps passed inside that suite. Certified path on `4a7a477` (parent of this commit) Actions run `37798576897` concluded success. This commit's Actions are not yet observed.
-- Known defects still open: unanchored `compileCovenantToIR` does not refuse (`operative-authority.ts` returns null without an anchor). `package-compile.ts` is still the broad set. Inline `7.4(a)(iii)` and `7.4(a)(iv)` are not structural nodes; that was already true before this parser change, and those discovery ids have no run-original evidence file. Local semantic-review timeout is not a certification result.
+- Known defects still open: unanchored `compileCovenantToIR` does not refuse (`operative-authority.ts` returns null without an anchor). `package-compile.ts` is still the broad set. Local semantic-review timeouts under the 5s default are not a certification result.
+- `7.4(a)(iii)` and `7.4(a)(iv)` are not nodes. The marker scanner rejects a parenthesis that is immediately preceded by a comma and a space (`MARKER_OCCURRENCE` in `clause-hierarchy.ts`). The Section 7.4 text is "), (iii)" and "), (iv)". That exclusion is the documented citation-list rule. Those two discovery ids have no run-original evidence file. The same two keys were already unresolved on the parser before the letter-run guard. Do not accept every comma-separated marker; that was the FWRG citation false-positive the rule exists to stop.
 - Decision: do not merge `origin/main` (`9de4e57`) into this branch. The qualitative-honesty files diverge. Do not wire question closure into `package-compile.ts`.
 
 ## Open, still in this owner's scope
@@ -96,9 +97,9 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: explain why inline markers `(iii)` and `(iv)` inside CONMED Section 7.4(a) do not become nodes, and fix that only if the change does not move a section ref that the offline map already binds.
-- Relevant files: `lib/contract-model/compiler/clause-hierarchy.ts`, `tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt` around Section 7.4, `scripts/p3-conmed-pilot/pipeline.ts` `rehydrateNodeIds`.
-- First step: `npx tsx` a rehydrate of `sealedPopulation().all` and print nodes whose `sectionRef` starts with `7.4`.
-- Expected output: either `(iii)` and `(iv)` appear under `7.4(a)`, or a written reason they must stay unparsed (mid-sentence marker, ambiguous with a roman/letter collision).
-- Acceptance: `offline-maps.test.ts` still passes, and any new node is covered by a synthetic test that does not name CONMED in production code.
-- Dependency: do not edit sealed evidence JSON. Do not call a provider.
+- Objective: decide whether a compile call that has a structural index and no anchor node must fail closed, without breaking certified raw-text fixtures that intentionally have no index.
+- Relevant files: `lib/contract-model/compiler/operative-authority.ts` (`operativeModelDispatchBlock`), `lib/contract-model/compiler/semantic/compile.ts`, callers of `compileCovenantToIR`.
+- First step: search for `compileCovenantToIR(` and record which callers pass `toolAccess.structuralIndex` with an empty `originatingStructuralNodeIds`.
+- Expected output: a list of production callers. If every production caller passes an anchor, leave the raw-text fixture path unchanged and record that. If a production caller can dispatch with an index and no anchor, add a regression that refuses that call and does not refuse a fixture that has no index.
+- Acceptance: `tests/contract-model/compiler/operative-authority.test.ts` and `npm run test:phase3-certification` show no new assertion failure. No provider call.
+- Dependency: do not treat a missing anchor on a raw-text fixture as a contents line. Do not edit sealed evidence.
