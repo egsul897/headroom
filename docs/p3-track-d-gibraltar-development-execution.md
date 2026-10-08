@@ -85,6 +85,21 @@ Eight billed compiles verified `MATERIAL_DISCREPANCY`. Two compiled and the revi
 
 The 39-character `7.04` rows are the table-of-contents line `Section 7.04 Asset Dispositions 233`. Findings say that heading is the operative text and the compiled rules add content the line does not contain. The 5,767-character body was compiled separately and the review did not finish. Bare `7.04` stays `AMBIGUOUS`. `7.05(a)` verified `MATERIAL_DISCREPANCY` on a `BASKET` row. One finding quotes text that mentions `7.05(a)(y)`. The resolver result for that cite remains `NOT_FOUND`. No row was dispatched on either phrase node.
 
+## Article VII bodies, one call each
+
+`scripts/p3-development-pipeline/compile-gibraltar-article-vii.ts` compiled six unpaid section bodies on `BoundedSemanticCaller` (`anthropic/claude-haiku-4.5` through the gateway). One `submit_compilation`, plus one refinement when the model named a gap. Inventory was off. The verifier was off. The 12-turn loop was not used. `7.04` was skipped because that body is already on the verification ledger. Child rows and table-of-contents lines were not sent. Output ceiling 24,576 tokens. New-spend stop $12. The run completed at list price **$1.079528**. Record: `development-pipeline/article-vii-compile.json`.
+
+| Section | Chars | Rules | Input | Output | Refinement | List price |
+|---|---:|---:|---:|---:|---:|---:|
+| 7.02 | 415 | 2 | 23,305 | 3,164 | 0 | 0.039125 |
+| 7.08 | 2,694 | 3 | 66,578 | 11,493 | 1 | 0.124043 |
+| 7.03 | 4,234 | 1 | 66,800 | 13,606 | 1 | 0.134830 |
+| 7.06 | 7,962 | 22 | 29,846 | 15,862 | 1 | 0.109156 |
+| 7.01 | 21,491 | 28 | 90,251 | 48,808 | 1 | 0.334291 |
+| 7.05 | 34,605 | 26 | 92,323 | 49,152 | 1 | 0.338083 |
+
+Every section returned `REVIEW_REQUIRED`. `OPERATIVE_STATE_UNRESOLVED` is on each row because the supersession index is empty. `7.02` also reports `MISSING_CONTEXT`. `7.06`, `7.01`, and `7.05` also report `PROVIDER_FAILURE`. `7.05` output is exactly 2 × 24,576, so both the submit and the refinement filled the output ceiling. `7.01` output is 48,808, the same shape. Those two replies are capped. The rules that were returned are kept. DEVELOPMENT. `certified` false. `pinnedOffline` false. `eligibleClaimed` false. No pin. Cite `7.05(a)(y)` remains `NOT_FOUND`. Bare `7.04` remains `AMBIGUOUS`.
+
 ## Offline stages that ran
 
 `scripts/p3-development-pipeline/execute-gibraltar.ts` re-parsed the in-repo HTML with `parseDocument`, then ran `chunkDocument`, `parseDocumentStructure`, `detectStructuralDefinitions`, `detectStructuralReferences`, `buildStructuralIndex`, and `runPassADeterministicSignals` on `tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/`.

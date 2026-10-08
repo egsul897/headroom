@@ -1,0 +1,147 @@
+{
+  "banner": "DEVELOPMENT ≠ CERTIFIED ≠ PINNED_OFFLINE",
+  "designation": "DEVELOPMENT",
+  "certified": false,
+  "pinnedOffline": false,
+  "eligibleClaimed": false,
+  "pinWritten": false,
+  "model": "anthropic/claude-haiku-4.5",
+  "caller": "BoundedSemanticCaller",
+  "inventory": false,
+  "verifier": false,
+  "maxOutputTokens": 24576,
+  "ceilingUsd": 12,
+  "priceBasis": "Haiku list $1 input and $5 output per million tokens. priceUsage has no Haiku card.",
+  "manner": "One Article VII section body each. 7.04 skipped (already compiled). No child rows, no table-of-contents lines, no inventory pass, no verifier, no 12-turn loop.",
+  "attempts": [
+    {
+      "discoveryId": "discovery-candidate:12c482da0cd41175cf1afdb2",
+      "normalizedSourceRef": "7.02",
+      "operativeChars": 415,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "MISSING_CONTEXT",
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 2,
+      "definitions": 1,
+      "inputTokens": 23305,
+      "outputTokens": 3164,
+      "conversations": 1,
+      "refinements": 0,
+      "costUsd": 0.039125,
+      "wallClockMs": 28740,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    },
+    {
+      "discoveryId": "discovery-candidate:e28e5c9d7a7e36d661ebeeaf",
+      "normalizedSourceRef": "7.08",
+      "operativeChars": 2694,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 3,
+      "definitions": 0,
+      "inputTokens": 66578,
+      "outputTokens": 11493,
+      "conversations": 1,
+      "refinements": 1,
+      "costUsd": 0.124043,
+      "wallClockMs": 70740,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    },
+    {
+      "discoveryId": "discovery-candidate:f56eb3b3e930bc11a8322f48",
+      "normalizedSourceRef": "7.03",
+      "operativeChars": 4234,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 1,
+      "definitions": 0,
+      "inputTokens": 66800,
+      "outputTokens": 13606,
+      "conversations": 1,
+      "refinements": 1,
+      "costUsd": 0.13483,
+      "wallClockMs": 122364,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    },
+    {
+      "discoveryId": "discovery-candidate:10e232e92f6e3cc51ee8086f",
+      "normalizedSourceRef": "7.06",
+      "operativeChars": 7962,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "PROVIDER_FAILURE",
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 22,
+      "definitions": 0,
+      "inputTokens": 29846,
+      "outputTokens": 15862,
+      "conversations": 1,
+      "refinements": 1,
+      "costUsd": 0.109156,
+      "wallClockMs": 211409,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    },
+    {
+      "discoveryId": "discovery-candidate:fcc27931b80242a0fa84e671",
+      "normalizedSourceRef": "7.01",
+      "operativeChars": 21491,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "PROVIDER_FAILURE",
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 28,
+      "definitions": 0,
+      "inputTokens": 90251,
+      "outputTokens": 48808,
+      "conversations": 1,
+      "refinements": 1,
+      "costUsd": 0.334291,
+      "wallClockMs": 312163,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    },
+    {
+      "discoveryId": "discovery-candidate:b146de21e00b5b20b73cf8fe",
+      "normalizedSourceRef": "7.05",
+      "operativeChars": 34605,
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "PROVIDER_FAILURE",
+        "OPERATIVE_STATE_UNRESOLVED"
+      ],
+      "rules": 26,
+      "definitions": 0,
+      "inputTokens": 92323,
+      "outputTokens": 49152,
+      "conversations": 1,
+      "refinements": 1,
+      "costUsd": 0.338083,
+      "wallClockMs": 333372,
+      "certified": false,
+      "pinnedOffline": false,
+      "eligibleClaimed": false
+    }
+  ],
+  "spentUsd": 1.079528,
+  "stop": {
+    "reason": "COMPLETED",
+    "detail": null
+  }
+}
