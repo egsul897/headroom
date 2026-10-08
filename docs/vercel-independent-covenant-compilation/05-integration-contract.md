@@ -1,9 +1,11 @@
-# WS-VIC integration contract (Phase 2)
+# WS-VIC integration contract (Phase 2–3)
 
 **Workstream:** `WS-VIC` (bc-01a11d85-2531-7ae2-a5d5-cf7360ca6d1d)  
 **PR:** https://github.com/egsul897/headroom/pull/146  
 **Coordinator:** WS-PAR ([Parallel agent operating rules](https://cursor.com/agents/bc-01a11d87-7950-77b8-8141-e448c7e00e3f))  
 **Status:** PUBLISHED for peer consumption — does not rewrite peer exclusive trees
+
+**Phase 3 addendum:** Amendment-authority triage consumes Amendment Chain Research APIs (`lib/contract-model/compiler/amendment/**`) read-only. Do not resolve uncertainty merely because a later filing exists. CKF remains canonical corpus authority; VicRunStore remains noncanonical inference artifacts. No independent SEC crawler.
 
 ## Ownership (consumes WS-PAR map v6)
 

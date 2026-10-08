@@ -5,7 +5,7 @@
  * evidence. Hypotheses are explicitly labelled and NEVER imply permission
  * or operative authority.
  */
-export const DETERMINISTIC_EXTRACTION_VERSION = "deterministic-covenant-extraction.v1";
+export const DETERMINISTIC_EXTRACTION_VERSION = "deterministic-covenant-extraction.v2";
 
 export type FactKind =
   | "COVENANT_FAMILY_SIGNAL"
@@ -24,7 +24,8 @@ export type HypothesisKind =
   | "PROHIBITION_GUESS"
   | "BASKET_TYPE_GUESS"
   | "CAPACITY_FORMULA_GUESS"
-  | "OPERATIVE_AUTHORITY_GUESS";
+  | "OPERATIVE_AUTHORITY_GUESS"
+  | "AMENDMENT_AUTHORITY_GUESS";
 
 export interface SourceSpan {
   documentId: string | null;

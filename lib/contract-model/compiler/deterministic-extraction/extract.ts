@@ -200,14 +200,32 @@ export function extractDeterministicCovenantFacts(input: DeterministicExtraction
     });
   }
   if (facts.some((f) => f.kind === "COVENANT_FAMILY_SIGNAL")) {
+    // Family/signal recognition alone is SEMANTIC uncertainty — not amendment-chain
+    // precedence. Genuine amendment-authority issues require amendment-operation
+    // evidence (see AMENDMENT_OPERATION_SIGNAL below) or the amendment pipeline.
     hypotheses.push({
       hypothesisId: factId("COVENANT_FAMILY_SIGNAL", "auth-guess", 1),
       kind: "OPERATIVE_AUTHORITY_GUESS",
-      claim: "Structural/family recognition is not operative authority; governing operative text and amendments must be compiled.",
+      claim:
+        "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required.",
       status: "UNRESOLVED",
       requiresVerification: true,
       relatedFactIds: facts.filter((f) => f.kind === "COVENANT_FAMILY_SIGNAL").map((f) => f.factId),
       source: null,
+    });
+  }
+
+  const amendmentOpFacts = facts.filter((f) => f.kind === "AMENDMENT_RELATIONSHIP");
+  if (amendmentOpFacts.length > 0) {
+    hypotheses.push({
+      hypothesisId: factId("AMENDMENT_RELATIONSHIP", "amend-auth", 2),
+      kind: "AMENDMENT_AUTHORITY_GUESS",
+      claim:
+        "Amendment relationship evidence was observed; operative precedence, effective date, and parent-agreement identity remain unresolved pending the amendment pipeline and independent verification.",
+      status: "UNRESOLVED",
+      requiresVerification: true,
+      relatedFactIds: amendmentOpFacts.map((f) => f.factId),
+      source: amendmentOpFacts[0]?.source ?? null,
     });
   }
 

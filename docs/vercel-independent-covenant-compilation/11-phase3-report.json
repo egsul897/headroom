@@ -1,0 +1,991 @@
+{
+  "artifact": "VIC_PHASE3_REPORT",
+  "measuredAt": "2026-10-08T22:46:53.906Z",
+  "startingSha": "e1e4ad528338c0e7bfffdfa4c115fe5c37c64ee5",
+  "session": {
+    "wallClockMs": 12010,
+    "paidInferenceUsd": 0,
+    "localModel": {
+      "ollama": false,
+      "vllm": false,
+      "note": "Ollama/vLLM not installed; no unauthorized weight download; CPU local runtime unavailable this environment."
+    },
+    "documentsProcessed": 38,
+    "targetWas100": true,
+    "reached100": false,
+    "gapReason": "CKF/EHB delivered no consumable new authentic bodies in checked export paths; processed distinct on-disk fixture bodies only (URLs not counted)."
+  },
+  "ckfEhbIntegration": {
+    "status": "NO_CONSUMABLE_EXPORTS",
+    "newBodiesAvailable": 0,
+    "pathsChecked": [
+      "/workspace/docs/knowledge-factory",
+      "/workspace/docs/covenant-knowledge-factory",
+      "/workspace/docs/edgar-backfill",
+      "/workspace/data/ckf-exports",
+      "/workspace/data/ehb-exports"
+    ],
+    "note": "WS-VIC consumes CKF/EHB outputs read-only. No independent SEC crawler. URLs are not counted as documents. VicRunStore is not the canonical corpus."
+  },
+  "architecturalBoundaries": {
+    "vicRunStore": "noncanonical inference artifact store (phase3/run-store)",
+    "knowledgeFactory": "canonical corpus authority — MUST NOT TOUCH exclusive tree",
+    "productionLegalRules": "not written",
+    "ownership": "see 05-integration-contract.md + 10-phase3-amendment-authority-audit.json"
+  },
+  "amendmentAuthorityAudit": {
+    "totalClaims": 1318,
+    "byRootCause": {
+      "OVERBROAD_UNCERTAINTY_CLASSIFICATION": 1307,
+      "GENUINE_UNRESOLVED_AMENDMENT_PRECEDENCE": 6,
+      "MISSING_OPERATIVE_DOCUMENT": 0,
+      "INCORRECT_VERSION_SELECTION": 0,
+      "FALSE_AMENDMENT_DETECTION": 5,
+      "MISSING_EFFECTIVE_DATE_CONDITION": 0,
+      "MISSING_PARENT_AGREEMENT_IDENTITY": 0,
+      "OTHER": 0
+    },
+    "samples": [
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+        "candidateRef": "structural-node:54e9ba97668435304415be64",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such Indebtedness, no Default or Event of Default shall have o"
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "candidateRef": "structural-node:048f0961717cdd0da55b819a",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(iv) so long as no Event of Default exists, Restricted Debt Payments in an aggregate amount not to exceed (A) the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as "
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:177d2d1b367e33170b197969",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(ii)      shall comply with the Incremental Debt Lien/Guarantee Parameters.\n\n“ Permitted   Debt   Exchange   Offer ” has the meaning specified in Section 2.20(a) .\n\n“ Permitted Int"
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "candidateRef": "structural-node:3fa2f7a39e7c8267012a0d08",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(a) do not require any consent or approval of,\nregistration or filing with, or any other action by, any Governmental Authority, except such as have been obtained or made and are in"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:be23d02ae32c82b2e036ad4a",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(53) any Lien required to be granted under mandatory law in favor of\ncreditors as a consequence of a merger or a conversion permitted under this Agreement, including due to section"
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "candidateRef": "structural-node:26c1ead049b1f39671992aa4",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(x) Liens on Securities that are the subject of repurchase agreements constituting Investments permitted under Section 6.06 arising out of such repurchase transaction; "
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "candidateRef": "structural-node:202b7b8aeee165627c3b14c0",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(i) Liens arising out of conditional sale, title retention, consignment or similar\narrangements for sale of goods entered into by Loan Party or any Restricted Subsidiaries in the o"
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:c9a57f53bdf5d8b4423627ed",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(ii)      the making of any Investments,\nacquisitions, dispositions, Asset Disposition, mergers, amalgamations, consolidations, operational changes, business expansions and dispose"
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:117d60e59cbced56a0ee03c4",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(2)      any Subsidiary of an Unrestricted Subsidiary.\n\nThe Borrower may designate any Subsidiary of the Borrower (other than the Borrower or any Subsidiary that directly or indire"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:ff14a2229dbffc99b20345c9",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(e) Liens securing obligations in respect of Indebtedness, Disqualified Stock or Preferred Stock permitted to be assumed\npursuant to such clause (14) are solely on acquired propert"
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
+        "candidateRef": "structural-node:c1682716a576084f711939d9",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(o) Liens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or purported to have been sold, transferred, encumbe"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:dbab6a5b2f8d4ef067730d8b",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(a) the Borrower, (b) the Administrative Agent and (c) each\nAdditional Lender and Lender that agrees to provide any portion of the Other Loans or Other Commitments being incurred o"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:198378ee5837b5a04be9da82",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(b) any Investment held by such Person described in the preceding clause (a); provided that\nsuch Investment was not acquired by such Person in contemplation of such acquisition, me"
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+        "candidateRef": "structural-node:1796e52dd80901c4fdfbc185",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(i) so long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make advances, loans or extensions of credit to any F"
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+        "candidateRef": "structural-node:7a76a470523a01ee5a1c7e7d",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(a) No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly,\nany Restricted Payment, or incur any "
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "candidateRef": "structural-node:a9eb4403ac5b569f6a6cd600",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(viii) the Borrower may make Restricted Payments to (i) redeem, repurchase, retire or otherwise acquire any (A) Capital Stock (&#147; Treasury Capital Stock &#148;) of the Borrower"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:e0eb9dff72aed996db25e1fa",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(b) a customary intercreditor agreement in form and substance reasonably acceptable to the\nAdministrative Agent and the Borrower, which agreement shall provide that the Liens on th"
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "candidateRef": "structural-node:923a8f47b293e55f7dae25d6",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(h) Investments in joint ventures in an aggregate amount not exceeding $35,000,000; \n "
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:688ca16521660350d45f56fc",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(a) securing Finance Lease Obligations or Purchase Money\nObligations, or securing the payment of all or a part of the purchase price of, or securing Indebtedness or other obligatio"
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:26cc6cab2562df89d32de0aa",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(2)        solely for the purpose of determining the amount available for Restricted Payments under clause (y)(i) of Section 7.05(a) , any net income (loss) of any Restricted Subsi"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:038afdaad954cc9cf5f8a857",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(i) the\nSuper-Priority Revolving Credit Obligations and any Permitted Euro Revolving Indebtedness (and any Refinancing Indebtedness in respect thereof), in each case, which shall b"
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "candidateRef": "structural-node:672d05ce74930d4f8872428a",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(e) Lien and IP Searches . The Administrative Agent shall have received the results of\na recent lien search in the jurisdiction of organization of each Loan Party and each jurisdic"
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "candidateRef": "structural-node:004ee09d63eed2de35de6b9d",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(2)        the sum of all such payments;\n\nprovided that, for purposes of determining the\nWeighted Average Life to Maturity of any Indebtedness, the effects of any prepayments or am"
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "candidateRef": "structural-node:118c37231f5df4ad610bed7c",
+        "rootCause": "OVERBROAD_UNCERTAINTY_CLASSIFICATION",
+        "materiality": "NOISE",
+        "evidence": "Claim is operative-authority / family-signal uncertainty, not amendment-chain precedence.",
+        "excerpt": "(5) such\nRefinancing Indebtedness shall not be secured by any assets or property that does not secure the Refinanced Debt being Refinanced (plus improvements, accessions, proceeds "
+      }
+    ]
+  },
+  "structuralAndSourceRecovery": {
+    "phase2EmptyParses": 4,
+    "phase2MissingSourceClaims": 5,
+    "emptyAfterPreserveStructureStrip": 6,
+    "curatedExcerptDocsStillMissingFullFiling": 10,
+    "recoveryCases": [
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+        "sourceClass": "RAW_HTML",
+        "bytes": 191561,
+        "chars": 110215,
+        "nodes": 0,
+        "definitions": 35,
+        "disposition": "UNSUPPORTED_HEADING_GRAMMAR — raw HTML uses 'Section N.' / table-fragmented headings; Phase 2A expects SECTION N.NN; curated twin may parse",
+        "evidence": "EX-10.2 3 ex10-2.htm EX-10.2 Exhibit 10.2 AMENDED AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT made by CONMED CORPORATION and certain of its Subsidiaries in favor of JPMORGAN CHASE"
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+        "sourceClass": "CURATED_EXCERPT",
+        "bytes": 44178,
+        "chars": 44176,
+        "nodes": 0,
+        "definitions": 77,
+        "disposition": "UNSUPPORTED_OR_EXCERPT_FORMAT — definitions/joinder excerpts often lack ARTICLE/SECTION heading grammar the Phase 2A parser requires",
+        "evidence": "CONMED CORPORATION — Eighth Amended and Restated Credit Agreement, dated June 10, 2025 Curated definitions excerpt: only the defined terms Article VII (Negative Covenants)'s own text actually cites, i"
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt",
+        "sourceClass": "CURATED_EXCERPT",
+        "bytes": 106821,
+        "chars": 106821,
+        "nodes": 252,
+        "definitions": 35,
+        "disposition": "RECOVERED_VIA_CURATED_OR_COMPATIBLE_TEXT — structural nodes present on this body",
+        "evidence": "EX-10.2 3 ex10-2.htm EX-10.2 Exhibit 10.2 AMENDED AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT made by CONMED CORPORATION and certain of its Subsidiaries in favor of JPMORGAN CHASE BANK, N.A., as A"
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/raw-source/doc-c-2025-fourth-amendment.htm",
+        "sourceClass": "RAW_HTML",
+        "bytes": 52375,
+        "chars": 14070,
+        "nodes": 0,
+        "definitions": 0,
+        "disposition": "UNSUPPORTED_HEADING_GRAMMAR — raw HTML uses 'Section N.' / table-fragmented headings; Phase 2A expects SECTION N.NN; curated twin may parse",
+        "evidence": "EX-10.1 2 d906948dex101.htm EX-10.1 EX-10.1 Exhibit 10.1 EXECUTION VERSION FOURTH AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT THIS FOURTH AMENDMENT TO AMENDED AND RESTATED CREDI"
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/definitions-excerpt.txt",
+        "sourceClass": "CURATED_EXCERPT",
+        "bytes": 16544,
+        "chars": 16544,
+        "nodes": 0,
+        "definitions": 25,
+        "disposition": "UNSUPPORTED_OR_EXCERPT_FORMAT — definitions/joinder excerpts often lack ARTICLE/SECTION heading grammar the Phase 2A parser requires",
+        "evidence": "Available Amount &#148; means, at any time, an amount equal to, without duplication: (a) the sum of: (i) [reserved]; plus (ii) an amount, not less than zero for any period, equal to the CNI Growth Amo"
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+        "sourceClass": "CURATED_EXCERPT",
+        "bytes": 8137,
+        "chars": 8065,
+        "nodes": 0,
+        "definitions": 12,
+        "disposition": "UNSUPPORTED_OR_EXCERPT_FORMAT — definitions/joinder excerpts often lack ARTICLE/SECTION heading grammar the Phase 2A parser requires",
+        "evidence": "“ Availability ” means, (a) at any time other than an Availability Block Removal Period, an amount equal to (i) the lesser of (A) the Aggregate Revolving Commitment and (B) the Borrowing Base, minus ("
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+        "sourceClass": "CURATED_EXCERPT",
+        "bytes": 10883,
+        "chars": 10801,
+        "nodes": 0,
+        "definitions": 0,
+        "disposition": "UNSUPPORTED_OR_EXCERPT_FORMAT — definitions/joinder excerpts often lack ARTICLE/SECTION heading grammar the Phase 2A parser requires",
+        "evidence": " EX-10.3 4 d669761dex103.htm EX-10.3 EX-10.3 Exhibit 10.3 Execution Version JOINDER AGREEMENT dated as of December 21, 2023 (this “ Joinder Agreement ”) to that certain INTERCREDI"
+      }
+    ],
+    "note": "Unsupported excerpt formats separated from recoverable HTML newline-collapse defect."
+  },
+  "corpus": {
+    "authenticDocumentsProcessed": 38,
+    "bySourceClass": {
+      "EXTRACTED_TEXT": 12,
+      "RAW_HTML": 16,
+      "CURATED_EXCERPT": 10
+    },
+    "totalStructuralNodes": 25483,
+    "totalPassACandidates": 11802,
+    "perDocument": [
+      {
+        "documentId": "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "packageKey": "chwy-2026-credit-agreement",
+        "canonicalSourceId": "vic-src:chwy-2026-credit-agreement:f63b9dc6560e699c",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+        "bytes": 868560,
+        "structuralNodes": 1548,
+        "definitions": 486,
+        "crossReferences": 1198,
+        "passACandidates": 768,
+        "wallClockMs": 519
+      },
+      {
+        "documentId": "chwy-2026-credit-agreement/raw-html/doc-a-2026-06-23-credit-agreement.htm",
+        "packageKey": "chwy-2026-credit-agreement",
+        "canonicalSourceId": "vic-src:chwy-2026-credit-agreement:d1f8ff1deb0ec403",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "d1f8ff1deb0ec403443fd4e4e4259c4df37c45580889cfbc6b1274c4cfb9fbfb",
+        "bytes": 1306165,
+        "structuralNodes": 849,
+        "definitions": 486,
+        "crossReferences": 1188,
+        "passACandidates": 463,
+        "wallClockMs": 445
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:89ae1efbc8d70f9f",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "89ae1efbc8d70f9f91d401c59a94a5982b4b36cb19c7dec09c8d25a4de87f430",
+        "bytes": 826331,
+        "structuralNodes": 845,
+        "definitions": 361,
+        "crossReferences": 780,
+        "passACandidates": 402,
+        "wallClockMs": 432
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:29a1556d8a4c274b",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "29a1556d8a4c274b9eb01a8de3b9cf8a968e4408df8cefec0b956676f2441954",
+        "bytes": 1268135,
+        "structuralNodes": 1099,
+        "definitions": 429,
+        "crossReferences": 905,
+        "passACandidates": 536,
+        "wallClockMs": 443
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:7112a4b8df3fa5db",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "7112a4b8df3fa5db6f5286f4d59a25932b1b8f5b4e256d83f1c7c7ab2fc495ce",
+        "bytes": 191561,
+        "structuralNodes": 0,
+        "definitions": 35,
+        "crossReferences": 68,
+        "passACandidates": 0,
+        "wallClockMs": 6
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:f2ecab4fdc6a9701",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "f2ecab4fdc6a9701b37bb67c65ddeb1792c8cde749c17da0594dc4d93fdf3953",
+        "bytes": 37209,
+        "structuralNodes": 23,
+        "definitions": 0,
+        "crossReferences": 5,
+        "passACandidates": 9,
+        "wallClockMs": 53
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:be76b638c6ff85b8",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "bytes": 50080,
+        "structuralNodes": 169,
+        "definitions": 0,
+        "crossReferences": 73,
+        "passACandidates": 97,
+        "wallClockMs": 407
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:9a2b1c4d1ba2c80b",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+        "bytes": 44178,
+        "structuralNodes": 0,
+        "definitions": 77,
+        "crossReferences": 34,
+        "passACandidates": 0,
+        "wallClockMs": 6
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:e40b7099e4406b70",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+        "bytes": 18111,
+        "structuralNodes": 28,
+        "definitions": 1,
+        "crossReferences": 15,
+        "passACandidates": 10,
+        "wallClockMs": 58
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:e9d7a347023568be",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+        "bytes": 106821,
+        "structuralNodes": 252,
+        "definitions": 35,
+        "crossReferences": 68,
+        "passACandidates": 116,
+        "wallClockMs": 412
+      },
+      {
+        "documentId": "conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+        "packageKey": "conmed-2025-credit-facility",
+        "canonicalSourceId": "vic-src:conmed-2025-credit-facility:953d9051b9a53adf",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+        "bytes": 11701,
+        "structuralNodes": 23,
+        "definitions": 0,
+        "crossReferences": 5,
+        "passACandidates": 9,
+        "wallClockMs": 52
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:2bc4ee96a9b960d7",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+        "bytes": 743476,
+        "structuralNodes": 1356,
+        "definitions": 370,
+        "crossReferences": 957,
+        "passACandidates": 622,
+        "wallClockMs": 427
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:467267c933d83393",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+        "bytes": 741527,
+        "structuralNodes": 1367,
+        "definitions": 408,
+        "crossReferences": 969,
+        "passACandidates": 648,
+        "wallClockMs": 427
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:a8cacce72b6df9f8",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+        "bytes": 13862,
+        "structuralNodes": 21,
+        "definitions": 0,
+        "crossReferences": 9,
+        "passACandidates": 15,
+        "wallClockMs": 77
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:29fe29a537668e1e",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+        "bytes": 844994,
+        "structuralNodes": 1406,
+        "definitions": 481,
+        "crossReferences": 1025,
+        "passACandidates": 658,
+        "wallClockMs": 411
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/raw-source/doc-a-2022-amended-restated-credit-agreement.htm",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:4babe9f2a766b257",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "4babe9f2a766b257c0fef9e1546d5c222f5926513e36ffbcf2f5cddbde7d03a6",
+        "bytes": 1234538,
+        "structuralNodes": 1100,
+        "definitions": 0,
+        "crossReferences": 951,
+        "passACandidates": 555,
+        "wallClockMs": 651
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/raw-source/doc-b-2024-third-amendment.htm",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:4ea06bec34014dfe",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "4ea06bec34014dfe544704913bc6afa4461ce5aa4891f803fc54fe6279056ec7",
+        "bytes": 1175933,
+        "structuralNodes": 1114,
+        "definitions": 0,
+        "crossReferences": 969,
+        "passACandidates": 588,
+        "wallClockMs": 384
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/raw-source/doc-c-2025-fourth-amendment.htm",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:5092eeba72b6ea73",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "5092eeba72b6ea73b9aaef5b29aa2a0f50f4054dd40b2e14552cdbdf973b2fbc",
+        "bytes": 52375,
+        "structuralNodes": 0,
+        "definitions": 0,
+        "crossReferences": 9,
+        "passACandidates": 0,
+        "wallClockMs": 4
+      },
+      {
+        "documentId": "dsgr-2022-2025-credit-facility/raw-source/doc-d-2025-second-amended-restated-credit-agreement.htm",
+        "packageKey": "dsgr-2022-2025-credit-facility",
+        "canonicalSourceId": "vic-src:dsgr-2022-2025-credit-facility:c22774d223f22fad",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "c22774d223f22fadf60d228d0b9f728ec410d78633e9655a4968519cc67bd731",
+        "bytes": 1698197,
+        "structuralNodes": 1147,
+        "definitions": 379,
+        "crossReferences": 1015,
+        "passACandidates": 595,
+        "wallClockMs": 382
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "packageKey": "fwrg-2021-credit-agreement",
+        "canonicalSourceId": "vic-src:fwrg-2021-credit-agreement:ec183906d99bed71",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+        "bytes": 104183,
+        "structuralNodes": 396,
+        "definitions": 0,
+        "crossReferences": 198,
+        "passACandidates": 168,
+        "wallClockMs": 368
+      },
+      {
+        "documentId": "fwrg-2021-credit-agreement/definitions-excerpt.txt",
+        "packageKey": "fwrg-2021-credit-agreement",
+        "canonicalSourceId": "vic-src:fwrg-2021-credit-agreement:040274e5937cf34e",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+        "bytes": 16544,
+        "structuralNodes": 0,
+        "definitions": 25,
+        "crossReferences": 16,
+        "passACandidates": 0,
+        "wallClockMs": 5
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "packageKey": "gibraltar-2026-credit-agreement",
+        "canonicalSourceId": "vic-src:gibraltar-2026-credit-agreement:4131d3c166f8bddb",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "bytes": 1043514,
+        "structuralNodes": 2087,
+        "definitions": 564,
+        "crossReferences": 1459,
+        "passACandidates": 946,
+        "wallClockMs": 453
+      },
+      {
+        "documentId": "gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
+        "packageKey": "gibraltar-2026-credit-agreement",
+        "canonicalSourceId": "vic-src:gibraltar-2026-credit-agreement:d510fe0872947391",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "d510fe087294739135850bdc6535a9d29572dc8592161dcf7f83563cb91ba5ee",
+        "bytes": 2266666,
+        "structuralNodes": 1917,
+        "definitions": 564,
+        "crossReferences": 1444,
+        "passACandidates": 890,
+        "wallClockMs": 458
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "packageKey": "lsb-2023-abl-credit-agreement",
+        "canonicalSourceId": "vic-src:lsb-2023-abl-credit-agreement:3a175ce17390e13f",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+        "bytes": 16854,
+        "structuralNodes": 75,
+        "definitions": 0,
+        "crossReferences": 10,
+        "passACandidates": 43,
+        "wallClockMs": 207
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+        "packageKey": "lsb-2023-abl-credit-agreement",
+        "canonicalSourceId": "vic-src:lsb-2023-abl-credit-agreement:3988913874c4cb7b",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+        "bytes": 8137,
+        "structuralNodes": 0,
+        "definitions": 12,
+        "crossReferences": 13,
+        "passACandidates": 0,
+        "wallClockMs": 5
+      },
+      {
+        "documentId": "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+        "packageKey": "lsb-2023-abl-credit-agreement",
+        "canonicalSourceId": "vic-src:lsb-2023-abl-credit-agreement:399d7448d3f2736b",
+        "sourceClass": "CURATED_EXCERPT",
+        "contentHash": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+        "bytes": 10883,
+        "structuralNodes": 0,
+        "definitions": 0,
+        "crossReferences": 6,
+        "passACandidates": 0,
+        "wallClockMs": 5
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:4e5556efb11626b7",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+        "bytes": 177631,
+        "structuralNodes": 426,
+        "definitions": 123,
+        "crossReferences": 253,
+        "passACandidates": 149,
+        "wallClockMs": 368
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:9c21d9ea41426080",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+        "bytes": 181371,
+        "structuralNodes": 442,
+        "definitions": 126,
+        "crossReferences": 259,
+        "passACandidates": 157,
+        "wallClockMs": 392
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:ef91992838879f9f",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+        "bytes": 189102,
+        "structuralNodes": 458,
+        "definitions": 128,
+        "crossReferences": 263,
+        "passACandidates": 162,
+        "wallClockMs": 402
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/raw-html/doc-a-2025-04-22-credit-agreement.htm",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:ad43b31e06aacf71",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "ad43b31e06aacf7163a79b6a180a8be928258dc4d040f4b1d866cc0e89c168e5",
+        "bytes": 534723,
+        "structuralNodes": 360,
+        "definitions": 123,
+        "crossReferences": 253,
+        "passACandidates": 142,
+        "wallClockMs": 393
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/raw-html/doc-b-2025-05-19-amended-restated-credit-agreement.htm",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:39c7d986c15094fe",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "39c7d986c15094fe2b1a6e6e728b65bf679074a2ebca137df4297076d1e38fc4",
+        "bytes": 551112,
+        "structuralNodes": 371,
+        "definitions": 12,
+        "crossReferences": 259,
+        "passACandidates": 147,
+        "wallClockMs": 406
+      },
+      {
+        "documentId": "riot-2025-2026-credit-facility/raw-html/doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+        "packageKey": "riot-2025-2026-credit-facility",
+        "canonicalSourceId": "vic-src:riot-2025-2026-credit-facility:0f3c9e7ce8555506",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "0f3c9e7ce8555506b2598a260d17c6b029a4c063f31147096f2f5cf7e7d2ed17",
+        "bytes": 625038,
+        "structuralNodes": 385,
+        "definitions": 128,
+        "crossReferences": 263,
+        "passACandidates": 147,
+        "wallClockMs": 724
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:b21f89259b164ecd",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a",
+        "bytes": 788998,
+        "structuralNodes": 1625,
+        "definitions": 469,
+        "crossReferences": 1172,
+        "passACandidates": 707,
+        "wallClockMs": 426
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:722a6c55d5066c00",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "bytes": 802119,
+        "structuralNodes": 1612,
+        "definitions": 477,
+        "crossReferences": 1179,
+        "passACandidates": 707,
+        "wallClockMs": 444
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:88031784c0f7404e",
+        "sourceClass": "EXTRACTED_TEXT",
+        "contentHash": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+        "bytes": 28489,
+        "structuralNodes": 31,
+        "definitions": 3,
+        "crossReferences": 18,
+        "passACandidates": 14,
+        "wallClockMs": 73
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/raw/doc-a-2022-12-15-term-loan-credit-agreement.htm",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:2d74379b684cde1d",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "2d74379b684cde1d52273731458893b9e839910bc8ded78a03ec18db4d0ddb9b",
+        "bytes": 1255366,
+        "structuralNodes": 1448,
+        "definitions": 0,
+        "crossReferences": 1171,
+        "passACandidates": 650,
+        "wallClockMs": 444
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/raw/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:53f3648f46f9b20c",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "53f3648f46f9b20c842e9ad7298d048095150250919c99d637401311810f609f",
+        "bytes": 1208962,
+        "structuralNodes": 1472,
+        "definitions": 0,
+        "crossReferences": 1175,
+        "passACandidates": 668,
+        "wallClockMs": 427
+      },
+      {
+        "documentId": "final-lightweight-unseen-sup/raw/doc-c-2025-03-31-first-amendment.htm",
+        "packageKey": "final-lightweight-unseen-sup",
+        "canonicalSourceId": "vic-src:final-lightweight-unseen-sup:bf2bfa49af1eed7d",
+        "sourceClass": "RAW_HTML",
+        "contentHash": "bf2bfa49af1eed7d2207dd4849797f97a6afd59257c76825bbdf57cb88029772",
+        "bytes": 108629,
+        "structuralNodes": 31,
+        "definitions": 0,
+        "crossReferences": 18,
+        "passACandidates": 14,
+        "wallClockMs": 68
+      }
+    ]
+  },
+  "heldOutEval": {
+    "set": "phase-3f2 Riot reconciled ground truth (issuer-disjoint; two independent reviewers + adjudicator)",
+    "path": "/workspace/docs/phase-3f2-unseen-validation/resume/08-reconciled-ground-truth.json",
+    "materialClaimCount": 113,
+    "candidateRecallVsGtSections": {
+      "hits": 95,
+      "misses": 18,
+      "recall": 0.8407079646017699,
+      "label": "MEASURED — section/definition proxy recall of Pass A / defs against GT spans; not legal-completeness certification"
+    },
+    "candidatePrecisionProxy": {
+      "passASectionsMatchingGt": 108,
+      "passASectionsTotal": 156,
+      "precision": 0.6923076923076923,
+      "label": "MEASURED proxy — Pass A emits many structural windows; low precision expected for candidate generator"
+    },
+    "definitionDependencyCoverage": {
+      "claimsWithDeps": 97,
+      "depsWithSectionCoverage": 52,
+      "rate": 0.5360824742268041
+    },
+    "unsupportedCaseRefusal": {
+      "deterministicEmitsPermissionRules": false,
+      "note": "DETERMINISTIC_ONLY compile refuses affirmative permissions (0 rules with permission polarity on probes)"
+    },
+    "amendmentVersionAccuracy": {
+      "status": "NOT_SCORED_AS_RESOLVED",
+      "note": "Do not resolve uncertainty merely because a later filing exists; amendment pipeline consume-only; no paid Pass B."
+    },
+    "missSamples": [
+      {
+        "id": "RGT-C-035",
+        "document": "doc-c",
+        "sourceSpan": "Section 5.02(e)",
+        "type": "prohibition"
+      },
+      {
+        "id": "RGT-C-036",
+        "document": "doc-c",
+        "sourceSpan": "Section 5.01(j)",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-037",
+        "document": "doc-c",
+        "sourceSpan": "Section 5.01(j) (final paragraph)",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-048",
+        "document": "doc-c",
+        "sourceSpan": "Section 6.01(f)",
+        "type": "default-trigger"
+      },
+      {
+        "id": "RGT-C-050",
+        "document": "doc-c",
+        "sourceSpan": "Section 6.01(h)",
+        "type": "default-trigger"
+      },
+      {
+        "id": "RGT-C-051",
+        "document": "doc-c",
+        "sourceSpan": "Section 6.01(i)",
+        "type": "default-trigger"
+      },
+      {
+        "id": "RGT-C-052",
+        "document": "doc-c",
+        "sourceSpan": "Section 6.01(j)",
+        "type": "default-trigger"
+      },
+      {
+        "id": "RGT-C-064",
+        "document": "doc-c",
+        "sourceSpan": "Section 7.07",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-069",
+        "document": "doc-c",
+        "sourceSpan": "Section 2.11",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-081",
+        "document": "doc-c",
+        "sourceSpan": "Section 5.01(e)",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-084",
+        "document": "doc-c",
+        "sourceSpan": "Section 7.12",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-087",
+        "document": "doc-c",
+        "sourceSpan": "Section 2.09(d)",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-088",
+        "document": "doc-c",
+        "sourceSpan": "Section 2.08(a)",
+        "type": "affirmative-obligation"
+      },
+      {
+        "id": "RGT-C-089",
+        "document": "doc-c",
+        "sourceSpan": "Section 2.08(b)",
+        "type": "permission-with-conditions"
+      },
+      {
+        "id": "RGT-C-092",
+        "document": "doc-b",
+        "sourceSpan": "Recitals",
+        "type": "affirmative-obligation"
+      }
+    ],
+    "heuristicFlagsCountedAsVerifiedDefects": false
+  },
+  "falsePermissionFindings": {
+    "probes": [
+      {
+        "probeId": "fp-threshold-as-permission",
+        "mode": "DETERMINISTIC_ONLY",
+        "rulesEmitted": 0,
+        "claimedPermission": false,
+        "falsePermission": false,
+        "verificationStatus": "UNVERIFIED",
+        "note": "Independent probe — deterministic mode must not invent affirmative permissions"
+      },
+      {
+        "probeId": "fp-shall-not",
+        "mode": "DETERMINISTIC_ONLY",
+        "rulesEmitted": 0,
+        "claimedPermission": false,
+        "falsePermission": false,
+        "verificationStatus": "UNVERIFIED",
+        "note": "Independent probe — deterministic mode must not invent affirmative permissions"
+      },
+      {
+        "probeId": "fp-except-basket",
+        "mode": "DETERMINISTIC_ONLY",
+        "rulesEmitted": 0,
+        "claimedPermission": false,
+        "falsePermission": false,
+        "verificationStatus": "UNVERIFIED",
+        "note": "Independent probe — deterministic mode must not invent affirmative permissions"
+      }
+    ],
+    "falsePermissionCount": 0
+  },
+  "remainingLegalSafetyBlockers": [
+    "No local/open-weight semantic runtime authorized/available — semantic accuracy beyond candidate generation unmeasured for model arms",
+    "CKF/EHB have not delivered ≥100 newly acquired authentic EDGAR bodies to consumers",
+    "FWRG/LSB packages remain excerpt-only (MISSING_OPERATIVE_DOCUMENT)",
+    "Genuine amendment-precedence cases still REQUIRE_AMENDMENT_PIPELINE + independent verification — not auto-resolved",
+    "Held-out eval measures candidate generator coverage, not certified legal capacity/permission records",
+    "VicRunStore hypotheses remain UNVERIFIED; must not write production legal rules"
+  ]
+}

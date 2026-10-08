@@ -17,6 +17,7 @@ import { STRUCTURAL_INDEX_VERSION } from "../../lib/contract-model/compiler/type
 import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
 import { DISCOVERY_PIPELINE_VERSION } from "../../lib/contract-model/compiler/discovery/pipeline";
 import { extractDeterministicCovenantFacts } from "../../lib/contract-model/compiler/deterministic-extraction";
+import { stripHtmlPreserveStructure } from "../../lib/contract-model/compiler/deterministic-extraction/html-text";
 import { planSelectiveCompilation, type InventoryProvision } from "../../lib/contract-model/compiler/selective-compilation";
 import { VicRunStore } from "../../lib/contract-model/compiler/inference/run-store";
 import { contentAddress, sha256Hex } from "../../lib/contract-model/compiler/inference/hash";
@@ -31,20 +32,10 @@ const REPO = process.cwd();
 const FIX = join(REPO, "tests/fixtures/unseen-packages");
 const OUT = join(REPO, "docs/vercel-independent-covenant-compilation");
 const DATA = join(REPO, "covenant-knowledge-data/phase2-authentic");
-const COMPILER_VERSION = `vic-phase2a/${STRUCTURAL_INDEX_VERSION}+${DISCOVERY_PIPELINE_VERSION}+deterministic-covenant-extraction.v1`;
+const COMPILER_VERSION = `vic-phase2a/${STRUCTURAL_INDEX_VERSION}+${DISCOVERY_PIPELINE_VERSION}+deterministic-covenant-extraction.v2`;
 
 function stripHtml(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&#\d+;/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return stripHtmlPreserveStructure(html);
 }
 
 function walk(dir: string): string[] {
@@ -175,11 +166,14 @@ function factsFamiliesFromSignals(signals: string[]): string[] {
 
 function classifyUnresolved(claim: string): string {
   const c = claim.toLowerCase();
-  // Exact deterministic-extraction templates first (avoid false "structural" matches).
+  // Exact deterministic-extraction templates first (avoid false "structural" / amendment matches).
   if (c.includes("numerical threshold was observed")) return "SEMANTIC_UNCERTAINTY";
-  if (c.includes("not operative authority") || c.includes("amendments must be compiled")) {
-    return "AMENDMENT_AUTHORITY";
+  if (c.includes("covenant-family/signal recognition is not a verified")) return "SEMANTIC_UNCERTAINTY";
+  if (c.includes("structural/family recognition is not operative authority")) {
+    // Legacy Phase-2 wording — overbroad; treat as semantic, not amendment chain.
+    return "SEMANTIC_UNCERTAINTY";
   }
+  if (c.includes("amendment relationship evidence was observed")) return "AMENDMENT_AUTHORITY";
   if (c.includes("excerpt_not_full_filing") || c.includes("excerpt not full")) return "MISSING_SOURCE";
   if (c.includes("structural_parse_empty") || c.includes("structural parse empty")) {
     return "STRUCTURAL_PARSER_FAILURE";
@@ -188,7 +182,7 @@ function classifyUnresolved(claim: string): string {
   if (/definition|defined term/.test(c)) return "MISSING_DEFINITION";
   if (/financial input|ebitda|missing.*ratio/.test(c)) return "MISSING_FINANCIAL_INPUT";
   if (/parser failure|nesting failure|window failure/.test(c)) return "STRUCTURAL_PARSER_FAILURE";
-  if (/amendment|supersed/.test(c)) return "AMENDMENT_AUTHORITY";
+  if (/amendment relationship|amendment precedence|operative precedence/.test(c)) return "AMENDMENT_AUTHORITY";
   if (/cross-document|secured notes|outside this/.test(c)) return "CROSS_DOCUMENT_RESTRICTION";
   if (/unresolved|ambiguous|permission|authority|semantic/.test(c)) return "SEMANTIC_UNCERTAINTY";
   return "OTHER";
