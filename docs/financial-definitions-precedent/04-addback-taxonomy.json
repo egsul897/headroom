@@ -1,0 +1,187 @@
+{
+  "artifact": "financial-definitions-precedent.addback-taxonomy",
+  "version": "fdp.v1",
+  "status": "DRAFT",
+  "families": [
+    {
+      "id": "INTEREST_TAX_DA",
+      "name": "Interest, taxes, depreciation & amortization",
+      "typicalDirection": "ADD",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_EBITDA",
+        "CONMED-2025-CA::def::Consolidated_EBITDA",
+        "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA"
+      ]
+    },
+    {
+      "id": "NON_CASH",
+      "name": "Non-cash charges / income with optional cash clawback",
+      "typicalDirection": "ADD_WITH_CLAWBACK",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_EBITDA",
+        "CHWY-2026-CA::def::Excess_Cash_Flow"
+      ]
+    },
+    {
+      "id": "EXTRAORDINARY_UNUSUAL",
+      "name": "Extraordinary, unusual, non-recurring items",
+      "typicalDirection": "ADD_LOSSES_SUBTRACT_GAINS",
+      "examples": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA",
+        "CHWY-2026-CA::def::Consolidated_Net_Income"
+      ]
+    },
+    {
+      "id": "RESTRUCTURING_OPTIMIZATION",
+      "name": "Restructuring, integration, business optimization",
+      "typicalDirection": "ADD_OR_EXCLUDE_FROM_CNI",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_Net_Income",
+        "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
+      ]
+    },
+    {
+      "id": "SYNERGIES_RUN_RATE",
+      "name": "Synergies, cost savings, run-rate / expected benefits",
+      "typicalDirection": "ADD",
+      "lookforwardCommon": "12\u201336 months (instrument-specific)",
+      "examples": [
+        "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
+      ],
+      "capPatterns": [
+        "uncapped in excerpt (CHWY)",
+        "percent-of-EBITDA (CONMED Pro Forma Adjustments 15%)"
+      ]
+    },
+    {
+      "id": "PRO_FORMA",
+      "name": "Pro forma acquisition/disposition/specified transaction adjustments",
+      "typicalDirection": "RESTATE_PERIOD",
+      "examples": [
+        "CHWY-2026-CA::adj::Pro_Forma_Basis",
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ]
+    },
+    {
+      "id": "PRO_FORMA_SYNERGY",
+      "name": "Pro Forma Adjustments / synergies with explicit caps",
+      "typicalDirection": "ADD",
+      "examples": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ]
+    },
+    {
+      "id": "ACQUISITION_COSTS",
+      "name": "Transaction / Material Acquisition costs & expenses",
+      "typicalDirection": "ADD",
+      "examples": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA"
+      ]
+    },
+    {
+      "id": "BUSINESS_INTERRUPTION_INSURANCE",
+      "name": "Business interruption insurance proceeds",
+      "typicalDirection": "ADD",
+      "examples": [
+        "CONMED-2025-CA::def::Consolidated_EBITDA",
+        "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA"
+      ]
+    },
+    {
+      "id": "EARN_OUT",
+      "name": "Earn-out / contingent consideration",
+      "typicalDirection": "ADD",
+      "examples": [
+        "FWRG-2021-CA::def::Consolidated_Adjusted_EBITDA"
+      ]
+    },
+    {
+      "id": "PRO_FORMA_REVENUE",
+      "name": "Run-rate revenue / new contracts / pricing / new markets",
+      "typicalDirection": "ADD",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_EBITDA"
+      ]
+    },
+    {
+      "id": "CASH_NETTING",
+      "name": "Cash & Cash Equivalents netting against debt",
+      "typicalDirection": "SUBTRACT",
+      "variants": [
+        "inside debt definition (CHWY CTD)",
+        "inside ratio numerator with hard cap (CONMED)"
+      ],
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_Total_Debt",
+        "CONMED-2025-CA::def::Consolidated_Total_Leverage_Ratio"
+      ]
+    },
+    {
+      "id": "EXCLUDED_REVOLVING_LOANS",
+      "name": "Excluded revolving loans from leverage numerators",
+      "typicalDirection": "EXCLUDE_FROM_NUMERATOR",
+      "examples": [
+        "CHWY-2026-CA::ratio::Total_Leverage_Ratio"
+      ]
+    },
+    {
+      "id": "ANTI_DOUBLE_COUNT",
+      "name": "Anti-duplication across EBITDA and pro forma add-backs",
+      "typicalDirection": "FORBID",
+      "examples": [
+        "CHWY-2026-CA::adj::Anti_Duplication_1_08_d_ii"
+      ]
+    },
+    {
+      "id": "WORKING_CAPITAL",
+      "name": "Working capital adjustments (ECF)",
+      "typicalDirection": "BOTH",
+      "examples": [
+        "CHWY-2026-CA::def::Excess_Cash_Flow"
+      ]
+    },
+    {
+      "id": "CAPEX",
+      "name": "Capital expenditures in coverage numerators",
+      "typicalDirection": "SUBTRACT_FROM_NUMERATOR",
+      "examples": [
+        "LSB-2023-ABL::ratio::Fixed_Charge_Coverage_Ratio",
+        "FWRG-2021-CA::ratio::Fixed_Charge_Coverage_Ratio"
+      ]
+    },
+    {
+      "id": "STEP_UP",
+      "name": "Material Acquisition leverage step-up / step-down schedules",
+      "typicalDirection": "RELAX_MAX_RATIO",
+      "examples": [
+        "CONMED-2025-CA::test::Financial_Covenants_7_1"
+      ]
+    },
+    {
+      "id": "CURE",
+      "name": "Equity cure amounts and related EBITDA deeming",
+      "typicalDirection": "SPECIAL",
+      "examples": [
+        "FWRG-2021-CA::cure::Cure_Amount_Exclusion_From_AA",
+        "CHWY-2026-CA::cure::ABL_Cure_Amount_XREF"
+      ]
+    }
+  ],
+  "exclusionsDistinctFromAddbacks": [
+    {
+      "id": "CNI_EXCLUSION",
+      "name": "Items excluded from Consolidated Net Income before EBITDA build",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_Net_Income"
+      ]
+    },
+    {
+      "id": "DEBT_DEFINITION_EXCLUSION",
+      "name": "Instruments excluded from Consolidated Total Debt / Funded Debt",
+      "examples": [
+        "CHWY-2026-CA::def::Consolidated_Total_Debt",
+        "CONMED-2025-CA::def::Funded_Debt"
+      ]
+    }
+  ]
+}

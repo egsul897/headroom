@@ -1,0 +1,92 @@
+{
+  "probes": [
+    {
+      "probeId": "probe-remote-proviso",
+      "family": "remote_provisos",
+      "scenario": "Missing/open remote 'subject to' condition must block permission",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "COVENANT_TO_CONDITION::node:dsgr-doc-a:section:1.01(b)(2)(b)(ii)::node:dsgr-doc-a:unresolved:ambiguous-2.20::d32653b2f25f54bd",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "AMBIGUOUS_BLOCKER",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "Ambiguous structural reference to 2.20."
+    },
+    {
+      "probeId": "probe-shared-capacity",
+      "family": "shared_capacity",
+      "scenario": "Open shared-capacity / Available Amount dependency must block permission",
+      "documentId": "fwrg-art6",
+      "edgeId": "COVENANT_TO_SHARED_BASKET::node:fwrg-art6:section:6.04(a)(iii)(a)::node:fwrg-art6:term:available_amount::89e6be6c831dcf1a",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "UNRESOLVED_BLOCKER",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "Shared basket 'Available Amount' not located as a structural definition."
+    },
+    {
+      "probeId": "probe-amendment-supersession",
+      "family": "amendment_supersession",
+      "scenario": "Unresolved amendment target must not affirm permission",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "COVENANT_TO_AMENDMENT::node:dsgr-doc-a:section:1.06::node:dsgr-doc-a:unresolved:section-11::43cb756c2a5776a4",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "REVIEW_REQUIRED",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "no ARTICLE node with ref \"11\" exists among this document's own structural nodes"
+    },
+    {
+      "probeId": "probe-entity-scope",
+      "family": "entity_scope",
+      "scenario": "Entity-scope restriction signal must remain reviewable when incomplete",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "ENTITY_SCOPE::node:dsgr-doc-a:section:1.01(b)(2)(a)::node:dsgr-doc-a:section:1.01(b)(2)(a)::entity_scope::ddf6def749fb9f32",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "REVIEW_REQUIRED",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "Structural cross-reference 'Section 5.01' with connective 'entity-scope term'."
+    },
+    {
+      "probeId": "probe-ratio-definition",
+      "family": "ratio_definitions",
+      "scenario": "Missing ratio component / unresolved ratio must not affirm covenant compliance",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "RATIO_CALCULATION::node:dsgr-doc-a:section:1.01(b)(2)(b)(i)(h)::node:dsgr-doc-a:unresolved:ambiguous-6.12::da5dd6c4995c8aad",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "AMBIGUOUS_BLOCKER",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "Ambiguous structural reference to 6.12."
+    },
+    {
+      "probeId": "probe-cross-document",
+      "family": "cross_document_conditions",
+      "scenario": "Cross-document instrument dependency must stay unresolved/blocker without target package",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::node:dsgr-doc-a:section:1.2(b)(ii)(ii)(i)::node:cross_document:schedule_i::b55005fcb7b444ef",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "REVIEW_REQUIRED",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "Cross-document instrument reference; target not in this document text."
+    },
+    {
+      "probeId": "probe-missing-definition-controlling",
+      "family": "missing_definition",
+      "scenario": "Controlling missing definition on covenant term must REVIEW_REQUIRED",
+      "documentId": "dsgr-doc-a",
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:1.01(b)(2)(3)::node:dsgr-doc-a:unresolved:section-1010.230::69a71fe5b94b9092",
+      "controllingMissingOrOpen": true,
+      "downstreamStatus": "UNRESOLVED_BLOCKER",
+      "affirmativePermission": false,
+      "pass": true,
+      "evidence": "no SECTION node with ref \"1010.230\" exists among this document's own structural nodes"
+    }
+  ],
+  "passed": 7,
+  "failed": 0,
+  "affirmativePermissionCount": 0,
+  "policy": "A missing controlling dependency yields REVIEW_REQUIRED / UNSUPPORTED / UNRESOLVED_BLOCKER / AMBIGUOUS_BLOCKER — never affirmative permission. Atlas emits dependency candidates only."
+}

@@ -1,0 +1,333 @@
+{
+  "generatedAt": "2026-10-08T22:30:38.619Z",
+  "totalUnresolved": 715,
+  "totalAmbiguous": 82,
+  "byRootCause": {
+    "MISSING_DEFINITION": 624,
+    "MISSING_EXTERNAL_DOCUMENT": 5,
+    "AMENDMENT_TARGET_RESOLUTION": 51,
+    "STRUCTURAL_PARSING_FAILURE": 35,
+    "AMBIGUOUS_REFERENCE": 82,
+    "ENTITY_SCOPE_UNCERTAINTY": 0,
+    "INCORRECT_CANDIDATE_EDGE": 0,
+    "OTHER": 0
+  },
+  "controllingRestrictionRiskCount": 135,
+  "examples": [
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::III::3.19-no-burdensome-restrictions::node:doc-a:unresolved:ambiguous-6.10-doc-a::iii::3.19-no-burdensome-restrictions::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.10-chapeau, doc-a::VI::6.10-proviso-i, doc-a::VI::6.10-proviso-ii, doc-a::VI::6.10-proviso-iii, doc-a::VI::6.10-proviso-iv, doc-a::VI::6.10-proviso-v",
+      "rationale": "doc-a::III::3.19-no-burdensome-restrictions cites Section 6.10 via 'subject to Section' but 6 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "3.19",
+          "unitId": "doc-a::III::3.19-no-burdensome-restrictions",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "subject to any Burdensome Restrictions except those permitted under Section 6.10"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.01b::node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01b::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.04-chapeau, doc-a::VI::6.04a, doc-a::VI::6.04b, doc-a::VI::6.04c, doc-a::VI::6.04d, doc-a::VI::6.04e, doc-a::VI::6.04f, doc-a::VI::6.04g, doc-a::VI::6.04h, doc-a::VI::6.04i, doc-a::VI::6.04j, doc-a::VI::6.04k, doc-a::VI::6.04l, doc-a::VI::6.04m, doc-a::VI::6.04n, doc-a::VI::6.04o, doc-a::VI::6.04p, doc-a::VI::6.04q, doc-a::VI::6.04r, doc-a::VI::6.04-unrestricted-sub-valuation",
+      "rationale": "doc-a::VI::6.01b cites Section 6.04 via 'subject to Section' but 20 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.01(b)",
+          "unitId": "doc-a::VI::6.01b",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "subject to Section 6.04"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.01c::node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.01c::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.04-chapeau, doc-a::VI::6.04a, doc-a::VI::6.04b, doc-a::VI::6.04c, doc-a::VI::6.04d, doc-a::VI::6.04e, doc-a::VI::6.04f, doc-a::VI::6.04g, doc-a::VI::6.04h, doc-a::VI::6.04i, doc-a::VI::6.04j, doc-a::VI::6.04k, doc-a::VI::6.04l, doc-a::VI::6.04m, doc-a::VI::6.04n, doc-a::VI::6.04o, doc-a::VI::6.04p, doc-a::VI::6.04q, doc-a::VI::6.04r, doc-a::VI::6.04-unrestricted-sub-valuation",
+      "rationale": "doc-a::VI::6.01c cites Section 6.04 via 'subject to Section' but 20 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.01(c)",
+          "unitId": "doc-a::VI::6.01c",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "subject to Section 6.04"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unit:doc-a::VI::6.12a-interest-coverage::node:doc-a:unresolved:ambiguous-7.03-doc-a::vi::6.12a-interest-coverage::ambiguous",
+      "kind": "COVENANT_TO_CONDITION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VII::7.03a-equity-cure-right, doc-a::VII::7.03b-equity-cure-conditions, doc-a::VII::7.03c-equity-cure-standstill",
+      "rationale": "doc-a::VI::6.12a-interest-coverage cites Section 7.03 via 'subject to Section' but 3 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.12(a)",
+          "unitId": "doc-a::VI::6.12a-interest-coverage",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "subject to the Section 7.03"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::authored::excluded-property",
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "resolution": "UNRESOLVED",
+      "rootCause": "MISSING_EXTERNAL_DOCUMENT",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Security Agreements are outside the DSGR credit-agreement package.",
+      "rationale": "Excluded Property is defined only by cross-reference to the Security Agreements, which are not part of this document.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.01",
+          "unitId": "doc-a::I::collateral-and-security-documents",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Excluded Property is defined only by cross-reference to the Security Agreements, which are not part of this document - a genuine cross-document dependency."
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CROSS_DOCUMENT::node:doc-a:unit:doc-a::I::collateral-and-security-documents::node:cross_document:security_agreements,_which_are_not_part_of_this_document_-_a_genuine_cross-document_dependency",
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "resolution": "UNRESOLVED",
+      "rootCause": "MISSING_EXTERNAL_DOCUMENT",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Target instrument 'Security Agreements, which are not part of this document - a genuine cross-document dependency' is outside this document package.",
+      "rationale": "Ground-truth notes for doc-a::I::collateral-and-security-documents record a genuine cross-document dependency (Security Agreements, which are not part of this document - a genuine cross-document dependency).",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.01",
+          "unitId": "doc-a::I::collateral-and-security-documents",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "'Excluded Property' is defined only by cross-reference to the Security Agreements, which are not part of this document - a genuine cross-document dependency."
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::III::3.05-properties::node:doc-a:unresolved:ambiguous-6.02-doc-a::iii::3.05-properties::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.02-chapeau, doc-a::VI::6.02a, doc-a::VI::6.02b, doc-a::VI::6.02c, doc-a::VI::6.02d, doc-a::VI::6.02e, doc-a::VI::6.02f, doc-a::VI::6.02g, doc-a::VI::6.02h, doc-a::VI::6.02i, doc-a::VI::6.02j, doc-a::VI::6.02k, doc-a::VI::6.02l, doc-a::VI::6.02m, doc-a::VI::6.02n, doc-a::VI::6.02o, doc-a::VI::6.02p",
+      "rationale": "doc-a::III::3.05-properties cites Section 6.02 via 'permitted by Section' but 17 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "3.05",
+          "unitId": "doc-a::III::3.05-properties",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Section 6.02"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::IV::4.01f-lien-ip-searches::node:doc-a:unresolved:ambiguous-6.02-doc-a::iv::4.01f-lien-ip-searches::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.02-chapeau, doc-a::VI::6.02a, doc-a::VI::6.02b, doc-a::VI::6.02c, doc-a::VI::6.02d, doc-a::VI::6.02e, doc-a::VI::6.02f, doc-a::VI::6.02g, doc-a::VI::6.02h, doc-a::VI::6.02i, doc-a::VI::6.02j, doc-a::VI::6.02k, doc-a::VI::6.02l, doc-a::VI::6.02m, doc-a::VI::6.02n, doc-a::VI::6.02o, doc-a::VI::6.02p",
+      "rationale": "doc-a::IV::4.01f-lien-ip-searches cites Section 6.02 via 'permitted by Section' but 17 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "4.01(f)",
+          "unitId": "doc-a::IV::4.01f-lien-ip-searches",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Section 6.02"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::V::5.03-existence-conduct::node:doc-a:unresolved:ambiguous-6.03-doc-a::v::5.03-existence-conduct::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.03a-mergers, doc-a::VI::6.03b-divisions, doc-a::VI::6.03c-line-of-business, doc-a::VI::6.03d-fiscal-year, doc-a::VI::6.03e-accounting-basis, doc-a::VI::6.03f-tax-elections, doc-a::VI::6.03g-canadian-db-plans",
+      "rationale": "doc-a::V::5.03-existence-conduct cites Section 6.03 via 'permitted by Section' but 7 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "5.03",
+          "unitId": "doc-a::V::5.03-existence-conduct",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Section 6.03"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::VI::6.01c::node:doc-a:unresolved:ambiguous-6.01-doc-a::vi::6.01c::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.01-chapeau, doc-a::VI::6.01a, doc-a::VI::6.01b, doc-a::VI::6.01c, doc-a::VI::6.01d, doc-a::VI::6.01e, doc-a::VI::6.01f, doc-a::VI::6.01g, doc-a::VI::6.01h, doc-a::VI::6.01i, doc-a::VI::6.01j, doc-a::VI::6.01k, doc-a::VI::6.01l, doc-a::VI::6.01m, doc-a::VI::6.01n, doc-a::VI::6.01o, doc-a::VI::6.01p, doc-a::VI::6.01q",
+      "rationale": "doc-a::VI::6.01c cites Section 6.01 via 'permitted by Section' but 18 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.01(c)",
+          "unitId": "doc-a::VI::6.01c",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Section 6.01"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::VI::6.03a-mergers::node:doc-a:unresolved:ambiguous-6.04-doc-a::vi::6.03a-mergers::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.04-chapeau, doc-a::VI::6.04a, doc-a::VI::6.04b, doc-a::VI::6.04c, doc-a::VI::6.04d, doc-a::VI::6.04e, doc-a::VI::6.04f, doc-a::VI::6.04g, doc-a::VI::6.04h, doc-a::VI::6.04i, doc-a::VI::6.04j, doc-a::VI::6.04k, doc-a::VI::6.04l, doc-a::VI::6.04m, doc-a::VI::6.04n, doc-a::VI::6.04o, doc-a::VI::6.04p, doc-a::VI::6.04q, doc-a::VI::6.04r, doc-a::VI::6.04-unrestricted-sub-valuation",
+      "rationale": "doc-a::VI::6.03a-mergers cites Section 6.04 via 'permitted by Section' but 20 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.03(a)",
+          "unitId": "doc-a::VI::6.03a-mergers",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Section 6.04"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_EXCEPTION::node:doc-a:unit:doc-a::VI::6.05d::node:doc-a:unresolved:ambiguous-6.02-doc-a::vi::6.05d::ambiguous",
+      "kind": "COVENANT_TO_EXCEPTION",
+      "resolution": "AMBIGUOUS",
+      "rootCause": "AMBIGUOUS_REFERENCE",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Ambiguous section target: doc-a::VI::6.02-chapeau, doc-a::VI::6.02a, doc-a::VI::6.02b, doc-a::VI::6.02c, doc-a::VI::6.02d, doc-a::VI::6.02e, doc-a::VI::6.02f, doc-a::VI::6.02g, doc-a::VI::6.02h, doc-a::VI::6.02i, doc-a::VI::6.02j, doc-a::VI::6.02k, doc-a::VI::6.02l, doc-a::VI::6.02m, doc-a::VI::6.02n, doc-a::VI::6.02o, doc-a::VI::6.02p",
+      "rationale": "doc-a::VI::6.05d cites Section 6.02 via 'permitted by Section' but 17 inventory units match.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "6.05(d)",
+          "unitId": "doc-a::VI::6.05d",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "permitted by Sections 6.04(g) and (j); Dispositions constituting Liens permitted by Section 6.02"
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_CONDITION::node:doc-a:unresolved:parent-of-doc-a::iv::4.01c-corporate-certificates::node:doc-a:unit:doc-a::IV::4.01c-corporate-certificates",
+      "kind": "COVENANT_TO_CONDITION",
+      "resolution": "UNRESOLVED",
+      "rootCause": "STRUCTURAL_PARSING_FAILURE",
+      "controllingRestrictionRisk": false,
+      "unresolvedReason": "No parent COVENANT/BASKET unit found for section 4.01.",
+      "rationale": "CONDITION unit doc-a::IV::4.01c-corporate-certificates has no inventory-resolvable parent covenant.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "4.01(c)",
+          "unitId": "doc-a::IV::4.01c-corporate-certificates",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Secretary's certificates with resolutions, incumbency and attached organizational documents for each Loan Party, plus good standing certificates."
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:ppsa",
+      "kind": "COVENANT_TO_DEFINITION",
+      "resolution": "UNRESOLVED",
+      "rootCause": "MISSING_DEFINITION",
+      "controllingRestrictionRisk": false,
+      "unresolvedReason": "Term 'PPSA' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'PPSA' with no local definition unit.",
+      "sourceSpans": [
+        {
+          "documentId": "doc-a",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+          "sectionRef": "1.03",
+          "unitId": "doc-a::I::1.03-terms-generally",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "The Quebec/PPSA translation provisions are interpretive but are what make the Canadian collateral package function."
+        }
+      ],
+      "documentId": "doc-a"
+    },
+    {
+      "edgeId": "COVENANT_TO_AMENDMENT::node:doc-b:unit:doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap::node:doc-b:unresolved:amended-section-2.09(e)::2.09(e)",
+      "kind": "COVENANT_TO_AMENDMENT",
+      "resolution": "UNRESOLVED",
+      "rootCause": "AMENDMENT_TARGET_RESOLUTION",
+      "controllingRestrictionRisk": true,
+      "unresolvedReason": "Section 2.09(e) not inventory-local to amendment document doc-b.",
+      "rationale": "Amendment-document unit doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap operatively references Section 2.09(e).",
+      "sourceSpans": [
+        {
+          "documentId": "doc-b",
+          "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+          "sectionRef": "2(a)",
+          "unitId": "doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap",
+          "charStart": null,
+          "charEnd": null,
+          "excerpt": "Section 2.09(e)"
+        }
+      ],
+      "documentId": "doc-b"
+    }
+  ]
+}

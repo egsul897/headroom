@@ -1,0 +1,104 @@
+{
+  "predictionSource": "DETERMINISTIC_PASS_A",
+  "derivation": "Mapped operative Article VII headings from structure/operative-article-vii.json and Pass A section signals. No LLM. No discoveryIds invented. Predictions are system-under-test outputs, never ground truth.",
+  "candidates": [
+    {
+      "caseId": "gib-fam-indebtedness",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": ["INDEBTEDNESS"] },
+      "notes": "Heading Indebtedness on operative §7.01."
+    },
+    {
+      "caseId": "gib-fam-liens",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": ["LIENS"] },
+      "notes": "Heading Limitations on Liens."
+    },
+    {
+      "caseId": "gib-fam-asset-sales",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": ["ASSET_SALES"] },
+      "notes": "Heading Asset Dispositions → ASSET_SALES."
+    },
+    {
+      "caseId": "gib-fam-rp",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": ["RESTRICTED_PAYMENTS"] }
+    },
+    {
+      "caseId": "gib-fam-fincov",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": ["FINANCIAL_COVENANTS"] }
+    },
+    {
+      "caseId": "gib-fam-investments-absent",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "families": [] },
+      "notes": "No Article VII Investments heading; correctly empty for this case."
+    },
+    {
+      "caseId": "gib-def-ctnlr",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "terms": ["Consolidated Total Net Leverage Ratio"] },
+      "notes": "Term present in structural definitions inventory path; offline string presence check against extracted text."
+    },
+    {
+      "caseId": "gib-xref-builder-basket",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "resolvedTargets": [], "unresolved": true },
+      "notes": "Marker conflict 7.05(a)(y) vs printed (vi); honest unresolved."
+    },
+    {
+      "caseId": "gib-cond-7.08a-qma",
+      "predictionSource": "ABSENT",
+      "prediction": null,
+      "notes": "Pass B semantic condition extraction not run (no paid calls). NOT_EVALUATED."
+    },
+    {
+      "caseId": "gib-exc-7.02-permitted-lien",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "exceptions": ["Permitted Lien"] }
+    },
+    {
+      "caseId": "gib-scope-7.08",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "entityScope": "revolving_credit_facility_and_initial_tranche_a_facility_only" },
+      "notes": "Substring match on operative §7.08 chapeau."
+    },
+    {
+      "caseId": "gib-shared-ebitda-addback-cap",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "isSharedCapacity": true, "memberRefs": ["(e)(i)", "(g)", "(u)", "(v)", "(w)"] },
+      "notes": "Deterministic combined-with-clauses pattern on Consolidated EBITDA definition."
+    },
+    {
+      "caseId": "gib-shared-pass-a-false-positive-control",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "isSharedCapacity": true },
+      "notes": "INTENTIONAL SYSTEM FAILURE REFLECTING PASS A: shared_cap signal over-fires on aggregate-amount nodes. Scored as FAILURE against SOURCE_VERIFIED expected false."
+    },
+    {
+      "caseId": "gib-comp-7.08a-leverage",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "comparator": "MUST_NOT_EXCEED", "threshold": "5.25:1.00_through_2026-12-31" }
+    },
+    {
+      "caseId": "gib-comp-7.08b-interest-coverage",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "comparator": "MUST_NOT_FALL_BELOW", "threshold": "3.00:1.00" }
+    },
+    {
+      "caseId": "gib-prov-7.08a",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": {
+        "citationSectionRef": "7.08(a)",
+        "excerpt": "With respect to the Revolving Credit Facility and Initial Tranche A Facility only, except with the written consent of the Required Pro Rata Lenders, permit the Consolidated Total Net Leverage Ratio"
+      }
+    },
+    {
+      "caseId": "gib-amend-no-post-closing-amendment",
+      "predictionSource": "DETERMINISTIC_PASS_A",
+      "prediction": { "relationship": "NONE", "status": "resolved" }
+    }
+  ]
+}

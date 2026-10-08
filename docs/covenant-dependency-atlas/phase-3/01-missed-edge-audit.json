@@ -1,0 +1,113 @@
+{
+  "method": "SOURCE_SPAN_RECONSTRUCTION — not derived from post-fix extractor success alone",
+  "edges": [
+    {
+      "id": "miss-1",
+      "documentId": "chwy-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "termName": "EBITDA",
+        "connective": "ratio definition compositional reference"
+      },
+      "sourceReconstruction": {
+        "term": "Total Leverage Ratio",
+        "declarationSpanNote": "Production detectStructuralDefinitions charEnd ends at declaration match (~30 chars: '\" Total Leverage Ratio \" means')",
+        "definitionExcerptContains": "Consolidated EBITDA",
+        "excerptEvidence": "Total Leverage Ratio means, on any date, the ratio of (a) Consolidated Total Debt ... to (b) Consolidated EBITDA"
+      },
+      "rootCause": "INCORRECT_EXTRACTION_BOUNDARY",
+      "classificationFamily": "Ratio dependency",
+      "detail": "Atlas adapter sliced text.slice(charStart, charEnd) which excluded the compositional body already present in definitionExcerpt. Fix: Atlas-owned definitionBodyWindow (excerpt + text to next definition / bound). Production parser untouched.",
+      "fixApplied": "Atlas adapter definitionBodyWindow in extract-from-structural.ts"
+    },
+    {
+      "id": "miss-2",
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_DEFINITION",
+        "termName": "Indebtedness"
+      },
+      "sourceReconstruction": {
+        "search": "Indebtedness",
+        "result": "ABSENT from RIOT doc-a definitions and operative text",
+        "presentInstead": [
+          "Loan",
+          "Collateral",
+          "Actual LTV Ratio",
+          "Prevailing Market Value"
+        ]
+      },
+      "rootCause": "UNSUPPORTED_LEGAL_INTERPRETATION",
+      "classificationFamily": "Covenant-family recognition / incorrect expected sample",
+      "detail": "Phase-2 expected edge assumed a traditional credit-agreement Indebtedness covenant family. RIOT is an LTV / bitcoin-collateral facility without that defined term. Not an extractor miss — incorrect ground-truth sample.",
+      "fixApplied": "Rewrote RIOT expected edges from exact source terms (Collateral, Loan, Actual LTV Ratio)"
+    },
+    {
+      "id": "miss-3",
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "connective": "Security/Collateral/Intercreditor Agreement"
+      },
+      "sourceReconstruction": {
+        "search": [
+          "Security Agreement",
+          "Intercreditor Agreement"
+        ],
+        "result": "ABSENT",
+        "presentInstead": [
+          "Collateral Documents",
+          "Custody Agreement",
+          "Pledge and Collateral Account Control Agreement"
+        ]
+      },
+      "rootCause": "COVENANT_FAMILY_RECOGNITION",
+      "classificationFamily": "Cross-document / external document",
+      "detail": "Expected connective set was traditional loan-package labels. RIOT uses Collateral Documents / Custody Agreement. Adapter cross-document patterns expanded (Atlas-only) to include those authentic instrument names; section-body scan added.",
+      "fixApplied": "CONNECTIVE_RULES + section-body cross-document scan in Atlas adapter"
+    },
+    {
+      "id": "miss-4",
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "connective": "Available Amount / shared basket"
+      },
+      "sourceReconstruction": {
+        "search": [
+          "Available Amount",
+          "shared capacity",
+          "shared basket"
+        ],
+        "result": "ABSENT"
+      },
+      "rootCause": "UNSUPPORTED_LEGAL_INTERPRETATION",
+      "classificationFamily": "Shared basket",
+      "detail": "RIOT doc-a has no Available Amount / shared-basket mechanic. Expected edge was fabricated from a different covenant family. Removed from RIOT sample; shared-basket expectations retained on CHWY/DSGR/FWRG/Gibraltar where source supports them.",
+      "fixApplied": "Corrected GT sample; no fabricated RIOT shared-basket edge"
+    },
+    {
+      "id": "miss-5",
+      "documentId": "riot-doc-a",
+      "expected": {
+        "kind": "RATIO_CALCULATION",
+        "connective": "Leverage Ratio definition"
+      },
+      "sourceReconstruction": {
+        "search": "Leverage Ratio",
+        "result": "ABSENT",
+        "presentInstead": "Actual LTV Ratio means ... principal amount of the Loan ... to ... Prevailing Market Value of the Collateral"
+      },
+      "rootCause": "RATIO_DEPENDENCY / COVENANT_FAMILY_RECOGNITION",
+      "classificationFamily": "Ratio dependency",
+      "detail": "Expected traditional Leverage Ratio; source defines Actual LTV Ratio with Loan / Prevailing Market Value / Collateral components. After definitionBodyWindow + classic-component expansion, Atlas extracts RATIO_CALCULATION for Actual LTV Ratio → those components.",
+      "fixApplied": "Source-true RIOT ratio expectations + Atlas body window / component matching"
+    }
+  ],
+  "summary": {
+    "structuralExtractionBoundary": 1,
+    "incorrectGroundTruthSample": 3,
+    "covenantFamilyRecognitionGap": 1,
+    "note": "Correctness prioritized: three of five 'misses' were bad expected edges, not extractor failures."
+  }
+}

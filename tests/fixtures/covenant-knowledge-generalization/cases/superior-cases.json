@@ -1,0 +1,260 @@
+{
+  "packageId": "superior-2022-2025-credit-facility",
+  "labelMethod": "Reuses independently authored source-first claims from docs/final-lightweight-unseen/07-targeted-ground-truth.json (written before pipeline inspection of those claims). Remapped into CKG metrics. Authority SOURCE_VERIFIED for caption/recital facts confirmed against extracted text in this benchmark; REVIEWER_APPROVED where we rely on the prior independent GT packet without re-adjudicating every quantitative limb.",
+  "invariant28": "This package is permanent regression evidence and cannot again support a blind-generalization claim. Included here only as offline unseen-document performance measurement without new tuning.",
+  "cases": [
+    {
+      "caseId": "sup-def-ebitda-siblings",
+      "metric": "definition_extraction_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-a",
+        "sectionRef": "1.01",
+        "excerpt": "Consolidated EBITDA / Consolidated Net Income / Consolidated Interest Expense / Consolidated First Lien Secured Debt / Secured Net Leverage Ratio cluster (GT claims A1-A5).",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "terms": [
+            "Consolidated EBITDA",
+            "Consolidated Net Income",
+            "Consolidated Interest Expense",
+            "Consolidated First Lien Secured Debt",
+            "Secured Net Leverage Ratio"
+          ],
+          "requireExact": false
+        },
+        "notes": "Prior independent GT A1-A5; not model self-labels."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-def-amendment-three-terms",
+      "metric": "definition_extraction_accuracy",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-c",
+        "sectionRef": "2(a)",
+        "excerpt": "First Amendment adds Invoice Restrictions, Maintenance Liquidity, and Monthly Factoring Report to Section 1.01.",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "terms": ["Invoice Restrictions", "Maintenance Liquidity", "Monthly Factoring Report"],
+          "requireExact": false
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-xref-secured-net-leverage",
+      "metric": "cross_reference_accuracy",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-a",
+        "sectionRef": "1.01 Secured Net Leverage Ratio",
+        "excerpt": "Secured Net Leverage Ratio = Consolidated First Lien Secured Debt / Consolidated EBITDA for the applicable Test Period.",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "resolvedTargets": ["Consolidated First Lien Secured Debt", "Consolidated EBITDA"]
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-cond-cash-sweep-cure",
+      "metric": "condition_recall",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-c",
+        "sectionRef": "2(b) / 2.05(2)(c)",
+        "excerpt": "Mandatory cash-sweep with $50M and $115M thresholds plus Deficiency Amount cure under $1,300,000 within 30/5 Business Day windows (GT B4).",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "conditions": [
+            "unrestricted_cash_over_50m_sweep",
+            "maintenance_liquidity_over_115m_sweep",
+            "deficiency_amount_cure_eligible_under_1300000"
+          ]
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-shared-ebitda-10pct",
+      "metric": "shared_capacity_recognition",
+      "strata": {
+        "agreementType": "CREDIT_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "DEFINITIONS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-a",
+        "sectionRef": "1.01 Consolidated EBITDA proviso",
+        "excerpt": "aggregate amount of any amounts added back ... pursuant to clauses (f), (m) and (n) ... shall not exceed 10% of Consolidated EBITDA",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "isSharedCapacity": true,
+          "memberRefs": ["(f)", "(m)", "(n)"]
+        }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-amend-doc-b-restates-doc-a",
+      "metric": "amendment_reconstruction",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-b",
+        "sectionRef": "caption + preliminary statements",
+        "excerpt": "$520,000,000 AMENDED AND RESTATED CREDIT AGREEMENT Dated as of August 14, 2024 ... amend and restate that certain Credit Agreement, dated as of December 15, 2022",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "relationship": "doc-b RESTATES doc-a", "status": "resolved" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-amend-doc-c-amends-doc-b",
+      "metric": "amendment_reconstruction",
+      "strata": {
+        "agreementType": "AMENDMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-c",
+        "sectionRef": "caption",
+        "excerpt": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT dated as of March 31, 2025",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "relationship": "doc-c AMENDS doc-b", "status": "review_required" },
+        "notes": "Independent audit praised REVIEW_REQUIRED over force-resolve for this edge."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-prov-doc-b-caption",
+      "metric": "provenance_accuracy",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "doc-b",
+        "sectionRef": "caption",
+        "excerpt": "AMENDED AND RESTATED CREDIT AGREEMENT Dated as of August 14, 2024",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "citationSectionRef": "caption", "requiresExcerpt": true }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-unseen-aggregate",
+      "metric": "unseen_document_performance",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "package",
+        "sectionRef": "n/a",
+        "excerpt": "Aggregate offline proxy over independently labeled SUP amendment/definition cases.",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": {
+          "requiredCaseIds": [
+            "sup-amend-doc-b-restates-doc-a",
+            "sup-amend-doc-c-amends-doc-b",
+            "sup-prov-doc-b-caption"
+          ]
+        },
+        "notes": "Requires the historically failing RESTATES edge plus safe AMENDS and caption provenance. Offline rollup of frozen outcomes; not a new paid run."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "sup-cost-offline",
+      "metric": "cost_per_source_verified_representation",
+      "strata": {
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "issuer": "Superior Industries International, Inc.",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "superior-2022-2025-credit-facility",
+        "documentId": "package",
+        "sectionRef": "n/a",
+        "excerpt": "This CKG evaluation incurs $0.00 paid calls. Historical lightweight confirmation spent $5.03 under a separate mission and is not re-billed here.",
+        "sourcePath": "docs/final-lightweight-unseen.md"
+      },
+      "expected": {
+        "authority": "SOURCE_VERIFIED",
+        "value": { "maxCostUsd": 0 },
+        "notes": "Benchmark rule: no paid calls. Cost recorded as 0."
+      },
+      "attributedCostUsd": 0
+    }
+  ]
+}
