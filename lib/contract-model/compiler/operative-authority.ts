@@ -11,6 +11,7 @@
  */
 import { createHash } from "node:crypto";
 import type { NodeSupersessionStatus } from "./amendment/types";
+import { spanContainsDefinitionDeclaration } from "./structural-definitions";
 import type { StructuralIndex, TextMode } from "./structural-index";
 import type { StructuralNode } from "./types";
 
@@ -48,11 +49,20 @@ export function sha256Utf8(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
+/** Extraction turns a contents row into a non-breaking space and blank lines. Those are not separate clauses. */
+function collapseExtractedWhitespace(value: string): string {
+  return value.replace(/[\u00a0\s]+/g, " ").trim();
+}
+
 function isContentsListing(node: StructuralNode, index: OperativeTextIndex): boolean {
   if (index.getDescendants(node.nodeId).length > 0) return false;
-  const own = index.getNodeText(node.nodeId, "OWN").trim();
-  if (!own) return false;
-  const lines = own.split(/\n/).map((line) => line.trim()).filter((line) => line.length > 0);
+  const own = index.getNodeText(node.nodeId, "OWN");
+  if (!own.trim()) return false;
+  // A predicate such as "shall" is operative text even when a page number follows it.
+  if (OPERATIVE_EVIDENCE.test(own)) return false;
+  const collapsed = collapseExtractedWhitespace(own);
+  if (CONTENTS_LINE.test(collapsed)) return true;
+  const lines = own.split(/\n/).map((line) => collapseExtractedWhitespace(line)).filter((line) => line.length > 0);
   return lines.length > 0 && lines.every((line) => CONTENTS_LINE.test(line));
 }
 
@@ -60,6 +70,8 @@ function hasOperativeEvidence(node: StructuralNode, index: OperativeTextIndex): 
   if (index.getDescendants(node.nodeId).some((child) => child.nodeType === "SUBSECTION" || child.nodeType === "CLAUSE" || child.nodeType === "SUBCLAUSE")) return true;
   const text = index.getNodeText(node.nodeId, "DESCENDANTS").trim();
   if (OPERATIVE_EVIDENCE.test(text)) return true;
+  // A definitions section is operative text. "means" / colon declarations are the same grammar the structural index uses.
+  if (spanContainsDefinitionDeclaration(text)) return true;
   // A parsed clause is structural evidence of drafted text, unless that text is only a pointer.
   if ((node.nodeType === "SUBSECTION" || node.nodeType === "CLAUSE" || node.nodeType === "SUBCLAUSE") && text.length > 0 && !POINTER_LINE.test(text)) return true;
   return false;
@@ -103,6 +115,12 @@ export interface ArticleSevenAuthorityRow {
   structuralKind: StructuralOccurrenceKind | "MISSING";
   supersessionStatus: NodeSupersessionStatus;
   sourceHashOk: boolean;
+  /**
+   * Physical occurrence. Discovery may emit the same node under several candidate ids.
+   * Those rows are one body. Distinct ids remain distinct even when their text matches.
+   * A row without an id is its own occurrence.
+   */
+  occurrenceId?: string | null;
 }
 
 /**
@@ -116,9 +134,22 @@ export function selectAuthenticatedSectionBodies<T extends ArticleSevenAuthority
   const selected: T[] = [];
   for (const ref of refs) {
     const operative = rows.filter((row) => row.normalizedSourceRef === ref && row.structuralKind === "OPERATIVE_OCCURRENCE" && row.supersessionStatus !== "KNOWN_SUPERSEDED" && row.sourceHashOk);
-    if (operative.length === 1) selected.push(operative[0]!);
+    const unique = uniquePhysicalOccurrences(operative);
+    if (unique.length === 1) selected.push(unique[0]!);
   }
   return selected;
+}
+
+function uniquePhysicalOccurrences<T extends ArticleSevenAuthorityRow>(rows: readonly T[]): T[] {
+  const seen = new Set<string>();
+  const unique: T[] = [];
+  rows.forEach((row, index) => {
+    const key = row.occurrenceId ? `occurrence:${row.occurrenceId}` : `unkeyed:${index}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    unique.push(row);
+  });
+  return unique;
 }
 
 /** Production compile gate. No anchor means the caller did not supply structural identity; fixtures that compile raw text are unchanged. */

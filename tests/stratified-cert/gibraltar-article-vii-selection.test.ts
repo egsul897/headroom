@@ -8,16 +8,16 @@ import { ARTICLE_VII_BODY_REFS, haikuListUsd, selectArticleSevenBodies } from ".
 describe("Article VII body selection", () => {
   it("keeps the structurally operative body and drops a contents line even when that line is longer", () => {
     const selected = selectArticleSevenBodies([
-      { discoveryId: "toc-705", normalizedSourceRef: "7.05", operativeChars: 80_000, role: "BASKET", structuralKind: "CONTENTS_LISTING", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "body-705", normalizedSourceRef: "7.05", operativeChars: 40, role: "BASKET", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "child-705", normalizedSourceRef: "7.05(a)", operativeChars: 8704, role: "BASKET", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "body-704", normalizedSourceRef: "7.04", operativeChars: 5767, role: "PROVISO", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "toc-only", normalizedSourceRef: "7.08", operativeChars: 39, role: "GENERAL_PROHIBITION", structuralKind: "CONTENTS_LISTING", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "body-702", normalizedSourceRef: "7.02", operativeChars: 415, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "one-701", normalizedSourceRef: "7.01", operativeChars: 100, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "two-701", normalizedSourceRef: "7.01", operativeChars: 21_491, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true },
-      { discoveryId: "old-703", normalizedSourceRef: "7.03", operativeChars: 4_000, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "KNOWN_SUPERSEDED", sourceHashOk: true },
-      { discoveryId: "bad-706", normalizedSourceRef: "7.06", operativeChars: 8_000, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: false },
+      { discoveryId: "toc-705", normalizedSourceRef: "7.05", operativeChars: 80_000, role: "BASKET", structuralKind: "CONTENTS_LISTING", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "toc-705" },
+      { discoveryId: "body-705", normalizedSourceRef: "7.05", operativeChars: 40, role: "BASKET", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "body-705" },
+      { discoveryId: "child-705", normalizedSourceRef: "7.05(a)", operativeChars: 8704, role: "BASKET", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "child-705" },
+      { discoveryId: "body-704", normalizedSourceRef: "7.04", operativeChars: 5767, role: "PROVISO", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "body-704" },
+      { discoveryId: "toc-only", normalizedSourceRef: "7.08", operativeChars: 39, role: "GENERAL_PROHIBITION", structuralKind: "CONTENTS_LISTING", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "toc-only" },
+      { discoveryId: "body-702", normalizedSourceRef: "7.02", operativeChars: 415, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "body-702" },
+      { discoveryId: "one-701", normalizedSourceRef: "7.01", operativeChars: 100, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "one-701" },
+      { discoveryId: "two-701", normalizedSourceRef: "7.01", operativeChars: 21_491, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: true, occurrenceId: "two-701" },
+      { discoveryId: "old-703", normalizedSourceRef: "7.03", operativeChars: 4_000, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "KNOWN_SUPERSEDED", sourceHashOk: true, occurrenceId: "old-703" },
+      { discoveryId: "bad-706", normalizedSourceRef: "7.06", operativeChars: 8_000, role: "GENERAL_PROHIBITION", structuralKind: "OPERATIVE_OCCURRENCE", supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS", sourceHashOk: false, occurrenceId: "bad-706" },
     ]);
     expect(selected.map((row) => row.discoveryId)).toEqual(["body-702", "body-705"]);
     expect(selected.map((row) => row.discoveryId)).not.toContain("toc-705");

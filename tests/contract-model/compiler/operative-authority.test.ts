@@ -85,6 +85,48 @@ describe("operative source authentication", () => {
     });
     expect(rows.every((row) => row.structuralKind === "OPERATIVE_OCCURRENCE")).toBe(true);
     expect(selectAuthenticatedSectionBodies(rows, ["4.01"])).toEqual([]);
+    expect(selectAuthenticatedSectionBodies(rows.map((row, index) => ({ ...row, occurrenceId: index === 0 ? "node-a" : "node-b" })), ["4.01"])).toEqual([]);
+  });
+
+  it("counts repeated discovery rows on one physical node as one body", () => {
+    const repeated = [
+      { normalizedSourceRef: "7.01", structuralKind: "OPERATIVE_OCCURRENCE" as const, supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" as const, sourceHashOk: true, occurrenceId: "structural-node:same" },
+      { normalizedSourceRef: "7.01", structuralKind: "OPERATIVE_OCCURRENCE" as const, supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" as const, sourceHashOk: true, occurrenceId: "structural-node:same" },
+      { normalizedSourceRef: "7.01", structuralKind: "CONTENTS_LISTING" as const, supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" as const, sourceHashOk: true, occurrenceId: "structural-node:toc" },
+    ];
+    const selected = selectAuthenticatedSectionBodies(repeated, ["7.01"]);
+    expect(selected).toHaveLength(1);
+    expect(selected[0]!.occurrenceId).toBe("structural-node:same");
+    expect(selected[0]!.supersessionStatus).toBe("UNKNOWN_SUPERSESSION_STATUS");
+  });
+
+  it("classifies a contents row whose extraction split the label, title, and page number", () => {
+    const extracted = "Section\u00a07.01\n\nIndebtedness\n\n225\n\n";
+    const local = indexFor(doc, extracted, [node({ documentId: doc, nodeId: "split-toc", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: extracted.length, parentNodeId: null })]);
+    const decision = authenticateStructuralOccurrence({ node: local.getNodeById("split-toc")!, index: local, supersessionStatus: "CURRENT_OPERATIVE" });
+    expect(decision.structuralKind).toBe("CONTENTS_LISTING");
+    expect(decision.refuseModelDispatch).toBe(true);
+    expect(decision.authoritativeCurrent).toBe(false);
+    const operative = "Section 7.01\n\nIndebtedness. The Borrower shall not incur debt.\n";
+    const operativeIndex = indexFor(doc, operative, [node({ documentId: doc, nodeId: "split-body", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: operative.length, parentNodeId: null })]);
+    expect(authenticateStructuralOccurrence({ node: operativeIndex.getNodeById("split-body")!, index: operativeIndex, supersessionStatus: "CURRENT_OPERATIVE" }).structuralKind).toBe("OPERATIVE_OCCURRENCE");
+  });
+
+  it("treats a definitions section as operative when it declares terms and contains no covenant predicate", () => {
+    const definitions = [
+      "SECTION 1.01 Defined Terms . As used in this Agreement, the following terms have the meanings specified below:",
+      "",
+      "\"Consolidated EBITDA\" means, for any period, Consolidated Net Income for such period.",
+      "",
+    ].join("\n");
+    const local = indexFor(doc, definitions, [node({ documentId: doc, nodeId: "defs", nodeType: "SECTION", sectionRef: "1.01", charStart: 0, charEnd: definitions.length, parentNodeId: null })]);
+    const decision = authenticateStructuralOccurrence({ node: local.getNodeById("defs")!, index: local, supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" });
+    expect(decision.structuralKind).toBe("OPERATIVE_OCCURRENCE");
+    expect(decision.authoritativeCurrent).toBe(false);
+    expect(decision.refuseModelDispatch).toBe(false);
+    const colon = "\"Applicable Rate\": the rate described in this paragraph.\n";
+    const colonIndex = indexFor(doc, colon, [node({ documentId: doc, nodeId: "colon", nodeType: "SECTION", sectionRef: "1.01", charStart: 0, charEnd: colon.length, parentNodeId: null })]);
+    expect(authenticateStructuralOccurrence({ node: colonIndex.getNodeById("colon")!, index: colonIndex, supersessionStatus: "CURRENT_OPERATIVE" }).structuralKind).toBe("OPERATIVE_OCCURRENCE");
   });
 
   it("does not collapse the same label across documents", () => {

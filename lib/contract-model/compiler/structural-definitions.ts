@@ -193,6 +193,13 @@ function dedupeByOverlap(all: RegExpExecArray[]): RegExpExecArray[] {
  * each to its enclosing structural node. `nodes` must be this document's
  * own structural nodes only.
  */
+/** True when this span contains a declaration the structural definition grammar already recognizes. */
+export function spanContainsDefinitionDeclaration(text: string): boolean {
+  return scanPattern(DEFINITION_DECLARATION, text, 1, 100).length > 0
+    || scanPattern(QUOTED_COLON_DEFINITION, text, 1, 100).length > 0
+    || scanPattern(UNQUOTED_COLON_DEFINITION, text, 4, 60).length > 0;
+}
+
 export function detectStructuralDefinitions(documentId: string, text: string, nodes: StructuralNode[]): DetectedDefinition[] {
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
 

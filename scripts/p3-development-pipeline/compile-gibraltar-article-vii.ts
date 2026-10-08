@@ -66,6 +66,7 @@ export interface ArticleSevenRow {
   structuralKind: StructuralOccurrenceKind | "MISSING";
   supersessionStatus: NodeSupersessionStatus;
   sourceHashOk: boolean;
+  occurrenceId: string | null;
 }
 
 export function haikuListUsd(inputTokens: number, outputTokens: number): number {
@@ -206,6 +207,7 @@ async function main(): Promise<void> {
       structuralKind: authority?.structuralKind ?? "MISSING",
       supersessionStatus: built.candidate.supersessionStatus,
       sourceHashOk: authority ? !authority.reason.startsWith("SOURCE_HASH_MISMATCH") : false,
+      occurrenceId: anchor?.nodeId ?? null,
       candidate: built.candidate,
     });
   }
