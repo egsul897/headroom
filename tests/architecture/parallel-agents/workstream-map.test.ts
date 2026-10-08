@@ -46,7 +46,7 @@ describe("parallel-agent workstream map", () => {
 
   it("has required top-level identity fields", () => {
     expect(map.artifact).toBe("parallel-agent-workstream-map");
-    expect(map.version).toBeGreaterThanOrEqual(5);
+    expect(map.version).toBeGreaterThanOrEqual(6);
     expect(map.status).toBe("DRAFT_CONTRACT");
     expect(map.baseMainSha).toMatch(/^[0-9a-f]{40}$/);
     expect(map.workstreams.length).toBeGreaterThanOrEqual(16);
@@ -130,7 +130,7 @@ describe("parallel-agent workstream map", () => {
     );
   });
 
-  it("reconciles CKF/CCA exclusive trees to peer-shipped paths", () => {
+  it("reconciles CKF/CCA/VIC exclusive trees to peer-shipped paths", () => {
     const byId = Object.fromEntries(map.workstreams.map((w) => [w.workstreamId, w]));
     expect(byId["WS-CKF"].exclusiveOwn).toEqual(
       expect.arrayContaining([
@@ -143,6 +143,19 @@ describe("parallel-agent workstream map", () => {
         "docs/cursor-cloud-compute/**",
         "lib/cursor-cloud-compute/**",
       ]),
+    );
+    expect(byId["WS-VIC"].exclusiveOwn).toEqual(
+      expect.arrayContaining([
+        "lib/contract-model/compiler/inference/**",
+        "docs/vercel-independent-covenant-compilation/**",
+      ]),
+    );
+    // Duplicate KF store on VIC PR must not be granted
+    expect(byId["WS-VIC"].exclusiveOwn.join("\n")).not.toContain(
+      "lib/contract-model/covenant-knowledge",
+    );
+    expect(byId["WS-VIC"].mustNotTouch).toEqual(
+      expect.arrayContaining(["lib/contract-model/covenant-knowledge/**"]),
     );
   });
 

@@ -3,7 +3,7 @@
   "version": 1,
   "status": "ACTIVE_LEDGER",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "updatedAt": "2026-10-08T22:13:30Z",
+  "updatedAt": "2026-10-08T22:14:30Z",
   "items": [
     {
       "id": "IQ-001",
@@ -11,7 +11,7 @@
       "deliverable": "Operating rules, ownership map v2+, identity/SEC/dataset/gate contracts, ownership checker",
       "branch": "cursor/parallel-agent-operating-rules-0e3f",
       "pr": "https://github.com/egsul897/headroom/pull/138",
-      "tipSha": "f5e700dac9cf2376f8c61baa586942877a2435e8",
+      "tipSha": "a8e5d8859764af0905f6aa26e37f37d4c5f26fc3",
       "status": "IN_PROGRESS",
       "blockers": [],
       "dependsOn": []
@@ -36,12 +36,12 @@
       "id": "IQ-003",
       "workstreamId": "WS-VIC",
       "deliverable": "Provider-independent adapters + offline/deterministic compilation path",
-      "branch": null,
-      "pr": null,
-      "tipSha": null,
-      "status": "AWAITING_BRANCH",
+      "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
+      "pr": "https://github.com/egsul897/headroom/pull/146",
+      "tipSha": "3878e099e81bc96743b76257e2bac3aae0e01834",
+      "status": "DRAFT_PR_OPEN",
       "blockers": [
-        "No origin branch yet \u2014 proceed via contracts only"
+        "C-DUP-KF: remove or thin-client lib/contract-model/covenant-knowledge/** to WS-CKF"
       ],
       "dependsOn": [
         "IQ-001"
@@ -164,6 +164,20 @@
       "dependsOn": [
         "IQ-001"
       ]
+    },
+    {
+      "id": "IQ-012",
+      "workstreamId": "WS-RCD",
+      "deliverable": "Rare drafting novelty discovery",
+      "branch": "cursor/rare-covenant-drafting-discovery-553e",
+      "pr": "https://github.com/egsul897/headroom/pull/147",
+      "tipSha": "6c9e8a65c9cbac50c922c0d4ec4a91611957fdbb",
+      "status": "DRAFT_PR_OPEN",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
     }
   ],
   "conflicts": [
@@ -186,16 +200,22 @@
       "status": "RESOLVED_IN_MAP_V4"
     },
     {
-      "id": "C-004",
-      "summary": "WS-VIC and WS-GIB named in core-four coordination mandate but lack dedicated origin deliverables",
-      "resolution": "Keep exclusiveOwn reserved; VIC/GIB proceed independently when branches appear; do not reassign their roles to CKF/CCA",
-      "status": "OPEN"
-    },
-    {
       "id": "C-005",
       "summary": "CKB path drift vs earlier map",
       "resolution": "Map v5 adopts generalization-benchmark + lib/evaluation/ckg-benchmark",
       "status": "RESOLVED_IN_MAP_V5"
+    },
+    {
+      "id": "C-DUP-KF",
+      "summary": "VIC #146 lib/contract-model/covenant-knowledge/** duplicates WS-CKF knowledge factory",
+      "resolution": "VIC removes store or makes thin-client to CKF; not granted in map exclusiveOwn",
+      "status": "OPEN_BLOCKER_FOR_INTEGRATION"
+    },
+    {
+      "id": "C-004",
+      "summary": "WS-GIB still awaiting dedicated agent",
+      "resolution": "Keep exclusive tree reserved",
+      "status": "OPEN"
     }
   ],
   "proposedResolutions": [

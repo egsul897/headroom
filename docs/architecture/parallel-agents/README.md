@@ -15,7 +15,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | Path | Role |
 | --- | --- |
 | `00-operating-rules.md` | Binding operating rules for this fleet |
-| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v5; peer-path reconciled) |
+| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v6; peer-path reconciled) |
 | `10-live-integration-inventory.json` | Live branch/PR/SHA/data-class inventory |
 | `11-concrete-integration-plan.md` | Executable integration plan + conflict resolutions |
 | `12-core-four-role-lock.md` | Binding CKF/VIC/CCA/GIB role lock |

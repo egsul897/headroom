@@ -1,10 +1,10 @@
 {
   "artifact": "parallel-agent-workstream-map",
-  "version": 5,
+  "version": 6,
   "status": "DRAFT_CONTRACT",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "baseMainFetchedAt": "2026-10-08T22:00:00Z",
-  "mapAmendedAt": "2026-10-08T22:13:30Z",
+  "mapAmendedAt": "2026-10-08T22:14:30Z",
   "coordinator": {
     "workstreamId": "WS-PAR",
     "name": "Parallel Agent Operating Rules",
@@ -19,7 +19,8 @@
     "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines.",
     "v3 adds WS-GIB and later corpus agents (SCR/FDP/RAC/CRI) from founder coordination follow-ups; coordinator publishes contracts only.",
     "v4 reconciles exclusiveOwn to peer-shipped path claims (CKF\u2192knowledge-factory/*, CCA\u2192cursor-cloud-compute/*) without forcing peer rewrites. Prior v2/v3 proposed paths remain aliases only if unused.",
-    "v5 reconciles WS-CKB to peer-shipped covenant-knowledge-generalization-benchmark + lib/evaluation/ckg-benchmark; WS-PCI docs path to precedent-comparison-intelligence.md / docs/precedent-comparison-intelligence/** if present."
+    "v5 reconciles WS-CKB to peer-shipped covenant-knowledge-generalization-benchmark + lib/evaluation/ckg-benchmark; WS-PCI docs path to precedent-comparison-intelligence.md / docs/precedent-comparison-intelligence/** if present.",
+    "v6: WS-VIC peer paths under lib/contract-model/compiler/{inference,deterministic-extraction,local-semantic,selective-compilation}; lib/contract-model/covenant-knowledge/** is NOT granted \u2014 flagged duplicate of WS-CKF (C-DUP-KF). WS-RCD peer paths confirmed. VIC #146 / RCD #147 draft PRs."
   ],
   "sharedHardExclusions": [
     "docs/**/sealed*/**",
@@ -89,10 +90,13 @@
         "docs/cursor-cloud-compute/**",
         "docs/edgar-historical-backfill/**",
         "docs/vercel-independent-compilation/**",
+        "lib/contract-model/compiler/inference/**",
+        "lib/contract-model/covenant-knowledge/**",
         "lib/cursor-cloud-compute/**",
         "lib/edgar-historical-backfill/**",
         "lib/extraction/providers/**",
-        "scripts/compute-assessment/**"
+        "scripts/compute-assessment/**",
+        "scripts/covenant-knowledge/**"
       ],
       "softGates": [
         "Do not build a parallel covenant engine",
@@ -117,11 +121,13 @@
       "bcId": "bc-01a11d85-2531-7ae2-a5d5-cf7360ca6d1d",
       "missionSummary": "Provider-independent inference adapters + deterministic covenant extraction path so compilation can run without Vercel AI Gateway.",
       "exclusiveOwn": [
-        "docs/vercel-independent-compilation/**",
-        "lib/extraction/providers/**",
-        "lib/contract-model/analyzer/providers/**",
+        "docs/vercel-independent-covenant-compilation/**",
+        "lib/contract-model/compiler/inference/**",
+        "lib/contract-model/compiler/deterministic-extraction/**",
+        "lib/contract-model/compiler/local-semantic/**",
+        "lib/contract-model/compiler/selective-compilation/**",
         "scripts/vercel-independent-compilation/**",
-        "tests/extraction/providers/**",
+        "tests/contract-model/deterministic-extraction/**",
         "tests/vercel-independent-compilation/**"
       ],
       "extendViaNewSiblingOnly": [
@@ -131,15 +137,28 @@
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
-        "lib/covenant-knowledge/**",
+        "docs/compute-assessment/**",
         "docs/covenant-knowledge-factory/**",
+        "docs/knowledge-factory/**",
+        "lib/contract-model/covenant-knowledge/**",
+        "lib/contract-model/ir/**",
+        "lib/contract-model/phase3-certification/**",
+        "lib/covenant-knowledge/**",
+        "lib/knowledge-factory/**",
         "scripts/compute-assessment/**",
-        "docs/compute-assessment/**"
+        "scripts/covenant-knowledge/**",
+        "tests/contract-model/covenant-knowledge/**"
       ],
       "softGates": [
         "Do not unnecessarily rewrite the existing compiler",
         "Do not modify Claude-owned acceptance fixtures",
         "No paid provider calls without founder authorization"
+      ],
+      "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
+      "pr": "https://github.com/egsul897/headroom/pull/146",
+      "notes": [
+        "Peer shipped inference adapters under compiler/inference/** (adopted).",
+        "BLOCKER: lib/contract-model/covenant-knowledge/** on #146 is a duplicate KF surface \u2014 not in exclusiveOwn; must be removed or thin-client to WS-CKF before integration."
       ]
     },
     {
@@ -234,9 +253,10 @@
       "exclusiveOwn": [
         "docs/rare-covenant-drafting-discovery/**",
         "lib/drafting-novelty/**",
+        "scripts/rare-covenant-drafting-discovery.ts",
         "scripts/rare-covenant-drafting-discovery/**",
-        "tests/rare-covenant-drafting-discovery/**",
-        "tests/drafting-novelty/**"
+        "tests/drafting-novelty/**",
+        "tests/rare-covenant-drafting-discovery/**"
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
@@ -246,7 +266,9 @@
       "softGates": [
         "No production legal-rule edits",
         "No semantic equivalence from embedding/text similarity alone"
-      ]
+      ],
+      "branch": "cursor/rare-covenant-drafting-discovery-553e",
+      "pr": "https://github.com/egsul897/headroom/pull/147"
     },
     {
       "workstreamId": "WS-NED",

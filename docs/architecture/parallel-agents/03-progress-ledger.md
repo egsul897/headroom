@@ -137,3 +137,15 @@
 - New draft PRs: NED #143, PCI #144, CKB #145. Queue refreshed.
 - Honest counts: live EDGAR accession-backed growth = 0; verified knowledge growth = 0; cloud cost = $0.
 - ownershipViolations: []
+
+---
+
+## 2026-10-08T22:14:30Z — PARALLEL KNOWLEDGE PRODUCTION CONTROL
+
+- Refreshed live inventory **v2** across 13 workstreams / draft PRs #138–#147 (+ CKF branch).
+- **Critical conflict C-DUP-KF:** VIC #146 `lib/contract-model/covenant-knowledge/**` duplicates WS-CKF `lib/knowledge-factory/**` — not granted in map; integration blocker until removed/thin-cliented.
+- Map **v6** adopts VIC compiler inference trees; RCD #147 recorded.
+- Concrete plan rewritten with ordered executable steps (blocker-first).
+- EDGAR bulk live corpus in open PRs: still **0**; CKF/EHB capable; others fixture/research/synthetic/held-out.
+- Schema owner: PAR=import/identity contracts; CKF=KF Prisma+ingest+SEC scheduler.
+- No merges, no paid calls, no sealed-evidence / Claude-fixture edits.
