@@ -30,6 +30,8 @@ export interface SemanticRunResult {
   faithfulError: string | null;
   adversarial: Array<{ case: AdversarialCase; variant: "PURE_OMISSION" | "LINEAGE_ON_RULE"; run: Awaited<ReturnType<typeof certifyDiscoveredCovenantPackage>> | null; error: string | null }>;
   mockCalls: { inventory: number; passB: number; verifier: number };
+  /** Prompt sizes (user-content characters) seen by the mocked callers - the only offline cost signal available; a token proxy at ≈4 chars/token. */
+  promptChars: { inventory: number[]; passB: number[]; verifier: number[] };
 }
 
 function sectionOf(ref: string): string { return ref.replace(/\(.*$/, ""); }
@@ -109,17 +111,17 @@ function planRouter(plans: Map<string, { probe: string; sectionRef: string; plan
   };
 }
 
-function deps(plan: SubmissionPlan, counters: SemanticRunResult["mockCalls"], inventoryOpts: { linkProvisos?: boolean } = {}): CertifiedExecutionDeps {
-  const client = mockSemanticClient((user) => { counters.passB += 1; return plan(user); });
+function deps(plan: SubmissionPlan, counters: SemanticRunResult["mockCalls"], inventoryOpts: { linkProvisos?: boolean } = {}, chars: SemanticRunResult["promptChars"] = { inventory: [], passB: [], verifier: [] }): CertifiedExecutionDeps {
+  const client = mockSemanticClient((user) => { counters.passB += 1; chars.passB.push(user.length); return plan(user); });
   const inv1 = mockInventoryCaller(inventoryOpts), inv2 = mockInventoryCaller(inventoryOpts), verifier = mockInventoryCaller();
-  const wrap = (c: ReturnType<typeof mockInventoryCaller>, bump: () => void) => ({ ...c, call: async (schema: never, stage: string, sys: string, user: string, o?: never) => { bump(); return c.call(schema, stage, sys, user, o); } });
+  const wrap = (c: ReturnType<typeof mockInventoryCaller>, bump: (user: string) => void) => ({ ...c, call: async (schema: never, stage: string, sys: string, user: string, o?: never) => { bump(user); return c.call(schema, stage, sys, user, o); } });
   return {
     config: certifiedConfig({ semanticModel: MOCK_MODEL, inventoryModel: MOCK_MODEL, verifierModel: MOCK_MODEL, transportRetry: { ...CERTIFIED_TRANSPORT_RETRY_POLICY, baseDelayMs: 1 } }),
     semanticCaller: new BoundedSemanticCaller("MOCKED", MOCK_MODEL, client, { maxOutputTokens: 8000 }),
-    inventoryPassCallers: [wrap(inv1, () => { counters.inventory += 1; }) as never, wrap(inv2, () => { counters.inventory += 1; }) as never],
+    inventoryPassCallers: [wrap(inv1, (u) => { counters.inventory += 1; chars.inventory.push(u.length); }) as never, wrap(inv2, (u) => { counters.inventory += 1; chars.inventory.push(u.length); }) as never],
     inventoryCaller: null,
-    reviewCaller: wrap(verifier, () => { counters.verifier += 1; }) as never,
-    conditionSuspicionCaller: wrap(verifier, () => { counters.verifier += 1; }) as never,
+    reviewCaller: wrap(verifier, (u) => { counters.verifier += 1; chars.verifier.push(u.length); }) as never,
+    conditionSuspicionCaller: wrap(verifier, (u) => { counters.verifier += 1; chars.verifier.push(u.length); }) as never,
     budget: new HardDispatchBudget({ ceilingUsd: 1, maxCalls: 500 }),
     concurrency: 1,
     cache: new InMemorySemanticCompilationCache(),
@@ -138,8 +140,9 @@ export async function runSemanticStage(pkg: CorpusPackage, s: DeterministicStage
   const input: CovenantMapPackageInput = { companyId: m.companyId, packageKey: `${pkg.packageId}-package`, instrumentKey, asOfDate, documents: docs, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOfDate) ?? null, amendmentEffects: s.amendment?.effects ?? [], supersessionIndex: s.supersessionIndexes.get(asOfDate), candidates, discoveryRunVersion: "manifest-declared-population.v1", discoveryPopulation: population };
   const plans = new Map(specs.map((spec) => [spec.key, { probe: spec.ownText.trim().slice(0, 600), altProbe: spec.covenants.find((c) => c.operativeTextDocumentId)?.mustContain[0], sectionRef: spec.sectionRef, plan: faithfulPlan(index, m, spec) }] as const));
   const mockCalls = { inventory: 0, passB: 0, verifier: 0 };
+  const promptChars: SemanticRunResult["promptChars"] = { inventory: [], passB: [], verifier: [] };
   let faithful: SemanticRunResult["faithful"] = null, faithfulError: string | null = null;
-  try { faithful = await certifyDiscoveredCovenantPackage(input, deps(planRouter(plans), mockCalls)); } catch (e) { faithfulError = e instanceof Error ? `${e.message}\n${e.stack?.split("\n").slice(1, 4).join("\n")}` : String(e); }
+  try { faithful = await certifyDiscoveredCovenantPackage(input, deps(planRouter(plans), mockCalls, {}, promptChars)); } catch (e) { faithfulError = e instanceof Error ? `${e.message}\n${e.stack?.split("\n").slice(1, 4).join("\n")}` : String(e); }
   const adversarial: SemanticRunResult["adversarial"] = [];
   for (const c of adversarialCases(m, specs)) {
     const spec = specs.find((x) => x.key === c.candidateKey)!;
@@ -156,7 +159,7 @@ export async function runSemanticStage(pkg: CorpusPackage, s: DeterministicStage
       catch (e) { adversarial.push({ case: c, variant, run: null, error: e instanceof Error ? e.message : String(e) }); }
     }
   }
-  return { specs, instrumentKey, faithful, faithfulError, adversarial, mockCalls, untestable };
+  return { specs, instrumentKey, faithful, faithfulError, adversarial, mockCalls, promptChars, untestable };
 }
 
 // ----------------------------------------------------------------------------------------------------------------

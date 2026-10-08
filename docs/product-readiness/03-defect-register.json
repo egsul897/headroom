@@ -103,6 +103,7 @@
       "stage": "SEMANTIC_COMPOSITION",
       "title": "A section-level candidate is compiled from superseded/deleted sub-clause text with no operative lineage",
       "packages": [
+        "pkg-b-multi-document",
         "pkg-c-amendment-supersession"
       ],
       "signatures": [
@@ -124,11 +125,16 @@
           "packageId": "pkg-c-amendment-supersession",
           "expectationRef": "certification:credit-agreement::7.01",
           "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "operative-text:indenture::4.09",
+          "severity": "WRONG_OPERATIVE_SOURCE"
         }
       ],
       "failingInput": "Amendment No. 1 restates 7.01(b) ($25m → $40m + no-Default proviso); Amendment No. 2 deletes 7.01(e). Operative state resolves both (RESOLVED). Candidate anchored at SECTION 7.01, as of 2026-06-30.",
       "expected": "The operative text handed to composition excludes the superseded $25,000,000 text and the deleted $15,000,000 clause, or the candidate carries lineage/evidence status that forbids treating them as current.",
-      "actual": "Operative text still contains both; operativeLineage null; Layer-1 raises MISSING_BASKET for $25,000,000 and $15,000,000 (demanding the stale baskets) and rejects the correct $40,000,000 excerpt as NOT_IN_SOURCE. The clause-level 7.01(b) candidate receives the amended text correctly, but its compiled rule has a null provenance excerpt and its context bundle is derived from the base text (the amended proviso's term \"Default\" is not retrieved).",
+      "actual": "Operative text still contains both; operativeLineage null; Layer-1 raises MISSING_BASKET for $25,000,000 and $15,000,000 (demanding the stale baskets) and rejects the correct $40,000,000 excerpt as NOT_IN_SOURCE. The clause-level 7.01(b) candidate receives the amended text correctly, but its compiled rule has a null provenance excerpt and its context bundle is derived from the base text (the amended proviso's term \"Default\" is not retrieved). Breadth (T4, package B First Supplemental Indenture restating indenture 4.09(c) to $75,000,000 effective 2026-05-01): the amendment resolves against the SECOND instrument correctly (4.09(c) SUPERSEDED at 2026-06-30, CURRENT at 2026-03-31, credit agreement untouched), yet the section-level candidate indenture::4.09 is still handed operative text containing the superseded '$50,000,000' with lineage null - the same stale-parent-span defect on a second instrument.",
       "repro": "buildCandidateCompilerInput(candidate 7.01, operativeState@2026-06-30).operativeSourceText; faithful submission for credit-agreement::7.01",
       "impact": "Any section-level unit over an amended agreement is verified against the wrong text; a deleted basket can be certified as live.",
       "hypothesis": "Supersession is attached per physical node; the parent section's operative text is the base DESCENDANTS span and the per-node supersession index is not consulted when assembling it; the clause-level path binds provenance against the amendment text but context retrieval scans the base node.",

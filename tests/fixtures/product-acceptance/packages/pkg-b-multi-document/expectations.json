@@ -3,7 +3,7 @@
   "packageId": "pkg-b-multi-document",
   "title": "Package B — credit agreement plus indenture with conflicting defined terms",
   "issuer": "Northfield Components Corp. (synthetic)",
-  "scenario": "Two operative instruments. The same defined term (Consolidated EBITDA, Indebtedness, Consolidated Net Income, Interest Expense) is defined differently in each document. The credit agreement caps the Senior Notes by cross-document reference; the indenture caps the credit agreement. Entity scope differs (Subsidiary vs Restricted Subsidiary).",
+  "scenario": "Two operative instruments. The same defined term (Consolidated EBITDA, Indebtedness, Consolidated Net Income, Interest Expense) is defined differently in each document. The credit agreement caps the Senior Notes by cross-document reference; the indenture caps the credit agreement. Entity scope differs (Subsidiary vs Restricted Subsidiary). A First Supplemental Indenture (effective 2026-05-01) restates indenture 4.09(c) from $50,000,000 to $75,000,000; it targets the SECOND instrument (the indenture), not the credit agreement.",
   "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
   "companyId": "company:northfield",
   "instrumentKey": "northfield-credit-agreement-2026",
@@ -23,10 +23,19 @@
       "role": "INDENTURE",
       "operative": true,
       "sha256": "5a3dc3e31a86a6f7a5f83f0a080d3672b99d9050c78b08084a2801b87bc6175b"
+    },
+    {
+      "documentId": "supplemental-indenture-1",
+      "label": "First Supplemental Indenture",
+      "file": "documents/supplemental-indenture-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "c26f491bd1cb0bd1f51605be15fcc5746117b52bcea35307979afb6ddae49c3a"
     }
   ],
   "operativeState": {
     "asOfDates": [
+      "2026-03-31",
       "2026-06-30"
     ],
     "exact": [
@@ -50,6 +59,43 @@
           "$150,000,000"
         ],
         "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-03-31",
+        "documentId": "indenture",
+        "sectionRef": "4.09(c)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$50,000,000"
+        ],
+        "mustNotContain": [
+          "$75,000,000"
+        ]
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "indenture",
+        "sectionRef": "4.09(c)",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$75,000,000"
+        ],
+        "mustNotContain": [
+          "$50,000,000"
+        ],
+        "supersededBy": "supplemental-indenture-1"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$30,000,000"
+        ],
+        "mustNotContain": [
+          "$75,000,000"
+        ]
       }
     ]
   },
@@ -102,6 +148,17 @@
         "nodeType": "SECTION",
         "parentSectionRef": "IV",
         "unique": true
+      },
+      {
+        "documentId": "supplemental-indenture-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Section 4.09(c)",
+          "$75,000,000"
+        ]
       }
     ],
     "invariants": [
@@ -502,6 +559,7 @@
   "nonOperative": [],
   "invariants": [
     "Every definition dependency recorded for a covenant must resolve within the covenant's own document unless the text expressly imports another instrument's definition.",
-    "A cross-document instrument reference (e.g. 'Senior Notes Indenture') must be recorded as a reference to a package document, never dropped silently."
+    "A cross-document instrument reference (e.g. 'Senior Notes Indenture') must be recorded as a reference to a package document, never dropped silently.",
+    "The supplemental indenture's effect attaches to the indenture instrument (4.09(c) SUPERSEDED at 2026-06-30, CURRENT at 2026-03-31) and never to the credit agreement."
   ]
 }

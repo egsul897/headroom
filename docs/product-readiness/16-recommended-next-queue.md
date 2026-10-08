@@ -77,6 +77,6 @@ Next prioritized bounded tasks (this track):
 - T1. On-disk definition-amendment fixtures (one per package B, F, I) so IPV-19/20 carry acceptance-run signatures.
 - T2. Posture-flip and percentage-change adversarial kinds (item 2) via the declarative `adversarial` field.
 - T3. Triple-composition package (item 6) with expectations for refusal precedence.
-- T4. Supplemental-indenture package (item 7).
-- T5. Prompt-token measurement from the mocked stage (item 8) to re-base doc 08's overhead constant.
-- T6. Onboarding / data-room ingestion assumptions doc (directive items 11–12), tied to the structural findings.
+- T4. ~~Supplemental-indenture package~~ done on B (second-instrument amendment resolves correctly; IPV-04 breadth on the indenture).
+- T5. ~~Prompt-token measurement from the mocked stage~~ done (doc 08 §Prompt-size measurement: estimates low by ≈2–3× on input tokens; re-basing deferred to E2).
+- T6. ~~Onboarding / data-room ingestion assumptions doc~~ done (`19-onboarding-and-ingestion-assumptions.md`).
