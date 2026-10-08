@@ -41,7 +41,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## IPV-04 — Section operative text kept superseded clauses
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `c2a913b`.
 - Severity: P0 wrong operative source. A deleted basket compiled from the parent section is a live permission.
 - Reproduction: Amendment 1 restates `7.01(b)` from `$25,000,000` to `$40,000,000`. Amendment 2 deletes `7.01(d)` (`$15,000,000`). Operative state resolves both clauses. `resolveOperativeSource` for section `7.01` returned the base descendants, including both stale amounts.
 - Root cause: supersession is recorded on the clause node. The parent section has no provision view, so the candidate-span fallback read `getNodeText(section, DESCENDANTS)`. A definition amendment sourced on the enclosing section could also win that lookup and replace the section with the single new definition.
@@ -49,6 +49,14 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 - Preserved: a review-required amendment of a node that has no amended descendants still falls back to that node's base text. An unresolved amendment of the section itself does not keep the base section when a child clause was replaced. A real section restatement still wins over its old children.
 - Tests: `tests/contract-model/section-operative-splice.test.ts` 6 passed. Context retrieval 36, phase-2g 48, architecture 17, definition-level 6, unclassified-override 4 passed. `npm run test:phase3-certification` plus the new file: 465 passed. `npx tsc --noEmit -p .` clean.
 - False-permission implication: the parent section no longer compiles the replaced `$25,000,000` cap or the deleted `$15,000,000` basket. When the splice is not unique, the section text is withheld rather than certified from the base document.
+
+## IPV-05 — Qualified agreement target and unresolved amendment
+
+- Status: local tests passed; push follows this entry.
+- Reproduction: `FIRST AMENDMENT ... to the ABL Credit Agreement dated as of September 9, 2026` against an `ABL CREDIT AGREEMENT` of that date. The agreement-reference pattern required the label to follow the determiner immediately, so `ABL` hid the reference. The relationship was `DETERMINISTIC_NO_SIGNAL`. Calling `computeOperativeContractState` with the pipeline effects and without the optional unresolved list returned `OPERATIVE_STATE_RESOLVED` and zero unattached effects.
+- Fix: a closed facility qualifier (`ABL`, `Term Loan`, `Revolving`, and the same class) may sit between the determiner and the agreement label. An effect whose target instrument key is null is unattached even when the caller does not repeat it.
+- Tests: `tests/contract-model/qualified-agreement-target.test.ts` 2 passed. Package-graph adversarial 20, phase-2g 48, operative-state adversarial 23, post-3f2 restatement 15, node-supersession 14 passed. `npx tsc --noEmit -p .` clean.
+- False-permission implication: the amended Available Amount is the `$15,000,000` definition. An amendment that names no agreement does not leave the instrument resolved on the base text.
 
 ## Queue
 
@@ -58,7 +66,8 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 | P0-B IPV-19 definition amendment replaces all of Section 1.01 | P0 | VERIFIED locally | Definition target plus section splice; see definition-level-amendment tests |
 | P0-B IPV-20 retrieval ignores operative definition | P0 | VERIFIED locally | Bundle excerpt uses the operative definition when one exists |
 | P0-C IPV-16 notwithstanding side letter | P0 | VERIFIED locally | Unresolved override; no invented amount; base cap not RESOLVED |
-| IPV-04 section candidate compiles superseded clauses | P0 | VERIFIED locally | Parent operative text splices resolved clause replacements and deletions |
+| IPV-04 section candidate compiles superseded clauses | P0 | PUSHED `c2a913b` | Parent operative text splices resolved clause replacements and deletions |
+| IPV-05 ABL amendment target unresolved | P0 | VERIFIED locally | Facility qualifier plus null-target effects stay unattached |
 | P0-D IPV-02 / IPV-03 | P0 | VERIFIED on `bb9bfd4` | Re-check only if those files change |
 | P0-E source authentication | P0 | VERIFIED on `bb9bfd4` | Do not reopen |
 

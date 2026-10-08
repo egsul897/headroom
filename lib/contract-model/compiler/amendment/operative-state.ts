@@ -536,7 +536,14 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
   // one honest "known but unattached" list. This is what prevents `status`
   // from defaulting to RESOLVED merely because `provisions` is empty - see
   // unattachedEffects on OperativeContractState for the full rationale.
-  const unattachedEffects = [...unattachedFromResolved, ...(input.unresolvedTargetEffectsForThisInstrument ?? [])];
+  // An effect with no instrument key is unresolved amendment activity. It counts
+  // even when the caller did not repeat it in unresolvedTargetEffectsForThisInstrument.
+  const seenUnattached = new Set<string>();
+  const unattachedEffects = [...unattachedFromResolved, ...input.allEffects.filter((e) => e.target.targetInstrumentKey === null), ...(input.unresolvedTargetEffectsForThisInstrument ?? [])].filter((e) => {
+    if (seenUnattached.has(e.effectId)) return false;
+    seenUnattached.add(e.effectId);
+    return true;
+  });
 
   const worstStatus = (statuses: OperativeStateStatus[]): OperativeStateStatus => {
     if (statuses.includes("OPERATIVE_STATE_CONFLICTED")) return "OPERATIVE_STATE_CONFLICTED";

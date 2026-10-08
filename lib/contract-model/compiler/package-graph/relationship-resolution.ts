@@ -111,6 +111,10 @@ function ws(phrase: string): string {
 }
 
 const RESTATEMENT_PREFIX = `(?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)${ws(" Amended and Restated ")}|${ws("Amended and Restated ")}|${ws("First Lien ")}|${ws("Second Lien ")}|Senior\\s+|Subordinated\\s+)?`;
+// A facility adjective between the determiner and the agreement label is ordinary
+// drafting ("the ABL Credit Agreement", "the Revolving Credit Agreement"). It is a
+// closed list, not free text, so an unrelated capitalized phrase cannot become a target.
+const FACILITY_QUALIFIER = `(?:(?:ABL|Term(?:\\s+Loan)?|Revolving|Bridge|Receivables|Incremental|Delayed\\s+Draw|FILO|Unitranche|Asset-Based)\\s+)?`;
 const AGREEMENT_LABEL_ALTERNATION = [ws("Credit Agreement"), "Indenture", ws("Loan Agreement"), ws("Intercreditor Agreement"), ws("Guarantee and Collateral Agreement"), ws("Guaranty and Collateral Agreement"), ws("Guarantee and Security Agreement"), ws("Guaranty and Security Agreement"), ws("Pledge and Security Agreement"), ws("Pledge, Guaranty and Security Agreement"), ws("Security Agreement"), ws("Collateral Agreement"), `Guaranty(?:${ws(" Agreement")})?`, ws("Guarantee Agreement")].join("|");
 // POST-3F.2 remediation (Unit B1) - root cause traced in docs/post-3f2-
 // generalization-architecture-decision.json section 6 bug 1: the original
@@ -124,7 +128,7 @@ const AGREEMENT_LABEL_ALTERNATION = [ws("Credit Agreement"), "Indenture", ws("Lo
 // ordinary English determiners, not a Riot-specific pattern. Kept
 // deliberately minimal (no free-text "flexible lead" was needed once "a"
 // itself sits immediately before the label in the recital shape).
-const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain|an?)\\s+(${RESTATEMENT_PREFIX}(?:${AGREEMENT_LABEL_ALTERNATION}))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?(${DATE_RE.source})`, "gi");
+const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain|an?)\\s+(${RESTATEMENT_PREFIX}${FACILITY_QUALIFIER}(?:${AGREEMENT_LABEL_ALTERNATION}))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?(${DATE_RE.source})`, "gi");
 
 // POST-3F.2 remediation (Unit B1, date-ambiguity safeguard - architecture
 // decision section 6 bug 2): a restatement's recital conventionally quotes
