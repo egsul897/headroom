@@ -121,6 +121,7 @@ Blockers retained for all CKF named exports. Fixture reuse of discovery/compiled
 ## 9. Tests, CI, PR, cost
 
 - Local: `npm test -- tests/covenant-research` → **57/57 passed**
+- GitHub CI on tip `5434ca302f5441a53129e164ced29d78b4822bec`: **6/6 pass**
 - Paid inference: **$0**
 - Merge: **not performed**
 - Certification / production legal-rule changes: **none**

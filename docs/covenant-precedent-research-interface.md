@@ -60,6 +60,15 @@ npm alias: `npm run research:covenant -- "<query>"`.
 - Knowledge-factory probe reports blockers when canonical exports are absent
 - See `docs/covenant-precedent-research-phase2-report.md`
 
+## Phase 3
+
+- Deterministic source-span consolidation + diversity rerank (`retrieval.v3`)
+- Verification taxonomy: `FIXTURE` / `UNVERIFIED` / `HYPOTHESIS` / `SOURCE_VERIFIED` / `INDEPENDENTLY_LEGALLY_VERIFIED` (no auto-promotion)
+- `--phase3-corpus` adds SUP term-loan discovery/compiled + Gibraltar structure ingest
+- `--eval-independent` runs issuer-disjoint ≥50-query evaluation (`independent-eval-queries.json`)
+- Versioned CKF canonical adapters (`ckf-canonical-adapter.v1`) with explicit export blockers
+- See `docs/covenant-precedent-research-phase3-report.md`
+
 ## Out of scope
 
 - Paid embedding / vector DB
