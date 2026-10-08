@@ -63,18 +63,24 @@ export function resolveCrossReferences(input: {
     let m: RegExpExecArray | null;
     while ((m = SECTION_RE.exec(text)) !== null) {
       const raw = m[0];
-      const norm = `Section ${m[1]}`.replace(/\s+/g, " ");
+      const sectionNum = m[1];
+      if (!sectionNum) continue;
+      const norm = `Section ${sectionNum}`.replace(/\s+/g, " ");
       const key = `sec:${norm}`;
       if (seen.has(key)) continue;
       seen.add(key);
 
       let resolution: CrossRefResolution;
-      if (superseded.has(norm) || superseded.has(m[1])) {
+      if (superseded.has(norm) || superseded.has(sectionNum)) {
         resolution = "SUPERSEDED";
       } else if (known.size === 0) {
         // Structural presence in same instrument text without full atlas → controlling but atlas-unjoined
         resolution = "RESOLVED_CONTROLLING";
-      } else if (known.has(norm) || known.has(m[1]) || [...known].some((k) => norm.includes(k) || k.includes(m[1]))) {
+      } else if (
+        known.has(norm) ||
+        known.has(sectionNum) ||
+        [...known].some((k) => norm.includes(k) || k.includes(sectionNum))
+      ) {
         resolution = "RESOLVED_CONTROLLING";
       } else {
         resolution = "MISSING_TARGET";
@@ -86,18 +92,14 @@ export function resolveCrossReferences(input: {
         resolution,
         controlling: true,
         evidence: raw,
-        atlasStatus:
-          resolution === "RESOLVED_CONTROLLING"
-            ? "RESOLVED"
-            : resolution === "AMBIGUOUS"
-              ? "AMBIGUOUS"
-              : "UNRESOLVED",
+        atlasStatus: resolution === "RESOLVED_CONTROLLING" ? "RESOLVED" : "UNRESOLVED",
       });
     }
 
     DEFINED_DOC_RE.lastIndex = 0;
     while ((m = DEFINED_DOC_RE.exec(text)) !== null) {
       const raw = m[1];
+      if (!raw) continue;
       const key = `doc:${raw.toLowerCase()}`;
       if (seen.has(key)) continue;
       seen.add(key);

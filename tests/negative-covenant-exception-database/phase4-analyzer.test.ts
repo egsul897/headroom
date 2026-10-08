@@ -41,14 +41,20 @@ describe("NCEDB phase 4 analyzer", () => {
 
     const evals = runPhase4Evaluations();
     const m = evals.frozenPhase3.metrics;
-    expect(m.remoteConditionRecall.numerator).toBe(m.remoteConditionRecall.denominator);
-    expect(m.remoteConditionRecall.value).toBe(1);
-    expect(m.provisoAttachmentAccuracy.value).toBe(1);
-    expect(m.entityScopeFidelity.value).toBe(1);
-    expect(m.crossReferenceAccuracy.value).toBe(1);
-    expect(m.incorrectUnconditionalPermissionRate.value).toBe(0);
-    expect(m.unsupportedCaseRefusal.denominator).toBeGreaterThan(0);
-    expect(m.unsupportedCaseRefusal.value).toBe(1);
+    const remote = m.remoteConditionRecall!;
+    const proviso = m.provisoAttachmentAccuracy!;
+    const entity = m.entityScopeFidelity!;
+    const cross = m.crossReferenceAccuracy!;
+    const uncond = m.incorrectUnconditionalPermissionRate!;
+    const refusal = m.unsupportedCaseRefusal!;
+    expect(remote.numerator).toBe(remote.denominator);
+    expect(remote.value).toBe(1);
+    expect(proviso.value).toBe(1);
+    expect(entity.value).toBe(1);
+    expect(cross.value).toBe(1);
+    expect(uncond.value).toBe(0);
+    expect(refusal.denominator).toBeGreaterThan(0);
+    expect(refusal.value).toBe(1);
   });
 
   it("attaches parent and hanging provisos deterministically; ambiguous nested → refusal class", () => {

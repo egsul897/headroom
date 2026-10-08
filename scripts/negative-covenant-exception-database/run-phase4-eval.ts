@@ -310,6 +310,14 @@ function main() {
   });
 
   const frozenM = evals.frozenPhase3.metrics;
+  const fr = {
+    remote: frozenM.remoteConditionRecall!,
+    proviso: frozenM.provisoAttachmentAccuracy!,
+    entity: frozenM.entityScopeFidelity!,
+    cross: frozenM.crossReferenceAccuracy!,
+    uncond: frozenM.incorrectUnconditionalPermissionRate!,
+  };
+  const p3m = phase3Metrics.metrics;
   const report = `# NCEDB Phase 4 — Mission Report
 
 Starting SHA: \`${START_SHA}\`
@@ -322,11 +330,11 @@ ${beforeAfter.rootCausesPhase3Failures.map((r) => `- **${r.id}** ${r.failure}: $
 
 | metric | Phase 3 | Phase 4 |
 |---|---|---|
-| remote-condition recall | ${phase3Metrics.metrics.remoteConditionRecall.value} (${phase3Metrics.metrics.remoteConditionRecall.numerator}/${phase3Metrics.metrics.remoteConditionRecall.denominator}) | ${frozenM.remoteConditionRecall.value} (${frozenM.remoteConditionRecall.numerator}/${frozenM.remoteConditionRecall.denominator}) |
-| proviso attachment | ${phase3Metrics.metrics.provisoAttachmentAccuracy.value} (${phase3Metrics.metrics.provisoAttachmentAccuracy.numerator}/${phase3Metrics.metrics.provisoAttachmentAccuracy.denominator}) | ${frozenM.provisoAttachmentAccuracy.value} (${frozenM.provisoAttachmentAccuracy.numerator}/${frozenM.provisoAttachmentAccuracy.denominator}) |
-| entity-scope | ${phase3Metrics.metrics.entityScopeAccuracy.value} (${phase3Metrics.metrics.entityScopeAccuracy.numerator}/${phase3Metrics.metrics.entityScopeAccuracy.denominator}) | ${frozenM.entityScopeFidelity.value} (${frozenM.entityScopeFidelity.numerator}/${frozenM.entityScopeFidelity.denominator}) |
-| cross-reference | ${phase3Metrics.metrics.crossReferenceAccuracy.value} (${phase3Metrics.metrics.crossReferenceAccuracy.numerator}/${phase3Metrics.metrics.crossReferenceAccuracy.denominator}) | ${frozenM.crossReferenceAccuracy.value} (${frozenM.crossReferenceAccuracy.numerator}/${frozenM.crossReferenceAccuracy.denominator}) |
-| incorrect unconditional rate | ${phase3Metrics.metrics.incorrectUnconditionalClassificationRate.value} (${phase3Metrics.metrics.incorrectUnconditionalClassificationRate.numerator}/${phase3Metrics.metrics.incorrectUnconditionalClassificationRate.denominator}) | ${frozenM.incorrectUnconditionalPermissionRate.value} (${frozenM.incorrectUnconditionalPermissionRate.numerator}/${frozenM.incorrectUnconditionalPermissionRate.denominator}) |
+| remote-condition recall | ${p3m.remoteConditionRecall.value} (${p3m.remoteConditionRecall.numerator}/${p3m.remoteConditionRecall.denominator}) | ${fr.remote.value} (${fr.remote.numerator}/${fr.remote.denominator}) |
+| proviso attachment | ${p3m.provisoAttachmentAccuracy.value} (${p3m.provisoAttachmentAccuracy.numerator}/${p3m.provisoAttachmentAccuracy.denominator}) | ${fr.proviso.value} (${fr.proviso.numerator}/${fr.proviso.denominator}) |
+| entity-scope | ${p3m.entityScopeAccuracy.value} (${p3m.entityScopeAccuracy.numerator}/${p3m.entityScopeAccuracy.denominator}) | ${fr.entity.value} (${fr.entity.numerator}/${fr.entity.denominator}) |
+| cross-reference | ${p3m.crossReferenceAccuracy.value} (${p3m.crossReferenceAccuracy.numerator}/${p3m.crossReferenceAccuracy.denominator}) | ${fr.cross.value} (${fr.cross.numerator}/${fr.cross.denominator}) |
+| incorrect unconditional rate | ${p3m.incorrectUnconditionalClassificationRate.value} (${p3m.incorrectUnconditionalClassificationRate.numerator}/${p3m.incorrectUnconditionalClassificationRate.denominator}) | ${fr.uncond.value} (${fr.uncond.numerator}/${fr.uncond.denominator}) |
 
 ## CKF integration
 Status: **${ckf.status}** — productionCapacityApproved always false.

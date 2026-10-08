@@ -88,7 +88,10 @@ function extractParentBlock(sectionText: string): {
   const exceptionListStart = bMatch >= 0 ? bMatch : sectionText.search(/will not prohibit/i);
   const parent = exceptionListStart >= 0 ? sectionText.slice(0, exceptionListStart) : sectionText.slice(0, 1200);
   const aMatch = parent.match(/\(a\)[\s\u00a0]+([\s\S]+)/i);
-  const prohibition = aMatch ? normalizeWs(aMatch[1]).trim() : normalizeWs(parent).trim();
+  const prohibitionGroup = aMatch?.[1];
+  const prohibition = prohibitionGroup
+    ? normalizeWs(prohibitionGroup).trim()
+    : normalizeWs(parent).trim();
   const openingMatch = sectionText.match(
     /The provisions of Section[\s\u00a0\d.a-z()]+will not prohibit\s*:?/i,
   );
@@ -116,12 +119,16 @@ function enumerateNumberedLimbs(
   const matches: Array<{ num: string; start: number }> = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(bRegion)) !== null) {
-    matches.push({ num: m[2], start: m.index + m[0].length });
+    const num = m[2];
+    if (!num) continue;
+    matches.push({ num, start: m.index + m[0].length });
   }
   for (let i = 0; i < matches.length; i++) {
     const cur = matches[i];
-    const end = i + 1 < matches.length ? matches[i + 1].start : Math.min(bRegion.length, cur.start + 1200);
-    // back up to previous marker start for cleaner text — use from '(' 
+    if (!cur) continue;
+    const next = matches[i + 1];
+    const end = next ? next.start : Math.min(bRegion.length, cur.start + 1200);
+    // back up to previous marker start for cleaner text — use from '('
     const markerStart = bRegion.lastIndexOf(`(${cur.num})`, cur.start);
     const sliceStart = markerStart >= 0 ? markerStart : cur.start;
     const text = bRegion.slice(sliceStart, end).trim();
@@ -380,12 +387,16 @@ export function analyzeRiot502(fullText: string): AnalyzedException[] {
   const matches: Array<{ roman: string; idx: number }> = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(block)) !== null) {
+    const roman = m[1];
+    if (!roman) continue;
     const absIdx = m.index + m[0].lastIndexOf("(");
-    matches.push({ roman: m[1].toLowerCase(), idx: absIdx });
+    matches.push({ roman: roman.toLowerCase(), idx: absIdx });
   }
   for (let i = 0; i < matches.length; i++) {
     const cur = matches[i];
-    const next = i + 1 < matches.length ? matches[i + 1].idx : block.length;
+    if (!cur) continue;
+    const nextMatch = matches[i + 1];
+    const next = nextMatch ? nextMatch.idx : block.length;
     const text = block.slice(cur.idx, next).trim();
     const sectionRef = `5.02(a)(${cur.roman})`;
     const proviso = attachProvisos({

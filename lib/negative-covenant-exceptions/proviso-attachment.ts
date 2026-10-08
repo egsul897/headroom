@@ -49,7 +49,8 @@ export function findProvisoMarkers(text: string): Array<{ start: number; end: nu
   out.sort((a, b) => a.start - b.start);
   const deduped: typeof out = [];
   for (const h of out) {
-    if (deduped.length && h.start < deduped[deduped.length - 1].end) continue;
+    const prev = deduped[deduped.length - 1];
+    if (prev && h.start < prev.end) continue;
     deduped.push(h);
   }
   return deduped;
