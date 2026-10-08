@@ -71,6 +71,19 @@ describe("shared-capacity false-permission remediation", () => {
     expect(classifyAggregateOrSharedCapacitySignal(sharedCapacityPhrase)).toBe("shared_cap");
   });
 
+  it("Pass A: aggregate principal amount alone is not a new candidate, and aggregate amount still is", () => {
+    const build = (body: string) => {
+      const doc: CompilerDocumentInput = { documentId: "d1", label: "CA", text: `CREDIT AGREEMENT\n\n${body}\n` };
+      const nodes = parseDocumentStructure(doc);
+      return buildStructuralIndex(new Map([[doc.documentId, { text: doc.text, nodes }]]), [], []);
+    };
+    const principalCandidates = runPassADeterministicSignals("d1", build("SECTION 2.07 Repayment. The aggregate principal amount of the Loans outstanding on such date."));
+    expect(principalCandidates.filter((c) => c.signals.every((signal) => signal === "aggregate_amount"))).toEqual([]);
+    expect(principalCandidates.every((c) => !c.signals.includes("shared_cap"))).toBe(true);
+    const historicalCandidates = runPassADeterministicSignals("d1", build("SECTION 2.08 Economics. The aggregate amount of the basket."));
+    expect(historicalCandidates.some((c) => c.signals.includes("aggregate_amount") && !c.signals.includes("shared_cap"))).toBe(true);
+  });
+
   it("Pass A: aggregate-only nodes emit aggregate_amount, never shared_cap", () => {
     const index = indexFor(aggregateOnly);
     const candidates = runPassADeterministicSignals("d1", index);

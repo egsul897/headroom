@@ -21,6 +21,10 @@ import type { ContextItem, ContextItemEvidenceState } from "./types";
 const PROVISO_SIGNALS = [/\bprovided(?:,)? that\b/i, /\bprovided further\b/i, /\bnotwithstanding\b/i, /\bso long as\b/i];
 const EXCEPTION_SIGNALS = [/\bexcept that\b/i, /\bexcept as\b/i, /\bother than\b/i];
 const CONDITION_SIGNALS = [/\bin each case\b/i, /\bsubject to\b/i, /\bno Default (?:or Event of Default )?(?:shall have occurred|exists)\b/i];
+// A bare aggregate ceiling is still a reason to disclose the sibling. It is
+// not, by itself, a SHARED_CAP type. Relationship language is required for
+// that type; a relevant clause backreference can also establish it.
+const AGGREGATE_DISCLOSURE_RE = /\b(?:in the aggregate|aggregate (?:amount|cap|limit))\b/i;
 // Sibling SHARED_CAP typing requires relationship language. Bare "in the
 // aggregate" / "aggregate amount" alone is an ordinary ceiling, not a shared pool.
 const SHARED_CAP_SIGNALS = [
@@ -252,7 +256,8 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     const text = index.getNodeText(sibling.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     const classification = classifySiblingSignal(text);
-    if (!classification) continue;
+    const aggregateDisclosure = AGGREGATE_DISCLOSURE_RE.test(text);
+    if (!classification && !aggregateDisclosure) continue;
     if (!withinBudget(state, text.length)) return;
 
     // Evidence is assessed over the sibling's own DESCENDANTS span, not
@@ -269,23 +274,28 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     const siblingEvidenceText = index.getNodeText(sibling.nodeId, "DESCENDANTS");
     const assessment = assessSiblingRelevance(candidateText, candidateSectionRef, siblingEvidenceText);
     const siblingEvidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sibling.nodeId, sectionRef: sibling.sectionRef });
-    if (assessment.relevant) {
+    const sharedByCorrespondence = !classification && aggregateDisclosure && assessment.relevant;
+    const typed = classification && assessment.relevant ? classification : sharedByCorrespondence ? { type: "SHARED_CAP" as const, signal: "aggregate ceiling tied to another permission" } : null;
+    if (typed) {
       const item = addItem(
         state,
-        makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7, siblingEvidenceState)
+        makeItemInput(typed.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${typed.type.toLowerCase().replace("_", " ")} language ("${typed.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7, siblingEvidenceState)
       );
-      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${classification.type.toLowerCase()} language.`);
+      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${typed.type.toLowerCase()} language.`);
     } else {
       // WRONG-CONTEXT CONTAMINATION guard: the sibling matched a generic
       // keyword only - no clause backreference, no shared named resource,
       // no enclosing-scope linkage, no grammatical continuation of the
       // candidate's own list (and possibly an explicit relationship
-      // negation). Never silently attached at normal confidence/shape.
+      // negation). An ordinary aggregate ceiling is disclosed here and is
+      // not typed SHARED_CAP. Never silently dropped.
+      const label = classification ? classification.type.toLowerCase().replace("_", " ") : "ordinary aggregate ceiling";
+      const signal = classification?.signal ?? "aggregate amount";
       const item = addItem(
         state,
-        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified ${classification.type} item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2, siblingEvidenceState)
+        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${label} language ("${signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified shared cap item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2, siblingEvidenceState)
       );
-      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Unverified/possible ${classification.type.toLowerCase()} language - relevance not established.`);
+      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Unverified/possible ${label} language - relevance not established.`);
     }
   }
 }

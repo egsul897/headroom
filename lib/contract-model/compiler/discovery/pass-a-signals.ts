@@ -103,6 +103,10 @@ export function runPassADeterministicSignals(documentId: string, index: Structur
     if (isHeadlineSection && !signals.includes("headline_heading")) signals.push("headline_heading");
 
     if (signals.length === 0) continue;
+    // "aggregate principal/outstanding amount" inside a definition or a
+    // repayment mechanic is not, by itself, a covenant candidate. The
+    // historical discovery phrase remains "aggregate amount" / "aggregate basket".
+    if (signals.every((signal) => signal === "aggregate_amount") && !/\baggregate(?:d)? (?:amount|basket)\b/i.test(ownText)) continue;
     const supersession = getNodeSupersessionStatus(supersessionIndex, documentId, node.nodeId);
     candidates.push({ documentId, nodeKey: node.nodeKey, nodeId: node.nodeId, sectionRef: node.sectionRef, signals, signalScore: signals.length, supersessionStatus: supersession.status, supersessionReason: supersession.reason });
   }

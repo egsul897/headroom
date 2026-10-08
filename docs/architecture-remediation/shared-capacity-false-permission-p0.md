@@ -51,7 +51,8 @@ Acceptance for LCQG ADV-FP-01/02: ordinary aggregate text must not classify as `
 
 ## Remaining risks
 
-- The frozen 7.2(c) replay still expects 19 context items. Live retrieval now returns 18. The dropped item is `7.2(h)`, an ordinary aggregate ceiling (`in an aggregate amount outstanding … not to exceed the greater of`), previously attached only as `UNVERIFIED_SIBLING_SIGNAL` because the old sibling regex treated `aggregate amount` as shared-cap language. It is not restored as `SHARED_CAP`.
+- Sibling disclosure of an ordinary `aggregate amount` / `in the aggregate` ceiling is restored as `UNVERIFIED_SIBLING_SIGNAL` when the sibling does not correspond to the candidate. It is not typed `SHARED_CAP`. CONMED `7.2(h)` is that item. A relevant clause backreference still types the sibling `SHARED_CAP`.
+- Pass A does not admit a node whose only signal is a widened `aggregate principal` / `aggregate outstanding` phrase. The historical `aggregate amount` / `aggregate basket` phrase still admits a candidate as `aggregate_amount`, never `shared_cap`. Gibraltar offline Pass A stays 901.
 - Exotic shared-pool phrasing outside the relationship regex may under-recall (fail-closed to aggregate_amount / REVIEW_REQUIRED — preferred to false affirmative).
 - Frozen Phase-1 `pass-a-shared-cap.json` (51 hits) remains historical evidence until a new evaluation epoch.
 - Pass A is still a recall-oriented candidate generator — shared_cap hits are not capacity grants; consumers must still require affirmative permission + relationship IR.
