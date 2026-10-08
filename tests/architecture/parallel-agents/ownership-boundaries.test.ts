@@ -33,7 +33,7 @@ describe("ownership boundary checker", () => {
   });
 
   it("rejects WS-PAR edits under peer exclusive production trees", () => {
-    const result = runChecker("WS-PAR", ["lib/covenant-knowledge/index.ts"]);
+    const result = runChecker("WS-PAR", ["lib/knowledge-factory/index.ts"]);
     expect(result.status).toBe(1);
     expect(result.stderr).toMatch(/mustNotTouch|not in exclusiveOwn/);
   });
@@ -45,8 +45,8 @@ describe("ownership boundary checker", () => {
 
   it("allows WS-CKF docs under its exclusive tree", () => {
     const result = runChecker("WS-CKF", [
-      "docs/covenant-knowledge-factory/00-charter.md",
-      "lib/covenant-knowledge/registry.ts",
+      "docs/knowledge-factory/README.md",
+      "lib/knowledge-factory/index.ts",
     ]);
     expect(result.status).toBe(0);
   });

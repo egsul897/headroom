@@ -93,3 +93,15 @@
 - **changedFiles (exclusive):** docs/architecture/parallel-agents/**, tests/architecture/parallel-agents/**, scripts/parallel-agents/**
 - **integrationDependencies:** WS-CKF must implement SEC scheduler; peers may use mock; no Phase-3/NS-4 rewrites
 - **ownershipViolations:** []
+
+---
+
+## 2026-10-08T22:10:30Z — live inventory + path reconciliation
+
+- Founder follow-up: PARALLEL KNOWLEDGE PRODUCTION CONTROL (>15 agents).
+- Published `10-live-integration-inventory.json` and `11-concrete-integration-plan.md`.
+- Map **v4** adopts peer-shipped exclusive paths: CKF=`knowledge-factory/*`, CCA=`cursor-cloud-compute/*`.
+- Observed open fleet tips: PAR #138, DEF #139, CDA #140, CCA #141; CKF+EHB branches without PRs.
+- **EDGAR bulk:** no open PR yet evidences large live EDGAR-derived corpus; CKF/EHB are capable; DEF/CDA are fixture/source-backed overlays.
+- Conflicts logged: dual SEC access (C-001), package.json collisions (C-002); path drift resolved (C-003).
+- Schema owners declared: PAR=identity/import contracts; CKF=KF Prisma+SEC scheduler; VIC=adapters; Phase-3 IR out of fleet.

@@ -1,10 +1,10 @@
 {
   "artifact": "parallel-agent-workstream-map",
-  "version": 3,
+  "version": 4,
   "status": "DRAFT_CONTRACT",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "baseMainFetchedAt": "2026-10-08T22:00:00Z",
-  "mapAmendedAt": "2026-10-08T22:08:30Z",
+  "mapAmendedAt": "2026-10-08T22:10:30Z",
   "coordinator": {
     "workstreamId": "WS-PAR",
     "name": "Parallel Agent Operating Rules",
@@ -17,7 +17,8 @@
     "Existing production files listed as extendViaNewSiblingOnly must not be rewritten in place; prefer new sibling modules.",
     "v1 reserved slots 5\u20136 are superseded: founder dispatched a larger concurrent fleet. v2 assigns exclusive trees for all known mobile missions at amendment time.",
     "Knowledge-corpus workstreams (DEF/BFL/NED/CDA/RCD/PCI/CKB/EHB) must not invent a second covenant engine or rewrite Phase-3 IR / capacity engines.",
-    "v3 adds WS-GIB and later corpus agents (SCR/FDP/RAC/CRI) from founder coordination follow-ups; coordinator publishes contracts only."
+    "v3 adds WS-GIB and later corpus agents (SCR/FDP/RAC/CRI) from founder coordination follow-ups; coordinator publishes contracts only.",
+    "v4 reconciles exclusiveOwn to peer-shipped path claims (CKF\u2192knowledge-factory/*, CCA\u2192cursor-cloud-compute/*) without forcing peer rewrites. Prior v2/v3 proposed paths remain aliases only if unused."
   ],
   "sharedHardExclusions": [
     "docs/**/sealed*/**",
@@ -44,14 +45,19 @@
       "mustNotTouch": [
         "lib/connectors/**",
         "lib/extraction/**",
+        "lib/knowledge-factory/**",
         "lib/covenant-knowledge/**",
+        "lib/cursor-cloud-compute/**",
         "lib/contract-model/compiler/**",
         "lib/contract-model/ir/**",
         "lib/contract-model/phase3-certification/**",
+        "scripts/cursor-cloud-compute/**",
         "scripts/compute-assessment/**",
+        "docs/knowledge-factory/**",
         "docs/covenant-knowledge-factory/**",
-        "docs/vercel-independent-compilation/**",
-        "docs/compute-assessment/**"
+        "docs/cursor-cloud-compute/**",
+        "docs/compute-assessment/**",
+        "docs/vercel-independent-compilation/**"
       ],
       "publishesContracts": [
         "docs/architecture/parallel-agents/01-workstream-map.json",
@@ -65,11 +71,10 @@
       "bcId": "bc-01a11d83-6b3f-71e1-9438-3e157bb27327",
       "missionSummary": "Autonomous EDGAR acquisition \u2192 corpus registry/graph \u2192 taxonomy \u2192 cheap deterministic-first extraction \u2192 retrieval; expand a source-backed covenant corpus without a parallel covenant engine.",
       "exclusiveOwn": [
-        "docs/covenant-knowledge-factory/**",
-        "lib/covenant-knowledge/**",
-        "scripts/covenant-knowledge-factory/**",
-        "tests/covenant-knowledge/**",
-        "tests/covenant-knowledge-factory/**"
+        "docs/knowledge-factory/**",
+        "lib/knowledge-factory/**",
+        "scripts/knowledge-factory/**",
+        "tests/knowledge-factory/**"
       ],
       "extendViaNewSiblingOnly": [
         "lib/connectors/edgar-connector.ts",
@@ -79,12 +84,14 @@
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
-        "lib/extraction/providers/**",
-        "docs/vercel-independent-compilation/**",
-        "scripts/compute-assessment/**",
         "docs/compute-assessment/**",
+        "docs/cursor-cloud-compute/**",
         "docs/edgar-historical-backfill/**",
-        "lib/edgar-historical-backfill/**"
+        "docs/vercel-independent-compilation/**",
+        "lib/cursor-cloud-compute/**",
+        "lib/edgar-historical-backfill/**",
+        "lib/extraction/providers/**",
+        "scripts/compute-assessment/**"
       ],
       "softGates": [
         "Do not build a parallel covenant engine",
@@ -93,8 +100,15 @@
         "Do not interfere with Claude-owned independent acceptance tests"
       ],
       "notes": [
-        "Production SEC scheduler implementation lives under lib/covenant-knowledge/sec-scheduler/** (already covered by lib/covenant-knowledge/** exclusiveOwn)."
-      ]
+        "Peer-shipped trees use knowledge-factory/* (not covenant-knowledge-factory/*).",
+        "SEC HTTP client + rate-limit under lib/knowledge-factory/edgar/** is the intended production scheduler surface; extract to SecRequestScheduler API per 05-contract.",
+        "Prisma knowledge-factory migration owned by WS-CKF; do not edit prisma/schema.prisma models owned by other workstreams in the same PR without coordination."
+      ],
+      "migrationOwnership": [
+        "prisma/migrations/20261008220000_knowledge_factory_foundation/**"
+      ],
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "pr": null
     },
     {
       "workstreamId": "WS-VIC",
@@ -133,10 +147,10 @@
       "bcId": "bc-01a11d86-98d9-7d04-9776-41cf098c3334",
       "missionSummary": "Benchmark Cursor Cloud VM fitness for 100-document deterministic ingestion/structural compilation; optional GPU-worker interface without provisioning paid GPUs.",
       "exclusiveOwn": [
-        "docs/compute-assessment/**",
-        "scripts/compute-assessment/**",
-        "lib/compute-assessment/**",
-        "tests/compute-assessment/**"
+        "docs/cursor-cloud-compute/**",
+        "lib/cursor-cloud-compute/**",
+        "scripts/cursor-cloud-compute/**",
+        "tests/cursor-cloud-compute/**"
       ],
       "mustNotTouch": [
         "docs/architecture/parallel-agents/**",
@@ -148,7 +162,12 @@
         "No paid infrastructure or model calls without authorization",
         "Do not provision or pay for GPUs",
         "Report measured results, not estimates"
-      ]
+      ],
+      "notes": [
+        "Peer-shipped trees use cursor-cloud-compute/* (not compute-assessment/*)."
+      ],
+      "branch": "cursor/maximize-cursor-cloud-compute-3334",
+      "pr": "https://github.com/egsul897/headroom/pull/141"
     },
     {
       "workstreamId": "WS-EHB",
@@ -162,17 +181,22 @@
         "tests/edgar-historical-backfill/**"
       ],
       "mustNotTouch": [
+        "docs/architecture/parallel-agents/**",
         "docs/covenant-knowledge-factory/**",
-        "lib/covenant-knowledge/**",
+        "docs/knowledge-factory/**",
         "lib/connectors/edgar-connector.ts",
-        "docs/architecture/parallel-agents/**"
+        "lib/covenant-knowledge/**",
+        "lib/knowledge-factory/**",
+        "scripts/knowledge-factory/**"
       ],
       "softGates": [
         "Do not duplicate CKF downloader or source registry",
         "Metadata-first; no blind bulk download",
         "Respect SEC fair-access; no evasion",
         "No paid calls / merges / cert changes"
-      ]
+      ],
+      "branch": "cursor/edgar-historical-backfill-c45c",
+      "pr": null
     },
     {
       "workstreamId": "WS-CKB",
@@ -258,7 +282,9 @@
       "softGates": [
         "Do not alter production dependency resolver/compiler",
         "No legal dependency asserted from textual similarity alone"
-      ]
+      ],
+      "branch": "cursor/covenant-dependency-atlas-5021",
+      "pr": "https://github.com/egsul897/headroom/pull/140"
     },
     {
       "workstreamId": "WS-BFL",
@@ -302,7 +328,9 @@
       "softGates": [
         "Never assume alternate formulations are legally equivalent",
         "Do not modify another agent\u2019s schema"
-      ]
+      ],
+      "branch": "cursor/definition-encyclopedia-2a50",
+      "pr": "https://github.com/egsul897/headroom/pull/139"
     },
     {
       "workstreamId": "WS-PCI",

@@ -46,7 +46,7 @@ describe("parallel-agent workstream map", () => {
 
   it("has required top-level identity fields", () => {
     expect(map.artifact).toBe("parallel-agent-workstream-map");
-    expect(map.version).toBeGreaterThanOrEqual(3);
+    expect(map.version).toBeGreaterThanOrEqual(4);
     expect(map.status).toBe("DRAFT_CONTRACT");
     expect(map.baseMainSha).toMatch(/^[0-9a-f]{40}$/);
     expect(map.workstreams.length).toBeGreaterThanOrEqual(16);
@@ -124,8 +124,24 @@ describe("parallel-agent workstream map", () => {
       expect.arrayContaining([
         "lib/connectors/**",
         "lib/extraction/**",
-        "lib/covenant-knowledge/**",
-        "scripts/compute-assessment/**",
+        "lib/knowledge-factory/**",
+        "lib/cursor-cloud-compute/**",
+      ]),
+    );
+  });
+
+  it("reconciles CKF/CCA exclusive trees to peer-shipped paths", () => {
+    const byId = Object.fromEntries(map.workstreams.map((w) => [w.workstreamId, w]));
+    expect(byId["WS-CKF"].exclusiveOwn).toEqual(
+      expect.arrayContaining([
+        "docs/knowledge-factory/**",
+        "lib/knowledge-factory/**",
+      ]),
+    );
+    expect(byId["WS-CCA"].exclusiveOwn).toEqual(
+      expect.arrayContaining([
+        "docs/cursor-cloud-compute/**",
+        "lib/cursor-cloud-compute/**",
       ]),
     );
   });

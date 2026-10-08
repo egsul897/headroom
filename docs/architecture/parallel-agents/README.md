@@ -15,7 +15,9 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | Path | Role |
 | --- | --- |
 | `00-operating-rules.md` | Binding operating rules for this fleet |
-| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v3) |
+| `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v4; peer-path reconciled) |
+| `10-live-integration-inventory.json` | Live branch/PR/SHA/data-class inventory |
+| `11-concrete-integration-plan.md` | Executable integration plan + conflict resolutions |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
 | `04-canonical-identity-contract.json` | Logical corpus IDs → existing schema mappings |
