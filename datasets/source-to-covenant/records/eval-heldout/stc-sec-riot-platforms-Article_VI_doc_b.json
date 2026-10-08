@@ -65,7 +65,7 @@
   "schemaVersion": "source-to-covenant-dataset.v2",
   "toolVersions": {
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
     "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
     "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
     "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
@@ -185,7 +185,17 @@
   },
   "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
   "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
-  "duplicateDecision": null,
+  "duplicateDecision": {
+    "exampleId": "stc-sec-riot-platforms-Article_VI_doc_b",
+    "pairedExampleIds": [
+      "stc-sec-riot-platforms-Article_VI",
+      "stc-sec-riot-platforms-Article_VI_doc_a"
+    ],
+    "classification": "NEAR_DUPLICATE_QUARANTINED",
+    "keepInCorpus": true,
+    "trainingEligible": false,
+    "rationale": "Near-duplicate cluster near-dup-003 (similarity=0.9963, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+  },
   "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
   "independentlyReviewedGroundTruth": null,
   "knowledgeFactoryImport": {

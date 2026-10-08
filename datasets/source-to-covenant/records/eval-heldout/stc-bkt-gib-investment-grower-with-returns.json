@@ -82,7 +82,7 @@
   "schemaVersion": "source-to-covenant-dataset.v2",
   "toolVersions": {
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
     "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
     "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
     "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
@@ -200,7 +200,16 @@
   },
   "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
   "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
-  "duplicateDecision": null,
+  "duplicateDecision": {
+    "exampleId": "stc-bkt-gib-investment-grower-with-returns",
+    "pairedExampleIds": [
+      "stc-bkt-gib-anti-duplication-investment-returns"
+    ],
+    "classification": "NEAR_DUPLICATE_QUARANTINED",
+    "keepInCorpus": true,
+    "trainingEligible": false,
+    "rationale": "Near-duplicate cluster near-dup-002 (similarity=0.9778, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+  },
   "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-investment-grower-with-returns). Not independently reviewed.",
   "independentlyReviewedGroundTruth": null,
   "knowledgeFactoryImport": {

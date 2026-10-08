@@ -1,7 +1,7 @@
 {
   "schemaVersion": "source-to-covenant-dataset.v2",
   "startingSha": "66f8164ac85eb6aec37f3a7cb60451d614079a4f",
-  "auditedAt": "2026-10-08T22:25:02.880Z",
+  "auditedAt": "2026-10-08T23:31:07.176Z",
   "verificationClaims": {
     "previouslyClaimedHumanSourceVerified": 13,
     "independentlyVerifiedAfterAudit": 0,
@@ -29,6 +29,9 @@
   },
   "duplicates": {
     "exactDuplicatePairs": 6,
+    "nearDuplicateClusters": 4,
+    "quarantinedRecordCount": 19,
+    "independentObservationCount": 214,
     "decisions": [
       {
         "exampleId": "stc-lsb-6.01-chapeau-ratio-gated",
@@ -130,6 +133,112 @@
         "keepInCorpus": true,
         "trainingEligible": false,
         "rationale": "Amendment-related example overlaps section family with base-agreement examples; retain with lineage tags, block SFT until review."
+      },
+      {
+        "exampleId": "stc-exp-lsb-6.11-c-rp-payment-conditions",
+        "pairedExampleIds": [
+          "stc-exp-lsb-6.11-d-residual-last-resort-rp"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-001 (similarity=0.959, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-exp-lsb-6.11-d-residual-last-resort-rp",
+        "pairedExampleIds": [
+          "stc-exp-lsb-6.11-c-rp-payment-conditions"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-001 (similarity=0.959, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-bkt-gib-investment-grower-with-returns",
+        "pairedExampleIds": [
+          "stc-bkt-gib-anti-duplication-investment-returns"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-002 (similarity=0.9778, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-bkt-gib-anti-duplication-investment-returns",
+        "pairedExampleIds": [
+          "stc-bkt-gib-investment-grower-with-returns"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-002 (similarity=0.9778, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-sec-riot-platforms-Article_VI",
+        "pairedExampleIds": [
+          "stc-sec-riot-platforms-Article_VI_doc_a",
+          "stc-sec-riot-platforms-Article_VI_doc_b"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-003 (similarity=0.9963, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-sec-riot-platforms-Article_VI_doc_a",
+        "pairedExampleIds": [
+          "stc-sec-riot-platforms-Article_VI",
+          "stc-sec-riot-platforms-Article_VI_doc_b"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-003 (similarity=0.9963, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-sec-riot-platforms-Article_VI_doc_b",
+        "pairedExampleIds": [
+          "stc-sec-riot-platforms-Article_VI",
+          "stc-sec-riot-platforms-Article_VI_doc_a"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-003 (similarity=0.9963, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-def-fwrg-restricted_subsidiary",
+        "pairedExampleIds": [
+          "stc-def-fwrg-available_excluded_contribution_amount",
+          "stc-def-fwrg-cure_amount"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-004 (similarity=1, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-def-fwrg-available_excluded_contribution_amount",
+        "pairedExampleIds": [
+          "stc-def-fwrg-restricted_subsidiary",
+          "stc-def-fwrg-cure_amount"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-004 (similarity=1, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+      },
+      {
+        "exampleId": "stc-def-fwrg-cure_amount",
+        "pairedExampleIds": [
+          "stc-def-fwrg-restricted_subsidiary",
+          "stc-def-fwrg-available_excluded_contribution_amount"
+        ],
+        "classification": "NEAR_DUPLICATE_QUARANTINED",
+        "keepInCorpus": true,
+        "trainingEligible": false,
+        "rationale": "Near-duplicate cluster near-dup-004 (similarity=1, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
       }
     ]
   },

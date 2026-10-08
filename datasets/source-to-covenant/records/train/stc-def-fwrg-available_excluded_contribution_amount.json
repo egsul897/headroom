@@ -65,7 +65,7 @@
   "schemaVersion": "source-to-covenant-dataset.v2",
   "toolVersions": {
     "irSchemaVersion": "headroom-covenant-ir.v1",
-    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
     "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
     "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
     "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
@@ -179,9 +179,19 @@
     "auditedAt": "2026-10-08T22:30:00.000Z",
     "completenessNotInferredFromExtractionAlone": true
   },
-  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "trainingEligibility": "BLOCKED_DUPLICATE_OBSERVATION",
   "evaluationEligibility": "EVAL_ELIGIBLE_DEV_DIAGNOSTIC",
-  "duplicateDecision": null,
+  "duplicateDecision": {
+    "exampleId": "stc-def-fwrg-available_excluded_contribution_amount",
+    "pairedExampleIds": [
+      "stc-def-fwrg-restricted_subsidiary",
+      "stc-def-fwrg-cure_amount"
+    ],
+    "classification": "NEAR_DUPLICATE_QUARANTINED",
+    "keepInCorpus": true,
+    "trainingEligible": false,
+    "rationale": "Near-duplicate cluster near-dup-004 (similarity=1, token-jaccard>=0.92). Quarantined from independent-example counts and training until spans are differentiated."
+  },
   "datasetAuthorExpectation": "Definition excerpt for Available Excluded Contribution Amount — hypothesis mapping only.",
   "independentlyReviewedGroundTruth": null,
   "knowledgeFactoryImport": {
@@ -191,7 +201,7 @@
     "blockedReasons": [
       "not_independently_verified",
       "missing_verification_record_id",
-      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "trainingEligibility=BLOCKED_DUPLICATE_OBSERVATION",
       "usage_rights_review_required"
     ]
   }
