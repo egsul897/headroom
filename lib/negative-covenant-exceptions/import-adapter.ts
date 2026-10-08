@@ -10,6 +10,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   NCEDB_DATASET_VERSION,
+  NCEDB_PHASE3_DATASET_VERSION,
   PERMISSION_CLASSIFICATIONS,
   type ExceptionRecordV2,
   type ImportableDatasetManifest,
@@ -50,12 +51,33 @@ export function defaultCatalogPath(): string {
   );
 }
 
+export function defaultPhase3CatalogPath(): string {
+  return resolve(
+    process.cwd(),
+    "docs/negative-covenant-exception-database/phase-3/catalogs/exceptions-v3.json",
+  );
+}
+
 export function loadExceptionCatalogV2(path = defaultCatalogPath()): {
   manifest: ImportableDatasetManifest;
   exceptions: ExceptionRecordV2[];
 } {
   if (!existsSync(path)) {
     throw new Error(`NCEDB phase-2 catalog missing at ${path}`);
+  }
+  const raw = JSON.parse(readFileSync(path, "utf8")) as {
+    manifest: ImportableDatasetManifest;
+    exceptions: ExceptionRecordV2[];
+  };
+  return raw;
+}
+
+export function loadExceptionCatalogV3(path = defaultPhase3CatalogPath()): {
+  manifest: ImportableDatasetManifest;
+  exceptions: ExceptionRecordV2[];
+} {
+  if (!existsSync(path)) {
+    throw new Error(`NCEDB phase-3 catalog missing at ${path}`);
   }
   const raw = JSON.parse(readFileSync(path, "utf8")) as {
     manifest: ImportableDatasetManifest;
@@ -105,7 +127,10 @@ function validateRecord(r: ExceptionRecordV2): string[] {
  */
 export function buildImportBatch(
   exceptions: ExceptionRecordV2[],
-  options: { alreadyImportedKeys?: Iterable<string> } = {},
+  options: {
+    alreadyImportedKeys?: Iterable<string>;
+    datasetVersion?: string;
+  } = {},
 ): ImportBatch {
   const seen = new Set<string>();
   const already = new Set(options.alreadyImportedKeys ?? []);
@@ -157,7 +182,7 @@ export function buildImportBatch(
   }
 
   return {
-    datasetVersion: NCEDB_DATASET_VERSION,
+    datasetVersion: options.datasetVersion ?? NCEDB_DATASET_VERSION,
     generatedAt: new Date(0).toISOString(), // deterministic placeholder; callers may stamp
     items,
     skippedDuplicates,
@@ -166,8 +191,18 @@ export function buildImportBatch(
 }
 
 /** Deterministic stamp for replay-stable batches. */
-export function buildDeterministicImportBatch(exceptions: ExceptionRecordV2[]): ImportBatch {
-  const batch = buildImportBatch(exceptions);
+export function buildDeterministicImportBatch(
+  exceptions: ExceptionRecordV2[],
+  options: { datasetVersion?: string } = {},
+): ImportBatch {
+  const batch = buildImportBatch(exceptions, options);
   batch.generatedAt = "1970-01-01T00:00:00.000Z";
   return batch;
+}
+
+/** Phase-3 catalog import helper — never promotes to Permission tables. */
+export function buildPhase3ImportBatch(exceptions: ExceptionRecordV2[]): ImportBatch {
+  return buildDeterministicImportBatch(exceptions, {
+    datasetVersion: NCEDB_PHASE3_DATASET_VERSION,
+  });
 }

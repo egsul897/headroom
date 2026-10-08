@@ -7,6 +7,7 @@
  */
 
 export const NCEDB_DATASET_VERSION = "ncedb.phase2.v1";
+export const NCEDB_PHASE3_DATASET_VERSION = "ncedb.phase3.v1";
 
 export const PERMISSION_CLASSIFICATIONS = [
   "CONDITIONAL",
@@ -97,7 +98,7 @@ export interface StableSourceIdentity {
 
 export interface ExceptionRecordV2 {
   exceptionId: string;
-  datasetVersion: typeof NCEDB_DATASET_VERSION;
+  datasetVersion: typeof NCEDB_DATASET_VERSION | typeof NCEDB_PHASE3_DATASET_VERSION | string;
   sourceIdentity: StableSourceIdentity;
   covenantFamily: CovenantFamily;
 

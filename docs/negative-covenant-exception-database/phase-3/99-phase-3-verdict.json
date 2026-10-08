@@ -1,0 +1,24 @@
+{
+  "artifact": "99-phase-3-verdict",
+  "datasetVersion": "ncedb.phase3.v1",
+  "unconditionalAudit": {
+    "audited": 4,
+    "downgraded": 4,
+    "surviving": 0
+  },
+  "negativeControls": {
+    "LOCAL_CONDITIONS": 2,
+    "REMOTE_CONDITIONS": 2,
+    "NO_ADDITIONAL_CONDITIONS": 3,
+    "AMBIGUOUS_CONDITION_SCOPE": 8,
+    "PROHIBITION_NO_EXCEPTION": 2,
+    "NUMERIC_THRESHOLD_NOT_PERMISSION": 4,
+    "CONSTRAINED_BY_OTHER_DOCUMENT": 1
+  },
+  "authenticBatchAdded": 25,
+  "qualityMetricsStatus": "MEASURED_HELD_OUT",
+  "importStatus": "ALIGNED_FOR_REVIEW",
+  "sourceSpanFailures": 0,
+  "productionCapacityConclusions": false,
+  "readyForMerge": false
+}
