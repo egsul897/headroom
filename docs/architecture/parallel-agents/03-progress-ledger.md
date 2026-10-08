@@ -179,3 +179,14 @@
 - Open blockers: #143 `readyForMerge=false`; #128 do-not-merge grant; #146 C-DUP-KF + DIRTY; most remaining PRs DIRTY rebase.
 - Dashboard artifact: `14-continuous-main-integration-dashboard.json`.
 - actualExternalCostsUsd: 0
+
+---
+
+## 2026-10-08T23:22:00Z — PR #141 final merge gate (blocked) + CI follow-up
+
+- Gate reviewed exact head `69a6e6c583fc714e20e1f769b8cbcfa09238ae0a` against main `d69b3f5aefcc5df7f31c95d22a0a95f7cdc39f98`.
+- Seven current-head checks SUCCESS on that SHA; content is non-promoting WS-CCA infra/research with promotion-guards.
+- **Not merged:** GitHub `mergeable=CONFLICTING` / `mergeStateStatus=DIRTY` vs post-#128 main.
+- Conflict files only: `.gitignore`, `tests/financial-definitions-precedent/dataset-integrity.test.ts` (overlap with main #159/#128-era ignore + FDP strict-null fix).
+- **Follow-up (non-blocking):** improve CI path-filter coverage so shared-file TypeScript/test fixes (e.g. `tests/financial-definitions-precedent/**`) and infra packages like `lib/cursor-cloud-compute/**` reliably trigger the same required checks that catch `noUncheckedIndexedAccess` / merge-tree breakage before Integration Lead gates — not a blocker for #141 once rebased.
+
