@@ -120,12 +120,12 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: decide whether `compileCovenantToIR` can consult a complete evidence-engine record before a model call without treating a cache hit as correctness.
-- Relevant files: `lib/contract-model/compiler/semantic/compile.ts` (the cache lookup after the operative-authority gate) and `lib/contract-model/compiler/evidence-engine/`.
-- First step: read the compile cache key and the evidence-engine identity. List every field that must match. Do not wire the store into `package-compile.ts`. Do not dispatch a paid call.
-- Expected output: either a refusal to wire because an identity field is missing, or a bounded lookup that returns the stored result only on COMPLETE plus a matching payload hash and never sets `advancesCertification`.
-- Acceptance: existing evidence-engine tests pass. A contents listing and a missing anchor still refuse before any lookup. No provider call.
-- Dependency: do not raise the semantic-review timeout. Do not merge `origin/main`. Do not edit `tests/product-acceptance/`, `tests/fixtures/product-acceptance/`, `scripts/product-acceptance/`, or `docs/product-readiness/`.
+- Objective: keep the evidence store off the compile path until its identity covers the compile.
+- Decision: do not consult `ContentAddressedEvidenceStore` from `compileCovenantToIR` or `package-compile.ts`.
+- `computeCacheKey` binds company, instrument, document, candidate, operative text, context-bundle identity, operative lineage, schema, compiler algorithm, prompt, tool policy, provider, inventory mode, execution policy, source-context hash, frozen-inventory hash, and governing-scope hash.
+- `evidenceKey` binds artifact kind, stage, source content hash, document id, operative version, dependency hashes, prompt, schema, model, inference-config hash, and compiler version. It does not bind candidate, context bundle, operative lineage, tool policy, execution policy, source-context hash, frozen inventory, or governing scope.
+- A COMPLETE evidence hit with a matching payload hash is still a different unit. Serving it would skip the model for the wrong clause. `advancesCertification` stays false either way.
+- Next code change, if any, adds those missing fields to the evidence contract before any lookup. No lookup is added now.
 
 ## Milestone
 
