@@ -13,8 +13,11 @@ Deterministic novelty detection for financing drafting that differs from Headroo
 
 ```bash
 npx tsx scripts/rare-covenant-drafting-discovery.ts
-npx vitest run tests/drafting-novelty/novelty-pipeline.test.ts
+npx tsx scripts/rare-covenant-drafting-discovery-phase2.ts [--skip-acquire]
+npx vitest run tests/drafting-novelty
 ```
+
+Phase 2 writes `docs/rare-covenant-drafting-discovery/phase2/` (balanced metrics, controlling contexts, independent review, KF import, acquisition manifests). Local SEC bytes stay under gitignored `data/rare-covenant-drafting-discovery/`.
 
 ## Artifacts
 
