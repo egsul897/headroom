@@ -28,6 +28,8 @@ npm run test:cursor-cloud-compute
 npm run compute:bench-100
 ```
 
+**Measured results (this mission):** [`measured-results.md`](./measured-results.md)
+
 Outputs land in:
 
 - `docs/cursor-cloud-compute/results/compute-assessment-<runId>.json` (git-tracked, durable via remote)
