@@ -81,7 +81,7 @@ Claude-owned paths are not edited. DEVELOPMENT is not CERTIFIED. Paid provider s
 
 ## B3 — CONMED Section 7.4(a)(iii) and (iv)
 
-- Status: local tests passed; push follows this entry.
+- Status: PUSHED in `ca7937a`.
 - Reproduction: Section 7.4(a) reads `(ii) ... Person), (iii) any Subsidiary ... and (iv) the Parent Borrower may be merged`. The citation exclusion dropped `(iii)` because a comma and a space precede it. `(iv)` then failed the sequence check, and the successor proviso `(1)`/`(2)` was parented under `(ii)`.
 - Fix: a comma-space marker is a clause only when the text before it and the text after it are both clause bodies. A bare citation (`clauses (a), (b) and (c)`, or `(a), (i), (j), (m)`) has no body and stays excluded. A parenthetical gloss between citations stays excluded. `findRawMarkerOccurrences` itself still rejects comma-space markers.
 - Also recovered other comma-joined clause bodies in the same Article VII excerpt (for example 7.13(b)/(c) and 7.9's roman items). Section 7.14's exceptions moved from `7.14(a)(i)` to `7.14(c)(i)` because `(b)` and `(c)` are now siblings of `(a)`.
