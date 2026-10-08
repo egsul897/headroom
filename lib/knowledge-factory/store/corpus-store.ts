@@ -21,6 +21,7 @@ import type {
   KnowledgeSourceRecord,
   StructuralNodeRecord,
 } from "../types";
+import type { ConditionExceptionRecord } from "../pipeline/conditions";
 
 export interface CorpusStorePaths {
   root: string;
@@ -163,6 +164,22 @@ export class CorpusStore {
 
   loadCrossReferences(sourceId: string): CrossReferenceRecord[] {
     return this.readJson<CrossReferenceRecord[]>(`cross-refs/${sanitize(sourceId)}.json`) ?? [];
+  }
+
+  saveConditions(sourceId: string, rows: ConditionExceptionRecord[]): void {
+    this.writeJson(`conditions/${sanitize(sourceId)}.json`, rows);
+  }
+
+  loadConditions(sourceId: string): ConditionExceptionRecord[] {
+    return this.readJson<ConditionExceptionRecord[]>(`conditions/${sanitize(sourceId)}.json`) ?? [];
+  }
+
+  /** Exact-byte dedupe across the local durable corpus (all issuers). */
+  findByOriginalBytesHash(contentHash: string): KnowledgeSourceRecord | null {
+    for (const s of this.listSources()) {
+      if (s.originalBytesHash === contentHash) return s;
+    }
+    return null;
   }
 
   saveRelationships(rels: KnowledgeRelationshipRecord[]): void {

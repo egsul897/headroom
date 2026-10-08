@@ -30,6 +30,20 @@ export interface SecHttpResponse {
   bytes: number;
 }
 
+/**
+ * Fleet SEC access (docs/edgar-historical-backfill/03-fleet-sec-access-contract.md):
+ * when HEADROOM_SEC_FETCH_OWNER is set, only WS-CKF may live-fetch from this process.
+ * Unset owner = allow (single-agent / local pilot). Cache hits always allowed.
+ */
+export function assertCkfMayLiveFetch(): void {
+  const owner = (process.env.HEADROOM_SEC_FETCH_OWNER ?? "").trim().toUpperCase();
+  if (!owner || owner === "NONE") return;
+  if (owner === "WS-CKF") return;
+  throw new Error(
+    `SecHttpClient: live SEC fetch denied — HEADROOM_SEC_FETCH_OWNER=${owner} (CKF requires WS-CKF or unset for solo pilot)`,
+  );
+}
+
 export class SecHttpClient {
   readonly userAgent: string;
   private readonly limiter: RateLimiter;
@@ -42,7 +56,7 @@ export class SecHttpClient {
   private downloadBytes = 0;
 
   constructor(config: SecHttpClientConfig = {}) {
-    this.userAgent = config.userAgent ?? DEFAULT_USER_AGENT;
+    this.userAgent = config.userAgent ?? process.env.SEC_EDGAR_USER_AGENT ?? DEFAULT_USER_AGENT;
     this.limiter = new RateLimiter(config.rateLimit);
     this.cache = config.cacheDir ? new ResponseCache(config.cacheDir) : null;
     this.logPath = config.logDir ? path.join(config.logDir, "sec-requests.jsonl") : null;
@@ -67,6 +81,7 @@ export class SecHttpClient {
     if (this.cacheOnly) {
       throw new Error(`SecHttpClient: cache-only mode and no cache entry for ${url}`);
     }
+    assertCkfMayLiveFetch();
 
     let attempt = 0;
     let lastError: unknown;

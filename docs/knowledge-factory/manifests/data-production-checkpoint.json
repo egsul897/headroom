@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T22:37:45.034Z",
+  "generatedAt": "2026-10-08T22:40:45.748Z",
   "distinction": {
     "note": "Fixture documents are recorded public excerpts already in-repo. SEC documents were acquired live from sec.gov in this session. False-positive SEC exhibits are listed separately and excluded from debt-document counts."
   },
@@ -18,14 +18,14 @@
   "covenantCandidatesExtracted": 3708,
   "sourceBackedDefinitions": 162,
   "dependencyEdgesCrossReferences": 21552,
-  "documentRelationships": 40,
+  "documentRelationships": 46,
   "semanticHypothesesProduced": 0,
   "independentlyVerifiedRepresentations": 0,
   "unresolvedOrAmbiguousLegalIssues": {
-    "uncertaintyQueueItems": 2929,
+    "uncertaintyQueueItems": 3309,
     "ambiguousStructuralNodes": 6385,
     "unlinkedAmendments": 8,
-    "missingOperativeAuthorityDocs": 86,
+    "missingOperativeAuthorityDocs": 98,
     "note": "These are unresolved discovery/ambiguity items — not independently verified legal conclusions."
   },
   "draftingPatterns": {
@@ -87,13 +87,13 @@
     ]
   },
   "processing": {
-    "measuredParsingMsFromLedger": 2634,
+    "measuredParsingMsFromLedger": 5237,
     "secRequests": 237,
-    "downloadBytes": 54158388,
-    "storageBytes": 54158388,
+    "downloadBytes": 116021055,
+    "storageBytes": 116021055,
     "actualPaidProviderUsd": 0,
-    "estimatedModelCostUsdIfEnabled": 51.155034000000015,
-    "estimatedModelTokensIfEnabled": 17051678,
+    "estimatedModelCostUsdIfEnabled": 62.94004800000002,
+    "estimatedModelTokensIfEnabled": 20980016,
     "note": "Actual paid AI spend is $0. Estimated model figures are NOT actual spend."
   },
   "secDebtDocuments": [
@@ -845,7 +845,7 @@
     {
       "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
       "ticker": "CCK",
-      "class": "CONSENT",
+      "class": "UNKNOWN",
       "title": "CONSENT",
       "form": "10-K",
       "filingDate": "2025-03-03",
@@ -1084,7 +1084,7 @@
     {
       "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
       "ticker": "CCK",
-      "class": "CONSENT",
+      "class": "UNKNOWN",
       "title": "CONSENT",
       "form": "10-K",
       "filingDate": "2026-02-27",

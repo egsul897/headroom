@@ -26,6 +26,9 @@ export {
 } from "./pipeline/run";
 export { extractStructure } from "./pipeline/structural";
 export { discoverCovenantCandidates } from "./pipeline/candidates";
+export { extractConditionsAndExceptions } from "./pipeline/conditions";
+export { computeInstrumentIdentity, attachInstrumentIdentity } from "./pipeline/instrument-identity";
+export { loadEhbHandoffPackage, handoffToDiscovered } from "./coordination/ehb-handoff";
 export { discoverDocumentRelationships } from "./relationships/discover";
 export { findExactByteDuplicates, findExactNormalizedDuplicates, nearDuplicateScore } from "./dedupe/near-duplicate";
 export { buildSemanticPriorityQueue } from "./queue/semantic-priority";

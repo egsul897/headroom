@@ -12,6 +12,8 @@ import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { extractTextAsync, hashBytes } from "./text";
 import { extractStructure } from "./structural";
 import { discoverCovenantCandidates } from "./candidates";
+import { extractConditionsAndExceptions } from "./conditions";
+import { attachInstrumentIdentity } from "./instrument-identity";
 import { discoverDocumentRelationships } from "../relationships/discover";
 import { findExactByteDuplicates, findExactNormalizedDuplicates } from "../dedupe/near-duplicate";
 import { buildSemanticPriorityQueue } from "../queue/semantic-priority";
@@ -34,8 +36,10 @@ export interface ProcessDocumentResult {
   candidateCount: number;
   definitionCount: number;
   crossReferenceCount: number;
+  conditionExceptionCount: number;
   ambiguousCount: number;
   processingMs: number;
+  wasDuplicate: boolean;
 }
 
 export async function processAcquiredDocument(store: CorpusStore, input: ProcessDocumentInput): Promise<ProcessDocumentResult> {
@@ -44,6 +48,27 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
 
   if (!discovered.exhibit.sourceUrl.startsWith("fixture://") && !validateSourceUrl(discovered.exhibit.sourceUrl)) {
     throw new Error(`Invalid source URL: ${discovered.exhibit.sourceUrl}`);
+  }
+
+  // Exact-byte dedupe across corpus — second run must not invent a new sourceId row.
+  const existingByHash = store.findByOriginalBytesHash(contentHash);
+  if (existingByHash && existingByHash.sourceId !== discovered.sourceId) {
+    const aliasMeta = store.readJson<Record<string, string[]>>("dedupe-aliases.json") ?? {};
+    const list = aliasMeta[existingByHash.sourceId] ?? [];
+    if (!list.includes(discovered.sourceId)) list.push(discovered.sourceId);
+    aliasMeta[existingByHash.sourceId] = list;
+    store.writeJson("dedupe-aliases.json", aliasMeta);
+    return {
+      source: existingByHash,
+      structuralNodeCount: store.loadStructuralNodes(existingByHash.sourceId).length,
+      candidateCount: store.loadCandidates(existingByHash.sourceId).length,
+      definitionCount: store.loadDefinitions(existingByHash.sourceId).length,
+      crossReferenceCount: store.loadCrossReferences(existingByHash.sourceId).length,
+      conditionExceptionCount: store.loadConditions(existingByHash.sourceId).length,
+      ambiguousCount: store.loadStructuralNodes(existingByHash.sourceId).filter((n) => n.ambiguous).length,
+      processingMs: Date.now() - started,
+      wasDuplicate: true,
+    };
   }
 
   // Idempotent download / resume: if bytes already present for hash, reuse.
@@ -105,8 +130,10 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       candidateCount: 0,
       definitionCount: 0,
       crossReferenceCount: 0,
+      conditionExceptionCount: 0,
       ambiguousCount: 0,
       processingMs: Date.now() - started,
+      wasDuplicate: false,
     };
   }
 
@@ -119,8 +146,10 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       candidateCount: 0,
       definitionCount: 0,
       crossReferenceCount: 0,
+      conditionExceptionCount: 0,
       ambiguousCount: 0,
       processingMs: Date.now() - started,
+      wasDuplicate: false,
     };
   }
 
@@ -144,6 +173,8 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
 
   const candidates = discoverCovenantCandidates(discovered.sourceId, text, structural.nodes);
   store.saveCandidates(discovered.sourceId, candidates);
+  const conditions = extractConditionsAndExceptions(discovered.sourceId, text, structural.nodes);
+  store.saveConditions(discovered.sourceId, conditions);
 
   source = {
     ...source,
@@ -153,6 +184,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     representationLevel: candidates.length > 0 ? "DISCOVERED_CANDIDATE" : "STRUCTURALLY_INDEXED",
     normalizedTextHash,
   };
+  source = attachInstrumentIdentity(source);
   assertRepresentationCannotApproveCapacity(source.representationLevel);
   store.upsertSource(source);
 
@@ -167,8 +199,10 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     candidateCount: candidates.length,
     definitionCount: structural.definitions.length,
     crossReferenceCount: structural.crossReferences.length,
+    conditionExceptionCount: conditions.length,
     ambiguousCount: structural.ambiguousCount,
     processingMs,
+    wasDuplicate: false,
   };
 }
 
