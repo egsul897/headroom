@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "covenant-dependency-atlas.v1",
+  "generatedAt": "2026-10-08T22:06:23.979Z",
+  "paidInference": false,
+  "productionResolverTouched": false,
+  "merges": false,
+  "certificationChanges": false,
+  "totals": {
+    "documents": 4,
+    "nodes": 2490,
+    "edges": 2310,
+    "resolved": 1513,
+    "unresolved": 715,
+    "ambiguous": 82,
+    "diamonds": 175,
+    "cycles": 7
+  },
+  "kfCounts": {
+    "nodes": 2482,
+    "edges": 2310,
+    "byKind": {
+      "COVENANT_TO_DEFINITION": 1334,
+      "DEFINITION_TO_DEFINITION": 362,
+      "COVENANT_TO_CONDITION": 73,
+      "COVENANT_TO_EXCEPTION": 189,
+      "COVENANT_TO_AMENDMENT": 256,
+      "COVENANT_TO_SHARED_BASKET": 8,
+      "COVENANT_TO_CROSS_DOCUMENT": 2,
+      "ENTITY_SCOPE": 4,
+      "RATIO_CALCULATION": 54,
+      "FINANCIAL_INPUT": 28,
+      "RECLASSIFICATION": 0
+    },
+    "byResolution": {
+      "RESOLVED": 1513,
+      "UNRESOLVED": 715,
+      "AMBIGUOUS": 82
+    },
+    "diamonds": 175,
+    "cycles": 7,
+    "unresolved": 715,
+    "ambiguous": 82
+  },
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "nodes": 718,
+      "edges": 696,
+      "resolved": 522,
+      "unresolved": 160,
+      "ambiguous": 14,
+      "diamonds": 66,
+      "cycles": 4,
+      "completenessScore": 1,
+      "gapCount": 1
+    },
+    {
+      "documentId": "doc-b",
+      "nodes": 847,
+      "edges": 709,
+      "resolved": 475,
+      "unresolved": 186,
+      "ambiguous": 48,
+      "diamonds": 18,
+      "cycles": 1,
+      "completenessScore": 1,
+      "gapCount": 1
+    },
+    {
+      "documentId": "doc-c",
+      "nodes": 120,
+      "edges": 101,
+      "resolved": 24,
+      "unresolved": 77,
+      "ambiguous": 0,
+      "diamonds": 0,
+      "cycles": 0,
+      "completenessScore": 1,
+      "gapCount": 1
+    },
+    {
+      "documentId": "doc-d",
+      "nodes": 805,
+      "edges": 804,
+      "resolved": 492,
+      "unresolved": 292,
+      "ambiguous": 20,
+      "diamonds": 91,
+      "cycles": 2,
+      "completenessScore": 1,
+      "gapCount": 1
+    }
+  ],
+  "unresolvedRelationshipCount": 797
+}

@@ -1,0 +1,116 @@
+{
+  "documentId": "doc-d",
+  "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+  "nodeCount": 805,
+  "edgeCount": 804,
+  "resolvedEdgeCount": 492,
+  "unresolvedEdgeCount": 292,
+  "ambiguousEdgeCount": 20,
+  "buckets": [
+    {
+      "kind": "COVENANT_TO_DEFINITION",
+      "expectedMinimum": 5,
+      "observedResolved": 277,
+      "observedUnresolved": 273,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "DEFINITION_TO_DEFINITION",
+      "expectedMinimum": 3,
+      "observedResolved": 107,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "COVENANT_TO_CONDITION",
+      "expectedMinimum": 1,
+      "observedResolved": 6,
+      "observedUnresolved": 16,
+      "observedAmbiguous": 7,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "COVENANT_TO_EXCEPTION",
+      "expectedMinimum": 1,
+      "observedResolved": 75,
+      "observedUnresolved": 1,
+      "observedAmbiguous": 12,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "COVENANT_TO_AMENDMENT",
+      "expectedMinimum": 0,
+      "observedResolved": 0,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 1,
+      "missingOrThin": false,
+      "notes": "No inventory signal required this kind for this document."
+    },
+    {
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "expectedMinimum": 3,
+      "observedResolved": 3,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "COVENANT_TO_CROSS_DOCUMENT",
+      "expectedMinimum": 0,
+      "observedResolved": 0,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "No inventory signal required this kind for this document."
+    },
+    {
+      "kind": "ENTITY_SCOPE",
+      "expectedMinimum": 0,
+      "observedResolved": 0,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "No inventory signal required this kind for this document."
+    },
+    {
+      "kind": "RATIO_CALCULATION",
+      "expectedMinimum": 2,
+      "observedResolved": 16,
+      "observedUnresolved": 2,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "Meets inventory-derived soft minimum."
+    },
+    {
+      "kind": "FINANCIAL_INPUT",
+      "expectedMinimum": 0,
+      "observedResolved": 8,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "No inventory signal required this kind for this document."
+    },
+    {
+      "kind": "RECLASSIFICATION",
+      "expectedMinimum": 0,
+      "observedResolved": 0,
+      "observedUnresolved": 0,
+      "observedAmbiguous": 0,
+      "missingOrThin": false,
+      "notes": "No inventory signal required this kind for this document."
+    }
+  ],
+  "diamondCount": 91,
+  "cycleCount": 2,
+  "completenessScore": 1,
+  "gaps": [
+    "RECLASSIFICATION: no ground-truth unit in this document explicitly records a reclassification right; edge kind preserved as unresolved/absent rather than inferred from similarity."
+  ]
+}
