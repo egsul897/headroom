@@ -30,6 +30,6 @@ describe("PRODUCT verdicts ↔ defect register", () => {
     for (const [k, sev] of failing) expect(registered.get(k), k).toBe(sev);
   });
   it("the invariants Headroom meets today stay met (hanging proviso, same-document override at section level, Article IX cap at section level, conditional effectiveness, cache identity)", () => {
-    for (const id of ["INV-01", "INV-03", "INV-04", "INV-06", "INV-37", "INV-09", "INV-34"]) expect(results.find((r) => r.id === id)!.verdicts.filter((v) => v.kind === "PRODUCT" && !v.ok).map((v) => v.ref), id).toEqual([]);
+    for (const id of ["INV-01", "INV-03", "INV-04", "INV-06", "INV-37", "INV-09", "INV-34", "INV-32", "INV-28b"]) expect(results.find((r) => r.id === id)!.verdicts.filter((v) => v.kind === "PRODUCT" && !v.ok).map((v) => v.ref), id).toEqual([]);
   });
 });

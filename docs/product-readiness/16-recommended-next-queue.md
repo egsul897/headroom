@@ -80,3 +80,33 @@ Next prioritized bounded tasks (this track):
 - T4. ~~Supplemental-indenture package~~ done on B (second-instrument amendment resolves correctly; IPV-04 breadth on the indenture).
 - T5. ~~Prompt-token measurement from the mocked stage~~ done (doc 08 §Prompt-size measurement: estimates low by ≈2–3× on input tokens; re-basing deferred to E2).
 - T6. ~~Onboarding / data-room ingestion assumptions doc~~ done (`19-onboarding-and-ingestion-assumptions.md`).
+
+## Self-replenishing backlog pass 3 (2026-10-08, after INV-32 / INV-09b breadth / scan-noise mutants)
+
+1. **Uncovered invariants**: #8 maintenance covenant at runtime (still no springing construct); #16 designation entity
+   scope (semantic); the wire/representation path for a reclassification election (7.01(g)) — the runtime side is now
+   covered (INV-32).
+2. **Missing negative tests**: an approval-less election accepted by the runtime is only an observation; a product-layer
+   rule (W1) needs a test once a product layer exists. A comparator flip on a clean ratio clause other than A needs a
+   package whose certification path is not masked (every other ratio clause is masked by IPV-12/IPV-19 or an
+   undefined input) — add a package N with a clean ratio basket and no definition cycle, no amendment.
+3. **Untested interfaces**: unchanged (Pass B–D, Layer-2, interpreter forms F2/F4, persistence, PR #136 on main).
+4. **Prior failures without breadth**: IPV-13 (ontology) still only on D/E; IPV-10 (depth-2 undefined terms) only on H;
+   IPV-23 only on A — add scan-noise mutants on a multi-document package (H) to see cross-document effects.
+5. **Manifest gaps**: packages without adversarial plans: none (A–M all have at least one); packages without
+   operativeState rows: E, F, J, K, L (single-document, no amendments) — acceptable.
+6. **New compositions**: scan noise + amendment (does a mis-read heading break amendment targeting?); a side letter
+   that both loosens one basket and tightens another.
+7. **Cross-document**: an intercreditor that caps payments by reference to a credit-agreement definition (Availability)
+   whose definition is amended — IPV-20 across instruments.
+8. **Cost measurement**: done offline (doc 08 §Prompt-size); live E2 pending.
+9. **Workflows lacking criteria**: outside-counsel export format (W7 fields only); reviewer notes with citations;
+   onboarding clause-count diff (doc 19 §3 step 2) has no acceptance test.
+
+Next bounded tasks (this track):
+- U1. Package N: clean ratio basket, no cycle, no amendment — comparator flip unmasked (IPV-22 breadth on a second
+  clean path).
+- U2. Scan-noise mutants on H (multi-document) and a scan-noise + amendment composition (item 6).
+- U3. Cross-instrument definition amendment (item 7).
+- U4. Onboarding clause-count diff as a harness check (doc 19 §3 step 2): compare parsed clause enumerators with the
+  manifest's covenant list per section and flag gaps (turns IPV-07/23 silent merges into a deterministic card).

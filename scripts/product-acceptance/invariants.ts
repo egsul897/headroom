@@ -322,6 +322,9 @@ INVARIANTS.push(
         { pkg: "pkg-b-multi-document", id: "B-T1", claim: "4.09 ratio test is satisfied when the FCCR is at most 2.00 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "4.09", documentId: "indenture", operator: "LTE" } },
         { pkg: "pkg-a-basic-credit-agreement", id: "A-T1", claim: "7.01(c) is available when the leverage ratio is at least 3.50 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "7.01(c)", operator: "GTE" } },
         { pkg: "pkg-a-basic-credit-agreement", id: "A-T2", claim: "7.01(c) is available when the leverage ratio does not exceed 4.50 to 1.00 (threshold raised)", adversarial: { kind: "SET_RATIO", sectionRef: "7.01(c)", value: 4.5, excerpt: "4.50 to 1.00" } },
+        // breadth: every other RATIO_THRESHOLD covenant in the corpus with its comparator flipped
+        { pkg: "pkg-h-unseen-composition", id: "H-T4", claim: "7.11 requires the FCCR to be at most 1.00 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "7.11", operator: "LTE" } },
+        { pkg: "pkg-m-composed-p0", id: "M-T1", claim: "7.01(c) is available when the leverage ratio is at least 4.00 to 1.00 (comparator flipped)", adversarial: { kind: "SET_RATIO", sectionRef: "7.01(c)", operator: "GTE" } },
       ];
       for (const pid of [...new Set(cases.map((c) => c.pkg))]) {
         const base = loadPackage(pid); const manifest = JSON.parse(JSON.stringify(base.manifest)) as typeof base.manifest;
@@ -379,6 +382,35 @@ INVARIANTS.push(
         }
       }
       out.push({ ref: "invariant:INV-18:inflected-terms-retrieved", check: `every defined term used only in an inflected form reaches the bundle (${examined} covenants, ${pluralUses} inflected-only uses)`, ok: misses.length === 0, detail: misses.length ? `${misses.length} miss(es): ${misses.join("; ")}` : "none", kind: "PRODUCT", severity: "NONMATERIAL_OMISSION" });
+      return out;
+    } },
+);
+
+INVARIANTS.push(
+  { id: "INV-32", title: "A reclassification of usage between baskets executes only on a recorded, authorised election over an edge the contract provides; otherwise nothing moves", packageId: "pkg-f-capacity-ledger-honesty",
+    legalStatement: "F 7.01(g) lets the Borrower reclassify usage out of 7.01(b) by written notice to the Administrative Agent. The fixture IR carries no reclassification edge (the runtime cases never model 7.01(g)); an election moving $5,000,000 from 7.01(b) to 7.01(c) must therefore not execute, must not free 7.01(b) capacity, and must not be committable; an election the caller did not select must be refused as not on the selected path.",
+    run: async () => {
+      const out: InvariantVerdict[] = [];
+      const { rules, shared, definitions } = fixtureIR(); const asOf = "2026-09-30";
+      const approved = snapshot("snap-inv32", "APPROVED", "2026-06-30", 80_000_000);
+      const ledger = [usage("usage-inv32-1", 12_000_000, "rule:f-7.01(b)", "2026-03-15")];
+      const inputs = snapshotInputResolver({ snapshots: [approved], rules, definitions, companyId: ORG, instrumentKey: INST });
+      const graph = buildCapacityGraph({ rules, sharedCapacities: shared, definitions, companyId: ORG, instrumentKey: INST, asOf });
+      const base = evaluateCapacityState({ graph, rules, sharedCapacities: shared, definitions, inputs, ledger, asOf });
+      const election = { electionId: "elect-inv32", sourceRuleId: "rule:f-7.01(b)", destinationRuleId: "rule:f-7.01(c)", amount: { amount: "5000000", currency: "USD" }, effectiveAsOf: asOf, movesUsageIds: ["usage-inv32-1"], provenance: { source: "product-acceptance invariant", sourceVersion: "1", approvalRef: null } };
+      const run = (selected: string[]) => simulateTransaction({ transaction: { transactionId: `tx-inv32-${selected.length}`, companyId: ORG, instrumentKey: INST, effectiveAsOf: asOf, category: "debt", label: "reclassify 5m from (b) to (c)", entities: ["BORROWER"], effects: [{ effectId: "e1", kind: "APPLY_RECLASSIFICATION", election }], provenance: { source: "product-acceptance invariant", sourceVersion: "1", approvalRef: null } } as never, currentState: base, capacityGraph: graph, selectedPath: { capacityNodeIds: ["capacity:rule:rule:f-7.01(b)", "capacity:rule:rule:f-7.01(c)"], ruleIds: ["rule:f-7.01(b)", "rule:f-7.01(c)"], sharedCapacityIds: [], reclassificationElectionIds: selected }, inputs, context: { rules, sharedCapacities: shared, definitions, ledger, asOf } });
+      const sim = run(["elect-inv32"]) as unknown as { simulationStatus: string; limitations: Array<{ code: string; message: string }>; reclassificationEffects: { outcomes: Array<{ electionId: string; state: string; blocks?: Array<{ code: string }> }>; allExecuted: boolean }; commitPlan: { committable: boolean; blockedBy: string[] }; postState: { capacities: Array<{ ruleId: string; effectiveRemaining: unknown }> } };
+      const executed = sim.reclassificationEffects.outcomes.some((o) => o.state === "EXECUTED");
+      const codes = [...sim.limitations.map((l) => l.code), ...sim.reclassificationEffects.outcomes.flatMap((o) => (o.blocks ?? []).map((b) => b.code))];
+      out.push({ ref: "invariant:INV-32:no-edge-not-executed", check: "an election over a reclassification edge the IR does not provide is not executed", ok: !executed, detail: `status ${sim.simulationStatus}; outcomes ${sim.reclassificationEffects.outcomes.map((o) => `${o.electionId}:${o.state}`).join(",") || "none"}; codes ${codes.join(",") || "none"}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      out.push({ ref: "invariant:INV-32:no-edge-not-committable", check: "the commit plan is not committable and names the block", ok: sim.commitPlan.committable === false && sim.commitPlan.blockedBy.length > 0, detail: `committable ${sim.commitPlan.committable}; blockedBy ${sim.commitPlan.blockedBy.join(",")}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const beforeB = num(base.capacities.find((c) => c.ruleId === "rule:f-7.01(b)")!.effectiveRemaining);
+      const post = sim.postState as { capacities: Array<{ ruleId: string; effectiveRemaining: unknown }> } | null;
+      const afterB = post ? num((post.capacities.find((c) => c.ruleId === "rule:f-7.01(b)") as { effectiveRemaining: never } | undefined)?.effectiveRemaining as never) : null;
+      out.push({ ref: "invariant:INV-32:no-edge-no-capacity-freed", check: "7.01(b) remaining capacity is unchanged (or no post state is produced): nothing freed", ok: post === null || afterB === beforeB, detail: `7.01(b) remaining before ${beforeB} after ${post ? afterB : "(no post state: simulation blocked before applying)"}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      const unselected = run([]) as unknown as { simulationStatus: string; limitations: Array<{ code: string }> };
+      out.push({ ref: "invariant:INV-32:unselected-election-refused", check: "an election the caller did not place on the selected path is refused (EFFECT_TARGET_NOT_IN_SELECTED_PATH)", ok: unselected.limitations.some((l) => l.code === "EFFECT_TARGET_NOT_IN_SELECTED_PATH") && unselected.simulationStatus !== "SIMULATED", detail: `status ${unselected.simulationStatus}; limitations ${unselected.limitations.map((l) => l.code).join(",")}`, kind: "PRODUCT", severity: "CRITICAL_FALSE_PERMISSION" });
+      out.push({ ref: "invariant:INV-32:approval-reference-absent", check: "an election with approvalRef null is accepted as an election (recorded: the runtime does not require an approval reference; the product layer must)", ok: codes.some((c) => /APPROVAL|AUTHORI/i.test(c)), detail: `codes ${codes.join(",") || "none"}`, kind: "OBSERVATION" });
       return out;
     } },
 );
