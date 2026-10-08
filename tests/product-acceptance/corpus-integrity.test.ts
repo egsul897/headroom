@@ -17,7 +17,7 @@ const FORBIDDEN_REAL_NAMES = [/conmed/i, /gibraltar/i, /\bCNMD\b/, /\bROCK\b/];
 const FORBIDDEN_LIVE_IDS = [/discovery-candidate:[0-9a-f]{24}/, /ir-rule:[0-9a-f]{24}/, /phase-3-live-validation/, /phase-3-conmed/];
 
 describe("product-acceptance corpus integrity", () => {
-  it("contains the thirteen packages A–M", () => {
+  it("contains the fourteen packages A–N", () => {
     expect(packages.map((p) => p.packageId)).toEqual([
       "pkg-a-basic-credit-agreement",
       "pkg-b-multi-document",
@@ -32,6 +32,7 @@ describe("product-acceptance corpus integrity", () => {
       "pkg-k-three-way-builder",
       "pkg-l-affiliate-transactions",
       "pkg-m-composed-p0",
+      "pkg-n-clean-ratio",
     ]);
   });
 
@@ -95,6 +96,6 @@ describe("product-acceptance corpus integrity", () => {
     const a = corpusIdentity(packages);
     const b = corpusIdentity(loadCorpus());
     expect(a.corpusSha256).toBe(b.corpusSha256);
-    expect(a.packages).toHaveLength(13);
+    expect(a.packages).toHaveLength(14);
   });
 });

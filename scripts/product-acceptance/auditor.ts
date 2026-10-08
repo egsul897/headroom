@@ -88,6 +88,50 @@ export function auditStructure(pkg: CorpusPackage, s: DeterministicStages, L: Le
     if (actual === c.textSha256) L.pass("STRUCTURE", "PRODUCTION", "EXACT", ref, `node text hash ${actual.slice(0, 12)} matches the pinned clause text`);
     else L.fail("STRUCTURE", "PRODUCTION", "EXACT", ref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: `clause text hash ${c.textSha256!.slice(0, 12)} (pinned from the fixture bytes)`, actual: `${actual.slice(0, 12)}: the parsed clause text differs from the pinned text`, repro: `sha256(ws(index.getNodeText(findNodesByRef("${c.documentId}","${c.sectionRef}")[${(c.occurrence ?? 1) - 1}].nodeId,"DESCENDANTS")))`, deterministic: true });
   }
+  // U4 onboarding cards (doc 19 §3 step 2): parser-independent signals that a clause boundary or a heading was not recognised
+  //  (i) enumeration count: line-start enumerators "(x)" in a section's raw text vs the parsed direct children
+  //  (ii) embedded heading: a node's own text contains a line that looks like a SECTION heading (merged section)
+  //  (iii) malformed label: a SECTION node whose ref is not N.NN / N (e.g. "7.0" from "7.0l")
+  for (const d of pkg.documents.filter((d) => d.operative)) {
+    for (const n of index.allNodes().filter((n) => n.documentId === d.documentId && n.nodeType === "SECTION")) {
+      const raw = index.getNodeText(n.nodeId, "DESCENDANTS");
+      // walk the lettered enumerators in source order: (a) is expected first, then (b), ... ; a nested (i)/(ii)/(A) never matches
+      // the expected letter, an inline "(a) ... (b)" inside one line counts like a hanging-indent list (the parser mints both)
+      let expected = "a"; let counted = 0; const gaps: string[] = [];
+      for (const m of raw.matchAll(/(^|\n|\s)\(([^\s()]{1,4})\)\s/g)) {
+        const tok = m[2]!; const atLineStart = m[1] !== " ";
+        if (/^[a-z]$/.test(tok)) {
+          if (tok === expected) { counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1); }
+          else if (atLineStart && tok > expected && !/^[ivx]$/.test(tok)) { gaps.push(`(${expected}) absent before (${tok})`); counted += 1; expected = String.fromCharCode(tok.charCodeAt(0) + 1); }
+          // a roman (i)/(v)/(x) or a letter below the expected one is a nested or restarted list, not a top-level clause
+        } else if (atLineStart && tok.length === 1 && /[^\x00-\x7f]/.test(tok)) {
+          // a single non-ASCII enumerator at line start (homoglyph scan noise) was meant to be the next letter
+          gaps.push(`unrecognised enumerator (${tok}) where (${expected}) was expected`); counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1);
+        }
+      }
+      const children = index.allNodes().filter((c) => c.parentNodeId === n.nodeId && c.nodeType === "SUBSECTION").length;
+      const ref = `structure:enumeration-count:${d.documentId}#${n.sectionRef}`;
+      if (counted === 0 && children === 0) continue;
+      if (counted === children) L.pass("STRUCTURE", "PRODUCTION", "INVARIANT", ref, `${children} parsed clause(s) = ${counted} lettered enumerator(s)`);
+      else L.fail("STRUCTURE", "PRODUCTION", "INVARIANT", ref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: `one parsed SUBSECTION per lettered enumerator (${counted})`, actual: `${children} parsed SUBSECTION node(s) for ${counted} lettered enumerator(s): a clause boundary was not recognised (merged clause) or an extra node was minted`, repro: `walk /\\(([a-z])\\)/ in index.getNodeText(${n.sectionRef},"DESCENDANTS") vs SUBSECTION children of the node`, deterministic: true });
+      if (gaps.length > 0) {
+        const gref = `structure:enumeration-gap:${d.documentId}#${n.sectionRef}`;
+        const health = index.healthDiagnostics().filter((h) => { const x = h as { code?: string; message?: string }; return /ENUM|GAP/i.test(x.code ?? "") || (x.message ?? "").includes(n.sectionRef); }).length;
+        if (health > 0) L.pass("STRUCTURE", "PRODUCTION", "INVARIANT", gref, `${gaps.join("; ")} - ${health} health diagnostic(s) name the section or an enumeration gap`);
+        else L.fail("STRUCTURE", "PRODUCTION", "INVARIANT", gref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: "a non-contiguous enumeration produces a health diagnostic (ENUMERATION_GAP or equivalent)", actual: `${gaps.join("; ")}; health diagnostics 0 - the gap is silent`, repro: `index.healthDiagnostics() after loading ${d.documentId}`, deterministic: true });
+      }
+      const own = index.getNodeText(n.nodeId, "OWN");
+      const embedded = own.match(/\n\s*(?:S\s*E\s*C\s*T\s*I\s*O\s*N|SECTION)\s+\S+/i);
+      const childrenEmbedded = index.allNodes().filter((c) => c.parentNodeId === n.nodeId).map((c) => index.getNodeText(c.nodeId, "OWN").match(/\n\s*(?:S\s*E\s*C\s*T\s*I\s*O\s*N|SECTION)\s+\S+/i)).find((m) => m);
+      const hit = embedded ?? childrenEmbedded;
+      const eref = `structure:embedded-heading:${d.documentId}#${n.sectionRef}`;
+      if (hit) L.fail("STRUCTURE", "PRODUCTION", "INVARIANT", eref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: "no section heading inside a node's own text", actual: `heading-like line "${hit[0].trim().slice(0, 40)}" inside ${n.sectionRef} or a child: a following section was absorbed`, repro: `index.getNodeText(<node>,"OWN") contains a SECTION heading line`, deterministic: true });
+    }
+    const malformed = index.allNodes().filter((n) => n.documentId === d.documentId && n.nodeType === "SECTION" && !/^\d+(\.\d{2})?$/.test(n.sectionRef));
+    const mref = `structure:malformed-label:${d.documentId}`;
+    if (malformed.length === 0) L.pass("STRUCTURE", "PRODUCTION", "INVARIANT", mref, "every SECTION label is N.NN or N");
+    else L.fail("STRUCTURE", "PRODUCTION", "INVARIANT", mref, { severity: "SOURCE_PROVENANCE_FAILURE", outcomeClass: "INCORRECT_RESULT", expected: "SECTION labels of the form N.NN (or N in an amendment)", actual: `malformed label(s): ${malformed.map((n) => `"${n.sectionRef}"`).join(", ")} - a mis-read heading minted a node that exists nowhere in the agreement`, repro: `index.allNodes().filter(n => n.nodeType === "SECTION" && !/^\\d+(\\.\\d{2})?$/.test(n.sectionRef))`, deterministic: true });
+  }
   // generic structural invariants
   const orphans = index.orphans();
   if (orphans.length === 0) L.pass("STRUCTURE", "PRODUCTION", "INVARIANT", "structure:no-orphans", "no orphan nodes");

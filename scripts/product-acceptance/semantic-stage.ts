@@ -150,7 +150,7 @@ export async function runSemanticStage(pkg: CorpusPackage, s: DeterministicStage
     // A dropped unit is tested two ways: PURE_OMISSION strips the dropped unit's inventory lineage everywhere (the item is
     // simply not represented); LINEAGE_ON_RULE keeps the item cited on the parent rule node (a model that omits the
     // condition/shared cap but still "accounts" for the item). Both are mocked inputs; the outcomes differ in meaning.
-    const dropping = c.mutation.kind === "DROP_CONDITIONS" || c.mutation.kind === "DROP_SHARED_CAPS";
+    const dropping = c.mutation.kind === "DROP_CONDITIONS" || c.mutation.kind === "DROP_GATE" || c.mutation.kind === "DROP_SHARED_CAPS";
     const variants: Array<["PURE_OMISSION" | "LINEAGE_ON_RULE", boolean]> = dropping ? [["PURE_OMISSION", true], ["LINEAGE_ON_RULE", false]] : [["PURE_OMISSION", true]];
     for (const [variant, strip] of variants) {
       const vplans = new Map(plans);

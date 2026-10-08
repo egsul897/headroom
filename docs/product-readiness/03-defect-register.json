@@ -19,17 +19,22 @@
       "stage": "CERTIFICATION",
       "title": "Entity-scope widening is confirmed and certified when the clause narrows the section's governing scope",
       "packages": [
-        "pkg-a-basic-credit-agreement"
+        "pkg-a-basic-credit-agreement",
+        "pkg-n-clean-ratio"
       ],
       "signatures": [
         {
           "packageId": "pkg-a-basic-credit-agreement",
           "expectationRef": "adversarial:A-P2"
+        },
+        {
+          "packageId": "pkg-n-clean-ratio",
+          "expectationRef": "adversarial:N-P3"
         }
       ],
       "failingInput": "7.01(c): \"Indebtedness of the Borrower, so long as … Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00\" under a 7.01 lead-in \"The Borrower shall not, and shall not permit any Subsidiary to …\". Submission sets entityScope [BORROWER, ANY_SUBSIDIARY].",
       "expected": "Not CERTIFIED: the clause's own words restrict the ratio basket to the Borrower.",
-      "actual": "CERTIFIED; entityScopeAudit SOURCE_MATCH_CONFIRMED / safeToRely=true; Layer-1 VERIFIED_NO_MATERIAL_GAP_FOUND (Layer-2 mocked silent).",
+      "actual": "CERTIFIED; entityScopeAudit SOURCE_MATCH_CONFIRMED / safeToRely=true; Layer-1 VERIFIED_NO_MATERIAL_GAP_FOUND (Layer-2 mocked silent). PACKAGE N: the same widening on 7.01(c) 'Indebtedness of the Borrower' under a 'shall not permit any Subsidiary' lead-in is CERTIFIED (N-P3) - 2/2 clean paths.",
       "repro": "scripts/product-acceptance: adversarial SET_SCOPE on credit-agreement::7.01 {sectionRef:\"7.01(c)\", entityScope:[\"BORROWER\",\"ANY_SUBSIDIARY\"]}",
       "impact": "A subsidiary could be shown a ratio-based debt basket that the contract reserves for the Borrower.",
       "hypothesis": "The entity-scope guard witnesses the scope against the governing section lead-in and accepts any tag set that matches it, without checking the clause's own narrowing phrase (\"of the Borrower\").",
@@ -190,11 +195,15 @@
         {
           "packageId": "pkg-h-unseen-composition",
           "expectationRef": "definition:abl-credit-agreement#Term Loan Agreement"
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "expectationRef": "structure:enumeration-count:abl-credit-agreement#1.01"
         }
       ],
       "failingInput": "\"Payment Conditions\" means … (i) no Default … and (ii) Availability … not less than the greater of (A) $12,500,000 and (B) 12.5% of the Borrowing Base. followed by \"Subsidiary\" means … and \"Term Loan Agreement\" means …",
       "expected": "Definitions sourced from Section 1.01; no SUBSECTION/CLAUSE nodes 1.01(i), 1.01(ii), 1.01(ii)(A), 1.01(ii)(B).",
-      "actual": "Nodes 1.01(i), 1.01(ii), 1.01(ii)(A), 1.01(ii)(B) exist; \"Subsidiary\" and \"Term Loan Agreement\" are attributed to source node 1.01(ii)(B). Package E likewise mints 1.01(a)/(b)/(c) from the \"Available Amount\" definition.",
+      "actual": "Nodes 1.01(i), 1.01(ii), 1.01(ii)(A), 1.01(ii)(B) exist; \"Subsidiary\" and \"Term Loan Agreement\" are attributed to source node 1.01(ii)(B). Package E likewise mints 1.01(a)/(b)/(c) from the \"Available Amount\" definition. Manifest-independent card: Section 1.01 of the ABL agreement has two SUBSECTION children (1.01(i), 1.01(ii)) for zero lettered enumerators (structure:enumeration-count).",
       "repro": "resolveUniqueDefinitionByRef(index, 'abl-credit-agreement', 'Subsidiary').definition.sourceNodeId",
       "impact": "Wrong source citations for definitions; downstream provenance points at a clause that does not exist in the drafting.",
       "hypothesis": "The enumerator parser does not distinguish an enumeration that starts mid-sentence inside a quoted definition from a hanging-indent clause list.",
@@ -209,7 +218,8 @@
       "stage": "STRUCTURE",
       "title": "A dropped enumeration letter merges the next clause into the previous sibling",
       "packages": [
-        "pkg-g-adversarial-evidence"
+        "pkg-g-adversarial-evidence",
+        "pkg-h-unseen-composition"
       ],
       "signatures": [
         {
@@ -231,11 +241,27 @@
           "expectationRef": "mutation:MUT-19:ocr:7.01(c)",
           "severity": "SOURCE_PROVENANCE_FAILURE",
           "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-g-adversarial-evidence",
+          "expectationRef": "structure:enumeration-count:credit-agreement#7.03",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "packageId": "pkg-g-adversarial-evidence",
+          "expectationRef": "structure:enumeration-gap:credit-agreement#7.03",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "expectationRef": "mutation:MUT-21:ocr:7.03",
+          "severity": "SOURCE_PROVENANCE_FAILURE",
+          "evidence": "MUTATION"
         }
       ],
       "failingInput": "7.03 enumerates (a), (b), (d) - (c) absent (a conformed copy with a dropped letter).",
       "expected": "7.03(d) is its own node (or an ENUMERATION_GAP ambiguity), carrying the $2,500,000 basket.",
-      "actual": "No 7.03(d) node; the (d) text and its $2,500,000 value are absorbed into 7.03(b)'s own text. The deterministic layers then flag the unrepresented value under (b) (REVIEW), so the clause is never attributable to (d). SCAN-NOISE BREADTH (mutants on A): a spaced heading 'S E C T I O N 7.02 Liens' makes the whole Liens covenant disappear into 7.01(c) (0 nodes for 7.02, no health diagnostic); a Cyrillic homoglyph in the enumerator '(с)' makes 7.01(c) (the ratio basket) disappear into 7.01(b). Same mechanism as the dropped letter: an unrecognised boundary merges silently.",
+      "actual": "No 7.03(d) node; the (d) text and its $2,500,000 value are absorbed into 7.03(b)'s own text. The deterministic layers then flag the unrepresented value under (b) (REVIEW), so the clause is never attributable to (d). SCAN-NOISE BREADTH (mutants on A): a spaced heading 'S E C T I O N 7.02 Liens' makes the whole Liens covenant disappear into 7.01(c) (0 nodes for 7.02, no health diagnostic); a Cyrillic homoglyph in the enumerator '(с)' makes 7.01(c) (the ratio basket) disappear into 7.01(b). Same mechanism as the dropped letter: an unrecognised boundary merges silently. Manifest-independent cards (U4): 7.03 has 2 parsed SUBSECTIONs for 3 lettered enumerators (structure:enumeration-count) and the gap '(c) absent before (d)' produces no health diagnostic naming the section (structure:enumeration-gap). The same cards kill MUT-19 (homoglyph: 'unrecognised enumerator (с) where (c) was expected') and MUT-21 (spaced heading on H: 7.03 absorbed into 7.02), structure:embedded-heading kills MUT-17/21 and structure:malformed-label kills MUT-18/22 - all without a manifest.",
       "repro": "resolveUniqueNodeByRef('credit-agreement','7.03(d)') → NOT_FOUND",
       "impact": "A basket attributed to the wrong clause; its cross-references by letter fail silently.",
       "hypothesis": "The enumerator state machine requires contiguous letters and treats a non-successor enumerator as prose continuation.",
@@ -951,7 +977,8 @@
       "packages": [
         "pkg-a-basic-credit-agreement",
         "pkg-h-unseen-composition",
-        "pkg-l-affiliate-transactions"
+        "pkg-l-affiliate-transactions",
+        "pkg-n-clean-ratio"
       ],
       "evidence": "INVARIANT",
       "signatures": [
@@ -972,11 +999,15 @@
           "expectationRef": "invariant:INV-09b:A-T1-refused",
           "severity": "CRITICAL_FALSE_PERMISSION",
           "evidence": "INVARIANT"
+        },
+        {
+          "packageId": "pkg-n-clean-ratio",
+          "expectationRef": "adversarial:N-P1"
         }
       ],
       "failingInput": "L 7.07(d): '(d) any other transaction with an Affiliate involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved by a majority of the disinterested members of the board of directors of the Borrower.' Submission (adversarial L-P2, CLAIM_COMPLETE): rule for 7.07(d) with capacityExpression MONEY 5,000,000 (excerpt '$5,000,000', verbatim in the source), one APPROVAL condition, sufficiency COMPLETE. Run on the in-memory L variant without the Loan-Parties diamond so IPV-21 does not mask the result.",
       "expected": "Not CERTIFIED: the figure is the lower bound of the gate ('in excess of'), not a cap; the clause has no quantitative capacity at all. At minimum REVIEW_REQUIRED with a numeric-direction or 'threshold vs cap' finding.",
-      "actual": "certification CERTIFIED []; verification VERIFIED_NO_MATERIAL_GAP_FOUND []; compilation COMPLETED; the deterministic numeric assertion check finds the $5,000,000 figure in the source and the excerpt is verbatim, so nothing objects. Layer-2 reviewer is mocked (silent); whether a live reviewer would catch it is untested (doc 15 E3). Breadth (INV-25b, every comparator-introduced dollar figure in the corpus): H intercreditor 4.01 'shall not make any payment … if Availability would be less than $15,000,000' submitted as a $15,000,000 payment basket is CERTIFIED (second instance, different document type); H 7.11's springing trigger ($10,000,000) and H 7.03(b) with the Payment Conditions floor ($12,500,000, a figure that lives in a definition) are refused - the latter two for Layer-1 accountability reasons (missing baskets / figure not in the clause's own text), not because the comparator was understood. INV-09b (ratio direction): A 7.01(c) 'so long as … the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00' submitted with the COMPARE operator flipped to GTE ('available when the ratio is at least 3.50') is CERTIFIED with VERIFIED_NO_MATERIAL_GAP_FOUND; the same clause with the threshold raised to 4.50 is refused (the figure is absent from the source), and B 4.09 flipped is refused only because of its genuine definition cycle (IPV-12), so that case is masked. Comparator breadth (INV-09b over every RATIO_THRESHOLD covenant in the corpus): A 7.01(c) flipped → CERTIFIED; B 4.09 flipped → refused only by its genuine definition cycle (IPV-12); H 7.11 flipped → refused only because the faithful 7.11 is already REVIEW (undefined FCCR inputs); M 7.01(c) flipped → refused only by IPV-19's OPERATIVE_STATE_UNACCEPTABLE. The one ratio clause with a clean certification path certifies the inverted test; the other three are masked, not caught.",
+      "actual": "certification CERTIFIED []; verification VERIFIED_NO_MATERIAL_GAP_FOUND []; compilation COMPLETED; the deterministic numeric assertion check finds the $5,000,000 figure in the source and the excerpt is verbatim, so nothing objects. Layer-2 reviewer is mocked (silent); whether a live reviewer would catch it is untested (doc 15 E3). Breadth (INV-25b, every comparator-introduced dollar figure in the corpus): H intercreditor 4.01 'shall not make any payment … if Availability would be less than $15,000,000' submitted as a $15,000,000 payment basket is CERTIFIED (second instance, different document type); H 7.11's springing trigger ($10,000,000) and H 7.03(b) with the Payment Conditions floor ($12,500,000, a figure that lives in a definition) are refused - the latter two for Layer-1 accountability reasons (missing baskets / figure not in the clause's own text), not because the comparator was understood. INV-09b (ratio direction): A 7.01(c) 'so long as … the Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00' submitted with the COMPARE operator flipped to GTE ('available when the ratio is at least 3.50') is CERTIFIED with VERIFIED_NO_MATERIAL_GAP_FOUND; the same clause with the threshold raised to 4.50 is refused (the figure is absent from the source), and B 4.09 flipped is refused only because of its genuine definition cycle (IPV-12), so that case is masked. Comparator breadth (INV-09b over every RATIO_THRESHOLD covenant in the corpus): A 7.01(c) flipped → CERTIFIED; B 4.09 flipped → refused only by its genuine definition cycle (IPV-12); H 7.11 flipped → refused only because the faithful 7.11 is already REVIEW (undefined FCCR inputs); M 7.01(c) flipped → refused only by IPV-19's OPERATIVE_STATE_UNACCEPTABLE. The one ratio clause with a clean certification path certifies the inverted test; the other three are masked, not caught. PACKAGE N (clean path, no cycle/amendment/undefined input): the flipped comparator on 7.01(c) ('does not exceed 3.00 to 1.00' submitted as GTE) is CERTIFIED (N-P1); the raised threshold (3.50) is refused (N-P2) - 2/2 clean ratio paths certify the flip.",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-25 (scripts/product-acceptance/invariants.ts); the same submission on the on-disk package L is refused only because of IPV-21.",
       "impact": "A treasury user would be told 7.07(d) gives $5,000,000 of Affiliate-transaction room without board approval; the clause gives none. Same class as IPV-01/02/03: the deterministic gates verify figures and excerpts, not the comparator or the role of the figure (threshold vs cap). Two of five comparator-introduced figures in the corpus certify as caps (L 7.07(d), H ICA 4.01). A flipped ratio comparator inverts when a ratio basket is available (open when leverage is high instead of low) and passes every deterministic gate.",
       "hypothesis": "semantic-verification/numeric-assertion.ts matches currency amounts by value and the verifier's reconciliation accepts any source figure as accounting for a capacity expression; no check relates the figure's comparator phrase ('in excess of', 'not less than', 'greater than') to the capacity direction. The same gap covers COMPARE operators: numeric-assertion / reconciliation verify that each figure in the IR appears in the source, never that the operator matches the source's comparator phrase.",
@@ -991,7 +1022,8 @@
       "stage": "STRUCTURE",
       "title": "A malformed section number ('SECTION 7.0l', scan artefact) mints a node labelled '7.0' that absorbs the whole covenant, with no health diagnostic",
       "packages": [
-        "pkg-a-basic-credit-agreement"
+        "pkg-a-basic-credit-agreement",
+        "pkg-h-unseen-composition"
       ],
       "evidence": "MUTATION",
       "signatures": [
@@ -1000,15 +1032,59 @@
           "expectationRef": "mutation:MUT-18:ocr:7.01",
           "severity": "SOURCE_PROVENANCE_FAILURE",
           "evidence": "MUTATION"
+        },
+        {
+          "packageId": "pkg-h-unseen-composition",
+          "expectationRef": "mutation:MUT-22:ocr:4.01",
+          "severity": "SOURCE_PROVENANCE_FAILURE",
+          "evidence": "MUTATION"
         }
       ],
       "failingInput": "Package A with 'SECTION 7.01 Indebtedness' scanned as 'SECTION 7.0l Indebtedness' (letter l for digit 1; MUT-18).",
       "expected": "Either 7.01 is still recognised (the parser tolerates the artefact) or the heading is reported as unparseable with a health diagnostic and the section's clauses are not attributed to another label; cross-references to 7.01(b) (from 7.02) then fail closed.",
-      "actual": "parseDocumentStructure mints a SECTION node with sectionRef '7.0' whose text holds the entire Indebtedness covenant and its clauses; findNodesByRef('7.01') returns nothing; healthDiagnostics() is empty. The manifest's 7.01 expectations fail (MISSING_REQUIRED_COVENANT) but a consumer that did not pin 7.01 would see a plausible '7.0' covenant and a dangling reference from 7.02.",
+      "actual": "parseDocumentStructure mints a SECTION node with sectionRef '7.0' whose text holds the entire Indebtedness covenant and its clauses; findNodesByRef('7.01') returns nothing; healthDiagnostics() is empty. The manifest's 7.01 expectations fail (MISSING_REQUIRED_COVENANT) but a consumer that did not pin 7.01 would see a plausible '7.0' covenant and a dangling reference from 7.02. BREADTH (MUT-22, multi-document package H): 'SECTION 4.0l Restriction on Payments' in the intercreditor agreement mints a '4.0' node that absorbs the payment restriction (0 nodes for 4.01, no health diagnostic) - the defect is not specific to one document or heading.",
       "repro": "npx tsx scripts/product-acceptance/run-mutations.ts → MUT-18 (scripts/product-acceptance/mutations.ts)",
       "impact": "On scanned packages (doc 19 assumption 1) a single mis-read digit relabels a covenant; every cross-reference to it dangles and the debt covenant is reported under a label that exists nowhere in the agreement. Silent (no diagnostic).",
       "hypothesis": "The section-heading grammar accepts 'SECTION <number>' with a lenient numeric token and does not validate the dotted form (major.minor) or flag a trailing non-digit; stage-structure.ts's heading parser.",
       "acceptance": "mutation:MUT-18:ocr:7.01 passes: 7.01 recognised, or a diagnostic names the malformed heading and no node labelled '7.0' is minted."
+    },
+    {
+      "id": "IPV-24",
+      "status": "OPEN",
+      "severity": "MATERIAL_CONDITION_OMISSION",
+      "outcomeClass": "INCORRECT_RESULT",
+      "deterministic": true,
+      "stage": "CERTIFICATION",
+      "title": "The pro forma evaluation basis is not an accountable element: a ratio basket submitted with its ratio gate on the capacity but no condition node (so no evaluationBasis.proForma) certifies",
+      "packages": [
+        "pkg-a-basic-credit-agreement",
+        "pkg-n-clean-ratio"
+      ],
+      "signatures": [
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "adversarial:A-P5"
+        },
+        {
+          "packageId": "pkg-a-basic-credit-agreement",
+          "expectationRef": "adversarial:A-P5:lineage-on-rule"
+        },
+        {
+          "packageId": "pkg-n-clean-ratio",
+          "expectationRef": "adversarial:N-P5"
+        },
+        {
+          "packageId": "pkg-n-clean-ratio",
+          "expectationRef": "adversarial:N-P5:lineage-on-rule"
+        }
+      ],
+      "failingInput": "7.01(c) 'Indebtedness of the Borrower, so long as on the date of incurrence, after giving pro forma effect thereto, the <leverage ratio> does not exceed 3.50 (A) / 3.00 (N) to 1.00'. Submission keeps UNLIMITED_CAPACITY gatedBy COMPARE(ratio <= 3.50) with the clause's inventory lineage, but emits zero condition nodes - so the PRO_FORMA condition and its evaluationBasis {proForma: true} are gone (DROP_CONDITIONS).",
+      "expected": "Not CERTIFIED, or at least a MATERIAL finding: the words 'after giving pro forma effect thereto' are in the source and nothing in the submission carries them; the ratio would be tested on historical figures instead of pro forma for the incurrence.",
+      "actual": "CERTIFIED [] on A and N, both variants (lineage stripped or kept): compilation COMPLETED, sufficiency COMPLETE, 0 conditions, Layer-1 VERIFIED_NO_MATERIAL_GAP_FOUND (Layer-2 mocked silent). CONTROL: dropping the gate as well (DROP_GATE: A-P4, M-P4, N-P4, 'unconditional unlimited permission') is refused everywhere (COMPILATION_NOT_COMPLETED + UNACCOUNTED_MATERIAL_SOURCE), so accountability does see the ratio figure - it only does not see the evaluation basis. M-P5 is refused, but for IPV-19's OPERATIVE_STATE_UNACCEPTABLE reason (masked).",
+      "repro": "adversarial DROP_CONDITIONS on 7.01(c) of pkg-a-basic-credit-agreement (A-P5) / pkg-n-clean-ratio (N-P5); DROP_GATE (A-P4/N-P4) as the control.",
+      "impact": "A ratio basket evaluated on actual rather than pro forma figures permits an incurrence the test would block (debt about to be incurred is excluded from the numerator).",
+      "hypothesis": "Accountability is item-level: the clause is one inventory item (with the ratio value) and it is consumed by the capacity's gatedBy, so no UNACCOUNTED finding arises; no deterministic guard ties 'pro forma' wording in the operative text to evaluationBasis.proForma on a condition or the gate, and the mocked inventory emits no separate CONDITION-role item for an inline 'so long as' gate (a cooperative live model might, which would route this into IPV-03's node-compatibility gap instead).",
+      "acceptance": "A unit whose operative text contains 'pro forma' must either have evaluationBasis.proForma on the test that gates it or raise a MATERIAL finding; more generally the evaluation basis (pro forma / as-of / testing period) must be an accountable element of a ratio test, not a property only a condition node can carry."
     }
   ],
   "observations": [

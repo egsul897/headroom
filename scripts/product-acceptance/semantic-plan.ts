@@ -165,6 +165,8 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
 
 export type Mutation =
   | { kind: "DROP_CONDITIONS"; sectionRef: string }
+  /** Removes every condition AND the capacity's gatedBy test: the rule is presented as an unconditional permission. */
+  | { kind: "DROP_GATE"; sectionRef: string }
   | { kind: "SET_AMOUNT"; sectionRef: string; amount: number; excerpt: string }
   | { kind: "ADD_RULE_FROM_TEXT"; sectionRef: string; amount: number; excerpt: string; family: string }
   | { kind: "SET_SCOPE"; sectionRef: string; entityScope: string[] }
@@ -198,6 +200,7 @@ export function mutate(plan: SubmissionPlan, mutation: Mutation, opts: { stripLi
     const dropLineageOf = (dropped: unknown) => { if (!opts.stripLineage) return; const ids = new Set(idsIn(dropped)); stripIds(s.rules, ids); stripIds(s.sharedCapacities, ids); s.inventoryDispositions = (s.inventoryDispositions ?? []).filter((d) => !ids.has((d as { inventoryItemId: string }).inventoryItemId)); };
     switch (mutation.kind) {
       case "DROP_CONDITIONS": { const r = rule(mutation.sectionRef); if (r) { const dropped = r.conditions; r.conditions = []; dropLineageOf(dropped); } break; }
+      case "DROP_GATE": { const r = rule(mutation.sectionRef); if (r) { const cap = r.capacityExpression as { gatedBy?: unknown } | undefined; const dropped = [r.conditions, cap?.gatedBy]; r.conditions = []; if (cap && "gatedBy" in cap) delete cap.gatedBy; dropLineageOf(dropped); } break; }
       case "SET_AMOUNT": { const r = rule(mutation.sectionRef); if (r) { r.capacityExpression = { kind: "MONEY", amount: mutation.amount, currency: "USD", citation: mutation.sectionRef, excerpt: mutation.excerpt, inventoryItemIds: inventoryIdsFor(user, mutation.excerpt) }; r.excerpt = mutation.excerpt; } break; }
       case "ADD_RULE_FROM_TEXT": s.rules.push({ localRef: "rx", sourceSectionRef: mutation.sectionRef, covenantFamily: mutation.family, ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: ACTION_BY_FAMILY[mutation.family] ?? null, entityScope: ["BORROWER"], entityScopeExcluded: [], capacityExpression: { kind: "MONEY", amount: mutation.amount, currency: "USD", citation: mutation.sectionRef, excerpt: mutation.excerpt, inventoryItemIds: inventoryIdsFor(user, mutation.excerpt) }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: mutation.sectionRef, excerpt: mutation.excerpt, inventoryItemIds: inventoryIdsFor(user, mutation.excerpt) }); break;
       case "SET_SCOPE": { const r = rule(mutation.sectionRef); if (r) r.entityScope = mutation.entityScope; break; }
@@ -290,6 +293,7 @@ export function adversarialCases(m: ExpectationsManifest, specs: CandidateSpec[]
   for (const pc of m.prohibitedClaims) {
     const a = pc.adversarial; if (!a || out.some((o) => o.prohibitedClaimId === pc.id)) continue;
     const mutation: Mutation = a.kind === "DROP_CONDITIONS" ? { kind: "DROP_CONDITIONS", sectionRef: a.sectionRef }
+      : a.kind === "DROP_GATE" ? { kind: "DROP_GATE", sectionRef: a.sectionRef }
       : a.kind === "SET_AMOUNT" ? { kind: "SET_AMOUNT", sectionRef: a.sectionRef, amount: a.amount ?? 0, excerpt: a.excerpt ?? "" }
       : a.kind === "SET_SCOPE" ? { kind: "SET_SCOPE", sectionRef: a.sectionRef, entityScope: a.entityScope ?? ["BORROWER"] }
       : a.kind === "CLAIM_COMPLETE" ? { kind: "CLAIM_COMPLETE", sectionRef: a.sectionRef, amount: a.amount, excerpt: a.excerpt }

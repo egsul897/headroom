@@ -354,6 +354,26 @@
       "claim": "7.02 permits Liens securing Indebtedness under 7.01(c)",
       "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
       "reason": "7.02 only excepts Liens securing 7.01(b) Indebtedness."
+    },
+    {
+      "id": "A-P4",
+      "claim": "7.01(c) is an unconditional, unlimited debt permission (ratio gate and conditions dropped)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The 3.50 to 1.00 ratio test is the whole of the permission.",
+      "adversarial": {
+        "kind": "DROP_GATE",
+        "sectionRef": "7.01(c)"
+      }
+    },
+    {
+      "id": "A-P5",
+      "claim": "7.01(c)'s ratio test is measured on actual (not pro forma) figures (condition nodes dropped while the capacity keeps its ratio gate)",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "The text says 'after giving pro forma effect thereto'.",
+      "adversarial": {
+        "kind": "DROP_CONDITIONS",
+        "sectionRef": "7.01(c)"
+      }
     }
   ],
   "nonOperative": [],

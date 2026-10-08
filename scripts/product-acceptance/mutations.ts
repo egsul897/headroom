@@ -250,6 +250,14 @@ export const MUTATIONS: Mutation[] = [
     edits: [{ documentId: "credit-agreement", find: "in an aggregate principal amount not to exceed $30,000,000", replace: "in an aggregate prin-\ncipal amount not to exceed $30,000,000" }],
     expect: { changedSections: ["7.01(b)", "7.01"], stableSections: ["7.02", "7.03"], nodeIdsStableFor: ["7.01(b)"], ocr: { ref: "7.01(b)", distinctivePhrase: "$30,000,000" },
       survival: "KILLED", survivalReason: "the clause text hash changes", killedByStages: ["STRUCTURE"] } },
+  { id: "MUT-21", kind: "OCR_NOISE", packageId: "pkg-h-unseen-composition", description: "Multi-document package: the ABL agreement's 'SECTION 7.03 Investments' scanned as 'S E C T I O N 7.03 Investments'.", legalEffect: "None; a scan artefact.",
+    edits: [{ documentId: "abl-credit-agreement", find: "SECTION 7.03 Investments", replace: "S E C T I O N 7.03 Investments" }],
+    expect: { changedSections: [], stableSections: ["7.11"], nodeIdsStableFor: ["7.02"], ocr: { ref: "7.03", distinctivePhrase: "shall not make any Investment" },
+      survival: "KILLED", survivalReason: "the manifest pins 7.03 and its clauses", killedByStages: ["STRUCTURE"] } },
+  { id: "MUT-22", kind: "OCR_NOISE", packageId: "pkg-h-unseen-composition", observeDocumentId: "intercreditor-agreement", description: "Intercreditor agreement: 'SECTION 4.01 Restriction on Payments' scanned as 'SECTION 4.0l'.", legalEffect: "None; a scan artefact on the payment restriction.",
+    edits: [{ documentId: "intercreditor-agreement", find: "SECTION 4.01 Restriction on Payments", replace: "SECTION 4.0l Restriction on Payments" }],
+    expect: { changedSections: [], stableSections: ["2.01"], nodeIdsStableFor: ["2.01"], ocr: { ref: "4.01", distinctivePhrase: "Availability would be less than $15,000,000" },
+      survival: "KILLED", survivalReason: "the manifest pins intercreditor 4.01 (H-ICA-4.01)", killedByStages: ["STRUCTURE"] } },
 ];
 
 export function renderMutationReport(obs: MutationObservation[], sha: string): string {
