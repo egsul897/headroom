@@ -58,6 +58,14 @@ Offline: `tests/contract-model/compiler/evidence-engine.test.ts` 11 passed. `npx
 
 Measured Gibraltar verification spend remains `8.777854` on 16 attempts, 74 emitted rules, 0 verified rules. Pass B dollars are not on the rate card. No paid call was made to build the engine.
 
+## Compilation-scope decision
+
+ADR: `docs/architecture/SELECTIVE-COMPILATION-ADR.md`. Decision: hybrid. Package inventory stays broad and deterministic. Deep compilation becomes the dependency closure of a question, with every unexamined restriction disclosed. Full-population semantic compilation is not the default to keep, and a question-only read that drops uncited covenants is rejected.
+
+Proof of concept: `lib/contract-model/compiler/compilation-scope.ts`. Offline test on the xref fixture: seed `7.02` compiles `7.01`, `7.02`, `7.03`, and `7.04` under closure, leaves `7.05` and `7.06` listed and not compiled, and does not compile `1.01` when its definition text is retrieved. No dollar saving is claimed from those counts.
+
+No Phase 3 gate was moved. Pass B is not retired.
+
 ## Open, still in this owner's scope
 
 - Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix and this evidence engine.
