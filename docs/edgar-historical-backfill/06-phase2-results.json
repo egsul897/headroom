@@ -40,6 +40,7 @@
       "NEEDS_ORIGINAL_INDEX": 10,
       "totalIbr": 74
     },
+    "ibrDenominatorNote": "Engine ibrResolved=80 is pre-dedupe second-pass completions; residual RESOLVED=45 is post-dedupe kept IBR with URI+filename; queue IBR_RESOLVED=41 is the ranked fetchable subset. See 07-ibr-denominator-reconciliation.md.",
     "vsPhase1Pilot": {
       "newIssuersCompleted": 19,
       "newExhibitsApprox": 434,
@@ -47,7 +48,8 @@
       "note": "Phase1 had 81 distinct CIKs / 439 exhibits / 126 queue due to share-class collision"
     },
     "resumeIdempotent": true,
-    "queueSha256": "51b4e7870e0010b5dbed4bb19ce56991b42bdf099b1c2fd994eed67296ff38f5"
+    "queueIdSetSha256": "7570a95be2f272c5708068500002aabcf9881993c9eabf51ae6c6d375188f2f9",
+    "queueByteShaNote": "Byte-level acquisition-queue.json hash changes when resume rewrites pretty JSON; durable fingerprint is queueIdSetSha256 (149 stable ids)."
   },
   "legacyPilot100QueueValidation": {
     "total": 126,

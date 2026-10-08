@@ -59,11 +59,14 @@ export interface SecAccessPolicy {
   sharedBudgetPath: string | null;
 }
 
-export function readSecFetchOwner(env: NodeJS.ProcessEnv = process.env): SecFetchOwnerRole {
+/** Loose env bag — avoids requiring NODE_ENV on partial test doubles. */
+export type SecEnvBag = Record<string, string | undefined>;
+
+export function readSecFetchOwner(env: SecEnvBag = process.env): SecFetchOwnerRole {
   return (env.HEADROOM_SEC_FETCH_OWNER?.trim() || "NONE") as SecFetchOwnerRole;
 }
 
-export function sharedBudgetPath(env: NodeJS.ProcessEnv = process.env): string | null {
+export function sharedBudgetPath(env: SecEnvBag = process.env): string | null {
   const p = env.HEADROOM_SEC_SHARED_BUDGET_PATH?.trim();
   return p || null;
 }
@@ -71,7 +74,7 @@ export function sharedBudgetPath(env: NodeJS.ProcessEnv = process.env): string |
 export function evaluateSecAccessPolicy(params: {
   role: SecFetchOwnerRole;
   userAgent: string;
-  env?: NodeJS.ProcessEnv;
+  env?: SecEnvBag;
   nowMs?: number;
 }): SecAccessPolicy {
   const env = params.env ?? process.env;

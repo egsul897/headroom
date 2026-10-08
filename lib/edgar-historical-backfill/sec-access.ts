@@ -44,7 +44,7 @@ export interface SecAccessOptions {
    * (still requires a non-placeholder User-Agent).
    */
   bypassFleetPolicyForTests?: boolean;
-  env?: NodeJS.ProcessEnv;
+  env?: Record<string, string | undefined>;
   fetchImpl?: typeof fetch;
   now?: () => number;
   sleep?: (ms: number) => Promise<void>;
@@ -67,7 +67,7 @@ export class SecAccessCoordinator {
   private readonly cacheDir: string | null;
   private readonly cacheTtlMs: number;
   private readonly cacheOnly: boolean;
-  private readonly env: NodeJS.ProcessEnv;
+  private readonly env: Record<string, string | undefined>;
   private readonly fetchImpl: typeof fetch;
   private readonly now: () => number;
   private readonly sleep: (ms: number) => Promise<void>;

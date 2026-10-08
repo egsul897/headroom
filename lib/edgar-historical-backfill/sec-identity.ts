@@ -53,7 +53,7 @@ export function assertAuthorizedSecUserAgent(userAgent: string): string {
  * Returns null when unset (callers that need live SEC must fail closed).
  */
 export function resolveSecUserAgentFromEnv(
-  env: NodeJS.ProcessEnv = process.env,
+  env: Record<string, string | undefined> = process.env,
 ): string | null {
   const full = env.SEC_EDGAR_USER_AGENT?.trim();
   if (full) return assertAuthorizedSecUserAgent(full);
@@ -70,7 +70,7 @@ export function resolveSecUserAgentFromEnv(
 }
 
 /** Require a configured identity or throw. */
-export function requireSecUserAgentFromEnv(env: NodeJS.ProcessEnv = process.env): string {
+export function requireSecUserAgentFromEnv(env: Record<string, string | undefined> = process.env): string {
   const ua = resolveSecUserAgentFromEnv(env);
   if (!ua) {
     throw new SecUserAgentConfigError(

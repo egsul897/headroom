@@ -27,3 +27,12 @@
 - Pilot-100-v2: **100/100 distinct CIKs**, 78,859 filings, 873 exhibits, 868 distinct agreements, **149 fetchable** queued (108 inline + 41 IBR_RESOLVED).
 - Resume bug fixed (hydrate completed manifests when cursor at end); queue regeneration idempotent.
 - Tests: 29/29. Draft PR #142.
+
+## 2026-10-08 — Phase 2 final integration gate
+
+- Merged `origin/main` @ `ab87979` (`.gitignore` conflict resolved via broad `data/` + `.cache/`).
+- Scope audit: 47 files vs main stay in EHB exclusive trees + `.env.example` / `.gitignore`; no CKF/registry overlap.
+- IBR denominators documented: engine 80 (pre-dedupe) ≠ residual RESOLVED 45 ≠ queue IBR_RESOLVED 41 (`07-ibr-denominator-reconciliation.md`).
+- CKF handoff: 149 fetchable, offline validation 149/149, `queueIdSetSha256=7570a95…`, no second registry.
+- Resume replay: `secRequests=0`, identical 149 queueIds; `tsc --noEmit` clean; 29/29 tests.
+- Marked PR ready; notified WS-PAR Integration Lead for prompt merge (agent does not merge).
