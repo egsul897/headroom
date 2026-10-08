@@ -10,6 +10,8 @@ import {
   looksLikeIncorporatedByReference,
   parseIncorporatedByReference,
   completeIbrFromOriginalIndex,
+  extractIbrFormAndDate,
+  resolveIbrAccessionFromFilings,
 } from "../../lib/edgar-historical-backfill/ibr-resolver";
 import { exhibitsFromIndexHtml, parseIndexExhibitRows } from "../../lib/edgar-historical-backfill/index-parser";
 import { dedupeExhibits } from "../../lib/edgar-historical-backfill/dedupe";
@@ -97,6 +99,22 @@ describe("IBR resolver", () => {
     expect(ibr.resolvedAccessionNumber).toBe("0001193125-25-123456");
     expect(ibr.resolvedExhibitType).toBe("EX-10.1");
     expect(ibr.resolutionStatus).toBe("PARTIAL");
+  });
+
+  it("resolves Form+date IBR citations against submissions filings", () => {
+    const raw =
+      "Incorporated by reference to Exhibit 10.1 of the Company's Current Report on Form 8-K filed with the Securities and Exchange Commission on June 16, 2025";
+    expect(extractIbrFormAndDate(raw)).toEqual({ form: "8-K", date: "2025-06-16" });
+    const ibr = parseIncorporatedByReference({
+      description: "Eighth Amended and Restated Credit Agreement",
+      documentCellText: raw,
+      cik: "0000816956",
+    });
+    const resolved = resolveIbrAccessionFromFilings(ibr, [
+      { form: "8-K", filingDate: "2025-06-16", accessionNumber: "0001174947-25-000941" },
+    ]);
+    expect(resolved.resolvedAccessionNumber).toBe("0001174947-25-000941");
+    expect(resolved.resolvedExhibitType).toBe("EX-10.1");
   });
 
   it("completes IBR against the original index rows", () => {

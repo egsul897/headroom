@@ -63,16 +63,23 @@ export async function selectIssuerUniverse(
 ): Promise<IssuerRef[]> {
   const all = await loadCompanyTickers(sec);
   const byTicker = new Map(all.map((a) => [a.ticker, a]));
+  // One row per CIK (company_tickers.json often repeats CIKs across share classes).
+  const byCik = new Map<string, IssuerRef>();
+  for (const a of all) {
+    if (!byCik.has(a.cik)) byCik.set(a.cik, { cik: a.cik, ticker: a.ticker, title: a.title });
+  }
   const preferred: IssuerRef[] = [];
+  const preferredCiks = new Set<string>();
   for (const t of opts?.preferTickers ?? []) {
     const hit = byTicker.get(t.toUpperCase());
-    if (hit) preferred.push({ cik: hit.cik, ticker: hit.ticker, title: hit.title });
+    if (hit && !preferredCiks.has(hit.cik)) {
+      preferred.push({ cik: hit.cik, ticker: hit.ticker, title: hit.title });
+      preferredCiks.add(hit.cik);
+    }
   }
-  const preferredCiks = new Set(preferred.map((p) => p.cik));
-  const rest = all
+  const rest = [...byCik.values()]
     .filter((a) => !preferredCiks.has(a.cik))
-    .sort((a, b) => a.cik.localeCompare(b.cik))
-    .map((a) => ({ cik: a.cik, ticker: a.ticker, title: a.title }));
+    .sort((a, b) => a.cik.localeCompare(b.cik));
   return [...preferred, ...rest].slice(0, count);
 }
 
@@ -139,10 +146,20 @@ export async function loadIssuerFilings(
 }
 
 export function rankFilingsForIndexFetch(filings: FilingRef[], maxPerIssuer: number): FilingRef[] {
-  return [...filings]
+  const scored = [...filings]
     .map((f) => ({ f, score: filingDebtSignalScore(f.form, f.items, f.primaryDocDescription) }))
     .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score || b.f.filingDate.localeCompare(a.f.filingDate))
-    .slice(0, maxPerIssuer)
-    .map((x) => x.f);
+    .sort((a, b) => b.score - a.score || b.f.filingDate.localeCompare(a.f.filingDate));
+
+  // Reserve ~1/3 of the index budget for 10-K/10-Q so IBR exhibit tables are
+  // discovered, not only inline 8-K Item 1.01 attachments.
+  const reserved = Math.max(1, Math.floor(maxPerIssuer / 3));
+  const periodic = scored.filter((x) => /^(10-K|10-Q)/i.test(x.f.form)).slice(0, reserved);
+  const restBudget = maxPerIssuer - periodic.length;
+  const rest = scored.filter((x) => !periodic.includes(x)).slice(0, restBudget);
+  const picked = [...rest, ...periodic];
+  // Stable unique by accession, newest first within score order.
+  const byAcc = new Map<string, FilingRef>();
+  for (const x of picked) byAcc.set(x.f.accessionNumber, x.f);
+  return [...byAcc.values()].slice(0, maxPerIssuer);
 }

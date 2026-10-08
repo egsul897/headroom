@@ -10,7 +10,9 @@ import type { IncorporatedByReference } from "./types";
 
 const ACCESSION_RE = /\b(\d{10}-\d{2}-\d{6})\b/g;
 const EXHIBIT_RE = /\b(?:Exhibit|Ex\.?)\s*([0-9]+(?:\.[0-9]+)?[A-Za-z]?)\b/i;
-const FORM_DATE_RE = /\b((?:Form\s+)?(?:8-K|10-K|10-Q|S-1|S-3|S-4|20-F)(?:\/A)?)\b(?:[^.]{0,80}?)(?:filed|on)?\s*(?:on\s+)?((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{2,4})?/i;
+const FORM_RE = /\b(?:Form\s+)?(8-K|10-K|10-Q|S-1|S-3|S-4|20-F)(?:\/A)?\b/i;
+const DATE_RE =
+  /(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{2,4}/i;
 
 export interface IbrParseInput {
   description: string;
@@ -37,11 +39,12 @@ export function parseIncorporatedByReference(input: IbrParseInput): Incorporated
   const resolvedExhibitType = exhibitMatch ? `EX-${exhibitMatch[1]}` : undefined;
 
   if (accessions.length === 0) {
-    const formDate = FORM_DATE_RE.exec(rawText);
+    const formHit = FORM_RE.exec(rawText);
+    const dateHit = DATE_RE.exec(rawText);
     return {
       rawText,
       resolvedExhibitType,
-      resolutionStatus: formDate ? "PARTIAL" : "UNRESOLVED",
+      resolutionStatus: formHit || dateHit ? "PARTIAL" : "UNRESOLVED",
     };
   }
 
@@ -58,6 +61,80 @@ export function parseIncorporatedByReference(input: IbrParseInput): Incorporated
     resolvedFilename,
     resolvedSourceUri,
     resolutionStatus: resolvedExhibitType ? "PARTIAL" : "RESOLVED",
+  };
+}
+
+/** Normalize common SEC date prose to YYYY-MM-DD. */
+export function parseSecDateProse(raw: string): string | null {
+  const iso = raw.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+  const mdY = raw.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if (mdY) {
+    const y = mdY[3]!.length === 2 ? `20${mdY[3]}` : mdY[3]!;
+    return `${y}-${mdY[1]!.padStart(2, "0")}-${mdY[2]!.padStart(2, "0")}`;
+  }
+  const months: Record<string, string> = {
+    january: "01",
+    february: "02",
+    march: "03",
+    april: "04",
+    may: "05",
+    june: "06",
+    july: "07",
+    august: "08",
+    september: "09",
+    october: "10",
+    november: "11",
+    december: "12",
+  };
+  const named = raw.match(
+    /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})/i,
+  );
+  if (named) {
+    return `${named[3]}-${months[named[1]!.toLowerCase()]}-${named[2]!.padStart(2, "0")}`;
+  }
+  return null;
+}
+
+export function extractIbrFormAndDate(rawText: string): { form?: string; date?: string } {
+  const formHit = FORM_RE.exec(rawText);
+  const dateHit = DATE_RE.exec(rawText);
+  const form = formHit?.[1]?.toUpperCase();
+  const date = dateHit?.[0] ? parseSecDateProse(dateHit[0]) ?? undefined : undefined;
+  return { form, date };
+}
+
+/**
+ * When IBR prose cites Form + date but not accession, resolve against the
+ * issuer's already-loaded submissions catalog (no extra SEC call).
+ */
+export function resolveIbrAccessionFromFilings(
+  ibr: IncorporatedByReference,
+  filings: Array<{ form: string; filingDate: string; accessionNumber: string }>,
+): IncorporatedByReference {
+  if (ibr.resolvedAccessionNumber) return ibr;
+  const { form, date } = extractIbrFormAndDate(ibr.rawText);
+  if (!form || !date) return ibr;
+  const hit = filings.find((f) => f.form.toUpperCase() === form && f.filingDate === date);
+  if (!hit) {
+    // Allow ±1 day (weekend/acceptance quirks).
+    const nearby = filings.find((f) => {
+      if (f.form.toUpperCase() !== form) return false;
+      const a = Date.parse(f.filingDate);
+      const b = Date.parse(date);
+      return Number.isFinite(a) && Number.isFinite(b) && Math.abs(a - b) <= 2 * 86_400_000;
+    });
+    if (!nearby) return ibr;
+    return {
+      ...ibr,
+      resolvedAccessionNumber: nearby.accessionNumber,
+      resolutionStatus: ibr.resolvedExhibitType ? "PARTIAL" : "RESOLVED",
+    };
+  }
+  return {
+    ...ibr,
+    resolvedAccessionNumber: hit.accessionNumber,
+    resolutionStatus: ibr.resolvedExhibitType ? "PARTIAL" : "RESOLVED",
   };
 }
 

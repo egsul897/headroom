@@ -68,8 +68,12 @@ export function classifyExhibit(input: ClassifyInput): ClassifyResult {
     return { documentKind: "UNKNOWN", relevanceScore: 0, matchedSignals: [] };
   }
 
-  // Known non-debt false positives (Ford Tax Benefit Preservation Plan, equity awards, etc.).
-  if (/(tax\s+benefit|preservation\s+plan|restricted\s+stock|stock\s+unit|equity\s+incentive|employment\s+agreement|offer\s+letter|compensation\s+plan|bonus\s+plan)/i.test(h)) {
+  // Known non-debt false positives (Ford Tax Benefit Preservation Plan, equity awards, underwriting, bylaws, etc.).
+  if (
+    /(tax\s+benefit|preservation\s+plan|restricted\s+stock|stock\s+unit|equity\s+incentive|employment\s+agreement|offer\s+letter|compensation\s+plan|bonus\s+plan|underwriting\s+agreement|distribution\s+agreement|purchase\s+agreement\s+for\s+shares|sales\s+agreement|\bby-?laws\b|\bcertificate of incorporation\b|\barticles of (incorporation|association)\b|note\s+hedge|warrant\s+transaction\s+confirmation|call\s+option\s+transaction)/i.test(
+      h,
+    )
+  ) {
     return { documentKind: "UNKNOWN", relevanceScore: 5, matchedSignals: ["non_debt_false_positive"] };
   }
 

@@ -13,6 +13,7 @@ export * from "./sec-access";
 export * from "./exhibit-classifier";
 export * from "./ibr-resolver";
 export * from "./index-parser";
+export * from "./primary-exhibit-index";
 export * from "./submissions";
 export * from "./dedupe";
 export * from "./coverage";

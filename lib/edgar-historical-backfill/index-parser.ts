@@ -71,6 +71,11 @@ export function exhibitsFromIndexHtml(filing: FilingRef, html: string): ExhibitR
   const out: ExhibitRef[] = [];
 
   for (const row of rows) {
+    // Skip the filing's own primary form document rows (8-K/10-K covers), keep EX-* only.
+    const typeNorm = row.type.toUpperCase().replace(/\s+/g, "");
+    const isExhibit = typeNorm.startsWith("EX-") || typeNorm.startsWith("EXHIBIT");
+    if (!isExhibit) continue;
+
     const classified = classifyExhibit({
       filename: row.filename,
       description: row.description,

@@ -11,7 +11,13 @@ import { createHash } from "node:crypto";
 import { SecAccessCoordinator, getSharedSecAccess } from "./sec-access";
 import { selectIssuerUniverse, loadIssuerFilings, rankFilingsForIndexFetch } from "./submissions";
 import { exhibitsFromIndexHtml, parseIndexExhibitRows } from "./index-parser";
-import { completeIbrFromOriginalIndex, indexUrlFor } from "./ibr-resolver";
+import { exhibitsFromPrimaryDocument } from "./primary-exhibit-index";
+import {
+  archivesDocUrl,
+  completeIbrFromOriginalIndex,
+  indexUrlFor,
+  resolveIbrAccessionFromFilings,
+} from "./ibr-resolver";
 import { filingDebtSignalScore } from "./exhibit-classifier";
 import { dedupeExhibits } from "./dedupe";
 import { buildCoverageReport, countDistinctAgreements } from "./coverage";
@@ -115,9 +121,29 @@ export async function runHistoricalDiscovery(opts: RunDiscoveryOptions): Promise
         if (status !== 200) continue;
         const exhibits = exhibitsFromIndexHtml(filing, text);
         discovered.push(...exhibits);
+
+        // 10-K/10-Q: also parse the primary document's Item 15 exhibit index for IBR rows.
+        if (/^(10-K|10-Q)/i.test(filing.form) && filing.primaryDocument) {
+          const primaryUrl = archivesDocUrl(filing.cik, filing.accessionNumber, filing.primaryDocument);
+          const primary = await sec.getText(primaryUrl);
+          checkpoint.stats.indexesFetched++; // counts against fair-access budget
+          if (primary.status === 200) {
+            const fromPrimary = exhibitsFromPrimaryDocument(filing, primary.text);
+            discovered.push(...fromPrimary);
+          }
+        }
+
         if (entry) {
-          entry.exhibitCount = exhibits.length;
-          entry.relevantExhibitCount = exhibits.filter((e) => e.relevanceScore >= 55).length;
+          const forFiling = discovered.filter((e) => e.accessionNumber === filing.accessionNumber);
+          entry.exhibitCount = forFiling.length;
+          entry.relevantExhibitCount = forFiling.filter((e) => e.relevanceScore >= 55).length;
+        }
+      }
+
+      // Resolve IBR Form+date citations against this issuer's submissions catalog.
+      for (const e of discovered) {
+        if (e.ibr && !e.ibr.resolvedAccessionNumber) {
+          e.ibr = resolveIbrAccessionFromFilings(e.ibr, filings);
         }
       }
 

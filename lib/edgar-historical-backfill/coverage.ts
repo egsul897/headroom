@@ -64,15 +64,16 @@ export function buildCoverageReport(manifests: IssuerManifest[]): CoverageReport
       });
     }
 
-    // Year gaps: years with scanned filings but no credit agreement / indenture.
-    const yearsScanned = new Set(m.filings.map((f) => f.filingDate.slice(0, 4)));
+    // Year gaps: only for years where we actually opened an index (budgeted discovery),
+    // not every year present in the full submissions catalog.
+    const yearsIndexed = new Set(m.filings.filter((f) => f.indexFetched).map((f) => f.filingDate.slice(0, 4)));
     const yearsWithCore = new Set(
       m.exhibits
         .filter((e) => e.documentKind === "CREDIT_AGREEMENT" || e.documentKind === "INDENTURE" || e.documentKind === "RESTATEMENT")
         .map((e) => e.filingDate.slice(0, 4)),
     );
-    for (const y of yearsScanned) {
-      if (!yearsWithCore.has(y) && m.filings.some((f) => f.filingDate.startsWith(y) && f.indexFetched)) {
+    for (const y of yearsIndexed) {
+      if (!yearsWithCore.has(y)) {
         gaps.push({
           cik: m.issuer.cik,
           ticker: m.issuer.ticker,
