@@ -74,11 +74,31 @@ No Phase 3 gate was moved. Pass B is not retired.
 
 An exact qualitative gate whose description only restates the other gate is rewritten to that one gate. A description that also states an independent qualifier is left unchanged. Substring folding from `origin/main` was not adopted. The third-qualifier and ambiguous-sibling tests still pass.
 
-The open parser change in PR #132 was tried and reverted. It removes structural anchors for CONMED `7.1(c)` and `7.1(d)` and drops the offline map from 104 represented evidence records to 102. `tests/contract-model/certified/offline-maps.test.ts` passes again with the parser restored.
+The open parser change in PR #132 is on this branch with one guard. A restarted letter run does not open when an open list of the same alphabet has already reached that letter. Without the guard, the cross-reference `Section 6.1(a) or (b)` inside CONMED 7.1(a) swallowed the real `(b)`, and `7.1(c)` / `7.1(d)` were no longer resolvable. With the guard, those two keys rehydrate and `offline-maps.test.ts` stays at 104 represented records.
+
+## Checkpoint
+
+- Agent: Cursor. Ownership: production compiler, source authentication, budget, evidence, structural parser. Not Claude's acceptance directories.
+- Mission: source-backed compilation without false operative text, silent condition loss, or unanchored authority.
+- Branch: `cursor/architecture-remediation-7cc2`. Base: `cursor/gibraltar-haiku-verify-7cc2`. PR #136 draft.
+- Last verified SHA before this commit: `4a7a4777303005f29ec5170f9a9800f691a119a9`. Certified path on that SHA succeeded (Actions `37798576897`). The commit that contains this checkpoint is the letter/roman guard.
+- Current task: letter/roman parser that keeps CONMED 7.1(c) and 7.1(d).
+- Status: implemented locally, tests below, commit follows this file.
+- Exact tests this cycle: `tsc --noEmit` exit 0. Clause hierarchy 17 passed. F2 nesting 18 passed. Structural index 17, references 8, phase-2f1 31 passed. `npm run test:phase3-certification`: 456 passed, 2 failed. Both failures are 5s timeouts in `semantic-verification-verify.test.ts` (no-key review routing, and IR mutation). Offline maps passed inside that suite. Certified path on `4a7a477` (parent of this commit) Actions run `37798576897` concluded success. This commit's Actions are not yet observed.
+- Known defects still open: unanchored `compileCovenantToIR` does not refuse (`operative-authority.ts` returns null without an anchor). `package-compile.ts` is still the broad set. Inline `7.4(a)(iii)` and `7.4(a)(iv)` are not structural nodes; that was already true before this parser change, and those discovery ids have no run-original evidence file. Local semantic-review timeout is not a certification result.
+- Decision: do not merge `origin/main` (`9de4e57`) into this branch. The qualitative-honesty files diverge. Do not wire question closure into `package-compile.ts`.
 
 ## Open, still in this owner's scope
 
-- Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix, the evidence engine, and the question planner. Do not describe a pending or absent job as green.
-- Do not recompile Article VII and do not rerun the 788-row verification. The smallest future spend test is the single-section experiment in the cost report, and it is not authorized by this change.
+- Do not recompile Article VII and do not rerun the 788-row verification. Paid spend remains $0.
 - Do not treat a cache hit or a dry selection as certification.
-- Wiring `package-compile.ts` to the closure remains deferred. It needs an explicit architecture change and must not move Phase 3 gates.
+- Wiring `package-compile.ts` to the closure remains deferred.
+
+## NEXT_TASK
+
+- Objective: explain why inline markers `(iii)` and `(iv)` inside CONMED Section 7.4(a) do not become nodes, and fix that only if the change does not move a section ref that the offline map already binds.
+- Relevant files: `lib/contract-model/compiler/clause-hierarchy.ts`, `tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt` around Section 7.4, `scripts/p3-conmed-pilot/pipeline.ts` `rehydrateNodeIds`.
+- First step: `npx tsx` a rehydrate of `sealedPopulation().all` and print nodes whose `sectionRef` starts with `7.4`.
+- Expected output: either `(iii)` and `(iv)` appear under `7.4(a)`, or a written reason they must stay unparsed (mid-sentence marker, ambiguous with a roman/letter collision).
+- Acceptance: `offline-maps.test.ts` still passes, and any new node is covered by a synthetic test that does not name CONMED in production code.
+- Dependency: do not edit sealed evidence JSON. Do not call a provider.
