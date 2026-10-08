@@ -555,6 +555,9 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
   } else {
     status = worstStatus(provisions.map((p) => p.status));
   }
+  if (status === "OPERATIVE_STATE_RESOLVED" && unattachedEffects.some((e) => e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:"))) {
+    status = "OPERATIVE_STATE_REVIEW_REQUIRED";
+  }
 
   const byStatus: Record<string, number> = {};
   for (const p of provisions) byStatus[p.status] = (byStatus[p.status] ?? 0) + 1;
