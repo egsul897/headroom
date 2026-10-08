@@ -1,0 +1,109 @@
+{
+  "artifact": "financial-definitions-precedent.unresolved-interpretation-queue",
+  "version": "fdp.v1",
+  "items": [
+    {
+      "id": "UQ-001",
+      "topic": "CHWY Interest Coverage Ratio definition locus",
+      "severity": "Interest Coverage Ratio is heavily referenced (including Numerical Permission and \u00a71.08(g)) but a standalone \u201cInterest Coverage Ratio\u201d means-definition was not located in the extracted-text sweep used for this draft.",
+      "blockingFor": [
+        "interest coverage calculation executability for CHWY"
+      ],
+      "neededEvidence": "Full definition headword or section assigning meaning; confirm if defined via ABL CA or another construct",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-002",
+      "topic": "CHWY ABL Cure Amount mechanics",
+      "severity": "Term loan CA cross-references Cure Amount to ABL Credit Agreement; ABL CA not in chwy-2026 package extracted-text set used here.",
+      "blockingFor": [
+        "cure rights calculation",
+        "Available Amount equity prong exclusions"
+      ],
+      "neededEvidence": "ABL Credit Agreement cure section",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-003",
+      "topic": "FWRG Section 6.10 equity cure operative rules",
+      "severity": "Definitions excerpt excludes Cure Amount from Available Amount builders; frequency/amount/EBITDA-deeming rules for the cure right itself are not in the curated excerpt.",
+      "blockingFor": [
+        "cure right modeling"
+      ],
+      "neededEvidence": "Article VI financial covenant cure text",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-004",
+      "topic": "CONMED Consolidated Senior Secured Funded Debt full definition",
+      "severity": "SSLR numerator references Consolidated Senior Secured Funded Debt; capture of that headword's full text should be completed beyond the SSLR excerpt window for executor use.",
+      "blockingFor": [
+        "secured leverage executability"
+      ],
+      "neededEvidence": "Full \u201cConsolidated Senior Secured Funded Debt\u201d definition span",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-005",
+      "topic": "Whether CHWY Fixed Charges implies an FCCR test anywhere",
+      "severity": "Fixed Charges is defined, but no Fixed Charge Coverage Ratio definition was found; unclear if Fixed Charges is only a component for other uses.",
+      "blockingFor": [
+        "FCCR research target completeness for CHWY"
+      ],
+      "neededEvidence": "Operative uses of Fixed Charges",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-006",
+      "topic": "Interaction of CHWY Available Amount builder floors with Pro Forma Basis",
+      "severity": "Clause (a) says CNI/Retained ECF/EBITDA\u2212interest amounts are calculated on a Pro Forma Basis and also floors quarterly negatives at zero \u2014 order of operations between pro forma restatement and zero-floor is not explicitly sequenced in the excerpted sentence.",
+      "blockingFor": [
+        "Available Amount numeric evaluation"
+      ],
+      "neededEvidence": "Counsel-reviewed interpretation or additional clarifying drafting elsewhere in CA",
+      "status": "OPEN_NO_LEGAL_EQUIVALENCE_CLAIM"
+    },
+    {
+      "id": "UQ-007",
+      "topic": "GIB Available Amount Builder Basket full \u00a77.05(a)(y) arithmetic",
+      "severity": "Article I may cross-reference Section 7.05(a)(y); full builder prongs need operative section capture for executability. See UQ-GIB-705AY-CITATION for full citation/scope conflict record.",
+      "blockingFor": [
+        "GIB Available Amount numeric evaluation"
+      ],
+      "neededEvidence": "Section 7.05(a)(y) complete text",
+      "status": "SUPERSEDED_BY_UQ-GIB-705AY-CITATION"
+    },
+    {
+      "id": "UQ-008",
+      "topic": "DSGR EBITDA vs Consolidated EBITDA naming",
+      "severity": "DSGR drafting uses EBITDA / Net Income naming in places; confirm whether a separate Consolidated EBITDA headword exists in the same restated text.",
+      "blockingFor": [
+        "uniform term joining with encyclopedia"
+      ],
+      "neededEvidence": "Full EBITDA / Consolidated EBITDA headwords if both exist",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-009",
+      "topic": "Riot margin cure operative section crosswalk",
+      "severity": "Schedule shows Cure Amount (BTC) placeholder; full Section 2.06 / margin-call operative steps should be linked for executability beyond the schedule label.",
+      "blockingFor": [
+        "margin cure numeric evaluation"
+      ],
+      "neededEvidence": "Operative Margin Call / Additional Collateral sections with cure timing and LTV thresholds",
+      "status": "OPEN"
+    },
+    {
+      "id": "UQ-GIB-705AY-CITATION",
+      "topic": "Gibraltar Available Amount Builder Basket \u2014 \u00a77.05(a)(y) citation / naming scope",
+      "severity": "Article I: term \u201chas the meaning specified in Section 7.05(a)(y)\u201d. Operative \u00a77.05(a)(y) is the RP builder sum of (i)\u2013(vi). The naming parenthetical (\u201cthe foregoing clause (y), the Available Amount Builder Basket\u201d) is printed immediately after (vi), which can be misread as naming only the (vi) grower ($137.6M / 40% LTM EBITDA). Textually the parenthetical refers to clause (y). Loose references to \u201cSection 7.05(y)\u201d (without \u201c(a)\u201d) also appear. Do NOT force a unique target or certify the builder formula.",
+      "blockingFor": [
+        "GIB Available Amount numeric evaluation",
+        "TC-GIB-AA-BUILDER-v1 arithmetic"
+      ],
+      "neededEvidence": "Counsel determination of defined-term scope; confirm whether any amendment retargeted the parenthetical",
+      "status": "OPEN",
+      "forcedResolutionForbidden": true
+    }
+  ]
+}
