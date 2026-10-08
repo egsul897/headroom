@@ -1,17 +1,13 @@
-# WS-FDP mission report — Phase 4
+# WS-FDP mission report — Phase 5
 
 **Branch:** `cursor/financial-definitions-precedent-43af`  
 **PR:** #151  
-**Starting SHA:** `153d33a1883eecbd9cde2e96aaf6320edcc38a44`
+**Starting SHA:** `b234d4688f65c484c595771d87fd1b49ba33d52c`
 
-## Deliverables
+## Focus
 
-- Seven calculation models with controlling definitions, cross-refs, provisos, entity scope, measurement dates, amendment joins, and financial-input requirements.
-- Amendment-authority records coordinated with Amendment Chain Research (join only).
-- +64 independent arithmetic scenarios (total 77).
-- Legal-completeness metrics separate from arithmetic.
-- Canonical export v3; Gibraltar citation remains OPEN / capacity not inferred.
+Fail-closed calculation safety and independent legal review readiness. Incomplete inputs, unsupported semantics, unresolved amendment authority, and ambiguous citations must not produce apparently authoritative financial or capacity conclusions.
 
 ## Boundaries
 
-No paid inference, merge, certification advancement, production legal-rule/calc-engine edits, or peer production schema competition.
+No paid inference, merge, certification advancement, production legal-rule promotion, Claude-owned fixture modifications, or competing production schemas. Gibraltar citation remains unresolved.

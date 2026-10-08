@@ -43,7 +43,11 @@ Deep, source-backed precedent dataset focused on **financial definitions**, **le
 | `21-amendment-authority.json` | Amendment-authority join to Amendment Intelligence |
 | `22-canonical-export-v3.json` | Canonical export v3 with model + amend joins |
 | `23-legal-completeness.json` | Structural legal-completeness metrics (not legal review) |
+| `24-independent-legal-challenger.json` | External legal-challenger handoff (none self-verified) |
+| `25-phase5-failure-dispositions.json` | Phase 5 SHA drift + missing/unsupported dispositions |
+| `26-conmed-pro-forma-completeness.json` | CONMED clause-(i) PF partial-model taxonomy |
 | `scripts/generate_phase4.py` | Deterministic Phase 4 artifact generator |
+| `scripts/generate_phase5.py` | Phase 5 fail-closed safety + challenger generator |
 | `examples/` | Human-readable source-backed vignettes |
 | `source-normalize/` | Deterministic plaintext sidecars for HTML fixtures (citation offsets) |
 

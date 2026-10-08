@@ -1,0 +1,80 @@
+{
+  "artifact": "financial-definitions-precedent.phase5-failure-dispositions",
+  "version": "fdp.phase5-disp.v1",
+  "shaDrift": {
+    "reportedPhase4Sha": "0e92747ba5fc018a2589aa93a6fdc9246a7611dc",
+    "observedGithubHeadAtPrompt": "b234d4688f65c484c595771d87fd1b49ba33d52c",
+    "interveningCommits": [
+      {
+        "sha": "b234d4688f65c484c595771d87fd1b49ba33d52c",
+        "subject": "WS-FDP Phase 4: peer join field aliases from inventory",
+        "remediation": "Added joinFieldAliases + ACR package coverage; no missing-input safety fixes yet"
+      }
+    ],
+    "reconciledStartingSha": "b234d4688f65c484c595771d87fd1b49ba33d52c",
+    "hold": false
+  },
+  "missingInputFailureDispositions": [
+    {
+      "modelId": "CM-CONMED-EBITDA-PF-v1",
+      "phase4Status": "FAIL",
+      "exactFailingDimension": "missingInputRefusal",
+      "rootCause": "No MISSING_INPUT arithmetic cases bound to TC-CONMED-EBITDA-PF-CAP-v1; evaluators only covered attested-input paths, so absent gross could be mistaken for zero.",
+      "missingInput": "pro_forma_adjustment_gross (and ebitda_before_pf_clause_i)",
+      "observedOutputBeforeFix": "Legal-completeness FAIL; no refusal case \u2014 silent zero would yield ebitda_after=base",
+      "couldBeMistakenForValidCalc": true,
+      "generalizableFix": "Require explicit MISSING_INPUT whenever any financialInputRequirements key is absent; add silent-zero negative controls",
+      "regressionCaseIds": [
+        "ARITH-P5-CONMED-PF-MISSING-GROSS",
+        "ARITH-P5-CONMED-PF-MISSING-BEFORE",
+        "ARITH-P5-CONMED-PF-SILENT-ZERO-TRAP"
+      ],
+      "phase5Status": "PASS"
+    },
+    {
+      "modelId": "CM-CHWY-TLR-v1",
+      "phase4Status": "FAIL",
+      "exactFailingDimension": "missingInputRefusal",
+      "rootCause": "TLR suite had zero-denominator and currency refusals but no missing CTD/EBITDA cases; missing CTD as 0 yields 0.0x (looks compliant).",
+      "missingInput": "consolidated_total_debt / consolidated_ebitda_covenant_defined",
+      "observedOutputBeforeFix": "Legal-completeness FAIL",
+      "couldBeMistakenForValidCalc": true,
+      "generalizableFix": "MISSING_INPUT on any absent ratio input; forbid treat_missing_as_zero",
+      "regressionCaseIds": [
+        "ARITH-P5-CHWY-TLR-MISSING-CTD",
+        "ARITH-P5-CHWY-TLR-MISSING-EBITDA",
+        "ARITH-P5-CHWY-TLR-SILENT-ZERO-TRAP"
+      ],
+      "phase5Status": "PASS"
+    },
+    {
+      "modelId": "CM-CHWY-ANTIDUPE-v1",
+      "phase4Status": "FAIL",
+      "exactFailingDimension": "missingInputRefusal",
+      "rootCause": "Antidupe cases assumed both amounts present; missing already-in-EBITDA could be treated as 0 \u2192 false OK/allow full clause (d).",
+      "missingInput": "addback_amount_clause_d / addback_amount_already_in_ebitda",
+      "observedOutputBeforeFix": "Legal-completeness FAIL",
+      "couldBeMistakenForValidCalc": true,
+      "generalizableFix": "MISSING_INPUT unless both overlap operands attested; forbid assume_no_overlap",
+      "regressionCaseIds": [
+        "ARITH-P5-CHWY-ANTIDUPE-MISSING-CLAUSE-D",
+        "ARITH-P5-CHWY-ANTIDUPE-MISSING-ALREADY"
+      ],
+      "phase5Status": "PASS"
+    }
+  ],
+  "dsgrUnsupportedCaseDisposition": {
+    "modelId": "CM-DSGR-EBITDA-v1",
+    "phase4Status": "FAIL",
+    "rootCause": "All Phase-4 DSGR cases returned numeric ebitda under simplified capped-bucket model; no path returned UNSUPPORTED_CASE/REVIEW_REQUIRED for unmodeled clauses, missing source authority, or unattested provisos.",
+    "testsAdded": [
+      "ARITH-P5-DSGR-UNSUPPORTED-ADDBACK",
+      "ARITH-P5-DSGR-MISSING-SOURCE-AUTHORITY",
+      "ARITH-P5-DSGR-UNMODELED-PROVISO",
+      "ARITH-P5-DSGR-UNSUPPORTED-BRANCH",
+      "ARITH-P5-DSGR-MISSING-AM1-AM2"
+    ],
+    "rule": "Unsupported contractual semantics must not yield affirmative executable EBITDA",
+    "phase5Status": "PASS"
+  }
+}

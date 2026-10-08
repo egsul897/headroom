@@ -193,11 +193,12 @@
     "atlasEntries": 57,
     "typedCalculations": 7,
     "calculationModels": 7,
-    "arithmeticCases": 77,
+    "arithmeticCases": 100,
     "arithmeticCasesPhase4New": 64,
     "unresolvedItems": 10,
     "sourceDocuments": 11,
-    "amendmentAuthorityRecords": 7
+    "amendmentAuthorityRecords": 7,
+    "arithmeticCasesPhase5New": 23
   },
   "calculationModelIds": [
     "CM-CONMED-SSLR-v1",
@@ -237,7 +238,10 @@
     "calculationModels": "20-calculation-models.json",
     "amendmentAuthority": "21-amendment-authority.json",
     "legalCompleteness": "23-legal-completeness.json",
-    "unresolvedQueue": "07-unresolved-interpretation-queue.json"
+    "unresolvedQueue": "07-unresolved-interpretation-queue.json",
+    "independentLegalChallenger": "24-independent-legal-challenger.json",
+    "phase5FailureDispositions": "25-phase5-failure-dispositions.json",
+    "conmedProFormaCompleteness": "26-conmed-pro-forma-completeness.json"
   },
   "joinFieldAliases": {
     "note": "Peer field names do not always match FDP declared joins 1:1. Consumers must map via these aliases. Inventory from Amendment peer research explore @ 2026-10-08; peers remain remote-only (not copied into this branch).",
@@ -329,5 +333,12 @@
       "peerManifests": "docs/knowledge-factory/manifests/"
     }
   },
-  "peerInventoryNote": "Peer exclusive trees are not checked out on this branch; join metadata consumed from origin/cursor/{amendment-chain-research-2926,covenant-dependency-atlas-5021,definition-encyclopedia-2a50,covenant-basket-capacity-formula-library-ae51,covenant-knowledge-factory-7327} via fetch. productionEngineUntouched / productionResolverTouched / productionCodeModified remain true on peers; WS-FDP does not modify lib/covenant-engine.ts or capacity runtime."
+  "peerInventoryNote": "Peer exclusive trees are not checked out on this branch; join metadata consumed from origin/cursor/{amendment-chain-research-2926,covenant-dependency-atlas-5021,definition-encyclopedia-2a50,covenant-basket-capacity-formula-library-ae51,covenant-knowledge-factory-7327} via fetch. productionEngineUntouched / productionResolverTouched / productionCodeModified remain true on peers; WS-FDP does not modify lib/covenant-engine.ts or capacity runtime.",
+  "phase": 5,
+  "startingShaPhase5": "b234d4688f65c484c595771d87fd1b49ba33d52c",
+  "safetyPosture": {
+    "missingInputRefusalPassCount": 7,
+    "unsupportedCaseRefusalPassCount": 7,
+    "failClosed": true
+  }
 }

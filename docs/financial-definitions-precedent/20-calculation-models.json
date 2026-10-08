@@ -51,13 +51,29 @@
         "CONMED-2022-AMD2::amend::Cash_Netting_Cap_75_to_100"
       ],
       "simplifiedAway": [],
-      "notes": "Cash-netting dollar figure lineage requires amendment-authority join; Seventh A&R before-text partially missing from package."
+      "notes": "Cash-netting dollar figure lineage requires amendment-authority join; Seventh A&R before-text partially missing from package.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "Typed arithmetic under attested required inputs"
+        ],
+        "partiallyRepresented": [],
+        "unsupportedLegalSemantics": [],
+        "requiredExternalFinancialAttestations": [
+          "consolidated_senior_secured_funded_debt",
+          "rtp_attributed_principal",
+          "unrestricted_cash_and_cash_equivalents",
+          "consolidated_ebitda_covenant_defined",
+          "material_acquisition_election_and_dates"
+        ],
+        "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-CONMED-EBITDA-PF-v1",
       "typedCalcId": "TC-CONMED-EBITDA-PF-CAP-v1",
       "name": "CONMED Consolidated EBITDA Pro Forma Adjustment 15% cap",
-      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "status": "PARTIAL_SEMANTIC_MODEL",
       "blockedReasons": [],
       "legalReviewState": "SEMANTIC_HYPOTHESIS",
       "instrumentIdentity": "cnmd-credit-lineage-2021-2026",
@@ -92,15 +108,39 @@
         "CONMED-2025-CA::def::Consolidated_EBITDA"
       ],
       "simplifiedAway": [
-        "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model remains open for future expansion"
+        "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+        "Cross-clause without-duplication identity across all EBITDA prongs",
+        "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
       ],
-      "notes": "Arithmetic model treats clause (i) AGE delta only; other add-backs not silently zeroed \u2014 missing schedule \u2192 MISSING_INPUT for full EBITDA."
+      "notes": "Arithmetic model treats clause (i) AGE delta only; other add-backs not silently zeroed \u2014 missing schedule \u2192 MISSING_INPUT for full EBITDA.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "clause (i) PF net-of-benefits arithmetic under attested inputs",
+          "15% after-giving-effect cap math under stated assumptions"
+        ],
+        "partiallyRepresented": [
+          "Interaction of clause (i) with other Consolidated EBITDA add-backs",
+          "$30M Transaction/Material Acquisition cost cap (declared, not fully arith suite)"
+        ],
+        "unsupportedLegalSemantics": [
+          "Full multi-clause EBITDA reconstruction as a single certified figure",
+          "Material Acquisition qualification without attested election facts"
+        ],
+        "requiredExternalFinancialAttestations": [
+          "ebitda_before_pf_clause_i",
+          "pro_forma_adjustment_gross",
+          "benefits_realized",
+          "transaction_costs_material_acquisition"
+        ],
+        "representationClass": "PARTIAL_SEMANTIC_MODEL",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-DSGR-EBITDA-v1",
       "typedCalcId": "TC-DSGR-EBITDA-v1",
       "name": "DSGR EBITDA with Combined Cap (Second A&R doc-d)",
-      "status": "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+      "status": "PARTIAL_SEMANTIC_MODEL",
       "blockedReasons": [],
       "legalReviewState": "SEMANTIC_HYPOTHESIS",
       "instrumentIdentity": "dsgr-ar-ca-2022-04-01",
@@ -146,7 +186,34 @@
       "simplifiedAway": [
         "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
       ],
-      "notes": "Operative text is Doc D restatement; do not apply Doc B Combined Cap language as if still controlling without restatement check."
+      "notes": "Operative text is Doc D restatement; do not apply Doc B Combined Cap language as if still controlling without restatement check.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "Combined Cap 20% before capped add-backs (simplified bucket)",
+          "Cost Savings net-of-benefits when action dates attested"
+        ],
+        "partiallyRepresented": [
+          "Uncapped EBITDA (a)/(b) prongs as attested aggregates"
+        ],
+        "unsupportedLegalSemantics": [
+          "Unmodeled addback clauses",
+          "Applying Doc B text without Doc D restatement authority",
+          "Cost Savings without attested action dates"
+        ],
+        "requiredExternalFinancialAttestations": [
+          "net_income",
+          "interest_expense",
+          "income_tax_expense_net",
+          "depreciation_amortization",
+          "nonrecurring_unusual_expenses",
+          "cost_savings_projected",
+          "cost_savings_benefits_realized",
+          "clause_a_xviii_b",
+          "cost_savings_action_dates"
+        ],
+        "representationClass": "PARTIAL_SEMANTIC_MODEL",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-CHWY-TLR-v1",
@@ -191,7 +258,23 @@
         "CHWY-2026-CA::def::Test_Period"
       ],
       "simplifiedAway": [],
-      "notes": "No amendment chain in Amendment Intelligence for CHWY 2026 package; single-instrument authority."
+      "notes": "No amendment chain in Amendment Intelligence for CHWY 2026 package; single-instrument authority.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "Typed arithmetic under attested required inputs"
+        ],
+        "partiallyRepresented": [],
+        "unsupportedLegalSemantics": [],
+        "requiredExternalFinancialAttestations": [
+          "consolidated_total_debt",
+          "excluded_revolving_loans_balance",
+          "consolidated_ebitda_covenant_defined",
+          "test_period_election",
+          "unrestricted_cash_and_cash_equivalents"
+        ],
+        "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-CHWY-ANTIDUPE-v1",
@@ -228,7 +311,20 @@
         "CHWY-2026-CA::adj::Expected_Run_Rate_Benefit"
       ],
       "simplifiedAway": [],
-      "notes": "Identity of 'same amount' is a legal/factual question; arithmetic cases assume attested overlap."
+      "notes": "Identity of 'same amount' is a legal/factual question; arithmetic cases assume attested overlap.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "Typed arithmetic under attested required inputs"
+        ],
+        "partiallyRepresented": [],
+        "unsupportedLegalSemantics": [],
+        "requiredExternalFinancialAttestations": [
+          "addback_amount_clause_d",
+          "addback_amount_already_in_ebitda"
+        ],
+        "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-RIOT-LTV-MARGIN-v1",
@@ -277,7 +373,23 @@
       "simplifiedAway": [
         "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
       ],
-      "notes": "Restatement lineage Doc A\u2192B\u2192C present in fixture; operative calc uses Doc C. No Amendment Intelligence chain ID for Riot."
+      "notes": "Restatement lineage Doc A\u2192B\u2192C present in fixture; operative calc uses Doc C. No Amendment Intelligence chain ID for Riot.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [
+          "Typed arithmetic under attested required inputs"
+        ],
+        "partiallyRepresented": [],
+        "unsupportedLegalSemantics": [],
+        "requiredExternalFinancialAttestations": [
+          "loan_principal",
+          "collateral_pmv",
+          "initial_ltv",
+          "btc_price",
+          "margin_call_event"
+        ],
+        "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     },
     {
       "id": "CM-GIB-AA-BUILDER-v1",
@@ -329,12 +441,34 @@
         "GIB-2026-CA::def::LTM_EBITDA"
       ],
       "simplifiedAway": [],
-      "notes": "Arithmetic evaluation refused. Components extracted as EXTRACTED_NOT_CERTIFIED only."
+      "notes": "Arithmetic evaluation refused. Components extracted as EXTRACTED_NOT_CERTIFIED only.",
+      "completenessTaxonomy": {
+        "fullyRepresented": [],
+        "partiallyRepresented": [
+          "Component extraction as EXTRACTED_NOT_CERTIFIED"
+        ],
+        "unsupportedLegalSemantics": [
+          "Any certified Available Amount / builder capacity figure"
+        ],
+        "requiredExternalFinancialAttestations": [
+          "consolidated_net_income_cumulative",
+          "equity_proceeds_since_closing",
+          "converted_debt_equity_proceeds",
+          "restricted_investment_returns",
+          "unrestricted_sub_redesignation_fmv",
+          "ltm_ebitda",
+          "event_of_default_status",
+          "citation_scope_resolution"
+        ],
+        "representationClass": "BLOCKED_REVIEW_REQUIRED",
+        "doNotUpgradeToLegallyCompleteFromArithmetic": true
+      }
     }
   ],
   "counts": {
     "total": 7,
-    "completeSemanticHypothesis": 6,
+    "completeSemanticHypothesis": 4,
+    "partialSemanticModel": 2,
     "blockedReviewRequired": 1
   }
 }

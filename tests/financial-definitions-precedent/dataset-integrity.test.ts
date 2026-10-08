@@ -88,6 +88,9 @@ describe("financial-definitions-precedent dataset integrity", () => {
       "21-amendment-authority.json",
       "22-canonical-export-v3.json",
       "23-legal-completeness.json",
+      "24-independent-legal-challenger.json",
+      "25-phase5-failure-dispositions.json",
+      "26-conmed-pro-forma-completeness.json",
       "README.md",
     ];
     for (const f of required) {
@@ -540,8 +543,16 @@ describe("financial-definitions-precedent dataset integrity", () => {
       if (m.id === "CM-GIB-AA-BUILDER-v1") {
         expect(m.status).toBe("BLOCKED_REVIEW_REQUIRED");
         expect(m.blockedReasons.join(" ")).toMatch(/UQ-GIB-705AY-CITATION/);
+      } else if (
+        m.id === "CM-CONMED-EBITDA-PF-v1" ||
+        m.id === "CM-DSGR-EBITDA-v1"
+      ) {
+        expect(m.status).toBe("PARTIAL_SEMANTIC_MODEL");
       } else {
-        expect(m.status).toBe("MODEL_COMPLETE_SEMANTIC_HYPOTHESIS");
+        expect([
+          "MODEL_COMPLETE_SEMANTIC_HYPOTHESIS",
+          "PARTIAL_SEMANTIC_MODEL",
+        ]).toContain(m.status);
       }
     }
   });
@@ -703,5 +714,135 @@ describe("financial-definitions-precedent dataset integrity", () => {
     );
     expect(withAliases.joinFieldAliases.amendmentIntelligence.packageCoverage.CHWY).toBeNull();
     expect(withAliases.joinFieldAliases.amendmentIntelligence.packageCoverage.GIB).toBeNull();
+  });
+
+  it("phase-5 fail-closed: missing-input and unsupported refusals pass for all seven models", () => {
+    const legal = readJson<{
+      summary: {
+        missingInputRefusalPassCount: number;
+        unsupportedCaseRefusalPassCount: number;
+        independentlyLegallyReviewedCount: number;
+      };
+      models: Array<{
+        modelId: string;
+        independentlyLegallyReviewed: boolean;
+        dimensions: {
+          missingInputRefusal: { status: string };
+          unsupportedCaseRefusal: { status: string };
+        };
+      }>;
+    }>("23-legal-completeness.json");
+    expect(legal.summary.missingInputRefusalPassCount).toBe(7);
+    expect(legal.summary.unsupportedCaseRefusalPassCount).toBe(7);
+    expect(legal.summary.independentlyLegallyReviewedCount).toBe(0);
+    expect(legal.models.every((m) => m.independentlyLegallyReviewed === false)).toBe(true);
+
+    const arith = readJson<{
+      phase5NewCaseCount: number;
+      cases: Array<{
+        id: string;
+        phase?: number;
+        modelId?: string;
+        controlType: string;
+        inputs: Record<string, unknown>;
+        expectedOutput: Record<string, unknown>;
+        forbidInference?: string[];
+      }>;
+    }>("15-arithmetic-evaluation.json");
+    expect(arith.phase5NewCaseCount).toBeGreaterThanOrEqual(20);
+    const p5 = arith.cases.filter((c) => c.phase === 5);
+
+    // Silent-zero traps must refuse
+    for (const id of [
+      "ARITH-P5-CONMED-PF-MISSING-GROSS",
+      "ARITH-P5-CHWY-TLR-MISSING-CTD",
+      "ARITH-P5-CHWY-ANTIDUPE-MISSING-ALREADY",
+    ]) {
+      const c = p5.find((x) => x.id === id);
+      expect(c?.expectedOutput.status).toBe("MISSING_INPUT");
+      expect(c?.forbidInference?.join(" ") || "").toMatch(/zero|capacity|overlap/i);
+    }
+
+    // DSGR unsupported semantics must not yield ebitda number
+    for (const id of [
+      "ARITH-P5-DSGR-UNSUPPORTED-ADDBACK",
+      "ARITH-P5-DSGR-MISSING-SOURCE-AUTHORITY",
+      "ARITH-P5-DSGR-UNMODELED-PROVISO",
+      "ARITH-P5-DSGR-UNSUPPORTED-BRANCH",
+    ]) {
+      const c = p5.find((x) => x.id === id);
+      expect(c?.expectedOutput.status).toBe("UNSUPPORTED_CASE");
+      expect(c?.expectedOutput.ebitda).toBeUndefined();
+    }
+
+    // Amendment / parent refusals
+    expect(
+      p5.find((c) => c.id === "ARITH-P5-CONMED-WRONG-PARENT")?.expectedOutput.status,
+    ).toBe("UNSUPPORTED_CASE");
+    expect(
+      p5.find((c) => c.id === "ARITH-P5-CONMED-AMD-SURVIVAL-UNRESOLVED")?.expectedOutput
+        .status,
+    ).toBe("REVIEW_REQUIRED");
+
+    // Gibraltar: no capacity
+    const gib = p5.find((c) => c.id === "ARITH-P5-GIB-NO-CAPACITY");
+    expect(gib?.expectedOutput.available_capacity).toBeNull();
+    expect(gib?.expectedOutput.is_capacity_basket_certified).toBe(false);
+
+    // Maintenance headroom ≠ permission
+    const neg = p5.find((c) => c.id === "ARITH-P5-NEG-MAINTENANCE-NOT-PERMISSION");
+    expect(neg?.expectedOutput.permission_granted).toBe(false);
+    expect(neg?.expectedOutput.capacity_amount).toBeNull();
+  });
+
+  it("independent legal challenger package is ready without self-verification", () => {
+    const ch = readJson<{
+      version: string;
+      independentlyLegallyReviewedCount: number;
+      selectedForChallenge: string[];
+      models: Array<{
+        modelId: string;
+        independentlyLegallyReviewed: boolean;
+        controllingSourceSpans: unknown[];
+        refusalConditions: unknown[];
+        knownSimplifications: unknown[];
+        arithmeticTestEvidence: { caseCount: number };
+      }>;
+    }>("24-independent-legal-challenger.json");
+    expect(ch.version).toBe("fdp.legal-challenger.v1");
+    expect(ch.independentlyLegallyReviewedCount).toBe(0);
+    expect(ch.selectedForChallenge).toEqual(
+      expect.arrayContaining([
+        "CM-CONMED-EBITDA-PF-v1",
+        "CM-DSGR-EBITDA-v1",
+        "CM-CONMED-SSLR-v1",
+      ]),
+    );
+    expect(ch.selectedForChallenge.length).toBeGreaterThanOrEqual(3);
+    expect(ch.models.length).toBe(7);
+    for (const m of ch.models) {
+      expect(m.independentlyLegallyReviewed).toBe(false);
+      expect(m.controllingSourceSpans.length).toBeGreaterThan(0);
+      expect(m.arithmeticTestEvidence.caseCount).toBeGreaterThan(0);
+    }
+    const pf = ch.models.find((m) => m.modelId === "CM-CONMED-EBITDA-PF-v1");
+    expect(pf!.knownSimplifications.length).toBeGreaterThan(0);
+  });
+
+  it("CONMED PF completeness remains partial and not upgraded by arithmetic", () => {
+    const pf = readJson<{
+      representationClass: string;
+      doNotUpgradeToLegallyCompleteFromArithmetic: boolean;
+      taxonomy: { unsupportedLegalSemantics: string[] };
+    }>("26-conmed-pro-forma-completeness.json");
+    expect(pf.representationClass).toBe("PARTIAL_SEMANTIC_MODEL");
+    expect(pf.doNotUpgradeToLegallyCompleteFromArithmetic).toBe(true);
+    expect(pf.taxonomy.unsupportedLegalSemantics.length).toBeGreaterThan(0);
+
+    const uq = readJson<{ items: Array<{ id: string; status: string }> }>(
+      "07-unresolved-interpretation-queue.json",
+    );
+    const gib = uq.items.find((i) => i.id === "UQ-GIB-705AY-CITATION");
+    expect(gib?.status).toBe("OPEN");
   });
 });

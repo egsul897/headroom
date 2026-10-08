@@ -94,7 +94,8 @@
       "peerBeforeAfterRefs": [
         "docs/amendment-chain-research/before-after/cnmd-am2-definitions-and-ratio.json",
         "docs/amendment-chain-research/before-after/cnmd-am1-am2-cash-netting-chain.json"
-      ]
+      ],
+      "asOfRefusalRule": "Amd2 survival unresolved or Seventh parent on Eighth date \u2192 refuse; Omnibus effectiveness unproven \u2192 REVIEW_REQUIRED"
     },
     {
       "modelId": "CM-CONMED-EBITDA-PF-v1",
@@ -178,7 +179,8 @@
       "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
       "peerBeforeAfterRefs": [
         "docs/amendment-chain-research/before-after/dsgr-am4-restricted-payments.json"
-      ]
+      ],
+      "asOfRefusalRule": "Missing Am1/Am2 authority or Doc B without restatement check \u2192 refuse"
     },
     {
       "modelId": "CM-CHWY-TLR-v1",
@@ -206,7 +208,8 @@
         "No Amendment Chain Research chainId for CHWY 2026 \u2014 single-doc authority assumed for fixture"
       ],
       "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
-      "peerBeforeAfterRefs": []
+      "peerBeforeAfterRefs": [],
+      "asOfRefusalRule": "Do not infer complete amendment history from single instrument; claim_complete_amendment_history \u2192 REVIEW_REQUIRED"
     },
     {
       "modelId": "CM-CHWY-ANTIDUPE-v1",
@@ -231,7 +234,8 @@
       ],
       "unresolvedAuthority": [],
       "authorityStatus": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
-      "peerBeforeAfterRefs": []
+      "peerBeforeAfterRefs": [],
+      "asOfRefusalRule": "Do not infer complete amendment history from single instrument; claim_complete_amendment_history \u2192 REVIEW_REQUIRED"
     },
     {
       "modelId": "CM-RIOT-LTV-MARGIN-v1",
@@ -277,7 +281,8 @@
         "Initial LTV schedule numeric attestation still open"
       ],
       "authorityStatus": "PARTIAL_REVIEW_REQUIRED",
-      "peerBeforeAfterRefs": []
+      "peerBeforeAfterRefs": [],
+      "asOfRefusalRule": "Initial LTV schedule numeric must be attested; else MISSING_INPUT"
     },
     {
       "modelId": "CM-GIB-AA-BUILDER-v1",
@@ -305,7 +310,8 @@
       ],
       "authorityStatus": "REVIEW_REQUIRED",
       "peerBeforeAfterRefs": [],
-      "forcedResolutionForbidden": true
+      "forcedResolutionForbidden": true,
+      "asOfRefusalRule": "UQ-GIB-705AY-CITATION blocks any capacity figure"
     }
   ],
   "joinFieldAliases": {

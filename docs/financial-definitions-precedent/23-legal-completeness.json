@@ -2,7 +2,8 @@
   "artifact": "financial-definitions-precedent.legal-completeness",
   "version": "fdp.legal-complete.v1",
   "status": "DRAFT",
-  "disclaimer": "Legal-completeness dimensions are structural completeness checks on the draft model pack. They do NOT constitute independent legal review or production approval.",
+  "phase": 5,
+  "disclaimer": "Legal-completeness dimensions are structural completeness checks on the draft model pack. They do NOT constitute independent legal review or production approval. Arithmetic PASS/PARTIAL must not upgrade models to legally complete.",
   "models": [
     {
       "modelId": "CM-CONMED-SSLR-v1",
@@ -10,7 +11,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "PASS",
-          "caseCount": 20,
+          "caseCount": 25,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -19,7 +20,8 @@
         },
         "definitionClosure": {
           "status": "PASS",
-          "simplifiedAway": []
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
         },
         "amendmentVersionCorrectness": {
           "status": "REVIEW_REQUIRED",
@@ -52,7 +54,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "PARTIAL",
-          "caseCount": 10,
+          "caseCount": 13,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -62,8 +64,11 @@
         "definitionClosure": {
           "status": "PARTIAL",
           "simplifiedAway": [
-            "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model remains open for future expansion"
-          ]
+            "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+            "Cross-clause without-duplication identity across all EBITDA prongs",
+            "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
         },
         "amendmentVersionCorrectness": {
           "status": "PARTIAL_REVIEW_REQUIRED",
@@ -79,8 +84,8 @@
           "entityRestrictions": "Consolidated Borrower group"
         },
         "missingInputRefusal": {
-          "status": "FAIL",
-          "demonstrated": false
+          "status": "PASS",
+          "demonstrated": true
         },
         "unsupportedCaseRefusal": {
           "status": "PASS",
@@ -95,8 +100,8 @@
       "typedCalcId": "TC-DSGR-EBITDA-v1",
       "dimensions": {
         "arithmeticCorrectness": {
-          "status": "PASS",
-          "caseCount": 14,
+          "status": "PARTIAL",
+          "caseCount": 19,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -107,7 +112,8 @@
           "status": "PARTIAL",
           "simplifiedAway": [
             "Not all EBITDA (a)/(b) prongs enumerated as separate typed components; uncapped prongs treated as attested aggregates when present"
-          ]
+          ],
+          "representationClass": "PARTIAL_SEMANTIC_MODEL"
         },
         "amendmentVersionCorrectness": {
           "status": "PARTIAL_REVIEW_REQUIRED",
@@ -127,8 +133,8 @@
           "demonstrated": true
         },
         "unsupportedCaseRefusal": {
-          "status": "FAIL",
-          "demonstrated": false
+          "status": "PASS",
+          "demonstrated": true
         }
       },
       "independentlyLegallyReviewed": false,
@@ -140,7 +146,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "PASS",
-          "caseCount": 9,
+          "caseCount": 13,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -149,7 +155,8 @@
         },
         "definitionClosure": {
           "status": "PASS",
-          "simplifiedAway": []
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
         },
         "amendmentVersionCorrectness": {
           "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
@@ -165,8 +172,8 @@
           "entityRestrictions": "Restricted Parties / consolidated group per CHWY defs"
         },
         "missingInputRefusal": {
-          "status": "FAIL",
-          "demonstrated": false
+          "status": "PASS",
+          "demonstrated": true
         },
         "unsupportedCaseRefusal": {
           "status": "PASS",
@@ -182,7 +189,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "PASS",
-          "caseCount": 9,
+          "caseCount": 12,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -191,7 +198,8 @@
         },
         "definitionClosure": {
           "status": "PASS",
-          "simplifiedAway": []
+          "simplifiedAway": [],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
         },
         "amendmentVersionCorrectness": {
           "status": "SINGLE_INSTRUMENT_OK_WITH_GAP_NOTE",
@@ -207,8 +215,8 @@
           "entityRestrictions": "Restricted Parties"
         },
         "missingInputRefusal": {
-          "status": "FAIL",
-          "demonstrated": false
+          "status": "PASS",
+          "demonstrated": true
         },
         "unsupportedCaseRefusal": {
           "status": "PASS",
@@ -224,7 +232,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "PASS",
-          "caseCount": 11,
+          "caseCount": 12,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -235,7 +243,8 @@
           "status": "PARTIAL",
           "simplifiedAway": [
             "Exact Initial LTV schedule numeric remains SEMANTIC_HYPOTHESIS pending schedule attestation"
-          ]
+          ],
+          "representationClass": "SEMANTIC_HYPOTHESIS_ARITHMETICALLY_TESTED"
         },
         "amendmentVersionCorrectness": {
           "status": "PARTIAL_REVIEW_REQUIRED",
@@ -268,7 +277,7 @@
       "dimensions": {
         "arithmeticCorrectness": {
           "status": "BLOCKED",
-          "caseCount": 4,
+          "caseCount": 6,
           "note": "Arithmetic under stated assumptions only; not legal verification"
         },
         "controllingSourceCompleteness": {
@@ -277,7 +286,8 @@
         },
         "definitionClosure": {
           "status": "BLOCKED",
-          "simplifiedAway": []
+          "simplifiedAway": [],
+          "representationClass": "BLOCKED_REVIEW_REQUIRED"
         },
         "amendmentVersionCorrectness": {
           "status": "REVIEW_REQUIRED",
@@ -308,6 +318,9 @@
   "summary": {
     "modelCount": 7,
     "blockedModels": 1,
-    "independentlyLegallyReviewedCount": 0
+    "partialModels": 2,
+    "independentlyLegallyReviewedCount": 0,
+    "missingInputRefusalPassCount": 7,
+    "unsupportedCaseRefusalPassCount": 7
   }
 }

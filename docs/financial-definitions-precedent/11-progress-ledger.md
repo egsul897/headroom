@@ -54,3 +54,14 @@
 - Incorporated peer-inventory findings: encyclopedia/basket/atlas/amendment/CKF field names do not 1:1 match FDP declared joins; recorded `joinFieldAliases` in canonical export v3 + amendment-authority.
 - Confirmed ACR coverage: CONMED + DSGR only; CHWY/RIOT/GIB have no amendment-chain IDs (already reflected as gap notes / REVIEW_REQUIRED).
 - Peer trees remain remote-only; production calc engine untouched.
+
+## 2026-10-08 — Phase 5: fail-closed calculation safety
+
+- Starting SHA `b234d46` (reported P4 `0e92747` + join-alias follow-up only; no HOLD).
+- Fixed missing-input refusal FAILs for CONMED-PF / CHWY-TLR / CHWY-ANTIDUPE with MISSING_INPUT cases + silent-zero negative controls.
+- Fixed DSGR unsupported-case refusal FAIL: unmodeled addbacks, missing source authority, unattested provisos, full-EBITDA branch → UNSUPPORTED_CASE (no affirmative EBITDA).
+- CONMED PF marked `PARTIAL_SEMANTIC_MODEL` with completeness taxonomy; arithmetic must not upgrade to legally complete.
+- Amendment as-of refusals: Amd2 survival, wrong parent, Omnibus effectiveness, DSGR missing Am1/Am2, Riot schedule, CHWY no inferred amendment history.
+- Gibraltar `UQ-GIB-705AY-CITATION` remains OPEN; capacity not inferred.
+- Independent legal challenger package (`24-…`) for all 7 models; ≥3 selected including CONMED-PF + DSGR; independently reviewed count = 0.
+- Legal-completeness: missingInputRefusal 7/7 PASS; unsupportedCaseRefusal 7/7 PASS.
