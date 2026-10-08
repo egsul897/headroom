@@ -104,9 +104,21 @@ Next prioritized bounded tasks (this track):
    onboarding clause-count diff (doc 19 §3 step 2) has no acceptance test.
 
 Next bounded tasks (this track):
-- U1. Package N: clean ratio basket, no cycle, no amendment — comparator flip unmasked (IPV-22 breadth on a second
-  clean path).
-- U2. Scan-noise mutants on H (multi-document) and a scan-noise + amendment composition (item 6).
-- U3. Cross-instrument definition amendment (item 7).
-- U4. Onboarding clause-count diff as a harness check (doc 19 §3 step 2): compare parsed clause enumerators with the
-  manifest's covenant list per section and flag gaps (turns IPV-07/23 silent merges into a deterministic card).
+- U1. DONE (`291855c`): package N — N-P1 flipped comparator and N-P3 widened scope certify on the clean path
+  (IPV-22 / IPV-01 now 2/2 clean paths); N-P2 raised threshold refused; N-P5 surfaced IPV-24.
+- U2. DONE (`291855c`): MUT-21/22 on H — same silent merge (IPV-07) and bogus '4.0' node (IPV-23) in a multi-document
+  package. The scan-noise + amendment composition (item 6) is still open → V1.
+- U3. Cross-instrument definition amendment (item 7) → V4.
+- U4. DONE (`291855c`): four manifest-independent cards in `auditStructure` (enumeration-count / enumeration-gap /
+  embedded-heading / malformed-label); they fire on G 7.03, H 1.01 and MUT-17/18/19/21/22.
+
+Self-replenishing pass 4 (after `291855c`):
+- V1. Scan noise + amendment composition: a mis-read heading ('7.0l') on the section an amendment targets — does the
+  amendment still resolve its target, and is the result a silent no-op or a diagnostic? (IPV-23 × amendment targeting.)
+- V2. Evaluation-basis breadth for IPV-24: DROP_CONDITIONS with the gate kept on B 4.09 (indenture FCCR, pro forma
+  incurrence test) and H 7.11 (springing trigger + cure); and the inverse representation — a pro forma basis asserted
+  on a test the text measures historically.
+- V3. Promote the four structural cards into doc 11 as onboarding criteria (D13: zero cards on the partner's
+  agreement before any question is answered) and run them over the benchmark corpus documents.
+- V4. Cross-instrument definition amendment (U3 as before): an intercreditor cap by reference to a credit-agreement
+  definition whose definition is amended.

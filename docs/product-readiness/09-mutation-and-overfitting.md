@@ -177,6 +177,25 @@ delete, markup exhibit, schedule modification) and not a waiver/side-letter over
    K-P2 refused. I-P1/I-P3 and J-P2/K-P1 are question-level or representation-gap claims and are exercised by the
    benchmark (BM-01, BM-14) and IPV-15 respectively, not by a Pass B submission.
 
+5. **Scan-noise family and manifest-independent structural cards** (MUT-17…20 on A; MUT-21 spaced heading in H's
+   ABL agreement, MUT-22 'SECTION 4.0l' in H's intercreditor). All six behave the same way: an unrecognised boundary
+   merges the following clause or section into its predecessor (IPV-07) or mints a bogus 'N.0' node (IPV-23), with
+   zero health diagnostics. `auditStructure` now carries four cards that need no manifest (doc 19 §3 step 2):
+   `structure:enumeration-count` (a letter walk over `(a)`, `(b)`, … against the parsed SUBSECTION children; roman
+   and nested lists ignored; a non-ASCII enumerator counts as 'unrecognised'), `structure:enumeration-gap` (a
+   non-contiguous enumeration must produce a diagnostic naming the section), `structure:embedded-heading` (a SECTION
+   heading inside a node's own text) and `structure:malformed-label` (a SECTION label that is not N.NN). On the base
+   corpus they add two IPV-07 signatures on G 7.03 and one IPV-06 signature on H 1.01; in the kill analysis they fire
+   on MUT-17/21 (embedded heading), MUT-18/22 (malformed label) and MUT-19 (enumeration count + gap) — the first
+   kills in this suite that do not depend on the manifest's clause list. Mutation run at `291855ce3f9b`: 22 mutants,
+   15 killed, 22/22 predictions held; MUT-08/09/12–16 still survive for the reasons in §2.1.
+6. **DROP_GATE control and IPV-24.** `DROP_CONDITIONS` on a ratio basket leaves the capacity's `gatedBy` COMPARE in
+   place, so the earlier certification of such a submission was not a false permission on its own. The new
+   `DROP_GATE` mutation removes the gate too; it is refused on A, M and N (UNACCOUNTED_MATERIAL_SOURCE), which shows
+   accountability does see the ratio figure. What it does not see is the evaluation basis: with the gate kept and the
+   condition nodes dropped, `evaluationBasis.proForma` is gone and A-P5 / N-P5 certify in both lineage variants
+   (**IPV-24**); M-P5 is refused only through IPV-19's operative-state block.
+
 ## 8. Repro
 
 ```

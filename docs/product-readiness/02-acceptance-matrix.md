@@ -26,33 +26,34 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/731f34e2f9ae/`, repository SHA `731f34e2f9ae`, 657 checks: 577 pass · 62 fail · 18 not tested)
+## Matrix (committed run `acceptance-runs/291855ce3f9b/`, repository SHA `291855ce3f9b`, 754 checks: 664 pass · 71 fail · 19 not tested)
 
 Earlier committed runs: `8f51e2981bd2` (8 packages, 360: 318/30/12), `00977b674579` (10, 431: 376/41/14),
 `83e6bf1d3ce0` (10 + cross-reference audit, 444: 388/42/14), `2b018f8a6719` (11 + clause-text pins, 571: 508/48/15),
 `f182a679394b` (12, 604: 539/49/16), `440069481941` (I definition amendment, 609: 539/53/17), `dcfd931004c6` (B
-supplemental indenture, 614: 543/54/17). At `731f34e`: package M composes a definition amendment, a side letter and a
-Guarantor/Subsidiary definition; IPV-16 and IPV-20 gain their first acceptance-run signatures. Findings are 62, all
-registered (IPV-01…IPV-22; IPV-17 closed).
+supplemental indenture, 614: 543/54/17), `731f34e2f9ae` (13 + package M, 657: 577/62/18). At `291855c`: package N
+(a clean ratio path), four manifest-independent structural cards (enumeration-count / enumeration-gap /
+embedded-heading / malformed-label), the DROP_GATE control and the A/M/N evaluation-basis cases. Findings are 71, all
+registered (IPV-01…IPV-24; IPV-17 closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
-| a-basic-credit-agreement | 22/22 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 4/6 (2 F) | – | 43/46 |
-| b-multi-document | 25/25 | 5/5 | 1/1 | 0/1 (1 NT) | 12/12 | 13/14 (1 F) | 5/6 (1 F) | – | 61/64 |
-| c-amendment-supersession | 15/15 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 43/48 |
-| d-qualitative-restrictions | 16/16 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 35/39 |
-| e-structural-ambiguity | 19/20 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 45/55 |
-| f-capacity-ledger-honesty | 20/20 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 61/66 |
-| g-adversarial-evidence | 18/20 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 50/57 |
-| h-unseen-composition | 27/29 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/10 (2 F) | 10/10 | 9/10 (1 F) | – | 57/64 |
-| i-secured-debt-lien | 22/22 | 0/2 (2 F) | 1/1 | 0/1 (1 NT) | 12/18 (5 F) (1 NT) | 11/12 (1 F) | 1/5 (4 F) | – | 47/61 |
-| j-restricted-payments-builder | 16/16 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 35/38 |
-| k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
-| l-affiliate-transactions | 15/15 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 31/33 |
-| m-composed-p0 | 17/17 | 3/6 (3 F) | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 6/7 (1 F) | 1/3 (2 F) | – | 34/43 |
-
-Invariant checks (`invariant-runs/731f34e2f9ae/`): 16 invariants, 33 PRODUCT verdicts pass / 16 fail — all sixteen
-are IPV-19/20/21/22. Mutation suite: 16 mutants, 9 killed, 16/16 predictions held. Benchmark: quality unchanged.
+| a-basic-credit-agreement | 24/24 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 6/10 (4 F) | – | 47/52 |
+| b-multi-document | 30/30 | 5/5 | 1/1 | 0/1 (1 NT) | 12/12 | 13/14 (1 F) | 5/6 (1 F) | – | 66/69 |
+| c-amendment-supersession | 19/19 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 47/52 |
+| d-qualitative-restrictions | 19/19 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 38/42 |
+| e-structural-ambiguity | 24/25 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 50/60 |
+| f-capacity-ledger-honesty | 24/24 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 65/70 |
+| g-adversarial-evidence | 20/24 (4 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 52/61 |
+| h-unseen-composition | 33/36 (3 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/10 (2 F) | 10/10 | 9/10 (1 F) | – | 63/71 |
+| i-secured-debt-lien | 26/26 | 0/2 (2 F) | 1/1 | 0/1 (1 NT) | 12/18 (5 F) (1 NT) | 11/12 (1 F) | 1/5 (4 F) | – | 51/65 |
+| j-restricted-payments-builder | 19/19 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 38/41 |
+| k-three-way-builder | 22/22 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 39/47 |
+| l-affiliate-transactions | 17/17 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 4/5 (1 F) | – | 33/35 |
+| m-composed-p0 | 21/21 | 3/6 (3 F) | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 6/7 (1 F) | 5/7 (2 F) | – | 42/51 |
+| n-clean-ratio | 16/16 | – | 1/1 | 0/1 (1 NT) | 5/5 | 6/6 | 5/9 (4 F) | – | 33/38 |
+Invariant checks (`invariant-runs/291855ce3f9b/`): 18 invariants, 39 PRODUCT verdicts pass / 18 fail — every
+failure is IPV-19/20/21/22. Mutation suite: 22 mutants, 15 killed, 22/22 predictions held. Benchmark: quality unchanged.
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 
@@ -62,7 +63,7 @@ rule; "pure omission" variants strip it.
 
 | package | refused / cases | accepted (= finding) |
 |---|---|---|
-| A | 1/3 | A-P1 lineage-on-rule (dropped no-Default proviso), A-P2 (scope widened to any Subsidiary) |
+| A | 2/5 | A-P1 lineage-on-rule (dropped no-Default proviso), A-P2 (scope widened to any Subsidiary), A-P5 both variants (7.01(c) condition nodes dropped while the capacity keeps its ratio gate: the pro forma basis vanishes — IPV-24); A-P4 (gate and conditions dropped: 'unconditional unlimited') refused ✅ |
 | B | 2/2 | — |
 | C | 3/3 | — |
 | D | 3/3 | — |
@@ -74,12 +75,15 @@ rule; "pure omission" variants strip it.
 | J | 3/3 | — (J-P1 both variants refused with MATERIAL_DISCREPANCY: the definition-sourced Default kill-switch is accounted for; J-P2 is the IPV-15 representation gap, not expressible) |
 | K | 2/2 | — (K-P2 both variants refused; K-P1 as J-P2) |
 | L | 4/4 | — (L-P1 both variants, L-P2, L-P3 refused; every refusal cites CONTEXT_CONTRACT_UNACCEPTABLE from the false cycle IPV-21, so these are not evidence the gates caught the claims) |
-| M | 1/1 | — (M-P1 '$40,000,000 after the side letter' refused only because IPV-19's Section 1.01 replacement makes the unit's operative evidence unresolved: a fail-closed defect masking a false permission) |
+| M | 3/3 | — (M-P1 '$40,000,000 after the side letter', M-P4 and M-P5 all refused only because IPV-19's Section 1.01 replacement makes the unit's operative evidence unresolved: a fail-closed defect masking a false permission and the IPV-24 omission) |
+| N | 2/5 | N-P1 (comparator flipped on 7.01(c): IPV-22 on a second clean path), N-P3 (scope widened to any Subsidiary: IPV-01 on a second clean path), N-P5 both variants (IPV-24); N-P2 (threshold raised to 3.50) and N-P4 (gate dropped) refused ✅ |
 
 Refusals worth noting because they are the product doing the right thing: a non-operative recital/exhibit figure
 (G-P1), a stale amendment's figure (G-P2), a superseded amount at a later date (C-P1), a figure invented for a
 truncated clause (G-P5), an undefined term claimed COMPLETE (D-P4, G-P4), a EUR basket claimed in USD (F-P4), a
-mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, C-P4, D-P1, H-P3, H-P4, H-P5).
+mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, C-P4, D-P1, H-P3, H-P4, H-P5), a
+ratio basket presented with no test at all (A-P4, M-P4, N-P4: UNACCOUNTED_MATERIAL_SOURCE), a raised ratio threshold
+(A-T2, N-P2).
 
 ## Faithful acceptance (a correct representation submitted through the mocked model)
 
@@ -98,6 +102,7 @@ mislabelled family/action (G-P3), pure omissions of a material condition (A-P1, 
 | K | FAILED | 7.06 and 7.08 review (IPV-14 class: mock did not represent one sibling unit each); 7.09 review (IPV-18: family unrecognised, relabelled) |
 | L | REVIEW_REQUIRED | 7.07 review: context contract unacceptable because of a FALSE DEFINITION_CYCLE 'Loan Parties → Subsidiary → Loan Parties' (IPV-21), plus one inventory item the mock did not represent |
 | M | FAILED | 7.01 and 7.02 REVIEW (OPERATIVE_STATE_UNACCEPTABLE: the mis-targeted definition amendment leaves every dependent unit with 'partial amendment state' — IPV-19); 1.01 definitions candidate loses every definition (IPV-19); the side letter never reaches the operative state (IPV-16 on disk); 7.01(c) compiled on the pre-amendment EBITDA (IPV-20 on disk) |
+| N | REVIEW_REQUIRED | 7.01 and 7.03 CERTIFIED on the faithful submission (the first package whose every covenant certifies); 1.01 definitions candidate observed only — the clean path on which N-P1/N-P3/N-P5 then certify |
 
 ## Runtime (package F, production Phase-4 runtime over fixture IR): 14/14
 

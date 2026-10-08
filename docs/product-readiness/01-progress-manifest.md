@@ -28,7 +28,8 @@ Cursor work. Provider calls: none in this workstream.
 | 18 | T3 package M: IPV-19's REVIEW masks IPV-16/IPV-20; IPV-21 suppressed by IPV-09; IPV-16/20 on disk; runs at `731f34e2f9ae` (657: 577/62/18) | done (`731f34e` + this commit) |
 | 19 | INV-18 inflected-term breadth (IPV-09: 26/28 misses, re-rated MATERIAL), scan-noise mutants MUT-17…20 (IPV-07 breadth, IPV-23), doc 20 inventory + citation spec; runs at `ade5386` | done (`ade5386` + this commit) |
 | 20 | milestone report 3; INV-32 reclassification (holds), INV-09b comparator breadth (1 clean path certifies, 3 masked), self-replenishing pass 3 (U1–U4); `invariant-runs/` at `091a105` | done (`091a105` + this commit) |
-| 21 | U1 package N (clean ratio basket, comparator flip unmasked); U4 onboarding clause-count diff check; U2 scan-noise on H | next |
+| 21 | U1 package N (IPV-22/IPV-01 on a second clean path, IPV-24 new); U4 four manifest-independent structural cards (G/H signatures, kill MUT-17/18/19/21/22); U2 MUT-21/22 on H; DROP_GATE control; runs at `291855ce3f9b` (754: 664/71/19; 22 mutants 15 killed; 18 invariants) | done (`291855c` + this commit) |
+| 22 | V2 evaluation-basis breadth (B 4.09, H 7.11); V1 scan noise × amendment targeting; V3 structural cards as onboarding criterion D13 | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".

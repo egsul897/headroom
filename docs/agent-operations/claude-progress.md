@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `291855c` + this commit | package N (clean ratio path: N-P1 flip and N-P3 widening certify — IPV-22/IPV-01 2/2 clean paths; N-P2 refused); four manifest-independent structural cards in `auditStructure` (IPV-07 signatures on G 7.03, IPV-06 on H 1.01; kill MUT-17/18/19/21/22); DROP_GATE control refused on A/M/N; **IPV-24** (pro forma evaluation basis dropped with the gate kept certifies on A and N); MUT-21/22 scan noise on H (IPV-07/IPV-23 breadth); runs at `291855ce3f9b` (754: 664/71/19; 22 mutants 15 killed 22/22 held; 18 invariants 39/18) | `vitest run tests/product-acceptance` 208 pass / 28 skipped; tsc clean on owned files; pin-check 0 drift; secret scan clean |
 | 2026-10-08 | `091a105` + this commit | milestone report 3 delivered; INV-32 reclassification without a contract edge holds (4/4); INV-09b comparator breadth: A certifies the flip, B/H/M masked; self-replenishing pass 3 → U1–U4; `invariant-runs/091a105` (18 invariants) | `npx vitest run tests/product-acceptance` green; tsc clean; pin-check clean |
 | 2026-10-08 | `ade5386` + this commit | INV-18 inflected-term breadth (IPV-09 93% miss, MATERIAL), scan-noise mutants MUT-17…20 (silent merges IPV-07; bogus '7.0' node IPV-23), doc 20 inventory/citation spec; `invariant-runs/ade5386` (17 invariants), `mutation-runs/ade5386` (20 mutants) | `npx vitest run tests/product-acceptance` green (see run); tsc clean; pin-check clean |
 | 2026-10-08 | `731f34e` + this commit | T3 package M (definition amendment + side letter + Guarantor/Subsidiary): IPV-19's fail-closed REVIEW masks IPV-16 and IPV-20 false permissions; IPV-21 does not fire (plural 'Guarantors', IPV-09); first acceptance-run signatures for IPV-16 and IPV-20; artefacts `acceptance-runs/731f34e2f9ae` (657: 577/62/18), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 193 pass / 28 skipped; tsc clean; pin-check clean |
@@ -33,7 +34,7 @@
 
 ## Current task
 
-U1 package N (clean ratio path), U4 clause-count diff check, U2 scan noise on H (task 6 below). Batch 7 complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+V2 evaluation-basis breadth for IPV-24 (B 4.09, H 7.11), V1 scan noise × amendment targeting, V3 structural cards as onboarding criterion D13 (doc 16 pass 4). Batch 8 (U1/U2/U4) complete at `291855c`. Batch 7 complete. Batches 1–2 complete: ledger doc 17 (forty mapped).
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -70,11 +71,11 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: U1 — package N (`pkg-n-clean-ratio`): a short credit agreement with one fixed basket and one ratio basket ('so long as the Total Net Leverage Ratio does not exceed 3.00 to 1.00'), definitions without any diamond or cycle, no amendments, no undefined inputs, so its certification path is clean; declarative adversarial cases: comparator flipped (SET_RATIO GTE), threshold raised (SET_RATIO 3.50), scope widened (SET_SCOPE) — expectations: all refused; expected product result: the flip certifies (IPV-22 breadth on a second clean path), the raise is refused, the widening certifies (IPV-01 breadth). U4 — harness check `structure:enumeration-continuity:<section>`: for every manifest section with lettered clauses, the parsed enumerators must be a contiguous a, b, c… sequence matching the manifest's clause count; a gap or a merged clause is a STRUCTURE finding (turns IPV-07/IPV-23-class silent merges into a deterministic card; verify it fires on MUT-17/19 and on G's dropped letter). U2 — scan-noise mutants on H (multi-document): spaced heading in the ABL agreement and a homoglyph in the intercreditor; expectations as MUT-17/19.
-- Files: `tests/fixtures/product-acceptance/packages/pkg-n-clean-ratio/`, `scripts/product-acceptance/auditor.ts` (enumeration-continuity check), `scripts/product-acceptance/mutations.ts` (MUT-21/22), tests package count 14, register, ledger, matrix, checkpoint.
-- First step: package N documents + manifest, pin, run-all to scratch, classify; then U4 in auditStructure and re-run G/A mutants.
-- Expected output: IPV-22 and IPV-01 breadth on a clean path; a deterministic enumeration-continuity check with its own acceptance-run signatures on G (and new ones if other packages have gaps); scan-noise results on H.
-- Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
+- Objective: V2 — evaluation-basis breadth for IPV-24: declarative DROP_CONDITIONS (gate kept) on B indenture 4.09 (FCCR incurrence test, 'pro forma') and H 7.11 (springing trigger + cure, TRIGGER/CURE conditions with no gatedBy) — does the omission certify wherever the clause has no second inventory item for its basis, or is it masked (IPV-12 on B, undefined inputs on H)? Then V1 — scan noise × amendment targeting: an in-memory variation of C where the section an amendment targets is headed 'SECTION 7.0l'; record whether the amendment resolves its target, becomes unattached, or silently no-ops (INV-05c, kind INVARIANT). Then V3 — add criterion D13 to doc 11 ('zero structural cards on the partner's agreement before any question is answered') and run `auditStructure` over the benchmark corpus documents to report card counts.
+- Files: `tests/fixtures/product-acceptance/packages/pkg-b-multi-document/expectations.json`, `pkg-h-unseen-composition/expectations.json` (prohibitedClaims with `adversarial`), `scripts/product-acceptance/invariants.ts` (INV-05c), `docs/product-readiness/11-pilot-acceptance-criteria.md`, `03-defect-register.json` (IPV-24 signatures or masked notes), `02`, `17`, `16`, `01`, this file.
+- First step: add B-P? / H-P? DROP_CONDITIONS claims, pin, `run-all --out <scratch>`, classify each outcome against IPV-24 / masked; then INV-05c in `invariants.ts` using `variation()` on C.
+- Expected output: IPV-24 breadth count (n/4 ratio clauses on clean paths), an INV-05c verdict (holds / new defect / masked), D13 in doc 11 with card counts per benchmark document.
+- Acceptance: suite green (known-defects, invariants, mutations); pin-check clean; commit with trailers; push; checkpoint updated; PR #137 description refreshed.
 - Dependencies: none (offline).
 
 Then (P2): harness strengthening (text-hash pinning per covenant, three-section definition fixture, waiver/side-letter fixture family), then the continuous-loop invariant backlog.
