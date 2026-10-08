@@ -2,7 +2,7 @@
 
 **PR:** https://github.com/egsul897/headroom/pull/146 (draft; **not merged**)  
 **Starting SHA:** `e1e4ad528338c0e7bfffdfa4c115fe5c37c64ee5`  
-**Ending SHA:** _(git tip after this commit)_  
+**Ending SHA:** `81a833d888cc2c918107c64232cb73768849de5c`  
 
 Label key: **MEASURED** | **UNAVAILABLE** | **HISTORICAL**
 
@@ -11,7 +11,7 @@ Label key: **MEASURED** | **UNAVAILABLE** | **HISTORICAL**
 | | SHA |
 | --- | --- |
 | Start | `e1e4ad528338c0e7bfffdfa4c115fe5c37c64ee5` |
-| End | see branch tip after push (this document committed with Phase 3 code) |
+| End | `81a833d888cc2c918107c64232cb73768849de5c` |
 
 ## 2. Authentic documents processed
 
