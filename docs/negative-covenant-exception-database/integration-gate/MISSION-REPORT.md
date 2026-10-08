@@ -3,11 +3,12 @@
 ## SHAs
 - Phase 3 start: `1456000040f03faeb2beca3c9f46bc2db91ac960`
 - Reported Phase 4: `44685ff410190e3ea67d33bf862a833c6cb3f39c`
-- Actual PR head: `7dadd90b9152d9b6a71e243bec2d24f2e1fe0645`
+- Actual PR head: `a3c60363ef5608957b4a6ec7c3dff609c5dd410e`
 - origin/main: `64e5b5c23d153714a78659c408f3078227084a49`
 - merge-base: `9de4e5737166fcec84a35fdc9a3404870549211f`
 
 ## Intervening changes (reported Phase 4 → head)
+- `a3c6036` NCEDB integration gate: reconcile head, adversarial fail-closed tests, merge report.
 - `7dadd90` NCEDB Phase 4: fix strict TypeScript errors breaking Vercel build.
 
 Eval metrics unchanged. Production Permission paths untouched. Fixtures untouched.
