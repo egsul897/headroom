@@ -1,0 +1,398 @@
+{
+  "version": "rare-covenant-drafting-discovery.phase2.v1",
+  "generatedAt": "2026-10-08T22:45:58.156Z",
+  "sampleSize": 20,
+  "queueSize": 40,
+  "stratification": "up_to_2_per_category_from_40_queue",
+  "countsByLabel": {
+    "GENUINELY_UNFAMILIAR_SHAPE": 1,
+    "FAMILIAR_SHAPE_DIFFERENT_WORDING": 0,
+    "DUPLICATE_OR_EXTRACTION_ARTIFACT": 3,
+    "POTENTIALLY_MATERIAL_LEGAL_VARIATION": 10,
+    "UNRESOLVED_MISSING_CONTEXT": 6
+  },
+  "confirmedLegalDefectCount": 0,
+  "heuristicOnlyFailureModeCount": 20,
+  "items": [
+    {
+      "queueRank": 7,
+      "findingId": "novelty:09499d876dd74df1df2480f8",
+      "category": "AMENDMENT_MECHANISM",
+      "heuristicFailureMode": "AMENDMENT_BYPASS",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 686260,
+        "charEnd": 687659,
+        "excerpt": "Section 4.01 or 4.02, in each case, without the written consent of each Lender; or (vi) [reserved]; provided that: (I) [reserved]; (II) [reserved] (III) no amendment, waiver or consent shall, unless in writing and signed by the Administrative Agent in addition to the Lenders required above, affect the rights or duties of, or any fees or other amounts payable to, the Administrative Agent under this Agreement or any other Loan Document; and (IV) [reserved]; provided further tha"
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION"
+    },
+    {
+      "queueRank": 17,
+      "findingId": "novelty:10a4586f76aedd622b71271e",
+      "category": "AMENDMENT_MECHANISM",
+      "heuristicFailureMode": "AMENDMENT_BYPASS",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "edgar:0001158463:0000947871-22-001095:ss1446904_ex1001.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/jblu-000094787122001095-ss1446904_ex1001.htm.txt",
+        "charStart": 413091,
+        "charEnd": 414382,
+        "excerpt": "(d) Notwithstanding anything to the contrary contained in Section 10.08(a), (i) in the event that either the Borrower requests that this Agreement be modified or amended in a manner which would require the unanimous consent of all of the Lenders or the consent of all Lenders directly and adversely affected thereby and, in each case, such modification or amendment is agreed to by the Required Lenders, then the Borrower may replace any non-consenting Lender in accordance with S"
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_REQUIRED_LENDERS+AMENDMENT_SACRED_RIGHT+AMENDMENT_YANK_A_BANK+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 8,
+      "findingId": "novelty:17b733533d3240765f3e694c",
+      "category": "BASKET_FORMULA",
+      "heuristicFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-sup-2024-arca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "charStart": 542411,
+        "charEnd": 543809,
+        "excerpt": "(b) Indebtedness, Disqualified Stock or Preferred Stock of Persons that are acquired by the Borrower or Guarantor or merged into, amalgamated or consolidated with the Borrower or a Guarantor of the Borrower in accordance with the terms of this Agreement, in the case of the preceding clauses (a) and (b), in an aggregate principal amount or liquidation preference, together with any Refinancing Indebtedness in respect thereof (excluding any Incremental Amounts), not to exceed (A"
+      },
+      "signatureKey": "BASKET_FORMULA|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+RATIO_GATE+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 18,
+      "findingId": "novelty:c70e0a98651ca7d271d11e42",
+      "category": "BASKET_FORMULA",
+      "heuristicFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 629864,
+        "charEnd": 631035,
+        "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated EBITDA for the mo"
+      },
+      "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 9,
+      "findingId": "novelty:161f57fc2d7ddcf19fc6eb26",
+      "category": "COVENANT_STRUCTURE",
+      "heuristicFailureMode": "FALSE_PERMISSION",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "edgar:0000002488:0001193125-12-357533:d397602dex41.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/amd-000119312512357533-d397602dex41.htm.txt",
+        "charStart": 166057,
+        "charEnd": 167455,
+        "excerpt": "(b) Notwithstanding the foregoing limitation, the Company or any Restricted Subsidiary may enter into or suffer to exist the following: (1) any transaction or series of transactions between the Company and one or more Restricted Subsidiaries or between two or more Restricted Subsidiaries; (2) any Restricted Payment permitted to be made pursuant to Section 4.10 or any Permitted Investment; (3) any employment, indemnification or other similar agreement or employee benefit plan "
+      },
+      "signatureKey": "COVENANT_STRUCTURE|ENTITY_RESTRICTED_SUB+EXCEPTION_LIST_ITEM+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+SHARED_AGGREGATE"
+    },
+    {
+      "queueRank": 19,
+      "findingId": "novelty:175a5a633141b834adad8a25",
+      "category": "COVENANT_STRUCTURE",
+      "heuristicFailureMode": "CAPACITY_OVERSTATEMENT",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-sup-2024-arca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "charStart": 525229,
+        "charEnd": 526342,
+        "excerpt": "SECTION 6.14 Use of Proceeds. The proceeds of the Amendment and Restatement Date Term Loans and cash on hand, will be used (i) to fund the Amendment and Restatement Date Refinancing, together with any premiums and accrued and unpaid interest thereon and any fees and expenses with respect thereto, (ii) to pay the Transaction Expenses, (iii) to repay the Senior Notes in full, to pay all accrued and unpaid interest, fees and other amounts thereon and to pay any fees and expenses"
+      },
+      "signatureKey": "COVENANT_STRUCTURE|DEFINITION_FOR_PURPOSES+GENERAL_PROHIBITION+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 4,
+      "findingId": "novelty:43a35ed7388b2245661af583",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "heuristicFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "edgar:0001335258:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/lyv-000133525826000035-lyv-20260630xex102xmastert.htm.txt",
+        "charStart": 463601,
+        "charEnd": 464999,
+        "excerpt": "Section 12.5. Admission or Withdrawal of Participants . (a) Any additional direct or indirect subsidiary of LNW may become a Participant (i) if such prospective Participant shall be a Limited Special Purpose Entity, (ii), except for a HoldCo Participant, by acquiring an equity interest in the Member organized in the Jurisdiction of formation of such subsidiary (which shall also be the Jurisdiction in which the applicable live entertainment business controlled by such subsidia"
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 14,
+      "findingId": "novelty:b3f32c4e78828bde84c6d157",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "heuristicFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "edgar:0000002488:0001193125-04-183871:dex41.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/amd-000119312504183871-dex41.htm.txt",
+        "charStart": 132335,
+        "charEnd": 133733,
+        "excerpt": "Notwithstanding anything to the contrary in this covenant: (i) the Company shall not Incur any Debt pursuant to this covenant if the proceeds thereof are used, directly or indirectly, to Refinance any Subordinated Obligations unless such Debt shall be subordinated to the Notes to at least the same extent as such Subordinated Obligations; (ii) the Company shall not permit any Restricted Subsidiary to Incur any Debt pursuant to Section 4.09(a)(2) if the proceeds thereof are use"
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_CAP_REFERENCE+ENTITY_RESTRICTED_SUB+GENERAL_PROHIBITION+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PROHIBITION+RECLASSIFY_SOLE_DISCRETION"
+    },
+    {
+      "queueRank": 10,
+      "findingId": "novelty:00d45f5d6245e3dc1b4ed722",
+      "category": "DEFINITION_FORMULATION",
+      "heuristicFailureMode": "FALSE_PERMISSION",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 63227,
+        "charEnd": 64625,
+        "excerpt": "Notwithstanding the foregoing, Cash Equivalents shall include amounts denominated in currencies other than those set forth in clause (1) above; provided that such amounts are converted into any currency listed in clause (1) as promptly as practicable and in any event within ten (10) Business Days following the receipt of such amounts. For the avoidance of doubt, any items identified as Cash Equivalents under this definition will be deemed to be Cash Equivalents for all purpos"
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION"
+    },
+    {
+      "queueRank": 20,
+      "findingId": "novelty:129561c6e92ed7e5ffb96736",
+      "category": "DEFINITION_FORMULATION",
+      "heuristicFailureMode": "FALSE_PERMISSION",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "edgar:0001174922:0001341004-10-001346:ex4_1.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/wynn-000134100410001346-ex4_1.htm.txt",
+        "charStart": 19126,
+        "charEnd": 20524,
+        "excerpt": "Notwithstanding the foregoing, any sale of assets which requires a mandatory prepayment of amounts outstanding (or the mandatory reduction of commitments thereunder) under the Credit Agreement shall constitute an Asset Sale for purposes of this Indenture. \" Attributable Debt \" in respect of a sale and leaseback transaction means, at the time of determination, the present value of the obligation of the lessee for net rental payments during the remaining term of the lease inclu"
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION"
+    },
+    {
+      "queueRank": 6,
+      "findingId": "novelty:8164072432127402501caa80",
+      "category": "ENTITY_SCOPE",
+      "heuristicFailureMode": "SCOPE_MISBIND",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2024-third-amendment",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+        "charStart": 228253,
+        "charEnd": 229652,
+        "excerpt": "Section 7701(a)(30) of the Code. \" U.S. Secured Obligations \" means all Obligations of the U.S. Loan Parties, together with all (i) Banking Services Obligations of the U.S. Loan Parties and the U.S. Subsidiaries and (ii) Swap Agreement Obligations of the U.S. Loan Parties and the U.S. Subsidiaries owing to one or more Lenders or their respective Affiliates; provided, however, that the definition of \"U.S. Secured Obligations\" shall not create any guarantee by any Guarantor of "
+      },
+      "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 16,
+      "findingId": "novelty:c8a36a8ab08ed3ac0ff37181",
+      "category": "ENTITY_SCOPE",
+      "heuristicFailureMode": "SCOPE_MISBIND",
+      "independentLabel": "DUPLICATE_OR_EXTRACTION_ARTIFACT",
+      "confirmedLegalDefect": false,
+      "defectUncertainty": "extraction_window_quality",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Window appears truncated or page-artifact contaminated; treat as extraction artifact until re-anchored.",
+      "sourceSpan": {
+        "documentId": "edgar:0000884887:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/rcl-000110465922106834-tm2227571d1_ex4-1.htm.txt",
+        "charStart": 158535,
+        "charEnd": 159934,
+        "excerpt": "provided that any such property (including Vessels), plant or equipment or other assets constitute Priority Assets; provided, further, that the principal amount of any Indebtedness, Disqualified Stock or preferred stock permitted under this clause (iv) did not in each case at the time of incurrence exceed, together with amounts previously incurred and outstanding under this clause (iv) with respect to any applicable Vessel, (A) in the case of a completed Vessel, the book valu"
+      },
+      "signatureKey": "ENTITY_SCOPE|CROSS_DOC_CAP_REFERENCE+CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 5,
+      "findingId": "novelty:33cd3d6b92c696a776265329",
+      "category": "INTERCREDITOR_LIMITATION",
+      "heuristicFailureMode": "PRIORITY_MISORDER",
+      "independentLabel": "GENUINELY_UNFAMILIAR_SHAPE",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "unfamiliar_shape_partial_context",
+      "contextCompleteness": "PARTIAL",
+      "rationale": "Drafting shape is unfamiliar relative to corpus signatures; context only partial — do not treat heuristic failure mode as confirmed defect.",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 847553,
+        "charEnd": 848951,
+        "excerpt": "(b) Notwithstanding anything to the contrary set forth herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof, this Agreement will be subject to the terms and provisions of such Intercreditor Agreement. In the event of any inconsistency between the provisions of this Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the "
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+EXCEPTION_LIST_ITEM+INTERCREDITOR_JOINDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION"
+    },
+    {
+      "queueRank": 15,
+      "findingId": "novelty:0557d697b76d147c5bc172ab",
+      "category": "INTERCREDITOR_LIMITATION",
+      "heuristicFailureMode": "PRIORITY_MISORDER",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "edgar:0001174922:0001341004-10-001346:ex4_1.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/wynn-000134100410001346-ex4_1.htm.txt",
+        "charStart": 133659,
+        "charEnd": 134767,
+        "excerpt": "Section 2.04 Paying Agent to Hold Money in Trust. The Issuers shall require each Paying Agent other than the Trustee to agree in writing that the Paying Agent shall hold in trust for the benefit of Holders or the Trustee all money held by the Paying Agent for the payment of principal, premium or Liquidated Damages, if any, or interest on the Notes, and shall notify the Trustee of any default by the Issuers in making any such payment. While any such default continues, the Trus"
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|INTERCREDITOR_TURNOVER"
+    },
+    {
+      "queueRank": 3,
+      "findingId": "novelty:01ae8eafa800d2fb25f50927",
+      "category": "PROVISO_PLACEMENT",
+      "heuristicFailureMode": "FALSE_PERMISSION",
+      "independentLabel": "DUPLICATE_OR_EXTRACTION_ARTIFACT",
+      "confirmedLegalDefect": false,
+      "defectUncertainty": "extraction_window_quality",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Window appears truncated or page-artifact contaminated; treat as extraction artifact until re-anchored.",
+      "sourceSpan": {
+        "documentId": "edgar:0000004457:0000004457-05-000017:creditagreement1.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/uhal-000000445705000017-creditagreement1.htm.txt",
+        "charStart": 69191,
+        "charEnd": 70308,
+        "excerpt": "provided that (i) the principal amount prepaid is at least $1,000,000 (unless otherwise agreed to in writing by the Lender) and (ii) the Borrowers pay to the Lender, on the date of prepayment, accrued unpaid interest on the amount so prepaid. The Borrowers may notify the Lender in writing that it has elected to terminate the Facility in connection with the prepayment in full of the Loans and all other outstanding Obligations. Upon such prepayment in full, together with paymen"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 13,
+      "findingId": "novelty:0920352660536d7555e9c7e5",
+      "category": "PROVISO_PLACEMENT",
+      "heuristicFailureMode": "FALSE_PERMISSION",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "edgar:0001158463:0000947871-22-001095:ss1446904_ex1001.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/jblu-000094787122001095-ss1446904_ex1001.htm.txt",
+        "charStart": 387481,
+        "charEnd": 388879,
+        "excerpt": "(c) Upon its receipt of a duly completed Assignment and Acceptance executed by an assigning Lender and an assignee, the assignee's completed administrative questionnaire in a form as the Administrative Agent may require (unless the assignee shall already be a Lender hereunder), the processing and recordation fee referred to in paragraph (b) of this Section and any written consent to such assignment required by paragraph (b) of this Section, the Administrative Agent shall acce"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|DEFINITION_FOR_PURPOSES+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 1,
+      "findingId": "novelty:58f3a268bc892375aa0901ef",
+      "category": "RECLASSIFICATION",
+      "heuristicFailureMode": "CAPACITY_OVERSTATEMENT",
+      "independentLabel": "DUPLICATE_OR_EXTRACTION_ARTIFACT",
+      "confirmedLegalDefect": false,
+      "defectUncertainty": "extraction_window_quality",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Window appears truncated or page-artifact contaminated; treat as extraction artifact until re-anchored.",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392532,
+        "charEnd": 393651,
+        "excerpt": "curred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. (g) For purposes of determining the permissibility of any action (or inaction), change, transaction or event that requires"
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC"
+    },
+    {
+      "queueRank": 11,
+      "findingId": "novelty:839e05d4b361acfeb4b9648e",
+      "category": "RECLASSIFICATION",
+      "heuristicFailureMode": "CAPACITY_OVERSTATEMENT",
+      "independentLabel": "POTENTIALLY_MATERIAL_LEGAL_VARIATION",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "shape_rare_in_balanced_corpus_but_legal_effect_unverified",
+      "contextCompleteness": "COMPLETE",
+      "rationale": "Zero corpus signature support with high-risk tokens and recovered controlling context. Potentially material; legal defect NOT independently confirmed without solver/IR adjudication.",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392409,
+        "charEnd": 393528,
+        "excerpt": "mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. "
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC"
+    },
+    {
+      "queueRank": 2,
+      "findingId": "novelty:04634969e2db8223d0a1fe82",
+      "category": "SHARED_CAPACITY",
+      "heuristicFailureMode": "CAPACITY_OVERSTATEMENT",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "edgar:0000063296:0000063296-10-000089:exhibit10-1loanagrmt12212010.htm",
+        "path": "data/rare-covenant-drafting-discovery/extracted-text/matw-000006329610000089-exhibit10-1loanagrmt12212010.htm.txt",
+        "charStart": 176367,
+        "charEnd": 177420,
+        "excerpt": "(l) A Change of Control shall occur; or (m) (i) A Termination Event with respect to a Plan shall occur, (ii) any Person shall engage in any Prohibited Transaction or Reportable Event involving any Plan, (iii) an accumulated funding deficiency, whether or not waived, shall exist with respect to any Plan, (iv) a Loan Party or any ERISA Affiliate shall be in \"Default\" (as defined in Section 4219(c)(5) of ERISA) with respect to payments due to a multi-employer Plan resulting from"
+      },
+      "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS"
+    },
+    {
+      "queueRank": 12,
+      "findingId": "novelty:054700f3759cce662e28b1b4",
+      "category": "SHARED_CAPACITY",
+      "heuristicFailureMode": "CAPACITY_OVERSTATEMENT",
+      "independentLabel": "UNRESOLVED_MISSING_CONTEXT",
+      "confirmedLegalDefect": null,
+      "defectUncertainty": "controlling_context_incomplete",
+      "contextCompleteness": "CONTEXT_INCOMPLETE",
+      "rationale": "Independent review refused: controlling provision / surrounding context incomplete.",
+      "sourceSpan": {
+        "documentId": "probe-sup-2024-arca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "charStart": 544854,
+        "charEnd": 546253,
+        "excerpt": "provided that with respect to Indebtedness incurred or assumed pursuant to clause (14)(a), (A) Subsidiaries of the Borrower that are not Guarantors may not incur or assume Indebtedness or issue Disqualified Stock or Preferred Stock under clause (14)(a) if, after giving pro forma effect to such incurrence, assumption or issuance (including a pro forma application of the net proceeds therefrom), (x) the aggregate principal amount of Indebtedness, liquidation preference of Disqu"
+      },
+      "signatureKey": "SHARED_CAPACITY|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS"
+    }
+  ]
+}

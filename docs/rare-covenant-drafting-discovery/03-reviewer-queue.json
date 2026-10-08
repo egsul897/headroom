@@ -1,0 +1,1513 @@
+{
+  "version": "rare-covenant-drafting-discovery.v1",
+  "count": 40,
+  "queue": [
+    {
+      "queueRank": 1,
+      "findingId": "novelty:58f3a268bc892375aa0901ef",
+      "category": "RECLASSIFICATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392532,
+        "charEnd": 393651,
+        "excerpt": "curred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. (g) For purposes of determining the permissibility of any action (or inaction), change, transaction or event that requires"
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:621ccec8a058e05722b32004",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8736,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE",
+          "excerpt": "ately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. (g) For purpo",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:839e05d4b361acfeb4b9648e",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7869,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwi",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:b9be458600439c6af421ffc0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7037,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "ed Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclass",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this RECLASSIFICATION drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [392532, 393651) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 2,
+      "findingId": "novelty:0aeca535057f66cbbbc4efcf",
+      "category": "SHARED_CAPACITY",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 225602,
+        "charEnd": 226722,
+        "excerpt": "s compensation, performance and similar deposits entered into as a result of the operations of the business in the ordinary course of business or consistent with industry practice; (22) [reserved]; (23) Investments in non-Loan Parties, taken together with all other Investments made pursuant to this clause (23) that are at that time outstanding, without giving effect to the sale of a non-Loan Party to the extent the proceeds of such sale do not consist of, or have not been sub"
+      },
+      "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_NON_LOAN_PARTY+IN_THE_AGGREGATE_WITH",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:9a1c7e8d5b1102855e19fee2",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.76,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_NON_LOAN_PARTY+IN_THE_AGGREGATE_WITH",
+          "excerpt": "ry practice; (22) [reserved]; (23) Investments in non-Loan Parties, taken together with all other Investments made pursuant to this clause (23) that are at that time outstanding, without giving effect to the sale of a non-Loan Party to the extent the proceeds of such sale do not ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this SHARED_CAPACITY drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [225602, 226722) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 3,
+      "findingId": "novelty:210c0d5e9ac49d8bf1a8eeec",
+      "category": "PROVISO_PLACEMENT",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 544224,
+        "charEnd": 545622,
+        "excerpt": "provided that with respect to Indebtedness incurred or assumed pursuant to clause (14)(a), (A) Subsidiaries of the Borrower that are not Guarantors may not incur or assume Indebtedness or issue Disqualified Stock or Preferred Stock under clause (14)(a) if, after giving pro forma effect to such incurrence, assumption or issuance (including a pro forma application of the net proceeds therefrom), the aggregate principal amount of Indebtedness, liquidation preference of Disqualif"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:3b513deb324843944d96982d",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.2265,
+          "signatureKey": "PROVISO_PLACEMENT|ENTITY_GUARANTOR_ONLY+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "y of the foregoing (excluding any Incremental Amounts), in each case then outstanding, would exceed (as of the date such Indebtedness, Disqualified Stock or Preferred Stock is issued, incurred or otherwise obtained) the greater of (I) $100.0 million and (II) 50% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this PROVISO_PLACEMENT drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [544224, 545622) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 4,
+      "findingId": "novelty:8ce10504ba5a4b33e55046f0",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "noveltyScore": 0.9471,
+      "suspectedFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 532015,
+        "charEnd": 533412,
+        "excerpt": "(b) The provisions of Section 7.02(a) will not apply to: (1) Indebtedness under the Loan Documents (including any Incremental Loans, Other Loans, Extended Term Loans and Replacement Loans); (2) the incurrence by the Borrower of the Senior Notes and the Guarantee thereof by any Guarantor; (3) the incurrence of Indebtedness by the Borrower and any of its Subsidiaries in existence on the Closing Date (excluding Indebtedness described in the preceding clauses (1) and (2) and Inde"
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:522fea218de7fc9633c8bdd4",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1451,
+          "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_REFINANCING_LINEAGE+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION",
+          "excerpt": "(b) The provisions of Section 6.01(a) hereof shall not apply to: (1) Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtedness in respect thereof, (Y) the ABL Loan Documents up to ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:449cbdcd2096dff9f32af684",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1385,
+          "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_REFINANCING_LINEAGE",
+          "excerpt": "pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtedness in respect thereof, (Y) the ABL Loan Documents up to an aggregate principal amount outstanding at any one time not to exceed the greater of (a) $800.0 million and (b) the Borrowing Base (as ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this CROSS_DOCUMENT_RESTRICTION drafting is modeled correctly. Suspected failure mode: CROSS_INSTRUMENT_SILENCE. Check the exact source span [532015, 533412) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 5,
+      "findingId": "novelty:33cd3d6b92c696a776265329",
+      "category": "INTERCREDITOR_LIMITATION",
+      "noveltyScore": 0.9187,
+      "suspectedFailureMode": "PRIORITY_MISORDER",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 847553,
+        "charEnd": 848951,
+        "excerpt": "(b) Notwithstanding anything to the contrary set forth herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof, this Agreement will be subject to the terms and provisions of such Intercreditor Agreement. In the event of any inconsistency between the provisions of this Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the "
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+EXCEPTION_LIST_ITEM+INTERCREDITOR_JOINDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:441f5feb38bee9290b285969",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8249,
+          "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+INTERCREDITOR_JOINDER+PROVISO_AFTER_PERMISSION",
+          "excerpt": "herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof, this Agreement will be subject to the terms and provisions of such Intercreditor Agreement. In the event of any inconsistency b",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:35ed3bef7bd6fe456c0497e0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7556,
+          "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+INTERCREDITOR_JOINDER+PROVISO_AFTER_PERMISSION",
+          "excerpt": "ny inconsistency between the provisions of this Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the case of any inconsistency between this Agreement and any Intercreditor Agreement, the provisions of the Intercreditor",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:7800a99d22909c844ee116f7",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7151,
+          "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+INTERCREDITOR_JOINDER+PROVISO_AFTER_PERMISSION",
+          "excerpt": "Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the case of any inconsistency between this Agreement and any Intercreditor Agreement, the provisions of the Intercreditor Agreement govern and control. The Lenders ackno",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this INTERCREDITOR_LIMITATION drafting is modeled correctly. Suspected failure mode: PRIORITY_MISORDER. Check the exact source span [847553, 848951) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 6,
+      "findingId": "novelty:ec03258c560657f248d65901",
+      "category": "ENTITY_SCOPE",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "SCOPE_MISBIND",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2025-second-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "charStart": 192271,
+        "charEnd": 193669,
+        "excerpt": "Section 7701(a)(30) of the Code. \" U.S. Secured Obligations \" means all Obligations of the U.S. Loan Parties, together with all (i) Banking Services Obligations of the U.S. Loan Parties and the U.S. Subsidiaries and (ii) Swap Agreement Obligations of the U.S. Loan Parties and the U.S. Subsidiaries, in each case, owing to one or more Lenders or their respective Affiliates; provided, however, that the definition of \"U.S. Secured Obligations\" shall not create any guarantee by an"
+      },
+      "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:07d12eaf0237bb7630ba6dc6",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1054,
+          "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Each Canadian Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:598ef416adb86b5c54600248",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1054,
+          "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Each Canadian Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this ENTITY_SCOPE drafting is modeled correctly. Suspected failure mode: SCOPE_MISBIND. Check the exact source span [192271, 193669) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 7,
+      "findingId": "novelty:09499d876dd74df1df2480f8",
+      "category": "AMENDMENT_MECHANISM",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "AMENDMENT_BYPASS",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 686260,
+        "charEnd": 687659,
+        "excerpt": "Section 4.01 or 4.02, in each case, without the written consent of each Lender; or (vi) [reserved]; provided that: (I) [reserved]; (II) [reserved] (III) no amendment, waiver or consent shall, unless in writing and signed by the Administrative Agent in addition to the Lenders required above, affect the rights or duties of, or any fees or other amounts payable to, the Administrative Agent under this Agreement or any other Loan Document; and (IV) [reserved]; provided further tha"
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:41964acf6dce4060acf3dd54",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1477,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+AMENDMENT_REQUIRED_LENDERS+EXCEPTION_LIST_ITEM+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "(d) Notwithstanding anything in this Agreement or the other Loan Documents to the contrary, the Loans of any Lender that is at the time (i) a Defaulting Lender or (ii) a Disqualified Lender, shall not have any voting or approval rights under the Loan Documents and shall be exclud",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:450cdec5767aadf572b0a45d",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.145,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+NOTWITHSTANDING_OVERRIDE",
+          "excerpt": "Notwithstanding anything to the contrary herein, any amendment, modification, waiver or other action which by its terms requires the consent of all Lenders or each affected Lender may be effected with the consent of the applicable Lenders other than Defaulting Lenders, except tha",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this AMENDMENT_MECHANISM drafting is modeled correctly. Suspected failure mode: AMENDMENT_BYPASS. Check the exact source span [686260, 687659) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 8,
+      "findingId": "novelty:c70e0a98651ca7d271d11e42",
+      "category": "BASKET_FORMULA",
+      "noveltyScore": 0.9627,
+      "suspectedFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 629864,
+        "charEnd": 631035,
+        "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated EBITDA for the mo"
+      },
+      "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:5944345c70603076e2c97a9c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7714,
+          "signatureKey": "BASKET_FORMULA|IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:e0a6dbd19ce0c09c187b0fec",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6538,
+          "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "utstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and (y) 100% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:fce8ede46f2e98b66e250b5c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1341,
+          "signatureKey": "BASKET_FORMULA|BUILDER_BASKET+TOGETHER_WITH_SECTIONS",
+          "excerpt": "on 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(27), shall not exceed, at the time of the incurrence thereof and after giving pro forma effect thereto, the greater of (x) $360.0 million and (y) 50% of Consolidated EB",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this BASKET_FORMULA drafting is modeled correctly. Suspected failure mode: CAPACITY_UNDERSTATEMENT. Check the exact source span [629864, 631035) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 9,
+      "findingId": "novelty:6c699aa9e7201a291e5e9f43",
+      "category": "COVENANT_STRUCTURE",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2022-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "charStart": 465222,
+        "charEnd": 466117,
+        "excerpt": "Section 6.05(k) shall be made for fair value and for at least 75% cash consideration. Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of transactions) of intellectual property that is material to the business of the Company and its"
+      },
+      "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:7e52c70b72177289cbcd8c5e",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.7786,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+          "excerpt": "Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transac",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:2f98542047e2b87e484eddd1",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.5642,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph (k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA; provide",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:af8596f88aa34a4c472010c5",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.4656,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph (k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $47,500,000 and 25% of Applicable EBITDA; provide",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this COVENANT_STRUCTURE drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [465222, 466117) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 10,
+      "findingId": "novelty:00d45f5d6245e3dc1b4ed722",
+      "category": "DEFINITION_FORMULATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 63227,
+        "charEnd": 64625,
+        "excerpt": "Notwithstanding the foregoing, Cash Equivalents shall include amounts denominated in currencies other than those set forth in clause (1) above; provided that such amounts are converted into any currency listed in clause (1) as promptly as practicable and in any event within ten (10) Business Days following the receipt of such amounts. For the avoidance of doubt, any items identified as Cash Equivalents under this definition will be deemed to be Cash Equivalents for all purpos"
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:c84f3ec76f8adbb8a024b976",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.2578,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+          "excerpt": "Notwithstanding the foregoing, Cash Equivalents shall include amounts denominated in currencies other than those set forth in clauses (1) and (2) above; provided that such amounts are converted into any currency listed in clauses (1) and (2) as promptly as practicable and in any ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this DEFINITION_FORMULATION drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [63227, 64625) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 11,
+      "findingId": "novelty:839e05d4b361acfeb4b9648e",
+      "category": "RECLASSIFICATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392409,
+        "charEnd": 393528,
+        "excerpt": "mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. "
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:b9be458600439c6af421ffc0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8982,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "ed Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclass",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:58f3a268bc892375aa0901ef",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7869,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "curred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:621ccec8a058e05722b32004",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6895,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE",
+          "excerpt": "ately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio for such Incurrence-Based Amounts on a Pro Forma Basis. (g) For purpo",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this RECLASSIFICATION drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [392409, 393528) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 12,
+      "findingId": "novelty:0ccfa7a7e4057254b021c70a",
+      "category": "SHARED_CAPACITY",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 629452,
+        "charEnd": 630572,
+        "excerpt": "utstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of any incurrence or issuance under this Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties tha"
+      },
+      "signatureKey": "SHARED_CAPACITY|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:16e1e7039991e11615a56212",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6538,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:ff1a71ba789de8ce57d6b3f2",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.4691,
+          "signatureKey": "SHARED_CAPACITY|IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:4b338a1c39937989a315ce96",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.2429,
+          "signatureKey": "SHARED_CAPACITY|IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "t to this Section 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred under this Section 6.01(b)(12)(b)), does not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this SHARED_CAPACITY drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [629452, 630572) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 13,
+      "findingId": "novelty:24132dba9db305f4b0acc264",
+      "category": "PROVISO_PLACEMENT",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 650984,
+        "charEnd": 652104,
+        "excerpt": "Effective Date (on a cumulative basis), received by the applicable Restricted Party, as the case may be, is in the form of cash or Cash Equivalents, and (ii) with respect to any Asset Sales individually in excess of the greater of (x) $216.0 million and (y) 30% of Consolidated EBITDA for the most recently ended Test Period at the time of contractually agreeing to such Asset Sale, at least 75% of the consideration (as determined by the Initial Borrower at the time of contractu"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:2097aa1dcce6ea10f4e4cdb5",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.4101,
+          "signatureKey": "PROVISO_PLACEMENT|PROVISO_AFTER_PERMISSION",
+          "excerpt": "fective Date (on a cumulative basis), received by the applicable Restricted Party (or held in escrow pending release), as the case may be, is in the form of cash or Cash Equivalents; provided that the amount of: (a) the greater of the principal amount and the carrying value of an",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this PROVISO_PLACEMENT drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [650984, 652104) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 14,
+      "findingId": "novelty:921c2207f1453fd3b62d0448",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "noveltyScore": 0.9187,
+      "suspectedFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 197135,
+        "charEnd": 198255,
+        "excerpt": "ss incurred by a Restricted Party that is not a Loan Party, any such Indebtedness that is secured (i) is not secured by any assets of a Loan Party not securing the Secured Obligations and (ii) is subject to the relevant Intercreditor Agreement(s). \" Incremental Facility \" means each and any Incremental Revolving Facility and Incremental Term Facility. \" Incremental Facility Amendment \" has the meaning assigned to such term in Section 2.18(e)(i). \" Incremental Loans \" means In"
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+DEFINITION_MEANS+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [],
+      "reviewerPrompt": "Verify whether this CROSS_DOCUMENT_RESTRICTION drafting is modeled correctly. Suspected failure mode: CROSS_INSTRUMENT_SILENCE. Check the exact source span [197135, 198255) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 15,
+      "findingId": "novelty:2a7010dd8226fb119b97166a",
+      "category": "INTERCREDITOR_LIMITATION",
+      "noveltyScore": 0.88,
+      "suspectedFailureMode": "PRIORITY_MISORDER",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 799189,
+        "charEnd": 799674,
+        "excerpt": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by the Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restric"
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|ENTITY_RESTRICTED_SUB+GENERAL_PROHIBITION+INTERCREDITOR_STANDSTILL+PROVISO_AFTER_PROHIBITION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:66b3d17e73820cccecd26f41",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.3718,
+          "signatureKey": "INTERCREDITOR_LIMITATION|ENTITY_RESTRICTED_SUB+GENERAL_PROHIBITION+INTERCREDITOR_STANDSTILL",
+          "excerpt": "iority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Bo",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this INTERCREDITOR_LIMITATION drafting is modeled correctly. Suspected failure mode: PRIORITY_MISORDER. Check the exact source span [799189, 799674) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 16,
+      "findingId": "novelty:4f41c907788b6b25e9c04da5",
+      "category": "ENTITY_SCOPE",
+      "noveltyScore": 0.974,
+      "suspectedFailureMode": "SCOPE_MISBIND",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 687842,
+        "charEnd": 689240,
+        "excerpt": "Notwithstanding the foregoing: (A) the obligations in clauses (a) and (b) of this Section 6.01 may be satisfied by furnishing, at the Borrower's option, the applicable financial statements or, as applicable, forecasts of (I) any successor of the Borrower, (II) any Wholly Owned Restricted Subsidiary of the Borrower that, together with its consolidated Restricted Subsidiaries, constitutes substantially all of the assets of the Borrower and its combined and consolidated Subsidia"
+      },
+      "signatureKey": "ENTITY_SCOPE|ENTITY_RESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:0c663f80d1cb0915e6e07d4b",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1108,
+          "signatureKey": "ENTITY_SCOPE|ENTITY_UNRESTRICTED_SUB+PROVISO_AFTER_PERMISSION",
+          "excerpt": "provided that to the extent such information relates to a parent of the Initial Borrower, such information is accompanied by consolidating information, which may be unaudited, that -121- explains in reasonable detail the differences between the information relating to such parent",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this ENTITY_SCOPE drafting is modeled correctly. Suspected failure mode: SCOPE_MISBIND. Check the exact source span [687842, 689240) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 17,
+      "findingId": "novelty:39b9a6e363d82422353e11b3",
+      "category": "AMENDMENT_MECHANISM",
+      "noveltyScore": 0.96,
+      "suspectedFailureMode": "AMENDMENT_BYPASS",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 851249,
+        "charEnd": 852647,
+        "excerpt": "Section 9.05 Notice of Default . The Administrative Agent shall not be deemed to have knowledge or notice of the occurrence of any Default, unless the Administrative Agent shall have received written notice from a Lender or the Borrower referring to this Agreement, describing such Default and stating that such notice is a \"notice of default\". The Administrative Agent will notify the Lenders of its receipt of any such notice. The Administrative Agent shall take such action wit"
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_REQUIRED_LENDERS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+      "comparisonExamples": [],
+      "reviewerPrompt": "Verify whether this AMENDMENT_MECHANISM drafting is modeled correctly. Suspected failure mode: AMENDMENT_BYPASS. Check the exact source span [851249, 852647) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 18,
+      "findingId": "novelty:e0a6dbd19ce0c09c187b0fec",
+      "category": "BASKET_FORMULA",
+      "noveltyScore": 0.9627,
+      "suspectedFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 629452,
+        "charEnd": 630572,
+        "excerpt": "utstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, at the time of any incurrence or issuance under this Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties tha"
+      },
+      "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:c70e0a98651ca7d271d11e42",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6538,
+          "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:5944345c70603076e2c97a9c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.4691,
+          "signatureKey": "BASKET_FORMULA|IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:fce8ede46f2e98b66e250b5c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.152,
+          "signatureKey": "BASKET_FORMULA|BUILDER_BASKET+TOGETHER_WITH_SECTIONS",
+          "excerpt": "on 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(27), shall not exceed, at the time of the incurrence thereof and after giving pro forma effect thereto, the greater of (x) $360.0 million and (y) 50% of Consolidated EB",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this BASKET_FORMULA drafting is modeled correctly. Suspected failure mode: CAPACITY_UNDERSTATEMENT. Check the exact source span [629452, 630572) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 19,
+      "findingId": "novelty:7371f8b133636a60c901e091",
+      "category": "COVENANT_STRUCTURE",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 34933,
+        "charEnd": 36053,
+        "excerpt": "nt to clause 13 of \"Permitted Investments,\" minus (b) the amount of the Available Investment Capacity Amount utilized by the Restricted Parties pursuant to Section 6.08(b)(26) (after giving effect to any reallocation or reclassification permitted hereunder). \" Available RP Capacity Amount \" means, at any time of determination (and after giving effect to any reallocation or reclassification permitted hereunder), the amount of Restricted Payments that may be made at the time of"
+      },
+      "signatureKey": "COVENANT_STRUCTURE|DEFINITION_MEANS+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:55823b05e9f457ef3ad99771",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.0863,
+          "signatureKey": "COVENANT_STRUCTURE|DEFINITION_MEANS+EXCEPTION_LIST_ITEM",
+          "excerpt": "Section 6.01(b)(13) incurred to Refinance any Indebtedness initially incurred pursuant to Section 6.01(b)(31)) and (ii) the amount of the Available RP Capacity Amount utilized by the Restricted Parties to incur Liens pursuant to clause (46)(i) of the definition of \"Permitted Lien",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this COVENANT_STRUCTURE drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [34933, 36053) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 20,
+      "findingId": "novelty:153df828dc8c90ca345aee84",
+      "category": "DEFINITION_FORMULATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "MISSING_RESTRICTION",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 198429,
+        "charEnd": 199549,
+        "excerpt": "d related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof. \" Incremental Term Loan \" has the meaning assigned to such term in Section 2.18(a). -42- \" Incurrence-Based Amounts \" has the meaning assigned to such term in Section 1.08(f). \" Indebtedness \" means, with respect to any Person, without duplication: (a) any indebtedness (including principal or premium) of such Person in respect of borrowed money, evide"
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+FIXED_VS_INCURRENCE+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:16b464be29795ef8a444bf50",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7539,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+FIXED_VS_INCURRENCE+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "Section 2.18(a). \" Incremental Revolving Loans \" means Loans under any Incremental Revolving Facility or Incremental Revolving Increase. \" Incremental Term Commitment \" means a commitment in respect of Incremental Term Loans. \" Incremental Term Facility \" means each and any facil",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:7e49b44d594914aab7337a4d",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.2463,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS",
+          "excerpt": "\"Incremental Loan\" has the meaning specified in Section 2.14(2). \"Incremental Loan Request\" has the meaning specified in Section 2.14(1). \"Indebtedness\" means, with respect to any Person, without duplication: (1) any indebtedness (including principal and premium) of such Person, ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this DEFINITION_FORMULATION drafting is modeled correctly. Suspected failure mode: MISSING_RESTRICTION. Check the exact source span [198429, 199549) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 21,
+      "findingId": "novelty:8dc9b352d20975bb95f88fe0",
+      "category": "RECLASSIFICATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392122,
+        "charEnd": 393242,
+        "excerpt": "Amount to the extent permitted, with the balance incurred under the Fixed Incremental Amount. In addition, any Indebtedness (and associated Liens, subject to the applicable priorities required pursuant to the applicable Incurrence-Based Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be aut"
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:b9be458600439c6af421ffc0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6378,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "ed Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclass",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:839e05d4b361acfeb4b9648e",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.5876,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwi",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:58f3a268bc892375aa0901ef",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.4491,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "curred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this RECLASSIFICATION drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [392122, 393242) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 22,
+      "findingId": "novelty:16e1e7039991e11615a56212",
+      "category": "SHARED_CAPACITY",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 629864,
+        "charEnd": 631035,
+        "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated EBITDA for the mo"
+      },
+      "signatureKey": "SHARED_CAPACITY|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:ff1a71ba789de8ce57d6b3f2",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7714,
+          "signatureKey": "SHARED_CAPACITY|IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:0ccfa7a7e4057254b021c70a",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6538,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "utstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and (y) 100% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:66f8b299abd48540d3f7e46e",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1804,
+          "signatureKey": "SHARED_CAPACITY|GENERAL_PROHIBITION+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "istent with past practice or in the ordinary course of business and (b) (i) Indebtedness under any Receivables Non-Recourse Facility and (ii) Indebtedness under any Receivables Recourse Facility that does not exceed the greater of (x) $360.0 million and (y) 50% of Consolidated EB",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this SHARED_CAPACITY drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [629864, 631035) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 23,
+      "findingId": "novelty:3a7caf91729c0036fc98c4bf",
+      "category": "PROVISO_PLACEMENT",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "MISSING_RESTRICTION",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 532015,
+        "charEnd": 533412,
+        "excerpt": "(b) The provisions of Section 7.02(a) will not apply to: (1) Indebtedness under the Loan Documents (including any Incremental Loans, Other Loans, Extended Term Loans and Replacement Loans); (2) the incurrence by the Borrower of the Senior Notes and the Guarantee thereof by any Guarantor; (3) the incurrence of Indebtedness by the Borrower and any of its Subsidiaries in existence on the Closing Date (excluding Indebtedness described in the preceding clauses (1) and (2) and Inde"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:3b513deb324843944d96982d",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.3083,
+          "signatureKey": "PROVISO_PLACEMENT|ENTITY_GUARANTOR_ONLY+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "y of the foregoing (excluding any Incremental Amounts), in each case then outstanding, would exceed (as of the date such Indebtedness, Disqualified Stock or Preferred Stock is issued, incurred or otherwise obtained) the greater of (I) $100.0 million and (II) 50% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this PROVISO_PLACEMENT drafting is modeled correctly. Suspected failure mode: MISSING_RESTRICTION. Check the exact source span [532015, 533412) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 24,
+      "findingId": "novelty:c5e12fa8994331f96150dca7",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "noveltyScore": 0.9187,
+      "suspectedFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 847553,
+        "charEnd": 848951,
+        "excerpt": "(b) Notwithstanding anything to the contrary set forth herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof, this Agreement will be subject to the terms and provisions of such Intercreditor Agreement. In the event of any inconsistency between the provisions of this Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the "
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+EXCEPTION_LIST_ITEM+INTERCREDITOR_JOINDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:f2ebeff9f3db39ffd5366613",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8249,
+          "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+INTERCREDITOR_JOINDER+PROVISO_AFTER_PERMISSION",
+          "excerpt": "herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof, this Agreement will be subject to the terms and provisions of such Intercreditor Agreement. In the event of any inconsistency b",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:2e31b0d72425bd4ca824f50d",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7556,
+          "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+INTERCREDITOR_JOINDER+PROVISO_AFTER_PERMISSION",
+          "excerpt": "ny inconsistency between the provisions of this Agreement and any other Loan Document, the terms of this Agreement shall govern and control; provided that, in the case of any inconsistency between this Agreement and any Intercreditor Agreement, the provisions of the Intercreditor",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:33d34566ed29df5ed973eb2c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7326,
+          "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_SUBJECT_TO+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+          "excerpt": "rform and observe its obligations under the ABL Intercreditor Agreement. (b) Notwithstanding anything to the contrary set forth herein, to the extent the Administrative Agent and/or Collateral Agent enter into any other Intercreditor Agreement in accordance with the terms hereof,",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this CROSS_DOCUMENT_RESTRICTION drafting is modeled correctly. Suspected failure mode: CROSS_INSTRUMENT_SILENCE. Check the exact source span [847553, 848951) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 25,
+      "findingId": "novelty:66b3d17e73820cccecd26f41",
+      "category": "INTERCREDITOR_LIMITATION",
+      "noveltyScore": 0.865,
+      "suspectedFailureMode": "PRIORITY_MISORDER",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 799215,
+        "charEnd": 800334,
+        "excerpt": "iority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by the Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction. (b) The provisions"
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|ENTITY_RESTRICTED_SUB+GENERAL_PROHIBITION+INTERCREDITOR_STANDSTILL",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:2a7010dd8226fb119b97166a",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.3718,
+          "signatureKey": "INTERCREDITOR_LIMITATION|ENTITY_RESTRICTED_SUB+GENERAL_PROHIBITION+INTERCREDITOR_STANDSTILL+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this INTERCREDITOR_LIMITATION drafting is modeled correctly. Suspected failure mode: PRIORITY_MISORDER. Check the exact source span [799215, 800334) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 26,
+      "findingId": "novelty:90da23c51690c55f95a42e90",
+      "category": "ENTITY_SCOPE",
+      "noveltyScore": 0.9307,
+      "suspectedFailureMode": "SCOPE_MISBIND",
+      "sourceSpan": {
+        "documentId": "probe-gibraltar-2026-ca",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "charStart": 761872,
+        "charEnd": 762992,
+        "excerpt": "ry in such Asset Dispositions having an aggregate fair market value, taken together with all other Designated Non-Cash Consideration received pursuant to this covenant that is at that time outstanding, not to exceed the greater of (i) $ 86,000,000 and (ii) 25.0% of LTM EBITDA, with the fair market value of each item of Designated Non-Cash Consideration being measured at the time received and without giving effect to subsequent changes in value; and (3) within 540 days from th"
+      },
+      "signatureKey": "ENTITY_SCOPE|DEFINITION_MEANS+ENTITY_RESTRICTED_SUB+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:359aa27390ce726277020207",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1515,
+          "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+ENTITY_RESTRICTED_SUB+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "regate fair market value, taken together with all other Investments made pursuant to this clause (22) and all Investments made pursuant to clause (20) , in each case, that are at that time outstanding, not to exceed the greater of (i) $258,000,000 and (ii) 75.0% of LTM EBITDA (wi",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:428c5e41f00ebd264d17f0cd",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1515,
+          "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+ENTITY_RESTRICTED_SUB+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "regate fair market value, taken together with all other Investments made pursuant to this clause (20) and all Investments made pursuant to clause (22) , in each case, that are at that time outstanding, not to exceed the greater of (i) $258,000,000 and (ii) 75.0% of LTM EBITDA (wi",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this ENTITY_SCOPE drafting is modeled correctly. Suspected failure mode: SCOPE_MISBIND. Check the exact source span [761872, 762992) in tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 27,
+      "findingId": "novelty:41964acf6dce4060acf3dd54",
+      "category": "AMENDMENT_MECHANISM",
+      "noveltyScore": 0.9457,
+      "suspectedFailureMode": "AMENDMENT_BYPASS",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 765484,
+        "charEnd": 766679,
+        "excerpt": "(d) Notwithstanding anything in this Agreement or the other Loan Documents to the contrary, the Loans of any Lender that is at the time (i) a Defaulting Lender or (ii) a Disqualified Lender, shall not have any voting or approval rights under the Loan Documents and shall be excluded in determining whether all Lenders (or all Lenders of a Class), all affected Lenders (or all affected Lenders of a Class) or the Required Lenders or Required Revolving Lenders, as applicable, have "
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+AMENDMENT_REQUIRED_LENDERS+EXCEPTION_LIST_ITEM+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:09499d876dd74df1df2480f8",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.1477,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "Section 4.01 or 4.02, in each case, without the written consent of each Lender; or (vi) [reserved]; provided that: (I) [reserved]; (II) [reserved] (III) no amendment, waiver or consent shall, unless in writing and signed by the Administrative Agent in addition to the Lenders requ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:450cdec5767aadf572b0a45d",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.0827,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+NOTWITHSTANDING_OVERRIDE",
+          "excerpt": "Notwithstanding anything to the contrary herein, any amendment, modification, waiver or other action which by its terms requires the consent of all Lenders or each affected Lender may be effected with the consent of the applicable Lenders other than Defaulting Lenders, except tha",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this AMENDMENT_MECHANISM drafting is modeled correctly. Suspected failure mode: AMENDMENT_BYPASS. Check the exact source span [765484, 766679) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 28,
+      "findingId": "novelty:43ff49362aca8437718a146b",
+      "category": "BASKET_FORMULA",
+      "noveltyScore": 0.96,
+      "suspectedFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 542095,
+        "charEnd": 543214,
+        "excerpt": "of the preceding clauses (a) and (b), in an aggregate principal amount or liquidation preference, together with any Refinancing Indebtedness in respect thereof (excluding any Incremental Amounts), not to exceed (A) the greater of $60.0 million and 30% of Consolidated EBITDA plus (B) an unlimited amount so long as in the case of this clause (B) only, either: (x) after giving pro forma effect to such acquisition, investment amalgamation, consolidation or merger and such incurre"
+      },
+      "signatureKey": "BASKET_FORMULA|CROSS_DOC_REFINANCING_LINEAGE+IN_THE_AGGREGATE_WITH+RATIO_GATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:7183c0cbf7c0ad4fe1341789",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.6098,
+          "signatureKey": "BASKET_FORMULA|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+IN_THE_AGGREGATE_WITH+RATIO_GATE",
+          "excerpt": "(b) Indebtedness, Disqualified Stock or Preferred Stock of Persons that are acquired by the Borrower or Guarantor or merged into, amalgamated or consolidated with the Borrower or a Guarantor of the Borrower in accordance with the terms of this Agreement, in the case of the preced",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this BASKET_FORMULA drafting is modeled correctly. Suspected failure mode: CAPACITY_UNDERSTATEMENT. Check the exact source span [542095, 543214) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 29,
+      "findingId": "novelty:76eca5dd88b8118068e9bbd4",
+      "category": "COVENANT_STRUCTURE",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-sup-2022-tlca",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "charStart": 532015,
+        "charEnd": 533412,
+        "excerpt": "(b) The provisions of Section 7.02(a) will not apply to: (1) Indebtedness under the Loan Documents (including any Incremental Loans, Other Loans, Extended Term Loans and Replacement Loans); (2) the incurrence by the Borrower of the Senior Notes and the Guarantee thereof by any Guarantor; (3) the incurrence of Indebtedness by the Borrower and any of its Subsidiaries in existence on the Closing Date (excluding Indebtedness described in the preceding clauses (1) and (2) and Inde"
+      },
+      "signatureKey": "COVENANT_STRUCTURE|CROSS_DOC_REFINANCING_LINEAGE+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:69d9a28f08c29b475611f6a8",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.3083,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_GUARANTOR_ONLY+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "y of the foregoing (excluding any Incremental Amounts), in each case then outstanding, would exceed (as of the date such Indebtedness, Disqualified Stock or Preferred Stock is issued, incurred or otherwise obtained) the greater of (I) $100.0 million and (II) 50% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this COVENANT_STRUCTURE drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [532015, 533412) in tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 30,
+      "findingId": "novelty:16b464be29795ef8a444bf50",
+      "category": "DEFINITION_FORMULATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "MISSING_RESTRICTION",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 198099,
+        "charEnd": 199497,
+        "excerpt": "Section 2.18(a). \" Incremental Revolving Loans \" means Loans under any Incremental Revolving Facility or Incremental Revolving Increase. \" Incremental Term Commitment \" means a commitment in respect of Incremental Term Loans. \" Incremental Term Facility \" means each and any facility comprised of Incremental Term Commitments and related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof. \" Incremental Term Loan \""
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+FIXED_VS_INCURRENCE+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:153df828dc8c90ca345aee84",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7539,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+FIXED_VS_INCURRENCE+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "d related Incremental Term Loans created pursuant to an Incremental Facility Amendment, together with any refinancing thereof. \" Incremental Term Loan \" has the meaning assigned to such term in Section 2.18(a). -42- \" Incurrence-Based Amounts \" has the meaning assigned to such te",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:7e49b44d594914aab7337a4d",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.2092,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS",
+          "excerpt": "\"Incremental Loan\" has the meaning specified in Section 2.14(2). \"Incremental Loan Request\" has the meaning specified in Section 2.14(1). \"Indebtedness\" means, with respect to any Person, without duplication: (1) any indebtedness (including principal and premium) of such Person, ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:be420217f856b1e5cbd3a554",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1326,
+          "signatureKey": "DEFINITION_FORMULATION|CROSS_DOC_SUBJECT_TO+DEFINITION_MEANS+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+          "excerpt": "ss incurred by a Restricted Party that is not a Loan Party, any such Indebtedness that is secured (i) is not secured by any assets of a Loan Party not securing the Secured Obligations and (ii) is subject to the relevant Intercreditor Agreement(s). \" Incremental Facility \" means e",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this DEFINITION_FORMULATION drafting is modeled correctly. Suspected failure mode: MISSING_RESTRICTION. Check the exact source span [198099, 199497) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 31,
+      "findingId": "novelty:b9be458600439c6af421ffc0",
+      "category": "RECLASSIFICATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 392356,
+        "charEnd": 393476,
+        "excerpt": "ed Amounts), Investments, liquidations, dissolutions, mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets the applicable ratio fo"
+      },
+      "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:839e05d4b361acfeb4b9648e",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8982,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "mergers, consolidations, Restricted Payments or any prepayments of Indebtedness (or, in each case, any portion thereof) incurred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwi",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:58f3a268bc892375aa0901ef",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7037,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "curred or otherwise effected in reliance on Fixed Amounts shall be automatically and immediately reclassified at any time, unless the Initial Borrower otherwise elects from time to time, as incurred under the applicable Incurrence-Based Amounts if the Borrowers subsequently meets",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:8dc9b352d20975bb95f88fe0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.6378,
+          "signatureKey": "RECLASSIFICATION|DEFINITION_FOR_PURPOSES+FIXED_VS_INCURRENCE+RATIO_GATE+RECLASSIFY_AUTOMATIC",
+          "excerpt": "Amount to the extent permitted, with the balance incurred under the Fixed Incremental Amount. In addition, any Indebtedness (and associated Liens, subject to the applicable priorities required pursuant to the applicable Incurrence-Based Amounts), Investments, liquidations, dissol",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this RECLASSIFICATION drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [392356, 393476) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 32,
+      "findingId": "novelty:193b831b9d1ffd19347012c6",
+      "category": "SHARED_CAPACITY",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "CAPACITY_OVERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2022-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "charStart": 436299,
+        "charEnd": 437257,
+        "excerpt": "(c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary, provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by any Borrower or other Loan Party of Indebtedness of any Restricted Subsidiary that is not a Loan Party shall be subject to Section 6.04, (iii) the aggregate principal amount of Indebtedness of Restric"
+      },
+      "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+EXCEPTION_LIST_ITEM+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:32cdc8e66e02b6cc36ba4bcb",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 1,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+EXCEPTION_LIST_ITEM+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary, provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:1adbbe8cb7673902e06c425d",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.4821,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other L",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:e5e095379ceab757ae550585",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.2857,
+          "signatureKey": "SHARED_CAPACITY|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+EXCEPTION_LIST_ITEM+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other L",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this SHARED_CAPACITY drafting is modeled correctly. Suspected failure mode: CAPACITY_OVERSTATEMENT. Check the exact source span [436299, 437257) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 33,
+      "findingId": "novelty:4e4f1ba22ac6186e20a2caf1",
+      "category": "PROVISO_PLACEMENT",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2025-second-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "charStart": 192271,
+        "charEnd": 193669,
+        "excerpt": "Section 7701(a)(30) of the Code. \" U.S. Secured Obligations \" means all Obligations of the U.S. Loan Parties, together with all (i) Banking Services Obligations of the U.S. Loan Parties and the U.S. Subsidiaries and (ii) Swap Agreement Obligations of the U.S. Loan Parties and the U.S. Subsidiaries, in each case, owing to one or more Lenders or their respective Affiliates; provided, however, that the definition of \"U.S. Secured Obligations\" shall not create any guarantee by an"
+      },
+      "signatureKey": "PROVISO_PLACEMENT|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:669799ff3a9cd5a82bfeef3a",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1054,
+          "signatureKey": "PROVISO_PLACEMENT|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Each Canadian Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:75ff2d4f873a88f1df89d980",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1054,
+          "signatureKey": "PROVISO_PLACEMENT|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+EXCEPTION_LIST_ITEM+GENERAL_PROHIBITION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "(b) Each Canadian Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees to the Secured Parties",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:d84ff1f6beeebc726c55520d",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1053,
+          "signatureKey": "PROVISO_PLACEMENT|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION+TOGETHER_WITH_SECTIONS",
+          "excerpt": "SECTION 10.01. Guaranty . (a) Each U.S. Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable for, and, as a primary obligor and not merely as surety, absolutely, unconditionally and irrevocably guarantees ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this PROVISO_PLACEMENT drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [192271, 193669) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 34,
+      "findingId": "novelty:034a030f5c8296a5a0051f8d",
+      "category": "CROSS_DOCUMENT_RESTRICTION",
+      "noveltyScore": 0.9133,
+      "suspectedFailureMode": "CROSS_INSTRUMENT_SILENCE",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 635731,
+        "charEnd": 636849,
+        "excerpt": "Stock or Preferred Stock described in Sections 6.01(b)(1) through (33) hereof or is entitled to be incurred pursuant to Section 6.01(a) hereof, the Initial Borrower, in its sole discretion, shall allocate, classify and reclassify all or a portion of such item of Indebtedness, Disqualified Stock or Preferred Stock (or any portion thereof) in any manner that complies with this Section 6.01 and shall only be required to include the amount and type of such Indebtedness, Disqualif"
+      },
+      "signatureKey": "CROSS_DOCUMENT_RESTRICTION|CROSS_DOC_CAP_REFERENCE+RECLASSIFY_SOLE_DISCRETION",
+      "comparisonExamples": [],
+      "reviewerPrompt": "Verify whether this CROSS_DOCUMENT_RESTRICTION drafting is modeled correctly. Suspected failure mode: CROSS_INSTRUMENT_SILENCE. Check the exact source span [635731, 636849) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 35,
+      "findingId": "novelty:3eefa6bde4c95888dc111cbe",
+      "category": "INTERCREDITOR_LIMITATION",
+      "noveltyScore": 0.8507,
+      "suspectedFailureMode": "PRIORITY_MISORDER",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 283826,
+        "charEnd": 285225,
+        "excerpt": "provided that such defeasance or satisfaction and discharge is not prohibited by this Agreement; -61- (39) Liens securing Indebtedness that was permitted by the terms of this Agreement to be incurred pursuant to Section 6.01(b)(1) hereof; provided that (i) Liens incurred pursuant to this clause on Collateral securing Indebtedness permitted to be incurred pursuant to Section 6.01(b)(1)(Y) shall be subject to applicable Customary Intercreditor Agreements and (ii) Liens on the T"
+      },
+      "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+ENTITY_GUARANTOR_ONLY+INTERCREDITOR_PRIORITY_COLLATERAL+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:7a554b5b91554cc90541cdf0",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.8415,
+          "signatureKey": "INTERCREDITOR_LIMITATION|CROSS_DOC_SUBJECT_TO+ENTITY_GUARANTOR_ONLY+INTERCREDITOR_PRIORITY_COLLATERAL+PROVISO_AFTER_PERMISSION",
+          "excerpt": "Section 6.01(b)(1) hereof; provided that (i) Liens incurred pursuant to this clause on Collateral securing Indebtedness permitted to be incurred pursuant to Section 6.01(b)(1)(Y) shall be subject to applicable Customary Intercreditor Agreements and (ii) Liens on the Term Priority",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this INTERCREDITOR_LIMITATION drafting is modeled correctly. Suspected failure mode: PRIORITY_MISORDER. Check the exact source span [283826, 285225) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 36,
+      "findingId": "novelty:052515367b5703dd927cff11",
+      "category": "ENTITY_SCOPE",
+      "noveltyScore": 0.9267,
+      "suspectedFailureMode": "SCOPE_MISBIND",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 649854,
+        "charEnd": 651252,
+        "excerpt": "Section 6.04 [Reserved] . -139- Section 6.05 Limitation on Asset Sales . (a) The Borrowers shall not, and shall not permit any Restricted Subsidiary to, consummate an Asset Sale, unless: (1) the applicable Restricted Party, as the case may be, receives consideration (including, but not limited to, by way of relief from, or by any other Person assuming responsibility for, any liabilities, contingent or otherwise, in connection with, such Asset Sales) at the time of such Asset "
+      },
+      "signatureKey": "ENTITY_SCOPE|ENTITY_RESTRICTED_SUB+IN_THE_AGGREGATE_WITH+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:577e6799b9b1964ba5a71878",
+          "documentId": "probe-gibraltar-2026-ca",
+          "packageId": "gibraltar-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1156,
+          "signatureKey": "ENTITY_SCOPE|DEFINITION_FOR_PURPOSES+ENTITY_GUARANTOR_ONLY+ENTITY_RESTRICTED_SUB",
+          "excerpt": "tion is a Permitted Asset Swap); (2) in any such Asset Disposition, or series of related Asset Dispositions (except to the extent the Asset Disposition is a Permitted Asset Swap), with a purchase price in excess of the greater of (i) $68,800,000 and (ii) 20.0% of LTM EBITDA, at l",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this ENTITY_SCOPE drafting is modeled correctly. Suspected failure mode: SCOPE_MISBIND. Check the exact source span [649854, 651252) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 37,
+      "findingId": "novelty:9f7d5df26fd403ed7563eae5",
+      "category": "AMENDMENT_MECHANISM",
+      "noveltyScore": 0.92,
+      "suspectedFailureMode": "AMENDMENT_BYPASS",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2025-second-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "charStart": 595428,
+        "charEnd": 596548,
+        "excerpt": "ermitted hereunder, or any amendment or supplement thereto (i) that is for the purpose of adding the holders of Indebtedness governed thereby as parties thereto, as expressly contemplated by the terms of such Applicable Intercreditor Agreement (it being understood that any such amendment or supplement may make such other changes to the applicable intercreditor or subordination agreement as, in the good faith determination of the Administrative Agent, are required to effectuat"
+      },
+      "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+ENTITY_LOAN_PARTY+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:d3ee701306c250817aa3e3be",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.7765,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_AFFECTED_LENDER+ENTITY_LOAN_PARTY+PROVISO_AFTER_PERMISSION",
+          "excerpt": "rned thereby as parties thereto, as expressly contemplated by the terms of such Applicable Intercreditor Agreement (it being understood that any such amendment or supplement may make such other changes to the applicable intercreditor or subordination agreement as, in the good fai",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:0542ba1ec4ec6bccb2a17c16",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.2332,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_REQUIRED_LENDERS+PROVISO_AFTER_PERMISSION",
+          "excerpt": "rties thereto, as expressly contemplated by the terms of such Intercreditor Agreement, as applicable (it being understood that any such amendment, modification or supplement may make such other changes to the applicable Intercreditor Agreement as, in the good faith determination ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:34dbd59682ac2a939b26768d",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.1088,
+          "signatureKey": "AMENDMENT_MECHANISM|AMENDMENT_REQUIRED_LENDERS+PROVISO_AFTER_PERMISSION",
+          "excerpt": "dministrative Agent, are required to effectuate the foregoing and provided that such other changes are not adverse, in any material respect, to the interests of the Lenders) or (ii) that is expressly contemplated by any Intercreditor Agreement in connection with joinders and supp",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this AMENDMENT_MECHANISM drafting is modeled correctly. Suspected failure mode: AMENDMENT_BYPASS. Check the exact source span [595428, 596548) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 38,
+      "findingId": "novelty:5944345c70603076e2c97a9c",
+      "category": "BASKET_FORMULA",
+      "noveltyScore": 0.9267,
+      "suspectedFailureMode": "CAPACITY_UNDERSTATEMENT",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 630048,
+        "charEnd": 631168,
+        "excerpt": "19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued to finance or assumed in connection with an acquisition or Investment in an aggregate principal amount not to exceed the greater of (x) $720.0 million and (y) 100.0% of Consolidated EBITDA for the most recently ended Test Period, calculated on a Pro Forma Basis, in the aggregate at any one time outstanding together with all other outstanding Indebtedness, Disqualified Stock and/"
+      },
+      "signatureKey": "BASKET_FORMULA|IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:c70e0a98651ca7d271d11e42",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.7714,
+          "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "Section 6.01(b)(18) and (ii) Indebtedness of Restricted Parties that are not Guarantors in respect of any working capital facilities to the extent non-recourse to the Loan Parties; (19) Indebtedness, Disqualified Stock or Preferred Stock of any Restricted Party incurred or issued",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:e0a6dbd19ce0c09c187b0fec",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.4691,
+          "signatureKey": "BASKET_FORMULA|ENTITY_GUARANTOR_ONLY+ENTITY_LOAN_PARTY+IN_THE_AGGREGATE_WITH+SHARED_AGGREGATE+TOGETHER_WITH_SECTIONS",
+          "excerpt": "utstanding not to exceed, in the aggregate (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(18)), the greater of (x) $720.0 million and (y) 100% of Consolidated E",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:fce8ede46f2e98b66e250b5c",
+          "documentId": "probe-chwy-2026-ca",
+          "packageId": "chwy-2026-credit-agreement",
+          "role": "PROBE",
+          "jaccard": 0.1467,
+          "signatureKey": "BASKET_FORMULA|BUILDER_BASKET+TOGETHER_WITH_SECTIONS",
+          "excerpt": "on 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred in reliance on this Section 6.01(b)(27), shall not exceed, at the time of the incurrence thereof and after giving pro forma effect thereto, the greater of (x) $360.0 million and (y) 50% of Consolidated EB",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this BASKET_FORMULA drafting is modeled correctly. Suspected failure mode: CAPACITY_UNDERSTATEMENT. Check the exact source span [630048, 631168) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 39,
+      "findingId": "novelty:7e52c70b72177289cbcd8c5e",
+      "category": "COVENANT_STRUCTURE",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-dsgr-2025-second-arca",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "charStart": 486972,
+        "charEnd": 487888,
+        "excerpt": "Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, Lien, sale, conveyance, transfer or other Disposition, and whether in a single transaction or a series of transactions) of intellectual property that is material to the business of the Company and its Restricted Subsidiaries to any Unrestricted Subsidiary or any Restricted Subsidiary t"
+      },
+      "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:6c699aa9e7201a291e5e9f43",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.7786,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+          "excerpt": "Section 6.05(k) shall be made for fair value and for at least 75% cash consideration. Notwithstanding the foregoing, no Loan Party or any Restricted Subsidiary shall consummate any transaction that results in the Disposition (whether by way of any Restricted Payment, investment, ",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:af8596f88aa34a4c472010c5",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.4439,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph (k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $47,500,000 and 25% of Applicable EBITDA; provide",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:2f98542047e2b87e484eddd1",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.4368,
+          "signatureKey": "COVENANT_STRUCTURE|ENTITY_LOAN_PARTY+ENTITY_RESTRICTED_SUB+ENTITY_UNRESTRICTED_SUB+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION+PROVISO_AFTER_PROHIBITION",
+          "excerpt": "any other clause of this Section; provided that the aggregate fair market value of all assets Disposed of in reliance upon this paragraph (k) shall not exceed during any fiscal year of the Company an amount equal to the greater of $25,000,000 and 25% of Applicable EBITDA; provide",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this COVENANT_STRUCTURE drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [486972, 487888) in tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    },
+    {
+      "queueRank": 40,
+      "findingId": "novelty:1ec9ccbd8e44679d83b36176",
+      "category": "DEFINITION_FORMULATION",
+      "noveltyScore": 0.99,
+      "suspectedFailureMode": "FALSE_PERMISSION",
+      "sourceSpan": {
+        "documentId": "probe-chwy-2026-ca",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "charStart": 17597,
+        "charEnd": 18996,
+        "excerpt": "Section 163(e)(5) of the Code to such Indebtedness. \" Alternate Base Rate \" means for any day a fluctuating rate per annum equal to the highest of (a) the NYFRB Rate plus 1/2 of 1.00%, (b) the Prime Rate for such day and (c) Term SOFR Rate for a one (1)-month Interest Period as published two (2) U.S. Government Securities Business Days prior to such day (or if such day is not a U.S. Government Securities Business Day, the immediately preceding U.S. Government Securities Busin"
+      },
+      "signatureKey": "DEFINITION_FORMULATION|DEFINITION_MEANS+NOTWITHSTANDING_OVERRIDE+PROVISO_AFTER_PERMISSION",
+      "comparisonExamples": [
+        {
+          "unitId": "draft-unit:40c6e90a35ec7077d0302de5",
+          "documentId": "probe-sup-2022-tlca",
+          "packageId": "final-lightweight-unseen-sup",
+          "role": "PROBE",
+          "jaccard": 0.1634,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS",
+          "excerpt": "is being used as an alternate rate of interest pursuant to Section 3.03 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 3.03(2)), then the Base Rate shall be the greater of clauses (a) and (b) above and shall be determined",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:2c5d0277d24052a68cdb01ff",
+          "documentId": "probe-dsgr-2022-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1589,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+PROVISO_AFTER_PERMISSION",
+          "excerpt": "sed as an alternate rate of interest pursuant to Section 2.14 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 2.14(b)), then the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        },
+        {
+          "unitId": "draft-unit:c723f0d99f6c29ecb3f8cc6f",
+          "documentId": "probe-dsgr-2025-second-arca",
+          "packageId": "dsgr-2022-2025-credit-facility",
+          "role": "PROBE",
+          "jaccard": 0.1589,
+          "signatureKey": "DEFINITION_FORMULATION|DEFINITION_FOR_PURPOSES+DEFINITION_MEANS+PROVISO_AFTER_PERMISSION",
+          "excerpt": "sed as an alternate rate of interest pursuant to Section 2.14 (for the avoidance of doubt, only until the Benchmark Replacement has been determined pursuant to Section 2.14(b)), then the Alternate Base Rate shall be the greater of clauses (a) and (b) above and shall be determined",
+          "equivalenceClaim": "NONE_LEXICAL_ONLY"
+        }
+      ],
+      "reviewerPrompt": "Verify whether this DEFINITION_FORMULATION drafting is modeled correctly. Suspected failure mode: FALSE_PERMISSION. Check the exact source span [17597, 18996) in tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt. Compare shape (not wording) to the listed examples; do not assume lexical similarity means same legal effect."
+    }
+  ]
+}

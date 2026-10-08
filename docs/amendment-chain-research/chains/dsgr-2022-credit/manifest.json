@@ -1,0 +1,127 @@
+{
+  "chainId": "dsgr-2022-04-01-ar-credit",
+  "issuer": {
+    "name": "Distribution Solutions Group, Inc. (formerly Lawson Products, Inc.)",
+    "ticker": "DSGR",
+    "cik": "0000703604"
+  },
+  "instrument": {
+    "instrumentId": "dsgr-ar-ca-2022-04-01",
+    "title": "Amended and Restated Credit Agreement dated April 1, 2022 → Second A&R dated December 18, 2025",
+    "governingLawNote": "Illinois internal laws stated on Fourth Amendment.",
+    "identityNotes": [
+      "Chain includes targeted Third and Fourth Amendments, then a full Second Amended and Restated Credit Agreement.",
+      "Classic restatement-followed-by / preceded-by targeted amendment pattern; final operative base becomes Doc D restatement.",
+      "First/Second Amendments between 2022 A&R and Third Amendment are not in the Phase 3F fixture package — MISSING relative to complete chain (see unresolved-authority)."
+    ]
+  },
+  "documents": [
+    {
+      "docId": "dsgr-doc-a",
+      "role": "RESTATEMENT",
+      "title": "Amended and Restated Credit Agreement",
+      "executionDate": "2022-04-01",
+      "filingDate": "2022-04-04",
+      "accession": "0001193125-22-095177",
+      "exhibit": "EX-10.2",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/703604/000119312522095177/d345714dex102.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "EXPLICIT_EFFECTIVE_DATE",
+        "namedEffectiveDate": "2022-04-01",
+        "conditionsSummary": null,
+        "evidenceQuote": "Fixture README / document dating April 1, 2022."
+      },
+      "amendsInstrumentId": null,
+      "amendsDocIds": [],
+      "notes": []
+    },
+    {
+      "docId": "dsgr-doc-b",
+      "role": "AMENDMENT",
+      "title": "Third Amendment to Amended and Restated Credit Agreement",
+      "executionDate": "2024-08-14",
+      "filingDate": "2024-08-16",
+      "accession": "0001193125-24-202196",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/703604/000119312524202196/d885541dex101.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Third Amendment Effective Date subject to conditions including incremental funding, certificates, opinions, fees (Section 4 of amendment).",
+        "evidenceQuote": "Conditions of Effectiveness. The effectiveness of this Amendment (the \"Third Amendment Effective Date\") is subject..."
+      },
+      "amendsInstrumentId": "dsgr-ar-ca-2022-04-01",
+      "amendsDocIds": ["dsgr-doc-a"],
+      "notes": [
+        "Large amend-and-restate blocks of Articles I–XII (near full-size restatement technique).",
+        "Explicit non-waiver clause: effectiveness shall not operate as a waiver..."
+      ]
+    },
+    {
+      "docId": "dsgr-doc-c",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment to Amended and Restated Credit Agreement",
+      "executionDate": "2025-03-31",
+      "filingDate": "2025-04-02",
+      "accession": "0001193125-25-070858",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/703604/000119312525070858/d906948dex101.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "DEEMED_RETROACTIVE",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Fourth Amendment Effective Date is condition-based; parties agree to give deemed effect to clauses (a) and (b) as of January 1, 2025.",
+        "evidenceQuote": "with the parties hereto agreeing to give deemed effect to the amendments described in clauses (a) and (b) below as of January 1, 2025"
+      },
+      "amendsInstrumentId": "dsgr-ar-ca-2022-04-01",
+      "amendsDocIds": ["dsgr-doc-b"],
+      "notes": [
+        "Amends §3.17 and Restricted Payments §6.08(a)(v).",
+        "Explicit non-waiver: shall not operate as a waiver of any right, power or remedy..."
+      ]
+    },
+    {
+      "docId": "dsgr-doc-d",
+      "role": "RESTATEMENT",
+      "title": "Second Amended and Restated Credit Agreement",
+      "executionDate": "2025-12-18",
+      "filingDate": "2025-12-22",
+      "accession": "0001193125-25-328786",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/703604/000119312525328786/d83410dex101.htm",
+      "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+      "retrievalStatus": "FIXTURE_PRESENT",
+      "effectiveDateProvision": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "namedEffectiveDate": null,
+        "conditionsSummary": "Full restatement effectiveness conditions not re-extracted in this research pass beyond fixture presence.",
+        "evidenceQuote": null
+      },
+      "amendsInstrumentId": "dsgr-ar-ca-2022-04-01",
+      "amendsDocIds": ["dsgr-doc-c"],
+      "notes": ["Superseding full restatement after targeted Fourth Amendment."]
+    }
+  ],
+  "authorityPolicy": {
+    "noInferenceWithoutSource": true,
+    "waiversSeparateFromAmendments": true,
+    "notes": [
+      "First and Second Amendments (if any) between Doc A and Doc B are not in package — unresolved completeness.",
+      "Waivers explicitly disclaimed in Third/Fourth Amendments; no standalone waiver instrument identified in package."
+    ]
+  },
+  "adversarialTags": [
+    "RESTATEMENT_THEN_TARGETED",
+    "DEEMED_RETROACTIVE_EFFECT",
+    "CONDITIONAL_EFFECTIVENESS",
+    "MULTI_COVENANT_FAMILY",
+    "WAIVER_OR_CONSENT_SEPARATE",
+    "MISSING_DOCUMENT",
+    "INCORPORATION_BY_REFERENCE"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "datasetId": "negative-covenant-exception-database-phase2",
+  "datasetVersion": "ncedb.phase2.v1",
+  "workstreamId": "WS-NED",
+  "status": "OFFLINE_RESEARCH_DATASET",
+  "representationLevelCeiling": "DETERMINISTICALLY_VALIDATED",
+  "exactSourceProvenance": true,
+  "stableContentIdentities": true,
+  "sourceTextHashes": true,
+  "compilerOrModelVersions": {
+    "ncedb": "ncedb.phase2.v1",
+    "mode": "deterministic-offline"
+  },
+  "confidenceAndUncertaintyLabels": true,
+  "verificationStatusField": true,
+  "duplicateDetection": {
+    "strategy": "sourceIdentityKey + exceptionId importKey"
+  },
+  "deterministicReplay": {
+    "regenerator": "scripts/negative-covenant-exception-database/generate-phase2.py"
+  },
+  "actualRecordCounts": {
+    "exceptions": 21,
+    "issuers": 8,
+    "documents": 12,
+    "negativeControls": 12,
+    "localOnlyEconomicOrConditionRows": 3,
+    "remoteOnlyRows": 7
+  },
+  "independentQualityMetrics": {
+    "path": "docs/negative-covenant-exception-database/phase-2/06-quality-metrics.json",
+    "status": "PARTIAL_WITH_UNVERIFIED"
+  },
+  "nonGoals": [
+    "No modifications to production covenant engines (lib/contract-model/**).",
+    "No Claude-owned acceptance fixture modifications.",
+    "No paid inference.",
+    "No merges.",
+    "No certification advancement.",
+    "No sealed-evidence modifications.",
+    "Labels are not automatic production capacity approvals."
+  ],
+  "classificationCounts": {
+    "UNCONDITIONAL_SOURCE_VERIFIED": 4,
+    "CONDITIONAL": 12,
+    "NOT_AN_AFFIRMATIVE_PERMISSION": 4,
+    "UNKNOWN": 1
+  },
+  "localOnlyIds": [
+    "lsb-6.01-i-local-greater-of",
+    "riot-5.02-a-ii-tax-liens-local",
+    "conmed-7.5-a-qualitative-gates"
+  ],
+  "remoteOnlyIds": [
+    "conmed-7.2-a-loan-document-debt",
+    "conmed-7.2-c-remote-lien-and-7.1",
+    "lsb-6.11-c-remote-payment-conditions",
+    "lsb-6.04-b-external-secured-notes",
+    "dsgr-6.01-a-secured-obligations",
+    "sup-7.01-permitted-liens-definitional",
+    "fwrg-6.04-a-iii-builder-remote"
+  ],
+  "bothLocalAndRemoteIds": [
+    "conmed-7.2-d-finance-leases-local-greater-of",
+    "chwy-6.01-a-ratio-gated-incurrence",
+    "gibraltar-7.01-a-ratio-incurrence-proviso",
+    "dsgr-6.01-b-intercompany-shared-cap"
+  ],
+  "noIdentifiableAdditionalConditionsIds": [
+    "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+    "dsgr-fourth-amendment-authority-pointer",
+    "riot-5.02-a-i-facility-liens"
+  ]
+}

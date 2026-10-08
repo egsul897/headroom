@@ -1,0 +1,256 @@
+{
+  "artifact": "ncedb-current-head-integration-gate",
+  "generatedAt": "2026-10-08T23:18:59.432Z",
+  "workstreamId": "WS-NED",
+  "pr": 143,
+  "shas": {
+    "phase3Start": "1456000040f03faeb2beca3c9f46bc2db91ac960",
+    "reportedPhase4": "44685ff410190e3ea67d33bf862a833c6cb3f39c",
+    "observedHeadAtGateStart": "7dadd90b9152d9b6a71e243bec2d24f2e1fe0645",
+    "actualPrHead": "5fb12d4c285c0c44ca1e2ced282fdf34ad898010",
+    "endingSha": "5fb12d4c285c0c44ca1e2ced282fdf34ad898010",
+    "originMain": "64e5b5c23d153714a78659c408f3078227084a49",
+    "mergeBaseWithMain": "9de4e5737166fcec84a35fdc9a3404870549211f",
+    "ciVerifiedTip": "5d02b54de857a8927eba1cca03794108a636f69b"
+  },
+  "interveningChanges": {
+    "commits": [
+      {
+        "sha": "5d02b54de857a8927eba1cca03794108a636f69b",
+        "subject": "NCEDB integration gate: pin ending SHA on tip."
+      },
+      {
+        "sha": "f4e3981fd33c28ee1266d122e660001ad1f9cb7b",
+        "subject": "NCEDB integration gate: refresh report at current tip after gate commit."
+      },
+      {
+        "sha": "a3c60363ef5608957b4a6ec7c3dff609c5dd410e",
+        "subject": "NCEDB integration gate: reconcile head, adversarial fail-closed tests, merge report."
+      },
+      {
+        "sha": "7dadd90b9152d9b6a71e243bec2d24f2e1fe0645",
+        "subject": "NCEDB Phase 4: fix strict TypeScript errors breaking Vercel build."
+      }
+    ],
+    "summary": "4 intervening commit(s) after reported Phase 4 SHA",
+    "changesProductionBehavior": false,
+    "changesEvalMetrics": false,
+    "changesFixtures": false,
+    "changesTests": true,
+    "note": "7dadd90 is null-safety only (Vercel). Later commits add integration-gate adversarial tests + report artifacts only. Frozen Gibraltar and Riot metric numerators/denominators identical at 44685ff and head. No production Permission paths; no Claude fixture edits."
+  },
+  "mergeWithMain": {
+    "overlappingPathsSinceMergeBase": 0,
+    "dryRunMergeClean": true,
+    "note": "git merge --no-commit of PR tip into origin/main succeeded with no conflicts in a worktree check."
+  },
+  "replayedMetrics": {
+    "frozenGibraltar706": {
+      "remoteConditionRecall": {
+        "value": 1,
+        "numerator": 6,
+        "denominator": 6,
+        "status": "MEASURED",
+        "evidence": [
+          "7.06(b)(1): Closing Date limb; Loan Document defs; parent section provisos; unresolved cross-ref:Closing Date",
+          "7.06(b)(4): parent section provisos; acquisition timing / designation conditions; Initial Agreement refinement proviso",
+          "7.06(b)(5): parent section provisos; nested subclause conditions; subsequent incurrence permission cross-ref; local contest/reserve conditions; Initial Agreement refinement proviso; unresolved cross-ref:this Agreement (permission cross-reference)",
+          "7.06(b)(14): Closing Date limb; parent section provisos; subsequent incurrence permission cross-ref; unresolved cross-ref:Section 7.01; unresolved cross-ref:Closing Date",
+          "7.06(b)(16): parent section provisos; Transaction Documents definition/external; unresolved cross-ref:Transaction Documents",
+          "7.06(b)(17): parent section provisos; Initial Agreement refinement proviso"
+        ]
+      },
+      "provisoAttachmentAccuracy": {
+        "value": 1,
+        "numerator": 2,
+        "denominator": 2,
+        "status": "MEASURED",
+        "evidence": [
+          "7.06(b)(1): PARENT_PROVISO_MAY_INTERACT",
+          "7.06(b)(17): HANGING"
+        ]
+      },
+      "entityScopeFidelity": {
+        "value": 1,
+        "numerator": 2,
+        "denominator": 2,
+        "status": "MEASURED",
+        "evidence": [
+          "7.06(b)(1): LOAN_PARTY_OTHER_THAN_BORROWER, LOAN_PARTIES, BORROWER, EXCLUDE:BORROWER",
+          "7.06(b)(12): LOAN_PARTY_OTHER_THAN_BORROWER, LOAN_PARTIES, BORROWER, NON_LOAN_PARTY_SUBSIDIARIES, SUBSIDIARIES, EXCLUDE:BORROWER"
+        ]
+      },
+      "crossReferenceAccuracy": {
+        "value": 1,
+        "numerator": 3,
+        "denominator": 3,
+        "status": "MEASURED",
+        "evidence": [
+          "7.06(b)(1): Section 7.06(a), Loan Documents, Closing Date",
+          "7.06(b)(6): Section 7.06(a), this Agreement (permission cross-reference)",
+          "7.06(b)(15): Section 7.06(a), Section 7.02"
+        ]
+      },
+      "incorrectUnconditionalPermissionRate": {
+        "value": 0,
+        "numerator": 0,
+        "denominator": 16,
+        "status": "MEASURED"
+      },
+      "unsupportedCaseRefusal": {
+        "value": 1,
+        "numerator": 1,
+        "denominator": 1,
+        "status": "MEASURED",
+        "evidence": [
+          "7.06(b)(5): refusal=none remote=parent section provisos|nested subclause conditions|subsequent incurrence permission cross-ref|local contest/reserve conditions|Initial Agreement refinement proviso|unresolved cross-ref:this Agreement (permission cross-reference)"
+        ]
+      },
+      "exceptionDiscoveryPrecision": {
+        "value": 1,
+        "numerator": 16,
+        "denominator": 16,
+        "status": "MEASURED"
+      },
+      "exceptionDiscoveryRecall": {
+        "value": 1,
+        "numerator": 16,
+        "denominator": 16,
+        "status": "MEASURED"
+      }
+    },
+    "issuerDisjointRiot502": {
+      "exceptionDiscoveryPrecision": {
+        "value": 1,
+        "numerator": 4,
+        "denominator": 4,
+        "status": "MEASURED"
+      },
+      "exceptionDiscoveryRecall": {
+        "value": 1,
+        "numerator": 4,
+        "denominator": 4,
+        "status": "MEASURED"
+      },
+      "remoteConditionRecall": {
+        "value": 1,
+        "numerator": 4,
+        "denominator": 4,
+        "status": "MEASURED",
+        "evidence": [
+          "5.02(a)(i): Loan Document defs; Collateral external; unresolved cross-ref:Loan Document",
+          "5.02(a)(ii): Collateral external; local contest/reserve conditions; local contest/reserve conditions",
+          "5.02(a)(iii): Collateral external; local contest/reserve conditions; Section 430(k) definitional dependence; Section 436 definitional dependence; local contest/reserve conditions",
+          "5.02(a)(iv): Collateral external"
+        ]
+      },
+      "entityScopeFidelity": {
+        "value": 1,
+        "numerator": 3,
+        "denominator": 3,
+        "status": "MEASURED",
+        "evidence": [
+          "5.02(a)(i): BORROWER",
+          "5.02(a)(ii): BORROWER",
+          "5.02(a)(iv): BORROWER"
+        ]
+      },
+      "crossReferenceAccuracy": {
+        "value": 1,
+        "numerator": 2,
+        "denominator": 2,
+        "status": "MEASURED",
+        "evidence": [
+          "5.02(a)(i): Loan Document",
+          "5.02(a)(iii): Section 430(k), Section 436"
+        ]
+      },
+      "incorrectUnconditionalPermissionRate": {
+        "value": 0,
+        "numerator": 0,
+        "denominator": 4,
+        "status": "MEASURED"
+      }
+    }
+  },
+  "adversarialCoverage": [
+    "Missing remote conditions → mayClassifyUnconditional false",
+    "Unresolved definitions → mayClassifyUnconditional false",
+    "Parent proviso interactions visible on 7.06(b)(1)",
+    "Unresolved amendment authority → not unconditional",
+    "Prohibition-only 5.02(c) not emitted as exception",
+    "Entity-scope uncertainty fails closed / no Guarantor inference from Loan Parties",
+    "productionCapacityApproved always false on import batches"
+  ],
+  "ckfCompatibility": {
+    "canonicalSchemaOnBranch": false,
+    "canonicalSchemaOnMain": false,
+    "deliveryContractOnMain": true,
+    "deliveryFieldPresence": {
+      "exactSourceProvenance": true,
+      "stableContentIdentities": true,
+      "sourceTextHashes": true,
+      "compilerOrModelVersions": true,
+      "confidenceAndUncertaintyLabels": true,
+      "verificationStatusField": true,
+      "duplicateDetection": true,
+      "deterministicReplay": true,
+      "actualRecordCounts": true,
+      "independentQualityMetrics": true
+    },
+    "status": "ALIGNED_FOR_REVIEW",
+    "doesNotCreateCompetingCanonicalSchema": true,
+    "preservesUnresolvedDependencyFields": true,
+    "productionCapacityApprovedAlwaysFalse": true,
+    "peerBranch": "cursor/covenant-knowledge-factory-7327",
+    "integrationQueueDependsOn": [
+      "IQ-001 (WS-PAR)",
+      "IQ-002 (WS-CKF)"
+    ]
+  },
+  "promotionSafety": {
+    "productionCapacityApproved": false,
+    "doesNotWrite": [
+      "Permission",
+      "PermissionRelationship",
+      "SharedCapacityConstraint",
+      "CovenantProvision",
+      "ContractRule",
+      "SemanticTruthRecord"
+    ],
+    "unconditionalCapacityAlwaysFalse": true
+  },
+  "mergeReadiness": {
+    "canMergeIntactAsResearchOverlay": true,
+    "recommendSplit": false,
+    "rationale": [
+      "Dry-run merge into current origin/main is conflict-free and path-disjoint since merge-base.",
+      "Dataset is OFFLINE_RESEARCH_DATASET with productionCapacityApproved=false.",
+      "No lib/contract-model or Claude-owned fixture edits.",
+      "Full CKF wire-up remains ALIGNED_FOR_REVIEW until IQ-002 lands; that is a dependency note, not a merge conflict."
+    ],
+    "blockersForOperativePromotion": [
+      "WS-CKF canonical schema not on main (IQ-002)",
+      "Must not promote SOURCE_ONLY/PARTIAL dependency closures into Permission tables (G1/G2)"
+    ],
+    "recommendation": "MERGE_INTACT_AS_NON_PROMOTING_RESEARCH_OVERLAY — merge PR #143 into main as WS-NED research corpus + offline analyzer library; do not enable production Permission ingestion until CKF schema wire-up and human review path exist."
+  },
+  "remainingFalsePermissionRisks": [
+    "PARTIAL definitional joins may understate nested definition depth",
+    "Parent proviso MAY_INTERACT is structural visibility, not a full legal attachment opinion",
+    "Amendment authority atoms remain UNRESOLVED in local analyzer pass",
+    "Numbered-limb discovery P/R can look strong if read without remote/proviso/unconditional metrics"
+  ],
+  "costs": {
+    "actualPaidSpendUsd": 0
+  },
+  "ci": {
+    "localTsc": "clean",
+    "localNcedbTests": "43/43",
+    "currentHeadCi": "green",
+    "vercel": "pass",
+    "vercelPreviewComments": "pass",
+    "verifiedOnSha": "5d02b54de857a8927eba1cca03794108a636f69b",
+    "note": "Vercel green on 5d02b54; finalize stamp tip 5fb12d4 is docs/script only (no production behavior change)."
+  }
+}

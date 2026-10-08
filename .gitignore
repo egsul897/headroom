@@ -9,8 +9,13 @@ coverage
 .claude/worktrees/
 # LocalFilesystemStorageProvider's dev/test fallback (lib/document-storage/local-fs-provider.ts)
 .local-blob-storage/
+# WS-CCA local compute caches (includes rare-covenant / EHB SEC byte caches under data/)
+# EHB runtime manifests/queue/source bytes: data/edgar-historical-backfill/ (EPHEMERAL_WORKSPACE)
+# Default SEC fair-access cache: .cache/sec-edgar/ (covered by .cache/)
 data/
 .local-knowledge-corpus/
 .cache/
+# Amendment-chain research EDGAR byte cache (hashes committed under docs/; bytes not in git)
+.local-amendment-research/
 # Covenant Dependency Atlas / KF bulky generated exports & acquired corpus bytes
 .local-dependency-atlas/

@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-def-fwrg-loan_party",
+  "polarity": "POSITIVE",
+  "role": "DEFINITION",
+  "split": "train",
+  "document": {
+    "issuerId": "fwrg",
+    "issuerName": "First Watch Restaurant Group, Inc.",
+    "instrumentKey": "fwrg-2021-credit-agreement",
+    "documentId": "fwrg-doc-a-credit-agreement-2021",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+    "cik": "0001789940"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "fwrg-doc-a-credit-agreement-2021",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "1.01/Loan Party",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE I",
+    "unitKind": "DEFINITION"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Loan Party subject (or purported to be subject) to a Lien under any Collateral Document and any and all other property of any Loan Party, now existing or hereafter acquired, that is or becomes subject (or purported to be subject) to a Lien pursuant to any Collateral Document to secure the Secured Obligations. For the avoidance of doubt, in no event shall &#147;Collateral&#148; include any Excluded Asset. &#147; Collateral and Guarantee Requirement &#148; means, at any time, subject to (x) the applicable limitations set forth in this Agreement and/or any other Loan Document and the terms of any applicable Intercreditor Agreement and (y) the time periods (and extensions thereof) set forth in Section 5.12 and/or Section 5.15 , as applicable, the requirement that: (a) on the Cl\n\n---DEFINITION BREAK---\n\nConsolidated Adjusted EBITDA &#148; means, with respect to any Person on a consolidated basis for any period, the sum of: (a) Consolidated Net Income for such period; plus (b) to the extent not otherwise included in the determination of Consolidated Net Income for such period, the amount of any proceeds of any business interruption insurance policy (whether or not then received so long as such Person in good faith expects to receive such proceeds); plus 14 (c) without duplication, those amounts which, in the determination of Consolidated Net Income for such period, have been deducted for: (i) Consolidated Interest Expense; plus (ii) [reserved]; plus (iii) Taxes paid in respect of, and any provision for, federal, state, local and foreign income Taxes; plus (iv) (A) all depreciation and amortization (including amortization of goodwill, software and other intangible assets), (B) all impairment Charges, including any bad debt expense, and (C) all asset write-offs and/or write-downs, includ",
+    "charStartInFixture": 4242,
+    "charEndInFixture": 6052,
+    "sourceTextSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+    "windowSha256": "85c744c7a74669d701272e34317ead29d099533b409508b9b606bacad867b87d",
+    "definitions": {
+      "Loan Party": "Loan Party subject (or purported to be subject) to a Lien under any Collateral Document and any and all other property of any Loan Party, now existing or hereafter acquired, that is or becomes subject (or purported to be subject) to a Lien pursuant to any Collateral Document to secure the Secured Obligations. For the avoidance of doubt, in no event shall &#147;Collateral&#148; include any Excluded Asset. &#147; Collateral and Guarantee Requirement &#148; means, at any time, subject to (x) the applicable limitations set forth in this Agreement and/or any other Loan Document and the terms of any applicable Intercreditor Agreement and (y) the time periods (and extensions thereof) set forth in Section 5.12 and/or Section 5.15 , as applicable, the requirement that: (a) on the Cl\n\n---DEFINITION BREAK---\n\nConsolidated Adjusted EBITDA &#148; means, with respect to any Person on a consolidated basis for any period, the sum of: (a) Consolidated Net Income for such period; plus (b) to the extent not otherwise included in the determination of Consolidated Net Income for such period, the amount of any proceeds of any business interruption insurance policy (whether or not then received so long as such Person in good faith expects to receive such proceeds); plus 14 (c) without duplication, those amounts which, in the determination of Consolidated Net Income for such period, have been deducted for: (i) Consolidated Interest Expense; plus (ii) [reserved]; plus (iii) Taxes paid in respect of, and any provision for, federal, state, local and foreign income Taxes; plus (iv) (A) all depreciation and amortization (including amortization of goodwill, software and other intangible assets), (B) all impairment Charges, including any bad debt expense, and (C) all asset write-offs and/or write-downs, includ"
+    },
+    "definitionSourceSha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "DEFINITIONS_CALCULATION_RULES",
+    "candidatePermissionProhibitionClass": "DEFINITION",
+    "proposedFormulaOrCapacity": {
+      "shape": "DEFINITION",
+      "description": "Definition excerpt for Loan Party — hypothesis mapping only.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [],
+    "uncertainty": {
+      "level": "MEDIUM",
+      "reasons": [
+        "Definition excerpt may truncate full term"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic definition excerpt. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "fwrg-2021-credit-agreement",
+    "operativeVersion": "fwrg-doc-a-credit-agreement-2021",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+      "windowSha256=85c744c7a74669d701272e34317ead29d099533b409508b9b606bacad867b87d",
+      "sectionRef=1.01/Loan Party"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "Loan Party",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Definition excerpt for Loan Party — hypothesis mapping only.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "85c744c7a74669d701272e34317ead29d099533b409508b9b606bacad867b87d",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "corpusId": "amendment-chain-research-v1",
+  "generatedAt": "2026-10-08",
+  "agentBcId": "bc-01a11d8c-04a1-7063-8ba7-696cb3502926",
+  "branch": "cursor/amendment-chain-research-2926",
+  "productionCodeModified": false,
+  "chains": [
+    {
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "path": "chains/coherent-2022-credit/",
+      "amendmentEvents": 5,
+      "minThreeMet": true
+    },
+    {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "path": "chains/matthews-2020-third-ar/",
+      "amendmentEvents": 6,
+      "minThreeMet": true
+    },
+    {
+      "chainId": "azz-2022-05-13-credit-agreement",
+      "path": "chains/azz-2022-credit/",
+      "amendmentEvents": 4,
+      "minThreeMet": true
+    },
+    {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "path": "chains/dsgr-2022-credit/",
+      "amendmentEvents": 3,
+      "minThreeMet": true,
+      "note": "Third + Fourth Amendments + Second A&R restatement after 2022 A&R (≥3 related events)."
+    },
+    {
+      "chainId": "cnmd-seventh-ar-to-eighth-ar",
+      "path": "chains/conmed-seventh-eighth/",
+      "amendmentEvents": 3,
+      "minThreeMet": true,
+      "note": "Second Amendment + Eighth restatement + Omnibus (≥3 related events across lineage)."
+    },
+    {
+      "chainId": "inap-2017-04-06-credit-agreement",
+      "path": "chains/internap-2017-credit/",
+      "amendmentEvents": 1,
+      "minThreeMet": false,
+      "note": "Adversarial narrowing specimen; Am1–6 missing. Not counted toward the ≥3-event identification requirement."
+    }
+  ],
+  "missionTaskCoverage": {
+    "1_identify_originals_with_3plus_amendments": {
+      "status": "DONE",
+      "chains": ["cohr-2022-07-01-credit-agreement", "matw-2020-03-27-third-ar-loan", "azz-2022-05-13-credit-agreement", "dsgr-2022-04-01-ar-credit", "cnmd-seventh-ar-to-eighth-ar"]
+    },
+    "2_retrieve_original_and_amendments": {
+      "status": "PARTIAL",
+      "note": "Live EDGAR retrieval for Coherent Am4/Am5, Matthews base/Am1/Am5/Am6, AZZ full Am1–4 + base, Internap Am7; fixture-backed DSGR/CONMED. Gaps logged in unresolved-authority files."
+    },
+    "3_resolve_instrument_identities": {
+      "status": "DONE",
+      "note": "instrumentId + identityNotes per manifest; CONMED Seventh vs Eighth explicitly separated."
+    },
+    "4_execution_dates_effectiveness_conditional": {
+      "status": "DONE",
+      "note": "effectiveDateProvision on every document; CONDITIONAL_UNRESOLVED / DEEMED_RETROACTIVE used where warranted."
+    },
+    "5_definition_level_changes": {
+      "status": "DONE",
+      "examples": ["ba-azz-am4-applicable-margin", "ba-cnmd-am2-defs-ratio", "ba-cohr-am4 Incremental Amount"]
+    },
+    "6_covenant_level_changes": {
+      "status": "DONE",
+      "examples": ["ba-dsgr-am4-rp", "ba-matw-am6-601j", "ba-cnmd-am2 §7.1(b)"]
+    },
+    "7_basket_amount_changes": {
+      "status": "DONE",
+      "examples": ["ba-cohr-am4-baskets-and-ratio", "ba-inap-am7-baskets-and-ratios"]
+    },
+    "8_financial_ratio_changes": {
+      "status": "DONE",
+      "examples": ["ba-cohr-am4 §6.11", "ba-cnmd-am2 §7.1(b)", "ba-inap-am7 §6.10"]
+    },
+    "9_narrowing_permissions": {
+      "status": "DONE",
+      "examples": ["ba-matw-am6-601j", "ba-inap-am7"]
+    },
+    "10_waivers_consents_separate": {
+      "status": "DONE",
+      "examples": ["VC-007", "CNMD/DSGR non-waiver clauses tracked separately"]
+    },
+    "11_missing_docs_uncertain_authority": {
+      "status": "DONE",
+      "paths": ["chains/*/unresolved-authority.json"]
+    },
+    "12_before_after_legal_text": {
+      "status": "DONE",
+      "path": "before-after/"
+    }
+  },
+  "verificationCandidates": [
+    "verification-candidates/VC-001-same-day-cohr-am4-am5.json",
+    "verification-candidates/VC-002-deemed-retroactive-dsgr-am4.json",
+    "verification-candidates/VC-003-multi-definition-cnmd-am2.json",
+    "verification-candidates/VC-004-permission-narrowing-matw-601j.json",
+    "verification-candidates/VC-005-multi-era-definition-azz-margin.json",
+    "verification-candidates/VC-006-omnibus-incorporation-cnmd.json",
+    "verification-candidates/VC-007-waiver-vs-amendment-separation.json",
+    "verification-candidates/VC-008-basket-narrowing-inap-am7.json"
+  ],
+  "coordination": {
+    "amendmentIntelligenceProduct": "lib/contract-model/compiler/amendment/",
+    "peerAgentsNoted": [
+      "WS-CKF Covenant knowledge factory (docs/knowledge-factory/) — may ingest manifests; bulk bytes out of git",
+      "WS-PAR Parallel agent operating rules — fleet ownership map"
+    ],
+    "amendmentIntelligenceNamedPeerAgent": null,
+    "note": "No cloud agent titled 'Amendment Intelligence' was found in the concurrent fleet; coordination is via research schemas aligned to amendment/types.ts EffectiveDateStatus and AmendmentOperation enums without modifying production code."
+  }
+}

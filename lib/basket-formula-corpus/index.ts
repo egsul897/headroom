@@ -7,3 +7,8 @@ export * from "./typed-formula";
 export * from "./dependency";
 export * from "./import-contract";
 export * from "./legal-class";
+export * from "./semantic-role";
+export * from "./governing-binding";
+export * from "./dependency-graph";
+export * from "./peer-integration";
+export * from "./promotion-status";

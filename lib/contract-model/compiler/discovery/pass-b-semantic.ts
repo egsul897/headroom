@@ -166,8 +166,13 @@ function normalizeWireItem(item: WireSemanticRuleItem): SemanticRuleItem {
   };
 }
 
-export async function runPassBSemanticClassification(caller: StageCaller, batch: SectionBatchInput): Promise<SemanticSectionResult> {
-  const content = [
+export function passBSystemPrompt(): string {
+  return SYSTEM_PROMPT;
+}
+
+/** The user content `runPassBSemanticClassification` sends. Exported so a pre-dispatch cost ceiling uses the same string. */
+export function buildPassBUserContent(batch: SectionBatchInput): string {
+  return [
     `Document: ${batch.documentId}`,
     `Section: ${batch.sectionRef} - "${batch.heading}"`,
     batch.passAHints.length > 0 ? `Deterministic pre-screen flagged sub-references (hints only, not authoritative): ${batch.passAHints.join(", ")}` : "",
@@ -177,6 +182,10 @@ export async function runPassBSemanticClassification(caller: StageCaller, batch:
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+export async function runPassBSemanticClassification(caller: StageCaller, batch: SectionBatchInput): Promise<SemanticSectionResult> {
+  const content = buildPassBUserContent(batch);
   const wireResult: WireSemanticSectionResult = await caller.call(SemanticSectionResultSchema, "covenant_discovery_section", SYSTEM_PROMPT, content);
   return { rules: wireResult.rules.map(normalizeWireItem) };
 }

@@ -1,0 +1,49 @@
+{
+  "historical": {
+    "candidates": 390,
+    "affirmativeBefore": 294,
+    "affirmativeAfter": 27,
+    "correctedFalseAffirmatives": 267,
+    "independentReviews": 145,
+    "precision": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "recall": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "falsePermissionRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 145,
+      "definition": "FP / evaluation_set — remediator predicts AFFIRMATIVE_CAPACITY but independent verdict does not"
+    },
+    "falseRefusalRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 25,
+      "definition": "FN / (TP+FN) — remediator refuses affirmative where independent finds genuine permission"
+    },
+    "operativeSpanFidelity": {
+      "value": 0.3793103448275862,
+      "numerator": 55,
+      "denominator": 145
+    },
+    "fullyClosedDependencies": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 145
+    },
+    "executable": 0
+  },
+  "reproducedOnMain": {
+    "candidates": 390,
+    "affirmativeAfter": 27,
+    "independentReviewsArtifact": 145,
+    "executable": 0
+  },
+  "driftExplanation": "No drift: merged Phase-3 export on current main reproduces 390 candidates and 27 affirmative-capacity hypotheses."
+}
