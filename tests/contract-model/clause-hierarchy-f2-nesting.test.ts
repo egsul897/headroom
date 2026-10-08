@@ -118,10 +118,12 @@ const CHEWY = "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extract
     for (const l of ["a", "b", "c", "d", "e", "f", "g", "h", "i"]) expect(byRef.get(`6.08(a)(3)(${l})`)?.parentNodeId).toBe(byRef.get("6.08(a)(3)")?.nodeId);
     expect(text.slice(byRef.get("6.08(a)(3)(a)")!.charStart, byRef.get("6.08(a)(3)(a)")!.charStart + 30)).toMatch(/^\(a\) the greater of \(x\) 50%/);
   });
-  it("6.08(a)(3)(b) is the true (i)/(A)/(B)/(ii) limb through (c), with no fabricated (x)/(y) nodes", () => {
+  it("6.08(a)(3)(b) is the true (i)/(A)/(x)/(y)/(B)/(ii) limb through (c), with no fabricated (b)(x)/(b)(y) nodes", () => {
     const b = byRef.get("6.08(a)(3)(b)")!;
     const romanI = byRef.get("6.08(a)(3)(b)(i)")!;
     const upperA = byRef.get("6.08(a)(3)(b)(i)(A)")!;
+    const lowerX = byRef.get("6.08(a)(3)(b)(i)(A)(x)")!;
+    const lowerY = byRef.get("6.08(a)(3)(b)(i)(A)(y)")!;
     const upperB = byRef.get("6.08(a)(3)(b)(i)(B)")!;
     const romanIi = byRef.get("6.08(a)(3)(b)(ii)")!;
     const c = byRef.get("6.08(a)(3)(c)")!;
@@ -130,13 +132,21 @@ const CHEWY = "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extract
     expect(b.charEnd).not.toBe(664780);
     expect(text.slice(romanI.charStart, romanI.charStart + 6)).toBe("(i)(A)");
     expect(text.slice(upperA.charStart, upperA.charStart + 3)).toBe("(A)");
-    expect(text.slice(upperA.charStart, upperA.charEnd)).toContain("(x) Equity Interests");
-    expect(text.slice(upperA.charStart, upperA.charEnd)).toContain("(y) Designated Preferred Stock");
+    expect(upperA.charEnd).toBe(lowerX.charStart);
+    expect(lowerX.charStart).toBe(664780);
+    expect(text.slice(lowerX.charStart, lowerX.charEnd)).toContain("(x) Equity Interests");
+    expect(lowerY.charStart).toBe(lowerX.charEnd);
+    expect(text.slice(lowerY.charStart, lowerY.charEnd)).toContain("(y) Designated Preferred Stock");
+    expect(lowerY.charEnd).toBe(upperB.charStart);
+    expect(lowerY.charEnd).not.toBe(666205);
     expect(text.slice(upperB.charStart, upperB.charStart + 3)).toBe("(B)");
     expect(text.slice(romanIi.charStart, romanIi.charStart + 4)).toBe("(ii)");
     expect(romanIi.charEnd).toBe(666205);
     expect(c.charStart).toBe(666205);
-    expect(inside.filter((n) => /\(a\)\(3\)\(b\)\([xy]\)/.test(n.sectionRef) || n.sectionRef.endsWith("(x)") || n.sectionRef.endsWith("(y)"))).toEqual([]);
+    expect(byRef.has("6.08(a)(3)(b)(x)")).toBe(false);
+    expect(byRef.has("6.08(a)(3)(b)(y)")).toBe(false);
+    expect(byRef.get("6.08(b)(16)(g)(x)")?.charStart).toBe(689561);
+    expect(byRef.get("6.08(b)(16)(g)(y)")?.charStart).toBe(689793);
   });
   it("the real 6.08(b) is 6.08(b) and its children are 6.08(b)(1)..(27) with 6.08(b)(12) anchoring the general basket text", () => {
     const b = byRef.get("6.08(b)")!;

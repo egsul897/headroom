@@ -315,9 +315,9 @@ function skipDeepestForOuterLetter(args: {
 /**
  * restartedLetterRun: a line-start single letter past "a", continuing no open sequence, may open
  * a lettered run when the next line-start marker is the following letter and is not the following roman.
- * It does not fire when an already-open list's own next item is a line-start within the next few
- * line-starts: those markers are inside that list, not a new letter run. A lone "(x)" stays unparsed.
- * "(x)" then "(xi)" does not become a letter run.
+ * A lone "(x)" stays unparsed. "(x)" then "(xi)" does not become a letter run. An already-open list
+ * still resumes at its own next item, so "(x)"/"(y)" under a glued "(i)(A)" stay children of "(A)"
+ * and do not become a false "(b)(x)"/"(b)(y)" that swallows "(B)" and "(ii)".
  */
 function restartedLetterCandidate(args: {
   sectionText: string;
@@ -325,7 +325,6 @@ function restartedLetterCandidate(args: {
   occIndex: number;
   token: string;
   candidates: MarkerCandidate[];
-  stack: OpenLevel[];
   atLineStart: boolean;
 }): MarkerCandidate | null {
   if (!args.atLineStart || args.token.length !== 1) return null;
@@ -344,23 +343,7 @@ function restartedLetterCandidate(args: {
   const expectedRoman = romanToken(romanKind, roman.index + 1);
   const nextMarker = args.occurrences[args.occIndex + 1];
   if (expectedRoman && ((nextMarker && nextMarker.token === expectedRoman) || nextLine.token === expectedRoman)) return null;
-  if (openListResumesSoon(args.sectionText, args.occurrences, args.occIndex, args.stack)) return null;
   return letter;
-}
-
-/** True when some already-open list's next item is a line-start within the next few line-starts. */
-function openListResumesSoon(sectionText: string, occurrences: RawMarkerOccurrence[], fromIndex: number, stack: OpenLevel[]): boolean {
-  if (stack.length === 0) return false;
-  let lineStarts = 0;
-  for (let i = fromIndex + 1; i < occurrences.length; i++) {
-    const later = occurrences[i];
-    if (!later || !isLineStart(sectionText, later.charStart)) continue;
-    lineStarts += 1;
-    if (lineStarts > 4) return false;
-    const cands = classifyMarker(later.token);
-    if (stack.some((level) => cands.some((c) => c.kind === level.kind && c.index === level.lastIndex + 1))) return true;
-  }
-  return false;
 }
 
 /**
@@ -466,7 +449,7 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     // 3. Start a brand-new nested level under the current top. Index 1 (a/i/A/1) always may.
     // A line-start single letter past "a" may also open a restarted letter run when the next
     // line-start marker is the following letter and not the following roman (restartedLetterRun).
-    const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, stack, atLineStart });
+    const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, atLineStart });
     const startCandidates = candidates.filter((c) => c.index === 1);
     if ((restarted !== null || startCandidates.length > 0) && stack.length < 6) {
       // F-2 mechanism 2: a new family after a hanging paragraph attaches above the innermost list
