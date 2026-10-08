@@ -1,0 +1,1030 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.v1",
+  "generatedAt": "2026-10-08T22:16:19.840Z",
+  "headSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "branch": "cursor/live-corpus-quality-gate-7f51",
+  "paidCalls": 0,
+  "certificationImpact": "NONE",
+  "claudeOwnedFixturesModified": false,
+  "productionLegalRulesModified": false,
+  "firstRealEdgarBatch": "gibraltar-2026-credit-agreement",
+  "sampleIds": [
+    "gib-doc-a",
+    "sup-doc-a",
+    "sup-doc-b",
+    "sup-doc-c"
+  ],
+  "authenticDocumentCount": 4,
+  "syntheticDocumentCount": 0,
+  "findings": [
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "source_integrity",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "EDGAR body + extracted text SHA256 match provenance and structure-summary.",
+      "evidence": {
+        "textSha": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "rawSha": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+        "expectedText": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "expectedBody": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+        "source": "SEC EDGAR",
+        "accession": "0001140361-26-003087"
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:source_integrity:infrastructure:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "source_integrity",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Byte-identity of public EDGAR exhibit vs fixture is independently verifiable.",
+      "evidence": {
+        "designation": "DEVELOPMENT",
+        "certified": false
+      },
+      "independentGroundTruth": true,
+      "notes": "DEVELOPMENT designation is not CERTIFIED — hash PASS ≠ legal knowledge PASS.",
+      "findingId": "gib-doc-a:source_integrity:legally_verified:pass"
+    },
+    {
+      "findingId": "gib-doc-a:held_out_blind:infrastructure",
+      "sampleId": "gib-doc-a",
+      "dimension": "source_integrity",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Knife River BLIND body remains unread.",
+      "evidence": {
+        "designation": "BLIND",
+        "bodyOpened": false,
+        "clausesSearched": false,
+        "covenantWordingInspected": false,
+        "metadataRecordedFromThisRun": false,
+        "reason": "No Knife River metadata was already recorded in the repository at tip 1acdff3. This lane did not look up, request, or store a Knife River URL or accession."
+      },
+      "independentGroundTruth": true
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "structural_completeness",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Structural index present (2087 nodes); Articles I–X detected; Pass B not fabricated.",
+      "evidence": {
+        "totalNodes": 2087,
+        "nodesByType": {
+          "ARTICLE": 20,
+          "SECTION": 282,
+          "SUBSECTION": 346,
+          "CLAUSE": 488,
+          "SUBCLAUSE": 951
+        },
+        "articlesPresent": true,
+        "tocDuplication": true,
+        "healthFindings": 918,
+        "healthCodes": {
+          "DUPLICATE_LABEL_EXPECTED": 306,
+          "AMBIGUOUS_LEGAL_REFERENCE": 306,
+          "DUPLICATE_NORMALIZED_PATH": 306
+        }
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:structural_completeness:infrastructure:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "structural_completeness",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "TOC+body duplication makes bare section labels AMBIGUOUS under resolveUniqueNodeByRef.",
+      "evidence": {
+        "byCode": {
+          "DUPLICATE_LABEL_EXPECTED": 306,
+          "AMBIGUOUS_LEGAL_REFERENCE": 306,
+          "DUPLICATE_NORMALIZED_PATH": 306
+        },
+        "tocDuplication": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:structural_completeness:extraction:fail"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "structural_completeness",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "Full structural legal completeness (every operative subsection) lacks independent counsel GT.",
+      "evidence": {
+        "note": "Operative Article VII spans independently readable; deep inventory UNVERIFIED."
+      },
+      "independentGroundTruth": false,
+      "findingId": "gib-doc-a:structural_completeness:legally_verified:unverified"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "definition_completeness",
+      "layer": "extraction",
+      "status": "PASS",
+      "summary": "Deterministic definition detector reported 564 definitions.",
+      "evidence": {
+        "definitionsDetected": 564
+      },
+      "independentGroundTruth": true,
+      "notes": "Count PASS is extraction infrastructure, not exhaustive legal completeness.",
+      "findingId": "gib-doc-a:definition_completeness:extraction:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "definition_completeness",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Spot-checked material defined terms are present in source text.",
+      "evidence": {
+        "keyTerms": [
+          "Consolidated Total Net Leverage Ratio",
+          "Consolidated Interest Coverage Ratio",
+          "Available Amount Builder Basket",
+          "Permitted Liens"
+        ],
+        "missingTerms": []
+      },
+      "independentGroundTruth": true,
+      "notes": "Spot-check only — not an exhaustive definition inventory. Exhaustive recall remains UNVERIFIED at corpus scale.",
+      "findingId": "gib-doc-a:definition_completeness:legally_verified:pass"
+    },
+    {
+      "findingId": "gib-doc-a:definition_completeness:legally_verified:exhaustive",
+      "sampleId": "gib-doc-a",
+      "dimension": "definition_completeness",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "Exhaustive definition extraction accuracy vs full Article I inventory has no independent GT in this gate.",
+      "evidence": {
+        "definitionsDetected": 564
+      },
+      "independentGroundTruth": false
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "negative_covenant_discovery",
+      "layer": "extraction",
+      "status": "PASS",
+      "summary": "Operative Article VII negative-covenant sections recovered 7/7.",
+      "evidence": {
+        "expected": [
+          {
+            "ref": "7.01",
+            "heading": "Indebtedness"
+          },
+          {
+            "ref": "7.02",
+            "heading": "Limitations on Liens"
+          },
+          {
+            "ref": "7.03",
+            "heading": "Fundamental Changes"
+          },
+          {
+            "ref": "7.04",
+            "heading": "Asset Dispositions"
+          },
+          {
+            "ref": "7.05",
+            "heading": "Restricted Payments"
+          },
+          {
+            "ref": "7.06",
+            "heading": "Burdensome Agreements"
+          },
+          {
+            "ref": "7.08",
+            "heading": "Financial Covenants"
+          }
+        ],
+        "recovered": [
+          {
+            "ref": "7.01",
+            "heading": "Indebtedness",
+            "span": 21491
+          },
+          {
+            "ref": "7.02",
+            "heading": "Limitations on Liens",
+            "span": 415
+          },
+          {
+            "ref": "7.03",
+            "heading": "Fundamental Changes",
+            "span": 4234
+          },
+          {
+            "ref": "7.04",
+            "heading": "Asset Dispositions",
+            "span": 5767
+          },
+          {
+            "ref": "7.05",
+            "heading": "Restricted Payments",
+            "span": 34605
+          },
+          {
+            "ref": "7.06",
+            "heading": "Burdensome Agreements",
+            "span": 7962
+          },
+          {
+            "ref": "7.08",
+            "heading": "Financial Covenants",
+            "span": 2694
+          }
+        ],
+        "noStandaloneInvestmentsSection": true,
+        "reserved707": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:negative_covenant_discovery:extraction:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "negative_covenant_discovery",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Headings and operative spans independently confirmed in source Article VII.",
+      "evidence": {
+        "method": "Direct span read against extracted EDGAR text via operative-article-vii.json offsets"
+      },
+      "independentGroundTruth": true,
+      "notes": "Section-level discovery only — lettered basket inventory under 7.01(b) remains UNVERIFIED.",
+      "findingId": "gib-doc-a:negative_covenant_discovery:legally_verified:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "exception_and_condition_recall",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "§7.02 Permitted Lien exception independently confirmed in source.",
+      "evidence": {
+        "excerptProbe": "except if such Subject Lien is a Permitted Lien",
+        "present": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "exception_and_condition_recall",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "§7.08 leverage step-down + Qualifying Material Acquisition condition language present in source.",
+      "evidence": {
+        "qma": true,
+        "leverageStep": true
+      },
+      "independentGroundTruth": true,
+      "notes": "Presence PASS ≠ system extraction of conditions into IR (Pass B never ran → extraction UNVERIFIED).",
+      "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "exception_and_condition_recall",
+      "layer": "extraction",
+      "status": "UNVERIFIED",
+      "summary": "Pass B semantic condition/exception extraction was not executed on this batch.",
+      "evidence": {
+        "passBExecuted": false,
+        "discoveryIdsMinted": false,
+        "passACandidates": 946
+      },
+      "independentGroundTruth": false,
+      "notes": "Mark UNVERIFIED — absence of Pass B is not a fabricated PASS.",
+      "findingId": "gib-doc-a:exception_and_condition_recall:extraction:unverified"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "Only 491/1459 references resolved (33.7%); 968 unresolved.",
+      "evidence": {
+        "detected": 1459,
+        "resolved": 491,
+        "unresolved": 968
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:cross_reference_completeness:extraction:fail"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "layer": "legally_verified",
+      "status": "FAIL",
+      "summary": "Available Amount Builder Basket self-cites §7.05(a)(y) while operative print uses clause (vi)/(y) — source marker conflict.",
+      "evidence": {
+        "definitionCites705ay": true,
+        "naturalSearchHits": 3,
+        "compilerPathNoted": "7.05(a)(4)(ii)(vi)(B)"
+      },
+      "independentGroundTruth": true,
+      "notes": "FAIL here means the corpus presents conflicting markers; system must not invent a single clean target.",
+      "findingId": "gib-doc-a:cross_reference_completeness:legally_verified:fail"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "amendment_authority",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Package is a single ORIGINAL credit agreement; no post-closing amendment exhibit in package (Lane C search).",
+      "evidence": {
+        "instrumentClass": "ORIGINAL",
+        "laterAmendmentExhibitsFound": false,
+        "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS on Pass A (no amendment chain ingested)"
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:amendment_authority:legally_verified:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "amendment_authority",
+      "layer": "extraction",
+      "status": "PASS",
+      "summary": "No fabricated amendment/restatement edges invented for a single-document ORIGINAL package.",
+      "evidence": {
+        "discoveryIdsMinted": false
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:amendment_authority:extraction:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "entity_scope_recognition",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "§7.08 facility-limited entity/instrument scope present in source.",
+      "evidence": {
+        "phrase": "With respect to the Revolving Credit Facility and Initial Tranche A Facility only",
+        "present": true
+      },
+      "independentGroundTruth": true,
+      "notes": "Source presence verified. Structured IR population of entityScope is UNVERIFIED (no Pass B).",
+      "findingId": "gib-doc-a:entity_scope_recognition:legally_verified:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "entity_scope_recognition",
+      "layer": "extraction",
+      "status": "UNVERIFIED",
+      "summary": "No Pass B / compiled IR entityScope fields exist for this batch.",
+      "evidence": {
+        "passBExecuted": false
+      },
+      "independentGroundTruth": false,
+      "findingId": "gib-doc-a:entity_scope_recognition:extraction:unverified"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "false_affirmative_capacity",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "Pass A shared_cap fired on 51 nodes; phrase 'shared capacity' absent — high false-affirmative risk.",
+      "evidence": {
+        "sharedCapSignalCount": 51,
+        "phraseSharedCapacityPresent": false,
+        "realReallocationTerm": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:false_affirmative_capacity:extraction:fail"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "false_affirmative_capacity",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No certified capacity answers exist for this DEVELOPMENT batch; cannot legally verify false-affirmative rate beyond signal audit.",
+      "evidence": {
+        "designation": "DEVELOPMENT",
+        "certified": false
+      },
+      "independentGroundTruth": false,
+      "findingId": "gib-doc-a:false_affirmative_capacity:legally_verified:unverified"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "provenance_correctness",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Provenance.json records SEC EDGAR URL, accession, exhibit, retrieval timestamp, hashes.",
+      "evidence": {
+        "accession": "0001140361-26-003087",
+        "hasSourceUrl": true,
+        "bodySha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:provenance_correctness:infrastructure:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "provenance_correctness",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "Operative §7.08 extracted window contains embedded page number '249' (source furniture).",
+      "evidence": {
+        "pageFurniture": true,
+        "sectionRef": "7.08"
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:provenance_correctness:extraction:fail"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "unresolved_and_unsupported_semantics",
+      "layer": "extraction",
+      "status": "PASS",
+      "summary": "Pipeline refused synthetic Pass B; no discoveryIds invented; unsupported semantics not coerced into fake IR.",
+      "evidence": {
+        "passBExecuted": false,
+        "discoveryIdsMinted": false,
+        "reason": "No AI credentials; Pass B refused rather than synthesized"
+      },
+      "independentGroundTruth": true,
+      "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:extraction:pass"
+    },
+    {
+      "sampleId": "gib-doc-a",
+      "dimension": "unresolved_and_unsupported_semantics",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "Without Pass B/compiled units, corpus-scale unsupported-semantic surfacing cannot be legally verified.",
+      "evidence": {},
+      "independentGroundTruth": false,
+      "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "source_integrity",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "evidence": {
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "sha256": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a",
+        "authenticEdgar": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-a:source_integrity:infrastructure:pass"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "provenance_correctness",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Caption/title evidence for CREDIT_AGREEMENT confirmed in source.",
+      "evidence": {
+        "expectType": "CREDIT_AGREEMENT",
+        "captionNeedle": "CREDIT AGREEMENT",
+        "captionOk": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-a:provenance_correctness:legally_verified:pass"
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "dimension": "source_integrity",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "evidence": {
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "sha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "authenticEdgar": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-b:source_integrity:infrastructure:pass"
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "dimension": "provenance_correctness",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Caption/title evidence for AMENDED_AND_RESTATED_AGREEMENT confirmed in source.",
+      "evidence": {
+        "expectType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "captionNeedle": "AMENDED AND RESTATED",
+        "captionOk": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-b:provenance_correctness:legally_verified:pass"
+    },
+    {
+      "sampleId": "sup-doc-c",
+      "dimension": "source_integrity",
+      "layer": "infrastructure",
+      "status": "PASS",
+      "summary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "evidence": {
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+        "sha256": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+        "authenticEdgar": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-c:source_integrity:infrastructure:pass"
+    },
+    {
+      "sampleId": "sup-doc-c",
+      "dimension": "provenance_correctness",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "Caption/title evidence for AMENDMENT confirmed in source.",
+      "evidence": {
+        "expectType": "AMENDMENT",
+        "captionNeedle": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+        "captionOk": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-c:provenance_correctness:legally_verified:pass"
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "dimension": "amendment_authority",
+      "layer": "legally_verified",
+      "status": "FAIL",
+      "summary": "Source confirms doc-b is A&R and cites December 15, 2022 original — independent GT D1 applies.",
+      "evidence": {
+        "independentClaim": "D1",
+        "expectedRelationship": "doc-b RESTATES doc-a, status RESOLVED, high confidence via direct type+date match.",
+        "docBHasRestateRecital": false
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-b:amendment_authority:legally_verified:fail"
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "dimension": "amendment_authority",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "Frozen lightweight run misclassified doc-b as CREDIT_AGREEMENT and produced zero RESTATES edge.",
+      "evidence": {
+        "historicalFail": true,
+        "independentExpectedType": "AMENDED_AND_RESTATED_AGREEMENT, high confidence - the caption's own earliest position must be selected over the later recital mention of a different (base) document type.",
+        "classifArtifactPresent": true
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-b:amendment_authority:extraction:fail"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "definition_completeness",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "Independent GT for multi-definition cluster exists, but this gate does not re-score a new paid compile; mark UNVERIFIED for live legal verification of extraction completeness.",
+      "evidence": {
+        "gtClaims": [
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ]
+      },
+      "independentGroundTruth": false,
+      "notes": "GT propositions exist; current live extraction against them was not re-executed unpaid. UNVERIFIED ≠ PASS.",
+      "findingId": "sup-doc-a:definition_completeness:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "definition_completeness",
+      "layer": "extraction",
+      "status": "FAIL",
+      "summary": "Historical COMPILE_CAP sampling never reached Article I definitions — empty definition extraction for GT A1–A5.",
+      "evidence": {
+        "source": "docs/final-lightweight-unseen.md sampling artifact disclosure"
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-a:definition_completeness:extraction:fail"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "structural_completeness",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for structural_completeness on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:structural_completeness:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "negative_covenant_discovery",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for negative_covenant_discovery on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:negative_covenant_discovery:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "exception_and_condition_recall",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for exception_and_condition_recall on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:exception_and_condition_recall:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "cross_reference_completeness",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for cross_reference_completeness on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:cross_reference_completeness:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "entity_scope_recognition",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for entity_scope_recognition on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:entity_scope_recognition:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "false_affirmative_capacity",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for false_affirmative_capacity on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:false_affirmative_capacity:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "dimension": "unresolved_and_unsupported_semantics",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-a in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "dimension": "unresolved_and_unsupported_semantics",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-b in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-b:unresolved_and_unsupported_semantics:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-c",
+      "dimension": "unresolved_and_unsupported_semantics",
+      "layer": "legally_verified",
+      "status": "UNVERIFIED",
+      "summary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-c in this unpaid gate.",
+      "evidence": {
+        "reason": "UNVERIFIED_NO_FRESH_INDEPENDENT_GT_ADJUDICATION"
+      },
+      "independentGroundTruth": false,
+      "findingId": "sup-doc-c:unresolved_and_unsupported_semantics:legally_verified:unverified"
+    },
+    {
+      "sampleId": "sup-doc-c",
+      "dimension": "amendment_authority",
+      "layer": "legally_verified",
+      "status": "PASS",
+      "summary": "doc-c caption is First Amendment (A&R phrase is referential, not self-type).",
+      "evidence": {
+        "gtClaim": "C3"
+      },
+      "independentGroundTruth": true,
+      "findingId": "sup-doc-c:amendment_authority:legally_verified:pass"
+    }
+  ],
+  "layerSummaries": [
+    {
+      "layer": "infrastructure",
+      "pass": 7,
+      "fail": 0,
+      "unverified": 0,
+      "findings": [
+        "gib-doc-a:source_integrity:infrastructure:pass",
+        "gib-doc-a:held_out_blind:infrastructure",
+        "gib-doc-a:structural_completeness:infrastructure:pass",
+        "gib-doc-a:provenance_correctness:infrastructure:pass",
+        "sup-doc-a:source_integrity:infrastructure:pass",
+        "sup-doc-b:source_integrity:infrastructure:pass",
+        "sup-doc-c:source_integrity:infrastructure:pass"
+      ]
+    },
+    {
+      "layer": "extraction",
+      "pass": 4,
+      "fail": 6,
+      "unverified": 2,
+      "findings": [
+        "gib-doc-a:structural_completeness:extraction:fail",
+        "gib-doc-a:definition_completeness:extraction:pass",
+        "gib-doc-a:negative_covenant_discovery:extraction:pass",
+        "gib-doc-a:exception_and_condition_recall:extraction:unverified",
+        "gib-doc-a:cross_reference_completeness:extraction:fail",
+        "gib-doc-a:amendment_authority:extraction:pass",
+        "gib-doc-a:entity_scope_recognition:extraction:unverified",
+        "gib-doc-a:false_affirmative_capacity:extraction:fail",
+        "gib-doc-a:provenance_correctness:extraction:fail",
+        "gib-doc-a:unresolved_and_unsupported_semantics:extraction:pass",
+        "sup-doc-b:amendment_authority:extraction:fail",
+        "sup-doc-a:definition_completeness:extraction:fail"
+      ]
+    },
+    {
+      "layer": "legally_verified",
+      "pass": 11,
+      "fail": 2,
+      "unverified": 14,
+      "findings": [
+        "gib-doc-a:source_integrity:legally_verified:pass",
+        "gib-doc-a:structural_completeness:legally_verified:unverified",
+        "gib-doc-a:definition_completeness:legally_verified:pass",
+        "gib-doc-a:definition_completeness:legally_verified:exhaustive",
+        "gib-doc-a:negative_covenant_discovery:legally_verified:pass",
+        "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "gib-doc-a:cross_reference_completeness:legally_verified:fail",
+        "gib-doc-a:amendment_authority:legally_verified:pass",
+        "gib-doc-a:entity_scope_recognition:legally_verified:pass",
+        "gib-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "gib-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-a:provenance_correctness:legally_verified:pass",
+        "sup-doc-b:provenance_correctness:legally_verified:pass",
+        "sup-doc-c:provenance_correctness:legally_verified:pass",
+        "sup-doc-b:amendment_authority:legally_verified:fail",
+        "sup-doc-a:definition_completeness:legally_verified:unverified",
+        "sup-doc-a:structural_completeness:legally_verified:unverified",
+        "sup-doc-a:negative_covenant_discovery:legally_verified:unverified",
+        "sup-doc-a:exception_and_condition_recall:legally_verified:unverified",
+        "sup-doc-a:cross_reference_completeness:legally_verified:unverified",
+        "sup-doc-a:entity_scope_recognition:legally_verified:unverified",
+        "sup-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "sup-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-b:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-c:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "sup-doc-c:amendment_authority:legally_verified:pass"
+      ]
+    }
+  ],
+  "dimensionRollup": [
+    {
+      "dimension": "source_integrity",
+      "pass": 6,
+      "fail": 0,
+      "unverified": 0
+    },
+    {
+      "dimension": "structural_completeness",
+      "pass": 1,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "definition_completeness",
+      "pass": 2,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "negative_covenant_discovery",
+      "pass": 2,
+      "fail": 0,
+      "unverified": 1
+    },
+    {
+      "dimension": "exception_and_condition_recall",
+      "pass": 2,
+      "fail": 0,
+      "unverified": 2
+    },
+    {
+      "dimension": "cross_reference_completeness",
+      "pass": 0,
+      "fail": 2,
+      "unverified": 1
+    },
+    {
+      "dimension": "amendment_authority",
+      "pass": 3,
+      "fail": 2,
+      "unverified": 0
+    },
+    {
+      "dimension": "entity_scope_recognition",
+      "pass": 1,
+      "fail": 0,
+      "unverified": 2
+    },
+    {
+      "dimension": "false_affirmative_capacity",
+      "pass": 0,
+      "fail": 1,
+      "unverified": 2
+    },
+    {
+      "dimension": "provenance_correctness",
+      "pass": 4,
+      "fail": 1,
+      "unverified": 0
+    },
+    {
+      "dimension": "unresolved_and_unsupported_semantics",
+      "pass": 1,
+      "fail": 0,
+      "unverified": 4
+    }
+  ],
+  "highestRiskOmissions": [
+    {
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "severity": "CRITICAL",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "reproducibleSteps": [
+        "Search extracted text for 'Available Amount Builder Basket'",
+        "Observe definition: 'has the meaning specified in Section 7.05(a)(y)'",
+        "Observe operative prong excerpt in natural-search.json builder_grower tightestRef 7.05(a)(4)(ii)(vi)(B)",
+        "Confirm parenthetical still says 'clause (y)' beside printed (vi)"
+      ],
+      "expectedSafeBehavior": "Leave cross-reference UNRESOLVED or dual-cite with REVIEW_REQUIRED; never force a unique resolved target that prefers compiler path over source disagreement.",
+      "observedBehavior": "Filed HTML disagrees with itself; compiler path matches neither clean legal citation.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/natural-search.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-builder-language.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "severity": "CRITICAL",
+      "title": "Pass A shared_cap over-fires on 'aggregate amount' (51 hits) without shared baskets",
+      "sampleId": "gib-doc-a",
+      "dimension": "false_affirmative_capacity",
+      "reproducibleSteps": [
+        "Confirm extracted text has zero occurrences of the phrase 'shared capacity'",
+        "Load structure/pass-a-shared-cap.json — length 51",
+        "Spot-check excerpts: nearly all are EBITDA add-back 'aggregate amount' provisos",
+        "Contrast with real 'Restricted Payment Reallocated Amount' reallocation term (not a shared pool)"
+      ],
+      "expectedSafeBehavior": "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone.",
+      "observedBehavior": "Deterministic shared_cap signal mass-fires; treating hits as shared baskets would create false affirmative capacity.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "severity": "CRITICAL",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "sampleId": "sup-doc-b",
+      "dimension": "amendment_authority",
+      "reproducibleSteps": [
+        "Read docs/final-lightweight-unseen.md §4 (doc-b classified CREDIT_AGREEMENT; zero RESTATES)",
+        "Confirm doc-b caption in extracted-text contains 'AMENDED AND RESTATED' with possible newline before 'CREDIT AGREEMENT'",
+        "Confirm independent GT claims C2 + D1 in docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+        "Re-check document-classifier AMENDED_AND_RESTATED pattern for whitespace tolerance"
+      ],
+      "expectedSafeBehavior": "Classify doc-b as AMENDED_AND_RESTATED_AGREEMENT and surface RESTATES→doc-a (or honest REVIEW_REQUIRED), never silent omission.",
+      "observedBehavior": "Wrong high-confidence CREDIT_AGREEMENT classification; relationship candidate absent entirely (dangerous silence).",
+      "fixturePaths": [
+        "docs/final-lightweight-unseen.md",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+        "docs/final-lightweight-unseen/12-document-classification.json",
+        "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "severity": "HIGH",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "sampleId": "gib-doc-a",
+      "dimension": "structural_completeness",
+      "reproducibleSteps": [
+        "Load tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "Re-run parseDocumentStructure + buildStructuralIndex (or inspect structure/health-summary.json)",
+        "Observe AMBIGUOUS_LEGAL_REFERENCE / DUPLICATE_LABEL_EXPECTED / DUPLICATE_NORMALIZED_PATH each = 306",
+        "Call resolveUniqueNodeByRef('7.04') — expect AMBIGUOUS (TOC line + operative body)"
+      ],
+      "expectedSafeBehavior": "Prefer long-span operative body nodes for Article VII (as operative-article-vii.json already records) and never silently pick TOC stubs as operative text.",
+      "observedBehavior": "Bare labels are AMBIGUOUS; consumers that ignore span length can bind to TOC stubs.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "severity": "HIGH",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "reproducibleSteps": [
+        "Read structure/structure-summary.json referencesDetected/Resolved/Unresolved",
+        "Confirm 1459 detected, 491 resolved, 968 unresolved",
+        "Note TOC duplication contributes AMBIGUOUS targets for many bare refs"
+      ],
+      "expectedSafeBehavior": "Unresolved material references must remain explicit UNRESOLVED / REVIEW_REQUIRED — never silently dropped or force-bound to TOC stubs.",
+      "observedBehavior": "Majority of detected references remain unresolved after structural indexing.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-DISC-706-NO-PASSA",
+      "severity": "MEDIUM",
+      "title": "§7.06 Burdensome Agreements operative chapeau carries zero Pass A signals",
+      "sampleId": "gib-doc-a",
+      "dimension": "negative_covenant_discovery",
+      "reproducibleSteps": [
+        "Inspect structure/section-pass-a.json entries with sectionRef=7.06 and ownChars>~40",
+        "Observe signals=[] on operative Burdensome Agreements chapeau",
+        "Compare to §7.02 which carries exception_marker/permitted_construct/covenant_verb/headline_heading"
+      ],
+      "expectedSafeBehavior": "Negative covenant sections without headline-friendly verbs must still be discoverable (e.g. via article membership + heading taxonomy), not only Pass A signal fire.",
+      "observedBehavior": "Pass A silent on §7.06 chapeau; section still present in operative-article-vii via structure.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/section-pass-a.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": false
+    },
+    {
+      "defectId": "LCQG-GIB-PROV-PAGE-FURNITURE",
+      "severity": "MEDIUM",
+      "title": "Embedded PDF/HTML page furniture in operative §7.08 text window",
+      "sampleId": "gib-doc-a",
+      "dimension": "provenance_correctness",
+      "reproducibleSteps": [
+        "Slice extracted text using operative-article-vii.json offsets for 7.08",
+        "Observe standalone '249' line inside the financial covenants window"
+      ],
+      "expectedSafeBehavior": "Strip or flag page furniture so citations/excerpts do not treat page numbers as operative legal text.",
+      "observedBehavior": "Page number survives into the operative span used for downstream discovery.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": false
+    }
+  ],
+  "outstandingGaps": [
+    "Exhaustive Gibraltar Article I definition inventory lacks independent counsel GT (spot-checks only).",
+    "Gibraltar Pass B/C/D semantic extraction never ran — condition/exception IR population UNVERIFIED.",
+    "Superior definition/condition/entity dimensions marked UNVERIFIED for fresh legal verification in this unpaid gate.",
+    "Knife River BLIND body remains unread and is excluded from the sample.",
+    "False-affirmative capacity legally verified rate cannot be computed without certified capacity answers on DEVELOPMENT package.",
+    "No production legal rules or certification status were changed by this gate."
+  ],
+  "reproducibleCommands": [
+    "npm run live-corpus-quality-gate",
+    "npx tsx scripts/live-corpus-quality-gate/run.ts",
+    "npx vitest run tests/live-corpus-quality-gate/"
+  ],
+  "gateVerdict": "LIVE_CORPUS_QUALITY_GATE_RECORDED_WITH_DEFECTS"
+}

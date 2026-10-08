@@ -1,0 +1,151 @@
+{
+  "highestRiskOmissions": [
+    {
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "severity": "CRITICAL",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "reproducibleSteps": [
+        "Search extracted text for 'Available Amount Builder Basket'",
+        "Observe definition: 'has the meaning specified in Section 7.05(a)(y)'",
+        "Observe operative prong excerpt in natural-search.json builder_grower tightestRef 7.05(a)(4)(ii)(vi)(B)",
+        "Confirm parenthetical still says 'clause (y)' beside printed (vi)"
+      ],
+      "expectedSafeBehavior": "Leave cross-reference UNRESOLVED or dual-cite with REVIEW_REQUIRED; never force a unique resolved target that prefers compiler path over source disagreement.",
+      "observedBehavior": "Filed HTML disagrees with itself; compiler path matches neither clean legal citation.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/natural-search.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-builder-language.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "severity": "CRITICAL",
+      "title": "Pass A shared_cap over-fires on 'aggregate amount' (51 hits) without shared baskets",
+      "sampleId": "gib-doc-a",
+      "dimension": "false_affirmative_capacity",
+      "reproducibleSteps": [
+        "Confirm extracted text has zero occurrences of the phrase 'shared capacity'",
+        "Load structure/pass-a-shared-cap.json — length 51",
+        "Spot-check excerpts: nearly all are EBITDA add-back 'aggregate amount' provisos",
+        "Contrast with real 'Restricted Payment Reallocated Amount' reallocation term (not a shared pool)"
+      ],
+      "expectedSafeBehavior": "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone.",
+      "observedBehavior": "Deterministic shared_cap signal mass-fires; treating hits as shared baskets would create false affirmative capacity.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "severity": "CRITICAL",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "sampleId": "sup-doc-b",
+      "dimension": "amendment_authority",
+      "reproducibleSteps": [
+        "Read docs/final-lightweight-unseen.md §4 (doc-b classified CREDIT_AGREEMENT; zero RESTATES)",
+        "Confirm doc-b caption in extracted-text contains 'AMENDED AND RESTATED' with possible newline before 'CREDIT AGREEMENT'",
+        "Confirm independent GT claims C2 + D1 in docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+        "Re-check document-classifier AMENDED_AND_RESTATED pattern for whitespace tolerance"
+      ],
+      "expectedSafeBehavior": "Classify doc-b as AMENDED_AND_RESTATED_AGREEMENT and surface RESTATES→doc-a (or honest REVIEW_REQUIRED), never silent omission.",
+      "observedBehavior": "Wrong high-confidence CREDIT_AGREEMENT classification; relationship candidate absent entirely (dangerous silence).",
+      "fixturePaths": [
+        "docs/final-lightweight-unseen.md",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+        "docs/final-lightweight-unseen/12-document-classification.json",
+        "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "severity": "HIGH",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "sampleId": "gib-doc-a",
+      "dimension": "structural_completeness",
+      "reproducibleSteps": [
+        "Load tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "Re-run parseDocumentStructure + buildStructuralIndex (or inspect structure/health-summary.json)",
+        "Observe AMBIGUOUS_LEGAL_REFERENCE / DUPLICATE_LABEL_EXPECTED / DUPLICATE_NORMALIZED_PATH each = 306",
+        "Call resolveUniqueNodeByRef('7.04') — expect AMBIGUOUS (TOC line + operative body)"
+      ],
+      "expectedSafeBehavior": "Prefer long-span operative body nodes for Article VII (as operative-article-vii.json already records) and never silently pick TOC stubs as operative text.",
+      "observedBehavior": "Bare labels are AMBIGUOUS; consumers that ignore span length can bind to TOC stubs.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "severity": "HIGH",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "sampleId": "gib-doc-a",
+      "dimension": "cross_reference_completeness",
+      "reproducibleSteps": [
+        "Read structure/structure-summary.json referencesDetected/Resolved/Unresolved",
+        "Confirm 1459 detected, 491 resolved, 968 unresolved",
+        "Note TOC duplication contributes AMBIGUOUS targets for many bare refs"
+      ],
+      "expectedSafeBehavior": "Unresolved material references must remain explicit UNRESOLVED / REVIEW_REQUIRED — never silently dropped or force-bound to TOC stubs.",
+      "observedBehavior": "Majority of detected references remain unresolved after structural indexing.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": true
+    },
+    {
+      "defectId": "LCQG-GIB-DISC-706-NO-PASSA",
+      "severity": "MEDIUM",
+      "title": "§7.06 Burdensome Agreements operative chapeau carries zero Pass A signals",
+      "sampleId": "gib-doc-a",
+      "dimension": "negative_covenant_discovery",
+      "reproducibleSteps": [
+        "Inspect structure/section-pass-a.json entries with sectionRef=7.06 and ownChars>~40",
+        "Observe signals=[] on operative Burdensome Agreements chapeau",
+        "Compare to §7.02 which carries exception_marker/permitted_construct/covenant_verb/headline_heading"
+      ],
+      "expectedSafeBehavior": "Negative covenant sections without headline-friendly verbs must still be discoverable (e.g. via article membership + heading taxonomy), not only Pass A signal fire.",
+      "observedBehavior": "Pass A silent on §7.06 chapeau; section still present in operative-article-vii via structure.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/section-pass-a.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": false
+    },
+    {
+      "defectId": "LCQG-GIB-PROV-PAGE-FURNITURE",
+      "severity": "MEDIUM",
+      "title": "Embedded PDF/HTML page furniture in operative §7.08 text window",
+      "sampleId": "gib-doc-a",
+      "dimension": "provenance_correctness",
+      "reproducibleSteps": [
+        "Slice extracted text using operative-article-vii.json offsets for 7.08",
+        "Observe standalone '249' line inside the financial covenants window"
+      ],
+      "expectedSafeBehavior": "Strip or flag page furniture so citations/excerpts do not treat page numbers as operative legal text.",
+      "observedBehavior": "Page number survives into the operative span used for downstream discovery.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json"
+      ],
+      "returnTo": "production-agent",
+      "blocksLegalVerification": false
+    }
+  ]
+}
