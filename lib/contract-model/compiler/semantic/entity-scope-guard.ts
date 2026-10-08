@@ -411,8 +411,12 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
     if (inInclude) entityScope = [];
     if (inExclude) entityScopeExcluded = [];
     limit("ENTITY_SCOPE_UNRECOGNIZED_TAG", `wire entity tag(s) ${unrecognized.map((u) => `"${u.raw}" (${u.field})`).join(", ")} are not EntityClassTag values; the affected scope field is reset to unspecified and the tag is preserved verbatim in entityScopeAudit - its meaning is not guessed${gov ? "; no authenticated source established the applicability exactly" : ""}`);
-  } else if (entityScope.length === 0 && sourceDerived) {
-    // v3: the model left the scope empty; authenticated source establishes it - never left unspecified when the source says who is bound.
+  } else if (entityScope.length === 0 && sourceDerived?.precedence === "GOVERNING_SCOPE_SOURCE") {
+    // The clause's own text binds no obligor and the model named nobody. The authenticated
+    // governing chain is the applicability. Own-excerpt or cited-unit derivation is not
+    // applied to an empty submission: that would add tags the submission did not carry,
+    // including a prohibition lead-in's obligor set onto a permission that named nobody.
+    // A later pass over a scope this guard already reset must not refill those tags.
     status = "SOURCE_SCOPE_DERIVED";
     precedence = sourceDerived.precedence;
     entityScope = [...sourceDerived.scope];
@@ -456,14 +460,27 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
       precedence = "MODEL_EMITTED";
       codes.push("ENTITY_SCOPE_UNWITNESSED");
     } else if (unmet.length > 0 && ownDerived) {
-      // v3: the own actor language proves the model scope wrong AND establishes the correct scope exactly - use the source, record the discrepancy.
-      status = "SOURCE_SCOPE_DERIVED";
-      precedence = "OWN_OPERATIVE_LANGUAGE";
-      modelDiscrepancy = { modelScope: [...before.entityScope], rawEmitted, governingScope: [...ownDerived], relation: relationOf(entityScope, ownDerived) };
-      entityScope = [...ownDerived];
-      witnessOut.decidedBy = tiersOf(binding);
-      codes.push("ENTITY_SCOPE_SOURCE_DERIVED", "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
-      reasons.push(reasonText("ENTITY_SCOPE_SOURCE_DERIVED", `entityScope ${JSON.stringify(entityScope)} - ${sourceDerived!.detail}; the model's scope ${JSON.stringify(before.entityScope)} touched no class for source binding ${[...new Set(unmet.map((s) => `"${s.phrase}"`))].join(", ")} and is recorded as a discrepancy`));
+      const relation = relationOf(entityScope, ownDerived);
+      modelDiscrepancy = { modelScope: [...before.entityScope], rawEmitted, governingScope: [...ownDerived], relation };
+      if (relation === "MODEL_NARROWER" || relation === "MODEL_DIFFERENT") {
+        // The cited text names classes the submitted scope does not cover. Adopting that
+        // wider set would turn a borrower-only permission into the governing prohibition's
+        // obligor set. Reset. Do not add a tag the submission did not carry.
+        status = "UNDERINCLUSIVE_VS_SOURCE";
+        precedence = "NONE";
+        witnessOut.decidedBy = tiersOf(unmet);
+        entityScope = [];
+        const where = witnessOut.decidedBy === "OWN_EXCERPT" ? "the rule's own provenance excerpt" : witnessOut.decidedBy === "CITED_UNIT_LEAD_IN" ? `the lead-in of the cited unit ${rule.sourceSectionRef ?? ""}` : `the rule's own excerpt and the lead-in of the cited unit ${rule.sourceSectionRef ?? ""}`;
+        limit("ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE", `entityScope ${JSON.stringify(before.entityScope)} does not cover source binding ${[...new Set(unmet.map((s) => `"${s.phrase}"`))].join(", ")} (witness: ${where}); the cited text names ${JSON.stringify(ownDerived)} and that wider set was not adopted`);
+      } else {
+        // The clause's own actor language is a narrower exact set. Use it, and do not leave the rule COMPLETE.
+        status = "SOURCE_SCOPE_DERIVED";
+        precedence = "OWN_OPERATIVE_LANGUAGE";
+        entityScope = [...ownDerived];
+        witnessOut.decidedBy = tiersOf(binding);
+        codes.push("ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
+        limit("ENTITY_SCOPE_SOURCE_DERIVED", `entityScope ${JSON.stringify(entityScope)} - ${sourceDerived!.detail}; the model's scope ${JSON.stringify(before.entityScope)} touched no class for source binding ${[...new Set(unmet.map((s) => `"${s.phrase}"`))].join(", ")} and is recorded as a discrepancy`);
+      }
     } else if (unmet.length > 0) {
       // §6: provable under-inclusion. Remove the false precision; never widen by guess.
       status = "UNDERINCLUSIVE_VS_SOURCE";
