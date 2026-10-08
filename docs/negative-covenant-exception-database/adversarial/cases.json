@@ -1,0 +1,229 @@
+{
+  "datasetId": "negative-covenant-exception-adversarial-v1",
+  "status": "SYNTHETIC_ADVERSARIAL",
+  "principle": "Each case isolates one way a seemingly permissive exception is constrained elsewhere. Never treat local exception text as unconditional capacity.",
+  "cases": [
+    {
+      "caseId": "ADV-01-hanging-proviso-list-wide",
+      "title": "Trailing proviso after last enumerated basket binds all siblings",
+      "failureMode": "HANGING_PROVISO",
+      "syntheticDrafting": "Section 6.01. The Borrower will not incur Indebtedness, except:\n(a) Indebtedness under this Agreement;\n(b) Indebtedness not to exceed $25,000,000;\n(c) Indebtedness of Foreign Subsidiaries not to exceed $10,000,000;\nprovided that, in the case of clauses (a) through (c), no Event of Default shall have occurred and be continuing.",
+      "naiveMisread": "Clause (b) is an unconditional $25mm basket.",
+      "correctRead": "The hanging proviso after (c) attaches to (a)-(c); (b) is EOD-gated.",
+      "requiredFields": [
+        "provisos.attachment=HANGING|TRAILING_LIST_WIDE",
+        "conditions.location includes siblings"
+      ],
+      "expectedSearchTags": [
+        "HANGING_PROVISO",
+        "SECTION_WIDE_LIMITATION"
+      ]
+    },
+    {
+      "caseId": "ADV-02-article-chapeau-entity",
+      "title": "Article-level chapeau silently narrows every basket",
+      "failureMode": "ARTICLE_LEVEL",
+      "syntheticDrafting": "ARTICLE VII NEGATIVE COVENANTS. The Parent Borrower shall not, and shall not permit any Restricted Subsidiary to: Section 7.08 Investments. Make any Investment, except: (l) Investments not exceeding $5,000,000.",
+      "naiveMisread": "Any Subsidiary may use the $5mm Investments basket.",
+      "correctRead": "Article chapeau limits the covenant subjects to Parent Borrower + Restricted Subsidiaries; Unrestricted Subsidiaries are outside the prohibition and outside the basket grant as drafted.",
+      "requiredFields": [
+        "conditions.location=ARTICLE_LEVEL"
+      ],
+      "expectedSearchTags": [
+        "ARTICLE_LEVEL"
+      ]
+    },
+    {
+      "caseId": "ADV-03-defined-term-payment-conditions",
+      "title": "Unlimited basket gated only by remote defined term",
+      "failureMode": "DEFINED_TERM_GATE",
+      "syntheticDrafting": "Section 6.11 Restricted Payments. ... except: (c) Restricted Payments so long as the Payment Conditions are satisfied. \"Payment Conditions\" means (i) no Default, (ii) Availability \u2265 15% of the Line Cap, and (iii) delivery of a certificate.",
+      "naiveMisread": "Clause (c) is unlimited RP capacity.",
+      "correctRead": "Capacity is entirely the Payment Conditions definition; local clause has no quantum because the gate is remote.",
+      "requiredFields": [
+        "conditions.location=DEFINED_TERM",
+        "capacityShape=UNLIMITED_GATED"
+      ],
+      "expectedSearchTags": [
+        "DEFINED_TERM_GATE"
+      ]
+    },
+    {
+      "caseId": "ADV-04-cross-section-ratio",
+      "title": "Debt exception depends on financial-covenant section",
+      "failureMode": "CROSS_SECTION_CONDITION",
+      "syntheticDrafting": "7.2(c) Indebtedness secured by Liens permitted by 7.3(g); provided that the Borrower is in pro forma compliance with Section 7.1.",
+      "naiveMisread": "7.2(c) is an open secured-debt permission whenever 7.3(g) liens exist.",
+      "correctRead": "Usable only if \u00a77.1 covenants are met on a pro forma basis \u2014 condition outside the debt clause.",
+      "requiredFields": [
+        "crossReferences includes 7.1",
+        "remoteConstraintFlags includes CROSS_SECTION_CONDITION"
+      ],
+      "expectedSearchTags": [
+        "CROSS_SECTION_CONDITION"
+      ]
+    },
+    {
+      "caseId": "ADV-05-notwithstanding-imports-external",
+      "title": "Notwithstanding overrides local caps but imports other documents",
+      "failureMode": "NOTWITHSTANDING",
+      "syntheticDrafting": "6.04(b) notwithstanding anything to the contrary herein, Loan Parties may dispose of Notes Priority Collateral so long as permitted under the Secured Notes Documents.",
+      "naiveMisread": "Notwithstanding means unlimited Notes Priority Collateral sale capacity under the ABL.",
+      "correctRead": "Local ABL caps are overridden, but permission and proceeds rules are constrained by the Secured Notes Documents.",
+      "requiredFields": [
+        "provisos.attachment=NOTWITHSTANDING",
+        "crossReferences to external instrument"
+      ],
+      "expectedSearchTags": [
+        "NOTWITHSTANDING"
+      ]
+    },
+    {
+      "caseId": "ADV-06-shared-builder-election",
+      "title": "Builder basket shared across RP, Investments, and junior prepays",
+      "failureMode": "SHARED_CAPACITY",
+      "syntheticDrafting": "6.04(a)(iii) RP \u2264 elected Available Amount; 6.06(q) Investments \u2264 elected Available Amount; 6.04(b)(v) Restricted Debt Payments \u2264 elected Available Amount.",
+      "naiveMisread": "Each clause provides a separate full Available Amount.",
+      "correctRead": "One shared builder pool; elections reduce capacity for the other families.",
+      "requiredFields": [
+        "sharedCapacityInteractions.kind=BUILDER_ELECTION|SHARED_BASKET"
+      ],
+      "expectedSearchTags": [
+        "SHARED_CAPACITY",
+        "BUILDER_SHARED"
+      ]
+    },
+    {
+      "caseId": "ADV-07-residual-last-resort",
+      "title": "Small flat basket unusable if larger sibling is available",
+      "failureMode": "RESIDUAL_LAST_RESORT",
+      "syntheticDrafting": "6.11(d) Restricted Payments \u2264 $500,000 per year (only if not permitted under any other clause of 6.11).",
+      "naiveMisread": "Borrower always has $500k RP capacity.",
+      "correctRead": "If Payment Conditions RP (c) is available, (d) cannot be used.",
+      "requiredFields": [
+        "sharedCapacityInteractions.kind=RESIDUAL_LAST_RESORT"
+      ],
+      "expectedSearchTags": [
+        "RESIDUAL_LAST_RESORT",
+        "SECTION_WIDE_LIMITATION"
+      ]
+    },
+    {
+      "caseId": "ADV-08-mutual-debt-lien-dependence",
+      "title": "Debt basket and lien basket each require the other",
+      "failureMode": "CROSS_SECTION_CONDITION",
+      "syntheticDrafting": "7.2(c) debt secured by Liens permitted by 7.3(g); 7.3(g) liens securing Indebtedness permitted by 7.2.",
+      "naiveMisread": "Either basket alone is usable capacity.",
+      "correctRead": "Neither is free-standing; both remote conditions must be jointly satisfied.",
+      "requiredFields": [
+        "crossReferences bidirectional debt/lien"
+      ],
+      "expectedSearchTags": [
+        "CROSS_SECTION_CONDITION"
+      ]
+    },
+    {
+      "caseId": "ADV-09-ratio-stepup-moves-investment-gate",
+      "title": "Investment ratio gate moves with financial-covenant notwithstanding step-up",
+      "failureMode": "NOTWITHSTANDING",
+      "syntheticDrafting": "7.8(j) Investments if CSSLR \u2264 7.1(a) CSSLR minus 0.25x; 7.1(a) Notwithstanding the foregoing, after Material Acquisition CSSLR may be 0.50x greater for four quarters.",
+      "naiveMisread": "Investment gate is a fixed 3.50 ratio.",
+      "correctRead": "Remote notwithstanding step-up changes the Investment permission's moving target.",
+      "requiredFields": [
+        "remoteConstraintFlags includes NOTWITHSTANDING or CROSS_SECTION_CONDITION"
+      ],
+      "expectedSearchTags": [
+        "NOTWITHSTANDING",
+        "CROSS_SECTION_CONDITION"
+      ]
+    },
+    {
+      "caseId": "ADV-10-affiliate-meta-gate",
+      "title": "Affiliate exception only as wide as other NC permissions",
+      "failureMode": "CROSS_SECTION_CONDITION",
+      "syntheticDrafting": "7.10 shall not prohibit (iv) any Restricted Payment not prohibited by Section 7.6.",
+      "naiveMisread": "Affiliate section independently permits Restricted Payments.",
+      "correctRead": "Exception is a pointer; RP still must fit \u00a77.6.",
+      "requiredFields": [
+        "crossReferences includes 7.6"
+      ],
+      "expectedSearchTags": [
+        "CROSS_SECTION_CONDITION"
+      ]
+    },
+    {
+      "caseId": "ADV-11-section-wide-valuation",
+      "title": "Trailing valuation methodology changes outstanding capacity of every basket",
+      "failureMode": "HANGING_PROVISO",
+      "syntheticDrafting": "7.8(l) Investments \u2264 greater of $75mm / 3.5% CTA at any time outstanding. For purposes of this Agreement, the amount of any Investment shall be the original cost ... giving effect to any return of capital...",
+      "naiveMisread": "Outstanding usage equals cash currently deployed without netting returns.",
+      "correctRead": "Hanging section-wide valuation rule nets returns and forbids write-up adjustments.",
+      "requiredFields": [
+        "conditions.location=SECTION_WIDE_PROVISO or remote HANGING_PROVISO"
+      ],
+      "expectedSearchTags": [
+        "HANGING_PROVISO",
+        "SECTION_WIDE_LIMITATION"
+      ]
+    },
+    {
+      "caseId": "ADV-12-fundamental-change-consumes-asset-sale",
+      "title": "Fundamental-change Division deemed utilization of Asset Sale baskets",
+      "failureMode": "SHARED_CAPACITY",
+      "syntheticDrafting": "7.4(a)(iii) Division permitted provided that any Division shall be deemed to be a utilization of the applicable baskets in Section 7.5.",
+      "naiveMisread": "Division permission is independent of Asset Sale capacity.",
+      "correctRead": "Cross-family shared capacity: Division burns \u00a77.5 headroom.",
+      "requiredFields": [
+        "sharedCapacityInteractions relatedRefs includes 7.5"
+      ],
+      "expectedSearchTags": [
+        "SHARED_CAPACITY"
+      ]
+    },
+    {
+      "caseId": "ADV-13-unlimited-ordinary-course-still-gated",
+      "title": "Unlimited obsolete-property carve-out still qualitative-gated",
+      "failureMode": "QUALITATIVE_GATE",
+      "syntheticDrafting": "7.5(a) the Disposition of obsolete or worn out property in the ordinary course of business;",
+      "naiveMisread": "Unlimited Asset Sale capacity for any disposition.",
+      "correctRead": "Two qualitative gates (obsolete/worn out AND ordinary course) remain; inventing absence of gates is forbidden.",
+      "requiredFields": [
+        "capacityShape=UNLIMITED_GATED",
+        "unconditionalCapacity=false"
+      ],
+      "expectedSearchTags": [
+        "UNLIMITED_GATED"
+      ]
+    },
+    {
+      "caseId": "ADV-14-junior-prepay-amendment-stack",
+      "title": "Junior prepay permission constrained by amendment restrictions in sibling subsections",
+      "failureMode": "SECTION_WIDE_LIMITATION",
+      "syntheticDrafting": "7.9(a) voluntary Prepayment of Permitted Subordinated Indebtedness allowed if pro forma 7.1 ok; 7.9(b) no amendment that shortens maturity or weakens subordination.",
+      "naiveMisread": "If 7.1 is met, borrower may restructure and prepay freely.",
+      "correctRead": "\u00a77.9(b)/(c) amendment limits are section-wide constraints on the same instruments.",
+      "requiredFields": [
+        "remoteConstraintFlags includes SECTION_WIDE_LIMITATION"
+      ],
+      "expectedSearchTags": [
+        "SECTION_WIDE_LIMITATION",
+        "CROSS_SECTION_CONDITION"
+      ]
+    },
+    {
+      "caseId": "ADV-15-classify-reclassify-not-new-capacity",
+      "title": "Classify/reclassify paragraph is not additional capacity",
+      "failureMode": "SHARED_CAPACITY",
+      "syntheticDrafting": "For purposes of determining compliance with this Section 7.2 ... Borrower may classify or reclassify ... in any manner that complies with this Section 7.2.",
+      "naiveMisread": "Reclassification creates a new uncapped basket.",
+      "correctRead": "Reclassification only reallocates among existing compliant baskets.",
+      "requiredFields": [
+        "sharedCapacityInteractions.kind=CLASSIFY_RECLASSIFY",
+        "capacityShape=NONE_QUALITATIVE"
+      ],
+      "expectedSearchTags": [
+        "CLASSIFY_RECLASSIFY"
+      ]
+    }
+  ]
+}
