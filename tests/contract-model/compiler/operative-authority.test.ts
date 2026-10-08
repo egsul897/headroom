@@ -100,6 +100,32 @@ describe("operative source authentication", () => {
     expect(selected[0]!.supersessionStatus).toBe("UNKNOWN_SUPERSESSION_STATUS");
   });
 
+  it("classifies a contents row whose title states a dollar amount, a ratio, or a month", () => {
+    const dollarTitle = "Section 7.01 Minimum Liquidity of $50,000,000 225\n";
+    const ratioTitle = "Section 7.11 Interest Coverage of 2.00 to 1 88\n";
+    const monthTitle = "Section 2.01 Closing Date May 15 12\n";
+    const titles = [dollarTitle, ratioTitle, monthTitle];
+    for (const title of titles) {
+      const local = indexFor(doc, title, [node({ documentId: doc, nodeId: "title-toc", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: title.length, parentNodeId: null })]);
+      const decision = authenticateStructuralOccurrence({ node: local.getNodeById("title-toc")!, index: local, supersessionStatus: "CURRENT_OPERATIVE" });
+      expect(decision.structuralKind).toBe("CONTENTS_LISTING");
+      expect(decision.refuseModelDispatch).toBe(true);
+      expect(decision.authoritativeCurrent).toBe(false);
+    }
+    const basket = "Section 7.01 Minimum Liquidity. The basket is $50,000,000.\n";
+    const basketIndex = indexFor(doc, basket, [node({ documentId: doc, nodeId: "basket", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: basket.length, parentNodeId: null })]);
+    expect(authenticateStructuralOccurrence({ node: basketIndex.getNodeById("basket")!, index: basketIndex, supersessionStatus: "CURRENT_OPERATIVE" }).structuralKind).toBe("OPERATIVE_OCCURRENCE");
+    const permission = "The Borrower may sell inventory.\n";
+    const permissionIndex = indexFor(doc, permission, [node({ documentId: doc, nodeId: "permission", nodeType: "CLAUSE", sectionRef: "7.01(a)", charStart: 0, charEnd: permission.length, parentNodeId: null })]);
+    expect(authenticateStructuralOccurrence({ node: permissionIndex.getNodeById("permission")!, index: permissionIndex, supersessionStatus: "CURRENT_OPERATIVE" }).structuralKind).toBe("OPERATIVE_OCCURRENCE");
+  });
+
+  it("does not refuse a raw-text fixture that supplies an index and no anchor", () => {
+    expect(operativeModelDispatchBlock({ index, anchorNodeId: null, supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
+    expect(operativeModelDispatchBlock({ index: null, anchorNodeId: "body", supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
+    expect(operativeModelDispatchBlock({ index, anchorNodeId: "", supersessionStatus: "CURRENT_OPERATIVE" })).toBeNull();
+  });
+
   it("classifies a contents row whose extraction split the label, title, and page number", () => {
     const extracted = "Section\u00a07.01\n\nIndebtedness\n\n225\n\n";
     const local = indexFor(doc, extracted, [node({ documentId: doc, nodeId: "split-toc", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: extracted.length, parentNodeId: null })]);

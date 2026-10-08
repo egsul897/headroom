@@ -81,11 +81,11 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 - Agent: Cursor. Ownership: production compiler, source authentication, budget, evidence, structural parser. Not Claude's acceptance directories.
 - Mission: source-backed compilation without false operative text, silent condition loss, or unanchored authority.
 - Branch: `cursor/architecture-remediation-7cc2`. Base: `cursor/gibraltar-haiku-verify-7cc2`. PR #136 draft.
-- Last verified SHA before this commit: `4a7a4777303005f29ec5170f9a9800f691a119a9`. Certified path on that SHA succeeded (Actions `37798576897`). The commit that contains this checkpoint is the letter/roman guard.
-- Current task: letter/roman parser that keeps CONMED 7.1(c) and 7.1(d).
-- Status: implemented locally, tests below, commit follows this file.
-- Exact tests this cycle: `tsc --noEmit` exit 0. Clause hierarchy 17 passed. F2 nesting 18 passed. Structural index 17, references 8, phase-2f1 31 passed. `npm run test:phase3-certification`: 456 passed, 2 failed. Both failures are 5s timeouts in `semantic-verification-verify.test.ts` (no-key review routing, and IR mutation). Offline maps passed inside that suite. Certified path on `4a7a477` (parent of this commit) Actions run `37798576897` concluded success. This commit's Actions are not yet observed.
-- Known defects still open: unanchored `compileCovenantToIR` does not refuse (`operative-authority.ts` returns null without an anchor). `package-compile.ts` is still the broad set. Local semantic-review timeouts under the 5s default are not a certification result.
+- Last verified SHA before the unanchored decision: `044d1b32052d5d75c1bfb57d26fdbd183a0804b5`. Certified path on `4a7a477` succeeded (Actions `37798576897`). Actions on `8590be6` and `044d1b3` were not observed.
+- Current task: contents titles that state a dollar amount, a ratio, or a month were operative occurrences. A raw-text fixture with an index and no anchor stays allowed.
+- Status: implemented locally. `tests/contract-model/compiler/operative-authority.test.ts` 13 passed. `npm run test:phase3-certification` is the acceptance run for this change and is recorded when it finishes.
+- Known defects still open: `package-compile.ts` still compiles every eligible non-representation candidate. Local semantic-review timeouts under the 5s default are not a certification result. Actions on `8590be6` and `044d1b3` are unobserved.
+- Unanchored compile: every production caller that reaches `compileCovenantToIR` with a real package index also passes a non-empty anchor. Discovery Pass C sets `structuralNodeIds` to a node id from that index. `compileCandidateToVerifiedIR` returns `NO_STRUCTURAL_ANCHOR` before compile when the list is empty or the id is missing. Gibraltar `candidateFor` and `rehydrate` skip a row with no resolvable node id. `operativeModelDispatchBlock` still returns null when the index is absent or the anchor id is absent, because `testCompilerInput` and certified bounded-execution fixtures compile raw operative text with an index attached and `originatingStructuralNodeIds` empty. An anchor id that is present and missing from the index is still refused.
 - `7.4(a)(iii)` and `7.4(a)(iv)` are not nodes. The marker scanner rejects a parenthesis that is immediately preceded by a comma and a space (`MARKER_OCCURRENCE` in `clause-hierarchy.ts`). The Section 7.4 text is "), (iii)" and "), (iv)". That exclusion is the documented citation-list rule. Those two discovery ids have no run-original evidence file. The same two keys were already unresolved on the parser before the letter-run guard. Do not accept every comma-separated marker; that was the FWRG citation false-positive the rule exists to stop.
 - Decision: do not merge `origin/main` (`9de4e57`) into this branch. The qualitative-honesty files diverge. Do not wire question closure into `package-compile.ts`.
 
@@ -97,9 +97,8 @@ The open parser change in PR #132 is on this branch with one guard. A restarted 
 
 ## NEXT_TASK
 
-- Objective: decide whether a compile call that has a structural index and no anchor node must fail closed, without breaking certified raw-text fixtures that intentionally have no index.
-- Relevant files: `lib/contract-model/compiler/operative-authority.ts` (`operativeModelDispatchBlock`), `lib/contract-model/compiler/semantic/compile.ts`, callers of `compileCovenantToIR`.
-- First step: search for `compileCovenantToIR(` and record which callers pass `toolAccess.structuralIndex` with an empty `originatingStructuralNodeIds`.
-- Expected output: a list of production callers. If every production caller passes an anchor, leave the raw-text fixture path unchanged and record that. If a production caller can dispatch with an index and no anchor, add a regression that refuses that call and does not refuse a fixture that has no index.
-- Acceptance: `tests/contract-model/compiler/operative-authority.test.ts` and `npm run test:phase3-certification` show no new assertion failure. No provider call.
-- Dependency: do not treat a missing anchor on a raw-text fixture as a contents line. Do not edit sealed evidence.
+- Objective: confirm whether a cross-reference resolver can return a contents-listing node as the operative target of a section label that also has a real body.
+- Relevant files: `lib/contract-model/compiler/structural-references.ts`, `lib/contract-model/compiler/structural-index.ts` (`resolveUniqueNodeByRef`), `lib/contract-model/compiler/operative-authority.ts`.
+- First step: find a fixture or a unit test where one document has two nodes for the same section ref, one a contents line and one an operative body, and see what `resolveUniqueNodeByRef` and reference resolution return.
+- Expected output: if the resolver already returns AMBIGUOUS and consumers refuse that, record it. If a consumer treats the contents node as the resolved target, refuse that resolution and add a regression. Do not guess between the two nodes.
+- Acceptance: existing structural-reference tests pass, plus the new regression if a consumer was wrong. No provider call. No sealed-evidence edit.

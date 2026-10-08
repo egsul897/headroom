@@ -14,6 +14,8 @@ DEVELOPMENT ≠ CERTIFIED. This register does not change certification status.
 | Longest text was treated as authority when two spans shared a label. | Length is not an authority vote. Two physical nodes for one label stay a refusal. |
 | Repeated discovery rows for one physical node were selected as two bodies and dropped real sections. | `selectAuthenticatedSectionBodies` dedupes by occurrence id. A missing id does not collapse distinct rows. |
 | A definitions section with `means` and no `shall` was refused as non-operative. | `spanContainsDefinitionDeclaration` reuses the structural definition grammar. |
+| A contents title that states a dollar amount, a ratio, or a month was operative text. | Quantity evidence no longer blocks a contents classification. `may` followed by a day number is a month. A body that states a basket amount without being a contents row stays operative. |
+| An unanchored compile with an index looked like a missing fail-closed. | Production discovery, covenant-map, and Gibraltar rehydration pass an anchor. Raw-text fixtures keep compiling when the anchor id is absent. A supplied id missing from the index is still refused. |
 | An independent qualitative condition was deleted, and an unattributed unlimited pair was copied onto siblings. | `semantic-accountability-compiler.v12` qualitative redundancy and ambiguous attribution. |
 | Missing token telemetry was treated as zero spend. | `mayDispatchUnderSpendingTarget` blocks the next dispatch when tokens are unknown. |
 | The five-conversation reservation shape was filtered only for Gibraltar. | The Gibraltar-only stop was removed. The shape applies generally. |

@@ -40,10 +40,14 @@ const CONTENTS_LINE = /^(?:(?:section|article)\s+|§\s*)?(?:\d+\.\d+|\d{1,2})(?:
 const POINTER_LINE = /^(?:the foregoing|see\s+(?:section|article|clause)|as\s+(?:defined|set forth)\s+in)\b/i;
 
 /**
- * Positive operative evidence. A page number at the end of a contents line is
- * not one of these. A bare character-count threshold is not one of these.
+ * Linguistic operative predicates. A contents title may name a dollar amount,
+ * a ratio, or a month ("May 15") and still be a contents row. "may" followed
+ * by a day number is that month, not the permission modal.
  */
-const OPERATIVE_EVIDENCE = /\b(?:shall|must|may|will|agree(?:s|d)?|provided\s+that|not\s+less\s+than|not\s+exceed|at\s+least)\b|(?:\$\s?\d|\b\d+(?:\.\d+)?\s*(?:to\s*1|%|percent)\b)/i;
+const OPERATIVE_PREDICATE = /\b(?:shall|must|may\b(?!\s+\d{1,2}\b)|will|agree(?:s|d)?|provided\s+that|not\s+less\s+than|not\s+exceed|at\s+least)\b/i;
+
+/** Amounts and ratios are operative evidence in a body. They also appear in contents titles, so they do not block a contents classification. */
+const QUANTITY_EVIDENCE = /(?:\$\s?\d|\b\d+(?:\.\d+)?\s*(?:to\s*1|%|percent)\b)/i;
 
 export function sha256Utf8(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
@@ -59,7 +63,8 @@ function isContentsListing(node: StructuralNode, index: OperativeTextIndex): boo
   const own = index.getNodeText(node.nodeId, "OWN");
   if (!own.trim()) return false;
   // A predicate such as "shall" is operative text even when a page number follows it.
-  if (OPERATIVE_EVIDENCE.test(own)) return false;
+  // A dollar amount or ratio in the title is not that predicate.
+  if (OPERATIVE_PREDICATE.test(own)) return false;
   const collapsed = collapseExtractedWhitespace(own);
   if (CONTENTS_LINE.test(collapsed)) return true;
   const lines = own.split(/\n/).map((line) => collapseExtractedWhitespace(line)).filter((line) => line.length > 0);
@@ -69,7 +74,7 @@ function isContentsListing(node: StructuralNode, index: OperativeTextIndex): boo
 function hasOperativeEvidence(node: StructuralNode, index: OperativeTextIndex): boolean {
   if (index.getDescendants(node.nodeId).some((child) => child.nodeType === "SUBSECTION" || child.nodeType === "CLAUSE" || child.nodeType === "SUBCLAUSE")) return true;
   const text = index.getNodeText(node.nodeId, "DESCENDANTS").trim();
-  if (OPERATIVE_EVIDENCE.test(text)) return true;
+  if (OPERATIVE_PREDICATE.test(text) || QUANTITY_EVIDENCE.test(text)) return true;
   // A definitions section is operative text. "means" / colon declarations are the same grammar the structural index uses.
   if (spanContainsDefinitionDeclaration(text)) return true;
   // A parsed clause is structural evidence of drafted text, unless that text is only a pointer.
@@ -152,7 +157,14 @@ function uniquePhysicalOccurrences<T extends ArticleSevenAuthorityRow>(rows: rea
   return unique;
 }
 
-/** Production compile gate. No anchor means the caller did not supply structural identity; fixtures that compile raw text are unchanged. */
+/**
+ * Production compile gate.
+ * Discovery, the covenant-map pipeline, and Gibraltar rehydration each pass a
+ * real anchor before compile. Certified raw-text fixtures call compile with a
+ * structural index and an empty originatingStructuralNodeIds list. No index,
+ * or an index with no anchor id, therefore returns null. An anchor id that
+ * was supplied and is not in the index is still a refusal.
+ */
 export function operativeModelDispatchBlock(args: {
   index: Pick<StructuralIndex, "getNodeById" | "getNodeText" | "getDescendants"> | null | undefined;
   anchorNodeId: string | null | undefined;
