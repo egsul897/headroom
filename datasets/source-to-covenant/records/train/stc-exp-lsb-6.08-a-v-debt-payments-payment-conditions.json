@@ -1,0 +1,209 @@
+{
+  "exampleId": "stc-exp-lsb-6.08-a-v-debt-payments-payment-conditions",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.08(a)(v)",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments of Indebtedness shall be permitted:",
+  "input": {
+    "exactText": "d payments of principal and interest, and payment of any other amount, in each case to the extent such payment is\nrequired pursuant to the terms of any Indebtedness permitted under Section  6.01 , other than Subordinated Indebtedness (which is covered by clause  (iv) below); \n (iii) payments of Indebtedness as a result of any refinancing of Indebtedness permitted by\n Section  6.01(d) ; (iv) payments of Subordinated Indebtedness to the extent permitted in\naccordance with the terms of such Subordinated Indebtedness or any agreement with respect thereto governing the subordination thereof; \n (v) payments of Indebtedness to the extent the Payment Conditions are satisfied; and \n (vi) payments of Indebtedness not to exceed $500,000 in the aggregate in any fiscal year of the Loan Parties (it being\nunderstood and agreed that any payment of Indebtedness made pursuant this clause (vi) shall only be permitted if such payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this\n Section  6.08(a) ). (b) No Loan Party shall amend, modify, alter, or change any of the terms or conditions of any\nagreement, instrument, document, indenture, or other writing evidencing or concerning Subordinated Indebtedness if such amendment, modification, alteration or change would be materially adverse to the Administrative Agent or the Lenders in any\nrespect (as determined by the Administrative Agent in its Permitted Discretion). SECTION  6.09 \n[ Reserved ]. SECTION  6.10 [ Reserved ]. \n   85 \n\n \n\n\n \n \n\n \n SECTION  6.11 Restricted Payments . Make any\ndistribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a\n“ Restricted Payment ”); provided , that the foregoing shall not prohibit any of the following: (a) Restricted\nPayments by a Loan Party to another Loan Party; (b) transactions permitted under Section  6.03 ; \n (c) Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment; and \n (d) Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any\nRestricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment wo",
+    "charStartInFixture": 11754,
+    "charEndInFixture": 14154,
+    "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "windowSha256": "4d584300eac86780bf58e3d3d9dfe5f551c1f29f59c2ff46c54f2b82a169b8f9",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "6.08(a)(v)"
+    ],
+    "conditions": [
+      "[object Object]"
+    ],
+    "crossReferences": [
+      "[object Object]",
+      "[object Object]"
+    ],
+    "entityScopeNotes": [
+      "{\"includes\":[\"Loan Parties / Subsidiaries\"],\"excludes\":[]}"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "MANDATORY_PREPAYMENTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "UNLIMITED_GATED",
+      "description": "Peer exception-catalog hypothesis for 6.08(a)(v). Not independently reviewed.",
+      "figures": [],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "[object Object]"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Expanded from peer exception catalog; Phase-2 marks as HUMAN_HYPOTHESIS only"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC source window. Candidate label imported from negative-covenant exception catalog as a hypothesis — not independent ground truth."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=4d584300eac86780bf58e3d3d9dfe5f551c1f29f59c2ff46c54f2b82a169b8f9",
+      "sectionRef=6.08(a)(v)"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the follow",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "{\"includes\":[\"Loan Parties / Subsidiaries\"],\"excludes\":[]}",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.08(a)(v). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "4d584300eac86780bf58e3d3d9dfe5f551c1f29f59c2ff46c54f2b82a169b8f9",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

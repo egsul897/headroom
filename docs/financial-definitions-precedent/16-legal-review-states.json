@@ -1,0 +1,28 @@
+{
+  "artifact": "financial-definitions-precedent.legal-review-states",
+  "version": "fdp.legal-states.v1",
+  "states": [
+    {
+      "id": "SOURCE_SPAN_VERIFIED",
+      "meaning": "Excerpt char offsets + sha256 match source file bytes (or owned plaintext sidecar)."
+    },
+    {
+      "id": "ARITHMETICALLY_TESTED",
+      "meaning": "A fdp.arith.v1 case executed and matched expected intermediates/outputs under stated assumptions. Not legal validation."
+    },
+    {
+      "id": "SEMANTIC_HYPOTHESIS",
+      "meaning": "Structured reading / typedCalc component map authored by agent; unverified legally."
+    },
+    {
+      "id": "INDEPENDENTLY_LEGALLY_REVIEWED",
+      "meaning": "Requires actual reviewer evidence record (reviewer id, timestamp, scope). NONE promoted in this pack."
+    },
+    {
+      "id": "REVIEW_REQUIRED",
+      "meaning": "Open ambiguity or missing authority; must not infer zero/unlimited/available capacity."
+    }
+  ],
+  "promotionRule": "No record may be set to INDEPENDENTLY_LEGALLY_REVIEWED without an attached reviewerEvidence object.",
+  "independentlyLegallyReviewedCount": 0
+}

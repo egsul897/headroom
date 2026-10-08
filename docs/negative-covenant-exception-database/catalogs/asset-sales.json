@@ -1,0 +1,311 @@
+{
+  "covenantFamily": "ASSET_SALES",
+  "count": 3,
+  "exceptionIds": [
+    "conmed-7.5-a-obsolete-ordinary-course",
+    "conmed-7.5-f-asset-sale-dual-caps",
+    "lsb-6.04-b-notes-priority-notwithstanding"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.5-a-obsolete-ordinary-course",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "ASSET_SALES",
+      "parentProhibition": {
+        "sectionRef": "7.5",
+        "text": "Dispose of any of its Property or business ... or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:"
+      },
+      "exceptionSectionRef": "7.5(a)",
+      "exactExceptionText": "the Disposition of obsolete or worn out property in the ordinary course of business;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.5",
+        "Section 7.5(a)"
+      ],
+      "definedTerms": [
+        "Disposition"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "property is obsolete or worn out",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(a)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "in the ordinary course of business",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(a)",
+          "computableHint": "ORDINARY_COURSE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c4",
+          "text": "section-end Collateral release paragraph only after sale in accordance with Agreement",
+          "location": "SECTION_WIDE_PROVISO",
+          "locationRef": "7.5 trailing release paragraph",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "7.5 trailing release paragraph",
+          "role": "Collateral release conditioned on compliant sale"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "SECTION_WIDE_LIMITATION",
+          "description": "Trailing Collateral-release paragraph conditions post-sale lien release on compliance with Agreement terms."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Unlimited-looking carve-out; both qualitative gates are non-computable and must not be invented away. Known CONMED \u00a77.5(a) honesty pattern.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.5-f-asset-sale-dual-caps",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "ASSET_SALES",
+      "parentProhibition": {
+        "sectionRef": "7.5",
+        "text": "Dispose of any of its Property or business ... except:"
+      },
+      "exceptionSectionRef": "7.5(f)",
+      "exactExceptionText": "any Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that (i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 10% of Consolidated Total Assets ... in any fiscal year and (y) 20% of Consolidated Total Assets ... in the aggregate during any four-year rolling period and (ii) the aggregate amount of Consolidated EBITDA attributable to all assets sold ... shall not exceed (x) 7.5% of Consolidated EBITDA ... in any fiscal year and (y) 15% of Consolidated EBITDA ... during any four-year rolling period; provided , further , that the requirements of Section 2.12(b) are complied with in connection with such Asset Sale or Recovery Event;",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.5",
+        "Section 7.5(f)"
+      ],
+      "definedTerms": [
+        "Asset Sale",
+        "Recovery Event",
+        "Consolidated Total Assets",
+        "Consolidated EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "CTA annual and four-year rolling caps",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(f)(i)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "EBITDA contribution annual and four-year rolling caps",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(f)(ii)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c3",
+          "text": "Section 2.12(b) mandatory prepayment / proceeds requirements",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "2.12(b)",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "sale-leasebacks only if also permitted by Section 7.11",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.11",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "PERCENT_OF",
+          "value": "10% CTA / fiscal year"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "20% CTA / four-year rolling"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "7.5% Consolidated EBITDA / fiscal year"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "15% Consolidated EBITDA / four-year rolling"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Dual CTA and EBITDA pools shared across all Asset Sales under clause (f)",
+          "relatedRefs": [
+            "7.5(f)"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "provided that dual CTA/EBITDA caps",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Primary capacity gates."
+        },
+        {
+          "text": "provided further that Section 2.12(b) complied with",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Remote proceeds application gate."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "2.12(b)",
+          "role": "proceeds / prepayment mechanics"
+        },
+        {
+          "targetRef": "7.11",
+          "role": "sale-leaseback sublimit"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "\u00a72.12(b) and \u00a77.11 sit outside the exception's local dollar math."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Seemingly large Asset Sale permission; mandatory prepayment mechanics and sale-leaseback section constrain use.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.04-b-notes-priority-notwithstanding",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "ASSET_SALES",
+      "parentProhibition": {
+        "sectionRef": "6.04",
+        "text": "Other than transactions permitted under Section 6.03, convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that:"
+      },
+      "exceptionSectionRef": "6.04(b)",
+      "exactExceptionText": "notwithstanding anything to the contrary contained herein, any Loan Party and any of its respective Subsidiaries may sell, transfer or otherwise dispose of any Notes Priority Collateral owned by such Person so long as such disposition is permitted under the Secured Notes Documents or if the requisite holders of the Secured Notes otherwise consent ... proceeds from the sale or disposition of Notes Priority Collateral shall be applied by the Loan Parties in accordance with the terms of the Secured Notes Documents and the Secured Notes Indenture;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(b)"
+      ],
+      "definedTerms": [
+        "Notes Priority Collateral",
+        "Secured Notes Documents",
+        "Secured Notes Indenture"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "disposition permitted under Secured Notes Documents or noteholder consent",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Secured Notes Documents",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "proceeds applied per Secured Notes Documents / Indenture",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Secured Notes Indenture",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Party",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "notwithstanding anything to the contrary contained herein",
+          "attachment": "NOTWITHSTANDING",
+          "scopeNote": "Overrides conflicting local ABL disposition limits, but imports notes documents."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "Secured Notes Documents",
+          "role": "permission source"
+        },
+        {
+          "targetRef": "6.03",
+          "role": "fundamental-change carve-out interaction in chapeau"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "NOTWITHSTANDING",
+          "description": "Local ABL caps do not control Notes Priority Collateral sales."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "True permission and proceeds application live in Secured Notes Documents."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Notwithstanding makes the ABL exception look free; capacity is still constrained by an external instrument.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

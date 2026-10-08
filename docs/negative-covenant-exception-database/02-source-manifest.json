@@ -1,0 +1,39 @@
+{
+  "artifact": "02-source-manifest",
+  "sources": {
+    "conmed-2025-credit-facility": {
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+    },
+    "lsb-2023-abl-credit-agreement": {
+      "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8"
+    },
+    "fwrg-2021-credit-agreement": {
+      "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23"
+    }
+  },
+  "counts": {
+    "exceptions": 34,
+    "byFamily": {
+      "DEBT_INCURRENCE": 8,
+      "LIENS": 2,
+      "RESTRICTED_PAYMENTS": 6,
+      "INVESTMENTS": 5,
+      "ASSET_SALES": 3,
+      "AFFILIATE_TRANSACTIONS": 2,
+      "FUNDAMENTAL_CHANGES": 2,
+      "JUNIOR_DEBT_PREPAYMENTS": 3,
+      "SUBSIDIARY_RESTRICTIONS": 3
+    },
+    "bySource": {
+      "conmed-2025-credit-facility": 19,
+      "lsb-2023-abl-credit-agreement": 9,
+      "fwrg-2021-credit-agreement": 6
+    },
+    "withRemoteConditions": 34,
+    "hangingOrSectionWideProvisos": 3,
+    "seeminglyPermissiveButConstrained": 34
+  }
+}

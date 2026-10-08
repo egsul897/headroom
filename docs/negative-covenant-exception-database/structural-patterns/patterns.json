@@ -1,0 +1,79 @@
+{
+  "patterns": [
+    {
+      "patternId": "PAT-hanging-trailing-proviso",
+      "description": "provided that / provided further after the last enumerated item binds prior siblings unless clearly limited.",
+      "exampleExceptionIds": [
+        "conmed-7.8-l-general-investments-basket",
+        "lsb-6.03-fundamental-changes-carveouts"
+      ],
+      "adversarialCaseIds": [
+        "ADV-01-hanging-proviso-list-wide",
+        "ADV-11-section-wide-valuation"
+      ]
+    },
+    {
+      "patternId": "PAT-article-chapeau",
+      "description": "Article-level 'shall not, and shall not permit' binds entity scope for every section exception.",
+      "exampleExceptionIds": [
+        "conmed-7.2-d-finance-leases-greater-of",
+        "lsb-6.01-i-greater-of-flat-assets"
+      ],
+      "adversarialCaseIds": [
+        "ADV-02-article-chapeau-entity"
+      ]
+    },
+    {
+      "patternId": "PAT-defined-term-remote-gate",
+      "description": "Exception body names a defined term (Payment Conditions, Available Amount, Permitted X) whose operative gates live elsewhere.",
+      "exampleExceptionIds": [
+        "lsb-6.11-c-rp-payment-conditions",
+        "fwrg-6.04-a-iii-available-amount-rp",
+        "conmed-7.2-l-permitted-unsecured"
+      ],
+      "adversarialCaseIds": [
+        "ADV-03-defined-term-payment-conditions",
+        "ADV-06-shared-builder-election"
+      ]
+    },
+    {
+      "patternId": "PAT-cross-section-condition",
+      "description": "Exception expressly conditions on compliance with another section (financial covenants, affirmative covenants, sibling NC).",
+      "exampleExceptionIds": [
+        "conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+        "conmed-7.8-i-foreign-advances-depend-7.2k",
+        "conmed-7.5-f-asset-sale-dual-caps"
+      ],
+      "adversarialCaseIds": [
+        "ADV-04-cross-section-ratio",
+        "ADV-08-mutual-debt-lien-dependence"
+      ]
+    },
+    {
+      "patternId": "PAT-notwithstanding-external",
+      "description": "notwithstanding clause defeats local limits while importing external instrument constraints.",
+      "exampleExceptionIds": [
+        "lsb-6.04-b-notes-priority-notwithstanding"
+      ],
+      "adversarialCaseIds": [
+        "ADV-05-notwithstanding-imports-external",
+        "ADV-09-ratio-stepup-moves-investment-gate"
+      ]
+    },
+    {
+      "patternId": "PAT-shared-or-residual-capacity",
+      "description": "Builder elections, cross-basket offsets, classify/reclassify, or residual-last-resort parentheticals.",
+      "exampleExceptionIds": [
+        "fwrg-6.04-a-iii-available-amount-rp",
+        "fwrg-6.04-b-iv-rdp-cross-basket-offset",
+        "lsb-6.11-d-residual-last-resort-rp",
+        "conmed-7.2-trailing-classify-reclassify"
+      ],
+      "adversarialCaseIds": [
+        "ADV-06-shared-builder-election",
+        "ADV-07-residual-last-resort",
+        "ADV-15-classify-reclassify-not-new-capacity"
+      ]
+    }
+  ]
+}

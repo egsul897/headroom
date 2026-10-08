@@ -1,0 +1,209 @@
+{
+  "exampleId": "stc-bkt-chwy-refinancing-premiums-addon",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "chewy",
+    "issuerName": "Chewy, Inc.",
+    "instrumentKey": "chwy-2026-credit-agreement",
+    "documentId": "chwy-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "chwy-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "§6.01 refinancing mechanics",
+  "input": {
+    "exactText": " Disqualified Stock or Preferred Stock shall be deemed to have been incurred, and permitted to be incurred,\nunder such Section 6.01(a) hereof so long as the principal amount of such Refinancing Indebtedness, Disqualified Stock or Preferred Stock does not exceed the principal amount of Indebtedness, Disqualified Stock or Preferred Stock being\nRefinanced plus amounts permitted by the next sentence. Any Refinancing Indebtedness, Disqualified Stock or Preferred Stock and any Indebtedness incurred to Refinance Indebtedness, Disqualified Stock or Preferred Stock incurred pursuant to\nSections 6.01(b)(1), (4), (12), (31), (32) and (33) hereof shall be permitted to include additional Indebtedness, Disqualified Stock or Preferred Stock incurred to pay premiums (including tender premiums), defeasance costs, underwriting\ndiscounts, accrued and unpaid interest, dividends and fees, costs and expenses (including upfront fees, original issue discount or similar fees) in connection with such Refinancing.\n\nFor purposes of determining compliance with any U.S. dollar-denominated restriction on the incurrence of Indebtedness, Disqualified Stock or\nPreferred Stock, the U.S. dollar-equivalent principal amount of Indebtedness or liquidation preference of Disqualified Stock or Preferred Stock denominated in a foreign currency shall be calculated by the Borrowers based on the relevant currency\nexchange rate in effect on the date such Indebtedness, Disqualified Stock or Preferred Stock was deemed to be incurred, in the case of term debt, or first committed, in the case of revolving credit debt; provided that if such Indebtedness,\nDisqualified Stock or Preferred Stock is incurred to Refinance other Indebtedness, Disqualified Stock or Preferred Stock denominated in a foreign currency, and such Refinancing would cause the applicable U.S. dollar-denominated restriction to be\nexceeded if calculated at the relevant currency exchange rate in effect on the date of such Refinancing, such U.S. dollar-d",
+    "charStartInFixture": 638655,
+    "charEndInFixture": 640655,
+    "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "windowSha256": "3e2e30aaee44672035c4c440546f84402e495457069a8ddaf70b09d7d3a81810",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "\"Refinancing of Indebtedness/DQ/Preferred incurred under specified clauses\""
+    ],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Restricted Parties refinancing listed §6.01 baskets\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (chwy-refinancing-premiums-addon). Not independently reviewed.",
+      "figures": [
+        "Refinancing Indebtedness may include premiums, defeasance costs, discounts, accrued interest/dividends, and fees/OID in connection with the Refinancing"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "original basket clauses being refinanced",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "original principal and cost schedule not supplied"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "chwy-2026-credit-agreement",
+    "operativeVersion": "chwy-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "windowSha256=3e2e30aaee44672035c4c440546f84402e495457069a8ddaf70b09d7d3a81810",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "§6.01 refinancing mechanics",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Restricted Parties refinancing listed §6.01 baskets\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-refinancing-premiums-addon). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "3e2e30aaee44672035c4c440546f84402e495457069a8ddaf70b09d7d3a81810",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

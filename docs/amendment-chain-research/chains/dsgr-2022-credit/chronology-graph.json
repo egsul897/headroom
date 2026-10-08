@@ -1,0 +1,62 @@
+{
+  "chainId": "dsgr-2022-04-01-ar-credit",
+  "nodes": [
+    {
+      "id": "dsgr-doc-a",
+      "date": "2022-04-01",
+      "label": "2022 A&R Credit Agreement"
+    },
+    {
+      "id": "dsgr-gap-am1-am2",
+      "date": "2023-06 / 2024-06",
+      "label": "First Amendment ACQUIRED; Second Amendment PARTIAL (image EX-10.1 + 10-Q narrative)",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "dsgr-doc-b",
+      "date": "2024-08-14",
+      "label": "Third Amendment"
+    },
+    {
+      "id": "dsgr-doc-c",
+      "date": "2025-03-31",
+      "label": "Fourth Amendment (deemed effect 2025-01-01)"
+    },
+    {
+      "id": "dsgr-doc-d",
+      "date": "2025-12-18",
+      "label": "Second A&R Credit Agreement"
+    }
+  ],
+  "edges": [
+    {
+      "from": "dsgr-doc-a",
+      "to": "dsgr-gap-am1-am2",
+      "kind": "AMENDS",
+      "authority": "UNRESOLVED"
+    },
+    {
+      "from": "dsgr-gap-am1-am2",
+      "to": "dsgr-doc-b",
+      "kind": "AMENDS",
+      "authority": "UNRESOLVED"
+    },
+    {
+      "from": "dsgr-doc-b",
+      "to": "dsgr-doc-c",
+      "kind": "AMENDS",
+      "authority": "SOURCE_BACKED"
+    },
+    {
+      "from": "dsgr-doc-c",
+      "to": "dsgr-doc-d",
+      "kind": "RESTATES",
+      "authority": "SOURCE_BACKED"
+    }
+  ],
+  "deemedEffect": {
+    "docId": "dsgr-doc-c",
+    "deemedAsOf": "2025-01-01",
+    "executionDate": "2025-03-31"
+  }
+}

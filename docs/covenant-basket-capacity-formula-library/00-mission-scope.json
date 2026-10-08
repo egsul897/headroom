@@ -1,0 +1,55 @@
+{
+  "mission": "HEADROOM — COVENANT BASKET AND CAPACITY FORMULA LIBRARY",
+  "platform": "Cursor Cloud Agent",
+  "constraints": {
+    "noProductionCapacityEngineChanges": true,
+    "noPaidCalls": true,
+    "noMerges": true,
+    "noCertificationChanges": true,
+    "noInventedPermissionsFromBareNumbers": true,
+    "noCapacityCalculationWhenInputsOrConditionsMissing": true
+  },
+  "requiredCoverageFamilies": [
+    "FIXED_DOLLAR",
+    "GREATER_OF_FIXED_AND_PERCENTAGE",
+    "GROWER",
+    "RATIO_BASED",
+    "AVAILABLE_AMOUNT_BUILDER",
+    "CUMULATIVE_CREDIT",
+    "EQUITY_CONTRIBUTION",
+    "INCREMENTAL_DEBT",
+    "REFINANCING",
+    "PURCHASE_MONEY",
+    "GENERAL_DEBT",
+    "GENERAL_LIEN",
+    "RESTRICTED_PAYMENT",
+    "INVESTMENT",
+    "ASSET_SALE_REINVESTMENT",
+    "SHARED",
+    "RECLASSIFICATION",
+    "BASKET_REPLENISHMENT",
+    "ANTI_DOUBLE_COUNTING",
+    "CROSS_COVENANT_CAPACITY_RESTRICTION"
+  ],
+  "requiredRecordFields": [
+    "exactSourceSpan",
+    "governingCovenant",
+    "basketFamily",
+    "amountOrFormulaCandidate",
+    "measurementDate",
+    "financialInputs",
+    "entityScope",
+    "conditions",
+    "sharedCapacityDependencies",
+    "reclassificationRights",
+    "sourceVersion",
+    "verificationStatus"
+  ],
+  "artifacts": {
+    "libraryTypes": "lib/basket-formula-corpus/",
+    "builder": "scripts/basket-formula-corpus/build-corpus.py",
+    "docs": "docs/covenant-basket-capacity-formula-library/",
+    "export": "docs/covenant-basket-capacity-formula-library/export/",
+    "tests": "tests/basket-formula-corpus/"
+  }
+}

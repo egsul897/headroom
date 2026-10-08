@@ -1,0 +1,385 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-a-basic-credit-agreement",
+  "title": "Package A — basic single credit agreement",
+  "issuer": "Harbor Lane Industries, Inc. (synthetic)",
+  "scenario": "One credit agreement with a definitions article and three negative covenants. Baseline: everything here is unambiguous and must be recovered exactly.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:harbor-lane",
+  "instrumentKey": "harbor-lane-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "77551de27abad59c20d695abe4b435757c488eb860a89161712c10e1918b6bb3"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-06-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$30,000,000",
+          "no Default has occurred"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "status": "CURRENT",
+        "mustContain": [
+          "3.50 to 1.00",
+          "Consolidated Total Leverage Ratio"
+        ],
+        "mustNotContain": []
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "1.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "I",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true,
+        "ownTextContains": [
+          "shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(a)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "Loan Documents"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$30,000,000",
+          "provided that no Default has occurred and is continuing"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "3.50 to 1.00"
+        ]
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.02",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.03",
+        "nodeType": "SECTION",
+        "parentSectionRef": "VII",
+        "unique": true
+      }
+    ],
+    "invariants": [
+      "No orphan nodes.",
+      "No duplicate sectionRef within the document.",
+      "Every SUBSECTION under 7.01 has 7.01 as its physical parent."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "unique": true,
+        "excerptContains": "Consolidated Net Income"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated Total Leverage Ratio",
+        "unique": true,
+        "excerptContains": "Consolidated Total Debt"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated Total Debt",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Default",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Loan Documents",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Lien",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Subsidiary",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": []
+  },
+  "covenants": [
+    {
+      "id": "A-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not",
+        "Indebtedness"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Subsidiary"
+      ],
+      "crossReferences": [],
+      "textSha256": "34a67ec0e7f0c2f5048769b6cdc862ffd94b050bbd72b56fe6469abe9836b4ec"
+    },
+    {
+      "id": "A-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "A-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$30,000,000",
+        "at any time outstanding"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 30000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "no Default has occurred and is continuing at the time of incurrence",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Indebtedness",
+        "Default"
+      ],
+      "crossReferences": [],
+      "textSha256": "8c8735fd1eb77d46bade349272b690df26fde76ed28d2e2f89c37d9f8c848303"
+    },
+    {
+      "id": "A-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "RATIO_BASED_PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "3.50 to 1.00",
+        "pro forma"
+      ],
+      "value": {
+        "kind": "RATIO_THRESHOLD",
+        "metric": "Consolidated Total Leverage Ratio",
+        "comparator": "LTE",
+        "numerator": 3.5,
+        "denominator": 1
+      },
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [
+        {
+          "kind": "RATIO_TEST",
+          "textContains": "Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00",
+          "independent": true,
+          "material": true
+        },
+        {
+          "kind": "PRO_FORMA",
+          "textContains": "after giving pro forma effect thereto",
+          "independent": false,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Consolidated Total Leverage Ratio",
+        "Consolidated Total Debt",
+        "Consolidated EBITDA"
+      ],
+      "crossReferences": [],
+      "textSha256": "b5fa55823fc96ae62075da25f84024295b99f16e9128586bacd1747e73b0b42a"
+    },
+    {
+      "id": "A-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create any Lien",
+        "Section 7.01(b)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Lien",
+        "Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "629aaa7d62651de87b55ea551bc98df656442ac332f445e7faf34cca884214bf"
+    },
+    {
+      "id": "A-7.03",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.03",
+      "family": "FUNDAMENTAL_CHANGES",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "merge or consolidate"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [],
+      "textSha256": "7290438c6ead703c1b87fcee0bf8db8e9bc60a05726b2173e85aa23aca652c5a"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [],
+  "unsupported": [],
+  "prohibitedClaims": [
+    {
+      "id": "A-P1",
+      "claim": "7.01(b) permits $30,000,000 of Indebtedness without the no-Default condition",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "The proviso is part of the basket."
+    },
+    {
+      "id": "A-P2",
+      "claim": "7.01(c) ratio basket is available to any Subsidiary",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.01(c) is limited to Indebtedness of the Borrower."
+    },
+    {
+      "id": "A-P3",
+      "claim": "7.02 permits Liens securing Indebtedness under 7.01(c)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "7.02 only excepts Liens securing 7.01(b) Indebtedness."
+    },
+    {
+      "id": "A-P4",
+      "claim": "7.01(c) is an unconditional, unlimited debt permission (ratio gate and conditions dropped)",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "The 3.50 to 1.00 ratio test is the whole of the permission.",
+      "adversarial": {
+        "kind": "DROP_GATE",
+        "sectionRef": "7.01(c)"
+      }
+    },
+    {
+      "id": "A-P5",
+      "claim": "7.01(c)'s ratio test is measured on actual (not pro forma) figures (condition nodes dropped while the capacity keeps its ratio gate)",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "The text says 'after giving pro forma effect thereto'.",
+      "adversarial": {
+        "kind": "DROP_CONDITIONS",
+        "sectionRef": "7.01(c)"
+      }
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Every recovered covenant must carry a source location inside the credit agreement text.",
+    "The $30,000,000 basket must never be reported as unconditional.",
+    "The 3.50 to 1.00 ratio must be recovered as a threshold on Consolidated Total Leverage Ratio, not as a dollar basket."
+  ]
+}

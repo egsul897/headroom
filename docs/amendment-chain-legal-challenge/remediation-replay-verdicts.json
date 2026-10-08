@@ -1,0 +1,51 @@
+{
+  "replayType": "INDEPENDENT_REMEDIATION_REPLAY",
+  "reviewedSha": "50eb36b9116fee788fe89eaa588875ccb5c2681e",
+  "originalReviewedSha": "ce07b1525972d1dea00792a2058900fa56291163",
+  "researchPr": 150,
+  "priorChallengePr": 156,
+  "generatedAt": "2026-10-08T23:05:00Z",
+  "promotionStatus": "NOT_INDEPENDENTLY_LEGALLY_VERIFIED",
+  "anyExecutableAmendmentStateLegallyVerified": false,
+  "safeForNonPromotingResearchIntegration": true,
+  "safeForCertifiedOperativeLaw": false,
+  "researchPrModified": false,
+  "frozenCertificationEvidenceEdited": false,
+  "productionLegalRulesEdited": false,
+  "paidInference": false,
+  "defectDispositions": {
+    "D1_conmed_internap_manifest_ledger_dual_truth": "CLOSED",
+    "D2_azz_applicable_rate_vs_margin": "CLOSED",
+    "D3_azz_kf_export_omission": "CLOSED",
+    "D4_internap_before_text_and_am1_am6_propagation": "PARTIALLY_REMEDIATED",
+    "D5_dsgr_10m_before_and_am2_wrapper": "PARTIALLY_REMEDIATED",
+    "D6_conmed_parentage": "CLOSED",
+    "D7_matthews_coherent_sequencing": "CLOSED",
+    "D8_conditional_ed_and_deemed_retroactive": "PARTIALLY_REMEDIATED",
+    "D9_canonical_export_unresolved_authority": "CLOSED",
+    "D10_vc_regression": "CLOSED"
+  },
+  "defectNotes": {
+    "D3_azz_kf_export_omission": "Am4 hashed and exported; orig/Am1-3 HASH_PENDING residual is honest missingAuthority, not omission of chain",
+    "D4_internap_before_text_and_am1_am6_propagation": "Orig before-text CLOSED; Am1-Am6 exhaustive propagation STILL_OPEN",
+    "D5_dsgr_10m_before_and_am2_wrapper": "$10M before-text CLOSED; Am2 wrapper STILL_OPEN; 10-Q NOT_OPERATIVE preserved",
+    "D8_conditional_ed_and_deemed_retroactive": "Fail-closed discipline CLOSED; calendar proofs STILL_OPEN"
+  },
+  "verdicts": {
+    "VC-001": { "prior": "PASS", "replay": "PASS" },
+    "VC-002": { "prior": "PASS", "replay": "PASS" },
+    "VC-003": { "prior": "PASS", "replay": "PASS" },
+    "VC-004": { "prior": "PASS", "replay": "PASS" },
+    "VC-005": { "prior": "AMBIGUOUS", "replay": "PASS" },
+    "VC-006": { "prior": "PASS", "replay": "PASS" },
+    "VC-007": { "prior": "PASS", "replay": "PASS" },
+    "VC-008": { "prior": "AMBIGUOUS", "replay": "PASS" }
+  },
+  "remainingBlockers": [
+    "CONDITIONAL_UNRESOLVED Effective Date calendars",
+    "dsgr-am2-wrapper-text MISSING_DOCUMENT",
+    "inap Am1-Am6 basket propagation UNRESOLVED_DEPENDENCY",
+    "azz orig/Am1-Am3 HASH_PENDING",
+    "VC test-specs independentlyReviewedLegalGroundTruth still PENDING_INDEPENDENT_REVIEW"
+  ]
+}

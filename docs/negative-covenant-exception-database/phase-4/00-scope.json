@@ -1,0 +1,23 @@
+{
+  "artifact": "00-scope",
+  "phase": 4,
+  "datasetVersion": "ncedb.phase4.v1",
+  "startingPR": 143,
+  "startingSha": "1456000040f03faeb2beca3c9f46bc2db91ac960",
+  "goals": [
+    "Explicit dependency closure",
+    "Proviso attachment repair",
+    "Entity-scope repair",
+    "Cross-reference repair",
+    "Independent eval (frozen P3 + issuer-disjoint)",
+    "CKF integration without Permission writes"
+  ],
+  "nonGoals": [
+    "No paid inference",
+    "No merge",
+    "No certification advancement",
+    "No production legal-rule changes",
+    "No Claude-owned fixture modifications",
+    "No competing canonical schema"
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "artifact": "01-unconditional-classification-audit",
+  "datasetVersion": "ncedb.phase3.v1",
+  "principle": "Distinguish unconditional categorical exception (local clause form) from unconditional legal permission (no controlling remote/definitional/external constraints). Incomplete controlling context \u2192 downgrade. Never infer production capacity.",
+  "auditedCount": 4,
+  "downgradedCount": 4,
+  "survivingUnconditionalCount": 0,
+  "audits": [
+    {
+      "exceptionId": "conmed-7.2-a-loan-document-debt",
+      "phase2Classification": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "phase3Classification": "CONDITIONAL",
+      "categoricalExceptionVsLegalPermission": {
+        "isUnconditionalCategoricalExceptionInLocalClause": true,
+        "isUnconditionalLegalPermission": false,
+        "distinction": "Local clause is a categorical carve-out with no dollar/ratio gate, but entity/instrument scope depends on Loan Party / Loan Document definitions that are not present in the curated definitions excerpt. Categorical exception \u2260 unconditional legal permission; incomplete controlling context requires downgrade."
+      },
+      "reconstruction": {
+        "parentProhibition": {
+          "sectionRef": "7.2",
+          "paraphraseSummary": "General Indebtedness prohibition with enumerated exceptions.",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+            "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+            "charStart": 3654,
+            "charEnd": 3720,
+            "exactText": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+            "matchStatus": "EXACT"
+          }
+        },
+        "exceptionAndProvisos": {
+          "exactExceptionText": "Indebtedness of any Loan Party pursuant to any Loan Document;",
+          "localProvisos": [],
+          "note": "No local proviso; definitional scope is remote."
+        },
+        "incorporatedDefinitions": [
+          {
+            "term": "Loan Party",
+            "presentInCuratedDefsExcerpt": false,
+            "status": "MISSING_FROM_CURATED_EXCERPT"
+          },
+          {
+            "term": "Loan Document",
+            "presentInCuratedDefsExcerpt": true,
+            "status": "MISSING_FROM_CURATED_EXCERPT"
+          }
+        ],
+        "entityAndInstrumentScope": {
+          "includes": [
+            "Loan Party"
+          ],
+          "instrumentConstraint": "pursuant to any Loan Document",
+          "sourceSpanResolved": false
+        },
+        "remoteConditions": [
+          "Article VII chapeau entity restriction (Parent Borrower / Subsidiaries)",
+          "Loan Party / Loan Document definitional bounds (unresolved in curated defs)"
+        ],
+        "sharedCapacity": [],
+        "financialTests": [],
+        "amendmentAuthority": [
+          {
+            "documentRef": "base",
+            "effect": "none noted",
+            "status": "NONE_NOTED"
+          }
+        ],
+        "externalDocumentRestrictions": []
+      },
+      "downgradeReason": "Controlling definitional context for Loan Party / Loan Document is incomplete in the curated source package; cannot verify unconditional legal permission.",
+      "productionCapacityInferred": false,
+      "auditTrailPreserved": true,
+      "verificationStatusAfterAudit": "SOURCE_VERIFIED_PARTIAL_CONTEXT"
+    },
+    {
+      "exceptionId": "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "phase2Classification": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "phase3Classification": "CONDITIONAL",
+      "categoricalExceptionVsLegalPermission": {
+        "isUnconditionalCategoricalExceptionInLocalClause": false,
+        "isUnconditionalLegalPermission": false,
+        "distinction": "7.06(b)(1) has two limbs: (x) Loan Documents / Facilities Obligations and (y) instruments in effect on the Closing Date. Limb (y) is an external-document / Closing Date condition. Parent 7.06(a) also carries provisos. Phase-2 remoteConditions were empty \u2014 incomplete. Not unconditional legal permission."
+      },
+      "reconstruction": {
+        "parentProhibition": {
+          "sectionRef": "7.06(a)",
+          "paraphraseSummary": "Burdensome Agreements restriction on subsidiary distributions.",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+            "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+            "charStart": 808858,
+            "charEnd": 808949,
+            "exactText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance",
+            "matchStatus": "EXACT"
+          }
+        },
+        "exceptionAndProvisos": {
+          "exactExceptionText": "any encumbrance or restriction (x) for the benefit of the Lenders with respect to the Facilities and the Obligations or under the Loan Documents or (y)\u00a0pursuant to any instrument or\nagreement in effect at or entered into",
+          "dualLimb": true,
+          "limbYClosingDate": true,
+          "parentProvisosIn706a": true
+        },
+        "incorporatedDefinitions": [
+          {
+            "term": "Loan Documents",
+            "status": "REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+          },
+          {
+            "term": "Closing Date",
+            "status": "EXTERNAL_TEMPORAL_ANCHOR"
+          },
+          {
+            "term": "Obligations / Facilities",
+            "status": "REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+          }
+        ],
+        "entityAndInstrumentScope": {
+          "includes": [
+            "Loan Party other than Borrower (per 7.06(a))",
+            "as applicable"
+          ],
+          "excludes": [],
+          "sourceSpan": null
+        },
+        "remoteConditions": [
+          "7.06(a) parent provisos (Preferred Stock priority / subordination carve-outs)",
+          "Closing Date instrument limb (external/temporal)",
+          "Loan Document definitional scope"
+        ],
+        "sharedCapacity": [],
+        "financialTests": [],
+        "amendmentAuthority": [
+          {
+            "documentRef": "base",
+            "effect": "none noted",
+            "status": "NONE_NOTED"
+          }
+        ],
+        "externalDocumentRestrictions": [
+          "instruments/agreements in effect at or entered into on the Closing Date"
+        ]
+      },
+      "downgradeReason": "Closing Date external limb + parent provisos + unresolved definitional closure; phase-2 omitted remote conditions.",
+      "productionCapacityInferred": false,
+      "auditTrailPreserved": true,
+      "verificationStatusAfterAudit": "SOURCE_VERIFIED_PARTIAL_CONTEXT"
+    },
+    {
+      "exceptionId": "dsgr-6.01-a-secured-obligations",
+      "phase2Classification": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "phase3Classification": "CONDITIONAL",
+      "categoricalExceptionVsLegalPermission": {
+        "isUnconditionalCategoricalExceptionInLocalClause": true,
+        "isUnconditionalLegalPermission": false,
+        "distinction": "Local (a) has no quantum gate, but Secured Obligations is definitionally conditioned (Excluded Swap Obligations proviso) and Article VI chapeau limits duration to Paid-in-Full. Definitional/remote conditions \u2192 CONDITIONAL."
+      },
+      "reconstruction": {
+        "parentProhibition": {
+          "sectionRef": "6.01",
+          "paraphraseSummary": "No Indebtedness except enumerated baskets.",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+            "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+            "charStart": 448133,
+            "charEnd": 448268,
+            "exactText": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:",
+            "matchStatus": "EXACT"
+          }
+        },
+        "exceptionAndProvisos": {
+          "exactExceptionText": "the Secured Obligations and the Guaranteed Obligations;",
+          "localProvisos": []
+        },
+        "incorporatedDefinitions": [
+          {
+            "term": "Secured Obligations",
+            "status": "FOUND_IN_SOURCE",
+            "excerpt": "Secured Obligations \u201d means all Obligations of the Canadian Loan Parties, together with all (i) Banking\nServices Obligations of the Canadian Loan Parties and the Foreign Subsidiaries and (ii) Swap Agreement Obligations of the Canadian Loan Parties and the Foreign Subsidiaries, in each case, owing to one or more Lenders or their respective\nAffiliates; provided, however, that the definition of \u201cCanadian Secured Obligat",
+            "embeddedProviso": "Excluded Swap Obligations carve-out in definition"
+          },
+          {
+            "term": "Guaranteed Obligations",
+            "status": "PARTIALLY_RESOLVED",
+            "note": "Canadian/U.S. Guaranteed Obligations variants; full closure not in phase-2 record"
+          }
+        ],
+        "entityAndInstrumentScope": {
+          "includes": [
+            "Loan Parties / Restricted Subsidiaries as bound by chapeau"
+          ],
+          "excludes": [],
+          "sourceSpan": null
+        },
+        "remoteConditions": [
+          "Article VI Paid-in-Full duration chapeau",
+          "Secured Obligations definitional proviso (Excluded Swap Obligations)"
+        ],
+        "sharedCapacity": [],
+        "financialTests": [],
+        "amendmentAuthority": [
+          {
+            "documentRef": "base",
+            "effect": "none noted",
+            "status": "NONE_NOTED"
+          }
+        ],
+        "externalDocumentRestrictions": []
+      },
+      "downgradeReason": "Incorporated Secured Obligations definition contains controlling provisos; article-level Paid-in-Full duration is a remote condition.",
+      "productionCapacityInferred": false,
+      "auditTrailPreserved": true,
+      "verificationStatusAfterAudit": "SOURCE_VERIFIED_PARTIAL_CONTEXT"
+    },
+    {
+      "exceptionId": "riot-5.02-a-i-facility-liens",
+      "phase2Classification": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "phase3Classification": "CONDITIONAL",
+      "categoricalExceptionVsLegalPermission": {
+        "isUnconditionalCategoricalExceptionInLocalClause": true,
+        "isUnconditionalLegalPermission": false,
+        "distinction": "Clause (i) is categorical in-form (no dollar/ratio), but permission is bounded by Loan Document, Collateral Agent, Secured Parties, and Collateral \u2014 and Collateral is defined by external Pledge and Collateral Account Control Agreement. Not unconditional legal permission; no production capacity inference."
+      },
+      "reconstruction": {
+        "parentProhibition": {
+          "sectionRef": "5.02(a)",
+          "paraphraseSummary": "No Liens on Collateral except enumerated.",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+            "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+            "charStart": 125808,
+            "charEnd": 126224,
+            "exactText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral, whether now owned or hereafter acquired, or file or permit the filing of, or permit to remain in effect, any financing statement or other similar notice of any Lien with respect to the Collateral under the UCC of any State or under any similar recording or notice statute, except:",
+            "matchStatus": "EXACT"
+          }
+        },
+        "exceptionAndProvisos": {
+          "exactExceptionText": "Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;",
+          "localProvisos": []
+        },
+        "incorporatedDefinitions": [
+          {
+            "term": "Loan Document",
+            "status": "FOUND_IN_SOURCE",
+            "excerpt": "\u201cLoan Document\u201d means any of (a)\u00a0this Agreement, (b)\u00a0the Promissory Note, (c)\u00a0the Collateral Documents and (d)\u00a0all other documents, certificates, instruments or agreements executed and delivered by or on behalf of the Borrower for the benefit of any Agent or the Lender in connect"
+          },
+          {
+            "term": "Collateral Agent",
+            "status": "FOUND_IN_SOURCE",
+            "note": "Coinbase Credit"
+          },
+          {
+            "term": "Collateral",
+            "status": "EXTERNAL_DOCUMENT",
+            "excerpt": "\u201cCollateral\u201d has the meaning given to it in the Pledge and Collateral Account Control Agreement.\n\n\u200b\n\n3\n\n\u200b\n\n\u201cCollateral Account\u201d means an account with account nu",
+            "externalDoc": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "term": "Secured Parties",
+            "status": "REFERENCED"
+          }
+        ],
+        "entityAndInstrumentScope": {
+          "includes": [
+            "Borrower"
+          ],
+          "assetScope": "Collateral only (not all assets)",
+          "instrumentConstraint": "pursuant to any Loan Document; in favor of Collateral Agent"
+        },
+        "remoteConditions": [
+          "Loan Document definitional set",
+          "Collateral external definition (Pledge agreement)"
+        ],
+        "sharedCapacity": [],
+        "financialTests": [],
+        "amendmentAuthority": [
+          {
+            "documentRef": "base",
+            "effect": "none noted",
+            "status": "NONE_NOTED"
+          }
+        ],
+        "externalDocumentRestrictions": [
+          "Pledge and Collateral Account Control Agreement (Collateral definition)"
+        ]
+      },
+      "downgradeReason": "Definitional + external Collateral document restrictions control the exception; phase-2 remoteConditions were empty.",
+      "productionCapacityInferred": false,
+      "auditTrailPreserved": true,
+      "verificationStatusAfterAudit": "SOURCE_VERIFIED_PARTIAL_CONTEXT"
+    }
+  ],
+  "summaryTable": [
+    {
+      "exceptionId": "conmed-7.2-a-loan-document-debt",
+      "from": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "to": "CONDITIONAL",
+      "categoricalLocal": true,
+      "unconditionalLegalPermission": false
+    },
+    {
+      "exceptionId": "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "from": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "to": "CONDITIONAL",
+      "categoricalLocal": false,
+      "unconditionalLegalPermission": false
+    },
+    {
+      "exceptionId": "dsgr-6.01-a-secured-obligations",
+      "from": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "to": "CONDITIONAL",
+      "categoricalLocal": true,
+      "unconditionalLegalPermission": false
+    },
+    {
+      "exceptionId": "riot-5.02-a-i-facility-liens",
+      "from": "UNCONDITIONAL_SOURCE_VERIFIED",
+      "to": "CONDITIONAL",
+      "categoricalLocal": true,
+      "unconditionalLegalPermission": false
+    }
+  ]
+}

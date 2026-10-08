@@ -1,0 +1,655 @@
+{
+  "analyzer": "ncedb-phase4-dependency-aware-analyzer",
+  "exceptions": [
+    {
+      "detectedId": "DET-RIOT-5.02-a-i",
+      "sectionRef": "5.02(a)(i)",
+      "limbText": "(i)Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;",
+      "charStart": 126236,
+      "preview": "(i)Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Loan Document defs",
+        "Collateral external",
+        "unresolved cross-ref:Loan Document"
+      ],
+      "predictedProvisoAttachment": "NONE",
+      "predictedEntityScope": [
+        "BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Loan Document"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "5.02(a)(i)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document",
+            "evidenceText": "Loan Document"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document",
+            "evidenceText": "Loan Document"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (7 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [],
+        "primaryAttachment": "NONE",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "The Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "The Borrower"
+          }
+        ],
+        "excludes": [],
+        "ambiguous": false,
+        "notes": [
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Loan Document",
+            "normalizedTarget": "Loan Document",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Loan Document",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "Loan Document",
+            "normalizedTarget": "Loan Document",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Loan Document",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral",
+        "openingLanguage": "except:",
+        "parentProvisoTexts": []
+      }
+    },
+    {
+      "detectedId": "DET-RIOT-5.02-a-ii",
+      "sectionRef": "5.02(a)(ii)",
+      "limbText": "(ii)Liens for Taxes not yet due or that are being contested in good faith and by appropriate proceedings diligently conducted, if adequate reserves with respect thereto are maintained on the books of the applicable Person in accordance with Applicable Accounting Rules;",
+      "charStart": 126353,
+      "preview": "(ii)Liens for Taxes not yet due or that are being contested in good faith and by appropriate proceedings diligently conducted, if adequate reserves with respect",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Collateral external",
+        "local contest/reserve conditions",
+        "local contest/reserve conditions"
+      ],
+      "predictedProvisoAttachment": "NONE",
+      "predictedEntityScope": [
+        "BORROWER"
+      ],
+      "predictedCrossRefs": [],
+      "dependencyClosure": {
+        "exceptionRef": "5.02(a)(ii)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [],
+        "primaryAttachment": "NONE",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "The Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "The Borrower"
+          }
+        ],
+        "excludes": [],
+        "ambiguous": false,
+        "notes": [
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral",
+        "openingLanguage": "except:",
+        "parentProvisoTexts": []
+      }
+    },
+    {
+      "detectedId": "DET-RIOT-5.02-a-iii",
+      "sectionRef": "5.02(a)(iii)",
+      "limbText": "(iii)Liens imposed by law (other than any such Lien imposed pursuant to Section 430(k) of the Code or ERISA or a violation of Section 436 of the Code), in each case incurred in the ordinary course of business (i) for amounts not yet overdue or (ii) for amounts that are overdue and that (in the case of any such amounts overdue for a period in excess of five (5) days) are being contested in good faith by appropriate proceedings, so long as such reserves or other appropriate provisions, if any, as shall be required by Applicable Accounting Rules shall have been made for any such contested amounts; and",
+      "charStart": 126624,
+      "preview": "(iii)Liens imposed by law (other than any such Lien imposed pursuant to Section 430(k) of the Code or ERISA or a violation of Section 436 of the Code), in each ",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Collateral external",
+        "local contest/reserve conditions",
+        "Section 430(k) definitional dependence",
+        "Section 436 definitional dependence",
+        "local contest/reserve conditions"
+      ],
+      "predictedProvisoAttachment": "NONE",
+      "predictedEntityScope": [
+        "BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 430(k)",
+        "Section 436"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "5.02(a)(iii)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 430(k)",
+            "status": "PARTIAL",
+            "targetRef": "Section 430(k)",
+            "evidenceText": "Section 430(k)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 436",
+            "status": "PARTIAL",
+            "targetRef": "Section 436",
+            "evidenceText": "Section 436"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 430(k)",
+            "status": "PARTIAL",
+            "targetRef": "Section 430(k)",
+            "evidenceText": "Section 430(k)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 436",
+            "status": "PARTIAL",
+            "targetRef": "Section 436",
+            "evidenceText": "Section 436"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (8 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [],
+        "primaryAttachment": "NONE",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "The Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "The Borrower"
+          }
+        ],
+        "excludes": [],
+        "ambiguous": false,
+        "notes": [
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 430(k)",
+            "normalizedTarget": "Section 430(k)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 430(k)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Section 436",
+            "normalizedTarget": "Section 436",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 436",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral",
+        "openingLanguage": "except:",
+        "parentProvisoTexts": []
+      }
+    },
+    {
+      "detectedId": "DET-RIOT-5.02-a-iv",
+      "sectionRef": "5.02(a)(iv)",
+      "limbText": "(iv)Liens (whether contractual or arising as a matter of Law, including rights of set-off or netting) in favor of the Custodian in connection with the Collateral Account.",
+      "charStart": 127231,
+      "preview": "(iv)Liens (whether contractual or arising as a matter of Law, including rights of set-off or netting) in favor of the Custodian in connection with the Collatera",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Collateral external"
+      ],
+      "predictedProvisoAttachment": "NONE",
+      "predictedEntityScope": [
+        "BORROWER"
+      ],
+      "predictedCrossRefs": [],
+      "dependencyClosure": {
+        "exceptionRef": "5.02(a)(iv)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "The Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Document",
+            "status": "PARTIAL",
+            "targetRef": "Loan Document"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral",
+            "status": "EXTERNAL",
+            "targetRef": "Collateral"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Collateral Agent",
+            "status": "PARTIAL",
+            "targetRef": "Collateral Agent"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Secured Parties",
+            "status": "PARTIAL",
+            "targetRef": "Secured Parties"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Pledge and Collateral Account Control Agreement"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "restatement chain not closed"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [],
+        "primaryAttachment": "NONE",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "The Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "The Borrower"
+          }
+        ],
+        "excludes": [],
+        "ambiguous": false,
+        "notes": [
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral",
+        "openingLanguage": "except:",
+        "parentProvisoTexts": []
+      }
+    }
+  ]
+}

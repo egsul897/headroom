@@ -1,0 +1,3392 @@
+{
+  "benchmarkVersion": "extraction-architecture-benchmark.v1",
+  "generatedAt": "2026-10-08T21:49:17.266Z",
+  "repository": {
+    "headSha": "731f34e2f9aed7537380492cc4f2d946f904709c",
+    "branch": "claude/independent-product-validation",
+    "dirty": true
+  },
+  "corpusSha256": "aa923dfda024f86e599b947fb9800a7d67a4fc182e9bc7461438e8e4f82150f0",
+  "costModel": "deepseek/deepseek-v4-flash",
+  "evidenceLabels": {
+    "quality": "MEASURED_OFFLINE_OVER_FIXTURES",
+    "cost": "DETERMINISTIC_ESTIMATE",
+    "latency": "HYPOTHETICAL_PROJECTION",
+    "strategiesB_C": "EVALUATION_MODEL",
+    "strategyA": "PRODUCTION_POPULATION"
+  },
+  "cases": [
+    {
+      "caseId": "BM-01",
+      "adversarialClass": "DEBT_BASKET_SUBJECT_TO_SEPARATE_LIEN_COVENANT",
+      "packageId": "pkg-i-secured-debt-lien",
+      "question": "Can the Borrower incur $40,000,000 of secured Indebtedness under the general debt basket in Section 7.01(b)?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15"
+            ],
+            "definitions": [
+              "Default",
+              "Foreign Subsidiary",
+              "Guarantor",
+              "Indebtedness",
+              "Lien",
+              "Loan Documents",
+              "Permitted Liens",
+              "Subsidiary",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 5,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 3,
+              "of": 3
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 3,
+              "definitionsOf": 3,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(b)",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02(b)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 5,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 3
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 3,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "credit-agreement#7.02: lien prohibition governs secured debt",
+              "credit-agreement#9.15: $25,000,000 cap on all secured debt, outside Article VII"
+            ],
+            "falsePermission": true,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20825,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00495365,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15",
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Subsidiary",
+              "Guarantor",
+              "Lien",
+              "Default",
+              "Foreign Subsidiary",
+              "Permitted Liens",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 3,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 5,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 3,
+              "of": 3
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 3,
+              "definitionsOf": 3,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "3 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-02",
+      "adversarialClass": "RP_EXCEPTION_CONSTRAINED_BY_DEFINITION_ELSEWHERE",
+      "packageId": "pkg-j-restricted-payments-builder",
+      "question": "Can the Borrower pay a $15,000,000 dividend under Section 7.06(c)?",
+      "expectedOutcome": "NEEDS_INPUT_FAIL_CLOSED",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#7.06",
+              "credit-agreement#7.08"
+            ],
+            "definitions": [
+              "Available Amount",
+              "Consolidated Net Income",
+              "Cumulative Retained Excess Cash Flow",
+              "Default",
+              "Excess Cash Flow",
+              "Investment",
+              "Restricted Payment",
+              "Total Leverage Ratio"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Closing Date and",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Consolidated Total Debt",
+              "UNRESOLVED_DEFINED_TERM: Consolidated EBITDA",
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "dependencyClosure": {
+              "definitionsHit": 5,
+              "definitionsOf": 5,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24465,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00542685,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.06(c)",
+              "credit-agreement#1.01",
+              "credit-agreement#7.06"
+            ],
+            "definitions": [
+              "Available Amount",
+              "Consolidated Net Income",
+              "Cumulative Retained Excess Cash Flow",
+              "Default",
+              "Excess Cash Flow",
+              "Investment",
+              "Restricted Payment",
+              "Total Leverage Ratio"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "dependencyClosure": {
+              "definitionsHit": 5,
+              "definitionsOf": 5,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "credit-agreement#7.08(d): shares the Available Amount"
+            ],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24265,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0054008500000000004,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.06",
+              "credit-agreement#1.01",
+              "credit-agreement#7.08"
+            ],
+            "definitions": [
+              "Available Amount",
+              "Cumulative Retained Excess Cash Flow",
+              "Excess Cash Flow",
+              "Consolidated Net Income",
+              "Default",
+              "Restricted Payment",
+              "Total Leverage Ratio",
+              "Investment"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 4,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Closing Date and",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Consolidated Total Debt",
+              "UNRESOLVED_DEFINED_TERM: Consolidated EBITDA"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "dependencyClosure": {
+              "definitionsHit": 5,
+              "definitionsOf": 5,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": [
+              "4 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24465,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00542685,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-03",
+      "adversarialClass": "RATIO_BASKET_AFFECTED_BY_ANOTHER_DOCUMENT",
+      "packageId": "pkg-b-multi-document",
+      "question": "Can the Borrower incur $160,000,000 of Indebtedness under the Credit Agreement's Section 7.01?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "indenture#1.01",
+              "supplemental-indenture-1#1",
+              "supplemental-indenture-1#2",
+              "credit-agreement#7.01",
+              "indenture#4.09",
+              "credit-agreement#7.02",
+              "indenture#4.10"
+            ],
+            "definitions": [
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Indebtedness",
+              "Interest Expense",
+              "Loan Documents",
+              "Senior Notes Indenture",
+              "Subsidiary",
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Fixed Charge Coverage Ratio",
+              "Indebtedness",
+              "Interest Expense",
+              "Restricted Subsidiary",
+              "Unrestricted Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "indenture",
+              "supplemental-indenture-1"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "UNRESOLVED_DEFINED_TERM: Granite Trust Company",
+              "UNRESOLVED_DEFINED_TERM: Senior Notes",
+              "DEFINITION_CYCLE: Restricted Subsidiary",
+              "UNRESOLVED_DEFINED_TERM: Issuer and",
+              "UNRESOLVED_DEFINED_TERM: Restricted Subsidiaries",
+              "UNRESOLVED_DEFINED_TERM: Capital Lease Obligations of",
+              "UNRESOLVED_DEFINED_TERM: Subsidiary of",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 4.09(c)",
+              "UNRESOLVED_DEFINED_TERM: Supplemental Indenture",
+              "UNRESOLVED_DEFINED_TERM: Holders of",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Issue Date",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: Capital Stock"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 4,
+            "unitsInScope": 8,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 3,
+              "definitionsOf": 3,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 8,
+            "modelCalls": 40,
+            "inputTokens": 65192,
+            "outputTokens": 23040,
+            "estimatedUsd": 0.01446536,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 480,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "indenture#4.09(a)",
+              "credit-agreement#7.02"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement",
+              "indenture"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 4,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 3,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "indenture#4.09: indenture restricts the Issuer's debt incl. a FCCR test",
+              "condition RATIO_TEST in indenture#4.09"
+            ],
+            "falsePermission": true,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20615,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049263499999999995,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "indenture#4.09",
+              "supplemental-indenture-1#1",
+              "supplemental-indenture-1#2"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Senior Notes Indenture",
+              "Fixed Charge Coverage Ratio",
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Interest Expense",
+              "Indebtedness",
+              "Restricted Subsidiary",
+              "Unrestricted Subsidiary",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "indenture",
+              "supplemental-indenture-1"
+            ],
+            "notExamined": 7,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Restricted Subsidiary",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Issue Date",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 4.09(c)"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 4,
+            "unitsInScope": 5,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 3,
+              "definitionsOf": 3,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "7 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 5,
+            "modelCalls": 25,
+            "inputTokens": 38975,
+            "outputTokens": 14400,
+            "estimatedUsd": 0.00881075,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 300,
+              "parallel8": 48
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-04",
+      "adversarialClass": "AMENDMENT_SILENTLY_REPLACES_THRESHOLD",
+      "packageId": "pkg-c-amendment-supersession",
+      "question": "As of 2026-06-30, how much Indebtedness may the Borrower incur under Section 7.01(b), and may it assume $10,000,000 of acquisition debt under Section 7.01(e)?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-2#1",
+              "amendment-2#2",
+              "amendment-1#2",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02"
+            ],
+            "definitions": [
+              "Default",
+              "Indebtedness",
+              "Loan Documents",
+              "Permitted Acquisition",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1",
+              "amendment-2"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "UNRESOLVED_DEFINED_TERM: Required Lenders",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(e)"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 3,
+              "documentsOf": 3
+            },
+            "operativeSourceAccurate": true,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 50974,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.011868219999999999,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(e)",
+              "credit-agreement#7.01(b)",
+              "credit-agreement#7.01"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 3
+            },
+            "operativeSourceAccurate": false,
+            "dangerousOmissions": [
+              "amendment-1#1: restates 7.01(b) to $40,000,000 with a no-Default proviso",
+              "amendment-2#1: deletes 7.01(e)",
+              "condition NO_DEFAULT in amendment-1#1"
+            ],
+            "falsePermission": true,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20880,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049608,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "amendment-1#1",
+              "amendment-2#1",
+              "amendment-1#2",
+              "amendment-2#2"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Permitted Acquisition",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1",
+              "amendment-2"
+            ],
+            "notExamined": 4,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(b)",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.01(e)"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 6,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 1,
+              "definitionsOf": 2,
+              "documentsHit": 3,
+              "documentsOf": 3
+            },
+            "operativeSourceAccurate": true,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "4 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 6,
+            "modelCalls": 30,
+            "inputTokens": 43116,
+            "outputTokens": 17280,
+            "estimatedUsd": 0.01009788,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 360,
+              "parallel8": 48
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-05",
+      "adversarialClass": "DEFINITION_WITH_NESTED_DEPENDENCIES",
+      "packageId": "pkg-a-basic-credit-agreement",
+      "question": "Is the ratio debt basket in Section 7.01(c) available?",
+      "expectedOutcome": "NEEDS_INPUT_FAIL_CLOSED",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#1.02",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.03"
+            ],
+            "definitions": [
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Consolidated Total Debt",
+              "Consolidated Total Leverage Ratio",
+              "Default",
+              "Indebtedness",
+              "Interest Expense",
+              "Lien",
+              "Loan Documents",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "UNRESOLVED_DEFINED_TERM: Terms Generally",
+              "UNRESOLVED_DEFINED_TERM: Fundamental Changes"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 5,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 6,
+              "definitionsOf": 6,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 5,
+            "modelCalls": 25,
+            "inputTokens": 39130,
+            "outputTokens": 14400,
+            "estimatedUsd": 0.0088309,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 300,
+              "parallel8": 48
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(c)",
+              "credit-agreement#7.01(a)",
+              "credit-agreement#7.01"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 6,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": false,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20785,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00494845,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.03"
+            ],
+            "definitions": [
+              "Consolidated Total Leverage Ratio",
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Interest Expense",
+              "Consolidated Total Debt",
+              "Indebtedness",
+              "Default",
+              "Loan Documents",
+              "Subsidiary",
+              "Lien"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 3,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Fundamental Changes"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 6,
+              "definitionsOf": 6,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": [
+              "3 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 22626,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0051877799999999995,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-06",
+      "adversarialClass": "EXCEPTION_LIMITED_TO_CERTAIN_SUBSIDIARIES",
+      "packageId": "pkg-i-secured-debt-lien",
+      "question": "May a Foreign Subsidiary incur $30,000,000 of Indebtedness under Section 7.01(b)?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15"
+            ],
+            "definitions": [
+              "Default",
+              "Foreign Subsidiary",
+              "Guarantor",
+              "Indebtedness",
+              "Lien",
+              "Loan Documents",
+              "Permitted Liens",
+              "Subsidiary",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(b)",
+              "credit-agreement#7.01(c)",
+              "credit-agreement#7.01"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20795,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00494975,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15",
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Subsidiary",
+              "Guarantor",
+              "Lien",
+              "Default",
+              "Foreign Subsidiary",
+              "Permitted Liens",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 3,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "3 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-07",
+      "adversarialClass": "TOC_ENTRY_RESEMBLING_OPERATIVE_LANGUAGE",
+      "packageId": "pkg-e-structural-ambiguity",
+      "question": "What does Section 7.06 permit by way of Restricted Payments?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.06",
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.06"
+            ],
+            "definitions": [
+              "Available Amount",
+              "Consolidated Net Income",
+              "Default",
+              "Indebtedness",
+              "Restricted Payment",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 1.01",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.01",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.02",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.06",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: Closing Date",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "AMBIGUOUS_RELATIVE_REFERENCE: ARTICLE VII",
+              "UNRESOLVED_DEFINED_TERM: Loan Documents",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 8,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [
+              "credit-agreement#7.06#1"
+            ],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "forbidden unit(s) in scope: credit-agreement#7.06#1"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 8,
+            "modelCalls": 40,
+            "inputTokens": 60872,
+            "outputTokens": 23040,
+            "estimatedUsd": 0.01390376,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 480,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.06",
+              "credit-agreement#7.06",
+              "credit-agreement#7.06(a)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [
+              "credit-agreement#7.06#1"
+            ],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "forbidden unit(s) in scope: credit-agreement#7.06#1"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20425,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049016500000000005,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.06",
+              "credit-agreement#7.06",
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.01"
+            ],
+            "definitions": [
+              "Available Amount",
+              "Consolidated Net Income",
+              "Default",
+              "Restricted Payment",
+              "Subsidiary",
+              "Indebtedness"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 12,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "SECTION 7.06 from 7.06 → AMBIGUOUS",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.06",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "AMBIGUOUS_RELATIVE_REFERENCE: ARTICLE VII",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.01",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.02",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 1.01",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Closing Date",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 5,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [
+              "credit-agreement#7.06#1"
+            ],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "forbidden unit(s) in scope: credit-agreement#7.06#1",
+              "12 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 5,
+            "modelCalls": 25,
+            "inputTokens": 38865,
+            "outputTokens": 14400,
+            "estimatedUsd": 0.00879645,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 300,
+              "parallel8": 48
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-08",
+      "adversarialClass": "COVENANT_FAMILY_WITH_UNEXPECTED_HEADING",
+      "packageId": "pkg-g-adversarial-evidence",
+      "question": "Can the Borrower make a $4,000,000 Investment in a joint venture?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "stale-amendment#1",
+              "stale-amendment#2",
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.03",
+              "credit-agreement#7.04"
+            ],
+            "definitions": [
+              "Default",
+              "Indebtedness",
+              "Investment",
+              "Loan Documents",
+              "Subsidiary"
+            ],
+            "documents": [
+              "stale-amendment",
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.09",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "REFERENCED_DOCUMENT_ABSENT: the Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.01",
+              "UNRESOLVED_DEFINED_TERM: Permitted Refinancing Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: REMAINDER OF PAGE INTENTIONALLY LEFT",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 1,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 51219,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.011900069999999999,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.03",
+              "credit-agreement#7.03(a)",
+              "credit-agreement#7.03(b)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20470,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049075,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.03"
+            ],
+            "definitions": [
+              "Investment"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 7,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH",
+              "amendment stale-amendment: UNRESOLVED (2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"November 18, 2021\") - never guessed from title similarity alone)"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 1,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 1,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "7 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 1,
+            "modelCalls": 5,
+            "inputTokens": 7010,
+            "outputTokens": 2880,
+            "estimatedUsd": 0.0016600999999999999,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 60,
+              "parallel8": 12
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-09",
+      "adversarialClass": "RESTRICTION_OUTSIDE_EXPECTED_ARTICLE",
+      "packageId": "pkg-d-qualitative-restrictions",
+      "question": "Can the Borrower sell a warehouse for $8,000,000 cash under Section 7.05(k) and keep the proceeds?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#2.05",
+              "credit-agreement#7.05"
+            ],
+            "definitions": [
+              "Cash Equivalents",
+              "Default",
+              "Disposition",
+              "Net Cash Proceeds",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Net Cash Proceeds of",
+              "UNRESOLVED_DEFINED_TERM: Business Days of",
+              "UNRESOLVED_DEFINED_TERM: Dispositions of",
+              "UNRESOLVED_DEFINED_TERM: Specified Strategic Transaction",
+              "UNRESOLVED_DEFINED_TERM: Disposition of"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 4,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 4,
+              "definitionsOf": 4,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24347,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00541151,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.05(k)",
+              "credit-agreement#2.05(b)",
+              "credit-agreement#7.05(c)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 3,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 4,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "condition SCOPE_CARVEOUT in credit-agreement#7.05"
+            ],
+            "falsePermission": true,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20475,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00490815,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.05",
+              "credit-agreement#2.05"
+            ],
+            "definitions": [
+              "Cash Equivalents",
+              "Default",
+              "Disposition",
+              "Net Cash Proceeds",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 7,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Dispositions of",
+              "UNRESOLVED_DEFINED_TERM: Specified Strategic Transaction",
+              "UNRESOLVED_DEFINED_TERM: Disposition of",
+              "UNRESOLVED_DEFINED_TERM: Net Cash Proceeds of",
+              "UNRESOLVED_DEFINED_TERM: Business Days of"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 2,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 4,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 4,
+              "definitionsOf": 4,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "7 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 2,
+            "modelCalls": 10,
+            "inputTokens": 16353,
+            "outputTokens": 5760,
+            "estimatedUsd": 0.00362349,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 120,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-10",
+      "adversarialClass": "SHARED_CAPACITY_ACROSS_BASKETS",
+      "packageId": "pkg-f-capacity-ledger-honesty",
+      "question": "Can the Borrower make a $15,000,000 Investment under Section 7.08(c) if it has already paid $9,000,000 of dividends under Section 7.06(b)?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.06",
+              "credit-agreement#7.08"
+            ],
+            "definitions": [
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Indebtedness",
+              "Interest Expense",
+              "Investment",
+              "Restricted Payment",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Loan Documents",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "UNRESOLVED_DEFINED_TERM: Administrative Agent",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 4,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 4,
+            "modelCalls": 20,
+            "inputTokens": 32098,
+            "outputTokens": 11520,
+            "estimatedUsd": 0.00716794,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 240,
+              "parallel8": 36
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.08(c)",
+              "credit-agreement#7.08",
+              "credit-agreement#7.06(b)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20540,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049166,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.08",
+              "credit-agreement#7.06"
+            ],
+            "definitions": [
+              "Investment",
+              "Subsidiary",
+              "Consolidated EBITDA",
+              "Consolidated Net Income",
+              "Interest Expense",
+              "Indebtedness",
+              "Restricted Payment"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 8,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 2,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "8 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 2,
+            "modelCalls": 10,
+            "inputTokens": 15244,
+            "outputTokens": 5760,
+            "estimatedUsd": 0.00347932,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 120,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-11",
+      "adversarialClass": "PERMITTED_TRANSACTION_WITH_MULTIPLE_INDEPENDENT_CONDITIONS",
+      "packageId": "pkg-d-qualitative-restrictions",
+      "question": "Can the Borrower sell its principal manufacturing facility for cash under Section 7.05(k)?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "credit-agreement#2.05",
+              "credit-agreement#7.05"
+            ],
+            "definitions": [
+              "Cash Equivalents",
+              "Default",
+              "Disposition",
+              "Net Cash Proceeds",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Net Cash Proceeds of",
+              "UNRESOLVED_DEFINED_TERM: Business Days of",
+              "UNRESOLVED_DEFINED_TERM: Dispositions of",
+              "UNRESOLVED_DEFINED_TERM: Specified Strategic Transaction",
+              "UNRESOLVED_DEFINED_TERM: Disposition of"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 4,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24347,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00541151,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.05(k)",
+              "credit-agreement#7.05(l)",
+              "credit-agreement#2.05(b)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 3,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "credit-agreement#7.05: the hanging proviso after (l) removes the facility from every permission",
+              "condition SCOPE_CARVEOUT in credit-agreement#7.05"
+            ],
+            "falsePermission": true,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20650,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0049309,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.05",
+              "credit-agreement#2.05"
+            ],
+            "definitions": [
+              "Cash Equivalents",
+              "Default",
+              "Disposition",
+              "Net Cash Proceeds",
+              "Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 7,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Dispositions of",
+              "UNRESOLVED_DEFINED_TERM: Specified Strategic Transaction",
+              "UNRESOLVED_DEFINED_TERM: Disposition of",
+              "UNRESOLVED_DEFINED_TERM: Net Cash Proceeds of",
+              "UNRESOLVED_DEFINED_TERM: Business Days of"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 2,
+            "unitsInScope": 2,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 4,
+              "of": 4
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "7 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 2,
+            "modelCalls": 10,
+            "inputTokens": 16353,
+            "outputTokens": 5760,
+            "estimatedUsd": 0.00362349,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 120,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-12",
+      "adversarialClass": "CROSS_REFERENCE_THAT_CANNOT_BE_RESOLVED",
+      "packageId": "pkg-g-adversarial-evidence",
+      "question": "Can the Borrower refinance its $20,000,000 general-basket debt under Section 7.01(c)?",
+      "expectedOutcome": "FAIL_CLOSED_UNRESOLVED",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "stale-amendment#1",
+              "stale-amendment#2",
+              "credit-agreement#1.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.03",
+              "credit-agreement#7.04"
+            ],
+            "definitions": [
+              "Default",
+              "Indebtedness",
+              "Investment",
+              "Loan Documents",
+              "Subsidiary"
+            ],
+            "documents": [
+              "stale-amendment",
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 7.09",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "REFERENCED_DOCUMENT_ABSENT: the Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.01",
+              "UNRESOLVED_DEFINED_TERM: Permitted Refinancing Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: REMAINDER OF PAGE INTENTIONALLY LEFT",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 1,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 51219,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.011900069999999999,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(c)",
+              "credit-agreement#7.01(b)",
+              "credit-agreement#7.01(a)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": false,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20115,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.00486135,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.01",
+              "credit-agreement#7.03",
+              "credit-agreement#7.04"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Investment"
+            ],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 4,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "SECTION 7.01 from 7.01 → AMBIGUOUS",
+              "clause (b) from 7.01 → AMBIGUOUS",
+              "AMBIGUOUS_RELATIVE_REFERENCE: SECTION 7.01",
+              "UNRESOLVED_DEFINED_TERM: Permitted Refinancing Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Cash Equivalents",
+              "UNRESOLVED_DEFINED_TERM: Restricted Payments",
+              "UNRESOLVED_DEFINED_TERM: REMAINDER OF PAGE INTENTIONALLY LEFT",
+              "structure: DUPLICATE_LABEL_EXPECTED",
+              "structure: AMBIGUOUS_LEGAL_REFERENCE",
+              "structure: DUPLICATE_NORMALIZED_PATH",
+              "amendment stale-amendment: UNRESOLVED (2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"November 18, 2021\") - never guessed from title similarity alone)"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 4,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 1,
+              "definitionsOf": 1,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": [
+              "4 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 4,
+            "modelCalls": 20,
+            "inputTokens": 27987,
+            "outputTokens": 11520,
+            "estimatedUsd": 0.0066335100000000004,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 240,
+              "parallel8": 36
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-13",
+      "adversarialClass": "MISSING_DOCUMENT_PREVENTS_COMPLETE_ANSWER",
+      "packageId": "pkg-h-unseen-composition",
+      "question": "Can the Borrower grant a second-priority Lien on its receivables to secure the Term Loan Agreement?",
+      "expectedOutcome": "FAIL_CLOSED_MISSING_DOCUMENT",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "intercreditor-agreement#2.01",
+              "abl-credit-agreement#1.01",
+              "amendment-1#1",
+              "intercreditor-agreement#4.01",
+              "amendment-1#2",
+              "abl-credit-agreement#7.02",
+              "abl-credit-agreement#7.03",
+              "abl-credit-agreement#7.11"
+            ],
+            "definitions": [
+              "Availability",
+              "Available Amount",
+              "Borrowing Base",
+              "Consolidated Net Income",
+              "Fixed Charge Coverage Ratio",
+              "Investment",
+              "Lien",
+              "Payment Conditions",
+              "Subsidiary",
+              "Term Loan Agreement",
+              "Available Amount"
+            ],
+            "documents": [
+              "intercreditor-agreement",
+              "abl-credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [
+              "Term Loan Agreement"
+            ],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Priority of Liens",
+              "UNRESOLVED_DEFINED_TERM: ABL Obligations",
+              "UNRESOLVED_DEFINED_TERM: ABL Priority Collateral",
+              "UNRESOLVED_DEFINED_TERM: Term Loan Obligations",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Closing Date",
+              "UNRESOLVED_DEFINED_TERM: Eligible Receivables",
+              "UNRESOLVED_DEFINED_TERM: Eligible Inventory",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Consolidated EBITDA",
+              "UNRESOLVED_DEFINED_TERM: Fixed Charges",
+              "UNRESOLVED_DEFINED_TERM: Term Loan Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Ridgeway Finance LLC",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: ABL Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Consolidated Net Income",
+              "UNRESOLVED_DEFINED_TERM: Payments of Term Loan Obligations",
+              "UNRESOLVED_DEFINED_TERM: Intercreditor Agreement",
+              "UNRESOLVED_DEFINED_TERM: Loan Parties",
+              "UNRESOLVED_DEFINED_TERM: Financial Covenant",
+              "UNRESOLVED_DEFINED_TERM: Fixed Charge Coverage Ratio of"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 8,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 8,
+            "modelCalls": 40,
+            "inputTokens": 64270,
+            "outputTokens": 23040,
+            "estimatedUsd": 0.0143455,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 480,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "abl-credit-agreement#7.02(b)",
+              "intercreditor-agreement#2.01",
+              "abl-credit-agreement#1.01"
+            ],
+            "definitions": [
+              "Availability",
+              "Available Amount",
+              "Borrowing Base",
+              "Consolidated Net Income",
+              "Fixed Charge Coverage Ratio",
+              "Investment",
+              "Lien",
+              "Payment Conditions",
+              "Subsidiary",
+              "Term Loan Agreement"
+            ],
+            "documents": [
+              "abl-credit-agreement",
+              "intercreditor-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": false,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 24554,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.005438419999999999,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "abl-credit-agreement#7.02",
+              "intercreditor-agreement#2.01"
+            ],
+            "definitions": [
+              "Lien",
+              "Term Loan Agreement",
+              "Availability",
+              "Borrowing Base",
+              "Available Amount",
+              "Consolidated Net Income",
+              "Fixed Charge Coverage Ratio",
+              "Investment",
+              "Payment Conditions"
+            ],
+            "documents": [
+              "abl-credit-agreement",
+              "intercreditor-agreement"
+            ],
+            "notExamined": 14,
+            "missingDocuments": [
+              "Term Loan Agreement"
+            ],
+            "unresolvedReferences": [
+              "UNRESOLVED_DEFINED_TERM: Intercreditor Agreement",
+              "UNRESOLVED_DEFINED_TERM: Eligible Receivables",
+              "UNRESOLVED_DEFINED_TERM: Eligible Inventory",
+              "UNRESOLVED_DEFINED_TERM: Priority of Liens",
+              "UNRESOLVED_DEFINED_TERM: ABL Obligations",
+              "UNRESOLVED_DEFINED_TERM: ABL Priority Collateral",
+              "UNRESOLVED_DEFINED_TERM: Term Loan Obligations",
+              "amendment amendment-1: UNRESOLVED (the source document itself has no resolvable reference to another agreement)"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 2,
+            "materialRestrictionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "materialConditionRecall": {
+              "hit": 1,
+              "of": 1
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 2,
+              "documentsOf": 2
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": true,
+            "outcome": "FAIL_CLOSED",
+            "notes": [
+              "14 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 2,
+            "modelCalls": 10,
+            "inputTokens": 15622,
+            "outputTokens": 5760,
+            "estimatedUsd": 0.0035284599999999998,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 120,
+              "parallel8": 24
+            }
+          }
+        }
+      }
+    },
+    {
+      "caseId": "BM-14",
+      "adversarialClass": "CHEAPEST_STRATEGY_APPEARS_SUCCESSFUL",
+      "packageId": "pkg-i-secured-debt-lien",
+      "question": "What is the general debt basket and how much of it may be secured?",
+      "expectedOutcome": "ANSWER_WITH_RESTRICTIONS",
+      "strategies": {
+        "A_BROAD": {
+          "scope": {
+            "units": [
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2",
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15"
+            ],
+            "definitions": [
+              "Default",
+              "Foreign Subsidiary",
+              "Guarantor",
+              "Indebtedness",
+              "Lien",
+              "Loan Documents",
+              "Permitted Liens",
+              "Subsidiary",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII"
+            ],
+            "flags": [
+              "every SECTION in every document, including non-operative documents unless a document-role gate excludes them"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        },
+        "B_NAIVE_SELECTIVE": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01(b)",
+              "credit-agreement#7.01(a)",
+              "credit-agreement#7.01(d)"
+            ],
+            "definitions": [],
+            "documents": [
+              "credit-agreement"
+            ],
+            "notExamined": 0,
+            "missingDocuments": [],
+            "unresolvedReferences": [],
+            "flags": [
+              "base text only (no operative state)",
+              "no dependency closure",
+              "k=3"
+            ]
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 3,
+            "materialRestrictionRecall": {
+              "hit": 0,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 0,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [
+              "credit-agreement#7.02(b): $20,000,000 of it may be secured",
+              "credit-agreement#9.15: and never more than $25,000,000 of secured debt in total"
+            ],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "PLAUSIBLE_BUT_INCOMPLETE",
+            "notes": []
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 3,
+            "modelCalls": 15,
+            "inputTokens": 20110,
+            "outputTokens": 8640,
+            "estimatedUsd": 0.0048607,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 180,
+              "parallel8": 24
+            }
+          }
+        },
+        "C_HYBRID": {
+          "scope": {
+            "units": [
+              "credit-agreement#7.01",
+              "credit-agreement#7.02",
+              "credit-agreement#7.04",
+              "credit-agreement#9.15",
+              "credit-agreement#1.01",
+              "amendment-1#1",
+              "amendment-1#2"
+            ],
+            "definitions": [
+              "Indebtedness",
+              "Loan Documents",
+              "Subsidiary",
+              "Guarantor",
+              "Lien",
+              "Default",
+              "Foreign Subsidiary",
+              "Permitted Liens",
+              "Foreign Subsidiary"
+            ],
+            "documents": [
+              "credit-agreement",
+              "amendment-1"
+            ],
+            "notExamined": 3,
+            "missingDocuments": [],
+            "unresolvedReferences": [
+              "DEFINITION_CYCLE: Subsidiary",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of",
+              "UNRESOLVED_DEFINED_TERM: Borrower and",
+              "UNRESOLVED_DEFINED_TERM: Indebtedness of Foreign Subsidiaries",
+              "DEFINITION_CYCLE: Guarantor",
+              "UNRESOLVED_DEFINED_TERM: Secured Indebtedness",
+              "UNRESOLVED_DEFINED_TERM: Article VII",
+              "OTHER: 7.02(a)",
+              "OTHER: 7.02(c)",
+              "UNRESOLVED_DEFINED_TERM: Defined Terms",
+              "UNRESOLVED_DEFINED_TERM: Event of Default",
+              "UNRESOLVED_DEFINED_TERM: United States of America",
+              "UNRESOLVED_DEFINED_TERM: Notes and",
+              "UNRESOLVED_DEFINED_TERM: Security Documents",
+              "AMBIGUOUS_RELATIVE_REFERENCE: Section 1.01",
+              "UNRESOLVED_DEFINED_TERM: Credit Agreement"
+            ],
+            "flags": []
+          },
+          "quality": {
+            "requiredUnits": 3,
+            "unitsInScope": 7,
+            "materialRestrictionRecall": {
+              "hit": 2,
+              "of": 2
+            },
+            "materialConditionRecall": {
+              "hit": 0,
+              "of": 0
+            },
+            "dependencyClosure": {
+              "definitionsHit": 2,
+              "definitionsOf": 2,
+              "documentsHit": 1,
+              "documentsOf": 1
+            },
+            "operativeSourceAccurate": null,
+            "dangerousOmissions": [],
+            "falsePermission": false,
+            "forbiddenUnitsInScope": [],
+            "failClosedCorrect": null,
+            "outcome": "COMPLETE",
+            "notes": [
+              "3 signalled unit(s) not examined (disclosed)"
+            ]
+          },
+          "cost": {
+            "label": "DETERMINISTIC_ESTIMATE",
+            "units": 7,
+            "modelCalls": 35,
+            "inputTokens": 53390,
+            "outputTokens": 20160,
+            "estimatedUsd": 0.0121823,
+            "projectedLatencyS": {
+              "label": "HYPOTHETICAL_PROJECTION",
+              "serial": 420,
+              "parallel8": 60
+            }
+          }
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "A_BROAD": {
+      "cases": 14,
+      "complete": 10,
+      "plausibleButIncomplete": 0,
+      "failClosed": 4,
+      "falsePermissions": 0,
+      "dangerousOmissions": 0,
+      "restrictionRecall": {
+        "hit": 18,
+        "of": 18
+      },
+      "conditionRecall": {
+        "hit": 16,
+        "of": 16
+      },
+      "definitionRecall": {
+        "hit": 37,
+        "of": 37
+      },
+      "failClosedCorrect": {
+        "hit": 4,
+        "of": 4
+      },
+      "estimatedUsd": 0.14717859,
+      "modelCalls": 420,
+      "inputTokens": 648303
+    },
+    "B_NAIVE_SELECTIVE": {
+      "cases": 14,
+      "complete": 5,
+      "plausibleButIncomplete": 8,
+      "failClosed": 1,
+      "falsePermissions": 5,
+      "dangerousOmissions": 13,
+      "restrictionRecall": {
+        "hit": 9,
+        "of": 18
+      },
+      "conditionRecall": {
+        "hit": 12,
+        "of": 16
+      },
+      "definitionRecall": {
+        "hit": 7,
+        "of": 37
+      },
+      "failClosedCorrect": {
+        "hit": 1,
+        "of": 4
+      },
+      "estimatedUsd": 0.06986512,
+      "modelCalls": 210,
+      "inputTokens": 295504
+    },
+    "C_HYBRID": {
+      "cases": 14,
+      "complete": 10,
+      "plausibleButIncomplete": 0,
+      "failClosed": 4,
+      "falsePermissions": 0,
+      "dangerousOmissions": 0,
+      "restrictionRecall": {
+        "hit": 18,
+        "of": 18
+      },
+      "conditionRecall": {
+        "hit": 16,
+        "of": 16
+      },
+      "definitionRecall": {
+        "hit": 36,
+        "of": 37
+      },
+      "failClosedCorrect": {
+        "hit": 4,
+        "of": 4
+      },
+      "estimatedUsd": 0.09741497999999998,
+      "modelCalls": 280,
+      "inputTokens": 426786
+    }
+  },
+  "incremental": [
+    {
+      "packageId": "pkg-c-amendment-supersession",
+      "mutation": "restate 7.01(b) (Amendment No. 1)",
+      "strategy": "A_BROAD",
+      "withContentAddressing": 1,
+      "withoutContentAddressing": 7,
+      "label": "DETERMINISTIC_ESTIMATE"
+    },
+    {
+      "packageId": "pkg-c-amendment-supersession",
+      "mutation": "restate 7.01(b) (Amendment No. 1)",
+      "strategy": "C_HYBRID",
+      "withContentAddressing": 1,
+      "withoutContentAddressing": 6,
+      "label": "DETERMINISTIC_ESTIMATE"
+    }
+  ],
+  "cacheReuse": [
+    {
+      "packageId": "pkg-i-secured-debt-lien",
+      "questions": [
+        "BM-01",
+        "BM-06"
+      ],
+      "strategy": "B_NAIVE_SELECTIVE",
+      "unitsFirst": 3,
+      "unitsSecond": 3,
+      "sharedUnits": 2,
+      "label": "DETERMINISTIC_ESTIMATE"
+    },
+    {
+      "packageId": "pkg-i-secured-debt-lien",
+      "questions": [
+        "BM-01",
+        "BM-06"
+      ],
+      "strategy": "C_HYBRID",
+      "unitsFirst": 7,
+      "unitsSecond": 7,
+      "sharedUnits": 7,
+      "label": "DETERMINISTIC_ESTIMATE"
+    },
+    {
+      "packageId": "pkg-i-secured-debt-lien",
+      "questions": [
+        "BM-01",
+        "BM-06"
+      ],
+      "strategy": "A_BROAD",
+      "unitsFirst": 7,
+      "unitsSecond": 7,
+      "sharedUnits": 7,
+      "label": "DETERMINISTIC_ESTIMATE"
+    }
+  ]
+}

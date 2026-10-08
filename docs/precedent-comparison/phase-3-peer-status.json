@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-10-08T22:32:05.691Z",
+  "peers": {
+    "dependencyAtlas": {
+      "availability": "AVAILABLE",
+      "note": "loaded 2 edges from lib/precedent-comparison/adapters/fixtures/atlas-dataset.sample.json"
+    },
+    "definitionEncyclopedia": {
+      "availability": "AVAILABLE",
+      "note": "loaded 1 definitions from lib/precedent-comparison/adapters/fixtures/definitions.sample.json"
+    },
+    "edgarBackfill": {
+      "availability": "UNAVAILABLE",
+      "note": "EHB sample schema fixture only at lib/precedent-comparison/adapters/fixtures/acquisition-queue.sample.json — live acquisition-queue.json not delivered; 100-agreement target still blocked"
+    },
+    "knowledgeFactory": {
+      "availability": "UNAVAILABLE",
+      "note": "Knowledge Factory corpus export not present — PCI expands from local authentic fixtures only"
+    },
+    "amendmentChain": {
+      "availability": "UNAVAILABLE",
+      "note": "Amendment Chain Research export not in worktree — amendment-version claims remain local documentRole heuristics"
+    },
+    "financialDefinitionsPrecedent": {
+      "availability": "UNAVAILABLE",
+      "note": "Financial Definitions Precedent export not mounted in this worktree"
+    },
+    "negativeCovenantExceptions": {
+      "availability": "UNAVAILABLE",
+      "note": "Negative Covenant Exception Database export not present — exception asymmetries use local phrase heuristics only (REGEX_HEURISTIC standing)"
+    }
+  },
+  "ckfExpansion": {
+    "blocked": true,
+    "reason": "Knowledge Factory corpus export not present — PCI expands from local authentic fixtures only",
+    "peerStatsHint": "CKF sibling branch reports SEC acquisitions in manifests, but published provision corpus export is not mounted in this worktree; PCI will not build a second SEC downloader.",
+    "targetAdditionalAgreements": 25,
+    "integrated": 0
+  }
+}

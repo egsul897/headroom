@@ -1,0 +1,209 @@
+{
+  "exampleId": "stc-bkt-chwy-incremental-cap",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "chewy",
+    "issuerName": "Chewy, Inc.",
+    "instrumentKey": "chwy-2026-credit-agreement",
+    "documentId": "chwy-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "chwy-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Definitions — Incremental Cap",
+  "input": {
+    "exactText": "rust that is controlled by any of the foregoing individuals or any donor-advised foundation, fund or trust of which any such individual is the donor.\n\n“ Impacted Loans ” has the meaning assigned to such term in Section 2.12(a)(ii).\n\n“ Increased Amount ” has the meaning assigned to such term in Section 6.02.\n\n-41-\n\n“ Incremental Borrower ” has the meaning assigned to such term in Section 2.18(a).\n\n“ Incremental Cap ” means, as of any date of determination:\n\n(a)\nthe Fixed Incremental Amount; plus\n\n(b)\nthe Voluntary Prepayment Incremental Amount; plus\n\n(c)\nthe Ratio Incremental Amount; plus\n\n(d)\nthe Extension Amount.\n\n“ Incremental Equivalent Debt ” means Indebtedness of any Restricted Party consisting of secured or unsecured bonds, notes, debentures, or\nloans; provided that:\n\n(a)\nthe condition set forth in Section 2.18(b) shall have been complied with as if such Indebtedness was an\nIncremental Loan;\n\n(b)\nat the time of incurrence, and after giving effect thereto, the aggregate par principal amount thereof does not\nexceed that amount which may be incurred within the Incremental Cap;\n\n(c)\nthe pricing, interest rate, margins, currency types and denominations, discounts, premiums, rate floors and\nfees and original issue discount, maturity and amortization schedule for any Incremental Equivalent Debt will be as determined by the Initial Borrower or the applicable lenders providing such Incremental Equivalent Debt; and\n\n(d)\nother than with respect to Indebtedness incurred by a Restricted Party that is not a Loan Party, any such\nIndebtedness that is secured (i) is not secured by any assets of a Loan Party not securing the Secured Obligations and (ii) is subject to the relevant Intercreditor Agreement(s).\n\n“ Incremental Facility ” means each and any Incremental Revolving Facility and Incremental Term Facility.\n\n“ Incremental Facility Amendment ” has the meaning assigned to such term in Section 2.18(e)(i).\n\n“ Incremental Loans ” means Incremental Term Loans and Loans under any",
+    "charStartInFixture": 196257,
+    "charEndInFixture": 198257,
+    "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "windowSha256": "29eef4eb46dad29dce629d1825ab101f267d42b35523d7792120f88df30120d4",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Restricted Parties eligible for Incremental Facilities / Incremental Equivalent Debt\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (chwy-incremental-cap). Not independently reviewed.",
+      "figures": [
+        "Fixed Incremental Amount + Voluntary Prepayment Incremental Amount + Ratio Incremental Amount + Extension Amount"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "each Incremental Cap component basket",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "all four Incremental Cap component values require separate computation/inputs"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "chwy-2026-credit-agreement",
+    "operativeVersion": "chwy-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "windowSha256=29eef4eb46dad29dce629d1825ab101f267d42b35523d7792120f88df30120d4",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Definitions — Incremental Cap",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Restricted Parties eligible for Incremental Facilities / Incremental Equivalent Debt\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-incremental-cap). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "29eef4eb46dad29dce629d1825ab101f267d42b35523d7792120f88df30120d4",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

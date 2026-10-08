@@ -1,0 +1,224 @@
+{
+  "covenantFamily": "AFFILIATE_TRANSACTIONS",
+  "count": 2,
+  "exceptionIds": [
+    "conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+    "lsb-6.14-affiliate-transactions"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "AFFILIATE_TRANSACTIONS",
+      "parentProhibition": {
+        "sectionRef": "7.10",
+        "text": "Enter into any transaction ... with any Affiliate (other than transactions between or among the Parent Borrower and the Subsidiary Guarantors) that involves consideration in excess of $2,500,000 for such transaction unless such transaction is (a) not otherwise prohibited under this Agreement and (b) upon fair and reasonable terms no less favorable ..."
+      },
+      "exceptionSectionRef": "7.10 except (i)-(v)",
+      "exactExceptionText": "except that this Section 7.10 shall not prohibit (i) the sale, transfer, encumbrance or other disposition ... pursuant to a Receivables Transfer Program, (ii) overhead and other ordinary course allocations of costs and services on a reasonable basis, (iii) allocations of tax liabilities ..., (iv) any incurrence of Indebtedness not prohibited by Section 7.2, (iii) any Restricted Payment not prohibited by Section 7.6, (iv) any Investment permitted by Section 7.8 specifically contemplated by Section 7.8 to be made among Affiliates or (v) transactions between or among the Parent Borrower and its Subsidiaries in the ordinary course of business which are pursuant to customary transfer pricing arrangements ... (but not involving (x) an Investment not specifically contemplated by Section 7.8 to be made among Affiliates or (y) an Asset Sale not otherwise permitted under this Agreement).",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.10"
+      ],
+      "definedTerms": [
+        "Affiliate",
+        "Receivables Transfer Program",
+        "Subsidiary Guarantors"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "de minimis threshold $2,500,000 before arm's-length test applies",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "7.10 chapeau",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "not otherwise prohibited under this Agreement",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "7.10(a)",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "arm's-length terms",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "7.10(b)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "carve-outs (iv) debt / RP / Investments only if other NC sections permit",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.2 / 7.6 / 7.8",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c5",
+          "text": "transfer-pricing limb excludes non-contemplated Investments and non-permitted Asset Sales",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.10(v)(x)-(y)",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$2,500,000 consideration threshold"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "transactions with Affiliates"
+        ],
+        "excludes": [
+          "transactions between or among Parent Borrower and Subsidiary Guarantors (chapeau carve-out)"
+        ]
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "but not involving (x) non-contemplated Investment or (y) non-permitted Asset Sale",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Negative proviso inside transfer-pricing exception."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.2",
+          "role": "debt carve-out"
+        },
+        {
+          "targetRef": "7.6",
+          "role": "RP carve-out"
+        },
+        {
+          "targetRef": "7.8",
+          "role": "Investment carve-out"
+        },
+        {
+          "targetRef": "7.5",
+          "role": "Asset Sale residual limit"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Affiliate exceptions expressly re-import Debt/RP/Investment/Asset Sale restrictions."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau still binds."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Affiliate section is a meta-gate: several 'exceptions' are only as wide as other negative covenants.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.14-affiliate-transactions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "AFFILIATE_TRANSACTIONS",
+      "parentProhibition": {
+        "sectionRef": "6.14",
+        "text": "Except for transactions (a) set forth on Schedule 6.14, (b) transactions not exceeding $5,000,000 in the aggregate at any time, and (c) transactions that are (i) in the ordinary course ... (ii) upon fair and reasonable terms and (iii) no less favorable ... and (d) transactions that are otherwise permitted under this Agreement, directly or indirectly enter into or permit to exist any transaction with any Affiliate of any Loan Party."
+      },
+      "exceptionSectionRef": "6.14(a)-(d)",
+      "exactExceptionText": "Except for transactions (a) set forth on Schedule 6.14, (b) transactions not exceeding $5,000,000 in the aggregate at any time, and (c) transactions that are (i) in the ordinary course of the Loan Parties' business, (ii) upon fair and reasonable terms and (iii) no less favorable to Loan Parties than would be obtained in an arm's length transaction with a non-Affiliate, and (d) transactions that are otherwise permitted under this Agreement...",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.14"
+      ],
+      "definedTerms": [
+        "Affiliate",
+        "Loan Parties"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Schedule 6.14 listed",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(a)",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "\u2264 $5,000,000 aggregate",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(b)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c3",
+          "text": "ordinary course + arm's length",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(c)",
+          "computableHint": "ORDINARY_COURSE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "otherwise permitted under this Agreement",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Agreement-wide",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$5,000,000 aggregate"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Affiliate of any Loan Party"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Schedule 6.14",
+          "role": "listed exceptions"
+        },
+        {
+          "targetRef": "Agreement-wide permissions",
+          "role": "catch-all (d)"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Clause (d) re-imports every other permission/prohibition in the Agreement."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Affiliate catch-all (d) is not independent capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}
