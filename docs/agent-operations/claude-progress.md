@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | batch 9 (this commit + artefacts) | INV-05c scan noise on an amended heading (C): fail-closed, holds (no diagnostic); V2 IPV-24 breadth: B-P4 and H-P5 masked, clean paths 2/2; D13 structural-card criterion in doc 11; self-replenishing pass 5 (W1–W4) | `vitest run tests/product-acceptance` 208 pass / 28 skipped; tsc clean on owned files; pin-check 0 drift; secret scan clean |
 | 2026-10-08 | `291855c` + this commit | package N (clean ratio path: N-P1 flip and N-P3 widening certify — IPV-22/IPV-01 2/2 clean paths; N-P2 refused); four manifest-independent structural cards in `auditStructure` (IPV-07 signatures on G 7.03, IPV-06 on H 1.01; kill MUT-17/18/19/21/22); DROP_GATE control refused on A/M/N; **IPV-24** (pro forma evaluation basis dropped with the gate kept certifies on A and N); MUT-21/22 scan noise on H (IPV-07/IPV-23 breadth); runs at `291855ce3f9b` (754: 664/71/19; 22 mutants 15 killed 22/22 held; 18 invariants 39/18) | `vitest run tests/product-acceptance` 208 pass / 28 skipped; tsc clean on owned files; pin-check 0 drift; secret scan clean |
 | 2026-10-08 | `091a105` + this commit | milestone report 3 delivered; INV-32 reclassification without a contract edge holds (4/4); INV-09b comparator breadth: A certifies the flip, B/H/M masked; self-replenishing pass 3 → U1–U4; `invariant-runs/091a105` (18 invariants) | `npx vitest run tests/product-acceptance` green; tsc clean; pin-check clean |
 | 2026-10-08 | `ade5386` + this commit | INV-18 inflected-term breadth (IPV-09 93% miss, MATERIAL), scan-noise mutants MUT-17…20 (silent merges IPV-07; bogus '7.0' node IPV-23), doc 20 inventory/citation spec; `invariant-runs/ade5386` (17 invariants), `mutation-runs/ade5386` (20 mutants) | `npx vitest run tests/product-acceptance` green (see run); tsc clean; pin-check clean |
@@ -34,7 +35,7 @@
 
 ## Current task
 
-V2 evaluation-basis breadth for IPV-24 (B 4.09, H 7.11), V1 scan noise × amendment targeting, V3 structural cards as onboarding criterion D13 (doc 16 pass 4). Batch 8 (U1/U2/U4) complete at `291855c`. Batch 7 complete. Batches 1–2 complete: ledger doc 17 (forty mapped).
+W1 cross-instrument definition amendment (IPV-20 across instruments), W2 IPV-24 inverse, W3 card precision on real-world layouts, W4 IPV-19 × IPV-06 composition (doc 16 pass 5). Batch 9 (V1–V3) complete. Batch 8 (U1/U2/U4) complete at `291855c`.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -71,11 +72,11 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: V2 — evaluation-basis breadth for IPV-24: declarative DROP_CONDITIONS (gate kept) on B indenture 4.09 (FCCR incurrence test, 'pro forma') and H 7.11 (springing trigger + cure, TRIGGER/CURE conditions with no gatedBy) — does the omission certify wherever the clause has no second inventory item for its basis, or is it masked (IPV-12 on B, undefined inputs on H)? Then V1 — scan noise × amendment targeting: an in-memory variation of C where the section an amendment targets is headed 'SECTION 7.0l'; record whether the amendment resolves its target, becomes unattached, or silently no-ops (INV-05c, kind INVARIANT). Then V3 — add criterion D13 to doc 11 ('zero structural cards on the partner's agreement before any question is answered') and run `auditStructure` over the benchmark corpus documents to report card counts.
-- Files: `tests/fixtures/product-acceptance/packages/pkg-b-multi-document/expectations.json`, `pkg-h-unseen-composition/expectations.json` (prohibitedClaims with `adversarial`), `scripts/product-acceptance/invariants.ts` (INV-05c), `docs/product-readiness/11-pilot-acceptance-criteria.md`, `03-defect-register.json` (IPV-24 signatures or masked notes), `02`, `17`, `16`, `01`, this file.
-- First step: add B-P? / H-P? DROP_CONDITIONS claims, pin, `run-all --out <scratch>`, classify each outcome against IPV-24 / masked; then INV-05c in `invariants.ts` using `variation()` on C.
-- Expected output: IPV-24 breadth count (n/4 ratio clauses on clean paths), an INV-05c verdict (holds / new defect / masked), D13 in doc 11 with card counts per benchmark document.
-- Acceptance: suite green (known-defects, invariants, mutations); pin-check clean; commit with trailers; push; checkpoint updated; PR #137 description refreshed.
+- Objective: W1 — cross-instrument definition amendment: package O (`pkg-o-cross-instrument-definition`) or an in-memory variation of H: the intercreditor caps payments by reference to the ABL agreement's 'Availability' definition; an ABL amendment restates 'Availability'. Check (a) the amendment attaches to the ABL definition (IPV-19 shape expected), (b) the intercreditor unit's definition bundle carries the amended text (IPV-20 across instruments), (c) the operative state of the intercreditor is unaffected (it was not amended). Then W3 — card precision: two in-memory variations (page numbers between clauses; numbered '(1) (2)' clauses) run through `auditStructure` — the four cards must stay silent (OBSERVATION verdicts, kind HARNESS if they fire). Then W2 — IPV-24 inverse on a variation of N without 'pro forma'.
+- Files: `tests/fixtures/product-acceptance/packages/pkg-o-*/` (or `scripts/product-acceptance/invariants.ts` INV-20b / INV-24b / INV-23c), tests package count if a package is added, `03-defect-register.json`, `02`, `17`, `16`, `01`, this file.
+- First step: read H's intercreditor 4.01 and ABL 'Availability' definition; author `abl-amendment-1.txt` as an in-memory `variation()` first (cheaper than a package); run `runDeterministicStages` + `bundleFor` on the intercreditor unit; classify.
+- Expected output: an IPV-20 cross-instrument signature (or a hold), card-precision verdicts (silent or a harness fix), IPV-24 inverse verdict.
+- Acceptance: suite green; pin-check clean; commit with trailers; push; checkpoint updated; PR #137 description refreshed.
 - Dependencies: none (offline).
 
 Then (P2): harness strengthening (text-hash pinning per covenant, three-section definition fixture, waiver/side-letter fixture family), then the continuous-loop invariant backlog.

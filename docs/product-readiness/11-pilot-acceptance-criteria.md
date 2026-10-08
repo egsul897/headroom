@@ -18,6 +18,7 @@ met and none can be met from offline evidence. Numbers below are gates on the co
 | D8 | Mutation suite: every operator killed or explicitly declared equivalent/gap with a registered product finding | `mutations.test.ts` | met (9 killed, 1 equivalent, 6 gaps registered) |
 | D11 | Definition amendments apply to the definition, and dependent baskets compile against the amended text | `invariants.test.ts` INV-05 | **not met** (IPV-19, IPV-20) |
 | D12 | No false refusal on common definitional drafting (diamond dependencies) | `invariants.test.ts` INV-19/19b | **not met** (IPV-21: 4 of 33 section-level candidates blocked) |
+| D13 | Zero manifest-independent structural cards (`structure:enumeration-count`, `enumeration-gap`, `embedded-heading`, `malformed-label`) on the partner's agreements before any question is answered; every card is triaged by a human | `auditStructure` cards, run `291855ce3f9b` and after | per-partner; on the corpus the cards fire exactly where IPV-06/07 live (A 0, B 0, C 0, D 0, E 0, F 0, G 2, H 1, I 0, J 0, K 0, L 0, M 0, N 0) and on every scan-noise mutant (MUT-17/18/19/21/22) |
 | D9 | Reviewer workflow shows source text, lineage and every unresolved dependency for each unit before approval | MVP spec §3 steps 5–7 | **not testable offline**; UI not in scope of this branch |
 | D10 | Partner package runs the deterministic stages with zero structural findings of IPV-06/07/08/11 class, or each finding is triaged by a human before any model call | acceptance runner on the partner package | per-partner |
 

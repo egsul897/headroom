@@ -151,6 +151,25 @@ export const INVARIANTS: Array<{ id: string; title: string; legalStatement: stri
       out.push({ ref: "invariant:INV-06:instrument-not-resolved", check: "instrument state at 2026-06-30 is not RESOLVED while the effect is pending", ok: st?.status !== "OPERATIVE_STATE_RESOLVED", detail: `instrument ${st?.status}`, kind: "PRODUCT", severity: "UNSUPPORTED_AS_COMPLETE" });
       return out;
     } },
+  { id: "INV-05c", title: "Scan noise on the heading an amendment targets: the amendment must still attach to Section 7.01(b), or the mis-read heading must be diagnosed", packageId: "pkg-c-amendment-supersession",
+    legalStatement: "Amendment No. 1 restates 7.01(b). If the base agreement's heading scanned as 'SECTION 7.0l Indebtedness' (IPV-23 shape), the law has not changed: 7.01(b) at 2025-12-31 reads $40,000,000 with a no-Default proviso. The product must either still apply the amendment to the clause or refuse with a diagnostic (unattached effect / health finding) - never leave the instrument RESOLVED on the base text.",
+    run: async () => {
+      const base = loadPackage("pkg-c-amendment-supersession");
+      const pkg = variation(base, "INV-05c", [{ documentId: "credit-agreement", find: "SECTION 7.01 Indebtedness", replace: "SECTION 7.0l Indebtedness" }]);
+      const s = await runDeterministicStages(pkg); const out: InvariantVerdict[] = [];
+      const effects = s.amendment?.effects ?? [];
+      const e = effects.find((x) => x.amendmentDocumentId === "amendment-1");
+      const st = s.operativeStates.get("2025-12-31");
+      const p = st?.provisions.find((x) => x.sectionRef === "7.01(b)");
+      const nodes = s.index.findNodesByRef("credit-agreement", "7.01(b)");
+      const health = s.index.healthDiagnostics().length;
+      const applied = !!p && /\$40,000,000/.test(p.currentText ?? "") && /no Default/.test(p.currentText ?? "");
+      const diagnosed = (e ? e.status !== "RESOLVED" : true) || (s.amendment?.unattachedEffects?.length ?? 0) > 0 || health > 0 || st?.status !== "OPERATIVE_STATE_RESOLVED";
+      out.push({ ref: "invariant:INV-05c:target-node-exists", check: "7.01(b) is still a resolvable node after the heading mis-read (observation)", ok: nodes.length === 1, detail: `${nodes.length} node(s) for 7.01(b); SECTION labels ${s.index.allNodes().filter((n) => n.documentId === "credit-agreement" && n.nodeType === "SECTION").map((n) => n.sectionRef).join(",")}`, kind: "OBSERVATION" });
+      out.push({ ref: "invariant:INV-05c:amendment-applied-or-diagnosed", check: "7.01(b) at 2025-12-31 reads as amended, OR the effect is not RESOLVED / is unattached / a health diagnostic exists / the instrument is not RESOLVED", ok: applied || diagnosed, detail: `effect ${e ? `${e.operation} ${e.status} → ${JSON.stringify(e.target).slice(0, 80)}` : "absent"}; unattached ${s.amendment?.unattachedEffects?.length ?? 0}; health ${health}; instrument ${st?.status}; 7.01(b) ${p ? `${p.status} "${(p.currentText ?? "").slice(0, 60)}"` : "no provision"}`, kind: "PRODUCT", severity: "INCORRECT_AMENDMENT_PRECEDENCE" });
+      out.push({ ref: "invariant:INV-05c:amendment-applied", check: "7.01(b) at 2025-12-31 reads $40,000,000 with the no-Default proviso (the amendment attached despite the heading noise)", ok: applied, detail: p ? `${p.status}, applied chain ${p.appliedChain.length}, "${(p.currentText ?? "").slice(0, 80)}"` : "no 7.01(b) provision in the operative state", kind: "OBSERVATION" });
+      return out;
+    } },
   { id: "INV-37", title: "Cache identity: a compiled unit is reusable when its own text and context are unchanged, and never reused when its text changed", packageId: "pkg-a-basic-credit-agreement",
     legalStatement: "Inserting a proviso into 7.01(c) must not invalidate the cached compilation of 7.02 (text unchanged) and must invalidate 7.01's (text changed).",
     run: async () => {

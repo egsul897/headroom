@@ -113,12 +113,25 @@ Next bounded tasks (this track):
   embedded-heading / malformed-label); they fire on G 7.03, H 1.01 and MUT-17/18/19/21/22.
 
 Self-replenishing pass 4 (after `291855c`):
-- V1. Scan noise + amendment composition: a mis-read heading ('7.0l') on the section an amendment targets — does the
+- V1. DONE (INV-05c): the amendment on a mis-read heading fails closed (effect and instrument REVIEW_REQUIRED, empty 7.01(b) text) — holds, no diagnostic names the cause.
+- V2. DONE: B-P4 (indenture 4.09 'pro forma basis') refused through IPV-12/IPV-04; H-P5 through undefined inputs — IPV-24 remains 2/2 on clean paths, 2 masked.
+- V3. DONE: criterion D13 in doc 11 with the per-package card counts.
+- V1 (original). Scan noise + amendment composition: a mis-read heading ('7.0l') on the section an amendment targets — does the
   amendment still resolve its target, and is the result a silent no-op or a diagnostic? (IPV-23 × amendment targeting.)
-- V2. Evaluation-basis breadth for IPV-24: DROP_CONDITIONS with the gate kept on B 4.09 (indenture FCCR, pro forma
+- V2 (original). Evaluation-basis breadth for IPV-24: DROP_CONDITIONS with the gate kept on B 4.09 (indenture FCCR, pro forma
   incurrence test) and H 7.11 (springing trigger + cure); and the inverse representation — a pro forma basis asserted
   on a test the text measures historically.
-- V3. Promote the four structural cards into doc 11 as onboarding criteria (D13: zero cards on the partner's
+- V3 (original). Promote the four structural cards into doc 11 as onboarding criteria (D13: zero cards on the partner's
   agreement before any question is answered) and run them over the benchmark corpus documents.
 - V4. Cross-instrument definition amendment (U3 as before): an intercreditor cap by reference to a credit-agreement
   definition whose definition is amended.
+
+Self-replenishing pass 5 (after batch 9):
+- W1. V4 — cross-instrument definition amendment (intercreditor cap by reference to a credit-agreement definition that
+  is later amended): IPV-20 across instruments.
+- W2. IPV-24 inverse: a pro forma basis asserted on a test the text measures historically (B 4.09 has 'pro forma';
+  author a variation of N without it and submit evaluationBasis.proForma = true).
+- W3. Card precision on real-world layouts: a hanging-indent clause list with page numbers between clauses, and a
+  section whose clauses are numbered (1), (2) instead of lettered — do the cards stay silent (no false positives)?
+- W4. A second composition for IPV-19: a definition amendment on a package whose Section 1.01 holds a nested
+  enumeration (IPV-06 shape) — does the whole-section replacement also erase the minted sub-nodes' owners?

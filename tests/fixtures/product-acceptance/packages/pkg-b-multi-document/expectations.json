@@ -554,6 +554,17 @@
       "claim": "Indenture 4.09 restricts Unrestricted Subsidiaries",
       "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
       "reason": "Only the Issuer and Restricted Subsidiaries are restricted; reporting broader scope misstates the obligation (and the inverse — narrowing CA 7.01 to Restricted Subsidiaries — would be a false permission)."
+    },
+    {
+      "id": "B-P4",
+      "claim": "Indenture 4.09's FCCR test is measured on historical (not pro forma) figures (condition node dropped)",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "4.09 says 'determined on a pro forma basis'.",
+      "adversarial": {
+        "kind": "DROP_CONDITIONS",
+        "sectionRef": "4.09",
+        "documentId": "indenture"
+      }
     }
   ],
   "nonOperative": [],
