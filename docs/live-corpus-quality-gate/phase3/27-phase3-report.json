@@ -1,7 +1,7 @@
 {
   "schemaVersion": "live-corpus-quality-gate.phase3.v1",
-  "generatedAt": "2026-10-08T22:36:45.838Z",
-  "headSha": "a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd",
+  "generatedAt": "2026-10-08T22:49:17.039Z",
+  "headSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
   "branch": "cursor/live-corpus-quality-gate-7f51",
   "startingPr": 153,
   "startingSha": "18e2ed4bd66eaa9caff25eac49ef490c2fbb1816",
@@ -47,13 +47,13 @@
     "3_productionFixesReceivedAndIndependentlyReplayed": [
       {
         "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
-        "candidateSha": null,
-        "verdict": "OPEN_UNAVAILABLE",
-        "note": "No candidate fix SHA. Pattern still matches aggregate-amount; phrase 'shared capacity' absent. Defect remains OPEN."
+        "candidateSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+        "verdict": "REPLAY_PASSED",
+        "note": "Independent worktree replay recorded: baseline reproduces ADV-FP-01/02; fix 83cde5b corrects labeling. Eval checkout does not embed production fix (by design). Ticket INDEPENDENTLY_ADJUDICATED, not CLOSED."
       },
       {
         "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
-        "candidateSha": "a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd",
+        "candidateSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
         "verdict": "REPLAY_PASSED",
         "note": "Classification + RESTATES edge surfaced (REVIEW_REQUIRED allowed). Matches frozen expected safe behavior."
       },
@@ -85,23 +85,23 @@
     "4_defectsClosedOpenOrRegressed": {
       "CLOSED": [],
       "OPEN": [
-        "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
         "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
         "LCQG-GIB-XREF-LOW-RESOLVE"
       ],
       "REPLAY_PASSED": [],
       "INDEPENDENTLY_ADJUDICATED": [
+        "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
         "LCQG-SUP-AMEND-RESTATES-MISSING",
         "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
         "LCQG-HARNESS-FINDING-ID-COLLISION"
       ],
       "REPLAY_FAILED": [],
       "statusRollup": {
-        "OPEN": 3,
+        "OPEN": 2,
         "FIX_PROPOSED": 0,
         "REPLAY_FAILED": 0,
         "REPLAY_PASSED": 0,
-        "INDEPENDENTLY_ADJUDICATED": 3,
+        "INDEPENDENTLY_ADJUDICATED": 4,
         "CLOSED": 0
       },
       "note": "No defect CLOSED solely because a production agent reported passing tests."
@@ -349,7 +349,7 @@
       "Heuristic UNVERIFIED: dsgr-doc-d / expansion_doc_no_independent_gt_this_gate"
     ],
     "9_exactShaTestsCiPr": {
-      "headSha": "a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd",
+      "headSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
       "branch": "cursor/live-corpus-quality-gate-7f51",
       "startingPr": 153,
       "startingSha": "18e2ed4bd66eaa9caff25eac49ef490c2fbb1816",

@@ -2,28 +2,35 @@
   "results": [
     {
       "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
-      "candidateSha": null,
-      "baselineSha": null,
-      "worktreeUsed": "/workspace",
+      "candidateSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+      "baselineSha": "8f87a0633ac31cb7b5f6282cc0787231d365f27c",
+      "worktreeUsed": "isolated:baseline@8f87a06+fix@83cde5b",
       "reproductionPassed": true,
       "observations": {
-        "patternPresent": true,
-        "stillBroad": true,
-        "textHits": 70,
-        "phraseSharedCapacity": false,
+        "evalCheckoutStillHasLegacyPattern": true,
         "fixtureSharedCapCount": 51,
-        "checkedBranches": [
-          "main",
-          "cursor/architecture-remediation-7cc2",
-          "cursor/covenant-knowledge-factory-7327"
-        ]
+        "independentReplayArtifact": "docs/live-corpus-quality-gate/phase3/28-p0-shared-cap-independent-replay.json",
+        "independentReplay": {
+          "fixSha": "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+          "baselineSha": "8f87a0633ac31cb7b5f6282cc0787231d365f27c",
+          "defectTicketVerdict": {
+            "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+            "status": "INDEPENDENTLY_ADJUDICATED",
+            "notClosedBecause": "Labeling layer (Pass A / coverage-audit / context sibling typing / semantic SHARED_CAP_MARKER) independently verified repaired. End-to-end IR shared-capacity grant / transaction-capacity creation path not fully re-certified in this unpaid replay — per mission rule, INDEPENDENTLY_ADJUDICATED rather than CLOSED."
+          },
+          "advFp": {
+            "ADV-FP-01": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+            "ADV-FP-02": "CORRECTED_ON_FIX_REPRODUCED_ON_BASELINE",
+            "ticketClosed": false
+          }
+        }
       },
-      "verdict": "OPEN_UNAVAILABLE",
-      "note": "No candidate fix SHA. Pattern still matches aggregate-amount; phrase 'shared capacity' absent. Defect remains OPEN."
+      "verdict": "REPLAY_PASSED",
+      "note": "Independent worktree replay recorded: baseline reproduces ADV-FP-01/02; fix 83cde5b corrects labeling. Eval checkout does not embed production fix (by design). Ticket INDEPENDENTLY_ADJUDICATED, not CLOSED."
     },
     {
       "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
-      "candidateSha": "a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd",
+      "candidateSha": "af9bbda1ef437e9afae7c34a125707ef44d7cb49",
       "baselineSha": null,
       "worktreeUsed": "current-eval",
       "reproductionPassed": true,
@@ -75,8 +82,8 @@
           "",
           " Test Files  2 passed (2)",
           "      Tests  25 passed (25)",
-          "   Start at  22:36:44",
-          "   Duration  851ms (transform 518ms, setup 0ms, collect 883ms, tests 23ms, environment 0ms, prepare 81ms)"
+          "   Start at  22:49:15",
+          "   Duration  894ms (transform 541ms, setup 0ms, collect 890ms, tests 23ms, environment 0ms, prepare 108ms)"
         ],
         "acceptance": "CONTENTS_LISTING refuseModelDispatch; never silent TOC bind; AMBIGUOUS exposure preserved"
       },

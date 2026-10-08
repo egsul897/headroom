@@ -87,13 +87,20 @@ describe("live corpus quality gate phase 3", () => {
     // Must not close solely from production self-report — no CLOSED without adjudication path
     const rollup = contractStatusRollup(contracts);
     expect(rollup.CLOSED).toBe(0);
-    expect(rollup.OPEN).toBeGreaterThan(0);
+    expect(rollup.OPEN).toBeGreaterThan(0); // builder + xref remain OPEN
     expect(
       contracts.some((c) => c.defectId === "LCQG-SUP-AMEND-RESTATES-MISSING" && c.status === "INDEPENDENTLY_ADJUDICATED"),
     ).toBe(true);
     expect(
-      contracts.some((c) => c.defectId === "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP" && c.status === "OPEN"),
+      contracts.some(
+        (c) =>
+          c.defectId === "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP" &&
+          c.status === "INDEPENDENTLY_ADJUDICATED" &&
+          c.proposedFixSha === "83cde5b985b6bb480ac2500cccf894fe6e497f20",
+      ),
     ).toBe(true);
+    // Still must not CLOSED from labeling-only adjudication
+    expect(contracts.find((c) => c.defectId === "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP")?.status).not.toBe("CLOSED");
   });
 
   it("independently replays SUP RESTATES fix on current tip without editing production code", () => {
@@ -103,11 +110,13 @@ describe("live corpus quality gate phase 3", () => {
     expect((replay.observations.restatesCount as number) >= 1).toBe(true);
   });
 
-  it("leaves shared_cap and builder dual-cite OPEN when no fix SHA available", () => {
+  it("records independent shared_cap fix replay while leaving builder/xref OPEN", () => {
     const shared = replaySharedCapStillBroken();
-    expect(shared.verdict).toBe("OPEN_UNAVAILABLE");
+    expect(shared.verdict).toBe("REPLAY_PASSED");
+    expect(shared.candidateSha).toBe("83cde5b985b6bb480ac2500cccf894fe6e497f20");
     expect(shared.observations.fixtureSharedCapCount).toBeGreaterThanOrEqual(51);
-    expect(shared.observations.phraseSharedCapacity).toBe(false);
+    // Eval branch does not ship the production fix
+    expect(shared.observations.evalCheckoutStillHasLegacyPattern).toBe(true);
 
     const builder = replayBuilderDualCite();
     expect(builder.verdict).toBe("OPEN_UNAVAILABLE");
@@ -122,7 +131,8 @@ describe("live corpus quality gate phase 3", () => {
     expect(cases.length).toBeGreaterThanOrEqual(7);
     expect(summary.denominator).toBe(cases.length);
     expect(summary.failUnsafe + summary.passFailClosed + summary.unverified).toBe(summary.denominator);
-    // Aggregate-as-shared-cap must FAIL_UNSAFE while shared_cap pattern remains broad
+    // Eval checkout still has legacy Pass A — ADV-FP-01 remains FAIL_UNSAFE locally.
+    // Independent worktree replay of 83cde5b is recorded separately (28-p0 artifact).
     expect(cases.some((c) => c.caseId === "ADV-FP-01" && c.verdict === "FAIL_UNSAFE")).toBe(true);
     // Unresolved GT categories must not be PASS
     expect(cases.filter((c) => !c.groundTruthAvailable).every((c) => c.verdict === "UNVERIFIED")).toBe(

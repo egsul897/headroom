@@ -5,7 +5,7 @@
 **Starting PR:** #153
 **Starting SHA:** `18e2ed4bd66eaa9caff25eac49ef490c2fbb1816`
 **Frozen evaluation content SHA:** `cebec8ab3aaecd894b1903ac0b758828655a88df`
-**Generation HEAD:** `a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd`
+**Generation HEAD:** `af9bbda1ef437e9afae7c34a125707ef44d7cb49`
 **Paid calls:** `0`
 **Certification impact:** `NONE`
 **Production fixes in this branch:** `false`
@@ -28,14 +28,14 @@
 
 | Defect | Status |
 |---|---|
-| `LCQG-GIB-FALSE-AFFIRM-SHARED-CAP` | **OPEN** |
+| `LCQG-GIB-FALSE-AFFIRM-SHARED-CAP` | **INDEPENDENTLY_ADJUDICATED** |
 | `LCQG-SUP-AMEND-RESTATES-MISSING` | **INDEPENDENTLY_ADJUDICATED** |
 | `LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT` | **OPEN** |
 | `LCQG-GIB-STRUCT-AMBIGUOUS-TOC` | **INDEPENDENTLY_ADJUDICATED** |
 | `LCQG-GIB-XREF-LOW-RESOLVE` | **OPEN** |
 | `LCQG-HARNESS-FINDING-ID-COLLISION` | **INDEPENDENTLY_ADJUDICATED** |
 
-Status rollup: {"OPEN":3,"FIX_PROPOSED":0,"REPLAY_FAILED":0,"REPLAY_PASSED":0,"INDEPENDENTLY_ADJUDICATED":3,"CLOSED":0}
+Status rollup: {"OPEN":2,"FIX_PROPOSED":0,"REPLAY_FAILED":0,"REPLAY_PASSED":0,"INDEPENDENTLY_ADJUDICATED":4,"CLOSED":0}
 
 ## 5. False-permission adversarial
 
@@ -56,10 +56,13 @@ See `26-legal-safety-metrics.json`. Unavailable GT never converted to PASS.
 
 ## 9. SHA / tests / CI / PR
 
-- HEAD: `a02e2a8b776c51b5b441ffcc5b8d0b564d67d2bd`
+- HEAD: `af9bbda1ef437e9afae7c34a125707ef44d7cb49`
 - Tests: `npm run live-corpus-quality-gate:phase3` · `npx vitest run tests/live-corpus-quality-gate/`
 - PR: #153 draft — do not merge
 
-## Probe enrichment (independent SHA catalog)
+## P0 Shared-capacity independent replay (ADV-FP-01/02)
 
-Supplemental production-SHA catalog from independent branch probe folded into `22-remediation-contracts.json` `relatedShas` without changing status rollup: SUP relationship `db7f32a`; TOC cluster `481b19f`→`f9f402c` (tip checkout `ec7d5df`); shared_cap adjacent-only `34af49b`; xref partial unproven `fc530e1`. Statuses unchanged (OPEN 3 / INDEPENDENTLY_ADJUDICATED 3 / CLOSED 0).
+- Baseline `8f87a06` reproduces false shared_cap / SHARED_CAP_CANDIDATE.
+- Fix `83cde5b` (PR #136) corrects labeling; genuine shared language retained.
+- Defect `LCQG-GIB-FALSE-AFFIRM-SHARED-CAP`: **INDEPENDENTLY_ADJUDICATED** (not CLOSED).
+- Artifact: `28-p0-shared-cap-independent-replay.json` · `28-p0-shared-cap-REPORT.md`

@@ -62,6 +62,12 @@ export const XREF_PARTIAL_SHA = "fc530e18294c90c6a8f2b31acb93f5400e14ff5a";
 /** Adjacent semantic-inventory note that ordinary aggregate amount is not SHARED_CAP_MARKER — not a Pass A fix. */
 export const SHARED_CAP_ADJACENT_SHA = "34af49b6d7222d7b13db6add3cd1c0d1531715dd";
 
+/** P0 shared-capacity false-permission remediation (PR #136). */
+export const SHARED_CAP_P0_FIX_SHA = "83cde5b985b6bb480ac2500cccf894fe6e497f20";
+
+/** Parent of SHARED_CAP_P0_FIX_SHA — independent baseline for ADV-FP-01/02 reproduction. */
+export const SHARED_CAP_P0_BASELINE_SHA = "8f87a0633ac31cb7b5f6282cc0787231d365f27c";
+
 /** Pre-whitespace baseline where SUP doc-b misclassifies as CREDIT_AGREEMENT. */
 export const PRE_WHITESPACE_SHA = "4331cf8"; // full resolved at replay time
 
@@ -72,22 +78,22 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
       defectId: "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
       title: "Pass A shared_cap over-fires on aggregate-amount nodes",
       priority: "CRITICAL",
-      owningProductionBranch: "cursor/covenant-knowledge-factory-7327",
+      owningProductionBranch: "cursor/architecture-remediation-7cc2",
       owningAgent: "Covenant Knowledge Factory",
       originalFailingSha: ORIGINAL_FAILING_SHA,
-      proposedFixSha: null,
-      proposedFixBranch: null,
-      relatedShas: [SHARED_CAP_ADJACENT_SHA],
+      proposedFixSha: SHARED_CAP_P0_FIX_SHA,
+      proposedFixBranch: "cursor/architecture-remediation-7cc2",
+      relatedShas: [SHARED_CAP_ADJACENT_SHA, SHARED_CAP_P0_BASELINE_SHA, ARCH_REMED_SHA],
       minimalReproduction: [
-        "Worktree isolation: checkout any production tip without editing phase1-freeze.",
-        "Inspect pass-a-signals shared_cap regex: aggregate(?:d)? (?:amount|basket)|combined|shared.",
-        "Count pattern hits on Gibraltar credit-agreement.txt (expect dozens; phrase 'shared capacity' absent).",
-        "Confirm fixture tests/fixtures/.../structure/pass-a-shared-cap.json length=51.",
+        "Baseline worktree at 8f87a06 (parent of fix): ADV-FP-01/02 emit shared_cap + SHARED_CAP_CANDIDATE.",
+        "Fix worktree at 83cde5b: ordinary aggregate → aggregate_amount only; no shared_cap / SHARED_CAP_CANDIDATE / SHARED_CAP_MARKER.",
+        "Genuine multi-permission language still shared_cap on fix.",
+        "Do not mutate phase1-freeze oracle (historical pass-a-shared-cap.json length=51 remains frozen evidence).",
       ],
       frozenExpectedBehavior:
         "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
       independentTestCommand:
-        "npx tsx scripts/live-corpus-quality-gate/phase3-run.ts  # contract LCQG-GIB-FALSE-AFFIRM-SHARED-CAP replay",
+        "docs/live-corpus-quality-gate/phase3/28-p0-shared-cap-independent-replay.json  # isolated baseline 8f87a06 vs fix 83cde5b",
       acceptanceCriteria: [
         "shared_cap signal no longer fires on ordinary aggregate-amount nodes lacking shared-pool semantics.",
         "Explicit shared capacity / combined basket / reallocation language still detectable.",
@@ -95,13 +101,13 @@ export function buildRemediationContracts(overrides?: Partial<Record<string, Rem
         "Independent evaluator REPLAY_PASSED before any CLOSED status.",
       ],
       regressionRisks: [
-        "Over-narrowing may miss real shared baskets that use atypical phrasing.",
+        "Over-narrowing may miss real shared baskets that use atypical phrasing (Gibraltar shared_cap 48→18; monitor exotic phrasing).",
         "Downstream Pass B/C consumers that treated shared_cap as soft recall signal may need recalibration.",
-        "Do not mistake adjacent semantic-inventory exclusions (34af49b) or coverage-audit's narrower shared_cap for a Pass A fix.",
+        "Labeling repair ≠ full IR shared-capacity grant certification — keep ticket out of CLOSED until capacity-path adjudication.",
       ],
-      status: overrides?.["LCQG-GIB-FALSE-AFFIRM-SHARED-CAP"] ?? "OPEN",
+      status: overrides?.["LCQG-GIB-FALSE-AFFIRM-SHARED-CAP"] ?? "INDEPENDENTLY_ADJUDICATED",
       statusRationale:
-        "Pass A pattern identical on main / architecture-remediation / knowledge-factory. Adjacent SHA 34af49b documents ordinary aggregate amount ≠ SHARED_CAP_MARKER in semantic-inventory only — not Pass A. Left OPEN.",
+        "Independent worktree replay: baseline 8f87a06 reproduces ADV-FP-01/02 (shared_cap + SHARED_CAP_CANDIDATE); fix 83cde5b (PR #136) corrects labeling across Pass A / coverage-audit / context typing / semantic marker while genuine shared language remains detectable. Not CLOSED — end-to-end transaction-capacity creation from aggregate alone not separately re-certified beyond labeling + figure-role interaction probes.",
       freezeEpochPreserved: true,
       closedOnlyByIndependentAdjudication: true,
     },
