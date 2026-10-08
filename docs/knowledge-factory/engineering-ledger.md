@@ -40,25 +40,35 @@ Living progress log for the Cursor-owned knowledge-factory branch.
 
 ## Measured live acquisition (this session)
 
-See `docs/knowledge-factory/manifests/data-production-checkpoint.json`.
+See `docs/knowledge-factory/manifests/data-production-checkpoint.json` and
+`docs/knowledge-factory/manifests/pilot-100-production-report.json`.
 
-- Pilot-100 production report: **112** financing documents (target 100)
-- Unique instrument identities: **111**
-- Structural nodes: **37,641**; covenant candidates: **4,585**; definitions: **256**
-- Condition/exception records: **14,933**; cross-refs: **23,758**
-- EHB handoff: 16 acquired, 1 duplicate; claims in local `ehb-claims.json`
-- Second-run dedupe demonstrated (source count unchanged)
+- Pilot-100 production report: **113** financing documents (target 100)
+- Unique instrument identities: **112**
+- Structural nodes: **37,789**; covenant candidates: **4,590**; definitions: **257**
+- Condition/exception records: **14,975**; cross-refs: **23,876**
+- EHB handoff consumed; second-run dedupe demonstrated (source count unchanged)
 - Verified examples: **0**; paid AI: **$0**
-- Persistence: local `.local-knowledge-corpus/` (no DATABASE_URL in this VM)
+- Persistence: local `.local-knowledge-corpus/` (no DATABASE_URL / Blob in this VM)
 - PR: https://github.com/egsul897/headroom/pull/154
 - Coordinated with WS-EHB branch `cursor/edgar-historical-backfill-c45c`
 
+## Phase 3 — durable preservation & cross-agent integration
+
+- **Durability claim: NONE** — no shared Postgres or object storage credentials; local bytes are not cross-VM durable.
+- Source inventory: `docs/knowledge-factory/preservation/source-inventory.json`
+- Acquisition manifest + recovery: `docs/knowledge-factory/preservation/acquisition-manifest.json`, `scripts/knowledge-factory/recover-from-manifest.ts`
+- Canonical consumer export: `knowledge-factory.consumer-export.v1` under `docs/knowledge-factory/export/v1/`
+- Independent consumer imports demonstrated: Definition Encyclopedia + Dependency Atlas (shared sourceIds, pass-2 idempotent)
+- Replay against pilot targets: exact match (113 / 112 / 37789 / 4590 / 257 / 23876 / 14975)
+- Missing infra: `DATABASE_URL` + Blob read/write token for verified shared durability
+
 ## Next ten implementation tasks
 
-1. Purge/quarantine the 6 known false-positive SEC exhibits from the active debt corpus.
-2. Expand live run to full 100-issuer stratified plan with filingLimit≥200 and older submission files.
-3. Add 424B5/S-4 exhibit paths and deepen indenture discovery.
-4. Persist KnowledgeSource rows + structural/candidate JSON into Postgres.
+1. When approved Postgres + Blob credentials exist: persist KnowledgeSource rows + bytes; verify read-after-write and independent-session retrieval.
+2. Purge/quarantine known false-positive SEC exhibits from the active debt corpus.
+3. Expand live run to full 100-issuer stratified plan with filingLimit≥200 and older submission files.
+4. Add 424B5/S-4 exhibit paths and deepen indenture discovery.
 5. Scale toward 500 issuers / 2,000 distinct debt documents with diversity guards.
 6. Improve amendment-chain linking from exhibit descriptions (no chronology-only effectiveness).
 7. Postgres FTS over provision excerpts; defer pgvector unless justified.

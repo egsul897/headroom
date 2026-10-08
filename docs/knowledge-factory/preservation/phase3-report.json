@@ -1,7 +1,7 @@
 {
-  "mission": "HEADROOM — KNOWLEDGE FACTORY PHASE 3",
+  "mission": "HEADROOM \u2014 KNOWLEDGE FACTORY PHASE 3",
   "startingSha": "b0e45f4721a621a0954ae5f2e2abc8e53460b988",
-  "endingShaNote": "Set by commit after this script; see phase3-final-report.json post-commit.",
+  "endingShaNote": "Phase 3 preservation/export commit",
   "sourcePreservationStatus": {
     "inventorySchema": "knowledge-factory.source-inventory.v1",
     "inventoryPath": "docs/knowledge-factory/preservation/source-inventory.json",
@@ -106,5 +106,11 @@
     "productionLegalRuleModifications": false,
     "fixturesSeparatedFromSecAcquisitions": true
   },
-  "paidInferenceUsd": 0
+  "paidInferenceUsd": 0,
+  "endingSha": "2046a9ef32695ee5ad452acd5a54fecf95f501f5",
+  "pr": "https://github.com/egsul897/headroom/pull/154",
+  "tests": {
+    "knowledgeFactory": "27 passed locally",
+    "tsc": "clean"
+  }
 }
