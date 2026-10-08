@@ -1,7 +1,7 @@
 {
   "artifact": "live-integration-inventory",
   "version": 1,
-  "asOf": "2026-10-08T22:10:30Z",
+  "asOf": "2026-10-08T22:12:30Z",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
   "schemaOwner": {
     "canonicalIdentityContract": "WS-PAR",
@@ -15,7 +15,7 @@
     {
       "workstreamId": "WS-PAR",
       "branch": "cursor/parallel-agent-operating-rules-0e3f",
-      "headSha": "749448edb3f7f0da323c12de4e4e1e066fe66b67",
+      "headSha": "f5e700dac9cf2376f8c61baa586942877a2435e8",
       "pr": "https://github.com/egsul897/headroom/pull/138",
       "scope": "coordination contracts, ownership map, gates, mocks",
       "ownedFiles": [
@@ -65,7 +65,7 @@
       "workstreamId": "WS-EHB",
       "branch": "cursor/edgar-historical-backfill-c45c",
       "headSha": "2cc7b013982258ae7e63b27dff3363d3f84a3fb9",
-      "pr": null,
+      "pr": "https://github.com/egsul897/headroom/pull/142",
       "scope": "historical discovery, IBR, dedupe, coverage, pilot scripts",
       "ownedFiles": [
         "docs/edgar-historical-backfill/**",
@@ -79,7 +79,7 @@
       "dependencies": [
         "WS-CKF SEC scheduler / must not second-download"
       ],
-      "testsAndCi": "unit tests in branch; no draft PR yet",
+      "testsAndCi": "draft PR #142 open",
       "integrationConflicts": [
         "lib/edgar-historical-backfill/sec-access.ts must call CKF scheduler, not independent SEC flood"
       ],
@@ -139,7 +139,7 @@
     {
       "workstreamId": "WS-CCA",
       "branch": "cursor/maximize-cursor-cloud-compute-3334",
-      "headSha": "8409dd9ddd4c8d46c943027f800855e553847928",
+      "headSha": "7180ae820a87d56765e90bd25be695290f85792e",
       "pr": "https://github.com/egsul897/headroom/pull/141",
       "scope": "100-doc benchmark harness, env inspect, optional GPU worker interface",
       "ownedFiles": [
@@ -182,14 +182,14 @@
       "testsAndCi": "unknown",
       "integrationConflicts": [],
       "dataClass": "NOT_STARTED_ON_ORIGIN",
-      "nextExecutableTask": "Publish adapter contract + deterministic/offline vertical slice PR"
+      "nextExecutableTask": "Create branch + draft PR for provider adapters; use offline/deterministic first"
     },
     {
       "workstreamId": "WS-GIB",
       "branch": null,
       "headSha": null,
       "pr": null,
-      "note": "Founder named Gibraltar Pass B cost analysis; related older PR #128 is Track D pipeline (different scope). Cost-analysis agent not yet mapped to a dedicated branch.",
+      "note": "Core-four role reserved. #128/#135 are not the Pass B cost-analysis workstream. Awaiting dedicated agent/branch under docs/gibraltar-pass-b-cost/**.",
       "actualDataProduced": "none for cost-analysis workstream",
       "dataClass": "AWAITING_AGENT",
       "nextExecutableTask": "When agent appears: analyze existing Pass B artifacts only; no paid inference"

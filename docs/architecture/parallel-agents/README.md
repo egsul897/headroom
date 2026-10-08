@@ -18,6 +18,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `01-workstream-map.json` | Machine-readable workstream + exclusive ownership map (v4; peer-path reconciled) |
 | `10-live-integration-inventory.json` | Live branch/PR/SHA/data-class inventory |
 | `11-concrete-integration-plan.md` | Executable integration plan + conflict resolutions |
+| `12-core-four-role-lock.md` | Binding CKF/VIC/CCA/GIB role lock |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
 | `04-canonical-identity-contract.json` | Logical corpus IDs → existing schema mappings |

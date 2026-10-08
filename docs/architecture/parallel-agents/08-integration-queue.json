@@ -3,7 +3,7 @@
   "version": 1,
   "status": "ACTIVE_LEDGER",
   "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "updatedAt": "2026-10-08T22:10:30Z",
+  "updatedAt": "2026-10-08T22:12:30Z",
   "items": [
     {
       "id": "IQ-001",
@@ -11,7 +11,7 @@
       "deliverable": "Operating rules, ownership map v2+, identity/SEC/dataset/gate contracts, ownership checker",
       "branch": "cursor/parallel-agent-operating-rules-0e3f",
       "pr": "https://github.com/egsul897/headroom/pull/138",
-      "tipSha": "749448edb3f7f0da323c12de4e4e1e066fe66b67",
+      "tipSha": "f5e700dac9cf2376f8c61baa586942877a2435e8",
       "status": "IN_PROGRESS",
       "blockers": [],
       "dependsOn": []
@@ -26,7 +26,7 @@
       "status": "BRANCH_NO_PR",
       "blockers": [
         "Draft PR not opened",
-        "Must expose SecRequestScheduler fa\u00e7ade"
+        "Must expose SecRequestScheduler fa\u00e7ade over lib/knowledge-factory/edgar/*"
       ],
       "dependsOn": [
         "IQ-001"
@@ -39,8 +39,10 @@
       "branch": null,
       "pr": null,
       "tipSha": null,
-      "status": "AWAITING_PEER_PR",
-      "blockers": [],
+      "status": "AWAITING_BRANCH",
+      "blockers": [
+        "No origin branch yet \u2014 proceed via contracts only"
+      ],
       "dependsOn": [
         "IQ-001"
       ]
@@ -51,7 +53,7 @@
       "deliverable": "Cursor Cloud compute benchmark measurements (no paid provisioning)",
       "branch": "cursor/maximize-cursor-cloud-compute-3334",
       "pr": "https://github.com/egsul897/headroom/pull/141",
-      "tipSha": "8409dd9ddd4c8d46c943027f800855e553847928",
+      "tipSha": "7180ae820a87d56765e90bd25be695290f85792e",
       "status": "DRAFT_PR_OPEN",
       "blockers": [],
       "dependsOn": [
@@ -67,7 +69,7 @@
       "tipSha": null,
       "status": "AWAITING_AGENT",
       "blockers": [
-        "Agent not yet visible in mobile fleet list at ledger update"
+        "Dedicated Pass B cost-analysis agent not visible; #128/#135 are Track D/Haiku compile, not this role"
       ],
       "dependsOn": [
         "IQ-001"
@@ -78,11 +80,11 @@
       "workstreamId": "WS-EHB",
       "deliverable": "Historical EDGAR backfill queue using centralized scheduler",
       "branch": "cursor/edgar-historical-backfill-c45c",
-      "pr": null,
+      "pr": "https://github.com/egsul897/headroom/pull/142",
       "tipSha": "2cc7b013982258ae7e63b27dff3363d3f84a3fb9",
-      "status": "BRANCH_NO_PR",
+      "status": "DRAFT_PR_OPEN",
       "blockers": [
-        "Must use CKF scheduler/mock \u2014 has local sec-access"
+        "Must route sec-access through CKF SecRequestScheduler or PAR mock \u2014 no parallel SEC flood"
       ],
       "dependsOn": [
         "IQ-001",
@@ -119,6 +121,34 @@
         "IQ-001",
         "IQ-002"
       ]
+    },
+    {
+      "id": "IQ-009",
+      "workstreamId": "WS-NED",
+      "deliverable": "Negative covenant exception database",
+      "branch": "cursor/negative-covenant-exception-db-21b5",
+      "pr": null,
+      "tipSha": "e2d7d20768fe4842c1b5be03c540443dc29588cd",
+      "status": "BRANCH_NO_PR",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
+    },
+    {
+      "id": "IQ-010",
+      "workstreamId": "WS-PCI",
+      "deliverable": "Precedent comparison intelligence corpus",
+      "branch": "cursor/precedent-comparison-intelligence-616b",
+      "pr": null,
+      "tipSha": "9d1c55fc6596d3eff294fcbe9c133c15f0dc6d39",
+      "status": "BRANCH_NO_PR",
+      "blockers": [],
+      "dependsOn": [
+        "IQ-001",
+        "IQ-002"
+      ]
     }
   ],
   "conflicts": [
@@ -139,6 +169,12 @@
       "summary": "Map path drift for CKF/CCA vs coordinator proposals",
       "resolution": "Map v4 adopts peer-shipped paths",
       "status": "RESOLVED_IN_MAP_V4"
+    },
+    {
+      "id": "C-004",
+      "summary": "WS-VIC and WS-GIB named in core-four coordination mandate but lack dedicated origin deliverables",
+      "resolution": "Keep exclusiveOwn reserved; VIC/GIB proceed independently when branches appear; do not reassign their roles to CKF/CCA",
+      "status": "OPEN"
     }
   ],
   "proposedResolutions": [
