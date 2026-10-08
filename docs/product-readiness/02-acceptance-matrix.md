@@ -26,24 +26,26 @@ Stage modes in this run:
 
 Nothing in this run is certification evidence. No live evidence directory was touched.
 
-## Matrix (committed run `acceptance-runs/83e6bf1d3ce0/`, repository SHA `83e6bf1d3ce0`, 444 checks: 388 pass · 42 fail · 14 not tested)
+## Matrix (committed run `acceptance-runs/2b018f8a6719/`, repository SHA `2b018f8a6719`, 571 checks: 508 pass · 48 fail · 15 not tested)
 
-Earlier committed runs: `8f51e2981bd2` (8 packages, 360 checks: 318/30/12), `00977b674579` (10 packages, 431 checks:
-376/41/14). The 13 checks added at `83e6bf1` are the cross-reference audits (`context:<id>:cross-references`), one of
-which fails (IPV-17). Findings are 42, all registered (IPV-01…IPV-17).
+Earlier committed runs: `8f51e2981bd2` (8 packages, 360 checks: 318/30/12), `00977b674579` (10 packages, 431:
+376/41/14), `83e6bf1d3ce0` (10 packages + cross-reference audit, 444: 388/42/14). At `2b018f8`: package K added, every
+covenant's clause text pinned (`structure:text:<id>`, 80+ new checks, all pass), adversarial plans for I/J/K. Findings
+are 48, all registered (IPV-01…IPV-18; IPV-17 closed).
 
 | package | STRUCTURE | OPERATIVE_STATE | DISC_PASS_A | DISC_PASS_B_PLUS | CONTEXT_RETRIEVAL | SEM_COMPOSITION | CERTIFICATION | RUNTIME_CAPACITY | total |
 |---|---|---|---|---|---|---|---|---|---|
-| a-basic-credit-agreement | 16/16 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 4/6 (2 F) | – | 37/40 |
-| b-multi-document | 13/13 | 2/2 | 1/1 | 0/1 (1 NT) | 12/12 | 13/13 | 5/6 (1 F) | – | 46/48 |
-| c-amendment-supersession | 7/7 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 35/40 |
-| d-qualitative-restrictions | 11/11 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 30/34 |
-| e-structural-ambiguity | 13/14 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 39/49 |
-| f-capacity-ledger-honesty | 11/11 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 52/57 |
-| g-adversarial-evidence | 9/11 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 41/48 |
-| h-unseen-composition | 18/20 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/9 (1 F) | 10/10 | 9/10 (1 F) | – | 48/54 |
-| i-secured-debt-lien | 10/10 | – | 1/1 | 0/1 (1 NT) | 12/17 (5 F) | 12/12 | 0/4 (4 F) | – | 35/45 |
-| j-restricted-payments-builder | 10/10 | – | 1/1 | 0/1 (1 NT) | 6/8 (2 F) | 7/7 | 1/2 (1 F) | – | 25/29 |
+| a-basic-credit-agreement | 22/22 | 2/2 | 1/1 | 0/1 (1 NT) | 7/7 | 7/7 | 4/6 (2 F) | – | 43/46 |
+| b-multi-document | 24/24 | 2/2 | 1/1 | 0/1 (1 NT) | 12/12 | 13/13 | 5/6 (1 F) | – | 57/59 |
+| c-amendment-supersession | 15/15 | 7/7 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 8/10 (2 F) | 5/6 (1 F) | – | 43/48 |
+| d-qualitative-restrictions | 16/16 | 1/1 | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 6/7 (1 F) | 4/5 (1 F) | – | 35/39 |
+| e-structural-ambiguity | 19/20 (1 F) | – | 1/1 | 0/1 (1 NT) | 7/11 (1 F) (3 NT) | 10/11 (1 F) | 8/11 (3 F) | – | 45/55 |
+| f-capacity-ledger-honesty | 20/20 | – | 1/1 | 0/1 (1 NT) | 12/14 (2 F) | 10/10 | 4/6 (2 F) | 14/14 | 61/66 |
+| g-adversarial-evidence | 18/20 (2 F) | 2/2 | 2/3 (1 F) | 0/1 (1 NT) | 10/12 (1 F) (1 NT) | 10/10 | 8/9 (1 F) | – | 50/57 |
+| h-unseen-composition | 27/29 (2 F) | 2/3 (1 F) | 1/1 | 0/1 (1 NT) | 8/9 (1 F) | 10/10 | 9/10 (1 F) | – | 57/63 |
+| i-secured-debt-lien | 21/21 | – | 1/1 | 0/1 (1 NT) | 12/17 (5 F) | 12/12 | 1/5 (4 F) | – | 47/57 |
+| j-restricted-payments-builder | 16/16 | – | 1/1 | 0/1 (1 NT) | 7/8 (1 F) | 7/7 | 4/5 (1 F) | – | 35/38 |
+| k-three-way-builder | 18/18 | – | 1/1 | 0/1 (1 NT) | 9/11 (2 F) | 5/7 (2 F) | 2/5 (3 F) | – | 35/43 |
 
 ## Adversarial acceptance (prohibited claims submitted through the mocked model)
 

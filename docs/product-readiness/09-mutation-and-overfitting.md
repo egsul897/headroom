@@ -1,7 +1,7 @@
 # Mutation suite and anti-overfitting audit
 
 Branch `claude/independent-product-validation`; first run at code SHA `83e6bf1d3ce044bf56c38083b5940e43d92adcd5`
-(`mutation-runs/83e6bf1d3ce0/`), re-run after the harness strengthening of §8 (see the latest `mutation-runs/<sha12>/`) (`mutations.json` machine-readable, `mutations.md` per-verdict). Runner:
+(`mutation-runs/83e6bf1d3ce0/`), re-run after the harness strengthening of §7 at `2b018f8` (`mutation-runs/2b018f8a6719/`: 16 mutants, 9 killed, 16/16 predictions held, 135/135 harness verdicts, 12 product-verdict failures all registered under IPV-16) (`mutations.json` machine-readable, `mutations.md` per-verdict). Runner:
 `npx tsx scripts/product-acceptance/run-mutations.ts` (≈6 s, zero provider calls). Pinned by
 `tests/product-acceptance/mutations.test.ts` (22 tests). Nothing under `lib/` was modified; fixtures on disk were not
 modified (every mutation is applied in memory and the corpus-integrity test re-pins the bytes).

@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `2b018f8` + this commit | harness strengthening: covenant `textSha256` pinning + STRUCTURE audit (MUT-02 now killed), side-letter/consent mutants MUT-13…16 (IPV-16 breadth: A, C, H, I), hybrid closure cross-document back-reference, package K (three-way builder; IPV-17 control), I/J/K adversarial plans, IPV-17 CLOSED (harness false positive), IPV-18 (no family for junior-debt prepayments); artefacts `acceptance-runs/2b018f8a6719` (571 checks: 508/48/15), `mutation-runs/2b018f8a6719` (16 mutants, 9 killed, 16/16 predictions), `benchmark-runs/2b018f8a6719` (unchanged results) | `npx vitest run tests/product-acceptance` → 171 pass / 28 skipped; tsc clean for owned files; `pin-corpus --check` clean |
 | 2026-10-08 | `99255ab` + this commit | mutation/acceptance run artefacts, doc 09, matrix refresh; then docs 10–16 (evidence quality scorecard, pilot acceptance criteria, executive assessment, design-partner package, positioning by maturity, proposed paid experiments, recommended next queue), scorecard 04 refreshed, PR #137 description updated | `npx vitest run tests/product-acceptance` → 160 pass / 28 skipped (unchanged; docs only) |
 | 2026-10-08 | `83e6bf1` | mutation suite (12 operators, `mutations.ts`, `run-mutations.ts`, `mutations.test.ts`), cross-reference audit in `auditContextRetrieval`, severities MISSING_DEPENDENCY / INCORRECT_AMENDMENT_PRECEDENCE, register IPV-16/IPV-17; follow-up commit: `mutation-runs/83e6bf1d3ce0`, `acceptance-runs/83e6bf1d3ce0` (444 checks: 388/42/14), doc 09, matrix refresh | `npx vitest run tests/product-acceptance` → 160 pass / 28 skipped; `tsc --noEmit` clean for owned files |
 | 2026-10-08 | `00977b6` + `0edfd95` | extraction architecture benchmark (`benchmark/`, 14 cases, doc 08), packages I/J, register IPV-15, committed runs `acceptance-runs/00977b674579` (431 checks) and `benchmark-runs/00977b674579` | `npx vitest run tests/product-acceptance` → 136 pass / 28 skipped |
@@ -20,7 +21,9 @@
 
 ## Current task
 
-Harness strengthening from the mutation suite (task 5 below): per-covenant text-hash pinning, side-letter fixture family, three-section definition fixture, I/J adversarial plans. Queue 8+ docs complete (10–16).
+Continuous-loop backlog (task 6 below): next ten legal invariants from the directive's forty, each as a fixture variation or mutant with an independent expectation. Harness strengthening (task 5) complete at `2b018f8`.
+
+Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
 Previous — queue 8+ docs (10–16), scorecard refresh, PR description. Mutation suite + anti-overfitting audit complete: `09-mutation-and-overfitting.md`, 8/12 mutants killed, IPV-16 (side-letter override invisible to operative state — P0 class) and IPV-17 (asymmetric definition-mediated cross-reference closure) registered; node ids shown positional.
 
@@ -36,7 +39,7 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 2. P0/P3 — extraction architecture benchmark (done, doc 08) (broad vs naive selective vs hybrid) with new adversarial packages (secured debt + lien; RP builder + definition elsewhere; cross-doc ratio; missing document) and 13 completeness cases; cost metrics labelled measured / estimated / projected.
 3. P1 — mutation suite + anti-overfitting audit (done, doc 09).
 4. P4 — evidence quality scorecard, pilot acceptance gates, executive assessment, design-partner package, positioning by maturity, proposed paid experiments, recommended next queue (done, docs 10–16).
-5. P2 — harness strengthening from the mutation suite: per-covenant normalised text hash in manifests (deterministic kill for added conditions); a three-section definition fixture for IPV-17's acceptance; waiver/consent/side-letter fixture family (IPV-16) across packages.
+5. P2 — harness strengthening (done at `2b018f8`): textSha256 pinning, side-letter/consent mutants, package K, I/J/K adversarial plans. Follow-ups: an on-disk side-letter package so the acceptance run carries IPV-16; a ratio-bearing-sibling package to pin the bundle-item-type observation.
 6. P2 — continuous loop backlog: 40 legal invariants × systematic variation (see directive), CFO/treasury/legal workflow product backlog.
 
 ## Blocked tasks
@@ -45,7 +48,7 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## Known defects (independent register)
 
-`docs/product-readiness/03-defect-register.json` — IPV-01…IPV-17; run signatures pinned by `tests/product-acceptance/known-defects.test.ts`, MUTATION-evidence signatures by `tests/product-acceptance/mutations.test.ts`.
+`docs/product-readiness/03-defect-register.json` — IPV-01…IPV-18 (IPV-17 CLOSED as a harness false positive); run signatures pinned by `tests/product-acceptance/known-defects.test.ts`, MUTATION-evidence signatures by `tests/product-acceptance/mutations.test.ts`.
 
 ## Architectural decisions (this track)
 
@@ -55,11 +58,11 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: harness strengthening driven by the mutation suite — (a) per-covenant whitespace-normalised text hash pinned in every manifest and audited at STRUCTURE so any textual change to an operative clause is a deterministic kill (closes the MUT-02 gap class); (b) side-letter / waiver fixture family: one in-memory or on-disk side letter per package A, C, H, I with expectations that the operative state for the named section is not RESOLVED (breadth for IPV-16); (c) a package-K fixture whose definition names three sections (IPV-17 acceptance); (d) adversarial submission plans for packages I and J (`semantic-plan.ts` adversarialCases) so the I-P*/J-P* prohibited claims are exercised.
-- Files: `scripts/product-acceptance/corpus.ts` (manifest schema: optional `textSha256` per covenant), `scripts/product-acceptance/auditor.ts` (STRUCTURE check), `tests/fixtures/product-acceptance/packages/*/expectations.json` (re-pin via `pin-corpus.ts`), `scripts/product-acceptance/mutations.ts` (new mutants MUT-13…), `scripts/product-acceptance/semantic-plan.ts` (I/J adversarial cases), `docs/product-readiness/03-defect-register.json` (signatures), `02-acceptance-matrix.md`.
-- First step: add `textSha256?: string` to the Covenant schema in `corpus.ts`; extend `pin-corpus.ts` to compute it from `index.getNodeText(node,"DESCENDANTS")` normalised; run `pin-corpus.ts` and `--check`; add the STRUCTURE audit; re-run MUT-02 and confirm it is now KILLED (update its prediction with the reason).
-- Expected output: MUT-02 killed; new mutants for side letters on A/C/H/I all SURVIVED-GAP with registered IPV-16 signatures; package K added with its cross-reference checks failing on IPV-17; I/J adversarial rows in the matrix.
-- Acceptance: `npx vitest run tests/product-acceptance` green with the new register signatures; `pin-corpus.ts --check` clean; commit + push; checkpoint updated.
+- Objective: continuous-loop invariants, batch 1 (ten of the directive's forty), each as (a) an in-memory mutant in `mutations.ts` or (b) an on-disk package variation, with an independent expectation and a kill/product verdict: (1) a hanging proviso attaches to every preceding clause of its section; (2) a "greater of $X and Y% of metric" basket is NEEDS_INPUT without the metric; (3) a "notwithstanding" clause inside the SAME document overrides the section it names (operative state or closure must surface it); (4) an Article IX-style cap outside the covenant article governs (I-9.15 pattern on another family); (5) a definition amended by a later amendment changes every dependent basket at the right date; (6) an amendment with a condition precedent to effectiveness is not applied before the condition; (7) a reclassification election between baskets is represented or refused; (8) a currency basket is never converted; (9) a springing covenant on availability is inactive until the trigger; (10) a guarantee by a non-guarantor subsidiary is prohibited (I-7.04 pattern).
+- Files: `scripts/product-acceptance/mutations.ts` (MUT-17…), `tests/fixtures/product-acceptance/packages/*` (variations where a mutant cannot express the invariant), `tests/product-acceptance/mutations.test.ts`, `docs/product-readiness/03-defect-register.json`, `docs/product-readiness/17-invariant-backlog.md` (ledger of the forty: id, status, artefact, verdict).
+- First step: write `17-invariant-backlog.md` listing all forty invariants from the directive with status NOT_STARTED, then implement (1), (3), (5), (6) as mutants on packages D, A, B, C (cheapest, highest P0 relevance: same-document override and conditional effectiveness are false-permission classes).
+- Expected output: ten invariants with artefacts and verdicts; any new product finding registered; mutation run re-recorded.
+- Acceptance: `npx vitest run tests/product-acceptance` green; `pin-corpus --check` clean; checkpoint updated; commit + push.
 - Dependencies: none (offline).
 
 Then (P2): harness strengthening (text-hash pinning per covenant, three-section definition fixture, waiver/side-letter fixture family), then the continuous-loop invariant backlog.
