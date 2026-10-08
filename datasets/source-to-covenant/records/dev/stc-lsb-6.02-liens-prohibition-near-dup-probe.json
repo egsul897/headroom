@@ -1,0 +1,227 @@
+{
+  "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "dev",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    "filingAccession": "0001193125-23-303035",
+    "cik": "0000060714",
+    "exhibit": "EX-10.1",
+    "agreementDate": "2023-12-21",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/60714/000119312523303035/"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": "2023-12-21",
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.02",
+    "sourceNodeKey": null,
+    "articleRef": "ARTICLE VI",
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": "Create, incur, assume, or permit to exist any Lien on or with respect to any of its assets",
+  "input": {
+    "exactText": "SECTION  6.02 Liens. \n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of Permitted Liens to the extent that the original Indebtedness is refinanced, renewed, replaced or extended under\n Section  6.01(d) and so long as the replacement Liens only encumber those assets that secured the refinanced, renewed, or extended Indebtedness). \n ",
+    "charStartInFixture": 4442,
+    "charEndInFixture": 5002,
+    "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "windowSha256": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "Permitted Liens"
+    ],
+    "conditions": [],
+    "crossReferences": [
+      "Permitted Liens",
+      "Section 6.01(d)"
+    ],
+    "entityScopeNotes": [
+      "Loan Party assets"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "LIENS",
+    "candidatePermissionProhibitionClass": "PROHIBITION",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Duplicate-probe twin of stc-lsb-6.02-liens-prohibition — same controlling window for exact-duplicate detection tests.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Permitted Liens definition full text"
+    ],
+    "uncertainty": {
+      "level": "LOW",
+      "reasons": []
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Intentional exact-duplicate window probe for dedup machinery. Same source hash expected as stc-lsb-6.02-liens-prohibition."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": "No independent review scope recorded. Catalog author checked the cited source window while generating the candidate label.",
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+      "sectionRef=6.02"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity."
+  },
+  "verificationHistory": [
+    {
+      "at": "2026-10-08T22:30:00.000Z",
+      "fromStatus": "HUMAN_SOURCE_VERIFIED",
+      "toStatus": "HUMAN_HYPOTHESIS",
+      "reason": "Phase-1 HUMAN_SOURCE_VERIFIED reflected catalog-author source reading by the dataset builder, not an independent reviewer with a verification_record_id. Preserved in verificationHistory; demoted per Phase-2 ground-truth integrity.",
+      "actor": "PHASE2_INTEGRITY_AUDIT"
+    }
+  ],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Create, incur, assume, or permit to exist any Lien on or with respect to any of its assets",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cited terms without pulled definitions: Permitted Liens"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "Loan Party assets",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "DEFINED_TERM:(none pulled)",
+      "REMOTE_CONDITION:remote/compound conditions"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: DEFINED_TERM:(none pulled); REMOTE_CONDITION:remote/compound conditions",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_DUPLICATE_OBSERVATION",
+  "evaluationEligibility": "EVAL_INELIGIBLE_DUPLICATE_PROBE",
+  "duplicateDecision": {
+    "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+    "pairedExampleIds": [
+      "stc-lsb-6.02-liens-prohibition"
+    ],
+    "classification": "INTENTIONAL_DEDUP_PROBE",
+    "keepInCorpus": true,
+    "trainingEligible": false,
+    "rationale": "Exact shared window retained to exercise duplicate detection. Excluded from training observations."
+  },
+  "datasetAuthorExpectation": "Duplicate-probe twin of stc-lsb-6.02-liens-prohibition — same controlling window for exact-duplicate detection tests.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "79c1a300ba7d547b2d30dc2c5d4c236d4921d77fef75fae61a058eaae052745b",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_DUPLICATE_OBSERVATION",
+      "usage_rights_review_required"
+    ]
+  }
+}

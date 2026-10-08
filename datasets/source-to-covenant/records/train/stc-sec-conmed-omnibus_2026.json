@@ -1,0 +1,201 @@
+{
+  "exampleId": "stc-sec-conmed-omnibus_2026",
+  "polarity": "POSITIVE",
+  "role": "AMENDMENT_EFFECT",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "omnibus-2026",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "AMENDMENT_EFFECT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "FIRST OMNIBUS AMENDMENT AND INCREASED FACILITY ACTIVATION NOTICE, DATED AS OF MAY 27, 2026, AMONG CONMED CORPORATION, LINVATEC NEDERLAND B.V\nExhibit 10.1\nExecution Version\nFIRST OMNIBUS AMENDMENT AND INCREASED FACILITY\nACTIVATION NOTICE\nFIRST AMENDMENT AND INCREASED\nFACILITY ACTIVATION NOTICE, dated as of May 27, 2026 (this \" Amendment \"), to (a) the Eighth Amended and Restated Credit\nAgreement, dated as of June 10, 2025 (as amended, amended and restated or otherwise modified from time to time prior to the date hereof,\nthe \" Credit Agreement \"; the Credit Agreement as modified by this Amendment, the \" Amended Credit Agreement \"),\namong CONMED Corporation, a Delaware corporation (the \" Parent Borrower \"), the Foreign Subsidiary Borrowers from time\nto time party thereto, the Lenders party thereto, JPMorgan Chase Bank, N.A., as administrative agent (the \" Administrative Agent \"),\nand the other agents party thereto and (b) the Amended and Restated Guarantee and Collateral Agreement, dated as of the June 10, 2025\n(as amended, amended and restated or otherwise modified from time to time prior to the date hereof, the \" Guarantee and Collateral\nAgreement \"; the Guarantee and Collateral Agreement as modified by this Amendment, the \" Amended Guarantee and Collateral\nAgreement \"), made by the Parent Borrower and its Subsidiaries party thereto in favor of the Administrative Agent. Capitalized\nterms used herein and not otherwise defined shall have the meanings assigned to them in the Credit Agreement or the Amended Credit Agreement,\nas applicable.\nW I T N E S S E T H :\nWHEREAS, the Parent Borrower\nand the Administrative Agent are parties to the Credit Agreement;\nWHEREAS, pursuant to Section\n2.28 of the Credit Agreement, the Parent Borrower has requested commitments for Incremental Term Loans in the form of delayed draw term\n\"a\" loans in an aggregate principal amount equal to $450,000,000 on the terms set forth herein (such commitments, the \" Term\nA-2 Commitments \", the loans pursuant to such Term A-2 Commitments, the \" Term A-2 Loans \");\nWHEREAS, the Parent Borrower\nmay incur such Term A-2 Commitments and such Term A-2 Loans by entering into an Increased Facility Activation Notice with Lenders willing\nto provide such Term A-2 Commitments (each such Lender, a \" Term A-2 Lender \" and together the \" Term A-2 Lenders \");\nWHEREAS, each Term A-2 Lender\nlisted on Schedule 1 hereby commits to provide Term A-2 Commitments in an aggregate principal amount not to exceed the amount of\nits \"Term A-2 Commitment\" set forth next to such Term A-2 Lender's name on Schedule 1 ;\nWHEREAS, pursuant to Section\n2.28(d) of the Credit Agreement, amendments to the Credit Agreement necessary to reflect the existence and terms of any Incremental Term\nLoans may be effected in writing by the Administrative Agent with the Parent Borrower's consent;\nWHEREAS, the Parent Borrower\nhas requested certain other amendments to the Credit Agreement and the Guarantee and Collateral Agreement;\nWHEREAS, pursuant to Section\n10.1 of the Credit Agreement, the Credit Agreement may be amended in writing signed by the Parent Borrower and the Required Lenders (as\ndefined in the Credit Agreement);\nWHEREAS, the Parent Borrower,\nthe Administrative Agent, each Lender party to the Credit Agreement prior to giving effect to his Amendment that is a signatory hereto\n(each a \" Consenting Lender \") and each Term A-2 Lender is willing to consent to the amendments, waivers and other modifications\nset forth herei",
+    "charStartInFixture": 32,
+    "charEndInFixture": 3532,
+    "sourceTextSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+    "windowSha256": "947cbc4e456dd04183530e4e7033dbf3027c0f1bb02c6257f2a131e85e7339d9",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "AMENDMENT_WAIVER_CONSENT",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+      "windowSha256=947cbc4e456dd04183530e4e7033dbf3027c0f1bb02c6257f2a131e85e7339d9",
+      "sectionRef=omnibus-2026"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "947cbc4e456dd04183530e4e7033dbf3027c0f1bb02c6257f2a131e85e7339d9",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

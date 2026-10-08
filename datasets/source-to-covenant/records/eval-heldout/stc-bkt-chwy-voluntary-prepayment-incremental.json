@@ -1,0 +1,209 @@
+{
+  "exampleId": "stc-bkt-chwy-voluntary-prepayment-incremental",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "chewy",
+    "issuerName": "Chewy, Inc.",
+    "instrumentKey": "chwy-2026-credit-agreement",
+    "documentId": "chwy-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "chwy-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Definitions — Voluntary Prepayment Incremental Amount",
+  "input": {
+    "exactText": "Act ” means the Uniting and Strengthening America by Providing Appropriate Tools Required to Intercept and\nObstruct Terrorism Act of 2001, as amended from time to time.\n“ Vehicles ” means all railcars, cars, trucks, trailers, construction and\nearth moving equipment and other vehicles covered by a certificate of title law of any state and all tires and other appurtenances to any of the foregoing.\n\n“ Voluntary Prepayment Incremental Amount ” means the sum of the aggregate principal amount of voluntary prepayments, redemptions and\nrepurchases and debt buybacks, payments utilizing the provision of Section 2.17 or Section 2.22 and other permanent reductions of Term Loans (including any Credit Agreement Refinancing Indebtedness or Refinancing Term Loans) (in each case,\nto be calculated based on the aggregate principal amount of debt purchased and/or retired in connection with such buyback), loans under any Revolving Facility (with a corresponding permanent commitment reduction), Incremental Equivalent Debt, other\nobligations secured on a pari passu or senior basis with any Revolving Facility and Term Loans, any Incremental Equivalent Debt, and other obligations secured on a pari passu , senior or junior basis with the Term Loans, except to the\nextent funded with long-term debt (other than revolving debt or intercompany debt or proceeds of the applicable Incremental Facility being incurred).\n\n“ Weighted Average Life to Maturity ” means, when applied to any Indebtedness, Disqualified Stock or Preferred Stock, as the case may be, at\nany date, the quotient obtained by dividing:\n(1) the sum of the products of the number of years from the date of determination to the date of each\nsuccessive scheduled principal payment of such Indebtedness or redemption or similar payment with respect to such Disqualified Stock or Preferred Stock multiplied by the amount of such payment; by\n\n(2) the sum of all such payments;\nprovided that, for\npurposes of determining the Weighted Average Life to",
+    "charStartInFixture": 358378,
+    "charEndInFixture": 360378,
+    "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "windowSha256": "041523ff0b7d079c14048f5cc5203ff107bd63a4ce1e5caf9400ffee1643a635",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [
+      "\"qualifying voluntary prepayments per remainder of definition\""
+    ],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"as defined for Incremental Cap usage\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (chwy-voluntary-prepayment-incremental). Not independently reviewed.",
+      "figures": [
+        "sum of voluntary prepayments/redemptions/repurchases/buybacks (definition continues in source)"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Incremental Cap",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "full definitional exclusions and prepayment ledger not fully captured in this span"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "chwy-2026-credit-agreement",
+    "operativeVersion": "chwy-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "windowSha256=041523ff0b7d079c14048f5cc5203ff107bd63a4ce1e5caf9400ffee1643a635",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Definitions — Voluntary Prepayment Incremental Amount",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"as defined for Incremental Cap usage\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-voluntary-prepayment-incremental). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "041523ff0b7d079c14048f5cc5203ff107bd63a4ce1e5caf9400ffee1643a635",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

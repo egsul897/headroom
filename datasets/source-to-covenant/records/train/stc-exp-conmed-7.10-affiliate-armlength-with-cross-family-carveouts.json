@@ -1,0 +1,218 @@
+{
+  "exampleId": "stc-exp-conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "7.10 except (i)-(v)",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Enter into any transaction ... with any Affiliate (other than transactions between or among the Parent Borrower and the Subsidiary Guarantors) that involves consideration in excess of $2,500,000 for such transaction unless such transaction is (a) not otherwise prohibited under this Agreement and (b) upon fair and reasonable terms no less favorable ...",
+  "input": {
+    "exactText": " or exchange of Property, the rendering of any service\nor the payment of any management, advisory or similar fees, with any Affiliate (other than transactions between or among the Parent Borrower\nand the Subsidiary Guarantors) that involves consideration in excess of $2,500,000 for such transaction unless such transaction is (a) not\notherwise prohibited under this Agreement and (b) upon fair and reasonable terms no less favorable to the Parent Borrower or such\nSubsidiary, as the case may be, than it would obtain in a comparable arm's length transaction with a Person which is not an Affiliate,\nexcept that this Section 7.10 shall not prohibit (i) the sale, transfer, encumbrance or other disposition by the Parent Borrower or its\nSubsidiaries to a Subsidiary of accounts receivable or related ancillary rights or assets, or interests therein, pursuant to a Receivables\nTransfer Program, (ii) overhead and other ordinary course allocations of costs and services on a reasonable basis, (iii) allocations of\ntax liabilities and other tax-related items among the Parent Borrower and its Affiliates based principally upon the financial income,\ntaxable income, credits and other amounts directly related to the respective parties, (iv) any incurrence of Indebtedness not prohibited\nby Section 7.2, (iii) any Restricted Payment not prohibited by Section 7.6, (iv) any Investment permitted by Section 7.8 specifically\ncontemplated by Section 7.8 to be made among Affiliates or (v) transactions between or among the Parent Borrower and its Subsidiaries\nin the ordinary course of business which are pursuant to customary transfer pricing arrangements or for the achievement of operating efficiencies\n(but not involving (x) an Investment not specifically contemplated by Section 7.8 to be made among Affiliates or (y) an Asset Sale not\notherwise permitted under this Agreement).\nSECTION 7.11 Limitation on Sales\nand Leasebacks . Enter into any arrangement with any Person providing for the leasing by the Parent Borrower or any Subsidiary of real\nor personal property which has been or is to be sold or transferred by the Parent Borrower or such Subsidiary to such Person or to any\nother Person to whom funds have been or are to be advanced by such Person on the security of such property or rental obligations of the\nParent Borrower or such Subsidiary, except in respect of assets the aggregate fair mark",
+    "charStartInFixture": 42799,
+    "charEndInFixture": 45199,
+    "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "windowSha256": "0342205eb1cee7f6802e022f129f1dfc090a99615206e33e793b0801c2547737",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "7.10 except (i)-(v)"
+    ],
+    "conditions": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ],
+    "crossReferences": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ],
+    "entityScopeNotes": [
+      "{\"includes\":[\"transactions with Affiliates\"],\"excludes\":[\"transactions between or among Parent Borrower and Subsidiary Guarantors (chapeau carve-out)\"]}"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "AFFILIATE_TRANSACTIONS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "FIXED_MONEY",
+      "description": "Peer exception-catalog hypothesis for 7.10 except (i)-(v). Not independently reviewed.",
+      "figures": [
+        "[object Object]"
+      ],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "[object Object]",
+      "[object Object]"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Expanded from peer exception catalog; Phase-2 marks as HUMAN_HYPOTHESIS only"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC source window. Candidate label imported from negative-covenant exception catalog as a hypothesis — not independent ground truth."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "windowSha256=0342205eb1cee7f6802e022f129f1dfc090a99615206e33e793b0801c2547737",
+      "sectionRef=7.10 except (i)-(v)"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Enter into any transaction ... with any Affiliate (other than transactions between or among the Parent Borrower and the ",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "{\"includes\":[\"transactions with Affiliates\"],\"excludes\":[\"transactions between or among Parent Borrower and Subsidiary Guarantors (chapeau carve-out)\"]}",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.10 except (i)-(v). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "0342205eb1cee7f6802e022f129f1dfc090a99615206e33e793b0801c2547737",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

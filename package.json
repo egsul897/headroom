@@ -15,6 +15,7 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "golden-test": "tsx scripts/golden-test.ts",
+    "dataset:source-to-covenant": "tsx scripts/source-to-covenant/build-dataset.ts",
     "ckg-benchmark": "tsx scripts/ckg-benchmark/run.ts",
     "test:ckg-benchmark": "vitest run tests/covenant-knowledge-generalization/",
     "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts"
