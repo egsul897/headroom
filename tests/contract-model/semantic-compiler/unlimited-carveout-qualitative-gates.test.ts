@@ -335,4 +335,110 @@ describe("unlimited carve-out dual qualitative gates", () => {
       expect(out.conditions.map((c) => c.provenance?.excerpt)).not.toContain("surplus or damaged equipment");
     }
   });
+
+  const residual = (excerpt: string, description = excerpt) => ({
+    conditionType: "UNSUPPORTED" as const,
+    expression: null,
+    referencesDefinitionId: null,
+    description,
+    citation: "§9.07(a)",
+    excerpt,
+  });
+
+  function surfacesOf(out: IRRule): string {
+    return out.conditions.map((c) => `${c.provenance?.excerpt ?? ""}\n${c.provenance?.rawModelExcerpt ?? ""}\n${c.description}`).join("\n");
+  }
+
+  function wireFromIr(expr: IRExpression | null): WireExpression | null {
+    if (!expr) return null;
+    if (expr.kind === "AND" || expr.kind === "OR") return { kind: expr.kind, operands: expr.operands.map((operand) => wireFromIr(operand)).filter((operand): operand is WireExpression => operand !== null) };
+    if (expr.kind === "UNSUPPORTED") {
+      return { kind: "UNSUPPORTED", semanticDescription: expr.semanticDescription, reason: expr.reason, sourceEvidence: expr.sourceEvidence, excerpt: expr.sourceEvidence, citation: "§9.07(a)" };
+    }
+    return null;
+  }
+
+  it("keeps an object-class surface that also states an independent qualifier and does not treat that surface as the manner", () => {
+    const objectThird = `surplus or damaged equipment ${THIRD}`;
+    const operative = `${SURPLUS}. A separate limit applies to ${objectThird}.`;
+    const [out] = compile(operative, [rule({ conditions: [residual(objectThird, `The carve-out applies only to ${objectThird}`)] })]);
+    const kept = out!.conditions.find((c) => c.provenance?.excerpt === objectThird);
+    expect(kept?.description).toContain(THIRD);
+    expect(kept?.description).not.toContain("in the ordinary course of business");
+    expect(out!.conditions.filter((c) => c.provenance?.excerpt === objectThird)).toHaveLength(1);
+    expect(surfacesOf(out!)).toContain("surplus or damaged equipment");
+    expect(surfacesOf(out!)).toContain("in the ordinary course of business");
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(out!.sufficiencyReasons.join("\n")).not.toMatch(/\bCERTIFIED\b/);
+    expect(gate(out!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("retains a non-source object-plus-qualifier surface as raw evidence and does not invent an authoritative excerpt for it", () => {
+    const objectThird = `surplus or damaged equipment ${THIRD}`;
+    const [out] = compile(SURPLUS_WITH_THIRD, [rule({ conditions: [residual(objectThird, `The carve-out applies only to ${objectThird}`)] })]);
+    const kept = out!.conditions.find((c) => c.provenance?.rawModelExcerpt === objectThird);
+    expect(kept?.provenance?.excerpt).toBeNull();
+    expect(kept?.description).toContain(THIRD);
+    expect(kept?.description).not.toContain("in the ordinary course of business");
+    expect(out!.conditions.map((c) => c.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(out!.sufficiencyReasons.join("\n")).toContain("PROVENANCE_EXCERPT_UNRESOLVED");
+  });
+
+  it("keeps a manner surface that also states an independent qualifier and does not treat that surface as the object class", () => {
+    const mannerThird = `in the ordinary course of business ${THIRD}`;
+    const [out] = compile(SURPLUS_WITH_THIRD, [rule({ conditions: [residual(mannerThird, `The carve-out applies only ${mannerThird}`)] })]);
+    const excerpts = out!.conditions.map((c) => c.provenance?.excerpt ?? "");
+    expect(excerpts).toContain(mannerThird);
+    expect(excerpts).toContain("surplus or damaged equipment");
+    expect(excerpts).toContain("in the ordinary course of business");
+    expect(excerpts.filter((excerpt) => excerpt === mannerThird)).toHaveLength(1);
+    const kept = out!.conditions.find((c) => c.provenance?.excerpt === mannerThird);
+    expect(kept?.description).toContain(THIRD);
+    expect(kept?.description).not.toContain("surplus or damaged equipment");
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("drops only an exactly redundant folded gate and does not delete a broader condition that merely contains a gate phrase", () => {
+    const exact = "surplus or damaged equipment in the ordinary course of business";
+    const broader = `surplus or damaged equipment ${THIRD}`;
+    const [out] = compile(SURPLUS_WITH_THIRD, [rule({
+      conditions: [residual(exact, exact), residual(exact, exact), residual(broader, `kept because it also states ${broader}`)],
+    })]);
+    const excerpts = out!.conditions.map((c) => c.provenance?.excerpt);
+    expect(out!.conditions.filter((c) => c.description === exact)).toHaveLength(0);
+    expect(excerpts.filter((excerpt) => excerpt === exact)).toHaveLength(0);
+    expect(excerpts.filter((excerpt) => excerpt === "surplus or damaged equipment")).toHaveLength(1);
+    expect(excerpts.filter((excerpt) => excerpt === "in the ordinary course of business")).toHaveLength(1);
+    const kept = out!.conditions.find((c) => c.provenance?.rawModelExcerpt === broader);
+    expect(kept?.provenance?.excerpt).toBeNull();
+    expect(kept?.description).toContain(THIRD);
+    expect(surfacesOf(out!)).toContain(broader);
+    expect(out!.conditions).toHaveLength(3);
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(gate(out!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("does not multiply conditions or drop the independent qualifier when the same submission is normalized again", () => {
+    const foldedExcerpt = `surplus or damaged equipment in the ordinary course of business ${THIRD}`;
+    const once = compile(SURPLUS_WITH_THIRD, [rule({ conditions: [residual(foldedExcerpt, `The carve-out applies only to ${foldedExcerpt}`)] })])[0]!;
+    const twice = compile(SURPLUS_WITH_THIRD, [rule({
+      sufficiency: once.sufficiency,
+      capacityExpression: { kind: "UNLIMITED_CAPACITY", gatedBy: wireFromIr(gate(once).gatedBy) },
+      conditions: once.conditions.map((c) => residual(c.provenance?.excerpt ?? "", c.description)),
+    })])[0]!;
+    expect(twice.conditions).toHaveLength(once.conditions.length);
+    expect(twice.conditions.map((c) => c.provenance?.excerpt)).toEqual(once.conditions.map((c) => c.provenance?.excerpt));
+    expect(surfacesOf(twice)).toContain(THIRD);
+    expect(surfacesOf(twice)).toContain(foldedExcerpt);
+    expect(twice.sufficiency).toBe(once.sufficiency);
+    expect(twice.sufficiency).not.toBe("COMPLETE");
+    const again = gate(twice).gatedBy;
+    expect(again?.kind).toBe("AND");
+    if (again?.kind === "AND") expect(unsupportedOperands(again)).toHaveLength(unsupportedOperands(gate(once).gatedBy!).length);
+  });
 });
