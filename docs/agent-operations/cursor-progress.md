@@ -48,8 +48,18 @@ Supersession on these rows remains unresolved. Selection for a diagnostic read i
 - `tests/contract-model/certified/golden-map.test.ts` passed.
 - `npm run test:phase3-certification`: 453 passed, 3 failed. The 3 failures are `tests/contract-model/semantic-verification-verify.test.ts` timeouts or `semanticReviewInvoked === false` under the local 5s default. The same assertion fails on `481b19fe91137f0be6a552d2ec06925a0bcaf27d` with these edits stashed, so it is not caused by the definition-declaration change. GitHub Actions run `37793529670` on `481b19f` failed the certified path with 13 `OPERATIVE_AUTHORITY_REFUSED` failures in certification, golden-map, edge-authority, and xref fixtures. Those four files pass locally after the definition-declaration fix. That Actions run has not been re-executed on the new commit.
 
+## Evidence engine
+
+Module `lib/contract-model/compiler/evidence-engine/`. Report `docs/agent-operations/cost-evidence-engine.md`.
+
+Default spend authorization is no paid calls. The $5 figure is a proposed experiment cap, not an authorization. Haiku stays off the rate card. Cache hits do not certify. Contents listings are rejected before a reservation.
+
+Offline: `tests/contract-model/compiler/evidence-engine.test.ts` 11 passed. `npx tsc --noEmit -p .` exited 0.
+
+Measured Gibraltar verification spend remains `8.777854` on 16 attempts, 74 emitted rules, 0 verified rules. Pass B dollars are not on the rate card. No paid call was made to build the engine.
+
 ## Open, still in this owner's scope
 
-- Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix.
-- Do not recompile Article VII. The dry selection is a diagnostic. The historical count-only record stays sealed.
-- Do not treat this dry selection as certification, coverage, or a product-acceptance result.
+- Re-observe the certified-path Actions job on the commit that contains the definition-declaration fix and this evidence engine.
+- Do not recompile Article VII and do not rerun the 788-row verification. The smallest future spend test is the single-section experiment in the cost report, and it is not authorized by this change.
+- Do not treat a cache hit or a dry selection as certification.
