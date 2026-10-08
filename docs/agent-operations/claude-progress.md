@@ -12,6 +12,7 @@
 
 | when (UTC) | SHA | what | tests run |
 |---|---|---|---|
+| 2026-10-08 | `091a105` + this commit | milestone report 3 delivered; INV-32 reclassification without a contract edge holds (4/4); INV-09b comparator breadth: A certifies the flip, B/H/M masked; self-replenishing pass 3 → U1–U4; `invariant-runs/091a105` (18 invariants) | `npx vitest run tests/product-acceptance` green; tsc clean; pin-check clean |
 | 2026-10-08 | `ade5386` + this commit | INV-18 inflected-term breadth (IPV-09 93% miss, MATERIAL), scan-noise mutants MUT-17…20 (silent merges IPV-07; bogus '7.0' node IPV-23), doc 20 inventory/citation spec; `invariant-runs/ade5386` (17 invariants), `mutation-runs/ade5386` (20 mutants) | `npx vitest run tests/product-acceptance` green (see run); tsc clean; pin-check clean |
 | 2026-10-08 | `731f34e` + this commit | T3 package M (definition amendment + side letter + Guarantor/Subsidiary): IPV-19's fail-closed REVIEW masks IPV-16 and IPV-20 false permissions; IPV-21 does not fire (plural 'Guarantors', IPV-09); first acceptance-run signatures for IPV-16 and IPV-20; artefacts `acceptance-runs/731f34e2f9ae` (657: 577/62/18), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 193 pass / 28 skipped; tsc clean; pin-check clean |
 | 2026-10-08 | `dcfd931` + this commit | T4 First Supplemental Indenture on B (second-instrument amendment resolves ✅; indenture::4.09 stale text → IPV-04 breadth), T5 prompt-size measurement (≈8,400 user-content tokens per unit median; doc 08 estimates low ≈2–3× on input), T6 onboarding doc 19; artefacts `acceptance-runs/dcfd931004c6` (614: 543/54/17), invariant/mutation/benchmark runs | `npx vitest run tests/product-acceptance` → 186 pass / 28 skipped; tsc clean; pin-check clean |
@@ -32,7 +33,7 @@
 
 ## Current task
 
-Milestone report 3, then ratio-comparator / reclassification cases (task 6 below). Second self-replenishing pass items (a)–(c) complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
+U1 package N (clean ratio path), U4 clause-count diff check, U2 scan noise on H (task 6 below). Batch 7 complete. Batches 1–2 complete: ledger doc 17 (forty mapped, 25 COVERED / 11 PARTIAL / 3 CHECKED / 1 NOT_STARTED→COVERED), seven dedicated checks, twelve packages, IPV-19/IPV-20 registered in both directions.
 
 Previous — harness strengthening (text-hash pinning, side-letter family, package K, I/J/K adversarial plans).
 
@@ -69,10 +70,10 @@ Previous task — PR #136 source-authority challenge (head `982c3bc3a58425543f8a
 
 ## NEXT_TASK
 
-- Objective: (a) ledger #32/#34: simulateTransaction with an APPLY_RECLASSIFICATION effect and no recorded election on F (7.01(g) reclassifies usage from (b)); expectation: refused / REVIEW, never capacity freed (F-U2); (b) ratio-comparator breadth: SET_RATIO on every RATIO_THRESHOLD covenant in the corpus (A 7.01(c), B 4.09, H 7.11, J 7.06(c), M 7.01(c)) recording which refusals are masked by IPV-21/IPV-12/IPV-19 and which certify (IPV-22 breadth); (c) milestone report 3 with the required return fields; (d) third self-replenishing pass.
-- Files: `scripts/product-acceptance/invariants.ts` (INV-32, INV-09c), register, ledger, checkpoint.
-- First step: INV-32 — read `transaction/types.ts` for the APPLY_RECLASSIFICATION effect shape and the election type; build the effect against rule:f-7.01(b) → rule:f-7.01(g) is not in the fixture IR, so add a reclassification-target rule to a local IR copy (labelled) and simulate without an election.
-- Expected output: INV-32 verdicts; comparator breadth table; milestone report.
+- Objective: U1 — package N (`pkg-n-clean-ratio`): a short credit agreement with one fixed basket and one ratio basket ('so long as the Total Net Leverage Ratio does not exceed 3.00 to 1.00'), definitions without any diamond or cycle, no amendments, no undefined inputs, so its certification path is clean; declarative adversarial cases: comparator flipped (SET_RATIO GTE), threshold raised (SET_RATIO 3.50), scope widened (SET_SCOPE) — expectations: all refused; expected product result: the flip certifies (IPV-22 breadth on a second clean path), the raise is refused, the widening certifies (IPV-01 breadth). U4 — harness check `structure:enumeration-continuity:<section>`: for every manifest section with lettered clauses, the parsed enumerators must be a contiguous a, b, c… sequence matching the manifest's clause count; a gap or a merged clause is a STRUCTURE finding (turns IPV-07/IPV-23-class silent merges into a deterministic card; verify it fires on MUT-17/19 and on G's dropped letter). U2 — scan-noise mutants on H (multi-document): spaced heading in the ABL agreement and a homoglyph in the intercreditor; expectations as MUT-17/19.
+- Files: `tests/fixtures/product-acceptance/packages/pkg-n-clean-ratio/`, `scripts/product-acceptance/auditor.ts` (enumeration-continuity check), `scripts/product-acceptance/mutations.ts` (MUT-21/22), tests package count 14, register, ledger, matrix, checkpoint.
+- First step: package N documents + manifest, pin, run-all to scratch, classify; then U4 in auditStructure and re-run G/A mutants.
+- Expected output: IPV-22 and IPV-01 breadth on a clean path; a deterministic enumeration-continuity check with its own acceptance-run signatures on G (and new ones if other packages have gaps); scan-noise results on H.
 - Acceptance: suite green; pin-check clean; commit + push; checkpoint updated.
 - Dependencies: none (offline).
 

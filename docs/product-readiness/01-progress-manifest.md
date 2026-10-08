@@ -27,7 +27,8 @@ Cursor work. Provider calls: none in this workstream.
 | 17 | T4 supplemental indenture on B (resolves on the second instrument; IPV-04 breadth), T5 offline prompt-size measurement (doc 08), T6 `19-onboarding-and-ingestion-assumptions.md`; runs at `dcfd931004c6` | done (`dcfd931` + this commit) |
 | 18 | T3 package M: IPV-19's REVIEW masks IPV-16/IPV-20; IPV-21 suppressed by IPV-09; IPV-16/20 on disk; runs at `731f34e2f9ae` (657: 577/62/18) | done (`731f34e` + this commit) |
 | 19 | INV-18 inflected-term breadth (IPV-09: 26/28 misses, re-rated MATERIAL), scan-noise mutants MUT-17…20 (IPV-07 breadth, IPV-23), doc 20 inventory + citation spec; runs at `ade5386` | done (`ade5386` + this commit) |
-| 20 | milestone report 3; then: ratio-comparator cases on every ratio clause once IPV-21/IPV-12 masking is understood per package; APPLY_RECLASSIFICATION without an election (ledger #32/#34); product backlog 7–10 criteria refresh | next |
+| 20 | milestone report 3; INV-32 reclassification (holds), INV-09b comparator breadth (1 clean path certifies, 3 masked), self-replenishing pass 3 (U1–U4); `invariant-runs/` at `091a105` | done (`091a105` + this commit) |
+| 21 | U1 package N (clean ratio basket, comparator flip unmasked); U4 onboarding clause-count diff check; U2 scan-noise on H | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".
