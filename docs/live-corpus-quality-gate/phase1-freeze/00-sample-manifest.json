@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.v1",
+  "title": "Live Corpus Quality Gate — stratified authentic EDGAR sample",
+  "purpose": "Independently evaluate the first real EDGAR-derived knowledge batch. Not synthetic-only. Not a certification gate.",
+  "hardRules": [
+    "Do not evaluate only synthetic examples.",
+    "Preserve held-out / BLIND status (Knife River body unread).",
+    "Independence from compiler development: do not treat FWRG/LSB/CONMED/DSGR/Chewy/Riot as this live-corpus batch.",
+    "Where independently verified ground truth is unavailable, mark UNVERIFIED — never PASS.",
+    "Do not modify Claude-owned fixtures, production legal rules, or certification status.",
+    "No paid model calls in this gate."
+  ],
+  "firstRealEdgarBatch": {
+    "packageId": "gibraltar-2026-credit-agreement",
+    "designation": "DEVELOPMENT",
+    "designationIsNotCertified": true,
+    "issuer": "Gibraltar Industries, Inc.",
+    "source": "SEC EDGAR",
+    "accession": "0001140361-26-003087",
+    "exhibit": "EX-10.1",
+    "fixtureRoot": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/",
+    "laneReport": "docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md",
+    "whyFirstBatch": "First public EDGAR package retrieved and structurally ingested under Lane C as the DEVELOPMENT knowledge batch; Pass B/C/D not run; no discoveryIds minted."
+  },
+  "stratifiedSample": [
+    {
+      "sampleId": "gib-doc-a",
+      "packageId": "gibraltar-2026-credit-agreement",
+      "documentId": "gibraltar-doc-a-2026-02-02-credit-agreement",
+      "issuer": "Gibraltar Industries, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "instrumentClass": "ORIGINAL",
+      "draftingComplexity": "HIGH",
+      "heldOutStatus": "HELD_OUT_DEVELOPMENT_PACKAGE",
+      "compilerDevelopmentIndependence": "Not used to author production prompts or extraction rules; Pass B never ran.",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "rawHtmlPath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
+      "structureDir": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/",
+      "provenancePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/provenance.json",
+      "authenticEdgar": true
+    },
+    {
+      "sampleId": "sup-doc-a",
+      "packageId": "superior-2022-2025-credit-facility",
+      "documentId": "doc-a",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "CREDIT_AGREEMENT",
+      "instrumentClass": "ORIGINAL",
+      "draftingComplexity": "HIGH",
+      "heldOutStatus": "FORMERLY_UNSEEN_NOW_REGRESSION",
+      "compilerDevelopmentIndependence": "Selected as genuinely unseen for lightweight confirmation; not a compiler-tuning package. Invariant 28: permanent regression evidence thereafter.",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+      "independentGtPath": "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+      "frozenRunEvidence": "docs/final-lightweight-unseen/",
+      "authenticEdgar": true
+    },
+    {
+      "sampleId": "sup-doc-b",
+      "packageId": "superior-2022-2025-credit-facility",
+      "documentId": "doc-b",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+      "instrumentClass": "RESTATEMENT",
+      "draftingComplexity": "HIGH",
+      "heldOutStatus": "FORMERLY_UNSEEN_NOW_REGRESSION",
+      "compilerDevelopmentIndependence": "Same package as sup-doc-a; caption/restatement adversarial case.",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+      "independentGtPath": "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+      "authenticEdgar": true
+    },
+    {
+      "sampleId": "sup-doc-c",
+      "packageId": "superior-2022-2025-credit-facility",
+      "documentId": "doc-c",
+      "issuer": "Superior Industries International, Inc.",
+      "agreementType": "AMENDMENT",
+      "instrumentClass": "AMENDMENT",
+      "draftingComplexity": "MEDIUM",
+      "heldOutStatus": "FORMERLY_UNSEEN_NOW_REGRESSION",
+      "compilerDevelopmentIndependence": "Same package; First Amendment to A&R.",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+      "independentGtPath": "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+      "authenticEdgar": true
+    }
+  ],
+  "excludedFromThisGateAsCompilerTuningCorpus": [
+    "fwrg-2021-credit-agreement",
+    "lsb-2023-abl-credit-agreement",
+    "conmed-2025-credit-facility",
+    "dsgr-2022-2025-credit-facility",
+    "chwy-2026-credit-agreement",
+    "riot-2025-2026-credit-facility"
+  ],
+  "reservedBlind": {
+    "issuer": "Knife River",
+    "status": "BLIND_BODY_UNREAD",
+    "includedInSample": false
+  },
+  "auditDimensions": [
+    "source_integrity",
+    "structural_completeness",
+    "definition_completeness",
+    "negative_covenant_discovery",
+    "exception_and_condition_recall",
+    "cross_reference_completeness",
+    "amendment_authority",
+    "entity_scope_recognition",
+    "false_affirmative_capacity",
+    "provenance_correctness",
+    "unresolved_and_unsupported_semantics"
+  ]
+}

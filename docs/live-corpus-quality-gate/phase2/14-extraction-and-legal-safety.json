@@ -1,0 +1,200 @@
+{
+  "extractionMetrics": {
+    "documentsProbed": 26,
+    "tocBodyDuplicationRiskDocs": 7,
+    "amendedRestatedCaptionDocs": 15,
+    "creditAgreementCaptionDocs": 20,
+    "greaterOfMentionsTotal": 227,
+    "sharedCapacityPhraseDocs": 0,
+    "aggregateAmountMentionsTotal": 391,
+    "financialCovenantHeadingDocs": 13,
+    "gibraltarStructural": {
+      "totalNodes": 2087,
+      "definitionsDetected": 564,
+      "referencesDetected": 1459,
+      "referencesResolved": 491,
+      "referencesUnresolved": 968,
+      "resolveRate": 0.3365318711446196,
+      "passACandidates": 946,
+      "tocBodySeparation": "UNVERIFIED_PARTIAL — operative-article-vii recovers long spans; bare refs AMBIGUOUS",
+      "structuralNodePrecisionRecall": "UNVERIFIED — no full independent node-level GT for Gibraltar",
+      "covenantDiscoveryRecallSectionLevel": "PASS for Article VII section heads (Phase-1 legally_verified)",
+      "provisoAttachment": "UNVERIFIED — Pass B not run",
+      "entityScopeExtraction": "UNVERIFIED for IR population; source phrase present for §7.08",
+      "amendmentRelationshipAccuracy": "PASS for single-document ORIGINAL absence; FAIL on SUP RESTATES historical"
+    },
+    "note": "Metrics are offline probes. Precision/recall labeled UNVERIFIED unless independent GT exists."
+  },
+  "legalSafetyFindings": [
+    {
+      "kind": "CONFIRMED_DEFECT",
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "issue": "false_affirmative_shared_capacity_signal_risk",
+      "docId": "gib-doc-a",
+      "status": "FAIL",
+      "note": "Confirmed in Phase-1 + adjudicated; aggregate-amount mass without shared-capacity phrase."
+    },
+    {
+      "kind": "CONFIRMED_DEFECT",
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "issue": "wrong_operative_version_risk_via_missing_restates",
+      "docId": "sup-doc-b",
+      "status": "FAIL",
+      "note": "Confirmed historical dangerous silence on RESTATES."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "chwy-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-b",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-c",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-d",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-b",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-c",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-eighth-ar",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-omnibus-2026",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-guarantee",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-second-amend-2022",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-neg-cov",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-omnibus",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-guarantee",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-second-amend",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "fwrg-article-6",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "fwrg-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-article-6",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-intercreditor-joinder",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    }
+  ]
+}

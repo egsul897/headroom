@@ -1,0 +1,403 @@
+{
+  "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+  "phase1TipSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+  "freezeArtifactHashes": {
+    "00-sample-manifest.json": "1e7bd3876ce8dc5e48182ff18b3728c71f302e1b5e17da73bf09a9d8f23436de",
+    "01-findings.json": "1c82f3c2ae9e8cda7cd44b5455c4e5f5ac0359e63783a89572b4f3fafe2aee64",
+    "02-layer-summaries.json": "398ffad0785bd60c88699e63db9c029573ceaf3a29ea9ab4c89b966e330d5ff9",
+    "03-production-defects.json": "7a4dbb1be6c73aecb8dc8a4f284bd0657aaf5640197f14697fec738b344351d3",
+    "04-quality-gate-report.json": "ee26f6dc3a21554199ce6ae836c5c76857e9ac4d9f6f6c446d2790d823d043f3",
+    "REPORT.md": "9a322a7fa45edffeff851bdcea9a0b2e474e1d4f4f5ab8df85f800556de246a8"
+  },
+  "freezeIntact": true,
+  "frozenFindingCount": 46,
+  "frozenUniqueFindingIds": 45,
+  "replayFindingCount": 46,
+  "reproduced": 45,
+  "nonReproduced": 0,
+  "statusChanged": 0,
+  "newInReplay": 0,
+  "missingInReplay": 0,
+  "duplicateFrozenFindingIds": [
+    {
+      "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+      "occurrences": 2
+    }
+  ],
+  "evaluationHarnessDefects": [
+    {
+      "defectId": "LCQG-HARNESS-FINDING-ID-COLLISION",
+      "classification": "EVALUATION_HARNESS_DEFECT",
+      "summary": "Phase-1 findingId formula embeds status and collides when two PASS findings share sample+dimension+layer (46 listed findings, 45 unique IDs). Oracle left unchanged; all unique IDs reproduced.",
+      "duplicateFrozenFindingIds": [
+        {
+          "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+          "occurrences": 2
+        }
+      ]
+    }
+  ],
+  "classifications": [
+    {
+      "findingId": "gib-doc-a:amendment_authority:extraction:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "No fabricated amendment/restatement edges invented for a single-document ORIGINAL package.",
+      "replaySummary": "No fabricated amendment/restatement edges invented for a single-document ORIGINAL package."
+    },
+    {
+      "findingId": "gib-doc-a:amendment_authority:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Package is a single ORIGINAL credit agreement; no post-closing amendment exhibit in package (Lane C search).",
+      "replaySummary": "Package is a single ORIGINAL credit agreement; no post-closing amendment exhibit in package (Lane C search)."
+    },
+    {
+      "findingId": "gib-doc-a:cross_reference_completeness:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Only 491/1459 references resolved (33.7%); 968 unresolved.",
+      "replaySummary": "Only 491/1459 references resolved (33.7%); 968 unresolved."
+    },
+    {
+      "findingId": "gib-doc-a:cross_reference_completeness:legally_verified:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Available Amount Builder Basket self-cites §7.05(a)(y) while operative print uses clause (vi)/(y) — source marker conflict.",
+      "replaySummary": "Available Amount Builder Basket self-cites §7.05(a)(y) while operative print uses clause (vi)/(y) — source marker conflict."
+    },
+    {
+      "findingId": "gib-doc-a:definition_completeness:extraction:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Deterministic definition detector reported 564 definitions.",
+      "replaySummary": "Deterministic definition detector reported 564 definitions."
+    },
+    {
+      "findingId": "gib-doc-a:definition_completeness:legally_verified:exhaustive",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "Exhaustive definition extraction accuracy vs full Article I inventory has no independent GT in this gate.",
+      "replaySummary": "Exhaustive definition extraction accuracy vs full Article I inventory has no independent GT in this gate."
+    },
+    {
+      "findingId": "gib-doc-a:definition_completeness:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Spot-checked material defined terms are present in source text.",
+      "replaySummary": "Spot-checked material defined terms are present in source text."
+    },
+    {
+      "findingId": "gib-doc-a:entity_scope_recognition:extraction:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No Pass B / compiled IR entityScope fields exist for this batch.",
+      "replaySummary": "No Pass B / compiled IR entityScope fields exist for this batch."
+    },
+    {
+      "findingId": "gib-doc-a:entity_scope_recognition:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "§7.08 facility-limited entity/instrument scope present in source.",
+      "replaySummary": "§7.08 facility-limited entity/instrument scope present in source."
+    },
+    {
+      "findingId": "gib-doc-a:exception_and_condition_recall:extraction:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "Pass B semantic condition/exception extraction was not executed on this batch.",
+      "replaySummary": "Pass B semantic condition/exception extraction was not executed on this batch."
+    },
+    {
+      "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "§7.08 leverage step-down + Qualifying Material Acquisition condition language present in source.",
+      "replaySummary": "§7.08 leverage step-down + Qualifying Material Acquisition condition language present in source."
+    },
+    {
+      "findingId": "gib-doc-a:false_affirmative_capacity:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Pass A shared_cap fired on 51 nodes; phrase 'shared capacity' absent — high false-affirmative risk.",
+      "replaySummary": "Pass A shared_cap fired on 51 nodes; phrase 'shared capacity' absent — high false-affirmative risk."
+    },
+    {
+      "findingId": "gib-doc-a:false_affirmative_capacity:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No certified capacity answers exist for this DEVELOPMENT batch; cannot legally verify false-affirmative rate beyond signal audit.",
+      "replaySummary": "No certified capacity answers exist for this DEVELOPMENT batch; cannot legally verify false-affirmative rate beyond signal audit."
+    },
+    {
+      "findingId": "gib-doc-a:held_out_blind:infrastructure",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Knife River BLIND body remains unread.",
+      "replaySummary": "Knife River BLIND body remains unread."
+    },
+    {
+      "findingId": "gib-doc-a:negative_covenant_discovery:extraction:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Operative Article VII negative-covenant sections recovered 7/7.",
+      "replaySummary": "Operative Article VII negative-covenant sections recovered 7/7."
+    },
+    {
+      "findingId": "gib-doc-a:negative_covenant_discovery:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Headings and operative spans independently confirmed in source Article VII.",
+      "replaySummary": "Headings and operative spans independently confirmed in source Article VII."
+    },
+    {
+      "findingId": "gib-doc-a:provenance_correctness:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Operative §7.08 extracted window contains embedded page number '249' (source furniture).",
+      "replaySummary": "Operative §7.08 extracted window contains embedded page number '249' (source furniture)."
+    },
+    {
+      "findingId": "gib-doc-a:provenance_correctness:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Provenance.json records SEC EDGAR URL, accession, exhibit, retrieval timestamp, hashes.",
+      "replaySummary": "Provenance.json records SEC EDGAR URL, accession, exhibit, retrieval timestamp, hashes."
+    },
+    {
+      "findingId": "gib-doc-a:source_integrity:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "EDGAR body + extracted text SHA256 match provenance and structure-summary.",
+      "replaySummary": "EDGAR body + extracted text SHA256 match provenance and structure-summary."
+    },
+    {
+      "findingId": "gib-doc-a:source_integrity:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Byte-identity of public EDGAR exhibit vs fixture is independently verifiable.",
+      "replaySummary": "Byte-identity of public EDGAR exhibit vs fixture is independently verifiable."
+    },
+    {
+      "findingId": "gib-doc-a:structural_completeness:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "TOC+body duplication makes bare section labels AMBIGUOUS under resolveUniqueNodeByRef.",
+      "replaySummary": "TOC+body duplication makes bare section labels AMBIGUOUS under resolveUniqueNodeByRef."
+    },
+    {
+      "findingId": "gib-doc-a:structural_completeness:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Structural index present (2087 nodes); Articles I–X detected; Pass B not fabricated.",
+      "replaySummary": "Structural index present (2087 nodes); Articles I–X detected; Pass B not fabricated."
+    },
+    {
+      "findingId": "gib-doc-a:structural_completeness:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "Full structural legal completeness (every operative subsection) lacks independent counsel GT.",
+      "replaySummary": "Full structural legal completeness (every operative subsection) lacks independent counsel GT."
+    },
+    {
+      "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:extraction:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Pipeline refused synthetic Pass B; no discoveryIds invented; unsupported semantics not coerced into fake IR.",
+      "replaySummary": "Pipeline refused synthetic Pass B; no discoveryIds invented; unsupported semantics not coerced into fake IR."
+    },
+    {
+      "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "Without Pass B/compiled units, corpus-scale unsupported-semantic surfacing cannot be legally verified.",
+      "replaySummary": "Without Pass B/compiled units, corpus-scale unsupported-semantic surfacing cannot be legally verified."
+    },
+    {
+      "findingId": "sup-doc-a:cross_reference_completeness:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for cross_reference_completeness on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for cross_reference_completeness on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:definition_completeness:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Historical COMPILE_CAP sampling never reached Article I definitions — empty definition extraction for GT A1–A5.",
+      "replaySummary": "Historical COMPILE_CAP sampling never reached Article I definitions — empty definition extraction for GT A1–A5."
+    },
+    {
+      "findingId": "sup-doc-a:definition_completeness:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "Independent GT for multi-definition cluster exists, but this gate does not re-score a new paid compile; mark UNVERIFIED for live legal verification of extraction completeness.",
+      "replaySummary": "Independent GT for multi-definition cluster exists, but this gate does not re-score a new paid compile; mark UNVERIFIED for live legal verification of extraction completeness."
+    },
+    {
+      "findingId": "sup-doc-a:entity_scope_recognition:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for entity_scope_recognition on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for entity_scope_recognition on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:exception_and_condition_recall:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for exception_and_condition_recall on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for exception_and_condition_recall on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:false_affirmative_capacity:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for false_affirmative_capacity on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for false_affirmative_capacity on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:negative_covenant_discovery:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for negative_covenant_discovery on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for negative_covenant_discovery on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:provenance_correctness:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Caption/title evidence for CREDIT_AGREEMENT confirmed in source.",
+      "replaySummary": "Caption/title evidence for CREDIT_AGREEMENT confirmed in source."
+    },
+    {
+      "findingId": "sup-doc-a:source_integrity:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+    },
+    {
+      "findingId": "sup-doc-a:structural_completeness:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for structural_completeness on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for structural_completeness on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-a in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-a in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-b:amendment_authority:extraction:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Frozen lightweight run misclassified doc-b as CREDIT_AGREEMENT and produced zero RESTATES edge.",
+      "replaySummary": "Frozen lightweight run misclassified doc-b as CREDIT_AGREEMENT and produced zero RESTATES edge."
+    },
+    {
+      "findingId": "sup-doc-b:amendment_authority:legally_verified:fail",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "FAIL",
+      "replayStatus": "FAIL",
+      "frozenSummary": "Source confirms doc-b is A&R and cites December 15, 2022 original — independent GT D1 applies.",
+      "replaySummary": "Source confirms doc-b is A&R and cites December 15, 2022 original — independent GT D1 applies."
+    },
+    {
+      "findingId": "sup-doc-b:provenance_correctness:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Caption/title evidence for AMENDED_AND_RESTATED_AGREEMENT confirmed in source.",
+      "replaySummary": "Caption/title evidence for AMENDED_AND_RESTATED_AGREEMENT confirmed in source."
+    },
+    {
+      "findingId": "sup-doc-b:source_integrity:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+    },
+    {
+      "findingId": "sup-doc-b:unresolved_and_unsupported_semantics:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-b in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-b in this unpaid gate."
+    },
+    {
+      "findingId": "sup-doc-c:amendment_authority:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "doc-c caption is First Amendment (A&R phrase is referential, not self-type).",
+      "replaySummary": "doc-c caption is First Amendment (A&R phrase is referential, not self-type)."
+    },
+    {
+      "findingId": "sup-doc-c:provenance_correctness:legally_verified:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Caption/title evidence for AMENDMENT confirmed in source.",
+      "replaySummary": "Caption/title evidence for AMENDMENT confirmed in source."
+    },
+    {
+      "findingId": "sup-doc-c:source_integrity:infrastructure:pass",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "PASS",
+      "replayStatus": "PASS",
+      "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+      "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+    },
+    {
+      "findingId": "sup-doc-c:unresolved_and_unsupported_semantics:legally_verified:unverified",
+      "outcome": "REPRODUCED",
+      "frozenStatus": "UNVERIFIED",
+      "replayStatus": "UNVERIFIED",
+      "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-c in this unpaid gate.",
+      "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-c in this unpaid gate."
+    }
+  ],
+  "oracleUntouched": true
+}

@@ -1,0 +1,1865 @@
+{
+  "schemaVersion": "live-corpus-quality-gate.phase2.v1",
+  "generatedAt": "2026-10-08T22:23:49.605Z",
+  "headSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+  "branch": "cursor/live-corpus-quality-gate-7f51",
+  "startingPr": 153,
+  "startingSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+  "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+  "paidCalls": 0,
+  "certificationImpact": "NONE",
+  "claudeOwnedFixturesModified": false,
+  "productionLegalRulesModified": false,
+  "productionFixesImplemented": false,
+  "oracleUntouched": true,
+  "freezeIntact": true,
+  "mandatoryReturn": {
+    "1_originalFindingsReproduced": {
+      "frozenFindingCount": 46,
+      "frozenUniqueFindingIds": 45,
+      "replayFindingCount": 46,
+      "reproduced": 45,
+      "nonReproduced": 0,
+      "statusChanged": 0,
+      "newInReplay": 0,
+      "missingInReplay": 0,
+      "freezeIntact": true,
+      "note": "45/45 unique findingIds reproduced. Listed count is 46 due to Phase-1 findingId collision (harness defect; oracle not mutated)."
+    },
+    "2_criticalFindingsAdjudicated": [
+      {
+        "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+        "classification": "SOURCE_INCONSISTENCY",
+        "owningAgent": "Dependency Atlas",
+        "compilerStage": "reference-resolution"
+      },
+      {
+        "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+        "classification": "COMPILER_DEFECT",
+        "owningAgent": "Covenant Knowledge Factory",
+        "compilerStage": "pass-a-deterministic-discovery"
+      },
+      {
+        "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+        "classification": "COMPILER_DEFECT",
+        "owningAgent": "Amendment Intelligence",
+        "compilerStage": "document-classification"
+      },
+      {
+        "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+        "classification": "COMPILER_DEFECT",
+        "owningAgent": "Structural Compiler",
+        "compilerStage": "structural-index"
+      },
+      {
+        "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+        "classification": "COMPILER_DEFECT",
+        "owningAgent": "Dependency Atlas",
+        "compilerStage": "reference-resolution"
+      }
+    ],
+    "3_confirmedCompilerDefects": [
+      "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "LCQG-GIB-XREF-LOW-RESOLVE"
+    ],
+    "4_sourceInconsistencies": [
+      "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "LCQG-GIB-STRUCT-AMBIGUOUS-TOC"
+    ],
+    "5_evaluationHarnessDefects": [
+      "LCQG-HARNESS-FINDING-ID-COLLISION"
+    ],
+    "6_newAuthenticAgreementsEvaluated": {
+      "additionalAvailable": 22,
+      "totalAuthentic": 26,
+      "targetAdditional": 25,
+      "availabilityGap": 3,
+      "docIds": [
+        "chwy-doc-a",
+        "dsgr-doc-a",
+        "dsgr-doc-b",
+        "dsgr-doc-c",
+        "dsgr-doc-d",
+        "riot-doc-a",
+        "riot-doc-b",
+        "riot-doc-c",
+        "conmed-eighth-ar",
+        "conmed-omnibus-2026",
+        "conmed-guarantee",
+        "conmed-second-amend-2022",
+        "conmed-curated-neg-cov",
+        "conmed-curated-definitions",
+        "conmed-curated-omnibus",
+        "conmed-curated-guarantee",
+        "conmed-curated-second-amend",
+        "fwrg-article-6",
+        "fwrg-definitions",
+        "lsb-article-6",
+        "lsb-definitions",
+        "lsb-intercreditor-joinder"
+      ]
+    },
+    "7_extractionMetrics": {
+      "documentsProbed": 26,
+      "tocBodyDuplicationRiskDocs": 7,
+      "amendedRestatedCaptionDocs": 15,
+      "creditAgreementCaptionDocs": 20,
+      "greaterOfMentionsTotal": 227,
+      "sharedCapacityPhraseDocs": 0,
+      "aggregateAmountMentionsTotal": 391,
+      "financialCovenantHeadingDocs": 13,
+      "gibraltarStructural": {
+        "totalNodes": 2087,
+        "definitionsDetected": 564,
+        "referencesDetected": 1459,
+        "referencesResolved": 491,
+        "referencesUnresolved": 968,
+        "resolveRate": 0.3365318711446196,
+        "passACandidates": 946,
+        "tocBodySeparation": "UNVERIFIED_PARTIAL — operative-article-vii recovers long spans; bare refs AMBIGUOUS",
+        "structuralNodePrecisionRecall": "UNVERIFIED — no full independent node-level GT for Gibraltar",
+        "covenantDiscoveryRecallSectionLevel": "PASS for Article VII section heads (Phase-1 legally_verified)",
+        "provisoAttachment": "UNVERIFIED — Pass B not run",
+        "entityScopeExtraction": "UNVERIFIED for IR population; source phrase present for §7.08",
+        "amendmentRelationshipAccuracy": "PASS for single-document ORIGINAL absence; FAIL on SUP RESTATES historical"
+      },
+      "note": "Metrics are offline probes. Precision/recall labeled UNVERIFIED unless independent GT exists."
+    },
+    "8_legalSafetyFindings": {
+      "confirmedDefects": [
+        {
+          "kind": "CONFIRMED_DEFECT",
+          "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+          "issue": "false_affirmative_shared_capacity_signal_risk",
+          "docId": "gib-doc-a",
+          "status": "FAIL",
+          "note": "Confirmed in Phase-1 + adjudicated; aggregate-amount mass without shared-capacity phrase."
+        },
+        {
+          "kind": "CONFIRMED_DEFECT",
+          "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+          "issue": "wrong_operative_version_risk_via_missing_restates",
+          "docId": "sup-doc-b",
+          "status": "FAIL",
+          "note": "Confirmed historical dangerous silence on RESTATES."
+        }
+      ],
+      "heuristicFlags": 22,
+      "heuristicFlagDocIds": [
+        "chwy-doc-a",
+        "dsgr-doc-a",
+        "dsgr-doc-b",
+        "dsgr-doc-c",
+        "dsgr-doc-d",
+        "riot-doc-a",
+        "riot-doc-b",
+        "riot-doc-c",
+        "conmed-eighth-ar",
+        "conmed-omnibus-2026",
+        "conmed-guarantee",
+        "conmed-second-amend-2022",
+        "conmed-curated-neg-cov",
+        "conmed-curated-definitions",
+        "conmed-curated-omnibus",
+        "conmed-curated-guarantee",
+        "conmed-curated-second-amend",
+        "fwrg-article-6",
+        "fwrg-definitions",
+        "lsb-article-6",
+        "lsb-definitions",
+        "lsb-intercreditor-joinder"
+      ]
+    },
+    "9_remainingUnverifiedItems": [
+      "Exhaustive Gibraltar definition inventory (spot-checks only in Phase-1).",
+      "Pass B/C/D semantic IR for Gibraltar (never executed).",
+      "Structural node precision/recall without independent node-level GT.",
+      "Proviso attachment accuracy (requires semantic compile).",
+      "Entity-scope IR population (source phrase only).",
+      "Expansion/regression docs lack fresh independent legal GT in this unpaid gate.",
+      "False-affirmative capacity rate beyond confirmed Gibraltar shared_cap signal audit.",
+      "Knife River BLIND body unread by design.",
+      "Availability gap vs 25 additional agreements: 3 (disclosed)."
+    ],
+    "10_exactShaPrTestsCi": {
+      "tipShaCommand": "git rev-parse HEAD",
+      "pr": 153,
+      "tests": [
+        "npx vitest run tests/live-corpus-quality-gate/",
+        "npm run live-corpus-quality-gate",
+        "npm run live-corpus-quality-gate:phase2"
+      ],
+      "ci": "No certification advancement; draft PR evaluation only"
+    }
+  },
+  "replay": {
+    "frozenEvaluationContentSha": "cebec8ab3aaecd894b1903ac0b758828655a88df",
+    "phase1TipSha": "084405770a02f5eebe88b0b7ffb192a46fd7960c",
+    "freezeArtifactHashes": {
+      "00-sample-manifest.json": "1e7bd3876ce8dc5e48182ff18b3728c71f302e1b5e17da73bf09a9d8f23436de",
+      "01-findings.json": "1c82f3c2ae9e8cda7cd44b5455c4e5f5ac0359e63783a89572b4f3fafe2aee64",
+      "02-layer-summaries.json": "398ffad0785bd60c88699e63db9c029573ceaf3a29ea9ab4c89b966e330d5ff9",
+      "03-production-defects.json": "7a4dbb1be6c73aecb8dc8a4f284bd0657aaf5640197f14697fec738b344351d3",
+      "04-quality-gate-report.json": "ee26f6dc3a21554199ce6ae836c5c76857e9ac4d9f6f6c446d2790d823d043f3",
+      "REPORT.md": "9a322a7fa45edffeff851bdcea9a0b2e474e1d4f4f5ab8df85f800556de246a8"
+    },
+    "freezeIntact": true,
+    "frozenFindingCount": 46,
+    "frozenUniqueFindingIds": 45,
+    "replayFindingCount": 46,
+    "reproduced": 45,
+    "nonReproduced": 0,
+    "statusChanged": 0,
+    "newInReplay": 0,
+    "missingInReplay": 0,
+    "duplicateFrozenFindingIds": [
+      {
+        "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "occurrences": 2
+      }
+    ],
+    "evaluationHarnessDefects": [
+      {
+        "defectId": "LCQG-HARNESS-FINDING-ID-COLLISION",
+        "classification": "EVALUATION_HARNESS_DEFECT",
+        "summary": "Phase-1 findingId formula embeds status and collides when two PASS findings share sample+dimension+layer (46 listed findings, 45 unique IDs). Oracle left unchanged; all unique IDs reproduced.",
+        "duplicateFrozenFindingIds": [
+          {
+            "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+            "occurrences": 2
+          }
+        ]
+      }
+    ],
+    "classifications": [
+      {
+        "findingId": "gib-doc-a:amendment_authority:extraction:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "No fabricated amendment/restatement edges invented for a single-document ORIGINAL package.",
+        "replaySummary": "No fabricated amendment/restatement edges invented for a single-document ORIGINAL package."
+      },
+      {
+        "findingId": "gib-doc-a:amendment_authority:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Package is a single ORIGINAL credit agreement; no post-closing amendment exhibit in package (Lane C search).",
+        "replaySummary": "Package is a single ORIGINAL credit agreement; no post-closing amendment exhibit in package (Lane C search)."
+      },
+      {
+        "findingId": "gib-doc-a:cross_reference_completeness:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Only 491/1459 references resolved (33.7%); 968 unresolved.",
+        "replaySummary": "Only 491/1459 references resolved (33.7%); 968 unresolved."
+      },
+      {
+        "findingId": "gib-doc-a:cross_reference_completeness:legally_verified:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Available Amount Builder Basket self-cites §7.05(a)(y) while operative print uses clause (vi)/(y) — source marker conflict.",
+        "replaySummary": "Available Amount Builder Basket self-cites §7.05(a)(y) while operative print uses clause (vi)/(y) — source marker conflict."
+      },
+      {
+        "findingId": "gib-doc-a:definition_completeness:extraction:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Deterministic definition detector reported 564 definitions.",
+        "replaySummary": "Deterministic definition detector reported 564 definitions."
+      },
+      {
+        "findingId": "gib-doc-a:definition_completeness:legally_verified:exhaustive",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "Exhaustive definition extraction accuracy vs full Article I inventory has no independent GT in this gate.",
+        "replaySummary": "Exhaustive definition extraction accuracy vs full Article I inventory has no independent GT in this gate."
+      },
+      {
+        "findingId": "gib-doc-a:definition_completeness:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Spot-checked material defined terms are present in source text.",
+        "replaySummary": "Spot-checked material defined terms are present in source text."
+      },
+      {
+        "findingId": "gib-doc-a:entity_scope_recognition:extraction:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No Pass B / compiled IR entityScope fields exist for this batch.",
+        "replaySummary": "No Pass B / compiled IR entityScope fields exist for this batch."
+      },
+      {
+        "findingId": "gib-doc-a:entity_scope_recognition:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "§7.08 facility-limited entity/instrument scope present in source.",
+        "replaySummary": "§7.08 facility-limited entity/instrument scope present in source."
+      },
+      {
+        "findingId": "gib-doc-a:exception_and_condition_recall:extraction:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "Pass B semantic condition/exception extraction was not executed on this batch.",
+        "replaySummary": "Pass B semantic condition/exception extraction was not executed on this batch."
+      },
+      {
+        "findingId": "gib-doc-a:exception_and_condition_recall:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "§7.08 leverage step-down + Qualifying Material Acquisition condition language present in source.",
+        "replaySummary": "§7.08 leverage step-down + Qualifying Material Acquisition condition language present in source."
+      },
+      {
+        "findingId": "gib-doc-a:false_affirmative_capacity:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Pass A shared_cap fired on 51 nodes; phrase 'shared capacity' absent — high false-affirmative risk.",
+        "replaySummary": "Pass A shared_cap fired on 51 nodes; phrase 'shared capacity' absent — high false-affirmative risk."
+      },
+      {
+        "findingId": "gib-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No certified capacity answers exist for this DEVELOPMENT batch; cannot legally verify false-affirmative rate beyond signal audit.",
+        "replaySummary": "No certified capacity answers exist for this DEVELOPMENT batch; cannot legally verify false-affirmative rate beyond signal audit."
+      },
+      {
+        "findingId": "gib-doc-a:held_out_blind:infrastructure",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Knife River BLIND body remains unread.",
+        "replaySummary": "Knife River BLIND body remains unread."
+      },
+      {
+        "findingId": "gib-doc-a:negative_covenant_discovery:extraction:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Operative Article VII negative-covenant sections recovered 7/7.",
+        "replaySummary": "Operative Article VII negative-covenant sections recovered 7/7."
+      },
+      {
+        "findingId": "gib-doc-a:negative_covenant_discovery:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Headings and operative spans independently confirmed in source Article VII.",
+        "replaySummary": "Headings and operative spans independently confirmed in source Article VII."
+      },
+      {
+        "findingId": "gib-doc-a:provenance_correctness:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Operative §7.08 extracted window contains embedded page number '249' (source furniture).",
+        "replaySummary": "Operative §7.08 extracted window contains embedded page number '249' (source furniture)."
+      },
+      {
+        "findingId": "gib-doc-a:provenance_correctness:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Provenance.json records SEC EDGAR URL, accession, exhibit, retrieval timestamp, hashes.",
+        "replaySummary": "Provenance.json records SEC EDGAR URL, accession, exhibit, retrieval timestamp, hashes."
+      },
+      {
+        "findingId": "gib-doc-a:source_integrity:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "EDGAR body + extracted text SHA256 match provenance and structure-summary.",
+        "replaySummary": "EDGAR body + extracted text SHA256 match provenance and structure-summary."
+      },
+      {
+        "findingId": "gib-doc-a:source_integrity:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Byte-identity of public EDGAR exhibit vs fixture is independently verifiable.",
+        "replaySummary": "Byte-identity of public EDGAR exhibit vs fixture is independently verifiable."
+      },
+      {
+        "findingId": "gib-doc-a:structural_completeness:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "TOC+body duplication makes bare section labels AMBIGUOUS under resolveUniqueNodeByRef.",
+        "replaySummary": "TOC+body duplication makes bare section labels AMBIGUOUS under resolveUniqueNodeByRef."
+      },
+      {
+        "findingId": "gib-doc-a:structural_completeness:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Structural index present (2087 nodes); Articles I–X detected; Pass B not fabricated.",
+        "replaySummary": "Structural index present (2087 nodes); Articles I–X detected; Pass B not fabricated."
+      },
+      {
+        "findingId": "gib-doc-a:structural_completeness:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "Full structural legal completeness (every operative subsection) lacks independent counsel GT.",
+        "replaySummary": "Full structural legal completeness (every operative subsection) lacks independent counsel GT."
+      },
+      {
+        "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:extraction:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Pipeline refused synthetic Pass B; no discoveryIds invented; unsupported semantics not coerced into fake IR.",
+        "replaySummary": "Pipeline refused synthetic Pass B; no discoveryIds invented; unsupported semantics not coerced into fake IR."
+      },
+      {
+        "findingId": "gib-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "Without Pass B/compiled units, corpus-scale unsupported-semantic surfacing cannot be legally verified.",
+        "replaySummary": "Without Pass B/compiled units, corpus-scale unsupported-semantic surfacing cannot be legally verified."
+      },
+      {
+        "findingId": "sup-doc-a:cross_reference_completeness:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for cross_reference_completeness on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for cross_reference_completeness on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:definition_completeness:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Historical COMPILE_CAP sampling never reached Article I definitions — empty definition extraction for GT A1–A5.",
+        "replaySummary": "Historical COMPILE_CAP sampling never reached Article I definitions — empty definition extraction for GT A1–A5."
+      },
+      {
+        "findingId": "sup-doc-a:definition_completeness:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "Independent GT for multi-definition cluster exists, but this gate does not re-score a new paid compile; mark UNVERIFIED for live legal verification of extraction completeness.",
+        "replaySummary": "Independent GT for multi-definition cluster exists, but this gate does not re-score a new paid compile; mark UNVERIFIED for live legal verification of extraction completeness."
+      },
+      {
+        "findingId": "sup-doc-a:entity_scope_recognition:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for entity_scope_recognition on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for entity_scope_recognition on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:exception_and_condition_recall:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for exception_and_condition_recall on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for exception_and_condition_recall on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:false_affirmative_capacity:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for false_affirmative_capacity on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for false_affirmative_capacity on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:negative_covenant_discovery:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for negative_covenant_discovery on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for negative_covenant_discovery on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:provenance_correctness:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Caption/title evidence for CREDIT_AGREEMENT confirmed in source.",
+        "replaySummary": "Caption/title evidence for CREDIT_AGREEMENT confirmed in source."
+      },
+      {
+        "findingId": "sup-doc-a:source_integrity:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+        "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+      },
+      {
+        "findingId": "sup-doc-a:structural_completeness:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for structural_completeness on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for structural_completeness on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-a:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-a in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-a in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-b:amendment_authority:extraction:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Frozen lightweight run misclassified doc-b as CREDIT_AGREEMENT and produced zero RESTATES edge.",
+        "replaySummary": "Frozen lightweight run misclassified doc-b as CREDIT_AGREEMENT and produced zero RESTATES edge."
+      },
+      {
+        "findingId": "sup-doc-b:amendment_authority:legally_verified:fail",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "FAIL",
+        "replayStatus": "FAIL",
+        "frozenSummary": "Source confirms doc-b is A&R and cites December 15, 2022 original — independent GT D1 applies.",
+        "replaySummary": "Source confirms doc-b is A&R and cites December 15, 2022 original — independent GT D1 applies."
+      },
+      {
+        "findingId": "sup-doc-b:provenance_correctness:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Caption/title evidence for AMENDED_AND_RESTATED_AGREEMENT confirmed in source.",
+        "replaySummary": "Caption/title evidence for AMENDED_AND_RESTATED_AGREEMENT confirmed in source."
+      },
+      {
+        "findingId": "sup-doc-b:source_integrity:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+        "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+      },
+      {
+        "findingId": "sup-doc-b:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-b in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-b in this unpaid gate."
+      },
+      {
+        "findingId": "sup-doc-c:amendment_authority:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "doc-c caption is First Amendment (A&R phrase is referential, not self-type).",
+        "replaySummary": "doc-c caption is First Amendment (A&R phrase is referential, not self-type)."
+      },
+      {
+        "findingId": "sup-doc-c:provenance_correctness:legally_verified:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Caption/title evidence for AMENDMENT confirmed in source.",
+        "replaySummary": "Caption/title evidence for AMENDMENT confirmed in source."
+      },
+      {
+        "findingId": "sup-doc-c:source_integrity:infrastructure:pass",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "PASS",
+        "replayStatus": "PASS",
+        "frozenSummary": "Authentic extracted EDGAR text fixture present with stable SHA256.",
+        "replaySummary": "Authentic extracted EDGAR text fixture present with stable SHA256."
+      },
+      {
+        "findingId": "sup-doc-c:unresolved_and_unsupported_semantics:legally_verified:unverified",
+        "outcome": "REPRODUCED",
+        "frozenStatus": "UNVERIFIED",
+        "replayStatus": "UNVERIFIED",
+        "frozenSummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-c in this unpaid gate.",
+        "replaySummary": "No fresh independent legal verification performed for unresolved_and_unsupported_semantics on sup-doc-c in this unpaid gate."
+      }
+    ],
+    "oracleUntouched": true
+  },
+  "adjudications": [
+    {
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "priority": "CRITICAL",
+      "classification": "SOURCE_INCONSISTENCY",
+      "secondaryClassifications": [
+        "COMPILER_DEFECT"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "regex locate definition cite + natural-search operative prong",
+        "charStart": 37218,
+        "charEnd": 37338,
+        "excerpt": " specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "sectionRef": "1.01(3)(31)(ii)"
+      },
+      "compilerStage": "reference-resolution",
+      "actualOutput": {
+        "definitionCites": "Section 7.05(a)(y)",
+        "printedMarker": "(vi)",
+        "parentheticalStillSays": "clause (y)",
+        "compilerStructuralPath": "1.01(3)(31)(ii)"
+      },
+      "expectedSafeBehavior": "Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement.",
+      "rootCauseHypothesis": "Primary: filed HTML itself disagrees (definition vs printed marker). Secondary: structural path 7.05(a)(4)(ii)(vi)(B) matches neither clean legal citation, so reference-resolution can invent false certainty if it binds uniquely.",
+      "independentEvidence": [
+        "sourceSha256=4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "definitionSpan= specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "operativeExcerpt=he Borrower or any Restricted Subsidiary. “ Auto-Extension Letter of Credit ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as of any date of determination and with res",
+        "Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "recommendedOwningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core",
+        "Covenant Knowledge Factory"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "title": "Pass A shared_cap over-fires on aggregate-amount nodes (51 hits)",
+      "priority": "CRITICAL",
+      "classification": "COMPILER_DEFECT",
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "Pass A shared_cap fixture excerpts + absence of phrase 'shared capacity'",
+        "excerpt": "(ii) fees, costs and expenses associated with acquisition related litigation and settlement thereof; provided that the aggregate amount of adjustments made pursuant to this clause (e)(i) (combined with the aggregate amount of adjustments made pursuant to clauses (g) , (u) ,",
+        "sectionRef": "1.01(3)(31)(2)(1)(e)(ii)"
+      },
+      "compilerStage": "pass-a-deterministic-discovery",
+      "actualOutput": {
+        "sharedCapSignalCount": 51,
+        "phraseSharedCapacityPresent": false,
+        "realReallocationTermPresent": true
+      },
+      "expectedSafeBehavior": "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
+      "rootCauseHypothesis": "Pass A `shared_cap` regex/heuristic keyed primarily to 'aggregate amount' (and similar), which fires on ordinary EBITDA add-back caps and other non-shared constructions.",
+      "independentEvidence": [
+        "sharedCapCount=51",
+        "phraseSharedCapacityPresent=false",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "Lane C report: shared capacity phrase does not occur"
+      ],
+      "recommendedOwningAgent": "Covenant Knowledge Factory",
+      "coordinatingAgents": [
+        "Legal Core",
+        "Structural Compiler"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "priority": "CRITICAL",
+      "classification": "COMPILER_DEFECT",
+      "sampleId": "sup-doc-b",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+      "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+      "exactSourceSpan": {
+        "method": "caption locate AMENDED AND RESTATED + historical lightweight report",
+        "charStart": 92,
+        "charEnd": 112,
+        "excerpt": "19822dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nEXECUTION VERSION\n\n$520,000,000\nAMENDED AND RESTATED\nCREDIT AGREEMENT\nDated as of August 14, 2024,\n\namong\nSUPERIOR INDUSTRIES\nINTERN",
+        "sectionRef": "caption"
+      },
+      "compilerStage": "document-classification",
+      "actualOutput": {
+        "historicalClassification": "CREDIT_AGREEMENT @ 0.9",
+        "restatesCandidates": 0,
+        "historicalReportConfirms": true
+      },
+      "expectedSafeBehavior": "Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission.",
+      "rootCauseHypothesis": "document-classifier AMENDED_AND_RESTATED pattern requires literal space between 'RESTATED' and 'CREDIT AGREEMENT' without whitespace normalization; EDGAR HTML line-wrap inserts newline and falls through to CREDIT_AGREEMENT. Relationship scan gated on classification type, so RESTATES never attempted.",
+      "independentEvidence": [
+        "sourceSha256=722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "docs/final-lightweight-unseen.md §4",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "recommendedOwningAgent": "Amendment Intelligence",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Dependency Atlas"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "priority": "HIGH",
+      "classification": "COMPILER_DEFECT",
+      "secondaryClassifications": [
+        "SOURCE_INCONSISTENCY"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "Articles I–X appear twice (TOC + body); health-summary counts",
+        "excerpt": "Articles I through X appear twice: table of contents, then the body. Bare section labels AMBIGUOUS under resolveUniqueNodeByRef.",
+        "sectionRef": "I–X / 7.xx"
+      },
+      "compilerStage": "structural-index",
+      "actualOutput": {
+        "healthByCode": {
+          "DUPLICATE_LABEL_EXPECTED": 306,
+          "AMBIGUOUS_LEGAL_REFERENCE": 306,
+          "DUPLICATE_NORMALIZED_PATH": 306
+        },
+        "findingCount": 918,
+        "articlesJsonLength": 20,
+        "operativeLongSpanRecovery": [
+          "7.01",
+          "7.02",
+          "7.03",
+          "7.04",
+          "7.05",
+          "7.06",
+          "7.08"
+        ]
+      },
+      "expectedSafeBehavior": "Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers.",
+      "rootCauseHypothesis": "EDGAR HTML embeds a full TOC before the body (source shape). Structural index correctly emits duplicate labels but resolveUniqueNodeByRef stays AMBIGUOUS; downstream consumers that ignore span length risk TOC binding.",
+      "independentEvidence": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "recommendedOwningAgent": "Structural Compiler",
+      "coordinatingAgents": [
+        "Dependency Atlas",
+        "Covenant Knowledge Factory"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    },
+    {
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "priority": "HIGH",
+      "classification": "COMPILER_DEFECT",
+      "secondaryClassifications": [
+        "UNRESOLVED_LEGAL_QUESTION"
+      ],
+      "sampleId": "gib-doc-a",
+      "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+      "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "exactSourceSpan": {
+        "method": "structure-summary reference counters",
+        "excerpt": "referencesDetected=1459 resolved=491 unresolved=968"
+      },
+      "compilerStage": "reference-resolution",
+      "actualOutput": {
+        "detected": 1459,
+        "resolved": 491,
+        "unresolved": 968,
+        "resolveRate": 0.3365318711446196
+      },
+      "expectedSafeBehavior": "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
+      "rootCauseHypothesis": "Mixture of (a) TOC-induced AMBIGUOUS targets, (b) external/schedule references omitted from package, (c) genuine cross-article refs not yet resolved by deterministic matcher. Not purely a source inconsistency.",
+      "independentEvidence": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "recommendedOwningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core"
+      ],
+      "blocksLegalVerification": true,
+      "productionFixInThisBranch": false
+    }
+  ],
+  "tickets": [
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "defectId": "LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "title": "Available Amount Builder Basket citation marker conflict (7.05(a)(y) vs printed (vi))",
+      "severity": "CRITICAL",
+      "owningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core",
+        "Covenant Knowledge Factory"
+      ],
+      "classification": "SOURCE_INCONSISTENCY",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: reference-resolution",
+        "Confirm actualOutput: {\"definitionCites\":\"Section 7.05(a)(y)\",\"printedMarker\":\"(vi)\",\"parentheticalStillSays\":\"clause (y)\",\"compilerStructuralPath\":\"1.01(3)(31)(ii)\"}",
+        "Expected safe behavior: Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement.",
+        "Evidence: sourceSha256=4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "Evidence: definitionSpan= specified in Section\n2.03(c)(iii) .\n\n“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) .\n\n“ Available Tenor ” means, as of any date of determination and with respect",
+        "Evidence: operativeExcerpt=he Borrower or any Restricted Subsidiary. “ Auto-Extension Letter of Credit ” has the meaning specified in Section 2.03(c)(iii) . “ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y) . “ Available Tenor ” means, as of any date of determination and with res",
+        "Evidence: Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Treat as UNRESOLVED / dual-cite REVIEW_REQUIRED. Never force a unique resolved target that prefers compiler path over source disagreement."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "Lane C report docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md §Builder/grower"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "title": "Pass A shared_cap over-fires on aggregate-amount nodes (51 hits)",
+      "severity": "CRITICAL",
+      "owningAgent": "Covenant Knowledge Factory",
+      "coordinatingAgents": [
+        "Legal Core",
+        "Structural Compiler"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: pass-a-deterministic-discovery",
+        "Confirm actualOutput: {\"sharedCapSignalCount\":51,\"phraseSharedCapacityPresent\":false,\"realReallocationTermPresent\":true}",
+        "Expected safe behavior: Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics.",
+        "Evidence: sharedCapCount=51",
+        "Evidence: phraseSharedCapacityPresent=false",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json",
+        "Evidence: Lane C report: shared capacity phrase does not occur"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Do not emit affirmative shared-capacity / combined-headroom conclusions from aggregate-amount pattern matches alone. Require explicit shared-pool / combined-cap / reallocation semantics."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/pass-a-shared-cap.json"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING",
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "title": "SUP doc-b RESTATES doc-a never surfaced (classifier whitespace / newline defect)",
+      "severity": "CRITICAL",
+      "owningAgent": "Amendment Intelligence",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Dependency Atlas"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt (sha256 722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c)",
+        "Compiler stage: document-classification",
+        "Confirm actualOutput: {\"historicalClassification\":\"CREDIT_AGREEMENT @ 0.9\",\"restatesCandidates\":0,\"historicalReportConfirms\":true}",
+        "Expected safe behavior: Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission.",
+        "Evidence: sourceSha256=722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "Evidence: docs/final-lightweight-unseen.md §4",
+        "Evidence: docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "Evidence: docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Classify as AMENDED_AND_RESTATED_AGREEMENT; surface RESTATES→doc-a or honest REVIEW_REQUIRED — never silent omission."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "docs/final-lightweight-unseen.md §4",
+        "docs/final-lightweight-unseen/07-targeted-ground-truth.json claims C2 + D1",
+        "docs/final-lightweight-unseen/12-document-classification.json"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "defectId": "LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "title": "Gibraltar TOC duplication yields AMBIGUOUS bare section refs",
+      "severity": "HIGH",
+      "owningAgent": "Structural Compiler",
+      "coordinatingAgents": [
+        "Dependency Atlas",
+        "Covenant Knowledge Factory"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: structural-index",
+        "Confirm actualOutput: {\"healthByCode\":{\"DUPLICATE_LABEL_EXPECTED\":306,\"AMBIGUOUS_LEGAL_REFERENCE\":306,\"DUPLICATE_NORMALIZED_PATH\":306},\"findingCount\":918,\"articlesJsonLength\":20,\"operativeLongSpanRecovery\":[\"7.01\",\"7.02\",\"7.03\",\"7.04\",\"7.05\",\"7.06\",\"7.08\"]}",
+        "Expected safe behavior: Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers.",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Prefer long-span operative body nodes; never silently bind TOC stubs; expose AMBIGUOUS explicitly to consumers."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/articles.json length=20",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/operative-article-vii.json long-span recovery exists"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    },
+    {
+      "ticketId": "TICKET-LCQG-GIB-XREF-LOW-RESOLVE",
+      "defectId": "LCQG-GIB-XREF-LOW-RESOLVE",
+      "title": "Gibraltar cross-reference resolve rate ~33.7% (968 unresolved)",
+      "severity": "HIGH",
+      "owningAgent": "Dependency Atlas",
+      "coordinatingAgents": [
+        "Structural Compiler",
+        "Legal Core"
+      ],
+      "classification": "COMPILER_DEFECT",
+      "minimalReproduction": [
+        "Checkout evaluation branch; do not modify docs/live-corpus-quality-gate/phase1-freeze/",
+        "Inspect source: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt (sha256 4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5)",
+        "Compiler stage: reference-resolution",
+        "Confirm actualOutput: {\"detected\":1459,\"resolved\":491,\"unresolved\":968,\"resolveRate\":0.3365318711446196}",
+        "Expected safe behavior: Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist.",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "Evidence: tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "acceptanceCriteriaForFix": [
+        "Fix lands on a production branch owned by the recommended agent — not by silently editing this evaluation oracle.",
+        "Independent replay of Phase-1 freeze still reproduces the historical finding until a NEW evaluation epoch is explicitly opened.",
+        "New regression test on production side proves the generalized fix without package-specific hardcoding (Architecture Invariant #29).",
+        "Keep material unresolved refs explicit (UNRESOLVED/REVIEW_REQUIRED). Do not force-bind to ambiguous TOC targets. Improve resolution where unique operative targets exist."
+      ],
+      "frozenOracleProtection": "docs/live-corpus-quality-gate/phase1-freeze/* is immutable. Agents implementing fixes MUST NOT edit frozen findings, expected statuses, or FREEZE-MANIFEST.json.",
+      "fixturePaths": [
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/structure-summary.json",
+        "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/structure/health-summary.json AMBIGUOUS_LEGAL_REFERENCE=306"
+      ],
+      "productionFixAllowedOnEvaluationBranch": false
+    }
+  ],
+  "ticketsByOwner": {
+    "Dependency Atlas": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT",
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING (coordinating)",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC (coordinating)",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE"
+    ],
+    "Structural Compiler": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP (coordinating)",
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING (coordinating)",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE (coordinating)"
+    ],
+    "Legal Core": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP (coordinating)",
+      "TICKET-LCQG-GIB-XREF-LOW-RESOLVE (coordinating)"
+    ],
+    "Covenant Knowledge Factory": [
+      "TICKET-LCQG-GIB-XREF-BUILDER-MARKER-CONFLICT (coordinating)",
+      "TICKET-LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "TICKET-LCQG-GIB-STRUCT-AMBIGUOUS-TOC (coordinating)"
+    ],
+    "Amendment Intelligence": [
+      "TICKET-LCQG-SUP-AMEND-RESTATES-MISSING"
+    ]
+  },
+  "corpus": {
+    "documents": [
+      {
+        "docId": "gib-doc-a",
+        "packageId": "gibraltar-2026-credit-agreement",
+        "issuer": "Gibraltar Industries, Inc.",
+        "agreementType": "CREDIT_AGREEMENT",
+        "instrumentClass": "ORIGINAL",
+        "complexity": "HIGH",
+        "role": "PHASE1_SAMPLE",
+        "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "chars": 1043514,
+        "sha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 3.983,
+        "crossDocument": false,
+        "usedForCompilerTuning": false,
+        "phase1Evaluated": true
+      },
+      {
+        "docId": "sup-doc-a",
+        "packageId": "superior-2022-2025-credit-facility",
+        "issuer": "Superior Industries International, Inc.",
+        "agreementType": "CREDIT_AGREEMENT",
+        "instrumentClass": "ORIGINAL",
+        "complexity": "HIGH",
+        "role": "PHASE1_SAMPLE",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt",
+        "chars": 788998,
+        "sha256": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 4.573,
+        "crossDocument": true,
+        "usedForCompilerTuning": false,
+        "phase1Evaluated": true
+      },
+      {
+        "docId": "sup-doc-b",
+        "packageId": "superior-2022-2025-credit-facility",
+        "issuer": "Superior Industries International, Inc.",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "PHASE1_SAMPLE",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "chars": 802119,
+        "sha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 4.612,
+        "crossDocument": true,
+        "usedForCompilerTuning": false,
+        "phase1Evaluated": true
+      },
+      {
+        "docId": "sup-doc-c",
+        "packageId": "superior-2022-2025-credit-facility",
+        "issuer": "Superior Industries International, Inc.",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "MEDIUM",
+        "role": "PHASE1_SAMPLE",
+        "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+        "chars": 28489,
+        "sha256": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 0.707,
+        "crossDocument": true,
+        "usedForCompilerTuning": false,
+        "phase1Evaluated": true
+      },
+      {
+        "docId": "chwy-doc-a",
+        "packageId": "chwy-2026-credit-agreement",
+        "issuer": "Chewy, Inc.",
+        "agreementType": "CREDIT_AGREEMENT",
+        "instrumentClass": "ORIGINAL",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "chars": 868560,
+        "sha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 4.257,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "dsgr-doc-a",
+        "packageId": "dsgr-2022-2025-credit-facility",
+        "issuer": "Distribution Solutions Group, Inc.",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt",
+        "chars": 743476,
+        "sha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 4.043,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "dsgr-doc-b",
+        "packageId": "dsgr-2022-2025-credit-facility",
+        "issuer": "Distribution Solutions Group, Inc.",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+        "chars": 741527,
+        "sha256": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 4.502,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "dsgr-doc-c",
+        "packageId": "dsgr-2022-2025-credit-facility",
+        "issuer": "Distribution Solutions Group, Inc.",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "MEDIUM",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "chars": 13862,
+        "sha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "dsgr-doc-d",
+        "packageId": "dsgr-2022-2025-credit-facility",
+        "issuer": "Distribution Solutions Group, Inc.",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "chars": 844994,
+        "sha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 3.652,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "riot-doc-a",
+        "packageId": "riot-2025-2026-credit-facility",
+        "issuer": "Riot Platforms, Inc.",
+        "agreementType": "CREDIT_AGREEMENT",
+        "instrumentClass": "ORIGINAL",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt",
+        "chars": 177631,
+        "sha256": "4e5556efb11626b7f207b0c1e7b9953329048fad22ddd0d4f2eda6a1e6e7ba2b",
+        "covenantFamilyHints": [
+          "LIENS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 6.224,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "riot-doc-b",
+        "packageId": "riot-2025-2026-credit-facility",
+        "issuer": "Riot Platforms, Inc.",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt",
+        "chars": 181371,
+        "sha256": "9c21d9ea414260804cdc3bbf1bc1b697f9320bcbe69677f311b68be0da722762",
+        "covenantFamilyHints": [
+          "LIENS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 6.223,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "riot-doc-c",
+        "packageId": "riot-2025-2026-credit-facility",
+        "issuer": "Riot Platforms, Inc.",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "chars": 189102,
+        "sha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+        "covenantFamilyHints": [
+          "LIENS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 6.119,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-eighth-ar",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
+        "instrumentClass": "RESTATEMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+        "chars": 826331,
+        "sha256": "20496bb3c5effc5c85e5d5d3dd2efa5d48cf003b5024964ae613fab140b559ac",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-omnibus-2026",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "HIGH",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
+        "chars": 1268135,
+        "sha256": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-guarantee",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "GUARANTEE",
+        "instrumentClass": "ANCILLARY",
+        "complexity": "MEDIUM",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+        "chars": 191561,
+        "sha256": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-second-amend-2022",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "MEDIUM",
+        "role": "REGRESSION_AUTHENTIC",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
+        "chars": 37209,
+        "sha256": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-curated-neg-cov",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "chars": 50080,
+        "sha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-curated-definitions",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+        "chars": 44178,
+        "sha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-curated-omnibus",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt",
+        "chars": 18111,
+        "sha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS"
+        ],
+        "definedTermDensityProxy": 0.552,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-curated-guarantee",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "GUARANTEE",
+        "instrumentClass": "ANCILLARY",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt",
+        "chars": 106821,
+        "sha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "conmed-curated-second-amend",
+        "packageId": "conmed-2025-credit-facility",
+        "issuer": "CONMED Corporation",
+        "agreementType": "AMENDMENT",
+        "instrumentClass": "AMENDMENT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+        "chars": 11701,
+        "sha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "fwrg-article-6",
+        "packageId": "fwrg-2021-credit-agreement",
+        "issuer": "First Watch Restaurant Group, Inc.",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "chars": 104183,
+        "sha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "fwrg-definitions",
+        "packageId": "fwrg-2021-credit-agreement",
+        "issuer": "First Watch Restaurant Group, Inc.",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "LOW",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/definitions-excerpt.txt",
+        "chars": 16544,
+        "sha256": "040274e5937cf34ec1700da2b490f3039620be3365037a57284b4e9918a4b9e6",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 1.813,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "lsb-article-6",
+        "packageId": "lsb-2023-abl-credit-agreement",
+        "issuer": "LakeShore Bancorp / LSB",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "MEDIUM",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "chars": 16854,
+        "sha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "FUNDAMENTAL_CHANGES",
+          "FINANCIAL_COVENANTS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "lsb-definitions",
+        "packageId": "lsb-2023-abl-credit-agreement",
+        "issuer": "LakeShore Bancorp / LSB",
+        "agreementType": "PARTIAL_EXCERPT",
+        "instrumentClass": "EXCERPT",
+        "complexity": "LOW",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+        "chars": 8137,
+        "sha256": "3988913874c4cb7bb4ac2c47dfa62317649b9e4be35f71fa052132189e2760cd",
+        "covenantFamilyHints": [
+          "INDEBTEDNESS",
+          "LIENS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS"
+        ],
+        "definedTermDensityProxy": 12.399,
+        "crossDocument": false,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      },
+      {
+        "docId": "lsb-intercreditor-joinder",
+        "packageId": "lsb-2023-abl-credit-agreement",
+        "issuer": "LakeShore Bancorp / LSB",
+        "agreementType": "INTERCREDITOR",
+        "instrumentClass": "ANCILLARY",
+        "complexity": "LOW",
+        "role": "PARTIAL_EXCERPT",
+        "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+        "chars": 10883,
+        "sha256": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+        "covenantFamilyHints": [
+          "LIENS"
+        ],
+        "definedTermDensityProxy": 0,
+        "crossDocument": true,
+        "usedForCompilerTuning": true,
+        "phase1Evaluated": false
+      }
+    ],
+    "availability": {
+      "targetAdditionalDistinctAgreements": 25,
+      "additionalDistinctAvailable": 22,
+      "totalAuthenticDocuments": 26,
+      "phase1Documents": 4,
+      "availabilityGap": 3,
+      "note": "Shared fixture corpus contains 22 additional authentic documents beyond Phase-1 (target was 25). Gap of 3 disclosed; no fabricated documents; Knife River BLIND unread."
+    },
+    "stratifiedCounts": {
+      "issuer": {
+        "Gibraltar Industries, Inc.": 1,
+        "Superior Industries International, Inc.": 3,
+        "Chewy, Inc.": 1,
+        "Distribution Solutions Group, Inc.": 4,
+        "Riot Platforms, Inc.": 3,
+        "CONMED Corporation": 9,
+        "First Watch Restaurant Group, Inc.": 2,
+        "LakeShore Bancorp / LSB": 3
+      },
+      "agreementType": {
+        "CREDIT_AGREEMENT": 4,
+        "AMENDED_AND_RESTATED_AGREEMENT": 6,
+        "AMENDMENT": 7,
+        "GUARANTEE": 2,
+        "PARTIAL_EXCERPT": 6,
+        "INTERCREDITOR": 1
+      },
+      "instrumentClass": {
+        "ORIGINAL": 4,
+        "RESTATEMENT": 6,
+        "AMENDMENT": 7,
+        "ANCILLARY": 3,
+        "EXCERPT": 6
+      },
+      "complexity": {
+        "HIGH": 12,
+        "MEDIUM": 11,
+        "LOW": 3
+      },
+      "role": {
+        "PHASE1_SAMPLE": 4,
+        "REGRESSION_AUTHENTIC": 12,
+        "PARTIAL_EXCERPT": 10
+      }
+    },
+    "blindReservation": {
+      "issuer": "Knife River",
+      "status": "BLIND_BODY_UNREAD",
+      "inspected": false
+    }
+  },
+  "extractionMetrics": {
+    "documentsProbed": 26,
+    "tocBodyDuplicationRiskDocs": 7,
+    "amendedRestatedCaptionDocs": 15,
+    "creditAgreementCaptionDocs": 20,
+    "greaterOfMentionsTotal": 227,
+    "sharedCapacityPhraseDocs": 0,
+    "aggregateAmountMentionsTotal": 391,
+    "financialCovenantHeadingDocs": 13,
+    "gibraltarStructural": {
+      "totalNodes": 2087,
+      "definitionsDetected": 564,
+      "referencesDetected": 1459,
+      "referencesResolved": 491,
+      "referencesUnresolved": 968,
+      "resolveRate": 0.3365318711446196,
+      "passACandidates": 946,
+      "tocBodySeparation": "UNVERIFIED_PARTIAL — operative-article-vii recovers long spans; bare refs AMBIGUOUS",
+      "structuralNodePrecisionRecall": "UNVERIFIED — no full independent node-level GT for Gibraltar",
+      "covenantDiscoveryRecallSectionLevel": "PASS for Article VII section heads (Phase-1 legally_verified)",
+      "provisoAttachment": "UNVERIFIED — Pass B not run",
+      "entityScopeExtraction": "UNVERIFIED for IR population; source phrase present for §7.08",
+      "amendmentRelationshipAccuracy": "PASS for single-document ORIGINAL absence; FAIL on SUP RESTATES historical"
+    },
+    "note": "Metrics are offline probes. Precision/recall labeled UNVERIFIED unless independent GT exists."
+  },
+  "legalSafetyFindings": [
+    {
+      "kind": "CONFIRMED_DEFECT",
+      "defectId": "LCQG-GIB-FALSE-AFFIRM-SHARED-CAP",
+      "issue": "false_affirmative_shared_capacity_signal_risk",
+      "docId": "gib-doc-a",
+      "status": "FAIL",
+      "note": "Confirmed in Phase-1 + adjudicated; aggregate-amount mass without shared-capacity phrase."
+    },
+    {
+      "kind": "CONFIRMED_DEFECT",
+      "defectId": "LCQG-SUP-AMEND-RESTATES-MISSING",
+      "issue": "wrong_operative_version_risk_via_missing_restates",
+      "docId": "sup-doc-b",
+      "status": "FAIL",
+      "note": "Confirmed historical dangerous silence on RESTATES."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "chwy-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-b",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-c",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "dsgr-doc-d",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-a",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-b",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "riot-doc-c",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-eighth-ar",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-omnibus-2026",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-guarantee",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-second-amend-2022",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-neg-cov",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-omnibus",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-guarantee",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "conmed-curated-second-amend",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "fwrg-article-6",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "fwrg-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-article-6",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-definitions",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    },
+    {
+      "kind": "HEURISTIC_FLAG",
+      "issue": "expansion_doc_no_independent_gt_this_gate",
+      "docId": "lsb-intercreditor-joinder",
+      "status": "UNVERIFIED",
+      "note": "Present in expansion corpus; no fresh independent legal GT adjudication in Phase-2 unpaid gate."
+    }
+  ],
+  "remainingUnverified": [
+    "Exhaustive Gibraltar definition inventory (spot-checks only in Phase-1).",
+    "Pass B/C/D semantic IR for Gibraltar (never executed).",
+    "Structural node precision/recall without independent node-level GT.",
+    "Proviso attachment accuracy (requires semantic compile).",
+    "Entity-scope IR population (source phrase only).",
+    "Expansion/regression docs lack fresh independent legal GT in this unpaid gate.",
+    "False-affirmative capacity rate beyond confirmed Gibraltar shared_cap signal audit.",
+    "Knife River BLIND body unread by design.",
+    "Availability gap vs 25 additional agreements: 3 (disclosed)."
+  ],
+  "reproducibleCommands": [
+    "npm run live-corpus-quality-gate",
+    "npm run live-corpus-quality-gate:phase2",
+    "npx vitest run tests/live-corpus-quality-gate/"
+  ],
+  "verdict": "LIVE_CORPUS_QUALITY_GATE_PHASE2_REPLAY_AND_TRIAGE_RECORDED"
+}
