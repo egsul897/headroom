@@ -1,6 +1,6 @@
 /**
  * Reclassify Neon PUBLIC_SEC_EDGAR sources currently UNKNOWN using title/filename
- * metadata only (no SEC network). Requires KF_MASS_PRECEDENT_LIVE_WRITE gate.
+ * and optional BYTEA text samples (no SEC network). Requires live-write gate.
  */
 import { classifyDebtDocument } from "../../lib/knowledge-factory/classify/debt-document";
 import { prisma } from "../../lib/prisma";
@@ -14,6 +14,7 @@ async function main() {
     process.exit(2);
   }
   const dry = process.argv.includes("--dry-run");
+  const withBytes = process.argv.includes("--with-bytes");
   const rows = await prisma.knowledgeSource.findMany({
     where: {
       usageRightsReviewStatus: "PUBLIC_SEC_EDGAR" as never,
@@ -24,21 +25,45 @@ async function main() {
       documentTitle: true,
       exhibitFilename: true,
       formType: true,
-      metadata: true,
+      originalBytesHash: true,
     },
   });
+
+  const hashSet = withBytes
+    ? [...new Set(rows.map((r) => r.originalBytesHash).filter(Boolean))]
+    : [];
+  const byteByHash = new Map<string, Buffer>();
+  if (hashSet.length) {
+    const blobs = await prisma.documentByteObject.findMany({
+      where: { contentHash: { in: hashSet } },
+      select: { contentHash: true, bytes: true },
+    });
+    for (const b of blobs) byteByHash.set(b.contentHash, Buffer.from(b.bytes));
+  }
+
   const stats = {
     scanned: rows.length,
     changed: 0,
     unchanged: 0,
+    withTextSample: 0,
     byTarget: {} as Record<string, number>,
   };
+
   for (const row of rows) {
+    let textSample = "";
+    if (withBytes && row.originalBytesHash) {
+      const buf = byteByHash.get(row.originalBytesHash);
+      if (buf) {
+        textSample = buf.toString("utf8").slice(0, 12_000);
+        stats.withTextSample += 1;
+      }
+    }
     const result = classifyDebtDocument({
       title: row.documentTitle ?? "",
       description: row.documentTitle ?? "",
       filename: row.exhibitFilename ?? "",
       exhibitType: row.formType ?? "",
+      textSample,
     });
     if (result.documentClass === "UNKNOWN") {
       stats.unchanged += 1;
@@ -46,7 +71,9 @@ async function main() {
     }
     stats.changed += 1;
     stats.byTarget[result.documentClass] = (stats.byTarget[result.documentClass] ?? 0) + 1;
-    console.log(`${dry ? "DRY" : "UPD"} ${row.sourceId} -> ${result.documentClass} (${result.signals.join(",")})`);
+    console.log(
+      `${dry ? "DRY" : "UPD"} ${row.sourceId} -> ${result.documentClass} (${result.signals.join(",")})`,
+    );
     if (!dry) {
       await prisma.knowledgeSource.update({
         where: { sourceId: row.sourceId },
@@ -54,7 +81,7 @@ async function main() {
       });
     }
   }
-  console.log(JSON.stringify({ dry, stats }, null, 2));
+  console.log(JSON.stringify({ dry, withBytes, stats }, null, 2));
   await prisma.$disconnect();
 }
 
