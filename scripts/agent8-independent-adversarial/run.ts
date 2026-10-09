@@ -391,7 +391,7 @@ function runRuntimeCases(): void {
         conditions: [
           {
             conditionId: "g1",
-            conditionType: "RATIO_TEST",
+            conditionType: "RATIO_SATISFIED",
             expression: gate,
             referencesDefinitionId: null,
             description: "FLNL <= 3.75x",
@@ -427,7 +427,7 @@ function runRuntimeCases(): void {
       releaseBlocking: !gateFailed,
     });
     // Status-layer honesty: AVAILABLE + GATE_NOT_SATISFIED is a misleading favorable signal
-    const statusHonest = ratio.status === "NOT_SATISFIED" && ratio.status !== "AVAILABLE";
+    const statusHonest = ratio.status === "NOT_SATISFIED";
     record({
       id: "RT-08b-gated-unlimited-status-not-available",
       challenge: 20,
@@ -885,7 +885,7 @@ function runAuthenticCases(): void {
   // --- 1: Covenant extraction — material CONMED baskets present in structure ---
   if (fs.existsSync(conmedArt7)) {
     const text = fs.readFileSync(conmedArt7, "utf8");
-    const nodes = parseDocumentStructure({ documentId: "conmed-doc-a", text });
+    const nodes = parseDocumentStructure({ documentId: "conmed-doc-a", label: "Credit Agreement", text });
     const spanText = (n: (typeof nodes)[number]) => text.slice(n.charStart, n.charEnd);
     const checks: Array<{ id: string; needle: string; sectionHint: string }> = [
       { id: "7.2(o)", needle: "60,000,000", sectionHint: "7.2" },

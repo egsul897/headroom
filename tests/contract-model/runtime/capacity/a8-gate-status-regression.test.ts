@@ -39,7 +39,7 @@ function gatedUnlimited(ruleId = "ratio-debt", threshold = 3.75) {
     conditions: [
       {
         conditionId: `${ruleId}-gate`,
-        conditionType: "RATIO_TEST",
+        conditionType: "RATIO_SATISFIED",
         expression: gatedBy,
         referencesDefinitionId: null,
         description: `${GATE_METRIC} <= ${threshold}`,
@@ -101,7 +101,7 @@ describe("A8-01 gate status regression — never AVAILABLE on unsatisfied gate",
         conditions: [
           {
             conditionId: "g",
-            conditionType: "RATIO_TEST",
+            conditionType: "RATIO_SATISFIED",
             expression: gatedBy,
             referencesDefinitionId: null,
             description: "gate",
@@ -152,7 +152,7 @@ describe("A8-01 gate status regression — never AVAILABLE on unsatisfied gate",
         conditions: [
           {
             conditionId: "g",
-            conditionType: "RATIO_TEST",
+            conditionType: "RATIO_SATISFIED",
             expression: gatedBy,
             referencesDefinitionId: null,
             description: "gate",

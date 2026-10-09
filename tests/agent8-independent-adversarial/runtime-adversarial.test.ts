@@ -59,10 +59,9 @@ describe("Agent 8 independent adversarial suite", () => {
       }
 
       // Must exercise both favorable-path and prohibition-path outcomes
-      expect(report.summary.outcomeBuckets.CORRECT_EXECUTABLE).toBeGreaterThan(0);
-      expect(
-        report.summary.outcomeBuckets.CORRECT_PROHIBITION + report.summary.outcomeBuckets.CORRECT_REFUSAL,
-      ).toBeGreaterThan(0);
+      const buckets = report.summary.outcomeBuckets;
+      expect(buckets.CORRECT_EXECUTABLE ?? 0).toBeGreaterThan(0);
+      expect((buckets.CORRECT_PROHIBITION ?? 0) + (buckets.CORRECT_REFUSAL ?? 0)).toBeGreaterThan(0);
 
       // Explicitly surface the known status-layer false-permission signal if still open
       const gatedStatus = report.cases.find((c) => c.id === "RT-08b-gated-unlimited-status-not-available");

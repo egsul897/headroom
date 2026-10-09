@@ -10,7 +10,7 @@ const rules = [
     conditions: [
       {
         conditionId: "g1",
-        conditionType: "RATIO_TEST",
+        conditionType: "RATIO_SATISFIED",
         expression: gate,
         referencesDefinitionId: null,
         description: "FLNL <= 3.75x",
@@ -82,7 +82,11 @@ console.log(
     {
       simStatus: sim.simulationStatus,
       path: sim.selectedPathResult,
-      effects: sim.capacityEffects.map((e) => ({ outcome: e.outcome, note: e.note })),
+      effects: sim.capacityEffects.map((e) => ({
+        outcome: e.outcome,
+        capacityStatus: e.capacityStatus,
+        limitations: e.limitations.map((l) => l.code),
+      })),
     },
     null,
     2,
