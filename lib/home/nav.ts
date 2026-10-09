@@ -21,6 +21,7 @@ export type CompanyNavKey =
   | "simulate"
   | "evidence"
   | "ask"
+  | "alerts"
   | "onboarding";
 
 export interface CompanyNavItem {
@@ -49,6 +50,7 @@ export function companyNavItems(companyId: string, onboardingStatus: OnboardingS
     { key: "simulate", href: `/${companyId}/simulate`, label: "Simulate" },
     { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
     { key: "ask", href: `/${companyId}/ask`, label: "Ask" },
+    { key: "alerts", href: `/${companyId}/alerts`, label: "Alerts" },
   ];
   if (onboardingStatus === "ONBOARDING" || onboardingStatus === "ACTIVE_WITH_LIMITATIONS") {
     items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Onboarding" });
