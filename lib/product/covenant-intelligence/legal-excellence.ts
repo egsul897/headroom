@@ -86,3 +86,38 @@ export {
   verifyLegalAnalysisIndependently,
   bridgeToCertificationPipeline,
 };
+
+export {
+  evaluateCrossDocumentTransaction,
+  verifyCrossDocumentVerdictIndependently,
+  CROSS_DOCUMENT_COVENANT_VERSION,
+} from "./cross-document-covenant";
+export {
+  AUTHENTIC_CROSS_DOCUMENT_SCENARIOS,
+  SYNTHETIC_CROSS_DOCUMENT_SCENARIOS,
+  runAllCrossDocumentScenarios,
+  runCrossDocumentScenario,
+} from "./cross-document-scenarios";
+export {
+  AUTHENTIC_PACKAGE_SCENARIOS,
+  runAllAuthenticPackageScenarios,
+} from "./cross-document-authentic-packages";
+export {
+  ADVERSARIAL_CROSS_DOCUMENT_SCENARIOS,
+  runAllAdversarialScenarios,
+} from "./cross-document-adversarial";
+export { attachNumericalCapacity, contemplatedFromAskDraft } from "./cross-document-capacity";
+export {
+  runConmedDsgrCompletenessAudit,
+  independentlyEnumerateRestrictions,
+  CROSS_DOCUMENT_COMPLETENESS_AUDIT_VERSION,
+} from "./cross-document-completeness-audit";
+export {
+  projectPermissionLayers,
+  CROSS_DOCUMENT_PERMISSION_LAYERS_VERSION,
+} from "./cross-document-permission-layers";
+export {
+  runCrossDocumentSequentialState,
+  buildConmedSequentialDemo,
+  CROSS_DOCUMENT_SEQUENTIAL_STATE_VERSION,
+} from "./cross-document-sequential-state";

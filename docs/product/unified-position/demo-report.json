@@ -1,0 +1,371 @@
+{
+  "schema": "unified-position-demo.v1",
+  "companyId": "coherent",
+  "paidProvidersCalled": false,
+  "postsToLedger": false,
+  "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — demonstration only",
+  "startedAt": "2026-10-09T22:20:50.895Z",
+  "positionReadiness": {
+    "status": "EXECUTABLE_PATH_AVAILABLE",
+    "capacityAuthority": "LEGACY_ENGINE",
+    "canEvaluateExecutableCapacity": true,
+    "ns4ApprovedSnapshotCount": 0,
+    "headline": "Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=LEGACY_ENGINE · not Phase 3 package CERTIFIED · not certified Phase 4E). No NS-4 APPROVED financial snapshot yet. No Phase 3 VERIFIED semantic units yet."
+  },
+  "overviewUtilizationHonesty": {
+    "capacityRowCount": 25,
+    "allUtilizationPctNull": true,
+    "allRemainingNullWhenNotTracked": true
+  },
+  "scenarios": [
+    {
+      "label": "below_limit_secured",
+      "question": "Can we incur $50 million of secured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we incur $50 million of secured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 50,
+        "kind": "SECURED_DEBT",
+        "secured": true,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "SECURED_DEBT",
+        "amountMillions": 50,
+        "secured": true,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "clear",
+        "debt": {
+          "status": "clear",
+          "bindingDocumentIds": [
+            "coherent-credit-agreement-2022"
+          ],
+          "perDocument": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear"
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear"
+            }
+          ]
+        },
+        "crossDocument": {
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "at_limit_probe",
+      "question": "Can we incur $100 million of secured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we incur $100 million of secured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 100,
+        "kind": "SECURED_DEBT",
+        "secured": true,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=debt&amount=100&secured=1&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "SECURED_DEBT",
+        "amountMillions": 100,
+        "secured": true,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "clear",
+        "debt": {
+          "status": "clear",
+          "bindingDocumentIds": [
+            "coherent-credit-agreement-2022"
+          ],
+          "perDocument": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear"
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear"
+            }
+          ]
+        },
+        "crossDocument": {
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=100&secured=1&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "above_limit_probe",
+      "question": "Can we incur $5000 million of secured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we incur $5000 million of secured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 5000,
+        "kind": "SECURED_DEBT",
+        "secured": true,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=debt&amount=5000&secured=1&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "SECURED_DEBT",
+        "amountMillions": 5000,
+        "secured": true,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "blocked",
+        "debt": {
+          "status": "blocked",
+          "bindingDocumentIds": [
+            "coherent-credit-agreement-2022"
+          ],
+          "perDocument": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear"
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear"
+            }
+          ]
+        },
+        "crossDocument": {
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=5000&secured=1&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "dividend",
+      "question": "Can we pay a $25 million dividend on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we pay a $25 million dividend on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 25,
+        "kind": "RESTRICTED_PAYMENT",
+        "secured": null,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=rp&amount=25&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "RESTRICTED_PAYMENT",
+        "amountMillions": 25,
+        "secured": null,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "clear",
+        "restrictedPayment": {
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "status": "clear",
+          "remaining": 0
+        },
+        "crossDocument": {
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "note": "RP/investment tested on one configured document only. 1 other document(s) may separately restrict this transaction — open Simulate for the caveat banners."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=rp&amount=25&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "investment",
+      "question": "Can we make a $25 million investment on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we make a $25 million investment on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 25,
+        "kind": "INVESTMENT",
+        "secured": null,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=investment&amount=25&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "INVESTMENT",
+        "amountMillions": 25,
+        "secured": null,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "clear",
+        "restrictedPayment": {
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "status": "clear",
+          "remaining": 0
+        },
+        "crossDocument": {
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "note": "RP/investment tested on one configured document only. 1 other document(s) may separately restrict this transaction — open Simulate for the caveat banners."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=investment&amount=25&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "unsecured",
+      "question": "Can we incur $75 million of unsecured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we incur $75 million of unsecured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 75,
+        "kind": "UNSECURED_DEBT",
+        "secured": false,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=debt&amount=75&secured=0&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "UNSECURED_DEBT",
+        "amountMillions": 75,
+        "secured": false,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "clear",
+        "debt": {
+          "status": "clear",
+          "bindingDocumentIds": [
+            "coherent-credit-agreement-2022"
+          ],
+          "perDocument": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear"
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear"
+            }
+          ]
+        },
+        "crossDocument": {
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+        }
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=75&secured=0&asOf=2026-06-30&from=ask"
+    },
+    {
+      "label": "missing_amount",
+      "question": "Can we incur secured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we incur secured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": null,
+        "kind": "SECURED_DEBT",
+        "secured": true,
+        "missingConfirmations": [
+          "transaction amount"
+        ]
+      },
+      "simulateHref": null,
+      "legacySimulation": null,
+      "askAnswerKind": "insufficient_evidence",
+      "askSimulateHref": null
+    }
+  ],
+  "crossDocumentPosition": {
+    "documentCount": 2,
+    "secured": {
+      "status": "modeled",
+      "capacity": 4041,
+      "bindingDocumentId": "coherent-2029-notes-indenture",
+      "bindingDocumentName": "2029 Senior Notes Indenture",
+      "bindingProvision": {
+        "id": "prov-ind-mila-secured",
+        "documentId": "coherent-2029-notes-indenture",
+        "code": "mila_secured",
+        "basketName": "MILA — secured prong",
+        "sectionRef": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+        "formulaType": "LEVERAGE_RATIO_ROOM",
+        "thresholdValue": 3,
+        "params": {
+          "debtBasis": "secured"
+        },
+        "notes": null
+      }
+    },
+    "unsecured": {
+      "status": "modeled",
+      "capacity": 5129,
+      "bindingDocumentId": "coherent-credit-agreement-2022",
+      "bindingDocumentName": "Credit Agreement (2022, as amended)",
+      "bindingProvision": {
+        "id": "prov-ca-leverage-cap",
+        "documentId": "coherent-credit-agreement-2022",
+        "code": "ca_leverage_cap",
+        "basketName": "Financial Covenants — Total Net Leverage",
+        "sectionRef": "§6.11 — TNL ≤ 4.25x",
+        "formulaType": "LEVERAGE_RATIO_ROOM",
+        "thresholdValue": 4.25,
+        "params": {
+          "debtBasis": "total"
+        },
+        "notes": null
+      }
+    },
+    "note": "Permission under one agreement does not override a prohibition under another."
+  },
+  "finishedAt": "2026-10-09T22:21:03.270Z"
+}

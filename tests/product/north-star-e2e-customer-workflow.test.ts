@@ -171,7 +171,10 @@ describeDb("North Star E2E customer workflow", () => {
     expect(txn.authoritative.cutoff.state).toBe("RESOLVED");
     expect(txn.pathEnumeration.authority).toBe("NOT_CERTIFIED_4E");
     expect(txn.certifiedAttempt.blockers).toContain("NO_VERIFIED_EXECUTION_PACKAGE");
-    expect(["insufficient_evidence", "review_required"]).toContain(txn.answer.kind);
+    // LEGACY_ENGINE simulation may still run (same engine as Simulate) while certified path is blocked.
+    expect(["insufficient_evidence", "review_required", "legacy_labeled"]).toContain(txn.answer.kind);
+    expect(txn.simulateHref).toContain("/simulate?");
+    expect(txn.legacySimulation).toBeTruthy();
 
     auth = await loadAuthoritativeCapacity({ companyId: CO, evaluationDate: "2026-08-01" });
     expect(auth.authority).not.toBe("CERTIFIED_4A_4D");

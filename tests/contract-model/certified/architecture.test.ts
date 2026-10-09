@@ -170,7 +170,9 @@ describe("certification closure: one decision, one adapter, no bypass", () => {
 
   it("Phase 4 is reachable from Phase 3 only through the certified adapter and the strict boundary: no product module imports the raw runtime capacity/simulation primitives, and the map itself never imports the runtime", () => {
     const runtimeImporters = walkTs(CM_LIB).filter((f) => !f.includes(`${path.sep}runtime${path.sep}`)).filter((f) => /from "[^"]*runtime\/(capacity\/graph|capacity\/state|transaction\/simulate)"/.test(fs.readFileSync(f, "utf8"))).map((f) => path.relative(CM_LIB, f)).sort();
-    expect(runtimeImporters).toEqual(["verified-execution.ts"]);
+    // verified-execution = certified single-step boundary; sequential-execution = multi-step
+    // composition boundary beside it (Agent 4). Product must still import only these adapters.
+    expect(runtimeImporters).toEqual(["sequential-execution.ts", "verified-execution.ts"]);
     for (const f of walkTs(path.join(CM_LIB, "covenant-map"))) expect(fs.readFileSync(f, "utf8"), f).not.toMatch(/from "[^"]*\/runtime\//);
     // the adapter consumes certification records + persisted packages only: never a map node, never raw compiler output
     const adapter = srcOf("phase3-certification/phase4-adapter.ts");

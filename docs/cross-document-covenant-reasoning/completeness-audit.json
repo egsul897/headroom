@@ -1,0 +1,436 @@
+{
+  "audit": {
+    "version": "product.cross-document-completeness-audit.v1",
+    "missedRestrictionCount": 0,
+    "falseNonApplicabilityCount": 0,
+    "findings": [
+      {
+        "scenarioId": "auth-conmed-unsecured-general-basket",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "7.2",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.2(o)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.2(l)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.3",
+            "family": "LIENS",
+            "expectation": "MUST_NOT_BLOCK_WHEN_UNSECURED"
+          },
+          {
+            "sectionRef": "7.6",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.8",
+            "family": "INVESTMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.1",
+            "family": "FINANCIAL_CONDITION",
+            "expectation": "MAINTENANCE_ONLY_NOT_INCURRENCE_GATE"
+          },
+          {
+            "sectionRef": "guarantor-scope",
+            "family": "SUBSIDIARY_GUARANTOR",
+            "expectation": "APPLICABLE_IF_GUARANTEE"
+          },
+          {
+            "sectionRef": "shared-capacity",
+            "family": "SHARED_CAPACITY",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "amendment-precedence",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "intercreditor",
+            "family": "INTERCREDITOR",
+            "expectation": "NOT_IN_PACKAGE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "7.2(a)",
+          "7.2(l)",
+          "7.2(o)"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": [
+          "7.1: independently classified as maintenance-only for this pathway — not scored as a Headroom miss when absent from evaluatedRestrictions."
+        ]
+      },
+      {
+        "scenarioId": "auth-conmed-secured-without-lien-path",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "7.2",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.2(o)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.2(l)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.3",
+            "family": "LIENS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.6",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.8",
+            "family": "INVESTMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.1",
+            "family": "FINANCIAL_CONDITION",
+            "expectation": "MAINTENANCE_ONLY_NOT_INCURRENCE_GATE"
+          },
+          {
+            "sectionRef": "guarantor-scope",
+            "family": "SUBSIDIARY_GUARANTOR",
+            "expectation": "APPLICABLE_IF_GUARANTEE"
+          },
+          {
+            "sectionRef": "shared-capacity",
+            "family": "SHARED_CAPACITY",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "amendment-precedence",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "intercreditor",
+            "family": "INTERCREDITOR",
+            "expectation": "NOT_IN_PACKAGE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "7.2(a)",
+          "7.2(l)",
+          "7.2(o)",
+          "7.3"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": [
+          "7.1: independently classified as maintenance-only for this pathway — not scored as a Headroom miss when absent from evaluatedRestrictions."
+        ]
+      },
+      {
+        "scenarioId": "auth-conmed-rp-basket",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "7.2",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.2(o)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.2(l)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.3",
+            "family": "LIENS",
+            "expectation": "APPLICABLE_IF_SECURED"
+          },
+          {
+            "sectionRef": "7.6",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.8",
+            "family": "INVESTMENTS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.1",
+            "family": "FINANCIAL_CONDITION",
+            "expectation": "MAINTENANCE_ONLY_NOT_INCURRENCE_GATE"
+          },
+          {
+            "sectionRef": "guarantor-scope",
+            "family": "SUBSIDIARY_GUARANTOR",
+            "expectation": "APPLICABLE_IF_GUARANTEE"
+          },
+          {
+            "sectionRef": "shared-capacity",
+            "family": "SHARED_CAPACITY",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "amendment-precedence",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "intercreditor",
+            "family": "INTERCREDITOR",
+            "expectation": "NOT_IN_PACKAGE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "7.6",
+          "7.8"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": [
+          "7.1: independently classified as maintenance-only for this pathway — not scored as a Headroom miss when absent from evaluatedRestrictions."
+        ]
+      },
+      {
+        "scenarioId": "auth-conmed-nonguarantor-guarantee",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "7.2",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.2(o)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.2(l)",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.3",
+            "family": "LIENS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "7.6",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.8",
+            "family": "INVESTMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "7.1",
+            "family": "FINANCIAL_CONDITION",
+            "expectation": "MAINTENANCE_ONLY_NOT_INCURRENCE_GATE"
+          },
+          {
+            "sectionRef": "guarantor-scope",
+            "family": "SUBSIDIARY_GUARANTOR",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "shared-capacity",
+            "family": "SHARED_CAPACITY",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "amendment-precedence",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "intercreditor",
+            "family": "INTERCREDITOR",
+            "expectation": "NOT_IN_PACKAGE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "7.2(a)",
+          "7.2(l)",
+          "7.2(o)",
+          "7.3",
+          "guarantor-scope"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": [
+          "7.1: independently classified as maintenance-only for this pathway — not scored as a Headroom miss when absent from evaluatedRestrictions."
+        ]
+      },
+      {
+        "scenarioId": "auth-dsgr-incremental-unevidenced",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "6.01",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "6.02",
+            "family": "LIENS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "6.04",
+            "family": "INVESTMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "6.08",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "2.09",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "10.01",
+            "family": "GUARANTEE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "Applicable Intercreditor Agreement",
+            "family": "INTERCREDITOR",
+            "expectation": "REQUIRED_DOC_IF_SECURED_PRIORITY"
+          },
+          {
+            "sectionRef": "9.02",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "Incremental Amount",
+            "family": "SHARED_CAPACITY",
+            "expectation": "MUST_EVALUATE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "10.01",
+          "2.09",
+          "6.01",
+          "6.02",
+          "9.02",
+          "Applicable Intercreditor Agreement",
+          "Incremental Amount"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": []
+      },
+      {
+        "scenarioId": "auth-dsgr-investment-lien-debt-bundle",
+        "independentlyEnumerated": [
+          {
+            "sectionRef": "6.01",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "6.02",
+            "family": "LIENS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "6.04",
+            "family": "INVESTMENTS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "6.08",
+            "family": "RESTRICTED_PAYMENTS",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "2.09",
+            "family": "DEBT_INCURRENCE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "10.01",
+            "family": "GUARANTEE",
+            "expectation": "MUST_EVALUATE"
+          },
+          {
+            "sectionRef": "Applicable Intercreditor Agreement",
+            "family": "INTERCREDITOR",
+            "expectation": "REQUIRED_DOC_IF_SECURED_PRIORITY"
+          },
+          {
+            "sectionRef": "9.02",
+            "family": "AMENDMENT_PRECEDENCE",
+            "expectation": "NOT_IN_PACKAGE"
+          },
+          {
+            "sectionRef": "Incremental Amount",
+            "family": "SHARED_CAPACITY",
+            "expectation": "NOT_IN_PACKAGE"
+          }
+        ],
+        "headroomSectionRefs": [
+          "10.01",
+          "2.09",
+          "6.01",
+          "6.02",
+          "6.04",
+          "6.08",
+          "9.02",
+          "Incremental Amount"
+        ],
+        "missedRestrictions": [],
+        "falseNonApplicability": [],
+        "notes": []
+      }
+    ]
+  },
+  "authenticSuite": {
+    "total": 12,
+    "matchedCount": 12,
+    "falsePermissionCount": 0,
+    "missedRestrictions": 0,
+    "scenarioIds": [
+      "auth-conmed-unsecured-general-basket",
+      "auth-conmed-secured-without-lien-path",
+      "auth-conmed-rp-basket",
+      "auth-conmed-nonguarantor-guarantee",
+      "auth-dsgr-incremental-unevidenced",
+      "auth-dsgr-investment-lien-debt-bundle",
+      "auth-gibraltar-general-debt-basket",
+      "auth-gibraltar-secured-missing-ica",
+      "auth-gibraltar-rp-builder-unevidenced",
+      "auth-chewy-shared-rp-investment",
+      "auth-chewy-incremental-unevidenced",
+      "auth-fwrg-nonloanparty-debt"
+    ]
+  }
+}

@@ -21,6 +21,12 @@ describe("transaction draft parsing", () => {
     expect(d.kind).toBe("RESTRICTED_PAYMENT");
     expect(d.missingConfirmations).toContain("evaluationDate (YYYY-MM-DD)");
   });
+
+  it("does not treat unsecured as secured", () => {
+    const d = parseTransactionDraft("Can we incur $75 million of unsecured debt on 2026-06-30?");
+    expect(d.kind).toBe("UNSECURED_DEBT");
+    expect(d.secured).toBe(false);
+  });
 });
 
 describe("demo transaction fixtures", () => {

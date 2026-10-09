@@ -1,0 +1,1018 @@
+{
+  "schema": "cross-document-covenant-scenarios.v1",
+  "generatedAt": "2026-10-09T22:23:20.525Z",
+  "costUsd": 0,
+  "total": 8,
+  "matchedCount": 8,
+  "falsePermissionCount": 0,
+  "results": [
+    {
+      "scenarioId": "xd-01-permit-vs-prohibit",
+      "title": "CA Loan Documents carve-out permits; Indenture Credit Agreement cap prohibits",
+      "expectedOverall": "PROHIBITED",
+      "actualOverall": "PROHIBITED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "credit-agreement",
+          "documentLabel": "Northfield Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        },
+        {
+          "documentId": "indenture",
+          "documentLabel": "Northfield Senior Notes Indenture",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "excerpt": "(a) Indebtedness under the Loan Documents;"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money."
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "excerpt": "(b) other Indebtedness in an aggregate principal amount not to exceed $30,000,000 at any time outstanding; and"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "excerpt": "(c) Indebtedness under the Senior Notes Indenture in an aggregate principal amount not to exceed $200,000,000."
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "excerpt": "provided that the Issuer may incur Indebtedness if the Fixed Charge Coverage Ratio for the most recently ended four full fiscal quarters would have been at leas"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money, all obligations evidenced by bonds, notes or debentures and all Capit"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "excerpt": "(a) Indebtedness under the Credit Agreement in an aggregate principal amount not to exceed $150,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "excerpt": "(c) Indebtedness in an aggregate principal amount not to exceed $75,000,000 at any time outstanding."
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "stance": "PERMITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "stance": "PERMITS"
+        }
+      ],
+      "conditions": [
+        "Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis"
+      ],
+      "supportedPermissions": [
+        "Northfield Credit Agreement §7.01(a): Loan Documents carve-out matches contemplated facility debt.",
+        "Northfield Senior Notes Indenture §4.09: qualitative/ratio permission exists.",
+        "Northfield Senior Notes Indenture §4.09(c): amount within basket $75,000,000."
+      ],
+      "prohibitions": [
+        "Northfield Senior Notes Indenture §4.09(a): pro forma Credit Agreement outstanding $170,000,000 exceeds cap $150,000,000."
+      ],
+      "unknowns": [
+        "Northfield Senior Notes Indenture §4.09: condition not evidenced — Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PROHIBITED",
+      "exactSourceCitations": [
+        "Northfield Credit Agreement §7.01(a)",
+        "Northfield Credit Agreement §1.01",
+        "Northfield Credit Agreement §7.01(b)",
+        "Northfield Credit Agreement §7.01(c)",
+        "Northfield Senior Notes Indenture §4.09",
+        "Northfield Senior Notes Indenture §1.01",
+        "Northfield Senior Notes Indenture §4.09(a)",
+        "Northfield Senior Notes Indenture §4.09(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:credit-agreement:7.01(a)",
+          "label": "Northfield Credit Agreement §7.01(a)",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:indenture:4.09",
+          "label": "Northfield Senior Notes Indenture §4.09",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:indenture:4.09(c)",
+          "label": "Northfield Senior Notes Indenture §4.09(c)",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [
+        "Cross-document tension: at least one applicable document supports a permission while another prohibits. Conjunction applies — permission does not override prohibition."
+      ],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-02-different-conditions",
+      "title": "General basket debt permitted under both docs subject to different caps/conditions",
+      "expectedOverall": "PERMITTED",
+      "actualOverall": "PERMITTED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "credit-agreement",
+          "documentLabel": "Northfield Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        },
+        {
+          "documentId": "indenture",
+          "documentLabel": "Northfield Senior Notes Indenture",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "excerpt": "(a) Indebtedness under the Loan Documents;"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money."
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "excerpt": "(b) other Indebtedness in an aggregate principal amount not to exceed $30,000,000 at any time outstanding; and"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "excerpt": "(c) Indebtedness under the Senior Notes Indenture in an aggregate principal amount not to exceed $200,000,000."
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "excerpt": "provided that the Issuer may incur Indebtedness if the Fixed Charge Coverage Ratio for the most recently ended four full fiscal quarters would have been at leas"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money, all obligations evidenced by bonds, notes or debentures and all Capit"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "excerpt": "(a) Indebtedness under the Credit Agreement in an aggregate principal amount not to exceed $150,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "excerpt": "(c) Indebtedness in an aggregate principal amount not to exceed $75,000,000 at any time outstanding."
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "stance": "PERMITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "stance": "PERMITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "stance": "PERMITS"
+        }
+      ],
+      "conditions": [
+        "Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis"
+      ],
+      "supportedPermissions": [
+        "Northfield Credit Agreement §7.01(a): Loan Documents carve-out matches contemplated facility debt.",
+        "Northfield Credit Agreement §7.01(b): amount within basket $30,000,000.",
+        "Northfield Senior Notes Indenture §4.09: qualitative/ratio permission exists.",
+        "Northfield Senior Notes Indenture §4.09(c): amount within basket $75,000,000."
+      ],
+      "prohibitions": [],
+      "unknowns": [
+        "Northfield Senior Notes Indenture §4.09: condition not evidenced — Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PERMITTED",
+      "exactSourceCitations": [
+        "Northfield Credit Agreement §7.01(a)",
+        "Northfield Credit Agreement §1.01",
+        "Northfield Credit Agreement §7.01(b)",
+        "Northfield Credit Agreement §7.01(c)",
+        "Northfield Senior Notes Indenture §4.09",
+        "Northfield Senior Notes Indenture §1.01",
+        "Northfield Senior Notes Indenture §4.09(a)",
+        "Northfield Senior Notes Indenture §4.09(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:credit-agreement:7.01(a)",
+          "label": "Northfield Credit Agreement §7.01(a)",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:credit-agreement:7.01(b)",
+          "label": "Northfield Credit Agreement §7.01(b)",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:indenture:4.09",
+          "label": "Northfield Senior Notes Indenture §4.09",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:indenture:4.09(c)",
+          "label": "Northfield Senior Notes Indenture §4.09(c)",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-03-debt-and-lien",
+      "title": "Secured debt needs both debt and lien authority; §9.15 shared secured cap binds",
+      "expectedOverall": "PROHIBITED",
+      "actualOverall": "PROHIBITED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "gp-credit-agreement",
+          "documentLabel": "Granite Peak Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.01(b)",
+          "excerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.02(b)",
+          "excerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and"
+        },
+        {
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.04",
+          "excerpt": "The Borrower shall not permit any Subsidiary that is not a Guarantor to guarantee any Indebtedness of the Borrower."
+        },
+        {
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "9.15",
+          "excerpt": "the Borrower shall not permit the aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries that is secured by a Lien to exceed $25,000,00"
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.01(b)",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "LIENS",
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.02(b)",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "SUBSIDIARY_GUARANTOR",
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.04",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "SHARED_CAPACITY",
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "9.15",
+          "stance": "PROHIBITS"
+        }
+      ],
+      "conditions": [
+        "Obligor is Borrower or Guarantor",
+        "Secures Indebtedness permitted under §7.01(b)"
+      ],
+      "supportedPermissions": [
+        "Granite Peak Credit Agreement §7.01(b): amount within basket $50,000,000."
+      ],
+      "prohibitions": [
+        "Granite Peak Credit Agreement §7.02(b): amount $30,000,000 exceeds basket $20,000,000.",
+        "Granite Peak Credit Agreement §7.04: The Borrower shall not permit any Subsidiary that is not a Guarantor to guarantee any Indebtedness of the Borrower.",
+        "Granite Peak Credit Agreement §9.15: exceeds stated ceiling $25,000,000."
+      ],
+      "unknowns": [
+        "Granite Peak Credit Agreement §7.01(b): condition not evidenced as satisfied — Obligor is Borrower or Guarantor",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PROHIBITED",
+      "exactSourceCitations": [
+        "Granite Peak Credit Agreement §7.01(b)",
+        "Granite Peak Credit Agreement §7.02(b)",
+        "Granite Peak Credit Agreement §7.04",
+        "Granite Peak Credit Agreement §9.15"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:gp-credit-agreement:7.01(b)",
+          "label": "Granite Peak Credit Agreement §7.01(b)",
+          "documentId": "gp-credit-agreement",
+          "sectionRef": "7.01(b)",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [
+        "Granite Peak Credit Agreement §7.02(b) shares capacity with §9.15 — do not stack independently.",
+        "Granite Peak Credit Agreement §9.15 shares capacity with §7.02(b) — do not stack independently."
+      ],
+      "falsePermissionRisks": [
+        "Cross-document tension: at least one applicable document supports a permission while another prohibits. Conjunction applies — permission does not override prohibition."
+      ],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-04-cross-section-definition",
+      "title": "Ratio-debt permission depends on Fixed Charge Coverage Ratio definition in §1.01",
+      "expectedOverall": "PROHIBITED",
+      "actualOverall": "PROHIBITED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "credit-agreement",
+          "documentLabel": "Northfield Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        },
+        {
+          "documentId": "indenture",
+          "documentLabel": "Northfield Senior Notes Indenture",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "excerpt": "(a) Indebtedness under the Loan Documents;"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money."
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "excerpt": "(b) other Indebtedness in an aggregate principal amount not to exceed $30,000,000 at any time outstanding; and"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "excerpt": "(c) Indebtedness under the Senior Notes Indenture in an aggregate principal amount not to exceed $200,000,000."
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "excerpt": "provided that the Issuer may incur Indebtedness if the Fixed Charge Coverage Ratio for the most recently ended four full fiscal quarters would have been at leas"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money, all obligations evidenced by bonds, notes or debentures and all Capit"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "excerpt": "(a) Indebtedness under the Credit Agreement in an aggregate principal amount not to exceed $150,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "excerpt": "(c) Indebtedness in an aggregate principal amount not to exceed $75,000,000 at any time outstanding."
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "stance": "PROHIBITS"
+        }
+      ],
+      "conditions": [
+        "Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis"
+      ],
+      "supportedPermissions": [
+        "Northfield Senior Notes Indenture §4.09: qualitative/ratio permission exists."
+      ],
+      "prohibitions": [
+        "Northfield Credit Agreement §7.01(b): amount $100,000,000 exceeds basket $30,000,000."
+      ],
+      "unknowns": [
+        "Northfield Senior Notes Indenture §4.09: condition not evidenced — Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PROHIBITED",
+      "exactSourceCitations": [
+        "Northfield Credit Agreement §7.01(a)",
+        "Northfield Credit Agreement §1.01",
+        "Northfield Credit Agreement §7.01(b)",
+        "Northfield Credit Agreement §7.01(c)",
+        "Northfield Senior Notes Indenture §4.09",
+        "Northfield Senior Notes Indenture §1.01",
+        "Northfield Senior Notes Indenture §4.09(a)",
+        "Northfield Senior Notes Indenture §4.09(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:indenture:4.09",
+          "label": "Northfield Senior Notes Indenture §4.09",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [
+        "Cross-document tension: at least one applicable document supports a permission while another prohibits. Conjunction applies — permission does not override prohibition."
+      ],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-05-amendment-effect",
+      "title": "Supplemental Indenture changes operative §4.09(c) from $50M to $75M",
+      "expectedOverall": "PROHIBITED",
+      "actualOverall": "PROHIBITED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "credit-agreement",
+          "documentLabel": "Northfield Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        },
+        {
+          "documentId": "indenture",
+          "documentLabel": "Northfield Senior Notes Indenture",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "excerpt": "(a) Indebtedness under the Loan Documents;"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money."
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "excerpt": "(b) other Indebtedness in an aggregate principal amount not to exceed $30,000,000 at any time outstanding; and"
+        },
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "excerpt": "(c) Indebtedness under the Senior Notes Indenture in an aggregate principal amount not to exceed $200,000,000."
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "excerpt": "provided that the Issuer may incur Indebtedness if the Fixed Charge Coverage Ratio for the most recently ended four full fiscal quarters would have been at leas"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money, all obligations evidenced by bonds, notes or debentures and all Capit"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "excerpt": "(a) Indebtedness under the Credit Agreement in an aggregate principal amount not to exceed $150,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "excerpt": "(c) Indebtedness in an aggregate principal amount not to exceed $50,000,000 at any time outstanding."
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "stance": "PROHIBITS"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(c)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "stance": "PROHIBITS"
+        }
+      ],
+      "conditions": [
+        "Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis"
+      ],
+      "supportedPermissions": [
+        "Northfield Senior Notes Indenture §4.09: qualitative/ratio permission exists."
+      ],
+      "prohibitions": [
+        "Northfield Credit Agreement §7.01(b): amount $60,000,000 exceeds basket $30,000,000."
+      ],
+      "unknowns": [
+        "Northfield Senior Notes Indenture §4.09: condition not evidenced — Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PROHIBITED",
+      "exactSourceCitations": [
+        "Northfield Credit Agreement §7.01(a)",
+        "Northfield Credit Agreement §1.01",
+        "Northfield Credit Agreement §7.01(b)",
+        "Northfield Credit Agreement §7.01(c)",
+        "Northfield Senior Notes Indenture §4.09",
+        "Northfield Senior Notes Indenture §1.01",
+        "Northfield Senior Notes Indenture §4.09(a)",
+        "Northfield Senior Notes Indenture §4.09(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:indenture:4.09",
+          "label": "Northfield Senior Notes Indenture §4.09",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [
+        "Cross-document tension: at least one applicable document supports a permission while another prohibits. Conjunction applies — permission does not override prohibition."
+      ],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-06-absent-document",
+      "title": "Term-loan lien permission subject to Intercreditor; ICA absent → undetermined",
+      "expectedOverall": "UNDETERMINED",
+      "actualOverall": "UNDETERMINED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "abl-credit-agreement",
+          "documentLabel": "Copperline ABL Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.02(b)",
+          "excerpt": "(b) Liens securing Indebtedness under the Term Loan Agreement, subject to the Intercreditor Agreement;"
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "LIENS",
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.02(b)",
+          "stance": "CONDITIONAL"
+        }
+      ],
+      "conditions": [
+        "Subject to the Intercreditor Agreement"
+      ],
+      "supportedPermissions": [
+        "Copperline ABL Credit Agreement §7.02(b): qualitative/ratio permission exists."
+      ],
+      "prohibitions": [],
+      "unknowns": [
+        "Copperline ABL Credit Agreement §7.02(b): condition not evidenced — Subject to the Intercreditor Agreement",
+        "Required document absent: Intercreditor Agreement — ABL §7.02(b) expressly conditions Term Loan Liens on the Intercreditor Agreement; ICA text is not in the package.",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "UNDETERMINED",
+      "exactSourceCitations": [
+        "Copperline ABL Credit Agreement §7.02(b)"
+      ],
+      "contractualPathways": [],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-07-classification-divergence",
+      "title": "Capital lease classified as Indebtedness under Indenture but not under CA definition",
+      "expectedOverall": "PERMITTED",
+      "actualOverall": "PERMITTED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "indenture",
+          "documentLabel": "Northfield Senior Notes Indenture",
+          "reason": "Definition of Indebtedness includes Capital Lease Obligations — instrument is in-scope. Document contains independently applicable restrictions."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "excerpt": "provided that the Issuer may incur Indebtedness if the Fixed Charge Coverage Ratio for the most recently ended four full fiscal quarters would have been at leas"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "1.01",
+          "excerpt": "\"Indebtedness\" means, as to any Person, all obligations of such Person for borrowed money, all obligations evidenced by bonds, notes or debentures and all Capit"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "excerpt": "(a) Indebtedness under the Credit Agreement in an aggregate principal amount not to exceed $150,000,000 at any time outstanding;"
+        },
+        {
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "excerpt": "(c) Indebtedness in an aggregate principal amount not to exceed $75,000,000 at any time outstanding."
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(a)",
+          "stance": "INAPPLICABLE"
+        },
+        {
+          "family": "DEBT_INCURRENCE",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "stance": "PERMITS"
+        }
+      ],
+      "conditions": [
+        "Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis"
+      ],
+      "supportedPermissions": [
+        "Northfield Senior Notes Indenture §4.09: qualitative/ratio permission exists.",
+        "Northfield Senior Notes Indenture §4.09(c): amount within basket $75,000,000."
+      ],
+      "prohibitions": [],
+      "unknowns": [
+        "Northfield Senior Notes Indenture §4.09: condition not evidenced — Fixed Charge Coverage Ratio ≥ 2.00 to 1.00 on a pro forma basis",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "PERMITTED",
+      "exactSourceCitations": [
+        "Northfield Senior Notes Indenture §4.09",
+        "Northfield Senior Notes Indenture §1.01",
+        "Northfield Senior Notes Indenture §4.09(a)",
+        "Northfield Senior Notes Indenture §4.09(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:indenture:4.09",
+          "label": "Northfield Senior Notes Indenture §4.09",
+          "documentId": "indenture",
+          "sectionRef": "4.09",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        },
+        {
+          "pathId": "path:indenture:4.09(c)",
+          "label": "Northfield Senior Notes Indenture §4.09(c)",
+          "documentId": "indenture",
+          "sectionRef": "4.09(c)",
+          "status": "CANDIDATE",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    },
+    {
+      "scenarioId": "xd-08-multiple-pathways",
+      "title": "Investment with multiple contractual pathways; Payment Conditions / Available Amount / ICA",
+      "expectedOverall": "CONDITIONALLY_PERMITTED",
+      "actualOverall": "CONDITIONALLY_PERMITTED",
+      "matchesExpected": true,
+      "applicableDocuments": [
+        {
+          "documentId": "abl-credit-agreement",
+          "documentLabel": "Copperline ABL Credit Agreement",
+          "reason": "Document contains independently applicable negative-covenant or priority restrictions for this transaction kind."
+        }
+      ],
+      "governingSections": [
+        {
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.03(b)",
+          "excerpt": "(b) Investments in an aggregate amount not to exceed the Available Amount, provided that the Payment Conditions are satisfied; and"
+        },
+        {
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "1.01",
+          "excerpt": "\"Available Amount\" means, as of any date, an amount equal to $10,000,000 plus 50% of Consolidated Net Income..."
+        },
+        {
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.03(c)",
+          "excerpt": "(c) other Investments in an aggregate amount not to exceed $3,000,000 at any time outstanding:"
+        }
+      ],
+      "evaluatedRestrictions": [
+        {
+          "family": "INVESTMENTS",
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.03(b)",
+          "stance": "CONDITIONAL"
+        },
+        {
+          "family": "INVESTMENTS",
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.03(c)",
+          "stance": "PROHIBITS"
+        }
+      ],
+      "conditions": [
+        "Payment Conditions satisfied (no Default; Availability ≥ greater of $12,500,000 and 12.5% of Borrowing Base)",
+        "Uses Available Amount capacity",
+        "no Default has occurred and is continuing",
+        "Investments are made in cash"
+      ],
+      "supportedPermissions": [
+        "Copperline ABL Credit Agreement §7.03(b): amount within basket $10,000,000."
+      ],
+      "prohibitions": [],
+      "unknowns": [
+        "Copperline ABL Credit Agreement §7.03(b): condition not evidenced as satisfied — Payment Conditions satisfied (no Default; Availability ≥ greater of $12,500,000 and 12.5% of Borrowing Base)",
+        "Copperline ABL Credit Agreement §7.03(b): condition not evidenced as satisfied — Uses Available Amount capacity",
+        "Phase 4E authority=NOT_CERTIFIED_4E: NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "overallResult": "CONDITIONALLY_PERMITTED",
+      "exactSourceCitations": [
+        "Copperline ABL Credit Agreement §7.03(b)",
+        "Copperline ABL Credit Agreement §1.01",
+        "Copperline ABL Credit Agreement §7.03(c)"
+      ],
+      "contractualPathways": [
+        {
+          "pathId": "path:abl-credit-agreement:7.03(b)",
+          "label": "Copperline ABL Credit Agreement §7.03(b)",
+          "documentId": "abl-credit-agreement",
+          "sectionRef": "7.03(b)",
+          "status": "CONDITIONAL",
+          "note": "Neutral pathway from operative fact — not auto-selected; stacking not assumed."
+        }
+      ],
+      "antiStackingNotes": [],
+      "falsePermissionRisks": [],
+      "systemsConsumed": {
+        "packageGraph": false,
+        "operativeResolution": false,
+        "verifiedRulebookSignal": false,
+        "pathEnumeration4E": true,
+        "crossCovenantAnalysis": false
+      },
+      "independentVerification": {
+        "confirmed": true,
+        "falsePermissionCount": 0,
+        "findings": []
+      }
+    }
+  ]
+}

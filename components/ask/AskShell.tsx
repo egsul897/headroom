@@ -20,6 +20,7 @@ export function AskShell({
   const [mode, setMode] = useState<AskMode>("transaction");
   const [result, setResult] = useState<AskShellResult>(initial);
   const [txnJson, setTxnJson] = useState<string | null>(null);
+  const [simulateHref, setSimulateHref] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   return (
@@ -118,11 +119,22 @@ export function AskShell({
             </div>
           </div>
         )}
+        {simulateHref && (
+          <div className="button-row" style={{ marginTop: 12 }}>
+            <Link className="button button-primary" href={simulateHref}>
+              Open in Simulate (same LEGACY_ENGINE)
+            </Link>
+          </div>
+        )}
       </section>
 
       {txnJson && (
         <section className="home-card" style={{ marginTop: 12 }}>
           <h2 className="home-headline">Transaction analysis (structured)</h2>
+          <p className="home-detail" style={{ marginBottom: 8 }}>
+            LEGACY_ENGINE figures use the same covenant-engine as Simulate. Certified path remains separately gated.
+            Hypothetical results never post to the ledger.
+          </p>
           <pre style={{ whiteSpace: "pre-wrap", fontSize: 12, overflow: "auto" }}>{txnJson}</pre>
         </section>
       )}
@@ -133,6 +145,7 @@ export function AskShell({
           event.preventDefault();
           setPending(true);
           setTxnJson(null);
+          setSimulateHref(null);
           try {
             if (mode === "transaction") {
               const res = await fetch("/api/ask/transaction", {
@@ -145,6 +158,7 @@ export function AskShell({
                 draft?: { missingConfirmations?: string[] };
                 authoritative?: { status: string; authority: string; missingInputs?: string[] };
                 pathEnumeration?: { authority: string; note: string };
+                simulateHref?: string | null;
                 error?: string;
               };
               if (data.error) {
@@ -156,6 +170,7 @@ export function AskShell({
                 });
               } else {
                 setTxnJson(JSON.stringify(data, null, 2));
+                setSimulateHref(data.simulateHref ?? null);
                 setResult({
                   kind:
                     data.answer?.kind === "certified"
