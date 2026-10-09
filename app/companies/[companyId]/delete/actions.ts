@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
 
 /**
  * Permanently deletes a company and every row that cascades from it
@@ -19,6 +20,8 @@ import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
 export async function deleteCompanyAction(formData: FormData) {
   const companyId = String(formData.get("companyId") ?? "");
   const confirmName = String(formData.get("confirmName") ?? "").trim();
+  // Tenant boundary: a destructive action on a company the caller is not permitted to reach fails closed.
+  await requireCompanyAccess(companyId);
 
   // The two golden regression companies (task "UNIVERSAL HEADROOM PRODUCT
   // EXPERIENCE" §79 - "Protected companies: Coherent, Matthews must remain

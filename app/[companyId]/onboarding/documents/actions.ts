@@ -1,5 +1,7 @@
 "use server";
 
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { runExtractionForDocument } from "@/lib/onboarding/documents";
@@ -11,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import type { DocumentType } from "@prisma/client";
 
 export async function uploadDocumentAction(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a file to upload.");
   const declaredType = String(formData.get("declaredType") ?? "OTHER") as DocumentType;
@@ -59,6 +62,7 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 }
 
 export async function runExtractionAction(companyId: string, documentId: string) {
+  await requireCompanyAccess(companyId);
   const { provider, providerName, model, promptVersion, schemaVersion } = getExtractionProvider();
   await runExtractionForDocument({ companyId, documentId, provider, providerName, model, promptVersion, schemaVersion });
 

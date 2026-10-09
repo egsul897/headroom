@@ -44,7 +44,7 @@ async function teardown() {
 describe("P3-R0 C5 — SNAPSHOT_UPDATE approval does not carry prior facts forward", () => {
   beforeAll(async () => {
     await teardown();
-    await prisma.company.create({ data: { id: COMPANY_ID, name: "Fixture P3-R0 C5 (synthetic, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_ID, name: "Fixture P3-R0 C5 (synthetic, test-only)" } });
   });
 
   afterAll(async () => {
@@ -147,7 +147,7 @@ describe("P3-R0 C5 — SNAPSHOT_UPDATE approval does not carry prior facts forwa
   it("a complete payload does not require a prior snapshot to exist", async () => {
     const freshId = "fixture-p3-r0-c5-feeds-fresh";
     await prisma.company.deleteMany({ where: { id: freshId } });
-    await prisma.company.create({ data: { id: freshId, name: "Fixture P3-R0 C5 fresh (synthetic, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: freshId, name: "Fixture P3-R0 C5 fresh (synthetic, test-only)" } });
     try {
       const item = await prisma.feedQueueItem.create({
         data: {

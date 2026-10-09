@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { authorizeCompanyAccess } from "@/lib/auth/tenant-boundary";
 
 export const metadata = { title: "Headroom — Document source" };
 
@@ -69,6 +70,9 @@ export default async function DocumentSourcePage({
   params: Promise<{ companyId: string; documentId: string }>;
 }) {
   const { companyId, documentId } = await params;
+  // Tenant boundary: stored document bytes are customer data; deny before any read, 404 either way.
+  const access = await authorizeCompanyAccess(companyId);
+  if (!access.allowed) notFound();
   const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
   if (!doc) notFound();
 

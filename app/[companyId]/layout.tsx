@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCompanySummary } from "@/lib/dashboard-service";
+import { authorizeCompanyAccess } from "@/lib/auth/tenant-boundary";
 import { CompanyNav } from "@/components/CompanyNav";
 import { CompanyIdentityCard } from "@/components/home/CompanyIdentityCard";
 import { BrandMark } from "@/components/home/icons";
@@ -15,6 +16,9 @@ import "../home-shell.css";
  */
 export default async function CompanyLayout({ children, params }: { children: ReactNode; params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
+  // Tenant boundary: a denied or unknown company answers 404 before any company data is read.
+  const access = await authorizeCompanyAccess(companyId);
+  if (!access.allowed) notFound();
   const company = await getCompanySummary(companyId).catch(() => null);
   if (!company) notFound();
 

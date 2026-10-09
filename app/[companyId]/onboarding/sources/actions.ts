@@ -1,5 +1,7 @@
 "use server";
 
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
+
 /**
  * Bare-minimum "Connect Source" action layer (docs/autonomous-retrieval-phase-a-foundation.md,
  * task's own "a bare-minimum Connect Source action is welcome if it's quick"
@@ -14,6 +16,7 @@ import { createIngestionJob, runAllPendingIngestionStages } from "@/lib/connecto
 import { prisma } from "@/lib/prisma";
 
 export async function connectEdgarAction(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   const ticker = String(formData.get("ticker") ?? "").trim();
   if (!ticker) throw new Error("Enter a ticker to connect an EDGAR source.");
   await connectSource({ companyId, connectorType: "EDGAR", config: { ticker } });
@@ -22,7 +25,9 @@ export async function connectEdgarAction(companyId: string, formData: FormData) 
 
 /** Runs an INITIALIZE job on first sync, SYNC on every sync after - the connection's own lastSuccessfulSyncAt is what decides which. */
 export async function syncConnectionAction(companyId: string, sourceConnectionId: string) {
-  const connection = await prisma.companySourceConnection.findUniqueOrThrow({ where: { id: sourceConnectionId } });
+  await requireCompanyAccess(companyId);
+  // Object-level scope: the connection must belong to the company this action was authorized for.
+  const connection = await prisma.companySourceConnection.findFirstOrThrow({ where: { id: sourceConnectionId, companyId } });
   const kind = connection.lastSuccessfulSyncAt ? "SYNC" : "INITIALIZE";
   const job = await createIngestionJob({ companyId, kind, sourceConnectionId });
   await runAllPendingIngestionStages(job.id);
@@ -30,6 +35,7 @@ export async function syncConnectionAction(companyId: string, sourceConnectionId
 }
 
 export async function connectAndSyncCsvAction(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a CSV file to upload.");
   const buffer = Buffer.from(await file.arrayBuffer());

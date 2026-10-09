@@ -84,7 +84,7 @@ async function teardown() {
 
 beforeAll(async () => {
   await teardown();
-  await prisma.company.create({ data: { id: COMPANY_ID, name: "Part B FINDING-7 product-flow gating test co", onboardingStatus: "ONBOARDING" } });
+  await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_ID, name: "Part B FINDING-7 product-flow gating test co", onboardingStatus: "ONBOARDING" } });
 });
 
 afterAll(async () => {

@@ -1,5 +1,7 @@
 "use server";
 
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
+
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { LedgerBasket, LedgerDirection } from "@prisma/client";
@@ -9,6 +11,7 @@ const VALID_DIRECTIONS: LedgerDirection[] = ["CREDIT", "DEBIT"];
 
 /** Generalized off app/ledger/actions.ts (Coherent-only) - same real writes, companyId-scoped. */
 export async function addLedgerEntry(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   const basket = String(formData.get("basket"));
   const direction = String(formData.get("direction"));
   const amount = Number(formData.get("amount"));
@@ -32,7 +35,8 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
  * there is no successor fact. A second call fails closed.
  */
 export async function supersedeLedgerEntry(companyId: string, id: string) {
-  const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
+  await requireCompanyAccess(companyId);
+  const entry = await prisma.ledgerEntry.findFirstOrThrow({ where: { id, companyId } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
   if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
   await prisma.ledgerEntry.update({
@@ -44,6 +48,7 @@ export async function supersedeLedgerEntry(companyId: string, id: string) {
 
 /** Mirrors the "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared restricted-payment pool. */
 export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number) {
+  await requireCompanyAccess(companyId);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
   await prisma.ledgerEntry.create({
     data: {
