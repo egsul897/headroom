@@ -18,9 +18,17 @@ describe("continuous neon expand targeting", () => {
       "ex10-1.htm",
       ["ABL_AGREEMENT", "CREDIT_AGREEMENT"],
     );
+    const supplement = scoreExhibitForTargets(
+      "Third Supplemental Indenture",
+      "ex4-3.htm",
+      ["INDENTURE", "CREDIT_AGREEMENT"],
+    );
     const generic = scoreExhibitForTargets("Side letter", "ex99.htm", ["ABL_AGREEMENT"]);
     expect(abl).toBeGreaterThan(generic);
+    expect(abl).toBeGreaterThan(supplement);
     expect(abl).toBeGreaterThanOrEqual(10);
+    // Discovery-filtered candidates keep a positive floor so they are not dropped
+    expect(generic).toBeGreaterThan(0);
   });
 });
 

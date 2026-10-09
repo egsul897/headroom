@@ -1,0 +1,418 @@
+{
+  "schema": "kf-calculation-example-library.v1",
+  "generatedAt": "2026-10-09T23:10:53.840Z",
+  "note": "Synthetic financial inputs — not authentic customer evidence; expected stored separately from enginePrediction",
+  "cases": [
+    {
+      "mechanicId": "general-investment-basket-fixed",
+      "mechanicLabel": "Fixed-dollar general investment basket",
+      "scenarioKind": "BELOW_LIMIT",
+      "sourceLinked": true,
+      "sourceRef": {
+        "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+        "documentClass": "RESTATEMENT",
+        "note": "Anchor only — synthetic inputs are not certificate evidence"
+      },
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingInvestments": 10000000,
+        "notes": "Synthetic utilization against a $50mm fixed basket"
+      },
+      "proposedTransaction": {
+        "action": "MAKE_INVESTMENT",
+        "amount": 25000000,
+        "currency": "USD",
+        "baskets": [
+          "general-investments"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 15000000,
+        "notes": "10 + 25 < 50 fixed cap → permitted with 15 remaining"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:0d8be1578b4fb9cd",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "general-investment-basket-fixed",
+      "mechanicLabel": "Fixed-dollar general investment basket",
+      "scenarioKind": "AT_LIMIT",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingInvestments": 40000000
+      },
+      "proposedTransaction": {
+        "action": "MAKE_INVESTMENT",
+        "amount": 10000000,
+        "currency": "USD",
+        "baskets": [
+          "general-investments"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 0,
+        "notes": "Exactly at $50mm cap"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:3711b69608874879",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "general-investment-basket-fixed",
+      "mechanicLabel": "Fixed-dollar general investment basket",
+      "scenarioKind": "ABOVE_LIMIT",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingInvestments": 45000000
+      },
+      "proposedTransaction": {
+        "action": "MAKE_INVESTMENT",
+        "amount": 10000000,
+        "currency": "USD",
+        "baskets": [
+          "general-investments"
+        ]
+      },
+      "expected": {
+        "permitted": false,
+        "remainingCapacity": 5000000,
+        "blockedReason": "Exceeds fixed basket capacity",
+        "notes": "45 + 10 > 50"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:7d9d30fda89d083d",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "available-amount-rp",
+      "mechanicLabel": "Restricted payment from Available Amount builder",
+      "scenarioKind": "DIVIDEND",
+      "sourceLinked": true,
+      "sourceRef": {
+        "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
+        "documentClass": "RESTATEMENT",
+        "note": "Builder basket pattern — synthetic builder balance"
+      },
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "availableAmountBuilder": 75000000,
+        "outstandingRestrictedPayments": 20000000
+      },
+      "proposedTransaction": {
+        "action": "RESTRICTED_PAYMENT",
+        "amount": 30000000,
+        "currency": "USD",
+        "baskets": [
+          "available-amount"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 25000000,
+        "notes": "Builder 75 − prior RP 20 − dividend 30 = 25"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:d433050c4276fa01",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "shared-rp-investment-capacity",
+      "mechanicLabel": "Shared RP / investment builder capacity",
+      "scenarioKind": "SHARED_CAPACITY",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "availableAmountBuilder": 40000000,
+        "outstandingRestrictedPayments": 10000000,
+        "outstandingInvestments": 15000000,
+        "notes": "Investments and RPs share Available Amount"
+      },
+      "proposedTransaction": {
+        "action": "MAKE_INVESTMENT",
+        "amount": 20000000,
+        "currency": "USD",
+        "baskets": [
+          "available-amount",
+          "investments"
+        ]
+      },
+      "expected": {
+        "permitted": false,
+        "remainingCapacity": 15000000,
+        "blockedReason": "Shared capacity exhausted by prior RP + investments",
+        "notes": "40 − 10 − 15 = 15 available; 20 proposed → blocked"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:732961ac0e3e40e7",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "leverage-ratio-debt-incurrence",
+      "mechanicLabel": "Incurrence leverage test for incremental debt",
+      "scenarioKind": "RATIO_CHANGE",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "consolidatedEBITDA": 200000000,
+        "consolidatedTotalDebt": 800000000,
+        "notes": "Pro forma leverage must not exceed 5.00x"
+      },
+      "proposedTransaction": {
+        "action": "INCUR_DEBT",
+        "amount": 150000000,
+        "currency": "USD",
+        "baskets": [
+          "ratio-debt"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "notes": "Pro forma debt 950 / EBITDA 200 = 4.75x ≤ 5.00x"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:6ed2c39e195c3358",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "leverage-ratio-debt-incurrence",
+      "mechanicLabel": "Incurrence leverage test for incremental debt",
+      "scenarioKind": "ABOVE_LIMIT",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "consolidatedEBITDA": 200000000,
+        "consolidatedTotalDebt": 900000000
+      },
+      "proposedTransaction": {
+        "action": "INCUR_DEBT",
+        "amount": 150000000,
+        "currency": "USD",
+        "baskets": [
+          "ratio-debt"
+        ]
+      },
+      "expected": {
+        "permitted": false,
+        "blockedReason": "Pro forma leverage 5.25x exceeds 5.00x",
+        "notes": "1050 / 200 = 5.25x"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:3bda3af31451b154",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "equity-contribution-builder",
+      "mechanicLabel": "Equity contribution increases Available Amount",
+      "scenarioKind": "EQUITY_CONTRIBUTION",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "availableAmountBuilder": 10000000
+      },
+      "proposedTransaction": {
+        "action": "EQUITY_CONTRIBUTION",
+        "amount": 50000000,
+        "currency": "USD",
+        "baskets": [
+          "available-amount-builder"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 60000000,
+        "notes": "Contribution adds to builder; not a restricted payment"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:3606124a18a6a447",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "debt-repayment-reduces-outstanding",
+      "mechanicLabel": "Debt repayment frees outstanding debt basket",
+      "scenarioKind": "DEBT_REPAYMENT",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingIndebtedness": 100000000
+      },
+      "proposedTransaction": {
+        "action": "REPAY_DEBT",
+        "amount": 25000000,
+        "currency": "USD",
+        "baskets": [
+          "permitted-indebtedness-outstanding"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 75000000,
+        "notes": "Repayment reduces outstanding utilization (synthetic ledger)"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:239a86f4b71caf82",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "multi-basket-stacking",
+      "mechanicLabel": "Transaction split across fixed + ratio baskets",
+      "scenarioKind": "MULTI_BASKET",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingInvestments": 40000000,
+        "consolidatedEBITDA": 100000000,
+        "consolidatedTotalDebt": 300000000,
+        "notes": "Fixed basket remaining 10; ratio basket available"
+      },
+      "proposedTransaction": {
+        "action": "MAKE_INVESTMENT",
+        "amount": 30000000,
+        "currency": "USD",
+        "baskets": [
+          "general-investments",
+          "ratio-investments"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "remainingCapacity": 0,
+        "notes": "Allocate 10 to fixed + 20 to ratio path (illustrative stacking)"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:71be20bccd1a9a3b",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "reclassification-between-baskets",
+      "mechanicLabel": "Reclassify investment from general to ratio basket",
+      "scenarioKind": "RECLASSIFICATION",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingInvestments": 50000000,
+        "consolidatedEBITDA": 150000000
+      },
+      "proposedTransaction": {
+        "action": "RECLASSIFY_INVESTMENT",
+        "amount": 20000000,
+        "currency": "USD",
+        "baskets": [
+          "general-investments",
+          "ratio-investments"
+        ]
+      },
+      "expected": {
+        "permitted": true,
+        "notes": "Reclassification frees general basket without new cash outlay"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:ed252cbd0e3e20b0",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "sequential-builder-then-rp",
+      "mechanicLabel": "Sequential equity contribution then dividend",
+      "scenarioKind": "SEQUENTIAL",
+      "sourceLinked": false,
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "availableAmountBuilder": 5000000,
+        "outstandingRestrictedPayments": 0
+      },
+      "proposedTransaction": {
+        "action": "RESTRICTED_PAYMENT",
+        "amount": 40000000,
+        "currency": "USD",
+        "baskets": [
+          "available-amount"
+        ]
+      },
+      "expected": {
+        "permitted": false,
+        "remainingCapacity": 5000000,
+        "blockedReason": "Insufficient builder before contribution step",
+        "notes": "Without prior contribution, dividend blocked; pair with equity-contribution case"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:ce190e741a52b003",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    },
+    {
+      "mechanicId": "cross-document-lien-debt-pairing",
+      "mechanicLabel": "Debt permission does not alone grant lien permission",
+      "scenarioKind": "CROSS_DOCUMENT",
+      "sourceLinked": true,
+      "sourceRef": {
+        "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+        "documentClass": "RESTATEMENT",
+        "note": "Cross-document interaction — discovery only, not certified pairing"
+      },
+      "inputs": {
+        "inputKind": "synthetic",
+        "currency": "USD",
+        "outstandingIndebtedness": 0,
+        "notes": "Debt basket open; lien basket closed in this synthetic package"
+      },
+      "proposedTransaction": {
+        "action": "INCUR_SECURED_DEBT",
+        "amount": 10000000,
+        "currency": "USD",
+        "baskets": [
+          "ratio-debt",
+          "general-liens"
+        ]
+      },
+      "expected": {
+        "permitted": false,
+        "blockedReason": "Lien capacity missing despite debt basket room",
+        "notes": "Illustrates debt→lien dependency; not automatic permission"
+      },
+      "verificationStatus": "SYNTHETIC_VALIDATED",
+      "caseId": "calc:c671c30f60c07c6f",
+      "schema": "kf-calculation-example.v1",
+      "createdAt": "2026-10-09T23:10:53.839Z",
+      "enginePrediction": null
+    }
+  ]
+}

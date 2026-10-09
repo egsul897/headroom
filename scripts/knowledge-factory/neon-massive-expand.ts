@@ -23,7 +23,7 @@ async function main() {
   const dryRun = flag("--dry-run");
   const max = Number(arg("--max") ?? "25");
   const issuers = Number(arg("--issuers") ?? "12");
-  const filingLimit = Number(arg("--filing-limit") ?? "80");
+  const filingLimit = Number(arg("--filing-limit") ?? "220");
   const maxPerIssuer = Number(arg("--max-per-issuer") ?? "3");
   const tickers = arg("--tickers")?.split(",").map((t) => t.trim().toUpperCase()).filter(Boolean);
 

@@ -1,0 +1,55 @@
+{
+  "batchKey": "neon-massive-batch4-2026-10-09",
+  "live": true,
+  "startedAt": "2026-10-09T22:58:50.390Z",
+  "finishedAt": "2026-10-09T23:03:55.245Z",
+  "wallMs": 304854,
+  "discovered": 2209,
+  "skippedExisting": 15,
+  "skippedNonFinancing": 1274,
+  "fetched": 11,
+  "persisted": 11,
+  "reused": 0,
+  "analyzed": 11,
+  "failed": 0,
+  "relationshipEdgesPersisted": 8007,
+  "calculationExamples": 13,
+  "errors": [],
+  "persistedSourceIds": [
+    "edgar:0001628280-26-050949:cck-06302026xq2ex101.htm",
+    "edgar:0001219601-25-000036:cck-06302025xq2ex104.htm",
+    "edgar:0001260221-25-000081:exhibit106amendedandrestat.htm",
+    "edgar:0001260221-25-000061:exhibit101amendedandrestat.htm",
+    "edgar:0000004962-23-000017:exhibit4axp2023indenture.htm",
+    "edgar:0000723612-19-000119:indenture.htm",
+    "edgar:0000947871-20-000544:ss175302_ex1001.htm",
+    "edgar:0000947871-18-000538:ss98160_1001.htm",
+    "edgar:0001657853-23-000166:amendmentno7tocreditagreem.htm",
+    "edgar:0000092380-20-000060:luv-3312020ex102.htm",
+    "edgar:0000092380-20-000060:luv-3312020ex103.htm"
+  ],
+  "byClassDelta": {
+    "UNKNOWN": 1,
+    "RESTATEMENT": 5,
+    "INDENTURE": 1,
+    "AMENDMENT": 3,
+    "CREDIT_AGREEMENT": 1
+  },
+  "neonAfter": {
+    "knowledgeSources": 761,
+    "documentByteObjects": 738,
+    "knowledgeRelationships": 40222,
+    "distinctIssuers": 211,
+    "covenantSummaryItems": 31058,
+    "databaseSizePretty": "251 MB"
+  },
+  "quality": {
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 64,
+      "DETERMINISTICALLY_VALIDATED": 3,
+      "DISCOVERED_CANDIDATE": 694
+    },
+    "certifiedPromotionCount": 0,
+    "note": "Automated pipeline stops at DISCOVERED_CANDIDATE / DETERMINISTICALLY_VALIDATED — never invents CERTIFIED"
+  }
+}
