@@ -127,8 +127,12 @@ describe("unwired overview stays UNKNOWN", () => {
     const overview = readFileSync(path.join(ROOT, "components/home/Overview.tsx"), "utf8");
     expect(page).not.toContain("alertCount");
     expect(overview).not.toContain("alertCount");
-    // Page loads via authoritative loader; Overview component still defaults to UNWIRED when no load prop.
-    expect(page).toContain("loadCompanyOverview");
+    // Company home loads the financial/covenant dashboard via the covenant overview
+    // path (same engines as /dashboard). The legacy Overview component still
+    // defaults to UNWIRED when no load prop is passed.
+    expect(page).toContain("loadCovenantOverviewInputs");
+    expect(page).toContain("DashboardClient");
+    expect(page).not.toContain("alertCount={0}");
     expect(overview).toContain("UNWIRED_OVERVIEW_LOAD");
     expect(alertBadgeCount(UNKNOWN_STATE)).toBeNull();
     expect(alertBadgeCount(NOT_LOADED_STATE)).toBeNull();

@@ -398,20 +398,69 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   const unsecuredCapacity = headlineCapacitySide(unsecuredSim);
   const bindingKeys = new Set([...citationsToKeys(securedSim.binding?.bindingConstraint), ...citationsToKeys(unsecuredSim.binding?.bindingConstraint)]);
 
+  const fin = covenantData.financials;
+  // A covenant financial snapshot is only treated as present when EBITDA is
+  // positive — empty/zero placeholder financials must not invent $0 headlines.
+  const hasCovenantSnapshot = Number.isFinite(fin.ebitda) && fin.ebitda > 0;
+  const hasInterest = hasCovenantSnapshot && Number.isFinite(fin.interestExpense) && fin.interestExpense > 0;
+  const covenantMoney = (n: number): HeadlineMetric["value"] =>
+    Number.isFinite(n) ? `$${Math.round(n).toLocaleString("en-US")}M` : null;
+  const fmtPositionMoney = (n: number | null | undefined): string | null =>
+    n !== null && n !== undefined && Number.isFinite(n) ? `$${Math.round(n).toLocaleString("en-US")}M` : null;
+
+  // Prefer covenant-definition leverage (computeLeverageMetrics over agreement inputs)
+  // when a real covenant snapshot is present; fall back to financial-core metrics
+  // only when those report OK — never invent a ratio from empty inputs.
+  const contractualTnl = hasCovenantSnapshot ? position.metrics.totalNetLeverage : null;
+  const contractualSsnl = hasCovenantSnapshot ? position.metrics.seniorSecuredNetLeverage : null;
+  const contractualFccr = hasCovenantSnapshot && hasInterest ? position.metrics.fixedChargeCoverage : null;
+
+  const grossDebtDisplay = hasCovenantSnapshot ? covenantMoney(fin.totalDebt) : fmtPositionMoney(financialPosition.capitalStructure.grossDebt);
+  const cashDisplay = hasCovenantSnapshot ? covenantMoney(fin.cash) : fmtPositionMoney(financialPosition.liquidity.cash.value);
+
+  const totalDebtHeadline: HeadlineMetric = {
+    key: "totalDebt",
+    label: "Total debt",
+    value: grossDebtDisplay,
+    state: grossDebtDisplay !== null ? "AVAILABLE" : "NOT_AVAILABLE",
+  };
+  const cashHeadline: HeadlineMetric = {
+    key: "cash",
+    label: "Cash",
+    value: cashDisplay,
+    state: cashDisplay !== null ? "AVAILABLE" : "NOT_AVAILABLE",
+  };
+
   const headlineMetrics: HeadlineMetric[] = [
-    { key: "cash", label: "Cash", value: `$${Math.round(financialPosition.liquidity.cash.value).toLocaleString("en-US")}M`, state: "AVAILABLE" },
-    { key: "grossDebt", label: "Gross debt", value: `$${Math.round(financialPosition.capitalStructure.grossDebt).toLocaleString("en-US")}M`, state: "AVAILABLE" },
-    { key: "netDebt", label: "Net debt", value: `$${Math.round(financialPosition.capitalStructure.netDebt).toLocaleString("en-US")}M`, state: "AVAILABLE" },
     {
-      key: "totalLiquidity",
-      label: "Total liquidity",
-      value: financialPosition.liquidity.totalLiquidity === null ? null : `$${Math.round(financialPosition.liquidity.totalLiquidity).toLocaleString("en-US")}M`,
-      state: financialPosition.liquidity.totalLiquidity === null ? "REVIEW_REQUIRED" : "AVAILABLE",
+      key: "ebitda",
+      label: "Consolidated EBITDA (covenant)",
+      value: hasCovenantSnapshot ? covenantMoney(fin.ebitda) : null,
+      state: hasCovenantSnapshot ? "AVAILABLE" : "NOT_AVAILABLE",
     },
-    metricRow("netLeverage", "Net leverage", financialPosition.metrics.genericNetLeverage),
-    metricRow("securedLeverage", "Secured leverage", financialPosition.metrics.genericSecuredLeverage),
-    metricRow("interestCoverage", "Interest coverage", financialPosition.metrics.genericInterestCoverage),
-    metricRow("ebitdaMargin", "EBITDA margin", financialPosition.metrics.ebitdaMarginPct),
+    totalDebtHeadline,
+    {
+      key: "securedDebt",
+      label: "Secured debt",
+      value: hasCovenantSnapshot && Number.isFinite(fin.securedDebt) ? covenantMoney(fin.securedDebt) : null,
+      state: hasCovenantSnapshot && Number.isFinite(fin.securedDebt) ? "AVAILABLE" : "NOT_AVAILABLE",
+    },
+    cashHeadline,
+    {
+      key: "interestExpense",
+      label: "Interest expense (LTM)",
+      value: hasInterest ? covenantMoney(fin.interestExpense) : null,
+      state: hasInterest ? "AVAILABLE" : "NOT_AVAILABLE",
+    },
+    contractualTnl !== null && Number.isFinite(contractualTnl)
+      ? { key: "totalNetLeverage", label: "Total net leverage (covenant)", value: `${contractualTnl.toFixed(2)}x`, state: "AVAILABLE" }
+      : metricRow("netLeverage", "Net leverage", financialPosition.metrics.genericNetLeverage),
+    contractualSsnl !== null && Number.isFinite(contractualSsnl)
+      ? { key: "seniorSecuredNetLeverage", label: "Senior secured net leverage (covenant)", value: `${contractualSsnl.toFixed(2)}x`, state: "AVAILABLE" }
+      : metricRow("securedLeverage", "Secured leverage", financialPosition.metrics.genericSecuredLeverage),
+    contractualFccr !== null && Number.isFinite(contractualFccr)
+      ? { key: "fixedChargeCoverage", label: "Fixed charge coverage (covenant)", value: `${contractualFccr.toFixed(2)}x`, state: "AVAILABLE" }
+      : metricRow("interestCoverage", "Interest coverage", financialPosition.metrics.genericInterestCoverage),
   ];
 
   const shadowed = computeShadowedProvisionCodes(covenantData, solverContext);
@@ -493,6 +542,10 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   pushFamily("INVESTMENTS", investmentRows);
   pushFamily("ASSET_SALES", assetSaleRows);
   pushFamily("DEFINITIONS_CALCULATION_RULES", unclassified);
+
+  // Surface contractual limits + headroom for each distinct financial-covenant
+  // metric (only when the agreement actually models that test — never invented).
+  headlineMetrics.push(...financialCovenantLimitHeadlines(otherProvisionRows));
 
   for (const f of families) assignTiers(f.rows);
 
@@ -628,4 +681,46 @@ function metricRow(key: string, label: string, m: { status: string; value: numbe
     return { key, label, value: null, state: m.status === "UNAVAILABLE_MISSING_INPUT" ? "NOT_AVAILABLE" : "REVIEW_REQUIRED" };
   }
   return { key, label, value: `${m.value.toFixed(2)}x`, state: "AVAILABLE" };
+}
+
+/**
+ * Pull limit + headroom headlines from modeled FINANCIAL_COVENANTS ratio rows.
+ * Prefers the maintenance-test row ("Financial Covenants" in the name) over
+ * incurrence-test duplicates of the same metric. Missing tests stay omitted.
+ */
+function financialCovenantLimitHeadlines(rows: OverviewRow[]): HeadlineMetric[] {
+  const ratioRows = rows.filter((r): r is RatioRow => r.kind === "RATIO" && r.status === "MODELED" && Number.isFinite(r.ratioLimit));
+  if (ratioRows.length === 0) return [];
+
+  const byMetric = new Map<string, RatioRow>();
+  for (const row of ratioRows) {
+    const metric = row.name.split(" — ")[0]?.trim() || row.name;
+    const existing = byMetric.get(metric);
+    const prefer = row.name.includes("Financial Covenants");
+    const existingPrefer = existing?.name.includes("Financial Covenants") ?? false;
+    if (!existing || (prefer && !existingPrefer)) byMetric.set(metric, row);
+  }
+
+  const out: HeadlineMetric[] = [];
+  for (const [metric, row] of byMetric) {
+    const slug = metric
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_|_$/g, "");
+    out.push({
+      key: `${slug}_limit`,
+      label: `${metric} limit`,
+      value: `${row.ratioLimit.toFixed(2)}x`,
+      state: "AVAILABLE",
+    });
+    if (row.ratioHeadroom !== null && Number.isFinite(row.ratioHeadroom)) {
+      out.push({
+        key: `${slug}_headroom`,
+        label: `${metric} headroom`,
+        value: `${row.ratioHeadroom.toFixed(2)}x`,
+        state: "AVAILABLE",
+      });
+    }
+  }
+  return out;
 }

@@ -1,22 +1,44 @@
-import { CompanyOverview } from "@/components/home/Overview";
-import { loadCompanyOverview } from "@/lib/home/load-overview";
+import { DashboardClient } from "@/components/DashboardClient";
+import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
+import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
 /**
- * Company home dashboard. Slots load from authoritative queries via
- * `loadCompanyOverview` — invent-absence when unwired or not determinable.
+ * Company home = financial & covenant dashboard.
+ *
+ * Loads uploaded financials + debt-agreement rules via existing infrastructure
+ * (`loadCovenantOverviewInputs` → `buildCovenantOverview` / covenant-engine).
+ * Arithmetic is deterministic engine code; missing inputs stay blank / flagged.
+ * No hardcoded demo ratios. No second calculation engine.
  */
 export default async function CompanyIndexPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const overview = await loadCompanyOverview(companyId);
+  const inputs = await loadCovenantOverviewInputs(companyId);
+  const { company, asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById } =
+    inputs;
+
+  const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
+  const maturitiesQuery = maturitiesQueryFromPosition(financialPosition);
+
   return (
-    <CompanyOverview
-      companyId={companyId}
-      identityName={overview.identityName}
-      load={overview.load}
-      readinessHeadline={overview.readinessHeadline}
-      authorityNote={overview.authorityNote}
+    <DashboardClient
+      companyName={company.name}
+      asOfDate={asOfDate.toISOString()}
+      covenantData={covenantData}
+      financialPosition={financialPosition}
+      solverContext={{
+        ...solverContext,
+        activationState: {
+          ...solverContext.activationState,
+          unknownKeysArray: [...solverContext.activationState.unknownKeys],
+        },
+      }}
+      permissionRows={permissionRows}
+      coverageDeclarations={coverageDeclarations}
+      documentNameEntries={[...documentNameById.entries()]}
+      facilitiesQuery={facilitiesQuery}
+      maturitiesQuery={maturitiesQuery}
     />
   );
 }
