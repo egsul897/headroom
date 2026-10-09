@@ -8,11 +8,12 @@
  * section, or invent one the source never states. One-to-many expansion of a whole-section reference onto certified
  * units is a PACKAGE-level derived artifact (covenant-map/package-dependencies.ts), never a candidate-level rewrite.
  *
- * The stated references come from two authenticated places: a deterministic scan of the candidate's own operative text
+ * The stated references come from authenticated source text: a deterministic scan of the candidate's own operative text
  * (absolute "Section X" / "§ X" references, explicit lists, relative "clause (x) of this Section" references, and
- * ranges "clauses (a) through (d)" when the structural index resolves the range deterministically), and the frozen
- * Pass A inventory's `referencedSections` lineage - admitted only where it agrees with the text scan, or where the text
- * carries no section-shaped reference at all. Every model-emitted target is classified against that set:
+ * ranges "clauses (a) through (d)" when the structural index resolves the range deterministically), plus — IPV-15 —
+ * section references stated inside retrieved definition texts the unit depends on (definition-mediated shared capacity
+ * such as Available Amount naming 7.06(c)/7.08(d)). Pass A inventory `referencedSections` may corroborate but never
+ * create a stated reference on their own (SA-1). Every model-emitted target is classified against that set:
  *
  *   EXACT_SOURCE_REFERENCE             the reference as drafted (text-equal after whitespace/case folding)
  *   SOURCE_EQUIVALENT_NORMALIZATION    the same target under identity normalization ("Section 9.1" -> "9.1", "§ 9.1")
@@ -30,12 +31,10 @@ import type { StructuralIndex } from "../structural-index";
 import { normalizeReferenceText } from "./source-reference";
 import { scanSourceReferences, type SourceTargetSelector } from "../source-reference-scan";
 
-// v2 (source-authority closure SA-1): the stated-reference set is SOURCE TEXT ONLY - the shared deterministic scanner
-// over the candidate's operative text (with the structural index for ranges). Pass A inventory `referencedSections`
-// are themselves source-grounded now (inventory normalization scans the authenticated item span) and may corroborate,
-// but no model inventory claim can create a stated reference: the former "lineage stands alone when the text carries
-// none" fallback is removed. Every stated reference carries its source-derived target selector (SA-2).
-export const SOURCE_REFERENCE_FIDELITY_VERSION = "source-reference-fidelity.v2";
+// v3 (IPV-15): stated-reference set is still SOURCE TEXT ONLY (SA-1) — operative text plus retrieved definition
+// bodies the unit depends on. Pass A inventory `referencedSections` may corroborate but never create a stated
+// reference. Every stated reference carries its source-derived target selector (SA-2).
+export const SOURCE_REFERENCE_FIDELITY_VERSION = "source-reference-fidelity.v3";
 
 export type ReferenceFidelityClass =
   | "EXACT_SOURCE_REFERENCE"
@@ -102,6 +101,12 @@ export interface ClassifyReferencesInput {
   emitted: string[];
   operativeText: string;
   /**
+   * IPV-15: full texts of retrieved DEFINITION / DEFINITION_DEPENDENCY items the unit depends on.
+   * Section references stated there are admissible stated references for this unit (definition-mediated
+   * shared capacity). Never model prose — only source-backed context-bundle excerpts.
+   */
+  definitionAuthorityTexts?: readonly string[] | null;
+  /**
    * Pass A lineage: the SOURCE-GROUNDED referencedSections of the inventory items the node consumes. Corroboration
    * only (recorded in the audit); never a stated reference on its own (SA-1).
    */
@@ -111,13 +116,29 @@ export interface ClassifyReferencesInput {
   documentId?: string | null;
 }
 
-/** The authenticated stated-reference set for a node: the deterministic scan of the operative text, nothing else. */
+function authorityTexts(input: Omit<ClassifyReferencesInput, "emitted">): string[] {
+  return [input.operativeText, ...(input.definitionAuthorityTexts ?? [])].filter((t) => t.trim().length > 0);
+}
+
+/** The authenticated stated-reference set: operative text plus retrieved definition bodies (IPV-15). */
 export function statedReferencesFor(input: Omit<ClassifyReferencesInput, "emitted">): StatedSourceReference[] {
-  return statedSectionReferencesInText(input.operativeText, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId });
+  const opts = { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId };
+  const out: StatedSourceReference[] = [];
+  const seen = new Set<string>();
+  for (const text of authorityTexts(input)) {
+    for (const ref of statedSectionReferencesInText(text, opts)) {
+      const key = ref.normalized ?? norm(ref.raw);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(ref);
+    }
+  }
+  return out;
 }
 
 export function classifyEmittedReferences(input: ClassifyReferencesInput): ReferenceFidelityOutcome {
   const stated = statedReferencesFor(input);
+  const authority = authorityTexts(input).join("\n");
   const classifications: EmittedReferenceClassification[] = [];
   const authoritative: string[] = [];
   const excluded: ReferenceFidelityOutcome["excluded"] = [];
@@ -133,8 +154,8 @@ export function classifyEmittedReferences(input: ClassifyReferencesInput): Refer
   for (const emitted of input.emitted) {
     const n = normalizeReferenceText(emitted);
     if (n === null) {
-      if (namedReferenceStated(emitted, input.operativeText)) { classifications.push({ emitted, normalized: null, classification: "EXACT_SOURCE_REFERENCE", statedRefs: [emitted], detail: "named reference stated verbatim in the operative text" }); addAuth(emitted, { sourceText: emitted.trim(), kind: "NAMED_CONDITION", qualifierText: null }); }
-      else { invented = true; classifications.push({ emitted, normalized: null, classification: "MODEL_INVENTED_REFERENCE", statedRefs: [], detail: "named reference does not occur in the operative text" }); excluded.push({ emitted, classification: "MODEL_INVENTED_REFERENCE", restoredTo: null }); }
+      if (namedReferenceStated(emitted, authority)) { classifications.push({ emitted, normalized: null, classification: "EXACT_SOURCE_REFERENCE", statedRefs: [emitted], detail: "named reference stated verbatim in the operative or retrieved definition text" }); addAuth(emitted, { sourceText: emitted.trim(), kind: "NAMED_CONDITION", qualifierText: null }); }
+      else { invented = true; classifications.push({ emitted, normalized: null, classification: "MODEL_INVENTED_REFERENCE", statedRefs: [], detail: "named reference does not occur in the operative text or retrieved definitions" }); excluded.push({ emitted, classification: "MODEL_INVENTED_REFERENCE", restoredTo: null }); }
       continue;
     }
     const sectionStated = stated.filter((s) => s.normalized !== null);

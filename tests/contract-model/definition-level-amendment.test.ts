@@ -82,13 +82,16 @@ describe("definition-level amendments", () => {
     const { result, state } = await run(`SECTION 1. Amendments. The definition of "Consolidated EBITDA" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: ${SMALLER}`);
     const effects = result.effects.filter((e) => e.amendmentDocumentId === "amendment-1" && e.operation !== "REAFFIRM");
     expect(effects.map((e) => [e.target.kind, e.target.targetDefinedTermRef, e.target.targetSectionRef, e.operation])).toEqual([["DEFINITION", "Consolidated EBITDA", null, "REPLACE_DEFINITION"]]);
+    expect(effects[0]!.newText).toMatch(/^"Consolidated EBITDA"\s+means/);
     expect(effects[0]!.newText).toContain("depreciation and amortization");
     expect(effects[0]!.newText).not.toContain("income tax expense");
     const section = state.provisions.find((p) => p.kind === "SECTION" && p.sectionRef === "1.01");
     expect(section?.currentText).toMatch(/"Indebtedness" means/);
+    expect(section?.currentText).toMatch(/"Consolidated EBITDA"\s+means/);
     expect(section?.currentText).not.toMatch(/income tax expense/);
     expect(section?.currentText).toMatch(/depreciation and amortization/);
     const ebitda = getOperativeDefinition(state, "Consolidated EBITDA");
+    expect(ebitda?.currentText).toMatch(/^"Consolidated EBITDA"\s+means/);
     expect(ebitda?.currentText).not.toMatch(/income tax expense/);
     expect(ebitda?.status).toBe("OPERATIVE_STATE_RESOLVED");
     expect(getOperativeDefinition(state, "Indebtedness")).toBeNull();

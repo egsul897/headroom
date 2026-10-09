@@ -39,8 +39,11 @@ const REPLACEMENT_TEXT_CAPTURE_RE = /(?:amended and restated in its entirety to 
 
 const DEFINITION_ADD_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?added/i;
 const DEFINITION_DELETE_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?deleted/i;
+// IPV-19: the opening quote of the restated definition body must stay inside
+// capture group 2. A prior `["“]?` outside the group stripped it, so section
+// splice produced `Term" means` and definition-ownership (`"Term" means`) failed.
 const DEFINITION_REPLACE_RE = new RegExp(
-  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*["“]?([\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)`,
+  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)`,
   "i",
 );
 

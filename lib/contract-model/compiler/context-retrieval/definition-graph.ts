@@ -23,8 +23,9 @@ import type { ContextItem } from "./types";
  */
 const ADMINISTRATIVE_TERM_DENYLIST = new Set(["person", "business day", "governmental authority", "requirements of law", "us", "united states", "dollars", "administrative agent", "collateral agent", "lender", "agent", "closing date", "code", "gaap"]);
 
-function isAdministrativeTerm(normalizedTerm: string): boolean {
-  return ADMINISTRATIVE_TERM_DENYLIST.has(normalizedTerm);
+/** True for boilerplate terms that do not materially affect covenant analysis (task §9). */
+export function isAdministrativeTerm(normalizedTerm: string): boolean {
+  return ADMINISTRATIVE_TERM_DENYLIST.has(normalizedTerm.trim().toLowerCase().replace(/\s+/g, " "));
 }
 
 interface KnownTermMention {

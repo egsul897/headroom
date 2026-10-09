@@ -25,6 +25,7 @@ const CREDIT = `CREDIT AGREEMENT dated as of January 15, 2026, among Harbor Lane
 
 SECTION 1.01 Defined Terms. As used in this Agreement:
 "Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication, Interest Expense, income tax expense and depreciation and amortization expense for such period.
+"Default" means any event that is, or with notice or lapse of time or both would become, an Event of Default.
 "Indebtedness" means, as to any Person, all obligations of such Person for borrowed money.
 
 SECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except:
@@ -134,6 +135,11 @@ describe("section operative text follows clause amendments", () => {
       { index, packageGraph: null, exactTermsByDocument: new Map(), operativeState: state },
     );
     expect(clauseBundle.items.find((item) => item.type === "OPERATIVE_SOURCE")?.excerptText).toContain("Default");
+    // IPV-04: definition scan must use the amended operative excerpt, not the base $25m node text
+    // (which never named Default). Otherwise the no-Default proviso is compiled without its definition.
+    const defs = clauseBundle.items.filter((item) => item.type === "DEFINITION" || item.type === "DEFINITION_DEPENDENCY");
+    expect(defs.map((d) => d.normalizedRef.toLowerCase())).toContain("default");
+    expect(defs.map((d) => d.normalizedRef.toLowerCase())).toContain("indebtedness");
   });
 
   it("does not confirm the base section when a clause amendment has no replacement text", async () => {
