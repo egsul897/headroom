@@ -218,12 +218,15 @@ describe("§33/§51 the target's operative state from the REAL preserved Phase-2
     const bundle = buildCovenantContextBundle({ candidate: stages.target, packageKey: PACKAGE_KEY, companyId: COMPANY_ID, instrumentKey: INSTRUMENT_KEY }, { ...stages.access, operativeState: adapted.state, semanticUnitOwnership: stages.owners });
     expect(bundle.sufficiencyState).toBe("SUFFICIENT");
     const unresolved = bundle.items.filter((i) => i.evidenceState?.status !== "CURRENT").map((i) => [i.type, i.normalizedRef, i.evidenceState?.status]);
-    expect(unresolved).toEqual([["DEFINITION", "Indebtedness", "HISTORICAL_ONLY"], ["AMENDMENT_LEAD", "Indebtedness", "OPERATIVE_STATE_UNRESOLVED"]]);
+    // HISTORICAL_ONLY remains: freeze records a CONDITIONAL_UNRESOLVED effective-date on an Indebtedness amendment effect.
+    // AMENDMENT_LEAD Indebtedness OPERATIVE_STATE_UNRESOLVED is gone: chronological absurdity leaves Second Amendment
+    // (→ Seventh A&R, absent from package) UNRESOLVED rather than falsely attaching to the Eighth — fail-closed, not invented.
+    expect(unresolved).toEqual([["DEFINITION", "Indebtedness", "HISTORICAL_ONLY"]]);
     expect(bundle.items.find((i) => i.type === "DEFINITION")!.evidenceState!.reason).toMatch(/CONDITIONAL_UNRESOLVED/);
     const input = assembleCompilerInput(stages.target, bundle, { companyId: COMPANY_ID, instrumentKey: INSTRUMENT_KEY, documents: stages.documents, index: stages.index, packageGraph: stages.packageGraph, operativeState: adapted.state, amendmentEffects: adapted.effects, candidates: [stages.target], discoveryRunVersion: stages.target.discoveryRunVersion, asOfDate: "2026-10-04" } as never);
     expect(input.operativeLineage).toBeNull();
     expect(input.operativeSourceOrigin).toBe("STRUCTURAL_NODE");
-    expect(contextBundleEvidenceFlags(input).inputHasUnresolvedOperativeEvidence).toBe(true); // OPERATIVE_STATE_UNRESOLVED stays - for the REAL reason now
+    expect(contextBundleEvidenceFlags(input).inputHasUnresolvedOperativeEvidence).toBe(true); // HISTORICAL_ONLY is not current truth — still disclosed
   });
   it("the live runner supplies this state to the canonical package input and refuses to write into the immutable evidence directory", () => {
     const src = fs.readFileSync("scripts/phase-3-live-validation/run-7-2c-first-certified.ts", "utf8");

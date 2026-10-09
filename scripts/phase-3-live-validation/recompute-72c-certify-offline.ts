@@ -167,8 +167,10 @@ async function main() {
   console.log("flags", contextBundleEvidenceFlags(input));
 
   const normalized = normalizeSubmission(SubmitCompilationSchema.parse(frozen.rawModelOutput), input);
-  const failureReasons = contextBundleEvidenceFlags(input).inputHasUnresolvedOperativeEvidence ? (["OPERATIVE_STATE_UNRESOLVED"] as const) : ([] as const);
-  const status = determineStatus([...failureReasons], normalized.rules.length, normalized.rules.some((r) => r.sufficiency !== "COMPLETE"), failureReasons.length > 0);
+  const failureReasons = (
+    contextBundleEvidenceFlags(input).inputHasUnresolvedOperativeEvidence ? ["OPERATIVE_STATE_UNRESOLVED"] : []
+  ) as import("../../lib/contract-model/compiler/semantic/types").SemanticCompilerFailureReason[];
+  const status = determineStatus(failureReasons, normalized.rules.length, normalized.rules.some((r) => r.sufficiency !== "COMPLETE"), failureReasons.length > 0);
   const refreshedLog = refreshRetrievedSources(frozen.toolCallLog ?? [], stages.index, TARGET_DOC);
   const compilation: SemanticCompilationResult = {
     ...frozen,
