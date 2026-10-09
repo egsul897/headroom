@@ -4,6 +4,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { normalizeStructureScanText } from "./structural";
 import type { StructuralNodeRecord } from "../types";
 
 export interface ConditionExceptionRecord {
@@ -35,15 +36,16 @@ export function extractConditionsAndExceptions(
   nodes: StructuralNodeRecord[],
   maxPerDoc = 400,
 ): ConditionExceptionRecord[] {
+  const scan = normalizeStructureScanText(text);
   const out: ConditionExceptionRecord[] = [];
   const seen = new Set<string>();
 
   for (const p of PATTERNS) {
     const re = new RegExp(p.re.source, "gi");
     let m: RegExpExecArray | null;
-    while ((m = re.exec(text)) !== null && out.length < maxPerDoc) {
+    while ((m = re.exec(scan)) !== null && out.length < maxPerDoc) {
       const charStart = m.index;
-      const charEnd = Math.min(text.length, charStart + 280);
+      const charEnd = Math.min(scan.length, charStart + 280);
       const key = `${p.kind}:${charStart}`;
       if (seen.has(key)) continue;
       seen.add(key);
@@ -55,7 +57,7 @@ export function extractConditionsAndExceptions(
         nodeId: node?.nodeId,
         charStart,
         charEnd,
-        excerpt: text.slice(charStart, charEnd),
+        excerpt: scan.slice(charStart, charEnd),
         signals: [p.signal],
         representationLevel: "DISCOVERED_CANDIDATE",
       });

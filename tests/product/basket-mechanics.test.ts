@@ -144,9 +144,22 @@ describe("quantitative basket / relationship mechanics", () => {
       "INVESTMENTS",
     );
     expect(a.basketsAndThresholds.some((b) => /Anti-stacking/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Anti-stacking scope:/i.test(b))).toBe(true);
     expect(a.basketsAndThresholds.some((b) => /Divide-and-classify|reclassify/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Reclassification election:/i.test(b))).toBe(true);
     expect(a.basketsAndThresholds.some((b) => /Not Otherwise Applied/i.test(b))).toBe(true);
     expect(a.basketsAndThresholds.some((b) => /NOA deductions|NOA usage/i.test(b))).toBe(true);
     expect(a.dependencies.some((d) => /Not Otherwise Applied/i.test(d))).toBe(true);
+  });
+
+  it("extracts Available Amount builder limbs and incremental election order beyond keywords", () => {
+    const a = run(
+      "Available Amount means the sum of (a) $50,000,000 plus (b) 50% of Consolidated Net Income minus (c) the aggregate amount of Restricted Payments made using the Available Amount that is Not Otherwise Applied. Incremental Cap means (a) the Fixed Incremental Amount; plus (b) the Ratio Incremental Amount; plus (c) the Voluntary Prepayment Incremental Amount. Unless the Borrower elects otherwise, the Borrower shall be deemed to have used amounts under the Ratio Incremental Amount prior to the Fixed Incremental Amount. Ratio Incremental Amount means an amount so long as the First Lien Leverage Ratio does not exceed 4.50 to 1.00.",
+      "Incremental Facilities",
+    );
+    expect(a.basketsAndThresholds.some((b) => /Available Amount limb:/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Incremental limb:/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Incremental election order:/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Ratio incremental condition:/i.test(b))).toBe(true);
   });
 });

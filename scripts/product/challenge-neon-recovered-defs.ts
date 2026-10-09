@@ -214,10 +214,11 @@ async function analyzeTarget(t: Target) {
   const { bytes } = await loadDurableSourceBytes({ sourceId: t.sourceId });
   const { text } = await extractTextAsync(bytes, row.exhibitFilename || "ex.htm");
   const structural = extractStructure(t.sourceId, text);
-  const definitions = discoverDefinitions(t.sourceId, text, structural.nodes);
-  const xrefs = discoverCrossReferences(t.sourceId, text);
-  const candidates = discoverCovenantCandidates(t.sourceId, text, structural.nodes);
-  const conditions = extractConditionsAndExceptions(t.sourceId, text, structural.nodes);
+  const scan = structural.normalizedText;
+  const definitions = discoverDefinitions(t.sourceId, scan, structural.nodes);
+  const xrefs = discoverCrossReferences(t.sourceId, scan);
+  const candidates = discoverCovenantCandidates(t.sourceId, scan, structural.nodes);
+  const conditions = extractConditionsAndExceptions(t.sourceId, scan, structural.nodes);
 
   const summary = buildDocumentCovenantSummary({
     sourceId: t.sourceId,

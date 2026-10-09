@@ -88,10 +88,11 @@ async function analyzeAndPersist(sourceId: string) {
   const { bytes } = await loadDurableSourceBytes({ sourceId });
   const { text } = await extractTextAsync(bytes, row.exhibitFilename || "ex.htm");
   const structural = extractStructure(sourceId, text);
-  const definitions = discoverDefinitions(sourceId, text, structural.nodes);
-  const xrefs = discoverCrossReferences(sourceId, text);
-  const candidates = discoverCovenantCandidates(sourceId, text, structural.nodes);
-  const conditions = extractConditionsAndExceptions(sourceId, text, structural.nodes);
+  const scan = structural.normalizedText;
+  const definitions = discoverDefinitions(sourceId, scan, structural.nodes);
+  const xrefs = discoverCrossReferences(sourceId, scan);
+  const candidates = discoverCovenantCandidates(sourceId, scan, structural.nodes);
+  const conditions = extractConditionsAndExceptions(sourceId, scan, structural.nodes);
   const summary = buildDocumentCovenantSummary({
     sourceId,
     documentTitle: row.documentTitle || sourceId,

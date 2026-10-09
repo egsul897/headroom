@@ -302,10 +302,16 @@ function extractBaskets(excerpt: string): string[] {
   ) {
     pushUnique("Anti-stacking / without-duplication across clauses referenced.");
     const forPurposes = excerpt.match(
-      /without duplication\s+for purposes of\s+Section\s+[\dA-Za-z.()-]+/gi,
+      /without duplication\s+for purposes of\s+Section\s+[\dA-Za-z.()-]+(?:\s+of\s+any\s+amounts\s+applied\s+pursuant\s+to\s+[^.…]{0,80})?/gi,
     );
     for (const hit of (forPurposes ?? []).slice(0, 2)) {
-      pushUnique(`Anti-stacking scope: ${normalizeWs(hit)}`);
+      pushUnique(`Anti-stacking scope: ${normalizeWs(hit).slice(0, 180)}`);
+    }
+    const paired = excerpt.match(
+      /without duplication[^.…]{0,40}(?:Section|clause)\s+[\dA-Za-z.()-]+[^.…]{0,60}(?:Section|clause)\s+[\dA-Za-z.()-]+/gi,
+    );
+    for (const hit of (paired ?? []).slice(0, 2)) {
+      pushUnique(`Anti-stacking paired clauses: ${normalizeWs(hit).slice(0, 160)}`);
     }
   }
   if (
@@ -313,6 +319,12 @@ function extractBaskets(excerpt: string): string[] {
     /\b(?:basket|clause|Section|Indebtedness|Lien|Investment|Restricted Payment|Permitted)\b/i.test(excerpt)
   ) {
     pushUnique("Classification / reclassification election present (basket designation may change).");
+    const election = excerpt.match(
+      /(?:may|shall|will)(?:\s*,\s*in\s+(?:its|their)\s+sole\s+discretion,?)?\s*(?:from\s+time\s+to\s+time\s+)?(?:divide,?\s*)?(?:classify|reclassify)[^.…]{0,160}/gi,
+    );
+    for (const hit of (election ?? []).slice(0, 2)) {
+      pushUnique(`Reclassification election: ${normalizeWs(hit).slice(0, 180)}`);
+    }
   }
   if (
     /\bdivide(?:\s+and)?,?\s*classify\b|\bdivide and classify or reclassify\b|\bdivide,\s*classify\b/i.test(
@@ -327,15 +339,29 @@ function extractBaskets(excerpt: string): string[] {
     )
   ) {
     pushUnique("Basket reallocation / reclassification right referenced.");
+    const realloc = excerpt.match(
+      /reallocated from\s+(?:the\s+)?[A-Za-z ]{0,40}Basket[^.…]{0,100}|General (?:Debt|Lien) Basket Reallocated Amount[^.…]{0,120}/gi,
+    );
+    for (const hit of (realloc ?? []).slice(0, 2)) {
+      pushUnique(`Reallocation path: ${normalizeWs(hit).slice(0, 160)}`);
+    }
   }
   // Incremental facility alternative paths (Chewy-style names + Gibraltar-style facilities)
   if (/\bFixed Incremental Amount\b|\bCash-Capped Incremental Facility\b/i.test(excerpt)) {
     pushUnique("Incremental path: Fixed / Cash-Capped Incremental Amount.");
+    const fixedLimb = excerpt.match(
+      /Fixed Incremental Amount[^.…]{0,20}means[^.…]{0,220}|Cash-Capped Incremental Facility[^.…]{0,160}/i,
+    );
+    if (fixedLimb) pushUnique(`Fixed incremental mechanics: ${normalizeWs(fixedLimb[0]).slice(0, 180)}`);
   }
   if (
     /\bRatio Incremental Amount\b|\bRatio-Based Incremental(?:\s+Facility|\s+Amount)?\b/i.test(excerpt)
   ) {
     pushUnique("Incremental path: Ratio Incremental Amount (ratio condition).");
+    const ratioCond = excerpt.match(
+      /Ratio(?:-Based)? Incremental (?:Amount|Facility)[^.…]{0,200}?(?:Leverage|Coverage)\s+Ratio[^.…]{0,80}\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.00)?/i,
+    );
+    if (ratioCond) pushUnique(`Ratio incremental condition: ${normalizeWs(ratioCond[0]).slice(0, 180)}`);
   }
   if (
     /\bVoluntary Prepayment Incremental Amount\b|\bPrepayment-Based Incremental Facility\b/i.test(
@@ -351,12 +377,22 @@ function extractBaskets(excerpt: string): string[] {
       /\bPrepayment-Based Incremental\b/i.test(excerpt))
   ) {
     pushUnique("Incremental Amount is a multi-component sum (fixed / ratio / voluntary / reallocations).");
+    const limbs = excerpt.match(
+      /(?:plus|minus)\s+(?:\([^)]{1,12}\)\s+)?(?:the\s+)?(?:Fixed|Ratio|Voluntary Prepayment|Cash-Capped|Prepayment-Based|Extension)[A-Za-z \-]{0,40}/gi,
+    );
+    for (const hit of (limbs ?? []).slice(0, 4)) {
+      pushUnique(`Incremental limb: ${normalizeWs(hit).slice(0, 120)}`);
+    }
   }
   if (
     /\bunless the (?:Initial )?Borrower elects otherwise\b/i.test(excerpt) &&
     /\b(?:Ratio[- ]Based Incremental|Ratio Incremental|Fixed Incremental|Cash-Capped)\b/i.test(excerpt)
   ) {
     pushUnique("Incremental default utilization order / election dependency present.");
+    const order = excerpt.match(
+      /unless the (?:Initial )?Borrower elects otherwise[^.…]{0,220}/i,
+    );
+    if (order) pushUnique(`Incremental election order: ${normalizeWs(order[0]).slice(0, 180)}`);
   }
   if (
     /\b(?:redesignat|automatically cease to be deemed incurred|deemed incurred under the Ratio)\b/i.test(
@@ -373,6 +409,18 @@ function extractBaskets(excerpt: string): string[] {
     if (/\bplus\b/i.test(excerpt)) {
       pushUnique("Available Amount builder includes additive components.");
     }
+    // Builder limb clips near Available Amount — stop before Incremental Cap/Amount defs.
+    const aaWindow = (
+      excerpt.match(/Available Amount[\s\S]{0,700}?(?=\bIncremental (?:Cap|Amount)\b|$)/i)?.[0] ??
+      excerpt.match(/Available Amount[\s\S]{0,500}/i)?.[0] ??
+      ""
+    );
+    const aaLimbs = aaWindow.match(
+      /(?:plus|minus)\s+(?:\([^)]{1,12}\)\s*)?(?:the\s+)?(?:\d|\$|fifty|Restricted|Investment|amount|aggregate|Cumulative|Consolidated)[^.…;]{5,120}/gi,
+    );
+    for (const hit of (aaLimbs ?? []).slice(0, 4)) {
+      pushUnique(`Available Amount limb: ${normalizeWs(hit).slice(0, 160)}`);
+    }
   }
   if (/\bat any (?:one )?time outstanding\b|\bthen outstanding\b/i.test(excerpt)) {
     pushUnique("Cap measured on outstanding amount at any time.");
@@ -383,7 +431,7 @@ function extractBaskets(excerpt: string): string[] {
   if (/\bpro forma\b/i.test(excerpt) && /\b(?:Leverage|Coverage)\s+Ratio\b/i.test(excerpt)) {
     pushUnique("Pro forma leverage/coverage test gates capacity.");
   }
-  return out.slice(0, 18);
+  return out.slice(0, 22);
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {

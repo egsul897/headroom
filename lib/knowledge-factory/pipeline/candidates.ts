@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { classifyFamiliesFromText } from "../taxonomy/families";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
+import { normalizeStructureScanText } from "./structural";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
 
 /** Expand heading-only spans to the next section start so body text is analyzed. */
@@ -36,6 +37,7 @@ export function discoverCovenantCandidates(
   text: string,
   nodes: StructuralNodeRecord[],
 ): CovenantCandidateRecord[] {
+  const scan = normalizeStructureScanText(text);
   const out: CovenantCandidateRecord[] = [];
   // Include ambiguous section candidates when they carry a usable sectionRef —
   // curated/HTML exhibits often triage headings as ambiguous while still
@@ -51,8 +53,8 @@ export function discoverCovenantCandidates(
   const byId = new Map(nodes.map((n) => [n.nodeId, n]));
 
   for (const node of sectionNodes) {
-    const span = operativeSpan(node, sectionNodes, text.length);
-    const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
+    const span = operativeSpan(node, sectionNodes, scan.length);
+    const excerpt = scan.slice(span.start, Math.min(span.end, span.start + 4000));
     // Inherit parent section/article heading so 10.04(i) under "Investments" is not
     // primarily classified as INDEBTEDNESS from body mentions alone.
     const parentHeading = ancestralHeadings(node, byId);
@@ -90,15 +92,15 @@ export function discoverCovenantCandidates(
   }
 
   // Document-level fallback when structure is sparse but text is rich.
-  if (out.length === 0 && text.length > 2000) {
-    const rank = scoreDiscoveryPotential(text.slice(0, 100_000));
+  if (out.length === 0 && scan.length > 2000) {
+    const rank = scoreDiscoveryPotential(scan.slice(0, 100_000));
     if (rank.score >= 6) {
       out.push({
         candidateId: candidateId(sourceId, "document-fallback"),
         sourceId,
         families: rank.families.length ? rank.families : ["UNKNOWN"],
         signals: [...rank.signals, "sparse_structure_document_fallback"],
-        excerpt: text.slice(0, 800),
+        excerpt: scan.slice(0, 800),
         representationLevel: "DISCOVERED_CANDIDATE",
         discoveryScore: rank.score,
       });

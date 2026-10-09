@@ -8,14 +8,17 @@
 | Metric | Count |
 |---|---|
 | Knowledge sources with durable bytes | ~730 |
-| Packages with covenantSummary | ~669+ |
-| Mass-precedent-expansion refreshes | 105+ (plus force-refresh wave) |
+| Packages with covenantSummary | 669 |
+| Mass-precedent-expansion refreshes | **170** |
 | Neon recovered-defs targets | 12 |
-| Sum summary items (across packages) | ~30k |
-| Grower basket signals | ~360+ |
-| Builder / Available Amount signals | ~553+ |
-| Incremental path signals | ~152+ |
-| Packages with both Debt + Liens categories | ~237 |
+| Sum summary items (across packages) | **29,999** |
+| Grower basket signals | **458** |
+| Builder / Available Amount signals | **709** |
+| Incremental path signals | **184** |
+| Anti-stack signals | **151** |
+| NOA signals | **345** |
+| Reclass / divide-and-classify signals | **114** |
+| Packages with both Debt + Liens categories | **220** |
 
 ## Agreements / packages newly exercised this cycle
 - Crowns 7th amendment, Live Nation amendments, Snowflake, RBC, McKesson, Peloton, Maravai, Chewy alt, Caterpillar 364-day + 3Y A&R, JetBlue indenture, Accenture CA, Oceaneering A&R pair, DSGR 2nd A&R, final-lightweight term loan / A&R, Crowne/ex4march2017 indenture, plus ~100 ehb financing docs

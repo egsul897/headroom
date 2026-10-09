@@ -13,13 +13,52 @@ export interface StructuralExtractionResult {
   ambiguousCount: number;
   definitions: DefinitionRecord[];
   crossReferences: CrossReferenceRecord[];
+  /** Text actually scanned (may restore line breaks for collapsed HTML). */
+  normalizedText: string;
+}
+
+/**
+ * SEC HTML exhibits often collapse section headings into paragraph flow
+ * (avg line length >> 400), so line-anchored SECTION patterns find nothing
+ * (Suja A&R: structuralNodes=0 despite rich “6.1 Indebtedness.” body text).
+ * Restore newlines before bare “N.N Title.” headings when wrapping is pathological.
+ * Idempotent. Does not modify Phase 3 compiler stage-structure itself.
+ */
+export function normalizeStructureScanText(text: string): string {
+  const newlines = (text.match(/\n/g) || []).length;
+  const avgLine = text.length / Math.max(1, newlines);
+  // Already reasonably line-wrapped — leave alone (idempotent for repaired text).
+  if (avgLine < 400) return text;
+  if (text.length < 500) return text;
+
+  return text.replace(
+    /([^\n])([ \t]+)(\d+\.\d+)\s+(\[?[A-Z][A-Za-z0-9 ,&'’;/[\]-]{1,100}?\]?)\s*\.(?!\d)/g,
+    (full, prev: string, _sp: string, num: string, title: string, offset: number, whole: string) => {
+      const before = whole.slice(Math.max(0, offset - 48), offset + String(prev).length);
+      // Citations / cross-refs — leave intact.
+      if (
+        /(?:Section|SECTION|§|under|pursuant\s+to|clause|hereof|Agreement|of\s+this)\s*$/i.test(
+          before,
+        )
+      ) {
+        return full;
+      }
+      // TOC leader dots after the title — leave intact.
+      const after = whole.slice(offset + full.length, offset + full.length + 40);
+      if (/\.{4,}/.test(after) || /\.{4,}/.test(full)) return full;
+      // Break before AND after the heading so line-anchored SECTION patterns
+      // see a dedicated heading line (body text must not remain on the same line).
+      return `${prev}\n${num} ${title}.\n`;
+    },
+  );
 }
 
 export function extractStructure(sourceId: string, text: string): StructuralExtractionResult {
+  const scan = normalizeStructureScanText(text);
   const doc: CompilerDocumentInput = {
     documentId: sourceId,
     label: sourceId,
-    text,
+    text: scan,
   };
   const triage = parseDocumentStructureWithTriage(doc);
   const nodes: StructuralNodeRecord[] = triage.nodes.map((n) => ({
@@ -48,9 +87,9 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
     });
   }
 
-  const index = buildStructuralIndex(new Map([[sourceId, { text, nodes: triage.nodes }]]), [], []);
-  const definitions = discoverDefinitions(sourceId, text, nodes);
-  const crossReferences = discoverCrossReferences(sourceId, text);
+  const index = buildStructuralIndex(new Map([[sourceId, { text: scan, nodes: triage.nodes }]]), [], []);
+  const definitions = discoverDefinitions(sourceId, scan, nodes);
+  const crossReferences = discoverCrossReferences(sourceId, scan);
 
   // Touch index health so empty/corrupt docs surface honestly.
   void index;
@@ -60,6 +99,7 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
     ambiguousCount: triage.ambiguousCandidates.length,
     definitions,
     crossReferences,
+    normalizedText: scan,
   };
 }
 
@@ -92,7 +132,7 @@ export function normalizeDefinitionScanText(text: string): string {
 }
 
 export function discoverDefinitions(sourceId: string, text: string, _nodes: StructuralNodeRecord[]): DefinitionRecord[] {
-  const scan = normalizeDefinitionScanText(text);
+  const scan = normalizeDefinitionScanText(normalizeStructureScanText(text));
   const out: DefinitionRecord[] = [];
   const seen = new Set<string>();
   let m: RegExpExecArray | null;
@@ -125,10 +165,11 @@ export function discoverDefinitions(sourceId: string, text: string, _nodes: Stru
 const XREF_RE = /\b(?:Section|Article|clause)\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))*)\b/gi;
 
 export function discoverCrossReferences(sourceId: string, text: string): CrossReferenceRecord[] {
+  const scan = normalizeStructureScanText(text);
   const out: CrossReferenceRecord[] = [];
   let m: RegExpExecArray | null;
   const re = new RegExp(XREF_RE.source, "gi");
-  while ((m = re.exec(text)) !== null && out.length < 5000) {
+  while ((m = re.exec(scan)) !== null && out.length < 5000) {
     out.push({
       sourceId,
       rawReference: m[0]!,

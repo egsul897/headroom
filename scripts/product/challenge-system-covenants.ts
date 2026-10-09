@@ -154,10 +154,11 @@ async function analyzeOne(t: Target) {
   const loaded = await loadText(t);
   const { sourceId, text } = loaded;
   const structural = extractStructure(sourceId, text);
-  const definitions = discoverDefinitions(sourceId, text, structural.nodes);
-  const xrefs = discoverCrossReferences(sourceId, text);
-  const candidates = discoverCovenantCandidates(sourceId, text, structural.nodes);
-  const conditions = extractConditionsAndExceptions(sourceId, text, structural.nodes);
+  const scan = structural.normalizedText;
+  const definitions = discoverDefinitions(sourceId, scan, structural.nodes);
+  const xrefs = discoverCrossReferences(sourceId, scan);
+  const candidates = discoverCovenantCandidates(sourceId, scan, structural.nodes);
+  const conditions = extractConditionsAndExceptions(sourceId, scan, structural.nodes);
   const summary = buildDocumentCovenantSummary({
     sourceId,
     documentTitle: loaded.title,
