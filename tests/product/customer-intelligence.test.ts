@@ -236,6 +236,45 @@ describe("dependency graph and amendment compare", () => {
   });
 });
 
+describe("export formats", () => {
+  it("renders HTML and DOCX from the shared review object", async () => {
+    const { renderCovenantReviewHtml, renderCovenantReviewDocx } = await import(
+      "../../lib/product/customer-intelligence/export-docx"
+    );
+    const review: CovenantReviewWorkspace = {
+      companyId: "co-export",
+      documentCount: 1,
+      analyzedOkCount: 1,
+      failedCount: 0,
+      totalSummaries: 1,
+      executive: {
+        headline: "1 document analyzed.",
+        materialRestrictions: ["§7.01: No Indebtedness except baskets."],
+        materialPermissions: [],
+        unresolved: [],
+      },
+      categories: [],
+      documents: [],
+      amendmentPackage: null,
+      dependencyGraph: { edgeCount: 0, edges: [], cycles: [], note: "n/a" },
+      amendmentCompare: {
+        operativeResolution: "NO_DOCUMENTS",
+        rows: [],
+        unresolvedReasons: [],
+        note: "n/a",
+      },
+    };
+    const html = renderCovenantReviewHtml(review);
+    expect(html).toContain("<!DOCTYPE html>");
+    expect(html).toContain("DISCOVERED");
+    const docx = await renderCovenantReviewDocx(review);
+    expect(docx.length).toBeGreaterThan(500);
+    // DOCX is a zip package
+    expect(docx[0]).toBe(0x50);
+    expect(docx[1]).toBe(0x4b);
+  });
+});
+
 describe("covenant review markdown export", () => {
   it("renders executive fields from the shared review object", () => {
     const review: CovenantReviewWorkspace = {

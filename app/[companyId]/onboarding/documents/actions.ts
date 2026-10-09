@@ -38,13 +38,48 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
   }
   if (documentId) {
     try {
-      await analyzeCustomerDocument({
+      const { stageCustomerDocument, LARGE_UPLOAD_DEFER_BYTES } = await import(
+        "@/lib/product/customer-intelligence/analyze-upload"
+      );
+      const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
+      const staged = await stageCustomerDocument({
         companyId,
         documentId,
         bytes: buffer,
         filename: file.name,
         declaredType,
+        existingStorageRef: doc?.storageRef,
       });
+
+      const runAnalyze = () =>
+        analyzeCustomerDocument({
+          companyId,
+          documentId,
+          bytes: buffer,
+          filename: file.name,
+          declaredType,
+        }).catch((err) => {
+          console.error(
+            `[analyzeCustomerDocument] unexpected error for company ${companyId} document ${documentId}:`,
+            err,
+          );
+        });
+
+      // Large authentic agreements: durable bytes are already staged — do not hold the
+      // upload request open for full structural/covenant analysis (request-timeout risk).
+      if (buffer.length >= LARGE_UPLOAD_DEFER_BYTES) {
+        void runAnalyze().then(() => {
+          revalidatePath(`/${companyId}/onboarding/documents`);
+          revalidatePath(`/${companyId}/documents`);
+          revalidatePath(`/${companyId}/covenants`);
+          revalidatePath(`/${companyId}/documents/${documentId}`);
+        });
+        console.info(
+          `[uploadDocumentAction] deferred analysis sourceId=${staged.sourceId} bytes=${buffer.length}`,
+        );
+      } else {
+        await runAnalyze();
+      }
     } catch (err) {
       console.error(
         `[analyzeCustomerDocument] unexpected error for company ${companyId} document ${documentId}:`,
@@ -55,6 +90,7 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 
   revalidatePath(`/${companyId}/onboarding/documents`);
   revalidatePath(`/${companyId}/documents`);
+  revalidatePath(`/${companyId}/covenants`);
   if (documentId) revalidatePath(`/${companyId}/documents/${documentId}`);
 }
 

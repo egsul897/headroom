@@ -1,4 +1,9 @@
-export { analyzeCustomerDocument, type CustomerAnalyzeResult } from "./analyze-upload";
+export {
+  analyzeCustomerDocument,
+  stageCustomerDocument,
+  LARGE_UPLOAD_DEFER_BYTES,
+  type CustomerAnalyzeResult,
+} from "./analyze-upload";
 export { analyzeAmendmentPackage, type AmendmentPackageView } from "./amendment-package";
 export {
   listCustomerDocumentIntelligence,

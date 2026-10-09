@@ -39,6 +39,9 @@ type QuestionIntent =
   | "DEBT_LIEN_CROSS"
   | "FINANCIAL_INPUTS_CAPACITY"
   | "NON_GUARANTOR_DEBT"
+  | "GUARANTEES"
+  | "RATIO_PERMISSIONS"
+  | "SHARED_CAPACITY"
   | "ASSET_SALES"
   | "AMENDMENT_CHANGES"
   | "LEVERAGE_DEFINITIONS"
@@ -69,6 +72,15 @@ function classifyIntent(q: string): QuestionIntent {
     /unrestricted subsidiar|invest(ment|s)? in (an )?unrestricted|designate.*unrestricted|investment basket/.test(s)
   ) {
     return "INVESTMENTS_UNRESTRICTED";
+  }
+  if (/shared.?cap|aggregate.?cap|in the aggregate|shared basket|builder basket|available amount/.test(s)) {
+    return "SHARED_CAPACITY";
+  }
+  if (/ratio.?based|ratio debt|leverage.?test|pro forma.*ratio|incurrence.?test/.test(s)) {
+    return "RATIO_PERMISSIONS";
+  }
+  if (/guarant(ee|y)|guarantee.?limitation|guarantor/.test(s) && !/non.?guarantor/.test(s)) {
+    return "GUARANTEES";
   }
   if (/leverage|coverage ratio|definition.*(ratio|leverage)|(ratio|leverage).*definition/.test(s)) {
     return "LEVERAGE_DEFINITIONS";
@@ -102,6 +114,17 @@ function intentCategories(intent: QuestionIntent): string[] {
       ];
     case "NON_GUARANTOR_DEBT":
       return ["DEBT_INCURRENCE", "GUARANTEES", "OTHER"];
+    case "GUARANTEES":
+      return ["GUARANTEES", "DEBT_INCURRENCE", "OTHER"];
+    case "RATIO_PERMISSIONS":
+      return ["DEBT_INCURRENCE", "FINANCIAL_MAINTENANCE", "BASKETS_EXCEPTIONS_CONDITIONS", "LIENS_SECURED_DEBT"];
+    case "SHARED_CAPACITY":
+      return [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+      ];
     case "ASSET_SALES":
       return ["ASSET_SALES"];
     case "LEVERAGE_DEFINITIONS":
@@ -148,6 +171,15 @@ function intentTokens(intent: QuestionIntent, question: string): string[] {
       break;
     case "NON_GUARANTOR_DEBT":
       extra.push("foreign", "subsidiary", "guarantor", "loan", "party", "indebtedness");
+      break;
+    case "GUARANTEES":
+      extra.push("guarantee", "guarantor", "guaranty", "subsidiary", "indebtedness");
+      break;
+    case "RATIO_PERMISSIONS":
+      extra.push("ratio", "leverage", "pro", "forma", "consolidated", "ebitda", "coverage");
+      break;
+    case "SHARED_CAPACITY":
+      extra.push("aggregate", "shared", "builder", "available", "amount", "basket", "cap");
       break;
     case "ASSET_SALES":
       extra.push("asset", "sale", "disposition", "property");
@@ -204,6 +236,17 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   if (intent === "FINANCIAL_INPUTS_CAPACITY") {
     if (/ebitda|leverage|ratio|greater of|grower|builder|available amount/i.test(hay)) score += 4;
     if ((item.materialBasketsThresholds ?? []).length > 0) score += 2;
+  }
+  if (intent === "GUARANTEES") {
+    if (/guarant/i.test(hay)) score += 6;
+    if (item.category === "GUARANTEES") score += 4;
+  }
+  if (intent === "RATIO_PERMISSIONS") {
+    if (/ratio|leverage|pro forma|consolidated ebitda/i.test(hay)) score += 5;
+    if ((item.conditions ?? []).some((c) => /ratio|leverage|pro forma/i.test(c))) score += 3;
+  }
+  if (intent === "SHARED_CAPACITY") {
+    if (/aggregate|shared|builder|available amount|in the aggregate/i.test(hay)) score += 6;
   }
   if (intent === "ASSET_SALES" && item.category === "ASSET_SALES") score += 6;
   if (intent === "NON_GUARANTOR_DEBT") {
@@ -333,6 +376,12 @@ function composeAnswer(params: {
       "Contractual capacity is not determinable from discovery summaries alone. Financial inputs that are commonly required (only when the operative rulebook uses them) include: Consolidated EBITDA / Adjusted EBITDA, total and secured debt, cash for netting where the definition allows, interest expense / fixed charges, total assets for grower baskets, pro forma adjustments, and the testing date. Matching provisions that imply those inputs say:",
     NON_GUARANTOR_DEBT:
       "Debt at non-guarantor / non-Loan-Party subsidiaries depends on specific indebtedness baskets and entity-scope language. Matching analyzed provisions say:",
+    GUARANTEES:
+      "Guarantee limitations typically restrict Loan Party / Restricted Subsidiary guarantees of third-party or non-guarantor indebtedness, subject to enumerated exceptions. Matching analyzed provisions say:",
+    RATIO_PERMISSIONS:
+      "Ratio-based permissions (for example leverage or coverage tests) are conditional — they are not available capacity without approved contractual financial inputs and operative definitions. Matching analyzed provisions say:",
+    SHARED_CAPACITY:
+      "Shared-capacity / aggregate-cap language can link multiple baskets. Permission under one clause may consume capacity shared with another. Matching analyzed provisions say:",
     ASSET_SALES:
       "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say:",
     AMENDMENT_CHANGES:
@@ -392,6 +441,9 @@ function composeAnswer(params: {
       : "",
     params.intent === "DEBT_LIEN_CROSS"
       ? "Cross-covenant conclusion: do not treat an Indebtedness basket as a Lien permission. Both regimes must independently support the structure, subject to shared caps and conditions."
+      : "",
+    params.intent === "RATIO_PERMISSIONS" || params.intent === "SHARED_CAPACITY"
+      ? "Capacity conclusion: NOT DETERMINABLE from discovery alone — ratio tests and shared caps require an executable rulebook, approved financial snapshot, and ledger utilization where applicable."
       : "",
     params.amendmentNote ? params.amendmentNote : "",
     "These statements are DISCOVERED_CANDIDATE analyses shared with the covenant-summary store. They do not establish that a transaction is permitted, that capacity exists, or that language is currently operative after amendments.",

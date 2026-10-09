@@ -56,6 +56,94 @@ export interface CustomerAnalyzeResult {
   structuralNodeCount: number;
   error?: string;
   promotedToLegalTruth: 0;
+  /** True when bytes were staged and analysis was deferred off the request path. */
+  deferred?: boolean;
+}
+
+/** Files at/above this size stage durable bytes first, then analyze outside the upload critical path. */
+export const LARGE_UPLOAD_DEFER_BYTES = 1_500_000;
+
+/**
+ * Persist original customer bytes + a PENDING KnowledgeSource row before heavy analysis.
+ * Idempotent on (companyId, documentId, contentHash).
+ */
+export async function stageCustomerDocument(params: {
+  companyId: string;
+  documentId: string;
+  bytes: Buffer;
+  filename: string;
+  declaredType?: string;
+  /** Prefer existing Document storageRef when present to avoid double BYTEA write. */
+  existingStorageRef?: string | null;
+}): Promise<{ sourceId: string; storageRef: string; contentHash: string; reusedBytes: boolean }> {
+  const contentHash = sha256(params.bytes);
+  const sourceId = customerSourceId(params.companyId, params.documentId, contentHash);
+  const company = await prisma.company.findUniqueOrThrow({ where: { id: params.companyId } });
+
+  let storageRef = params.existingStorageRef ?? null;
+  let reusedBytes = Boolean(storageRef);
+  if (!storageRef) {
+    const provider = new PostgresDocumentStorageProvider();
+    const stored = await provider.store({
+      companyId: params.companyId,
+      filename: params.filename,
+      contentType: contentTypeFor(params.filename),
+      data: params.bytes,
+    });
+    storageRef = stored.storageRef;
+    reusedBytes = false;
+  }
+
+  const pendingMeta = JSON.parse(
+    JSON.stringify({
+      workspaceScope: "CUSTOMER",
+      companyId: params.companyId,
+      documentId: params.documentId,
+      declaredType: params.declaredType ?? null,
+      processingStatus: "STAGED_PENDING_ANALYSIS",
+      promotedToLegalTruth: 0,
+    }),
+  );
+
+  await prisma.knowledgeSource.upsert({
+    where: { sourceId },
+    create: {
+      sourceId,
+      companyId: params.companyId,
+      documentId: params.documentId,
+      issuerCik: "0000000000",
+      issuerTicker: company.ticker,
+      issuerName: company.name,
+      accessionNumber: `customer-${params.documentId}`,
+      exhibitFilename: params.filename,
+      sourceUrl: `fixture://customer/${params.companyId}/${params.documentId}/${params.filename}`,
+      filingDate: new Date(),
+      formType: "UPLOAD",
+      documentTitle: params.filename,
+      documentClass: documentClassFromDeclared(params.declaredType, "UNKNOWN") as never,
+      originalBytesHash: contentHash,
+      acquisitionTimestamp: new Date(),
+      parserVersion: "customer-stage-v1",
+      extractionStatus: "PENDING",
+      representationLevel: "SOURCE_ONLY",
+      provenance: "customer-upload",
+      usageRightsReviewStatus: "UNREVIEWED",
+      byteSize: params.bytes.length,
+      storageRef,
+      metadata: pendingMeta,
+    },
+    update: {
+      companyId: params.companyId,
+      documentId: params.documentId,
+      storageRef,
+      byteSize: params.bytes.length,
+      issuerName: company.name,
+      issuerTicker: company.ticker,
+      metadata: pendingMeta,
+    },
+  });
+
+  return { sourceId, storageRef, contentHash, reusedBytes };
 }
 
 /**
