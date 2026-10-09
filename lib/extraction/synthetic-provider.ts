@@ -42,18 +42,9 @@ import type {
   StructureExtractionResult,
 } from "./provider";
 import type { DefinedTermProposal, DocumentRelationshipProposal, ExternalInputRequirementProposal, PermissionProposal, RelationshipProposal } from "./schemas";
+import { detectGrantType, recognizePermissionFormula } from "./synthetic-formula";
 
-const DOLLAR_RE = /\$([\d,]+(?:\.\d+)?)\s*(million|billion)?/i;
 const DEFINITION_RE = /^"([^"]{2,80})"\s+means\b/;
-
-/** Parses a dollar figure, in the $-millions convention this codebase's own fixtures use elsewhere (e.g. tests/solver/gate0-security-scope.test.ts's FIN.ebitda). Returns null (never a fabricated number) when no figure is present. */
-function parseDollarAmount(text: string): number | null {
-  const match = DOLLAR_RE.exec(text);
-  if (!match?.[1]) return null;
-  const raw = parseFloat(match[1].replace(/,/g, ""));
-  if (Number.isNaN(raw)) return null;
-  return match[2]?.toLowerCase() === "billion" ? raw * 1000 : raw;
-}
 
 export class SyntheticExtractionProvider implements ContractExtractionProvider {
   async extractDocumentStructure(input: StructureExtractionInput): Promise<StructureExtractionResult> {
@@ -136,32 +127,36 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
     const candidates: PermissionProposal[] = [];
     for (const chunk of input.chunks) {
       if (!chunk.sectionRef) continue;
-      const isLien = /\blien\b/i.test(chunk.text);
-      const isIndebtedness = /\bindebtedness\b/i.test(chunk.text);
-      if (!isLien && !isIndebtedness) continue;
+      const grantType = detectGrantType(chunk.text);
+      if (!grantType) continue;
       // Only propose a MODELED permission when there is a concrete
       // dollar-denominated basket to anchor thresholdValue to - a
       // keyword-only match with no figure is exactly what COVERAGE below
       // exists to flag instead (fail closed: leave it genuinely unmodeled
       // rather than fabricate a $0/low-confidence "modeled" placeholder).
-      const amount = parseDollarAmount(chunk.text);
-      if (amount === null) continue;
+      const formula = recognizePermissionFormula(chunk.text);
+      if (!formula) continue;
+      const isLien = grantType === "LIEN";
       candidates.push({
         kind: "PERMISSION",
         sourceChunkIds: [chunk.id],
         sourcePage: chunk.page ?? undefined,
         sourceSectionRef: chunk.sectionRef,
         sourceExcerpt: chunk.text.slice(0, 300),
-        confidence: 0.8,
-        rationale: `Found a dollar-denominated basket in Section ${chunk.sectionRef}.`,
+        confidence: formula.formulaType === "FLAT_AMOUNT" ? 0.8 : 0.85,
+        rationale:
+          formula.formulaType === "FLAT_AMOUNT"
+            ? `Found a dollar-denominated basket in Section ${chunk.sectionRef}.`
+            : `Found a greater-of grower basket in Section ${chunk.sectionRef} (${formula.formulaType}).`,
         proposedValue: {
           permissionRef: chunk.sectionRef,
           action: isLien ? "secure Indebtedness with a Lien" : "incur Indebtedness",
-          grantType: isLien ? "LIEN" : "DEBT_INCURRENCE",
-          amountKind: "FIXED",
+          grantType,
+          amountKind: formula.amountKind,
           entityScope: [],
-          formulaType: "FLAT_AMOUNT",
-          thresholdValue: amount,
+          formulaType: formula.formulaType,
+          thresholdValue: formula.thresholdValue,
+          ...(formula.params ? { params: formula.params } : {}),
           measurementBasis: "CUMULATIVE_INCURRED",
           sectionRef: chunk.sectionRef,
           definedTermRefs: [],
@@ -201,21 +196,30 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
     const candidates: PermissionProposal[] = [];
     for (const chunk of input.chunks) {
       if (!chunk.sectionRef || modeledSections.has(chunk.sectionRef)) continue;
-      if (!/\bindebtedness\b|\blien\b/i.test(chunk.text)) continue;
+      const gapGrant = detectGrantType(chunk.text);
+      // Maintenance / financial covenants often lack Indebtedness/Lien keywords
+      // and dollar figures — still flag as KNOWN_NOT_MODELED when ratio language
+      // is present (fail closed: never invent a MODELED dollar capacity).
+      const looksLikeMaintenance =
+        /\b(?:leverage|coverage)\s+ratio\b/i.test(chunk.text) &&
+        /\b\d+(?:\.\d+)?\s*to\s*1(?:\.0+)?\b/i.test(chunk.text);
+      if (!gapGrant && !looksLikeMaintenance) continue;
       candidates.push({
         kind: "PERMISSION",
         sourceChunkIds: [chunk.id],
         sourcePage: chunk.page ?? undefined,
         sourceSectionRef: chunk.sectionRef,
         sourceExcerpt: chunk.text.slice(0, 300),
-        rationale: `Section ${chunk.sectionRef} references Indebtedness/Lien but no PERMISSION candidate covers it yet - flagged as a coverage gap, not modeled.`,
+        rationale: looksLikeMaintenance && !gapGrant
+          ? `Section ${chunk.sectionRef} appears to contain a financial maintenance ratio covenant but has no dollar-anchored basket — flagged as a coverage gap, not modeled.`
+          : `Section ${chunk.sectionRef} references Indebtedness/Lien but no PERMISSION candidate covers it yet - flagged as a coverage gap, not modeled.`,
         proposedValue: {
           permissionRef: `${chunk.sectionRef}-gap`,
           action: "unmodeled provision - requires manual review",
-          grantType: /\blien\b/i.test(chunk.text) ? "LIEN" : "DEBT_INCURRENCE",
+          grantType: gapGrant ?? "DEBT_INCURRENCE",
           amountKind: "FIXED",
           entityScope: [],
-          formulaType: "FLAT_AMOUNT",
+          formulaType: looksLikeMaintenance ? "RATIO_GATE" : "FLAT_AMOUNT",
           thresholdValue: 0,
           measurementBasis: "CUMULATIVE_INCURRED",
           sectionRef: chunk.sectionRef,
