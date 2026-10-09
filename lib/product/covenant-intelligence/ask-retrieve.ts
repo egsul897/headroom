@@ -2,6 +2,10 @@
  * Question answering over persisted covenant analyses (same objects as summaries).
  * Retrieves relevant provisions, composes an explanation, cites sections.
  * Does not invent capacity, permissions, or amendment conclusions.
+ *
+ * For lawyer-grade complete retrieval + independent verification + Phase 3
+ * bridging, prefer `runLegalExcellence` from `./legal-excellence` (extends
+ * this ranking with recursive expansion and omission detection).
  */
 
 import { prisma } from "../../prisma";
@@ -328,6 +332,8 @@ export function answerFromSummaryItems(params: {
     .map((item) => ({ ...item, score: scoreItem(item, intent, tokens) }))
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
+  // Sync helper keeps ranking+compose; the customer-facing async path
+  // (`answerFromCorpus`) runs full legal excellence (retrieval + adversarial verify).
   return composeAnswer({
     question: q,
     intent,
@@ -397,13 +403,18 @@ export async function answerFromCorpus(params: {
     }
   }
 
-  return answerFromSummaryItems({
+  // Customer-facing Ask path: complete retrieval + independent adversarial
+  // verification + certification bridge (never invent executable capacity).
+  const { runLegalExcellence } = await import("./legal-excellence");
+  const excellence = runLegalExcellence({
     question: q,
     items,
     researchOnly,
     amendmentNote,
+    transactionDescription: q,
     limit: params.limit ?? 6,
   });
+  return excellence.bridged.ask;
 }
 
 export async function listSummariesInNeon(limit = 50): Promise<

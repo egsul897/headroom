@@ -159,6 +159,8 @@ export type IREntityScope = { include: EntityClassTag[]; exclude: EntityClassTag
 export type EntityScopeReasonCode =
   | "ENTITY_SCOPE_UNRECOGNIZED_TAG"
   | "ENTITY_SCOPE_UNDERINCLUSIVE_VS_SOURCE"
+  /** Clause-own actor language establishes a narrower exact scope than the submitted/governing-wide model scope (IPV-01). */
+  | "ENTITY_SCOPE_OVERINCLUSIVE_VS_SOURCE"
   | "ENTITY_SCOPE_AMBIGUOUS_VS_SOURCE"
   | "ENTITY_SCOPE_UNSPECIFIED"
   | "ENTITY_SCOPE_UNWITNESSED"

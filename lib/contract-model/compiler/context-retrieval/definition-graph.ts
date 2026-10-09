@@ -9,7 +9,7 @@
  * structural-definitions.ts already declared, never a fuzzy guess.
  */
 import type { StructuralIndex } from "../structural-index";
-import { addEdge, addItem, makeItemInput, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, operativeDefinitionText, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { computeItemId } from "./identity";
 import type { ContextItem } from "./types";
 
@@ -32,7 +32,25 @@ interface KnownTermMention {
   normalizedTerm: string;
 }
 
-/** Every term THIS document declared (structural-definitions.ts's own detection) that appears verbatim in `text` - exact match only, word-boundary-safe. */
+/**
+ * IPV-09: plural/inflected surface forms of a declared defined term.
+ * Deterministic English inflection only (Subsidiaries/ies, Guarantors, Liens) —
+ * never fuzzy synonym matching across distinct defined terms.
+ */
+function termSurfaceForms(exactTerm: string): string[] {
+  const forms = new Set<string>([exactTerm]);
+  if (/y$/i.test(exactTerm) && !/[aeiou]y$/i.test(exactTerm)) {
+    forms.add(exactTerm.replace(/y$/i, exactTerm.endsWith("Y") ? "IES" : "ies"));
+  } else if (/s$/i.test(exactTerm) || /x$/i.test(exactTerm) || /z$/i.test(exactTerm) || /ch$/i.test(exactTerm) || /sh$/i.test(exactTerm)) {
+    forms.add(`${exactTerm}${exactTerm === exactTerm.toUpperCase() ? "ES" : "es"}`);
+  } else {
+    forms.add(`${exactTerm}${/[A-Z]+$/.test(exactTerm) && exactTerm === exactTerm.toUpperCase() ? "S" : "s"}`);
+  }
+  // Common credit-agreement plurals already ending in "Subsidiary" etc. are covered above.
+  return [...forms];
+}
+
+/** Every term THIS document declared (structural-definitions.ts's own detection) that appears verbatim in `text` - exact match only, word-boundary-safe (plus deterministic plural surface forms — IPV-09). */
 function findKnownTermMentions(text: string, index: StructuralIndex, documentId: string, excludeNormalizedTerm: string): KnownTermMention[] {
   const out: KnownTermMention[] = [];
   const seen = new Set<string>();
@@ -41,10 +59,13 @@ function findKnownTermMentions(text: string, index: StructuralIndex, documentId:
     if (def.normalizedTerm === excludeNormalizedTerm) continue;
     if (seen.has(def.normalizedTerm)) continue;
     if (isAdministrativeTerm(def.normalizedTerm)) continue;
-    // Word-boundary-safe exact match of the term's own exact text (never fuzzy).
-    const escaped = def.exactTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`\\b${escaped}\\b`);
-    if (re.test(text)) {
+    // Word-boundary-safe exact match of the term's own exact text (never fuzzy),
+    // plus plural/inflected surface forms so "Guarantors" resolves "Guarantor".
+    const hit = termSurfaceForms(def.exactTerm).some((form) => {
+      const escaped = form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp(`\\b${escaped}\\b`).test(text);
+    });
+    if (hit) {
       out.push({ exactTerm: def.exactTerm, normalizedTerm: def.normalizedTerm });
       seen.add(def.normalizedTerm);
     }
@@ -82,6 +103,25 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
 
     if (isCycle) {
       const cyclePath = [...pathTermsStack, mention.normalizedTerm].join(" -> ");
+      // IPV-12 / IPV-21: when the term is ALREADY retrieved, the loop is closed against
+      // material already in the bundle (diamond or mutual cross-mention). Disclose as
+      // LOW so sufficiency stays honest without false REVIEW_REQUIRED refusals. MEDIUM
+      // only when the cycle blocks retrieval of a term not yet in the bundle.
+      if (existing) {
+        addEdge(state, parentItemId, existing.itemId, "DEPENDS_ON_DEFINITION", `Cyclic/diamond dependency (${cyclePath}) - already retrieved; not re-expanded.`);
+        state.duplicatePathsDeduplicated++;
+        state.unresolved.push({
+          originatingNodeKey: null,
+          dependencyType: "DEFINITION_CYCLE",
+          sourceText: mention.exactTerm,
+          attemptedResolution: `Definition cycle detected: ${cyclePath}`,
+          reason: "Dependency path re-enters an already-retrieved definition; edge recorded, expansion stopped. Severity LOW because the definition text is already in the bundle (IPV-21 diamond / mutual cross-mention).",
+          candidateTargets: [mention.exactTerm],
+          citation: `${documentId}::${mention.exactTerm}`,
+          severity: "LOW",
+        });
+        continue;
+      }
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "DEFINITION_CYCLE",
@@ -92,7 +132,6 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
         citation: `${documentId}::${mention.exactTerm}`,
         severity: "MEDIUM",
       });
-      if (existing) addEdge(state, parentItemId, existing.itemId, "DEPENDS_ON_DEFINITION", `Cyclic dependency (${cyclePath}) - not re-expanded.`);
       continue;
     }
 
@@ -102,7 +141,9 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
       continue;
     }
 
-    const fullText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    const baseText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    // IPV-20: prefer RESOLVED amended definition text over the base-index span.
+    const fullText = operativeDefinitionText(state, index, documentId, mention.exactTerm, baseText);
     if (!withinBudget(state, fullText.length)) return;
 
     // Phase 3F.1 FIX-2 - this is the exact defect class the reproduced

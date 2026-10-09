@@ -59,7 +59,7 @@ export const XREF_AGREEMENT = [
   "",
   "(b) Liens on property acquired after the Closing Date securing Indebtedness in a principal amount not exceeding 65% of the fair market value of such property.",
   "",
-  "SECTION 7.04 General Debt Basket . The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+  "SECTION 7.04 General Debt Basket . The Borrower may incur Indebtedness under this Section 7.04 in an aggregate principal amount not to exceed the greater of $123,000,000 and 17% of Total Assets.",
   "",
   "SECTION 7.05 Restricted Payments . The Borrower shall not make any Restricted Payment, except Restricted Payments made subject to Section 7.06.",
   "",
@@ -96,7 +96,7 @@ export const X = {
   lien_chapeau: "The Borrower shall not create any Lien on any property, except:",
   lien_a: "(a) Liens securing Indebtedness under the Loan Documents;",
   lien_b: "(b) Liens on property acquired after the Closing Date securing Indebtedness in a principal amount not exceeding 65% of the fair market value of such property.",
-  basket: "The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+  basket: "The Borrower may incur Indebtedness under this Section 7.04 in an aggregate principal amount not to exceed the greater of $123,000,000 and 17% of Total Assets.",
   rp: "The Borrower shall not make any Restricted Payment, except Restricted Payments made subject to Section 7.06.",
   inv: "The Borrower shall not make any Investment, except Investments made subject to Section 7.05.",
 };
@@ -127,7 +127,7 @@ export const XREF_INVENTORY: ScriptedInventory = {
     item("7.03", X.lien_a, "PERMISSION", "MATERIAL", "Liens securing Loan Document Indebtedness"),
     item("7.03", X.lien_b, "PERMISSION", "CRITICAL", "acquired-property Liens up to 65% of fair market value"),
   ],
-  "7.04": [item("7.04", X.basket, "THRESHOLD", "CRITICAL", "general debt basket: greater of $123,000,000 and 17% of Total Assets")],
+  "7.04": [item("7.04", X.basket, "PERMISSION", "CRITICAL", "general debt basket: greater of $123,000,000 and 17% of Total Assets")],
   "7.05": [item("7.05", X.rp, "PROHIBITION", "CRITICAL", "restricted payments prohibited except subject to Section 7.06")],
   "7.06": [item("7.06", X.inv, "PROHIBITION", "CRITICAL", "investments prohibited except subject to Section 7.05")],
 };
@@ -173,12 +173,55 @@ export function xrefSubmissionFor(user: string): unknown {
     return { rules: [ratioTest("7.01(a)", "Leverage Ratio", "LTE", 4.25, X.fc_a, [...a, ...chapeau]), ratioTest("7.01(b)", "Interest Coverage Ratio", "GTE", 2.5, X.fc_b, [...b, ...chapeau])], definitions: [], ...empty };
   }
   if (allTagged(user, "7.02-chapeau").length > 0) {
-    // the PARENT candidate owns the prohibition; the children own their permissions (exceptions here are relationships, not units)
+    // the PARENT candidate owns the prohibition; the children own their permissions (exceptions here are relationships, not units).
+    // IPV-03: do not lineage-launder child CONDITION inventory items onto the parent exception nodes —
+    // cite only the permission proposition on each carve-out, and disposition any child CONDITION
+    // items that leaked into this inventory (DESCENDANTS excerpt match) as owned by the child units.
     const chapeau = ids(user, "7.02-chapeau", "general prohibition");
-    const exc = (tag: string, description: string, excerpt: string) => ({ description, permissionRef: null, conditions: [], citation: tag, excerpt, inventoryItemIds: allTagged(user, tag) });
-    return { rules: [{ localRef: "r0", sourceSectionRef: "7.02", covenantFamily: "INDEBTEDNESS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "INCUR_DEBT", entityScope: ["BORROWER"], capacityExpression: null, conditions: [],
-      exceptions: [exc("7.02(a)", "clause (a): Indebtedness secured by permitted Liens, gated on pro forma covenant compliance", X.a_permission), exc("7.02(b)", "clause (b): Subsidiary Indebtedness subject to the Payment Conditions", X.b_permission), exc("7.02(c)", "clause (c): other Indebtedness subject to Section 7.04", X.c_permission)],
-      dependsOn: [], sufficiency: "COMPLETE", citation: "7.02", excerpt: X.debt_chapeau, inventoryItemIds: chapeau }], definitions: [], ...empty };
+    const childPermission = (tag: string, needle: string) => ids(user, tag, needle);
+    const childConditions = [
+      ...ids(user, "7.02(a)", "pro forma compliance"),
+      ...ids(user, "7.02(a)", "testing date basis"),
+      ...ids(user, "7.02(a)", "transaction timing"),
+    ];
+    const exc = (tag: string, description: string, excerpt: string, needle: string) => ({
+      description,
+      permissionRef: null,
+      conditions: [],
+      citation: tag,
+      excerpt,
+      inventoryItemIds: childPermission(tag, needle),
+    });
+    return {
+      rules: [{
+        localRef: "r0",
+        sourceSectionRef: "7.02",
+        covenantFamily: "INDEBTEDNESS",
+        ruleType: "PROHIBITION",
+        posture: "PROHIBITION",
+        action: "INCUR_DEBT",
+        entityScope: ["BORROWER"],
+        capacityExpression: null,
+        conditions: [],
+        exceptions: [
+          exc("7.02(a)", "clause (a): Indebtedness secured by permitted Liens, gated on pro forma covenant compliance", X.a_permission, "permits Indebtedness"),
+          exc("7.02(b)", "clause (b): Subsidiary Indebtedness subject to the Payment Conditions", X.b_permission, "Subsidiary Indebtedness"),
+          exc("7.02(c)", "clause (c): other Indebtedness subject to Section 7.04", X.c_permission, "other Indebtedness"),
+        ],
+        dependsOn: [],
+        sufficiency: "COMPLETE",
+        citation: "7.02",
+        excerpt: X.debt_chapeau,
+        inventoryItemIds: chapeau,
+      }],
+      definitions: [],
+      inventoryDispositions: childConditions.map((inventoryItemId) => ({
+        inventoryItemId,
+        disposition: "INTENTIONALLY_NON_COMPUTATIONAL",
+        reason: "Condition proposition is owned by the child candidate (7.02(a)); parent prohibition records only the carve-out relationship (IPV-03).",
+      })),
+      ...empty,
+    };
   }
   if (allTagged(user, "7.02(a)").length > 0) {
     const perm = ids(user, "7.02(a)", "permits Indebtedness"), proviso = ids(user, "7.02(a)", "pro forma compliance"), testing = ids(user, "7.02(a)", "testing date basis"), timing = ids(user, "7.02(a)", "transaction timing");
