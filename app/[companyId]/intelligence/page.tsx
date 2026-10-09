@@ -263,9 +263,43 @@ export default async function DebtIntelligencePage({
         )}
       </Card>
 
-      {/* 6. Transactions */}
+      {/* 6. Multi-path contractual pathways */}
       <Card>
-        <div className="card-title">6. Transaction intelligence</div>
+        <div className="card-title">6. Multi-path transaction analysis</div>
+        <div className="card-subtitle">
+          Enumerates alternative contractual pathways. Stacking across debt/lien baskets is not assumed unless the
+          agreement expressly shares capacity.
+        </div>
+        {(d.multiPath ?? []).length === 0 ? (
+          <div className="row-note">Analyze a financing package to enumerate pathways.</div>
+        ) : (
+          (d.multiPath ?? []).map((mp) => (
+            <div key={mp.transaction.label} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+              <div className="row-label">{mp.transaction.label}</div>
+              <div className="row-note">{mp.narrative}</div>
+              <div className="row-note" style={{ marginTop: 6 }}>
+                Pathways: {mp.paths.length} · sufficient single: {mp.sufficientSinglePaths.length} · partial:{" "}
+                {mp.partialPaths.length}
+              </div>
+              {mp.paths.slice(0, 8).map((p) => (
+                <div key={p.pathId} className="row-note" style={{ marginTop: 4 }}>
+                  • [{p.status}] §{p.sectionRef} {p.family}
+                  {p.capacityMillions != null ? ` · $${p.capacityMillions}M` : ""}
+                  {p.reviewDecision ? ` · counsel ${p.reviewDecision}` : " · AI-proposed"}
+                  {p.formulaHint ? ` — ${p.formulaHint.slice(0, 120)}` : ""}
+                </div>
+              ))}
+              <div className="row-note" style={{ marginTop: 6 }}>
+                {mp.combination.note}
+              </div>
+            </div>
+          ))
+        )}
+      </Card>
+
+      {/* 7. Transactions */}
+      <Card>
+        <div className="card-title">7. Transaction intelligence</div>
         <div className="card-subtitle">
           Proposed exercises mapped to AI-matched provisions. Run Ask for reasoned analysis; Simulate when the engine
           path is ready. Pro forma ratios stay conditional without executable rules and inputs.

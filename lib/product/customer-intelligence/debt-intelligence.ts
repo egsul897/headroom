@@ -19,6 +19,10 @@ import {
   type FormulaParams,
   type FormulaType,
 } from "@/lib/covenant-engine";
+import {
+  analyzeMultiPathTransaction,
+  type MultiPathAnalysis,
+} from "./multi-path-analysis";
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -135,6 +139,8 @@ export interface DebtIntelligenceDashboard {
     notes: string[];
     drilldown: DashboardDrilldown;
   }>;
+  /** Multi-path contractual pathway analysis (stacking not assumed). */
+  multiPath: MultiPathAnalysis[];
   rulebookStage: string;
   capacityStatus: string;
   amendmentResolution: string;
@@ -989,6 +995,51 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     });
   }
 
+  const compiledForPaths = executablePermissions.map((p) => ({
+    id: p.id,
+    code: p.code,
+    grantType: p.grantType,
+    sectionRef: p.sectionRef,
+    formulaType: p.formulaType,
+    thresholdValue: num(p.thresholdValue) ?? 0,
+    params: (p.params ?? null) as FormulaParams | null,
+    action: p.action,
+    modelingStatus: p.modelingStatus,
+  }));
+
+  const multiPath: MultiPathAnalysis[] = [
+    analyzeMultiPathTransaction({
+      amountMillions: 100,
+      kind: "SECURED_DEBT",
+      secured: true,
+      label: "$100M secured debt incurrence",
+      items: allItems,
+      approvals,
+      permissions: compiledForPaths,
+      financials: finForEval,
+    }),
+    analyzeMultiPathTransaction({
+      amountMillions: 75,
+      kind: "RESTRICTED_PAYMENT",
+      secured: false,
+      label: "$75M restricted payment",
+      items: allItems,
+      approvals,
+      permissions: compiledForPaths,
+      financials: finForEval,
+    }),
+    analyzeMultiPathTransaction({
+      amountMillions: 150,
+      kind: "ACQUISITION",
+      secured: true,
+      label: "$150M acquisition (debt + investment + lien)",
+      items: allItems,
+      approvals,
+      permissions: compiledForPaths,
+      financials: finForEval,
+    }),
+  ];
+
   return {
     companyId,
     headline:
@@ -1016,13 +1067,14 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     monitoring,
     transactions,
     proForma,
+    multiPath,
     rulebookStage: rulebook.stage,
     capacityStatus: capacity.status,
     amendmentResolution: review.amendmentCompare.operativeResolution,
     documentCount: review.documentCount,
     interpretedCount: rulebook.interpretedProvisions,
     acceptedCount,
-    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses.",
+    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses. Multi-path analyses enumerate alternative contractual pathways without assuming basket stacking.",
   };
 }
 

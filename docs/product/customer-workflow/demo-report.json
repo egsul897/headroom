@@ -9,7 +9,7 @@
       "compile": [
         {
           "status": "COMPILED",
-          "permissionId": "cmv0io5tz00035xz74jkc256s",
+          "permissionId": "cmv0yzib600032ugu01lgwhiq",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
           "grantType": "DEBT_INCURRENCE",
           "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -20,7 +20,7 @@
         },
         {
           "status": "COMPILED",
-          "permissionId": "cmv0io65c00075xz7xjogjoq8",
+          "permissionId": "cmv0yziol00072ugufc7k26z4",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
           "grantType": "LIEN",
           "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -46,11 +46,38 @@
           "message": "Could not parse a numeric basket/threshold — not minting MODELED Permission"
         }
       ]
+    },
+    "rp": {
+      "sectionRef": "7.6",
+      "compile": [
+        {
+          "status": "COMPILED",
+          "permissionId": "cmv0yzjza000b2uguclohq7i7",
+          "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:RESTRICTED_PAYMENT",
+          "grantType": "RESTRICTED_PAYMENT",
+          "formulaType": "FLAT_AMOUNT",
+          "thresholdValue": 25,
+          "modelingStatus": "MODELED",
+          "missingFields": [],
+          "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:RESTRICTED_PAYMENT"
+        },
+        {
+          "status": "COMPILED",
+          "permissionId": "cmv0yzk6z000f2ugu5o4lv1uk",
+          "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:INVESTMENT",
+          "grantType": "INVESTMENT",
+          "formulaType": "FLAT_AMOUNT",
+          "thresholdValue": 25,
+          "modelingStatus": "MODELED",
+          "missingFields": [],
+          "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:INVESTMENT"
+        }
+      ]
     }
   },
   "permissions": [
     {
-      "id": "cmv0io5tz00035xz74jkc256s",
+      "id": "cmv0yzib600032ugu01lgwhiq",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
       "grantType": "DEBT_INCURRENCE",
       "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -59,13 +86,31 @@
       "sectionRef": "7.2"
     },
     {
-      "id": "cmv0io65c00075xz7xjogjoq8",
+      "id": "cmv0yziol00072ugufc7k26z4",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
       "grantType": "LIEN",
       "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
       "thresholdValue": "50",
       "modelingStatus": "MODELED",
       "sectionRef": "7.2"
+    },
+    {
+      "id": "cmv0yzjza000b2uguclohq7i7",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:RESTRICTED_PAYMENT",
+      "grantType": "RESTRICTED_PAYMENT",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": "25",
+      "modelingStatus": "MODELED",
+      "sectionRef": "7.6"
+    },
+    {
+      "id": "cmv0yzk6z000f2ugu5o4lv1uk",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:INVESTMENT",
+      "grantType": "INVESTMENT",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": "25",
+      "modelingStatus": "MODELED",
+      "sectionRef": "7.6"
     }
   ],
   "capacity": {
@@ -74,15 +119,15 @@
     "canEvaluateExecutableCapacity": true,
     "analyzedDocumentCount": 1,
     "summaryCount": 15,
-    "permissionCount": 2,
-    "provisionCount": 2,
+    "permissionCount": 4,
+    "provisionCount": 4,
     "hasFinancialSnapshot": true,
     "headline": "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone.",
     "blockers": [],
     "guidance": "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration."
   },
   "rulebookStage": "EXECUTABLE",
-  "rulebookExecutable": 2,
+  "rulebookExecutable": 4,
   "exercise": {
     "exerciseId": "debt.secured.100",
     "outcome": "CONDITIONAL",
@@ -108,9 +153,9 @@
   "dashboard": {
     "headline": "AI-populated debt intelligence · 1/1 docs · rulebook EXECUTABLE · capacity EXECUTABLE_PATH_AVAILABLE",
     "documentCount": 1,
-    "acceptedCount": 2,
+    "acceptedCount": 3,
     "capacityStatus": "EXECUTABLE_PATH_AVAILABLE",
-    "basketsWithRemaining": 1,
+    "basketsWithRemaining": 2,
     "sampleBaskets": [
       {
         "sectionRef": "7.2",
@@ -128,9 +173,9 @@
       },
       {
         "sectionRef": "7.6",
-        "status": "CONDITIONAL",
-        "remaining": null,
-        "reviewDecision": null,
+        "status": "COMPUTED",
+        "remaining": "$25M",
+        "reviewDecision": "ACCEPTED",
         "capacity": "Amount/threshold: $25,000,000"
       },
       {
@@ -277,7 +322,7 @@
   "engineCapacity": {
     "securedRemaining": 84,
     "unsecuredRemaining": 84,
-    "permissionsTotal": 2
+    "permissionsTotal": 4
   },
   "documentCapacityFormulas": {
     "secured": {

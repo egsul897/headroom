@@ -142,6 +142,23 @@ async function main() {
       })
     : null;
 
+  const rpItem =
+    summary.items.find(
+      (i) =>
+        /RESTRICTED|INVESTMENT/i.test(i.category) &&
+        (i.materialBasketsThresholds ?? []).some((b) => /\$/.test(b)),
+    ) ?? summary.items.find((i) => /restricted payment|investment/i.test(`${i.heading} ${i.category}`));
+  const acceptRp = rpItem
+    ? await recordReviewerDecision({
+        companyId: COMPANY_ID,
+        sourceId,
+        sectionRef: rpItem.sectionRef,
+        category: rpItem.category,
+        decision: "ACCEPTED",
+        note: "Demo counsel acceptance — compile RP/investment basket into executable Permission + rpWaterfall",
+      })
+    : null;
+
   await createManualFinancialState({
     companyId: COMPANY_ID,
     asOfDate: new Date("2026-06-30"),
@@ -214,6 +231,7 @@ async function main() {
       lien: lienItem
         ? { sectionRef: lienItem.sectionRef, compile: acceptLien?.compileResults }
         : null,
+      rp: rpItem ? { sectionRef: rpItem.sectionRef, compile: acceptRp?.compileResults } : null,
     },
     permissions,
     capacity,

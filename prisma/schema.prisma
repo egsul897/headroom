@@ -729,6 +729,8 @@ model GoldenTest {
 enum GrantType {
   DEBT_INCURRENCE
   LIEN
+  RESTRICTED_PAYMENT
+  INVESTMENT
 
   @@map("grant_type")
 }

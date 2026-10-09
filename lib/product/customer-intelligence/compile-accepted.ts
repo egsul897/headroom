@@ -19,11 +19,13 @@ export type CompileStatus =
   | "SKIPPED"
   | "FAILED";
 
+export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
+
 export interface CompileAcceptedResult {
   status: CompileStatus;
   permissionId?: string;
   code?: string;
-  grantType?: "DEBT_INCURRENCE" | "LIEN";
+  grantType?: CounselGrantType;
   formulaType?: string;
   thresholdValue?: number;
   modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
@@ -56,15 +58,34 @@ function parseRatio(text: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function grantTypesForItem(item: CovenantSummaryItem, category: string): Array<"DEBT_INCURRENCE" | "LIEN"> {
-  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")}`.toUpperCase();
-  const out: Array<"DEBT_INCURRENCE" | "LIEN"> = [];
+function grantTypesForItem(item: CovenantSummaryItem, category: string): CounselGrantType[] {
+  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")} ${item.plainEnglish}`.toUpperCase();
+
+  // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
+  const isRpFamily = /RESTRICTED.?PAYMENT|DIVIDEND|SHARE.?REPURCHASE|\bRP\b|AVAILABLE AMOUNT/.test(hay);
+  const isInvestmentFamily = /INVESTMENT|ACQUISITION|PERMITTED INVESTMENT/.test(hay);
+  if (isRpFamily && isInvestmentFamily) {
+    // Shared RP/Investment article — mint both grant types when baskets mention both.
+    const out: CounselGrantType[] = [];
+    if (/DIVIDEND|RESTRICTED PAYMENT|SHARE.?REPURCHASE|\bRP\b/.test(hay)) out.push("RESTRICTED_PAYMENT");
+    if (/INVESTMENT|ACQUISITION/.test(hay)) out.push("INVESTMENT");
+    if (out.length) return [...new Set(out)];
+  }
+  if (isRpFamily && !/INDEBTEDNESS|DEBT INCURRENCE|INCREMENTAL/.test(hay)) {
+    return ["RESTRICTED_PAYMENT"];
+  }
+  if (isInvestmentFamily && !/INDEBTEDNESS|DEBT INCURRENCE|LIEN|INCREMENTAL/.test(hay)) {
+    return ["INVESTMENT"];
+  }
+
+  const out: CounselGrantType[] = [];
   if (/LIEN|SECURED|COLLATERAL/.test(hay)) out.push("LIEN");
-  if (/DEBT|INDEBTEDNESS|INCURRENCE|INCREMENTAL|BORROW/.test(hay) || !out.length) out.push("DEBT_INCURRENCE");
+  if (/DEBT|INDEBTEDNESS|INCURRENCE|INCREMENTAL|BORROW/.test(hay)) out.push("DEBT_INCURRENCE");
   // Secured debt scenarios need both regimes when both families are present.
   if (/LIEN|SECURED/.test(hay) && /DEBT|INDEBTEDNESS/.test(hay)) {
     return ["DEBT_INCURRENCE", "LIEN"];
   }
+  if (!out.length) out.push("DEBT_INCURRENCE");
   return [...new Set(out)];
 }
 
@@ -294,6 +315,7 @@ export async function compileAcceptedInterpretation(params: {
     }
     for (const id of docIds) {
       await syncDocumentCapacityFormulas(params.companyId, id);
+      await syncDocumentRpWaterfall(params.companyId, id);
     }
     if (!results.length) {
       results.push({ status: "SKIPPED", missingFields: [], message: "No prior counsel Permissions to supersede" });
@@ -418,6 +440,7 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   await syncDocumentCapacityFormulas(params.companyId, documentId);
+  await syncDocumentRpWaterfall(params.companyId, documentId);
   await supersedeCounselPermissionsOnAmendedDocs(params.companyId, documentId, params.sectionRef);
 
   return results;
@@ -520,6 +543,61 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
         ? (capacityFormulas as Prisma.InputJsonValue)
         : Prisma.JsonNull,
     },
+  });
+}
+
+/**
+ * Rebuild Document.rpWaterfall from counsel-compiled RESTRICTED_PAYMENT / INVESTMENT
+ * Permissions. Steps are ordered builder → flat → other; ratio gates attached when present.
+ * Does not invent ratio-gate codes when none were compiled.
+ */
+export async function syncDocumentRpWaterfall(companyId: string, documentId: string): Promise<void> {
+  const perms = await prisma.permission.findMany({
+    where: {
+      companyId,
+      documentId,
+      modelingStatus: "MODELED",
+      code: { startsWith: "counsel:" },
+      grantType: { in: ["RESTRICTED_PAYMENT", "INVESTMENT"] },
+      OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
+    },
+  });
+  if (!perms.length) return;
+
+  const rank = (p: (typeof perms)[number]): number => {
+    if (p.formulaType === "BUILDER_BASKET") return 0;
+    if (p.formulaType === "FLAT_AMOUNT" || String(p.formulaType).includes("GREATER_OF")) return 1;
+    if (p.formulaType === "RATIO_GATE" || p.formulaType === "LEVERAGE_RATIO_ROOM") return 9;
+    return 5;
+  };
+
+  const stepPerms = perms
+    .filter((p) => p.formulaType !== "RATIO_GATE" && p.code)
+    .sort((a, b) => rank(a) - rank(b) || a.sectionRef.localeCompare(b.sectionRef));
+  const steps = stepPerms.map((p) => ({ code: p.code! }));
+  if (!steps.length) return;
+
+  const ratioGates = perms.filter((p) => p.formulaType === "RATIO_GATE" && p.code);
+  const dividendGate =
+    ratioGates.find((p) => p.grantType === "RESTRICTED_PAYMENT")?.code ??
+    ratioGates[0]?.code ??
+    steps[steps.length - 1]!.code;
+  const investmentGate =
+    ratioGates.find((p) => p.grantType === "INVESTMENT")?.code ??
+    ratioGates[0]?.code ??
+    steps[steps.length - 1]!.code;
+
+  const rpWaterfall = {
+    steps,
+    ratioGateCodeByKind: {
+      dividend: dividendGate,
+      investment: investmentGate,
+    },
+  };
+
+  await prisma.document.update({
+    where: { id: documentId },
+    data: { rpWaterfall: rpWaterfall as Prisma.InputJsonValue },
   });
 }
 
