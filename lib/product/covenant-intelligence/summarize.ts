@@ -71,6 +71,11 @@ export interface CovenantSummaryItem {
   epistemicStatus: "DISCOVERED_CANDIDATE" | "STRUCTURE_ONLY";
   interpretationNote: string;
   unresolvedQuestions: string[];
+  alternativeInterpretations?: string[];
+  assumptions?: string[];
+  judgmentCalls?: string[];
+  /** Set when workspace counsel accepted/edited this item. */
+  reviewerDecision?: "ACCEPTED" | "EDITED" | "REJECTED";
   /** Full structured analysis — Ask and UI share this object. */
   analysis: ProvisionAnalysis;
 }
@@ -131,6 +136,9 @@ function itemFromAnalysis(
     epistemicStatus: analysis.epistemicStatus,
     interpretationNote: analysis.interpretationNote,
     unresolvedQuestions: analysis.unresolved,
+    alternativeInterpretations: analysis.alternativeInterpretations,
+    assumptions: analysis.assumptions,
+    judgmentCalls: analysis.judgmentCalls,
     analysis,
   };
 }
@@ -149,7 +157,17 @@ export function buildDocumentCovenantSummary(params: {
   const items: CovenantSummaryItem[] = [];
   const countsByCategory: Record<string, number> = {};
 
-  const ranked = [...params.candidates].sort((a, b) => b.discoveryScore - a.discoveryScore);
+  const peripheralHeading =
+    /\b(?:notice|notices|miscellaneous|governing law|counterpart|severability|waivers? of jury|expenses|indemnif|assignments?|successors|effectiveness|conditions?\s+precedent|representations|schedules?|exhibits?)\b/i;
+
+  const ranked = [...params.candidates].sort((a, b) => {
+    const ah = `${a.excerpt ?? ""} ${(a.signals ?? []).join(" ")}`;
+    const bh = `${b.excerpt ?? ""} ${(b.signals ?? []).join(" ")}`;
+    const ap = peripheralHeading.test(ah) ? 1 : 0;
+    const bp = peripheralHeading.test(bh) ? 1 : 0;
+    if (ap !== bp) return ap - bp; // primary covenants before peripheral
+    return b.discoveryScore - a.discoveryScore;
+  });
   for (const c of ranked) {
     const analysis = analyzeProvision({
       sourceId: params.sourceId,
@@ -180,7 +198,7 @@ export function buildDocumentCovenantSummary(params: {
     documentClass: params.documentClass,
     generatedAt: new Date().toISOString(),
     promotedToLegalTruth: 0,
-    note: "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
+    note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
     items: items.slice(0, 120),
     definedTermsSample: params.definitions.slice(0, 40).map((d) => ({

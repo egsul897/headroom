@@ -22,7 +22,7 @@ import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
-import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
+import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
 import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText, retrieveInboundOverrideReferences } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
@@ -53,6 +53,31 @@ const HEADING_NOISE = /^(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)\b|\b(?:SECTION|ARTI
  */
 const HIGH_CONFIDENCE_UNDEFINED_TERM =
   /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent)\b/i;
+
+/** Mirror of definition-graph administrative denylist — nested fallback must not MEDIUM-refuse boilerplate. */
+const ADMINISTRATIVE_NESTED_DENYLIST = new Set(["person", "business day", "governmental authority", "requirements of law", "us", "united states", "dollars", "administrative agent", "collateral agent", "lender", "agent", "closing date", "code", "gaap"]);
+
+/** Deterministic plural/singular surface forms so "Restricted Payments" matches declared "Restricted Payment". */
+function phraseSurfaceForms(exact: string): string[] {
+  const forms = new Set<string>([exact]);
+  if (/y$/i.test(exact) && !/[aeiou]y$/i.test(exact)) {
+    forms.add(exact.replace(/y$/i, exact.endsWith("Y") ? "IES" : "ies"));
+  } else if (/s$/i.test(exact) || /x$/i.test(exact) || /z$/i.test(exact) || /ch$/i.test(exact) || /sh$/i.test(exact)) {
+    forms.add(`${exact}${exact === exact.toUpperCase() ? "ES" : "es"}`);
+  } else {
+    forms.add(`${exact}${/[A-Z]+$/.test(exact) && exact === exact.toUpperCase() ? "S" : "s"}`);
+  }
+  return [...forms];
+}
+
+function knownTermCoversPhrase(phrase: string, exactTerms: Map<string, string>): boolean {
+  const normalized = phrase.toLowerCase();
+  if (exactTerms.has(normalized)) return true;
+  for (const exact of exactTerms.values()) {
+    if (phraseSurfaceForms(exact).some((f) => f.toLowerCase() === normalized)) return true;
+  }
+  return false;
+}
 
 function extractCandidatePhrases(text: string): string[] {
   const matches = text.match(TITLE_CASE_PHRASE) ?? [];
@@ -151,9 +176,11 @@ function retrieveCrossDocumentDefinitionFallback(
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
     const normalized = phrase.toLowerCase();
+    if (ADMINISTRATIVE_NESTED_DENYLIST.has(normalized) || isAdministrativeTerm(normalized)) continue;
     // Same-document exact match OR IPV-09 plural/inflected surface form of a declared term —
     // already handled by findKnownTermMentions; do not re-report as undefined.
-    if (phraseMatchesDeclaredTerm(phrase, sameDocTerms)) continue;
+    // Prefer phraseMatchesDeclaredTerm (shared with definition-graph); keep knownTermCoversPhrase as local mirror.
+    if (phraseMatchesDeclaredTerm(phrase, sameDocTerms) || knownTermCoversPhrase(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
       const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
@@ -169,10 +196,22 @@ function retrieveCrossDocumentDefinitionFallback(
       const seenKey = `${documentId}::${normalized}`;
       if (state.seenUnresolvedTermPhrases.has(seenKey)) continue;
       state.seenUnresolvedTermPhrases.add(seenKey);
-      // Administrative denylist (Closing Date, GAAP, …) stays LOW even when morphology looks high-confidence —
-      // matches definition-graph materiality gating so IPV-10 cannot refuse on boilerplate.
-      const unresolvedSeverity =
-        isAdministrativeTerm(normalized) ? "LOW" : scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      // Administrative boilerplate (Closing Date, etc.) and same-document section
+      // captions ("Restricted Payments" naming SECTION 7.06) are not undefined
+      // defined-term failures — disclose LOW so IPV-10 / IPV-15 cannot refuse on
+      // boilerplate or covenant-category wording.
+      // Match only the SECTION/ARTICLE heading caption (e.g. "Restricted Payments"
+      // naming 7.06), never definition bodies under Section 1.01 — otherwise nested
+      // undefined Consolidated* terms inside a ratio definition are demoted to LOW.
+      const sectionCaption = access.index.allNodes().some((n) => {
+        if (n.documentId !== documentId || (n.nodeType !== "SECTION" && n.nodeType !== "ARTICLE")) return false;
+        const own = access.index.getNodeText(n.nodeId, "OWN");
+        const headingLine = (own.split(/\n/)[0] ?? own).trim();
+        const caption = headingLine.replace(/^(?:SECTION|ARTICLE)\s+\S+\s+/i, "").split(".")[0] ?? "";
+        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption);
+      });
+      let unresolvedSeverity: "LOW" | "MEDIUM" = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      if (isAdministrativeTerm(normalized) || sectionCaption) unresolvedSeverity = "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "UNRESOLVED_DEFINED_TERM",
@@ -245,9 +284,9 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
       : access.index.getNodeText(primaryNodeId, "DESCENDANTS");
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
-  // INV-04: Article/section overrides that name this candidate from elsewhere
-  // (e.g. 9.15 "Notwithstanding … Article VII") are inbound-only.
+  // INV-04 / main: inbound notwithstanding + article-level override leads.
   retrieveInboundOverrideReferences(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared

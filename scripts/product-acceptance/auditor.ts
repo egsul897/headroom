@@ -183,7 +183,9 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
   }
   for (const e of pkg.manifest.operativeState.exact) {
     const ref = `operative:${e.asOfDate}:${e.documentId}#${e.definitionTerm ?? e.sectionRef}`;
-    const state = e.documentId === s.baseDocumentId ? s.operativeStates.get(e.asOfDate) : s.operativeStates.get(`${e.asOfDate}::${e.documentId}`);
+    // Prefer the per-instrument state (not the package merge) so status/unattached
+    // reflect that instrument alone.
+    const state = s.operativeStates.get(`${e.asOfDate}::${e.documentId}`) ?? s.operativeStates.get(e.asOfDate);
     const repro = `computeOperativeContractState({asOfDate:"${e.asOfDate}", baseDocumentId:"${s.baseDocumentId}"}) → provision ${e.definitionTerm ?? e.sectionRef}`;
     if (!state) { L.fail("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: "TEST_INFRASTRUCTURE_FAILURE", expected: e.status, actual: "no operative state computed", repro, deterministic: true }); continue; }
     const provision = state.provisions.find((p) => e.definitionTerm ? p.kind === "DEFINITION" && (p.definedTermRef ?? "").toLowerCase() === e.definitionTerm.toLowerCase() : p.kind === "SECTION" && p.sectionRef === e.sectionRef);
@@ -195,12 +197,37 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     const applied = provision?.appliedChain.length ?? 0;
     const current = provision?.currentText ?? null;
     const problems: string[] = [];
-    if (e.status === "CURRENT") {
+    // IPV-19: a definition-targeted amendment correctly leaves Section 1.01
+    // without a SECTION provision view; the DEFINITION provision carries the
+    // restatement and the section node must stay CURRENT_OPERATIVE (not wiped).
+    let definitionTargeted = false;
+    if (e.status === "SUPERSEDED" && !e.definitionTerm && !provision && e.supersededBy) {
+      const defViews = state.provisions.filter(
+        (p) => p.kind === "DEFINITION" && p.appliedChain.some((a) => a.amendmentDocumentId === e.supersededBy) && p.status === "OPERATIVE_STATE_RESOLVED",
+      );
+      if (defViews.length > 0 && (supStatus === "N/A" || supStatus === "CURRENT_OPERATIVE")) {
+        definitionTargeted = true;
+        const combined = ws([baseText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
+        for (const t of e.mustContain) if (!combined.includes(ws(t))) problems.push(`lacks "${t}"`);
+        for (const t of e.mustNotContain) {
+          if (defViews.some((p) => p.currentText && ws(p.currentText).includes(ws(t)))) problems.push(`amended definition still carries superseded "${t}"`);
+        }
+        if (problems.length === 0) {
+          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} untouched (IPV-19)`);
+          continue;
+        }
+      }
+    }
+    if (!definitionTargeted && e.status === "CURRENT") {
       if (applied > 0) problems.push(`${applied} effect(s) applied at ${e.asOfDate} although none expected`);
+      // IPV-16: a CURRENT manifest row must not hold when an unclassified
+      // override leaves the provision REVIEW_REQUIRED — that is the kill signal
+      // for side-letter mutants (MUT-08/12/13) without inventing override dollars.
+      if (provision?.status === "OPERATIVE_STATE_REVIEW_REQUIRED") problems.push(`provision ${provision.status} while manifest expects CURRENT`);
       if (supStatus !== "N/A" && supStatus !== "CURRENT_OPERATIVE") problems.push(`supersession status ${supStatus}`);
       for (const t of e.mustContain) if (!textCarries(current ?? baseText, t)) problems.push(`operative text lacks "${t}"`);
       for (const t of e.mustNotContain) if (textCarries(current ?? baseText, t)) problems.push(`operative text contains forbidden "${t}"`);
-    } else {
+    } else if (!definitionTargeted) {
       if (!provision) problems.push("no provision view recorded for this section/term");
       else {
         if (applied === 0) problems.push("no effect applied at this as-of date");

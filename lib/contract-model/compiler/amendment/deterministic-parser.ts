@@ -37,12 +37,17 @@ import { hashParts } from "../hashing";
 // colon and capture nothing.
 const REPLACEMENT_TEXT_CAPTURE_RE = /(?:amended and restated in its entirety to read as follows|amended by adding the following|amended and restated to read in its entirety as follows)\s*:?\s*(["“][\s\S]{1,3000}?["”]|[\s\S]{1,3000}?)(?:\n\s*\n|$)/;
 
-const DEFINITION_ADD_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?added/i;
-const DEFINITION_DELETE_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?deleted/i;
+/** Optional "in/under Section N / set forth|contained|appearing|provided …" between term and verb (IPV-19 F1/F3). */
+const DEF_SECTION_LOCUS = String.raw`(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?`;
+const DEFINITION_ADD_RE = new RegExp(String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?added`, "i");
+const DEFINITION_DELETE_RE = new RegExp(String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?deleted`, "i");
+// IPV-19: prefer a fully quoted restatement capture; restoreRestatedDefinitionLeadingQuote repairs a stripped opener.
 const DEFINITION_REPLACE_RE = new RegExp(
-  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?["”]|[\s\S]{1,3000}?)(?:\n\s*\n|$)`,
+  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?["”]|[\s\S]{1,3000}?)(?:\n\s*\n|$)`,
   "i",
 );
+/** F2: "Section 1.01 … amended by amending and restating the definition of X … to read as follows: …" */
+const DEFINITION_REPLACE_VIA_SECTION_RE = /amended by amending and restating the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?[\s\S]{0,80}?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)/i;
 
 /** Normalize captured restatement text: prefer the quoted form so definition splice keeps `"Term" means…`. */
 function capturedRestatementText(raw: string): string {
@@ -81,7 +86,8 @@ function refineOperationAndText(mc: ModificationCandidate, amendmentText: string
   if (mc.targetDefinedTermRef) {
     if (DEFINITION_ADD_RE.test(region)) return { operation: "ADD_DEFINITION", newText: null };
     if (DEFINITION_DELETE_RE.test(region)) return { operation: "DELETE_DEFINITION", newText: null };
-    const replaceMatch = DEFINITION_REPLACE_RE.exec(amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined));
+    const window = amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined);
+    const replaceMatch = DEFINITION_REPLACE_RE.exec(window) ?? DEFINITION_REPLACE_VIA_SECTION_RE.exec(window);
     if (replaceMatch) return { operation: "REPLACE_DEFINITION", newText: restoreRestatedDefinitionLeadingQuote(capturedRestatementText(replaceMatch[2]!)) };
     return { operation: "MODIFY_DEFINITION", newText: null };
   }

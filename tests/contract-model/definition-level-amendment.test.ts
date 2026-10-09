@@ -71,10 +71,11 @@ describe("definition-level amendments", () => {
     expect(hits.map((c) => [c.targetDefinedTermRef, c.targetSectionRef, c.operation])).toEqual([[null, "6.01", "RESTATE"]]);
   });
 
-  it("a section amended by restating one definition stays a section candidate for interpretation, not a captured definition replacement", () => {
+  it("F2 'Section 1.01 amended by restating the definition of X' targets the definition, not whole Section 1.01", () => {
     const f2 = amendment(`SECTION 1. Amendments. Section 1.01 of the Credit Agreement is hereby amended by amending and restating the definition of "Consolidated EBITDA" in its entirety to read as follows: ${LARGER}`);
     const hits = detectModificationCandidates(f2).filter((c) => c.targetSectionRef || c.targetDefinedTermRef);
-    expect(hits.some((c) => c.targetSectionRef === "1.01")).toBe(true);
+    expect(hits.some((c) => c.targetDefinedTermRef === "Consolidated EBITDA")).toBe(true);
+    expect(hits.some((c) => c.targetSectionRef === "1.01")).toBe(false);
     expect(hits.some((c) => c.targetDefinedTermRef === "Consolidated EBITDA" && c.operation === "RESTATE")).toBe(false);
   });
 
@@ -82,17 +83,19 @@ describe("definition-level amendments", () => {
     const { result, state } = await run(`SECTION 1. Amendments. The definition of "Consolidated EBITDA" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: ${SMALLER}`);
     const effects = result.effects.filter((e) => e.amendmentDocumentId === "amendment-1" && e.operation !== "REAFFIRM");
     expect(effects.map((e) => [e.target.kind, e.target.targetDefinedTermRef, e.target.targetSectionRef, e.operation])).toEqual([["DEFINITION", "Consolidated EBITDA", null, "REPLACE_DEFINITION"]]);
+    expect(effects[0]!.newText).toMatch(/^"Consolidated EBITDA"\s+means/);
     expect(effects[0]!.newText).toContain("depreciation and amortization");
     expect(effects[0]!.newText).not.toContain("income tax expense");
     // IPV-19: keep the opening quote so ownership / inventory can match `"Term" means`.
     expect(effects[0]!.newText).toMatch(/^"Consolidated EBITDA" means/);
     const section = state.provisions.find((p) => p.kind === "SECTION" && p.sectionRef === "1.01");
     expect(section?.currentText).toMatch(/"Indebtedness" means/);
-    expect(section?.currentText).toMatch(/"Consolidated EBITDA" means/);
+    // IPV-19: opening quote retained in the spliced section / operative definition.
+    expect(section?.currentText).toMatch(/"Consolidated EBITDA"\s+means/);
     expect(section?.currentText).not.toMatch(/income tax expense/);
     expect(section?.currentText).toMatch(/depreciation and amortization/);
     const ebitda = getOperativeDefinition(state, "Consolidated EBITDA");
-    expect(ebitda?.currentText).toMatch(/^"Consolidated EBITDA" means/);
+    expect(ebitda?.currentText).toMatch(/^"Consolidated EBITDA"\s+means/);
     expect(ebitda?.currentText).not.toMatch(/income tax expense/);
     expect(ebitda?.status).toBe("OPERATIVE_STATE_RESOLVED");
     expect(getOperativeDefinition(state, "Indebtedness")).toBeNull();

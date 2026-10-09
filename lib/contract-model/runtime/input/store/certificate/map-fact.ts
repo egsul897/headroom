@@ -42,6 +42,49 @@ export function factToIdentity(fact: CertificateFactProposal): FinancialInputIde
   };
 }
 
+/**
+ * Encode certificate page/section/table/row into the FinancialInput note so Prisma
+ * rematerialize can persist a real FactLocator (4B identity types stay unchanged).
+ */
+export function encodeLocatorNote(
+  note: string | undefined,
+  locator: CertificateFactProposal["locator"],
+): string | undefined {
+  const payload = {
+    page: locator.page ?? null,
+    section: locator.section ?? null,
+    table: locator.table ?? null,
+    row: locator.row ?? null,
+    note: locator.note ?? null,
+  };
+  const encoded = `sourceLocator=${JSON.stringify(payload)}`;
+  return note ? `${note}; ${encoded}` : encoded;
+}
+
+/** Recover locator JSON previously encoded by encodeLocatorNote. */
+export function decodeLocatorFromNote(note: string | null | undefined): {
+  page?: number | null;
+  section?: string | null;
+  table?: string | null;
+  row?: string | null;
+  note?: string | null;
+} | null {
+  if (!note) return null;
+  const m = note.match(/sourceLocator=(\{[^;]*\})/);
+  if (!m?.[1]) return null;
+  try {
+    return JSON.parse(m[1]) as {
+      page?: number | null;
+      section?: string | null;
+      table?: string | null;
+      row?: string | null;
+      note?: string | null;
+    };
+  } catch {
+    return null;
+  }
+}
+
 /** Build 4B FinancialInput from a certificate fact proposal. */
 export function factToFinancialInput(fact: CertificateFactProposal, sourceVersion: string): FinancialInput {
   return {
@@ -49,7 +92,7 @@ export function factToFinancialInput(fact: CertificateFactProposal, sourceVersio
     value: toRuntimeValue(fact.value, fact.key),
     displayName: fact.displayName,
     sourceVersion,
-    note: fact.note,
+    note: encodeLocatorNote(fact.note, fact.locator),
   };
 }
 

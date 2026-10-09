@@ -35,6 +35,7 @@ import { classifySourceAction, assessActionCompatibility } from "./action-ontolo
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
 import { resolveProvenanceExcerpt, type AdmissibleSourceText } from "./provenance-binding";
 import { applyUnlimitedCarveOutQualitativeGates } from "./unlimited-carveout-honesty";
+import { classifyFigureRoleInText, oppositeRatioOperator, sourceRatioOperatorNear } from "./figure-role-guard";
 
 const IR_VALUE_TYPES: readonly IRValueType[] = ["MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN", "DATE", "DURATION", "PERIOD", "ENTITY_SET", "CAPACITY"];
 const SUFFICIENCY_VALUES: readonly RepresentationSufficiency[] = ["COMPLETE", "PARTIAL", "AMBIGUOUS", "UNSUPPORTED", "MISSING_CONTEXT", "CONFLICTED"];
@@ -118,8 +119,6 @@ interface NormCtx {
   population: readonly OwnershipIndexCandidate[] | null;
   /** The candidate's operative text - the only text whose figures a dependency description may restate. */
   operativeText: string;
-  /** IPV-15: retrieved DEFINITION / DEFINITION_DEPENDENCY bodies (authenticated source) for stated-reference fidelity. */
-  retrievedDefinitionTexts: readonly string[];
   /** Model prose stripped out of dependency descriptions, kept as non-authoritative diagnostics on the compilation (never on the unit). */
   dependencyProse: DependencyProseDiagnostic[];
   /** ENTITY-SCOPE GUARD §4: every entity tag emitted anywhere under this rule (rule fields or ENTITY_SCOPE_REFERENCE nodes) with its RECOGNIZED/UNRECOGNIZED outcome - shared by reference across child contexts, fresh per rule. */
@@ -136,6 +135,8 @@ interface NormCtx {
   limits: string[];
   /** PROVENANCE SOURCE BINDING: the admissible source texts (deduplicated by content) a model excerpt may bind to. */
   admissibleSources: readonly AdmissibleSourceText[];
+  /** IPV-15: texts of retrieved DEFINITION items — section refs inside them are admissible. */
+  dependentDefinitionTexts: readonly string[];
 }
 
 /**
@@ -201,7 +202,7 @@ function fidelityFor(ctx: NormCtx, path: string, emitted: string[], lineageIds: 
     emitted,
     operativeText: ctx.operativeText,
     lineageRefs,
-    retrievedDefinitionTexts: ctx.retrievedDefinitionTexts,
+    dependentDefinitionTexts: ctx.dependentDefinitionTexts,
     baseSectionRef: ctx.baseSectionRef,
     index: ctx.referenceIndex,
     documentId: ctx.documentId,
@@ -792,14 +793,14 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   const referenceIndex: StructuralIndex | null = input.toolAccess?.structuralIndex ?? null;
   const population = input.candidatePopulation ?? null;
   const admissibleSources = admissibleSourcesFor(input);
-  const retrievedDefinitionTexts = (input.contextBundle?.items ?? [])
+  const dependentDefinitionTexts = (input.contextBundle?.items ?? [])
     .filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY")
     .map((i) => i.excerptText)
     .filter((t) => t.trim().length > 0);
   const governingScope: GoverningSemanticContext | null = input.governingScope ?? null;
   const inventoryRefs = new Map<string, string[]>();
   for (const it of input.frozenInventory?.items ?? []) inventoryRefs.set(it.inventoryItemId, [...(it.referencedSections ?? [])]);
-  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, retrievedDefinitionTexts, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [], admissibleSources });
+  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [], admissibleSources, dependentDefinitionTexts });
   const ownershipScope: OwnershipScope = {
     documentId, candidateSectionRef: input.sourceSectionRef, anchorNodeId: input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null,
     operativeRegionRefs: (input.sourceContext?.regions ?? []).filter((r) => r.kind === "OPERATIVE" && r.sectionRef).map((r) => r.sectionRef!),
@@ -891,7 +892,10 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const sourceReferenceAudit: IRSourceReferenceAudit | undefined = ctx.referenceAudit.length > 0 ? {
       version: SOURCE_REFERENCE_FIDELITY_VERSION,
       note: "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
-      statedReferences: statedReferencesFor({ operativeText: input.operativeSourceText, retrievedDefinitionTexts, lineageRefs: [...new Set((wireRule.inventoryItemIds ?? []).flatMap((id) => inventoryRefs.get(id) ?? []))], baseSectionRef: input.sourceSectionRef ?? null, index: referenceIndex, documentId }).map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })),
+      // SA-1 audit surface: operative-text scan only. Definition-mediated refs are
+      // admitted in fidelityFor (IPV-15) when the model emits them; they are not
+      // bulk-listed here as if the clause itself stated every cross-ref in every retrieved definition.
+      statedReferences: statedReferencesFor({ operativeText: input.operativeSourceText, lineageRefs: [...new Set((wireRule.inventoryItemIds ?? []).flatMap((id) => inventoryRefs.get(id) ?? []))], baseSectionRef: input.sourceSectionRef ?? null, index: referenceIndex, documentId }).map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })),
       entries: [...ctx.referenceAudit],
     } : undefined;
 
@@ -939,6 +943,44 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       const evidence = !fromGoverning ? (audit.witness.citedUnitLeadIn ?? audit.witness.ownExcerpt ?? "") : g?.evidence ?? (parentScopeItems[0]?.excerptText ?? "");
       guarded.inheritedAttributes = [...(guarded.inheritedAttributes ?? []), { attribute: "entityScope", sourceAuthority: authority, sourceSectionRef: sectionRef, evidence: evidence.slice(0, 240), canonicalValue: guarded.entityScope.join("+"), compatibility: audit.modelDiscrepancy && audit.modelDiscrepancy.relation !== "AGREES" ? "INCOMPATIBLE" : "COMPATIBLE", ...spanOf(basisRegionId) }];
     }
+    // IPV-22: a MONEY capacity whose figure is a comparator-introduced threshold
+    // ("in excess of $X", "less than $X") is never a basket cap.
+    const cap = guarded.capacityExpression;
+    if (cap && cap.kind === "MONEY" && typeof (cap as { amount?: unknown }).amount === "number") {
+      const amount = (cap as { amount: number; excerpt?: string | null }).amount;
+      const excerpt = (cap as { excerpt?: string | null }).excerpt ?? String(amount);
+      const role = classifyFigureRoleInText(excerpt, input.operativeSourceText) !== "ABSENT"
+        ? classifyFigureRoleInText(excerpt, input.operativeSourceText)
+        : classifyFigureRoleInText(String(amount), input.operativeSourceText);
+      if (role === "THRESHOLD") {
+        limitRule(ctx, `FIGURE_ROLE_THRESHOLD_AS_CAP: capacityExpression asserts MONEY ${amount} as a basket cap, but the operative source introduces that figure as a threshold/floor (e.g. "in excess of" / "less than"), not a "not to exceed" cap; COMPLETE claim refused`);
+        guarded.capacityExpression = null;
+        if (guarded.sufficiency === "COMPLETE") {
+          guarded.sufficiency = "PARTIAL";
+          guarded.sufficiencyReasons = [...guarded.sufficiencyReasons, "deterministic post-processing: FIGURE_ROLE_THRESHOLD_AS_CAP — figure is a threshold, not a cap"];
+        }
+      }
+    }
+    // IPV-22: ratio COMPARE operator must match the source comparator direction.
+    const gatedBy = cap && "gatedBy" in cap ? (cap as { gatedBy?: IRExpression | null }).gatedBy : null;
+    const checkCompare = (expr: IRExpression | null | undefined, path: string) => {
+      if (!expr || expr.kind !== "COMPARE") return;
+      const right = expr.right;
+      const value = right && right.kind === "RATIO" && typeof (right as { value?: unknown }).value === "number" ? (right as { value: number }).value : null;
+      if (value === null) return;
+      const sourceOp = sourceRatioOperatorNear(input.operativeSourceText, value);
+      if (!sourceOp) return;
+      if (expr.operator !== sourceOp) {
+        const flipped = oppositeRatioOperator(sourceOp);
+        limitRule(ctx, `RATIO_COMPARATOR_MISMATCH: ${path} asserts COMPARE ${expr.operator} against ${value} to 1.00, but the operative source states ${sourceOp}${flipped && expr.operator === flipped ? " (comparator flipped)" : ""}; direction is part of the source test`);
+        if (guarded.sufficiency === "COMPLETE") {
+          guarded.sufficiency = "PARTIAL";
+          guarded.sufficiencyReasons = [...guarded.sufficiencyReasons, `deterministic post-processing: RATIO_COMPARATOR_MISMATCH at ${path}`];
+        }
+      }
+    };
+    checkCompare(gatedBy ?? null, "capacityExpression.gatedBy");
+    for (let i = 0; i < guarded.conditions.length; i++) checkCompare(guarded.conditions[i]?.expression ?? null, `conditions[${i}].expression`);
     return withLineage(guarded, wireRule.inventoryItemIds);
   });
   // SEMANTIC FIDELITY §10/§11: model prose carried ON the unit (sufficiency reasons, condition/exception descriptions) may

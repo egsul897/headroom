@@ -16,6 +16,8 @@ export interface CustomerDocumentIntelligence {
   representationLevel: string;
   storageRef: string | null;
   originalBytesHash: string;
+  filingDate: string;
+  processingStatus: string | null;
   covenantItemCount: number;
   summary: DocumentCovenantSummary | null;
   amendmentPackage: AmendmentPackageView | null;
@@ -54,6 +56,8 @@ export async function listCustomerDocumentIntelligence(
       Boolean(summary && summary.items.length > 0) &&
       row.extractionStatus !== "FAILED" &&
       row.extractionStatus !== "UNSUPPORTED_FORMAT";
+    const processingStatus =
+      typeof meta.processingStatus === "string" ? meta.processingStatus : null;
     return {
       documentId: row.documentId ?? "",
       sourceId: row.sourceId,
@@ -63,6 +67,8 @@ export async function listCustomerDocumentIntelligence(
       representationLevel: row.representationLevel,
       storageRef: row.storageRef,
       originalBytesHash: row.originalBytesHash,
+      filingDate: row.filingDate.toISOString().slice(0, 10),
+      processingStatus,
       covenantItemCount: summary?.items.length ?? 0,
       summary,
       amendmentPackage: amendmentFromMetadata(row.metadata),

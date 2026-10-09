@@ -8,7 +8,7 @@
  * - APPROVED never reached here — stays DRAFT | REVIEW_REQUIRED until approveCertificateProposal
  */
 import type { FinancialSnapshot } from "../../types";
-import { InMemoryApprovedSnapshotStore } from "../memory-store";
+import type { AsyncApprovedSnapshotStore, SyncApprovedSnapshotStore } from "../store-api";
 import { APPENDABLE_STATUSES } from "../types";
 import type { LedgerProposalRecorder } from "./ledger-proposals";
 import { certificateIdentityKey, factToFinancialInput } from "./map-fact";
@@ -87,26 +87,11 @@ function validateCertificate(cert: SyntheticCertificate): CertificateProposalIss
   return issues;
 }
 
-/**
- * Map certificate facts → 4B FinancialInputs 1:1 and append as DRAFT | REVIEW_REQUIRED.
- * Basket-usage lines are recorded on the ledger recorder only — never into snapshot.inputs.
- *
- * Intentionally does **not** look up prior periods or other certificates: a missing fact
- * stays missing (no carried-forward fill).
- */
-export function proposeFromCertificate(
-  store: InMemoryApprovedSnapshotStore,
-  cert: SyntheticCertificate,
-  ledgerRecorder: LedgerProposalRecorder,
-): ProposeFromCertificateResult {
-  const localIssues = validateCertificate(cert);
-  if (localIssues.length > 0) return { ok: false, issues: localIssues };
-
+function buildProposedSnapshot(cert: SyntheticCertificate): FinancialSnapshot {
   const sourceVersion = `${cert.documentId}@${cert.versionHash}`;
   // Only facts on *this* certificate — no cross-period fill.
   const inputs = cert.facts.map((f) => factToFinancialInput(f, sourceVersion));
-
-  const snapshot: FinancialSnapshot = {
+  return {
     snapshotId: cert.snapshotId,
     version: cert.version,
     companyId: cert.companyId,
@@ -128,8 +113,37 @@ export function proposeFromCertificate(
     },
     review: { reviewedBy: null, reviewedAt: null, approvalRef: null },
   };
+}
 
-  const write = store.appendSnapshot({ snapshot });
+function recordLedgerProposals(cert: SyntheticCertificate, ledgerRecorder: LedgerProposalRecorder) {
+  // Record basket-usage as ledger PROPOSALS only — never snapshot facts, never applied.
+  return cert.basketUsageLines.map((line) =>
+    ledgerRecorder.record({
+      sourceDocumentId: cert.documentId,
+      sourceVersionHash: cert.versionHash,
+      companyId: cert.companyId,
+      line,
+      proposer: cert.proposer,
+    }),
+  );
+}
+
+/**
+ * Map certificate facts → 4B FinancialInputs 1:1 and append as DRAFT | REVIEW_REQUIRED.
+ * Basket-usage lines are recorded on the ledger recorder only — never into snapshot.inputs.
+ *
+ * Intentionally does **not** look up prior periods or other certificates: a missing fact
+ * stays missing (no carried-forward fill).
+ */
+export function proposeFromCertificate(
+  store: SyncApprovedSnapshotStore,
+  cert: SyntheticCertificate,
+  ledgerRecorder: LedgerProposalRecorder,
+): ProposeFromCertificateResult {
+  const localIssues = validateCertificate(cert);
+  if (localIssues.length > 0) return { ok: false, issues: localIssues };
+
+  const write = store.appendSnapshot({ snapshot: buildProposedSnapshot(cert) });
   if (!write.ok) {
     return {
       ok: false,
@@ -144,16 +158,32 @@ export function proposeFromCertificate(
     };
   }
 
-  // Record basket-usage as ledger PROPOSALS only — never snapshot facts, never applied.
-  const ledgerProposals = cert.basketUsageLines.map((line) =>
-    ledgerRecorder.record({
-      sourceDocumentId: cert.documentId,
-      sourceVersionHash: cert.versionHash,
-      companyId: cert.companyId,
-      line,
-      proposer: cert.proposer,
-    }),
-  );
+  return { ok: true, write, ledgerProposals: recordLedgerProposals(cert, ledgerRecorder) };
+}
 
-  return { ok: true, write, ledgerProposals };
+/** Durable-store variant — same soft gates; awaits Prisma flush. */
+export async function proposeFromCertificateAsync(
+  store: AsyncApprovedSnapshotStore,
+  cert: SyntheticCertificate,
+  ledgerRecorder: LedgerProposalRecorder,
+): Promise<ProposeFromCertificateResult> {
+  const localIssues = validateCertificate(cert);
+  if (localIssues.length > 0) return { ok: false, issues: localIssues };
+
+  const write = await store.appendSnapshot({ snapshot: buildProposedSnapshot(cert) });
+  if (!write.ok) {
+    return {
+      ok: false,
+      issues: [
+        {
+          code: "STORE_WRITE_REJECTED",
+          message: `appendSnapshot refused certificate proposal ${cert.snapshotId}`,
+          refs: [cert.snapshotId],
+          storeIssues: write.issues,
+        },
+      ],
+    };
+  }
+
+  return { ok: true, write, ledgerProposals: recordLedgerProposals(cert, ledgerRecorder) };
 }

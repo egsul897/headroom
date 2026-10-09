@@ -311,8 +311,15 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
 
   for (const applied of appliedChain) {
     const effect = group.effects.find((e) => e.effectId === applied.effectId)!;
-    if (currentSourceNodeKey) supersededSourceNodeKeys.push(currentSourceNodeKey);
-    if (currentSourceNodeId) supersededSourceNodeIds.push(currentSourceNodeId);
+    // IPV-19: a definition's structural sourceNodeId is the enclosing SECTION
+    // (typically 1.01). Marking that section KNOWN_SUPERSEDED when only one
+    // term was restated wipes every other definition in the section. Track
+    // term-level supersession via the DEFINITION provision view itself; do
+    // not publish the parent section node as superseded.
+    if (group.kind !== "DEFINITION") {
+      if (currentSourceNodeKey) supersededSourceNodeKeys.push(currentSourceNodeKey);
+      if (currentSourceNodeId) supersededSourceNodeIds.push(currentSourceNodeId);
+    }
     if (DELETE_OPERATIONS.has(effect.operation)) {
       currentText = null;
       attemptedText = null;
@@ -320,6 +327,13 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     } else if (effect.newText) {
       currentText = effect.newText;
       attemptedText = effect.newText;
+      lastAppliedWasCleanDeletion = false;
+    } else if (effect.status === "REVIEW_REQUIRED" || effect.status === "UNRESOLVED" || effect.operation === "UNKNOWN_CHANGE") {
+      // IPV-16: a side-letter / consent / override attaches as UNKNOWN_CHANGE or
+      // REVIEW_REQUIRED without capturable replacement text. The provision must
+      // not be reported RESOLVED, but the last authoritative text (base or prior
+      // amendment) stays visible for review — never wiped to null merely because
+      // the override's own wording was not extractable as newText.
       lastAppliedWasCleanDeletion = false;
     } else {
       // Effect genuinely applies (real evidence, resolved target, real effective date) but did not supply capturable resulting text (e.g. a threshold change or a bare "is hereby amended" with no quoted replacement) - the FACT that this effect governs is known; the resulting TEXT is honestly not safely renderable, never fabricated.
@@ -407,7 +421,15 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   } else if (hasSequenceUnresolved || hasReviewOrUnresolvedEffect) {
     status = "OPERATIVE_STATE_REVIEW_REQUIRED";
     unresolvedIssues.push(...conflicts.filter((c) => c.conflictType === "AMENDMENT_SEQUENCE_UNRESOLVED").map((c) => c.reason));
-    unresolvedIssues.push(...group.effects.filter((e) => (e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED") && e.unresolvedReason).map((e) => `${e.effectId}: ${e.unresolvedReason}`));
+    unresolvedIssues.push(
+      ...group.effects
+        .filter((e) => e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED")
+        .map((e) => {
+          const src = e.sourceCitation || e.amendmentDocumentId;
+          const why = e.unresolvedReason ?? `${e.operation} from ${src} requires review`;
+          return `${e.effectId} (${src}): ${why}`;
+        }),
+    );
   } else if (targetUnresolved) {
     status = "OPERATIVE_STATE_PARTIAL";
     unresolvedIssues.push(

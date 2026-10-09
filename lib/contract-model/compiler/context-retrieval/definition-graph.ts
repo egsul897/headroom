@@ -25,7 +25,7 @@ const ADMINISTRATIVE_TERM_DENYLIST = new Set(["person", "business day", "governm
 
 /** Boilerplate terms that do not materially affect covenant analysis (task §9). Shared with the nested undefined-term scan so IPV-10 MEDIUM morphology cannot refuse a bundle for an administrative phrase. */
 export function isAdministrativeTerm(normalizedTerm: string): boolean {
-  return ADMINISTRATIVE_TERM_DENYLIST.has(normalizedTerm);
+  return ADMINISTRATIVE_TERM_DENYLIST.has(normalizedTerm.trim().toLowerCase().replace(/\s+/g, " "));
 }
 
 interface KnownTermMention {
@@ -157,13 +157,9 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
     const fullText = operativeDefinitionText(state, index, documentId, mention.exactTerm, baseText);
     if (!withinBudget(state, fullText.length)) return;
 
-    // Phase 3F.1 FIX-2 - this is the exact defect class the reproduced
-    // exploit targeted: fullText above is raw base-document text with NO
-    // amendment/operative-state check of any kind. evidenceState is
-    // computed here, BEFORE this item is ever placed in the bundle, so a
-    // CONFLICTED/AMBIGUOUS/superseded definition is never silently
-    // presented as current truth regardless of whether the model ever
-    // calls getDefinition itself.
+    // Phase 3F.1 FIX-2 - evidenceState is computed BEFORE this item is ever
+    // placed in the bundle, so a CONFLICTED/AMBIGUOUS/superseded definition
+    // is never silently presented as current truth.
     const evidenceState = resolveDefinitionEvidenceState(state, index, documentId, mention.exactTerm);
     const type = depth === 1 ? "DEFINITION" : "DEFINITION_DEPENDENCY";
     const item = addItem(

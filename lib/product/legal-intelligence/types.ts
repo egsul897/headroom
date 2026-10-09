@@ -41,7 +41,15 @@ export interface ChallengeFinding {
     | "CROSS_PROVISION_RESTRICTION"
     | "UTILIZATION_UNKNOWN"
     | "ENTITY_SCOPE"
-    | "CONTRADICTION";
+    | "CONTRADICTION"
+    | "MISSED_RESTRICTION"
+    | "MISSED_EXCEPTION"
+    | "OVERLOOKED_PROVISO"
+    | "WRONG_AMENDMENT_VERSION"
+    | "UNSUPPORTED_STACKING"
+    | "DOUBLE_COUNTED_CAPACITY"
+    | "UNRESOLVED_FINANCIAL_DEPENDENCY"
+    | "UNSUPPORTED_LEGAL_CONCLUSION";
   statement: string;
   invalidatesExecutability: boolean;
 }

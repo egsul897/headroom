@@ -17,6 +17,12 @@ export type {
   SyntheticCertificate,
 } from "./types";
 export { LedgerProposalRecorder } from "./ledger-proposals";
-export { proposeFromCertificate } from "./propose";
-export { approveCertificateProposal } from "./approve";
-export { certificateIdentityKey, factToFinancialInput, factToIdentity } from "./map-fact";
+export { proposeFromCertificate, proposeFromCertificateAsync } from "./propose";
+export { approveCertificateProposal, approveCertificateProposalAsync } from "./approve";
+export {
+  certificateIdentityKey,
+  factToFinancialInput,
+  factToIdentity,
+  encodeLocatorNote,
+  decodeLocatorFromNote,
+} from "./map-fact";

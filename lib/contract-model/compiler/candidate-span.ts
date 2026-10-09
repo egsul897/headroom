@@ -7,6 +7,10 @@
  *   OPERATIVE_STATE_CURRENT_TEXT  when the instrument's computed OperativeContractState has RESOLVED a provision view
  *                                 for that node and carries the current (amended) text, that text governs - the base
  *                                 node is KNOWN_SUPERSEDED and compiling it would compile history.
+ *
+ * IPV-04: when the parent section itself was not restated but one or more descendant clauses were
+ * superseded/deleted, the DESCENDANTS span is spliced from those provision views so stale $25m / deleted
+ * $15m text is never handed to composition as current.
  */
 import type { StructuralIndex } from "./structural-index";
 import type { DiscoveredCandidate } from "./discovery/types";
@@ -154,6 +158,54 @@ function withheldResult(anchorNodeId: string | null, provision: OperativeProvisi
   return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true, withheldReasons: reasons };
 }
 
+/**
+ * Rebuild a parent section's operative text by applying descendant provision views
+ * (replace superseded OWN spans; omit deleted ones). Returns null when no descendant
+ * provision touches this anchor (caller falls through to structural DESCENDANTS).
+ */
+export function spliceOperativeDescendants(anchorNodeId: string, index: StructuralIndex, operativeState: OperativeContractState): string | null {
+  const anchor = index.getNodeById(anchorNodeId);
+  if (!anchor) return null;
+  const descendants = index.getDescendants(anchorNodeId);
+  if (descendants.length === 0) return null;
+
+  type Edit = { start: number; end: number; replacement: string };
+  const edits: Edit[] = [];
+
+  for (const p of operativeState.provisions) {
+    if (p.kind !== "SECTION" || p.appliedChain.length === 0) continue;
+    if (p.sectionRef === anchor.sectionRef) continue; // parent itself handled by governingProvisionFor
+    const node =
+      descendants.find((d) => d.sectionRef === p.sectionRef) ??
+      descendants.find((d) => p.supersededSourceNodeIds.includes(d.nodeId) || p.currentSourceNodeId === d.nodeId);
+    if (!node) continue;
+    const start = node.charStart;
+    const end = node.charEnd;
+    if (p.currentText === null || p.currentText.trim().length === 0) {
+      // Deleted / text withheld — drop the clause span from the parent.
+      edits.push({ start, end, replacement: "" });
+    } else {
+      edits.push({ start, end, replacement: p.currentText });
+    }
+  }
+
+  if (edits.length === 0) return null;
+
+  const docText = index.getDocumentText(anchor.documentId);
+  if (!docText) return null;
+  // Apply deepest/latest spans first so earlier offsets stay valid.
+  edits.sort((a, b) => b.start - a.start);
+  let text = docText.slice(anchor.charStart, anchor.charEnd);
+  const base = anchor.charStart;
+  for (const e of edits) {
+    const relStart = e.start - base;
+    const relEnd = e.end - base;
+    if (relStart < 0 || relEnd > text.length || relStart > relEnd) continue;
+    text = text.slice(0, relStart) + e.replacement + text.slice(relEnd);
+  }
+  return text;
+}
+
 export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, index: StructuralIndex, operativeState?: OperativeContractState | null): ResolvedOperativeSource {
   const anchorNodeId = candidate.structuralNodeIds[0] ?? null;
   const provision = governingProvisionFor(candidate, operativeState);
@@ -189,6 +241,14 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
   const spliced = spliceDescendantAmendments(anchorNodeId, start, index, operativeState);
   if (spliced.withheld) return withheldResult(anchorNodeId, provision, spliced.withheldReasons);
   if (spliced.amended || start !== base) return { text: spliced.text, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+  // Fallback: char-offset splice of descendant provision views (IPV-04) when
+  // string-index splice found no safe edits but descendants still carry effects.
+  if (operativeState) {
+    const offsetSpliced = spliceOperativeDescendants(anchorNodeId, index, operativeState);
+    if (offsetSpliced !== null) {
+      return { text: offsetSpliced, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
+  }
   return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
 }
 

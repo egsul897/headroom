@@ -85,6 +85,68 @@ describe("substantive CONMED covenant intelligence", () => {
       expect(answer.citations.length).toBeGreaterThan(0);
     }
   });
+
+  it("answers $100M secured-debt amount questions as NOT DETERMINABLE without rulebook/financials", () => {
+    const answer = answerFromSummaryItems({
+      question: "Can the borrower incur an additional $100 million of secured debt?",
+      items: summary.items.map((i) => ({ ...i, sourceId })),
+      limit: 8,
+    });
+    expect(answer.kind).toBe("answered");
+    expect(answer.detail).toMatch(/\$100 million/);
+    expect(answer.detail).toMatch(/NOT DETERMINABLE/);
+    expect(answer.detail.toLowerCase()).toMatch(/lien|indebtedness|secured/);
+    expect(answer.detail).toMatch(/executable legal rulebook|financial/);
+    expect(answer.citations.length).toBeGreaterThan(0);
+    expect(answer.permissions?.length ?? answer.detail).toBeTruthy();
+  });
+
+  const overnightQuestions: Array<{ q: string; expectDetail: RegExp }> = [
+    {
+      q: "What additional secured debt can the borrower incur?",
+      expectDetail: /indebtedness|lien|secured|prohibit|except/i,
+    },
+    {
+      q: "Which restricted payment baskets are available?",
+      expectDetail: /restricted payment|dividend|basket|prohibit/i,
+    },
+    {
+      q: "Can the borrower invest in an unrestricted subsidiary?",
+      expectDetail: /investment|unrestricted|restricted payment/i,
+    },
+    {
+      q: "What conditions apply to an incremental facility?",
+      expectDetail: /incremental|indebtedness|leverage|pro forma|facility|basket/i,
+    },
+    {
+      q: "What restrictions apply to asset sales?",
+      expectDetail: /asset sale|disposition|prohibit|except/i,
+    },
+    {
+      q: "Can debt incurred under one basket be secured under another provision?",
+      expectDetail: /cross-covenant|lien|indebtedness|does not automatically/i,
+    },
+    {
+      q: "What financial inputs are required to calculate capacity?",
+      expectDetail: /ebitda|financial|NOT DETERMINABLE|capacity/i,
+    },
+  ];
+
+  for (const { q, expectDetail } of overnightQuestions) {
+    it(`answers overnight question: ${q.slice(0, 48)}…`, () => {
+      const answer = answerFromSummaryItems({
+        question: q,
+        items: summary.items.map((i) => ({ ...i, sourceId })),
+        limit: 8,
+      });
+      expect(["answered", "insufficient_evidence"]).toContain(answer.kind);
+      if (answer.kind === "answered") {
+        expect(answer.detail).toMatch(expectDetail);
+        expect(answer.citations.length).toBeGreaterThan(0);
+        expect(answer.detail).not.toMatch(/^Based only on discovered covenant excerpts/);
+      }
+    });
+  }
 });
 
 describe("corpus quality", () => {

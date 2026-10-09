@@ -364,6 +364,7 @@ enum FormulaType {
   FLAT_AMOUNT
   FLAT_NET_OF_DEBT
   GREATER_OF_FLAT_OR_PCT_EBITDA
+  GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS
   LEVERAGE_RATIO_ROOM
   COVERAGE_RATIO_ROOM
   BUILDER_BASKET
@@ -728,6 +729,8 @@ model GoldenTest {
 enum GrantType {
   DEBT_INCURRENCE
   LIEN
+  RESTRICTED_PAYMENT
+  INVESTMENT
 
   @@map("grant_type")
 }
@@ -3894,4 +3897,123 @@ model KnowledgeImportBatch {
   @@index([status])
   @@index([family])
   @@map("knowledge_import_batches")
+}
+
+// =============================================================================
+// NS-4 — Phase 4B-compatible append-only approved financial snapshot store
+// Distinct from legacy FinancialSnapshot / financial_snapshots.
+// APPROVED only via attributable approval events; no in-place mutation of published rows.
+// =============================================================================
+
+model ContractInputSnapshot {
+  id                   String   @id @default(cuid())
+  snapshotId           String   @unique
+  companyId            String
+  version              String
+  asOf                 String?
+  reportingPeriod      String?
+  status               String // DRAFT | REVIEW_REQUIRED | APPROVED | SUPERSEDED
+  supersedesSnapshotId String?
+  provenanceJson       Json
+  reviewedBy           String?
+  reviewedAt           String?
+  approvalRef          String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  facts  ContractInputFact[]
+  events ContractInputSnapshotEvent[]
+
+  @@index([companyId, status])
+  @@index([companyId, reportingPeriod])
+  @@map("contract_input_snapshots")
+}
+
+model ContractInputFact {
+  id                    String  @id @default(cuid())
+  snapshotId            String
+  identityJson          Json
+  valueJson             Json
+  displayName           String?
+  sourceVersion         String?
+  overridesDefinitionId String?
+  note                  String?
+
+  snapshot ContractInputSnapshot      @relation(fields: [snapshotId], references: [snapshotId], onDelete: Cascade)
+  locators ContractInputFactLocator[]
+
+  @@index([snapshotId])
+  @@map("contract_input_facts")
+}
+
+model ContractInputFactLocator {
+  id                String  @id @default(cuid())
+  factId            String
+  sourceDocumentId  String?
+  sourceVersionHash String?
+  locatorJson       Json?
+
+  fact ContractInputFact @relation(fields: [factId], references: [id], onDelete: Cascade)
+
+  @@index([factId])
+  @@index([sourceDocumentId])
+  @@map("contract_input_fact_locators")
+}
+
+model ContractInputSnapshotEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique
+  snapshotId  String?
+  companyId   String
+  type        String // SNAPSHOT_APPENDED | SNAPSHOT_APPROVED | SNAPSHOT_SUPERSEDED
+  at          DateTime
+  payloadJson Json
+  createdAt   DateTime @default(now())
+
+  snapshot ContractInputSnapshot? @relation(fields: [snapshotId], references: [snapshotId], onDelete: SetNull)
+
+  @@index([companyId, at])
+  @@index([snapshotId])
+  @@map("contract_input_snapshot_events")
+}
+
+// =============================================================================
+// Phase 4C — append-only contract ledger (capacity usage). Distinct from legacy
+// ledger_entries. Corrections supersede; rows are never hard-deleted for history.
+// =============================================================================
+
+model ContractLedgerUsage {
+  id                   String  @id @default(cuid())
+  usageId              String  @unique
+  companyId            String
+  instrumentKey        String
+  effectiveAsOf        String
+  amount               String
+  currency             String
+  capacityPathJson     Json
+  transactionRef       String?
+  status               String // RECORDED | PENDING | REVERSED | SUPERSEDED
+  supersededByUsageId  String?
+  provenanceJson       Json
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([companyId, status])
+  @@index([companyId, effectiveAsOf])
+  @@map("contract_ledger_usages")
+}
+
+model ContractLedgerUsageEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique
+  companyId   String
+  usageId     String?
+  type        String // USAGE_APPENDED | USAGE_SUPERSEDED
+  at          DateTime
+  payloadJson Json
+  createdAt   DateTime @default(now())
+
+  @@index([companyId, at])
+  @@index([usageId])
+  @@map("contract_ledger_usage_events")
 }
