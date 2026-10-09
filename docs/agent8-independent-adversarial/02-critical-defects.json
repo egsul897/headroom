@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "agent8-critical-defects.v1",
+  "mission": "HEADROOM AGENT 8 — INDEPENDENT CORRECTNESS AND ADVERSARIAL TESTING",
+  "productionCodeModified": true,
+  "remediationBranch": "cursor/a8-gate-status-remediation-4f52",
+  "releaseBlocking": [],
+  "closed": [
+    {
+      "id": "DEFECT-A8-01",
+      "caseId": "RT-08b-gated-unlimited-status-not-available",
+      "status": "CLOSED",
+      "title": "Failed ratio gate reports capacity status AVAILABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "fix": "CapacityStatus.NOT_SATISFIED + statusForAmount floor on GATE_NOT_SATISFIED in evaluateCapacityState",
+      "afterStatus": "NOT_SATISFIED",
+      "releaseBlocking": false
+    },
+    {
+      "id": "DEFECT-A8-02",
+      "caseId": "RT-02b-shared-negative-remaining-published",
+      "status": "CLOSED",
+      "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED",
+      "severity": "MATERIAL_OVERSTATEMENT",
+      "fix": "SharedConstraintState withholds remaining as NOT_DETERMINED on OVER_CONSUMPTION; deficit in overConsumption/provisional",
+      "releaseBlocking": false
+    }
+  ],
+  "materialObservations": [],
+  "independentRetest": {
+    "total": 32,
+    "passed": 32,
+    "incorrectFavorable": 0,
+    "releaseBlockingCount": 0
+  }
+}

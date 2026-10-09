@@ -143,8 +143,8 @@ writeJson(`${OUT}/02-capacity-node-model.json`, {
   nodeKindsReservedNeverProduced: ["LEDGER_USAGE"],
   nodeKindsAreStructuralNotCovenantForms: "a node is a thing that bears or consumes capacity, or a labelled component of an expression; nothing is named after a basket type",
   nodeFields: ["capacityNodeId", "kind", "companyId", "instrumentKey", "ruleId", "sharedCapacityId", "sourceIdentity", "expressionId", "componentRole", "entityScope", "phase3", "dependsOnNodeIds", "unquantifiedSharedWith"],
-  statuses: ["AVAILABLE", "NEEDS_INPUT", "UNSUPPORTED", "AMBIGUOUS", "REVIEW_REQUIRED", "ERROR"],
-  statusesNeverCollapse: { missingFact: "NEEDS_INPUT", unsupportedSemantics: "UNSUPPORTED", ambiguousLegalState: "AMBIGUOUS", reviewRequiredLegalState: "REVIEW_REQUIRED", runtimeError: "ERROR" },
+  statuses: ["AVAILABLE", "NOT_SATISFIED", "NEEDS_INPUT", "UNSUPPORTED", "AMBIGUOUS", "REVIEW_REQUIRED", "ERROR"],
+  statusesNeverCollapse: { missingFact: "NEEDS_INPUT", unsupportedSemantics: "UNSUPPORTED", unsatisfiedGate: "NOT_SATISFIED", ambiguousLegalState: "AMBIGUOUS", reviewRequiredLegalState: "REVIEW_REQUIRED", runtimeError: "ERROR" },
   capacityAmountKinds: ["AMOUNT", "UNLIMITED", "GATE_NOT_SATISFIED", "NOT_DETERMINED"],
   workedNodes: nodeDemo.nodes.map((x) => ({ capacityNodeId: x.capacityNodeId, kind: x.kind, componentRole: x.componentRole, expressionId: x.expressionId, sourceIdentity: x.sourceIdentity })),
 });
