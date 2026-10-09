@@ -268,20 +268,51 @@ export async function persistAmendmentGraph(params?: {
   };
 }
 
+/**
+ * Coverage over persisted KnowledgeRelationshipEdge rows.
+ *
+ * Important: `targetSourceId` stores the logical `KnowledgeSource.sourceId`
+ * (e.g. "edgar:…"), while `sourceRecordId` stores the Neon cuid. Mixing the
+ * two namespaces in one set under-counts / over-counts linked sources.
+ */
 export async function loadAmendmentGraphCoverage(): Promise<{
   edgeCount: number;
   byKind: Record<string, number>;
   linkedSources: number;
+  unresolvedTargetSourceIds: number;
 }> {
   const edges = await prisma.knowledgeRelationshipEdge.findMany({
     select: { kind: true, sourceRecordId: true, targetSourceId: true },
   });
+  const sources = await prisma.knowledgeSource.findMany({
+    select: { id: true, sourceId: true },
+  });
+  const idToSourceId = new Map(sources.map((s) => [s.id, s.sourceId]));
+  const logicalSourceIds = new Set(sources.map((s) => s.sourceId));
+
   const byKind: Record<string, number> = {};
-  const linked = new Set<string>();
+  const linkedLogical = new Set<string>();
+  let unresolvedTargetSourceIds = 0;
+
   for (const e of edges) {
     byKind[e.kind] = (byKind[e.kind] ?? 0) + 1;
-    linked.add(e.sourceRecordId);
-    linked.add(e.targetSourceId);
+    const fromLogical = idToSourceId.get(e.sourceRecordId);
+    if (fromLogical) linkedLogical.add(fromLogical);
+
+    if (logicalSourceIds.has(e.targetSourceId)) {
+      linkedLogical.add(e.targetSourceId);
+    } else if (idToSourceId.has(e.targetSourceId)) {
+      // Tolerate any historical rows that stored cuid instead of sourceId.
+      linkedLogical.add(idToSourceId.get(e.targetSourceId)!);
+    } else {
+      unresolvedTargetSourceIds += 1;
+    }
   }
-  return { edgeCount: edges.length, byKind, linkedSources: linked.size };
+
+  return {
+    edgeCount: edges.length,
+    byKind,
+    linkedSources: linkedLogical.size,
+    unresolvedTargetSourceIds,
+  };
 }
