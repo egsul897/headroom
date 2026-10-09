@@ -242,3 +242,15 @@
 - **actualExternalCostsUsd:** 0
 - **ownershipViolations:** []
 
+---
+
+## 2026-10-09T22:28:00Z — BLK-USAGE-ZERO assignment + PR #216
+
+- Draft PR: https://github.com/egsul897/headroom/pull/216
+- Focused tests: `npx vitest run tests/architecture/parallel-agents` → 26 passed
+- Published `19-blk-usage-zero-assignment.md` with exact evidence:
+  - `lib/covenant-engine.ts:1899` `currentUsage: 0`
+  - `lib/product/legal-intelligence/run-package-path.ts:66` `ledger = 0`
+- WS-CAP instructed to fail closed on unknown usage; no second ledger; no cert-board edits
+- actualExternalCostsUsd: 0
+

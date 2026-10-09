@@ -25,6 +25,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `16-product-specialist-fleet.json` | Eight product specialists + adversarial lane exclusive ownership |
 | `17-progress-manifest.json` | Shared engineering progress manifest (session-facing) |
 | `18-pr-integration-sequence.json` | Recommended PR order / do-not-merge (no auto-merge) |
+| `19-blk-usage-zero-assignment.md` | P0 WS-CAP brief: unknown utilization ≠ zero |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
