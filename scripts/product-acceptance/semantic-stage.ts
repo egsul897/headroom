@@ -24,24 +24,32 @@ import { mockInventoryCaller, mockSemanticClient, MOCK_MODEL, ws, textCarries, t
 import { faithfulPlan, adversarialCases, mutate, type CandidateSpec, type AdversarialCase } from "./semantic-plan";
 import type { OperativeContractState } from "../../lib/contract-model/compiler/amendment/types";
 
-/** Merge every instrument's operative state at an as-of so section splice sees sibling-instrument amendments (IPV-04 indenture breadth). */
+/**
+ * Package-level operative state for semantic/certification.
+ *
+ * `runDeterministicStages` already stores a merged multi-instrument state at
+ * the bare as-of key (and per-instrument copies at `${asOf}::${documentId}`).
+ * Re-merging those copies here duplicated provision views, which made
+ * spliceDescendantAmendments see overlapping edits and withhold parent section
+ * text (EMPTY_OPERATIVE_TEXT on credit-agreement::7.01) — IPV-04 residual.
+ */
 function packageOperativeState(s: DeterministicStages, asOfDate: string): OperativeContractState | null {
-  const base = s.operativeStates.get(asOfDate) ?? null;
+  const merged = s.operativeStates.get(asOfDate);
+  if (merged) return merged;
   const extras = [...s.operativeStates.entries()]
     .filter(([key]) => key.startsWith(`${asOfDate}::`))
     .map(([, state]) => state);
-  if (!base && extras.length === 0) return null;
-  if (!base) return extras[0] ?? null;
-  if (extras.length === 0) return base;
+  if (extras.length === 0) return null;
+  if (extras.length === 1) return extras[0]!;
   const statusRank = (status: OperativeContractState["status"]): number =>
     status === "OPERATIVE_STATE_CONFLICTED" ? 3 : status === "OPERATIVE_STATE_REVIEW_REQUIRED" ? 2 : status === "OPERATIVE_STATE_PARTIAL" ? 1 : 0;
-  const worst = [base, ...extras].reduce((a, b) => (statusRank(b.status) > statusRank(a.status) ? b : a));
+  const worst = extras.reduce((a, b) => (statusRank(b.status) > statusRank(a.status) ? b : a));
   return {
-    ...base,
+    ...extras[0]!,
     status: worst.status,
     summary: worst.summary,
-    provisions: [...base.provisions, ...extras.flatMap((e) => e.provisions)],
-    unattachedEffects: [...base.unattachedEffects, ...extras.flatMap((e) => e.unattachedEffects)],
+    provisions: extras.flatMap((e) => e.provisions),
+    unattachedEffects: extras.flatMap((e) => e.unattachedEffects),
   };
 }
 
