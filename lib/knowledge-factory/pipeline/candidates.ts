@@ -19,16 +19,15 @@ function operativeSpan(
     .filter((n) => n.charStart > node.charStart)
     .sort((a, b) => a.charStart - b.charStart);
   const nextStart = later[0]?.charStart;
-  // Prefer next-section boundary; fall back to at least 2.5k chars of body.
-  const end = Math.min(
-    textLen,
-    Math.max(node.charEnd, nextStart ?? node.charStart + 2500, node.charStart + 2500),
-  );
-  // If next section is close, stop before it.
+  // Stop strictly before the next section heading so bodies do not bleed.
   if (nextStart != null && nextStart > start) {
-    return { start, end: Math.min(textLen, Math.max(node.charEnd, nextStart)) };
+    return { start, end: Math.min(textLen, nextStart) };
   }
-  return { start, end };
+  // Sparse structure: take at least 2.5k chars of body beyond the heading span.
+  return {
+    start,
+    end: Math.min(textLen, Math.max(node.charEnd, node.charStart + 2500)),
+  };
 }
 
 export function discoverCovenantCandidates(

@@ -27,7 +27,12 @@ async function main() {
       metadata: true,
     },
   });
-  const stats: Record<string, number> = { scanned: rows.length, changed: 0, unchanged: 0 };
+  const stats = {
+    scanned: rows.length,
+    changed: 0,
+    unchanged: 0,
+    byTarget: {} as Record<string, number>,
+  };
   for (const row of rows) {
     const result = classifyDebtDocument({
       title: row.documentTitle ?? "",
@@ -40,7 +45,7 @@ async function main() {
       continue;
     }
     stats.changed += 1;
-    stats[`to_${result.documentClass}`] = (stats[`to_${result.documentClass}`] ?? 0) + 1;
+    stats.byTarget[result.documentClass] = (stats.byTarget[result.documentClass] ?? 0) + 1;
     console.log(`${dry ? "DRY" : "UPD"} ${row.sourceId} -> ${result.documentClass} (${result.signals.join(",")})`);
     if (!dry) {
       await prisma.knowledgeSource.update({

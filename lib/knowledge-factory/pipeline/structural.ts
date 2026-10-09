@@ -64,7 +64,7 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
 }
 
 const DEFINITION_RE =
-  /[“"]([A-Z][^“"]{1,80})[”"]\s+(?:means|shall\s+mean|has\s+the\s+meaning)\b|“([A-Z][^”]{1,80})”\s+(?:means|shall\s+mean)\b|"([A-Z][^"]{1,80})"\s+(?:means|shall\s+mean)\b/g;
+  /[“"]([A-Z][^“"]{1,80})[”"]\s+(?:means|shall\s+mean|has\s+the\s+meaning|shall\s+have\s+the\s+meaning)\b|“([A-Z][^”]{1,80})”\s+(?:means|shall\s+mean|shall\s+have\s+the\s+meaning)\b|"([A-Z][^"]{1,80})"\s+(?:means|shall\s+mean|shall\s+have\s+the\s+meaning)\b/g;
 
 /** Strip HTML tags / entities so EDGAR HTML exhibits yield definition hits. */
 export function normalizeTextForDefinitions(text: string): { plain: string; map: Int32Array } {
@@ -76,9 +76,13 @@ export function normalizeTextForDefinitions(text: string): { plain: string; map:
     if (text[i] === "<") {
       const close = text.indexOf(">", i + 1);
       if (close === -1) break;
-      // Treat block tags as whitespace so "Term</b> means" still matches.
+      // Treat block/inline emphasis tags as whitespace so "Term</b> means" still matches.
       const tag = text.slice(i, close + 1).toLowerCase();
-      if (/^<\/?(?:p|div|br|tr|td|li|h\d|section|table)\b/.test(tag) || tag === "<br>" || tag === "<br/>") {
+      if (
+        /^<\/?(?:p|div|br|tr|td|li|h\d|section|table|b|i|em|strong|span|font|u)\b/.test(tag) ||
+        tag === "<br>" ||
+        tag === "<br/>"
+      ) {
         plain += " ";
         map.push(i);
       }
@@ -144,7 +148,8 @@ export function discoverDefinitions(sourceId: string, text: string, _nodes: Stru
   }
 
   // Title-case bare terms often appear in HTML after tag strip: Consolidated EBITDA means
-  const bare = /\b([A-Z][A-Za-z0-9][A-Za-z0-9 /-]{1,70})\s+(?:means|shall\s+mean)\b/g;
+  const bare =
+    /\b([A-Z][A-Za-z0-9][A-Za-z0-9 /-]{1,70})\s+(?:means|shall\s+mean|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b/g;
   while ((m = bare.exec(plain)) !== null && out.length < 2000) {
     const term = (m[1] ?? "").trim();
     if (!term || /^(The|A|An|This|Such|Section|Article)\b/.test(term)) continue;
