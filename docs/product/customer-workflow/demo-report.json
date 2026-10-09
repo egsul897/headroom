@@ -9,7 +9,7 @@
       "compile": [
         {
           "status": "COMPILED",
-          "permissionId": "cmv0i7s470003b2akhbg0fg4z",
+          "permissionId": "cmv0icqhe0003ugrxk5nba2ow",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
           "grantType": "DEBT_INCURRENCE",
           "formulaType": "FLAT_AMOUNT",
@@ -22,7 +22,7 @@
         },
         {
           "status": "COMPILED",
-          "permissionId": "cmv0i7s9l0005b2akmfmppg0r",
+          "permissionId": "cmv0icqsr0007ugrxhbi8ky8d",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
           "grantType": "LIEN",
           "formulaType": "FLAT_AMOUNT",
@@ -54,7 +54,7 @@
   },
   "permissions": [
     {
-      "id": "cmv0i7s470003b2akhbg0fg4z",
+      "id": "cmv0icqhe0003ugrxk5nba2ow",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
       "grantType": "DEBT_INCURRENCE",
       "formulaType": "FLAT_AMOUNT",
@@ -63,7 +63,7 @@
       "sectionRef": "7.2"
     },
     {
-      "id": "cmv0i7s9l0005b2akmfmppg0r",
+      "id": "cmv0icqsr0007ugrxhbi8ky8d",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
       "grantType": "LIEN",
       "formulaType": "FLAT_AMOUNT",
@@ -79,7 +79,7 @@
     "analyzedDocumentCount": 1,
     "summaryCount": 15,
     "permissionCount": 2,
-    "provisionCount": 0,
+    "provisionCount": 2,
     "hasFinancialSnapshot": true,
     "headline": "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone.",
     "blockers": [],
@@ -159,6 +159,102 @@
         "capacity": "Amount/threshold: $2,500,000"
       }
     ],
+    "proForma": [
+      {
+        "metricId": "proforma:secured:100",
+        "scenario": "Proposed $100M secured debt incurrence",
+        "amountMillions": 100,
+        "secured": true,
+        "status": "CONDITIONAL",
+        "proFormaTotalLeverage": "2.86x",
+        "proFormaSecuredLeverage": "2.02x",
+        "proFormaInterestCoverage": "6.83x",
+        "basketRemainingAfter": "$0M",
+        "engineCapacityRemaining": "$50M",
+        "notes": [
+          "Pro forma total leverage 2.86x; secured 2.02x",
+          "Counsel-compiled basket remaining before txn $50M → after $0M",
+          "Engine secured remaining: $50M (undefined)",
+          "$100M exceeds counsel-compiled remaining basket capacity"
+        ],
+        "drilldown": {
+          "metricId": "proforma:secured:100",
+          "title": "Pro forma $100M secured debt",
+          "module": "TRANSACTIONS",
+          "governingAgreement": null,
+          "sectionCitation": null,
+          "definitions": [],
+          "contractualFormula": "Pro forma Debt/EBITDA after +$100M secured; basket remaining − $100M",
+          "financialInputs": [
+            {
+              "label": "Transaction amount",
+              "value": "$100M",
+              "required": true
+            },
+            {
+              "label": "Opening total debt",
+              "value": "$1,100M",
+              "required": true
+            },
+            {
+              "label": "Opening secured debt",
+              "value": "$750M",
+              "required": true
+            },
+            {
+              "label": "EBITDA",
+              "value": "$420M",
+              "required": true
+            },
+            {
+              "label": "Assumed new-debt rate",
+              "value": "6.5%",
+              "required": false
+            }
+          ],
+          "historicalUtilization": [],
+          "conditions": [],
+          "exceptions": [],
+          "relatedCovenants": [],
+          "aiInterpretation": null,
+          "alternatives": [],
+          "assumptions": [],
+          "reviewerCorrections": [],
+          "calculationHistory": [
+            "PF total leverage = (1100+100)/420",
+            "PF secured leverage = (750+100)/420",
+            "Engine secured remaining: $50M (undefined)"
+          ],
+          "missingInputs": [],
+          "hrefs": [
+            {
+              "label": "Covenant review",
+              "href": "/demo-customer-workflow/covenants"
+            },
+            {
+              "label": "Lawyer review",
+              "href": "/demo-customer-workflow/rulebook"
+            },
+            {
+              "label": "Ask Headroom",
+              "href": "/demo-customer-workflow/ask"
+            },
+            {
+              "label": "Financial inputs",
+              "href": "/demo-customer-workflow/onboarding/financials"
+            },
+            {
+              "label": "Simulate",
+              "href": "/demo-customer-workflow/simulate"
+            },
+            {
+              "label": "Capacity",
+              "href": "/demo-customer-workflow/capacity"
+            }
+          ]
+        }
+      }
+    ],
     "transactions": [
       {
         "scenario": "Proposed $100M secured debt",
@@ -181,5 +277,48 @@
         "summary": "AI matched §7.14 (SECTION 7.14 Limitation on Restrictions). 3 related provisions. Pro forma ratios/capacity remain conditional without executable rules."
       }
     ]
+  },
+  "engineCapacity": {
+    "securedRemaining": 50,
+    "unsecuredRemaining": 50,
+    "permissionsTotal": 2
+  },
+  "documentCapacityFormulas": {
+    "secured": {
+      "op": "MIN",
+      "items": [
+        {
+          "op": "SUM",
+          "items": [
+            {
+              "op": "REF",
+              "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE"
+            }
+          ],
+          "label": "Debt baskets"
+        },
+        {
+          "op": "SUM",
+          "items": [
+            {
+              "op": "REF",
+              "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN"
+            }
+          ],
+          "label": "Lien baskets"
+        }
+      ],
+      "label": "Secured capacity (counsel-compiled debt ∩ lien)"
+    },
+    "unsecured": {
+      "op": "SUM",
+      "items": [
+        {
+          "op": "REF",
+          "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE"
+        }
+      ],
+      "label": "Unsecured debt baskets (counsel-compiled)"
+    }
   }
 }

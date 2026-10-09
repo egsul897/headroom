@@ -183,10 +183,12 @@ async function main() {
     reexerciseOnImprove: true,
   });
 
-  const [capacity, rulebook, dashboard] = await Promise.all([
+  const { getCompanyDashboard } = await import("../../lib/dashboard-service");
+  const [capacity, rulebook, dashboard, engineDash] = await Promise.all([
     loadCapacityReadiness(COMPANY_ID),
     loadRulebookReadiness(COMPANY_ID),
     loadDebtIntelligenceDashboard(COMPANY_ID),
+    getCompanyDashboard(COMPANY_ID).catch((e) => ({ error: e instanceof Error ? e.message : String(e) })),
   ]);
 
   const permissions = await prisma.permission.findMany({
@@ -239,12 +241,27 @@ async function main() {
         reviewDecision: b.reviewDecision,
         capacity: b.contractualCapacity,
       })),
+      proForma: dashboard.proForma,
       transactions: dashboard.transactions.slice(0, 4).map((t) => ({
         scenario: t.scenario,
         status: t.status,
         summary: t.summary.slice(0, 200),
       })),
     },
+    engineCapacity:
+      "error" in engineDash
+        ? engineDash
+        : {
+            securedRemaining: engineDash.capacity.secured.remainingCapacity,
+            unsecuredRemaining: engineDash.capacity.unsecured.remainingCapacity,
+            permissionsTotal: engineDash.legalReview.permissionsTotal,
+          },
+    documentCapacityFormulas: (
+      await prisma.document.findUnique({
+        where: { id: DOC_ID },
+        select: { capacityFormulas: true },
+      })
+    )?.capacityFormulas,
   };
 
   const outDir = path.join("docs", "product", "customer-workflow");

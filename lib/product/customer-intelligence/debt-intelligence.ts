@@ -120,6 +120,21 @@ export interface DebtIntelligenceDashboard {
     simulateHref: string;
     drilldown: DashboardDrilldown;
   }>;
+  /** Pro forma transaction effects when financials + executable rules exist. */
+  proForma: Array<{
+    metricId: string;
+    scenario: string;
+    amountMillions: number;
+    secured: boolean;
+    status: MetricNumericStatus;
+    proFormaTotalLeverage: string | null;
+    proFormaSecuredLeverage: string | null;
+    proFormaInterestCoverage: string | null;
+    basketRemainingAfter: string | null;
+    engineCapacityRemaining: string | null;
+    notes: string[];
+    drilldown: DashboardDrilldown;
+  }>;
   rulebookStage: string;
   capacityStatus: string;
   amendmentResolution: string;
@@ -256,6 +271,16 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     totalDebt != null && securedDebt != null ? Math.max(0, totalDebt - securedDebt) : null;
   const netDebt = totalDebt != null && cash != null ? totalDebt - cash : null;
   const asOfDate = snapshot?.asOfDate?.toISOString().slice(0, 10) ?? null;
+  const notesText = snapshot?.notes ?? "";
+  const firstLienFromNotes = (() => {
+    const m = notesText.match(/First-lien debt \(\$M\):\s*([\d.]+)/i);
+    return m ? Number(m[1]) : null;
+  })();
+  const fixedChargesFromNotes = (() => {
+    const m = notesText.match(/Fixed charges \(\$M\):\s*([\d.]+)/i);
+    return m ? Number(m[1]) : null;
+  })();
+  const assumedRate = snapshot ? num(snapshot.assumedNewDebtRatePct) : null;
 
   const capitalInstruments: DebtIntelligenceDashboard["capitalStructure"]["instruments"] = [];
 
@@ -409,9 +434,20 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       family: "LEVERAGE",
       compute: () => ratioStr(securedDebt, ebitda),
       formula: "Secured Debt / Consolidated EBITDA",
-      thresholdHint: /secured\s+leverage|first\s+lien|senior\s+secured\s+leverage/i,
+      thresholdHint: /secured\s+leverage|senior\s+secured\s+leverage/i,
       missing: [
         ...(securedDebt == null ? ["Secured Debt"] : []),
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+      ],
+    },
+    {
+      name: "First-lien leverage",
+      family: "LEVERAGE",
+      compute: () => ratioStr(firstLienFromNotes, ebitda),
+      formula: "First-Lien Debt / Consolidated EBITDA (uses mapped first-lien input; not assumed = all secured)",
+      thresholdHint: /first.?lien\s+leverage/i,
+      missing: [
+        ...(firstLienFromNotes == null ? ["First-lien debt principal"] : []),
         ...(ebitda == null ? ["Contractual EBITDA"] : []),
       ],
     },
@@ -429,10 +465,13 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     {
       name: "Fixed-charge coverage",
       family: "COVERAGE",
-      compute: () => null,
+      compute: () => ratioStr(ebitda, fixedChargesFromNotes),
       formula: "Consolidated EBITDA / Fixed Charges (contract-defined)",
       thresholdHint: /fixed.?charge\s+coverage|fccr/i,
-      missing: ["Contractual EBITDA", "Fixed Charges (not on snapshot)"],
+      missing: [
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+        ...(fixedChargesFromNotes == null ? ["Fixed Charges"] : []),
+      ],
     },
     {
       name: "Minimum liquidity",
@@ -848,6 +887,99 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
 
   const acceptedCount = approvals.filter((a) => a.decision === "ACCEPTED" || a.decision === "EDITED").length;
 
+  // Pro forma $100M secured — uses counsel-compiled basket remaining + leverage math (no invented capacity).
+  const proForma: DebtIntelligenceDashboard["proForma"] = [];
+  const securedTxnAmount = 100;
+  if (finForEval && ebitda != null && ebitda > 0) {
+    const pfTotalDebt = finForEval.totalDebt + securedTxnAmount;
+    const pfSecured = finForEval.securedDebt + securedTxnAmount;
+    const pfInterest = finForEval.interestExpense + securedTxnAmount * ((assumedRate ?? 0) / 100);
+    const computedBasket = baskets.find((b) => b.status === "COMPUTED" && b.remaining != null);
+    const remainingNum = computedBasket?.remaining
+      ? Number(String(computedBasket.remaining).replace(/[$,M]/g, ""))
+      : null;
+    let engineRemaining: string | null = null;
+    let engineNotes: string[] = [];
+    if (capacity.canEvaluateExecutableCapacity) {
+      try {
+        const { getCompanyDashboard } = await import("@/lib/dashboard-service");
+        const dash = await getCompanyDashboard(companyId);
+        const rem = dash.capacity.secured.remainingCapacity;
+        engineRemaining = rem != null && Number.isFinite(rem) ? fmtM(rem) : null;
+        const securedStatus =
+          typeof dash.capacity.secured.status === "string" && dash.capacity.secured.status
+            ? dash.capacity.secured.status
+            : "status unavailable";
+        engineNotes.push(
+          `Engine secured remaining: ${engineRemaining ?? "not determinable"} (${securedStatus})`,
+        );
+      } catch (err) {
+        engineNotes.push(
+          `Engine capacity unavailable: ${err instanceof Error ? err.message.slice(0, 160) : "error"}`,
+        );
+      }
+    }
+    const basketOk =
+      remainingNum != null ? securedTxnAmount <= remainingNum : null;
+    proForma.push({
+      metricId: "proforma:secured:100",
+      scenario: "Proposed $100M secured debt incurrence",
+      amountMillions: securedTxnAmount,
+      secured: true,
+      status:
+        remainingNum != null && capacity.canEvaluateExecutableCapacity
+          ? basketOk
+            ? "COMPUTED"
+            : "CONDITIONAL"
+          : snapshot
+            ? "CONDITIONAL"
+            : "MISSING_FINANCIALS",
+      proFormaTotalLeverage: ratioStr(pfTotalDebt, ebitda),
+      proFormaSecuredLeverage: ratioStr(pfSecured, ebitda),
+      proFormaInterestCoverage: ratioStr(ebitda, pfInterest),
+      basketRemainingAfter:
+        remainingNum != null ? fmtM(Math.max(0, remainingNum - securedTxnAmount)) : null,
+      engineCapacityRemaining: engineRemaining,
+      notes: [
+        `Pro forma total leverage ${(pfTotalDebt / ebitda).toFixed(2)}x; secured ${(pfSecured / ebitda).toFixed(2)}x`,
+        remainingNum != null
+          ? `Counsel-compiled basket remaining before txn ${fmtM(remainingNum)} → after ${fmtM(Math.max(0, remainingNum - securedTxnAmount))}`
+          : "No COMPUTED counsel basket remaining yet — accept/compile a debt+lien basket",
+        ...engineNotes,
+        basketOk === false
+          ? `$100M exceeds counsel-compiled remaining basket capacity`
+          : `$100M tested against counsel-compiled baskets where available`,
+      ],
+      drilldown: buildDrilldown({
+        metricId: "proforma:secured:100",
+        title: "Pro forma $100M secured debt",
+        module: "TRANSACTIONS",
+        companyId,
+        formula: "Pro forma Debt/EBITDA after +$100M secured; basket remaining − $100M",
+        inputs: [
+          { label: "Transaction amount", value: fmtM(securedTxnAmount), required: true },
+          { label: "Opening total debt", value: totalDebt != null ? fmtM(totalDebt) : null, required: true },
+          { label: "Opening secured debt", value: securedDebt != null ? fmtM(securedDebt) : null, required: true },
+          { label: "EBITDA", value: fmtM(ebitda), required: true },
+          {
+            label: "Assumed new-debt rate",
+            value: assumedRate != null ? `${assumedRate}%` : null,
+            required: false,
+          },
+        ],
+        missing: [
+          ...(remainingNum == null ? ["Counsel-compiled basket remaining"] : []),
+          ...(!capacity.canEvaluateExecutableCapacity ? ["Executable capacity path"] : []),
+        ],
+        calcHistory: [
+          `PF total leverage = (${finForEval.totalDebt}+100)/${ebitda}`,
+          `PF secured leverage = (${finForEval.securedDebt}+100)/${ebitda}`,
+          ...engineNotes,
+        ],
+      }),
+    });
+  }
+
   return {
     companyId,
     headline:
@@ -874,6 +1006,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     baskets: baskets.slice(0, 60),
     monitoring,
     transactions,
+    proForma,
     rulebookStage: rulebook.stage,
     capacityStatus: capacity.status,
     amendmentResolution: review.amendmentCompare.operativeResolution,
@@ -903,6 +1036,9 @@ export function findDashboardMetric(
   }
   for (const t of dash.transactions) {
     if (t.metricId === metricId) return t.drilldown;
+  }
+  for (const p of dash.proForma ?? []) {
+    if (p.metricId === metricId) return p.drilldown;
   }
   return null;
 }

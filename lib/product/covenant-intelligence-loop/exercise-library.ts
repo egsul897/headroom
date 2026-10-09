@@ -26,6 +26,17 @@ export const EXERCISE_LIBRARY: ExerciseDefinition[] = [
     requiredFinancialInputs: [],
   }),
   ex({
+    exerciseId: "debt.unsecured.150",
+    family: "DEBT_INCURRENCE",
+    title: "Incur $150 million of unsecured debt",
+    question:
+      "Can the borrower incur $150 million of additional unsecured indebtedness? Identify fixed, grower, and ratio baskets, conditions, and entity scope.",
+    amountMillions: 150,
+    tags: ["unsecured", "debt", "mandate"],
+    requiredCategories: ["DEBT_INCURRENCE"],
+    requiredFinancialInputs: ["totalDebt", "ebitda"],
+  }),
+  ex({
     exerciseId: "debt.secured.100",
     family: "DEBT_INCURRENCE",
     title: "Incur $100 million of secured debt",
@@ -188,6 +199,17 @@ export const EXERCISE_LIBRARY: ExerciseDefinition[] = [
   }),
 
   // Investments
+  ex({
+    exerciseId: "inv.75",
+    family: "INVESTMENTS",
+    title: "Make a $75 million investment",
+    question:
+      "Can the borrower make a $75 million investment? Identify investment baskets, RP overlap, conditions, and entity scope.",
+    amountMillions: 75,
+    tags: ["investment", "mandate"],
+    requiredCategories: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
+    requiredFinancialInputs: [],
+  }),
   ex({
     exerciseId: "inv.acquire_sub",
     family: "INVESTMENTS",

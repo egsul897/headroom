@@ -233,9 +233,39 @@ export default async function DebtIntelligencePage({
         )}
       </Card>
 
-      {/* 5. Transactions */}
+      {/* 5. Pro forma transaction effects */}
       <Card>
-        <div className="card-title">5. Transaction intelligence</div>
+        <div className="card-title">5. Pro forma transaction effects</div>
+        <div className="card-subtitle">
+          Computed from financial snapshot and counsel-compiled baskets when available. Never invents remaining capacity.
+        </div>
+        {(d.proForma ?? []).length === 0 ? (
+          <div className="row-note">Enter financials and accept/compile a debt basket to populate pro forma effects.</div>
+        ) : (
+          (d.proForma ?? []).map((p) => (
+            <div key={p.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+              <MetricRow
+                label={p.scenario}
+                value={p.proFormaTotalLeverage ?? p.status}
+                status={p.status}
+                statusTone={toneFor(p.status)}
+                secondary={`PF secured lev ${p.proFormaSecuredLeverage ?? "—"} · basket after ${p.basketRemainingAfter ?? "—"} · engine ${p.engineCapacityRemaining ?? "—"}`}
+                drilldown={p.drilldown}
+                defaultOpen={openMetric === p.metricId}
+              />
+              {p.notes.slice(0, 4).map((n, i) => (
+                <div key={i} className="row-note">
+                  • {n}
+                </div>
+              ))}
+            </div>
+          ))
+        )}
+      </Card>
+
+      {/* 6. Transactions */}
+      <Card>
+        <div className="card-title">6. Transaction intelligence</div>
         <div className="card-subtitle">
           Proposed exercises mapped to AI-matched provisions. Run Ask for reasoned analysis; Simulate when the engine
           path is ready. Pro forma ratios stay conditional without executable rules and inputs.

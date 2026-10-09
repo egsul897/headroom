@@ -250,15 +250,24 @@ export async function compileAcceptedInterpretation(params: {
       where: { companyId: params.companyId, code: { startsWith: prefix } },
     });
     const results: CompileAcceptedResult[] = [];
+    const now = new Date();
+    const docIds = new Set<string>();
     for (const p of existing) {
+      docIds.add(p.documentId);
       await prisma.permission.update({
         where: { id: p.id },
         data: {
           modelingStatus: "KNOWN_NOT_MODELED",
-          effectiveTo: new Date(),
-          notes: `${p.notes ?? ""}\n[Superseded — counsel REJECTED ${new Date().toISOString()}]`.trim(),
+          effectiveTo: now,
+          notes: `${p.notes ?? ""}\n[Superseded — counsel REJECTED ${now.toISOString()}]`.trim(),
         },
       });
+      if (p.code) {
+        await prisma.covenantProvision.updateMany({
+          where: { companyId: params.companyId, code: p.code, effectiveTo: null },
+          data: { effectiveTo: now },
+        });
+      }
       results.push({
         status: "SUPERSEDED",
         permissionId: p.id,
@@ -266,6 +275,9 @@ export async function compileAcceptedInterpretation(params: {
         message: "Prior counsel-compiled Permission superseded on rejection",
         missingFields: [],
       });
+    }
+    for (const id of docIds) {
+      await syncDocumentCapacityFormulas(params.companyId, id);
     }
     if (!results.length) {
       results.push({ status: "SKIPPED", missingFields: [], message: "No prior counsel Permissions to supersede" });
@@ -374,9 +386,164 @@ export async function compileAcceptedInterpretation(params: {
         message: `Compiled executable Permission ${code}`,
       });
     }
+
+    // Mirror into CovenantProvision so legacy capacityFormulas REF codes resolve.
+    await upsertCounselProvision({
+      companyId: params.companyId,
+      documentId,
+      code,
+      basketName: `${item.heading} (${grantType})`.slice(0, 200),
+      sectionRef: params.sectionRef,
+      formulaType: parsed.formulaType,
+      thresholdValue: parsed.thresholdValue,
+      params: parsed.params ?? null,
+      notes,
+    });
   }
 
+  await syncDocumentCapacityFormulas(params.companyId, documentId);
+  await supersedeCounselPermissionsOnAmendedDocs(params.companyId, documentId, params.sectionRef);
+
   return results;
+}
+
+async function upsertCounselProvision(params: {
+  companyId: string;
+  documentId: string;
+  code: string;
+  basketName: string;
+  sectionRef: string;
+  formulaType: string;
+  thresholdValue: number;
+  params: Record<string, unknown> | null;
+  notes: string;
+}): Promise<void> {
+  const existing = await prisma.covenantProvision.findFirst({
+    where: {
+      companyId: params.companyId,
+      documentId: params.documentId,
+      code: params.code,
+      effectiveTo: null,
+    },
+  });
+  const data = {
+    companyId: params.companyId,
+    documentId: params.documentId,
+    code: params.code,
+    basketName: params.basketName,
+    sectionRef: params.sectionRef,
+    formulaType: params.formulaType as never,
+    thresholdValue: new Prisma.Decimal(params.thresholdValue),
+    params: (params.params as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+    notes: params.notes,
+    effectiveTo: null as Date | null,
+  };
+  if (existing) {
+    await prisma.covenantProvision.update({ where: { id: existing.id }, data });
+  } else {
+    await prisma.covenantProvision.create({ data });
+  }
+}
+
+/**
+ * Rebuild Document.capacityFormulas from counsel-compiled MODELED permissions.
+ * Secured = MIN(debt baskets, lien baskets); unsecured = SUM(debt baskets).
+ * Does not invent CoverageDeclaration completeness.
+ */
+export async function syncDocumentCapacityFormulas(companyId: string, documentId: string): Promise<void> {
+  const perms = await prisma.permission.findMany({
+    where: {
+      companyId,
+      documentId,
+      modelingStatus: "MODELED",
+      code: { startsWith: "counsel:" },
+      OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
+    },
+  });
+  const debtCodes = perms.filter((p) => p.grantType === "DEBT_INCURRENCE" && p.code).map((p) => p.code!);
+  const lienCodes = perms.filter((p) => p.grantType === "LIEN" && p.code).map((p) => p.code!);
+
+  const ref = (code: string) => ({ op: "REF" as const, code });
+  const capacityFormulas: Record<string, unknown> = {};
+
+  if (debtCodes.length && lienCodes.length) {
+    capacityFormulas.secured = {
+      op: "MIN",
+      label: "Secured capacity (counsel-compiled debt ∩ lien)",
+      items: [
+        { op: "SUM", items: debtCodes.map(ref), label: "Debt baskets" },
+        { op: "SUM", items: lienCodes.map(ref), label: "Lien baskets" },
+      ],
+    };
+  } else if (debtCodes.length) {
+    capacityFormulas.secured = {
+      op: "SUM",
+      label: "Secured capacity (debt baskets — lien regime not yet counsel-compiled)",
+      items: debtCodes.map(ref),
+    };
+  } else if (lienCodes.length) {
+    capacityFormulas.secured = {
+      op: "SUM",
+      label: "Secured capacity (lien baskets — debt regime not yet counsel-compiled)",
+      items: lienCodes.map(ref),
+    };
+  }
+
+  if (debtCodes.length) {
+    capacityFormulas.unsecured = {
+      op: "SUM",
+      label: "Unsecured debt baskets (counsel-compiled)",
+      items: debtCodes.map(ref),
+    };
+  }
+
+  await prisma.document.update({
+    where: { id: documentId },
+    data: {
+      capacityFormulas: Object.keys(capacityFormulas).length
+        ? (capacityFormulas as Prisma.InputJsonValue)
+        : Prisma.JsonNull,
+    },
+  });
+}
+
+/** When the operative document is an amendment (or supersedes another), end prior counsel permissions on superseded docs for the same section. */
+async function supersedeCounselPermissionsOnAmendedDocs(
+  companyId: string,
+  documentId: string,
+  sectionRef: string,
+): Promise<void> {
+  const doc = await prisma.document.findFirst({
+    where: { id: documentId, companyId },
+    select: { id: true, supersedesDocumentId: true, type: true },
+  });
+  if (!doc?.supersedesDocumentId) return;
+  const prior = await prisma.permission.findMany({
+    where: {
+      companyId,
+      documentId: doc.supersedesDocumentId,
+      sectionRef,
+      code: { startsWith: "counsel:" },
+      OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
+    },
+  });
+  const now = new Date();
+  for (const p of prior) {
+    await prisma.permission.update({
+      where: { id: p.id },
+      data: {
+        effectiveTo: now,
+        notes: `${p.notes ?? ""}\n[Superseded by counsel compile on amendment document ${documentId} at ${now.toISOString()}]`.trim(),
+      },
+    });
+    await prisma.covenantProvision.updateMany({
+      where: { companyId, documentId: doc.supersedesDocumentId, code: p.code ?? undefined, effectiveTo: null },
+      data: { effectiveTo: now },
+    });
+  }
+  if (prior.length) {
+    await syncDocumentCapacityFormulas(companyId, doc.supersedesDocumentId);
+  }
 }
 
 /** Pure helper for tests — parse without DB. */

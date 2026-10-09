@@ -432,7 +432,7 @@ describe("capacity / simulate honesty wiring", () => {
     expect(source).toContain("canEvaluateExecutableCapacity");
     expect(source).toMatch(/never rendered as \$0 or Unlimited/);
     expect(source).not.toMatch(/remainingCapacity\s*\?\?\s*0/);
-    expect(readiness).toContain("DISCOVERED ≠ VERIFIED");
+    expect(readiness).toContain("DISCOVERED ≠ counsel-approved");
     expect(readiness).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
     expect(readiness).toContain("canEvaluateExecutableCapacity");
   });
@@ -448,7 +448,7 @@ describe("capacity / simulate honesty wiring", () => {
   it("covenant review workspace is the covenants page data source", () => {
     const source = readFileSync(path.join(root, "app/[companyId]/covenants/page.tsx"), "utf8");
     expect(source).toContain("loadCovenantReviewWorkspace");
-    expect(source).toContain("DISCOVERED ≠ VERIFIED");
+    expect(source).toContain("DISCOVERED ≠ counsel-approved");
     expect(source).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
   });
 });
