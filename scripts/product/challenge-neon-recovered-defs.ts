@@ -101,6 +101,53 @@ const TARGETS: Target[] = [
       "How do amendment changes affect debt capacity?",
     ],
   },
+  {
+    sourceId: "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+    label: "McKesson Term Loan Agreement",
+    expectedDefTerms: ["Consolidated EBITDA", "Administrative Agent", "Lien"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What incremental facility capacity paths are available?",
+      "How do debt and lien permissions interact?",
+    ],
+  },
+  {
+    sourceId: "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+    label: "Peloton Interactive credit agreement exhibit",
+    expectedDefTerms: ["Consolidated EBITDA", "Administrative Agent", "Restricted Payment"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What restricted-payment / dividend baskets are available?",
+      "Which baskets share capacity or use an Available Amount builder?",
+      "What investments or acquisitions are permitted?",
+    ],
+  },
+  {
+    sourceId: "research:cbcfl:chef-unknown-ex_975043",
+    label: "The Chefs Warehouse credit agreement exhibit",
+    expectedDefTerms: ["Consolidated EBITDA", "Administrative Agent", "Lien"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What asset-sale restrictions apply?",
+      "Can debt be refinanced or replaced?",
+    ],
+  },
+  {
+    sourceId: "edgar:0000092380-26-000077:exhibit102-01southwestai.htm",
+    label: "Southwest Airlines Increase Joinder / First Amendment",
+    expectedDefTerms: ["Administrative Agent", "Commitment"],
+    questions: [
+      "What restrictions govern additional indebtedness?",
+      "What restrictions apply to additional secured debt?",
+      "How do amendment changes affect debt capacity?",
+      "Can debt be refinanced or replaced?",
+    ],
+  },
 ];
 
 function termPresent(defs: Array<{ term: string }>, want: string): boolean {

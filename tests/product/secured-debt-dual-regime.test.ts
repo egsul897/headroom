@@ -64,6 +64,14 @@ describe("secured-debt dual-regime Ask", () => {
         families: ["INDEBTEDNESS"],
       }),
       stubItem({
+        sectionRef: "5.08",
+        heading: "Ownership of Property; Liens",
+        category: "LIENS_SECURED_DEBT",
+        posture: "GENERAL_PROHIBITION",
+        plainEnglish: "Representation that Borrower has good title subject to Liens not prohibited.",
+        families: ["LIENS"],
+      }),
+      stubItem({
         sectionRef: "7.01",
         heading: "Limitation on Indebtedness",
         category: "DEBT_INCURRENCE",
@@ -75,7 +83,7 @@ describe("secured-debt dual-regime Ask", () => {
       }),
       stubItem({
         sectionRef: "7.02",
-        heading: "Limitation on Liens",
+        heading: "Limitations on Liens",
         category: "LIENS_SECURED_DEBT",
         posture: "GENERAL_PROHIBITION",
         restriction: "Create, incur, assume or suffer to exist any Lien — except as expressly permitted",
@@ -106,11 +114,10 @@ describe("secured-debt dual-regime Ask", () => {
     expect(answer.detail).toMatch(/\[INDEBTEDNESS REGIME\]/);
     expect(answer.citations.some((c) => c.sectionRef === "7.02")).toBe(true);
     expect(answer.citations.some((c) => c.sectionRef === "7.01")).toBe(true);
-    // Liens regime must appear even though incremental facilities would otherwise dominate ranking.
-    const liensIdx = answer.detail.indexOf("LIENS REGIME");
-    const debtIdx = answer.detail.indexOf("INDEBTEDNESS REGIME");
-    expect(liensIdx).toBeGreaterThan(-1);
-    expect(debtIdx).toBeGreaterThan(-1);
+    // Prefer operative Limitations on Liens over Ownership-of-Property representations.
+    expect(answer.detail).toMatch(/§7\.02[^\n]*\[LIENS REGIME\]/);
+    expect(answer.detail).not.toMatch(/§5\.08[^\n]*\[LIENS REGIME\]/);
+    expect(answer.citations[0]?.sectionRef).not.toBe("5.08");
   });
 
   it("surfaces incremental path mechanics on incremental-facility questions", () => {

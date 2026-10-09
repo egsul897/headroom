@@ -64,6 +64,18 @@ const TARGETS: Target[] = [
     sourceId: "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
     title: "Live Nation Amended Credit Agreement",
   },
+  {
+    kind: "neon",
+    id: "gibraltar-edgar",
+    sourceId: "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    title: "Gibraltar Industries Credit Agreement (EDGAR)",
+  },
+  {
+    kind: "neon",
+    id: "chewy-edgar",
+    sourceId: "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+    title: "Chewy Credit Agreement (EDGAR)",
+  },
 ];
 
 const QUESTIONS = [

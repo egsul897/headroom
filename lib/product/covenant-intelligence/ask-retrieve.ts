@@ -243,11 +243,19 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
     if (/lien|secured|collateral/i.test(hay)) score += 4;
     if (item.category === "LIENS_SECURED_DEBT") score += 3;
     if (item.posture === "GENERAL_PROHIBITION" && item.category === "LIENS_SECURED_DEBT") score += 6;
-    if (/^(?:limitation on\s+)?liens?\b/i.test(item.heading)) score += 8;
+    if (/^(?:limitations?\s+on\s+)?liens?\b/i.test(item.heading)) score += 10;
+    if (/^(?:limitations?\s+on\s+)?indebtedness\b/i.test(item.heading)) score += 8;
     if (item.posture === "GENERAL_PROHIBITION" && item.category === "DEBT_INCURRENCE") score += 2;
-    // Representations / affirmative covenants that merely mention liens are weak hits.
-    if (/representation|affirmative|insurance|properties\b/i.test(item.heading) && item.category !== "LIENS_SECURED_DEBT") {
-      score -= 5;
+    // Representations / affirmative / ownership-of-property "Liens" are not the liens covenant.
+    if (
+      /representation|affirmative|insurance|ownership of propert|title to|properties\b/i.test(item.heading) ||
+      /^[45]\.\d+/i.test(item.sectionRef)
+    ) {
+      score -= 10;
+    }
+    // Financial-maintenance ratios are not the secured-debt basket regime.
+    if (item.posture === "MAINTENANCE_TEST" || item.category === "FINANCIAL_MAINTENANCE") {
+      score -= 6;
     }
   }
   if (intent === "RESTRICTED_PAYMENTS") {
@@ -390,20 +398,51 @@ function selectAnswerItems<T extends CovenantSummaryItem & { sourceId: string; s
     picked.push(item);
   };
 
-  const lienGp = scored.find(
-    (i) =>
-      i.category === "LIENS_SECURED_DEBT" &&
-      (i.posture === "GENERAL_PROHIBITION" || /^(?:limitation on\s+)?liens?\b/i.test(i.heading)),
+  const isRepOrAffirmative = (i: T) =>
+    /representation|affirmative|ownership of propert|title to/i.test(i.heading) ||
+    /^[45]\.\d+/i.test(i.sectionRef);
+  const isLienCovenantHeading = (i: T) =>
+    /^(?:limitations?\s+on\s+)?liens?\b/i.test(i.heading) ||
+    /\blimitations?\s+on\s+liens?\b/i.test(i.heading);
+  const isDebtCovenantHeading = (i: T) =>
+    /^(?:limitations?\s+on\s+)?indebtedness\b/i.test(i.heading) ||
+    /\blimitations?\s+on\s+indebtedness\b/i.test(i.heading);
+
+  const lienGp =
+    scored.find(
+      (i) =>
+        i.category === "LIENS_SECURED_DEBT" &&
+        isLienCovenantHeading(i) &&
+        !isRepOrAffirmative(i),
+    ) ??
+    scored.find(
+      (i) =>
+        i.category === "LIENS_SECURED_DEBT" &&
+        i.posture === "GENERAL_PROHIBITION" &&
+        !isRepOrAffirmative(i),
+    );
+  const lienAny = scored.find(
+    (i) => i.category === "LIENS_SECURED_DEBT" && !isRepOrAffirmative(i),
   );
-  const lienAny = scored.find((i) => i.category === "LIENS_SECURED_DEBT");
-  const debtGp = scored.find(
+  const debtGp =
+    scored.find(
+      (i) =>
+        i.category === "DEBT_INCURRENCE" &&
+        isDebtCovenantHeading(i) &&
+        !/\bincremental\b/i.test(i.heading),
+    ) ??
+    scored.find(
+      (i) =>
+        i.category === "DEBT_INCURRENCE" &&
+        i.posture === "GENERAL_PROHIBITION" &&
+        !/\bincremental\b/i.test(i.heading) &&
+        i.category !== "FINANCIAL_MAINTENANCE",
+    );
+  const debtAny = scored.find(
     (i) =>
       i.category === "DEBT_INCURRENCE" &&
-      i.posture === "GENERAL_PROHIBITION" &&
-      !/\bincremental\b/i.test(i.heading),
-  );
-  const debtAny = scored.find(
-    (i) => i.category === "DEBT_INCURRENCE" && !/\bincremental\b/i.test(i.heading),
+      !/\bincremental\b/i.test(i.heading) &&
+      i.posture !== "MAINTENANCE_TEST",
   );
 
   take(lienGp ?? lienAny);
@@ -411,6 +450,9 @@ function selectAnswerItems<T extends CovenantSummaryItem & { sourceId: string; s
 
   for (const item of scored) {
     if (picked.length >= limit) break;
+    // Once an operative liens covenant is selected, drop ownership/rep lien noise.
+    if (isRepOrAffirmative(item) && (lienGp || lienAny)) continue;
+    if (item.posture === "MAINTENANCE_TEST" && item.category === "FINANCIAL_MAINTENANCE") continue;
     take(item);
   }
   return picked;
