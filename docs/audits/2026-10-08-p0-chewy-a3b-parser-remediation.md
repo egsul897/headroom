@@ -107,12 +107,10 @@ and `scripts/stratified-cert/**`, so a parser change never runs it. The stratifi
 `evidenceIdentity.parserCodeSha256` of the current provider-free Gibraltar record
 (`tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/development-pipeline/execution.json`) to the sha256 of
 `lib/contract-model/compiler/clause-hierarchy.ts`. Any parser change, including this one, changes that hash
-(`8ddef006…` on `main` → `0f04548f…` with this PR) while `structuralTreeSha256` stays identical. After merge the Gibraltar owner
-or Integration Lead must refresh the record with the repo's own provider-free tooling (no key set):
+(`8ddef006…` on `main` → `0f04548f…` with this PR) while `structuralTreeSha256` stays identical.
 
-```bash
-npx tsx scripts/p3-development-pipeline/execute-gibraltar.ts
-npx vitest run tests/stratified-cert/gibraltar-evidence-integrity.test.ts
-```
-
-Expected: only `parserCodeSha256` changes; 2064 / 938, `PROVIDER_EXECUTION_REQUIRED`, `certified: false`, no discovered candidates.
+**Resolved on this PR:** refreshed the provider-free record with no key set
+(`npx tsx scripts/p3-development-pipeline/execute-gibraltar.ts`). Diff is exactly one field —
+`parserCodeSha256` → `0f04548f499e50c2e1691193a523af3e4c3c1ba3b08b0b94838f7a40bbbc023d`. Counts stay
+2064 / 938; `PROVIDER_EXECUTION_REQUIRED`; `certified: false`; no discovered candidates. Historical Haiku
+rows remain non-promotable and are not current-tree evidence.
