@@ -73,4 +73,6 @@ Every matrix case records: operative authority (section/family label), formula, 
 
 ## SHA / PR
 
-Filled at commit/PR time in the boxed mission return.
+- **SHA:** `0790a0191167ac0ef78aef115304481bac86579f`
+- **Branch:** `cursor/covenant-capacity-mathematics-b580`
+- **Base:** `main`
