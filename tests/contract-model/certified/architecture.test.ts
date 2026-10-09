@@ -27,8 +27,9 @@ describe("one operative-source builder", () => {
     // no other module reads a candidate anchor's DESCENDANTS text to make operative text
     // no other module turns a candidate's anchor (structuralNodeIds[0]) into operative text via getNodeText
     const descendantsReaders = LIB.filter((f) => { const s = read(f); return /structuralNodeIds\[0\]/.test(s) && /getNodeText\([^\n]*"DESCENDANTS"\)/.test(s); });
-    // context-retrieval/pipeline.ts reads the anchor's text for the OPERATIVE_SOURCE context ITEM (an excerpt in the bundle), never as compiler input
-    expect(descendantsReaders.sort()).toEqual(["lib/contract-model/compiler/candidate-span.ts", "lib/contract-model/compiler/context-retrieval/pipeline.ts"]);
+    // IPV-04: only candidate-span.ts derives operative text from the anchor DESCENDANTS span.
+    // pipeline.ts serves operativeItem.excerptText (amended/spliced) for definition scans — it must not re-read DESCENDANTS.
+    expect(descendantsReaders.sort()).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);
     // and the operative-source functions are defined exactly once
     const definers = LIB.filter((f) => /export function (resolveOperativeSource|operativeSourceTextFor)\(/.test(read(f)));
     expect(definers).toEqual(["lib/contract-model/compiler/candidate-span.ts"]);

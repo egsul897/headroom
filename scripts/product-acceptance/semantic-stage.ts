@@ -20,8 +20,48 @@ import type { IRRule } from "../../lib/contract-model/ir/types";
 import type { CorpusPackage } from "./corpus";
 import type { DeterministicStages } from "./stages";
 import { Ledger, candidateFor } from "./auditor";
-import { mockInventoryCaller, mockSemanticClient, MOCK_MODEL, ws, type SubmissionPlan } from "./mocks";
+import { mockInventoryCaller, mockSemanticClient, MOCK_MODEL, ws, textCarries, type SubmissionPlan } from "./mocks";
 import { faithfulPlan, adversarialCases, mutate, type CandidateSpec, type AdversarialCase } from "./semantic-plan";
+import type { OperativeContractState } from "../../lib/contract-model/compiler/amendment/types";
+
+/**
+ * Package-level operative state for semantic/certification.
+ *
+ * `runDeterministicStages` stores the primary (base-document) instrument at the
+ * bare as-of key and every other instrument at `${asOf}::${documentId}`.
+ * Semantic/certification must see ALL instruments — otherwise an indenture
+ * amendment (e.g. package B 4.09(c) $50m→$75m) never reaches Pass B and the
+ * superseded base text is compiled. Provisions are deduped by provisionKey so
+ * re-merge cannot recreate the IPV-04 EMPTY_OPERATIVE_TEXT double-splice.
+ */
+function packageOperativeState(s: DeterministicStages, asOfDate: string): OperativeContractState | null {
+  const primary = s.operativeStates.get(asOfDate) ?? null;
+  const extras = [...s.operativeStates.entries()]
+    .filter(([key]) => key.startsWith(`${asOfDate}::`))
+    .map(([, state]) => state);
+  const parts = [primary, ...extras].filter((x): x is OperativeContractState => x !== null);
+  if (parts.length === 0) return null;
+  if (parts.length === 1) return parts[0]!;
+  const statusRank = (status: OperativeContractState["status"]): number =>
+    status === "OPERATIVE_STATE_CONFLICTED" ? 3 : status === "OPERATIVE_STATE_REVIEW_REQUIRED" ? 2 : status === "OPERATIVE_STATE_PARTIAL" ? 1 : 0;
+  const worst = parts.reduce((a, b) => (statusRank(b.status) > statusRank(a.status) ? b : a));
+  const seen = new Set<string>();
+  const provisions: OperativeContractState["provisions"] = [];
+  for (const part of parts) {
+    for (const p of part.provisions) {
+      if (seen.has(p.provisionKey)) continue;
+      seen.add(p.provisionKey);
+      provisions.push(p);
+    }
+  }
+  return {
+    ...parts[0]!,
+    status: worst.status,
+    summary: worst.summary,
+    provisions,
+    unattachedEffects: parts.flatMap((e) => e.unattachedEffects),
+  };
+}
 
 export interface SemanticRunResult {
   specs: CandidateSpec[];
@@ -137,7 +177,7 @@ export async function runSemanticStage(pkg: CorpusPackage, s: DeterministicStage
   const candidates = specs.map((spec) => toCandidate(index, spec));
   const docs = pkg.documents.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text }));
   const population = sealDiscoveryPopulation({ documents: docs, discoveryVersion: "manifest-declared-population.v1", candidates, scope: "COMPLETE" });
-  const input: CovenantMapPackageInput = { companyId: m.companyId, packageKey: `${pkg.packageId}-package`, instrumentKey, asOfDate, documents: docs, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOfDate) ?? null, amendmentEffects: s.amendment?.effects ?? [], supersessionIndex: s.supersessionIndexes.get(asOfDate), candidates, discoveryRunVersion: "manifest-declared-population.v1", discoveryPopulation: population };
+  const input: CovenantMapPackageInput = { companyId: m.companyId, packageKey: `${pkg.packageId}-package`, instrumentKey, asOfDate, documents: docs, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: packageOperativeState(s, asOfDate), amendmentEffects: s.amendment?.effects ?? [], supersessionIndex: s.supersessionIndexes.get(asOfDate), candidates, discoveryRunVersion: "manifest-declared-population.v1", discoveryPopulation: population };
   const plans = new Map(specs.map((spec) => [spec.key, { probe: spec.ownText.trim().slice(0, 600), altProbe: spec.covenants.find((c) => c.operativeTextDocumentId)?.mustContain[0], sectionRef: spec.sectionRef, plan: faithfulPlan(index, m, spec) }] as const));
   const mockCalls = { inventory: 0, passB: 0, verifier: 0 };
   const promptChars: SemanticRunResult["promptChars"] = { inventory: [], passB: [], verifier: [] };
@@ -208,10 +248,30 @@ export function auditSemantic(pkg: CorpusPackage, s: DeterministicStages, r: Sem
     }
     // operative-text integrity: a candidate's operative text must not carry text the manifest says is superseded/deleted at this as-of
     const runAsOf = m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
-    const staleHits = m.operativeState.exact.filter((e) => e.asOfDate === runAsOf && e.documentId === spec.documentId && e.status !== "CURRENT" && (e.sectionRef === spec.sectionRef || e.sectionRef.startsWith(spec.sectionRef + "("))).flatMap((e) => e.mustNotContain.filter((t) => ws(res.input?.operativeSourceText ?? "").includes(ws(t))).map((t) => `${e.sectionRef} ${e.status}: "${t}"`));
+    const staleHits = m.operativeState.exact.filter((e) => e.asOfDate === runAsOf && e.documentId === spec.documentId && e.status !== "CURRENT" && (e.sectionRef === spec.sectionRef || e.sectionRef.startsWith(spec.sectionRef + "("))).flatMap((e) => e.mustNotContain.filter((t) => textCarries(res.input?.operativeSourceText ?? "", t)).map((t) => `${e.sectionRef} ${e.status}: "${t}"`));
     if (staleHits.length > 0) L.fail("SEMANTIC_COMPOSITION", MODE, "INVARIANT", `operative-text:${spec.key}`, { severity: "WRONG_OPERATIVE_SOURCE", outcomeClass: "INCORRECT_RESULT", expected: `operative text as of ${runAsOf} excludes superseded/deleted text`, actual: `operative text handed to Pass B still contains ${staleHits.join("; ")}; lineage ${res.input?.operativeLineage ? res.input.operativeLineage.operativeStatus : "null"}; Layer-1 source findings: ${(res.verification?.findings ?? []).filter((f) => f.severity === "MATERIAL").map((f) => `${f.findingType}:${f.sourceEvidence.slice(0, 20)}`).join(", ") || "none"}`, repro: `buildCandidateCompilerInput(candidate ${spec.sectionRef}, operativeState@${runAsOf}).operativeSourceText`, deterministic: true });
     else if (m.operativeState.exact.some((e) => e.asOfDate === runAsOf && e.status !== "CURRENT" && e.sectionRef.startsWith(spec.sectionRef))) L.pass("SEMANTIC_COMPOSITION", MODE, "INVARIANT", `operative-text:${spec.key}`, `operative text excludes superseded/deleted text (lineage ${res.input?.operativeLineage?.operativeStatus ?? "null"})`);
-    if (!comp) { L.fail("SEMANTIC_COMPOSITION", MODE, "EXACT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: res.failure?.kind === "PROVIDER" ? "TEST_INFRASTRUCTURE_FAILURE" : "CORRECT_FAIL_CLOSED", expected: "compiled IR for the faithful submission", actual: `no compilation: ${res.failure?.kind ?? res.outcome}: ${res.failure?.detail.slice(0, 240) ?? ""}`, repro: `faithful submission for ${spec.key}`, deterministic: true }); continue; }
+    if (!comp) {
+      // IPV-16 / INV-16b: parent section text is withheld when a descendant carries an
+      // unclassified override — correct fail-closed, not a missing compilation.
+      // EMPTY_OPERATIVE_TEXT often arrives with null lineage; look at the operative
+      // state for an UNCLASSIFIED_OVERRIDE attached to this section or a descendant.
+      const state = s.operativeStates.get(runAsOf);
+      const overrideOnSection = !!state?.provisions.some((p) =>
+        !!p.sectionRef
+        && (p.sectionRef === spec.sectionRef || p.sectionRef.startsWith(spec.sectionRef + "(") || spec.sectionRef.startsWith(p.sectionRef + "("))
+        && (p.unresolvedIssues ?? []).some((issue) => /UNCLASSIFIED_OVERRIDE|side[- ]letter/i.test(issue)),
+      );
+      const overrideWithhold =
+        /UNCLASSIFIED_OVERRIDE|side[- ]letter/i.test(`${res.failure?.kind ?? ""} ${res.failure?.detail ?? ""} ${JSON.stringify(res.input?.operativeLineage ?? "")}`)
+        || (res.failure?.kind === "EMPTY_OPERATIVE_TEXT" && overrideOnSection);
+      if (overrideWithhold) {
+        L.pass("SEMANTIC_COMPOSITION", MODE, "EXACT", ref, `fail-closed: operative text withheld while an unclassified override governs a descendant (${res.failure?.kind ?? res.outcome})`);
+        continue;
+      }
+      L.fail("SEMANTIC_COMPOSITION", MODE, "EXACT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: res.failure?.kind === "PROVIDER" ? "TEST_INFRASTRUCTURE_FAILURE" : "CORRECT_FAIL_CLOSED", expected: "compiled IR for the faithful submission", actual: `no compilation: ${res.failure?.kind ?? res.outcome}: ${res.failure?.detail.slice(0, 240) ?? ""}`, repro: `faithful submission for ${spec.key}`, deterministic: true });
+      continue;
+    }
     for (const c of spec.covenants) {
       const cref = `semantic:${c.id}`;
       const rules = comp.rules.filter((x) => x.sourceSectionRef === c.sectionRef && (c.role !== "GENERAL_PROHIBITION" ? x.posture === c.posture : x.posture === "PROHIBITION"));

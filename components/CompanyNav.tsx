@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
 import {
   AskIcon,
-  CapacityIcon,
+  BellIcon,
   CovenantsIcon,
   DocumentsIcon,
   EvidenceIcon,
@@ -15,24 +15,26 @@ import {
   OnboardingIcon,
   PositionIcon,
   SimulateIcon,
+  ToolsIcon,
 } from "@/components/home/icons";
 import { companyNavItems, isCompanyNavItemActive, type CompanyNavKey } from "@/lib/home/nav";
 
 const ICONS: Record<CompanyNavKey, () => ReactNode> = {
   home: HomeIcon,
-  position: PositionIcon,
-  covenants: CovenantsIcon,
-  capacity: CapacityIcon,
-  simulate: SimulateIcon,
-  ledger: LedgerIcon,
   documents: DocumentsIcon,
-  ask: AskIcon,
+  covenants: CovenantsIcon,
+  intelligence: ToolsIcon,
+  position: PositionIcon,
+  ledger: LedgerIcon,
+  simulate: SimulateIcon,
   evidence: EvidenceIcon,
+  ask: AskIcon,
+  alerts: BellIcon,
   onboarding: OnboardingIcon,
 };
 
 /**
- * Institutional company navigation matching the Headroom dashboard mockup IA.
+ * Institutional company navigation for the Headroom product workspace.
  */
 export function CompanyNav({ companyId, onboardingStatus }: { companyId: string; onboardingStatus: OnboardingStatus }) {
   const pathname = usePathname() ?? "";

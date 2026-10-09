@@ -1,6 +1,6 @@
 # Document A → Document B — next test design (post-durability)
 
-**Status:** DESIGN ONLY — do not claim generalization until executed after A2 live proof.
+**Status:** EXECUTED (live Neon) — see `a2-live-idempotency-docb.json`. Gibraltar precedent remains DISCOVERED_CANDIDATE; Chewy operative identity separate.
 
 ## Document A (knowledge source)
 

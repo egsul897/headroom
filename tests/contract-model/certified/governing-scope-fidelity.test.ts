@@ -117,7 +117,7 @@ describe("GS5 + §9-§12 entity-scope precedence: own actor language > governing
     const r = normalize(idxA, "9.2(a)", [rule({})]).rules[0]!;
     expect(r.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
     expect(r.entityScopeAudit).toMatchObject({ guardVersion: ENTITY_SCOPE_GUARD_VERSION, status: "SOURCE_SCOPE_DERIVED", precedence: "GOVERNING_SCOPE_SOURCE", safeToRely: true });
-    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v3");
+    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v4");
     expect(r.entityScopeAudit!.modelDiscrepancy).toMatchObject({ modelScope: ["BORROWER"], governingScope: ["BORROWER", "ANY_SUBSIDIARY"], relation: "MODEL_NARROWER" });
     expect(r.sufficiency).toBe("COMPLETE");
   });
@@ -230,7 +230,7 @@ describe("REF1-REF5 source references are source identity", () => {
     expect(eq.authoritativeRefs).toEqual(["§9.1", "Section 9.3(b)"]);
     const list = classifyEmittedReferences({ emitted: ["Section 9.1(a)", "Section 9.1(c)", "Section 9.1(d)"], operativeText: "subject to Sections 9.1(a), 9.1(c) and 9.1(d) hereof" });
     expect(list.classifications.every((c) => c.classification === "EXACT_SOURCE_REFERENCE")).toBe(true);
-    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v2");
+    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v3");
   });
   it("REF4 model descendant expansion is excluded and restored to the drafted whole reference; broadening is restored to the drafted sub-clause; an invented reference is excluded and limits the rule", () => {
     const n = normalize(idxA, "9.2(a)", [rule({ conditions: [condition92a(["Section 9.1(a)", "Section 9.1(b)"])], dependsOn: [{ relationshipType: "REQUIRES", targetRef: "Section 9.3", description: "" }] })]);
@@ -320,7 +320,7 @@ describe("L1-1..L1-3 Layer 1 understands typed dependency semantics", () => {
     expect(inv.items.filter((i) => i.kind === "CROSS_RULE_TARGET").map((i) => i.textValue)).toEqual(["9.1|ALL_SATISFIED|SOURCE_REFERENCE_RESOLVED"]);
     expect(inv.items.filter((i) => i.kind === "EVALUATION_BASIS").length).toBe(1);
     expect(inv.items.filter((i) => i.kind === "INHERITED_ATTRIBUTE").map((i) => i.textValue)).toEqual(["governingProhibition:@GOVERNING_SCOPE:article-group:9", "action:INCUR_DEBT@PARENT_SCOPE:9.2", "entityScope:BORROWER+ANY_SUBSIDIARY@GOVERNING_SCOPE:article-group:9"]);
-    expect(SOURCE_INVENTORY_ALGORITHM_VERSION).toBe("phase-3c-source-inventory.v3");
+    expect(SOURCE_INVENTORY_ALGORITHM_VERSION).toBe("phase-3c-source-inventory.v4");
     expect(src.items.filter((i) => i.kind === "SECTION_REFERENCE").map((i) => i.normalizedRef)).toEqual(["9.3(b)", "9.1"]);
     expect(buildSourceInventory("x", "under this Section 9.4 and clause (b) of this Section", TEST_DOCUMENT_ID, "9.4", null).items.filter((i) => i.kind === "SECTION_REFERENCE")).toEqual([]);
   });

@@ -1,15 +1,15 @@
 # Track A2 — Durable canonical knowledge proof (Cursor-first Postgres BYTEA)
 
-**Verdict:** `IMPLEMENTED` (code path) / `DURABILITY_NOT_YET_PROVEN` (live cross-agent)  
-**Status:** Awaiting authorized `document_byte_objects` migrate deploy + independent Agent B retrieve
+**Verdict:** `A2_LIVE_DURABILITY_PROVEN`  
+**Status:** Live Neon persist + fresh-process independent retrieve + hash verify complete
 
 ## SHAs
 
 | Field | Value |
 |---|---|
 | CKF foundation merge | PR #154 |
-| Blob durable path merge | PR #174 |
-| Postgres BYTEA implementation | this PR (`cursor/postgres-bytea-durable-store-0e3f`) |
+| Blob/durable path merge | PR #174 (`fa6c578a`) |
+| Main tip at live proof | `2338e9e09fc9a6435bcfa4a330c424dd240ffb4d` |
 
 No second registry was created. Legal non-promotion semantics unchanged.
 
@@ -19,60 +19,31 @@ No second registry was created. Legal non-promotion semantics unchanged.
 |---|---|---|
 | **Byte store (Cursor default)** | `lib/document-storage/postgres-bytea-provider.ts` | `DATABASE_URL` + migration `20261009013000_document_byte_objects` |
 | Byte store (optional) | `lib/document-storage/vercel-blob-provider.ts` | `KF_BYTE_STORE=vercel-blob` + `BLOB_READ_WRITE_TOKEN` |
-| Storage factory | `lib/document-storage/index.ts` | `DOCUMENT_STORAGE_BACKEND=postgres` or Blob token |
 | Canonical registry | Prisma `KnowledgeSource` | `DATABASE_URL` + `20261008220000_knowledge_factory_foundation` |
 | Pipeline / export / consumers | existing `lib/knowledge-factory/**` | n/a |
 
-**Rejected as durability substitutes:** `LocalFilesystemStorageProvider`, `.local-knowledge-corpus/`, committed metadata/hashes alone, temporary agent files, mocked providers, same-VM-only read-after-write.
+**Rejected as durability substitutes:** `LocalFilesystemStorageProvider`, `.local-knowledge-corpus/`, committed metadata/hashes alone, temporary agent files, mocked providers.
 
-## Architecture
-
-See:
-
-- `ADR-postgres-bytea-durable-store.md`
-- `postgres-bytea-cost-scale.md`
-- `a2-independent-proof-plan-postgres.md`
-
-`storageRef` format: `pgbytea:v1:<sha256-hex>`. Content-addressed; unique on `contentHash`.
-
-## Tests
-
-- `tests/document-storage/postgres-bytea-provider.test.ts` — store, idempotent reuse, P2002 race, missing/corrupt retrieve, delete best-effort
-- `tests/knowledge-factory/durable-store-postgres.test.ts` — persist without Blob, conflict, orphan cleanup, retrieve
-- `tests/knowledge-factory/durable-store-credentials.test.ts` — DATABASE_URL alone → `POSTGRES_BYTEA_DURABLE`
-- `tests/knowledge-factory/durable-store-safety.test.ts` — Blob-path safety with `KF_BYTE_STORE=vercel-blob`
-
-## Migration requirements (not deployed by this PR)
-
-```sql
--- prisma/migrations/20261009013000_document_byte_objects/migration.sql
-CREATE TABLE "document_byte_objects" ( ... "bytes" BYTEA NOT NULL ... );
-UNIQUE ("contentHash");
-```
-
-**Do not** run `prisma migrate deploy` without explicit authorization.
-
-## Intended authentic source
+## Live proof results (Document A — Gibraltar)
 
 | Field | Value |
 |---|---|
 | sourceId | `edgar:0001140361-26-003087:ef20064499_ex10-1.htm` |
-| Fixture | `tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm` |
-| Byte length | 2,266,666 |
+| DB id | `cmv0aqwg00002ndhsetpsslgx` |
+| storageRef | `pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a` |
+| bytes | 2,266,666 |
+| SHA-256 | `6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a` |
+| Migration | Already applied (`prisma migrate status`: up to date, 35 migrations) |
+| Fresh-process retrieve | `RETRIEVE_OK` |
 
-## Independent proof
+## Document B (Chewy) generalization
 
-Follow `a2-independent-proof-plan-postgres.md`:
+See `a2-live-idempotency-docb.json`. Separate identities/hashes/storageRefs; both `DISCOVERED_CANDIDATE`; Gibraltar does not override Chewy operative bytes.
 
-1. Authorized migrate deploy  
-2. Agent A: `npm run kf:durable-proof`  
-3. Agent B: `--phase=retrieve` only  
-4. Then `DURABILITY_PROVEN`  
-5. Then Gibraltar → Chewy issuer-disjoint reuse
+## Artifacts
 
-## Precise remaining gates
-
-1. Explicit authorization to apply `20261009013000_document_byte_objects` on Neon  
-2. Independent agent retrieve of identical original bytes  
-
-Blob token is **not** required for Cursor-first A2.
+- `a2-roundtrip-evidence.json`
+- `a2-independent-retrieve.json`
+- `a2-live-idempotency-docb.json`
+- `a2-live-proof-report.md`
+- `scripts/knowledge-factory/a2-live-idempotency-docb.ts`

@@ -184,11 +184,18 @@ describe("§52 context retrieval for the target after the dependency-boundary fi
     for (const leaf of leaves) { expect(leaf.type).toBe("DEFINITION_DEPENDENCY"); expect(leaf.excerptText).not.toMatch(/\b(?:Section|Article)\s+[\dIVX]/); }
     expect([...depth.entries()].filter(([id]) => items.get(id)!.type === "CROSS_REFERENCE").map(([, d]) => d).sort()).toEqual([1, 1, 2]);
   });
-  it("new: SUFFICIENT, no budget stop, the same 19 items, cross-reference depth 1, and explicit ownership stops at the two separately-owned referenced covenants", () => {
+  it("new: SUFFICIENT, no budget stop, prior items plus plural-resolved definitions, cross-reference depth 1, and explicit ownership stops at the two separately-owned referenced covenants", () => {
     const b = buildCovenantContextBundle({ candidate: stages.target, packageKey: PACKAGE_KEY, companyId: COMPANY_ID, instrumentKey: INSTRUMENT_KEY }, { ...stages.access, operativeState: null, semanticUnitOwnership: stages.owners });
     expect(b.sufficiencyState).toBe("SUFFICIENT");
     expect([...b.stopReasons]).toEqual([]);
-    expect(b.items).toHaveLength(old.items.length);
+    // IPV-09: "Subsidiaries" / "Wholly-Owned Subsidiaries" surface forms now retrieve the singular definitions
+    // (2 additional DEFINITION_DEPENDENCY items vs the frozen pre-plural 19-item bundle).
+    expect(b.items.length).toBeGreaterThanOrEqual(old.items.length);
+    const added = b.items
+      .filter((i) => !old.items.some((o: any) => o.type === i.type && o.normalizedRef === i.normalizedRef))
+      .map((i) => `${i.type}:${i.normalizedRef}`)
+      .sort();
+    expect(added).toEqual(["DEFINITION_DEPENDENCY:Subsidiary", "DEFINITION_DEPENDENCY:Wholly-Owned Subsidiary"]);
     expect(b.performance.maxCrossReferenceDepthReached).toBe(1);
     const stops = (b.retrievalStops ?? []).map((s) => [s.reason, s.targetSectionRef, s.owningCandidateRefs.length]);
     expect(stops).toEqual([["STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", "7.3(g)", 1], ["STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", "7.1", 2]]);

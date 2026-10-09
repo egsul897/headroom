@@ -8,6 +8,7 @@ import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
 } from "@/lib/product/customer-intelligence/load";
+import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
 export const metadata = { title: "Headroom — Documents" };
 
@@ -126,10 +127,28 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <div className="row-value">
                 {intel ? (
                   <>
-                    <Chip tone={intel.analysisOk ? "pass" : "trip"}>
-                      {intel.analysisOk ? "ANALYZED" : "FAILED"}
+                    <Chip
+                      tone={
+                        intel.analysisOk
+                          ? "pass"
+                          : intel.processingStatus === "STAGED_PENDING_ANALYSIS" ||
+                              intel.processingStatus === "ANALYZING"
+                            ? "navy"
+                            : "trip"
+                      }
+                    >
+                      {intel.analysisOk
+                        ? "ANALYZED"
+                        : intel.processingStatus === "STAGED_PENDING_ANALYSIS"
+                          ? "STAGED"
+                          : intel.processingStatus === "ANALYZING"
+                            ? "ANALYZING"
+                            : intel.processingStatus === "FAILED_RETRYABLE"
+                              ? "RETRYABLE"
+                              : "FAILED"}
                     </Chip>{" "}
                     {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
+                    {intel.processingStatus ? ` · ${intel.processingStatus}` : ""}
                   </>
                 ) : (
                   <Chip tone="idle">Not yet analyzed</Chip>
@@ -138,8 +157,9 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
             </div>
             {intel && !intel.analysisOk && (
               <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
-                Analysis did not succeed
-                {intel.analysisError ? `: ${intel.analysisError}` : "."} Do not treat this document as analyzed.
+                {intel.processingStatus === "STAGED_PENDING_ANALYSIS" || intel.processingStatus === "ANALYZING"
+                  ? "Durable bytes are saved; analysis is in progress or queued. Refresh shortly."
+                  : `Analysis did not succeed${intel.analysisError ? `: ${intel.analysisError}` : "."} Original bytes are preserved — retry without re-upload.`}
               </div>
             )}
             <div className="button-row" style={{ marginTop: 12 }}>
@@ -152,6 +172,13 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <Link className="button" href={`/${companyId}/covenants`}>
                 View covenants
               </Link>
+              {intel && !intel.analysisOk && intel.storageRef && (
+                <form action={retryCustomerAnalysisAction.bind(null, companyId, d.id)}>
+                  <button className="button" type="submit">
+                    Retry analysis
+                  </button>
+                </form>
+              )}
             </div>
           </Card>
         );

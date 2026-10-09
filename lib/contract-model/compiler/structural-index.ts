@@ -574,7 +574,16 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       const ownIndex = sameDocumentDefs.findIndex((d) => d.charStart === def.charStart && d.normalizedTerm === def.normalizedTerm);
       // A NESTED declaration (one inside another definition's sentence) never ends the enclosing definition's span.
       const next = ownIndex >= 0 ? sameDocumentDefs.slice(ownIndex + 1).find((d) => !d.nested) : undefined;
-      const spanEnd = next ? next.charStart : doc.text.length;
+      // The next definition is not the only boundary. The last definition in a
+      // definitions block would otherwise run to the end of the document and
+      // swallow later covenants (IPV-12/IPV-21). A later covenant that names
+      // this term then looks like a back-edge, so a diamond is reported as a
+      // cycle. Stop at the next article or section heading.
+      const nextHeading = allNodesSorted.find(
+        (n) => n.documentId === def.documentId && n.charStart > def.charStart && (n.nodeType === "ARTICLE" || n.nodeType === "SECTION"),
+      );
+      const structureEnd = nextHeading ? nextHeading.charStart : doc.text.length;
+      const spanEnd = Math.min(next ? next.charStart : doc.text.length, structureEnd);
       return doc.text.slice(def.charStart, spanEnd);
     },
     allDefinitions: () => [...definitions],

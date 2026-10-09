@@ -58,7 +58,10 @@ export interface DashboardClientProps {
   maturitiesQuery: MaturitiesQuery;
 }
 
-const FIELD_DEFS: { key: keyof FinancialsInput; label: string; suffix: string }[] = [
+/** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
+type EditableFinancialKey = Exclude<keyof FinancialsInput, "totalAssets" | "totalDebt" | "securedDebt">;
+
+const FIELD_DEFS: { key: EditableFinancialKey; label: string; suffix: string }[] = [
   { key: "ebitda", label: "Consolidated EBITDA (covenant, est.)", suffix: "$M" },
   { key: "cash", label: "Unrestricted cash", suffix: "$M" },
   { key: "interestExpense", label: "Interest expense (LTM)", suffix: "$M" },

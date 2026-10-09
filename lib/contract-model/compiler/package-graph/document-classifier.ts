@@ -87,7 +87,10 @@ const RULES: ClassificationRule[] = [
   // no "No. N") mirrors the same ordinal convention SUPPLEMENTAL_INDENTURE
   // already recognizes above - a generalized drafting-style variant, not
   // evidence-specific.
-  { type: "AMENDMENT", patterns: [/\bamendment\s+(no\.?|number)\s*\d+/i, /^\s*amendment\b/im, /\bthis\s+amendment\b/i, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+amendment\b/im, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+omnibus\s+amendment\b/im] },
+  // IPV-16: lender CONSENT / waiver captions ("CONSENT dated as of…",
+  // "The Required Lenders hereby consent") are amendment-shaped overrides,
+  // never a fresh Credit Agreement merely because the body names one.
+  { type: "AMENDMENT", patterns: [/\bamendment\s+(no\.?|number)\s*\d+/i, /^\s*amendment\b/im, /\bthis\s+amendment\b/i, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+amendment\b/im, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+omnibus\s+amendment\b/im, /^\s*consent\b/im, /\b(?:required\s+)?lenders?\s+hereby\s+consent\b/i, /^\s*waiver\b/im] },
   { type: "INDENTURE", patterns: [/\bindenture\b/i] },
   { type: "CREDIT_AGREEMENT", patterns: [/\bcredit\s+agreement\b/i, /\bloan\s+agreement\b/i] },
 ];

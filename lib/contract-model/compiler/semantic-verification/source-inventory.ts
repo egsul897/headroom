@@ -39,7 +39,7 @@ import { AMOUNT_RE, parseScaledAmount } from "./amount-parser";
 // SECTION_REFERENCE items (source-reference-fidelity.ts's deterministic scan), so Layer 1 can ask whether every stated
 // cross-reference is represented by a typed dependency or cross-rule target - and whether the IR references a provision
 // the source never states.
-export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v3";
+export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v4";
 
 interface PatternDef {
   kind: SourceInventoryItemKind;
@@ -85,7 +85,10 @@ const PATTERNS: PatternDef[] = [
   ...CONDITION_SUSPICION_PATTERNS.map((p) => ({ kind: p.kind, re: p.re }) as PatternDef),
   { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding|with\s+the\s+exception\s+of)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
-  { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },
+  // IPV-02: "together with … pursuant to Section X" / "in an aggregate amount, together with"
+  // is the dominant shared-cap drafting form in leveraged credit agreements; omitting it let
+  // DROP_SHARED_CAPS submissions certify as independent baskets.
+  { kind: "SHARED_CAP_MARKER", re: /\b(?:together with|combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under)|aggregate amount,?\s+together with)\b/gi },
   { kind: "BUILDER_SIGNAL", re: /\b(?:cumulative(?:ly)?|builder|Retained (?:Excess )?Cash Flow|Available Amount)\b/gi },
   { kind: "RECLASSIFICATION_SIGNAL", re: /\breclassif(?:y|ied|ication)|redesignat(?:e|ed|ion)\b/gi },
   { kind: "ENTITY_SCOPE_TERM", re: /\b(?:Restricted Subsidiary|Restricted Subsidiaries|Unrestricted Subsidiary|Unrestricted Subsidiaries|Borrower|Guarantor|Loan Part(?:y|ies)|domestic subsidiary|foreign subsidiary)\b/gi },

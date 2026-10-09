@@ -361,7 +361,13 @@ describe("no re-verification inside Phase 4 (§7)", () => {
 
 describe("N. BYPASS: product surfaces cannot reach the raw runtime around the boundary (§17)", () => {
   const PRODUCT_ROOTS = ["app", "components", "lib"];
-  const EXEMPT = [/^lib\/contract-model\/runtime\//, /^lib\/contract-model\/verification-envelope\//, /^lib\/contract-model\/verified-execution\.ts$/];
+  const EXEMPT = [
+    /^lib\/contract-model\/runtime\//,
+    /^lib\/contract-model\/verification-envelope\//,
+    /^lib\/contract-model\/verified-execution\.ts$/,
+    // Product-facing North-Star persistence/selector/ledger bridge (stores only; not 4A/4D execution).
+    /^lib\/contract-model\/north-star-bridge\.ts$/,
+  ];
   const RAW_RUNTIME = /contract-model\/runtime(\/|$)/;
   const walk = (dir: string, out: string[] = []): string[] => {
     if (!fs.existsSync(dir)) return out;

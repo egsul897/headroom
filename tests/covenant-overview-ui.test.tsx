@@ -31,7 +31,7 @@ describe("CovenantOverviewView - Coherent (a modeled, binding capacity row)", ()
   it("never renders a raw FormulaType enum name as capacity text, and never substitutes a fabricated dollar amount for a REVIEW_REQUIRED/NOT_TESTED row", async () => {
     const overview = await getCovenantOverview("coherent");
     const html = renderToStaticMarkup(<CovenantOverviewView overview={overview} />);
-    expect(html).not.toMatch(/>(FLAT_AMOUNT|FLAT_NET_OF_DEBT|GREATER_OF_FLAT_OR_PCT_EBITDA|LEVERAGE_RATIO_ROOM|COVERAGE_RATIO_ROOM|BUILDER_BASKET|RATIO_GATE)</);
+    expect(html).not.toMatch(/>(FLAT_AMOUNT|FLAT_NET_OF_DEBT|GREATER_OF_FLAT_OR_PCT_EBITDA|GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS|LEVERAGE_RATIO_ROOM|COVERAGE_RATIO_ROOM|BUILDER_BASKET|RATIO_GATE)</);
     for (const fam of overview.covenantFamilies) {
       for (const row of fam.rows) {
         if (row.status === "REVIEW_REQUIRED" || row.status === "NOT_TESTED") {

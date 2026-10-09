@@ -221,10 +221,23 @@ describe("F-7A §19 D - chapeau + 20 child clauses", () => {
   it("rules from every shard stitch into 20 rules with ownership-derived ids, every child value present, and the chapeau item credited exactly once", () => {
     const results = plan.shards.map((s) => {
       const comp = emitRulesForShard(corpus, plan, s, "cand:6.04");
-      // the chapeau's own shard represents the chapeau condition on its first rule (or as a disposition when it owns no clause)
+      // IPV-03: CONDITION-role chapeau must be consumed by a conditions[] node, never bare rule lineage.
       if (s.shardId === plan.unitOwnerShard[plan.itemOwnerUnit["inv-item:chapeau"]!]) {
-        if (comp.rules[0]) comp.rules[0].inventoryItemIds = [...(comp.rules[0].inventoryItemIds ?? []), "inv-item:chapeau"];
-        else comp.inventoryDispositions.push({ inventoryItemId: "inv-item:chapeau", disposition: "INTENTIONALLY_NON_COMPUTATIONAL", note: "chapeau condition" });
+        if (comp.rules[0]) {
+          comp.rules[0].conditions = [
+            {
+              conditionId: `${comp.rules[0].ruleId}:cond-chapeau`,
+              conditionType: "NO_DEFAULT",
+              expression: null,
+              referencesDefinitionId: null,
+              description: "so long as no Default has occurred and is continuing",
+              provenance: null,
+              inventoryItemIds: ["inv-item:chapeau"],
+            } as never,
+          ];
+        } else {
+          comp.inventoryDispositions.push({ inventoryItemId: "inv-item:chapeau", disposition: "INTENTIONALLY_NON_COMPUTATIONAL", note: "chapeau condition" });
+        }
       }
       return ok(s.shardId, s.shardHash, comp);
     });

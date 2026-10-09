@@ -130,7 +130,13 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
       const inlineExceptions = inlineExcept ? [{ description: inlineExcept[1]!.slice(0, 160), permissionRef: null, conditions: c.crossReferences.filter((x) => x.sectionRef).map((x) => ({ conditionType: "OTHER_RULE_SATISFIED", expression: null, referencesDefinitionId: null, referencesRuleTargets: [{ targetRef: `Section ${x.sectionRef}` }], targetCombination: "ALL_SATISFIED", description: `permitted under Section ${x.sectionRef}`, citation: c.sectionRef, excerpt: inlineExcept[1]!.slice(0, 160), inventoryItemIds: inventoryIdsFor(user, inlineExcept[1]!) })), citation: c.sectionRef, excerpt: `except ${inlineExcept[1]!}`.slice(0, 200), inventoryItemIds: inventoryIdsFor(user, inlineExcept[1]!) }] : [];
       const exceptions = [...siblingExceptions, ...inlineExceptions];
       const conditions = c.conditions.filter((k) => k.kind !== "SHARED_CAP").map((k) => conditionFor(k, c, user));
-      const dependsOn = c.crossReferences.filter((x) => x.sectionRef).map((x) => ({ relationshipType: "REQUIRES", targetRef: `Section ${x.sectionRef}`, description: `cross-reference to ${x.sectionRef}`, inventoryItemIds: inventoryIdsFor(user, `Section ${x.sectionRef}`) }));
+      // IPV-15: a cross-reference that exists only inside a retrieved definition (note names the
+      // definition / "shared usage through") is not stated in the clause's operative text. Emitting
+      // it as dependsOn triggers MODEL_INVENTED_REFERENCE under SA-1. Represent the shared pool via
+      // sharedCapacities (below), not as an invented operative dependsOn.
+      const dependsOn = c.crossReferences
+        .filter((x) => x.sectionRef && !/definition|shared usage through/i.test(x.note ?? ""))
+        .map((x) => ({ relationshipType: "REQUIRES", targetRef: `Section ${x.sectionRef}`, description: `cross-reference to ${x.sectionRef}`, inventoryItemIds: inventoryIdsFor(user, `Section ${x.sectionRef}`) }));
       const ruleType = isProhibition && (c.value as { kind?: string } | undefined)?.kind === "MONEY" ? "QUANTITATIVE_RESTRICTION" : RULE_TYPE_BY_ROLE[c.role] ?? "QUALITATIVE_OBLIGATION";
       return { localRef: `r${i + 1}`, sourceSectionRef: c.sectionRef, covenantFamily: c.family, ruleType, posture: c.posture, action: ACTION_BY_FAMILY[c.family] ?? null, entityScope: c.entityScope ?? ["BORROWER"], entityScopeExcluded: [], capacityExpression: capacityFor(c, ids, excerpt), conditions, exceptions, dependsOn, sufficiency: sufficiencyFor(c), sufficiencyReasons: sufficiencyFor(c) === "COMPLETE" ? [] : [`${c.unresolvedTerms?.join(", ") ?? ""}${c.truncated ? " source truncated" : ""}`.trim()], citation: c.sectionRef, excerpt, inventoryItemIds: ids };
     });
@@ -154,7 +160,24 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
         if (firstCond) firstCond.inventoryItemIds = [...new Set([...(firstCond.inventoryItemIds ?? []), ...ids])];
       }
     }
-    const sharedCapacities = m.sharedCaps.filter((s) => s.participants.every((p) => covs.some((c) => c.sectionRef === p || c.sectionRef.startsWith(p)))).map((s, i) => ({ localRef: `sc${i + 1}`, description: s.where, capExpression: { kind: "MONEY", amount: (s.cap as { amount: number }).amount, currency: (s.cap as { currency: string }).currency, citation: spec.sectionRef, excerpt: s.textContains, inventoryItemIds: inventoryIdsFor(user, s.textContains) }, memberRefs: s.participants.map((p) => refOf.get(p) ?? refOf.get([...refOf.keys()].find((k) => k.startsWith(p)) ?? "") ?? "").filter(Boolean), citation: spec.sectionRef, excerpt: s.textContains, inventoryItemIds: inventoryIdsFor(user, s.textContains) }));
+    // IPV-15: include a shared cap when any participant is in this candidate (definition-mediated
+    // pools span sections compiled separately). Member refs are only the local rules; BUILDER caps
+    // reference the formula term rather than inventing a sibling dependsOn.
+    const sharedCapacities = m.sharedCaps
+      .filter((s) => s.participants.some((p) => covs.some((c) => c.sectionRef === p || c.sectionRef.startsWith(p))))
+      .map((s, i) => {
+        const ids = inventoryIdsFor(user, s.textContains);
+        const cap = s.cap as { kind?: string; amount?: number; currency?: string; formulaTerm?: string };
+        const localMembers = s.participants
+          .map((p) => refOf.get(p) ?? refOf.get([...refOf.keys()].find((k) => k.startsWith(p)) ?? "") ?? "")
+          .filter(Boolean);
+        const capExpression =
+          cap.kind === "BUILDER" && cap.formulaTerm
+            ? termRef(String(cap.formulaTerm), "MONEY", ids, s.textContains, spec.sectionRef)
+            : { kind: "MONEY", amount: Number(cap.amount ?? 0), currency: String(cap.currency ?? "USD"), citation: spec.sectionRef, excerpt: s.textContains, inventoryItemIds: ids };
+        return { localRef: `sc${i + 1}`, description: s.where, capExpression, memberRefs: localMembers, citation: spec.sectionRef, excerpt: s.textContains, inventoryItemIds: ids };
+      })
+      .filter((s) => s.memberRefs.length > 0);
     // a cooperative model dispositions the non-quantitative items it did not consume; items carrying values are left to the deterministic check
     const consumed = new Set<string>(JSON.stringify({ rules, sharedCapacities }).match(/inv-item:[0-9a-f]+/g) ?? []);
     const valued = new Set(inventoryIdsWithValues(user));

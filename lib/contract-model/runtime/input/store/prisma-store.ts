@@ -15,6 +15,28 @@ import type { FinancialInput, FinancialSnapshot } from "../types";
 import type { AppendSnapshotRequest, ApprovalTransition, StoreEvent, WriteResult } from "./types";
 import { InMemoryApprovedSnapshotStore } from "./memory-store";
 import { cloneStoreEvent, materializeFromEvents } from "./write";
+import { decodeLocatorFromNote } from "./certificate/map-fact";
+
+function locatorJsonForFact(
+  inp: FinancialInput,
+  snap: FinancialSnapshot,
+): Prisma.InputJsonValue {
+  const fromNote = decodeLocatorFromNote(inp.note);
+  if (fromNote) {
+    return {
+      page: fromNote.page ?? null,
+      section: fromNote.section ?? null,
+      table: fromNote.table ?? null,
+      row: fromNote.row ?? null,
+      note: fromNote.note ?? null,
+      inputKey: inp.identity.key,
+    };
+  }
+  return {
+    note: snap.provenance.note ?? null,
+    inputKey: inp.identity.key,
+  };
+}
 
 type Ns4Db = {
   contractInputSnapshot: PrismaClient["contractInputSnapshot"];
@@ -192,10 +214,7 @@ async function rematerializeCompany(db: Ns4Db, companyId: string, events: readon
                 {
                   sourceDocumentId: snap.provenance.source || null,
                   sourceVersionHash: snap.provenance.sourceVersion,
-                  locatorJson: {
-                    note: snap.provenance.note ?? null,
-                    inputKey: inp.identity.key,
-                  } as Prisma.InputJsonValue,
+                  locatorJson: locatorJsonForFact(inp, snap),
                 },
               ],
             },

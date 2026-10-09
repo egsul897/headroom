@@ -8,6 +8,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
+import { loadApprovedSnapshotsFromPrisma, loadLedgerUsagesFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { listCustomerDocumentIntelligence } from "./load";
 import { loadPhase3TrustedRulebookStatus } from "./phase3-trusted-rulebook";
 
@@ -17,7 +18,11 @@ export type CapacityReadinessStatus =
   | "NO_FINANCIAL_SNAPSHOT"
   | "NO_DOCUMENTS";
 
-/** Provenance of numerical capacity figures — never upgraded by trusted semantic units alone. */
+/**
+ * Provenance of numerical capacity figures — never upgraded by trusted semantic units alone.
+ * LEGACY_ENGINE / NOT_CERTIFIED_4E: counsel-compiled Prisma Permissions + covenant-engine
+ * against dated FinancialState — not Phase 4B APPROVED snapshots or Phase 4E paths.
+ */
 export type CapacityAuthority = "LEGACY_ENGINE" | "NOT_CERTIFIED_4E" | "DISCOVERY_ONLY" | "NONE";
 
 export interface CapacityReadiness {
@@ -36,6 +41,10 @@ export interface CapacityReadiness {
   hasFinancialSnapshot: boolean;
   /** NS-4 APPROVED ContractInput snapshots (0 when table empty / unavailable). */
   ns4ApprovedSnapshotCount: number;
+  /** North-Star Phase 4B APPROVED snapshot count (via bridge; may equal ns4 when wired). */
+  approvedNorthStarSnapshotCount: number;
+  /** Active (non-SUPERSEDED) Phase 4C contract ledger usages. */
+  contractLedgerActiveCount: number;
   /**
    * Phase 3 VERIFIED SemanticTruthRecord count (getTrustedSemanticTruth gate).
    * Present when eligible trusted outputs exist — not package CERTIFIED / not 4E.
@@ -55,6 +64,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     provisionCount,
     financialResolution,
     ns4ApprovedSnapshotCount,
+    approvedSnaps,
+    contractLedger,
     phase3,
   ] = await Promise.all([
     listCustomerDocumentIntelligence(companyId),
@@ -68,6 +79,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     prisma.contractInputSnapshot
       .count({ where: { companyId, status: "APPROVED" } })
       .catch(() => 0),
+    loadApprovedSnapshotsFromPrisma(prisma, companyId).catch(() => []),
+    loadLedgerUsagesFromPrisma(prisma, companyId).catch(() => []),
     loadPhase3TrustedRulebookStatus(companyId).catch(() => null),
   ]);
 
@@ -77,6 +90,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   const hasExecutableModel = permissionCount > 0 || provisionCount > 0;
   const phase3TrustedUnitCount = phase3?.trustedUnitCount ?? 0;
   const phase3TrustedRuleCount = phase3?.trustedRuleCount ?? 0;
+  const approvedNorthStarSnapshotCount = approvedSnaps.length;
+  const contractLedgerActiveCount = contractLedger.filter((u) => u.status !== "SUPERSEDED").length;
 
   const blockers: string[] = [];
   if (documents.length === 0) blockers.push("No financing documents uploaded in this workspace.");
@@ -90,11 +105,11 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   }
   if (!hasFinancialSnapshot) {
     blockers.push(
-      "No approved FinancialState snapshot — ratio/grower tests and engine capacity cannot be evaluated.",
+      "No dated FinancialState on the legacy path — ratio/grower tests and engine capacity cannot be evaluated (Phase 4B APPROVED snapshots are a separate North-Star store).",
     );
   }
-  // Missing Phase 3 VERIFIED units is reported in the headline note, not as a
-  // capacity blocker — the legacy executable path may still run honestly.
+  // Missing Phase 3 VERIFIED units / NS-4 APPROVED snapshots are reported in the
+  // headline note, not as capacity blockers — the legacy executable path may still run honestly.
 
   let status: CapacityReadinessStatus;
   if (documents.length === 0 && !hasExecutableModel) status = "NO_DOCUMENTS";
@@ -103,6 +118,7 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   else if (!hasFinancialSnapshot) status = "NO_FINANCIAL_SNAPSHOT";
   else status = "EXECUTABLE_PATH_AVAILABLE";
 
+  // Engine capacity requires both an executable model and a financial snapshot.
   const canEvaluateExecutableCapacity = hasExecutableModel && hasFinancialSnapshot;
   const capacityAuthority: CapacityAuthority = canEvaluateExecutableCapacity
     ? "LEGACY_ENGINE"
@@ -113,8 +129,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
         : "NONE";
 
   const ns4Note =
-    ns4ApprovedSnapshotCount > 0
-      ? ` NS-4 APPROVED financial snapshots on file: ${ns4ApprovedSnapshotCount}.`
+    ns4ApprovedSnapshotCount > 0 || approvedNorthStarSnapshotCount > 0
+      ? ` NS-4 / North-Star APPROVED financial snapshots on file: ${Math.max(ns4ApprovedSnapshotCount, approvedNorthStarSnapshotCount)}.`
       : " No NS-4 APPROVED financial snapshot yet.";
   const phase3Note =
     phase3TrustedUnitCount > 0
@@ -124,9 +140,13 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     unverifiedPermissionCount > 0
       ? ` Promoted Permissions include ${unverifiedPermissionCount} UNVERIFIED row(s) (legacy path · not Phase 3 CERTIFIED).`
       : "";
+  const ledgerNote =
+    contractLedgerActiveCount > 0
+      ? ` Active contract-ledger usages: ${contractLedgerActiveCount}.`
+      : "";
 
   const headline = canEvaluateExecutableCapacity
-    ? `Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=${capacityAuthority} · not Phase 3 package CERTIFIED · not certified Phase 4E).${ns4Note}${phase3Note}${unverifiedNote}`
+    ? `Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=${capacityAuthority} · not Phase 3 package CERTIFIED · not certified Phase 4E).${ns4Note}${phase3Note}${unverifiedNote}${ledgerNote}`
     : status === "DISCOVERY_ONLY"
       ? `AI covenant interpretations are available for counsel review. Numerical capacity stays blank until an executable rulebook and financial inputs exist.${phase3Note}`
       : status === "NO_FINANCIAL_SNAPSHOT"
@@ -150,6 +170,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     provisionCount,
     hasFinancialSnapshot,
     ns4ApprovedSnapshotCount,
+    approvedNorthStarSnapshotCount,
+    contractLedgerActiveCount,
     phase3TrustedUnitCount,
     phase3TrustedRuleCount,
     headline,

@@ -183,12 +183,101 @@ async function runCoherentPath(): Promise<PackageLegalPathResult> {
   };
 }
 
+/**
+ * Generic workspace path: challenge AI covenant summaries for any company.
+ * Never claims EXECUTABLE_VERIFIED without IR.
+ */
+async function runWorkspaceSummaryPath(companyId: string): Promise<PackageLegalPathResult> {
+  const { summarizeFromStoredMetadata } = await import("../covenant-intelligence/summarize");
+  const pathExecuted = [
+    "knowledgeSource/covenantSummary",
+    "challenge-stage",
+    "verified-execution:SKIPPED_NO_IR_PACKAGE",
+  ];
+  const rows = await prisma.knowledgeSource.findMany({
+    where: { companyId, NOT: { provenance: "workspace-meta" } },
+    take: 40,
+  });
+  const conclusions: LegalConclusion[] = [];
+  const unresolvedTerms: string[] = [];
+  let covenantRows = 0;
+  for (const row of rows) {
+    const summary = summarizeFromStoredMetadata(row.metadata);
+    if (!summary?.items?.length) continue;
+    for (const item of summary.items.slice(0, 40)) {
+      covenantRows += 1;
+      for (const d of item.applicableDefinitions ?? []) {
+        if (d.resolved === false) unresolvedTerms.push(d.term);
+      }
+      const missing = [
+        ...(item.unresolvedQuestions ?? []),
+        ...((item.applicableDefinitions ?? [])
+          .filter((d) => d.resolved === false)
+          .map((d) => `definition:${d.term}`)),
+      ];
+      conclusions.push({
+        id: `${row.sourceId}:${item.sectionRef}`,
+        kind: missing.length ? "UNRESOLVED" : "STRUCTURE_SOURCE_BACKED",
+        statement: `${item.sectionRef} ${item.category}: ${item.plainEnglish.slice(0, 240)}`,
+        executability: "NOT_EXECUTABLE",
+        evidenceCitations: [row.sourceId, item.sectionRef, item.sourceCitation].filter(Boolean),
+        missingInputs: missing.slice(0, 8),
+        limitations: [
+          item.interpretationNote || "AI summary — DISCOVERED ≠ certified",
+          ...(item.conditions ?? []).slice(0, 2).map((c) => `condition:${c.slice(0, 80)}`),
+        ],
+        promotedToLegalTruth: 0,
+      });
+    }
+  }
+
+  const snap = await prisma.financialSnapshot.count({ where: { companyId } });
+  const challenges = challengeLegalConclusions({
+    companyId,
+    conclusions,
+    context: {
+      hasApprovedFinancialSnapshot: snap > 0,
+      hasUtilizationLedger: false,
+      hasVerifiedIrPackage: false,
+      outOfPackageAmendments: [],
+      unresolvedDefinitionTerms: [...new Set(unresolvedTerms)].slice(0, 20),
+      entityScopeUnresolved: conclusions.some((c) => /guarantor|subsidiar/i.test(c.statement)),
+      claimsStackingWithoutSharedCapAnalysis: conclusions.some((c) =>
+        /stack|aggregate|combine baskets/i.test(c.statement),
+      ),
+    },
+  });
+  const { surviving } = applyChallengeVerdict(conclusions, challenges);
+
+  return {
+    schemaVersion: "product.legal-intelligence-path.v1",
+    generatedAt: new Date().toISOString(),
+    companyId,
+    packageKey: `workspace:${companyId}`,
+    pathExecuted,
+    conclusions: surviving,
+    challenges,
+    survivingExecutableConclusions: surviving.filter(
+      (c) => c.executability === "EXECUTABLE_VERIFIED" || c.executability === "LEGACY_ENGINE",
+    ).length,
+    blockedReasons: [
+      ...new Set(challenges.filter((c) => c.severity === "BLOCKER").map((c) => c.statement)),
+    ],
+    metrics: {
+      covenantRowsExamined: covenantRows,
+      packageFacts: 0,
+      capacityExecuted: 0,
+      unresolved: surviving.filter((c) => c.kind === "UNRESOLVED").length,
+    },
+  };
+}
+
 export async function runPackageLegalPath(
   companyId: string,
 ): Promise<PackageLegalPathResult> {
   if (companyId === CONMED_DEMO_COMPANY_ID) return runConmedPath();
   if (companyId === "coherent") return runCoherentPath();
-  throw new Error(`No integrated legal path registered for companyId=${companyId}`);
+  return runWorkspaceSummaryPath(companyId);
 }
 
 export async function runIntegratedLegalIntelligence(): Promise<{

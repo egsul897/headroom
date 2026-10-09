@@ -22,18 +22,25 @@ export default async function ResearchAskPage({
       <Card>
         <div className="card-title">Ask the research corpus</div>
         <div className="card-subtitle">
-          Answers are retrieved contractual excerpts with citations. Headroom will not invent
-          permissions or capacity figures.
+          Source-backed covenant analysis over public financing precedents. Precedents are not governing authority for
+          any customer agreement. Headroom will not invent permissions or capacity figures.
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href="/research/corpus">
             Corpus
+          </Link>
+          <Link className="button" href="/research/compare">
+            Compare
           </Link>
         </div>
       </Card>
 
       <Card>
         <ResearchAskForm defaultQuestion={q} defaultSourceId={sourceId} />
+        <div className="row-note" style={{ marginTop: 8 }}>
+          Try: secured debt · restricted payment baskets · unrestricted subsidiary investments · incremental facility
+          conditions · asset sales · debt secured under another provision · financial inputs for capacity
+        </div>
       </Card>
 
       {answer && (
@@ -46,6 +53,61 @@ export default async function ResearchAskPage({
           <div className="row-note" style={{ whiteSpace: "pre-wrap" }}>
             {answer.detail}
           </div>
+          {(answer.restrictions?.length ?? 0) > 0 && (
+            <>
+              <div className="row-label" style={{ marginTop: 12 }}>
+                Restrictions
+              </div>
+              {answer.restrictions!.map((r, i) => (
+                <div key={i} className="row-note">
+                  • {r}
+                </div>
+              ))}
+            </>
+          )}
+          {(answer.permissions?.length ?? 0) > 0 && (
+            <>
+              <div className="row-label" style={{ marginTop: 12 }}>
+                Permissions / baskets (not capacity)
+              </div>
+              {answer.permissions!.map((p, i) => (
+                <div key={i} className="row-note">
+                  • {p}
+                </div>
+              ))}
+            </>
+          )}
+          {(answer.unresolved?.length ?? 0) > 0 && (
+            <>
+              <div className="row-label" style={{ marginTop: 12 }}>
+                Unresolved
+              </div>
+              {answer.unresolved!.map((u, i) => (
+                <div key={i} className="row-note">
+                  • {u}
+                </div>
+              ))}
+            </>
+          )}
+          {answer.citations.length > 0 && (
+            <>
+              <div className="row-label" style={{ marginTop: 12 }}>
+                Citations
+              </div>
+              {answer.citations.map((c, i) => (
+                <div key={`${c.sourceId}-${c.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
+                  <strong>
+                    {c.governingAgreement} — §{c.sectionRef}
+                    {c.posture ? ` [${c.posture}]` : ""}
+                  </strong>
+                  <div>“{c.excerpt}”</div>
+                  <div style={{ opacity: 0.8 }}>
+                    [{c.sourceId}] · {c.epistemicStatus}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
           {answer.limitations.length > 0 && (
             <div className="row-note" style={{ marginTop: 12 }}>
               Limitations: {answer.limitations.join(" · ")}

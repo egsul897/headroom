@@ -4,6 +4,7 @@
  * class) on failure. The auditor never consults compiler self-assessments to decide a check.
  */
 import { buildCandidateCompilerInput } from "../../lib/contract-model/covenant-map/candidate-input";
+import { textCarries } from "./mocks";
 import { resolveUniqueDefinitionByRef, getNodeSupersessionStatus } from "../../lib/contract-model/compiler/amendment/operative-state";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
 import type { StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
@@ -182,7 +183,9 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
   }
   for (const e of pkg.manifest.operativeState.exact) {
     const ref = `operative:${e.asOfDate}:${e.documentId}#${e.definitionTerm ?? e.sectionRef}`;
-    const state = e.documentId === s.baseDocumentId ? s.operativeStates.get(e.asOfDate) : s.operativeStates.get(`${e.asOfDate}::${e.documentId}`);
+    // Prefer the per-instrument state (not the package merge) so status/unattached
+    // reflect that instrument alone.
+    const state = s.operativeStates.get(`${e.asOfDate}::${e.documentId}`) ?? s.operativeStates.get(e.asOfDate);
     const repro = `computeOperativeContractState({asOfDate:"${e.asOfDate}", baseDocumentId:"${s.baseDocumentId}"}) → provision ${e.definitionTerm ?? e.sectionRef}`;
     if (!state) { L.fail("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: "TEST_INFRASTRUCTURE_FAILURE", expected: e.status, actual: "no operative state computed", repro, deterministic: true }); continue; }
     const provision = state.provisions.find((p) => e.definitionTerm ? p.kind === "DEFINITION" && (p.definedTermRef ?? "").toLowerCase() === e.definitionTerm.toLowerCase() : p.kind === "SECTION" && p.sectionRef === e.sectionRef);
@@ -194,12 +197,37 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     const applied = provision?.appliedChain.length ?? 0;
     const current = provision?.currentText ?? null;
     const problems: string[] = [];
-    if (e.status === "CURRENT") {
+    // IPV-19: a definition-targeted amendment correctly leaves Section 1.01
+    // without a SECTION provision view; the DEFINITION provision carries the
+    // restatement and the section node must stay CURRENT_OPERATIVE (not wiped).
+    let definitionTargeted = false;
+    if (e.status === "SUPERSEDED" && !e.definitionTerm && !provision && e.supersededBy) {
+      const defViews = state.provisions.filter(
+        (p) => p.kind === "DEFINITION" && p.appliedChain.some((a) => a.amendmentDocumentId === e.supersededBy) && p.status === "OPERATIVE_STATE_RESOLVED",
+      );
+      if (defViews.length > 0 && (supStatus === "N/A" || supStatus === "CURRENT_OPERATIVE")) {
+        definitionTargeted = true;
+        const combined = ws([baseText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
+        for (const t of e.mustContain) if (!combined.includes(ws(t))) problems.push(`lacks "${t}"`);
+        for (const t of e.mustNotContain) {
+          if (defViews.some((p) => p.currentText && ws(p.currentText).includes(ws(t)))) problems.push(`amended definition still carries superseded "${t}"`);
+        }
+        if (problems.length === 0) {
+          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} untouched (IPV-19)`);
+          continue;
+        }
+      }
+    }
+    if (!definitionTargeted && e.status === "CURRENT") {
       if (applied > 0) problems.push(`${applied} effect(s) applied at ${e.asOfDate} although none expected`);
+      // IPV-16: a CURRENT manifest row must not hold when an unclassified
+      // override leaves the provision REVIEW_REQUIRED — that is the kill signal
+      // for side-letter mutants (MUT-08/12/13) without inventing override dollars.
+      if (provision?.status === "OPERATIVE_STATE_REVIEW_REQUIRED") problems.push(`provision ${provision.status} while manifest expects CURRENT`);
       if (supStatus !== "N/A" && supStatus !== "CURRENT_OPERATIVE") problems.push(`supersession status ${supStatus}`);
-      for (const t of e.mustContain) if (!ws(current ?? baseText).includes(ws(t))) problems.push(`operative text lacks "${t}"`);
-      for (const t of e.mustNotContain) if (ws(current ?? baseText).includes(ws(t))) problems.push(`operative text contains forbidden "${t}"`);
-    } else {
+      for (const t of e.mustContain) if (!textCarries(current ?? baseText, t)) problems.push(`operative text lacks "${t}"`);
+      for (const t of e.mustNotContain) if (textCarries(current ?? baseText, t)) problems.push(`operative text contains forbidden "${t}"`);
+    } else if (!definitionTargeted) {
       if (!provision) problems.push("no provision view recorded for this section/term");
       else {
         if (applied === 0) problems.push("no effect applied at this as-of date");
@@ -207,10 +235,10 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
         if (provision.status === "OPERATIVE_STATE_CONFLICTED") problems.push("CONFLICTED");
         if (e.status === "SUPERSEDED") {
           if (current === null) problems.push("currentText null (not derivable)");
-          for (const t of e.mustContain) if (current && !ws(current).includes(ws(t))) problems.push(`current text lacks "${t}"`);
-          for (const t of e.mustNotContain) if (current && ws(current).includes(ws(t))) problems.push(`current text contains superseded "${t}"`);
+          for (const t of e.mustContain) if (current && !textCarries(current, t)) problems.push(`current text lacks "${t}"`);
+          for (const t of e.mustNotContain) if (current && textCarries(current, t)) problems.push(`current text contains superseded "${t}"`);
         } else {
-          for (const t of e.mustNotContain) if (current && ws(current).includes(ws(t))) problems.push(`deleted provision still reads "${t}"`);
+          for (const t of e.mustNotContain) if (current && textCarries(current, t)) problems.push(`deleted provision still reads "${t}"`);
         }
       }
       if (supStatus !== "N/A" && supStatus === "CURRENT_OPERATIVE") problems.push(`base node still reported CURRENT_OPERATIVE at ${e.asOfDate}`);
@@ -225,6 +253,15 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
       // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
       const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
+      // IPV-16 / INV-16b: when superseding capacity could not be safely derived,
+      // an attached unresolved override with last authoritative text preserved
+      // is the intended fail-closed outcome. When mustContain is already present
+      // on currentText (safe derivation), fall through to the normal checks.
+      const supersedingDerived = !!current && e.mustContain.every((t) => textCarries(current, t));
+      if (attachedUnresolved && e.status === "SUPERSEDED" && e.supersededBy && !supersedingDerived) {
+        L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed override attached (${e.supersededBy}); provision REVIEW_REQUIRED with last authoritative text preserved; superseding capacity not derived (${detail})`);
+        continue;
+      }
       const falsePermission = !attachedUnresolved && e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));
       const failClosed = attachedUnresolved || !stateClaimsResolved || problems.every((p) => p.includes("null") || p.includes("CONFLICTED") || p.includes("UNKNOWN") || p.includes("REVIEW"));
       const upstreamNote = unresolvedUpstream.length ? ` | upstream: ${unresolvedUpstream.map((x) => `${x.operation} ${x.status}: ${x.unresolvedReason ?? ""}`).join("; ")} while instrument state is ${state.status} with ${state.unattachedEffects.length} unattached` : "";
@@ -270,12 +307,17 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
   const { index } = s;
   const m = pkg.manifest;
   const asOf = m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
-  const candidatePkg = { companyId: m.companyId, instrumentKey: m.instrumentKey, packageKey: `${pkg.packageId}-package`, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOf) ?? null, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
   const forbidden = new Map<string, (typeof m.definitions.mustNotResolveFrom)[number]>(m.definitions.mustNotResolveFrom.map((f) => [`${f.documentId}|${f.term.toLowerCase()}`, f]));
   for (const c of m.covenants.filter((c) => c.operative)) {
     const cand = candidateFor(index, c.documentId, c.sectionRef, [c.family as never], c.role as never, c.id, c.occurrence);
     const ref = `context:${c.id}`;
     if (!cand) { L.notTested("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, "candidate node not uniquely resolvable (see STRUCTURE)"); continue; }
+    // IPV-04: use the instrument that owns this candidate's document, not only the package base.
+    const operativeState = c.documentId === s.baseDocumentId
+      ? s.operativeStates.get(asOf) ?? null
+      : s.operativeStates.get(`${asOf}::${c.documentId}`) ?? s.operativeStates.get(asOf) ?? null;
+    const instrumentKey = s.instrumentKeys.get(c.documentId) ?? m.instrumentKey;
+    const candidatePkg = { companyId: m.companyId, instrumentKey, packageKey: `${pkg.packageId}-package`, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
     let build: ReturnType<typeof buildCandidateCompilerInput>;
     try { build = buildCandidateCompilerInput(cand, candidatePkg); }
     catch (e) { L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: "TEST_INFRASTRUCTURE_FAILURE", expected: "context bundle", actual: `threw: ${e instanceof Error ? e.message : String(e)}`, repro: `buildCandidateCompilerInput(${c.id})`, deterministic: true }); continue; }
@@ -323,7 +365,7 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
       const cref = `${ref}:definition-currency:${e.definitionTerm}`;
       if (!item) { L.notTested("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, `definition "${e.definitionTerm}" not in the bundle (see :definitions)`); continue; }
       const text = ws(item.excerptText);
-      const stale = [...e.mustContain.filter((t) => !text.includes(ws(t))).map((t) => `lacks amended text "${t}"`), ...e.mustNotContain.filter((t) => text.includes(ws(t))).map((t) => `still carries superseded text "${t}"`)];
+      const stale = [...e.mustContain.filter((t) => !textCarries(text, t)).map((t) => `lacks amended text "${t}"`), ...e.mustNotContain.filter((t) => textCarries(text, t)).map((t) => `still carries superseded text "${t}"`)];
       if (stale.length === 0) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, `definition "${e.definitionTerm}" handed to the compiler is the amended text (${e.supersededBy})`);
       else L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, { severity: "WRONG_OPERATIVE_SOURCE", outcomeClass: "INCORRECT_RESULT", expected: `definition "${e.definitionTerm}" as amended by ${e.supersededBy} at ${asOf}: contains [${e.mustContain.join(", ")}] not [${e.mustNotContain.join(", ")}]`, actual: `${stale.join("; ")} (item ${item.type} from ${item.documentId}: "${item.excerptText.slice(0, 120)}…")`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}")).bundle.items (DEFINITION "${e.definitionTerm}") with operativeState(${asOf})`, deterministic: true });
     }

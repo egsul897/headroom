@@ -19,6 +19,7 @@ import type { PackageDocumentInput, PackageGraphResult } from "../package-graph/
 import type { StageCaller } from "../llm-caller";
 import { resolveEffectiveDate } from "./effective-date";
 import { parseDeterministicAmendmentEffects } from "./deterministic-parser";
+import { detectUnclassifiedOverrides } from "./unclassified-override";
 import { detectMarkupExhibitEffects, type MarkupExhibitResolutionCandidate } from "./markup-exhibit";
 import { detectScheduleModificationEffects, type ScheduleModificationResolutionCandidate } from "./schedule-modification";
 import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } from "./semantic-interpreter";
@@ -52,7 +53,11 @@ function labelMatchesTarget(label: string, classificationType: string | undefine
 
 export const AMENDMENT_PIPELINE_VERSION = `phase-2g-amendment-pipeline.v1+${AMENDMENT_INTERPRETATION_PROMPT_VERSION}`;
 
-const AMENDMENT_SHAPED_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER"]);
+// IPV-16: SIDE_LETTER (and consent/waiver-shaped documents classified as
+// such) carry "notwithstanding Section X" overrides that must reach the
+// amendment pipeline — otherwise the operative state stays RESOLVED on the
+// base text with zero effects from the override document.
+const AMENDMENT_SHAPED_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER", "SIDE_LETTER"]);
 /** Operations deterministic parsing could not classify precisely - exactly the case task §8 scopes AI interpretation to ("can identify the relevant source region and target but cannot reliably classify the legal transformation"). */
 const AMBIGUOUS_OPERATIONS = new Set(["MODIFY_PROVISION", "UNKNOWN_CHANGE"]);
 
@@ -64,7 +69,7 @@ export interface AmendmentPipelineInput {
 
 /** Task §35 - counts how many semantic calls WOULD be made, before any are, so a caller can estimate cost first. Pure, zero-cost. */
 export function countAmbiguousEffectsNeedingInterpretation(input: AmendmentPipelineInput): number {
-  return runDeterministicPass(input).filter((e) => AMBIGUOUS_OPERATIONS.has(e.operation) && e.target.targetSectionRef !== null && e.status !== "UNRESOLVED").length;
+  return runDeterministicPass(input).filter((e) => AMBIGUOUS_OPERATIONS.has(e.operation) && e.target.targetSectionRef !== null && e.status !== "UNRESOLVED" && !e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:")).length;
 }
 
 function instrumentKeyForDocument(packageGraph: PackageGraphResult, documentId: string | null): string | null {
@@ -179,6 +184,33 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
     );
   }
 
+  for (const doc of documents) {
+    results.push(...detectUnclassifiedOverrides({
+      document: doc,
+      documents,
+      index: input.index,
+      instrumentKeyForDocument: (targetDocId) => instrumentKeyForDocument(packageGraph, targetDocId),
+      effectiveDate: resolveEffectiveDate({ amendmentText: doc.text, executionDate: identityById.get(doc.documentId)?.executionDate ?? null }),
+    }));
+  }
+
+  // IPV-16: modification-candidates also emit notwithstanding UNKNOWN_CHANGE.
+  // Prefer the caption-scoped UNCLASSIFIED_OVERRIDE effect (fail-closed, no
+  // invented dollars, never sent to the interpreter) over the competing
+  // candidate for the same amendment document + section.
+  const overrideKeys = new Set(
+    results
+      .filter((e) => e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:"))
+      .map((e) => `${e.amendmentDocumentId}\0${e.target.targetSectionRef ?? ""}`),
+  );
+  if (overrideKeys.size > 0) {
+    return results.filter((e) => {
+      if (e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:")) return true;
+      if (e.operation !== "UNKNOWN_CHANGE") return true;
+      return !overrideKeys.has(`${e.amendmentDocumentId}\0${e.target.targetSectionRef ?? ""}`);
+    });
+  }
+
   return results;
 }
 
@@ -268,7 +300,7 @@ export async function runAmendmentPipeline(caller: StageCaller, input: Amendment
 
   const finalEffects: AmendmentEffectCandidate[] = [];
   for (const effect of deterministicEffects) {
-    const needsInterpretation = AMBIGUOUS_OPERATIONS.has(effect.operation) && (effect.target.targetSectionRef !== null || effect.target.targetDefinedTermRef !== null) && effect.status !== "UNRESOLVED";
+    const needsInterpretation = AMBIGUOUS_OPERATIONS.has(effect.operation) && (effect.target.targetSectionRef !== null || effect.target.targetDefinedTermRef !== null) && effect.status !== "UNRESOLVED" && !effect.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:");
     if (!needsInterpretation) {
       finalEffects.push(effect);
       continue;

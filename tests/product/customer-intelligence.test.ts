@@ -1,6 +1,13 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { analyzeAmendmentPackage } from "../../lib/product/customer-intelligence/amendment-package";
+import { compareAmendmentSummaries } from "../../lib/product/customer-intelligence/amendment-compare";
+import { buildCovenantDependencyGraph } from "../../lib/product/customer-intelligence/dependency-graph";
+import { renderCovenantReviewMarkdown } from "../../lib/product/customer-intelligence/export-review";
+import type { CovenantReviewWorkspace } from "../../lib/product/customer-intelligence/covenant-review";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
+import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
 import type {
   CovenantCandidateRecord,
   DefinitionRecord,
@@ -131,5 +138,317 @@ describe("covenant summary substance", () => {
     expect(item.applicableDefinitions.some((d) => d.term === "Consolidated EBITDA")).toBe(true);
     expect(item.sourceCitation).toContain("7.01");
     expect(item.unresolvedQuestions.length).toBeGreaterThan(0);
+  });
+});
+
+function stubItem(
+  overrides: Partial<CovenantSummaryItem> & {
+    sectionRef: string;
+    category: CovenantSummaryItem["category"];
+    sourceId?: string;
+    documentTitle?: string;
+  },
+): CovenantSummaryItem & { sourceId: string; documentTitle: string } {
+  return {
+    categoryLabel: overrides.category,
+    heading: overrides.heading ?? overrides.sectionRef,
+    posture: "GENERAL_PROHIBITION",
+    plainEnglish: "Test provision.",
+    restriction: "No action except baskets.",
+    permissions: [],
+    coveredEntities: ["Borrower"],
+    exceptions: [],
+    conditions: [],
+    materialBasketsThresholds: [],
+    draftingPatterns: [],
+    operativeLanguageExcerpt: "The Borrower shall not…",
+    sourceCitation: `§${overrides.sectionRef}`,
+    governingAgreement: "CA",
+    families: [],
+    relatedDefinedTerms: [],
+    applicableDefinitions: [],
+    entityScope: {
+      borrower: true,
+      guarantor: false,
+      restrictedSubsidiary: false,
+      unrestrictedSubsidiary: false,
+      notes: [],
+    },
+    crossReferences: overrides.crossReferences ?? [],
+    dependencies: overrides.dependencies ?? [],
+    epistemicStatus: "DISCOVERED_CANDIDATE",
+    interpretationNote: "",
+    unresolvedQuestions: [],
+    analysis: {} as CovenantSummaryItem["analysis"],
+    sourceId: "s1",
+    documentTitle: "Credit Agreement",
+    ...overrides,
+    category: overrides.category,
+    sectionRef: overrides.sectionRef,
+  };
+}
+
+describe("dependency graph and amendment compare", () => {
+  it("builds debt-to-lien dependency edges without inventing permission", () => {
+    const graph = buildCovenantDependencyGraph([
+      stubItem({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
+      stubItem({ sectionRef: "7.02", category: "LIENS_SECURED_DEBT" }),
+    ]);
+    expect(graph.edgeCount).toBeGreaterThan(0);
+    expect(graph.edges.some((e) => e.kind === "DEBT_TO_LIEN")).toBe(true);
+    expect(graph.note.toLowerCase()).toContain("do not authorize");
+  });
+
+  it("compares base vs amendment summaries without selecting operative text", () => {
+    const view = analyzeAmendmentPackage({
+      companyId: "co-1",
+      sources: [
+        baseSource({ sourceId: "base", documentClass: "CREDIT_AGREEMENT", documentTitle: "Credit Agreement" }),
+        baseSource({
+          sourceId: "amd",
+          documentClass: "AMENDMENT",
+          documentTitle: "First Amendment",
+          exhibitFilename: "amd.htm",
+        }),
+      ],
+      relationships: [],
+    });
+    const compare = compareAmendmentSummaries({
+      amendmentPackage: view,
+      items: [
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "base",
+          materialBasketsThresholds: ["$50,000,000"],
+        }),
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "amd",
+          documentTitle: "First Amendment",
+          materialBasketsThresholds: ["$100,000,000"],
+          operativeLanguageExcerpt: "Amended basket language…",
+        }),
+      ],
+    });
+    expect(compare.operativeResolution).toBe("UNRESOLVED_PRECEDENCE");
+    expect(compare.rows.some((r) => r.changeKind === "THRESHOLD_OR_TEXT_SHIFT")).toBe(true);
+    expect(compare.note.toLowerCase()).toContain("unresolved");
+  });
+});
+
+describe("operative amendment resolution", () => {
+  it("resolves restatement supersession when chronology is consistent", async () => {
+    const { analyzeAmendmentPackage } = await import(
+      "../../lib/product/customer-intelligence/amendment-package"
+    );
+    const { compareAmendmentSummaries } = await import(
+      "../../lib/product/customer-intelligence/amendment-compare"
+    );
+    const { resolveOperativePrecedence } = await import(
+      "../../lib/product/customer-intelligence/operative-resolution"
+    );
+    const sources = [
+      baseSource({
+        sourceId: "base-ca",
+        documentClass: "CREDIT_AGREEMENT",
+        documentTitle: "Credit Agreement dated as of 2022-01-15",
+        filingDate: "2022-01-15",
+      }),
+      baseSource({
+        sourceId: "restated",
+        documentClass: "RESTATEMENT",
+        documentTitle: "Amended and Restated Credit Agreement dated as of 2024-06-01",
+        exhibitFilename: "restated.htm",
+        filingDate: "2024-06-01",
+      }),
+    ];
+    const ap = analyzeAmendmentPackage({ companyId: "co", sources, relationships: [] });
+    const compare = compareAmendmentSummaries({ amendmentPackage: ap, items: [] });
+    const op = resolveOperativePrecedence({ sources, amendmentPackage: ap, compare });
+    expect(op.status).toBe("RESOLVED");
+    expect(op.operativeDocumentSourceId).toBe("restated");
+    expect(op.baseDocumentSourceId).toBe("base-ca");
+  });
+
+  it("binds amended sections when threshold shifts are evidenced", async () => {
+    const { analyzeAmendmentPackage } = await import(
+      "../../lib/product/customer-intelligence/amendment-package"
+    );
+    const { compareAmendmentSummaries } = await import(
+      "../../lib/product/customer-intelligence/amendment-compare"
+    );
+    const { resolveOperativePrecedence } = await import(
+      "../../lib/product/customer-intelligence/operative-resolution"
+    );
+    const sources = [
+      baseSource({
+        sourceId: "base",
+        documentClass: "CREDIT_AGREEMENT",
+        documentTitle: "Credit Agreement",
+        filingDate: "2023-01-01",
+      }),
+      baseSource({
+        sourceId: "amd1",
+        documentClass: "AMENDMENT",
+        documentTitle: "First Amendment dated as of 2024-03-15 — Section 7.01 is hereby amended",
+        exhibitFilename: "amd.htm",
+        filingDate: "2024-03-15",
+      }),
+    ];
+    const ap = analyzeAmendmentPackage({ companyId: "co", sources, relationships: [] });
+    const compare = compareAmendmentSummaries({
+      amendmentPackage: ap,
+      items: [
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "base",
+          materialBasketsThresholds: ["$50,000,000"],
+        }),
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "amd1",
+          documentTitle: "First Amendment",
+          materialBasketsThresholds: ["$100,000,000"],
+          operativeLanguageExcerpt: "Amended basket language…",
+        }),
+        stubItem({
+          sectionRef: "7.02",
+          category: "LIENS_SECURED_DEBT",
+          sourceId: "base",
+        }),
+      ],
+    });
+    const op = resolveOperativePrecedence({ sources, amendmentPackage: ap, compare });
+    expect(["RESOLVED", "RESOLVED_PARTIAL"]).toContain(op.status);
+    expect(op.bindings.some((b) => b.sectionRef === "7.01" && b.operativeSourceId === "amd1")).toBe(
+      true,
+    );
+  });
+});
+
+describe("HTML definition discovery", () => {
+  it("extracts quoted terms from HTML exhibits with entities and tags", async () => {
+    const { discoverDefinitions } = await import("../../lib/knowledge-factory/pipeline/structural");
+    const html = `<p><b>&ldquo;Consolidated EBITDA&rdquo;</b> means Consolidated Net Income.</p><p>"Available Amount" shall mean the sum of builder components.</p>`;
+    const defs = discoverDefinitions("html-test", html, []);
+    expect(defs.map((d) => d.term)).toEqual(expect.arrayContaining(["Consolidated EBITDA", "Available Amount"]));
+  });
+});
+
+describe("export formats", () => {
+  it("renders HTML and DOCX from the shared review object", async () => {
+    const { renderCovenantReviewHtml, renderCovenantReviewDocx } = await import(
+      "../../lib/product/customer-intelligence/export-docx"
+    );
+    const review: CovenantReviewWorkspace = {
+      companyId: "co-export",
+      documentCount: 1,
+      analyzedOkCount: 1,
+      failedCount: 0,
+      totalSummaries: 1,
+      executive: {
+        headline: "1 document analyzed.",
+        materialRestrictions: ["§7.01: No Indebtedness except baskets."],
+        materialPermissions: [],
+        unresolved: [],
+      },
+      categories: [],
+      documents: [],
+      amendmentPackage: null,
+      dependencyGraph: { edgeCount: 0, edges: [], cycles: [], note: "n/a" },
+      amendmentCompare: {
+        operativeResolution: "NO_DOCUMENTS",
+        rows: [],
+        unresolvedReasons: [],
+        note: "n/a",
+      },
+      operativeResolution: null,
+    };
+    const html = renderCovenantReviewHtml(review);
+    expect(html).toContain("<!DOCTYPE html>");
+    expect(html).toContain("DISCOVERED");
+    const docx = await renderCovenantReviewDocx(review);
+    expect(docx.length).toBeGreaterThan(500);
+    // DOCX is a zip package
+    expect(docx[0]).toBe(0x50);
+    expect(docx[1]).toBe(0x4b);
+  });
+});
+
+describe("covenant review markdown export", () => {
+  it("renders executive fields from the shared review object", () => {
+    const review: CovenantReviewWorkspace = {
+      companyId: "co-export",
+      documentCount: 1,
+      analyzedOkCount: 1,
+      failedCount: 0,
+      totalSummaries: 1,
+      executive: {
+        headline: "1 document(s) analyzed with 1 source-backed covenant summaries.",
+        materialRestrictions: ["§7.01: No Indebtedness except enumerated baskets."],
+        materialPermissions: ["§7.01: general basket $50,000,000"],
+        unresolved: ["§7.01: operative amendment status unresolved"],
+      },
+      categories: [],
+      documents: [],
+      amendmentPackage: null,
+      dependencyGraph: {
+        edgeCount: 0,
+        edges: [],
+        cycles: [],
+        note: "Edges are discovery-backed relationship hints for review.",
+      },
+      amendmentCompare: {
+        operativeResolution: "NO_DOCUMENTS",
+        rows: [],
+        unresolvedReasons: [],
+        note: "Upload a base agreement and an amendment to enable before/after comparison.",
+      },
+      operativeResolution: null,
+    };
+    const md = renderCovenantReviewMarkdown(review);
+    expect(md).toContain("# Covenant review — co-export");
+    expect(md).toContain("DISCOVERED ≠ VERIFIED");
+    expect(md).toContain("§7.01: No Indebtedness");
+    expect(md).toContain("not capacity");
+  });
+});
+
+describe("capacity / simulate honesty wiring", () => {
+  const root = path.join(__dirname, "../..");
+
+  it("capacity page fail-closes without inventing figures when readiness blocks evaluation", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/capacity/page.tsx"), "utf8");
+    const readiness = readFileSync(
+      path.join(root, "lib/product/customer-intelligence/capacity-readiness.ts"),
+      "utf8",
+    );
+    expect(source).toContain("loadCapacityReadiness");
+    expect(source).toContain("NOT DETERMINABLE");
+    expect(source).toContain("canEvaluateExecutableCapacity");
+    expect(source).toMatch(/never rendered as \$0 or Unlimited/);
+    expect(source).not.toMatch(/remainingCapacity\s*\?\?\s*0/);
+    expect(readiness).toContain("DISCOVERED ≠ counsel-approved");
+    expect(readiness).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
+    expect(readiness).toContain("canEvaluateExecutableCapacity");
+  });
+
+  it("simulate page shows readiness for every company, not only CONMED", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/simulate/page.tsx"), "utf8");
+    expect(source).toContain("loadCapacityReadiness");
+    expect(source).toContain("NOT DETERMINABLE");
+    expect(source).not.toContain("CONMED_DEMO_COMPANY_ID");
+    expect(source).toContain("never modify the live transaction ledger");
+  });
+
+  it("covenant review workspace is the covenants page data source", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/covenants/page.tsx"), "utf8");
+    expect(source).toContain("loadCovenantReviewWorkspace");
+    expect(source).toContain("DISCOVERED ≠ counsel-approved");
+    expect(source).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
   });
 });

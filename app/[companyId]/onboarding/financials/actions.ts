@@ -9,6 +9,12 @@ function num(formData: FormData, name: string): number {
   return v;
 }
 
+function optionalNum(formData: FormData, name: string): number | undefined {
+  const raw = formData.get(name);
+  if (raw === null || String(raw).trim() === "") return undefined;
+  return num(formData, name);
+}
+
 export async function submitFinancialsAction(companyId: string, formData: FormData) {
   await createManualFinancialState({
     companyId,
@@ -21,6 +27,17 @@ export async function submitFinancialsAction(companyId: string, formData: FormDa
     equityProceedsSinceIssue: num(formData, "equityProceedsSinceIssue"),
     interestExpense: num(formData, "interestExpense"),
     assumedNewDebtRatePct: num(formData, "assumedNewDebtRatePct"),
+    fixedCharges: optionalNum(formData, "fixedCharges"),
+    totalAssets: optionalNum(formData, "totalAssets"),
+    firstLienDebtPrincipal: optionalNum(formData, "firstLienDebtPrincipal"),
+    restrictedGroupEbitda: optionalNum(formData, "restrictedGroupEbitda"),
+    ebitdaAdjustmentsAmount: optionalNum(formData, "ebitdaAdjustmentsAmount"),
+    contractualEbitdaTerm: String(formData.get("contractualEbitdaTerm") ?? "").trim() || undefined,
+    testingPeriod: String(formData.get("testingPeriod") ?? "").trim() || undefined,
+    proFormaAdjustments: String(formData.get("proFormaAdjustments") ?? "").trim() || undefined,
   });
   revalidatePath(`/${companyId}/onboarding/financials`);
+  revalidatePath(`/${companyId}/intelligence`);
+  revalidatePath(`/${companyId}/capacity`);
+  revalidatePath(`/${companyId}/simulate`);
 }

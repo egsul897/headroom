@@ -150,7 +150,7 @@ export interface PermissionRowInput {
   id: string;
   documentId: string;
   code: string | null;
-  grantType: "DEBT_INCURRENCE" | "LIEN";
+  grantType: "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
   action: string;
   entityScope: string[];
   formulaType: CovenantProvisionInput["formulaType"];
@@ -163,7 +163,7 @@ export interface PermissionRowInput {
 }
 
 export interface CoverageDeclarationInput {
-  grantType: "DEBT_INCURRENCE" | "LIEN";
+  grantType: "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
   notes: string | null;
 }
 
@@ -468,6 +468,7 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   const debtRows: OverviewRow[] = [];
   const lienRows: OverviewRow[] = [];
   for (const p of permissionRows) {
+    if (p.grantType !== "DEBT_INCURRENCE" && p.grantType !== "LIEN") continue;
     const built = buildCapacityRowFromPermission(p, documentNameById.get(p.documentId) ?? p.documentId, covenantData.financials, position.metrics, bindingKeys);
     if (p.grantType === "DEBT_INCURRENCE") debtRows.push(built);
     else lienRows.push(built);

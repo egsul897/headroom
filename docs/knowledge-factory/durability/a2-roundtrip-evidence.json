@@ -1,45 +1,102 @@
 {
-  "verdict": "DURABILITY_NOT_YET_PROVEN",
-  "status": "DURABILITY_BLOCKED_CREDENTIALS",
-  "startingSha": "dfe43239b6f16b11dff26c2075d7749f2545ed81",
-  "endingSha": "dfe43239b6f16b11dff26c2075d7749f2545ed81",
-  "missingDependencies": [
-    "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
-    "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
-  ],
-  "probe": {
-    "mode": "LOCAL_ONLY_NOT_CROSS_VM_DURABLE",
-    "durable": false,
-    "databaseUrlPresent": false,
-    "objectStorageTokenPresent": false,
-    "missingPrerequisites": [
-      "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
-      "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
-    ],
-    "notes": [
-      "Local .local-knowledge-corpus/ is session-scoped and gitignored; Cursor Cloud Agent VMs do not share those bytes.",
-      "Git-committed acquisition manifests + content hashes enable deterministic recovery, not durability.",
-      "Do not claim read-after-write durability or independent-session retrieval until both Postgres and object storage are available and verified."
-    ]
-  },
-  "existingInfrastructureReuse": {
-    "objectStorage": "lib/document-storage/vercel-blob-provider.ts (requires BLOB_READ_WRITE_TOKEN)",
-    "registry": "prisma KnowledgeSource (requires DATABASE_URL + migration 20261008220000_knowledge_factory_foundation)",
-    "localFallbackRejected": [
-      "lib/document-storage/local-fs-provider.ts",
-      ".local-knowledge-corpus/",
-      "committed docs/knowledge-factory manifests alone"
-    ]
-  },
-  "intendedProofSource": {
+  "verdict": "A2_LIVE_DURABILITY_PROVEN",
+  "status": "DURABILITY_PROVEN",
+  "durabilityProven": true,
+  "byteStore": "postgres-bytea",
+  "startingSha": "2338e9e09fc9a6435bcfa4a330c424dd240ffb4d",
+  "endingSha": "2338e9e09fc9a6435bcfa4a330c424dd240ffb4d",
+  "source": {
     "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
-    "fixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
-    "note": "Authentic Gibraltar EX-10.1 ready; not persisted because credentials are absent."
+    "byteLength": 2266666,
+    "contentHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "knowledgeSourceRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "storageProvider": "postgres-bytea",
+    "representationLevel": "DISCOVERED_CANDIDATE"
   },
-  "refusedSubstitutes": [
-    "local disk write under .local-knowledge-corpus",
-    "claiming durability from committed metadata/hashes",
-    "mocked DocumentStorageProvider"
-  ],
-  "nextAction": "Configure shared DATABASE_URL (with KnowledgeSource migrations applied) and BLOB_READ_WRITE_TOKEN on this environment, then re-run: npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts"
+  "independentRetrieval": {
+    "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "knowledgeSourceRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "originalBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "retrievedBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "byteLength": 2266666,
+    "byteEqual": true,
+    "hashEqual": true,
+    "representationLevel": "DISCOVERED_CANDIDATE",
+    "provenance": "sec-edgar-fixture",
+    "storageProvider": "postgres-bytea"
+  },
+  "byteForByteEqual": true,
+  "contentHashIdentity": true,
+  "originatingWorkspaceDeleted": true,
+  "consumerExport": {
+    "schemaVersion": "knowledge-factory.consumer-export.v1",
+    "sourceVersionId": "srcver:117063ca5efe948b29ef46ca6f2648f7",
+    "idempotencyKey": "f6c9a09a1f5e6e4a576859c3b2b3f55498d9580e5e76912597d15410c7a14683",
+    "durabilityClaim": "VERIFIED_SHARED_STORAGE",
+    "counts": {
+      "sources": 1,
+      "financingDocuments": 1,
+      "fixtureDocuments": 0,
+      "uniqueInstrumentIdentities": 1,
+      "structuralNodes": 2071,
+      "covenantCandidates": 261,
+      "definitions": 4,
+      "dependencyEdges": 1203,
+      "conditionExceptionRecords": 400,
+      "documentRelationships": 0,
+      "unresolvedUncertainties": 0
+    },
+    "canonicalSourceIds": [
+      "edgar:0001140361-26-003087:ef20064499_ex10-1.htm"
+    ]
+  },
+  "consumers": {
+    "definitionEncyclopedia": {
+      "pass1": {
+        "ok": true,
+        "sourcesUpserted": 1,
+        "definitionsUpserted": 4,
+        "promotedToLegalTruth": 0
+      },
+      "pass2": {
+        "ok": true,
+        "idempotent": true,
+        "promotedToLegalTruth": 0
+      }
+    },
+    "dependencyAtlas": {
+      "pass1": {
+        "ok": true,
+        "sourcesUpserted": 1,
+        "nodesUpserted": 3495,
+        "edgesUpserted": 1203,
+        "promotedToLegalTruth": 0
+      },
+      "pass2": {
+        "ok": true,
+        "idempotent": true,
+        "promotedToLegalTruth": 0
+      },
+      "sharedWithDef": true
+    }
+  },
+  "labelsPreserved": {
+    "representationLevel": "DISCOVERED_CANDIDATE",
+    "noCertificationPromotion": true,
+    "noCapacityPromotion": true
+  },
+  "nextAction": "Durability proven for Document A on Neon BYTEA. Continue product consumption; keep representationLevel non-promoting.",
+  "independentFreshProcessRetrieve": {
+    "method": "env -i PATH HOME DATABASE_URL + npx tsx --phase=retrieve",
+    "verdict": "RETRIEVE_OK",
+    "byteEqual": true,
+    "hashEqual": true,
+    "byteLength": 2266666,
+    "retrievedBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "knowledgeSourceRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+  },
+  "migrationStatus": "already_applied (prisma migrate status: Database schema is up to date; 35 migrations)"
 }

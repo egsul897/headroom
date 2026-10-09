@@ -112,17 +112,18 @@ describe("routes", () => {
 
   it("nav is institutional product IA with onboarding only while setup remains", () => {
     expect(companyNavItems("co", "ACTIVE").map((item) => item.label)).toEqual([
-      "Dashboard",
-      "Position",
-      "Covenants",
-      "Capacity",
-      "Simulations",
-      "Transactions",
+      "Overview",
       "Documents",
-      "Ask",
+      "Covenants",
+      "Intelligence",
+      "Position",
+      "Ledger",
+      "Simulate",
       "Evidence",
+      "Ask",
+      "Alerts",
     ]);
-    expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Set up");
+    expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Onboarding");
     const position = companyNavItems("co", "ACTIVE").find((item) => item.key === "position")!;
     expect(isCompanyNavItemActive("/co", companyNavItems("co", "ACTIVE")[0]!, "co")).toBe(true);
     expect(isCompanyNavItemActive("/co/dashboard", position, "co")).toBe(true);
@@ -164,7 +165,8 @@ describe("Ask shell", () => {
     expect(askHtml).not.toContain("Interrogation");
     expect(askHtml).not.toContain("Secondary to the overview");
     expect(askHtml).toContain("<button");
-    expect(askHtml).toMatch(/<button[^>]*disabled[^>]*>Submit question<\/button>/);
+    // Default Ask mode is North-Star transaction analysis; empty question keeps submit disabled.
+    expect(askHtml).toMatch(/<button[^>]*disabled[^>]*>(Submit question|Analyze transaction)<\/button>/);
 
     for (const caseId of Object.keys(ASK_CASES) as (keyof typeof ASK_CASES)[]) {
       const view = askRunner.askEmpty(caseId);

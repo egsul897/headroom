@@ -304,11 +304,15 @@ describe("Phase 3C fault injection - FALSE-POSITIVE CONTROLS (task §28, clean c
   });
 
   it("a correct greater-of basket produces no material finding", async () => {
-    const text = "...the greater of $5,000,000 and 8% of Consolidated Net Income.";
+    const text = "The Company may incur Indebtedness in an aggregate principal amount not to exceed the greater of $5,000,000 and 8% of Consolidated Net Income.";
     const clean = rule({ capacityExpression: { exprId: "e", kind: "MAX", type: "MONEY", operands: [money(5_000_000), { exprId: "e", kind: "MULTIPLY", type: "MONEY", operands: [percent(0.08), metricRef("Consolidated Net Income")] }] } });
     const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [clean] }) };
     const result = await verifyCompiledCandidate(input, { skipSemanticReview: true });
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+    const bare = "...the greater of $5,000,000 and 8% of Consolidated Net Income.";
+    const bareInput: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: bare }), compilationResult: compilationResult({ rules: [clean] }) };
+    const bareResult = await verifyCompiledCandidate(bareInput, { skipSemanticReview: true });
+    expect(bareResult.findings.some((finding) => finding.findingType === "WRONG_AMOUNT")).toBe(true);
   });
 
   it("a correct ratio permission (UnlimitedCapacity gated by a ratio) produces no material finding", async () => {

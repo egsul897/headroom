@@ -19,6 +19,8 @@ import { buildIrInventory } from "./ir-inventory";
 import { collectNumericAssertions } from "./numeric-assertion";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
+import { figureRoleFindings } from "./figure-role";
+import { evaluationBasisFindings } from "./evaluation-basis";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
@@ -161,6 +163,11 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
  * happens to notice it, preserving BLOCKER-9's own recall guarantee
  * unconditionally.
  */
+/** A shared-capacity omission stays open. A silent review must not turn it into an independent basket. */
+export function selectAmbiguousReasonsEligibleForDowngrade(reasons: readonly string[]): string[] {
+  return reasons.filter((reason) => !reason.includes("missing shared cap"));
+}
+
 function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFinding[], reconciliation: ReconciliationResult, review: SemanticReviewResult): SemanticVerificationFinding[] {
   if (review.failed || review.isSynthetic) return findings;
   // FIX B: a numeric assertion whose own magnitude could not be read safely is AMBIGUOUS for a
@@ -168,7 +175,7 @@ function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFin
   // numeric evidence, and like every other numeric-evidence item it keeps its severity whether or
   // not a model call happens to notice it. Only buildAggregateSignals' coarse presence-vs-absence
   // reasons are eligible for this downgrade.
-  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason));
+  const ambiguousReasons = new Set(selectAmbiguousReasonsEligibleForDowngrade(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS" && !i.numericGrounding).map((i) => i.reason)));
   if (ambiguousReasons.size === 0) return findings;
   const semanticFindingTypes = new Set(review.findings.map((f) => f.findingType));
 
@@ -336,6 +343,24 @@ export function buildConditionSuspicionInput(compilerInput: SemanticCompilerInpu
   return parentScope.length === 0 ? compilerInput.operativeSourceText : [compilerInput.operativeSourceText, ...parentScope].join("\n\n");
 }
 
+/**
+ * Figure-role classification needs the enclosing exception/permission chapeau
+ * ("shall not …, except:") before the clause text. A clause-only operative
+ * window otherwise marks a restated "not to exceed $X" basket as UNCLASSIFIED
+ * (THRESHOLD_AS_CAPACITY) even when PARENT_SCOPE already carries that chapeau.
+ * Parent text is prepended for classification only — it is not treated as this
+ * candidate's owned operative source for reconciliation.
+ */
+export function buildFigureRoleSourceText(compilerInput: SemanticCompilerInput): string {
+  const parentScope = (compilerInput.contextBundle?.items ?? [])
+    .filter((item) => item.type === "PARENT_SCOPE")
+    .map((item) => item.excerptText.trim())
+    .filter((text) => text.length > 0);
+  // Join with blank lines (same shape as buildConditionSuspicionInput) so a
+  // section heading in PARENT_SCOPE remains a clause boundary for MARKER_RE.
+  return parentScope.length === 0 ? compilerInput.operativeSourceText : [...parentScope, compilerInput.operativeSourceText].join("\n\n");
+}
+
 export async function verifyCompiledCandidate(input: VerificationInput, options: VerifyOptions = {}): Promise<SemanticVerificationResult> {
   const { compilerInput, compilationResult } = input;
 
@@ -414,7 +439,12 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
   const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
-  const deterministicFindings = [...buildFindingsFromReconciliation(input, reconciliation), ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef })];
+  const deterministicFindings = [
+    ...buildFindingsFromReconciliation(input, reconciliation),
+    ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...figureRoleFindings(buildFigureRoleSourceText(compilerInput), compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...evaluationBasisFindings(compilerInput.operativeSourceText, compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+  ];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
   // (see docs/phase-3f1-terminal-architecture-decision/02-architecture-

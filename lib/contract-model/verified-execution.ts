@@ -32,6 +32,9 @@ import { evaluateCapacityState } from "./runtime/capacity/state";
 import type { CapacityGraph, CapacityState, LedgerPolicy, LedgerUsageRecord } from "./runtime/capacity/types";
 import { simulateTransaction } from "./runtime/transaction/simulate";
 import type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult } from "./runtime/transaction/types";
+
+/** Re-export 4D caller types so product never imports `runtime/transaction/*`. */
+export type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult };
 import { hashOf } from "./runtime/input/identity";
 import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
 import { blocksUnit, interpretVerificationStatus, type VerificationCoverage as UnitCoverage } from "./runtime/verification-gate";

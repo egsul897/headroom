@@ -36,8 +36,10 @@
  * operative provision it changes" (`targetResolutionStatus === "UNIQUE"`).
  */
 import type { StructuralIndex } from "../structural-index";
+import type { StructuralNode } from "../types";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, computeOperativeDocument, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
+import { spliceOverrideAmountIntoClause, uniqueOverrideAmount } from "./unclassified-override";
 import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
@@ -278,8 +280,22 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
 
 const DELETE_OPERATIONS = new Set(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
 
+function isUnclassifiedOverride(effect: AmendmentEffectCandidate): boolean {
+  return (effect.unresolvedReason ?? "").startsWith("UNCLASSIFIED_OVERRIDE:");
+}
+
 function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfDate: string, index: StructuralIndex): OperativeProvisionView {
-  const { fullChain, conflicts } = buildProvisionChain(group);
+  // An unclassified side letter, consent, or waiver names the provision and
+  // stays REVIEW_REQUIRED. When the detector captured safe superseding
+  // language (newText), that text is applied chronologically like any other
+  // replacement so the operative reading carries the override capacity.
+  // When newText is null, the override must not erase the last text that
+  // does have authority — it stays attached as unresolved evidence only.
+  const textualGroup: ProvisionGroup = {
+    ...group,
+    effects: group.effects.filter((effect) => !isUnclassifiedOverride(effect) || !!effect.newText),
+  };
+  const { fullChain, conflicts } = buildProvisionChain(textualGroup);
   const asOfMs = new Date(asOfDate).getTime();
   const appliedChain = fullChain.filter((e) => e.effectiveDate.date !== null && new Date(e.effectiveDate.date).getTime() <= asOfMs).map((e) => ({ ...e, appliedAsOfQuery: true }));
 
@@ -300,15 +316,34 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
 
   for (const applied of appliedChain) {
     const effect = group.effects.find((e) => e.effectId === applied.effectId)!;
-    if (currentSourceNodeKey) supersededSourceNodeKeys.push(currentSourceNodeKey);
-    if (currentSourceNodeId) supersededSourceNodeIds.push(currentSourceNodeId);
+    // IPV-19: a definition's structural sourceNodeId is the enclosing SECTION
+    // (typically 1.01). Marking that section KNOWN_SUPERSEDED when only one
+    // term was restated wipes every other definition in the section. Track
+    // term-level supersession via the DEFINITION provision view itself; do
+    // not publish the parent section node as superseded.
+    if (group.kind !== "DEFINITION") {
+      if (currentSourceNodeKey) supersededSourceNodeKeys.push(currentSourceNodeKey);
+      if (currentSourceNodeId) supersededSourceNodeIds.push(currentSourceNodeId);
+    }
     if (DELETE_OPERATIONS.has(effect.operation)) {
       currentText = null;
       attemptedText = null;
       lastAppliedWasCleanDeletion = true;
     } else if (effect.newText) {
-      currentText = effect.newText;
+      // Unclassified overrides carry a verbatim window (for source verification).
+      // Prefer splicing the unique override amount into the last authoritative
+      // clause text so prior amendment wording is preserved except the capacity.
+      const overrideAmount = isUnclassifiedOverride(effect) ? uniqueOverrideAmount(effect.newText) : null;
+      const spliced = overrideAmount && currentText ? spliceOverrideAmountIntoClause(currentText, overrideAmount) : null;
+      currentText = spliced ?? effect.newText;
       attemptedText = effect.newText;
+      lastAppliedWasCleanDeletion = false;
+    } else if (effect.status === "REVIEW_REQUIRED" || effect.status === "UNRESOLVED" || effect.operation === "UNKNOWN_CHANGE") {
+      // IPV-16: a side-letter / consent / override attaches as UNKNOWN_CHANGE or
+      // REVIEW_REQUIRED without capturable replacement text. The provision must
+      // not be reported RESOLVED, but the last authoritative text (base or prior
+      // amendment) stays visible for review — never wiped to null merely because
+      // the override's own wording was not extractable as newText.
       lastAppliedWasCleanDeletion = false;
     } else {
       // Effect genuinely applies (real evidence, resolved target, real effective date) but did not supply capturable resulting text (e.g. a threshold change or a bare "is hereby amended" with no quoted replacement) - the FACT that this effect governs is known; the resulting TEXT is honestly not safely renderable, never fabricated.
@@ -396,7 +431,15 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   } else if (hasSequenceUnresolved || hasReviewOrUnresolvedEffect) {
     status = "OPERATIVE_STATE_REVIEW_REQUIRED";
     unresolvedIssues.push(...conflicts.filter((c) => c.conflictType === "AMENDMENT_SEQUENCE_UNRESOLVED").map((c) => c.reason));
-    unresolvedIssues.push(...group.effects.filter((e) => (e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED") && e.unresolvedReason).map((e) => `${e.effectId}: ${e.unresolvedReason}`));
+    unresolvedIssues.push(
+      ...group.effects
+        .filter((e) => e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED")
+        .map((e) => {
+          const src = e.sourceCitation || e.amendmentDocumentId;
+          const why = e.unresolvedReason ?? `${e.operation} from ${src} requires review`;
+          return `${e.effectId} (${src}): ${why}`;
+        }),
+    );
   } else if (targetUnresolved) {
     status = "OPERATIVE_STATE_PARTIAL";
     unresolvedIssues.push(
@@ -451,11 +494,108 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   };
 }
 
+/**
+ * A resolved definition replacement does not restate the section that houses
+ * the term. When the old definition occurs once inside that section, the
+ * section's operative text is the base section with that one span replaced.
+ * A section that already has its own effect is left to that effect. A span
+ * that cannot be found once is not guessed.
+ */
+function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionView[], baseDocumentId: string, index: StructuralIndex): OperativeProvisionView[] {
+  const claimedSectionRefs = new Set(provisions.filter((p) => p.kind === "SECTION" && p.sectionRef).map((p) => p.sectionRef));
+  const bySection = new Map<string, { section: StructuralNode; replacements: Array<{ at: number; oldText: string; view: OperativeProvisionView }>; failures: string[] }>();
+  for (const view of provisions) {
+    if (view.kind !== "DEFINITION" || view.appliedChain.length === 0 || !view.definedTermRef) continue;
+    const def = index.getDefinition(view.definedTermRef, baseDocumentId);
+    if (!def?.sourceNodeId) continue;
+    const enclosing = index.getNode(def.sourceNodeId);
+    if (!enclosing) continue;
+    const section = [enclosing, ...index.getAncestors(def.sourceNodeId).slice().reverse()].find((n) => n.nodeType === "SECTION");
+    if (!section || claimedSectionRefs.has(section.sectionRef)) continue;
+    const bucket = bySection.get(section.nodeId) ?? { section, replacements: [], failures: [] };
+    const oldText = index.getDefinitionFullText(def.exactTerm, baseDocumentId);
+    const sectionText = index.getNodeText(section.nodeId, "DESCENDANTS");
+    const at = oldText && sectionText ? sectionText.indexOf(oldText) : -1;
+    const unique = !!oldText && !!sectionText && at >= 0 && sectionText.indexOf(oldText, at + 1) < 0;
+    if (view.status !== "OPERATIVE_STATE_RESOLVED" || !view.currentText) {
+      bucket.failures.push(`The amendment of "${view.definedTermRef}" is not a resolved replacement, so Section ${section.sectionRef} cannot be reconstructed.`);
+    } else if (!unique) {
+      bucket.failures.push(`The original text of "${view.definedTermRef}" does not occur once inside Section ${section.sectionRef}, so the section cannot be reconstructed without guessing.`);
+    } else {
+      bucket.replacements.push({ at, oldText: oldText!, view });
+    }
+    bySection.set(section.nodeId, bucket);
+  }
+  const derived: OperativeProvisionView[] = [];
+  for (const { section, replacements, failures } of bySection.values()) {
+    const involved = provisions.filter((p) => p.kind === "DEFINITION" && p.appliedChain.length > 0 && p.definedTermRef && (replacements.some((r) => r.view === p) || failures.some((f) => f.includes(`"${p.definedTermRef}"`))));
+    const sourceView = involved[0];
+    if (!sourceView) continue;
+    if (failures.length > 0) {
+      derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, involved, "OPERATIVE_STATE_REVIEW_REQUIRED", failures));
+      continue;
+    }
+    const views = replacements.map((r) => r.view);
+    let text = index.getNodeText(section.nodeId, "DESCENDANTS");
+    const ordered = [...replacements].sort((a, b) => b.at - a.at);
+    let spliced = true;
+    for (const replacement of ordered) {
+      const at = text.indexOf(replacement.oldText);
+      if (at < 0 || text.indexOf(replacement.oldText, at + 1) >= 0 || !replacement.view.currentText) { spliced = false; break; }
+      const trailing = replacement.oldText.match(/\s*$/)?.[0] ?? "";
+      // IPV-19: if the captured restatement dropped the leading quote that the
+      // base definition carries, restore it so `"Term" means` remains matchable.
+      let replacementText = replacement.view.currentText.replace(/\s*$/, "");
+      if (replacement.oldText.trimStart().startsWith('"') && !replacementText.startsWith('"') && /^[A-Z][^"\n]{0,80}"\s+means\b/i.test(replacementText)) {
+        replacementText = `"${replacementText}`;
+      }
+      text = text.slice(0, at) + replacementText + trailing + text.slice(at + replacement.oldText.length);
+    }
+    if (!spliced || !text) {
+      derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, views, "OPERATIVE_STATE_REVIEW_REQUIRED", [`Section ${section.sectionRef} could not be reconstructed from its definition amendments.`]));
+      continue;
+    }
+    derived.push(derivedSectionView(sourceView, section, baseDocumentId, text, views, "OPERATIVE_STATE_RESOLVED", []));
+  }
+  return derived;
+}
+
+function derivedSectionView(source: OperativeProvisionView, section: StructuralNode, baseDocumentId: string, text: string | null, views: OperativeProvisionView[], status: OperativeProvisionView["status"], unresolvedIssues: string[]): OperativeProvisionView {
+  return {
+    instrumentKey: source.instrumentKey,
+    provisionKey: `${source.instrumentKey}::SECTION::${section.sectionRef}`,
+    kind: "SECTION",
+    documentId: baseDocumentId,
+    sectionRef: section.sectionRef,
+    definedTermRef: null,
+    asOfDate: source.asOfDate,
+    currentSourceDocumentId: source.currentSourceDocumentId,
+    currentSourceNodeKey: null,
+    currentSourceNodeId: null,
+    currentText: text,
+    fullChain: views.flatMap((r) => r.fullChain),
+    appliedChain: views.flatMap((r) => r.appliedChain),
+    supersededSourceNodeKeys: [],
+    supersededSourceNodeIds: [],
+    status,
+    unresolvedIssues,
+    conflicts: [],
+    targetResolutionStatus: "UNIQUE",
+    targetResolutionReason: null,
+    candidateSourceNodeIds: [],
+    ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
+    attemptedText: text,
+    reviewRequired: status !== "OPERATIVE_STATE_RESOLVED",
+    candidateTexts: [],
+  };
+}
+
 export function computeOperativeContractState(input: OperativeStateInput): OperativeContractState {
   const instrumentEffects = input.allEffects.filter((e) => e.target.targetInstrumentKey === input.instrumentKey);
   const { groups, unattachedEffects: unattachedFromResolved } = groupEffectsByProvision(instrumentEffects);
 
-  const provisions = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));
+  const fromEffects = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));
+  const provisions = [...fromEffects, ...sectionViewsAfterDefinitionReplacements(fromEffects, input.baseDocumentId, input.index)];
 
   // Phase 3F.1 §29-32/F3 - the caller-asserted unresolved-target effects
   // combine with anything groupEffectsByProvision itself could not attach
@@ -463,7 +603,14 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
   // one honest "known but unattached" list. This is what prevents `status`
   // from defaulting to RESOLVED merely because `provisions` is empty - see
   // unattachedEffects on OperativeContractState for the full rationale.
-  const unattachedEffects = [...unattachedFromResolved, ...(input.unresolvedTargetEffectsForThisInstrument ?? [])];
+  // An effect with no instrument key is unresolved amendment activity. It counts
+  // even when the caller did not repeat it in unresolvedTargetEffectsForThisInstrument.
+  const seenUnattached = new Set<string>();
+  const unattachedEffects = [...unattachedFromResolved, ...input.allEffects.filter((e) => e.target.targetInstrumentKey === null), ...(input.unresolvedTargetEffectsForThisInstrument ?? [])].filter((e) => {
+    if (seenUnattached.has(e.effectId)) return false;
+    seenUnattached.add(e.effectId);
+    return true;
+  });
 
   const worstStatus = (statuses: OperativeStateStatus[]): OperativeStateStatus => {
     if (statuses.includes("OPERATIVE_STATE_CONFLICTED")) return "OPERATIVE_STATE_CONFLICTED";
@@ -481,6 +628,9 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
     status = unattachedEffects.length === 0 ? "OPERATIVE_STATE_RESOLVED" : "OPERATIVE_STATE_REVIEW_REQUIRED";
   } else {
     status = worstStatus(provisions.map((p) => p.status));
+  }
+  if (status === "OPERATIVE_STATE_RESOLVED" && unattachedEffects.some((e) => e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:"))) {
+    status = "OPERATIVE_STATE_REVIEW_REQUIRED";
   }
 
   const byStatus: Record<string, number> = {};
@@ -1009,6 +1159,18 @@ export interface ResolveOperativeSectionEvidenceInput {
 }
 
 /**
+ * True when `childRef` is a nested clause under `parentRef` (e.g. 7.01(b) under
+ * 7.01). Exact equality is excluded — callers that need the section's own view
+ * already matched it. Uses a structural '(' boundary so 7.01 does not match 7.010.
+ */
+export function isNestedSectionRef(parentRef: string, childRef: string): boolean {
+  const parent = parentRef.replace(/\s+/g, "");
+  const child = childRef.replace(/\s+/g, "");
+  if (!parent || !child || parent === child) return false;
+  return child.startsWith(`${parent}(`);
+}
+
+/**
  * The single canonical primitive for "what is this SECTION's real operative
  * evidence, right now" - mirrors resolveOperativeDefinitionEvidence's own
  * two-branch structure exactly (a real, on-file OperativeProvisionView for
@@ -1042,7 +1204,33 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
     else if (view.status === "OPERATIVE_STATE_PARTIAL") status = "PARTIAL_AMENDMENT";
     else if (view.status === "OPERATIVE_STATE_REVIEW_REQUIRED") status = "OPERATIVE_STATE_UNRESOLVED";
     else status = "CURRENT";
+    // Even a RESOLVED parent view cannot claim CURRENT truth when a nested clause
+    // under it still carries an unresolved override / conflict / partial state.
+    if (status === "CURRENT") {
+      const nested = unresolvedNestedSectionProvisions(operativeState, documentId, node.sectionRef);
+      if (nested.length > 0) {
+        return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: nested.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
+      }
+    }
     return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+  }
+
+  // No exact provision view for this section — but a nested clause under it may
+  // still carry REVIEW_REQUIRED / CONFLICTED / PARTIAL evidence (side letter on
+  // 7.01(b) while the candidate is section 7.01). Never report CURRENT for the
+  // parent while that nested material override remains unresolved.
+  const nestedUnresolved = unresolvedNestedSectionProvisions(operativeState, documentId, node.sectionRef);
+  if (nestedUnresolved.length > 0) {
+    return {
+      outcome: "FOUND",
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      text: null,
+      documentId,
+      source: "amended",
+      isCurrentTruth: false,
+      unresolvedIssues: nestedUnresolved.flatMap((p) => p.unresolvedIssues),
+      legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
+    };
   }
 
   // No recorded amendment activity for this section at all - the caller
@@ -1060,4 +1248,18 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
     }
   }
   return { outcome: "FOUND", status: "CURRENT", text: null, documentId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
+}
+
+/**
+ * Nested unresolved SECTION provisions under `parentSectionRef` on the same
+ * instrument document identity. V1 OperativeContractState stores every view's
+ * `documentId` as the instrument baseDocumentId, so same-document filtering is
+ * usually a no-op — but the field is part of the view model, and a bare
+ * sectionRef match across documents would be contamination if that ever varies.
+ */
+function unresolvedNestedSectionProvisions(operativeState: OperativeContractState | null | undefined, documentId: string, parentSectionRef: string): OperativeProvisionView[] {
+  if (!operativeState) return [];
+  return operativeState.provisions.filter(
+    (p) => p.kind === "SECTION" && p.documentId === documentId && p.sectionRef != null && isNestedSectionRef(parentSectionRef, p.sectionRef) && p.status !== "OPERATIVE_STATE_RESOLVED",
+  );
 }

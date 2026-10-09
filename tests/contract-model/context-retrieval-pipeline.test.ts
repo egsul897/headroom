@@ -169,6 +169,45 @@ describe("Definitions", () => {
     const bundle = build(docs, "6.01");
     expect(bundle.unresolvedDependencies.some((u) => u.dependencyType === "UNRESOLVED_DEFINED_TERM" && u.sourceText === "Applicable Threshold Amount")).toBe(true);
   });
+
+  it("10c. INV-04: inbound notwithstanding Article override is retrieved for a section under that article", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `ARTICLE VII NEGATIVE COVENANTS\n\nSECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness except Indebtedness not exceeding $10,000,000.\n\nARTICLE IX MISCELLANEOUS\n\nSECTION 9.15 Secured Indebtedness. Notwithstanding anything to the contrary in Article VII, the Borrower shall not permit secured Indebtedness to exceed $25,000,000.`,
+      },
+    ];
+    const bundle = build(docs, "7.01");
+    expect(bundle.items.some((i) => i.normalizedRef === "9.15" && (i.type === "RELATED_COVENANT" || i.type === "CROSS_REFERENCE"))).toBe(true);
+  });
+
+  it("10b. IPV-15/09/10: nested plural of a declared term and administrative Closing Date do not force REVIEW_REQUIRED; real undefined Consolidated metrics still do", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `ARTICLE I DEFINITIONS\n\nSECTION 1.01 Defined Terms. As used in this Agreement:\n\n${term("Available Amount", "the sum of $20,000,000 plus amounts for each fiscal year ended after the Closing Date, minus the aggregate amount of Restricted Payments previously made; provided that Available Amount shall be zero while a Default is continuing.")}\n\n${term("Restricted Payment", "any dividend on equity of the Borrower.")}\n\n${term("Default", "any event of default.")}\n\n${term("Investment", "any loan or capital contribution.")}\n\nARTICLE VII NEGATIVE COVENANTS\n\nSECTION 7.08 Investments. The Borrower shall not make any Investment except Investments not exceeding the Available Amount.`,
+      },
+    ];
+    const investments = build(docs, "7.08");
+    expect(investments.unresolvedDependencies.some((u) => u.sourceText === "Restricted Payments")).toBe(false);
+    const closing = investments.unresolvedDependencies.find((u) => u.sourceText === "Closing Date");
+    expect(closing?.severity ?? "LOW").toBe("LOW");
+    expect(investments.sufficiencyState).toBe("SUFFICIENT");
+
+    // Same package shape as IPV-10: a ratio that names undefined Consolidated* terms must stay non-SUFFICIENT.
+    const docsWithRatio: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `ARTICLE I DEFINITIONS\n\nSECTION 1.01 Defined Terms. As used in this Agreement:\n\n${term("Available Amount", "an amount equal to $20,000,000.")}\n\n${term("Restricted Payment", "any dividend.")}\n\n${term("Total Leverage Ratio", "Consolidated Total Debt divided by Consolidated EBITDA.")}\n\nARTICLE VII NEGATIVE COVENANTS\n\nSECTION 7.06 Restricted Payments. The Borrower shall not make Restricted Payments except up to the Available Amount provided the Total Leverage Ratio does not exceed 3.00 to 1.00.`,
+      },
+    ];
+    const rp = build(docsWithRatio, "7.06");
+    expect(rp.unresolvedDependencies.some((u) => u.severity === "MEDIUM" && /Consolidated (EBITDA|Total Debt)/.test(u.sourceText))).toBe(true);
+    expect(rp.sufficiencyState).toBe("REVIEW_REQUIRED");
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -364,6 +364,7 @@ enum FormulaType {
   FLAT_AMOUNT
   FLAT_NET_OF_DEBT
   GREATER_OF_FLAT_OR_PCT_EBITDA
+  GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS
   LEVERAGE_RATIO_ROOM
   COVERAGE_RATIO_ROOM
   BUILDER_BASKET
@@ -728,6 +729,8 @@ model GoldenTest {
 enum GrantType {
   DEBT_INCURRENCE
   LIEN
+  RESTRICTED_PAYMENT
+  INVESTMENT
 
   @@map("grant_type")
 }
@@ -3973,3 +3976,46 @@ model ContractInputSnapshotEvent {
   @@index([snapshotId])
   @@map("contract_input_snapshot_events")
 }
+
+
+// =============================================================================
+// Phase 4C — append-only contract ledger (capacity usage). Distinct from legacy
+// ledger_entries. Corrections supersede; rows are never hard-deleted for history.
+// =============================================================================
+
+model ContractLedgerUsage {
+  id                   String  @id @default(cuid())
+  usageId              String  @unique
+  companyId            String
+  instrumentKey        String
+  effectiveAsOf        String
+  amount               String
+  currency             String
+  capacityPathJson     Json
+  transactionRef       String?
+  status               String // RECORDED | PENDING | REVERSED | SUPERSEDED
+  supersededByUsageId  String?
+  provenanceJson       Json
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([companyId, status])
+  @@index([companyId, effectiveAsOf])
+  @@map("contract_ledger_usages")
+}
+
+model ContractLedgerUsageEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique
+  companyId   String
+  usageId     String?
+  type        String // USAGE_APPENDED | USAGE_SUPERSEDED
+  at          DateTime
+  payloadJson Json
+  createdAt   DateTime @default(now())
+
+  @@index([companyId, at])
+  @@index([usageId])
+  @@map("contract_ledger_usage_events")
+}
+

@@ -4,10 +4,11 @@
  * Wired now:
  * - identity (company name)
  * - transactions (ACTIVE LedgerEntry)
+ * - alerts (monitoring feed when available)
  * - totalHeadroom / utilization / capacitySummary / statusTable / covenantsAtRisk
  *   from covenant overview + capacity engines when readiness allows
  *
- * Unwired (stay UNKNOWN): alerts, nextTest, drivers, headroomOverTime, export
+ * Unwired (stay UNKNOWN): nextTest, drivers, headroomOverTime, export
  *
  * Figure authority: LEGACY_ENGINE / NOT_CERTIFIED_4E until North-Star 4A–4E product paths replace it.
  * IMPLEMENTED ≠ CERTIFIED.
@@ -18,8 +19,11 @@ import { getCompanyDashboard, getCompanySummary } from "@/lib/dashboard-service"
 import { getCovenantOverview, type OverviewRow } from "@/lib/covenant-overview-service";
 import { fmtM, fmtX } from "@/lib/format";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { loadMonitoringFeed } from "@/lib/product/customer-intelligence/monitoring";
 import {
   UNWIRED_OVERVIEW_LOAD,
+  UNKNOWN_STATE,
+  alertStateFromQuery,
   capacitySummaryStateFromQuery,
   covenantsAtRiskStateFromQuery,
   statusTableStateFromQuery,
@@ -152,6 +156,18 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
 
   const company = await getCompanySummary(companyId).catch(() => null);
   const identityName = company?.name?.trim() ? company.name.trim() : null;
+
+  // Alerts slot from monitoring feed — does not invent capacity figures.
+  try {
+    const feed = await loadMonitoringFeed(companyId);
+    const count = feed.alerts.length;
+    load.alerts =
+      count === 0
+        ? alertStateFromQuery({ queried: true, outcome: "zero" })
+        : alertStateFromQuery({ queried: true, outcome: "nonzero", count });
+  } catch {
+    load.alerts = UNKNOWN_STATE;
+  }
 
   try {
     const entries = await prisma.ledgerEntry.findMany({

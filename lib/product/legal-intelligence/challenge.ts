@@ -15,11 +15,20 @@ export function challengeLegalConclusions(params: {
     outOfPackageAmendments: string[];
     unresolvedDefinitionTerms: string[];
     entityScopeUnresolved: boolean;
+    /** Optional second-pass signals — never auto-authoritative. */
+    claimsStackingWithoutSharedCapAnalysis?: boolean;
+    claimsCapacityWithoutUsageAttribution?: boolean;
+    operativeVersionUnresolved?: boolean;
+    missedRestrictionHints?: string[];
+    missedExceptionHints?: string[];
+    overlookedProvisoHints?: string[];
+    unresolvedFinancialDependencies?: string[];
   };
 }): ChallengeFinding[] {
   const findings: ChallengeFinding[] = [];
   let n = 0;
   const id = (suffix: string) => `challenge-${++n}-${suffix}`;
+  const ctx = params.context;
 
   for (const c of params.conclusions) {
     if (c.executability === "EXECUTABLE_VERIFIED" || c.executability === "LEGACY_ENGINE") {
@@ -124,6 +133,96 @@ export function challengeLegalConclusions(params: {
         "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE.",
       invalidatesExecutability: true,
     });
+  }
+
+  // Second-pass adversarial checks — disagreements for counsel, not auto-correct.
+  if (ctx.claimsStackingWithoutSharedCapAnalysis) {
+    findings.push({
+      id: id("stack"),
+      severity: "MATERIAL",
+      targetConclusionId: null,
+      category: "UNSUPPORTED_STACKING",
+      statement:
+        "Initial analysis appears to stack baskets/paths without shared-capacity or anti-stacking analysis.",
+      invalidatesExecutability: true,
+    });
+  }
+  if (ctx.claimsCapacityWithoutUsageAttribution) {
+    findings.push({
+      id: id("dbl"),
+      severity: "MATERIAL",
+      targetConclusionId: null,
+      category: "DOUBLE_COUNTED_CAPACITY",
+      statement:
+        "Remaining capacity claimed without attribution of prior basket usage — risk of double-counting.",
+      invalidatesExecutability: true,
+    });
+  }
+  if (ctx.operativeVersionUnresolved) {
+    findings.push({
+      id: id("opver"),
+      severity: "BLOCKER",
+      targetConclusionId: null,
+      category: "WRONG_AMENDMENT_VERSION",
+      statement: "Operative amendment version is unresolved — conclusions may cite superseded text.",
+      invalidatesExecutability: true,
+    });
+  }
+  for (const hint of (ctx.missedRestrictionHints ?? []).slice(0, 8)) {
+    findings.push({
+      id: id("miss-r"),
+      severity: "MATERIAL",
+      targetConclusionId: null,
+      category: "MISSED_RESTRICTION",
+      statement: `Possible missed restriction: ${hint}`,
+      invalidatesExecutability: false,
+    });
+  }
+  for (const hint of (ctx.missedExceptionHints ?? []).slice(0, 8)) {
+    findings.push({
+      id: id("miss-e"),
+      severity: "INFO",
+      targetConclusionId: null,
+      category: "MISSED_EXCEPTION",
+      statement: `Possible missed exception: ${hint}`,
+      invalidatesExecutability: false,
+    });
+  }
+  for (const hint of (ctx.overlookedProvisoHints ?? []).slice(0, 8)) {
+    findings.push({
+      id: id("prov"),
+      severity: "MATERIAL",
+      targetConclusionId: null,
+      category: "OVERLOOKED_PROVISO",
+      statement: `Possible overlooked proviso/condition: ${hint}`,
+      invalidatesExecutability: false,
+    });
+  }
+  for (const dep of (ctx.unresolvedFinancialDependencies ?? []).slice(0, 8)) {
+    findings.push({
+      id: id("findep"),
+      severity: "MATERIAL",
+      targetConclusionId: null,
+      category: "UNRESOLVED_FINANCIAL_DEPENDENCY",
+      statement: `Unresolved financial dependency: ${dep}`,
+      invalidatesExecutability: true,
+    });
+  }
+
+  for (const c of params.conclusions) {
+    if (
+      (c.executability === "EXECUTABLE_VERIFIED" || c.promotedToLegalTruth === 1) &&
+      c.evidenceCitations.length === 0
+    ) {
+      findings.push({
+        id: id("unsup"),
+        severity: "BLOCKER",
+        targetConclusionId: c.id,
+        category: "UNSUPPORTED_LEGAL_CONCLUSION",
+        statement: `Conclusion ${c.id} lacks source citations for an executability claim.`,
+        invalidatesExecutability: true,
+      });
+    }
   }
 
   return findings;

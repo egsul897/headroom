@@ -96,6 +96,34 @@ export function adaptLegacyCovenantProvision(provision: CovenantProvisionInput, 
       const capacity = withExpressionId({ kind: "MAX", type: "MONEY", operands: [flat, multiplied], provenance });
       return { rule: baseRule(capacity, [`basketName "${provision.basketName}"`, 'metricName "EBITDA" is the legacy engine\'s own flat financial-snapshot field, not a per-instrument defined term - a real Phase 3B compilation would resolve this against the instrument\'s own actual EBITDA definition instead']), refusalReason: null };
     }
+    case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+      const pct = provision.params?.pctTotalAssets;
+      if (pct === undefined) {
+        return {
+          rule: null,
+          refusalReason: `FormulaType GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS requires params.pctTotalAssets, which provision "${provision.code}" does not carry - refusing rather than guessing a percentage`,
+        };
+      }
+      const flat = withExpressionId({ kind: "MONEY", type: "MONEY", amount: provision.thresholdValue, currency: "USD", provenance });
+      const percentNode = withExpressionId({ kind: "PERCENT", type: "PERCENT", value: pct, provenance });
+      const metric = withExpressionId({
+        kind: "METRIC_REFERENCE",
+        type: "MONEY",
+        metricName: "Consolidated Total Assets",
+        companyId,
+        instrumentKey,
+        resolvedDefinitionId: null,
+      });
+      const multiplied = withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [percentNode, metric] });
+      const capacity = withExpressionId({ kind: "MAX", type: "MONEY", operands: [flat, multiplied], provenance });
+      return {
+        rule: baseRule(capacity, [
+          `basketName "${provision.basketName}"`,
+          'metricName "Consolidated Total Assets" is projected from FinancialState.balanceSheetFacts when present',
+        ]),
+        refusalReason: null,
+      };
+    }
     case "FLAT_NET_OF_DEBT": {
       const basis = provision.params?.netOfBasis ?? "total";
       const flat = withExpressionId({ kind: "MONEY", type: "MONEY", amount: provision.thresholdValue, currency: "USD", provenance });

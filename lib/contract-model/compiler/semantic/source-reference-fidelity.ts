@@ -35,7 +35,8 @@ import { scanSourceReferences, type SourceTargetSelector } from "../source-refer
 // are themselves source-grounded now (inventory normalization scans the authenticated item span) and may corroborate,
 // but no model inventory claim can create a stated reference: the former "lineage stands alone when the text carries
 // none" fallback is removed. Every stated reference carries its source-derived target selector (SA-2).
-export const SOURCE_REFERENCE_FIDELITY_VERSION = "source-reference-fidelity.v2";
+/** v3 (IPV-15): references stated inside a retrieved definition the unit depends on are admissible stated references for that unit. */
+export const SOURCE_REFERENCE_FIDELITY_VERSION = "source-reference-fidelity.v3";
 
 export type ReferenceFidelityClass =
   | "EXACT_SOURCE_REFERENCE"
@@ -106,14 +107,34 @@ export interface ClassifyReferencesInput {
    * only (recorded in the audit); never a stated reference on its own (SA-1).
    */
   lineageRefs?: readonly string[] | null;
+  /**
+   * IPV-15: authenticated texts of retrieved DEFINITION / DEFINITION_DEPENDENCY
+   * items the unit depends on. Section references stated inside those
+   * definitions (e.g. Available Amount netting across 7.06(c)/7.08(d)) are
+   * admissible for dependsOn / shared-capacity links on the citing unit.
+   */
+  dependentDefinitionTexts?: readonly string[] | null;
   baseSectionRef?: string | null;
   index?: StructuralIndex | null;
   documentId?: string | null;
 }
 
-/** The authenticated stated-reference set for a node: the deterministic scan of the operative text, nothing else. */
+/** The authenticated stated-reference set: operative text plus retrieved definition bodies the unit depends on (IPV-15). */
 export function statedReferencesFor(input: Omit<ClassifyReferencesInput, "emitted">): StatedSourceReference[] {
-  return statedSectionReferencesInText(input.operativeText, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId });
+  const opts = { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId };
+  const fromOperative = statedSectionReferencesInText(input.operativeText, opts);
+  const seen = new Set(fromOperative.map((r) => r.normalized ?? norm(r.raw)));
+  const fromDefs: StatedSourceReference[] = [];
+  for (const text of input.dependentDefinitionTexts ?? []) {
+    if (!text || text.trim().length === 0) continue;
+    for (const r of statedSectionReferencesInText(text, opts)) {
+      const key = r.normalized ?? norm(r.raw);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      fromDefs.push(r);
+    }
+  }
+  return [...fromOperative, ...fromDefs];
 }
 
 export function classifyEmittedReferences(input: ClassifyReferencesInput): ReferenceFidelityOutcome {
@@ -133,7 +154,8 @@ export function classifyEmittedReferences(input: ClassifyReferencesInput): Refer
   for (const emitted of input.emitted) {
     const n = normalizeReferenceText(emitted);
     if (n === null) {
-      if (namedReferenceStated(emitted, input.operativeText)) { classifications.push({ emitted, normalized: null, classification: "EXACT_SOURCE_REFERENCE", statedRefs: [emitted], detail: "named reference stated verbatim in the operative text" }); addAuth(emitted, { sourceText: emitted.trim(), kind: "NAMED_CONDITION", qualifierText: null }); }
+      const namedIn = [input.operativeText, ...(input.dependentDefinitionTexts ?? [])].some((t) => namedReferenceStated(emitted, t));
+      if (namedIn) { classifications.push({ emitted, normalized: null, classification: "EXACT_SOURCE_REFERENCE", statedRefs: [emitted], detail: "named reference stated verbatim in the operative text or a retrieved definition the unit depends on" }); addAuth(emitted, { sourceText: emitted.trim(), kind: "NAMED_CONDITION", qualifierText: null }); }
       else { invented = true; classifications.push({ emitted, normalized: null, classification: "MODEL_INVENTED_REFERENCE", statedRefs: [], detail: "named reference does not occur in the operative text" }); excluded.push({ emitted, classification: "MODEL_INVENTED_REFERENCE", restoredTo: null }); }
       continue;
     }

@@ -8,6 +8,15 @@
  * reference against another package document) is NOT done here - that is
  * relationship-resolution.ts's job, since it needs the whole package's
  * identities, not just one document's own text.
+ *
+ * IPV-19: definition amendments that name both the term and its home
+ * section ("The definition of X in Section 1.01 … is hereby amended") must
+ * target the DEFINITION, never REPLACE the whole of Section 1.01. Those
+ * patterns run before section-level RESTATE so the more specific form wins.
+ *
+ * IPV-16: side-letter / consent overrides ("Notwithstanding Section X …")
+ * are modification candidates (UNKNOWN_CHANGE / MODIFY) so the amendment
+ * pipeline can attach a REVIEW_REQUIRED effect to the named provision.
  */
 import type { ModificationCandidate, ModificationOperation, PackageDocumentInput } from "./types";
 
@@ -31,8 +40,46 @@ interface StatementPattern {
 // rest of the clause - never CONMED-specific text, just the parenthetical
 // itself.
 const OPTIONAL_SECTION_HEADING = String.raw`(?:\(\s*[A-Za-z][A-Za-z0-9 ,.'&-]{0,60}\s*\)\s+)?`;
+/** Optional "in/under Section N.NN …" / "set forth|contained|appearing|provided …" between a defined term and the amend verb (IPV-19 forms F1/F3). */
+const OPTIONAL_DEFINITION_SECTION_LOCUS = String.raw`(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?`;
 
 const PATTERNS: StatementPattern[] = [
+  // IPV-19 (priority): "the definition of "Consolidated EBITDA" in Section 1.01
+  // of the Credit Agreement is hereby amended and restated..." — MUST run
+  // before the section-level RESTATE pattern, which would otherwise claim
+  // "Section 1.01 … is hereby amended and restated" and wipe the whole
+  // definitions section.
+  {
+    operation: "MODIFY",
+    re: new RegExp(
+      String.raw`the definition of\s*["“]?\s*([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)\s*["”]?\s+${OPTIONAL_DEFINITION_SECTION_LOCUS}is (?:hereby )?amended`,
+      "gi",
+    ),
+    sectionRef: () => null,
+    definedTermRef: (m) => m[1]?.trim() ?? null,
+  },
+  // F2 form: "Section 1.01 … is hereby amended by amending and restating the definition of X"
+  // Quotes required so the non-greedy term capture cannot stop at a single capital letter.
+  {
+    operation: "MODIFY",
+    re: new RegExp(
+      String.raw`Section\s+(\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*)\s+${OPTIONAL_SECTION_HEADING}(?:of the [A-Za-z ]+ )?is (?:hereby )?amended by amending and restating the definition of\s*["“]\s*([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)\s*["”]`,
+      "gi",
+    ),
+    sectionRef: () => null,
+    definedTermRef: (m) => m[2]?.trim() ?? null,
+  },
+  // IPV-16: "Notwithstanding Section 7.01(b) of the Credit Agreement, …"
+  // / "notwithstanding the limitation in Section 7.02(b)" — override /
+  // consent / side-letter drafting that names a covenant without classic
+  // "is hereby amended" language.
+  {
+    operation: "UNKNOWN_CHANGE",
+    // No trailing \b: a word boundary between "1" and "(" would truncate "7.01(b)" to "7.01".
+    re: /\b[Nn]otwithstanding\s+(?:the\s+(?:limitation|restrictions?|provisions?|foregoing)\s+in\s+)?Section\s+(\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*)/g,
+    sectionRef: (m) => m[1] ?? null,
+    definedTermRef: () => null,
+  },
   // "Section 6.01 is hereby amended and restated in its entirety..."
   {
     operation: "RESTATE",
@@ -65,19 +112,6 @@ const PATTERNS: StatementPattern[] = [
     sectionRef: (m) => m[1] ?? null,
     definedTermRef: () => null,
   },
-  // "the definition of "Consolidated EBITDA" is amended and restated..." /
-  // "...is hereby amended by..." - real CONMED evidence (the second
-  // amendment's own text) showed extracted source text commonly uses
-  // straight ASCII quotes with a stray space just inside them (" X ")
-  // rather than curly quotes hugging the term directly - both quote
-  // styles and either spacing are tolerated here, a generalized text-
-  // extraction-artifact concern, not a CONMED-specific pattern.
-  {
-    operation: "MODIFY",
-    re: /the definition of\s*["“]?\s*([A-Z][A-Za-z0-9 ,.'&-]{1,60}?)\s*["”]?\s+is (?:hereby )?amended/gi,
-    sectionRef: () => null,
-    definedTermRef: (m) => m[1]?.trim() ?? null,
-  },
   // Generic fallback: "Section 6.01 is hereby amended" without a more specific verb matched above.
   {
     operation: "MODIFY",
@@ -100,6 +134,13 @@ function excerpt(text: string, charStart: number, matchLength: number): string {
   return text.slice(start, end).replace(/\s+/g, " ").trim();
 }
 
+/** True when a section-level RESTATE/MODIFY match is actually a definition amendment that already claimed this span (IPV-19). */
+function isDefinitionLocusBefore(text: string, matchIndex: number): boolean {
+  const lookback = text.slice(Math.max(0, matchIndex - 120), matchIndex);
+  return /\bthe definition of\s*["“]?[^"”\n]{1,80}["”]?\s+(?:(?:set\s+forth\s+)?in\s+)?$/i.test(lookback)
+    || /\bthe definition of\b/i.test(lookback) && /\bin\s+$/i.test(lookback);
+}
+
 export function detectModificationCandidates(doc: PackageDocumentInput): ModificationCandidate[] {
   const out: ModificationCandidate[] = [];
   const seenRestateOrAddSections = new Set<string>();
@@ -117,6 +158,12 @@ export function detectModificationCandidates(doc: PackageDocumentInput): Modific
     while ((m = re.exec(doc.text)) !== null) {
       const sectionRef = pattern.sectionRef(m);
       const definedTermRef = pattern.definedTermRef(m);
+      // IPV-19: section RESTATE that sits inside "the definition of X in Section N …"
+      // is not a whole-section replacement — skip (the definition pattern already claimed it).
+      if (pattern.operation === "RESTATE" && sectionRef && !definedTermRef && isDefinitionLocusBefore(doc.text, m.index)) {
+        if (m.index === re.lastIndex) re.lastIndex++;
+        continue;
+      }
       // The generic MODIFY fallback pattern only fires when a more specific
       // RESTATE/ADD pattern hasn't already claimed the same section - never
       // double-counts one amendment statement as two candidates.
@@ -124,7 +171,16 @@ export function detectModificationCandidates(doc: PackageDocumentInput): Modific
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }
-      if (pattern.operation === "UNKNOWN_CHANGE" && !sectionRef && !definedTermRef && claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
+      // A more specific candidate already owns this span. A section
+      // pattern must not retarget the locator inside "the definition of X
+      // in Section 1.01 is hereby amended and restated".
+      if (claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
+        if (m.index === re.lastIndex) re.lastIndex++;
+        continue;
+      }
+      // Skip a second candidate whose span sits inside an already-claimed
+      // definition/override match (definition pattern claims before section RESTATE).
+      if ((sectionRef || definedTermRef) && claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }

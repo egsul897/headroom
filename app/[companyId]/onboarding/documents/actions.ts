@@ -16,6 +16,13 @@ import type { DocumentType } from "@prisma/client";
 export async function uploadDocumentAction(companyId: string, formData: FormData) {
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a file to upload.");
+  const { MAX_CUSTOMER_UPLOAD_BYTES, LARGE_UPLOAD_DEFER_BYTES, stageCustomerDocument, reanalyzeCustomerDocumentFromStorage } =
+    await import("@/lib/product/customer-intelligence/analyze-upload");
+  if (file.size > MAX_CUSTOMER_UPLOAD_BYTES) {
+    throw new Error(
+      `File exceeds ${Math.floor(MAX_CUSTOMER_UPLOAD_BYTES / (1024 * 1024))}MB limit. Split the package or upload a smaller exhibit.`,
+    );
+  }
   const declaredType = String(formData.get("declaredType") ?? "OTHER") as DocumentType;
   const governs = String(formData.get("governs") ?? "") || undefined;
 
@@ -41,13 +48,43 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
   }
   if (documentId) {
     try {
-      await analyzeCustomerDocument({
+      const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
+      const staged = await stageCustomerDocument({
         companyId,
         documentId,
         bytes: buffer,
         filename: file.name,
         declaredType,
+        existingStorageRef: doc?.storageRef,
       });
+
+      // Large files: upload returns after durable stage; analysis runs from storage (retryable).
+      if (buffer.length >= LARGE_UPLOAD_DEFER_BYTES) {
+        void reanalyzeCustomerDocumentFromStorage({ companyId, documentId })
+          .then(() => {
+            revalidatePath(`/${companyId}/onboarding/documents`);
+            revalidatePath(`/${companyId}/documents`);
+            revalidatePath(`/${companyId}/covenants`);
+            revalidatePath(`/${companyId}/documents/${documentId}`);
+          })
+          .catch((err) => {
+            console.error(
+              `[reanalyzeCustomerDocumentFromStorage] deferred failure company=${companyId} doc=${documentId}`,
+              err,
+            );
+          });
+        console.info(
+          `[uploadDocumentAction] deferred analysis sourceId=${staged.sourceId} bytes=${buffer.length}`,
+        );
+      } else {
+        await analyzeCustomerDocument({
+          companyId,
+          documentId,
+          bytes: buffer,
+          filename: file.name,
+          declaredType,
+        });
+      }
     } catch (err) {
       console.error(
         `[analyzeCustomerDocument] unexpected error for company ${companyId} document ${documentId}:`,
@@ -58,7 +95,19 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 
   revalidatePath(`/${companyId}/onboarding/documents`);
   revalidatePath(`/${companyId}/documents`);
+  revalidatePath(`/${companyId}/covenants`);
   if (documentId) revalidatePath(`/${companyId}/documents/${documentId}`);
+}
+
+export async function retryCustomerAnalysisAction(companyId: string, documentId: string) {
+  const { reanalyzeCustomerDocumentFromStorage } = await import(
+    "@/lib/product/customer-intelligence/analyze-upload"
+  );
+  await reanalyzeCustomerDocumentFromStorage({ companyId, documentId });
+  revalidatePath(`/${companyId}/onboarding/documents`);
+  revalidatePath(`/${companyId}/documents`);
+  revalidatePath(`/${companyId}/covenants`);
+  revalidatePath(`/${companyId}/documents/${documentId}`);
 }
 
 export async function runExtractionAction(companyId: string, documentId: string) {
