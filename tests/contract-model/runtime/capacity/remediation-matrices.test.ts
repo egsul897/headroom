@@ -323,6 +323,14 @@ describe("R8 - legal-state dominance over every Phase-3 sufficiency value and un
     expect(amountString(cap(state, "r").grossCapacity)).toBe("100");
   });
 
+  it("SOURCE_SCOPE_DERIVED with safeToRely true publishes authoritative capacity (governing-scope derivation)", () => {
+    const { state } = run([rule("r", MONEY(100), scopeAudit("SOURCE_SCOPE_DERIVED", true))]);
+    const c = cap(state, "r");
+    expect(c.entityScope!.applicability).toBe("SCOPE_CONFIRMED_BY_SOURCE");
+    expect(c.status).toBe("AVAILABLE");
+    expect(amountString(c.grossCapacity)).toBe("100");
+  });
+
   it("legal and arithmetic causes compose: the worse of the two wins and both limitations are carried", () => {
     const { state } = run([rule("r", MUL(PCT(0.1), METRIC("m-absent")), { sufficiency: "PARTIAL" })]);
     const c = cap(state, "r");

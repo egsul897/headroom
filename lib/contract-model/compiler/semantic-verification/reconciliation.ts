@@ -168,14 +168,17 @@ function reconcileNumericAssertions(inventory: NumericAssertionInventory, eviden
   }));
 }
 
+/** Collapse EDGAR / drafting whitespace so "Consolidated\\nTotal Assets" matches "Consolidated Total Assets". */
+const normWs = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+
 /** Fuzzy, low-confidence metric/defined-term-name matching - the source-side METRIC_MENTION detector is deliberately over-inclusive (task's own disclosed "false positives are filtered out downstream" design), so a miss here is POSSIBLY_ACCOUNTED_FOR, never a material NOT_ACCOUNTED_FOR on its own. */
 function reconcileMetricMentions(sourceItems: SourceInventoryItem[], irItems: IrInventoryItem[]): ReconciliationItem[] {
   const metricRefs = irItems.filter((ir) => ir.kind === "METRIC_REFERENCE" || ir.kind === "DEFINED_TERM_REFERENCE");
   const out: ReconciliationItem[] = [];
   for (const sourceItem of sourceItems.filter((i) => i.kind === "METRIC_MENTION")) {
-    const needle = sourceItem.rawText.toLowerCase();
+    const needle = normWs(sourceItem.rawText);
     const matches = metricRefs.filter((ir) => {
-      const hay = (ir.textValue ?? "").toLowerCase();
+      const hay = normWs(ir.textValue ?? "");
       return hay.length > 0 && (hay.includes(needle) || needle.includes(hay));
     });
     if (matches.length > 0) out.push({ classification: "ACCOUNTED_FOR", sourceItem, irItems: matches, reason: `source mention "${sourceItem.rawText}" matches a compiled metric/defined-term reference` });

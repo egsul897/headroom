@@ -1,0 +1,70 @@
+{
+  "schema": "authentic-72d-phase4d.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "simulation": {
+    "attempted": true,
+    "certifiedCustomerResult": false,
+    "financialInputs": "SYNTHETIC_LABELED_TECHNICAL_DEMO — not a certified customer result",
+    "pathStatus": "CANDIDATE",
+    "outcome": "EXECUTED",
+    "detail": {
+      "simulationStatus": "SIMULATED",
+      "capacityEffects": [
+        {
+          "effectId": "e1",
+          "capacityNodeId": "capacity:rule:ir-rule:817fb6fce7f8b666081509b5",
+          "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+          "sharedCapacityId": null,
+          "attemptedAmount": {
+            "type": "MONEY",
+            "amount": "10000000",
+            "currency": "USD"
+          },
+          "sharedConstraintIds": [],
+          "availableAmount": {
+            "kind": "AMOUNT",
+            "value": {
+              "type": "MONEY",
+              "amount": "60000000",
+              "currency": "USD",
+              "lineage": {
+                "exprId": "ir-expr:c7ba6123ccb4f43797b7e9bf",
+                "inputKeys": [
+                  "Consolidated Total Assets"
+                ]
+              }
+            }
+          },
+          "shortfallAmount": null,
+          "outcome": "SATISFIED",
+          "capacityStatus": "AVAILABLE",
+          "provisional": null,
+          "limitations": []
+        }
+      ],
+      "effects": [
+        {
+          "effectId": "e1",
+          "kind": "CONSUME_CAPACITY",
+          "supported": true,
+          "applied": true,
+          "reason": "executed by the typed effect model"
+        }
+      ],
+      "conditions": [
+        {
+          "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+          "conditionId": "rule[r-7.2d].condition[0]",
+          "conditionType": "UNSUPPORTED",
+          "description": "The aggregate principal amount of Finance Lease Obligations may not exceed the greater-of cap at any one time outstanding.",
+          "result": "UNSUPPORTED",
+          "reason": "the condition is real but carries no boolean expression, so it cannot be evaluated",
+          "evaluation": null
+        }
+      ],
+      "limitations": [],
+      "note": "CONSUME_CAPACITY against §7.2(d) greater-of basket; UNSUPPORTED 'at any one time outstanding' condition disclosed (ledger-measured; empty ledger = zero outstanding)."
+    }
+  }
+}

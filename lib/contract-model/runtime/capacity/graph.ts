@@ -27,13 +27,17 @@ const componentNodeId = (ownerNodeId: string, exprId: string) => `${ownerNodeId}
 
 function entityScopeOf(rule: IRRule): CapacityEntityScope {
   const audit = rule.entityScopeAudit;
-  const applicability: CapacityEntityScope["applicability"] = !audit
-    ? "SCOPE_UNAUDITED"
-    : audit.status === "SOURCE_MATCH_CONFIRMED"
-      ? "SCOPE_CONFIRMED_BY_SOURCE"
-      : audit.status === "UNSPECIFIED"
-        ? "SCOPE_UNSPECIFIED"
-        : "SCOPE_NOT_SAFE_TO_RELY_ON";
+  // Phase-3 entity-scope guard sets safeToRely true for SOURCE_MATCH_CONFIRMED,
+  // UNSPECIFIED, and SOURCE_SCOPE_DERIVED (governing-scope / own-text derivation).
+  // Map applicability from that flag first — treating SOURCE_SCOPE_DERIVED as
+  // SCOPE_NOT_SAFE_TO_RELY_ON while safeToRely is true was a false REVIEW_REQUIRED
+  // on every governing-scope-derived basket.
+  let applicability: CapacityEntityScope["applicability"];
+  if (!audit) applicability = "SCOPE_UNAUDITED";
+  else if (audit.safeToRely === false) applicability = "SCOPE_NOT_SAFE_TO_RELY_ON";
+  else if (audit.status === "UNSPECIFIED") applicability = "SCOPE_UNSPECIFIED";
+  else if (audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED") applicability = "SCOPE_CONFIRMED_BY_SOURCE";
+  else applicability = "SCOPE_NOT_SAFE_TO_RELY_ON";
   return {
     entityScope: rule.entityScope,
     entityScopeExcluded: rule.entityScopeExcluded,
