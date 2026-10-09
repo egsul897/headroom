@@ -1,0 +1,57 @@
+{
+  "schema": "authentic-72d-capacity-require.v1",
+  "paidProvidersCalled": false,
+  "financialInputs": "SYNTHETIC_LABELED_TECHNICAL_DEMO — not a certified customer result",
+  "certifiedCustomerResult": false,
+  "asOf": "2026-06-30",
+  "capacity": {
+    "outcome": "EXECUTED",
+    "policy": "REQUIRE",
+    "packageHash": "913c95cb8ac99666623882a6b4c087a54a1aad3bf2286351f7f6dfdc622b935b",
+    "capacities": [
+      {
+        "capacityNodeId": "capacity:rule:ir-rule:817fb6fce7f8b666081509b5",
+        "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+        "status": "AVAILABLE",
+        "grossCapacity": {
+          "kind": "AMOUNT",
+          "value": {
+            "type": "MONEY",
+            "amount": "60000000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": "ir-expr:c7ba6123ccb4f43797b7e9bf",
+              "inputKeys": [
+                "Consolidated Total Assets"
+              ]
+            }
+          }
+        },
+        "effectiveRemaining": {
+          "kind": "AMOUNT",
+          "value": {
+            "type": "MONEY",
+            "amount": "60000000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": "ir-expr:c7ba6123ccb4f43797b7e9bf",
+              "inputKeys": [
+                "Consolidated Total Assets"
+              ]
+            }
+          }
+        },
+        "limitations": []
+      }
+    ]
+  },
+  "operativeCheck": {
+    "provision": "§7.2(d)",
+    "text": "Finance Lease Obligations … greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets … at any one time outstanding",
+    "syntheticCta": "2000000000",
+    "threePercent": "60000000",
+    "fixedLeg": "50000000",
+    "expectedGreaterOf": "60000000",
+    "outstandingAssumed": "0"
+  }
+}

@@ -61,7 +61,19 @@ export function phraseMatchesDeclaredTerm(phrase: string, exactTermsByNormalized
   return false;
 }
 
-/** Every term THIS document declared (structural-definitions.ts's own detection) that appears verbatim in `text` - exact match only, word-boundary-safe (plus deterministic plural surface forms — IPV-09). */
+/**
+ * Word-boundary-safe matcher for a declared term's surface form.
+ * Spaces inside the term match any whitespace run (space, newline, tab) so
+ * EDGAR line-wraps like "Consolidated\\nTotal Assets" still resolve the
+ * declared term — same discipline as IPV-09 plurals: surface form only,
+ * never fuzzy synonym matching across distinct terms.
+ */
+export function termFormAppearsInText(form: string, text: string): boolean {
+  const escaped = form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+  return new RegExp(`\\b${escaped}\\b`).test(text);
+}
+
+/** Every term THIS document declared (structural-definitions.ts's own detection) that appears verbatim in `text` - exact match only, word-boundary-safe (plus deterministic plural surface forms — IPV-09; plus whitespace-flexible multi-word forms for EDGAR wraps). */
 function findKnownTermMentions(text: string, index: StructuralIndex, documentId: string, excludeNormalizedTerm: string): KnownTermMention[] {
   const out: KnownTermMention[] = [];
   const seen = new Set<string>();
@@ -72,10 +84,7 @@ function findKnownTermMentions(text: string, index: StructuralIndex, documentId:
     if (isAdministrativeTerm(def.normalizedTerm)) continue;
     // Word-boundary-safe exact match of the term's own exact text (never fuzzy),
     // plus plural/inflected surface forms so "Guarantors" resolves "Guarantor".
-    const hit = termSurfaceForms(def.exactTerm).some((form) => {
-      const escaped = form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      return new RegExp(`\\b${escaped}\\b`).test(text);
-    });
+    const hit = termSurfaceForms(def.exactTerm).some((form) => termFormAppearsInText(form, text));
     if (hit) {
       out.push({ exactTerm: def.exactTerm, normalizedTerm: def.normalizedTerm });
       seen.add(def.normalizedTerm);

@@ -62,4 +62,40 @@ describe("enumerateCertifiedPaths", () => {
     expect(r.incompleteReasons.some((x) => x.includes("NO_MATCHING_PRIMARY"))).toBe(true);
     expect(["NOT_CERTIFIED_4E", "INCOMPLETE_PACKAGE"]).toContain(r.authority);
   });
+
+  it("refuses SECURED_DEBT CANDIDATE when the VEP has debt permission but no certified lien companion", () => {
+    const exercise = DEMO_EXERCISES.find((e) => e.id === "secured-borrowing-100m");
+    expect(exercise).toBeTruthy();
+    const full = buildFixtureVerifiedPackage(exercise!);
+    expect("blocked" in full).toBe(false);
+    if ("blocked" in full) return;
+
+    // Debt-only package: strip lien rules (simulates authentic §7.2(d)-only VEP).
+    const debtOnly = {
+      ...full,
+      rules: full.rules.filter((r) => r.action === "INCUR_DEBT" || r.action === "INCUR_SECURED_DEBT" || r.action === "GUARANTEE_DEBT"),
+    };
+    expect(debtOnly.rules.some((r) => r.action === "CREATE_LIEN" || r.action === "GRANT_COLLATERAL")).toBe(false);
+    expect(debtOnly.rules.length).toBeGreaterThan(0);
+
+    const secured = enumerateCertifiedPaths({
+      verifiedPackage: debtOnly,
+      transactionKind: "SECURED_DEBT",
+      secured: true,
+    });
+    expect(secured.incompleteReasons).toContain("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT");
+    expect(secured.authority).toBe("INCOMPLETE_PACKAGE");
+    expect(secured.paths.every((p) => p.status !== "CANDIDATE")).toBe(true);
+    expect(secured.unsupportedReasons.some((r) => r.startsWith("SECURED_PATH_REQUIRES_LIEN_COMPANION:"))).toBe(true);
+
+    // Unsecured analysis over the same debt-only package remains a complete enumeration.
+    const unsecured = enumerateCertifiedPaths({
+      verifiedPackage: debtOnly,
+      transactionKind: "UNSECURED_DEBT",
+      secured: false,
+    });
+    expect(unsecured.incompleteReasons).not.toContain("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT");
+    expect(unsecured.authority).toBe("CERTIFIED_4E");
+    expect(unsecured.paths.some((p) => p.status === "CANDIDATE")).toBe(true);
+  });
 });

@@ -1,0 +1,35 @@
+{
+  "decisionVersion": "phase3-candidate-certification.v1",
+  "candidateRef": "discovery-candidate:19f36eb8514494897cd4a5b6",
+  "status": "CERTIFIED",
+  "blockers": [],
+  "warnings": [
+    {
+      "code": "CONTEXT_ONLY_UNIT_QUARANTINED",
+      "detail": "2 unit(s) the composition emitted for source this candidate does not own were quarantined (never in the certified IR)",
+      "refs": [
+        "ir-definition:5d37be4c9e5ea7d59e07eea0",
+        "ir-rule:883e87ed10e884645db7df59"
+      ]
+    },
+    {
+      "code": "TARGET_ECONOMICS_EXCLUDED",
+      "detail": "figures the model restated from referenced provisions were excluded from this unit's dependency semantics",
+      "refs": [
+        "$50,000,000,"
+      ]
+    }
+  ],
+  "sourceIdentityStrength": "STRONG",
+  "semanticSourceIdentityStrength": "STRONG",
+  "operativeSourceVersion": "scv1:e174d146f21a66f9d6e4f1d8a62056b26bb2b99ca75876d58cfea855ed179fa3",
+  "semanticSourceContractVersion": "sscv2:b883cf7d27cb46c985b497e8f1aa472c333a1cf6f0cd5b0b219c9e24a6e765fe",
+  "artifactPackageHash": "5cc93dee72a85d623c095d09db79dad2dbbb85889b28144f69cb764c3ff5cb2f",
+  "snapshotHash": "df06463039b5184c811dd442f64dc84e560064a00a17d8847288f1ddf36276dc",
+  "unitIds": [
+    "ir-rule:817fb6fce7f8b666081509b5"
+  ],
+  "unitArtifactHashes": {
+    "ir-rule:817fb6fce7f8b666081509b5": "00ff45170a0a15261a182d112154a5caeaecf29b3bbdf5f1d5d64bc58713a932"
+  }
+}
