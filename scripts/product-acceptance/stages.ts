@@ -126,9 +126,42 @@ export async function runDeterministicStages(pkg: CorpusPackage): Promise<Determ
   const t1 = Date.now();
   try {
     for (const asOfDate of pkg.manifest.operativeState.asOfDates) {
-      const states = [...instrumentKeys].map(([baseDocumentId, instrumentKey]) => ({ baseDocumentId, state: computeOperativeContractState({ instrumentKey, baseDocumentId, asOfDate, index, allEffects: amendment?.effects ?? [] }) }));
-      operativeStates.set(asOfDate, states.find((x) => x.baseDocumentId === base.documentId)!.state);
-      for (const x of states) if (x.baseDocumentId !== base.documentId) operativeStates.set(`${asOfDate}::${x.baseDocumentId}`, x.state);
+      // IPV-05: amendment effects that could not resolve a target instrument must still
+      // surface as unattached REVIEW material on every candidate instrument — never leave
+      // the instrument OPERATIVE_STATE_RESOLVED with zero disclosure.
+      const unresolvedOrphanEffects = (amendment?.effects ?? []).filter(
+        (e) => (e.status === "UNRESOLVED" || e.status === "REVIEW_REQUIRED") && !e.target.targetInstrumentKey,
+      );
+      const states = [...instrumentKeys].map(([baseDocumentId, instrumentKey]) => ({
+        baseDocumentId,
+        state: computeOperativeContractState({
+          instrumentKey,
+          baseDocumentId,
+          asOfDate,
+          index,
+          allEffects: amendment?.effects ?? [],
+          unresolvedTargetEffectsForThisInstrument: unresolvedOrphanEffects,
+        }),
+      }));
+      // Per-instrument keys for operative-state auditor lookups; package-level
+      // asOf key merges every instrument so multi-instrument candidates
+      // (indenture + credit agreement) see descendant splices (IPV-04).
+      for (const x of states) operativeStates.set(`${asOfDate}::${x.baseDocumentId}`, x.state);
+      const rank: Record<string, number> = {
+        OPERATIVE_STATE_CONFLICTED: 4,
+        OPERATIVE_STATE_REVIEW_REQUIRED: 3,
+        OPERATIVE_STATE_PARTIAL: 2,
+        OPERATIVE_STATE_RESOLVED: 1,
+      };
+      const mergedStatus = states.reduce((worst, x) => ((rank[x.state.status] ?? 0) > (rank[worst] ?? 0) ? x.state.status : worst), "OPERATIVE_STATE_RESOLVED" as (typeof states)[number]["state"]["status"]);
+      operativeStates.set(asOfDate, {
+        instrumentKey: `package:${pkg.packageId}`,
+        asOfDate,
+        provisions: states.flatMap((x) => x.state.provisions),
+        unattachedEffects: states.flatMap((x) => x.state.unattachedEffects),
+        status: mergedStatus,
+        summary: `Merged operative state across ${states.length} instrument(s) at ${asOfDate}.`,
+      });
       supersessionIndexes.set(asOfDate, buildNodeSupersessionIndex(states));
     }
     stageRecords.push({ stage: "OPERATIVE_STATE", mode: "PRODUCTION", note: `computeOperativeContractState + buildNodeSupersessionIndex for ${pkg.manifest.operativeState.asOfDates.length} as-of date(s) × ${instrumentKeys.size} instrument(s)`, durationMs: Date.now() - t1 });

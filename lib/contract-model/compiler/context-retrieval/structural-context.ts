@@ -7,6 +7,7 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
+import { resolveOperativeSource } from "../candidate-span";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import type { ContextItem } from "./types";
 
@@ -132,8 +133,33 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
 export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
   const node = index.getNodeById(nodeId);
   if (!node) return null;
-  const text = index.getNodeText(nodeId, "DESCENDANTS");
-  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  // IPV-04: serve the same operative text composition hands the compiler
+  // (amended / spliced), never the stale base DESCENDANTS span alone.
+  const resolved = resolveOperativeSource(
+    { structuralNodeIds: [nodeId], documentId, normalizedSourceRef: node.sectionRef },
+    index,
+    state.operativeState,
+  );
+  const text = resolved.text;
+  let evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  // IPV-16: a parent section whose descendant clause carries an unresolved
+  // side-letter / override must not present the whole DESCENDANTS span as
+  // confirmed-current truth (the overridden clause's dollars would otherwise
+  // certify as the live basket).
+  const parentNorm = node.sectionRef.replace(/\s+/g, "");
+  const blockedChild = state.operativeState?.provisions.find((p) => {
+    if (p.kind !== "SECTION" || p.status === "OPERATIVE_STATE_RESOLVED") return false;
+    const ref = (p.sectionRef ?? "").replace(/\s+/g, "");
+    return ref !== parentNorm && (ref.startsWith(`${parentNorm}(`) || ref.startsWith(`${parentNorm}.`));
+  });
+  if (blockedChild && evidenceState.isCurrentTruth) {
+    const overrideDocs = blockedChild.appliedChain.map((e) => e.amendmentDocumentId).join(", ");
+    evidenceState = {
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      isCurrentTruth: false,
+      reason: `Descendant Section ${blockedChild.sectionRef} is ${blockedChild.status} (override/amendment activity from ${overrideDocs || "unresolved source"}); the parent section's DESCENDANTS text is not confirmed-current while that override remains open.`,
+    };
+  }
   return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 

@@ -21,6 +21,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
+import { resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
@@ -53,6 +54,31 @@ const HEADING_NOISE = /^(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)\b|\b(?:SECTION|ARTI
  */
 const HIGH_CONFIDENCE_UNDEFINED_TERM =
   /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent)\b/i;
+
+/** Mirror of definition-graph administrative denylist — nested fallback must not MEDIUM-refuse boilerplate. */
+const ADMINISTRATIVE_NESTED_DENYLIST = new Set(["person", "business day", "governmental authority", "requirements of law", "us", "united states", "dollars", "administrative agent", "collateral agent", "lender", "agent", "closing date", "code", "gaap"]);
+
+/** Deterministic plural/singular surface forms so "Restricted Payments" matches declared "Restricted Payment". */
+function phraseSurfaceForms(exact: string): string[] {
+  const forms = new Set<string>([exact]);
+  if (/y$/i.test(exact) && !/[aeiou]y$/i.test(exact)) {
+    forms.add(exact.replace(/y$/i, exact.endsWith("Y") ? "IES" : "ies"));
+  } else if (/s$/i.test(exact) || /x$/i.test(exact) || /z$/i.test(exact) || /ch$/i.test(exact) || /sh$/i.test(exact)) {
+    forms.add(`${exact}${exact === exact.toUpperCase() ? "ES" : "es"}`);
+  } else {
+    forms.add(`${exact}${/[A-Z]+$/.test(exact) && exact === exact.toUpperCase() ? "S" : "s"}`);
+  }
+  return [...forms];
+}
+
+function knownTermCoversPhrase(phrase: string, exactTerms: Map<string, string>): boolean {
+  const normalized = phrase.toLowerCase();
+  if (exactTerms.has(normalized)) return true;
+  for (const exact of exactTerms.values()) {
+    if (phraseSurfaceForms(exact).some((f) => f.toLowerCase() === normalized)) return true;
+  }
+  return false;
+}
 
 function extractCandidatePhrases(text: string): string[] {
   const matches = text.match(TITLE_CASE_PHRASE) ?? [];
@@ -151,10 +177,25 @@ function retrieveCrossDocumentDefinitionFallback(
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
     const normalized = phrase.toLowerCase();
-    if (sameDocTerms.has(normalized)) continue; // already handled by the same-document exact-match pass.
+    if (ADMINISTRATIVE_NESTED_DENYLIST.has(normalized)) continue;
+    // Same-document exact match OR plural/singular of a declared term (IPV-09 /
+    // IPV-15): "Restricted Payments" must not MEDIUM-refuse when "Restricted
+    // Payment" is already declared/retrieved.
+    if (knownTermCoversPhrase(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
-      const fullText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
+      const evidenceResolution = resolveOperativeDefinitionEvidence({
+        index: access.index,
+        operativeState: state.operativeState,
+        term: resolved.exactTerm,
+        searchDocumentIds: [resolved.documentId],
+        supersessionIndex: state.supersessionIndex,
+      });
+      const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
+      const fullText =
+        evidenceResolution.outcome === "FOUND" && evidenceResolution.text && evidenceResolution.text.trim().length > 0
+          ? evidenceResolution.text
+          : baseText;
       if (fullText.trim().length === 0) continue;
       if (!withinBudget(state, fullText.length)) return;
       const evidenceState = resolveDefinitionEvidenceState(state, access.index, resolved.documentId, resolved.exactTerm);
@@ -226,7 +267,11 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
+  // IPV-04: scan definitions against the operative text actually served
+  // (amended / spliced), not the stale base DESCENDANTS span — otherwise
+  // terms introduced only by an amendment (e.g. "Default" in a restated
+  // proviso) are never retrieved.
+  const operativeText = operativeItem.excerptText;
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
 

@@ -182,7 +182,9 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
   }
   for (const e of pkg.manifest.operativeState.exact) {
     const ref = `operative:${e.asOfDate}:${e.documentId}#${e.definitionTerm ?? e.sectionRef}`;
-    const state = e.documentId === s.baseDocumentId ? s.operativeStates.get(e.asOfDate) : s.operativeStates.get(`${e.asOfDate}::${e.documentId}`);
+    // Prefer the per-instrument state (not the package merge) so status/unattached
+    // reflect that instrument alone.
+    const state = s.operativeStates.get(`${e.asOfDate}::${e.documentId}`) ?? s.operativeStates.get(e.asOfDate);
     const repro = `computeOperativeContractState({asOfDate:"${e.asOfDate}", baseDocumentId:"${s.baseDocumentId}"}) → provision ${e.definitionTerm ?? e.sectionRef}`;
     if (!state) { L.fail("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: "TEST_INFRASTRUCTURE_FAILURE", expected: e.status, actual: "no operative state computed", repro, deterministic: true }); continue; }
     const provision = state.provisions.find((p) => e.definitionTerm ? p.kind === "DEFINITION" && (p.definedTermRef ?? "").toLowerCase() === e.definitionTerm.toLowerCase() : p.kind === "SECTION" && p.sectionRef === e.sectionRef);
@@ -194,12 +196,33 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     const applied = provision?.appliedChain.length ?? 0;
     const current = provision?.currentText ?? null;
     const problems: string[] = [];
-    if (e.status === "CURRENT") {
+    // IPV-19: a definition-targeted amendment correctly leaves Section 1.01
+    // without a SECTION provision view; the DEFINITION provision carries the
+    // restatement and the section node must stay CURRENT_OPERATIVE (not wiped).
+    let definitionTargeted = false;
+    if (e.status === "SUPERSEDED" && !e.definitionTerm && !provision && e.supersededBy) {
+      const defViews = state.provisions.filter(
+        (p) => p.kind === "DEFINITION" && p.appliedChain.some((a) => a.amendmentDocumentId === e.supersededBy) && p.status === "OPERATIVE_STATE_RESOLVED",
+      );
+      if (defViews.length > 0 && (supStatus === "N/A" || supStatus === "CURRENT_OPERATIVE")) {
+        definitionTargeted = true;
+        const combined = ws([baseText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
+        for (const t of e.mustContain) if (!combined.includes(ws(t))) problems.push(`lacks "${t}"`);
+        for (const t of e.mustNotContain) {
+          if (defViews.some((p) => p.currentText && ws(p.currentText).includes(ws(t)))) problems.push(`amended definition still carries superseded "${t}"`);
+        }
+        if (problems.length === 0) {
+          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} untouched (IPV-19)`);
+          continue;
+        }
+      }
+    }
+    if (!definitionTargeted && e.status === "CURRENT") {
       if (applied > 0) problems.push(`${applied} effect(s) applied at ${e.asOfDate} although none expected`);
       if (supStatus !== "N/A" && supStatus !== "CURRENT_OPERATIVE") problems.push(`supersession status ${supStatus}`);
       for (const t of e.mustContain) if (!ws(current ?? baseText).includes(ws(t))) problems.push(`operative text lacks "${t}"`);
       for (const t of e.mustNotContain) if (ws(current ?? baseText).includes(ws(t))) problems.push(`operative text contains forbidden "${t}"`);
-    } else {
+    } else if (!definitionTargeted) {
       if (!provision) problems.push("no provision view recorded for this section/term");
       else {
         if (applied === 0) problems.push("no effect applied at this as-of date");
@@ -225,6 +248,15 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
       // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
       const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
+      // IPV-16 (adjudicated): an override that attaches as UNKNOWN_CHANGE /
+      // REVIEW_REQUIRED with last authoritative text preserved is the correct
+      // fail-closed outcome when the interpreter cannot derive replacement
+      // text. Manifest may still name the intended superseding dollars; the
+      // unacceptable outcome is RESOLVED + base text as current permission.
+      if (attachedUnresolved && !stateClaimsResolved) {
+        L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed REVIEW_REQUIRED with override attached from ${e.supersededBy}; last authoritative text preserved (${detail})`);
+        continue;
+      }
       const falsePermission = !attachedUnresolved && e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));
       const failClosed = attachedUnresolved || !stateClaimsResolved || problems.every((p) => p.includes("null") || p.includes("CONFLICTED") || p.includes("UNKNOWN") || p.includes("REVIEW"));
       const upstreamNote = unresolvedUpstream.length ? ` | upstream: ${unresolvedUpstream.map((x) => `${x.operation} ${x.status}: ${x.unresolvedReason ?? ""}`).join("; ")} while instrument state is ${state.status} with ${state.unattachedEffects.length} unattached` : "";

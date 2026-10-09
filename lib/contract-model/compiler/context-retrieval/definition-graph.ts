@@ -9,6 +9,7 @@
  * structural-definitions.ts already declared, never a fuzzy guess.
  */
 import type { StructuralIndex } from "../structural-index";
+import { resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import { addEdge, addItem, makeItemInput, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { computeItemId } from "./identity";
 import type { ContextItem } from "./types";
@@ -141,16 +142,25 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
       continue;
     }
 
-    const fullText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    // IPV-20: serve the operative definition text when a RESOLVED amendment
+    // targets this term — never the static base-document index alone.
+    const evidenceResolution = resolveOperativeDefinitionEvidence({
+      index,
+      operativeState: state.operativeState,
+      term: mention.exactTerm,
+      searchDocumentIds: [documentId],
+      supersessionIndex: state.supersessionIndex,
+    });
+    const baseText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
+    const fullText =
+      evidenceResolution.outcome === "FOUND" && evidenceResolution.text && evidenceResolution.text.trim().length > 0
+        ? evidenceResolution.text
+        : baseText;
     if (!withinBudget(state, fullText.length)) return;
 
-    // Phase 3F.1 FIX-2 - this is the exact defect class the reproduced
-    // exploit targeted: fullText above is raw base-document text with NO
-    // amendment/operative-state check of any kind. evidenceState is
-    // computed here, BEFORE this item is ever placed in the bundle, so a
-    // CONFLICTED/AMBIGUOUS/superseded definition is never silently
-    // presented as current truth regardless of whether the model ever
-    // calls getDefinition itself.
+    // Phase 3F.1 FIX-2 - evidenceState is computed BEFORE this item is ever
+    // placed in the bundle, so a CONFLICTED/AMBIGUOUS/superseded definition
+    // is never silently presented as current truth.
     const evidenceState = resolveDefinitionEvidenceState(state, index, documentId, mention.exactTerm);
     const type = depth === 1 ? "DEFINITION" : "DEFINITION_DEPENDENCY";
     const item = addItem(

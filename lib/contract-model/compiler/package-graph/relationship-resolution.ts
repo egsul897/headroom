@@ -110,7 +110,13 @@ function ws(phrase: string): string {
   return phrase.replace(/ /g, "\\s+");
 }
 
-const RESTATEMENT_PREFIX = `(?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)${ws(" Amended and Restated ")}|${ws("Amended and Restated ")}|${ws("First Lien ")}|${ws("Second Lien ")}|Senior\\s+|Subordinated\\s+)?`;
+// IPV-05: facility-type prefixes (ABL, Term Loan, Revolving, …) commonly sit
+// before "Credit Agreement" / "Loan Agreement" in amendment captions
+// ("the ABL Credit Agreement dated as of…"). Without them, an amendment that
+// correctly names the base instrument fails type+date resolution and the
+// instrument is reported OPERATIVE_STATE_RESOLVED with zero effects.
+const FACILITY_TYPE_PREFIX = `(?:ABL\\s+|${ws("Term Loan ")}|${ws("Revolving Credit ")}|${ws("Revolving ")}|${ws("First Lien ")}|${ws("Second Lien ")}|Senior\\s+|Subordinated\\s+)?`;
+const RESTATEMENT_PREFIX = `(?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)${ws(" Amended and Restated ")}|${ws("Amended and Restated ")}|${FACILITY_TYPE_PREFIX})`;
 const AGREEMENT_LABEL_ALTERNATION = [ws("Credit Agreement"), "Indenture", ws("Loan Agreement"), ws("Intercreditor Agreement"), ws("Guarantee and Collateral Agreement"), ws("Guaranty and Collateral Agreement"), ws("Guarantee and Security Agreement"), ws("Guaranty and Security Agreement"), ws("Pledge and Security Agreement"), ws("Pledge, Guaranty and Security Agreement"), ws("Security Agreement"), ws("Collateral Agreement"), `Guaranty(?:${ws(" Agreement")})?`, ws("Guarantee Agreement")].join("|");
 // POST-3F.2 remediation (Unit B1) - root cause traced in docs/post-3f2-
 // generalization-architecture-decision.json section 6 bug 1: the original
