@@ -1,0 +1,45 @@
+{
+  "schema": "stage-c-pkgn-phase4e.v1",
+  "paidProvidersCalled": false,
+  "packageId": "pkg-n-clean-ratio",
+  "authority": "CERTIFIED_4E",
+  "pathCount": 4,
+  "paths": [
+    {
+      "pathId": "path:ir-rule:041ee566180d7781e9fda24a",
+      "status": "CANDIDATE",
+      "action": "INCUR_DEBT",
+      "ruleId": "ir-rule:041ee566180d7781e9fda24a",
+      "sourceSectionRef": "7.01(b)",
+      "financialTests": []
+    },
+    {
+      "pathId": "path:ir-rule:482a6fb7f6984ae5932dec28",
+      "status": "CANDIDATE",
+      "action": "INCUR_DEBT",
+      "ruleId": "ir-rule:482a6fb7f6984ae5932dec28",
+      "sourceSectionRef": "7.01(c)",
+      "financialTests": [
+        "rule[r4].condition[0]: RATIO_TEST: Total Net Leverage Ratio does not exceed 3.00 to 1.00 (pro forma)",
+        "rule[r4].condition[1]: PRO_FORMA: after giving pro forma effect thereto"
+      ]
+    },
+    {
+      "pathId": "path:ir-rule:93b74e03d8f510ede896dde9",
+      "status": "CANDIDATE",
+      "action": "INCUR_DEBT",
+      "ruleId": "ir-rule:93b74e03d8f510ede896dde9",
+      "sourceSectionRef": "7.01(a)",
+      "financialTests": []
+    },
+    {
+      "pathId": "path:ir-rule:a619f57c4c1e7085baefe437",
+      "status": "CANDIDATE",
+      "action": "INCUR_DEBT",
+      "ruleId": "ir-rule:a619f57c4c1e7085baefe437",
+      "sourceSectionRef": "7.01",
+      "financialTests": []
+    }
+  ],
+  "note": "Acceptance DERIVED VEP — synthetic issuer Oakhurst; not authentic EDGAR CERTIFIED."
+}

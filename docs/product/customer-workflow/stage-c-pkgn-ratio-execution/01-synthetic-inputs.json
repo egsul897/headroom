@@ -1,0 +1,22 @@
+{
+  "schema": "stage-c-pkgn-synthetic-inputs.v1",
+  "label": "SYNTHETIC_LABELED_TECHNICAL_DEMO — not a certified customer result",
+  "certifiedCustomerResult": false,
+  "asOf": "2026-12-31",
+  "totalNetLeverageRatio": "2.5",
+  "snapshot": {
+    "snapshotId": "synthetic-tnlr-pkgn-2.5",
+    "provenance": {
+      "source": "SYNTHETIC_LABELED_TECHNICAL_DEMO",
+      "sourceVersion": "stage-c-demo-1",
+      "note": "Labeled synthetic Total Net Leverage Ratio for Stage C technical demonstration — NEVER a certified customer financial result"
+    },
+    "inputs": [
+      {
+        "key": "Total Net Leverage Ratio",
+        "note": "SYNTHETIC: Total Net Leverage Ratio = 2.5 (pro forma); §7.01(c) gate is ≤ 3.00",
+        "value": "2.5"
+      }
+    ]
+  }
+}

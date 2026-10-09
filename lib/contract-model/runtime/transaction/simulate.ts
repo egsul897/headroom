@@ -292,6 +292,11 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
       }
       entityScope.push(entityScopeOutcome(rule, tx.entities ?? []));
     }
+    // Drafting often states "after giving pro forma effect thereto" as a manner phrase on the
+    // same ratio test that already carries evaluationBasis.proForma. When the compiler also emits
+    // that manner as a separate expressionless condition, treating it as an independent
+    // UNSUPPORTED gate incorrectly refuses a path whose pro-forma ratio test already SATISFIED.
+    dischargeRedundantProFormaMannerConditions(conditions, selectedRules);
     for (const cr of conditions) {
       if (cr.result === "NOT_SATISFIED") limit("CONDITION_NOT_SATISFIED", `condition ${cr.conditionId} on rule ${cr.ruleId} is not satisfied: ${cr.description}`, [cr.ruleId, cr.conditionId]);
       if (cr.result === "NEEDS_INPUT") limit("MISSING_FINANCIAL_INPUT", `condition ${cr.conditionId} on rule ${cr.ruleId} needs a financial fact that is not supplied`, [cr.ruleId, cr.conditionId]);
@@ -780,6 +785,40 @@ function conditionOutcome(evaluation: EvaluationResult | null, unsafeLegal: bool
   const v = evaluation.value;
   if (!v || v.type !== "BOOLEAN") return { result: "UNSUPPORTED", reason: `the condition evaluated to ${v?.type ?? "no value"} rather than a boolean` };
   return v.value ? { result: "SATISFIED", reason: "evaluated true against the pro-forma input view" } : { result: "NOT_SATISFIED", reason: "evaluated false against the pro-forma input view" };
+}
+
+/** True when the condition is only the "after giving pro forma effect…" manner phrase, with no boolean expression of its own. */
+function isExpressionlessProFormaManner(condition: IRRule["conditions"][number]): boolean {
+  if (condition.expression != null) return false;
+  const desc = condition.description ?? "";
+  const excerpt = condition.provenance?.excerpt ?? "";
+  const text = `${desc}\n${excerpt}`;
+  return /^PRO_FORMA\b/i.test(desc) || /\bafter giving pro forma effect\b/i.test(text);
+}
+
+/**
+ * When a sibling condition already carries evaluationBasis.proForma and evaluated SATISFIED,
+ * discharge a redundant expressionless pro-forma manner condition on the same rule.
+ * Does not invent satisfaction for unrelated UNSUPPORTED conditions.
+ */
+function dischargeRedundantProFormaMannerConditions(conditions: ConditionResult[], selectedRules: readonly IRRule[]): void {
+  for (const rule of selectedRules) {
+    const onRule = conditions.filter((c) => c.ruleId === rule.ruleId);
+    const proFormaSiblingSatisfied = onRule.some((cr) => {
+      if (cr.result !== "SATISFIED") return false;
+      const src = rule.conditions.find((c) => c.conditionId === cr.conditionId);
+      return src?.evaluationBasis?.proForma === true && src.expression != null;
+    });
+    if (!proFormaSiblingSatisfied) continue;
+    for (const cr of onRule) {
+      if (cr.result !== "UNSUPPORTED" || cr.evaluation != null) continue;
+      const src = rule.conditions.find((c) => c.conditionId === cr.conditionId);
+      if (!src || !isExpressionlessProFormaManner(src)) continue;
+      cr.result = "SATISFIED";
+      cr.reason =
+        "discharged: expressionless pro-forma manner phrase is already carried as evaluationBasis.proForma on a sibling condition that evaluated SATISFIED; not an independent unevaluable gate";
+    }
+  }
 }
 
 /** Phase-3 entity scope, read as it stands. Never widened, never guessed. */
