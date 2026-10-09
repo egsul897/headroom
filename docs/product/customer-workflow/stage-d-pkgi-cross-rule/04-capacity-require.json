@@ -1,0 +1,81 @@
+{
+  "schema": "stage-d-pkgi-cross-rule-capacity.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "asOf": "2026-12-31",
+  "outcome": "EXECUTED",
+  "debt701b": {
+    "status": "AVAILABLE",
+    "effectiveRemaining": {
+      "kind": "AMOUNT",
+      "value": {
+        "type": "MONEY",
+        "amount": "50000000",
+        "currency": "USD",
+        "lineage": {
+          "exprId": "ir-expr:09691fbb468a1a7770f867f4",
+          "inputKeys": [],
+          "rawSource": 50000000
+        }
+      }
+    },
+    "limitations": []
+  },
+  "lien702b": {
+    "status": "REVIEW_REQUIRED",
+    "effectiveRemaining": {
+      "kind": "NOT_DETERMINED",
+      "reason": "the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provisional`"
+    },
+    "provisional": {
+      "grossCapacity": {
+        "kind": "AMOUNT",
+        "value": {
+          "type": "MONEY",
+          "amount": "20000000",
+          "currency": "USD",
+          "lineage": {
+            "exprId": "ir-expr:478cb4c61c859ba8182c4e02",
+            "inputKeys": [],
+            "rawSource": 20000000
+          }
+        }
+      },
+      "remaining": {
+        "kind": "AMOUNT",
+        "value": {
+          "type": "MONEY",
+          "amount": "20000000",
+          "currency": "USD",
+          "lineage": {
+            "exprId": "ir-expr:478cb4c61c859ba8182c4e02",
+            "inputKeys": [],
+            "rawSource": 20000000
+          }
+        }
+      },
+      "effectiveRemaining": {
+        "kind": "AMOUNT",
+        "value": {
+          "type": "MONEY",
+          "amount": "20000000",
+          "currency": "USD",
+          "lineage": {
+            "exprId": "ir-expr:478cb4c61c859ba8182c4e02",
+            "inputKeys": [],
+            "rawSource": 20000000
+          }
+        }
+      }
+    },
+    "limitations": [
+      {
+        "code": "ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON",
+        "message": "the Phase-3 entity-scope guard marked this rule's scope not safe to rely on; the capacity is not attributed to a specific entity set",
+        "refs": [
+          "capacity:rule:ir-rule:81aa6243b5eb1655b8642df0"
+        ]
+      }
+    ]
+  }
+}
