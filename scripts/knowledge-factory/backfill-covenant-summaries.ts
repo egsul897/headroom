@@ -13,10 +13,23 @@ import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelli
 import { summarizeFromStoredMetadata } from "../../lib/product/covenant-intelligence/summarize";
 import path from "node:path";
 
+function argInt(name: string, fallback: number): number {
+  const hit = process.argv.find((a) => a.startsWith(`${name}=`));
+  if (!hit) return fallback;
+  const n = Number(hit.split("=")[1]);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
 async function main() {
+  const limit = argInt("--limit", 10_000);
+  const onlyCustomer = process.argv.includes("--customer-only");
   const rows = await prisma.knowledgeSource.findMany({
-    where: { storageRef: { not: null } },
+    where: {
+      storageRef: { not: null },
+      ...(onlyCustomer ? { companyId: { not: null } } : {}),
+    },
     orderBy: { sourceId: "asc" },
+    take: limit,
   });
   const store = openMassPrecedentCorpus();
   let updated = 0;
@@ -25,7 +38,12 @@ async function main() {
 
   for (const row of rows) {
     const existing = summarizeFromStoredMetadata(row.metadata);
-    if (existing && existing.items.length > 0) {
+    const force = process.argv.includes("--force");
+    const isV2 =
+      existing &&
+      typeof existing === "object" &&
+      (existing as { schemaVersion?: string }).schemaVersion === "product.covenant-summary.v2";
+    if (!force && existing && existing.items.length > 0 && isV2) {
       skipped += 1;
       continue;
     }
@@ -67,6 +85,7 @@ async function main() {
         candidates: store.loadCandidates(row.sourceId),
         definitions: store.loadDefinitions(row.sourceId),
         structuralNodes: store.loadStructuralNodes(row.sourceId),
+        crossReferences: store.loadCrossReferences(row.sourceId),
       });
 
       const prev =

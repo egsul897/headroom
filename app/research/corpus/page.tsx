@@ -50,11 +50,19 @@ export default async function ResearchCorpusPage({
           <div className="row-value">{summary.withStorageRef}</div>
         </div>
         <div className="row">
-          <div className="row-label">With covenant summaries</div>
+          <div className="row-label">Substantive financing precedents</div>
+          <div className="row-value">{summary.substantiveFinancingSources}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Non-financing exhibits (excluded from browse)</div>
+          <div className="row-value">{summary.nonFinancingExhibits}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">With covenant summaries (substantive)</div>
           <div className="row-value">{withSummary}</div>
         </div>
         <div className="row">
-          <div className="row-label">Distinct issuers</div>
+          <div className="row-label">Distinct issuers (substantive)</div>
           <div className="row-value">{summary.distinctIssuers}</div>
         </div>
         <div className="row-note" style={{ marginTop: 8 }}>

@@ -1,5 +1,5 @@
 /**
- * Plain-English covenant category summaries from discovered candidates.
+ * Document covenant summaries from substantive provision analysis.
  * DISCOVERED ≠ VERIFIED. Never invents capacity or legal permission.
  */
 
@@ -9,6 +9,7 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
+import { analyzeProvision, type ProvisionAnalysis, type ProvisionPosture } from "./analyze-provision";
 
 export type CovenantCategoryKey =
   | "DEBT_INCURRENCE"
@@ -37,60 +38,45 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   OTHER: "Other provisions",
 };
 
-const FAMILY_TO_CATEGORY: Record<string, CovenantCategoryKey> = {
-  INDEBTEDNESS: "DEBT_INCURRENCE",
-  INCREMENTAL_DEBT_AND_FACILITIES: "DEBT_INCURRENCE",
-  RATIO_BASED_PERMISSIONS: "DEBT_INCURRENCE",
-  LIENS: "LIENS_SECURED_DEBT",
-  RESTRICTED_PAYMENTS: "RESTRICTED_PAYMENTS_INVESTMENTS",
-  INVESTMENTS: "RESTRICTED_PAYMENTS_INVESTMENTS",
-  ASSET_SALES: "ASSET_SALES",
-  AFFILIATE_TRANSACTIONS: "AFFILIATE_TRANSACTIONS",
-  GUARANTEES: "GUARANTEES",
-  FUNDAMENTAL_CHANGES: "MERGERS_FUNDAMENTAL_CHANGES",
-  FINANCIAL_MAINTENANCE_COVENANTS: "FINANCIAL_MAINTENANCE",
-  EVENTS_OF_DEFAULT: "EVENTS_OF_DEFAULT",
-  AVAILABLE_AMOUNT_AND_BUILDER_BASKETS: "BASKETS_EXCEPTIONS_CONDITIONS",
-  SHARED_CAPACITY_PROVISIONS: "BASKETS_EXCEPTIONS_CONDITIONS",
-  GENERAL_CONDITIONS_AND_EXCEPTIONS: "BASKETS_EXCEPTIONS_CONDITIONS",
-  MANDATORY_PREPAYMENTS: "DEBT_INCURRENCE",
-  JUNIOR_DEBT_PREPAYMENTS: "DEBT_INCURRENCE",
-  RESTRICTED_SUBSIDIARIES: "OTHER",
-  UNRESTRICTED_SUBSIDIARIES: "OTHER",
-  DESIGNATIONS: "OTHER",
-};
-
-export interface EntityScopeSignals {
-  borrower: boolean;
-  guarantor: boolean;
-  restrictedSubsidiary: boolean;
-  unrestrictedSubsidiary: boolean;
-  notes: string[];
-}
-
+/** Persisted summary item — same shape consumed by Ask Headroom. */
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
   sectionRef: string;
   heading: string;
+  posture: ProvisionPosture;
   plainEnglish: string;
+  restriction: string | null;
+  permissions: string[];
+  coveredEntities: string[];
+  exceptions: string[];
+  conditions: string[];
+  materialBasketsThresholds: string[];
+  draftingPatterns: string[];
   operativeLanguageExcerpt: string;
   sourceCitation: string;
   governingAgreement: string;
   families: string[];
   relatedDefinedTerms: string[];
-  applicableDefinitions: Array<{ term: string; excerpt: string }>;
-  entityScope: EntityScopeSignals;
-  materialBasketsThresholds: string[];
+  applicableDefinitions: Array<{ term: string; excerpt: string; resolved?: boolean }>;
+  entityScope: {
+    borrower: boolean;
+    guarantor: boolean;
+    restrictedSubsidiary: boolean;
+    unrestrictedSubsidiary: boolean;
+    notes: string[];
+  };
   crossReferences: string[];
   dependencies: string[];
   epistemicStatus: "DISCOVERED_CANDIDATE" | "STRUCTURE_ONLY";
   interpretationNote: string;
   unresolvedQuestions: string[];
+  /** Full structured analysis — Ask and UI share this object. */
+  analysis: ProvisionAnalysis;
 }
 
 export interface DocumentCovenantSummary {
-  schemaVersion: "product.covenant-summary.v1";
+  schemaVersion: "product.covenant-summary.v2";
   sourceId: string;
   governingAgreement: string;
   issuerName?: string;
@@ -104,140 +90,49 @@ export interface DocumentCovenantSummary {
   definedTermsSample: Array<{ term: string; excerpt: string }>;
 }
 
-function sectionForNode(
-  nodeId: string | undefined,
-  nodes: StructuralNodeRecord[],
-): { sectionRef: string; heading: string } {
-  if (!nodeId) return { sectionRef: "n/a", heading: "Document body" };
-  const n = nodes.find((x) => x.nodeId === nodeId);
+function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["entityScope"] {
+  const joined = a.coveredEntities.join(" ").toLowerCase();
   return {
-    sectionRef: n?.sectionRef || n?.heading || nodeId,
-    heading: n?.heading || n?.sectionRef || "Untitled provision",
+    borrower: /\bborrower\b/.test(joined),
+    guarantor: /\bguarantor/.test(joined),
+    restrictedSubsidiary: /\brestricted subsidiar/.test(joined),
+    unrestrictedSubsidiary: /\bunrestricted subsidiar/.test(joined),
+    notes: a.entityScopeNotes,
   };
 }
 
-function detectEntityScope(excerpt: string, heading: string): EntityScopeSignals {
-  const hay = `${heading} ${excerpt}`.toLowerCase();
-  const notes: string[] = [];
-  const borrower = /\bborrower\b/.test(hay);
-  const guarantor = /\bguarantor/.test(hay);
-  const restrictedSubsidiary = /\brestricted subsidiar/.test(hay);
-  const unrestrictedSubsidiary = /\bunrestricted subsidiar/.test(hay);
-  if (borrower) notes.push("Text references the Borrower.");
-  if (guarantor) notes.push("Text references Guarantor(s).");
-  if (restrictedSubsidiary) notes.push("Text references Restricted Subsidiaries.");
-  if (unrestrictedSubsidiary) notes.push("Text references Unrestricted Subsidiaries.");
-  if (notes.length === 0) {
-    notes.push("Entity scope not clearly stated in the excerpt — full section review required.");
-  }
-  return { borrower, guarantor, restrictedSubsidiary, unrestrictedSubsidiary, notes };
-}
-
-function detectBasketsAndThresholds(excerpt: string): string[] {
-  const hits: string[] = [];
-  const money = excerpt.match(/\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/gi) ?? [];
-  for (const m of money.slice(0, 6)) hits.push(`Amount/threshold: ${m.trim()}`);
-  if (/\bgreater of\b/i.test(excerpt)) hits.push("Greater-of basket construct detected.");
-  if (/\bbuilder\b|\bavailable amount\b|\bcumulative credit\b/i.test(excerpt)) {
-    hits.push("Builder / Available Amount construct detected.");
-  }
-  if (/\bexcept(?:ion|ing)?\b|\bprovided that\b|\bso long as\b/i.test(excerpt)) {
-    hits.push("Exception or condition language detected.");
-  }
-  if (/\bleverage\b|\bcoverage\b|\bfixed charge\b/i.test(excerpt)) {
-    hits.push("Ratio-based condition or threshold language detected.");
-  }
-  return hits.slice(0, 8);
-}
-
-function detectDependencies(excerpt: string, crossRefs: string[], definedTerms: string[]): string[] {
-  const deps: string[] = [];
-  for (const ref of crossRefs.slice(0, 6)) {
-    deps.push(`Depends on / references ${ref}`);
-  }
-  for (const term of definedTerms.slice(0, 4)) {
-    deps.push(`Meaning controlled by definition of “${term}”`);
-  }
-  if (/\bsubject to\b|\bin accordance with\b|\bas defined in\b/i.test(excerpt)) {
-    deps.push("Operative effect appears contingent on another provision or definition.");
-  }
-  if (deps.length === 0) {
-    deps.push("No explicit cross-provision dependency identified in the excerpt.");
-  }
-  return deps.slice(0, 8);
-}
-
-function plainEnglishFor(params: {
-  families: string[];
-  heading: string;
-  excerpt: string;
-  sectionRef: string;
-  entityScope: EntityScopeSignals;
-  baskets: string[];
-  dependencies: string[];
-}): string {
-  const primary = params.families[0] ?? "UNKNOWN";
-  const cat = FAMILY_TO_CATEGORY[primary] ?? "OTHER";
-  const label = COVENANT_CATEGORY_LABELS[cat];
-  const clip = params.excerpt.replace(/\s+/g, " ").trim().slice(0, 320);
-  const scopeBits: string[] = [];
-  if (params.entityScope.borrower) scopeBits.push("Borrower");
-  if (params.entityScope.guarantor) scopeBits.push("Guarantor(s)");
-  if (params.entityScope.restrictedSubsidiary) scopeBits.push("Restricted Subsidiaries");
-  if (params.entityScope.unrestrictedSubsidiary) scopeBits.push("Unrestricted Subsidiaries");
-  const scope =
-    scopeBits.length > 0
-      ? `Apparent scope signals: ${scopeBits.join(", ")}.`
-      : "Scope (Borrower / Guarantor / Restricted Subsidiary) is not explicit in the excerpt.";
-  const basketNote =
-    params.baskets.length > 0
-      ? ` Material baskets/thresholds/exceptions signaled: ${params.baskets.slice(0, 3).join("; ")}.`
-      : "";
-  const depNote =
-    params.dependencies[0] && !params.dependencies[0].startsWith("No explicit")
-      ? ` Dependency: ${params.dependencies[0]}.`
-      : "";
-  return (
-    `Section ${params.sectionRef} (“${params.heading.slice(0, 100)}”) appears to impose or condition ` +
-    `${label.toLowerCase()} restrictions or permissions. ${scope}${basketNote}${depNote} ` +
-    `Source-backed substance: “${clip}${params.excerpt.length > 320 ? "…" : ""}”. ` +
-    `This explains discovered text; it is not a determination of current operative permission or capacity.`
-  );
-}
-
-function relatedTerms(excerpt: string, defs: DefinitionRecord[]): string[] {
-  const hits: string[] = [];
-  for (const d of defs.slice(0, 200)) {
-    if (d.term.length < 3) continue;
-    if (excerpt.toLowerCase().includes(d.term.toLowerCase())) hits.push(d.term);
-    if (hits.length >= 8) break;
-  }
-  return hits;
-}
-
-function applicableDefinitions(
-  terms: string[],
-  defs: DefinitionRecord[],
-): Array<{ term: string; excerpt: string }> {
-  const out: Array<{ term: string; excerpt: string }> = [];
-  for (const term of terms) {
-    const d = defs.find((x) => x.term.toLowerCase() === term.toLowerCase());
-    if (d) out.push({ term: d.term, excerpt: (d.excerpt ?? "").slice(0, 240) });
-  }
-  return out;
-}
-
-function crossRefsForCandidate(
-  nodeId: string | undefined,
-  excerpt: string,
-  xrefs: CrossReferenceRecord[],
-): string[] {
-  const fromNode = nodeId
-    ? xrefs.filter((x) => x.fromNodeId === nodeId).map((x) => x.rawReference)
-    : [];
-  const fromText =
-    excerpt.match(/\b(?:Section|Article|§)\s*[\dA-Za-z.()-]+/g)?.map((s) => s.trim()) ?? [];
-  return Array.from(new Set([...fromNode, ...fromText])).slice(0, 10);
+function itemFromAnalysis(
+  analysis: ProvisionAnalysis,
+  governingAgreement: string,
+): CovenantSummaryItem {
+  return {
+    category: analysis.category,
+    categoryLabel: analysis.categoryLabel,
+    sectionRef: analysis.sectionRef,
+    heading: analysis.heading,
+    posture: analysis.posture,
+    plainEnglish: analysis.plainEnglish,
+    restriction: analysis.restriction,
+    permissions: analysis.permissions,
+    coveredEntities: analysis.coveredEntities,
+    exceptions: analysis.exceptions,
+    conditions: analysis.conditions,
+    materialBasketsThresholds: analysis.basketsAndThresholds,
+    draftingPatterns: analysis.draftingPatterns,
+    operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
+    sourceCitation: analysis.sourceCitation,
+    governingAgreement,
+    families: analysis.families,
+    relatedDefinedTerms: analysis.applicableDefinitions.map((d) => d.term),
+    applicableDefinitions: analysis.applicableDefinitions,
+    entityScope: entityScopeFromAnalysis(analysis),
+    crossReferences: analysis.crossReferences,
+    dependencies: analysis.dependencies,
+    epistemicStatus: analysis.epistemicStatus,
+    interpretationNote: analysis.interpretationNote,
+    unresolvedQuestions: analysis.unresolved,
+    analysis,
+  };
 }
 
 export function buildDocumentCovenantSummary(params: {
@@ -253,60 +148,19 @@ export function buildDocumentCovenantSummary(params: {
 }): DocumentCovenantSummary {
   const items: CovenantSummaryItem[] = [];
   const countsByCategory: Record<string, number> = {};
-  const xrefs = params.crossReferences ?? [];
 
   const ranked = [...params.candidates].sort((a, b) => b.discoveryScore - a.discoveryScore);
   for (const c of ranked) {
-    const primary = c.families[0] ?? "UNKNOWN";
-    const category = FAMILY_TO_CATEGORY[primary] ?? "OTHER";
-    countsByCategory[category] = (countsByCategory[category] ?? 0) + 1;
-    const { sectionRef, heading } = sectionForNode(c.nodeId, params.structuralNodes);
-    const terms = relatedTerms(c.excerpt, params.definitions);
-    const entityScope = detectEntityScope(c.excerpt, heading);
-    const materialBasketsThresholds = detectBasketsAndThresholds(c.excerpt);
-    const crossReferences = crossRefsForCandidate(c.nodeId, c.excerpt, xrefs);
-    const dependencies = detectDependencies(c.excerpt, crossReferences, terms);
-    const unresolvedQuestions = [
-      "Whether this provision is currently operative after amendments",
-      "Whether exceptions/carve-outs fully neutralize the restriction",
-      "Whether required defined terms resolve to a complete calculation",
-    ];
-    if (dependencies.some((d) => d.startsWith("Depends on"))) {
-      unresolvedQuestions.push("Whether referenced provisions are present and currently operative in the package");
-    }
-    if (!entityScope.borrower && !entityScope.guarantor && !entityScope.restrictedSubsidiary) {
-      unresolvedQuestions.push("Missing clear entity-scope language in the retrieved excerpt");
-    }
-
-    items.push({
-      category,
-      categoryLabel: COVENANT_CATEGORY_LABELS[category],
-      sectionRef,
-      heading,
-      plainEnglish: plainEnglishFor({
-        families: c.families,
-        heading,
-        excerpt: c.excerpt,
-        sectionRef,
-        entityScope,
-        baskets: materialBasketsThresholds,
-        dependencies,
-      }),
-      operativeLanguageExcerpt: c.excerpt.slice(0, 600),
-      sourceCitation: `${params.sourceId} · ${sectionRef}`,
-      governingAgreement: params.documentTitle,
-      families: c.families,
-      relatedDefinedTerms: terms,
-      applicableDefinitions: applicableDefinitions(terms, params.definitions),
-      entityScope,
-      materialBasketsThresholds,
-      crossReferences,
-      dependencies,
-      epistemicStatus: "DISCOVERED_CANDIDATE",
-      interpretationNote:
-        "Classification and plain-English restatement are discovery aids grounded in extracted text. They are not legal advice and do not establish executable permission or capacity.",
-      unresolvedQuestions,
+    const analysis = analyzeProvision({
+      sourceId: params.sourceId,
+      documentTitle: params.documentTitle,
+      candidate: c,
+      definitions: params.definitions,
+      structuralNodes: params.structuralNodes,
+      crossReferences: params.crossReferences,
     });
+    countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
+    items.push(itemFromAnalysis(analysis, params.documentTitle));
   }
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
@@ -318,7 +172,7 @@ export function buildDocumentCovenantSummary(params: {
   });
 
   return {
-    schemaVersion: "product.covenant-summary.v1",
+    schemaVersion: "product.covenant-summary.v2",
     sourceId: params.sourceId,
     governingAgreement: params.documentTitle,
     issuerName: params.issuerName,
@@ -326,7 +180,7 @@ export function buildDocumentCovenantSummary(params: {
     documentClass: params.documentClass,
     generatedAt: new Date().toISOString(),
     promotedToLegalTruth: 0,
-    note: "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. PRECEDENT ≠ OPERATIVE AUTHORITY.",
+    note: "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
     items: items.slice(0, 120),
     definedTermsSample: params.definitions.slice(0, 40).map((d) => ({

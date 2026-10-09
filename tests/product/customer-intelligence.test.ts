@@ -118,7 +118,10 @@ describe("covenant summary substance", () => {
     expect(summary.items.length).toBe(1);
     const item = summary.items[0]!;
     expect(item.plainEnglish.toLowerCase()).toContain("debt");
+    expect(item.plainEnglish).not.toMatch(/appears to address/);
     expect(item.plainEnglish).not.toBe(item.heading);
+    expect(item.posture).toBeTruthy();
+    expect(item.analysis.plainEnglish).toBe(item.plainEnglish);
     expect(item.entityScope.borrower).toBe(true);
     expect(item.entityScope.restrictedSubsidiary).toBe(true);
     expect(item.materialBasketsThresholds.length).toBeGreaterThan(0);

@@ -212,7 +212,8 @@ export default async function DocumentSourcePage({
                 <div className="row-label">{item.categoryLabel}</div>
                 <div className="row-value">
                   <Chip tone="idle">{item.sectionRef}</Chip>{" "}
-                  <Chip tone="navy">{item.epistemicStatus}</Chip>
+                  {item.posture && <Chip tone="navy">{item.posture}</Chip>}{" "}
+                  <Chip tone="idle">{item.epistemicStatus}</Chip>
                 </div>
               </div>
               <div className="card-subtitle" style={{ marginTop: 4 }}>
@@ -221,13 +222,27 @@ export default async function DocumentSourcePage({
               <p className="row-note" style={{ whiteSpace: "pre-wrap" }}>
                 {item.plainEnglish}
               </p>
+              {item.restriction && (
+                <div className="row-note">Restriction: {item.restriction}</div>
+              )}
+              {(item.permissions?.length ?? 0) > 0 && (
+                <div className="row-note">
+                  Permissions / exceptions: {item.permissions!.slice(0, 4).join(" · ")}
+                </div>
+              )}
+              {(item.coveredEntities?.length ?? 0) > 0 && (
+                <div className="row-note">Covered entities: {item.coveredEntities!.join(", ")}</div>
+              )}
               {item.entityScope?.notes?.length > 0 && (
-                <div className="row-note">Scope: {item.entityScope.notes.join(" ")}</div>
+                <div className="row-note">Scope notes: {item.entityScope.notes.join(" ")}</div>
               )}
               {item.materialBasketsThresholds?.length > 0 && (
                 <div className="row-note">
                   Baskets / thresholds: {item.materialBasketsThresholds.join(" · ")}
                 </div>
+              )}
+              {(item.conditions?.length ?? 0) > 0 && (
+                <div className="row-note">Conditions: {item.conditions!.slice(0, 3).join(" · ")}</div>
               )}
               {item.dependencies?.length > 0 && (
                 <div className="row-note">Dependencies: {item.dependencies.join(" · ")}</div>
