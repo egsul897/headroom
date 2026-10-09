@@ -23,6 +23,22 @@ export const MOCK_MODEL = "deepseek/deepseek-v4-flash";
 export const MOCK_PROVIDER = "MOCKED";
 export const ws = (s: string) => s.replace(/\s+/g, " ").trim();
 
+/**
+ * True when `haystack` carries `needle` as its own token. Money needles like
+ * "$50,000,000" must not match inside "$150,000,000" (IPV-04 indenture 4.09
+ * false positive after the grower basket is correctly spliced to $75,000,000).
+ */
+export function textCarries(haystack: string, needle: string): boolean {
+  const h = ws(haystack);
+  const n = ws(needle);
+  if (!n) return false;
+  if (/^\$?[\d,]+(?:\.\d+)?$/.test(n) || /^EUR [\d,]+(?:\.\d+)?$/.test(n)) {
+    const escaped = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(?<![\\d])${escaped}(?![\\d])`).test(h);
+  }
+  return h.includes(n);
+}
+
 interface MockItem { localRef: string; slotId: string; semanticRole: string; proposition: string; excerpt: string; quantitativeValues: { kind: string; rawText: string; normalizedValue: number | null; unit: string | null }[]; referencedTerms: string[]; referencedSections: string[]; parentRef: string | null; relatedRefs: string[]; materiality: string; ambiguity: string; ambiguityReason: string | null; operative: string }
 
 const MONEY_RE = /(?:\$|EUR )[\d,]+(?:\.\d+)?/g;

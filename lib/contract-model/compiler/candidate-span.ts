@@ -7,10 +7,14 @@
  *   OPERATIVE_STATE_CURRENT_TEXT  when the instrument's computed OperativeContractState has RESOLVED a provision view
  *                                 for that node and carries the current (amended) text, that text governs - the base
  *                                 node is KNOWN_SUPERSEDED and compiling it would compile history.
+ *
+ * IPV-04: when the parent section itself was not restated but one or more descendant clauses were
+ * superseded/deleted, the DESCENDANTS span is spliced from those provision views so stale $25m / deleted
+ * $15m text is never handed to composition as current.
  */
 import type { StructuralIndex } from "./structural-index";
 import type { DiscoveredCandidate } from "./discovery/types";
-import type { OperativeContractState, OperativeProvisionView } from "./amendment/types";
+import type { AmendmentOperation, OperativeContractState, OperativeProvisionView } from "./amendment/types";
 
 export type OperativeSourceOrigin = "STRUCTURAL_NODE" | "OPERATIVE_STATE_CURRENT_TEXT";
 
@@ -19,24 +23,226 @@ export interface ResolvedOperativeSource {
   origin: OperativeSourceOrigin;
   anchorNodeId: string | null;
   provision: OperativeProvisionView | null;
+  /**
+   * A descendant amendment applies and its text could not be spliced without guessing.
+   * `text` is empty. It is not the base node, and it is not a resolved amendment.
+   */
+  withheld: boolean;
+  /** When withheld, the operative-state unresolved issues that forced the withhold (override identity, sequence, etc.). */
+  withheldReasons: string[];
 }
 
-/** The RESOLVED provision view governing this candidate's anchor node, if the operative state has one. */
+const DELETE_OPERATIONS = new Set<AmendmentOperation>(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
+
+function sameRef(a: string | null | undefined, b: string | null | undefined): boolean {
+  return (a ?? "").replace(/\s+/g, "").toLowerCase() === (b ?? "").replace(/\s+/g, "").toLowerCase();
+}
+
+function hasCurrentText(provision: OperativeProvisionView | null): provision is OperativeProvisionView & { currentText: string } {
+  return !!provision && provision.status === "OPERATIVE_STATE_RESOLVED" && !!provision.currentText && provision.currentText.trim().length > 0 && provision.appliedChain.length > 0;
+}
+
+function isResolvedDeletion(provision: OperativeProvisionView): boolean {
+  const last = provision.appliedChain[provision.appliedChain.length - 1];
+  return provision.status === "OPERATIVE_STATE_RESOLVED" && provision.appliedChain.length > 0 && !provision.currentText && !!last && DELETE_OPERATIONS.has(last.operation);
+}
+
+function lastAppliedMs(provision: OperativeProvisionView): number | null {
+  const last = provision.appliedChain[provision.appliedChain.length - 1];
+  if (!last?.effectiveDate.date) return null;
+  const ms = new Date(last.effectiveDate.date).getTime();
+  return Number.isNaN(ms) ? null : ms;
+}
+
+/** A parent replacement is the operative text only when every related amendment is strictly earlier. Same-day and later amendments, and undated ones, do not yield to it. */
+function relatedAmendmentIsNotStrictlyEarlier(anchor: OperativeProvisionView, anchorNodeId: string, index: StructuralIndex, operativeState: OperativeContractState | null | undefined): boolean {
+  if (!operativeState) return false;
+  const parentMs = lastAppliedMs(anchor);
+  const descendantIds = new Set(index.getDescendants(anchorNodeId).map((n) => n.nodeId));
+  return operativeState.provisions.some((provision) => {
+    if (provision.provisionKey === anchor.provisionKey || provision.appliedChain.length === 0) return false;
+    const hits = provision.supersededSourceNodeIds.some((id) => id === anchorNodeId || descendantIds.has(id));
+    if (!hits) return false;
+    const ms = lastAppliedMs(provision);
+    if (parentMs === null || ms === null) return true;
+    return ms >= parentMs;
+  });
+}
+
+/** The provision view governing this candidate's anchor node, if the operative state has one. */
 export function governingProvisionFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, operativeState: OperativeContractState | null | undefined): OperativeProvisionView | null {
   if (!operativeState) return null;
   const anchor = candidate.structuralNodeIds[0] ?? null;
+  const sectionView = operativeState.provisions.find((p) => p.kind === "SECTION" && p.documentId === candidate.documentId && p.sectionRef === candidate.normalizedSourceRef) ?? null;
   const byNode = anchor ? operativeState.provisions.find((p) => p.currentSourceNodeId === anchor || p.candidateSourceNodeIds.includes(anchor) || p.supersededSourceNodeIds.includes(anchor)) : undefined;
+  // A definition is often sourced on the section that houses it. That source node is not
+  // authority to replace the section with the one amended term.
+  if (byNode?.kind === "DEFINITION") {
+    if (sameRef(byNode.definedTermRef, candidate.normalizedSourceRef)) return byNode;
+    return sectionView;
+  }
   if (byNode) return byNode;
-  return operativeState.provisions.find((p) => p.kind === "SECTION" && p.documentId === candidate.documentId && p.sectionRef === candidate.normalizedSourceRef) ?? null;
+  return sectionView;
+}
+
+/**
+ * A provision view that governs a descendant of `anchorNodeId`, either because an
+ * applied amendment superseded that descendant or because an unresolved override
+ * (side letter / consent / waiver) remains attached to it while preserving its
+ * last authoritative source node. Pure side-letter overrides leave
+ * `supersededSourceNodeIds` empty, so matching on `currentSourceNodeId` /
+ * `candidateSourceNodeIds` is required — otherwise the parent section would keep
+ * serving the overridden child as CURRENT.
+ */
+function descendantProvisionHits(provision: OperativeProvisionView, descendantIds: Set<string>): string | null {
+  const superseded = provision.supersededSourceNodeIds.find((id) => descendantIds.has(id));
+  if (superseded) return superseded;
+  if (provision.status === "OPERATIVE_STATE_RESOLVED") return null;
+  if (provision.kind !== "SECTION") return null;
+  if (provision.currentSourceNodeId && descendantIds.has(provision.currentSourceNodeId)) return provision.currentSourceNodeId;
+  return provision.candidateSourceNodeIds.find((id) => descendantIds.has(id)) ?? null;
+}
+
+/**
+ * Clause replacements and deletions do not rewrite the parent section node. When every
+ * affected descendant has a resolved text and its base span occurs once, the parent
+ * operative text is the base section with those spans replaced. An unsafe descendant
+ * amendment — including an unresolved override that preserves last-authoritative text —
+ * withholds the parent text instead of leaving the stale clause in place.
+ */
+function spliceDescendantAmendments(anchorNodeId: string, start: string, index: StructuralIndex, operativeState: OperativeContractState | null | undefined): { text: string; amended: boolean; withheld: boolean; withheldReasons: string[] } {
+  if (!operativeState) return { text: start, amended: false, withheld: false, withheldReasons: [] };
+  const descendantIds = new Set(index.getDescendants(anchorNodeId).map((n) => n.nodeId));
+  const affecting = operativeState.provisions.flatMap((provision) => {
+    const nodeId = descendantProvisionHits(provision, descendantIds);
+    return nodeId ? [{ provision, nodeId }] : [];
+  });
+  if (affecting.length === 0) return { text: start, amended: false, withheld: false, withheldReasons: [] };
+  const outer = affecting.filter((item) => !affecting.some((other) => other.nodeId !== item.nodeId && index.getDescendants(other.nodeId).some((d) => d.nodeId === item.nodeId)));
+  const withheldReasons = outer.flatMap((item) => item.provision.unresolvedIssues);
+  const splices: Array<{ at: number; oldText: string; replacement: string }> = [];
+  for (const item of outer) {
+    if (isResolvedDeletion(item.provision)) {
+      const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
+      const at = oldText ? start.indexOf(oldText) : -1;
+      if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
+      splices.push({ at, oldText, replacement: "" });
+      continue;
+    }
+    if (!hasCurrentText(item.provision)) return { text: "", amended: false, withheld: true, withheldReasons };
+    const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
+    const at = oldText ? start.indexOf(oldText) : -1;
+    if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
+    splices.push({ at, oldText, replacement: item.provision.currentText });
+  }
+  const ordered = [...splices].sort((a, b) => a.at - b.at);
+  for (let i = 1; i < ordered.length; i++) {
+    if (ordered[i]!.at < ordered[i - 1]!.at + ordered[i - 1]!.oldText.length) return { text: "", amended: false, withheld: true, withheldReasons };
+  }
+  let text = start;
+  for (const splice of [...ordered].reverse()) {
+    text = text.slice(0, splice.at) + splice.replacement + text.slice(splice.at + splice.oldText.length);
+  }
+  return { text, amended: true, withheld: false, withheldReasons: [] };
+}
+
+function withheldResult(anchorNodeId: string | null, provision: OperativeProvisionView | null, withheldReasons: string[] = []): ResolvedOperativeSource {
+  const reasons = withheldReasons.length > 0 ? withheldReasons : provision?.unresolvedIssues ?? [];
+  return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: true, withheldReasons: reasons };
+}
+
+/**
+ * Rebuild a parent section's operative text by applying descendant provision views
+ * (replace superseded OWN spans; omit deleted ones). Returns null when no descendant
+ * provision touches this anchor (caller falls through to structural DESCENDANTS).
+ */
+export function spliceOperativeDescendants(anchorNodeId: string, index: StructuralIndex, operativeState: OperativeContractState): string | null {
+  const anchor = index.getNodeById(anchorNodeId);
+  if (!anchor) return null;
+  const descendants = index.getDescendants(anchorNodeId);
+  if (descendants.length === 0) return null;
+
+  type Edit = { start: number; end: number; replacement: string };
+  const edits: Edit[] = [];
+
+  for (const p of operativeState.provisions) {
+    if (p.kind !== "SECTION" || p.appliedChain.length === 0) continue;
+    if (p.sectionRef === anchor.sectionRef) continue; // parent itself handled by governingProvisionFor
+    const node =
+      descendants.find((d) => d.sectionRef === p.sectionRef) ??
+      descendants.find((d) => p.supersededSourceNodeIds.includes(d.nodeId) || p.currentSourceNodeId === d.nodeId);
+    if (!node) continue;
+    const start = node.charStart;
+    const end = node.charEnd;
+    if (p.currentText === null || p.currentText.trim().length === 0) {
+      // Deleted / text withheld — drop the clause span from the parent.
+      edits.push({ start, end, replacement: "" });
+    } else {
+      edits.push({ start, end, replacement: p.currentText });
+    }
+  }
+
+  if (edits.length === 0) return null;
+
+  const docText = index.getDocumentText(anchor.documentId);
+  if (!docText) return null;
+  // Apply deepest/latest spans first so earlier offsets stay valid.
+  edits.sort((a, b) => b.start - a.start);
+  let text = docText.slice(anchor.charStart, anchor.charEnd);
+  const base = anchor.charStart;
+  for (const e of edits) {
+    const relStart = e.start - base;
+    const relEnd = e.end - base;
+    if (relStart < 0 || relEnd > text.length || relStart > relEnd) continue;
+    text = text.slice(0, relStart) + e.replacement + text.slice(relEnd);
+  }
+  return text;
 }
 
 export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, index: StructuralIndex, operativeState?: OperativeContractState | null): ResolvedOperativeSource {
   const anchorNodeId = candidate.structuralNodeIds[0] ?? null;
   const provision = governingProvisionFor(candidate, operativeState);
-  if (provision && provision.status === "OPERATIVE_STATE_RESOLVED" && provision.currentText && provision.currentText.trim().length > 0 && provision.appliedChain.length > 0) {
-    return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision };
+  const base = anchorNodeId ? index.getNodeText(anchorNodeId, "DESCENDANTS") : "";
+  if (!anchorNodeId) return { text: "", origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+
+  const ownsAnchor = !!provision && provision.kind !== "DEFINITION" && provision.supersededSourceNodeIds.includes(anchorNodeId);
+  if (ownsAnchor && provision) {
+    if (hasCurrentText(provision)) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
+      return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
+    if (isResolvedDeletion(provision)) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
+      return { text: "", origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
+    // A review-required amendment of this node does not substitute its own text. The base node remains the fallback
+    // only when no descendant clause has its own applied amendment. Otherwise the base text still contains that clause.
+    const descendant = spliceDescendantAmendments(anchorNodeId, base, index, operativeState);
+    if (descendant.amended || descendant.withheld) return withheldResult(anchorNodeId, provision, descendant.withheldReasons.length > 0 ? descendant.withheldReasons : provision.unresolvedIssues);
+    return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
   }
-  return { text: anchorNodeId ? index.getNodeText(anchorNodeId, "DESCENDANTS") : "", origin: "STRUCTURAL_NODE", anchorNodeId, provision };
+  // A derived section view with no safe text means a definition amendment could not be reconstructed.
+  // The base section still contains the pre-amendment term.
+  if (provision?.kind === "SECTION" && provision.sectionRef === candidate.normalizedSourceRef && !hasCurrentText(provision) && (provision.status !== "OPERATIVE_STATE_RESOLVED" || provision.appliedChain.length > 0)) {
+    return withheldResult(anchorNodeId, provision);
+  }
+  if (provision?.kind === "DEFINITION" && sameRef(provision.definedTermRef, candidate.normalizedSourceRef) && hasCurrentText(provision)) {
+    return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+  }
+
+  const start = provision && provision.kind === "SECTION" && hasCurrentText(provision) ? provision.currentText : base;
+  const spliced = spliceDescendantAmendments(anchorNodeId, start, index, operativeState);
+  if (spliced.withheld) return withheldResult(anchorNodeId, provision, spliced.withheldReasons);
+  if (spliced.amended || start !== base) return { text: spliced.text, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+  // Fallback: char-offset splice of descendant provision views (IPV-04) when
+  // string-index splice found no safe edits but descendants still carry effects.
+  if (operativeState) {
+    const offsetSpliced = spliceOperativeDescendants(anchorNodeId, index, operativeState);
+    if (offsetSpliced !== null) {
+      return { text: offsetSpliced, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
+  }
+  return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
 }
 
 export function operativeSourceTextFor(candidate: Pick<DiscoveredCandidate, "structuralNodeIds" | "documentId" | "normalizedSourceRef">, index: StructuralIndex, operativeState?: OperativeContractState | null): string {

@@ -21,9 +21,9 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
-import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
-import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
-import { retrieveDirectDefinitions } from "./definition-graph";
+import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
+import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
+import { isAdministrativeTerm, retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
@@ -39,15 +39,63 @@ const TITLE_CASE_PHRASE = /\b(?:[A-Z][a-zA-Z]+(?:-[A-Z][a-zA-Z]+)?)(?:\s+(?:[A-Z
 /** Ordinary English sentence-initial capitalized words, stripped from the front of a candidate phrase before it is judged - "The Borrower" is noise, "Borrower" alone (rarely 2+ words, so usually filtered by the length check anyway) is not what this heuristic is for; this only matters for a leading article/demonstrative in front of a genuinely longer candidate. */
 const LEADING_STOPWORDS = new Set(["the", "this", "that", "each", "any", "such", "no", "for", "if", "in", "notwithstanding", "except", "subject", "pursuant", "unless", "until", "upon", "with", "without", "provided"]);
 
+/** Trailing conjunctions/prepositions that make a Title-Case capture incomplete ("Notes and", "Borrower and"). */
+const TRAILING_STOPWORDS = new Set(["and", "or", "of", "the", "a", "an", "to", "for", "in", "on", "by", "with"]);
+
+/** Section/article heading noise that the Title-Case heuristic must never treat as a defined-term lead. */
+const HEADING_NOISE = /^(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)\b|\b(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)$/i;
+
+/**
+ * High-confidence financial / covenant defined-term morphology (IPV-10).
+ * Nested undefined phrases matching this shape degrade sufficiency to REVIEW_REQUIRED;
+ * weaker Title-Case noise is disclosed at LOW so certified golden paths are not
+ * refused for ordinary document names ("Security Documents") or heading fragments.
+ */
+const HIGH_CONFIDENCE_UNDEFINED_TERM =
+  /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent)\b/i;
+
+/** Mirror of definition-graph administrative denylist — nested fallback must not MEDIUM-refuse boilerplate. */
+const ADMINISTRATIVE_NESTED_DENYLIST = new Set(["person", "business day", "governmental authority", "requirements of law", "us", "united states", "dollars", "administrative agent", "collateral agent", "lender", "agent", "closing date", "code", "gaap"]);
+
+/** Deterministic plural/singular surface forms so "Restricted Payments" matches declared "Restricted Payment". */
+function phraseSurfaceForms(exact: string): string[] {
+  const forms = new Set<string>([exact]);
+  if (/y$/i.test(exact) && !/[aeiou]y$/i.test(exact)) {
+    forms.add(exact.replace(/y$/i, exact.endsWith("Y") ? "IES" : "ies"));
+  } else if (/s$/i.test(exact) || /x$/i.test(exact) || /z$/i.test(exact) || /ch$/i.test(exact) || /sh$/i.test(exact)) {
+    forms.add(`${exact}${exact === exact.toUpperCase() ? "ES" : "es"}`);
+  } else {
+    forms.add(`${exact}${/[A-Z]+$/.test(exact) && exact === exact.toUpperCase() ? "S" : "s"}`);
+  }
+  return [...forms];
+}
+
+function knownTermCoversPhrase(phrase: string, exactTerms: Map<string, string>): boolean {
+  const normalized = phrase.toLowerCase();
+  if (exactTerms.has(normalized)) return true;
+  for (const exact of exactTerms.values()) {
+    if (phraseSurfaceForms(exact).some((f) => f.toLowerCase() === normalized)) return true;
+  }
+  return false;
+}
+
 function extractCandidatePhrases(text: string): string[] {
   const matches = text.match(TITLE_CASE_PHRASE) ?? [];
   const out = new Set<string>();
   for (const raw of matches) {
     const words = raw.trim().split(/\s+/);
     while (words.length > 0 && LEADING_STOPWORDS.has(words[0]!.toLowerCase())) words.shift();
-    if (words.length >= 2) out.add(words.join(" "));
+    while (words.length > 0 && TRAILING_STOPWORDS.has(words[words.length - 1]!.toLowerCase())) words.pop();
+    if (words.length < 2) continue;
+    const phrase = words.join(" ");
+    if (HEADING_NOISE.test(phrase)) continue;
+    out.add(phrase);
   }
   return [...out];
+}
+
+function unresolvedSeverityForNestedPhrase(phrase: string): "LOW" | "MEDIUM" {
+  return HIGH_CONFIDENCE_UNDEFINED_TERM.test(phrase) ? "MEDIUM" : "LOW";
 }
 
 export interface PackageAccess {
@@ -99,26 +147,44 @@ function retrieveCrossDocumentDependenciesForDefinitions(state: RetrievalState, 
   void documentId;
 }
 
-/** Types whose own retrieved text can carry a real defined-term usage that the operative node's own DESCENDANTS text does not contain - e.g. a proviso/sibling clause holding the covenant's real economic detail (task §32 test scenarios routinely retrieve this material as its own item). Undeclared-term detection must see this text too, not just the primary operative span, or a real dependency living entirely inside a retrieved sibling/parent/child item is silently never checked at all. */
-const STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN = new Set(["PARENT_SCOPE", "CHILD_RULE", "SIBLING_CONTEXT", "PROVISO", "EXCEPTION", "CONDITION", "SHARED_CAP"]);
+/** Types whose own retrieved text can carry a real defined-term usage that the operative node's own DESCENDANTS text does not contain - e.g. a proviso/sibling clause holding the covenant's real economic detail (task §32 test scenarios routinely retrieve this material as its own item). Undeclared-term detection must see this text too, not just the primary operative span, or a real dependency living entirely inside a retrieved sibling/parent/child item is silently never checked at all.
+ * IPV-10: DEFINITION / DEFINITION_DEPENDENCY bodies are included so nested undefined Title-Case phrases inside a retrieved definition are reported rather than silently leaving the bundle SUFFICIENT. */
+const STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN = new Set(["PARENT_SCOPE", "CHILD_RULE", "SIBLING_CONTEXT", "PROVISO", "EXCEPTION", "CONDITION", "SHARED_CAP", "DEFINITION", "DEFINITION_DEPENDENCY"]);
 
 function retrieveCrossDocumentDependenciesForStructuralContext(state: RetrievalState, access: PackageAccess): void {
   for (const item of [...state.items.values()]) {
     if (!STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN.has(item.type)) continue;
-    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId);
+    // IPV-10: scan definition bodies for nested undefined Title-Case phrases.
+    // High-confidence financial/covenant morphology → MEDIUM (sufficiency not
+    // SUFFICIENT). Weaker phrases stay LOW so heading fragments and ordinary
+    // document names do not refuse an otherwise complete certified path.
+    const nestedInDefinition = item.type === "DEFINITION" || item.type === "DEFINITION_DEPENDENCY";
+    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId, nestedInDefinition ? "NESTED" : "OPERATIVE");
   }
 }
 
 /** Cross-document/cross-instrument fallback for a Title-Case phrase mentioned in the operative text but NOT declared in the same document - task §9's "recursive definition dependencies" extended across documents (task §18/§21), always via the exact resolution order, never a whole-package search. */
-function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: PackageAccess, documentId: string, operativeText: string, operativeItemId: string): void {
+function retrieveCrossDocumentDefinitionFallback(
+  state: RetrievalState,
+  access: PackageAccess,
+  documentId: string,
+  operativeText: string,
+  operativeItemId: string,
+  scanMode: "OPERATIVE" | "NESTED" = "OPERATIVE",
+): void {
   const sameDocTerms = access.exactTermsByDocument.get(documentId) ?? new Map();
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
     const normalized = phrase.toLowerCase();
-    if (sameDocTerms.has(normalized)) continue; // already handled by the same-document exact-match pass.
+    if (ADMINISTRATIVE_NESTED_DENYLIST.has(normalized)) continue;
+    // Same-document exact match OR plural/singular of a declared term (IPV-09 /
+    // IPV-15): "Restricted Payments" must not MEDIUM-refuse when "Restricted
+    // Payment" is already declared/retrieved.
+    if (knownTermCoversPhrase(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
-      const fullText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
+      const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
+      const fullText = operativeDefinitionText(state, access.index, resolved.documentId, resolved.exactTerm, baseText);
       if (fullText.trim().length === 0) continue;
       if (!withinBudget(state, fullText.length)) return;
       const evidenceState = resolveDefinitionEvidenceState(state, access.index, resolved.documentId, resolved.exactTerm);
@@ -130,15 +196,31 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
       const seenKey = `${documentId}::${normalized}`;
       if (state.seenUnresolvedTermPhrases.has(seenKey)) continue;
       state.seenUnresolvedTermPhrases.add(seenKey);
+      // Administrative boilerplate (Closing Date, etc.) and same-document section
+      // captions ("Restricted Payments" naming SECTION 7.06) are not undefined
+      // defined-term failures — disclose LOW so definition-mediated shared
+      // capacity (IPV-15) is not refused for covenant-category wording.
+      const sectionCaption = access.index.allNodes().some((n) => {
+        if (n.documentId !== documentId || (n.nodeType !== "SECTION" && n.nodeType !== "ARTICLE")) return false;
+        const own = access.index.getNodeText(n.nodeId, "OWN");
+        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(own);
+      });
+      let unresolvedSeverity: "LOW" | "MEDIUM" = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      if (isAdministrativeTerm(normalized) || sectionCaption) unresolvedSeverity = "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "UNRESOLVED_DEFINED_TERM",
         sourceText: phrase,
         attemptedResolution: "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
-        reason: "Not declared in this document, and no related document in the package declares it either.",
+        reason:
+          unresolvedSeverity === "MEDIUM"
+            ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            : scanMode === "NESTED"
+              ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10 disclosure; LOW severity — not high-confidence financial/covenant morphology)."
+              : "Not declared in this document, and no related document in the package declares it either.",
         candidateTargets: [],
         citation: phrase,
-        severity: "LOW",
+        severity: unresolvedSeverity,
       });
     }
   }
@@ -184,9 +266,14 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
+  // IPV-04: scan definitions against the operative text actually served
+  // (amended / spliced), not the stale base DESCENDANTS span — otherwise
+  // terms introduced only by an amendment (e.g. "Default" in a restated
+  // proviso) are never retrieved.
+  const operativeText = operativeItem.excerptText;
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
+  retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared
