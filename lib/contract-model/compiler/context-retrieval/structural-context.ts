@@ -130,6 +130,53 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
   return { relevant: signals.length > 0, signals };
 }
 
+/**
+ * INV-04: reverse override discovery. A section in Article IX that says
+ * "Notwithstanding anything to the contrary in Article VII" governs every
+ * Article VII covenant even though VII never cites IX. Scan same-document
+ * SECTION nodes for that drafting and retrieve them as CROSS_REFERENCE.
+ */
+export function retrieveArticleOverrideLeads(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
+  const article = index.getAncestors(nodeId).find((n) => n.nodeType === "ARTICLE");
+  if (!article) return;
+  const articleLabel = article.sectionRef.replace(/\s+/g, "");
+  if (!articleLabel) return;
+  const overrideRe = new RegExp(
+    String.raw`notwithstanding\s+anything\s+to\s+the\s+contrary\s+in\s+Article\s+${articleLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\b`,
+    "i",
+  );
+  for (const n of index.allNodes()) {
+    if (n.documentId !== documentId || n.nodeType !== "SECTION") continue;
+    if (n.nodeId === nodeId) continue;
+    // Skip sections inside the same article (siblings are handled elsewhere).
+    const nArticle = index.getAncestors(n.nodeId).find((a) => a.nodeType === "ARTICLE");
+    if (nArticle?.nodeId === article.nodeId) continue;
+    const text = index.getNodeText(n.nodeId, "DESCENDANTS");
+    if (!overrideRe.test(text)) continue;
+    if (!withinBudget(state, text.length)) return;
+    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: n.nodeId, sectionRef: n.sectionRef });
+    const item = addItem(
+      state,
+      makeItemInput(
+        "CROSS_REFERENCE",
+        documentId,
+        n.nodeKey,
+        n.nodeId,
+        n.sectionRef,
+        `Section ${n.sectionRef}`,
+        text,
+        `Override of Article ${articleLabel}: Section ${n.sectionRef} states "notwithstanding anything to the contrary in Article ${articleLabel}" and therefore governs this candidate.`,
+        1,
+        [operativeItemId],
+        "STRUCTURAL_TRAVERSAL",
+        1,
+        evidenceState,
+      ),
+    );
+    addEdge(state, operativeItemId, item.itemId, "REFERENCES", `Article-level notwithstanding override from Section ${n.sectionRef}.`);
+  }
+}
+
 export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
   const node = index.getNodeById(nodeId);
   if (!node) return null;

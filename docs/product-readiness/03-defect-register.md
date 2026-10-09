@@ -35,7 +35,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-01 — Entity-scope widening is confirmed and certified when the clause narrows the section's governing scope
 
-**Status** OPEN · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
 
 - **failingInput**: 7.01(c): "Indebtedness of the Borrower, so long as … Consolidated Total Leverage Ratio does not exceed 3.50 to 1.00" under a 7.01 lead-in "The Borrower shall not, and shall not permit any Subsidiary to …". Submission sets entityScope [BORROWER, ANY_SUBSIDIARY].
 - **expected**: Not CERTIFIED: the clause's own words restrict the ratio basket to the Borrower.
@@ -48,7 +48,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-02 — A dropped "together with … pursuant to Section X" shared cap certifies as two independent baskets
 
-**Status** OPEN · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
 
 - **failingInput**: 7.06(b) and 7.08(c) each read "in an aggregate amount, together with [the other], not to exceed $20,000,000". Submission omits sharedCapacities.
 - **expected**: Not CERTIFIED (MISSING_SHARED_CAP or unaccounted shared-cap source).
@@ -61,7 +61,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-03 — Lineage laundering: a dropped material condition certifies when its inventory item is cited on the rule node
 
-**Status** OPEN · **Severity** MATERIAL_CONDITION_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** MATERIAL_CONDITION_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
 
 - **failingInput**: 7.01(b) "… provided that no Default has occurred …" (A) and 7.03(b) "… provided that the Payment Conditions are satisfied" (H). Submission emits the basket with zero conditions but lists the proviso's inventory item id on the rule node.
 - **expected**: Not CERTIFIED (the CONDITION-role item is not represented by any condition node).
@@ -74,7 +74,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-04 — A section-level candidate is compiled from superseded/deleted sub-clause text with no operative lineage
 
-**Status** OPEN · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
 
 - **failingInput**: Amendment No. 1 restates 7.01(b) ($25m → $40m + no-Default proviso); Amendment No. 2 deletes 7.01(e). Operative state resolves both (RESOLVED). Candidate anchored at SECTION 7.01, as of 2026-06-30.
 - **expected**: The operative text handed to composition excludes the superseded $25,000,000 text and the deleted $15,000,000 clause, or the candidate carries lineage/evidence status that forbids treating them as current.
@@ -83,11 +83,11 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **impact**: Any section-level unit over an amended agreement is verified against the wrong text; a deleted basket can be certified as live.
 - **hypothesis**: Supersession is attached per physical node; the parent section's operative text is the base DESCENDANTS span and the per-node supersession index is not consulted when assembling it; the clause-level path binds provenance against the amendment text but context retrieval scans the base node.
 - **acceptance**: A candidate whose descendants are superseded/deleted at the as-of date must have its operative text spliced from the operative provisions (or be refused with an explicit lineage status); context retrieval and provenance binding must use the operative text.
-- **signatures**: `pkg-c-amendment-supersession` → `operative-text:credit-agreement::7.01`; `pkg-c-amendment-supersession` → `semantic:C-7.01(b)-amended`; `pkg-c-amendment-supersession` → `context:C-7.01(b)-amended:definitions`; `pkg-c-amendment-supersession` → `certification:credit-agreement::7.01`; `pkg-b-multi-document` → `operative-text:indenture::4.09`
+- **signatures**: `pkg-c-amendment-supersession` → `operative-text:credit-agreement::7.01`; `pkg-c-amendment-supersession` → `semantic:C-7.01(b)-amended`; `pkg-c-amendment-supersession` → `context:C-7.01(b)-amended:definitions`; `pkg-b-multi-document` → `operative-text:indenture::4.09`
 
 ## IPV-05 — An unresolved amendment leaves the instrument's operative state RESOLVED with zero unattached effects
 
-**Status** OPEN · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
 
 - **failingInput**: "FIRST AMENDMENT dated as of December 1, 2026 to the ABL Credit Agreement dated as of September 9, 2026" restating the definition of "Available Amount". Base document title: "ABL CREDIT AGREEMENT dated as of September 9, 2026".
 - **expected**: SUPERSEDED definition as of 2027-03-31 ($15,000,000 starter), or an operative state that is not RESOLVED.
@@ -139,7 +139,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-09 — Plural use of a defined term is not resolved to its definition
 
-**Status** OPEN · **Severity** MATERIAL_CONDITION_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** MATERIAL_CONDITION_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: "Dispositions of property …", "Investments in Subsidiaries …", "Restricted Payments in an aggregate amount …" with singular definitions "Disposition", "Investment", "Restricted Payment".
 - **expected**: The singular definition is retrieved as a DEFINITION context item.
@@ -152,7 +152,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-10 — Undefined terms inside a retrieved definition are not reported; the bundle claims SUFFICIENT
 
-**Status** OPEN · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: 7.11 depends on "Fixed Charge Coverage Ratio" (defined) which depends on "Consolidated EBITDA" and "Fixed Charges" (never defined).
 - **expected**: Unresolved dependencies for the two undefined terms; sufficiency not SUFFICIENT.
@@ -178,7 +178,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-12 — A one-way Restricted/Unrestricted Subsidiary pair is reported as a DEFINITION_CYCLE (an IPV-21 over-extension, not a self-reference) and blocks certification of every dependent covenant
 
-**Status** OPEN · **Severity** NONMATERIAL_OMISSION · **Outcome** CAPABILITY_NOT_IMPLEMENTED · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** NONMATERIAL_OMISSION · **Outcome** CAPABILITY_NOT_IMPLEMENTED · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: "Unrestricted Subsidiary" means any Subsidiary of the Issuer designated as an Unrestricted Subsidiary …; "Restricted Subsidiary" means any Subsidiary … that is not an Unrestricted Subsidiary.
 - **expected**: Standard drafting; bundle SUFFICIENT.
@@ -213,11 +213,11 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **impact**: None (fail-closed); listed so the register accounts for every finding in the report.
 - **hypothesis**: Mock incompleteness (D) and correct behaviour (G).
 - **acceptance**: Close when the acceptance matrix no longer reports them, or re-classify if a real cause emerges.
-- **signatures**: `pkg-d-qualitative-restrictions` → `certification:credit-agreement::2.05`; `pkg-g-adversarial-evidence` → `certification:credit-agreement::7.01#2`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::9.15`; `pkg-k-three-way-builder` → `certification:credit-agreement::7.06`; `pkg-k-three-way-builder` → `certification:credit-agreement::7.08`
+- **signatures**: `pkg-d-qualitative-restrictions` → `certification:credit-agreement::2.05`; `pkg-g-adversarial-evidence` → `certification:credit-agreement::7.01#2`; `pkg-i-secured-debt-lien` → `certification:credit-agreement::9.15`; `pkg-k-three-way-builder` → `certification:credit-agreement::7.06`; `pkg-k-three-way-builder` → `certification:credit-agreement::7.08`; `pkg-c-amendment-supersession` → `certification:credit-agreement::7.01`; `pkg-b-multi-document` → `certification:credit-agreement::7.01`; `pkg-f-capacity-ledger-honesty` → `certification:credit-agreement::7.06`; `pkg-f-capacity-ledger-honesty` → `certification:credit-agreement::7.08`
 
 ## IPV-15 — Shared capacity mediated through a definition (Available Amount netting across 7.06(c)/7.08(d)) has no representation channel; a dependsOn to the sibling is rejected as invented
 
-**Status** OPEN · **Severity** NONMATERIAL_OMISSION · **Outcome** CORRECT_FAIL_CLOSED · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** NONMATERIAL_OMISSION · **Outcome** CORRECT_FAIL_CLOSED · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
 
 - **failingInput**: "Available Amount" means … minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d) …; 7.08(d) permits Investments up to the Available Amount.
 - **expected**: 7.08(d) and 7.06(c) are linked as sharing one pool (via the definition) and the Default kill-switch inside the definition is attached to both.
@@ -230,7 +230,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-16 — A side letter that overrides a covenant cap 'notwithstanding' the credit agreement produces no amendment effect; the operative state stays RESOLVED with the base-agreement text
 
-**Status** OPEN · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
 
 - **failingInput**: Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).
 - **expected**: The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.
@@ -239,7 +239,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **impact**: A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.
 - **hypothesis**: modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.
 - **acceptance**: A side letter / waiver / override document that names a section of the base agreement yields at least an unattached or REVIEW_REQUIRED effect for that instrument (operative state not RESOLVED), or a documented package-level 'unclassified override document' blocker that the certification path consumes. Verified by MUT-08/MUT-12 PRODUCT verdicts passing.
-- **signatures**: `pkg-b-multi-document` → `mutation:MUT-12:instrument-status:2026-06-30`; `pkg-b-multi-document` → `mutation:MUT-12:effects:side-letter`; `pkg-b-multi-document` → `mutation:MUT-08:instrument-status:2026-06-30`; `pkg-b-multi-document` → `mutation:MUT-08:effects:side-letter`; `pkg-a-basic-credit-agreement` → `mutation:MUT-13:instrument-status:2026-06-30`; `pkg-a-basic-credit-agreement` → `mutation:MUT-13:effects:side-letter`; `pkg-c-amendment-supersession` → `mutation:MUT-14:instrument-status:2026-06-30`; `pkg-c-amendment-supersession` → `mutation:MUT-14:effects:side-letter`; `pkg-h-unseen-composition` → `mutation:MUT-15:instrument-status:2027-03-31`; `pkg-h-unseen-composition` → `mutation:MUT-15:effects:side-letter`; `pkg-i-secured-debt-lien` → `mutation:MUT-16:instrument-status:2026-12-31`; `pkg-i-secured-debt-lien` → `mutation:MUT-16:effects:consent`; `pkg-m-composed-p0` → `operative:2026-06-30:credit-agreement#7.01(b)`; `pkg-m-composed-p0` → `invariant:INV-16b:override-attached-to-named-provision`; `pkg-m-composed-p0` → `invariant:INV-16b:provision-not-resolved-last-text-preserved`; `pkg-m-composed-p0` → `invariant:INV-16b:clause-retrieval-withheld-or-flagged`; `pkg-m-composed-p0` → `invariant:INV-16b:section-retrieval-does-not-serve-overridden-clause-as-current`; `pkg-m-composed-p0` → `invariant:INV-16b:section-with-overridden-clause-not-certified`
+- **signatures**: `pkg-b-multi-document` → `mutation:MUT-12:instrument-status:2026-06-30`; `pkg-b-multi-document` → `mutation:MUT-12:effects:side-letter`; `pkg-b-multi-document` → `mutation:MUT-08:instrument-status:2026-06-30`; `pkg-b-multi-document` → `mutation:MUT-08:effects:side-letter`; `pkg-a-basic-credit-agreement` → `mutation:MUT-13:instrument-status:2026-06-30`; `pkg-a-basic-credit-agreement` → `mutation:MUT-13:effects:side-letter`; `pkg-c-amendment-supersession` → `mutation:MUT-14:instrument-status:2026-06-30`; `pkg-c-amendment-supersession` → `mutation:MUT-14:effects:side-letter`; `pkg-h-unseen-composition` → `mutation:MUT-15:instrument-status:2027-03-31`; `pkg-h-unseen-composition` → `mutation:MUT-15:effects:side-letter`; `pkg-i-secured-debt-lien` → `mutation:MUT-16:instrument-status:2026-12-31`; `pkg-i-secured-debt-lien` → `mutation:MUT-16:effects:consent`; `pkg-m-composed-p0` → `invariant:INV-16b:override-attached-to-named-provision`; `pkg-m-composed-p0` → `invariant:INV-16b:provision-not-resolved-last-text-preserved`; `pkg-m-composed-p0` → `invariant:INV-16b:clause-retrieval-withheld-or-flagged`; `pkg-m-composed-p0` → `invariant:INV-16b:section-retrieval-does-not-serve-overridden-clause-as-current`; `pkg-m-composed-p0` → `invariant:INV-16b:section-with-overridden-clause-not-certified`; `pkg-m-composed-p0` → `certification:credit-agreement::7.01`; `pkg-m-composed-p0` → `certification:credit-agreement::7.02`
 
 ## IPV-17 — [CLOSED - harness false positive] Definition-mediated cross-reference closure appeared asymmetric for J 7.08(d); the sibling was present under a different bundle item type
 
@@ -269,7 +269,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-19 — A definition amendment ('The definition of "X" in Section 1.01 … is hereby amended and restated … to read as follows') is resolved as a REPLACE_TEXT of the whole of Section 1.01; the operative state then reads Section 1.01 as that single definition
 
-**Status** OPEN · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** WRONG_OPERATIVE_SOURCE · **Outcome** INCORRECT_RESULT · **Stage** OPERATIVE_STATE · **Deterministic** true
 
 - **failingInput**: Package A plus an in-memory Amendment No. 1 (effective May 1, 2026): 'The definition of "Consolidated EBITDA" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: "Consolidated EBITDA" means … and non-cash stock compensation expense for such period.' (form F1; F3 'set forth in Section 1.01 … to read in its entirety as follows' behaves the same).
 - **expected**: A DEFINITION-kind effect (targetDefinedTermRef 'Consolidated EBITDA') applied from 2026-05-01, so that the operative definition changes and Section 1.01's other ten definitions are untouched; or an unresolved/REVIEW effect.
@@ -278,11 +278,11 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 - **impact**: Evidence corruption at the operative-state layer (priority 0): every other definition in Section 1.01 is reported superseded with no text as of the amendment date; a consumer compiling the definitions candidate from the operative text would see one definition. The amendment itself is applied to the wrong unit, so lineage for 'Consolidated EBITDA' never exists (see IPV-20 for the retrieval consequence).
 - **hypothesis**: The deterministic parser's target resolver matches 'in Section 1.01' before (or instead of) 'the definition of "…"', so the explicit-pattern path binds a SECTION target with the restated text as the replacement; the DEFINITION target kind exists in the type but this drafting form never reaches it.
 - **acceptance**: F1 and F3 yield a DEFINITION-kind effect (or REVIEW), the 1.01 provision keeps its other definitions, and a DEFINITION provision view for 'Consolidated EBITDA' exists at 2026-06-30 with the new text; invariant:INV-05:F1/F3 PRODUCT verdicts pass.
-- **signatures**: `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:A:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:A:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:C:definition-amendment-targets-definition`; `pkg-i-secured-debt-lien` → `operative:2026-12-31:credit-agreement#Foreign Subsidiary`; `pkg-i-secured-debt-lien` → `operative:2026-12-31:credit-agreement#1.01`; `pkg-i-secured-debt-lien` → `semantic:credit-agreement::1.01`; `pkg-m-composed-p0` → `operative:2026-06-30:credit-agreement#Consolidated EBITDA`; `pkg-m-composed-p0` → `operative:2026-06-30:credit-agreement#1.01`; `pkg-m-composed-p0` → `semantic:credit-agreement::1.01`; `pkg-m-composed-p0` → `certification:credit-agreement::7.01`; `pkg-m-composed-p0` → `certification:credit-agreement::7.02`
+- **signatures**: `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F1:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05:F3:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:A:effect-targets-definition`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:A:state-section-1.01-not-replaced`; `pkg-a-basic-credit-agreement` → `invariant:INV-05b:C:definition-amendment-targets-definition`; `pkg-i-secured-debt-lien` → `operative:2026-12-31:credit-agreement#Foreign Subsidiary`; `pkg-i-secured-debt-lien` → `operative:2026-12-31:credit-agreement#1.01`; `pkg-i-secured-debt-lien` → `semantic:credit-agreement::1.01`; `pkg-m-composed-p0` → `operative:2026-06-30:credit-agreement#Consolidated EBITDA`; `pkg-m-composed-p0` → `operative:2026-06-30:credit-agreement#1.01`; `pkg-m-composed-p0` → `semantic:credit-agreement::1.01`
 
 ## IPV-20 — Definition retrieval hands the compiler the base-agreement definition text even when the operative state holds a RESOLVED amendment to the section the definition lives in
 
-**Status** OPEN · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: As IPV-19; buildCandidateCompilerInput for credit-agreement::7.01 with operativeState(2026-06-30), amendmentEffects and supersessionIndex supplied.
 - **expected**: The DEFINITION / DEFINITION_DEPENDENCY item for 'Consolidated EBITDA' at 2026-06-30 carries the amended text (with the stock-compensation add-back), or the bundle flags the definition's supersession status as unresolved.
@@ -295,7 +295,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-21 — A diamond dependency (a covenant names term T and term U, and U's definition names T) is reported as DEFINITION_CYCLE; the context contract then refuses certification of every such covenant (false refusal)
 
-**Status** OPEN · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** INCORRECT_RESULT · **Stage** CONTEXT_RETRIEVAL · **Deterministic** true
 
 - **failingInput**: Minimal reproduction (INV-19, package A in memory): add '"Guarantor" means each Subsidiary that has executed the Guarantee.' and make 7.01(b) read 'other Indebtedness of the Borrower and any Guarantor …'. 'Subsidiary' means any corporation or other entity that is controlled by the Borrower (no reference back). Real packages: I 7.01 (Subsidiary/Guarantor), L 7.07 (Loan Parties/Subsidiary).
 - **expected**: No DEFINITION_CYCLE: Subsidiary is reached by two paths (directly and through Guarantor) but no definition refers to itself or to a term that refers back to it. Context contract acceptable. The B indenture's Restricted Subsidiary ↔ Unrestricted Subsidiary pair, which IS circular, keeps being reported (positive control passes).
@@ -308,7 +308,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-22 — A figure's role and direction are not verified: a comparator-introduced threshold is certified as a basket cap, and a ratio test with its comparator flipped is certified
 
-**Status** OPEN · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
+**Status** FIXED_UNVERIFIED · **Severity** CRITICAL_FALSE_PERMISSION · **Outcome** INCORRECT_RESULT · **Stage** CERTIFICATION · **Deterministic** true
 
 - **failingInput**: L 7.07(d): '(d) any other transaction with an Affiliate involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved by a majority of the disinterested members of the board of directors of the Borrower.' Submission (adversarial L-P2, CLAIM_COMPLETE): rule for 7.07(d) with capacityExpression MONEY 5,000,000 (excerpt '$5,000,000', verbatim in the source), one APPROVAL condition, sufficiency COMPLETE. Run on the in-memory L variant without the Loan-Parties diamond so IPV-21 does not mask the result.
 - **expected**: Not CERTIFIED: the figure is the lower bound of the gate ('in excess of'), not a cap; the clause has no quantitative capacity at all. At minimum REVIEW_REQUIRED with a numeric-direction or 'threshold vs cap' finding.

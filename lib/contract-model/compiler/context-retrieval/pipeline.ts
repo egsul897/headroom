@@ -23,7 +23,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
-import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
+import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
@@ -274,6 +274,7 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   const operativeText = operativeItem.excerptText;
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
+  retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared

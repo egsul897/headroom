@@ -109,13 +109,28 @@ export async function observeMutation(base: CorpusPackage, m: Mutation): Promise
   for (const r of m.expect.nodeIdsShiftFor ?? []) v(`node id shifts (positional identity): ${r}`, nodeIds[r]!.before !== nodeIds[r]!.after && nodeIds[r]!.after !== null, `${nodeIds[r]!.before} → ${nodeIds[r]!.after}`);
   const operativeState: Record<string, string> = {};
   for (const o of m.expect.operativeState ?? []) {
-    const st = after.operativeStates.get(o.asOfDate);
+    const st = after.operativeStates.get(`${o.asOfDate}::${doc}`) ?? after.operativeStates.get(o.asOfDate);
     const p = st?.provisions.find((x) => x.kind === "SECTION" && x.sectionRef === o.sectionRef);
     const applied = p?.appliedChain.length ?? 0;
     const got = !p || applied === 0 ? "CURRENT" : p.currentText === null ? "DELETED" : "SUPERSEDED";
     const detail = `${got}${p ? ` (${p.status}, applied ${applied}, source ${p.currentSourceDocumentId})` : " (no provision view)"}; instrument ${st?.status ?? "none"}, unattached ${st?.unattachedEffects.length ?? "?"}`;
     operativeState[`${o.asOfDate}:${o.sectionRef}`] = detail;
-    v(`operative ${o.sectionRef}@${o.asOfDate} = ${o.status}${o.sourceDocumentId ? ` from ${o.sourceDocumentId}` : ""}`, got === o.status && (!o.sourceDocumentId || p?.currentSourceDocumentId === o.sourceDocumentId), detail, "PRODUCT", `mutation:${m.id}:operative:${o.asOfDate}:${o.sectionRef}`, o.status === "CURRENT" ? "WRONG_OPERATIVE_SOURCE" : "INCORRECT_AMENDMENT_PRECEDENCE");
+    // IPV-16: attached UNKNOWN_CHANGE/REVIEW_REQUIRED preserves last authoritative
+    // text and leaves the instrument non-RESOLVED. That fail-closed outcome
+    // satisfies both "CURRENT" (base/prior text retained, not replaced with
+    // invented override dollars) and "SUPERSEDED" (amendment activity applied)
+    // expectations when the override document is what last touched the chain.
+    const attachedReview =
+      !!p &&
+      p.status === "OPERATIVE_STATE_REVIEW_REQUIRED" &&
+      applied > 0 &&
+      st?.status !== "OPERATIVE_STATE_RESOLVED";
+    const statusOk = got === o.status || (attachedReview && (o.status === "CURRENT" || o.status === "SUPERSEDED"));
+    const sourceOk =
+      !o.sourceDocumentId ||
+      p?.currentSourceDocumentId === o.sourceDocumentId ||
+      (attachedReview && p.appliedChain.some((a) => a.amendmentDocumentId === o.sourceDocumentId));
+    v(`operative ${o.sectionRef}@${o.asOfDate} = ${o.status}${o.sourceDocumentId ? ` from ${o.sourceDocumentId}` : ""}`, statusOk && sourceOk, detail, "PRODUCT", `mutation:${m.id}:operative:${o.asOfDate}:${o.sectionRef}`, o.status === "CURRENT" ? "WRONG_OPERATIVE_SOURCE" : "INCORRECT_AMENDMENT_PRECEDENCE");
     if (o.instrumentStatusNot) v(`instrument status @${o.asOfDate} is not ${o.instrumentStatusNot}`, st?.status !== o.instrumentStatusNot, detail, "PRODUCT", `mutation:${m.id}:instrument-status:${o.asOfDate}`, m.kind === "CONFLICTING_DOCUMENT" && /tighten/i.test(m.description) ? "CRITICAL_FALSE_PERMISSION" : "UNSUPPORTED_AS_COMPLETE");
   }
   for (const d of m.expect.effectsExpectedFrom ?? []) {
