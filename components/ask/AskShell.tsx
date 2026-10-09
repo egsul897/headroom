@@ -159,6 +159,13 @@ export function AskShell({
                 authoritative?: { status: string; authority: string; missingInputs?: string[] };
                 pathEnumeration?: { authority: string; note: string };
                 simulateHref?: string | null;
+                verifiedSummary?: { executable?: boolean; blockers?: string[] };
+                executableOutcomes?: {
+                  verifiedExecutable?: boolean;
+                  verifiedBlockers?: string[];
+                  legacyOverallStatus?: string | null;
+                  completeness?: { verdict?: string; summary?: string } | null;
+                };
                 error?: string;
               };
               if (data.error) {
@@ -171,6 +178,10 @@ export function AskShell({
               } else {
                 setTxnJson(JSON.stringify(data, null, 2));
                 setSimulateHref(data.simulateHref ?? null);
+                const verifiedBlockers = data.executableOutcomes?.verifiedBlockers ?? data.verifiedSummary?.blockers ?? [];
+                const completenessLine = data.executableOutcomes?.completeness
+                  ? `Completeness: ${data.executableOutcomes.completeness.verdict ?? "—"} — ${data.executableOutcomes.completeness.summary ?? ""}`
+                  : null;
                 setResult({
                   kind:
                     data.answer?.kind === "certified"
@@ -180,11 +191,22 @@ export function AskShell({
                         : "answered",
                   caseId: "TRANSACTION_READINESS",
                   headline: data.answer?.headline ?? "Transaction analysis",
-                  detail: data.answer?.detail ?? "",
+                  detail: [
+                    data.answer?.detail ?? "",
+                    data.executableOutcomes?.verifiedExecutable
+                      ? "Verified path: EXECUTABLE (REQUIRE)."
+                      : verifiedBlockers.length > 0
+                        ? `Verified path refused: ${verifiedBlockers.join(", ")}`
+                        : null,
+                    completenessLine,
+                  ]
+                    .filter(Boolean)
+                    .join("\n\n"),
                   limitations: data.answer?.limitations,
                   unresolved: [
                     ...(data.draft?.missingConfirmations ?? []),
                     ...(data.authoritative?.missingInputs ?? []),
+                    ...(!data.executableOutcomes?.verifiedExecutable ? verifiedBlockers : []),
                   ],
                 });
               }

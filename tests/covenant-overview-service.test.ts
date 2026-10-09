@@ -69,16 +69,21 @@ describe.each(COMPANIES)("getCovenantOverview(%s) - same service/contract for ev
     }
   });
 
-  it("usage is never fabricated as $0 - every capacity row reports NOT_TRACKED usage honestly, with used=null", async () => {
+  it("usage is never fabricated as $0 - NOT_TRACKED stays null; TRACKED only with attributed 4C join", async () => {
     const overview = await getCovenantOverview(companyId);
     for (const fam of overview.covenantFamilies) {
       for (const row of fam.rows) {
         if (row.kind !== "CAPACITY") continue;
-        expect(row.usageState).toBe("NOT_TRACKED");
-        expect(row.used).toBeNull();
-        // UNKNOWN must not render as zero utilization or invented "full remaining".
-        expect(row.utilizationPct).toBeNull();
-        expect(row.remaining).toBeNull();
+        if (row.usageState === "NOT_TRACKED") {
+          expect(row.used).toBeNull();
+          // UNKNOWN must not render as zero utilization or invented "full remaining".
+          expect(row.utilizationPct).toBeNull();
+          expect(row.remaining).toBeNull();
+        } else {
+          expect(row.usageState).toBe("TRACKED");
+          expect(typeof row.used).toBe("number");
+          expect(Number.isFinite(row.used)).toBe(true);
+        }
       }
     }
   });

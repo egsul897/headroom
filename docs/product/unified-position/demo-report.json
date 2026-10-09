@@ -1,10 +1,104 @@
 {
-  "schema": "unified-position-demo.v1",
+  "schema": "unified-position-demo.v2",
   "companyId": "coherent",
   "paidProvidersCalled": false,
   "postsToLedger": false,
-  "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — demonstration only",
-  "startedAt": "2026-10-09T22:20:50.895Z",
+  "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — demonstration; verified path fail-closed without VEP",
+  "startedAt": "2026-10-09T22:34:44.112Z",
+  "executableOutcomes": [
+    {
+      "kind": "ATTRIBUTED_BASKET_UTILIZATION",
+      "joinCode": "ind_ratio_debt_fccr",
+      "usedMillions": 75,
+      "remainingMillions": 10078.846153846154
+    },
+    {
+      "kind": "LEGACY_PRE_POST_DEBT_INCURRENCE",
+      "amountMillions": 100,
+      "preTnl": 1.2329411764705882,
+      "postTnl": 1.291764705882353
+    },
+    {
+      "kind": "FIXTURE_VERIFIED_SIMULATION",
+      "exerciseId": "secured-borrowing-100m",
+      "capacityOutcome": "EXECUTED",
+      "simulationOutcome": "EXECUTED"
+    }
+  ],
+  "correctRefusals": [
+    {
+      "label": "below_limit_secured",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "at_limit_probe",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "above_limit_probe",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "dividend",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "investment",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "unsecured",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "repayment",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "equity_contribution",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    },
+    {
+      "label": "missing_amount",
+      "blockers": [
+        "NO_APPROVED_SNAPSHOT",
+        "CUTOFF_UNRESOLVED",
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ]
+    }
+  ],
   "positionReadiness": {
     "status": "EXECUTABLE_PATH_AVAILABLE",
     "capacityAuthority": "LEGACY_ENGINE",
@@ -12,10 +106,64 @@
     "ns4ApprovedSnapshotCount": 0,
     "headline": "Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=LEGACY_ENGINE · not Phase 3 package CERTIFIED · not certified Phase 4E). No NS-4 APPROVED financial snapshot yet. No Phase 3 VERIFIED semantic units yet."
   },
-  "overviewUtilizationHonesty": {
+  "overviewUtilization": {
     "capacityRowCount": 25,
-    "allUtilizationPctNull": true,
-    "allRemainingNullWhenNotTracked": true
+    "trackedCount": 0,
+    "notTrackedCount": 25,
+    "notTrackedAllNull": true,
+    "attributedActiveUsageCount": 0,
+    "attributedKeys": [],
+    "sampleTracked": []
+  },
+  "attributedUtilizationDemo": {
+    "persisted": false,
+    "joinCode": "ind_ratio_debt_fccr",
+    "trackedRowCount": 1,
+    "sample": {
+      "name": "Incur Ratio Debt (unlimited if FCCR ≥ 2.00x)",
+      "sectionRef": "§3.3(a)",
+      "currentCapacity": 10153.846153846154,
+      "used": 75,
+      "remaining": 10078.846153846154,
+      "utilizationPct": 0.7386363636363636
+    },
+    "applyCheck": {
+      "usageState": "TRACKED",
+      "used": 75,
+      "remaining": 10078.846153846154,
+      "utilizationPct": 0.7386363636363636
+    }
+  },
+  "ratioAndEffects": {
+    "preTotalNetLeverage": 1.2329411764705882,
+    "securedDebt": 2221,
+    "totalDebt": 3258,
+    "ebitda": 1700,
+    "effects": {
+      "authority": "LEGACY_ENGINE",
+      "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+      "kind": "DEBT_INCURRENCE",
+      "amountMillions": 100,
+      "secured": true,
+      "postsToLedger": false,
+      "pre": {
+        "totalDebt": 3258,
+        "securedDebt": 2221,
+        "cash": 1162,
+        "equityProceedsSinceIssue": 2150,
+        "totalNetLeverage": 1.2329411764705882,
+        "seniorSecuredNetLeverage": 0.6229411764705882
+      },
+      "post": {
+        "totalDebt": 3358,
+        "securedDebt": 2321,
+        "cash": 1162,
+        "equityProceedsSinceIssue": 2150,
+        "totalNetLeverage": 1.291764705882353,
+        "seniorSecuredNetLeverage": 0.6817647058823529
+      },
+      "basketDeltas": []
+    }
   },
   "scenarios": [
     {
@@ -52,23 +200,132 @@
             {
               "documentId": "coherent-credit-agreement-2022",
               "documentName": "Credit Agreement (2022, as amended)",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             },
             {
               "documentId": "coherent-2029-notes-indenture",
               "documentName": "2029 Senior Notes Indenture",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             }
           ]
         },
         "crossDocument": {
           "documentsEvaluated": 2,
           "documentsNotTested": 0,
-          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+          "note": "Permitted by all 2 applicable configured restriction(s)."
+        },
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DEBT_INCURRENCE",
+          "amountMillions": 50,
+          "secured": true,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3308,
+            "securedDebt": 2271,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2623529411764707,
+            "seniorSecuredNetLeverage": 0.6523529411764706
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "clear",
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        }
+      },
+      "askLegacyStatus": "clear",
+      "consistency": {
+        "legacyStatus": "clear",
+        "askLegacyStatus": "clear",
+        "match": true
+      }
     },
     {
       "label": "at_limit_probe",
@@ -104,23 +361,132 @@
             {
               "documentId": "coherent-credit-agreement-2022",
               "documentName": "Credit Agreement (2022, as amended)",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             },
             {
               "documentId": "coherent-2029-notes-indenture",
               "documentName": "2029 Senior Notes Indenture",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             }
           ]
         },
         "crossDocument": {
           "documentsEvaluated": 2,
           "documentsNotTested": 0,
-          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+          "note": "Permitted by all 2 applicable configured restriction(s)."
+        },
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DEBT_INCURRENCE",
+          "amountMillions": 100,
+          "secured": true,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3358,
+            "securedDebt": 2321,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.291764705882353,
+            "seniorSecuredNetLeverage": 0.6817647058823529
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=debt&amount=100&secured=1&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=100&secured=1&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "clear",
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        }
+      },
+      "askLegacyStatus": "clear",
+      "consistency": {
+        "legacyStatus": "clear",
+        "askLegacyStatus": "clear",
+        "match": true
+      }
     },
     {
       "label": "above_limit_probe",
@@ -156,23 +522,132 @@
             {
               "documentId": "coherent-credit-agreement-2022",
               "documentName": "Credit Agreement (2022, as amended)",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             },
             {
               "documentId": "coherent-2029-notes-indenture",
               "documentName": "2029 Senior Notes Indenture",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             }
           ]
         },
         "crossDocument": {
           "documentsEvaluated": 2,
           "documentsNotTested": 0,
-          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+          "note": "Permitted by all 2 applicable configured restriction(s)."
+        },
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DEBT_INCURRENCE",
+          "amountMillions": 5000,
+          "secured": true,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 8258,
+            "securedDebt": 7221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 4.174117647058823,
+            "seniorSecuredNetLeverage": 3.5641176470588234
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=debt&amount=5000&secured=1&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=5000&secured=1&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "blocked",
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        }
+      },
+      "askLegacyStatus": "blocked",
+      "consistency": {
+        "legacyStatus": "blocked",
+        "askLegacyStatus": "blocked",
+        "match": true
+      }
     },
     {
       "label": "dividend",
@@ -208,11 +683,118 @@
         "crossDocument": {
           "documentsEvaluated": 1,
           "documentsNotTested": 1,
-          "note": "RP/investment tested on one configured document only. 1 other document(s) may separately restrict this transaction — open Simulate for the caveat banners."
+          "note": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone."
+        },
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            }
+          ],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "Basket / restriction for this transaction type not configured on this document."
+            }
+          ],
+          "overallPermissionSupportable": false
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DIVIDEND",
+          "amountMillions": 25,
+          "secured": null,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1137,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2476470588235293,
+            "seniorSecuredNetLeverage": 0.6376470588235295
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=rp&amount=25&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=rp&amount=25&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "clear",
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            }
+          ],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "Basket / restriction for this transaction type not configured on this document."
+            }
+          ],
+          "overallPermissionSupportable": false
+        }
+      },
+      "askLegacyStatus": "clear",
+      "consistency": {
+        "legacyStatus": "clear",
+        "askLegacyStatus": "clear",
+        "match": true
+      }
     },
     {
       "label": "investment",
@@ -248,11 +830,118 @@
         "crossDocument": {
           "documentsEvaluated": 1,
           "documentsNotTested": 1,
-          "note": "RP/investment tested on one configured document only. 1 other document(s) may separately restrict this transaction — open Simulate for the caveat banners."
+          "note": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone."
+        },
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            }
+          ],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "Basket / restriction for this transaction type not configured on this document."
+            }
+          ],
+          "overallPermissionSupportable": false
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "INVESTMENT",
+          "amountMillions": 25,
+          "secured": null,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1137,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2476470588235293,
+            "seniorSecuredNetLeverage": 0.6376470588235295
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=investment&amount=25&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=investment&amount=25&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "clear",
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "Not fully evaluated — 1 document(s) tested; 1 on-file document(s) lack a configured test for this transaction. Overall permission is not supportable from the tested subset alone.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 1,
+          "documentsNotTested": 1,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            }
+          ],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "Basket / restriction for this transaction type not configured on this document."
+            }
+          ],
+          "overallPermissionSupportable": false
+        }
+      },
+      "askLegacyStatus": "clear",
+      "consistency": {
+        "legacyStatus": "clear",
+        "askLegacyStatus": "clear",
+        "match": true
+      }
     },
     {
       "label": "unsecured",
@@ -288,23 +977,419 @@
             {
               "documentId": "coherent-credit-agreement-2022",
               "documentName": "Credit Agreement (2022, as amended)",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             },
             {
               "documentId": "coherent-2029-notes-indenture",
               "documentName": "2029 Senior Notes Indenture",
-              "status": "clear"
+              "status": "clear",
+              "sectionRef": null
             }
           ]
         },
         "crossDocument": {
           "documentsEvaluated": 2,
           "documentsNotTested": 0,
-          "note": "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another."
+          "note": "Permitted by all 2 applicable configured restriction(s)."
+        },
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DEBT_INCURRENCE",
+          "amountMillions": 75,
+          "secured": false,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3333,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2770588235294118,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "basketDeltas": []
         }
       },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "legacy_labeled",
-      "askSimulateHref": "/coherent/simulate?action=debt&amount=75&secured=0&asOf=2026-06-30&from=ask"
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=75&secured=0&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "clear",
+        "completeness": {
+          "verdict": "PERMITTED_BY_ALL_APPLICABLE",
+          "summary": "Permitted by all 2 applicable configured restriction(s).",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 2,
+          "documentsNotTested": 0,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": true
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "clear",
+              "sectionRef": null,
+              "binding": false
+            }
+          ],
+          "notTested": [],
+          "overallPermissionSupportable": true
+        }
+      },
+      "askLegacyStatus": "clear",
+      "consistency": {
+        "legacyStatus": "clear",
+        "askLegacyStatus": "clear",
+        "match": true
+      }
+    },
+    {
+      "label": "repayment",
+      "question": "Can we repay $50 million of secured debt on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we repay $50 million of secured debt on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 50,
+        "kind": "SECURED_DEBT",
+        "secured": true,
+        "missingConfirmations": []
+      },
+      "simulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=demo",
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "DEBT_REPAYMENT",
+        "amountMillions": 50,
+        "secured": true,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "review_required",
+        "crossDocument": {
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "note": "DEBT_REPAYMENT pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents."
+        },
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "DEBT_REPAYMENT pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            }
+          ],
+          "overallPermissionSupportable": false
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "DEBT_REPAYMENT",
+          "amountMillions": 50,
+          "secured": true,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3208,
+            "securedDebt": 2171,
+            "cash": 1112,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "basketDeltas": []
+        }
+      },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": "/coherent/simulate?action=debt&amount=50&secured=1&asOf=2026-06-30&from=ask",
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "review_required",
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "DEBT_REPAYMENT pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            }
+          ],
+          "overallPermissionSupportable": false
+        }
+      },
+      "askLegacyStatus": "review_required",
+      "consistency": {
+        "legacyStatus": "review_required",
+        "askLegacyStatus": "review_required",
+        "match": true
+      }
+    },
+    {
+      "label": "equity_contribution",
+      "question": "Can we make a $25 million eligible equity contribution on 2026-06-30?",
+      "draft": {
+        "rawQuestion": "Can we make a $25 million eligible equity contribution on 2026-06-30?",
+        "evaluationDate": "2026-06-30",
+        "amountMillions": 25,
+        "kind": "UNKNOWN",
+        "secured": null,
+        "missingConfirmations": [
+          "transaction kind (debt / RP / investment / acquisition)"
+        ]
+      },
+      "simulateHref": null,
+      "legacySimulation": {
+        "authority": "LEGACY_ENGINE",
+        "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — same covenant-engine path as Simulate. Not Phase 3 package CERTIFIED. Not certified Phase 4E. Hypothetical — does not post to the ledger.",
+        "kind": "ELIGIBLE_EQUITY_CONTRIBUTION",
+        "amountMillions": 25,
+        "secured": null,
+        "preTransaction": {
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "financialAsOf": "2026-06-30"
+        },
+        "postsToLedger": false,
+        "overallStatus": "review_required",
+        "crossDocument": {
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "note": "ELIGIBLE_EQUITY_CONTRIBUTION pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents."
+        },
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "ELIGIBLE_EQUITY_CONTRIBUTION pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            }
+          ],
+          "overallPermissionSupportable": false
+        },
+        "effects": {
+          "authority": "LEGACY_ENGINE",
+          "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — deterministic pre/post financials from covenant-engine. Hypothetical — does not post to the ledger.",
+          "kind": "ELIGIBLE_EQUITY_CONTRIBUTION",
+          "amountMillions": 25,
+          "secured": null,
+          "postsToLedger": false,
+          "pre": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1162,
+            "equityProceedsSinceIssue": 2150,
+            "totalNetLeverage": 1.2329411764705882,
+            "seniorSecuredNetLeverage": 0.6229411764705882
+          },
+          "post": {
+            "totalDebt": 3258,
+            "securedDebt": 2221,
+            "cash": 1187,
+            "equityProceedsSinceIssue": 2175,
+            "totalNetLeverage": 1.218235294117647,
+            "seniorSecuredNetLeverage": 0.6082352941176471
+          },
+          "basketDeltas": [
+            {
+              "provisionId": "prov-ind-rp-builder",
+              "code": "rp_builder",
+              "basketName": "Builder Basket (Available Amount)",
+              "sectionRef": "§3.4(a)(C)",
+              "documentId": "coherent-2029-notes-indenture",
+              "preCapacity": 2835,
+              "postCapacity": 2860,
+              "formulaType": "BUILDER_BASKET"
+            }
+          ]
+        }
+      },
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
+      "askAnswerKind": "legacy_labeled",
+      "askSimulateHref": null,
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": "review_required",
+        "completeness": {
+          "verdict": "NOT_FULLY_EVALUATED",
+          "summary": "ELIGIBLE_EQUITY_CONTRIBUTION pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents.",
+          "documentsOnFile": 2,
+          "documentsEvaluated": 0,
+          "documentsNotTested": 2,
+          "prohibited": [],
+          "conditional": [],
+          "permitted": [],
+          "notTested": [
+            {
+              "documentId": "coherent-credit-agreement-2022",
+              "documentName": "Credit Agreement (2022, as amended)",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            },
+            {
+              "documentId": "coherent-2029-notes-indenture",
+              "documentName": "2029 Senior Notes Indenture",
+              "status": "not_configured",
+              "reason": "No dedicated restriction test wired for this effect kind yet."
+            }
+          ],
+          "overallPermissionSupportable": false
+        }
+      },
+      "askLegacyStatus": "review_required",
+      "consistency": {
+        "legacyStatus": "review_required",
+        "askLegacyStatus": "review_required",
+        "match": true
+      }
     },
     {
       "label": "missing_amount",
@@ -321,10 +1406,44 @@
       },
       "simulateHref": null,
       "legacySimulation": null,
+      "verifiedSummary": {
+        "executable": false,
+        "blockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "pathCandidateCount": 0
+      },
       "askAnswerKind": "insufficient_evidence",
-      "askSimulateHref": null
+      "askSimulateHref": null,
+      "askExecutableOutcomes": {
+        "verifiedExecutable": false,
+        "verifiedBlockers": [
+          "NO_APPROVED_SNAPSHOT",
+          "CUTOFF_UNRESOLVED",
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "legacyOverallStatus": null,
+        "completeness": null
+      },
+      "askLegacyStatus": null,
+      "consistency": null
     }
   ],
+  "fixtureVerifiedExecutable": {
+    "exerciseId": "secured-borrowing-100m",
+    "packageBlocked": false,
+    "runBlocked": false,
+    "blocker": null,
+    "capacityOutcome": "EXECUTED",
+    "simulationOutcome": "EXECUTED",
+    "note": "FIXTURE_IR — SYNTHETIC VerifiedExecutionPackage; demonstrates verified pre/post when gates pass"
+  },
   "crossDocumentPosition": {
     "documentCount": 2,
     "secured": {
@@ -367,5 +1486,5 @@
     },
     "note": "Permission under one agreement does not override a prohibition under another."
   },
-  "finishedAt": "2026-10-09T22:21:03.270Z"
+  "finishedAt": "2026-10-09T22:34:59.278Z"
 }

@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
+import { VerifiedSimulatePanel } from "@/components/VerifiedSimulatePanel";
 import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
 import { buildSolverContext } from "@/lib/dashboard-service";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { parseSimulateHandoffSearchParams } from "@/lib/product/unified-position/simulate-handoff";
+import {
+  attemptVerifiedSimulate,
+  summarizeVerifiedSimulate,
+} from "@/lib/product/unified-position/certified-simulate-bridge";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -13,6 +18,7 @@ export const metadata = { title: "Headroom — Simulate" };
  * Simulate — runs the shared covenant engine. A simulation is not a legal approval.
  * Without an executable rulebook and financial snapshot, expect NOT DETERMINABLE —
  * never a fabricated pass. Optional ?action=&amount=&secured=&asOf= seeds from Ask.
+ * Verified path is attempted via existing gates (no VEP invented); blockers shown precisely.
  */
 export default async function SimulatePage({
   params,
@@ -25,13 +31,34 @@ export default async function SimulatePage({
   const sp = searchParams ? await searchParams : {};
   const handoff = parseSimulateHandoffSearchParams(sp);
   const asOfDate = handoff.evaluationDate ? new Date(`${handoff.evaluationDate}T12:00:00.000Z`) : new Date();
-  const [readiness, data, documents, definedTermsByProvision, solverContext] = await Promise.all([
+  const evaluationDate =
+    handoff.evaluationDate ?? asOfDate.toISOString().slice(0, 10);
+  const amountMillions = handoff.amountMillions ?? 0;
+  const kind =
+    handoff.action === "rp"
+      ? "RESTRICTED_PAYMENT"
+      : handoff.action === "investment"
+        ? "INVESTMENT"
+        : handoff.secured === false
+          ? "UNSECURED_DEBT"
+          : "SECURED_DEBT";
+
+  const [readiness, data, documents, definedTermsByProvision, solverContext, verified] = await Promise.all([
     loadCapacityReadiness(companyId),
     loadCovenantDataOrEmpty(companyId, asOfDate),
     getDocuments(companyId),
     getDefinedTermsByProvision(companyId),
     buildSolverContext(companyId, asOfDate),
+    attemptVerifiedSimulate({
+      companyId,
+      evaluationDate,
+      amountMillions,
+      kind,
+      secured: handoff.secured,
+      verifiedPackage: null,
+    }),
   ]);
+  const verifiedSummary = summarizeVerifiedSimulate(verified);
 
   return (
     <div className="stack">
@@ -70,6 +97,8 @@ export default async function SimulatePage({
           </Link>
         </div>
       </Card>
+
+      <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
 
       <SimulateClient
         companyId={companyId}

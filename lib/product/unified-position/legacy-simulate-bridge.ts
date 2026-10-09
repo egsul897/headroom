@@ -15,8 +15,23 @@ import {
 } from "@/lib/covenant-engine";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
 import { buildSolverContext } from "@/lib/dashboard-service";
+import {
+  classifyCrossDocumentCompleteness,
+  type CrossDocumentCompleteness,
+} from "@/lib/product/unified-position/cross-document-completeness";
+import {
+  computeTransactionEffects,
+  effectKindFromAskKind,
+  type TransactionEffectsResult,
+} from "@/lib/product/unified-position/transaction-effects";
 
-export type LegacySimulateKind = "SECURED_DEBT" | "UNSECURED_DEBT" | "RESTRICTED_PAYMENT" | "INVESTMENT";
+export type LegacySimulateKind =
+  | "SECURED_DEBT"
+  | "UNSECURED_DEBT"
+  | "RESTRICTED_PAYMENT"
+  | "INVESTMENT"
+  | "DEBT_REPAYMENT"
+  | "ELIGIBLE_EQUITY_CONTRIBUTION";
 
 export interface LegacySimulateBridgeResult {
   authority: "LEGACY_ENGINE";
@@ -38,6 +53,7 @@ export interface LegacySimulateBridgeResult {
       documentName: string;
       status: TransactionStatus;
       reason?: string;
+      sectionRef?: string | null;
     }>;
   };
   restrictedPayment?: {
@@ -52,6 +68,10 @@ export interface LegacySimulateBridgeResult {
     documentsNotTested: number;
     note: string;
   };
+  /** Structured completeness — never overall-permit from a tested subset alone. */
+  completeness: CrossDocumentCompleteness;
+  /** Deterministic pre/post financials + basket deltas (LEGACY labeled). */
+  effects: TransactionEffectsResult | { refused: true; reason: string } | null;
   postsToLedger: false;
 }
 
@@ -96,10 +116,80 @@ export async function runLegacyEngineSimulation(args: {
     postsToLedger: false as const,
   };
 
+  const effectsKind =
+    args.kind === "DEBT_REPAYMENT"
+      ? "DEBT_REPAYMENT"
+      : args.kind === "ELIGIBLE_EQUITY_CONTRIBUTION"
+        ? "ELIGIBLE_EQUITY_CONTRIBUTION"
+        : effectKindFromAskKind(
+            args.kind === "SECURED_DEBT" || args.kind === "UNSECURED_DEBT"
+              ? args.kind
+              : args.kind === "INVESTMENT"
+                ? "INVESTMENT"
+                : "RESTRICTED_PAYMENT",
+          );
+  const effects =
+    effectsKind != null
+      ? computeTransactionEffects({
+          data,
+          kind: effectsKind,
+          amountMillions: args.amountMillions,
+          secured: args.secured,
+        })
+      : null;
+
+  if (args.kind === "DEBT_REPAYMENT" || args.kind === "ELIGIBLE_EQUITY_CONTRIBUTION") {
+    const completeness = classifyCrossDocumentCompleteness({
+      documentsOnFile: data.documents.map((d) => ({ id: d.id, name: d.name })),
+      evaluated: [],
+    });
+    // Override empty-eval INSUFFICIENT when we have docs but no restriction model for repay/equity.
+    const completenessAdjusted: CrossDocumentCompleteness =
+      data.documents.length > 0
+        ? {
+            ...completeness,
+            verdict: "NOT_FULLY_EVALUATED",
+            summary: `${args.kind} pre/post financials computed; restriction enumeration for this effect kind is not fully configured across all documents.`,
+            documentsOnFile: data.documents.length,
+            documentsEvaluated: 0,
+            documentsNotTested: data.documents.length,
+            notTested: data.documents.map((d) => ({
+              documentId: d.id,
+              documentName: d.name,
+              status: "not_configured" as const,
+              reason: "No dedicated restriction test wired for this effect kind yet.",
+            })),
+            overallPermissionSupportable: false,
+          }
+        : completeness;
+    return {
+      ...base,
+      overallStatus: "review_required",
+      crossDocument: {
+        documentsEvaluated: 0,
+        documentsNotTested: data.documents.length,
+        note: completenessAdjusted.summary,
+      },
+      completeness: completenessAdjusted,
+      effects,
+    };
+  }
+
   if (args.kind === "SECURED_DEBT" || args.kind === "UNSECURED_DEBT") {
     const secured = args.kind === "SECURED_DEBT" ? true : args.secured === true ? true : false;
     const solverContext = await buildSolverContext(args.companyId, asOf);
     const sim = simulateDebtIncurrence(data, position, args.amountMillions, secured, solverContext);
+    const completeness = classifyCrossDocumentCompleteness({
+      documentsOnFile: data.documents.map((d) => ({ id: d.id, name: d.name })),
+      evaluated: sim.perDocument.map((d) => ({
+        documentId: d.documentId,
+        documentName: d.documentName,
+        status: d.status,
+        reason: d.reason,
+        sectionRef: d.bindingProvision?.sectionRef ?? null,
+        binding: sim.binding?.documentId === d.documentId,
+      })),
+    });
     return {
       ...base,
       secured,
@@ -112,14 +202,16 @@ export async function runLegacyEngineSimulation(args: {
           documentName: d.documentName,
           status: d.status,
           reason: d.reason,
+          sectionRef: d.bindingProvision?.sectionRef ?? null,
         })),
       },
       crossDocument: {
-        documentsEvaluated: sim.perDocument.length,
-        documentsNotTested: Math.max(0, data.documents.length - sim.perDocument.length),
-        note:
-          "Debt incurrence evaluates each governing document independently, then combines. Permission under one agreement does not override a prohibition under another.",
+        documentsEvaluated: completeness.documentsEvaluated,
+        documentsNotTested: completeness.documentsNotTested,
+        note: completeness.summary,
       },
+      completeness,
+      effects,
     };
   }
 
@@ -139,7 +231,19 @@ export async function runLegacyEngineSimulation(args: {
     args.amountMillions,
     kind,
   );
-  const others = data.documents.filter((d) => d.id !== docId).length;
+  const completeness = classifyCrossDocumentCompleteness({
+    documentsOnFile: data.documents.map((d) => ({ id: d.id, name: d.name })),
+    evaluated: [
+      {
+        documentId: sim.documentId,
+        documentName: sim.documentName ?? sim.documentId,
+        status: sim.status,
+        reason: sim.reason,
+        sectionRef: null,
+        binding: true,
+      },
+    ],
+  });
   return {
     ...base,
     overallStatus: sim.status,
@@ -151,12 +255,11 @@ export async function runLegacyEngineSimulation(args: {
       remaining: sim.remaining,
     },
     crossDocument: {
-      documentsEvaluated: 1,
-      documentsNotTested: others,
-      note:
-        others > 0
-          ? `RP/investment tested on one configured document only. ${others} other document(s) may separately restrict this transaction — open Simulate for the caveat banners.`
-          : "Single governing document with RP waterfall on file.",
+      documentsEvaluated: completeness.documentsEvaluated,
+      documentsNotTested: completeness.documentsNotTested,
+      note: completeness.summary,
     },
+    completeness,
+    effects,
   };
 }
