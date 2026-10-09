@@ -17,7 +17,7 @@ import {
   proposeFromCertificateAsync,
   type CertificateFactProposal,
   type SyntheticCertificate,
-} from "@/lib/contract-model/runtime/input/store";
+} from "@/lib/contract-model/north-star-bridge";
 
 /** Map connector metricName → NS-4 certificate fact key (4B identity). */
 export const NS4_FACT_KEY_BY_METRIC: Record<string, string> = {
