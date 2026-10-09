@@ -42,7 +42,9 @@ export function parsePersistenceMode(raw: string | undefined, persistNeonFlag: b
   return persistNeonFlag ? "NEON" : "LOCAL";
 }
 
-export function assertNeonWriteAuthorized(env: NodeJS.ProcessEnv = process.env): void {
+export function assertNeonWriteAuthorized(
+  env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
+): void {
   if (env[MASS_LIVE_ENV] !== MASS_LIVE_TOKEN) {
     throw new Error(`Refusing Neon persist without ${MASS_LIVE_ENV}=${MASS_LIVE_TOKEN}`);
   }
@@ -56,7 +58,7 @@ export function assertNeonWriteAuthorized(env: NodeJS.ProcessEnv = process.env):
 export function resolveAcquisitionPersistence(opts: {
   mode: AcquisitionPersistenceMode;
   repoRoot?: string;
-  env?: NodeJS.ProcessEnv;
+  env?: NodeJS.ProcessEnv | Record<string, string | undefined>;
 }): ResolvedPersistence {
   const env = opts.env ?? process.env;
   const repoRoot = opts.repoRoot ?? process.cwd();
