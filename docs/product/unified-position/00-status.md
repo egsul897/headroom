@@ -1,7 +1,8 @@
 # Unified Position · Simulate · Ask — status
 
 **Branch:** `cursor/unified-position-simulate-ask-05a7`  
-**Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8`  
+**Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8`
+**Ending SHA:** `56e7baf9278ba2f9ce00da72c72fc7a6c778e640`
 **Soft gates:** no paid inference; no invented CERTIFIED; hypothetical sims never post to ledger  
 
 ## Deliverable summary
