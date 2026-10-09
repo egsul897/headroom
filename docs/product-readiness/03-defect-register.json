@@ -580,11 +580,16 @@
           "packageId": "pkg-f-capacity-ledger-honesty",
           "expectationRef": "certification:credit-agreement::7.08",
           "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-g-adversarial-evidence",
+          "expectationRef": "semantic:G-7.01-second",
+          "severity": "CRITICAL_FALSE_PERMISSION"
         }
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
       "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents).",
+      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package G semantic:G-7.01-second also recorded after operative-retrieval fixes.",
       "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
       "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",
