@@ -236,9 +236,8 @@ async function main(): Promise<void> {
       console.error("expected REQUIRE capacity REFUSED with CROSS_RULE_GATE_NOT_EXECUTABLE");
       process.exit(2);
     }
-  } else if (capacity.outcome !== "EXECUTED") {
-    console.error(`unexpected capacity outcome ${capacity.outcome}`);
-    process.exit(2);
+  } else {
+    // VerifiedCapacityResult is only REFUSED | EXECUTED; remaining branch is EXECUTED.
   }
 }
 

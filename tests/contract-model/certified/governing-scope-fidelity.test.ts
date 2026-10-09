@@ -132,15 +132,14 @@ describe("GS5 + §9-§12 entity-scope precedence: own actor language > governing
     expect(unknown.sufficiencyReasons.some((x) => x.startsWith("ENTITY_SCOPE_UNRECOGNIZED_TAG"))).toBe(false);
   });
   it("§12 fail-closed: without an authenticated governing source the v2 behaviour stands - an unrecognized tag resets the scope and limits the rule; nothing is inferred from drafting patterns", () => {
-    // No governingScope, no structural index (so lettered-child re-resolution cannot recover PARENT_SCOPE),
-    // and operative text is only the lettered fragment (no section chapeau) — refuse, never invent scope.
+    // No governingScope; default stub structural index finds no nodes (lettered-child re-resolution
+    // cannot recover PARENT_SCOPE); operative text is only the lettered fragment (no section chapeau).
     const r = normalizeSubmission(
       submission([rule({ entityScope: ["Company", "Restricted Subsidiary"] })]),
       testCompilerInput({
         sourceSectionRef: "9.2(a)",
         operativeSourceText: S92A,
         governingScope: null,
-        toolAccess: { structuralIndex: null, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: testCompilerInput().contextBundle },
       }),
     ).rules[0]!;
     expect([r.entityScope, r.entityScopeAudit!.status, r.sufficiency]).toEqual([[], "UNRECOGNIZED_TAG", "PARTIAL"]);
