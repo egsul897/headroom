@@ -211,14 +211,23 @@ describe("figure roles", () => {
   });
 
   it("clause-only operative text stays a capacity when PARENT_SCOPE carries the except lead-in", async () => {
+    const amount = 40_000_000;
     const clause = "(b) other Indebtedness in an aggregate principal amount not to exceed $40,000,000 at any time outstanding; provided that no Default has occurred and is continuing at the time of incurrence.";
     expect(classifyFigures(clause)[0]?.capacity).toBe(false);
+    const withParent = [
+      "SECTION 7.01 Indebtedness. The Borrower shall not create, incur or assume any Indebtedness, except:",
+      clause,
+    ].join("\n\n");
+    const figure = classifyFigures(withParent).find((item) => item.value === amount);
+    expect(figure?.role).toBe("EXCEPTION_AMOUNT");
+    expect(figure?.capacity).toBe(true);
+    expect(figureRoleIssues(withParent, [rule(money(amount))])).toEqual([]);
     const compiled: SemanticCompilationResult = {
       status: "COMPLETED", failureReasons: [], errorDetail: null,
       rules: [{
         ruleId: "rule-1", irSchemaVersion: "v1", companyId: "c", instrumentKey: "i", sourceDocumentId: "d", sourceSectionRef: "7.01(b)",
         covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT",
-        entityScope: [], entityScopeExcluded: [], transactionScope: null, capacityExpression: money(40_000_000), conditions: [], exceptions: [],
+        entityScope: [], entityScopeExcluded: [], transactionScope: null, capacityExpression: money(amount), conditions: [], exceptions: [],
         dependsOn: [], operativeLineage: null, sufficiency: "COMPLETE", sufficiencyReasons: [], provenance: null, compilerVersion: "v1", sourceContentVersion: null,
       } as IRRule],
       definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {},

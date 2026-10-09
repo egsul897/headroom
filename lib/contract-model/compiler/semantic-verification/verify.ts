@@ -342,6 +342,24 @@ export function buildConditionSuspicionInput(compilerInput: SemanticCompilerInpu
   return parentScope.length === 0 ? compilerInput.operativeSourceText : [compilerInput.operativeSourceText, ...parentScope].join("\n\n");
 }
 
+/**
+ * Figure-role classification needs the enclosing exception/permission chapeau
+ * ("shall not …, except:") before the clause text. A clause-only operative
+ * window otherwise marks a restated "not to exceed $X" basket as UNCLASSIFIED
+ * (THRESHOLD_AS_CAPACITY) even when PARENT_SCOPE already carries that chapeau.
+ * Parent text is prepended for classification only — it is not treated as this
+ * candidate's owned operative source for reconciliation.
+ */
+export function buildFigureRoleSourceText(compilerInput: SemanticCompilerInput): string {
+  const parentScope = (compilerInput.contextBundle?.items ?? [])
+    .filter((item) => item.type === "PARENT_SCOPE")
+    .map((item) => item.excerptText.trim())
+    .filter((text) => text.length > 0);
+  // Join with blank lines (same shape as buildConditionSuspicionInput) so a
+  // section heading in PARENT_SCOPE remains a clause boundary for MARKER_RE.
+  return parentScope.length === 0 ? compilerInput.operativeSourceText : [...parentScope, compilerInput.operativeSourceText].join("\n\n");
+}
+
 export async function verifyCompiledCandidate(input: VerificationInput, options: VerifyOptions = {}): Promise<SemanticVerificationResult> {
   const { compilerInput, compilationResult } = input;
 
@@ -420,22 +438,10 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
   const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
-  // Clause-level candidates often omit the parent's "except:" / "shall not" lead-in from
-  // operativeSourceText. Figure-role needs that governing act *before* the clause so
-  // introductionBeforeList / clauseGoverned see the exception list (PARENT_SCOPE first —
-  // not the condition-suspicion order, which appends parent text after the operative window).
-  const parentScopeForFigures = (compilerInput.contextBundle?.items ?? [])
-    .filter((item) => item.type === "PARENT_SCOPE")
-    .map((item) => item.excerptText.trim())
-    .filter((text) => text.length > 0);
-  const figureRoleText =
-    parentScopeForFigures.length === 0
-      ? compilerInput.operativeSourceText
-      : [...parentScopeForFigures, compilerInput.operativeSourceText].join("\n\n");
   const deterministicFindings = [
     ...buildFindingsFromReconciliation(input, reconciliation),
     ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
-    ...figureRoleFindings(figureRoleText, compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...figureRoleFindings(buildFigureRoleSourceText(compilerInput), compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
   ];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
