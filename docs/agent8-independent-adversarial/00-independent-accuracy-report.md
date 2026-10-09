@@ -13,13 +13,13 @@
 
 ## Executive verdict
 
-**Release-blocking finding: 1** — gated unlimited capacity publishes `status: AVAILABLE` while `grossCapacity` / `effectiveRemaining` are `GATE_NOT_SATISFIED` (`RT-08b`). Transaction simulation correctly refuses consumption, but any consumer that treats `status === "AVAILABLE"` as permission receives an unsupported favorable conclusion.
+**Initial finding (pre-remediation):** release-blocking A8-01 — `status: AVAILABLE` with amount `GATE_NOT_SATISFIED`. Material observation A8-02 — shared pool published negative remaining.
 
-**Material observation (not release-blocking):** shared-capacity overdraw publishes negative `sharedConstraints[].remaining` under `REVIEW_REQUIRED` while member capacities withhold (`RT-02b`).
+**Post-remediation (this branch):** both closed. Independent Agent 8 matrix **32/32 pass**, **0** incorrect favorable, **0** release-blocking. See `05-remediation-verdict.md`.
 
-**No incorrect executable permission** was observed on the Phase-4 `simulateTransaction` path for the exercised scenarios. The system does **not** refuse every transaction — executable favorable paths (builders, growers, equity contribution, separate grower when ratio fails) succeed when independently justified.
+**No incorrect executable permission** on `simulateTransaction` for exercised scenarios. Legitimate favorable paths remain AVAILABLE when independently justified.
 
-Prior IPV critical false-permission rows (IPV-01/02/20/22) are **CLOSED** in `docs/product-readiness/03-defect-register.json`. This mission did not re-open them; it probed runtime/status surfaces and authentic amendment/structure paths independently.
+Prior IPV critical false-permission rows (IPV-01/02/20/22) remain **CLOSED** in `docs/product-readiness/03-defect-register.json`.
 
 ---
 

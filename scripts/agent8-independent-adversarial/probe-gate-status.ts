@@ -35,6 +35,12 @@ console.log(
       gross: ratio.grossCapacity,
       rem: ratio.effectiveRemaining,
       lim: ratio.limitations.map((l) => l.code),
+      // Post A8-01 remediation contract: NOT_SATISFIED, never AVAILABLE
+      contract: {
+        statusIsNotAvailable: ratio.status !== "AVAILABLE",
+        statusIsNotSatisfied: ratio.status === "NOT_SATISFIED",
+        amountKindGateNotSatisfied: ratio.grossCapacity.kind === "GATE_NOT_SATISFIED",
+      },
     },
     null,
     2,

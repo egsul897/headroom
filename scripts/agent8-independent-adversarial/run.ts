@@ -137,13 +137,14 @@ function runRuntimeCases(): void {
     const pass = flagged && memberNotAvailable;
     // Separately observe whether negative remaining is published on the pool
     const poolPublishesNegative = moneyAmount(pool.remaining) !== null && Number(moneyAmount(pool.remaining)) < 0;
+    const poolWithholds = isNotDetermined(pool.remaining) && pool.overConsumption != null;
     record({
       id: "RT-02-shared-double-spend-blocked",
       challenge: 8,
       title: "Shared-capacity double spend is flagged and members are not AVAILABLE",
       source: "Phase-2 sc-shared-double-spend (15%×$200mm=$30mm; 20+15 exceeds); DSGR §6.01(p)/(g) mechanic",
       expected: "OVER_CONSUMPTION; members not AVAILABLE; no executable permission",
-      actual: `pool.status=${pool.status}, pool.rem=${moneyAmount(pool.remaining)}, member.status=${member.status}, flagged=${flagged}`,
+      actual: `pool.status=${pool.status}, pool.rem=${moneyAmount(pool.remaining) ?? pool.remaining.kind}, member.status=${member.status}, flagged=${flagged}`,
       pass,
       outcomeClass: pass ? "CORRECT_PROHIBITION" : "INCORRECT_FAVORABLE",
       severity: pass ? "NONE" : "CRITICAL_FALSE_PERMISSION",
@@ -153,20 +154,21 @@ function runRuntimeCases(): void {
     record({
       id: "RT-02b-shared-negative-remaining-published",
       challenge: 11,
-      title: "Shared pool publishes negative remaining under REVIEW_REQUIRED (authority asymmetry vs members)",
+      title: "Shared pool withholds negative remaining under REVIEW_REQUIRED (aligned with member withholding)",
       source: "Phase-2 sc-negative-capacity: availableAmountPresented=0; doNotReportNegativeAsPermission",
-      expected: "Pool remaining withheld as NOT_DETERMINED (or floored presentation), matching member withholding; never a negative permission figure",
-      actual: `pool.status=${pool.status}, pool.remaining=${moneyAmount(pool.remaining)}, member.effectiveRemaining withheld=${isNotDetermined(member.effectiveRemaining)}`,
-      pass: !poolPublishesNegative,
-      outcomeClass: poolPublishesNegative ? "OBSERVATION" : "CORRECT_REFUSAL",
+      expected: "Pool remaining withheld as NOT_DETERMINED; deficit under overConsumption/provisional; never a negative permission figure on remaining",
+      actual: `pool.status=${pool.status}, pool.remaining.kind=${pool.remaining.kind}, overConsumption=${pool.overConsumption ? "present" : "null"}, provisionalRem=${pool.provisional ? moneyAmount(pool.provisional.remaining) : "null"}, member.effectiveRemaining withheld=${isNotDetermined(member.effectiveRemaining)}`,
+      pass: !poolPublishesNegative && poolWithholds,
+      outcomeClass: !poolPublishesNegative && poolWithholds ? "CORRECT_REFUSAL" : "OBSERVATION",
       severity: poolPublishesNegative ? "MATERIAL_OVERSTATEMENT" : "NONE",
-      repro: "evaluateCapacityState shared overdraw → inspect sharedConstraints[0].remaining",
-      releaseBlocking: false, // status is REVIEW_REQUIRED, not AVAILABLE — not a silent false permission
+      repro: "evaluateCapacityState shared overdraw → inspect sharedConstraints[0].remaining / overConsumption",
+      releaseBlocking: false,
       rootCause: poolPublishesNegative
         ? "SharedConstraintState publishes raw arithmetic remaining even when OVER_CONSUMPTION floors status to REVIEW_REQUIRED; member CapacityStateEntry withholds under legalUnsafe"
         : undefined,
-      regressionRecommendation:
-        "Align shared-constraint publishing with member withholding: when OVER_CONSUMPTION applies, publish remaining as NOT_DETERMINED and keep deficit only under an overConsumption/provisional field",
+      regressionRecommendation: poolPublishesNegative
+        ? "Align shared-constraint publishing with member withholding: when OVER_CONSUMPTION applies, publish remaining as NOT_DETERMINED and keep deficit only under an overConsumption/provisional field"
+        : undefined,
     });
   }
 
@@ -425,13 +427,13 @@ function runRuntimeCases(): void {
       releaseBlocking: !gateFailed,
     });
     // Status-layer honesty: AVAILABLE + GATE_NOT_SATISFIED is a misleading favorable signal
-    const statusHonest = ratio.status !== "AVAILABLE";
+    const statusHonest = ratio.status === "NOT_SATISFIED" && ratio.status !== "AVAILABLE";
     record({
       id: "RT-08b-gated-unlimited-status-not-available",
       challenge: 20,
       title: "Failed ratio gate must not report capacity status AVAILABLE",
       source: "Phase-2 sc-ratio-test-failure / sc-conditional-permission; independent status semantics",
-      expected: "status ≠ AVAILABLE when gross/remaining is GATE_NOT_SATISFIED (e.g. GATE_NOT_SATISFIED / REVIEW_REQUIRED / NEEDS_INPUT)",
+      expected: "status=NOT_SATISFIED (never AVAILABLE) when gross/remaining is GATE_NOT_SATISFIED",
       actual: `status=${ratio.status}, gross.kind=${ratio.grossCapacity.kind}, rem.kind=${ratio.effectiveRemaining.kind}`,
       pass: statusHonest && gateFailed,
       outcomeClass: statusHonest ? "CORRECT_PROHIBITION" : "INCORRECT_FAVORABLE",
@@ -441,8 +443,9 @@ function runRuntimeCases(): void {
       rootCause: !statusHonest
         ? "statusFromEvaluation maps EvaluationResult.status EXECUTABLE → AVAILABLE even when capacity amount kind is GATE_NOT_SATISFIED"
         : undefined,
-      regressionRecommendation:
-        "Map GATE_NOT_SATISFIED capacity amounts to a non-AVAILABLE status (or a dedicated GATE_NOT_SATISFIED status) before publishing CapacityStateEntry.status",
+      regressionRecommendation: !statusHonest
+        ? "Map GATE_NOT_SATISFIED capacity amounts to NOT_SATISFIED before publishing CapacityStateEntry.status"
+        : undefined,
     });
   }
 

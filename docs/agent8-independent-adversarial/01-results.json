@@ -1,6 +1,6 @@
 {
   "schemaVersion": "agent8-independent-adversarial.v1",
-  "generatedAt": "2026-10-09T22:29:07.303Z",
+  "generatedAt": "2026-10-09T22:35:20.580Z",
   "methodology": {
     "groundTruth": "Independent arithmetic from Phase-2 adversarial scenarios + authentic CONMED/Chewy source text + human-ground-truth.ts. Not derived from compiler/runtime dumps.",
     "productionCodeModified": false,
@@ -15,19 +15,19 @@
   },
   "summary": {
     "total": 32,
-    "passed": 30,
-    "failed": 2,
+    "passed": 32,
+    "failed": 0,
     "outcomeBuckets": {
       "CORRECT_EXECUTABLE": 16,
-      "CORRECT_PROHIBITION": 4,
-      "CORRECT_REFUSAL": 10,
+      "CORRECT_PROHIBITION": 5,
+      "CORRECT_REFUSAL": 11,
       "INCORRECT_REFUSAL": 0,
-      "INCORRECT_FAVORABLE": 1,
+      "INCORRECT_FAVORABLE": 0,
       "UNSUPPORTED": 0,
       "UNTESTED": 0,
-      "OBSERVATION": 1
+      "OBSERVATION": 0
     },
-    "releaseBlockingCount": 1
+    "releaseBlockingCount": 0
   },
   "cases": [
     {
@@ -50,7 +50,7 @@
       "title": "Shared-capacity double spend is flagged and members are not AVAILABLE",
       "source": "Phase-2 sc-shared-double-spend (15%×$200mm=$30mm; 20+15 exceeds); DSGR §6.01(p)/(g) mechanic",
       "expected": "OVER_CONSUMPTION; members not AVAILABLE; no executable permission",
-      "actual": "pool.status=REVIEW_REQUIRED, pool.rem=-5000000, member.status=REVIEW_REQUIRED, flagged=true",
+      "actual": "pool.status=REVIEW_REQUIRED, pool.rem=NOT_DETERMINED, member.status=REVIEW_REQUIRED, flagged=true",
       "pass": true,
       "outcomeClass": "CORRECT_PROHIBITION",
       "severity": "NONE",
@@ -60,17 +60,15 @@
     {
       "id": "RT-02b-shared-negative-remaining-published",
       "challenge": 11,
-      "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED (authority asymmetry vs members)",
+      "title": "Shared pool withholds negative remaining under REVIEW_REQUIRED (aligned with member withholding)",
       "source": "Phase-2 sc-negative-capacity: availableAmountPresented=0; doNotReportNegativeAsPermission",
-      "expected": "Pool remaining withheld as NOT_DETERMINED (or floored presentation), matching member withholding; never a negative permission figure",
-      "actual": "pool.status=REVIEW_REQUIRED, pool.remaining=-5000000, member.effectiveRemaining withheld=true",
-      "pass": false,
-      "outcomeClass": "OBSERVATION",
-      "severity": "MATERIAL_OVERSTATEMENT",
-      "repro": "evaluateCapacityState shared overdraw → inspect sharedConstraints[0].remaining",
-      "releaseBlocking": false,
-      "rootCause": "SharedConstraintState publishes raw arithmetic remaining even when OVER_CONSUMPTION floors status to REVIEW_REQUIRED; member CapacityStateEntry withholds under legalUnsafe",
-      "regressionRecommendation": "Align shared-constraint publishing with member withholding: when OVER_CONSUMPTION applies, publish remaining as NOT_DETERMINED and keep deficit only under an overConsumption/provisional field"
+      "expected": "Pool remaining withheld as NOT_DETERMINED; deficit under overConsumption/provisional; never a negative permission figure on remaining",
+      "actual": "pool.status=REVIEW_REQUIRED, pool.remaining.kind=NOT_DETERMINED, overConsumption=present, provisionalRem=-5000000, member.effectiveRemaining withheld=true",
+      "pass": true,
+      "outcomeClass": "CORRECT_REFUSAL",
+      "severity": "NONE",
+      "repro": "evaluateCapacityState shared overdraw → inspect sharedConstraints[0].remaining / overConsumption",
+      "releaseBlocking": false
     },
     {
       "id": "RT-03-missing-shared-ir-trusts-independent",
@@ -158,7 +156,7 @@
       "title": "Failed ratio gate blocks ratio debt without collapsing the separate grower path",
       "source": "Phase-2 sc-ratio-test-failure; Chewy Fixed vs Ratio Incremental path separation",
       "expected": "ratio gross/remaining GATE_NOT_SATISFIED; general grower remains 40mm AVAILABLE",
-      "actual": "ratio.status=AVAILABLE, ratio.gross.kind=GATE_NOT_SATISFIED, ratio.rem.kind=GATE_NOT_SATISFIED, general.status=AVAILABLE, general.rem=40000000",
+      "actual": "ratio.status=NOT_SATISFIED, ratio.gross.kind=GATE_NOT_SATISFIED, ratio.rem.kind=GATE_NOT_SATISFIED, general.status=AVAILABLE, general.rem=40000000",
       "pass": true,
       "outcomeClass": "CORRECT_EXECUTABLE",
       "severity": "NONE",
@@ -170,15 +168,13 @@
       "challenge": 20,
       "title": "Failed ratio gate must not report capacity status AVAILABLE",
       "source": "Phase-2 sc-ratio-test-failure / sc-conditional-permission; independent status semantics",
-      "expected": "status ≠ AVAILABLE when gross/remaining is GATE_NOT_SATISFIED (e.g. GATE_NOT_SATISFIED / REVIEW_REQUIRED / NEEDS_INPUT)",
-      "actual": "status=AVAILABLE, gross.kind=GATE_NOT_SATISFIED, rem.kind=GATE_NOT_SATISFIED",
-      "pass": false,
-      "outcomeClass": "INCORRECT_FAVORABLE",
-      "severity": "CRITICAL_FALSE_PERMISSION",
+      "expected": "status=NOT_SATISFIED (never AVAILABLE) when gross/remaining is GATE_NOT_SATISFIED",
+      "actual": "status=NOT_SATISFIED, gross.kind=GATE_NOT_SATISFIED, rem.kind=GATE_NOT_SATISFIED",
+      "pass": true,
+      "outcomeClass": "CORRECT_PROHIBITION",
+      "severity": "NONE",
       "repro": "evaluateCapacityState(UNLIMITED gated capacity with failing ratio); inspect capacities[].status",
-      "releaseBlocking": true,
-      "rootCause": "statusFromEvaluation maps EvaluationResult.status EXECUTABLE → AVAILABLE even when capacity amount kind is GATE_NOT_SATISFIED",
-      "regressionRecommendation": "Map GATE_NOT_SATISFIED capacity amounts to a non-AVAILABLE status (or a dedicated GATE_NOT_SATISFIED status) before publishing CapacityStateEntry.status"
+      "releaseBlocking": false
     },
     {
       "id": "RT-09-stale-period-not-carried",
@@ -466,38 +462,6 @@
       "releaseBlocking": false
     }
   ],
-  "releaseBlocking": [
-    {
-      "id": "RT-08b-gated-unlimited-status-not-available",
-      "challenge": 20,
-      "title": "Failed ratio gate must not report capacity status AVAILABLE",
-      "source": "Phase-2 sc-ratio-test-failure / sc-conditional-permission; independent status semantics",
-      "expected": "status ≠ AVAILABLE when gross/remaining is GATE_NOT_SATISFIED (e.g. GATE_NOT_SATISFIED / REVIEW_REQUIRED / NEEDS_INPUT)",
-      "actual": "status=AVAILABLE, gross.kind=GATE_NOT_SATISFIED, rem.kind=GATE_NOT_SATISFIED",
-      "pass": false,
-      "outcomeClass": "INCORRECT_FAVORABLE",
-      "severity": "CRITICAL_FALSE_PERMISSION",
-      "repro": "evaluateCapacityState(UNLIMITED gated capacity with failing ratio); inspect capacities[].status",
-      "releaseBlocking": true,
-      "rootCause": "statusFromEvaluation maps EvaluationResult.status EXECUTABLE → AVAILABLE even when capacity amount kind is GATE_NOT_SATISFIED",
-      "regressionRecommendation": "Map GATE_NOT_SATISFIED capacity amounts to a non-AVAILABLE status (or a dedicated GATE_NOT_SATISFIED status) before publishing CapacityStateEntry.status"
-    }
-  ],
-  "materialObservations": [
-    {
-      "id": "RT-02b-shared-negative-remaining-published",
-      "challenge": 11,
-      "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED (authority asymmetry vs members)",
-      "source": "Phase-2 sc-negative-capacity: availableAmountPresented=0; doNotReportNegativeAsPermission",
-      "expected": "Pool remaining withheld as NOT_DETERMINED (or floored presentation), matching member withholding; never a negative permission figure",
-      "actual": "pool.status=REVIEW_REQUIRED, pool.remaining=-5000000, member.effectiveRemaining withheld=true",
-      "pass": false,
-      "outcomeClass": "OBSERVATION",
-      "severity": "MATERIAL_OVERSTATEMENT",
-      "repro": "evaluateCapacityState shared overdraw → inspect sharedConstraints[0].remaining",
-      "releaseBlocking": false,
-      "rootCause": "SharedConstraintState publishes raw arithmetic remaining even when OVER_CONSUMPTION floors status to REVIEW_REQUIRED; member CapacityStateEntry withholds under legalUnsafe",
-      "regressionRecommendation": "Align shared-constraint publishing with member withholding: when OVER_CONSUMPTION applies, publish remaining as NOT_DETERMINED and keep deficit only under an overConsumption/provisional field"
-    }
-  ]
+  "releaseBlocking": [],
+  "materialObservations": []
 }
