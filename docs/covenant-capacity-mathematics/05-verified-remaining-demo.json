@@ -22,7 +22,18 @@
       "SIMULATE": 65,
       "ASK": 65
     },
-    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED)."
+    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED).",
+    "completenessCertificate": "SYNTHETIC_LABELED VERIFIED_COMPLETE",
+    "withoutCompletenessWouldSupportRemaining": false
+  },
+  "attributedWithoutCompleteness": {
+    "knowledge": "KNOWN_ATTRIBUTED",
+    "attributedAmount": 10,
+    "supportsRemainingClaim": false,
+    "supportedRemaining": null,
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "mayPublishAvailable": false,
+    "note": "Known attributed utilization 10 USD (KNOWN_ATTRIBUTED), but completeness not certified — remaining capacity cannot be claimed."
   },
   "authenticUtilizationBlocker": {
     "authenticity": "AUTHENTIC_BLOCKER",
@@ -36,7 +47,11 @@
   },
   "realDataBlocker": {
     "status": "BLOCKED",
-    "detail": "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history."
+    "detail": "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history. Separately: approved individual ledger records do not establish completeness of historical usage."
+  },
+  "utilizationAuthority": {
+    "principle": "Approved individual ledger records establish known attributed usage only. Remaining = gross − usage requires an affirmative completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).",
+    "mergeBlocker": "PR #234 remains blocked on authentic completeness authority even after typecheck remediation."
   },
   "phase4cAdapterCoverage": [
     {

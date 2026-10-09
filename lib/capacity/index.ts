@@ -2,6 +2,7 @@ export type {
   UtilizationKnowledgeKind,
   UtilizationRecordKind,
   UtilizationEvidenceRecord,
+  UtilizationCompletenessCertificate,
   UtilizationResolution,
 } from "./utilization-types";
 export {

@@ -67,7 +67,7 @@ describe("utilization resolver — never invent zero", () => {
     expect(r.attributedAmount).toBe(0);
   });
 
-  it("attributed usage → KNOWN_ATTRIBUTED remaining claim", () => {
+  it("approved attributed records alone do NOT support remaining (completeness required)", () => {
     const r = resolveUtilization({
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
@@ -87,7 +87,40 @@ describe("utilization resolver — never invent zero", () => {
     });
     expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
     expect(r.attributedAmount).toBe(25);
+    expect(r.supportsRemainingClaim).toBe(false);
+    expect(r.completenessCertified).toBe(false);
+    expect(r.blockers.some((b) => /completeness/i.test(b))).toBe(true);
+  });
+
+  it("attributed usage + VERIFIED_COMPLETE certificate → remaining claim supported", () => {
+    const r = resolveUtilization({
+      capacityRuleId: "rule-flat",
+      asOf: AS_OF_D,
+      records: [
+        evidenceFromAttributedLedger({
+          usageId: "u1",
+          amount: 25,
+          currency: "USD",
+          effectiveAsOf: "2026-01-15",
+          capacityRuleId: "rule-flat",
+          status: "ACTIVE",
+          approvalState: "APPROVED",
+          sourceLabel: "synthetic-demo-ledger",
+          authenticity: "SYNTHETIC_LABELED",
+        }),
+      ],
+      completenessCertificate: {
+        capacityRuleId: "rule-flat",
+        asOf: AS_OF_D,
+        approvalState: "APPROVED",
+        sourceLabel: "SYNTHETIC_LABELED completeness cert",
+        kind: "VERIFIED_COMPLETE",
+      },
+    });
+    expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
+    expect(r.attributedAmount).toBe(25);
     expect(r.supportsRemainingClaim).toBe(true);
+    expect(r.completenessCertified).toBe(true);
   });
 
   it("unattributed legacy basket → UNATTRIBUTED_LEGACY_BASKET", () => {
@@ -168,10 +201,40 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
     expect(v.mayPublishAvailable).toBe(false);
   });
 
-  it("gross − attributed = supported remaining (labeled synthetic)", () => {
+  it("gross − attributed = supported remaining only with completeness certificate (labeled synthetic)", () => {
     const gross = 100;
     const used = 35;
     const expectedRemaining = 65;
+    const withoutCompleteness = computeVerifiedRemaining({
+      gross: {
+        amount: gross,
+        gateSatisfied: true,
+        modeled: true,
+        capacityRuleId: "basket-a",
+      },
+      utilization: {
+        capacityRuleId: "basket-a",
+        asOf: AS_OF_D,
+        records: [
+          evidenceFromAttributedLedger({
+            usageId: "syn-u1",
+            amount: used,
+            currency: "USD",
+            effectiveAsOf: "2026-03-01",
+            capacityRuleId: "basket-a",
+            status: "ACTIVE",
+            approvalState: "APPROVED",
+            sourceLabel: "SYNTHETIC_LABELED fixture — not authentic Neon history",
+            authenticity: "SYNTHETIC_LABELED",
+          }),
+        ],
+      },
+      sourceCitations: ["§6.01(a) synthetic demo"],
+    });
+    expect(withoutCompleteness.supportedRemaining).toBeNull();
+    expect(withoutCompleteness.mayPublishAvailable).toBe(false);
+    expect(withoutCompleteness.remainingStatus).toBe("GROSS_ONLY");
+
     const v = computeVerifiedRemaining({
       gross: {
         amount: gross,
@@ -195,6 +258,13 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        completenessCertificate: {
+          capacityRuleId: "basket-a",
+          asOf: AS_OF_D,
+          approvalState: "APPROVED",
+          sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE certificate",
+          kind: "VERIFIED_COMPLETE",
+        },
       },
       sourceCitations: ["§6.01(a) synthetic demo"],
     });
@@ -232,6 +302,13 @@ describe("Position / Simulate / Ask consistency", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        completenessCertificate: {
+          capacityRuleId: "shared-rule",
+          asOf: AS_OF_D,
+          approvalState: "APPROVED",
+          sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
+          kind: "VERIFIED_COMPLETE",
+        },
       },
       governingConditions: ["Payment Conditions satisfied"],
       crossDocumentConstraints: ["Shared RP pool with Investments"],

@@ -20,10 +20,12 @@ import {
   evaluateProvision,
   loadCompanyCovenantData,
   loadCompanySolverStaticData,
+  readProvisionLegalConditionFlags,
   type CovenantProvisionInput,
   type FinancialSnapshotInput,
   type FormulaParams,
   type FormulaType,
+  type ProvisionLegalConditionFlags,
 } from "@/lib/covenant-engine";
 import { permissionAsProvision } from "@/lib/solver/election";
 import { adaptLegacyCovenantProvision } from "@/lib/contract-model/ir/legacy-adapter";
@@ -93,19 +95,38 @@ export interface AuthenticCaseResult {
 
 const TOL = 1e-6;
 
+function assertNeverFormulaType(x: never): never {
+  throw new Error(`unexpected FormulaType: ${JSON.stringify(x)}`);
+}
+
+/**
+ * Independent expected capacity from numerical FormulaParams only.
+ * Legal conditions (automaticLinkOnly / assetScopeRestricted) are handled
+ * separately — they are not formula inputs and refuse independent capacity.
+ */
 function independentCapacity(
   formulaType: FormulaType,
   threshold: number,
   params: FormulaParams | null | undefined,
+  legal: ProvisionLegalConditionFlags,
   fin: FinancialSnapshotInput,
 ): AuthenticCaseResult["independentExpected"] {
+  // Legal condition: automatic-link liens have no independent ceiling.
+  // Preserve as CORRECT_REFUSAL / zero_linked — do not invent independent capacity.
+  if (legal.automaticLinkOnly) {
+    return {
+      status: "zero_linked",
+      capacityMillions: 0,
+      reason: legal.assetScopeRestricted
+        ? "automatic-link lien with asset-scope restriction: no independent ceiling (legal condition, not a numerical formula input)"
+        : "automatic-link lien: no independent ceiling (legal condition, not a numerical formula input)",
+    };
+  }
+
   const metrics = computeLeverageMetrics(fin);
   const p = params ?? {};
   switch (formulaType) {
     case "FLAT_AMOUNT":
-      if (p.automaticLinkOnly) {
-        return { status: "zero_linked", capacityMillions: Math.max(0, threshold), reason: "automatic-link lien: no independent ceiling (threshold modeled as 0)" };
-      }
       return { status: "modeled", capacityMillions: Math.max(0, threshold) };
     case "FLAT_NET_OF_DEBT": {
       const outstanding = p.netOfBasis === "secured" ? fin.securedDebt : fin.totalDebt;
@@ -148,20 +169,32 @@ function independentCapacity(
         : { status: "modeled", capacityMillions: 0 };
     }
     default:
-      return { status: "refused", capacityMillions: null, reason: `unsupported formulaType ${String(formulaType)}` };
+      return assertNeverFormulaType(formulaType);
   }
 }
 
 function mechanicOf(formulaType: FormulaType, grant: string, code: string): string {
+  // Preserve prior authentic-matrix priority: incremental → builder → RP/INV
+  // heuristics → formula-type growers/ratios/fixed. Exhaustive via assertNever.
   if (/incremental|incr/i.test(code) || /incremental/i.test(grant)) return "incremental_facility";
   if (formulaType === "BUILDER_BASKET") return "available_amount_builder";
   if (/rp_|restricted|RP/i.test(code) || /RESTRICTED/i.test(grant)) return "restricted_payment";
   if (/inv_/i.test(code) || /INVESTMENT/i.test(grant)) return "investment";
-  if (formulaType === "GREATER_OF_FLAT_OR_PCT_EBITDA" || formulaType === "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS") return "greater_of_grower";
-  if (formulaType === "LEVERAGE_RATIO_ROOM" || formulaType === "COVERAGE_RATIO_ROOM" || formulaType === "RATIO_GATE") return "ratio_debt";
-  if (formulaType === "FLAT_AMOUNT" || formulaType === "FLAT_NET_OF_DEBT") return "fixed_basket";
-  // All FormulaType cases handled above; keep a stable fallback for exhaustiveness.
-  return "other_mechanic";
+  // BUILDER_BASKET already returned above — remaining FormulaType cases:
+  switch (formulaType) {
+    case "GREATER_OF_FLAT_OR_PCT_EBITDA":
+    case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS":
+      return "greater_of_grower";
+    case "LEVERAGE_RATIO_ROOM":
+    case "COVERAGE_RATIO_ROOM":
+    case "RATIO_GATE":
+      return "ratio_debt";
+    case "FLAT_AMOUNT":
+    case "FLAT_NET_OF_DEBT":
+      return "fixed_basket";
+    default:
+      return assertNeverFormulaType(formulaType);
+  }
 }
 
 function classify(
@@ -322,10 +355,16 @@ function tryPhase4c(provision: CovenantProvisionInput, companyId: string, instru
 }
 
 function formulaNarrative(p: CovenantProvisionInput): string {
+  const legal = readProvisionLegalConditionFlags(p.params);
+  if (legal.automaticLinkOnly) {
+    return legal.assetScopeRestricted
+      ? `automatic-link (asset-scope restricted); no independent ceiling (legal condition)`
+      : `automatic-link capacity; no independent ceiling (legal condition)`;
+  }
   const params = p.params ?? {};
   switch (p.formulaType) {
     case "FLAT_AMOUNT":
-      return params.automaticLinkOnly ? `automatic linked capacity; independent ceiling = ${p.thresholdValue}` : `flat ${p.thresholdValue}`;
+      return `flat ${p.thresholdValue}`;
     case "FLAT_NET_OF_DEBT":
       return `max(0, ${p.thresholdValue} − ${params.netOfBasis ?? "total"} debt)`;
     case "GREATER_OF_FLAT_OR_PCT_EBITDA":
@@ -341,7 +380,7 @@ function formulaNarrative(p: CovenantProvisionInput): string {
     case "RATIO_GATE":
       return `unlimited if ${params.debtBasis ?? "total"} leverage ≤ ${p.thresholdValue}x, else 0`;
     default:
-      return p.formulaType;
+      return assertNeverFormulaType(p.formulaType);
   }
 }
 
@@ -364,7 +403,14 @@ async function evaluateCompany(args: {
       : "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed";
 
   const runOne = (provision: CovenantProvisionInput, provenance: AuthenticCaseResult["provenance"], grantOrFamily: string) => {
-    const independent = independentCapacity(provision.formulaType, provision.thresholdValue, provision.params, data.financials);
+    const legal = readProvisionLegalConditionFlags(provision.params);
+    const independent = independentCapacity(
+      provision.formulaType,
+      provision.thresholdValue,
+      provision.params,
+      legal,
+      data.financials,
+    );
     const engine = evaluateProvision(provision, data.financials, metrics);
     const engineResult = {
       status: engine.status,

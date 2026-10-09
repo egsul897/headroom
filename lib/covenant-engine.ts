@@ -123,12 +123,32 @@ export interface FormulaParams {
   cniSectionRef?: string;
   /** BUILDER_BASKET: section ref for the equity proceeds contribution, if distinct from the provision's own sectionRef. */
   equitySectionRef?: string;
-  /**
-   * FLAT_AMOUNT lien baskets that exist only as automatic links to another
-   * capacity path — no independent ceiling. When true, leaf/authentic
-   * evaluators treat independent capacity as zero (threshold is documentary only).
-   */
-  automaticLinkOnly?: boolean;
+}
+
+/**
+ * Legal / modeling condition flags sometimes stored in the same JSON column as
+ * FormulaParams. These are NOT numerical formula inputs: they describe whether
+ * a permission has an independent capacity path at all (e.g. automatic-link
+ * liens that only travel with another permission). Callers must read them via
+ * {@link readProvisionLegalConditionFlags}, never fold them into FormulaParams.
+ */
+export interface ProvisionLegalConditionFlags {
+  /** Lien (or similar) exists only as an automatic link — no independent ceiling. */
+  automaticLinkOnly: boolean;
+  /** Automatic-link capacity further restricted to a named asset scope. */
+  assetScopeRestricted: boolean;
+}
+
+/** Extract legal-condition flags from raw provision/permission params JSON. */
+export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalConditionFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { automaticLinkOnly: false, assetScopeRestricted: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    automaticLinkOnly: o.automaticLinkOnly === true,
+    assetScopeRestricted: o.assetScopeRestricted === true,
+  };
 }
 
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */

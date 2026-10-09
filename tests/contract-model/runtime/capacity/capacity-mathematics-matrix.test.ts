@@ -203,8 +203,16 @@ describe("greater-of and lesser-of baskets", () => {
 describe("asset-based and EBITDA-based growers", () => {
   it("ASSET-GROWER: 15% of Total Assets (name is data)", () => {
     // Independent: 0.15 * 400m = 60m
+    // CREATE_LIEN is the canonical ContractAction for lien-capacity permissions
+    // (equivalent family semantics to the former non-enum label PERMIT_LIEN).
+    const lienRule = rule("lien-assets", MUL(PCT(0.15), METRIC("Total Assets")), {
+      covenantFamily: "LIENS",
+      action: "CREATE_LIEN",
+    });
+    expect(lienRule.action).toBe("CREATE_LIEN");
+    expect(lienRule.covenantFamily).toBe("LIENS");
     const { state } = runCapacity({
-      rules: [rule("lien-assets", MUL(PCT(0.15), METRIC("Total Assets")), { covenantFamily: "LIENS", action: "CREATE_LIEN" })],
+      rules: [lienRule],
       facts: [fact("Total Assets", "400000000")],
     });
     assertCapacity(cap(state, "lien-assets"), { status: "AVAILABLE", remaining: "60000000" }, "ASSET-GROWER");
@@ -331,6 +339,8 @@ describe("Available Amount builders", () => {
       SUM(MONEY(25_000_000), METRIC("Cumulative Consolidated Net Income"), METRIC("Qualified Equity Proceeds")),
     );
     const { state } = runCapacity({
+      // PAY_DIVIDEND is the canonical Restricted Payments ContractAction
+      // (enum-equivalent to the former non-enum label MAKE_RESTRICTED_PAYMENT).
       rules: [rule("rp-aa", TERM("Available Amount", "MONEY", "def-aa"), { covenantFamily: "RESTRICTED_PAYMENTS", action: "PAY_DIVIDEND" })],
       definitions: [aaDef],
       facts: [
@@ -357,6 +367,7 @@ describe("Available Amount builders", () => {
 // 8. Restricted payments / 9. Investments / 10. Debt and lien capacity
 // ===========================================================================
 describe("covenant-family baskets (engine is family-agnostic)", () => {
+  // Canonical ContractAction values only — engine is family-agnostic for flat MONEY.
   const families: Array<{ id: string; family: IRRule["covenantFamily"]; action: IRRule["action"]; amount: number }> = [
     { id: "RP-FIXED", family: "RESTRICTED_PAYMENTS", action: "PAY_DIVIDEND", amount: 40_000_000 },
     { id: "INV-FIXED", family: "INVESTMENTS", action: "MAKE_INVESTMENT", amount: 55_000_000 },
@@ -364,11 +375,14 @@ describe("covenant-family baskets (engine is family-agnostic)", () => {
     { id: "LIEN-FIXED", family: "LIENS", action: "CREATE_LIEN", amount: 75_000_000 },
   ];
 
-  it.each(families)("$id: family=$family evaluates identically to any other flat basket", (f) => {
+  it.each(families)("$id: family=$family action=$action evaluates identically to any other flat basket", (f) => {
     const used = String(Math.floor(f.amount / 4));
     const remaining = String(f.amount - Math.floor(f.amount / 4));
+    const r = rule(f.id.toLowerCase(), MONEY(f.amount), { covenantFamily: f.family, action: f.action });
+    expect(r.action).toBe(f.action);
+    expect(r.covenantFamily).toBe(f.family);
     const { state } = runCapacity({
-      rules: [rule(f.id.toLowerCase(), MONEY(f.amount), { covenantFamily: f.family, action: f.action })],
+      rules: [r],
       ledger: [usage("u1", used, onRule(f.id.toLowerCase()))],
     });
     assertCapacity(cap(state, f.id.toLowerCase()), {
@@ -501,10 +515,17 @@ describe("reclassification", () => {
     if (ok) {
       expect(amountString(cap(result.after!, "src").usage)).toBe(srcUsage);
       expect(amountString(cap(result.after!, "dst").usage)).toBe(dstUsage);
-      expect(result.outcomes[0]?.conservation?.holds).toBe(true);
+      const outcome0 = result.outcomes[0];
+      expect(outcome0).toBeDefined();
+      if (outcome0 == null) throw new Error("expected reclassification outcome");
+      expect(outcome0.conservation).not.toBeNull();
+      expect(outcome0.conservation!.holds).toBe(true);
     } else {
       expect(result.after).toBeNull();
-      expect(result.outcomes[0]?.blockedBy.map((b) => b.code) ?? []).toContain("SOURCE_USAGE_INSUFFICIENT");
+      const outcome0 = result.outcomes[0];
+      expect(outcome0).toBeDefined();
+      if (outcome0 == null) throw new Error("expected blocked reclassification outcome");
+      expect(outcome0.blockedBy.map((b) => b.code)).toContain("SOURCE_USAGE_INSUFFICIENT");
     }
   });
 });

@@ -29,6 +29,8 @@ function syntheticAttributedExample() {
   const used = 35; // SYNTHETIC_LABELED attributed draw
   const expectedRemaining = 65;
 
+  // Approved attributed records alone do not establish completeness — demo
+  // includes an explicitly labeled SYNTHETIC completeness certificate.
   const utilization = resolveUtilization({
     capacityRuleId,
     asOf: AS_OF,
@@ -45,6 +47,13 @@ function syntheticAttributedExample() {
         authenticity: "SYNTHETIC_LABELED",
       }),
     ],
+    completenessCertificate: {
+      capacityRuleId,
+      asOf: AS_OF,
+      approvalState: "APPROVED",
+      sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE — not authentic Neon completeness authority",
+      kind: "VERIFIED_COMPLETE",
+    },
   });
 
   const verified = computeVerifiedRemaining({
@@ -97,6 +106,43 @@ function syntheticAttributedExample() {
       ASK: views.ASK.supportedRemainingCapacity,
     },
     note: verified.note,
+    completenessCertificate: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
+    withoutCompletenessWouldSupportRemaining: false,
+  };
+}
+
+/** Shows approved records without completeness → known util, no remaining claim. */
+function attributedWithoutCompletenessBlocker() {
+  const capacityRuleId = "synthetic:incomplete-history";
+  const utilization = resolveUtilization({
+    capacityRuleId,
+    asOf: AS_OF,
+    records: [
+      evidenceFromAttributedLedger({
+        usageId: "syn-partial",
+        amount: 10,
+        currency: "USD",
+        effectiveAsOf: "2026-01-01",
+        capacityRuleId,
+        status: "ACTIVE",
+        approvalState: "APPROVED",
+        sourceLabel: "SYNTHETIC_LABELED approved record without completeness",
+        authenticity: "SYNTHETIC_LABELED",
+      }),
+    ],
+  });
+  const verified = computeVerifiedRemaining({
+    gross: { amount: 100, gateSatisfied: true, modeled: true, capacityRuleId },
+    utilization,
+  });
+  return {
+    knowledge: utilization.knowledge,
+    attributedAmount: utilization.attributedAmount,
+    supportsRemainingClaim: utilization.supportsRemainingClaim,
+    supportedRemaining: verified.supportedRemaining,
+    publicationLabel: verified.publicationLabel,
+    mayPublishAvailable: verified.mayPublishAvailable,
+    note: utilization.note,
   };
 }
 
@@ -176,11 +222,18 @@ function adapterCoverageClassification() {
 function main() {
   const demo = {
     syntheticAttributedRemaining: syntheticAttributedExample(),
+    attributedWithoutCompleteness: attributedWithoutCompletenessBlocker(),
     authenticUtilizationBlocker: emptyLedgerIsUnknownExample(),
     realDataBlocker: {
       status: "BLOCKED",
       detail:
-        "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history.",
+        "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history. Separately: approved individual ledger records do not establish completeness of historical usage.",
+    },
+    utilizationAuthority: {
+      principle:
+        "Approved individual ledger records establish known attributed usage only. Remaining = gross − usage requires an affirmative completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).",
+      mergeBlocker:
+        "PR #234 remains blocked on authentic completeness authority even after typecheck remediation.",
     },
     phase4cAdapterCoverage: adapterCoverageClassification(),
     falseFavorableGuard: {

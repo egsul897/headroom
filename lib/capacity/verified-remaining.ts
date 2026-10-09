@@ -159,13 +159,15 @@ export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): Ve
   const grossUnlimited = Boolean(gross.unlimited);
 
   if (!utilization.supportsRemainingClaim) {
+    // Known attributed amount may still be reportable; unknown/completeness gap
+    // blocks remaining. Never treat known attributed rows as a complete set.
     return {
       capacityRuleId: gross.capacityRuleId,
       asOf: utilization.asOf,
       grossCapacity,
       grossUnlimited,
       utilization,
-      knownUtilization: null,
+      knownUtilization: utilization.attributedAmount,
       unknownUtilization: true,
       supportedRemaining: null,
       remainingStatus: "GROSS_ONLY",

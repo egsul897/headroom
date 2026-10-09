@@ -2,9 +2,12 @@
  * Utilization knowledge for remaining-capacity claims.
  *
  * Missing historical usage is NEVER defaulted to zero. An empty ledger table
- * is UNKNOWN, not VERIFIED_ZERO. VERIFIED_ZERO requires affirmative evidence
- * (approved empty attribution for the capacity path, or an explicit certificate
- * stating no usage).
+ * is UNKNOWN, not VERIFIED_ZERO.
+ *
+ * Approved individual ledger records establish known attributed usage only.
+ * They do NOT establish completeness of historical usage. Remaining capacity
+ * (gross − usage) requires an affirmative completeness certificate in addition
+ * to attributed records (or a verified-empty certificate when there is no usage).
  */
 export type UtilizationKnowledgeKind =
   | "KNOWN_ATTRIBUTED"
@@ -42,9 +45,28 @@ export interface UtilizationEvidenceRecord {
   authenticity: "AUTHENTIC" | "SYNTHETIC_LABELED";
 }
 
+/**
+ * Affirmative ledger-completeness certificate for one capacity path.
+ * Required for any remaining-capacity claim (including verified zero).
+ */
+export interface UtilizationCompletenessCertificate {
+  capacityRuleId: string;
+  asOf: string;
+  approvalState: "APPROVED";
+  sourceLabel: string;
+  /**
+   * VERIFIED_EMPTY — path has no active usage (and ledger is complete).
+   * VERIFIED_COMPLETE — attributed records on the path are the full usage set.
+   */
+  kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+}
+
 export interface UtilizationResolution {
   knowledge: UtilizationKnowledgeKind;
-  /** Sum applicable only when knowledge supports a numerical claim. */
+  /**
+   * Sum of approved attributed records when that sum is well-defined.
+   * May be known even when remaining is not supported (no completeness certificate).
+   */
   attributedAmount: number | null;
   currency: string | null;
   asOf: string;
@@ -54,6 +76,11 @@ export interface UtilizationResolution {
   recordsExcluded: UtilizationEvidenceRecord[];
   blockers: string[];
   note: string;
-  /** True only for KNOWN_ATTRIBUTED or VERIFIED_ZERO — safe to subtract from gross. */
+  /**
+   * True only when utilization knowledge supports subtracting from gross:
+   * VERIFIED_ZERO, or attributed knowledge plus VERIFIED_COMPLETE certificate.
+   * Approved individual records alone never set this true.
+   */
   supportsRemainingClaim: boolean;
+  completenessCertified: boolean;
 }

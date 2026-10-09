@@ -5,10 +5,13 @@
  * superseded, reclassified, shared-pool, and cross-entity/date usage.
  *
  * NEVER defaults missing historical usage to zero. An empty unattributed ledger
- * table is UNKNOWN, not VERIFIED_ZERO. VERIFIED_ZERO requires affirmative
- * evidence (approved empty attribution certificate for the capacity path).
+ * table is UNKNOWN, not VERIFIED_ZERO.
+ *
+ * Approved individual ledger records do NOT establish completeness of historical
+ * usage. Remaining = gross − usage requires a completeness certificate.
  */
 import type {
+  UtilizationCompletenessCertificate,
   UtilizationEvidenceRecord,
   UtilizationKnowledgeKind,
   UtilizationResolution,
@@ -22,8 +25,12 @@ export interface ResolveUtilizationArgs {
   records: readonly UtilizationEvidenceRecord[];
   /**
    * Affirmative certificate that the attributed ledger for this path is complete
-   * and contains no active usage as of `asOf`. Required for VERIFIED_ZERO.
-   * Absence of rows alone is never sufficient.
+   * as of `asOf`. Required for any remaining-capacity claim.
+   */
+  completenessCertificate?: UtilizationCompletenessCertificate | null;
+  /**
+   * @deprecated Prefer completenessCertificate with kind VERIFIED_EMPTY.
+   * Kept as a thin alias for call sites that only certify emptiness.
    */
   verifiedEmptyCertificate?: {
     capacityRuleId: string;
@@ -60,6 +67,28 @@ function appliesToRule(
   if (sharedCapacityId && record.sharedCapacityId === sharedCapacityId) return true;
   if (record.capacityRuleId === capacityRuleId) return true;
   return false;
+}
+
+function resolveCompletenessCert(
+  args: ResolveUtilizationArgs,
+): UtilizationCompletenessCertificate | null {
+  if (args.completenessCertificate) return args.completenessCertificate;
+  if (args.verifiedEmptyCertificate) {
+    return {
+      ...args.verifiedEmptyCertificate,
+      kind: "VERIFIED_EMPTY",
+    };
+  }
+  return null;
+}
+
+function certApplies(cert: UtilizationCompletenessCertificate | null, capacityRuleId: string, asOf: string): boolean {
+  return (
+    cert != null &&
+    cert.capacityRuleId === capacityRuleId &&
+    cert.approvalState === "APPROVED" &&
+    asOfCutoff(cert.asOf) >= asOfCutoff(asOf)
+  );
 }
 
 /**
@@ -111,12 +140,10 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     (r) => r.kind === "ATTRIBUTED_SHARED_POOL" || r.sharedCapacityId != null,
   );
 
-  const cert = args.verifiedEmptyCertificate;
-  const emptyCertified =
-    cert != null &&
-    cert.capacityRuleId === args.capacityRuleId &&
-    cert.approvalState === "APPROVED" &&
-    asOfCutoff(cert.asOf) >= asOfCutoff(asOf);
+  const cert = resolveCompletenessCert(args);
+  const completenessCertified = certApplies(cert, args.capacityRuleId, asOf);
+  const emptyCertified = completenessCertified && cert!.kind === "VERIFIED_EMPTY";
+  const recordsComplete = completenessCertified && cert!.kind === "VERIFIED_COMPLETE";
 
   let knowledge: UtilizationKnowledgeKind;
   let attributedAmount: number | null = null;
@@ -142,8 +169,16 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
       } else {
         knowledge = "KNOWN_ATTRIBUTED";
       }
-      supportsRemainingClaim = true;
-      note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}).`;
+      if (recordsComplete) {
+        supportsRemainingClaim = true;
+        note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}); completeness certified (${cert!.sourceLabel}).`;
+      } else {
+        supportsRemainingClaim = false;
+        blockers.push(
+          "approved attributed ledger records do not establish completeness of historical usage — remaining claim requires a VERIFIED_COMPLETE certificate",
+        );
+        note = `Known attributed utilization ${attributedAmount} ${currency ?? ""} (${knowledge}), but completeness not certified — remaining capacity cannot be claimed.`;
+      }
     }
   } else if (legacyOnly.length > 0 || args.unattributedLegacyBasketPresent) {
     knowledge = "UNATTRIBUTED_LEGACY_BASKET";
@@ -163,15 +198,15 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     attributedAmount = null;
     supportsRemainingClaim = false;
     blockers.push(
-      "only superseded usage present; no approved empty-ledger certificate for this path",
+      "only superseded usage present; no approved empty-ledger completeness certificate for this path",
     );
     note =
-      "Superseded usage excluded; absence of active rows is not verified zero without a certificate.";
+      "Superseded usage excluded; absence of active rows is not verified zero without a completeness certificate.";
   } else if (emptyCertified && attributedToRule.length === 0) {
     knowledge = "VERIFIED_ZERO";
     attributedAmount = 0;
     supportsRemainingClaim = true;
-    note = `Verified zero utilization per approved empty certificate (${cert!.sourceLabel}) as of ${asOfCutoff(asOf)}.`;
+    note = `Verified zero utilization per approved empty completeness certificate (${cert!.sourceLabel}) as of ${asOfCutoff(asOf)}.`;
   } else if (considered.length === 0) {
     knowledge = "UNKNOWN";
     attributedAmount = null;
@@ -197,6 +232,25 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     note = "Utilization UNKNOWN for this capacity path.";
   }
 
+  // Completeness KIND must match evidence shape — refuse mismatched certificates.
+  if (completenessCertified && cert!.kind === "VERIFIED_EMPTY" && attributedToRule.length > 0) {
+    supportsRemainingClaim = false;
+    blockers.push(
+      "VERIFIED_EMPTY completeness certificate conflicts with attributed usage records — remaining claim blocked",
+    );
+    note = `${note} Completeness certificate kind mismatch (EMPTY vs records present).`;
+  }
+  if (completenessCertified && cert!.kind === "VERIFIED_COMPLETE" && attributedToRule.length === 0) {
+    supportsRemainingClaim = false;
+    blockers.push(
+      "VERIFIED_COMPLETE completeness certificate requires attributed records — use VERIFIED_EMPTY for zero usage",
+    );
+    if (knowledge === "UNKNOWN" || knowledge === "VERIFIED_ZERO") {
+      knowledge = "PARTIALLY_KNOWN";
+    }
+    note = `${note} Completeness certificate kind mismatch (COMPLETE vs no records).`;
+  }
+
   return {
     knowledge,
     attributedAmount,
@@ -209,6 +263,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     blockers,
     note,
     supportsRemainingClaim,
+    completenessCertified: supportsRemainingClaim ? completenessCertified : false,
   };
 }
 
