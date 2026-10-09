@@ -39,15 +39,38 @@ const TITLE_CASE_PHRASE = /\b(?:[A-Z][a-zA-Z]+(?:-[A-Z][a-zA-Z]+)?)(?:\s+(?:[A-Z
 /** Ordinary English sentence-initial capitalized words, stripped from the front of a candidate phrase before it is judged - "The Borrower" is noise, "Borrower" alone (rarely 2+ words, so usually filtered by the length check anyway) is not what this heuristic is for; this only matters for a leading article/demonstrative in front of a genuinely longer candidate. */
 const LEADING_STOPWORDS = new Set(["the", "this", "that", "each", "any", "such", "no", "for", "if", "in", "notwithstanding", "except", "subject", "pursuant", "unless", "until", "upon", "with", "without", "provided"]);
 
+/** Trailing conjunctions/prepositions that make a Title-Case capture incomplete ("Notes and", "Borrower and"). */
+const TRAILING_STOPWORDS = new Set(["and", "or", "of", "the", "a", "an", "to", "for", "in", "on", "by", "with"]);
+
+/** Section/article heading noise that the Title-Case heuristic must never treat as a defined-term lead. */
+const HEADING_NOISE = /^(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)\b|\b(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)$/i;
+
+/**
+ * High-confidence financial / covenant defined-term morphology (IPV-10).
+ * Nested undefined phrases matching this shape degrade sufficiency to REVIEW_REQUIRED;
+ * weaker Title-Case noise is disclosed at LOW so certified golden paths are not
+ * refused for ordinary document names ("Security Documents") or heading fragments.
+ */
+const HIGH_CONFIDENCE_UNDEFINED_TERM =
+  /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent)\b/i;
+
 function extractCandidatePhrases(text: string): string[] {
   const matches = text.match(TITLE_CASE_PHRASE) ?? [];
   const out = new Set<string>();
   for (const raw of matches) {
     const words = raw.trim().split(/\s+/);
     while (words.length > 0 && LEADING_STOPWORDS.has(words[0]!.toLowerCase())) words.shift();
-    if (words.length >= 2) out.add(words.join(" "));
+    while (words.length > 0 && TRAILING_STOPWORDS.has(words[words.length - 1]!.toLowerCase())) words.pop();
+    if (words.length < 2) continue;
+    const phrase = words.join(" ");
+    if (HEADING_NOISE.test(phrase)) continue;
+    out.add(phrase);
   }
   return [...out];
+}
+
+function unresolvedSeverityForNestedPhrase(phrase: string): "LOW" | "MEDIUM" {
+  return HIGH_CONFIDENCE_UNDEFINED_TERM.test(phrase) ? "MEDIUM" : "LOW";
 }
 
 export interface PackageAccess {
@@ -106,10 +129,12 @@ const STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN = new Set(["PARENT_SCOPE", "CHI
 function retrieveCrossDocumentDependenciesForStructuralContext(state: RetrievalState, access: PackageAccess): void {
   for (const item of [...state.items.values()]) {
     if (!STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN.has(item.type)) continue;
-    // IPV-10: nested undefined terms inside a retrieved definition body must
-    // degrade sufficiency (MEDIUM), not hide under the LOW operative-text bar.
+    // IPV-10: scan definition bodies for nested undefined Title-Case phrases.
+    // High-confidence financial/covenant morphology → MEDIUM (sufficiency not
+    // SUFFICIENT). Weaker phrases stay LOW so heading fragments and ordinary
+    // document names do not refuse an otherwise complete certified path.
     const nestedInDefinition = item.type === "DEFINITION" || item.type === "DEFINITION_DEPENDENCY";
-    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId, nestedInDefinition ? "MEDIUM" : "LOW");
+    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId, nestedInDefinition ? "NESTED" : "OPERATIVE");
   }
 }
 
@@ -120,7 +145,7 @@ function retrieveCrossDocumentDefinitionFallback(
   documentId: string,
   operativeText: string,
   operativeItemId: string,
-  unresolvedSeverity: "LOW" | "MEDIUM" = "LOW",
+  scanMode: "OPERATIVE" | "NESTED" = "OPERATIVE",
 ): void {
   const sameDocTerms = access.exactTermsByDocument.get(documentId) ?? new Map();
   const phrases = extractCandidatePhrases(operativeText);
@@ -141,6 +166,7 @@ function retrieveCrossDocumentDefinitionFallback(
       const seenKey = `${documentId}::${normalized}`;
       if (state.seenUnresolvedTermPhrases.has(seenKey)) continue;
       state.seenUnresolvedTermPhrases.add(seenKey);
+      const unresolvedSeverity = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "UNRESOLVED_DEFINED_TERM",
@@ -148,8 +174,10 @@ function retrieveCrossDocumentDefinitionFallback(
         attemptedResolution: "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
         reason:
           unresolvedSeverity === "MEDIUM"
-            ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
-            : "Not declared in this document, and no related document in the package declares it either.",
+            ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            : scanMode === "NESTED"
+              ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10 disclosure; LOW severity — not high-confidence financial/covenant morphology)."
+              : "Not declared in this document, and no related document in the package declares it either.",
         candidateTargets: [],
         citation: phrase,
         severity: unresolvedSeverity,

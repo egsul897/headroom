@@ -427,7 +427,7 @@
       "impact": "A springing financial covenant is presented as computable when its metric is undefined.",
       "hypothesis": "Undefined-term detection runs on the operative text only, not on retrieved definition text.",
       "acceptance": "Capitalized multi-word terms inside retrieved definitions that resolve to no definition are reported as UNRESOLVED_DEFINED_TERM with appropriate severity.",
-      "fixNote": "Undefined Title-Case phrases inside retrieved definitions reported at MEDIUM; bundle not SUFFICIENT.",
+      "fixNote": "Undefined Title-Case phrases inside retrieved definitions are scanned; high-confidence financial/covenant morphology reported at MEDIUM (bundle not SUFFICIENT); weaker phrases disclosed at LOW. Definition spans bound at next SECTION/ARTICLE.",
       "fixedIn": "cursor/covenant-retrieval-legal-excellence-8de2"
     },
     {
