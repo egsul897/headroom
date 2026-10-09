@@ -8,10 +8,10 @@ import {
   LedgerProposalRecorder,
   proposeFromCertificateAsync,
   approveCertificateProposalAsync,
+  PrismaContractLedgerStore,
+  CONMED_FORM_INSPIRED_CERT,
   type SyntheticCertificate,
-} from "@/lib/contract-model/runtime/input/store";
-import { PrismaContractLedgerStore } from "@/lib/contract-model/runtime/capacity/store";
-import { CONMED_FORM_INSPIRED_CERT } from "@/lib/contract-model/runtime/input/store/certificate/fixtures";
+} from "@/lib/contract-model/north-star-bridge";
 
 export interface SeedCertificateResult {
   ok: boolean;

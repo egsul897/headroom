@@ -5,8 +5,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
-import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/runtime/input/store";
-import { loadLedgerUsagesFromPrisma } from "@/lib/contract-model/runtime/capacity/store";
+import { loadApprovedSnapshotsFromPrisma, loadLedgerUsagesFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { listCustomerDocumentIntelligence } from "./load";
 
 export type CapacityReadinessStatus =

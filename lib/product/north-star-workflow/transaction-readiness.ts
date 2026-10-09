@@ -10,15 +10,15 @@
  * Never invents capacity; never claims LEGACY figures are certified 4E.
  */
 import { prisma } from "@/lib/prisma";
-import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/runtime/input/store";
-import { loadLedgerUsagesFromPrisma } from "@/lib/contract-model/runtime/capacity/store";
 import {
+  loadApprovedSnapshotsFromPrisma,
+  loadLedgerUsagesFromPrisma,
   resolveContractualSelector,
   selectSnapshotForResolvedSelector,
   type DeliveryRecord,
   type FiscalCalendar,
   type NamedContractualSelector,
-} from "@/lib/contract-model/runtime/input/selector";
+} from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";

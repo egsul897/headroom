@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
-import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/runtime/input/store";
-import { loadLedgerUsagesFromPrisma } from "@/lib/contract-model/runtime/capacity/store";
+import { loadApprovedSnapshotsFromPrisma, loadLedgerUsagesFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow";
 import { CertificatesClient } from "./CertificatesClient";
 
