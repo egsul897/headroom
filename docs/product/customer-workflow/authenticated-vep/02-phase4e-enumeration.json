@@ -17,9 +17,9 @@
         {
           "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
           "action": "INCUR_DEBT",
-          "hasCapacityExpression": true,
-          "sufficiency": "COMPLETE",
-          "status": "UNSUPPORTED"
+          "status": "UNSUPPORTED",
+          "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+          "sourceSectionRef": "7.2(c)"
         }
       ]
     },
@@ -36,16 +36,16 @@
         {
           "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
           "action": "INCUR_DEBT",
-          "hasCapacityExpression": true,
-          "sufficiency": "COMPLETE",
-          "status": "UNSUPPORTED"
+          "status": "UNSUPPORTED",
+          "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+          "sourceSectionRef": "7.2(c)"
         }
       ]
     }
   ],
   "criticalFalsePermissions": 0,
   "notes": [
-    "enumerateCertifiedPaths over authentic DERIVED VEP.",
-    "ContemplatedTxnKind uses UNSECURED_DEBT / SECURED_DEBT (not legacy INCUR_DEBT)."
+    "enumerateCertifiedPaths over authentic DERIVED VEP (ContemplatedTxnKind UNSECURED_DEBT / SECURED_DEBT).",
+    "evaluateVerifiedCapacity(REQUIRE) invoked with null financial/ledger resolvers — see 04-capacity-require.json."
   ]
 }
