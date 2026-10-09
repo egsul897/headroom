@@ -1,0 +1,89 @@
+{
+  "chainId": "dsgr-2022-04-01-ar-credit",
+  "generatedAt": "2026-10-08T22:54:05Z",
+  "discipline": {
+    "recitalIsNotOperativeText": true,
+    "eightKSummaryIsNotOperativeText": true,
+    "levels": [
+      "DISCOVERED_AMENDMENT_EVENT",
+      "ACQUIRED_AMENDMENT_BODY",
+      "ACQUIRED_INCORPORATED_EXHIBITS",
+      "VERIFIED_PARENT_INSTRUMENT",
+      "VERIFIED_AMENDMENT_TARGET",
+      "VERIFIED_EFFECTIVE_DATE_CONDITIONS",
+      "VERIFIED_BEFORE_TEXT",
+      "VERIFIED_AFTER_TEXT",
+      "INDEPENDENTLY_REVIEWED_LEGAL_EFFECT"
+    ]
+  },
+  "events": [
+    {
+      "docId": "dsgr-doc-a",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": null
+    },
+    {
+      "docId": "dsgr-am1",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED",
+      "parent": "dsgr-doc-a",
+      "executionDate": "2023-06-08",
+      "accession": "0001193125-23-163984",
+      "effectiveDate": {
+        "status": "CONDITIONAL_UNRESOLVED",
+        "conditionsVerified": false
+      },
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "docId": "dsgr-am2",
+      "discoveredEvent": true,
+      "acquiredBody": "ACQUIRED_IMAGE_CONFORMED_EXHIBIT",
+      "parent": "dsgr-am1",
+      "executionDate": "2024-06-13",
+      "accession": "0000703604-24-000079",
+      "notes": "10-Q narrative: Second Amendment dated June 13, 2024; CDOR replaced with CORRA effective June 28, 2024. Do not treat as operative amendment body.",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "wrapperText": "MISSING",
+      "relatedFilingBody": "dsgr-am2-10q",
+      "filingNarrative": "NOT_OPERATIVE_TEXT"
+    },
+    {
+      "docId": "dsgr-doc-b",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-am2"
+    },
+    {
+      "docId": "dsgr-doc-c",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-doc-b",
+      "effectiveDate": {
+        "status": "DEEMED_RETROACTIVE",
+        "deemedAsOf": "2025-01-01",
+        "executionDate": "2025-03-31",
+        "conditionsVerified": false
+      },
+      "afterText": "SOURCE_BACKED",
+      "beforeText": "SOURCE_BACKED_DOC_B_$10M",
+      "independentReview": "PENDING_INDEPENDENT_REVIEW",
+      "beforeAuthority": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt"
+    },
+    {
+      "docId": "dsgr-doc-d",
+      "acquiredBody": "FIXTURE_PRESENT",
+      "parent": "dsgr-doc-c",
+      "role": "RESTATEMENT"
+    },
+    {
+      "docId": "dsgr-am2-10q",
+      "discoveredEvent": false,
+      "role": "FILING_BODY",
+      "acquiredBody": "ACQUIRED",
+      "accession": "0000703604-24-000079",
+      "filename": "dsgr-20240630.htm",
+      "authorityLevel": "DISCOVERY_AND_NARRATIVE_ONLY",
+      "operativeAuthority": false,
+      "independentReview": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ]
+}

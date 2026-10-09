@@ -34,6 +34,20 @@ const FAMILY_TO_STRATUM: Record<string, StratumId> = {
 const BUILDER_RE = /\b(builder|grower|build[\s-]?up|accumulated\s+(?:amount|restricted\s+payments?)\s+capacity)\b/i;
 const RECLASS_RE = /\b(reclassif(?:y|ication)|re[- ]characterize|anti[- ]duplication)\b/i;
 
+/**
+ * Text half of deriveCrossCuts. Observations only.
+ * A match is not a sealed role, not a discoveryId, and not a WITH_* claim.
+ */
+export function observeDeterministicCrossCutText(operativeText: string): {
+  builderHeuristic: boolean;
+  reclassificationHeuristic: boolean;
+} {
+  return {
+    builderHeuristic: BUILDER_RE.test(operativeText),
+    reclassificationHeuristic: RECLASS_RE.test(operativeText),
+  };
+}
+
 export function stratumFromFamilies(families: readonly string[]): StratumId {
   for (const f of families) {
     const s = FAMILY_TO_STRATUM[f];

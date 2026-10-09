@@ -1,0 +1,66 @@
+{
+  "specId": "VC-001-SPEC",
+  "schemaVersion": "amendment-chain-research.test-spec.v1",
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "sourceAuthorExpectation": {
+    "purpose": "Prove same-day Amendment No. 4 and No. 5 do not silently order by filing sequence; each effect's Effective Date status must govern, and Am5 must be treated as amending the Am4-amended instrument.",
+    "expectedFailClosedBehavior": "If either Am4 or Am5 Effective Date remains CONDITIONAL_UNRESOLVED, effects depending on inter-amendment order must surface REVIEW_REQUIRED / unresolved chain position \u2014 never invent an order from accession sequence alone.",
+    "queryDates": [
+      "2025-09-25",
+      "2025-09-26",
+      "2025-09-27"
+    ],
+    "mapsToProductionModules": [
+      "effective-date",
+      "chain",
+      "operative-state",
+      "independent-verification"
+    ],
+    "sourcePointers": [
+      {
+        "docId": "cohr-am4",
+        "accession": "0001193125-25-220656",
+        "localFixturePath": null,
+        "quote": "Amendment No. 4 Effective Date (as defined below)"
+      },
+      {
+        "docId": "cohr-am5",
+        "accession": "0001193125-25-220656",
+        "localFixturePath": null,
+        "quote": "Amendment No. 5 Effective Date"
+      }
+    ],
+    "relatedScenarios": [
+      {
+        "scenarioId": "COHR-S2",
+        "asOf": "2025-09-26",
+        "expect": "Same-day Am4 then Am5 ordering must follow each Effective Date, not accession sequence",
+        "status": "REVIEW_REQUIRED_IF_CONDITIONS_UNRESOLVED",
+        "tests": [
+          "SAME_DAY"
+        ],
+        "vc": "VC-001"
+      }
+    ],
+    "notLegalGroundTruth": true
+  },
+  "independentlyReviewedLegalGroundTruth": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "disposition": null,
+    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+  },
+  "replay": {
+    "portable": true,
+    "requiresProductionPatch": false,
+    "claudeOwnedFixturesTouched": false,
+    "inputs": {
+      "chainId": "cohr-2022-07-01-credit-agreement",
+      "acquisitionLedger": "docs/amendment-chain-research/phase2/acquisition-ledger.json",
+      "authorityLayer": "docs/amendment-chain-research/authority-layers/cohr-2022-07-01-credit-agreement.json",
+      "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
+    }
+  },
+  "notAProductionPatch": true
+}

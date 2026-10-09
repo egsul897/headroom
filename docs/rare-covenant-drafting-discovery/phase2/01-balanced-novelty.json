@@ -1,0 +1,2212 @@
+{
+  "version": "rare-covenant-drafting-discovery.phase2.v1",
+  "generatedAt": "2026-10-08T22:45:56.953Z",
+  "disclaimer": "Probe-only signature rates from imbalanced pools are not evidence of market rarity. Prefer equal-sized split metrics and leave-one-out rates below.",
+  "equalSizedSplits": [
+    {
+      "splitId": "equal-1-n200-s1",
+      "seed": 1,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.7905,
+      "sharedSignatureRate": 0.2095,
+      "meanTopNoveltyScore": 0.9564,
+      "medianTopNoveltyScore": 0.9577,
+      "highRiskFindingCount": 39
+    },
+    {
+      "splitId": "equal-2-n200-s2",
+      "seed": 2,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.7404,
+      "sharedSignatureRate": 0.2596,
+      "meanTopNoveltyScore": 0.9252,
+      "medianTopNoveltyScore": 0.9195,
+      "highRiskFindingCount": 38
+    },
+    {
+      "splitId": "equal-3-n200-s3",
+      "seed": 3,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.8073,
+      "sharedSignatureRate": 0.1927,
+      "meanTopNoveltyScore": 0.9552,
+      "medianTopNoveltyScore": 0.9545,
+      "highRiskFindingCount": 35
+    },
+    {
+      "splitId": "equal-4-n200-s5",
+      "seed": 5,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.75,
+      "sharedSignatureRate": 0.25,
+      "meanTopNoveltyScore": 0.938,
+      "medianTopNoveltyScore": 0.92,
+      "highRiskFindingCount": 42
+    },
+    {
+      "splitId": "equal-5-n200-s8",
+      "seed": 8,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.7426,
+      "sharedSignatureRate": 0.2574,
+      "meanTopNoveltyScore": 0.9198,
+      "medianTopNoveltyScore": 0.9194,
+      "highRiskFindingCount": 36
+    },
+    {
+      "splitId": "equal-6-n200-s13",
+      "seed": 13,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.783,
+      "sharedSignatureRate": 0.217,
+      "meanTopNoveltyScore": 0.9349,
+      "medianTopNoveltyScore": 0.932,
+      "highRiskFindingCount": 36
+    },
+    {
+      "splitId": "equal-7-n200-s21",
+      "seed": 21,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.7778,
+      "sharedSignatureRate": 0.2222,
+      "meanTopNoveltyScore": 0.9461,
+      "medianTopNoveltyScore": 0.93,
+      "highRiskFindingCount": 34
+    },
+    {
+      "splitId": "equal-8-n200-s34",
+      "seed": 34,
+      "sampleSizePerRole": 200,
+      "corpusUnits": 200,
+      "probeUnits": 200,
+      "corpusIssuers": 3,
+      "probeIssuers": 40,
+      "probeOnlySignatureRate": 0.7778,
+      "sharedSignatureRate": 0.2222,
+      "meanTopNoveltyScore": 0.9495,
+      "medianTopNoveltyScore": 0.932,
+      "highRiskFindingCount": 38
+    }
+  ],
+  "equalSizedStability": {
+    "splitCount": 8,
+    "probeOnlyRateMean": 0.7712,
+    "probeOnlyRateStd": 0.0227,
+    "meanTopScoreMean": 0.9406,
+    "meanTopScoreStd": 0.0127,
+    "sampleSizeSensitivity": [
+      {
+        "sampleSize": 40,
+        "probeOnlyRateMean": 0.8449,
+        "meanTopScoreMean": 0.8944
+      },
+      {
+        "sampleSize": 80,
+        "probeOnlyRateMean": 0.7694,
+        "meanTopScoreMean": 0.9166
+      },
+      {
+        "sampleSize": 120,
+        "probeOnlyRateMean": 0.8179,
+        "meanTopScoreMean": 0.9356
+      },
+      {
+        "sampleSize": 160,
+        "probeOnlyRateMean": 0.7621,
+        "meanTopScoreMean": 0.9295
+      },
+      {
+        "sampleSize": 200,
+        "probeOnlyRateMean": 0.7482,
+        "meanTopScoreMean": 0.9424
+      }
+    ]
+  },
+  "leaveOneIssuerOut": [
+    {
+      "heldOutId": "issuer:chwy",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 566,
+      "findings": 77,
+      "meanNoveltyScore": 0.9011,
+      "probeOnlySignatureRate": 0.5323,
+      "topCategories": [
+        {
+          "category": "BASKET_FORMULA",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:conmed",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 108,
+      "findings": 17,
+      "meanNoveltyScore": 0.4959,
+      "probeOnlySignatureRate": 0.0588,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:dsgr",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 1302,
+      "findings": 61,
+      "meanNoveltyScore": 0.8586,
+      "probeOnlySignatureRate": 0.4754,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 8
+        },
+        {
+          "category": "BASKET_FORMULA",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-aame",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 46,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "issuer:edgar-adm",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 71,
+      "findings": 7,
+      "meanNoveltyScore": 0.6608,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-adx",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 15,
+      "findings": 1,
+      "meanNoveltyScore": 0.839,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-alco",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 39,
+      "findings": 4,
+      "meanNoveltyScore": 0.662,
+      "probeOnlySignatureRate": 0.1176,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-amd",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 609,
+      "findings": 56,
+      "meanNoveltyScore": 0.8591,
+      "probeOnlySignatureRate": 0.4416,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-apog",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 83,
+      "findings": 11,
+      "meanNoveltyScore": 0.7171,
+      "probeOnlySignatureRate": 0.1628,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-avd",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 132,
+      "findings": 13,
+      "meanNoveltyScore": 0.5856,
+      "probeOnlySignatureRate": 0.1094,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 5
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-awi",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 154,
+      "findings": 28,
+      "meanNoveltyScore": 0.7208,
+      "probeOnlySignatureRate": 0.2785,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-axp",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 11,
+      "findings": 1,
+      "meanNoveltyScore": 0.9633,
+      "probeOnlySignatureRate": 0.1111,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-ball",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 16,
+      "findings": 5,
+      "meanNoveltyScore": 0.4567,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-bdx",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 75,
+      "findings": 11,
+      "meanNoveltyScore": 0.5721,
+      "probeOnlySignatureRate": 0.1081,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-bio",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 70,
+      "findings": 23,
+      "meanNoveltyScore": 0.7553,
+      "probeOnlySignatureRate": 0.4565,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 7
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-bkti",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 3,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "issuer:edgar-bmy",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 323,
+      "findings": 13,
+      "meanNoveltyScore": 0.6866,
+      "probeOnlySignatureRate": 0.1053,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-bset",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 170,
+      "findings": 22,
+      "meanNoveltyScore": 0.7444,
+      "probeOnlySignatureRate": 0.2267,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 7
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 7
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-ceco",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 20,
+      "findings": 8,
+      "meanNoveltyScore": 0.7862,
+      "probeOnlySignatureRate": 0.3333,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 4
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 2
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-cnmd",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 263,
+      "findings": 32,
+      "meanNoveltyScore": 0.6864,
+      "probeOnlySignatureRate": 0.1339,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 3
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-dal",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 173,
+      "findings": 28,
+      "meanNoveltyScore": 0.7632,
+      "probeOnlySignatureRate": 0.2949,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 2
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-domh",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 19,
+      "findings": 2,
+      "meanNoveltyScore": 0.828,
+      "probeOnlySignatureRate": 0.25,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-epac",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 245,
+      "findings": 54,
+      "meanNoveltyScore": 0.8159,
+      "probeOnlySignatureRate": 0.4675,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-hlt",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 250,
+      "findings": 51,
+      "meanNoveltyScore": 0.793,
+      "probeOnlySignatureRate": 0.375,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-hwm",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 71,
+      "findings": 10,
+      "meanNoveltyScore": 0.5723,
+      "probeOnlySignatureRate": 0.1,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-jblu",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 247,
+      "findings": 22,
+      "meanNoveltyScore": 0.703,
+      "probeOnlySignatureRate": 0.1596,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-luv",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 65,
+      "findings": 8,
+      "meanNoveltyScore": 0.5788,
+      "probeOnlySignatureRate": 0.0513,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 2
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-lyv",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 105,
+      "findings": 14,
+      "meanNoveltyScore": 0.8345,
+      "probeOnlySignatureRate": 0.24,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 4
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-matw",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 465,
+      "findings": 34,
+      "meanNoveltyScore": 0.8808,
+      "probeOnlySignatureRate": 0.4198,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-nsaro",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 26,
+      "findings": 2,
+      "meanNoveltyScore": 0.748,
+      "probeOnlySignatureRate": 0.0714,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-rcl",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 376,
+      "findings": 32,
+      "meanNoveltyScore": 0.784,
+      "probeOnlySignatureRate": 0.1932,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 7
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 7
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-riot",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 12,
+      "findings": 1,
+      "meanNoveltyScore": 0.759,
+      "probeOnlySignatureRate": 0.1667,
+      "topCategories": [
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-swks",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 76,
+      "findings": 12,
+      "meanNoveltyScore": 0.7483,
+      "probeOnlySignatureRate": 0.1111,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "RECLASSIFICATION",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-ual",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 165,
+      "findings": 27,
+      "meanNoveltyScore": 0.7759,
+      "probeOnlySignatureRate": 0.3281,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 5
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-uavs",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 88,
+      "findings": 1,
+      "meanNoveltyScore": 0.3033,
+      "probeOnlySignatureRate": 0,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-uhal",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 263,
+      "findings": 18,
+      "meanNoveltyScore": 0.7901,
+      "probeOnlySignatureRate": 0.1781,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 4
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 3
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:edgar-unm",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 1,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "issuer:edgar-wynn",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 532,
+      "findings": 56,
+      "meanNoveltyScore": 0.7908,
+      "probeOnlySignatureRate": 0.3799,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:fwrg",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 69,
+      "findings": 20,
+      "meanNoveltyScore": 0.7274,
+      "probeOnlySignatureRate": 0.2653,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 5
+        },
+        {
+          "category": "BASKET_FORMULA",
+          "count": 2
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:gibraltar",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 429,
+      "findings": 68,
+      "meanNoveltyScore": 0.8258,
+      "probeOnlySignatureRate": 0.4692,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:lsb",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 109,
+      "findings": 39,
+      "meanNoveltyScore": 0.7667,
+      "probeOnlySignatureRate": 0.5,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "INTERCREDITOR_LIMITATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:riot",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 86,
+      "findings": 10,
+      "meanNoveltyScore": 0.664,
+      "probeOnlySignatureRate": 0.1818,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "issuer:sup",
+      "heldOutKind": "ISSUER",
+      "probeUnits": 1046,
+      "findings": 68,
+      "meanNoveltyScore": 0.8946,
+      "probeOnlySignatureRate": 0.4899,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        }
+      ]
+    }
+  ],
+  "leaveOneInstrumentOut": [
+    {
+      "heldOutId": "chwy-2026-credit-agreement::probe-chwy-2026-ca",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 566,
+      "findings": 77,
+      "meanNoveltyScore": 0.9011,
+      "probeOnlySignatureRate": 0.5323,
+      "topCategories": [
+        {
+          "category": "BASKET_FORMULA",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "conmed-2025-credit-facility::corpus-conmed-article-vii",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 60,
+      "findings": 11,
+      "meanNoveltyScore": 0.4682,
+      "probeOnlySignatureRate": 0.0222,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        },
+        {
+          "category": "BASKET_FORMULA",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "dsgr-2022-2025-credit-facility::probe-dsgr-2022-arca",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 404,
+      "findings": 40,
+      "meanNoveltyScore": 0.5362,
+      "probeOnlySignatureRate": 0.0606,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-aame::edgar:0000008177:0000008177-06-000040:creditagreemt2006.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 46,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "edgar-adm::edgar:0000007084:0000950137-07-002630:c12602exv4w1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 71,
+      "findings": 7,
+      "meanNoveltyScore": 0.6608,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-adx::edgar:0000002230:0000898432-24-000469:exh3-1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 15,
+      "findings": 1,
+      "meanNoveltyScore": 0.839,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-alco::edgar:0000003545:0000003545-10-000077:exhibit1001.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 6,
+      "findings": 1,
+      "meanNoveltyScore": 0.7667,
+      "probeOnlySignatureRate": 0.25,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-amd::edgar:0000002488:0001193125-04-183871:dex41.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 170,
+      "findings": 41,
+      "meanNoveltyScore": 0.7142,
+      "probeOnlySignatureRate": 0.2348,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 7
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-apog::edgar:0000006845:0001193125-05-102714:dex101.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 83,
+      "findings": 11,
+      "meanNoveltyScore": 0.7171,
+      "probeOnlySignatureRate": 0.1628,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-avd::edgar:0000005981:0001193125-11-007530:dex101.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 132,
+      "findings": 13,
+      "meanNoveltyScore": 0.5856,
+      "probeOnlySignatureRate": 0.1094,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 5
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 2
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-awi::edgar:0000007431:0001043039-11-000027:exh10_1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 154,
+      "findings": 28,
+      "meanNoveltyScore": 0.7208,
+      "probeOnlySignatureRate": 0.2785,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-axp::edgar:0000004962:0000004962-09-000002:exhibit3_1certificateofinc.txt",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 11,
+      "findings": 1,
+      "meanNoveltyScore": 0.9633,
+      "probeOnlySignatureRate": 0.1111,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-ball::edgar:0000009389:0000009389-05-000206:ex99_f8k.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 16,
+      "findings": 5,
+      "meanNoveltyScore": 0.4567,
+      "probeOnlySignatureRate": 0.0909,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-bdx::edgar:0000010795:0001193125-12-246873:d356487dex10.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 75,
+      "findings": 11,
+      "meanNoveltyScore": 0.5721,
+      "probeOnlySignatureRate": 0.1081,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 5
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-bio::edgar:0000012208:0000012208-10-000058:exhibit101.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 43,
+      "findings": 19,
+      "meanNoveltyScore": 0.7421,
+      "probeOnlySignatureRate": 0.5152,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 6
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-bkti::edgar:0000002186:0001654954-20-000956:bkti_ex101.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 1,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "edgar-bmy::edgar:0000014272:0001140361-19-009278:nc10001974x1_ex4-1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 40,
+      "findings": 2,
+      "meanNoveltyScore": 0.47,
+      "probeOnlySignatureRate": 0,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-bset::edgar:0000010329:0001193125-04-186079:dex4a.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 158,
+      "findings": 22,
+      "meanNoveltyScore": 0.7444,
+      "probeOnlySignatureRate": 0.2361,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 7
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 7
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-ceco::edgar:0000003197:0001181431-07-017025:rrd149156_18842.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 9,
+      "findings": 3,
+      "meanNoveltyScore": 0.3719,
+      "probeOnlySignatureRate": 0,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-cnmd::edgar:0000816956:0002077096-26-000190:ea029246401ex10-1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 263,
+      "findings": 32,
+      "meanNoveltyScore": 0.6864,
+      "probeOnlySignatureRate": 0.1339,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 3
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-dal::edgar:0000027904:0000950144-06-003068:g00563exv10w1.txt",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 173,
+      "findings": 28,
+      "meanNoveltyScore": 0.7632,
+      "probeOnlySignatureRate": 0.2949,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 2
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-domh::edgar:0000012239:0001213900-21-006449:ea134334ex10-2_aikido.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 2,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "edgar-epac::edgar:0000006955:0000914760-07-000118:a65322_xind.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 154,
+      "findings": 47,
+      "meanNoveltyScore": 0.7503,
+      "probeOnlySignatureRate": 0.4476,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 7
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-hlt::edgar:0001585689:0001585689-21-000008:indenture-feb2021.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 250,
+      "findings": 51,
+      "meanNoveltyScore": 0.793,
+      "probeOnlySignatureRate": 0.375,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-hwm::edgar:0000004281:0001193125-07-152467:dex10a.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 71,
+      "findings": 10,
+      "meanNoveltyScore": 0.5723,
+      "probeOnlySignatureRate": 0.1,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-jblu::edgar:0001158463:0000947871-22-001095:ss1446904_ex1001.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 173,
+      "findings": 15,
+      "meanNoveltyScore": 0.7706,
+      "probeOnlySignatureRate": 0.1757,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 4
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-luv::edgar:0000092380:0000092380-20-000051:a364-daycreditagreemen.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 65,
+      "findings": 8,
+      "meanNoveltyScore": 0.5788,
+      "probeOnlySignatureRate": 0.0513,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 2
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-lyv::edgar:0001335258:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 105,
+      "findings": 14,
+      "meanNoveltyScore": 0.8345,
+      "probeOnlySignatureRate": 0.24,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 4
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-matw::edgar:0000063296:0000063296-10-000089:exhibit10-1loanagrmt12212010.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 71,
+      "findings": 9,
+      "meanNoveltyScore": 0.5106,
+      "probeOnlySignatureRate": 0.0286,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 3
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 2
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-nsaro::edgar:0000013372:0000072741-13-000055:amendmenttonstaragreementaug.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 11,
+      "findings": 1,
+      "meanNoveltyScore": 0.394,
+      "probeOnlySignatureRate": 0,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-rcl::edgar:0000884887:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 208,
+      "findings": 22,
+      "meanNoveltyScore": 0.6324,
+      "probeOnlySignatureRate": 0.0946,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "INTERCREDITOR_LIMITATION",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-riot::edgar:0001167419:0001079973-19-000057:ex10x2.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 8,
+      "findings": 1,
+      "meanNoveltyScore": 0.759,
+      "probeOnlySignatureRate": 0.3333,
+      "topCategories": [
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-swks::edgar:0000004127:0000950123-07-003198:y31359exv4w1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 76,
+      "findings": 12,
+      "meanNoveltyScore": 0.7483,
+      "probeOnlySignatureRate": 0.1111,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 4
+        },
+        {
+          "category": "RECLASSIFICATION",
+          "count": 4
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 3
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-ual::edgar:0000100517:0001193125-07-020056:dex41.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 165,
+      "findings": 27,
+      "meanNoveltyScore": 0.7759,
+      "probeOnlySignatureRate": 0.3281,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 5
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-uavs::edgar:0000008504:0001077048-07-000183:ex10-13.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 12,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "edgar-uhal::edgar:0000004457:0000004457-05-000017:creditagreement1.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 99,
+      "findings": 8,
+      "meanNoveltyScore": 0.8528,
+      "probeOnlySignatureRate": 0.1795,
+      "topCategories": [
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 3
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 2
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 2
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "edgar-unm::edgar:0000005513:0001193125-05-170305:dex101.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 1,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "edgar-wynn::edgar:0001174922:0000898822-12-000078:exhibit101promissorynote.htm",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 3,
+      "findings": 0,
+      "meanNoveltyScore": 0,
+      "probeOnlySignatureRate": 0,
+      "topCategories": []
+    },
+    {
+      "heldOutId": "final-lightweight-unseen-sup::probe-sup-2022-tlca",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 501,
+      "findings": 57,
+      "meanNoveltyScore": 0.541,
+      "probeOnlySignatureRate": 0.0556,
+      "topCategories": [
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 8
+        },
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "heldOutId": "fwrg-2021-credit-agreement::corpus-fwrg-article-6",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 62,
+      "findings": 17,
+      "meanNoveltyScore": 0.7293,
+      "probeOnlySignatureRate": 0.2381,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 6
+        },
+        {
+          "category": "CROSS_DOCUMENT_RESTRICTION",
+          "count": 5
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 5
+        },
+        {
+          "category": "BASKET_FORMULA",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "heldOutId": "gibraltar-2026-credit-agreement::probe-gibraltar-2026-ca",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 429,
+      "findings": 68,
+      "meanNoveltyScore": 0.8258,
+      "probeOnlySignatureRate": 0.4692,
+      "topCategories": [
+        {
+          "category": "AMENDMENT_MECHANISM",
+          "count": 8
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 8
+        },
+        {
+          "category": "DEFINITION_FORMULATION",
+          "count": 8
+        },
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 8
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "heldOutId": "lsb-2023-abl-credit-agreement::corpus-lsb-article-6",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 51,
+      "findings": 19,
+      "meanNoveltyScore": 0.8421,
+      "probeOnlySignatureRate": 0.4444,
+      "topCategories": [
+        {
+          "category": "ENTITY_SCOPE",
+          "count": 6
+        },
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 5
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 4
+        },
+        {
+          "category": "INTERCREDITOR_LIMITATION",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "heldOutId": "riot-2025-2026-credit-facility::probe-riot-2025-arca",
+      "heldOutKind": "INSTRUMENT",
+      "probeUnits": 29,
+      "findings": 4,
+      "meanNoveltyScore": 0.4575,
+      "probeOnlySignatureRate": 0,
+      "topCategories": [
+        {
+          "category": "PROVISO_PLACEMENT",
+          "count": 2
+        },
+        {
+          "category": "COVENANT_STRUCTURE",
+          "count": 1
+        },
+        {
+          "category": "SHARED_CAPACITY",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

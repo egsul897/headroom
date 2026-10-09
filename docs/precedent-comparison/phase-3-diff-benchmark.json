@@ -1,0 +1,215 @@
+{
+  "generatedAt": "2026-10-08T22:32:05.691Z",
+  "cases": [
+    {
+      "caseId": "short",
+      "description": "Short provisions",
+      "leftChars": 78,
+      "rightChars": 78,
+      "results": [
+        {
+          "algorithm": "token-lcs.v1",
+          "ms": 0.06779400000004898,
+          "hunkCount": 4,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 15,
+          "comparedRight": 15,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "token-lcs-bounded.v1",
+          "ms": 0.061726000000021486,
+          "hunkCount": 4,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 15,
+          "comparedRight": 15,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "myers-line.v1",
+          "ms": 0.18700400000000172,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1,
+          "comparedRight": 1,
+          "exhaustive": false,
+          "truncationNote": "Line-oriented Myers — token-level exhaustiveness not claimed"
+        }
+      ]
+    },
+    {
+      "caseId": "large-def",
+      "description": "Large definitions",
+      "leftChars": 1930,
+      "rightChars": 1954,
+      "results": [
+        {
+          "algorithm": "token-lcs.v1",
+          "ms": 1.9328590000000077,
+          "hunkCount": 6,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 220,
+          "comparedRight": 225,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "token-lcs-bounded.v1",
+          "ms": 2.314662999999996,
+          "hunkCount": 6,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 220,
+          "comparedRight": 225,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "myers-line.v1",
+          "ms": 0.20096599999999398,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1,
+          "comparedRight": 1,
+          "exhaustive": false,
+          "truncationNote": "Line-oriented Myers — token-level exhaustiveness not claimed"
+        }
+      ]
+    },
+    {
+      "caseId": "amendment-blackline",
+      "description": "Long amendment blacklines",
+      "leftChars": 5100,
+      "rightChars": 5191,
+      "results": [
+        {
+          "algorithm": "token-lcs.v1",
+          "ms": 12.307320000000004,
+          "hunkCount": 243,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1200,
+          "comparedRight": 1202,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "token-lcs-bounded.v1",
+          "ms": 2.0806370000000243,
+          "hunkCount": 86,
+          "bounded": true,
+          "identical": false,
+          "comparedLeft": 401,
+          "comparedRight": 401,
+          "exhaustive": false,
+          "truncationNote": "BOUNDED — abbreviated token window; not an exhaustive textual difference"
+        },
+        {
+          "algorithm": "myers-line.v1",
+          "ms": 0.812769000000003,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1,
+          "comparedRight": 1,
+          "exhaustive": false,
+          "truncationNote": "Line-oriented Myers — token-level exhaustiveness not claimed"
+        }
+      ]
+    },
+    {
+      "caseId": "repetitive",
+      "description": "Highly repetitive text",
+      "leftChars": 6414,
+      "rightChars": 6267,
+      "results": [
+        {
+          "algorithm": "token-lcs.v1",
+          "ms": 23.22091899999998,
+          "hunkCount": 4,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 802,
+          "comparedRight": 785,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "token-lcs-bounded.v1",
+          "ms": 4.314859999999953,
+          "hunkCount": 4,
+          "bounded": true,
+          "identical": false,
+          "comparedLeft": 401,
+          "comparedRight": 401,
+          "exhaustive": false,
+          "truncationNote": "BOUNDED — abbreviated token window; not an exhaustive textual difference"
+        },
+        {
+          "algorithm": "myers-line.v1",
+          "ms": 0.3390549999999166,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1,
+          "comparedRight": 1,
+          "exhaustive": false,
+          "truncationNote": "Line-oriented Myers — token-level exhaustiveness not claimed"
+        }
+      ]
+    },
+    {
+      "caseId": "adversarial-tokens",
+      "description": "Adversarial token sequences",
+      "leftChars": 3499,
+      "rightChars": 2999,
+      "results": [
+        {
+          "algorithm": "token-lcs.v1",
+          "ms": 16.103056000000038,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 500,
+          "comparedRight": 500,
+          "exhaustive": true,
+          "truncationNote": null
+        },
+        {
+          "algorithm": "token-lcs-bounded.v1",
+          "ms": 5.534513000000061,
+          "hunkCount": 5,
+          "bounded": true,
+          "identical": false,
+          "comparedLeft": 401,
+          "comparedRight": 401,
+          "exhaustive": false,
+          "truncationNote": "BOUNDED — abbreviated token window; not an exhaustive textual difference"
+        },
+        {
+          "algorithm": "myers-line.v1",
+          "ms": 0.20638999999994212,
+          "hunkCount": 2,
+          "bounded": false,
+          "identical": false,
+          "comparedLeft": 1,
+          "comparedRight": 1,
+          "exhaustive": false,
+          "truncationNote": "Line-oriented Myers — token-level exhaustiveness not claimed"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Bounded LCS must never be reported as an exhaustive diff.",
+    "Myers-line compares normalized lines, not tokens — semantic information may be lost at intra-line granularity.",
+    "Runtimes are process-local and non-certified performance claims."
+  ]
+}

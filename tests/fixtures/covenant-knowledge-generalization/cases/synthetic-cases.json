@@ -1,0 +1,190 @@
+{
+  "packageId": "ckg-synthetic-micro",
+  "labelMethod": "REVIEWER_APPROVED controlled micro-agreements. Source excerpts are hand-authored for evaluation only; not produced by Headroom models; not used to tune production prompts.",
+  "cases": [
+    {
+      "caseId": "syn-false-perm-general-prohibition",
+      "metric": "false_permission_rate",
+      "falsePermissionSensitive": true,
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-a",
+        "sectionRef": "6.01",
+        "excerpt": "The Borrower shall not incur any Indebtedness. There are no enumerated exceptions in this micro-agreement.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "shouldDeny": true }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-false-perm-carveout-present",
+      "metric": "false_permission_rate",
+      "falsePermissionSensitive": true,
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-b",
+        "sectionRef": "6.01",
+        "excerpt": "The Borrower shall not incur any Indebtedness except Indebtedness under this Agreement.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "shouldDeny": false },
+        "notes": "Affirmative permission for Agreement debt is correct; not a false permission."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unsupported-or-formula",
+      "metric": "unsupported_semantic_refusal",
+      "unsupportedSemantic": true,
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-c",
+        "sectionRef": "6.04(z)",
+        "excerpt": "Capacity equals the greater of (A) an amount determined by mutual agreement of the Required Lenders in their sole discretion and (B) a percentage of EBITDA selected by the Borrower after consultation with counsel to the Administrative Agent — no numeric formula is stated.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "mustRefuse": true },
+        "notes": "Correct behavior is UNSUPPORTED / REVIEW_REQUIRED, not inventing a dollar capacity."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unsupported-coercion-control",
+      "metric": "unsupported_semantic_refusal",
+      "unsupportedSemantic": true,
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "draftingComplexity": "HIGH"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-c",
+        "sectionRef": "6.04(z)",
+        "excerpt": "Same unsupported discretionary capacity as syn-unsupported-or-formula.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "mustRefuse": true },
+        "notes": "Paired control: a coerced numeric representation must FAIL."
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-comp-greater-of",
+      "metric": "comparator_correctness",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-d",
+        "sectionRef": "6.01(q)",
+        "excerpt": "Indebtedness not exceeding the greater of (A) $25,000,000 and (B) 10.0% of Consolidated EBITDA.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "comparator": "GREATER_OF", "threshold": "25000000_or_10pct_ebitda" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-entity-non-guarantor",
+      "metric": "entity_scope_accuracy",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "INDEBTEDNESS",
+        "draftingComplexity": "MEDIUM"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-e",
+        "sectionRef": "6.01(n)",
+        "excerpt": "Indebtedness of Restricted Subsidiaries that are not Loan Parties in an aggregate principal amount not to exceed $30,000,000.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "entityScope": "restricted_subsidiaries_that_are_not_loan_parties" }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-exc-lettered-baskets",
+      "metric": "exception_recall",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "LIENS",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-f",
+        "sectionRef": "6.02",
+        "excerpt": "No Liens except (a) Permitted Liens, (b) Liens securing the Obligations, and (c) Liens securing Refinancing Indebtedness thereof.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "REVIEWER_APPROVED",
+        "value": { "exceptions": ["6.02(a)", "6.02(b)", "6.02(c)"] }
+      },
+      "attributedCostUsd": 0
+    },
+    {
+      "caseId": "syn-unlabeled-future-issuer",
+      "metric": "covenant_family_discovery_recall",
+      "strata": {
+        "agreementType": "SYNTHETIC_MICRO",
+        "issuer": "SYNTHETIC",
+        "covenantFamily": "OTHER",
+        "draftingComplexity": "LOW"
+      },
+      "provenance": {
+        "packageId": "ckg-synthetic-micro",
+        "documentId": "syn-g",
+        "sectionRef": "n/a",
+        "excerpt": "Reserved slot for a future held-out issuer (e.g. Knife River) once BLIND body release is authorized.",
+        "sourcePath": "tests/fixtures/covenant-knowledge-generalization/cases/synthetic-source-excerpts.json"
+      },
+      "expected": {
+        "authority": "UNLABELED",
+        "value": { "families": [] },
+        "notes": "UNLABELED placeholder — Blind body unread; must not score as failure."
+      },
+      "attributedCostUsd": 0
+    }
+  ]
+}

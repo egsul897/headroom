@@ -1,0 +1,44 @@
+{
+  "recordId": "ba-matw-am6-601j",
+  "chainId": "matw-2020-03-27-third-ar-loan",
+  "amendingDocId": "matw-am6",
+  "comparisons": [
+    {
+      "changeClass": "PERMISSION_NARROWING",
+      "target": { "kind": "SECTION", "sectionRef": "6.01(j)", "covenantFamily": "LIENS" },
+      "label": "General secured-lien basket → Notes-only subordinate lien",
+      "beforeText": "(j) Liens of any Loan Party securing Indebtedness; provided, however, that such Liens shall be limited to Liens on equipment, fixtures, real property and/or proceeds thereof; and provided, further, that the aggregate book value of the assets securing such Indebtedness shall not at any time exceed the Permitted Amount;",
+      "afterText": "(j) Liens securing Indebtedness under the 2024 Note Offering to the extent both (y) the Agent has received the fully executed applicable Security Agreement and has a Prior Security Interest in the Collateral and (z) such Liens are subordinate to the Agent’s Liens on the applicable Collateral pursuant to and in accordance with the terms and provisions of the 2024 Note Intercreditor Agreement;",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "before": {
+          "accession": "0000063296-20-000040",
+          "exhibit": "EX-10.1",
+          "quote": "Permitted Amount shall mean Fifty Million and 00/100 Dollars ($50,000,000.00). ... (j) Liens of any Loan Party securing Indebtedness; provided... shall not at any time exceed the Permitted Amount;"
+        },
+        "after": {
+          "accession": "0001193125-24-224129",
+          "exhibit": "EX-10.2",
+          "quote": "(j) Liens securing Indebtedness under the 2024 Note Offering to the extent both (y) the Agent has received the fully executed applicable Security Agreement..."
+        }
+      },
+      "adversarialTags": ["PERMISSION_NARROWING", "RESTATEMENT_THEN_TARGETED", "CONDITIONAL_EFFECTIVENESS"]
+    },
+    {
+      "changeClass": "DEFINITION",
+      "target": { "kind": "DEFINITION", "definedTerm": "Permitted Amount", "covenantFamily": "LIENS" },
+      "label": "Permitted Amount definition remains in base; Sixth Amendment eliminates the only §6.01 use that consumed it for Loan-Party general secured liens",
+      "beforeText": "\"Permitted Amount\" shall mean Fifty Million and 00/100 Dollars ($50,000,000.00).",
+      "afterText": null,
+      "authority": {
+        "status": "PARTIAL",
+        "gapReason": "Whether Sixth Amendment deleted or retained the unused Permitted Amount definition was not independently re-confirmed in the Sixth Amendment full text this pass; only the §6.01(j) operative replacement is SOURCE_BACKED.",
+        "before": {
+          "accession": "0000063296-20-000040",
+          "exhibit": "EX-10.1"
+        }
+      },
+      "adversarialTags": ["MULTI_AMEND_SAME_DEFINITION"]
+    }
+  ]
+}

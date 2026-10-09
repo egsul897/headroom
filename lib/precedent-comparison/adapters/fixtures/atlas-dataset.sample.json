@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "covenant-dependency-atlas.v1",
+  "edges": [
+    {
+      "edgeId": "sample-edge-1",
+      "kind": "COVENANT_TO_DEFINITION",
+      "fromNodeId": "cov:7.2",
+      "toNodeId": "def:Indebtedness",
+      "resolution": "RESOLVED",
+      "evidenceClass": "AUTHORED_SOURCE_SPAN",
+      "rationale": "Sample atlas edge for adapter tests — Section 7.2 Indebtedness depends on defined term Indebtedness.",
+      "sharedBasketKey": null,
+      "sectionRef": "7.2",
+      "fromLabel": "Limitation on Indebtedness",
+      "toLabel": "Indebtedness"
+    },
+    {
+      "edgeId": "sample-edge-2",
+      "kind": "COVENANT_TO_SHARED_BASKET",
+      "fromNodeId": "cov:7.2-o",
+      "toNodeId": "basket:shared-general",
+      "resolution": "AMBIGUOUS",
+      "evidenceClass": "EXPLICIT_SOURCE_CONNECTIVE",
+      "rationale": "Sample ambiguous shared-basket edge for closure-gap reporting.",
+      "sharedBasketKey": "general-debt-basket",
+      "unresolvedReason": "multiple candidate pools",
+      "sectionRef": "7.2(o)"
+    }
+  ],
+  "nodes": []
+}

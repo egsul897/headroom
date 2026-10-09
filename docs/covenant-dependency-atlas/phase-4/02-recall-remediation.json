@@ -1,0 +1,2400 @@
+{
+  "phase3Reported": {
+    "expected": 135,
+    "truePositives": 93,
+    "falseNegatives": 42,
+    "recall": 0.6888888888888889,
+    "evaluationRecall": 0.5869565217391305
+  },
+  "phase3HarnessRecomputedOnCurrentAdapter": {
+    "overall": {
+      "expected": 135,
+      "truePositives": 117,
+      "falseNegatives": 18,
+      "precisionProbeFalsePositives": 0,
+      "recall": 0.8666666666666667,
+      "precision": 1,
+      "wilsonRecallLow": 0.7990737906483482,
+      "wilsonRecallHigh": 0.9139689861562984
+    },
+    "bySplit": {
+      "development": {
+        "expected": 46,
+        "truePositives": 38,
+        "falseNegatives": 8,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.8260869565217391,
+        "precision": 1,
+        "wilsonRecallLow": 0.6927636765607748,
+        "wilsonRecallHigh": 0.9091431643111074
+      },
+      "evaluation": {
+        "expected": 46,
+        "truePositives": 38,
+        "falseNegatives": 8,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.8260869565217391,
+        "precision": 1,
+        "wilsonRecallLow": 0.6927636765607748,
+        "wilsonRecallHigh": 0.9091431643111074
+      },
+      "blind": {
+        "expected": 43,
+        "truePositives": 41,
+        "falseNegatives": 2,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.9534883720930233,
+        "precision": 1,
+        "wilsonRecallLow": 0.8454422407613695,
+        "wilsonRecallHigh": 0.9871510096826803
+      }
+    },
+    "byFamily": {
+      "COVENANT_TO_DEFINITION": {
+        "expected": 39,
+        "truePositives": 35,
+        "falseNegatives": 4,
+        "recall": 0.8974358974358975
+      },
+      "RATIO_CALCULATION": {
+        "expected": 18,
+        "truePositives": 16,
+        "falseNegatives": 2,
+        "recall": 0.8888888888888888
+      },
+      "ENTITY_SCOPE": {
+        "expected": 16,
+        "truePositives": 14,
+        "falseNegatives": 2,
+        "recall": 0.875
+      },
+      "COVENANT_TO_CONDITION": {
+        "expected": 15,
+        "truePositives": 11,
+        "falseNegatives": 4,
+        "recall": 0.7333333333333333
+      },
+      "COVENANT_TO_EXCEPTION": {
+        "expected": 8,
+        "truePositives": 8,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "RECLASSIFICATION": {
+        "expected": 5,
+        "truePositives": 4,
+        "falseNegatives": 1,
+        "recall": 0.8
+      },
+      "FINANCIAL_INPUT": {
+        "expected": 7,
+        "truePositives": 7,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_SHARED_BASKET": {
+        "expected": 9,
+        "truePositives": 9,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_CROSS_DOCUMENT": {
+        "expected": 10,
+        "truePositives": 8,
+        "falseNegatives": 2,
+        "recall": 0.8
+      },
+      "COVENANT_TO_AMENDMENT": {
+        "expected": 7,
+        "truePositives": 4,
+        "falseNegatives": 3,
+        "recall": 0.5714285714285714
+      },
+      "DEFINITION_TO_DEFINITION": {
+        "expected": 1,
+        "truePositives": 1,
+        "falseNegatives": 0,
+        "recall": 1
+      }
+    },
+    "details": [
+      {
+        "edgeId": "gt:8906c0d4fa69ef205e01",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b305ca2e99fdc6bf9d61",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:534d134578cefa7e7488",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:eda0f72f161befaf415c",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:fe85e0ff84f52978dcad",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:157a0cdb3d1de5201801",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:92baf5a9bf8759b81a05",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c57c2f621e1dd36dbb72",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f8c05deda45dac8b1af0",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:e9b0fbb0789f4084825a",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:6d6f7d564f4280b72ec0",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:ba9f46c2c16ae38c660e",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:9daa2212acc2ff8be940",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4627a4089b852aa3bf31",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3886bbaf5806cd63cced",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RECLASSIFICATION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:8a5a26c4bdda280e5c96",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c30f2c516225c47327f7",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:cca1d9a852213cccc186",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:69e6bf004c8bc65566f3",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:51ebe0919797739172ed",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:50bd8e1a2eb60b72cbef",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:074c2fbddcc7f3755cb3",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:ad24e1580f4a52c1417f",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4de16ecd291a3576f642",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:2710ca83384f4497a0b0",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6480fab81baf13c554ac",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f4c19ad59df95e5a6364",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3348afaec91b3fcc6834",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:400cd87a344d43b4ed90",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:19ffa9329d0e693c4822",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:dae34ca05454ad08c15b",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:e9123469cc2ad9f46b42",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:7487f257b286b0099fd7",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b7785a7ed814890b0d8e",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:396c8c9fe6ff0c9e950e",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:3ea28e59c7c9ce7f8662",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:89c67f41250fe869ad34",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:ddc73a3b9f91bf5897f4",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:63029aef7dcb099cd652",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4533d6d3a4cb6b9c1eb5",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:ddfdf8393ecd08154e2a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:fb9b7ca57d6df8fa586a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c83719faa5653b638c9a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:9263ca703a0b1f4827c8",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:efdbc9c8958bc104ac34",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:5c9ae3e84e750ea15833",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:9a424bd43b5215034f6b",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:59cad0bf407f134ee038",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:99f55f1dd7d66733a066",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1b07acd4d597bbe2d754",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:90515664bb4a498b789c",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:11547f98f8aa9cb6bfd3",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:99db0015fb8de26fb1c0",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:112644cd56635dc99070",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8e2d04d94f127bc1ccf9",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:5919b53d76d25256b0ea",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:a62a4c845db544b2a382",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:773a44de60c79461d10c",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b057c3cbe35c43e51982",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:835e40585cabed59a360",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c94f208b1362a7d4583f",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:f221e40b76995fb1373b",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "DEFINITION_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:886e07667312d75be02f",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:6d89369da7a1fd621799",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:2202cb1e18645b8917ed",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:a3197c9d67cf3b34b9fe",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:556f0eb3ff02861fe5ee",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6622c9c5915cb654499a",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:19b86baa88d49eeb04b4",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:610b6a5b09035dfa98b4",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8f1805488f1537a4eb33",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:03a008ff1adf942e0c70",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:a176f63b1738d88bde2f",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c103c1f475e915a82d1d",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b8a1fc6850c980d25a22",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:607eb7e064be6dccd2dc",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:5b91139c26d9f69bd6b6",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:2324b6a69454c52b1fcf",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:5329cadbcac17506024f",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:92b88a6f623fb4248c90",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f5a38bfd426b1ad98bae",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:98509d210692abeef4e8",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:fa71783ba7c8faadc93a",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:81a9184b0cc12756313f",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:60199c22bdcae6300e2c",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:00eeebc79e5b510e46ec",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:dff0671867b4deaef80b",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:41074d985a496bcb5edb",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:540b6aed72d2b5a6eb58",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:804b8c232b99516f1859",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3e7248ed4f408a48ef68",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:cbb49e9b1d8b7a61e394",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:7cc9f7a7c25e2162a67c",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8cbec55936b3f952088c",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:278ef30464e2ee0af9c7",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:24f334b7ad188a8fb765",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6104d1ee11101067453e",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:81dd1dfc2efb4ad578fb",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:bbe86a26701c9dfd46bc",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:66740a23be1ce4d3706e",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:0f28e7f09e25a08e2a6c",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:aea4e4a9f305033bf41f",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:f1a5c58135897f69230f",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:769c38fe0d14a885bd4d",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:b0a6b121840fd97f78b7",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f14bd61a626119c965f9",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:26eac9724ccab11c0afc",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:61c548b86d681b7d9d82",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1bc715988a0467eaf3ef",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8d2777c5a7fe9894e1a4",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:98810a9db6dd21017aed",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4adc760433ddf8530414",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:991575e8f761405dc12a",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:9d587d23224d9f7a117c",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3b56943cc53eab47d3d2",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:aa0069a6022ba5b3ca0d",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:39ec2d27a3e68b07eb08",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:bfecdabec371680e90f7",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:111740483cf6f68a863e",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1fa3a165eaf44a390e61",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:df8b1e8e3f873a3bb948",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3c6608cc74bd7db74106",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:7ad29f747dd18452de78",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4bf86cf0801ce52a7a70",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:5d5476ee7171d8ae957a",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:da6b15707c325b559aa4",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:d8e407be8a90a8a144d2",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4d84e0fa9cbf174ba390",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:802a76f09271f04696ae",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:853789e02c2f4e7b34ac",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1ab3428fb72997ab4771",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f07cbf4e9e11cda45652",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:79b6964125e29ffd2ca6",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c7e77d84e6df8cf648f3",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:7e566a1398656d20654e",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "TERM"
+      }
+    ],
+    "harness": "PHASE3_TO_LABEL_OVERFILTER"
+  },
+  "phase4CorrectedHarness": {
+    "overall": {
+      "expected": 135,
+      "truePositives": 126,
+      "falseNegatives": 9,
+      "precisionProbeFalsePositives": 0,
+      "recall": 0.9333333333333333,
+      "precision": 1,
+      "wilsonRecallLow": 0.8781534131281653,
+      "wilsonRecallHigh": 0.9645335049136897
+    },
+    "bySplit": {
+      "development": {
+        "expected": 46,
+        "truePositives": 46,
+        "falseNegatives": 0,
+        "precisionProbeFalsePositives": 0,
+        "recall": 1,
+        "precision": 1,
+        "wilsonRecallLow": 0.9229238226702192,
+        "wilsonRecallHigh": 1
+      },
+      "evaluation": {
+        "expected": 46,
+        "truePositives": 39,
+        "falseNegatives": 7,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.8478260869565217,
+        "precision": 1,
+        "wilsonRecallLow": 0.7177558259368491,
+        "wilsonRecallHigh": 0.9242781376598251
+      },
+      "blind": {
+        "expected": 43,
+        "truePositives": 41,
+        "falseNegatives": 2,
+        "precisionProbeFalsePositives": 0,
+        "recall": 0.9534883720930233,
+        "precision": 1,
+        "wilsonRecallLow": 0.8454422407613695,
+        "wilsonRecallHigh": 0.9871510096826803
+      }
+    },
+    "byFamily": {
+      "COVENANT_TO_DEFINITION": {
+        "expected": 39,
+        "truePositives": 35,
+        "falseNegatives": 4,
+        "recall": 0.8974358974358975
+      },
+      "RATIO_CALCULATION": {
+        "expected": 18,
+        "truePositives": 16,
+        "falseNegatives": 2,
+        "recall": 0.8888888888888888
+      },
+      "ENTITY_SCOPE": {
+        "expected": 16,
+        "truePositives": 16,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_CONDITION": {
+        "expected": 15,
+        "truePositives": 14,
+        "falseNegatives": 1,
+        "recall": 0.9333333333333333
+      },
+      "COVENANT_TO_EXCEPTION": {
+        "expected": 8,
+        "truePositives": 8,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "RECLASSIFICATION": {
+        "expected": 5,
+        "truePositives": 5,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "FINANCIAL_INPUT": {
+        "expected": 7,
+        "truePositives": 7,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_SHARED_BASKET": {
+        "expected": 9,
+        "truePositives": 9,
+        "falseNegatives": 0,
+        "recall": 1
+      },
+      "COVENANT_TO_CROSS_DOCUMENT": {
+        "expected": 10,
+        "truePositives": 9,
+        "falseNegatives": 1,
+        "recall": 0.9
+      },
+      "COVENANT_TO_AMENDMENT": {
+        "expected": 7,
+        "truePositives": 6,
+        "falseNegatives": 1,
+        "recall": 0.8571428571428571
+      },
+      "DEFINITION_TO_DEFINITION": {
+        "expected": 1,
+        "truePositives": 1,
+        "falseNegatives": 0,
+        "recall": 1
+      }
+    },
+    "details": [
+      {
+        "edgeId": "gt:8906c0d4fa69ef205e01",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b305ca2e99fdc6bf9d61",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:534d134578cefa7e7488",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:eda0f72f161befaf415c",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:fe85e0ff84f52978dcad",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:157a0cdb3d1de5201801",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:92baf5a9bf8759b81a05",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c57c2f621e1dd36dbb72",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:f8c05deda45dac8b1af0",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:e9b0fbb0789f4084825a",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:6d6f7d564f4280b72ec0",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:ba9f46c2c16ae38c660e",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:9daa2212acc2ff8be940",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:4627a4089b852aa3bf31",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:3886bbaf5806cd63cced",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:8a5a26c4bdda280e5c96",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c30f2c516225c47327f7",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:cca1d9a852213cccc186",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:69e6bf004c8bc65566f3",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:51ebe0919797739172ed",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:50bd8e1a2eb60b72cbef",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:074c2fbddcc7f3755cb3",
+        "documentId": "chwy-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:ad24e1580f4a52c1417f",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4de16ecd291a3576f642",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:2710ca83384f4497a0b0",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6480fab81baf13c554ac",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f4c19ad59df95e5a6364",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3348afaec91b3fcc6834",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:400cd87a344d43b4ed90",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:19ffa9329d0e693c4822",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:dae34ca05454ad08c15b",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:e9123469cc2ad9f46b42",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:7487f257b286b0099fd7",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:b7785a7ed814890b0d8e",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:396c8c9fe6ff0c9e950e",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:3ea28e59c7c9ce7f8662",
+        "documentId": "riot-doc-a",
+        "split": "development",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:89c67f41250fe869ad34",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:ddc73a3b9f91bf5897f4",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:63029aef7dcb099cd652",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4533d6d3a4cb6b9c1eb5",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:ddfdf8393ecd08154e2a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:fb9b7ca57d6df8fa586a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:c83719faa5653b638c9a",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:9263ca703a0b1f4827c8",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:efdbc9c8958bc104ac34",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:5c9ae3e84e750ea15833",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:9a424bd43b5215034f6b",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:59cad0bf407f134ee038",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:99f55f1dd7d66733a066",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1b07acd4d597bbe2d754",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:90515664bb4a498b789c",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:11547f98f8aa9cb6bfd3",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:99db0015fb8de26fb1c0",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:112644cd56635dc99070",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:8e2d04d94f127bc1ccf9",
+        "documentId": "dsgr-doc-a",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:5919b53d76d25256b0ea",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:a62a4c845db544b2a382",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:773a44de60c79461d10c",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:b057c3cbe35c43e51982",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:835e40585cabed59a360",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:c94f208b1362a7d4583f",
+        "documentId": "lsb-art6",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:f221e40b76995fb1373b",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "DEFINITION_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:886e07667312d75be02f",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:6d89369da7a1fd621799",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:2202cb1e18645b8917ed",
+        "documentId": "lsb-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:a3197c9d67cf3b34b9fe",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:556f0eb3ff02861fe5ee",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6622c9c5915cb654499a",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:19b86baa88d49eeb04b4",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:610b6a5b09035dfa98b4",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8f1805488f1537a4eb33",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:03a008ff1adf942e0c70",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:a176f63b1738d88bde2f",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:c103c1f475e915a82d1d",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:b8a1fc6850c980d25a22",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:607eb7e064be6dccd2dc",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:5b91139c26d9f69bd6b6",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:2324b6a69454c52b1fcf",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:5329cadbcac17506024f",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:92b88a6f623fb4248c90",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:f5a38bfd426b1ad98bae",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:98509d210692abeef4e8",
+        "documentId": "fwrg-art6",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:fa71783ba7c8faadc93a",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:81a9184b0cc12756313f",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:60199c22bdcae6300e2c",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:00eeebc79e5b510e46ec",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:dff0671867b4deaef80b",
+        "documentId": "fwrg-defs",
+        "split": "blind",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:41074d985a496bcb5edb",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:540b6aed72d2b5a6eb58",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:804b8c232b99516f1859",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:3e7248ed4f408a48ef68",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:cbb49e9b1d8b7a61e394",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:7cc9f7a7c25e2162a67c",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:8cbec55936b3f952088c",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:278ef30464e2ee0af9c7",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:24f334b7ad188a8fb765",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:6104d1ee11101067453e",
+        "documentId": "cnmd-base-neg",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:81dd1dfc2efb4ad578fb",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:bbe86a26701c9dfd46bc",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:66740a23be1ce4d3706e",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:0f28e7f09e25a08e2a6c",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:aea4e4a9f305033bf41f",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:f1a5c58135897f69230f",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:769c38fe0d14a885bd4d",
+        "documentId": "cnmd-defs",
+        "split": "evaluation",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": false,
+        "hitMode": "MISS"
+      },
+      {
+        "edgeId": "gt:b0a6b121840fd97f78b7",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:f14bd61a626119c965f9",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:26eac9724ccab11c0afc",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:61c548b86d681b7d9d82",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1bc715988a0467eaf3ef",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:8d2777c5a7fe9894e1a4",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:98810a9db6dd21017aed",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:4adc760433ddf8530414",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:991575e8f761405dc12a",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:9d587d23224d9f7a117c",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:3b56943cc53eab47d3d2",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:aa0069a6022ba5b3ca0d",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:39ec2d27a3e68b07eb08",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_CONDITION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:bfecdabec371680e90f7",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:111740483cf6f68a863e",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_EXCEPTION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:1fa3a165eaf44a390e61",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:df8b1e8e3f873a3bb948",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:3c6608cc74bd7db74106",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "FINANCIAL_INPUT",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:7ad29f747dd18452de78",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:4bf86cf0801ce52a7a70",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "COVENANT_TO_AMENDMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:5d5476ee7171d8ae957a",
+        "documentId": "sup-doc-a",
+        "split": "blind",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:da6b15707c325b559aa4",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:d8e407be8a90a8a144d2",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_DEFINITION",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:4d84e0fa9cbf174ba390",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RECLASSIFICATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:802a76f09271f04696ae",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:853789e02c2f4e7b34ac",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_SHARED_BASKET",
+        "hit": true,
+        "hitMode": "TERM"
+      },
+      {
+        "edgeId": "gt:1ab3428fb72997ab4771",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:f07cbf4e9e11cda45652",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "RATIO_CALCULATION",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:79b6964125e29ffd2ca6",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:c7e77d84e6df8cf648f3",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "ENTITY_SCOPE",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      },
+      {
+        "edgeId": "gt:7e566a1398656d20654e",
+        "documentId": "gibraltar-ca",
+        "split": "development",
+        "kind": "COVENANT_TO_CROSS_DOCUMENT",
+        "hit": true,
+        "hitMode": "KIND_ONLY"
+      }
+    ],
+    "harness": "PHASE4_TERMNAME_OR_KIND"
+  },
+  "note": "Corrected harness uses termName when present; otherwise kind-only. toLabel is not an identity key. Frozen GT unchanged."
+}

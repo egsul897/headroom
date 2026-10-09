@@ -1,0 +1,778 @@
+{
+  "sourcePackage": "lsb-2023-abl-credit-agreement",
+  "count": 9,
+  "exceptionIds": [
+    "lsb-6.01-chapeau-ratio-and-payment-conditions",
+    "lsb-6.01-i-greater-of-flat-assets",
+    "lsb-6.11-c-rp-payment-conditions",
+    "lsb-6.11-d-residual-last-resort-rp",
+    "lsb-6.08-a-v-debt-payments-payment-conditions",
+    "lsb-6.13-k-investments-payment-conditions",
+    "lsb-6.04-b-notes-priority-notwithstanding",
+    "lsb-6.03-fundamental-changes-carveouts",
+    "lsb-6.14-affiliate-transactions"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Create, incur, assume, permit, guarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness; provided, that, the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the incurrence of such Indebtedness, (i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied with respect to such incurrence. The foregoing limitation shall not apply to:"
+      },
+      "exceptionSectionRef": "6.01 chapeau general permission",
+      "exactExceptionText": "the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the incurrence of such Indebtedness, (i) after giving effect to the incurrence thereof, the Fixed Charge Coverage Ratio of the Parent and its Subsidiaries for the most recently ended four full fiscal quarter period is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied with respect to such incurrence.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01 chapeau"
+      ],
+      "definedTerms": [
+        "Fixed Charge Coverage Ratio",
+        "Payment Conditions",
+        "Loan Parties"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "FCCR > 2.0 to 1.0 after giving effect",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "6.01 chapeau (i)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "Fixed Charge Coverage Ratio > 2.0 to 1.0"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties",
+          "their Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions reused by RP 6.11(c), Investments 6.13(k), debt payments 6.08(a)(v)",
+          "relatedRefs": [
+            "6.11(c)",
+            "6.13(k)",
+            "6.08(a)(v)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "defined-term compound gate"
+        },
+        {
+          "targetRef": "6.11(c)",
+          "role": "same Payment Conditions for RP"
+        },
+        {
+          "targetRef": "6.13(k)",
+          "role": "same Payment Conditions for Investments"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Payment Conditions compound liquidity/default/certificate tests live in definitions, not in \u00a76.01."
+        },
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VI chapeau (until Secured Obligations Paid in Full) binds."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Uncapped general debt permission; Payment Conditions is a shared remote gate across multiple NC families.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.01-i-greater-of-flat-assets",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Create, incur ... any Indebtedness; ... The foregoing limitation shall not apply to:"
+      },
+      "exceptionSectionRef": "6.01(i)",
+      "exactExceptionText": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(i)"
+      ],
+      "definedTerms": [],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Article VI duration chapeau",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VI chapeau",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$70,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "5.5%",
+          "measurementBasis": "total consolidated assets (GAAP balance sheet)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties and Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VI Paid-in-Full duration binds."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Enumerated basket independent of Payment Conditions, but still Article-scoped.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.11-c-rp-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.11",
+        "text": "Make any distribution or declare or pay any dividends ... (each, a \"Restricted Payment\"); provided, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.11(c)",
+      "exactExceptionText": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.11",
+        "Section 6.11(c)"
+      ],
+      "definedTerms": [
+        "Restricted Payment",
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied for each RP",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries via Article VI chapeau"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared with 6.01 chapeau, 6.08(a)(v), 6.13(k)",
+          "relatedRefs": [
+            "6.01",
+            "6.08(a)(v)",
+            "6.13(k)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote defined-term gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "No local dollars; entire capacity is the Payment Conditions definition."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Seemingly unlimited RP basket with zero local conditions other than a remote defined term.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.11-d-residual-last-resort-rp",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.11",
+        "text": "Make any ... Restricted Payment; provided, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.11(d)",
+      "exactExceptionText": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.11",
+        "Section 6.11(d)"
+      ],
+      "definedTerms": [
+        "Restricted Payment",
+        "Parent"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "only if not permitted under any other 6.11 clause",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.11(d) parenthetical",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$500,000 per fiscal year"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent fiscal-year aggregate"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "RESIDUAL_LAST_RESORT",
+          "description": "Cannot be used if another 6.11 clause is available",
+          "relatedRefs": [
+            "6.11(a)",
+            "6.11(b)",
+            "6.11(c)"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "it being understood ... only if not permitted under any other clause",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Last-resort residual."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.11(a)-(c)",
+          "role": "priority baskets"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "SECTION_WIDE_LIMITATION",
+          "description": "Residual use depends on unavailability of sibling exceptions, including Payment Conditions basket."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Small flat basket is not free capacity if Payment Conditions RP is available \u2014 residual-last-resort pattern.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.08-a-v-debt-payments-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.08(a)",
+        "text": "Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments of Indebtedness shall be permitted:"
+      },
+      "exceptionSectionRef": "6.08(a)(v)",
+      "exactExceptionText": "payments of Indebtedness to the extent the Payment Conditions are satisfied;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.08",
+        "Section 6.08(a)",
+        "Section 6.08(a)(v)"
+      ],
+      "definedTerms": [
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared across debt payments, RP, Investments, and general debt",
+          "relatedRefs": [
+            "6.01",
+            "6.11(c)",
+            "6.13(k)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote gate"
+        },
+        {
+          "targetRef": "6.08(a)(iv)",
+          "role": "separate Subordinated Indebtedness pathway"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Junior/other debt paydowns via (v) depend entirely on Payment Conditions definition."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Debt-payment exception with no local quantum; subordination pathway (iv) is separate and also remotely gated by subordination terms.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.13-k-investments-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.13",
+        "text": "Directly or indirectly, make or acquire any Investment ... provided, however, that the foregoing shall not prohibit any of the following:"
+      },
+      "exceptionSectionRef": "6.13(k)",
+      "exactExceptionText": "Investments to the extent the Payment Conditions are satisfied;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.13",
+        "Section 6.13(k)"
+      ],
+      "definedTerms": [
+        "Investments",
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared across NC families",
+          "relatedRefs": [
+            "6.01",
+            "6.11(c)",
+            "6.08(a)(v)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Unlimited-looking Investment permission gated only by remote defined term."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Same Payment Conditions pattern as RP and debt payments \u2014 shared remote gate, not local capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.04-b-notes-priority-notwithstanding",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "ASSET_SALES",
+      "parentProhibition": {
+        "sectionRef": "6.04",
+        "text": "Other than transactions permitted under Section 6.03, convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that:"
+      },
+      "exceptionSectionRef": "6.04(b)",
+      "exactExceptionText": "notwithstanding anything to the contrary contained herein, any Loan Party and any of its respective Subsidiaries may sell, transfer or otherwise dispose of any Notes Priority Collateral owned by such Person so long as such disposition is permitted under the Secured Notes Documents or if the requisite holders of the Secured Notes otherwise consent ... proceeds from the sale or disposition of Notes Priority Collateral shall be applied by the Loan Parties in accordance with the terms of the Secured Notes Documents and the Secured Notes Indenture;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(b)"
+      ],
+      "definedTerms": [
+        "Notes Priority Collateral",
+        "Secured Notes Documents",
+        "Secured Notes Indenture"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "disposition permitted under Secured Notes Documents or noteholder consent",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Secured Notes Documents",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "proceeds applied per Secured Notes Documents / Indenture",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Secured Notes Indenture",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Party",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "notwithstanding anything to the contrary contained herein",
+          "attachment": "NOTWITHSTANDING",
+          "scopeNote": "Overrides conflicting local ABL disposition limits, but imports notes documents."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "Secured Notes Documents",
+          "role": "permission source"
+        },
+        {
+          "targetRef": "6.03",
+          "role": "fundamental-change carve-out interaction in chapeau"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "NOTWITHSTANDING",
+          "description": "Local ABL caps do not control Notes Priority Collateral sales."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "True permission and proceeds application live in Secured Notes Documents."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Notwithstanding makes the ABL exception look free; capacity is still constrained by an external instrument.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.03-fundamental-changes-carveouts",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "FUNDAMENTAL_CHANGES",
+      "parentProhibition": {
+        "sectionRef": "6.03",
+        "text": "(a) Enter into any merger, consolidation, or reorganization... (b) liquidate... (c) convey... all or substantially all of the assets... provided, that the foregoing clauses (a), (b) and (c) shall not apply to ..."
+      },
+      "exceptionSectionRef": "6.03 proviso (i)-(vii)",
+      "exactExceptionText": "provided, that the foregoing clauses (a), (b) and (c) shall not apply to (i) the merger or consolidation of a Loan Party or a Subsidiary of a Loan Party with and into another Loan Party (in each such case, so long as a Borrower (to the extent a Borrower is part of such transaction) is the surviving entity of any such merger), (ii) the sale, transfer, lease or other disposal of any assets of any Loan Party or any of its Subsidiaries to any other Loan Party, (iii) Permitted Dispositions, (iv) Acquisitions and other Investments to the extent permitted hereunder, (v) conveyances... permitted by Section 6.04, (vi) mergers, liquidations, sale of assets of a non-Loan Party Subsidiary into or to another non-Loan Party Subsidiary, and (vii) any liquidation or dissolution of any Subsidiary that is not a Loan Party if the Borrower Representative determines in good faith that such liquidation or dissolution is in the best interests of the Parent and its Subsidiaries, is not materially disadvantageous to the Lenders, and the assets ... are transferred to a Loan Party.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.03"
+      ],
+      "definedTerms": [
+        "Permitted Dispositions",
+        "Loan Party",
+        "Borrower Representative"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Borrower must survive if Borrower is party",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.03(i)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Acquisitions/Investments only to extent permitted hereunder",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.13 / Investment permissions",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "dispositions via Section 6.04",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.04",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "good-faith / not materially disadvantageous for non-Loan Party liquidation",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.03(vii)",
+          "computableHint": "QUALITATIVE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "provided that foregoing clauses shall not apply to (i)-(vii)",
+          "attachment": "SECTION_WIDE",
+          "scopeNote": "Single hanging proviso opens all fundamental-change exceptions."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "6.04",
+          "role": "disposition pathway"
+        },
+        {
+          "targetRef": "6.13",
+          "role": "Investment pathway"
+        },
+        {
+          "targetRef": "Permitted Dispositions",
+          "role": "defined-term pathway"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "HANGING_PROVISO",
+          "description": "One proviso after (a)-(c) creates the entire exception list."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Several limbs are only as wide as Investments / Asset Sale permissions."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Fundamental-change exceptions are mostly pointers into other NC capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.14-affiliate-transactions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "AFFILIATE_TRANSACTIONS",
+      "parentProhibition": {
+        "sectionRef": "6.14",
+        "text": "Except for transactions (a) set forth on Schedule 6.14, (b) transactions not exceeding $5,000,000 in the aggregate at any time, and (c) transactions that are (i) in the ordinary course ... (ii) upon fair and reasonable terms and (iii) no less favorable ... and (d) transactions that are otherwise permitted under this Agreement, directly or indirectly enter into or permit to exist any transaction with any Affiliate of any Loan Party."
+      },
+      "exceptionSectionRef": "6.14(a)-(d)",
+      "exactExceptionText": "Except for transactions (a) set forth on Schedule 6.14, (b) transactions not exceeding $5,000,000 in the aggregate at any time, and (c) transactions that are (i) in the ordinary course of the Loan Parties' business, (ii) upon fair and reasonable terms and (iii) no less favorable to Loan Parties than would be obtained in an arm's length transaction with a non-Affiliate, and (d) transactions that are otherwise permitted under this Agreement...",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.14"
+      ],
+      "definedTerms": [
+        "Affiliate",
+        "Loan Parties"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Schedule 6.14 listed",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(a)",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "\u2264 $5,000,000 aggregate",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(b)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c3",
+          "text": "ordinary course + arm's length",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.14(c)",
+          "computableHint": "ORDINARY_COURSE"
+        },
+        {
+          "conditionId": "c4",
+          "text": "otherwise permitted under this Agreement",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "Agreement-wide",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$5,000,000 aggregate"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Affiliate of any Loan Party"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Schedule 6.14",
+          "role": "listed exceptions"
+        },
+        {
+          "targetRef": "Agreement-wide permissions",
+          "role": "catch-all (d)"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Clause (d) re-imports every other permission/prohibition in the Agreement."
+        }
+      ],
+      "capacityShape": "FIXED_MONEY",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Affiliate catch-all (d) is not independent capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

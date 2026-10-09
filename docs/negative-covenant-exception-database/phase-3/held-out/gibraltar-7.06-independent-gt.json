@@ -1,0 +1,206 @@
+{
+  "protocol": "Independent hand inventory of Gibraltar \u00a77.06 Burdensome Agreements from source text. Authored without reading detector outputs or phase-2/3 catalog rows for this section. Gibraltar is held-out relative to the simple Phase-3 detector (detector was not tuned on ROCK).",
+  "document": {
+    "issuerKey": "ROCK",
+    "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+    "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+    "sectionCharStart": 808797,
+    "sectionCharEnd": 816759
+  },
+  "items": [
+    {
+      "gtId": "HO-GIB-7.06-a",
+      "kind": "PROHIBITION_WITH_PROVISO",
+      "sectionRef": "7.06(a)",
+      "summary": "Burdensome Agreements prohibition on Loan Party (other than Borrower) distributions with provisos",
+      "hasHangingProviso": true,
+      "expectedExceptionCount": 0
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-chapeau",
+      "kind": "EXCEPTION_CHAPEAU",
+      "sectionRef": "7.06(b)",
+      "summary": "The provisions of Section 7.06(a) will not prohibit:"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-1",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(1)",
+      "summary": "Loan Documents / Facilities Obligations OR Closing Date instruments (dual limb)",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": [
+        "Closing Date limb",
+        "Loan Document defs",
+        "parent 7.06(a) provisos"
+      ],
+      "provisoAttachmentExpected": "PARENT_PROVISO_MAY_INTERACT",
+      "entityScopeExpected": [
+        "Loan Party other than Borrower"
+      ],
+      "crossRefsExpected": [
+        "Section 7.06(a)",
+        "Loan Documents"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-2",
+      "kind": "EXCEPTION_RESERVED",
+      "sectionRef": "7.06(b)(2)",
+      "summary": "[reserved]"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-3",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(3)",
+      "summary": "applicable law, rule, regulation or order",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-4",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(4)",
+      "summary": "pre-existing agreement of acquired Person / assumed in acquisition",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": [
+        "acquisition timing / designation conditions"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-5",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(5)",
+      "summary": "encumbrance/restriction nested sub-limbs (complex nesting)",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": [
+        "nested subclause conditions"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-6",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(6)",
+      "summary": "Purchase Money / Finance Lease Obligations permitted under Agreement",
+      "expectedClassification": "CONDITIONAL",
+      "crossRefsExpected": [
+        "permitted under this Agreement"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-7",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(7)",
+      "summary": "agreement for sale/disposition of assets/equity",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-8",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(8)",
+      "summary": "customary provisions in leases/licenses/JV/org docs",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-9",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(9)",
+      "summary": "encumbrances by applicable law/rule/regulation/order or required by regulatory authority",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-10",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(10)",
+      "summary": "cash/deposit/net worth restrictions imposed by customers ordinary course",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-11",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(11)",
+      "summary": "Swap Obligations",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-12",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(12)",
+      "summary": "other Indebtedness/Disqualified Stock/Preferred Stock of Non-Loan Party Subsidiaries",
+      "expectedClassification": "CONDITIONAL",
+      "entityScopeExpected": [
+        "Non-Loan Party Subsidiaries"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-13",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(13)",
+      "summary": "Qualified Securitization Financing / Receivables Facility restrictions",
+      "expectedClassification": "CONDITIONAL"
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-14",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(14)",
+      "summary": "agreement relating to Indebtedness permitted to be incurred subsequently",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": [
+        "subsequent incurrence permission cross-ref"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-15",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(15)",
+      "summary": "lien permitted under Section 7.02",
+      "expectedClassification": "CONDITIONAL",
+      "crossRefsExpected": [
+        "Section 7.02"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-16",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(16)",
+      "summary": "Transaction Documents",
+      "expectedClassification": "CONDITIONAL",
+      "remoteConditionsExpected": [
+        "Transaction Documents definition/external"
+      ]
+    },
+    {
+      "gtId": "HO-GIB-7.06-b-17",
+      "kind": "EXCEPTION",
+      "sectionRef": "7.06(b)(17)",
+      "summary": "refinancing of Indebtedness / Initial Agreement with hanging proviso",
+      "expectedClassification": "CONDITIONAL",
+      "provisoAttachmentExpected": "HANGING",
+      "remoteConditionsExpected": [
+        "Initial Agreement refinement proviso"
+      ]
+    }
+  ],
+  "observedNumberedClausesInSection": [
+    "1",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "independenceDeclaration": {
+    "groundTruthFromDetectorOutputs": false,
+    "usedToTuneDetector": false,
+    "catalogInvariantsNotUsedAsAccuracy": true
+  }
+}

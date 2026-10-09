@@ -1,0 +1,3506 @@
+{
+  "analyzer": "ncedb-phase4-dependency-aware-analyzer",
+  "exceptions": [
+    {
+      "detectedId": "DET-706-b-1",
+      "sectionRef": "7.06(b)(1)",
+      "limbText": "(1)          any encumbrance or restriction (x) for the benefit of the Lenders with respect to the Facilities and the Obligations or under the Loan Documents or (y) pursuant to any instrument or\nagreement in effect at or entered into on the Closing Date;\n\n(2)",
+      "charStart": 809659,
+      "preview": "(1) any encumbrance or restriction (x) for the benefit of the Lenders with respect to the Facilities and the Obligations or under the Loan Documents or (y) purs",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Closing Date limb",
+        "Loan Document defs",
+        "parent section provisos",
+        "unresolved cross-ref:Closing Date"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "Loan Documents",
+        "Closing Date"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(1)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Documents",
+            "status": "PARTIAL",
+            "evidenceText": "Loan Documents",
+            "targetRef": "Loan Documents"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Loan Documents",
+            "status": "RESOLVED",
+            "targetRef": "Loan Documents",
+            "evidenceText": "Loan Documents"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Loan Documents",
+            "status": "PARTIAL",
+            "evidenceText": "Loan Documents",
+            "targetRef": "Loan Documents"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Loan Documents",
+            "normalizedTarget": "Loan Documents",
+            "resolution": "DEFINED_TERM_REFERENCE",
+            "controlling": true,
+            "evidence": "Loan Documents",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-3",
+      "sectionRef": "7.06(b)(3)",
+      "limbText": "(3)          any encumbrance or restriction pursuant to applicable law, rule, regulation or order;\n\n(4)",
+      "charStart": 809941,
+      "preview": "(3) any encumbrance or restriction pursuant to applicable law, rule, regulation or order;\n\n(4)",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(3)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(3)",
+              "7.06(b)(1)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-4",
+      "sectionRef": "7.06(b)(4)",
+      "limbText": "(4)          any encumbrance or restriction pursuant to an agreement or instrument of a Person or relating to any Capital Stock or Indebtedness of a Person, entered into on or before the date on\nwhich such Person was acquired by or merged, consolidated or otherwise combined with or into the Borrower or any Restricted Subsidiary, or was designated as a Restricted Subsidiary or on which such agreement or instrument is assumed by the\nBorrower or any Restricted Subsidiary in connection with an acquisition of assets (other than Capital Stock or Indebtedness incurred as consideration in, or to provide all or any portion of the funds utilized to consummate, the transaction or\nseries of related transactions pursuant to which such Person became a Restricted Subsidiary or was acquired by the Borrower or was merged, consolidated or otherwise combined with or into the Borrower or any Restricted Subsidiary or entered into\nin contemplation of or in connection with such transaction) and outstanding on such date; provided that, for the purposes of this clause, if another Person is the successor company, any Subsidiary of\nsuch Person or agreement or instrument of such Person or any such Subsidiary shall be deemed acquired or assumed by the Borrower or any Restricted Subsidiary when such Person becomes the successor company;\n\n246\n\n(5)",
+      "charStart": 810041,
+      "preview": "(4) any encumbrance or restriction pursuant to an agreement or instrument of a Person or relating to any Capital Stock or Indebtedness of a Person, entered into",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "acquisition timing / designation conditions",
+        "Initial Agreement refinement proviso"
+      ],
+      "predictedProvisoAttachment": "HANGING",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(4)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "LOCAL_PROVISO",
+            "label": "local proviso",
+            "status": "RESOLVED",
+            "evidenceText": "provided that, for the purposes of this clause, if another Person is the successor company, any Subsidiary of such Person or agreement or instrument of such Person or any such Subsidiary shall be deemed acquired or assumed by the Borrower o"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the\nBorrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(4)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "provided that, for the purposes of this clause, if another Person is the successor company, any Subsidiary of such Person or agreement or instrument of such Person or any such Subsidiary shall be deemed acquired or assumed by the Borrower o",
+            "charStart": 1013,
+            "charEnd": 1253,
+            "attachment": "HANGING",
+            "appliesToRefs": [
+              "7.06(b)(4)"
+            ],
+            "evidence": "Limb-local proviso (HANGING)"
+          }
+        ],
+        "primaryAttachment": "HANGING",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the\nBorrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the\nBorrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-5",
+      "sectionRef": "7.06(b)(5)",
+      "limbText": "(5)          any encumbrance or restriction:\n\n(a)          that restricts in a customary manner the subletting, assignment or transfer of any property or asset that is subject to a lease, license or similar contract or agreement, or the\nassignment or transfer of any lease, license or other contract or agreement;\n\n(b)         contained in mortgages, pledges, charges or other security agreements permitted under this Agreement or securing Indebtedness of the Borrower or a Restricted Subsidiary permitted\nunder this Agreement to the extent such encumbrances or restrictions restrict the transfer or encumbrance of the property or assets subject to such mortgages, pledges, charges or other security agreements;\n\n(c)         contained in any trading, netting, operating, construction, service, supply, purchase, sale or other agreement to which the Borrower or any of its Restricted Subsidiaries is a party\nentered into in the ordinary course of business or consistent with past practice; provided that such agreement prohibits the encumbrance of solely the property or assets of the Borrower or such\nRestricted Subsidiary that are subject to such agreement, the payment rights arising thereunder or the proceeds thereof and does not extend to any other asset or property of the Borrower or such Restricted Subsidiary or the assets or property\nof another Restricted Subsidiary; or\n\n(d)          pursuant to customary provisions restricting dispositions of real property interests set forth in any reciprocal easement agreements of the Borrower or any Restricted Subsidiary;\n\n(6)",
+      "charStart": 811376,
+      "preview": "(5) any encumbrance or restriction:\n\n(a) that restricts in a customary manner the subletting, assignment or transfer of any property or asset that is subject to",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "nested subclause conditions",
+        "subsequent incurrence permission cross-ref",
+        "local contest/reserve conditions",
+        "Initial Agreement refinement proviso",
+        "unresolved cross-ref:this Agreement (permission cross-reference)"
+      ],
+      "predictedProvisoAttachment": "HANGING",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "RESTRICTED_SUBSIDIARIES",
+        "SUBSIDIARIES",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "this Agreement (permission cross-reference)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(5)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "LOCAL_PROVISO",
+            "label": "local proviso",
+            "status": "RESOLVED",
+            "evidenceText": "provided that such agreement prohibits the encumbrance of solely the property or assets of the Borrower or such Restricted Subsidiary that are subject to such agreement, the payment rights arising thereunder or the proceeds thereof and does"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Restricted Subsidiaries"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Subsidiaries"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "this Agreement (permission cross-reference)",
+            "status": "AMBIGUOUS",
+            "targetRef": "this Agreement (permission cross-reference)",
+            "evidenceText": "this Agreement (permission cross-reference)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "this Agreement (permission cross-reference)",
+            "status": "AMBIGUOUS",
+            "targetRef": "this Agreement (permission cross-reference)",
+            "evidenceText": "this Agreement (permission cross-reference)"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (3 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(5)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "provided that such agreement prohibits the encumbrance of solely the property or assets of the Borrower or such Restricted Subsidiary that are subject to such agreement, the payment rights arising thereunder or the proceeds thereof and does",
+            "charStart": 989,
+            "charEnd": 1229,
+            "attachment": "HANGING",
+            "appliesToRefs": [
+              "7.06(b)(5)"
+            ],
+            "evidence": "Limb-local proviso (HANGING)"
+          }
+        ],
+        "primaryAttachment": "HANGING",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          },
+          {
+            "entityClass": "RESTRICTED_SUBSIDIARIES",
+            "exactPhrase": "Restricted Subsidiaries",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Restricted Subsidiaries"
+          },
+          {
+            "entityClass": "SUBSIDIARIES",
+            "exactPhrase": "Subsidiaries",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Subsidiaries"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "permitted under this Agreement",
+            "normalizedTarget": "this Agreement (permission cross-reference)",
+            "resolution": "AMBIGUOUS",
+            "controlling": true,
+            "evidence": "permitted under this Agreement",
+            "atlasStatus": "AMBIGUOUS"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "permitted under this Agreement",
+            "normalizedTarget": "this Agreement (permission cross-reference)",
+            "resolution": "AMBIGUOUS",
+            "controlling": true,
+            "evidence": "permitted under this Agreement",
+            "atlasStatus": "AMBIGUOUS"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-6",
+      "sectionRef": "7.06(b)(6)",
+      "limbText": "(6)         any encumbrance or restriction pursuant to Purchase Money Obligations and Finance Lease Obligations permitted under this Agreement, in each case, that impose encumbrances or\nrestrictions on the property so acquired;\n\n(7)",
+      "charStart": 812951,
+      "preview": "(6) any encumbrance or restriction pursuant to Purchase Money Obligations and Finance Lease Obligations permitted under this Agreement, in each case, that impos",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "acquisition timing / designation conditions",
+        "subsequent incurrence permission cross-ref",
+        "unresolved cross-ref:this Agreement (permission cross-reference)"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "this Agreement (permission cross-reference)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(6)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "this Agreement (permission cross-reference)",
+            "status": "AMBIGUOUS",
+            "targetRef": "this Agreement (permission cross-reference)",
+            "evidenceText": "this Agreement (permission cross-reference)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "this Agreement (permission cross-reference)",
+            "status": "AMBIGUOUS",
+            "targetRef": "this Agreement (permission cross-reference)",
+            "evidenceText": "this Agreement (permission cross-reference)"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (3 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(6)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "permitted under this Agreement",
+            "normalizedTarget": "this Agreement (permission cross-reference)",
+            "resolution": "AMBIGUOUS",
+            "controlling": true,
+            "evidence": "permitted under this Agreement",
+            "atlasStatus": "AMBIGUOUS"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "permitted under this Agreement",
+            "normalizedTarget": "this Agreement (permission cross-reference)",
+            "resolution": "AMBIGUOUS",
+            "controlling": true,
+            "evidence": "permitted under this Agreement",
+            "atlasStatus": "AMBIGUOUS"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-7",
+      "sectionRef": "7.06(b)(7)",
+      "limbText": "(7)         any encumbrance or restriction imposed pursuant to an agreement entered into for the direct or indirect sale or disposition to a Person of all or substantially all the Capital Stock\nor assets of the Borrower or any Restricted Subsidiary (or the property or assets that are subject to such restriction) pending the closing of such sale or disposition;\n\n(8)",
+      "charStart": 813180,
+      "preview": "(7) any encumbrance or restriction imposed pursuant to an agreement entered into for the direct or indirect sale or disposition to a Person of all or substantia",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(7)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(7)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-8",
+      "sectionRef": "7.06(b)(8)",
+      "limbText": "(8)         customary provisions in leases, licenses, equityholder agreements, joint venture agreements, organizational documents and other similar agreements and instruments;\n\n247\n\n(9)",
+      "charStart": 813544,
+      "preview": "(8) customary provisions in leases, licenses, equityholder agreements, joint venture agreements, organizational documents and other similar agreements and instr",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(8)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(8)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-9",
+      "sectionRef": "7.06(b)(9)",
+      "limbText": "(9)          encumbrances or restrictions arising or existing by reason of applicable law or any applicable rule, regulation or order, or required by any regulatory authority;\n\n(10)",
+      "charStart": 813726,
+      "preview": "(9) encumbrances or restrictions arising or existing by reason of applicable law or any applicable rule, regulation or order, or required by any regulatory auth",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(9)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(9)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-10",
+      "sectionRef": "7.06(b)(10)",
+      "limbText": "(10)       any encumbrance or restriction on cash or other deposits or net worth imposed by customers under agreements entered into in the ordinary course of business or consistent with past\npractice;\n\n(11)",
+      "charStart": 813903,
+      "preview": "(10) any encumbrance or restriction on cash or other deposits or net worth imposed by customers under agreements entered into in the ordinary course of business",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "local contest/reserve conditions"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(10)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(10)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-11",
+      "sectionRef": "7.06(b)(11)",
+      "limbText": "(11)       any encumbrance or restriction pursuant to Swap Obligations;\n\n(12)",
+      "charStart": 814105,
+      "preview": "(11) any encumbrance or restriction pursuant to Swap Obligations;\n\n(12)",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(11)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(11)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-12",
+      "sectionRef": "7.06(b)(12)",
+      "limbText": "(12)       other Indebtedness, Disqualified Stock or Preferred Stock of Non-Loan Party Subsidiaries permitted to be incurred or issued subsequent to the Closing Date pursuant to the provisions\nof Section 7.01 that impose restrictions solely on the Non-Loan Party Subsidiaries party thereto and/or their Subsidiaries;\n\n(13)",
+      "charStart": 814178,
+      "preview": "(12) other Indebtedness, Disqualified Stock or Preferred Stock of Non-Loan Party Subsidiaries permitted to be incurred or issued subsequent to the Closing Date ",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Closing Date limb",
+        "parent section provisos",
+        "subsequent incurrence permission cross-ref",
+        "unresolved cross-ref:Section 7.01",
+        "unresolved cross-ref:Closing Date"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "NON_LOAN_PARTY_SUBSIDIARIES",
+        "SUBSIDIARIES",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "Section 7.01",
+        "Closing Date"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(12)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Non-Loan Party Subsidiaries"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Subsidiaries"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.01",
+            "status": "UNRESOLVED",
+            "targetRef": "Section 7.01",
+            "evidenceText": "Section 7.01"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.01",
+            "status": "UNRESOLVED",
+            "targetRef": "Section 7.01",
+            "evidenceText": "Section 7.01"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(12)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "proviso incorporated by cross-reference",
+            "charStart": -1,
+            "charEnd": -1,
+            "attachment": "CROSS_REFERENCED",
+            "appliesToRefs": [
+              "7.06(b)(12)"
+            ],
+            "evidence": "Condition/proviso incorporated via cross-reference target"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          },
+          {
+            "entityClass": "NON_LOAN_PARTY_SUBSIDIARIES",
+            "exactPhrase": "Non-Loan Party Subsidiaries",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Non-Loan Party Subsidiaries"
+          },
+          {
+            "entityClass": "SUBSIDIARIES",
+            "exactPhrase": "Subsidiaries",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Subsidiaries"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Section 7.01",
+            "normalizedTarget": "Section 7.01",
+            "resolution": "MISSING_TARGET",
+            "controlling": true,
+            "evidence": "Section 7.01",
+            "atlasStatus": "UNRESOLVED"
+          },
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "Section 7.01",
+            "normalizedTarget": "Section 7.01",
+            "resolution": "MISSING_TARGET",
+            "controlling": true,
+            "evidence": "Section 7.01",
+            "atlasStatus": "UNRESOLVED"
+          },
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-13",
+      "sectionRef": "7.06(b)(13)",
+      "limbText": "(13)       restrictions created in connection with any Qualified Securitization Financing or Receivables Facility that, in the good faith determination of the Borrower, are necessary or\nadvisable to effect such Securitization Facility or Receivables Facility;\n\n(14)",
+      "charStart": 814496,
+      "preview": "(13) restrictions created in connection with any Qualified Securitization Financing or Receivables Facility that, in the good faith determination of the Borrowe",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(13)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(13)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-14",
+      "sectionRef": "7.06(b)(14)",
+      "limbText": "(14)       any encumbrance or restriction arising pursuant to an agreement or instrument relating to any Indebtedness permitted to be incurred subsequent to the Closing Date pursuant to the\nprovisions of the covenant described under Section 7.01 if (i) the encumbrances and restrictions contained in any such agreement or instrument taken as a whole are not materially less favorable to the Lenders than the encumbrances and\nrestrictions contained in this Agreement, together with the security documents associated therewith or (ii) either (a) the Borrower determines at the time of entry into such agreement or instrument that such encumbrances or restrictions will\nnot adversely affect, in any material respect, the Borrower’s ability to make principal or interest payments on the Loans or (b) such encumbrance or restriction applies only during the continuance of a default in respect of a payment relating\nto such agreement or instrument;\n\n(15)",
+      "charStart": 814757,
+      "preview": "(14) any encumbrance or restriction arising pursuant to an agreement or instrument relating to any Indebtedness permitted to be incurred subsequent to the Closi",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "Closing Date limb",
+        "parent section provisos",
+        "subsequent incurrence permission cross-ref",
+        "unresolved cross-ref:Section 7.01",
+        "unresolved cross-ref:Closing Date"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "Section 7.01",
+        "Closing Date"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(14)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.01",
+            "status": "UNRESOLVED",
+            "targetRef": "Section 7.01",
+            "evidenceText": "Section 7.01"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date",
+            "targetRef": "Closing Date"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Closing Date"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.01",
+            "status": "UNRESOLVED",
+            "targetRef": "Section 7.01",
+            "evidenceText": "Section 7.01"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Closing Date",
+            "status": "EXTERNAL",
+            "targetRef": "Closing Date",
+            "evidenceText": "Closing Date"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (6 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(14)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(15)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "proviso incorporated by cross-reference",
+            "charStart": -1,
+            "charEnd": -1,
+            "attachment": "CROSS_REFERENCED",
+            "appliesToRefs": [
+              "7.06(b)(14)"
+            ],
+            "evidence": "Condition/proviso incorporated via cross-reference target"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Section 7.01",
+            "normalizedTarget": "Section 7.01",
+            "resolution": "MISSING_TARGET",
+            "controlling": true,
+            "evidence": "Section 7.01",
+            "atlasStatus": "UNRESOLVED"
+          },
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "Section 7.01",
+            "normalizedTarget": "Section 7.01",
+            "resolution": "MISSING_TARGET",
+            "controlling": true,
+            "evidence": "Section 7.01",
+            "atlasStatus": "UNRESOLVED"
+          },
+          {
+            "rawText": "Closing Date",
+            "normalizedTarget": "Closing Date",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Closing Date",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-15",
+      "sectionRef": "7.06(b)(15)",
+      "limbText": "(15)       any encumbrance or restriction existing by reason of any lien permitted under Section 7.02 ;\n\n(16)",
+      "charStart": 815701,
+      "preview": "(15) any encumbrance or restriction existing by reason of any lien permitted under Section 7.02 ;\n\n(16)",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "Section 7.02"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(15)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.02",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.02",
+            "evidenceText": "Section 7.02"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(15)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(16)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "proviso incorporated by cross-reference",
+            "charStart": -1,
+            "charEnd": -1,
+            "attachment": "CROSS_REFERENCED",
+            "appliesToRefs": [
+              "7.06(b)(15)"
+            ],
+            "evidence": "Condition/proviso incorporated via cross-reference target"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Section 7.02",
+            "normalizedTarget": "Section 7.02",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.02",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-16",
+      "sectionRef": "7.06(b)(16)",
+      "limbText": "(16)       any encumbrance or restriction arising pursuant to the Transaction Documents; or\n\n(17)",
+      "charStart": 815806,
+      "preview": "(16) any encumbrance or restriction arising pursuant to the Transaction Documents; or\n\n(17)",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "Transaction Documents definition/external",
+        "unresolved cross-ref:Transaction Documents"
+      ],
+      "predictedProvisoAttachment": "PARENT_PROVISO_MAY_INTERACT",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)",
+        "Transaction Documents"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(16)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Transaction Documents",
+            "status": "EXTERNAL",
+            "evidenceText": "Transaction Documents",
+            "targetRef": "Transaction Documents"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Transaction Documents"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Transaction Documents",
+            "status": "EXTERNAL",
+            "targetRef": "Transaction Documents",
+            "evidenceText": "Transaction Documents"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "DEFINED_TERM",
+            "label": "Transaction Documents",
+            "status": "EXTERNAL",
+            "evidenceText": "Transaction Documents",
+            "targetRef": "Transaction Documents"
+          },
+          {
+            "kind": "CROSS_DOCUMENT",
+            "label": "cross-document limitation",
+            "status": "EXTERNAL",
+            "evidenceText": "Transaction Documents"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Transaction Documents",
+            "status": "EXTERNAL",
+            "targetRef": "Transaction Documents",
+            "evidenceText": "Transaction Documents"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (5 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(16)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(17)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          }
+        ],
+        "primaryAttachment": "PARENT_PROVISO_MAY_INTERACT",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Loan Parties present; Guarantors not inferred without source phrase",
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          },
+          {
+            "rawText": "Transaction Documents",
+            "normalizedTarget": "Transaction Documents",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Transaction Documents",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": [
+          {
+            "rawText": "Transaction Documents",
+            "normalizedTarget": "Transaction Documents",
+            "resolution": "EXTERNAL_DOCUMENT",
+            "controlling": true,
+            "evidence": "Transaction Documents",
+            "atlasStatus": "UNRESOLVED"
+          }
+        ]
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    },
+    {
+      "detectedId": "DET-706-b-17",
+      "sectionRef": "7.06(b)(17)",
+      "limbText": "(17)       any encumbrance or restriction pursuant to an agreement or instrument effecting a refinancing of Indebtedness incurred pursuant to, or that otherwise\nrefinances, an agreement or instrument referred to in the clauses above or this clause (17) (an “ Initial Agreement ”) or contained in any amendment, supplement or other modification to an agreement\nreferred to in the clauses above or this clause (17) ; provided , however , that the encumbrances and restrictions with respect to such Guarantor contained\nin any such agreement or instrument are no less favorable in any material respect to the Lenders taken as a whole than the encumbrances and restrictions contained in the Initial Agreement or Initial Agreements to which such refinancing or\namendment, supplement or other modification relates (as determined in good faith by the Borrower).\n\n248",
+      "charStart": 815899,
+      "preview": "(17) any encumbrance or restriction pursuant to an agreement or instrument effecting a refinancing of Indebtedness incurred pursuant to, or that otherwise\nrefin",
+      "predictedClassification": "CONDITIONAL",
+      "predictedRemoteConditions": [
+        "parent section provisos",
+        "Initial Agreement refinement proviso"
+      ],
+      "predictedProvisoAttachment": "HANGING",
+      "predictedEntityScope": [
+        "LOAN_PARTY_OTHER_THAN_BORROWER",
+        "LOAN_PARTIES",
+        "BORROWER",
+        "GUARANTORS",
+        "EXCLUDE:BORROWER"
+      ],
+      "predictedCrossRefs": [
+        "Section 7.06(a)"
+      ],
+      "dependencyClosure": {
+        "exceptionRef": "7.06(b)(17)",
+        "atoms": [
+          {
+            "kind": "GOVERNING_PROHIBITION",
+            "label": "governing prohibition",
+            "status": "RESOLVED",
+            "evidenceText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions being paid on common stock and (y) the subordination of (including the application of any standstill requirements to) loans or advances made to the Borrower or any Restricted Subsidiary to other Indebtedness incurred by\nthe Borrower or any Restricted Subsidiary shall not be deemed to constitute such an encumbrance or restriction."
+          },
+          {
+            "kind": "OPENING_LANGUAGE",
+            "label": "applicable opening language",
+            "status": "RESOLVED",
+            "evidenceText": "The provisions of Section 7.06(a) will not prohibit:"
+          },
+          {
+            "kind": "LOCAL_PROVISO",
+            "label": "local proviso",
+            "status": "RESOLVED",
+            "evidenceText": "provided , however , that the encumbrances and restrictions with respect to such Guarantor contained in any such agreement or instrument are no less favorable in any material respect to the Lenders taken as a whole than the encumbrances and"
+          },
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "any Loan Party other than the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Loan Party"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "the Borrower"
+          },
+          {
+            "kind": "ENTITY_RESTRICTION",
+            "label": "entity restriction",
+            "status": "RESOLVED",
+            "evidenceText": "Guarantor"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          },
+          {
+            "kind": "CROSS_REFERENCE",
+            "label": "Section 7.06(a)",
+            "status": "RESOLVED",
+            "targetRef": "Section 7.06(a)",
+            "evidenceText": "Section 7.06(a)"
+          }
+        ],
+        "unresolved": [
+          {
+            "kind": "REMOTE_SECTION_PROVISO",
+            "label": "remote section proviso",
+            "status": "PARTIAL",
+            "evidenceText": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+          },
+          {
+            "kind": "AMENDMENT_VERSION_AUTHORITY",
+            "label": "amendment/version authority",
+            "status": "UNRESOLVED",
+            "evidenceText": "amendment chain not closed in local analyzer pass"
+          }
+        ],
+        "blockingForUnconditional": true,
+        "summary": "Dependency closure incomplete/blocking (2 non-resolved controlling atoms)"
+      },
+      "proviso": {
+        "hits": [
+          {
+            "text": "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of",
+            "charStart": 308,
+            "charEnd": 548,
+            "attachment": "PARENT_PROVISO_MAY_INTERACT",
+            "appliesToRefs": [
+              "7.06(b)(17)",
+              "7.06(b)(1)",
+              "7.06(b)(3)",
+              "7.06(b)(4)",
+              "7.06(b)(5)",
+              "7.06(b)(6)",
+              "7.06(b)(7)",
+              "7.06(b)(8)",
+              "7.06(b)(9)",
+              "7.06(b)(10)",
+              "7.06(b)(11)",
+              "7.06(b)(12)",
+              "7.06(b)(13)",
+              "7.06(b)(14)",
+              "7.06(b)(15)",
+              "7.06(b)(16)"
+            ],
+            "evidence": "Parent-block proviso marker precedes/governs enumerated exception list"
+          },
+          {
+            "text": "provided , however , that the encumbrances and restrictions with respect to such Guarantor contained in any such agreement or instrument are no less favorable in any material respect to the Lenders taken as a whole than the encumbrances and",
+            "charStart": 415,
+            "charEnd": 655,
+            "attachment": "HANGING",
+            "appliesToRefs": [
+              "7.06(b)(17)"
+            ],
+            "evidence": "Limb-local proviso (HANGING)"
+          }
+        ],
+        "primaryAttachment": "HANGING",
+        "ambiguous": false
+      },
+      "entityScope": {
+        "includes": [
+          {
+            "entityClass": "LOAN_PARTY_OTHER_THAN_BORROWER",
+            "exactPhrase": "any Loan Party other than the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          },
+          {
+            "entityClass": "LOAN_PARTIES",
+            "exactPhrase": "Loan Party",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Loan Party"
+          },
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "the Borrower",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "the Borrower"
+          },
+          {
+            "entityClass": "GUARANTORS",
+            "exactPhrase": "Guarantor",
+            "role": "INCLUDE",
+            "sourceBacked": true,
+            "evidence": "Guarantor"
+          }
+        ],
+        "excludes": [
+          {
+            "entityClass": "BORROWER",
+            "exactPhrase": "other than the Borrower",
+            "role": "EXCLUDE",
+            "sourceBacked": true,
+            "evidence": "any Loan Party other than the Borrower"
+          }
+        ],
+        "ambiguous": false,
+        "notes": [
+          "Borrower permission does not imply Restricted Subsidiaries without source phrase"
+        ]
+      },
+      "crossReferences": {
+        "hits": [
+          {
+            "rawText": "Section 7.06(a)",
+            "normalizedTarget": "Section 7.06(a)",
+            "resolution": "RESOLVED_CONTROLLING",
+            "controlling": true,
+            "evidence": "Section 7.06(a)",
+            "atlasStatus": "RESOLVED"
+          }
+        ],
+        "unresolvedOrNonResolved": []
+      },
+      "productionCapacityApproved": false,
+      "evidence": {
+        "governingProhibition": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance or consensual restriction on the ability of any Loan Party other than the Borrower to pay dividends or make any\nother distributions on its Capital Stock;\n\nprovided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or\nliquidating distributions",
+        "openingLanguage": "The provisions of Section 7.06(a) will not prohibit:",
+        "parentProvisoTexts": [
+          "provided that (x) the priority of any Preferred Stock in receiving dividends or liquidating distributions prior to dividends or liquidating distributions being paid on common stock and (y) the subordination of (including the application of"
+        ]
+      }
+    }
+  ]
+}

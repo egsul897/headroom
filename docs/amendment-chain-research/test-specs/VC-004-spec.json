@@ -1,0 +1,63 @@
+{
+  "specId": "VC-004-SPEC",
+  "schemaVersion": "amendment-chain-research.test-spec.v1",
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "sourceAuthorExpectation": {
+    "purpose": "Restatement-then-targeted amendment that narrows \u00a76.01(j) from a $50M general secured-lien basket to a Notes-only subordinate lien \u2014 permission narrowing must replace, not stack.",
+    "expectedFailClosedBehavior": "After Sixth Amendment is effective, operative \u00a76.01(j) text must be the Notes-only version. Serving pre-amendment Permitted Amount basket language as current would be a false-current failure. If Sixth Amendment Effective Date is CONDITIONAL_UNRESOLVED, status must not silently resolve to the Notes-only text as of execution date alone.",
+    "queryDates": [
+      "2024-09-01",
+      "2024-09-23",
+      "2024-09-30"
+    ],
+    "mapsToProductionModules": [
+      "deterministic-parser",
+      "chain",
+      "operative-state",
+      "independent-verification"
+    ],
+    "sourcePointers": [
+      {
+        "docId": "matw-third-ar",
+        "accession": "0000063296-20-000040",
+        "localFixturePath": null,
+        "quote": "(j) Liens of any Loan Party securing Indebtedness; provided... shall not at any time exceed the Permitted Amount"
+      },
+      {
+        "docId": "matw-am6",
+        "accession": "0001193125-24-224129",
+        "localFixturePath": null,
+        "quote": "(j) Liens securing Indebtedness under the 2024 Note Offering to the extent both (y)..."
+      }
+    ],
+    "relatedScenarios": [
+      {
+        "scenarioId": "MATW-S2",
+        "asOf": "2024-09-23",
+        "expect": "If Sixth Amendment Effective Date satisfied: Notes-only subordinate lien; general basket gone",
+        "status": "CONDITIONAL_PERMISSION_NARROWING",
+        "vc": "VC-004"
+      }
+    ],
+    "notLegalGroundTruth": true
+  },
+  "independentlyReviewedLegalGroundTruth": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "disposition": null,
+    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+  },
+  "replay": {
+    "portable": true,
+    "requiresProductionPatch": false,
+    "claudeOwnedFixturesTouched": false,
+    "inputs": {
+      "chainId": "matw-2020-03-27-third-ar-loan",
+      "acquisitionLedger": "docs/amendment-chain-research/phase2/acquisition-ledger.json",
+      "authorityLayer": "docs/amendment-chain-research/authority-layers/matw-2020-03-27-third-ar-loan.json",
+      "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
+    }
+  },
+  "notAProductionPatch": true
+}

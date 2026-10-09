@@ -1,0 +1,576 @@
+{
+  "manifestVersion": "product-acceptance-expectations.v1",
+  "packageId": "pkg-b-multi-document",
+  "title": "Package B — credit agreement plus indenture with conflicting defined terms",
+  "issuer": "Northfield Components Corp. (synthetic)",
+  "scenario": "Two operative instruments. The same defined term (Consolidated EBITDA, Indebtedness, Consolidated Net Income, Interest Expense) is defined differently in each document. The credit agreement caps the Senior Notes by cross-document reference; the indenture caps the credit agreement. Entity scope differs (Subsidiary vs Restricted Subsidiary). A First Supplemental Indenture (effective 2026-05-01) restates indenture 4.09(c) from $50,000,000 to $75,000,000; it targets the SECOND instrument (the indenture), not the credit agreement.",
+  "authorship": "Expectations written by reading the source text. Not derived from compiler output.",
+  "companyId": "company:northfield",
+  "instrumentKey": "northfield-credit-agreement-2026",
+  "documents": [
+    {
+      "documentId": "credit-agreement",
+      "label": "Credit Agreement",
+      "file": "documents/credit-agreement.txt",
+      "role": "BASE_AGREEMENT",
+      "operative": true,
+      "sha256": "893d3283043eeef5bcb624445657f4593e80ab99c2df4a819f351afbc49bba0d"
+    },
+    {
+      "documentId": "indenture",
+      "label": "Senior Notes Indenture",
+      "file": "documents/indenture.txt",
+      "role": "INDENTURE",
+      "operative": true,
+      "sha256": "5a3dc3e31a86a6f7a5f83f0a080d3672b99d9050c78b08084a2801b87bc6175b"
+    },
+    {
+      "documentId": "supplemental-indenture-1",
+      "label": "First Supplemental Indenture",
+      "file": "documents/supplemental-indenture-1.txt",
+      "role": "AMENDMENT",
+      "operative": true,
+      "sha256": "c26f491bd1cb0bd1f51605be15fcc5746117b52bcea35307979afb6ddae49c3a"
+    }
+  ],
+  "operativeState": {
+    "asOfDates": [
+      "2026-03-31",
+      "2026-06-30"
+    ],
+    "exact": [
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$200,000,000",
+          "Senior Notes Indenture"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "indenture",
+        "sectionRef": "4.09(a)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$150,000,000"
+        ],
+        "mustNotContain": []
+      },
+      {
+        "asOfDate": "2026-03-31",
+        "documentId": "indenture",
+        "sectionRef": "4.09(c)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$50,000,000"
+        ],
+        "mustNotContain": [
+          "$75,000,000"
+        ]
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "indenture",
+        "sectionRef": "4.09(c)",
+        "status": "SUPERSEDED",
+        "mustContain": [
+          "$75,000,000"
+        ],
+        "mustNotContain": [
+          "$50,000,000"
+        ],
+        "supersededBy": "supplemental-indenture-1"
+      },
+      {
+        "asOfDate": "2026-06-30",
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "status": "CURRENT",
+        "mustContain": [
+          "$30,000,000"
+        ],
+        "mustNotContain": [
+          "$75,000,000"
+        ]
+      }
+    ]
+  },
+  "structure": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "7.01",
+        "unique": true,
+        "ownTextContains": [
+          "$200,000,000"
+        ]
+      },
+      {
+        "documentId": "indenture",
+        "sectionRef": "4.09",
+        "nodeType": "SECTION",
+        "parentSectionRef": "IV",
+        "unique": true,
+        "ownTextContains": [
+          "Fixed Charge Coverage Ratio",
+          "2.00 to 1.00"
+        ]
+      },
+      {
+        "documentId": "indenture",
+        "sectionRef": "4.09(a)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "4.09",
+        "unique": true,
+        "ownTextContains": [
+          "$150,000,000"
+        ]
+      },
+      {
+        "documentId": "indenture",
+        "sectionRef": "4.09(c)",
+        "nodeType": "SUBSECTION",
+        "parentSectionRef": "4.09",
+        "unique": true,
+        "ownTextContains": [
+          "$50,000,000"
+        ]
+      },
+      {
+        "documentId": "indenture",
+        "sectionRef": "4.10",
+        "nodeType": "SECTION",
+        "parentSectionRef": "IV",
+        "unique": true
+      },
+      {
+        "documentId": "supplemental-indenture-1",
+        "sectionRef": "1",
+        "nodeType": "SECTION",
+        "parentSectionRef": null,
+        "unique": true,
+        "ownTextContains": [
+          "Section 4.09(c)",
+          "$75,000,000"
+        ]
+      }
+    ],
+    "invariants": [
+      "Nodes from the two documents must never share a nodeId.",
+      "A sectionRef lookup must be scoped by documentId: '1.01' exists in both documents and must resolve uniquely within each."
+    ]
+  },
+  "definitions": {
+    "exact": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "unique": true,
+        "excerptContains": "non-cash stock compensation expense"
+      },
+      {
+        "documentId": "indenture",
+        "term": "Consolidated EBITDA",
+        "unique": true,
+        "excerptContains": "excluding any non-cash stock compensation expense"
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Indebtedness",
+        "unique": true,
+        "excerptContains": "borrowed money"
+      },
+      {
+        "documentId": "indenture",
+        "term": "Indebtedness",
+        "unique": true,
+        "excerptContains": "Capital Lease Obligations"
+      },
+      {
+        "documentId": "indenture",
+        "term": "Restricted Subsidiary",
+        "unique": true
+      },
+      {
+        "documentId": "indenture",
+        "term": "Fixed Charge Coverage Ratio",
+        "unique": true
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Senior Notes Indenture",
+        "unique": true
+      }
+    ],
+    "mustNotResolveFrom": [
+      {
+        "documentId": "credit-agreement",
+        "term": "Consolidated EBITDA",
+        "forbiddenSourceDocumentId": "indenture",
+        "reason": "A credit-agreement covenant must use the credit-agreement definition, which includes stock compensation add-back."
+      },
+      {
+        "documentId": "indenture",
+        "term": "Indebtedness",
+        "forbiddenSourceDocumentId": "credit-agreement",
+        "reason": "The indenture definition is broader (includes Capital Lease Obligations)."
+      },
+      {
+        "documentId": "credit-agreement",
+        "term": "Restricted Subsidiary",
+        "forbiddenSourceDocumentId": "indenture",
+        "reason": "The credit agreement never defines Restricted Subsidiary; the term must not be imported from the indenture."
+      }
+    ]
+  },
+  "covenants": [
+    {
+      "id": "B-CA-7.01",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create, incur or assume any Indebtedness"
+      ],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "6140ffb592960ddb3cd5297c98df56d80e283b59fc777a190689f7d8378e0a2d"
+    },
+    {
+      "id": "B-CA-7.01(a)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(a)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Loan Documents"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [
+        "Loan Documents"
+      ],
+      "crossReferences": [],
+      "textSha256": "ca81604f99c5270c9dcf5e436fa38658a2a37475d5616d2aafcdf7cfc905d577"
+    },
+    {
+      "id": "B-CA-7.01(b)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(b)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$30,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 30000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "6d0bc7a1df156e0acfa82b24df6e8b55bf7f69856d2b4fa76ef30b9df6873120"
+    },
+    {
+      "id": "B-CA-7.01(c)",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.01(c)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$200,000,000",
+        "Senior Notes Indenture"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 200000000,
+        "currency": "USD",
+        "basis": "AGGREGATE_PRINCIPAL"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Senior Notes Indenture",
+        "Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "indenture",
+          "sectionRef": null,
+          "mustResolve": false,
+          "note": "Cross-document reference to the indenture as an instrument, not a section."
+        }
+      ],
+      "textSha256": "742ed0f1524d69f0044dd23747fff779feed79916fc6a94ad04b02640e374f65"
+    },
+    {
+      "id": "B-IND-4.09",
+      "documentId": "indenture",
+      "sectionRef": "4.09",
+      "family": "INDEBTEDNESS",
+      "role": "RATIO_BASED_PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Fixed Charge Coverage Ratio",
+        "2.00 to 1.00"
+      ],
+      "value": {
+        "kind": "RATIO_THRESHOLD",
+        "metric": "Fixed Charge Coverage Ratio",
+        "comparator": "GTE",
+        "numerator": 2,
+        "denominator": 1
+      },
+      "entityScope": [
+        "BORROWER"
+      ],
+      "conditions": [
+        {
+          "kind": "RATIO_TEST",
+          "textContains": "at least 2.00 to 1.00",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [
+        "Fixed Charge Coverage Ratio",
+        "Consolidated EBITDA",
+        "Interest Expense"
+      ],
+      "crossReferences": [],
+      "textSha256": "649cac9c3dfc03a3de01fe4709ff819f0a6d2b5efe56ef9bf6de328da6078254"
+    },
+    {
+      "id": "B-IND-4.09-prohibition",
+      "documentId": "indenture",
+      "sectionRef": "4.09",
+      "family": "INDEBTEDNESS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not, and shall not permit any Restricted Subsidiary to, incur"
+      ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeNote": "Restricted Subsidiaries only — Unrestricted Subsidiaries are outside the covenant.",
+      "conditions": [],
+      "dependsOnTerms": [
+        "Restricted Subsidiary",
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "649cac9c3dfc03a3de01fe4709ff819f0a6d2b5efe56ef9bf6de328da6078254"
+    },
+    {
+      "id": "B-IND-4.09(a)",
+      "documentId": "indenture",
+      "sectionRef": "4.09(a)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$150,000,000",
+        "Credit Agreement"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 150000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": null,
+          "mustResolve": false,
+          "note": "Instrument-level cross-document reference."
+        }
+      ],
+      "textSha256": "803e5c340d895ce26d17f221fe26ad3066647de75c62bdc6224b314796992700"
+    },
+    {
+      "id": "B-IND-4.09(c)",
+      "documentId": "indenture",
+      "sectionRef": "4.09(c)",
+      "family": "INDEBTEDNESS",
+      "role": "BASKET",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "$50,000,000"
+      ],
+      "value": {
+        "kind": "MONEY",
+        "amount": 50000000,
+        "currency": "USD",
+        "basis": "AT_ANY_TIME_OUTSTANDING"
+      },
+      "conditions": [],
+      "dependsOnTerms": [
+        "Indebtedness"
+      ],
+      "crossReferences": [],
+      "textSha256": "89163d017264847be676849315197bdbdbb8f99343329f1e584f1cc91cb3357f"
+    },
+    {
+      "id": "B-IND-4.10",
+      "documentId": "indenture",
+      "sectionRef": "4.10",
+      "family": "RESTRICTED_PAYMENTS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not declare or pay any dividend",
+        "no Default has occurred"
+      ],
+      "conditions": [
+        {
+          "kind": "NO_DEFAULT",
+          "textContains": "unless no Default has occurred and is continuing",
+          "independent": true,
+          "material": true
+        }
+      ],
+      "dependsOnTerms": [],
+      "crossReferences": [],
+      "textSha256": "b293bb147d577f94e590a924842aeeff55661a174bb3db539d921bdc984b7ebb"
+    },
+    {
+      "id": "B-CA-7.02",
+      "documentId": "credit-agreement",
+      "sectionRef": "7.02",
+      "family": "LIENS",
+      "role": "GENERAL_PROHIBITION",
+      "posture": "PROHIBITION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "shall not create any Lien",
+        "Section 7.01(b)"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [
+        {
+          "documentId": "credit-agreement",
+          "sectionRef": "7.01(b)",
+          "mustResolve": true
+        }
+      ],
+      "textSha256": "629aaa7d62651de87b55ea551bc98df656442ac332f445e7faf34cca884214bf"
+    },
+    {
+      "id": "B-IND-4.09(b)",
+      "documentId": "indenture",
+      "sectionRef": "4.09(b)",
+      "family": "INDEBTEDNESS",
+      "role": "PERMISSION",
+      "posture": "PERMISSION",
+      "operative": true,
+      "material": true,
+      "mustContain": [
+        "Notes issued on the Issue Date"
+      ],
+      "conditions": [],
+      "dependsOnTerms": [],
+      "crossReferences": [],
+      "textSha256": "4eaa14196f3d25b73a2f4f8d335f6ff10a9368dd1618e5afea760383ac4f6a3d"
+    }
+  ],
+  "sharedCaps": [],
+  "ambiguities": [
+    {
+      "id": "B-AMB-1",
+      "where": "indenture 4.10",
+      "description": "'Default' is used in the indenture but never defined there; the credit agreement does not define it either in this package.",
+      "mustBePreservedAs": [
+        "UNRESOLVED_TERM",
+        "REVIEW_REQUIRED",
+        "NEEDS_INPUT"
+      ],
+      "unacceptable": [
+        "silently resolving Default from any document"
+      ]
+    }
+  ],
+  "unsupported": [],
+  "prohibitedClaims": [
+    {
+      "id": "B-P1",
+      "claim": "The Senior Notes cap in CA 7.01(c) is $150,000,000",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "$150,000,000 is the indenture's cap on the Credit Agreement (4.09(a)); the CA's cap on the notes is $200,000,000."
+    },
+    {
+      "id": "B-P2",
+      "claim": "Consolidated EBITDA has a single definition for the package",
+      "severityIfAsserted": "WRONG_OPERATIVE_SOURCE",
+      "reason": "The two definitions differ on stock compensation; capacity under each instrument must use its own definition."
+    },
+    {
+      "id": "B-P3",
+      "claim": "Indenture 4.09 restricts Unrestricted Subsidiaries",
+      "severityIfAsserted": "CRITICAL_FALSE_PERMISSION",
+      "reason": "Only the Issuer and Restricted Subsidiaries are restricted; reporting broader scope misstates the obligation (and the inverse — narrowing CA 7.01 to Restricted Subsidiaries — would be a false permission)."
+    },
+    {
+      "id": "B-P4",
+      "claim": "Indenture 4.09's FCCR test is measured on historical (not pro forma) figures (condition node dropped)",
+      "severityIfAsserted": "MATERIAL_CONDITION_OMISSION",
+      "reason": "4.09 says 'determined on a pro forma basis'.",
+      "adversarial": {
+        "kind": "DROP_CONDITIONS",
+        "sectionRef": "4.09",
+        "documentId": "indenture"
+      }
+    }
+  ],
+  "nonOperative": [],
+  "invariants": [
+    "Every definition dependency recorded for a covenant must resolve within the covenant's own document unless the text expressly imports another instrument's definition.",
+    "A cross-document instrument reference (e.g. 'Senior Notes Indenture') must be recorded as a reference to a package document, never dropped silently.",
+    "The supplemental indenture's effect attaches to the indenture instrument (4.09(c) SUPERSEDED at 2026-06-30, CURRENT at 2026-03-31) and never to the credit agreement."
+  ]
+}

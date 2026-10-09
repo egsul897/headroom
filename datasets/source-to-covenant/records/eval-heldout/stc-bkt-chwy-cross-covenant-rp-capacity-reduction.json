@@ -1,0 +1,222 @@
+{
+  "exampleId": "stc-bkt-chwy-cross-covenant-rp-capacity-reduction",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "chewy",
+    "issuerName": "Chewy, Inc.",
+    "instrumentKey": "chwy-2026-credit-agreement",
+    "documentId": "chwy-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "chwy-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Definitions — Available RP Capacity Amount / cross-covenant reduction",
+  "input": {
+    "exactText": "08(b)(26) (after giving effect to any\nreallocation or reclassification permitted hereunder).\n“ Available RP Capacity Amount ” means, at any time of determination (and after\ngiving effect to any reallocation or reclassification permitted hereunder), the amount of Restricted Payments that may be made at the time of determination pursuant to Section 6.08 or the definition of “Permitted Investments”;\nprovided that the capacity available to make Restricted Payments pursuant to the provisions of Section 6.08 shall be reduced (with such reduction to be classified and/or reclassified among such clauses by the Borrowers as described in\nSection 6.08), without duplication by (i) the aggregate principal amount of Indebtedness that has been incurred pursuant to and to the extent outstanding under Section 6.01(b)(31) (together with any outstanding Indebtedness under\nSection 6.01(b)(13) incurred to Refinance any Indebtedness initially incurred pursuant to Section 6.01(b)(31)) and (ii) the amount of the Available RP Capacity Amount utilized by the Restricted Parties to incur Liens pursuant to\nclause (46)(i) of the definition of “Permitted Liens” (it being agreed and understood that, to the extent any Indebtedness has reduced the Available RP Capacity Amount pursuant to the foregoing proviso, the Available RP Capacity Amount\nshall not be further reduced by the amount of any such Indebtedness that is secured by Liens pursuant to clause (46)(i) of the definition of “Permitted Liens”). The Initial Borrower may elect to allocate or reallocate from time to time\nthe Available RP Capacity Amount.\n“ Available Tenor ” means, as of any date of determination and with respect to the then-current\nBenchmark, any tenor for such Benchmark (or component thereof) or payment period for interest calculated with reference to such Benchmark (or component thereof), as applicable, that is or may be used for determining the length of an Interest Period\nfor any term rate or otherwise, for determining any fre",
+    "charStartInFixture": 35698,
+    "charEndInFixture": 37698,
+    "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "windowSha256": "18788344c5dd433272a0700631e2c2abc4957d7912cb6f848cec7634ec4d26fe",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Restricted Parties\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (chwy-cross-covenant-rp-capacity-reduction). Not independently reviewed.",
+      "figures": [
+        "§6.08 RP capacity reduced (without duplication) by outstanding §6.01(b)(31) debt (and refi) and by Available RP Capacity Amount used for Liens"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "§6.08",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "§6.01(b)(31)",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "§6.01(b)(13)",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Lien usages of Available RP Capacity Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "cross-usage ledger not supplied"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "chwy-2026-credit-agreement",
+    "operativeVersion": "chwy-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "windowSha256=18788344c5dd433272a0700631e2c2abc4957d7912cb6f848cec7634ec4d26fe",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTROLLING_CONTEXT_COMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Definitions — Available RP Capacity Amount / cross-covenant reduction",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Restricted Parties\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Reclassification language in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [],
+    "auditNotes": "No required dependency gaps flagged under Phase-2 heuristics; not a certification of legal completeness.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-cross-covenant-rp-capacity-reduction). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "18788344c5dd433272a0700631e2c2abc4957d7912cb6f848cec7634ec4d26fe",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

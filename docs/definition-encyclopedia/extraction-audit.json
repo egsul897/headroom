@@ -1,0 +1,490 @@
+{
+  "schemaVersion": "definition-encyclopedia-extraction-audit.v1",
+  "documentsSampled": 6,
+  "meanPrecision": 1,
+  "meanRecall": 0.9906407596543092,
+  "audits": [
+    {
+      "sourceId": "chwy-2026-ca",
+      "documentId": "chwy-doc-a-2026-06-23",
+      "textSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+      "totalDefinitionsPresent": 497,
+      "definitionsDetected": 486,
+      "missedDefinitions": [
+        {
+          "gold": {
+            "exactTerm": "ABL Administrative Agent",
+            "normalizedTerm": "abl administrative agent",
+            "charStart": 9091,
+            "charEnd": 9135,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Affiliated Lender Cap",
+            "normalizedTerm": "affiliated lender cap",
+            "charStart": 17686,
+            "charEnd": 17727,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Borrowers",
+            "normalizedTerm": "borrowers",
+            "charStart": 49524,
+            "charEnd": 49553,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Designated Affiliate",
+            "normalizedTerm": "designated affiliate",
+            "charStart": 134109,
+            "charEnd": 134149,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Fixed Amounts",
+            "normalizedTerm": "fixed amounts",
+            "charStart": 183720,
+            "charEnd": 183753,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Intellectual Property",
+            "normalizedTerm": "intellectual property",
+            "charStart": 205980,
+            "charEnd": 206021,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "ISDA CDS Definitions",
+            "normalizedTerm": "isda cds definitions",
+            "charStart": 216988,
+            "charEnd": 217028,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Maximum Rate",
+            "normalizedTerm": "maximum rate",
+            "charStart": 229015,
+            "charEnd": 229047,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Other Applicable Indebtedness",
+            "normalizedTerm": "other applicable indebtedness",
+            "charStart": 240815,
+            "charEnd": 240864,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Refinanced Debt",
+            "normalizedTerm": "refinanced debt",
+            "charStart": 308462,
+            "charEnd": 308497,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "S&P",
+            "normalizedTerm": "s&p",
+            "charStart": 322596,
+            "charEnd": 322609,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        }
+      ],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [
+        {
+          "normalizedTerm": "subsidiary",
+          "count": 2,
+          "charStarts": [
+            339816,
+            341757
+          ]
+        }
+      ],
+      "nestedDefinitions": 10,
+      "multilineDefinitions": 486,
+      "precision": 1,
+      "recall": 0.9778672032193159,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    },
+    {
+      "sourceId": "gibraltar-2026-ca",
+      "documentId": "gibraltar-doc-a-2026",
+      "textSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+      "totalDefinitionsPresent": 575,
+      "definitionsDetected": 564,
+      "missedDefinitions": [
+        {
+          "gold": {
+            "exactTerm": "Cash-Capped   Incremental   Facility",
+            "normalizedTerm": "cash-capped incremental facility",
+            "charStart": 54219,
+            "charEnd": 54275,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Distressed   Agent-Related   Person",
+            "normalizedTerm": "distressed agent-related person",
+            "charStart": 146711,
+            "charEnd": 146766,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Existing   Revolving   Tranche",
+            "normalizedTerm": "existing revolving tranche",
+            "charStart": 180038,
+            "charEnd": 180088,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Extended   Revolving   Commitments",
+            "normalizedTerm": "extended revolving commitments",
+            "charStart": 180957,
+            "charEnd": 181011,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Extended   Revolving   Tranche",
+            "normalizedTerm": "extended revolving tranche",
+            "charStart": 181044,
+            "charEnd": 181094,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Financial Covenant Event of Default",
+            "normalizedTerm": "financial covenant event of default",
+            "charStart": 184766,
+            "charEnd": 184821,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "New   Revolving   Commitment",
+            "normalizedTerm": "new revolving commitment",
+            "charStart": 246511,
+            "charEnd": 246559,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "New   Revolving   Facility",
+            "normalizedTerm": "new revolving facility",
+            "charStart": 246592,
+            "charEnd": 246638,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Primary   Disqualified   Institution",
+            "normalizedTerm": "primary disqualified institution",
+            "charStart": 309226,
+            "charEnd": 309282,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Ratio-Based   Incremental   Facility",
+            "normalizedTerm": "ratio-based incremental facility",
+            "charStart": 316229,
+            "charEnd": 316285,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "S&P",
+            "normalizedTerm": "s&p",
+            "charStart": 334387,
+            "charEnd": 334400,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        }
+      ],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [
+        {
+          "normalizedTerm": "covered entity",
+          "count": 2,
+          "charStarts": [
+            130867,
+            1024777
+          ]
+        }
+      ],
+      "nestedDefinitions": 16,
+      "multilineDefinitions": 564,
+      "precision": 1,
+      "recall": 0.9808695652173913,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    },
+    {
+      "sourceId": "dsgr-2022-arca",
+      "documentId": "dsgr-doc-a-2022",
+      "textSha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "totalDefinitionsPresent": 373,
+      "definitionsDetected": 370,
+      "missedDefinitions": [
+        {
+          "gold": {
+            "exactTerm": "Document",
+            "normalizedTerm": "document",
+            "charStart": 82203,
+            "charEnd": 82231,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "Projections",
+            "normalizedTerm": "projections",
+            "charStart": 157342,
+            "charEnd": 157373,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        },
+        {
+          "gold": {
+            "exactTerm": "S&P",
+            "normalizedTerm": "s&p",
+            "charStart": 168377,
+            "charEnd": 168390,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        }
+      ],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [
+        {
+          "normalizedTerm": "approved fund",
+          "count": 2,
+          "charStarts": [
+            25748,
+            583767
+          ]
+        },
+        {
+          "normalizedTerm": "communications",
+          "count": 2,
+          "charStarts": [
+            67207,
+            519252
+          ]
+        },
+        {
+          "normalizedTerm": "ineligible institution",
+          "count": 2,
+          "charStarts": [
+            119680,
+            584150
+          ]
+        },
+        {
+          "normalizedTerm": "subsidiary",
+          "count": 2,
+          "charStarts": [
+            171798,
+            172659
+          ]
+        },
+        {
+          "normalizedTerm": "email",
+          "count": 7,
+          "charStarts": [
+            551094,
+            551326,
+            551436,
+            551526,
+            551835,
+            552043,
+            552250
+          ]
+        }
+      ],
+      "nestedDefinitions": 17,
+      "multilineDefinitions": 370,
+      "precision": 1,
+      "recall": 0.9919571045576407,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    },
+    {
+      "sourceId": "edgar:0000021076:3772e7f3acf4",
+      "documentId": "edgar:0000021076:3772e7f3acf4",
+      "textSha256": "47414d010124b8e9b6866330167169681385098b5353607f18f727177fbaf049",
+      "totalDefinitionsPresent": 146,
+      "definitionsDetected": 145,
+      "missedDefinitions": [
+        {
+          "gold": {
+            "exactTerm": "S&P",
+            "normalizedTerm": "s&p",
+            "charStart": 55851,
+            "charEnd": 55864,
+            "declarationKind": "SECOND_PASS",
+            "nested": false,
+            "inventoryMethod": "SECOND_PASS_QUOTED_MEANS"
+          },
+          "reason": "Present in gold inventory but not matched by structural detector at this offset."
+        }
+      ],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [],
+      "nestedDefinitions": 5,
+      "multilineDefinitions": 145,
+      "precision": 1,
+      "recall": 0.9931506849315068,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    },
+    {
+      "sourceId": "edgar:0000025232:59f74e1bae1a",
+      "documentId": "edgar:0000025232:59f74e1bae1a",
+      "textSha256": "ba625f309a1de77f9afb8bda0c5365e8d74f64bd220d60111f8cbf0aafce39e9",
+      "totalDefinitionsPresent": 3,
+      "definitionsDetected": 3,
+      "missedDefinitions": [],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [],
+      "nestedDefinitions": 1,
+      "multilineDefinitions": 3,
+      "precision": 1,
+      "recall": 1,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    },
+    {
+      "sourceId": "edgar:0000040211:4918f2915630",
+      "documentId": "edgar:0000040211:4918f2915630",
+      "textSha256": "a1e4ede60af4eb12f07d320498ac9d23a5184ff4364a9ed7237a295e110347a0",
+      "totalDefinitionsPresent": 0,
+      "definitionsDetected": 0,
+      "missedDefinitions": [],
+      "falseDetections": [],
+      "incorrectBoundaries": [],
+      "unresolvedForwardingDefinitions": 0,
+      "duplicateDefinitions": [],
+      "nestedDefinitions": 0,
+      "multilineDefinitions": 0,
+      "precision": 1,
+      "recall": 1,
+      "inventoryMethodNote": "Gold inventory = structural detector union second-pass quoted means/colon patterns. Misses unquoted or exotic declaration grammars outside both patterns. Detector-derived reference only — not independently verified legal gold / not a human gold standard."
+    }
+  ]
+}

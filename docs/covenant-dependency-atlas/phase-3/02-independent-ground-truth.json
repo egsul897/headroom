@@ -1,0 +1,37 @@
+{
+  "path": "tests/fixtures/covenant-dependency-atlas/authored-edges/independent-ground-truth-phase3.json",
+  "totals": {
+    "edges": 135,
+    "bySplit": {
+      "development": 46,
+      "evaluation": 46,
+      "blind": 43
+    },
+    "byIssuer": {
+      "CHWY": 22,
+      "RIOT": 14,
+      "DSGR": 19,
+      "LSB": 10,
+      "FWRG": 22,
+      "CNMD": 17,
+      "SXI": 21,
+      "ROCK": 10
+    },
+    "byKind": {
+      "COVENANT_TO_DEFINITION": 39,
+      "RATIO_CALCULATION": 18,
+      "ENTITY_SCOPE": 16,
+      "COVENANT_TO_CONDITION": 15,
+      "COVENANT_TO_EXCEPTION": 8,
+      "RECLASSIFICATION": 5,
+      "FINANCIAL_INPUT": 7,
+      "COVENANT_TO_SHARED_BASKET": 9,
+      "COVENANT_TO_CROSS_DOCUMENT": 10,
+      "COVENANT_TO_AMENDMENT": 7,
+      "DEFINITION_TO_DEFINITION": 1
+    }
+  },
+  "knifeRiverBlind": "PRESERVED_UNREAD — no Knife River body opened; no KNF/MDU filing ingested",
+  "gibraltarNote": "Gibraltar is DEVELOPMENT per Arch+Cert (docs/p3-lane-c-gibraltar-dev-edgar-1acdff3.md); Phase 2 evaluation label corrected in Phase 3",
+  "method": "SOURCE_TEXT_SPAN — not derived from extractor output"
+}

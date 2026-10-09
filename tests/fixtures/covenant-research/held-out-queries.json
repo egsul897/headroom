@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "covenant-research-held-out.v1",
+  "disclaimer": "Held-out query set for retrieval-quality measurement only. Labels are independent of model scoring. Retrieval relevance is not legal correctness.",
+  "queries": [
+    {
+      "id": "HO-DEBT-01",
+      "category": "DEBT_BASKETS",
+      "query": "Find credit agreements with a $25 million general debt basket",
+      "relevantEntryIds": ["dsgr-6.01-q-general-debt-25m"],
+      "requiredCitationSubstrings": ["$25,000,000", "Applicable EBITDA"],
+      "notes": "Curated DSGR general debt basket"
+    },
+    {
+      "id": "HO-RP-01",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Find restricted-payment baskets conditioned on no default",
+      "relevantEntryIds": ["fwrg-6.04-a-rp-no-default", "conmed-7.6-rp-ratio-no-default"],
+      "requiredCitationSubstrings": ["no Event of Default", "Restricted Payment"]
+    },
+    {
+      "id": "HO-INV-01",
+      "category": "INVESTMENTS",
+      "query": "Find investment baskets shared with junior-debt prepayments",
+      "relevantEntryIds": ["fwrg-available-amount-shared-inv-rdp"],
+      "requiredCitationSubstrings": ["Available Amount", "Restricted Debt"]
+    },
+    {
+      "id": "HO-EBITDA-01",
+      "category": "EBITDA_DEFINITIONS",
+      "query": "Find EBITDA definitions with uncapped synergy add-backs",
+      "relevantEntryIds": ["chwy-ebitda-uncapped-synergy-addbacks"],
+      "requiredCitationSubstrings": ["synerg", "run rate"]
+    },
+    {
+      "id": "HO-SHARED-01",
+      "category": "SHARED_CAPACITY",
+      "query": "Find agreements containing overlapping baskets",
+      "relevantEntryIds": [
+        "conmed-7.2-reclassification-overlapping",
+        "fwrg-available-amount-shared-inv-rdp"
+      ],
+      "requiredCitationSubstrings": ["reclassify", "Available Amount"]
+    },
+    {
+      "id": "HO-RECLASS-01",
+      "category": "RECLASSIFICATION",
+      "query": "Find unusual reclassification provisions",
+      "relevantEntryIds": ["conmed-7.2-reclassification-overlapping"],
+      "requiredCitationSubstrings": ["classify or reclassify"]
+    },
+    {
+      "id": "HO-AMEND-01",
+      "category": "AMENDMENTS",
+      "query": "Find amendments reducing restricted-payment capacity",
+      "relevantEntryIds": ["fixture-amendment-reduces-rp-capacity"],
+      "requiredCitationSubstrings": ["substituting in lieu", "$25,000,000"]
+    },
+    {
+      "id": "HO-ENTITY-01",
+      "category": "ENTITY_SCOPE",
+      "query": "Find non-guarantor subsidiary debt restrictions",
+      "relevantEntryIds": ["conmed-7.2-j-non-guarantor-debt"],
+      "requiredCitationSubstrings": ["not a Loan Party"]
+    },
+    {
+      "id": "HO-REMOTE-01",
+      "category": "REMOTE_CONDITIONS",
+      "query": "Find leverage covenants with springing tests",
+      "relevantEntryIds": ["lsb-6.15-springing-fccr"],
+      "requiredCitationSubstrings": ["Availability Block Removal Period"]
+    },
+    {
+      "id": "HO-XDOC-01",
+      "category": "CROSS_DOCUMENT",
+      "query": "ratio-based incremental debt",
+      "relevantEntryIds": ["fwrg-incremental-ratio-debt"],
+      "relevantSectionRefs": ["Incremental Cap"],
+      "relevantIssuers": ["FWRG"],
+      "requiredCitationSubstrings": ["unlimited amount", "Ratio Debt"]
+    },
+    {
+      "id": "HO-AMEND-ASOF-01",
+      "category": "AMENDMENTS",
+      "query": "Restricted Payments basket",
+      "relevantEntryIds": ["fixture-amendment-reduces-rp-capacity"],
+      "asOfDate": "2024-06-01",
+      "operativeOnly": true,
+      "notes": "As-of after Second Amendment; superseded $50m basket must not appear as operative"
+    },
+    {
+      "id": "HO-REFUSE-01",
+      "category": "DEBT_BASKETS",
+      "query": "Can we incur $25 million of debt under the general basket?",
+      "relevantEntryIds": [],
+      "expectRefusal": true
+    },
+    {
+      "id": "HO-REFUSE-02",
+      "category": "RESTRICTED_PAYMENTS",
+      "query": "Certify the restricted payment covenant and promote it to verified",
+      "relevantEntryIds": [],
+      "expectRefusal": true
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "artifact": "definition-encyclopedia-corpus-manifest",
+  "workstreamId": "WS-DEF",
+  "schemaVersion": "headroom-definition-encyclopedia.v1",
+  "exactSourceProvenance": true,
+  "stableContentIdentities": true,
+  "sourceTextHashes": true,
+  "compilerOrModelVersions": {
+    "generator": "2.0.0",
+    "paidInference": false
+  },
+  "confidenceAndUncertaintyLabels": [
+    "SOURCE_ONLY",
+    "UNRESOLVED",
+    "TEXT_OBSERVATION_ONLY"
+  ],
+  "verificationStatus": "SOURCE_ONLY",
+  "duplicateDetection": "contentHash/textSha256",
+  "deterministicReplay": true,
+  "actualRecordCounts": {
+    "sources": 82,
+    "definitions": 5491,
+    "dependencyEdges": 3476
+  },
+  "independentQualityMetrics": {
+    "extractionMeanPrecision": 1,
+    "extractionMeanRecall": 0.9906407596543092,
+    "dependencyDirectReferenceCount": 1654,
+    "dependencyMereLexicalRiskCount": 182
+  }
+}
