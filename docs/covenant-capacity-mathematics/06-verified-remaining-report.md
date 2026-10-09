@@ -51,7 +51,8 @@ Gross capacity · Known utilization · Unknown utilization · Supported remainin
 | Continues | PR #230 (`bf10361d`) |
 | PR | https://github.com/egsul897/headroom/pull/234 |
 | Branch | `cursor/verified-remaining-capacity-b580` |
-| SHA | `dd37c33ccde6548143ebd938250b12d2e6b24b56` |
+| SHA | `78d2b8e7dd0698f6a73bee430944fa6d8c13941b` |
+| CI | **green** (6/6 checks on tip) |
 | Capacity suite | **236/236** |
 | New utilization tests | **12** |
 | Cost | **$0** |
