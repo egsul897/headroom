@@ -34,7 +34,8 @@ Cursor work. Provider calls: none in this workstream.
 | 24 | IPV-21 / IPV-16 challenger adjudication against PR #136 @8f87a06 (doc 22): INV-19/19b controls corrected, INV-16b added, auditor severity fix, mutants annotated; IPV-12 re-rated | done (this commit) |
 | 25 | PR #161 independent Chewy P0 replay (doc 23) — INDEPENDENT_PARSER_REMEDIATION_PASSED with disclosed limitations | done (this commit) |
 | 26 | PR #168 IPV-16 remediation acceptance (doc 24) — IPV16_INDEPENDENT_REMEDIATION_PASSED (section-level path only) | done (this commit) |
-| 27 | Doc 21 §11 remainder (INV-04 back-reference path, shared-cap plan, real-fixture IPV rows); then W1–W4 | next |
+| 27 | PR #163 independent parser acceptance (doc 25) — PR163_PARSER_REMEDIATION_REQUIRED; #161 stays the selected correction; #169 blocked. PR #161 merge preparation: disclosure + regression pins pushed to its branch (`4736ea4a`), PR body corrected, Gibraltar record pin refresh handed to the Integration Lead | done (this commit) |
+| 28 | Doc 21 §11 remainder (INV-04 back-reference path, shared-cap plan, real-fixture IPV rows); then W1–W4 | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".
