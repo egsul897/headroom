@@ -5,3 +5,5 @@ export * from "./graph";
 export * from "./ledger";
 export * from "./state";
 export * from "./reclassification";
+/** Persisted append-only contract ledger (roadmap step 8) — distinct from legacy LedgerEntry. */
+export * from "./store";
