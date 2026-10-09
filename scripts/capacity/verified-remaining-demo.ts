@@ -1,37 +1,39 @@
 /**
  * Agent 3 — attributed utilization → verified remaining demo.
  *
- * Demonstrates: gross − attributed usage = supported remaining.
- * Uses SYNTHETIC_LABELED usage (authentic Neon attributed history is blocked —
- * see real-data blocker below). Does not write to the database.
+ * Demonstrates mechanics with SYNTHETIC_LABELED completeness certificates.
+ * Synthetic certificates are NEVER production-authoritative — Position /
+ * Simulate / Ask / verified-execution refuse authoritative remaining.
  *
  * Usage: npx tsx scripts/capacity/verified-remaining-demo.ts
  */
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import {
+  DEMO_BINDINGS,
   assertProductCapacityConsistency,
   buildSharedProductCapacityViews,
   computeVerifiedRemaining,
   evidenceFromAttributedLedger,
+  refuseAuthoritativeRemaining,
   resolveUtilization,
+  syntheticCompletenessCertificate,
 } from "@/lib/capacity";
 import { adaptLegacyCovenantProvision } from "@/lib/contract-model/ir/legacy-adapter";
 import type { CovenantProvisionInput } from "@/lib/covenant-engine";
 
 const AS_OF = "2026-06-30";
 const OUT = resolve("docs/covenant-capacity-mathematics");
+const CO = "demo-co";
 
-/** Labeled synthetic example — NOT authentic Neon history. */
 function syntheticAttributedExample() {
   const capacityRuleId = "synthetic:flat-basket:6.01(a)";
-  const gross = 100; // $M contractual flat basket
-  const used = 35; // SYNTHETIC_LABELED attributed draw
+  const gross = 100;
+  const used = 35;
   const expectedRemaining = 65;
 
-  // Approved attributed records alone do not establish completeness — demo
-  // includes an explicitly labeled SYNTHETIC completeness certificate.
   const utilization = resolveUtilization({
+    companyId: CO,
     capacityRuleId,
     asOf: AS_OF,
     records: [
@@ -43,17 +45,18 @@ function syntheticAttributedExample() {
         capacityRuleId,
         status: "ACTIVE",
         approvalState: "APPROVED",
-        sourceLabel: "SYNTHETIC_LABELED — Agent 3 demo fixture (not Neon contract_ledger_usages)",
+        sourceLabel: "SYNTHETIC_LABELED — Agent 3 demo fixture",
         authenticity: "SYNTHETIC_LABELED",
       }),
     ],
-    completenessCertificate: {
-      capacityRuleId,
-      asOf: AS_OF,
-      approvalState: "APPROVED",
-      sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE — not authentic Neon completeness authority",
+    executionMode: "DEMO_SYNTHETIC",
+    currentBindings: DEMO_BINDINGS,
+    completenessCertificate: syntheticCompletenessCertificate({
       kind: "VERIFIED_COMPLETE",
-    },
+      capacityRuleId,
+      companyId: CO,
+      asOf: AS_OF,
+    }),
   });
 
   const verified = computeVerifiedRemaining({
@@ -73,18 +76,14 @@ function syntheticAttributedExample() {
   });
 
   const views = buildSharedProductCapacityViews({
-    gross: {
-      amount: gross,
-      gateSatisfied: true,
-      modeled: true,
-      capacityRuleId,
-    },
+    gross: { amount: gross, gateSatisfied: true, modeled: true, capacityRuleId },
     utilization,
     governingConditions: verified.governingConditions,
     crossDocumentConstraints: verified.crossDocumentConstraints,
     sourceCitations: verified.sourceCitations,
     certificationStatus: "NOT_CERTIFIED",
   });
+  const gated = refuseAuthoritativeRemaining(verified);
 
   return {
     authenticity: "SYNTHETIC_LABELED" as const,
@@ -92,29 +91,26 @@ function syntheticAttributedExample() {
     formula: "FLAT_AMOUNT",
     grossContractualCapacity: gross,
     knownAttributedUtilization: used,
-    unknownUtilization: false,
-    supportedRemaining: verified.supportedRemaining,
+    demoEngineRemaining: verified.supportedRemaining,
     independentExpectedRemaining: expectedRemaining,
-    match: verified.supportedRemaining === expectedRemaining,
-    sharedPoolEffects: "none",
-    governingConditions: verified.governingConditions,
-    publicationLabel: verified.publicationLabel,
-    productConsistency: assertProductCapacityConsistency(views),
-    surfaces: {
+    demoMatch: verified.supportedRemaining === expectedRemaining,
+    productionAuthoritative: utilization.productionAuthoritative,
+    productSurfacesAuthoritativeRemaining: {
       POSITION: views.POSITION.supportedRemainingCapacity,
       SIMULATE: views.SIMULATE.supportedRemainingCapacity,
       ASK: views.ASK.supportedRemainingCapacity,
+      VERIFIED_EXECUTION: views.VERIFIED_EXECUTION.supportedRemainingCapacity,
     },
+    productConsistency: assertProductCapacityConsistency(views),
+    refuseAuthoritativeRemaining: gated,
     note: verified.note,
-    completenessCertificate: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
-    withoutCompletenessWouldSupportRemaining: false,
   };
 }
 
-/** Shows approved records without completeness → known util, no remaining claim. */
 function attributedWithoutCompletenessBlocker() {
   const capacityRuleId = "synthetic:incomplete-history";
   const utilization = resolveUtilization({
+    companyId: CO,
     capacityRuleId,
     asOf: AS_OF,
     records: [
@@ -130,6 +126,7 @@ function attributedWithoutCompletenessBlocker() {
         authenticity: "SYNTHETIC_LABELED",
       }),
     ],
+    executionMode: "PRODUCTION",
   });
   const verified = computeVerifiedRemaining({
     gross: { amount: 100, gateSatisfied: true, modeled: true, capacityRuleId },
@@ -139,9 +136,9 @@ function attributedWithoutCompletenessBlocker() {
     knowledge: utilization.knowledge,
     attributedAmount: utilization.attributedAmount,
     supportsRemainingClaim: utilization.supportsRemainingClaim,
+    productionAuthoritative: utilization.productionAuthoritative,
     supportedRemaining: verified.supportedRemaining,
     publicationLabel: verified.publicationLabel,
-    mayPublishAvailable: verified.mayPublishAvailable,
     note: utilization.note,
   };
 }
@@ -149,18 +146,15 @@ function attributedWithoutCompletenessBlocker() {
 function emptyLedgerIsUnknownExample() {
   const capacityRuleId = "authentic-blocker:permission-unattributed";
   const utilization = resolveUtilization({
+    companyId: CO,
     capacityRuleId,
     asOf: AS_OF,
     records: [],
     unattributedLegacyBasketPresent: true,
+    executionMode: "PRODUCTION",
   });
   const verified = computeVerifiedRemaining({
-    gross: {
-      amount: 100,
-      gateSatisfied: true,
-      modeled: true,
-      capacityRuleId,
-    },
+    gross: { amount: 100, gateSatisfied: true, modeled: true, capacityRuleId },
     utilization,
   });
   return {
@@ -176,7 +170,11 @@ function emptyLedgerIsUnknownExample() {
 }
 
 function adapterCoverageClassification() {
-  const cases: Array<{ formulaType: CovenantProvisionInput["formulaType"]; thresholdValue: number; params?: CovenantProvisionInput["params"] }> = [
+  const cases: Array<{
+    formulaType: CovenantProvisionInput["formulaType"];
+    thresholdValue: number;
+    params?: CovenantProvisionInput["params"];
+  }> = [
     { formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4.5, params: { debtBasis: "total" } },
     { formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2.0 },
     { formulaType: "RATIO_GATE", thresholdValue: 4.0, params: { debtBasis: "secured" } },
@@ -224,22 +222,31 @@ function main() {
     syntheticAttributedRemaining: syntheticAttributedExample(),
     attributedWithoutCompleteness: attributedWithoutCompletenessBlocker(),
     authenticUtilizationBlocker: emptyLedgerIsUnknownExample(),
-    realDataBlocker: {
-      status: "BLOCKED",
-      detail:
-        "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history. Separately: approved individual ledger records do not establish completeness of historical usage.",
-    },
     utilizationAuthority: {
+      issuers: ["COUNSEL_REVIEWER", "LEDGER_CUSTODIAN"],
+      neverProductionAuthoritative: ["SYSTEM_FIXTURE", "SYNTHETIC_LABELED"],
+      insufficientMethod: "REVIEWED_RECORDED_TRANSACTIONS_ONLY",
+      requiredEvidence: [
+        "companyId",
+        "operativeAgreementId",
+        "provisionOrBasketId",
+        "entityScopeKeys",
+        "currency",
+        "effectiveAsOf",
+        "coveragePeriodStart/End",
+        "binding fingerprints (document/ledger/financial/amendments/shared-capacity)",
+        "openingBalancePolicy / reclassificationPolicy / supersessionPolicy ≠ UNKNOWN",
+      ],
       principle:
-        "Approved individual ledger records establish known attributed usage only. Remaining = gross − usage requires an affirmative completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).",
+        "Remaining publishable only when capacity calculation AND validated completeness evidence are independently defensible. Synthetic certificates never authorize Position/Simulate/Ask/verified-execution remaining.",
       mergeBlocker:
-        "PR #234 remains blocked on authentic completeness authority even after typecheck remediation.",
+        "Authentic Neon completeness authority (counsel/custodian certificates bound to live document/ledger/financial epochs) is not yet populated — PR remains blocked for merge on that basis.",
     },
     phase4cAdapterCoverage: adapterCoverageClassification(),
     falseFavorableGuard: {
       emptyLedgerPublishesAvailable: false,
+      syntheticCertPublishesAuthoritativeRemaining: false,
       debtIntelligenceUsesResolver: true,
-      note: "Empty/unattributed ledger → CONDITIONAL/GROSS_ONLY, never COMPUTED remaining = gross",
     },
     costUsd: 0,
   };

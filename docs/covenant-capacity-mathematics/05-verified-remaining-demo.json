@@ -5,35 +5,37 @@
     "formula": "FLAT_AMOUNT",
     "grossContractualCapacity": 100,
     "knownAttributedUtilization": 35,
-    "unknownUtilization": false,
-    "supportedRemaining": 65,
+    "demoEngineRemaining": 65,
     "independentExpectedRemaining": 65,
-    "match": true,
-    "sharedPoolEffects": "none",
-    "governingConditions": [
-      "No Payment Conditions on this flat basket (demo)"
-    ],
-    "publicationLabel": "AVAILABLE",
+    "demoMatch": true,
+    "productionAuthoritative": false,
+    "productSurfacesAuthoritativeRemaining": {
+      "POSITION": null,
+      "SIMULATE": null,
+      "ASK": null,
+      "VERIFIED_EXECUTION": null
+    },
     "productConsistency": {
       "ok": true
     },
-    "surfaces": {
-      "POSITION": 65,
-      "SIMULATE": 65,
-      "ASK": 65
+    "refuseAuthoritativeRemaining": {
+      "remaining": null,
+      "mayPublishAvailable": false,
+      "publicationLabel": "GROSS_CONTRACTUAL",
+      "blockers": [
+        "authoritative remaining refused — completeness not production-authoritative (synthetic/demo certificates are not accepted on Position/Simulate/Ask/verified-execution)"
+      ]
     },
-    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED).",
-    "completenessCertificate": "SYNTHETIC_LABELED VERIFIED_COMPLETE",
-    "withoutCompletenessWouldSupportRemaining": false
+    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED)."
   },
   "attributedWithoutCompleteness": {
     "knowledge": "KNOWN_ATTRIBUTED",
     "attributedAmount": 10,
     "supportsRemainingClaim": false,
+    "productionAuthoritative": false,
     "supportedRemaining": null,
     "publicationLabel": "GROSS_CONTRACTUAL",
-    "mayPublishAvailable": false,
-    "note": "Known attributed utilization 10 USD (KNOWN_ATTRIBUTED), but completeness not certified — remaining capacity cannot be claimed."
+    "note": "Known attributed utilization 10 USD (KNOWN_ATTRIBUTED) — remaining requires validated completeness certificate."
   },
   "authenticUtilizationBlocker": {
     "authenticity": "AUTHENTIC_BLOCKER",
@@ -45,13 +47,29 @@
     "mayPublishAvailable": false,
     "note": "Legacy basket-family usage exists without rule attribution — gross capacity may be known; remaining after utilization cannot be claimed."
   },
-  "realDataBlocker": {
-    "status": "BLOCKED",
-    "detail": "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history. Separately: approved individual ledger records do not establish completeness of historical usage."
-  },
   "utilizationAuthority": {
-    "principle": "Approved individual ledger records establish known attributed usage only. Remaining = gross − usage requires an affirmative completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).",
-    "mergeBlocker": "PR #234 remains blocked on authentic completeness authority even after typecheck remediation."
+    "issuers": [
+      "COUNSEL_REVIEWER",
+      "LEDGER_CUSTODIAN"
+    ],
+    "neverProductionAuthoritative": [
+      "SYSTEM_FIXTURE",
+      "SYNTHETIC_LABELED"
+    ],
+    "insufficientMethod": "REVIEWED_RECORDED_TRANSACTIONS_ONLY",
+    "requiredEvidence": [
+      "companyId",
+      "operativeAgreementId",
+      "provisionOrBasketId",
+      "entityScopeKeys",
+      "currency",
+      "effectiveAsOf",
+      "coveragePeriodStart/End",
+      "binding fingerprints (document/ledger/financial/amendments/shared-capacity)",
+      "openingBalancePolicy / reclassificationPolicy / supersessionPolicy ≠ UNKNOWN"
+    ],
+    "principle": "Remaining publishable only when capacity calculation AND validated completeness evidence are independently defensible. Synthetic certificates never authorize Position/Simulate/Ask/verified-execution remaining.",
+    "mergeBlocker": "Authentic Neon completeness authority (counsel/custodian certificates bound to live document/ledger/financial epochs) is not yet populated — PR remains blocked for merge on that basis."
   },
   "phase4cAdapterCoverage": [
     {
@@ -97,8 +115,8 @@
   ],
   "falseFavorableGuard": {
     "emptyLedgerPublishesAvailable": false,
-    "debtIntelligenceUsesResolver": true,
-    "note": "Empty/unattributed ledger → CONDITIONAL/GROSS_ONLY, never COMPUTED remaining = gross"
+    "syntheticCertPublishesAuthoritativeRemaining": false,
+    "debtIntelligenceUsesResolver": true
   },
   "costUsd": 0
 }
