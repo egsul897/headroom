@@ -1,0 +1,1778 @@
+{
+  "generatedAt": "2026-10-09T01:33:02.604Z",
+  "packages": [
+    {
+      "schemaVersion": "product.legal-intelligence-path.v1",
+      "generatedAt": "2026-10-09T01:33:01.490Z",
+      "companyId": "conmed-demo",
+      "packageKey": "conmed-2025-credit-facility",
+      "pathExecuted": [
+        "conmed-demo/covenant-catalog",
+        "conmed-demo/package-facts",
+        "challenge-stage",
+        "verified-execution:SKIPPED_NO_IR_PACKAGE"
+      ],
+      "conclusions": [
+        {
+          "id": "fact-pkg-1",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document A (conmed-doc-a) is the BASE, currently-operative credit agreement: the Eighth Amended and Restated Credit Agreement, dated June 10, 2025, among CONMED Corporation (Parent Borrower), Foreign Subsidiary Borrowers, the Lenders, and JPMorgan Chase Bank, N.A. as Administrative Agent.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement title block"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-2",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document B (conmed-doc-b) is a full, freestanding GUARANTEE-AND-SECURITY document (Amended and Restated Guarantee and Collateral Agreement, dated June 10, 2025) that itself amends and restates a prior Guarantee and Collateral Agreement originally dated August 28, 2002 (amended 2003, 2006, 2013, 2016, and a Fifth Amendment dated July 16, 2021 - none of which are part of this package). Document B explicitly relates to Document A by name and exact execution date in its own recitals (\"the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025\").",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-b-guarantee-collateral-agreement recitals, WHEREAS clauses"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-3",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document C (conmed-doc-c) is the Second Amendment, dated August 1, 2022, to the SEVENTH Amended and Restated Credit Agreement, dated July 16, 2021 - a document that is NOT part of this package (the package deliberately omits it). Document C therefore amends a PRIOR, now-superseded base agreement, not Document A. This relationship is intentionally unresolvable from within this package alone (analogous to the LSB fixture's own Joinder-to-absent-Intercreditor-Agreement design) and any resolver that links Document C to Document A as if they were the same agreement is wrong.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-c-second-amendment-2022 preamble: \"SECOND AMENDMENT, dated as of August 1, 2022... to the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021\""
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-4",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document D (conmed-doc-d) is the First Omnibus Amendment and Increased Facility Activation Notice, dated May 27, 2026, and amends BOTH Document A (\"the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025\") AND Document B (\"the Amended and Restated Guarantee and Collateral Agreement, dated as of the June 10, 2025\") simultaneously - a genuine two-target amendment relationship, both targets present and identifiable in this package.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-d-first-omnibus-amendment-2026 preamble: \"to (a) the Eighth Amended and Restated Credit Agreement... and (b) the Amended and Restated Guarantee and Collateral Agreement...\""
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-5",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document D adds a new $450,000,000 Term A-2 incremental term loan facility via an Increased Facility Activation Notice mechanism under Section 2.28 of Document A, and is signed by Linvatec Nederland B.V. as a Foreign Subsidiary Borrower.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-d-first-omnibus-amendment-2026 recitals + Section 1/2"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-6",
+          "kind": "PACKAGE_FACT",
+          "statement": "Linvatec Nederland B.V. was ALREADY a Foreign Subsidiary Borrower as of Document C (August 2022) - it is not a brand-new entity being joined to the credit group for the first time in Document D (2026). Document D's real function for Linvatec Nederland B.V. is activating its participation in the NEW Term A-2 tranche, not a first-time joinder. (Self-correction: this package's own README speculatively described Document D as \"joinder-like new-party-activation content\" before this fact was confirmed by reading Document C in full during ground-truth authoring - the correction is recorded here, not silently made.)",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-c-second-amendment-2022 signature block: \"LINVATEC NEDERLAND B.V., as a Foreign Subsidiary Borrower\""
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-7",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document D's Section 4 (Reaffirmation) has each Loan Party reaffirm its guarantee and security obligations under Document B (the Guarantee and Collateral Agreement) and confirm the continued perfected priority of all Liens - naming 8 Guarantors by name (Aspen Laboratories, Inc.; SurgiQuest, Inc.; Linvatec Corporation; Viking Systems, Inc.; Buffalo Filter LLC; IN2BONES GLOBAL, INC.; IN2BONES USA, LLC; Bioerz, Inc.) in its signature block.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-d-first-omnibus-amendment-2026 Section 4 (Reaffirmation) + signature block"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "fact-pkg-8",
+          "kind": "PACKAGE_FACT",
+          "statement": "Document C makes three definitional amendments to Document A's precursor (the Seventh A&R) AND one direct amendment-and-restatement of the maintenance financial covenant at Section 7.1(b), replacing a flat 5.50x Consolidated Total Leverage Ratio cap with a stepped schedule ranging from 5.25x to 6.25x across specific 2021-2023 fiscal quarter ends. This is real, material, quantitative financial-covenant content - even though it targets a document (the Seventh A&R) that is not itself in this package, the NATURE of the amendment (a covenant-ratio step schedule) is exactly the kind of content Phase 2F's package-graph and discovery layers should recognize as material, regardless of whether the ultimate target document is in-package.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-c-second-amendment-2022 SECTION 2(a)-(b)"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Package fact — not a capacity determination"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.1",
+          "kind": "UNRESOLVED",
+          "statement": "7.1 FINANCIAL_COVENANTS: Four maintenance financial covenants: (a) Consolidated Senior Secured Leverage Ratio <= 3.75x (with a 0.50x Material-Acquisition step-up, max twice, 2-quarter gap); (b) Consolidated Total Leverage Ratio <= 5.50x (same step-up mechanic, capped at 6.00x); (c) Minimum Interest Coverage Ratio >= 2.75x; (d) a springing Liquidity covenant ($75M + Early Maturing Debt) that activates only within 91 days of Convertible Notes maturity and only if Early Maturing Debt exceeds $200M.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.1"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Consolidated Senior Secured Leverage Ratio",
+            "definition:Consolidated Total Leverage Ratio",
+            "definition:Interest Coverage Ratio",
+            "definition:Material Acquisition",
+            "definition:Convertible Notes",
+            "definition:Early Maturing Debt",
+            "definition:Liquidity"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2 INDEBTEDNESS: General prohibition on Indebtedness except 19 enumerated baskets (a)-(s), with a cross-basket reclassification right.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2"
+          ],
+          "missingInputs": [
+            "definition:Indebtedness"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-a",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(a) INDEBTEDNESS: Indebtedness of any Loan Party under any Loan Document.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(a)"
+          ],
+          "missingInputs": [
+            "definition:Loan Party",
+            "definition:Loan Document"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-b",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(b) INDEBTEDNESS: Intercompany debt: Parent Borrower to Subsidiary and Subsidiary Guarantor to Parent Borrower/other Subsidiary.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(b)"
+          ],
+          "missingInputs": [
+            "definition:Subsidiary Guarantor"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-c",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(c) INDEBTEDNESS: Indebtedness secured by Liens permitted under 7.3(g), conditioned on pro forma compliance with the 7.1 financial covenants.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(c)"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-d",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(d) INDEBTEDNESS: Finance Lease Obligations basket: greater of $50,000,000 and 3.0% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(d)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Finance Lease Obligations",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-e",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(e) INDEBTEDNESS: Existing Closing Date Indebtedness listed on Schedule 7.2(e), plus non-increasing refinancings.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(e)"
+          ],
+          "missingInputs": [
+            "Depends on a schedule or annex not fully modeled in this demo workspace."
+          ],
+          "limitations": [
+            "SCHEDULE_DEPENDENT_UNRESOLVED",
+            "Depends on a schedule or annex not fully modeled in this demo workspace."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-f",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(f) INDEBTEDNESS: Ordinary-course guarantees of Subsidiary Guarantor obligations.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(f)"
+          ],
+          "missingInputs": [
+            "definition:Subsidiary Guarantor"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-g",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(g) INDEBTEDNESS: Industrial revenue bonds basket: greater of $50,000,000 and 3.0% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(g)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-h",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(h) INDEBTEDNESS: Ordinary-course customer equipment-lease guarantees: greater of $50,000,000 and 3.0% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(h)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Equipment",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-i",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(i) INDEBTEDNESS: Ordinary-course letters of credit basket: greater of $50,000,000 and 3.0% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(i)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-j",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(j) INDEBTEDNESS: Non-Loan-Party-Subsidiary-to-non-Loan-Party-Subsidiary intercompany debt.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(j)"
+          ],
+          "missingInputs": [
+            "definition:Loan Party"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-k",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(k) INDEBTEDNESS: Foreign Subsidiary intercompany debt basket, no-default gated: greater of $150,000,000 and 10.0% of Consolidated Total Tangible Assets, evidenced by note and pledged under the Guarantee and Collateral Agreement.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(k)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Foreign Subsidiary",
+            "definition:Foreign Subsidiary Holdco",
+            "definition:Consolidated Total Tangible Assets",
+            "definition:Guarantee and Collateral Agreement"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-l",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(l) INDEBTEDNESS: Permitted Unsecured Indebtedness, no-default and pro-forma 7.1(b) compliance gated, plus guarantees thereof restricted to Loan Parties, unsecured only.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(l)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Unsecured Indebtedness"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-m",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(m) INDEBTEDNESS: Receivables Transfer Program indebtedness basket: greater of $125,000,000 and 7.5% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(m)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Receivables Transfer Program",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-n",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(n) INDEBTEDNESS: Permitted Subordinated Indebtedness, pro-forma 7.1(b) compliance gated, plus restricted, subordinated guarantees thereof.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(n)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Subordinated Indebtedness"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-o",
+          "kind": "UNRESOLVED",
+          "statement": "7.2(o) INDEBTEDNESS: General unsecured-debt basket: greater of $60,000,000 and 3.25% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(o)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-p",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(p) INDEBTEDNESS: Swap Agreement obligations basket (rate hedges up to aggregate Commitments, FX/commodity hedges, Bond Hedge/Warrant Transaction hedges).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(p)"
+          ],
+          "missingInputs": [
+            "definition:Swap Agreements",
+            "definition:Permitted Bond Hedge Transaction",
+            "definition:Permitted Warrant Transaction"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-r",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(r) INDEBTEDNESS: Convertible Notes and any Permitted Refinancing thereof.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(r)"
+          ],
+          "missingInputs": [
+            "definition:Convertible Notes",
+            "definition:Permitted Refinancing"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.2-s",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.2(s) INDEBTEDNESS: Acquisition-assumed debt, pro-forma 7.1(a)/(b) compliance gated, no-default gated, unsecured or purchase-money/finance-lease secured only.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.2(s)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Business Acquisition"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.3",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.3 LIENS: General prohibition on Liens except 16 enumerated baskets (a)-(p), with a cross-basket reclassification right.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.3"
+          ],
+          "missingInputs": [
+            "definition:Lien"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.3-h",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.3(h) LIENS: Liens created pursuant to the Security Documents (the operative Lien authorization for the secured facility itself).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.3(h)"
+          ],
+          "missingInputs": [
+            "definition:Security Documents"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.3-m",
+          "kind": "UNRESOLVED",
+          "statement": "7.3(m) LIENS: General Liens basket: greater of $50,000,000 and 3.0% of Consolidated Total Assets (by outstanding secured amount or FMV of assets).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.3(m)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.3-n",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.3(n) LIENS: Liens securing 7.2(e) Indebtedness specifically on the Parent Borrower's/Subsidiaries' Largo, Florida real property - a real-property-specific carve-out named to an actual location.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.3(n)"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.4",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.4 MERGERS_FUNDAMENTAL_CHANGES: Prohibition on merger/consolidation/liquidation/dissolution/Division/whole-business Disposition, except intra-group mergers, Successor Borrower merger mechanics (with reaffirmation-of-guarantee condition), asset dispositions to affiliates, and Foreign Subsidiary mergers with pledge-eligibility preservation conditions.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.4"
+          ],
+          "missingInputs": [
+            "definition:Division",
+            "definition:Successor Borrower",
+            "definition:Material Domestic Subsidiary",
+            "definition:Pledge Eligible Foreign Subsidiary"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.5",
+          "kind": "UNRESOLVED",
+          "statement": "7.5 ASSET_DISPOSITIONS: Prohibition on Property/business dispositions except 14 enumerated exceptions, including a general Asset Sale basket dual-gated by both a % of Consolidated Total Assets AND a % of Consolidated EBITDA (annual and 4-year rolling caps on both measures simultaneously) and a small-disposition de minimis basket (greater of $25,000,000 / 1.5% of Consolidated Total Assets).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.5"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Asset Sale",
+            "definition:Recovery Event",
+            "definition:Consolidated Total Assets",
+            "definition:Consolidated EBITDA"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.6 RESTRICTED_PAYMENTS: General prohibition on dividends/distributions/Capital Stock repurchases (\"Restricted Payments\") except 7 enumerated baskets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6"
+          ],
+          "missingInputs": [
+            "definition:Restricted Payments"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-b",
+          "kind": "UNRESOLVED",
+          "statement": "7.6(b) RESTRICTED_PAYMENTS: Employee stock plan repurchases + fractional-share cash payments, combined annual cap $25,000,000.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(b)"
+          ],
+          "missingInputs": [
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-c",
+          "kind": "UNRESOLVED",
+          "statement": "7.6(c) RESTRICTED_PAYMENTS: Rights-plan redemptions, cumulative $25,000,000 cap since the Closing Date.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(c)"
+          ],
+          "missingInputs": [
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed.",
+            "definition:Board"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-d",
+          "kind": "UNRESOLVED",
+          "statement": "7.6(d) RESTRICTED_PAYMENTS: General annual Restricted Payments basket: $40,000,000 per fiscal year, flat dollar cap, no ratio/default gate.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(d)"
+          ],
+          "missingInputs": [
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-e",
+          "kind": "UNRESOLVED",
+          "statement": "7.6(e) RESTRICTED_PAYMENTS: Ratio-gated UNLIMITED Restricted Payments basket: permitted so long as pro forma Consolidated Senior Secured Leverage Ratio <= 3.50x and no continuing/resulting Event of Default - the single most economically significant basket in this section (uncapped in dollar terms).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(e)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Senior Secured Leverage Ratio"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-f",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.6(f) RESTRICTED_PAYMENTS: Permitted Bond Hedge / Permitted Warrant Transaction premium and settlement payments.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(f)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Bond Hedge Transaction",
+            "definition:Permitted Warrant Transaction"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.6-g",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.6(g) RESTRICTED_PAYMENTS: Convertible-securities-linked payments/deliveries in stock (plus cash-in-lieu-of-fractional-shares) under Permitted Unsecured Indebtedness.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.6(g)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Unsecured Indebtedness"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.8 INVESTMENTS: General prohibition on Investments (advances, loans, capital contributions, securities purchases) except 13 enumerated baskets (a)-(m).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8"
+          ],
+          "missingInputs": [
+            "definition:Investments"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8-d",
+          "kind": "UNRESOLVED",
+          "statement": "7.8(d) INVESTMENTS: Employee/director loans and advances, $5,000,000 aggregate cap; key man insurance carved out of the limitation.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8(d)"
+          ],
+          "missingInputs": [
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8-i",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.8(i) INVESTMENTS: No-default-gated advances/loans to Foreign Subsidiaries/Foreign Subsidiary Holdcos, conditioned on Section 7.2(k) permissibility.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8(i)"
+          ],
+          "missingInputs": [
+            "definition:Foreign Subsidiary",
+            "definition:Foreign Subsidiary Holdco"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8-j",
+          "kind": "UNRESOLVED",
+          "statement": "7.8(j) INVESTMENTS: General basket ratio-gated at Consolidated Senior Secured Leverage Ratio 0.25x LOWER than the 7.1(a) covenant level (i.e. an incrementally tighter ratio test than the maintenance covenant itself) - genuinely uncapped in dollar terms if the ratio test is met, no-default gated, equity-investment sub-condition requiring Section 6.9 compliance.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8(j)"
+          ],
+          "missingInputs": [
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed.",
+            "definition:Consolidated Senior Secured Leverage Ratio"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Dollar/grower basket ceilings are cited from the agreement. Utilized and remaining capacity are unknown — no default zero usage is assumed."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8-k",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.8(k) INVESTMENTS: Permitted Business Acquisitions.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8(k)"
+          ],
+          "missingInputs": [
+            "definition:Permitted Business Acquisition"
+          ],
+          "limitations": [
+            "STRUCTURE_ONLY",
+            "Source-backed structural description only. Not executable legal capacity."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.8-l",
+          "kind": "UNRESOLVED",
+          "statement": "7.8(l) INVESTMENTS: General dollar-basket Investments, no-default gated: greater of $75,000,000 and 3.5% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.8(l)"
+          ],
+          "missingInputs": [
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "RATIO_GATED_UNRESOLVED",
+            "Basket structure and figures are source-backed. Remaining capacity cannot be quantified without Consolidated Total Assets / EBITDA / leverage inputs and utilization ledger."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.9",
+          "kind": "STRUCTURE_SOURCE_BACKED",
+          "statement": "7.9 SUBORDINATED_DEBT_PREPAYMENT: (a) Prohibition on voluntary prepayment of Permitted Subordinated/Unsecured Indebtedness unless no-default and pro forma 7.1 compliance; (b) prohibition on amending Permitted Subordinated Indebtedness in ways adverse to subordination/maturity/covenants; (c) prohibition on amending Permitted Unsecured Indebtedness in ways adverse to maturity/covenants; (d) charter-amendment restriction.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.9"
+          ],
+          "missingInputs": [
+            "definition:Permitted Subordinated Indebtedness",
+            "definition:Permitted Unsecured Indebtedness"
+          ],
+          "limitations": [
+            "PROHIBITION_STRUCTURE",
+            "General prohibition / covenant family structure from Article VII. Exceptions and baskets listed separately. Not a capacity number."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.10",
+          "kind": "UNRESOLVED",
+          "statement": "7.10 AFFILIATE_TRANSACTIONS: Fair-and-reasonable-terms requirement for affiliate transactions over $2,500,000, with ordinary-course/allocation/tax/receivables-program carve-outs.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.10"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Affiliate"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.11",
+          "kind": "UNRESOLVED",
+          "statement": "7.11 SALE_LEASEBACK: Sale-leaseback prohibition except assets with FMV under the greater of $75,000,000 and 3.5% of Consolidated Total Assets.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.11"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Consolidated Total Assets"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.12",
+          "kind": "UNRESOLVED",
+          "statement": "7.12 OTHER: Prohibition on changing fiscal-quarter/fiscal-year determination method.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.12"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.13",
+          "kind": "UNRESOLVED",
+          "statement": "7.13 LIENS: Negative-pledge-clause prohibition (agreements that would prohibit/limit Lien creation securing the Obligations), with Loan Document / purchase-money / Receivables-Program carve-outs.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.13"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Obligations",
+            "definition:Guarantee and Collateral Agreement"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.14",
+          "kind": "UNRESOLVED",
+          "statement": "7.14 SUBSIDIARY_RESTRICTIONS: Prohibition on consensual restrictions on Subsidiary dividends/loans/asset-transfers to the Parent Borrower/other Subsidiaries, with Loan Document / Disposition-agreement / Receivables-Program carve-outs.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.14"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.15",
+          "kind": "UNRESOLVED",
+          "statement": "7.15 OTHER: Lines-of-business restriction (existing/reasonably-related businesses only).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.15"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.16",
+          "kind": "UNRESOLVED",
+          "statement": "7.16 OTHER: Use-of-proceeds restriction: no Anti-Corruption Law violations, no Sanctioned Person/Country activity, no Sanctions violations.",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.16"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Anti-Corruption Laws",
+            "definition:Sanctioned Person",
+            "definition:Sanctioned Country",
+            "definition:Sanctions"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "cov-a-7.17",
+          "kind": "UNRESOLVED",
+          "statement": "7.17 OTHER: Outbound Investment Rules compliance covenant (a real, relatively novel 2024-era CFIUS-outbound-investment-regime covenant type - notable as a covenant family that likely did not appear in FWRG (2021) or LSB (2023) at all, since the U.S. outbound investment rules regime postdates both).",
+          "executability": "NOT_EXECUTABLE",
+          "evidenceCitations": [
+            "conmed-doc-a-eighth-ar-credit-agreement",
+            "7.17"
+          ],
+          "missingInputs": [
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted.",
+            "definition:Outbound Investment Rules",
+            "definition:Outbound Investment U.S. Person"
+          ],
+          "limitations": [
+            "NEEDS_FINANCIAL_INPUTS",
+            "Maintenance ratios are known from source text, but pass/fail requires an approved financial snapshot (leverage, coverage, liquidity). No numeric compliance is asserted."
+          ],
+          "promotedToLegalTruth": 0
+        }
+      ],
+      "challenges": [
+        {
+          "id": "challenge-1-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Consolidated Senior Secured Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-2-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Consolidated Total Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-3-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Interest Coverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-4-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Material Acquisition",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-5-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Convertible Notes",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-6-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Early Maturing Debt",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-7-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.1",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.1: definition:Liquidity",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-8-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2: definition:Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-9-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-a",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-a: definition:Loan Party",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-10-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-a",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-a: definition:Loan Document",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-11-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-b",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-b: definition:Subsidiary Guarantor",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-12-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-d",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-d: definition:Finance Lease Obligations",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-13-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-d",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-d: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-14-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-f",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-f: definition:Subsidiary Guarantor",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-15-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-g",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-g: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-16-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-h",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-h: definition:Equipment",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-17-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-h",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-h: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-18-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-i",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-i: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-19-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-j",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-j: definition:Loan Party",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-20-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-k",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-k: definition:Foreign Subsidiary",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-21-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-k",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-k: definition:Foreign Subsidiary Holdco",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-22-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-k",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-k: definition:Consolidated Total Tangible Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-23-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-k",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-k: definition:Guarantee and Collateral Agreement",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-24-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-l",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-l: definition:Permitted Unsecured Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-25-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-m",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-m: definition:Receivables Transfer Program",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-26-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-m",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-m: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-27-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-n",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-n: definition:Permitted Subordinated Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-28-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-o",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-o: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-29-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-p",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-p: definition:Swap Agreements",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-30-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-p",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-p: definition:Permitted Bond Hedge Transaction",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-31-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-p",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-p: definition:Permitted Warrant Transaction",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-32-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-r",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-r: definition:Convertible Notes",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-33-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-r",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-r: definition:Permitted Refinancing",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-34-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.2-s",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.2-s: definition:Permitted Business Acquisition",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-35-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.3",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.3: definition:Lien",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-36-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.3-h",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.3-h: definition:Security Documents",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-37-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.3-m",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.3-m: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-38-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.4",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.4: definition:Division",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-39-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.4",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.4: definition:Successor Borrower",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-40-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.4",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.4: definition:Material Domestic Subsidiary",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-41-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.4",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.4: definition:Pledge Eligible Foreign Subsidiary",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-42-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.5",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.5: definition:Asset Sale",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-43-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.5",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.5: definition:Recovery Event",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-44-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.5",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.5: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-45-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.5",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.5: definition:Consolidated EBITDA",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-46-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6: definition:Restricted Payments",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-47-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6-c",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6-c: definition:Board",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-48-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6-e",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6-e: definition:Consolidated Senior Secured Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-49-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6-f",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6-f: definition:Permitted Bond Hedge Transaction",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-50-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6-f",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6-f: definition:Permitted Warrant Transaction",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-51-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.6-g",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.6-g: definition:Permitted Unsecured Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-52-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8: definition:Investments",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-53-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8-i",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8-i: definition:Foreign Subsidiary",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-54-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8-i",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8-i: definition:Foreign Subsidiary Holdco",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-55-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8-j",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8-j: definition:Consolidated Senior Secured Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-56-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8-k",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8-k: definition:Permitted Business Acquisition",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-57-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.8-l",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.8-l: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-58-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.9",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.9: definition:Permitted Subordinated Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-59-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.9",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.9: definition:Permitted Unsecured Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-60-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.10",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.10: definition:Affiliate",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-61-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.11",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.11: definition:Consolidated Total Assets",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-62-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.13",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.13: definition:Obligations",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-63-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.13",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.13: definition:Guarantee and Collateral Agreement",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-64-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.16",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.16: definition:Anti-Corruption Laws",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-65-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.16",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.16: definition:Sanctioned Person",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-66-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.16",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.16: definition:Sanctioned Country",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-67-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.16",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.16: definition:Sanctions",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-68-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.17",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.17: definition:Outbound Investment Rules",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-69-def",
+          "severity": "MATERIAL",
+          "targetConclusionId": "cov-a-7.17",
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Unresolved definition dependency on cov-a-7.17: definition:Outbound Investment U.S. Person",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-70-amd",
+          "severity": "BLOCKER",
+          "targetConclusionId": null,
+          "category": "AMENDMENT_OUT_OF_PACKAGE",
+          "statement": "Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.",
+          "invalidatesExecutability": true
+        },
+        {
+          "id": "challenge-71-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Consolidated Senior Secured Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-72-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Consolidated Total Leverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-73-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Interest Coverage Ratio",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-74-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Material Acquisition",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-75-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Convertible Notes",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-76-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Early Maturing Debt",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-77-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Liquidity",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-78-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Indebtedness",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-79-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Loan Party",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-80-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Loan Document",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-81-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Subsidiary Guarantor",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-82-term",
+          "severity": "INFO",
+          "targetConclusionId": null,
+          "category": "UNRESOLVED_DEFINITION",
+          "statement": "Defined term required by covenant rows but not resolved for execution: Finance Lease Obligations",
+          "invalidatesExecutability": false
+        },
+        {
+          "id": "challenge-83-entity",
+          "severity": "MATERIAL",
+          "targetConclusionId": null,
+          "category": "ENTITY_SCOPE",
+          "statement": "Guarantor / restricted-subsidiary entity scope is not fully resolved for capacity attribution.",
+          "invalidatesExecutability": true
+        },
+        {
+          "id": "challenge-84-no-ir",
+          "severity": "BLOCKER",
+          "targetConclusionId": null,
+          "category": "MISSING_IR",
+          "statement": "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE.",
+          "invalidatesExecutability": true
+        }
+      ],
+      "survivingExecutableConclusions": 0,
+      "blockedReasons": [
+        "Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.",
+        "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE."
+      ],
+      "metrics": {
+        "covenantRowsExamined": 48,
+        "packageFacts": 8,
+        "capacityExecuted": 0,
+        "unresolved": 26
+      }
+    },
+    {
+      "schemaVersion": "product.legal-intelligence-path.v1",
+      "generatedAt": "2026-10-09T01:33:02.604Z",
+      "companyId": "coherent",
+      "packageKey": "coherent-evaluation-seed",
+      "pathExecuted": [
+        "dashboard-service/getCompanyDashboard",
+        "covenant-engine/computeCovenantPosition",
+        "challenge-stage"
+      ],
+      "conclusions": [
+        {
+          "id": "coherent-secured-capacity",
+          "kind": "CAPACITY_EXECUTED",
+          "statement": "Secured remaining capacity evaluated by legacy covenant engine: 5129",
+          "executability": "LEGACY_ENGINE",
+          "evidenceCitations": [
+            "coherent seed capacityFormulas",
+            "financialSnapshot"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Legacy engine path — not Phase-4 verified-execution REQUIRE",
+            "Seed formulas are evaluation fixtures, not authentic CONMED IR"
+          ],
+          "promotedToLegalTruth": 0
+        },
+        {
+          "id": "coherent-unsecured-capacity",
+          "kind": "CAPACITY_EXECUTED",
+          "statement": "Unsecured remaining capacity evaluated by legacy covenant engine: 5129",
+          "executability": "LEGACY_ENGINE",
+          "evidenceCitations": [
+            "coherent seed capacityFormulas",
+            "financialSnapshot"
+          ],
+          "missingInputs": [],
+          "limitations": [
+            "Legacy engine path — not Phase-4 verified-execution REQUIRE"
+          ],
+          "promotedToLegalTruth": 0
+        }
+      ],
+      "challenges": [],
+      "survivingExecutableConclusions": 2,
+      "blockedReasons": [],
+      "metrics": {
+        "covenantRowsExamined": 2,
+        "packageFacts": 0,
+        "capacityExecuted": 2,
+        "unresolved": 0
+      }
+    }
+  ]
+}

@@ -3,32 +3,31 @@ import { Card, Chip } from "@/components/ui";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { fmtM } from "@/lib/format";
 import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { listConmedCovenantExplorerRows } from "@/lib/product/conmed-demo/covenant-catalog";
+import { runPackageLegalPath } from "@/lib/product/legal-intelligence/run-package-path";
 
 export const metadata = { title: "Headroom — Position" };
 
 /**
  * Position — debt / covenant capacity workspace.
  * Uses the shared capacity engine via getCompanyDashboard. Never hardcodes issuer arithmetic.
- * For CONMED demo (no capacity formulas / financials), shows honest unresolved state.
+ * For CONMED demo: integrated legal path + challenge stage (fail-closed).
  */
 export default async function PositionPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
 
   if (isConmed) {
-    const rows = listConmedCovenantExplorerRows();
-    const needsInputs = rows.filter((r) =>
-      ["NEEDS_FINANCIAL_INPUTS", "RATIO_GATED_UNRESOLVED"].includes(r.capacityStatus),
-    ).length;
-    const structureOnly = rows.length - needsInputs;
+    const path = await runPackageLegalPath(CONMED_DEMO_COMPANY_ID);
+    const blockers = path.challenges.filter((c) => c.severity === "BLOCKER");
+    const facts = path.conclusions.filter((c) => c.kind === "PACKAGE_FACT");
 
     return (
       <div className="stack">
         <Card>
           <div className="card-title">Position</div>
           <div className="card-subtitle">
-            CONMED authentic package — capacity is <strong>not determinable</strong> in this workspace.
+            CONMED authentic package — integrated legal path + autonomous challenge. Capacity is{" "}
+            <strong>not determinable</strong>.
           </div>
           <div className="row" style={{ marginTop: 12 }}>
             <div className="row-label">Numeric capacity</div>
@@ -37,15 +36,19 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
             </div>
           </div>
           <div className="row">
-            <div className="row-label">Why</div>
-            <div className="row-value">
-              No approved financial snapshot, utilization ledger, or capacity IR is loaded. Basket ceilings and ratio gates are visible in Covenants as source-backed structure only.
+            <div className="row-label">Executable conclusions surviving challenge</div>
+            <div className="row-value">{path.survivingExecutableConclusions}</div>
+          </div>
+          <div className="row">
+            <div className="row-label">Path</div>
+            <div className="row-value" style={{ fontSize: 12 }}>
+              {path.pathExecuted.join(" → ")}
             </div>
           </div>
           <div className="row">
-            <div className="row-label">Covenant rows</div>
+            <div className="row-label">Covenant rows examined</div>
             <div className="row-value">
-              {rows.length} explored · {needsInputs} need financial inputs · {structureOnly} structure/prohibition
+              {path.metrics.covenantRowsExamined} · unresolved {path.metrics.unresolved}
             </div>
           </div>
           <div className="row" style={{ borderBottom: "none" }}>
@@ -68,20 +71,29 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
         </Card>
 
         <Card>
-          <div className="card-title">Debt instruments (package facts)</div>
-          <div className="card-subtitle">From authentic source — not a live facility register.</div>
-          <div className="row">
-            <div className="row-label">Base facility</div>
-            <div className="row-value">Eighth A&R Credit Agreement (Doc A) — JPMorgan agent</div>
+          <div className="card-title">Challenge findings (blockers)</div>
+          <div className="card-subtitle">
+            Autonomous challenge against proposed conclusions — not a research memo.
           </div>
-          <div className="row">
-            <div className="row-label">Incremental</div>
-            <div className="row-value">$450,000,000 Term A-2 via Doc D (source-backed; not modeled as drawable capacity here)</div>
-          </div>
-          <div className="row" style={{ borderBottom: "none" }}>
-            <div className="row-label">Guarantee / collateral</div>
-            <div className="row-value">Doc B — reaffirmed in Doc D</div>
-          </div>
+          {blockers.slice(0, 8).map((b) => (
+            <div className="row" key={b.id}>
+              <div>
+                <div className="row-label">{b.category}</div>
+                <div className="row-note">{b.statement}</div>
+              </div>
+              <Chip tone="tight">BLOCKER</Chip>
+            </div>
+          ))}
+        </Card>
+
+        <Card>
+          <div className="card-title">Package facts (source-backed)</div>
+          <div className="card-subtitle">Not capacity determinations.</div>
+          {facts.slice(0, 6).map((f) => (
+            <div className="row" key={f.id}>
+              <div className="row-note">{f.statement}</div>
+            </div>
+          ))}
         </Card>
       </div>
     );

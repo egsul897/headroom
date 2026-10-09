@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-10-09T01:33:02.604Z",
+  "packages": [
+    {
+      "companyId": "conmed-demo",
+      "packageKey": "conmed-2025-credit-facility",
+      "pathExecuted": [
+        "conmed-demo/covenant-catalog",
+        "conmed-demo/package-facts",
+        "challenge-stage",
+        "verified-execution:SKIPPED_NO_IR_PACKAGE"
+      ],
+      "conclusions": 56,
+      "challenges": 84,
+      "blockerChallenges": 2,
+      "survivingExecutableConclusions": 0,
+      "metrics": {
+        "covenantRowsExamined": 48,
+        "packageFacts": 8,
+        "capacityExecuted": 0,
+        "unresolved": 26
+      },
+      "blockedReasons": [
+        "Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.",
+        "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE."
+      ]
+    },
+    {
+      "companyId": "coherent",
+      "packageKey": "coherent-evaluation-seed",
+      "pathExecuted": [
+        "dashboard-service/getCompanyDashboard",
+        "covenant-engine/computeCovenantPosition",
+        "challenge-stage"
+      ],
+      "conclusions": 2,
+      "challenges": 0,
+      "blockerChallenges": 0,
+      "survivingExecutableConclusions": 2,
+      "metrics": {
+        "covenantRowsExamined": 2,
+        "packageFacts": 0,
+        "capacityExecuted": 2,
+        "unresolved": 0
+      },
+      "blockedReasons": []
+    }
+  ]
+}
