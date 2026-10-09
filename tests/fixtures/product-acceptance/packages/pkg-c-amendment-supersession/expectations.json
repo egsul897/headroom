@@ -307,6 +307,11 @@
       "mustContain": [
         "owed to the Borrower by any Subsidiary"
       ],
+      "entityScope": [
+        "BORROWER",
+        "ANY_SUBSIDIARY"
+      ],
+      "entityScopeNote": "Clause names Indebtedness owed by any Subsidiary to the Borrower; faithful scope includes both named classes (default BORROWER-only under-includes Subsidiary).",
       "conditions": [],
       "dependsOnTerms": [
         "Subsidiary"

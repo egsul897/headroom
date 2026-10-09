@@ -110,6 +110,10 @@ describe("section operative text follows clause amendments", () => {
     expect(section.text).not.toContain("$15,000,000");
     expect(section.text).toContain("$5,000,000");
     expect(section.text).toContain("Loan Documents");
+    // Trailing whitespace from the replaced base clause must survive so the next
+    // enumerator stays a boundary (never `...incurrence;(c)...`).
+    expect(section.text).not.toMatch(/continuing;\(c\)/);
+    expect(section.text).toMatch(/continuing;\s+\(c\)/);
 
     const clause = source(index, state, "7.01(b)");
     expect(clause.text).toContain("$40,000,000");
@@ -216,6 +220,43 @@ describe("section operative text follows clause amendments", () => {
     expect(clause.origin).toBe("OPERATIVE_STATE_CURRENT_TEXT");
     expect(clause.text).toContain("$10,000,000");
     expect(clause.text).not.toContain("$25,000,000");
+  });
+
+  it("IPV-04: context retrieval reads Default from amendment-restated 7.01(b) operative text", async () => {
+    const documents = [
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment(
+        "amendment-1",
+        "Amendment No. 1",
+        "March 1, 2026",
+        `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: ${REPLACEMENT}`,
+      ),
+    ];
+    const { state, index, result } = await compile(documents);
+    void result;
+    const clause = source(index, state, "7.01(b)");
+    expect(clause.origin).toBe("OPERATIVE_STATE_CURRENT_TEXT");
+    expect(clause.text).toMatch(/no Default has occurred/);
+    expect(clause.text).not.toContain("$25,000,000");
+
+    const exactTermsByDocument = new Map<string, Map<string, string>>();
+    const termMap = new Map<string, string>();
+    for (const def of index.allDefinitions()) {
+      if (def.documentId !== "credit-agreement") continue;
+      termMap.set(def.normalizedTerm, def.exactTerm);
+    }
+    exactTermsByDocument.set("credit-agreement", termMap);
+
+    const bundle = buildCovenantContextBundle(
+      { candidate: candidate(index, "7.01(b)"), packageKey: "pkg", companyId: "co", instrumentKey: state.instrumentKey },
+      { index, packageGraph: null, exactTermsByDocument, operativeState: state },
+    );
+    const defTerms = bundle.items
+      .filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY")
+      .map((i) => (i.normalizedRef ?? "").toLowerCase());
+    expect(defTerms).toContain("default");
+    expect(defTerms).toContain("indebtedness");
+    expect(bundle.items.some((i) => /Event of Default/i.test(i.excerptText))).toBe(true);
   });
 
   it("applies the outer clause replacement once when a nested clause was also amended", () => {
@@ -379,7 +420,9 @@ SECTION 2. Effectiveness. This letter shall become effective on March 1, 2026.
 
     const clauseView = state.provisions.find((p) => p.sectionRef === "7.01(b)");
     expect(clauseView?.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
-    expect(clauseView?.currentText).toContain("$25,000,000");
+    expect(clauseView?.currentText).toContain("$10,000,000");
+    expect(clauseView?.currentText).not.toContain("$25,000,000");
+    expect(clauseView?.currentSourceDocumentId).toBe("side-letter");
     expect(clauseView?.unresolvedIssues.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
     expect(clauseView?.unresolvedIssues.join(" ")).toContain("documentId=side-letter");
 
@@ -393,9 +436,10 @@ SECTION 2. Effectiveness. This letter shall become effective on March 1, 2026.
     expect(section.withheldReasons.join(" ")).not.toMatch(/\$10,000,000|shall not incur/);
 
     const clause = source(index, state, "7.01(b)");
-    expect(clause.withheld).toBe(true);
-    expect(clause.withheldReasons.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
-    expect(clause.withheldReasons.join(" ")).toContain("documentId=side-letter");
+    // Derived superseding capacity may be served as operative text, but never as
+    // current truth while the override remains REVIEW_REQUIRED / unclassified.
+    expect(clause.text).toContain("$10,000,000");
+    expect(clause.text).not.toContain("$25,000,000");
 
     const bundle = buildCovenantContextBundle(
       { candidate: candidate(index, "7.01"), packageKey: "pkg", companyId: "co", instrumentKey: state.instrumentKey },

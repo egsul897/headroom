@@ -23,8 +23,8 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
-import { isAdministrativeTerm, retrieveDirectDefinitions } from "./definition-graph";
-import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
+import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions } from "./definition-graph";
+import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText, retrieveInboundOverrideReferences } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
 import { computeBundleId, computeContentIdentity } from "./identity";
@@ -176,11 +176,11 @@ function retrieveCrossDocumentDefinitionFallback(
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
     const normalized = phrase.toLowerCase();
-    if (ADMINISTRATIVE_NESTED_DENYLIST.has(normalized)) continue;
-    // Same-document exact match OR plural/singular of a declared term (IPV-09 /
-    // IPV-15): "Restricted Payments" must not MEDIUM-refuse when "Restricted
-    // Payment" is already declared/retrieved.
-    if (knownTermCoversPhrase(phrase, sameDocTerms)) continue;
+    if (ADMINISTRATIVE_NESTED_DENYLIST.has(normalized) || isAdministrativeTerm(normalized)) continue;
+    // Same-document exact match OR IPV-09 plural/inflected surface form of a declared term —
+    // already handled by findKnownTermMentions; do not re-report as undefined.
+    // Prefer phraseMatchesDeclaredTerm (shared with definition-graph); keep knownTermCoversPhrase as local mirror.
+    if (phraseMatchesDeclaredTerm(phrase, sameDocTerms) || knownTermCoversPhrase(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
       const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
@@ -198,12 +198,17 @@ function retrieveCrossDocumentDefinitionFallback(
       state.seenUnresolvedTermPhrases.add(seenKey);
       // Administrative boilerplate (Closing Date, etc.) and same-document section
       // captions ("Restricted Payments" naming SECTION 7.06) are not undefined
-      // defined-term failures — disclose LOW so definition-mediated shared
-      // capacity (IPV-15) is not refused for covenant-category wording.
+      // defined-term failures — disclose LOW so IPV-10 / IPV-15 cannot refuse on
+      // boilerplate or covenant-category wording.
+      // Match only the SECTION/ARTICLE heading caption (e.g. "Restricted Payments"
+      // naming 7.06), never definition bodies under Section 1.01 — otherwise nested
+      // undefined Consolidated* terms inside a ratio definition are demoted to LOW.
       const sectionCaption = access.index.allNodes().some((n) => {
         if (n.documentId !== documentId || (n.nodeType !== "SECTION" && n.nodeType !== "ARTICLE")) return false;
         const own = access.index.getNodeText(n.nodeId, "OWN");
-        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(own);
+        const headingLine = (own.split(/\n/)[0] ?? own).trim();
+        const caption = headingLine.replace(/^(?:SECTION|ARTICLE)\s+\S+\s+/i, "").split(".")[0] ?? "";
+        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption);
       });
       let unresolvedSeverity: "LOW" | "MEDIUM" = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
       if (isAdministrativeTerm(normalized) || sectionCaption) unresolvedSeverity = "LOW";
@@ -215,6 +220,8 @@ function retrieveCrossDocumentDefinitionFallback(
         reason:
           unresolvedSeverity === "MEDIUM"
             ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            : isAdministrativeTerm(normalized)
+              ? "Administrative/boilerplate Title-Case phrase is not declared; disclosed at LOW severity (does not materially affect covenant analysis)."
             : scanMode === "NESTED"
               ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10 disclosure; LOW severity — not high-confidence financial/covenant morphology)."
               : "Not declared in this document, and no related document in the package declares it either.",
@@ -266,13 +273,19 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  // IPV-04: scan definitions against the operative text actually served
-  // (amended / spliced), not the stale base DESCENDANTS span — otherwise
-  // terms introduced only by an amendment (e.g. "Default" in a restated
-  // proviso) are never retrieved.
-  const operativeText = operativeItem.excerptText;
+  // IPV-04: definition / undeclared-term scans must use the same amendment-aware
+  // operative text already bound on OPERATIVE_SOURCE (resolveOperativeSource),
+  // not the base structural DESCENDANTS span. Otherwise a restated proviso that
+  // introduces terms like "Default" is invisible to retrieveDirectDefinitions
+  // while the auditor correctly observes those terms in the operative text.
+  const operativeText =
+    operativeItem.excerptText.trim().length > 0
+      ? operativeItem.excerptText
+      : access.index.getNodeText(primaryNodeId, "DESCENDANTS");
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
+  // INV-04 / main: inbound notwithstanding + article-level override leads.
+  retrieveInboundOverrideReferences(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
   // Definition-fallback and reference-detection-within-definitions run

@@ -220,6 +220,10 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     }
     if (!definitionTargeted && e.status === "CURRENT") {
       if (applied > 0) problems.push(`${applied} effect(s) applied at ${e.asOfDate} although none expected`);
+      // IPV-16: a CURRENT manifest row must not hold when an unclassified
+      // override leaves the provision REVIEW_REQUIRED — that is the kill signal
+      // for side-letter mutants (MUT-08/12/13) without inventing override dollars.
+      if (provision?.status === "OPERATIVE_STATE_REVIEW_REQUIRED") problems.push(`provision ${provision.status} while manifest expects CURRENT`);
       if (supStatus !== "N/A" && supStatus !== "CURRENT_OPERATIVE") problems.push(`supersession status ${supStatus}`);
       for (const t of e.mustContain) if (!textCarries(current ?? baseText, t)) problems.push(`operative text lacks "${t}"`);
       for (const t of e.mustNotContain) if (textCarries(current ?? baseText, t)) problems.push(`operative text contains forbidden "${t}"`);
@@ -249,13 +253,13 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
       // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
       const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
-      // IPV-16 (adjudicated): an override that attaches as UNKNOWN_CHANGE /
-      // REVIEW_REQUIRED with last authoritative text preserved is the correct
-      // fail-closed outcome when the interpreter cannot derive replacement
-      // text. Manifest may still name the intended superseding dollars; the
-      // unacceptable outcome is RESOLVED + base text as current permission.
-      if (attachedUnresolved && !stateClaimsResolved) {
-        L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed REVIEW_REQUIRED with override attached from ${e.supersededBy}; last authoritative text preserved (${detail})`);
+      // IPV-16 / INV-16b: when superseding capacity could not be safely derived,
+      // an attached unresolved override with last authoritative text preserved
+      // is the intended fail-closed outcome. When mustContain is already present
+      // on currentText (safe derivation), fall through to the normal checks.
+      const supersedingDerived = !!current && e.mustContain.every((t) => textCarries(current, t));
+      if (attachedUnresolved && e.status === "SUPERSEDED" && e.supersededBy && !supersedingDerived) {
+        L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed override attached (${e.supersededBy}); provision REVIEW_REQUIRED with last authoritative text preserved; superseding capacity not derived (${detail})`);
         continue;
       }
       const falsePermission = !attachedUnresolved && e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));

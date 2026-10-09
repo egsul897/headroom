@@ -194,6 +194,23 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
     }));
   }
 
+  // IPV-16: modification-candidates also emit notwithstanding UNKNOWN_CHANGE.
+  // Prefer the caption-scoped UNCLASSIFIED_OVERRIDE effect (fail-closed, no
+  // invented dollars, never sent to the interpreter) over the competing
+  // candidate for the same amendment document + section.
+  const overrideKeys = new Set(
+    results
+      .filter((e) => e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:"))
+      .map((e) => `${e.amendmentDocumentId}\0${e.target.targetSectionRef ?? ""}`),
+  );
+  if (overrideKeys.size > 0) {
+    return results.filter((e) => {
+      if (e.unresolvedReason?.startsWith("UNCLASSIFIED_OVERRIDE:")) return true;
+      if (e.operation !== "UNKNOWN_CHANGE") return true;
+      return !overrideKeys.has(`${e.amendmentDocumentId}\0${e.target.targetSectionRef ?? ""}`);
+    });
+  }
+
   return results;
 }
 

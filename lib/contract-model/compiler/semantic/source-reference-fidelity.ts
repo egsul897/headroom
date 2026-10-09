@@ -126,6 +126,7 @@ export function statedReferencesFor(input: Omit<ClassifyReferencesInput, "emitte
   const seen = new Set(fromOperative.map((r) => r.normalized ?? norm(r.raw)));
   const fromDefs: StatedSourceReference[] = [];
   for (const text of input.dependentDefinitionTexts ?? []) {
+    if (!text || text.trim().length === 0) continue;
     for (const r of statedSectionReferencesInText(text, opts)) {
       const key = r.normalized ?? norm(r.raw);
       if (seen.has(key)) continue;

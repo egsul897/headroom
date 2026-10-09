@@ -35,19 +35,26 @@ import { hashParts } from "../hashing";
 // words ("...to read as follows: Section 6.01 Indebtedness. ..."), which
 // would otherwise make a lazy capture terminate immediately after the
 // colon and capture nothing.
-const REPLACEMENT_TEXT_CAPTURE_RE = /(?:amended and restated in its entirety to read as follows|amended by adding the following|amended and restated to read in its entirety as follows)\s*:?\s*["“]?([\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)/;
+const REPLACEMENT_TEXT_CAPTURE_RE = /(?:amended and restated in its entirety to read as follows|amended by adding the following|amended and restated to read in its entirety as follows)\s*:?\s*(["“][\s\S]{1,3000}?["”]|[\s\S]{1,3000}?)(?:\n\s*\n|$)/;
 
 /** Optional "in/under Section N / set forth|contained|appearing|provided …" between term and verb (IPV-19 F1/F3). */
 const DEF_SECTION_LOCUS = String.raw`(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?`;
 const DEFINITION_ADD_RE = new RegExp(String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?added`, "i");
 const DEFINITION_DELETE_RE = new RegExp(String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?deleted`, "i");
-// IPV-19: opening quote of the restated definition body stays inside capture group 2.
+// IPV-19: prefer a fully quoted restatement capture; restoreRestatedDefinitionLeadingQuote repairs a stripped opener.
 const DEFINITION_REPLACE_RE = new RegExp(
-  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)`,
+  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+${DEF_SECTION_LOCUS}is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?["”]|[\s\S]{1,3000}?)(?:\n\s*\n|$)`,
   "i",
 );
 /** F2: "Section 1.01 … amended by amending and restating the definition of X … to read as follows: …" */
 const DEFINITION_REPLACE_VIA_SECTION_RE = /amended by amending and restating the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?[\s\S]{0,80}?to read(?: in its entirety)? as follows\s*:?\s*(["“][\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)/i;
+
+/** Normalize captured restatement text: prefer the quoted form so definition splice keeps `"Term" means…`. */
+function capturedRestatementText(raw: string): string {
+  const text = raw.trim();
+  if ((text.startsWith('"') || text.startsWith("“")) && (text.endsWith('"') || text.endsWith("”"))) return text;
+  return text;
+}
 
 const REAFFIRMATION_RE = /\bhereby\s+reaffirms?\b.{0,80}\b(?:guarantee|guaranty|obligations?|liability)\b/i;
 const NO_TEXTUAL_CHANGE_RE = /\b(?:remains?|shall remain)\s+(?:in full force and effect\s+)?unchanged\b|for the avoidance of doubt.{0,120}\bno (?:other )?(?:amendment|change|modification)\b/i;
@@ -56,6 +63,20 @@ function excerpt(text: string, charStart: number, matchLength: number): string {
   const start = Math.max(0, charStart - 40);
   const end = Math.min(text.length, charStart + matchLength + 80);
   return text.slice(start, end).replace(/\s+/g, " ").trim();
+}
+
+/**
+ * DEFINITION_REPLACE_RE's optional opening-quote delimiter can consume the
+ * leading `"` of a restated `"Term" means …` block. Without that quote, the
+ * section-1.01 splice produces `Term" means` and every downstream matcher
+ * that looks for `"Term" means` reports the definition as missing (IPV-19).
+ */
+function restoreRestatedDefinitionLeadingQuote(captured: string): string {
+  const text = captured.trim();
+  if (text.startsWith('"') || text.startsWith("\u201C")) return text;
+  // Term name closed by a quote then "means" — the opening quote was eaten as delimiter.
+  if (/^[A-Z][^"\n]{0,80}"\s+means\b/i.test(text)) return `"${text}`;
+  return text;
 }
 
 /** Refines a coarse Phase-2C ModificationCandidate into the finer AmendmentOperation taxonomy + captures verbatim text where the amendment's own source explicitly supplies it. */
@@ -67,18 +88,13 @@ function refineOperationAndText(mc: ModificationCandidate, amendmentText: string
     if (DEFINITION_DELETE_RE.test(region)) return { operation: "DELETE_DEFINITION", newText: null };
     const window = amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined);
     const replaceMatch = DEFINITION_REPLACE_RE.exec(window) ?? DEFINITION_REPLACE_VIA_SECTION_RE.exec(window);
-    if (replaceMatch) {
-      const captured = replaceMatch[2]!.trim();
-      // Belt-and-suspenders if an optional opener still ate the quote.
-      const newText = !/^["“]/.test(captured) && /^[A-Z][\s\S]*["”']\s*means\b/i.test(captured) ? `"${captured}` : captured;
-      return { operation: "REPLACE_DEFINITION", newText };
-    }
+    if (replaceMatch) return { operation: "REPLACE_DEFINITION", newText: restoreRestatedDefinitionLeadingQuote(capturedRestatementText(replaceMatch[2]!)) };
     return { operation: "MODIFY_DEFINITION", newText: null };
   }
 
   if (mc.operation === "RESTATE") {
     const captureMatch = REPLACEMENT_TEXT_CAPTURE_RE.exec(amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined));
-    return { operation: "REPLACE_TEXT", newText: captureMatch ? captureMatch[1]!.trim() : null };
+    return { operation: "REPLACE_TEXT", newText: captureMatch ? restoreRestatedDefinitionLeadingQuote(capturedRestatementText(captureMatch[1]!)) : null };
   }
   if (mc.operation === "ADD") {
     const captureMatch = REPLACEMENT_TEXT_CAPTURE_RE.exec(amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined));

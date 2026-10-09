@@ -260,3 +260,66 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
     }
   }
 }
+
+/**
+ * INV-04: reverse-reference lookup for override provisions that name this
+ * candidate's section or enclosing Article ("Notwithstanding anything to the
+ * contrary in Article VII…"). Outbound traversal never sees them; the index
+ * already records inbound edges via findReferencesTo.
+ */
+const INBOUND_OVERRIDE_SIGNAL = /\bnotwithstanding\b/i;
+
+export function retrieveInboundOverrideReferences(
+  state: RetrievalState,
+  index: StructuralIndex,
+  documentId: string,
+  nodeId: string,
+  parentItemId: string,
+): void {
+  const candidate = index.getNodeById(nodeId);
+  if (!candidate) return;
+  const targets = [candidate, ...index.getAncestors(nodeId)].filter((n) => n.nodeType === "SECTION" || n.nodeType === "ARTICLE" || n.nodeId === nodeId);
+  const seenSourceSections = new Set<string>();
+  for (const target of targets) {
+    for (const ref of index.findReferencesTo(target.nodeId)) {
+      if (!ref.sourceNodeId) continue;
+      if (ref.sourceNodeId === nodeId) continue;
+      if (index.getAncestors(ref.sourceNodeId).some((a) => a.nodeId === nodeId)) continue;
+      const sourceSection =
+        index.getNodeById(ref.sourceNodeId)?.nodeType === "SECTION"
+          ? index.getNodeById(ref.sourceNodeId)!
+          : index.getAncestors(ref.sourceNodeId).find((n) => n.nodeType === "SECTION") ?? index.getNodeById(ref.sourceNodeId);
+      if (!sourceSection || sourceSection.documentId !== documentId) continue;
+      if (seenSourceSections.has(sourceSection.nodeId)) continue;
+      // Same-section siblings are already handled by retrieveSiblingContext.
+      if (sourceSection.nodeId === candidate.nodeId) continue;
+      if (candidate.nodeType !== "SECTION" && index.getAncestors(nodeId).some((a) => a.nodeId === sourceSection.nodeId && a.nodeType === "SECTION")) continue;
+
+      const text = index.getNodeText(sourceSection.nodeId, "DESCENDANTS");
+      if (text.trim().length === 0 || !INBOUND_OVERRIDE_SIGNAL.test(text)) continue;
+      if (!withinBudget(state, text.length)) return;
+
+      seenSourceSections.add(sourceSection.nodeId);
+      const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sourceSection.nodeId, sectionRef: sourceSection.sectionRef });
+      const item = addItem(
+        state,
+        makeItemInput(
+          "RELATED_COVENANT",
+          documentId,
+          sourceSection.nodeKey,
+          sourceSection.nodeId,
+          sourceSection.sectionRef,
+          `Section ${sourceSection.sectionRef}`,
+          text,
+          `Inbound override: Section ${sourceSection.sectionRef} references ${ref.referenceText} with notwithstanding language that governs this candidate's ${target.nodeType === "ARTICLE" ? "article" : "section"}.`,
+          1,
+          [parentItemId],
+          "CROSS_REFERENCE_INDEX",
+          0.9,
+          evidenceState,
+        ),
+      );
+      addEdge(state, parentItemId, item.itemId, "REFERENCES", `inbound "${ref.referenceText}" from Section ${sourceSection.sectionRef}`);
+    }
+  }
+}

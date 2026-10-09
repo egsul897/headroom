@@ -126,14 +126,21 @@ function spliceDescendantAmendments(anchorNodeId: string, start: string, index: 
       const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
       const at = oldText ? start.indexOf(oldText) : -1;
       if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
-      splices.push({ at, oldText, replacement: "" });
+      // Keep the structural separator after a deleted clause (same trailing-ws rule as a replacement).
+      const trailing = oldText.match(/\s*$/)?.[0] ?? "";
+      splices.push({ at, oldText, replacement: trailing });
       continue;
     }
     if (!hasCurrentText(item.provision)) return { text: "", amended: false, withheld: true, withheldReasons };
     const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
     const at = oldText ? start.indexOf(oldText) : -1;
     if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
-    splices.push({ at, oldText, replacement: item.provision.currentText });
+    // DESCENDANTS spans often include the blank line / spaces that separate this clause from
+    // the next sibling. Amendment currentText does not. Preserve that trailing whitespace so
+    // the next enumerator stays a boundary (`incurrence;(c)` must never become one run-on unit).
+    const trailing = oldText.match(/\s*$/)?.[0] ?? "";
+    const replacement = `${item.provision.currentText.replace(/\s*$/, "")}${trailing}`;
+    splices.push({ at, oldText, replacement });
   }
   const ordered = [...splices].sort((a, b) => a.at - b.at);
   for (let i = 1; i < ordered.length; i++) {
@@ -211,6 +218,13 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
       if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
       return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
     }
+    // Applied superseding text under REVIEW_REQUIRED (e.g. a side-letter capacity
+    // derivation) must not fall through to the superseded base amount. Serve the
+    // derived currentText when present; otherwise withhold.
+    if (provision.appliedChain.length > 0 && !!provision.currentText && provision.currentText.trim().length > 0) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
+      return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
     if (isResolvedDeletion(provision)) {
       if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
       return { text: "", origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
@@ -219,6 +233,9 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
     // only when no descendant clause has its own applied amendment. Otherwise the base text still contains that clause.
     const descendant = spliceDescendantAmendments(anchorNodeId, base, index, operativeState);
     if (descendant.amended || descendant.withheld) return withheldResult(anchorNodeId, provision, descendant.withheldReasons.length > 0 ? descendant.withheldReasons : provision.unresolvedIssues);
+    if (provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" || provision.status === "OPERATIVE_STATE_PARTIAL" || provision.status === "OPERATIVE_STATE_CONFLICTED") {
+      return withheldResult(anchorNodeId, provision);
+    }
     return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
   }
   // A derived section view with no safe text means a definition amendment could not be reconstructed.

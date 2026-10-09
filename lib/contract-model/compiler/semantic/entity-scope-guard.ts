@@ -265,7 +265,9 @@ function evaluateSignals(tier: IREntityScopeSignal["tier"], text: string, scope:
 // rule through its citation). The lead-in is the unit's opening text up to
 // its first child enumerator.
 // ---------------------------------------------------------------------------
-const ENUM_MARKER = /(?<=^|\s)\((?:[a-z]{1,2}|[ivx]{1,5}|\d{1,3}|[A-Z]{1,2})\)/g;
+// Allow a marker after `;` / `:` as well as whitespace so a spliced proviso that ends
+// `...incurrence;(c)...` still ends the prior unit's lead-in (figure-role MARKER_RE already does).
+const ENUM_MARKER = /(?<=^|[\s;:])\((?:[a-z]{1,2}|[ivx]{1,5}|\d{1,3}|[A-Z]{1,2})\)/g;
 
 function refTokens(ref: string): { section: string; path: string[] } {
   const clean = ref.replace(/^[§\s]+/, "").replace(/^Section\s+/i, "").trim();
