@@ -6,7 +6,7 @@
 
 import type { KnowledgeTaxonomyFamily } from "../types";
 
-export const TAXONOMY_VERSION = "covenant-taxonomy.v1";
+export const TAXONOMY_VERSION = "covenant-taxonomy.v1.1";
 
 export interface TaxonomyFamilyDef {
   family: KnowledgeTaxonomyFamily;
@@ -146,9 +146,11 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
   {
     family: "SHARED_CAPACITY_PROVISIONS",
     label: "Shared-capacity provisions",
-    aliases: ["shared baskets"],
-    headingPatterns: [/\bshared\b/i],
-    bodyPatterns: [/\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity)\b/i],
+    aliases: ["shared baskets", "anti-stacking"],
+    headingPatterns: [/\bshared\s+(?:capacity|basket)\b/i],
+    bodyPatterns: [
+      /\b(?:shared\s+(?:basket|capacity|pool)|combined\s+with|together\s+with\b[\s\S]{0,200}?\b(?:pursuant\s+to|under)\s+(?:Sections?|clauses?)|without\s+duplication)\b/i,
+    ],
   },
   {
     family: "GENERAL_CONDITIONS_AND_EXCEPTIONS",

@@ -28,9 +28,9 @@
     },
     {
       "caseId": "sup-shared-ebitda-10pct",
-      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
-      "prediction": { "isSharedCapacity": false },
-      "notes": "Definition proviso not compiled; shared cap not recognized."
+      "predictionSource": "DETERMINISTIC_SHARED_CAPACITY_V2",
+      "prediction": { "isSharedCapacity": true, "memberRefs": ["(f)", "(m)", "(n)"] },
+      "notes": "CORRECTED 2026-10-09: multi-clause aggregate ceiling via 'pursuant to clauses (f), (m) and (n)' recognized as shared capacity without treating bare aggregate amount as shared."
     },
     {
       "caseId": "sup-amend-doc-b-restates-doc-a",

@@ -37,7 +37,15 @@ const SIGNAL_PATTERNS: SignalPattern[] = [
   { name: "financial_metric", re: /\b(?:EBITDA|Net Income|Leverage Ratio|Coverage Ratio|Fixed Charges|Total Assets|Net Worth)\b/i },
   { name: "refinancing", re: /\b(?:refinanc|refund|replace(?:ment|d)? (?:of|the) (?:existing )?Indebtedness)\b/i },
   { name: "builder_language", re: /\b(?:cumulative|Available Amount|builder basket|Retained Excess Cash Flow)\b/i },
-  { name: "shared_cap", re: /\b(?:aggregate(?:d)? (?:amount|basket)|combined (?:with|capacity)|shared (?:capacity|basket))\b/i },
+  // Ordinary aggregate ceilings are discovery-worthy but are NOT shared capacity.
+  // Keep them as a separate over-selecting signal so Pass A recall is preserved
+  // without collapsing "aggregate amount" into shared_cap interpretation.
+  { name: "aggregate_ceiling", re: /\b(?:in the aggregate|aggregate(?:d)?\s+(?:amount|principal|outstanding))\b/i },
+  // Shared capacity requires cross-basket / relationship language.
+  {
+    name: "shared_cap",
+    re: /(?:\bshared\s+(?:capacity|basket|pool)\b|\bcombined\s+(?:with|capacity|basket)\b|\bin\s+the\s+aggregate\s+(?:with|under)\b|\btogether\s+with\b[\s\S]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|clauses?)|\bwithout\s+duplication\b|\baggregate(?:d)?\s+amount\b[\s\S]{0,220}?\bpursuant\s+to\s+clauses?\s*\([a-z0-9]+\)(?:\s*,\s*\([a-z0-9]+\))+\s*(?:and|,)\s*\([a-z0-9]+\))/i,
+  },
 ];
 
 const HEADLINE_HEADING_WORDS = /\b(?:Indebtedness|Debt|Liens?|Restricted Payments?|Investments?|Dispositions?|Asset Sales?|Affiliate Transactions?|Financial Covenants?|Guarant(?:y|ies|ee)|Subsidiar(?:y|ies)|Merger|Consolidation|Fundamental Changes?|Change of Control|Sale.?Leaseback|Prepayment|Subordinat|Business|Line of Business|Nature of Business|Amendment|Modification)\b/i;

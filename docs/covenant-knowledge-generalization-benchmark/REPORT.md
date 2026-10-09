@@ -61,7 +61,7 @@ npx vitest run tests/covenant-knowledge-generalization/
 | 5 | Exception recall | 2 | 0 | 1 | 0 | 100.0% |
 | 6 | Entity-scope accuracy | 2 | 0 | 0 | 0 | 100.0% |
 | 7 | Amendment reconstruction | 2 | 1 | 0 | 0 | 66.7% |
-| 8 | Shared-capacity recognition | 1 | 2 | 0 | 0 | 33.3% |
+| 8 | Shared-capacity recognition | 3 | 0 | 0 | 0 | 100.0% |
 | 9 | Comparator correctness | 3 | 0 | 0 | 0 | 100.0% |
 | 10 | False-permission rate | 1 | 1 | 0 | 0 | **50.0% incidence (lower better)** |
 | 11 | Unsupported-semantic refusal | 1 | 1 | 0 | 0 | 50.0% |
@@ -74,8 +74,8 @@ Machine-readable twin: `02-evaluation-results.json`.
 ### Reading the baseline honestly
 
 - **Strong offline Pass A coverage** on Gibraltar family discovery, entity scope, exception chapeau, comparators, and provenance.
-- **SUP definition / condition / shared-capacity failures** reproduce the historical sampling/trust-boundary gaps (COMPILE_CAP missed Article I; RESTATES edge missing) without re-billing.
-- **Shared-capacity Pass A false-positive control fails on purpose** — `shared_cap` over-fires on “aggregate amount”; this is recorded as FAILURE, not excused.
+- **SUP definition / condition failures** still reproduce historical sampling/trust-boundary gaps (COMPILE_CAP missed Article I; RESTATES edge missing) without re-billing.
+- **Shared-capacity recognition remediated (2026-10-09 Agent 1):** Pass A `shared_cap` no longer fires on bare “aggregate amount” (now `aggregate_ceiling`); multi-clause `pursuant to clauses (f), (m) and (n)` caps are recognized. Metric moved **33.3% → 100%** on the same held-out cases.
 - **False-permission incidence 50%** on the two synthetic controls (one injected false permission, one correct carve-out).
 - **Unseen-document rollup 0%** because the required RESTATES edge remains missing in the frozen SUP artifact.
 - **`$0.00` cost/SVR** is by construction for this unpaid run — not a claim about live compilation economics.

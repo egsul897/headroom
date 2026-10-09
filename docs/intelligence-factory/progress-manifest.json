@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "intelligence-factory.progress-manifest.v1",
+  "updatedAt": "2026-10-09T22:22:00.000Z",
+  "agent": "HEADROOM AGENT 1 — COVENANT INTELLIGENCE FACTORY",
+  "northStar": "Accept unfamiliar financing package → source-backed rulebook → capacity → transaction answers with citations",
+  "guardrails": {
+    "neonWrites": "owner-gated only",
+    "paidInference": "not authorized this session",
+    "failClosed": "preserve",
+    "autoMerge": false,
+    "populations": "development / regression / holdout preserved"
+  },
+  "workstreams": {
+    "A_neon_inventory": {
+      "status": "CYCLE_2_REFRESHED",
+      "artifacts": [
+        "docs/intelligence-factory/agent1-cycle-2-corpus.raw.json",
+        "docs/intelligence-factory/AGENT1-CYCLE-2-REPORT.md",
+        "scripts/knowledge-factory/agent1-corpus-cycle.ts"
+      ]
+    },
+    "B_precedent_expansion": {
+      "status": "CYCLE_2_COMPLETE",
+      "artifacts": [
+        "lib/product/legal-reasoning/precedent-clause-search.ts",
+        "lib/knowledge-factory/patterns/library.ts",
+        "lib/knowledge-factory/patterns/shared-capacity.ts"
+      ],
+      "blockedOn": [
+        "Owner approval for UNKNOWN reclassify live write (13/180 dry-run ready)",
+        "Owner approval for instrumentIdentity backfill (671 missing)"
+      ]
+    },
+    "C_covenant_reasoning": {
+      "status": "CYCLE_2_PARTIAL",
+      "artifacts": [
+        "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+        "lib/knowledge-factory/corpus/population-registry.ts"
+      ],
+      "outcomes": [
+        "Shared-capacity false positive on bare aggregate amount fixed",
+        "CKG shared_capacity_recognition 33.3% → 100%"
+      ]
+    },
+    "D_capacity_mathematics": {
+      "status": "QUEUED"
+    },
+    "E_customer_cold_start": {
+      "status": "QUEUED"
+    }
+  },
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "name": "Neon intelligence baseline + retrieval honesty",
+      "peerBranch": "cursor/neon-intelligence-baseline-2229",
+      "note": "Peer Agent Cycle 1; coordinated via progress-manifest, not duplicated"
+    },
+    {
+      "id": "cycle-2",
+      "name": "Shared-capacity precision + mechanic patterns + population registry + CKG holdout",
+      "branch": "cursor/covenant-intelligence-factory-f761",
+      "paidInferenceCostUsd": 0,
+      "neonMutations": 0,
+      "outcomes": [
+        "Pass A shared_cap split from aggregate_ceiling",
+        "anti-stacking / grower / lesser-of patterns added",
+        "Precedent clause queries expanded",
+        "Population registry for development/regression/holdout",
+        "CKG shared_capacity_recognition → 100%",
+        "Neon inventory: 681 public SEC sources / 200 issuers / 28831 summary items"
+      ]
+    }
+  ]
+}

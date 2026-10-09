@@ -258,6 +258,9 @@ describe("benchmarks + precedent clause search", () => {
 
   it("searches precedent clauses without fabricating frequency stats", () => {
     expect(listPrecedentClauseQueries()).toContain("builder_basket");
+    expect(listPrecedentClauseQueries()).toContain("shared_capacity");
+    expect(listPrecedentClauseQueries()).toContain("anti_stacking");
+    expect(listPrecedentClauseQueries()).toContain("grower_basket");
     const hits = searchPrecedentClauses({ query: "available_amount", limit: 5 });
     // Index may be present in CI; when present, hits carry authority note.
     for (const h of hits) {
