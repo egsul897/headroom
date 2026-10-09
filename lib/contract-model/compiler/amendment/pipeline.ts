@@ -53,7 +53,11 @@ function labelMatchesTarget(label: string, classificationType: string | undefine
 
 export const AMENDMENT_PIPELINE_VERSION = `phase-2g-amendment-pipeline.v1+${AMENDMENT_INTERPRETATION_PROMPT_VERSION}`;
 
-const AMENDMENT_SHAPED_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER"]);
+// IPV-16: SIDE_LETTER (and consent/waiver-shaped documents classified as
+// such) carry "notwithstanding Section X" overrides that must reach the
+// amendment pipeline — otherwise the operative state stays RESOLVED on the
+// base text with zero effects from the override document.
+const AMENDMENT_SHAPED_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER", "SIDE_LETTER"]);
 /** Operations deterministic parsing could not classify precisely - exactly the case task §8 scopes AI interpretation to ("can identify the relevant source region and target but cannot reliably classify the legal transformation"). */
 const AMBIGUOUS_OPERATIONS = new Set(["MODIFY_PROVISION", "UNKNOWN_CHANGE"]);
 

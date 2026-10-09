@@ -1,0 +1,23 @@
+{
+  "phase": "independent-retrieve",
+  "startingSha": "2338e9e09fc9a6435bcfa4a330c424dd240ffb4d",
+  "byteStore": "postgres-bytea",
+  "retrieved": {
+    "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "knowledgeSourceRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "originalBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "retrievedBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "byteLength": 2266666,
+    "byteEqual": true,
+    "hashEqual": true,
+    "representationLevel": "DISCOVERED_CANDIDATE",
+    "provenance": "sec-edgar-fixture",
+    "storageProvider": "postgres-bytea"
+  },
+  "verdict": "RETRIEVE_OK",
+  "durabilityClaimNote": "RETRIEVE_OK via fresh process with new DB connection; bytes hash-verified independently of same-process memory.",
+  "freshProcess": true,
+  "envSanitized": true,
+  "missionVerdict": "A2_LIVE_DURABILITY_PROVEN"
+}

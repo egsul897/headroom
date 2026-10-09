@@ -16,11 +16,13 @@ export type CompanyNavKey =
   | "home"
   | "documents"
   | "covenants"
+  | "intelligence"
   | "position"
   | "ledger"
   | "simulate"
   | "evidence"
   | "ask"
+  | "alerts"
   | "onboarding";
 
 export interface CompanyNavItem {
@@ -44,11 +46,13 @@ export function companyNavItems(companyId: string, onboardingStatus: OnboardingS
     { key: "home", href: `/${companyId}`, label: "Overview" },
     { key: "documents", href: `/${companyId}/documents`, label: "Documents" },
     { key: "covenants", href: `/${companyId}/covenants`, label: "Covenants" },
+    { key: "intelligence", href: `/${companyId}/intelligence`, label: "Intelligence" },
     { key: "position", href: `/${companyId}/position`, label: "Position" },
     { key: "ledger", href: `/${companyId}/ledger`, label: "Ledger" },
     { key: "simulate", href: `/${companyId}/simulate`, label: "Simulate" },
     { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
     { key: "ask", href: `/${companyId}/ask`, label: "Ask" },
+    { key: "alerts", href: `/${companyId}/alerts`, label: "Alerts" },
   ];
   if (onboardingStatus === "ONBOARDING" || onboardingStatus === "ACTIVE_WITH_LIMITATIONS") {
     items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Onboarding" });

@@ -1,0 +1,88 @@
+{
+  "preCounts": {
+    "companies": 10,
+    "snaps": 4,
+    "ks": 700,
+    "dbo": 696
+  },
+  "fixtureHashes": {
+    "gibraltar": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "chewy": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "gibBytes": 2266666,
+    "chewyBytes": 1306165
+  },
+  "sameSourceSameBytes": {
+    "reusedExisting": true,
+    "knowledgeSourceRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "contentHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "documentByteObjectDelta": 0,
+    "pass": true
+  },
+  "sameSourceDifferentBytes": {
+    "pass": true,
+    "errorName": "DurableContentConflictError"
+  },
+  "hashMismatchOnPersist": {
+    "pass": true,
+    "message": "content hash mismatch: expected 0000000000000000000000000000000000000000000000000000000000000000, got 6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+  },
+  "diffSourceIdenticalBytes": {
+    "aliasSourceId": "proof-alias:gibraltar-identical-bytes:1791560137432",
+    "aliasRowId": "cmv0aqwg00002ndhsetpsslgx",
+    "aliasStorageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "gibStorageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "sameStorageRef": true,
+    "sameHash": true,
+    "documentByteObjectDelta": 0,
+    "pass": true
+  },
+  "missingRetrieve": {
+    "pass": true,
+    "code": "SOURCE_NOT_FOUND"
+  },
+  "chewyPersist": {
+    "knowledgeSourceRowId": "cmv0aqww30005ndhsvdpgtmn1",
+    "storageRef": "pgbytea:v1:5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "contentHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "retrievedBytes": 1306165,
+    "retrievedHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "loadHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "distinctFromGibraltar": true,
+    "pass": true
+  },
+  "documentB": {
+    "gibraltarSourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "chewySourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+    "gibraltarDbId": "cmv0aqwg00002ndhsetpsslgx",
+    "chewyDbId": "cmv0aqww30005ndhsvdpgtmn1",
+    "gibraltarBlobId": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "chewyBlobId": "pgbytea:v1:5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "sourceIdentitiesSeparate": true,
+    "hashesSeparate": true,
+    "storageRefsSeparate": true,
+    "gibraltarHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "chewyHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+    "representationLevels": {
+      "a": "DISCOVERED_CANDIDATE",
+      "b": "DISCOVERED_CANDIDATE"
+    },
+    "citationsCorrect": true,
+    "precedentNonAuthoritative": true,
+    "knowledgeDiscoveryDoesNotCertify": true,
+    "gibraltarDoesNotOverrideChewyOperative": true,
+    "pass": true
+  },
+  "postCounts": {
+    "companies": 10,
+    "snaps": 4,
+    "ks": 700,
+    "dbo": 696
+  },
+  "dataIntact": {
+    "companiesUnchangedOrGrew": true,
+    "snapsUnchangedOrGrew": true,
+    "pass": true
+  },
+  "verdict": "LIVE_IDEMPOTENCY_AND_DOC_B_PASS"
+}

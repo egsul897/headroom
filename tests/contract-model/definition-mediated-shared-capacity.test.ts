@@ -26,7 +26,7 @@ describe("definition-mediated shared capacity (IPV-15)", () => {
     const outcome = classifyEmittedReferences({
       emitted: ["Section 7.06(c)"],
       operativeText: "(d) Investments in an aggregate amount not to exceed the Available Amount.",
-      definitionAuthorityTexts: [AA],
+      dependentDefinitionTexts: [AA],
     });
     expect(outcome.invented).toBe(false);
     expect(outcome.excluded).toEqual([]);
@@ -38,7 +38,7 @@ describe("definition-mediated shared capacity (IPV-15)", () => {
     const outcome = classifyEmittedReferences({
       emitted: ["Section 9.99"],
       operativeText: "(d) Investments in an aggregate amount not to exceed the Available Amount.",
-      definitionAuthorityTexts: [AA],
+      dependentDefinitionTexts: [AA],
     });
     expect(outcome.invented).toBe(true);
     expect(outcome.excluded.map((e) => e.emitted)).toContain("Section 9.99");

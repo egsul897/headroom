@@ -53,9 +53,15 @@ export function resolveCrossDocumentDefinition(fromDocumentId: string, normalize
 
 /** Amendment/supplement leads targeting this covenant's own section (or a nested clause under it), or a definition it depends on - never resolved into operative text (task §19). */
 export function retrieveAmendmentLeadsForSection(state: RetrievalState, packageGraph: PackageGraphResult, documentId: string, sectionRef: string, parentItemId: string): void {
+  const norm = (r: string) => r.replace(/\s+/g, "");
+  const parent = norm(sectionRef);
+  // IPV-16: also surface leads that target a descendant clause (e.g. 7.01(b)
+  // when the candidate is section 7.01) so a section-level bundle names the
+  // side-letter / override rather than serving the overridden clause as current.
   const candidates = packageGraph.modificationCandidates.filter((mc: ModificationCandidate) => {
     if (mc.targetDocumentId !== documentId || !mc.targetSectionRef) return false;
-    return mc.targetSectionRef === sectionRef || isNestedSectionRef(sectionRef, mc.targetSectionRef);
+    const t = norm(mc.targetSectionRef);
+    return t === parent || isNestedSectionRef(sectionRef, mc.targetSectionRef) || t.startsWith(`${parent}(`) || t.startsWith(`${parent}.`);
   });
   for (const mc of candidates) {
     addAmendmentLeadItem(state, packageGraph, mc, parentItemId);

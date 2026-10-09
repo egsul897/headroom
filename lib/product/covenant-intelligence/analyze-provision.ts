@@ -44,6 +44,12 @@ export interface ProvisionAnalysis {
   operativeLanguageExcerpt: string;
   sourceCitation: string;
   unresolved: string[];
+  /** Competing readings when the excerpt supports material ambiguity. */
+  alternativeInterpretations: string[];
+  /** Explicit assumptions underlying the primary reading. */
+  assumptions: string[];
+  /** Where judgment was required beyond mechanical extraction. */
+  judgmentCalls: string[];
   epistemicStatus: "DISCOVERED_CANDIDATE";
   interpretationNote: string;
 }
@@ -373,12 +379,63 @@ function buildPlainEnglish(params: {
     parts.push(`Cross-provision dependencies: ${params.dependencies.slice(0, 3).join("; ")}.`);
   }
   parts.push(
-    "This explains discovered operative text; it is not a determination of current capacity, utilization, or amendment-operative status.",
+    "This is Headroom’s AI-generated, source-backed interpretation for counsel review — not a determination of current capacity, utilization, or amendment-operative status.",
   );
   if (params.unresolved.length > 0) {
     parts.push(`Unresolved: ${params.unresolved.slice(0, 3).join("; ")}.`);
   }
   return parts.join(" ");
+}
+
+function buildAlternativesAndAssumptions(params: {
+  posture: ProvisionPosture;
+  excerpt: string;
+  permissions: string[];
+  exceptions: string[];
+  baskets: string[];
+  unresolved: string[];
+}): { alternativeInterpretations: string[]; assumptions: string[]; judgmentCalls: string[] } {
+  const alternativeInterpretations: string[] = [];
+  const assumptions: string[] = [];
+  const judgmentCalls: string[] = [];
+  const hay = params.excerpt;
+
+  assumptions.push("Cited excerpt is treated as representative of the operative section body.");
+  assumptions.push("Amendment precedence has not been independently resolved unless separately analyzed.");
+
+  if (params.posture === "GENERAL_PROHIBITION" && (params.permissions.length > 0 || params.exceptions.length > 0)) {
+    alternativeInterpretations.push(
+      "Primary reading: general prohibition with enumerated exceptions. Competing reading: some listed baskets may operate as free-standing permissions if the chapeau does not clearly govern them.",
+    );
+    judgmentCalls.push("Whether exception clauses are exhaustive or illustrative requires counsel judgment on the chapeau and list structure.");
+  }
+  if (params.posture === "CONDITIONAL_PERMISSION" || /\bso long as\b|\bprovided that\b|\bsubject to\b/i.test(hay)) {
+    alternativeInterpretations.push(
+      "Primary reading: permission is unavailable unless stated conditions are satisfied. Competing reading: some conditions may be timing or notice requirements rather than substantive eligibility tests.",
+    );
+    judgmentCalls.push("Classification of provisos as conditions precedent versus ongoing covenants involves judgment.");
+  }
+  if (/\b(?:or|,)\s*(?:at the option of|in the Borrower's discretion)\b/i.test(hay) || /\beither\b.+\bor\b/i.test(hay)) {
+    alternativeInterpretations.push(
+      "The provision appears to offer alternative paths; the strongest supported path is reported first, but counsel should confirm which path is intended for the contemplated transaction.",
+    );
+  }
+  if (params.baskets.length > 1) {
+    alternativeInterpretations.push(
+      "Multiple baskets/thresholds appear in the excerpt — they may be cumulative, mutually exclusive, or shared-capacity. Primary analysis lists them without assuming stacking rules.",
+    );
+    judgmentCalls.push("Stacking / shared-capacity treatment among listed baskets is a judgment call without explicit aggregation language.");
+  }
+  if (params.unresolved.some((u) => /definition/i.test(u))) {
+    assumptions.push("Unresolved defined terms are flagged rather than imputed from market practice.");
+  }
+  if (alternativeInterpretations.length === 0 && params.posture === "UNRESOLVED") {
+    alternativeInterpretations.push(
+      "Posture could not be determined confidently; treat the plain-English summary as a provisional reading pending counsel review of the full section.",
+    );
+    judgmentCalls.push("Provision posture classification was unresolved from the excerpt.");
+  }
+  return { alternativeInterpretations, assumptions, judgmentCalls };
 }
 
 export function analyzeProvision(params: {
@@ -464,6 +521,15 @@ export function analyzeProvision(params: {
     unresolved,
   });
 
+  const { alternativeInterpretations, assumptions, judgmentCalls } = buildAlternativesAndAssumptions({
+    posture,
+    excerpt,
+    permissions,
+    exceptions,
+    baskets: basketsAndThresholds,
+    unresolved,
+  });
+
   return {
     sectionRef,
     heading,
@@ -486,8 +552,11 @@ export function analyzeProvision(params: {
     operativeLanguageExcerpt: excerpt.slice(0, 700),
     sourceCitation: `${params.sourceId} · ${sectionRef}`,
     unresolved,
+    alternativeInterpretations,
+    assumptions,
+    judgmentCalls,
     epistemicStatus: "DISCOVERED_CANDIDATE",
     interpretationNote:
-      "Source-backed discovery analysis using structural classification, condition/exception signals, drafting patterns, and definition matching. Not legal advice; not executable capacity.",
+      "AI-first source-backed interpretation for customer counsel review. Uses structural classification, condition/exception signals, drafting patterns, and definition matching. Not external legal verification; not executable capacity until counsel approves and the rulebook path is ready.",
   };
 }

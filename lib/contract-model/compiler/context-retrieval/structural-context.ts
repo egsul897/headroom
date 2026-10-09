@@ -140,6 +140,53 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
   return { relevant: signals.length > 0, signals };
 }
 
+/**
+ * INV-04: reverse override discovery. A section in Article IX that says
+ * "Notwithstanding anything to the contrary in Article VII" governs every
+ * Article VII covenant even though VII never cites IX. Scan same-document
+ * SECTION nodes for that drafting and retrieve them as CROSS_REFERENCE.
+ */
+export function retrieveArticleOverrideLeads(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
+  const article = index.getAncestors(nodeId).find((n) => n.nodeType === "ARTICLE");
+  if (!article) return;
+  const articleLabel = article.sectionRef.replace(/\s+/g, "");
+  if (!articleLabel) return;
+  const overrideRe = new RegExp(
+    String.raw`notwithstanding\s+anything\s+to\s+the\s+contrary\s+in\s+Article\s+${articleLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\b`,
+    "i",
+  );
+  for (const n of index.allNodes()) {
+    if (n.documentId !== documentId || n.nodeType !== "SECTION") continue;
+    if (n.nodeId === nodeId) continue;
+    // Skip sections inside the same article (siblings are handled elsewhere).
+    const nArticle = index.getAncestors(n.nodeId).find((a) => a.nodeType === "ARTICLE");
+    if (nArticle?.nodeId === article.nodeId) continue;
+    const text = index.getNodeText(n.nodeId, "DESCENDANTS");
+    if (!overrideRe.test(text)) continue;
+    if (!withinBudget(state, text.length)) return;
+    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: n.nodeId, sectionRef: n.sectionRef });
+    const item = addItem(
+      state,
+      makeItemInput(
+        "CROSS_REFERENCE",
+        documentId,
+        n.nodeKey,
+        n.nodeId,
+        n.sectionRef,
+        `Section ${n.sectionRef}`,
+        text,
+        `Override of Article ${articleLabel}: Section ${n.sectionRef} states "notwithstanding anything to the contrary in Article ${articleLabel}" and therefore governs this candidate.`,
+        1,
+        [operativeItemId],
+        "STRUCTURAL_TRAVERSAL",
+        1,
+        evidenceState,
+      ),
+    );
+    addEdge(state, operativeItemId, item.itemId, "REFERENCES", `Article-level notwithstanding override from Section ${n.sectionRef}.`);
+  }
+}
+
 function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documentId: string, node: { nodeId: string; sectionRef: string }, ownWhenUnamended: boolean): { text: string; evidenceState: ContextItemEvidenceState } {
   const resolved = resolveOperativeSource({ structuralNodeIds: [node.nodeId], documentId, normalizedSourceRef: node.sectionRef }, index, state.operativeState);
   if (resolved.withheld) {
@@ -164,7 +211,26 @@ function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documen
       },
     };
   }
-  return { text, evidenceState: resolveSectionEvidenceState(state, documentId, node) };
+  let evidenceState = resolveSectionEvidenceState(state, documentId, node);
+  // IPV-16: a parent section whose descendant clause carries an unresolved
+  // side-letter / override must not present the whole DESCENDANTS span as
+  // confirmed-current truth (the overridden clause's dollars would otherwise
+  // certify as the live basket).
+  const parentNorm = node.sectionRef.replace(/\s+/g, "");
+  const blockedChild = state.operativeState?.provisions.find((p) => {
+    if (p.kind !== "SECTION" || p.status === "OPERATIVE_STATE_RESOLVED") return false;
+    const ref = (p.sectionRef ?? "").replace(/\s+/g, "");
+    return ref !== parentNorm && (ref.startsWith(`${parentNorm}(`) || ref.startsWith(`${parentNorm}.`));
+  });
+  if (blockedChild && evidenceState.isCurrentTruth) {
+    const overrideDocs = blockedChild.appliedChain.map((e) => e.amendmentDocumentId).join(", ");
+    evidenceState = {
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      isCurrentTruth: false,
+      reason: `Descendant Section ${blockedChild.sectionRef} is ${blockedChild.status} (override/amendment activity from ${overrideDocs || "unresolved source"}); the parent section's DESCENDANTS text is not confirmed-current while that override remains open.`,
+    };
+  }
+  return { text, evidenceState };
 }
 
 export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {

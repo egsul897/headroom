@@ -1,0 +1,521 @@
+{
+  "runId": "cil-20261009-7b1bc17cde",
+  "stages": [
+    {
+      "stage": "INGEST",
+      "status": "OK",
+      "message": "Selected 5 source(s)"
+    },
+    {
+      "stage": "STRUCTURE",
+      "status": "OK",
+      "message": "Structured summaries available for 5/5"
+    },
+    {
+      "stage": "INTERPRET",
+      "status": "OK",
+      "message": "Retained source-backed narrative interpretations alongside structured items"
+    },
+    {
+      "stage": "COMPILE",
+      "status": "CONDITIONAL",
+      "message": "Compiled reusable contractual model fragments (conditional capacity)"
+    },
+    {
+      "stage": "EXERCISE",
+      "status": "OK",
+      "message": "Executed 25 exercise(s)"
+    },
+    {
+      "stage": "DIAGNOSE",
+      "status": "OK",
+      "message": "Recorded 42 gap(s)"
+    },
+    {
+      "stage": "IMPROVE",
+      "status": "OK",
+      "message": "Captured 6 pattern obs; 3 open eng tasks"
+    },
+    {
+      "stage": "REEXERCISE",
+      "status": "OK",
+      "message": "Reexecuted 7 exercise type(s); 20 comparisons"
+    },
+    {
+      "stage": "PUBLISH",
+      "status": "OK",
+      "message": "Published overlay for research-corpus"
+    }
+  ],
+  "publishSummary": {
+    "documentsProcessed": 5,
+    "exerciseTypes": 5,
+    "executions": 25,
+    "substantive": 0,
+    "conditional": 25,
+    "unsupported": 0,
+    "failed": 0,
+    "gapHistogram": {
+      "FINANCIAL_INPUT_MISSING": 35,
+      "MISSING_COVENANT": 6,
+      "DEFINITION_NOT_RESOLVED": 1
+    }
+  },
+  "sourceIds": [
+    "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+    "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+    "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+    "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+    "edgar:0000950157-21-000696:ex10-1.htm"
+  ],
+  "sampleResults": [
+    {
+      "exerciseId": "debt.unsecured.50",
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "7.02",
+        "7.02(c)",
+        "7.02(d)",
+        "8.01(e)",
+        "6.04(c)",
+        "7.06"
+      ],
+      "baskets": [
+        "7.02 basket/threshold: Cap measured on outstanding amount at any time.",
+        "7.02(c) basket/threshold: Cap measured on outstanding amount at any time.",
+        "8.01(e): (i) The Company or any Subsidiary (A) fails to make any payment when due (whether by scheduled maturity, required prepayment, acceleration, demand, or otherwise) in respect of any Indebtedness or Guarante…"
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Consolidated Total Assets"
+      ],
+      "gaps": [],
+      "missingInputs": [],
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL: apply cited baskets [7.02 basket/threshold: Cap measured on outstanding amount at any time.; 7.02(c) basket/threshold: Cap measured on outstanding amount at any time.; 8.01(e): (i) The Company or any Subsidiary (A) fails to make any payment when due (whether by scheduled maturity, required prepayment, acceleration, demand, or otherwise) in respect o",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "debt.secured.100",
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "7.02",
+        "7.01",
+        "7.01(l)",
+        "6.04(b)",
+        "7.01(b)",
+        "7.01(n)"
+      ],
+      "baskets": [
+        "7.02 basket/threshold: Cap measured on outstanding amount at any time."
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Permitted Lien",
+        "Consolidated Total Assets"
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "totalDebt",
+        "securedDebt",
+        "ebitda"
+      ],
+      "conditionalFormula": "Supported amount for $100 million is CONDITIONAL: apply cited baskets [7.02 basket/threshold: Cap measured on outstanding amount at any time.] after confirming operative language, counsel-selected interpretation, financial inputs (totalDebt, securedDebt, ebitda), and ledger utilization.",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "lien.secure_new_debt",
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "7.02",
+        "7.01(n)",
+        "6.04(b)",
+        "7.01",
+        "7.01(l)",
+        "5.07"
+      ],
+      "baskets": [
+        "7.02 basket/threshold: Cap measured on outstanding amount at any time."
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Permitted Lien",
+        "Consolidated Total Assets"
+      ],
+      "gaps": [],
+      "missingInputs": [],
+      "conditionalFormula": "Conditional pathway: 7.02 basket/threshold: Cap measured on outstanding amount at any time.",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "rp.dividend.50",
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "8.01(e)",
+        "2.06(a)",
+        "7.02",
+        "10.06(c)",
+        "2.01",
+        "2.04(c)"
+      ],
+      "baskets": [
+        "8.01(e): (i) The Company or any Subsidiary (A) fails to make any payment when due (whether by scheduled maturity, required prepayment, acceleration, demand, or otherwise) in respect of any Indebtedness or Guarante…",
+        "8.01(e) basket/threshold: Amount/threshold: $200,000,000,",
+        "2.06(a) basket/threshold: Amount/threshold: $5,000,000",
+        "2.06(a) basket/threshold: Amount/threshold: $1,000,000"
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Consolidated Total Assets"
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "ebitda",
+        "cumulativeNetIncome"
+      ],
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL: apply cited baskets [8.01(e): (i) The Company or any Subsidiary (A) fails to make any payment when due (whether by scheduled maturity, required prepayment, acceleration, demand, or otherwise) in respect of any Indebtedness or Guarante…; 8.01(e) basket/threshold: Amount/threshold: $200,000,000,; 2.06(a) basket/threshold: Amount/threshold: $5,000,000]",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "ratio.total_leverage",
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "7.06",
+        "8.01(e)",
+        "1.03(b)",
+        "2.02(a)",
+        "7.02(d)",
+        "5.02(b)"
+      ],
+      "baskets": [
+        "7.06 basket/threshold: Ratio threshold: 2.50 to 1.00",
+        "8.01(e): (i) The Company or any Subsidiary (A) fails to make any payment when due (whether by scheduled maturity, required prepayment, acceleration, demand, or otherwise) in respect of any Indebtedness or Guarante…",
+        "8.01(e) basket/threshold: Amount/threshold: $200,000,000,"
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Consolidated Total Assets"
+      ],
+      "gaps": [
+        "DOCUMENT_ABSENT:MISSING_COVENANT",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "totalDebt",
+        "ebitda"
+      ],
+      "conditionalFormula": "Conditional pathway: 7.06 basket/threshold: Ratio threshold: 2.50 to 1.00",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "debt.unsecured.50",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.07",
+        "4.08",
+        "4.08(a)",
+        "8.04(d)",
+        "8.04(e)",
+        "1.01(1)"
+      ],
+      "baskets": [],
+      "definitions": [
+        "Board of Directors: “Board of Directors”\nmeans:\n\n(1)              with\nrespect to a corporation, the board of directors of the corporation or any committee thereof duly authorized "
+      ],
+      "gaps": [],
+      "missingInputs": [],
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL pending identification of operative baskets/thresholds and required financial inputs (n/a).",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "debt.secured.100",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.08",
+        "11.04(a)",
+        "4.08(a)",
+        "11.01(c)",
+        "11.01(e)",
+        "11.04(b)"
+      ],
+      "baskets": [],
+      "definitions": [
+        "Board of Directors: “Board of Directors”\nmeans:\n\n(1)              with\nrespect to a corporation, the board of directors of the corporation or any committee thereof duly authorized "
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "totalDebt",
+        "securedDebt",
+        "ebitda"
+      ],
+      "conditionalFormula": "Supported amount for $100 million is CONDITIONAL pending identification of operative baskets/thresholds and required financial inputs (totalDebt, securedDebt, ebitda).",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "lien.secure_new_debt",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.08",
+        "11.04(a)",
+        "4.08(a)",
+        "11.04(b)",
+        "11.01(c)",
+        "11.01(e)"
+      ],
+      "baskets": [],
+      "definitions": [
+        "Board of Directors: “Board of Directors”\nmeans:\n\n(1)              with\nrespect to a corporation, the board of directors of the corporation or any committee thereof duly authorized "
+      ],
+      "gaps": [],
+      "missingInputs": [],
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "rp.dividend.50",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.08(d)",
+        "4.06",
+        "9.02",
+        "9.02(a)",
+        "4.06",
+        "13.05(B)"
+      ],
+      "baskets": [
+        "4.08(d): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…",
+        "4.08(d) basket/threshold: Amount/threshold: $2,000",
+        "4.08(d) basket/threshold: Amount/threshold: $1,000",
+        "4.06 basket/threshold: Amount/threshold: $120.0"
+      ],
+      "definitions": [
+        "Board of Directors: “Board of Directors” means: (1) with respect to a corporation, the board of directors of the corporation or any committee thereof duly authorized to act on beha"
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "ebitda",
+        "cumulativeNetIncome"
+      ],
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL: apply cited baskets [4.08(d): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…; 4.08(d) basket/threshold: Amount/threshold: $2,000; 4.08(d) basket/threshold: Amount/threshold: $1,000] after conf",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "ratio.total_leverage",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "1.01(2)",
+        "11.01(e)",
+        "11.04(a)",
+        "13.05(B)",
+        "1.01(1)",
+        "10.01(b)"
+      ],
+      "baskets": [
+        "13.05(B): (D) PURSUANT TO THE EXEMPTION FROM REGISTRATION PROVIDED BY RULE 144 UNDER THE SECURITIES ACT (IF AVAILABLE), (E) IN ACCORDANCE WITH ANOTHER EXEMPTION FROM REGISTRATION UNDER THE SECURITIES ACT (PROVIDED …",
+        "13.05(B): (D) OR (E), THE TRUSTEE IS FURNISHED WITH AN OPINION OF COUNSEL ACCEPTABLE TO THE ISSUER THAT SUCH TRANSFER IS IN COMPLIANCE WITH THE SECURITIES ACT) OR (F) PURSUANT TO AN EFFECTIVE REGISTRATION STATEMENT…"
+      ],
+      "definitions": [
+        "Board of Directors: “Board of Directors”\nmeans:\n\n(1)              with\nrespect to a corporation, the board of directors of the corporation or any committee thereof duly authorized "
+      ],
+      "gaps": [
+        "DOCUMENT_ABSENT:MISSING_COVENANT",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "totalDebt",
+        "ebitda"
+      ],
+      "conditionalFormula": "Conditional pathway: 13.05(B): (D) PURSUANT TO THE EXEMPTION FROM REGISTRATION PROVIDED BY RULE 144 UNDER THE SECURITIES ACT (IF AVAILABLE), (E) IN ACCORDANCE WITH ANOTHER EXEMPTION FROM REGISTRATION UNDER THE SECURITIES ACT (PROVIDED …",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "debt.unsecured.50",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.08(b)",
+        "4.07",
+        "1",
+        "1(a)",
+        "2",
+        "1.01(1)"
+      ],
+      "baskets": [
+        "4.08(b): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…",
+        "4.08(b) basket/threshold: Amount/threshold: $2,000",
+        "4.08(b) basket/threshold: Amount/threshold: $1,000",
+        "4.07 basket/threshold: Amount/threshold: $700"
+      ],
+      "definitions": [
+        "Indebtedness"
+      ],
+      "gaps": [],
+      "missingInputs": [],
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL: apply cited baskets [4.08(b): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…; 4.08(b) basket/threshold: Amount/threshold: $2,000; 4.08(b) basket/threshold: Amount/threshold: $1,000] after conf",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    },
+    {
+      "exerciseId": "debt.secured.100",
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "citationSections": [
+        "4.08",
+        "7.08(b)",
+        "4.08(a)",
+        "4.08(b)",
+        "1.01(2)",
+        "4.08"
+      ],
+      "baskets": [
+        "4.08(b): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…",
+        "4.08(b) basket/threshold: Amount/threshold: $2,000",
+        "4.08(b) basket/threshold: Amount/threshold: $1,000"
+      ],
+      "definitions": [
+        "Indebtedness",
+        "Permitted Lien"
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING"
+      ],
+      "missingInputs": [
+        "totalDebt",
+        "securedDebt",
+        "ebitda"
+      ],
+      "conditionalFormula": "Supported amount for $100 million is CONDITIONAL: apply cited baskets [4.08(b): (a) If a Change of Control Triggering Event occurs, each Holder of Notes will have the right to require the Issuer to repurchase all or any part (equal to $2,000 or an integral multiple of $1,000 in exces…; 4.08(b) basket/threshold: Amount/threshold: $2,000; 4.08(b) basket/threshold: Amount/threshold: $1,000] after con",
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)"
+    }
+  ],
+  "openEngineeringTasks": [
+    {
+      "taskId": "4c8a6463a2e3",
+      "category": "RETRIEVAL_MISS",
+      "priority": 200,
+      "title": "[RETRIEVAL_MISS] software — 11 occurrence(s)",
+      "affectedSourceIds": [
+        "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+        "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.ratio_basket",
+        "ratio.total_leverage",
+        "rp.dividend.50",
+        "inv.unrestricted_sub",
+        "multi.secured_acq"
+      ],
+      "occurrenceCount": 11,
+      "expectedImprovement": "Improve Ask scoring so required covenant categories surface for the exercise family.",
+      "relevantModules": [
+        "lib/product/covenant-intelligence/ask-retrieve.ts"
+      ],
+      "reproductionNotes": "exercise=debt.ratio_basket source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6 | exercise=rp.dividend.50 source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6 | exercise=inv.unrestricted_sub source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:59:00.938Z",
+      "updatedAt": "2026-10-09T04:59:00.938Z"
+    },
+    {
+      "taskId": "53e50d8f97ae",
+      "category": "BASKET_NOT_EXTRACTED",
+      "priority": 75,
+      "title": "[BASKET_NOT_EXTRACTED] software — 1 occurrence(s)",
+      "affectedSourceIds": [
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.ratio_basket"
+      ],
+      "occurrenceCount": 1,
+      "expectedImprovement": "Segment fixed/grower/ratio baskets from matching provisions with citations.",
+      "relevantModules": [
+        "lib/product/covenant-intelligence/analyze-provision.ts",
+        "lib/knowledge-factory/patterns/library.ts"
+      ],
+      "reproductionNotes": "exercise=debt.ratio_basket source=edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:59:00.938Z",
+      "updatedAt": "2026-10-09T04:59:00.938Z"
+    },
+    {
+      "taskId": "68aceba9888a",
+      "category": "DEFINITION_NOT_RESOLVED",
+      "priority": 60,
+      "title": "[DEFINITION_NOT_RESOLVED] software — 1 occurrence(s)",
+      "affectedSourceIds": [
+        "fixture:conmed-article-vii-loop",
+        "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+        "fixture:conmed-article-vii",
+        "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+        "edgar:0000950157-21-000696:ex10-1.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.secured.100",
+        "debt.unsecured.50",
+        "debt.ratio_basket",
+        "rp.dividend.50",
+        "ratio.total_leverage",
+        "multi.secured_acq"
+      ],
+      "occurrenceCount": 65,
+      "expectedImprovement": "Attach applicable defined terms from summary items to exercise results.",
+      "relevantModules": [
+        "lib/knowledge-factory/pipeline/structural.ts",
+        "lib/product/covenant-intelligence/analyze-provision.ts"
+      ],
+      "reproductionNotes": "exercise=ratio.total_leverage source=edgar:0001104659-14-087365:a14-26274_1ex4d1.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:58:01.661Z",
+      "updatedAt": "2026-10-09T05:00:45.916Z"
+    }
+  ],
+  "patternsCaptured": [
+    "ratio-basket",
+    "fixed-dollar-basket",
+    "general-debt-basket",
+    "permitted-liens",
+    "no-default-condition",
+    "shared-capacity"
+  ]
+}

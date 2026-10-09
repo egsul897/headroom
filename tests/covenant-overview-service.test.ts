@@ -65,7 +65,7 @@ describe.each(COMPANIES)("getCovenantOverview(%s) - same service/contract for ev
       if (row.kind !== "CAPACITY") continue;
       expect(row.formulaDisplay).toBeTruthy();
       // No raw FormulaType enum value should ever leak into customer-facing text.
-      expect(row.formulaDisplay).not.toMatch(/^(FLAT_AMOUNT|FLAT_NET_OF_DEBT|GREATER_OF_FLAT_OR_PCT_EBITDA|LEVERAGE_RATIO_ROOM|COVERAGE_RATIO_ROOM|BUILDER_BASKET|RATIO_GATE)$/);
+      expect(row.formulaDisplay).not.toMatch(/^(FLAT_AMOUNT|FLAT_NET_OF_DEBT|GREATER_OF_FLAT_OR_PCT_EBITDA|GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS|LEVERAGE_RATIO_ROOM|COVERAGE_RATIO_ROOM|BUILDER_BASKET|RATIO_GATE)$/);
     }
   });
 

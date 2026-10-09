@@ -145,10 +145,12 @@ export function analyzeAmendmentPackage(params: {
     unresolvedReasons.push(
       "Multiple base-like documents present without discovered amendment/restatement edges.",
     );
-  } else if (edges.some((e) => e.evidenceStatus === "DISCOVERED") || amendmentDocs.length > 0) {
+  } else if (amendmentDocs.length > 0 || edges.length > 0) {
+    // Provisional — loadCovenantReviewWorkspace runs resolveOperativePrecedence for
+    // evidence-backed RESOLVED / RESOLVED_PARTIAL when section diffs + chronology support it.
     operativeResolution = "UNRESOLVED_PRECEDENCE";
     unresolvedReasons.push(
-      "Amendment relationships require legal review — Headroom will not silently select operative language.",
+      "Amendment package detected — operative bindings require section-level change evidence and consistent chronology (auto-resolved when present).",
     );
   } else {
     operativeResolution = "RESOLVED";

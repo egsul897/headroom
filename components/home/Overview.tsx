@@ -47,6 +47,9 @@ export function CompanyOverview({
           {greeting.subheading ? <p className="home-greeting-sub">{greeting.subheading}</p> : null}
         </div>
         <div className="home-top-actions">
+          <Link className="button button-primary" href={`/${companyId}/intelligence`}>
+            Debt intelligence
+          </Link>
           <Link className="home-ask-hero" href={`/${companyId}/ask`} data-ask-hero>
             <span className="home-ask-hero-label">Ask</span>
             <span className="home-ask-hero-note">{ASK_CASES.NOT_AVAILABLE_ON_DEAL.headline}</span>
@@ -59,7 +62,13 @@ export function CompanyOverview({
               </span>
             ) : null}
           </a>
-          <button type="button" className="home-export" disabled aria-disabled="true" title={exportChromeTitle(slots.exportState)}>
+          <button
+            type="button"
+            className="home-export"
+            disabled
+            aria-disabled="true"
+            title={exportChromeTitle(slots.exportState)}
+          >
             <ExportIcon />
             Export
           </button>

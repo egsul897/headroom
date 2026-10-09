@@ -1,0 +1,634 @@
+{
+  "companyId": "demo-customer-workflow",
+  "generatedAt": "2026-10-09T12:57:15.260Z",
+  "integrationBase": "PR #187 tip (contains #181–#186)",
+  "dashboard": {
+    "rulebookStage": "EXECUTABLE",
+    "capacityStatus": "EXECUTABLE_PATH_AVAILABLE",
+    "basketsComputed": 2,
+    "multiPathOnDashboard": 3,
+    "proForma": {
+      "status": "CONDITIONAL",
+      "pfTotal": "2.86x",
+      "engineRemaining": "$84M"
+    }
+  },
+  "grantTypesPresent": [
+    "DEBT_INCURRENCE",
+    "LIEN",
+    "RESTRICTED_PAYMENT",
+    "INVESTMENT"
+  ],
+  "scenarios": [
+    {
+      "id": "A",
+      "label": "$100M secured — general basket may be insufficient; enumerate alternatives",
+      "depth": {
+        "pathways": 12,
+        "executable": 0,
+        "insufficient": 2,
+        "aiProposed": 9,
+        "conditional": 1,
+        "citations": 11,
+        "families": [
+          "GENERAL_DEBT",
+          "GENERAL_LIEN",
+          "LIEN_SECURING_PERMITTED_DEBT"
+        ],
+        "definitionsReferenced": 6,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed $100M secured — general basket may be insufficient; enumerate alternatives: examined 12 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $100M. Partial capacity identified on: §7.2 $84M; §7.2 $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 9; lien pathways: 3.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "capacity": 84
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "capacity": 84
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": null
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.9",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.13",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "CONDITIONAL",
+          "capacity": null,
+          "reviewDecision": "EDITED"
+        },
+        {
+          "sectionRef": "7.3",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.5",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.10",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.4",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.1",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.11",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "label": "$75M restricted payment — fixed and builder pathways",
+      "depth": {
+        "pathways": 4,
+        "executable": 0,
+        "insufficient": 1,
+        "aiProposed": 3,
+        "conditional": 0,
+        "citations": 4,
+        "families": [
+          "FIXED_RP"
+        ],
+        "definitionsReferenced": 2,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed $75M restricted payment — fixed and builder pathways: examined 4 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $75M. Partial capacity identified on: §7.6 $25M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "capacity": 25
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": [
+          {
+            "pathId": "7.6:FIXED_RP:RESTRICTED_PAYMENT",
+            "allocateMillions": 25,
+            "status": "INSUFFICIENT"
+          }
+        ]
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.14",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.17",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "status": "INSUFFICIENT",
+          "capacity": 25,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.8",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "label": "$150M acquisition — debt, investment, lien, subsidiary",
+      "depth": {
+        "pathways": 17,
+        "executable": 0,
+        "insufficient": 4,
+        "aiProposed": 12,
+        "conditional": 1,
+        "citations": 15,
+        "families": [
+          "FIXED_RP",
+          "GENERAL_DEBT",
+          "GENERAL_LIEN",
+          "LIEN_SECURING_PERMITTED_DEBT",
+          "FIXED_INVESTMENT"
+        ],
+        "definitionsReferenced": 9,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed $150M acquisition — debt, investment, lien, subsidiary: examined 17 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $150M. Partial capacity identified on: §7.2 $84M; §7.2 $84M; §7.6 $25M; §7.6 $25M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 9; lien pathways: 3.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "capacity": 84
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "capacity": 84
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "capacity": 25
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_INVESTMENT",
+          "capacity": 25
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": null
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.14",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.9",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.13",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "CONDITIONAL",
+          "capacity": null,
+          "reviewDecision": "EDITED"
+        },
+        {
+          "sectionRef": "7.3",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.17",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "status": "INSUFFICIENT",
+          "capacity": 25,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_INVESTMENT",
+          "status": "INSUFFICIENT",
+          "capacity": 25,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.8",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "label": "EBITDA −20% stress on ratio/grower pathways (recompute with stressed fin)",
+      "depth": {
+        "pathways": 12,
+        "executable": 0,
+        "insufficient": 2,
+        "aiProposed": 9,
+        "conditional": 1,
+        "citations": 11,
+        "families": [
+          "GENERAL_DEBT",
+          "GENERAL_LIEN",
+          "LIEN_SECURING_PERMITTED_DEBT"
+        ],
+        "definitionsReferenced": 6,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed EBITDA −20% stress on ratio/grower pathways (recompute with stressed fin): examined 12 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $100M. Partial capacity identified on: §7.2 $84M; §7.2 $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 9; lien pathways: 3.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "capacity": 84
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "capacity": 84
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": null
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.9",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.13",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "CONDITIONAL",
+          "capacity": null,
+          "reviewDecision": "EDITED"
+        },
+        {
+          "sectionRef": "7.3",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.5",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.10",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.4",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.1",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.11",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "label": "Amendment threshold change (capacity after counsel recompile)",
+      "depth": {
+        "pathways": 12,
+        "executable": 0,
+        "insufficient": 2,
+        "aiProposed": 9,
+        "conditional": 1,
+        "citations": 11,
+        "families": [
+          "GENERAL_DEBT",
+          "GENERAL_LIEN",
+          "LIEN_SECURING_PERMITTED_DEBT"
+        ],
+        "definitionsReferenced": 6,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed Amendment threshold change (capacity after counsel recompile): examined 12 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $100M. Partial capacity identified on: §7.2 $84M; §7.2 $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 9; lien pathways: 3.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "capacity": 84
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "capacity": 84
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": null
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_DEBT",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.2",
+          "family": "GENERAL_LIEN",
+          "status": "INSUFFICIENT",
+          "capacity": 84,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.9",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.13",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "CONDITIONAL",
+          "capacity": null,
+          "reviewDecision": "EDITED"
+        },
+        {
+          "sectionRef": "7.3",
+          "family": "LIEN_SECURING_PERMITTED_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.5",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.10",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.4",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.1",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.11",
+          "family": "GENERAL_DEBT",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    },
+    {
+      "id": "F",
+      "label": "Reclassification of historical usage — only if expressly permitted (conditional)",
+      "depth": {
+        "pathways": 4,
+        "executable": 0,
+        "insufficient": 1,
+        "aiProposed": 3,
+        "conditional": 0,
+        "citations": 4,
+        "families": [
+          "FIXED_RP"
+        ],
+        "definitionsReferenced": 2,
+        "stackingAssumed": false
+      },
+      "narrative": "Proposed Reclassification of historical usage — only if expressly permitted (conditional): examined 4 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $50M. Partial capacity identified on: §7.6 $25M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting.",
+      "sufficientSingle": [],
+      "partial": [
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "capacity": 25
+        }
+      ],
+      "combination": {
+        "stackingAssumed": false,
+        "note": "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "feasibleAllocation": [
+          {
+            "pathId": "7.6:FIXED_RP:RESTRICTED_PAYMENT",
+            "allocateMillions": 25,
+            "status": "INSUFFICIENT"
+          }
+        ]
+      },
+      "missing": [
+        "Counsel ACCEPT/EDIT on AI-proposed pathways"
+      ],
+      "pathSample": [
+        {
+          "sectionRef": "7.14",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.17",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        },
+        {
+          "sectionRef": "7.6",
+          "family": "FIXED_RP",
+          "status": "INSUFFICIENT",
+          "capacity": 25,
+          "reviewDecision": "ACCEPTED"
+        },
+        {
+          "sectionRef": "7.8",
+          "family": "FIXED_RP",
+          "status": "AI_PROPOSED",
+          "capacity": null,
+          "reviewDecision": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalPathways": 61,
+    "withPartialCapacity": 6,
+    "withSufficientSingle": 0,
+    "stackingEverAssumed": false
+  }
+}

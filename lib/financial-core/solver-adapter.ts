@@ -46,6 +46,9 @@ export function projectToLegacySnapshot(state: FinancialState): LegacySnapshotPr
       assumedNewDebtRatePct: state.covenantMetricFacts.assumedNewDebtRatePct.value,
       totalDebt: state.balanceSheetFacts.totalDebtPrincipal.value,
       securedDebt: state.balanceSheetFacts.securedDebtPrincipal.value,
+      ...(state.balanceSheetFacts.totalAssets?.value != null
+        ? { totalAssets: state.balanceSheetFacts.totalAssets.value }
+        : {}),
     },
   };
 }

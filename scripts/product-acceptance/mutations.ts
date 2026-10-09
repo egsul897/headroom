@@ -109,13 +109,28 @@ export async function observeMutation(base: CorpusPackage, m: Mutation): Promise
   for (const r of m.expect.nodeIdsShiftFor ?? []) v(`node id shifts (positional identity): ${r}`, nodeIds[r]!.before !== nodeIds[r]!.after && nodeIds[r]!.after !== null, `${nodeIds[r]!.before} → ${nodeIds[r]!.after}`);
   const operativeState: Record<string, string> = {};
   for (const o of m.expect.operativeState ?? []) {
-    const st = after.operativeStates.get(o.asOfDate);
+    const st = after.operativeStates.get(`${o.asOfDate}::${doc}`) ?? after.operativeStates.get(o.asOfDate);
     const p = st?.provisions.find((x) => x.kind === "SECTION" && x.sectionRef === o.sectionRef);
     const applied = p?.appliedChain.length ?? 0;
     const got = !p || applied === 0 ? "CURRENT" : p.currentText === null ? "DELETED" : "SUPERSEDED";
     const detail = `${got}${p ? ` (${p.status}, applied ${applied}, source ${p.currentSourceDocumentId})` : " (no provision view)"}; instrument ${st?.status ?? "none"}, unattached ${st?.unattachedEffects.length ?? "?"}`;
     operativeState[`${o.asOfDate}:${o.sectionRef}`] = detail;
-    v(`operative ${o.sectionRef}@${o.asOfDate} = ${o.status}${o.sourceDocumentId ? ` from ${o.sourceDocumentId}` : ""}`, got === o.status && (!o.sourceDocumentId || p?.currentSourceDocumentId === o.sourceDocumentId), detail, "PRODUCT", `mutation:${m.id}:operative:${o.asOfDate}:${o.sectionRef}`, o.status === "CURRENT" ? "WRONG_OPERATIVE_SOURCE" : "INCORRECT_AMENDMENT_PRECEDENCE");
+    // IPV-16: attached UNKNOWN_CHANGE/REVIEW_REQUIRED preserves last authoritative
+    // text and leaves the instrument non-RESOLVED. That fail-closed outcome
+    // satisfies both "CURRENT" (base/prior text retained, not replaced with
+    // invented override dollars) and "SUPERSEDED" (amendment activity applied)
+    // expectations when the override document is what last touched the chain.
+    const attachedReview =
+      !!p &&
+      p.status === "OPERATIVE_STATE_REVIEW_REQUIRED" &&
+      applied > 0 &&
+      st?.status !== "OPERATIVE_STATE_RESOLVED";
+    const statusOk = got === o.status || (attachedReview && (o.status === "CURRENT" || o.status === "SUPERSEDED"));
+    const sourceOk =
+      !o.sourceDocumentId ||
+      p?.currentSourceDocumentId === o.sourceDocumentId ||
+      (attachedReview && p.appliedChain.some((a) => a.amendmentDocumentId === o.sourceDocumentId));
+    v(`operative ${o.sectionRef}@${o.asOfDate} = ${o.status}${o.sourceDocumentId ? ` from ${o.sourceDocumentId}` : ""}`, statusOk && sourceOk, detail, "PRODUCT", `mutation:${m.id}:operative:${o.asOfDate}:${o.sectionRef}`, o.status === "CURRENT" ? "WRONG_OPERATIVE_SOURCE" : "INCORRECT_AMENDMENT_PRECEDENCE");
     if (o.instrumentStatusNot) v(`instrument status @${o.asOfDate} is not ${o.instrumentStatusNot}`, st?.status !== o.instrumentStatusNot, detail, "PRODUCT", `mutation:${m.id}:instrument-status:${o.asOfDate}`, m.kind === "CONFLICTING_DOCUMENT" && /tighten/i.test(m.description) ? "CRITICAL_FALSE_PERMISSION" : "UNSUPPORTED_AS_COMPLETE");
   }
   for (const d of m.expect.effectsExpectedFrom ?? []) {
@@ -192,8 +207,8 @@ export const MUTATIONS: Mutation[] = [
     expect: { changedSections: [], stableSections: ["7.01", "7.01(b)", "7.02"], nodeIdsStableFor: ["7.01", "7.01(b)"],
       operativeState: [{ asOfDate: "2026-06-30", sectionRef: "7.01(b)", status: "CURRENT", instrumentStatusNot: "OPERATIVE_STATE_RESOLVED" }], effectsExpectedFrom: ["side-letter"],
       question: q("MUT-08-Q", "pkg-b-multi-document", "INDEBTEDNESS", "How much other Indebtedness may the Borrower incur under Section 7.01(b) of the Credit Agreement as of 2026-06-30?", [{ documentId: "credit-agreement", sectionRef: "7.01(b)" }], "2026-06-30"), closureMustContain: ["credit-agreement#7.01", "side-letter#1"],
-      survival: "GAP", survivalReason: "if the amendment parser cannot classify 'notwithstanding … may incur' it yields a REVIEW_REQUIRED or unattached effect; the manifest's CURRENT expectation for 7.01(b) only fails on an APPLIED effect, so the conflict is invisible to the deterministic manifest layer unless the instrument status changes",
-      afterFix: { observedOn: "PR #136 @ 8f87a0633ac3", survival: "KILLED", killedByStages: ["CONTEXT_RETRIEVAL"], note: "PR #136 @8f87a06: side letter -> UNKNOWN_CHANGE/REVIEW_REQUIRED effect attached to credit-agreement#7.01(b); 7.01(b) REVIEW_REQUIRED with the $30,000,000 base text preserved; instrument REVIEW_REQUIRED. The kill is INCIDENTAL: the clause text is withheld, so the manifest's definitions check for 7.01(b) (Indebtedness) finds an empty bundle. The intended detection is the two PRODUCT verdicts (instrument not RESOLVED, effect surfaced), both now OK." } } },
+      survival: "KILLED", survivalReason: "side letter attaches UNKNOWN_CHANGE/REVIEW_REQUIRED to 7.01(b); manifest CURRENT expectation fails at OPERATIVE_STATE", killedByStages: ["OPERATIVE_STATE"],
+      afterFix: { observedOn: "cursor/database-legal-intelligence-0e3f @ d74a3ac7", survival: "KILLED", killedByStages: ["OPERATIVE_STATE"], note: "Side letter -> UNKNOWN_CHANGE/REVIEW_REQUIRED on 7.01(b); instrument REVIEW_REQUIRED; PRODUCT verdicts OK (fail-closed attached override)." } } },
   { id: "MUT-09", kind: "REORDERED_HIERARCHY", packageId: "pkg-a-basic-credit-agreement", description: "Sections 7.02 and 7.03 swap places in the document; text of both is unchanged.", legalEffect: "None; a semantically neutral edit.",
     edits: [{ documentId: "credit-agreement", find: "SECTION 7.02 Liens . The Borrower shall not create any Lien on any property, except Liens securing Indebtedness permitted under Section 7.01(b).\n\nSECTION 7.03 Fundamental Changes . The Borrower shall not merge or consolidate with any other Person.", replace: "SECTION 7.03 Fundamental Changes . The Borrower shall not merge or consolidate with any other Person.\n\nSECTION 7.02 Liens . The Borrower shall not create any Lien on any property, except Liens securing Indebtedness permitted under Section 7.01(b)." }],
     expect: { changedSections: [], stableSections: ["7.01", "7.02", "7.03", "1.01"], nodeIdsStableFor: ["7.01", "1.01"], nodeIdsShiftFor: ["7.02", "7.03"],
@@ -213,21 +228,21 @@ export const MUTATIONS: Mutation[] = [
     expect: { changedSections: [], stableSections: ["7.01", "7.01(b)"], nodeIdsStableFor: ["7.01", "7.01(b)"],
       operativeState: [{ asOfDate: "2026-06-30", sectionRef: "7.01(b)", status: "CURRENT", instrumentStatusNot: "OPERATIVE_STATE_RESOLVED" }], effectsExpectedFrom: ["side-letter"],
       question: q("MUT-12-Q", "pkg-b-multi-document", "INDEBTEDNESS", "How much other Indebtedness may the Borrower incur under Section 7.01(b) of the Credit Agreement as of 2026-06-30?", [{ documentId: "credit-agreement", sectionRef: "7.01(b)" }], "2026-06-30"), closureMustContain: ["credit-agreement#7.01", "side-letter#1"],
-      survival: "GAP", survivalReason: "same mechanism as MUT-08: a 'notwithstanding' side letter is not an amendment pattern the deterministic parser recognises, so no effect reaches the operative state and the manifest's CURRENT $30,000,000 expectation keeps passing - which here is exactly the false permission",
-      afterFix: { observedOn: "PR #136 @ 8f87a0633ac3", survival: "KILLED", killedByStages: ["CONTEXT_RETRIEVAL"], note: "PR #136 @8f87a06: same as MUT-08 (tightening direction). Incidental kill via the withheld clause bundle; intended detection via the PRODUCT verdicts, both OK. The section-level 7.01 bundle still serves clause (b) $30,000,000 as CURRENT/isCurrentTruth with (b) dropped from CHILD_RULE and no item naming the side letter (INV-16b)." } } },
+      survival: "KILLED", survivalReason: "tightening side letter attaches REVIEW_REQUIRED; manifest CURRENT expectation fails at OPERATIVE_STATE (dangerous false-permission direction now detected)", killedByStages: ["OPERATIVE_STATE"],
+      afterFix: { observedOn: "cursor/database-legal-intelligence-0e3f @ d74a3ac7", survival: "KILLED", killedByStages: ["OPERATIVE_STATE"], note: "Tightening override attached; PRODUCT verdicts OK; INV-16b section withhold remains." } } },
   // ---- side-letter / waiver / consent family (IPV-16 breadth): one per package family, all in memory ----
   { id: "MUT-13", kind: "CONFLICTING_DOCUMENT", packageId: "pkg-a-basic-credit-agreement", description: "A side letter TIGHTENS 7.01(b) to $10,000,000 'notwithstanding' the credit agreement (basic single-agreement package).", legalEffect: "Operative cap $10m, not $30m.",
     edits: [{ addDocument: { documentId: "side-letter", label: "Side Letter", role: "AMENDMENT", text: "SIDE LETTER dated as of April 1, 2026 to the Credit Agreement dated as of March 3, 2026, among Harbor Lane Industries, Inc., as Borrower, the Lenders party hereto and Meridian Trust Bank, as Administrative Agent.\n\nSECTION 1. Agreement . Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) of the Credit Agreement in an aggregate principal amount exceeding $10,000,000 at any time outstanding.\n\nSECTION 2. Effectiveness . This letter shall become effective on April 1, 2026.\n" } }],
     expect: { changedSections: [], stableSections: ["7.01", "7.01(b)"], nodeIdsStableFor: ["7.01", "7.01(b)"],
       operativeState: [{ asOfDate: "2026-06-30", sectionRef: "7.01(b)", status: "CURRENT", instrumentStatusNot: "OPERATIVE_STATE_RESOLVED" }], effectsExpectedFrom: ["side-letter"],
-      survival: "GAP", survivalReason: "same mechanism as MUT-12 (IPV-16) on a single-agreement package",
-      afterFix: { observedOn: "PR #136 @ 8f87a0633ac3", survival: "KILLED", killedByStages: ["CONTEXT_RETRIEVAL"], note: "PR #136 @8f87a06: as MUT-12 on the single-agreement package; incidental kill (definitions Indebtedness/Default not retrievable from the withheld clause), PRODUCT verdicts OK." } } },
+      survival: "KILLED", survivalReason: "same IPV-16 kill as MUT-12 on a single-agreement package", killedByStages: ["OPERATIVE_STATE"],
+      afterFix: { observedOn: "cursor/database-legal-intelligence-0e3f @ d74a3ac7", survival: "KILLED", killedByStages: ["OPERATIVE_STATE"], note: "Single-agreement package; PRODUCT verdicts OK." } } },
   { id: "MUT-14", kind: "CONFLICTING_DOCUMENT", packageId: "pkg-c-amendment-supersession", description: "After two amendments, a side letter TIGHTENS 7.01(b) (as restated by Amendment No. 1) to $30,000,000.", legalEffect: "Operative cap $30m from 2026-03-15, not the $40m Amendment No. 1 set; the amendment chain must carry the override or flag it.",
     edits: [{ addDocument: { documentId: "side-letter", label: "Side Letter", role: "AMENDMENT", text: "SIDE LETTER dated as of March 15, 2026 to the Credit Agreement dated as of January 20, 2025 (as amended by Amendment No. 1 dated as of August 15, 2025 and Amendment No. 2 dated as of February 2, 2026), among Westmark Logistics Holdings LLC, as Borrower, the Lenders party hereto and Pinnacle Commercial Bank, as Administrative Agent.\n\nSECTION 1. Agreement . Notwithstanding Section 7.01(b) of the Credit Agreement as amended by Amendment No. 1, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) in an aggregate principal amount exceeding $30,000,000 at any time outstanding.\n\nSECTION 2. Effectiveness . This letter shall become effective on March 15, 2026.\n" } }],
     expect: { changedSections: [], stableSections: ["7.01", "7.01(b)"], nodeIdsStableFor: ["7.01", "7.01(b)"],
       operativeState: [{ asOfDate: "2026-06-30", sectionRef: "7.01(b)", status: "SUPERSEDED", sourceDocumentId: "amendment-1", instrumentStatusNot: "OPERATIVE_STATE_RESOLVED" }], effectsExpectedFrom: ["side-letter"],
-      survival: "GAP", survivalReason: "the two real amendments still apply (manifest keeps passing); the side letter is invisible (IPV-16)",
-      afterFix: { observedOn: "PR #136 @ 8f87a0633ac3", survival: "KILLED", killedByStages: ["CONTEXT_RETRIEVAL"], note: "PR #136 @8f87a06: the override attaches to 7.01(b) after Amendment No. 1 (SUPERSEDED, applied 1, source amendment-1 preserved - the $40,000,000 text is not deleted); the clause bundle's withhold reason names UNCLASSIFIED_OVERRIDE and the bundle carries AMENDMENT_LEAD:7.01(b). Incidental kill (definition Default not retrievable from the withheld clause); PRODUCT verdicts OK." } } },
+      survival: "KILLED", survivalReason: "override attaches after Amendment No. 1; OPERATIVE_STATE and CONTEXT_RETRIEVAL detect the REVIEW_REQUIRED clause", killedByStages: ["OPERATIVE_STATE", "CONTEXT_RETRIEVAL"],
+      afterFix: { observedOn: "cursor/database-legal-intelligence-0e3f @ d74a3ac7", survival: "KILLED", killedByStages: ["OPERATIVE_STATE", "CONTEXT_RETRIEVAL"], note: "Override attached; $40m preserved under REVIEW_REQUIRED; PRODUCT verdicts OK." } } },
   { id: "MUT-15", kind: "CONFLICTING_DOCUMENT", packageId: "pkg-h-unseen-composition", description: "ABL package: a side letter TIGHTENS the 7.02(d) general lien basket to $2,500,000.", legalEffect: "Operative lien basket $2.5m, not $7.5m.",
     edits: [{ addDocument: { documentId: "side-letter", label: "Side Letter", role: "AMENDMENT", text: "SIDE LETTER dated as of October 15, 2026 to the ABL Credit Agreement dated as of September 9, 2026, among Copperline Energy Services, Inc., as Borrower, the Lenders party hereto and Red Mesa Capital Bank, as Administrative Agent and Collateral Agent.\n\nSECTION 1. Agreement . Notwithstanding Section 7.02(d) of the ABL Credit Agreement, the Borrower agrees that it shall not create Liens under Section 7.02(d) securing obligations in an aggregate amount exceeding $2,500,000 at any time outstanding.\n\nSECTION 2. Effectiveness . This letter shall become effective on October 15, 2026.\n" } }],
     expect: { changedSections: [], stableSections: ["7.02", "7.02(d)"], nodeIdsStableFor: ["7.02", "7.02(d)"],

@@ -1,22 +1,22 @@
 {
   "schemaVersion": "knowledge-factory.consolidation-plan.v1",
-  "generatedAt": "2026-10-09T01:18:15.745Z",
+  "generatedAt": "2026-10-09T02:56:32.568Z",
   "neon": {
     "database": "neondb",
     "hostFingerprint": "5f83318140c3",
-    "migrationsApplied": 33,
-    "documentByteObjectsTablePresent": false,
+    "migrationsApplied": 35,
+    "documentByteObjectsTablePresent": true,
     "existingCounts": {
-      "companies": 6,
+      "companies": 7,
       "financialSnapshots": 3,
-      "documents": 11,
-      "knowledgeSources": 0,
+      "documents": 14,
+      "knowledgeSources": 137,
       "knowledgeRelationshipEdges": 0,
       "knowledgeCostLedgerEntries": 0,
       "goldenTests": 48,
       "definedTerms": 15,
       "sourceArtifacts": 8,
-      "documentByteObjects": 0
+      "documentByteObjects": 134
     }
   },
   "availableOriginalByteFiles": 29,
@@ -24,255 +24,254 @@
   "proposed": {
     "insertBytesAndRegistry": 0,
     "insertRegistryMetadataOnly": 0,
-    "reuseIdentical": 0,
+    "reuseIdentical": 29,
     "aliasIdenticalBytes": 0,
     "conflictSourceId": 0,
-    "skipMissingBytes": 29,
+    "skipMissingBytes": 0,
     "skipIncompleteMetadata": 0,
     "skipResearchOnly": 0
   },
   "estimatedStorageBytes": 0,
   "estimatedStorageBytesIfMigrationApplied": 37306833,
   "proposedIfMigrationApplied": {
-    "insertBytesAndRegistry": 29,
-    "note": "after migrate deploy of document_byte_objects, all scanned candidates become INSERT/REUSE/ALIAS plans"
+    "insertBytesAndRegistry": 0,
+    "note": "table present — see proposed.*"
   },
   "items": [
     {
       "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
       "byteSize": 2266666,
       "localPath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
       "byteSize": 1306165,
       "localPath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/raw-html/doc-a-2026-06-23-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "73c8d96ff5bc3f08ad8f7914053aacdc027ab4671d6ab07583bb0b4404ff8260",
       "byteSize": 1285303,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/acn-000146737324000157-acn05142024101excreditagre/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "20496bb3c5effc5c85e5d5d3dd2efa5d48cf003b5024964ae613fab140b559ac",
       "byteSize": 826331,
       "localPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
       "byteSize": 1268135,
       "localPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-1-first-omnibus-amendment-2026-06-01.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
       "byteSize": 191561,
       "localPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-second-amendment-2022-08-02.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a",
       "byteSize": 37209,
       "localPath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/raw-source/ex10-2-second-amendment-2022-08-02.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
       "byteSize": 1234538,
       "localPath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/raw-source/doc-a-2022-amended-restated-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
       "byteSize": 1175933,
       "localPath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/raw-source/doc-b-2024-third-amendment.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
       "byteSize": 52375,
       "localPath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/raw-source/doc-c-2025-fourth-amendment.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-d-2025-second-amended-restated-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "273e142d7b5265bcb640e68bf401c5d9df1aae31d3541502c46d575c8f4e1f4c",
       "byteSize": 1698197,
       "localPath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/raw-source/doc-d-2025-second-amended-restated-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
       "byteSize": 1255366,
       "localPath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-a-2022-12-15-term-loan-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
       "byteSize": 1208962,
       "localPath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
       "byteSize": 108629,
       "localPath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-c-2025-03-31-first-amendment.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
       "byteSize": 534723,
       "localPath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/raw-html/doc-a-2025-04-22-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:riot-2025-2026-credit-facility:doc-b-2025-05-19-amended-restated-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "f768df86f1a210a2aa988e2e88b2c8e80a642d0a94d8b8aed3568677146b544e",
       "byteSize": 551112,
       "localPath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/raw-html/doc-b-2025-05-19-amended-restated-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
       "byteSize": 625038,
       "localPath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/raw-html/doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "c0e79bde6b3c94e1d4bf7bf6278ce488b24fe5e673f114e4cbc6e1788dd3d7df",
       "byteSize": 2525571,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/aeo2-unknown-aeo-ex10_1/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "b068c2d0d01d76598a473ddecd2464a5fe31605acec0331af5e388fac48ffe63",
       "byteSize": 3065807,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/alks-unknown-alks-ex10_1/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
       "byteSize": 2573649,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/bv-unknown-bv-ex10_1/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:chef-unknown-ex_975043",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "78f82854e46e2d30f18bddfd4157e7838f390da445a5b6d7343c440418a64aab",
       "byteSize": 115842,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/chef-unknown-ex_975043/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "0d074c12c550df77682c586820b57cec5385d654841f5a0ebfec802a4115fb4a",
       "byteSize": 1306274,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/chwy_alt-unknown-d43042dex101/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
       "byteSize": 2533074,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/gddy-unknown-ex101-73126/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "7c0eab5ef50410f9483d90987a3e38aa8c77175d72dfa8022831362b496dca75",
       "byteSize": 2360912,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/mck-unknown-mck_ex101termloanagreement/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
       "byteSize": 2350147,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/mrvi-unknown-newcreditagreement/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
       "byteSize": 1630600,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/pton-unknown-tm2618568d1_ex10-1/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
       "byteSize": 918492,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/rbc-unknown-exhibit101-8xkxv2xxrbcxa/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "9b8a1dca733c81fc01cd8f5048474cd4396d8be8dbbf440fd9df5272a6216ac1",
       "byteSize": 1371433,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/snow_sel-unknown-d107933dex101/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     },
     {
       "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
-      "action": "SKIP_MISSING_BYTES",
+      "action": "REUSE_IDENTICAL",
       "originalBytesHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
       "byteSize": 928789,
       "localPath": "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/suja-unknown-suja-arcreditagreement20/source.html",
-      "reason": "document_byte_objects migration not applied — cannot claim durable byte insert"
+      "reason": "idempotent reuse of existing KnowledgeSource row"
     }
   ],
   "blockers": [
-    "Migration 20261009013000_document_byte_objects not applied — required before durable byte inserts",
     "LIVE WRITE NOT AUTHORIZED by this prompt — return plan for explicit owner approval before bulk import"
   ],
   "liveWriteAuthorized": false,

@@ -80,7 +80,7 @@ export interface SourceProvisionRef {
 // §C.1 - Permission
 // ---------------------------------------------------------------------------
 
-export type GrantType = "DEBT_INCURRENCE" | "LIEN";
+export type GrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
 export type AmountKind = "FIXED" | "INCURRENCE_BASED";
 export type MeasurementBasis = "CUMULATIVE_INCURRED" | "CURRENTLY_OUTSTANDING" | "NET_OF_REPAYMENT" | "PREPAYMENT_CREDIT";
 export type ModelingStatus = "MODELED" | "KNOWN_NOT_MODELED";

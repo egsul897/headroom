@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
 import {
   AskIcon,
+  BellIcon,
   CovenantsIcon,
   DocumentsIcon,
   EvidenceIcon,
@@ -14,6 +15,7 @@ import {
   OnboardingIcon,
   PositionIcon,
   SimulateIcon,
+  ToolsIcon,
 } from "@/components/home/icons";
 import { companyNavItems, isCompanyNavItemActive, type CompanyNavKey } from "@/lib/home/nav";
 
@@ -21,11 +23,13 @@ const ICONS: Record<CompanyNavKey, () => ReactNode> = {
   home: HomeIcon,
   documents: DocumentsIcon,
   covenants: CovenantsIcon,
+  intelligence: ToolsIcon,
   position: PositionIcon,
   ledger: LedgerIcon,
   simulate: SimulateIcon,
   evidence: EvidenceIcon,
   ask: AskIcon,
+  alerts: BellIcon,
   onboarding: OnboardingIcon,
 };
 
