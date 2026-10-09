@@ -3,7 +3,7 @@
 **Mission:** Make Headroom reliably ingest, reconcile, and use company financial statements and officer/compliance certificates.  
 **Branch:** `cursor/financial-certificate-engine-8d31`  
 **PR:** https://github.com/egsul897/headroom/pull/220  
-**SHA:** `fda69707a2114450396072cecaeb08a2b177359a`  
+**SHA:** `49de9e7990b4f2fcb1e8e3ada90044ad0af088bb`  
 **Cost:** $0 paid inference (deterministic extraction; no provider calls).
 
 ---
