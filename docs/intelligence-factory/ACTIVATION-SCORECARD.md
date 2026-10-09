@@ -2,6 +2,9 @@
 
 **As of:** 2026-10-09  
 **Branch:** `cursor/neon-activation-repeatable-2229`  
+**SHA:** `2047fa69213e6b7e50dcdf9862e342950a40d63e`  
+**PR:** https://github.com/egsul897/headroom/pull/232  
+**Depends on / includes:** #225, #227  
 **Paid inference:** $0  
 **Neon corpus writes:** 0 (ephemeral E2E/matrix companies cleaned up)  
 **Production Neon writes:** authorization-gated — none performed for promotion
