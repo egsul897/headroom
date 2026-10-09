@@ -118,7 +118,14 @@ export type StructuralHealthFindingCode =
    * Never gates on its own - a lead for a human/further-automated review,
    * per this codebase's own INFO-severity discipline.
    */
-  | "SECTION_NUMBER_SEQUENCE_ANOMALY";
+  | "SECTION_NUMBER_SEQUENCE_ANOMALY"
+  /**
+   * IPV-07 — a lettered/numbered sibling sequence under one parent skips at least one
+   * expected enumerator (e.g. (a), (b), (d) with (c) absent). The parser still mints the
+   * later sibling as its own node; this INFO finding makes the gap visible to onboarding
+   * cards and health consumers so absorption is never silent.
+   */
+  | "ENUMERATION_GAP";
 
 /**
  * `severity: "INFO"` findings (AMBIGUOUS_LEGAL_REFERENCE, DUPLICATE_LABEL_EXPECTED,
@@ -431,6 +438,47 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       rootsByDocumentForSequenceCheck.set(n.documentId, arr);
     }
     checkSectionNumberSequenceAnomalies(rootsByDocumentForSequenceCheck.values());
+  }
+  // IPV-07 — non-contiguous sibling enumerators under one parent.
+  function siblingEnumeratorToken(parentRef: string, childRef: string): string | null {
+    if (!childRef.startsWith(parentRef)) return null;
+    const suffix = childRef.slice(parentRef.length);
+    const m = /^\(([a-zA-Z]{1,7}|\d{1,3})\)$/.exec(suffix);
+    return m?.[1] ?? null;
+  }
+  function enumeratorSequenceIndex(token: string): { kind: string; index: number } | null {
+    if (/^[a-z]$/.test(token)) return { kind: "LOWER_ALPHA", index: token.charCodeAt(0) - 96 };
+    if (/^[A-Z]$/.test(token)) return { kind: "UPPER_ALPHA", index: token.charCodeAt(0) - 64 };
+    if (/^\d+$/.test(token)) return { kind: "NUMERIC", index: Number(token) };
+    return null;
+  }
+  for (const [parentId, kids] of childrenByParentId) {
+    const parent = nodesById.get(parentId);
+    if (!parent) continue;
+    const sorted = [...kids].sort((a, b) => a.charStart - b.charStart);
+    let prev: { kind: string; index: number; token: string; nodeId: string } | null = null;
+    for (const kid of sorted) {
+      const token = siblingEnumeratorToken(parent.sectionRef, kid.sectionRef);
+      if (!token) continue;
+      const seq = enumeratorSequenceIndex(token);
+      if (!seq) continue;
+      if (prev && prev.kind === seq.kind && seq.index > prev.index + 1) {
+        const missing: string[] = [];
+        for (let i = prev.index + 1; i < seq.index; i++) {
+          if (seq.kind === "LOWER_ALPHA") missing.push(`(${String.fromCharCode(96 + i)})`);
+          else if (seq.kind === "UPPER_ALPHA") missing.push(`(${String.fromCharCode(64 + i)})`);
+          else missing.push(`(${i})`);
+        }
+        health.push({
+          code: "ENUMERATION_GAP",
+          severity: "INFO",
+          documentId: kid.documentId,
+          nodeId: kid.nodeId,
+          message: `Enumeration under ${parent.sectionRef} skips ${missing.join(", ")} between (${prev.token}) and (${token}) - a non-contiguous enumerator was minted as its own node rather than absorbed; confirm the source drafting (dropped letter / OCR) before relying on clause letter cross-references.`,
+        });
+      }
+      prev = { ...seq, token, nodeId: kid.nodeId };
+    }
   }
   // §8/§18 - a distinct diagnostic from DUPLICATE_LABEL_EXPECTED (which fires
   // on a single shared leaf-level sectionRef): this one detects two ENTIRE

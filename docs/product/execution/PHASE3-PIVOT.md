@@ -43,11 +43,23 @@ Definition amendments target DEFINITION (not whole Section 1.01). Quote-preferri
 
 Also: inbound override retrieval for Article/section `notwithstanding` caps (INV-04 / 9.15 on package I).
 
+## IPV-06 / IPV-07 / IPV-08 — CLOSED
+
+Structural / provenance on packages G/H:
+
+- Mid-sentence inline enumerations inside definitions no longer mint SUBSECTION/CLAUSE nodes; following terms source to Section 1.01.
+- A single dropped letter at line start mints the later sibling; `ENUMERATION_GAP` health finding is emitted (7.03(d) UNIQUE).
+- Unquoted exhibit `Term:` lines outside a definitions context are not definition records.
+
+## IPV-24 — CLOSED
+
+Pro forma evaluation basis is accountable on ratio gates (A-P5 / N-P5 refuse without `evaluationBasis.proForma`).
+
 ## Queue (existing Phase 3 / legal excellence)
 
 1. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
 2. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
 3. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
-4. Optional later: derive superseding text for unclassified overrides; junior-debt family (IPV-18).
+4. Optional later: junior-debt family (IPV-18).
 
 Primary work surface: PR #197 — not new storage.

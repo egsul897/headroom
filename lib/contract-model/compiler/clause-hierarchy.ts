@@ -428,6 +428,14 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     previousLabelEnd = occ.charEnd;
     const atLineStart = /(?:^|\n)[ \t]*$/.test(sectionText.slice(Math.max(0, occ.charStart - 8), occ.charStart));
 
+    const beforeText = sectionText.slice(Math.max(0, occ.charStart - 16), occ.charStart);
+    // List / heading punctuation (";" / ":" / ".") introduces a hanging or nested clause list,
+    // including the common "SECTION X.XX Title . (a) …" same-line open. Mid-sentence markers joined
+    // only by prose ("that (i) … and (ii) …", "equal to (a) … plus (b) …") are inline enumeration
+    // inside a sentence/definition and must not mint structural nodes (IPV-06).
+    const listIntroduced = /[;:.]\s*(?:and\/or|and|or)?\s*$/i.test(beforeText) || /\)\s*$/.test(beforeText);
+    const mayStartStructuralLevel = atLineStart || listIntroduced;
+
     // 1. Continue the current (deepest open) level, unless an outer letter list is the one this
     // line-start marker actually continues (letteredSiblingFollows).
     if (stack.length > 0) {
@@ -442,6 +450,20 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
         nodes.push({ nodeType: nodeTypeForDepth(stack.length), marker, charStart: occ.charStart, markerCharEnd: occ.charEnd, depth: stack.length, parentMarkerPath: [...top.ancestorPath] });
         continue;
       }
+      // IPV-07: a line-start same-kind marker that skips exactly one enumerator (dropped letter)
+      // must open its own node rather than being silently absorbed. Larger jumps (e.g. (b)→(x))
+      // are restarted / nested runs, not gaps. Ambiguous tokens that could start a nested list
+      // (e.g. "(i)" = letter 9 or roman 1) are left for step 3.
+      if (atLineStart) {
+        const jumped = candidates.find((c) => c.kind === top.kind && c.index === top.lastIndex + 2);
+        const couldStartNested = candidates.some((c) => c.index === 1 && c.kind !== top.kind);
+        if (jumped && !couldStartNested) {
+          top.lastIndex = jumped.index;
+          top.lastMarker = marker;
+          nodes.push({ nodeType: nodeTypeForDepth(stack.length), marker, charStart: occ.charStart, markerCharEnd: occ.charEnd, depth: stack.length, parentMarkerPath: [...top.ancestorPath] });
+          continue;
+        }
+      }
     }
 
     // 2. Return to an already-open OUTER level (pop deeper levels first).
@@ -455,7 +477,6 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
     // Inline-enumeration context: the label is joined to the preceding text by a bare comma or
     // conjunction ("..., (b) ... and (c) ...") rather than by the list punctuation (";" / ":") that
     // separates sibling items of an outer list ("...; (c) ..." / "...; and (c) ...").
-    const beforeText = sectionText.slice(Math.max(0, occ.charStart - 16), occ.charStart);
     const inlineEnumeration = /(?:,|\band|\bor|\band\/or)\s*$/i.test(beforeText) && !/[;:]\s*(?:and\/or|and|or)?\s*$/i.test(beforeText);
     for (let level = stack.length - 2; level >= 0; level--) {
       const outer = stack[level]!;
@@ -469,16 +490,31 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
         resumedOuter = true;
         break;
       }
+      // IPV-07 breadth: same single-letter gap acceptance when resuming an outer list at line start.
+      if (atLineStart) {
+        const jumped = candidates.find((c) => c.kind === outer.kind && c.index === outer.lastIndex + 2);
+        const couldStartNested = candidates.some((c) => c.index === 1 && c.kind !== outer.kind);
+        if (jumped && !couldStartNested) {
+          stack.length = level + 1;
+          outer.lastIndex = jumped.index;
+          outer.lastMarker = marker;
+          nodes.push({ nodeType: nodeTypeForDepth(stack.length), marker, charStart: occ.charStart, markerCharEnd: occ.charEnd, depth: stack.length, parentMarkerPath: [...outer.ancestorPath] });
+          resumedOuter = true;
+          break;
+        }
+      }
     }
     if (resumedOuter) continue;
 
-    // 3. Start a brand-new nested level under the current top. Index 1 (a/i/A/1) always may.
+    // 3. Start a brand-new nested level under the current top. Index 1 (a/i/A/1) always may when the
+    // marker is structurally introduced (line-start hanging indent, list punctuation, or direct
+    // "(d) (i)" nesting). Mid-sentence inline enumerations inside definitions/prose do not mint nodes.
     // A line-start single letter past "a" may also open a restarted letter run when the next
     // line-start marker is the following letter and not the following roman (restartedLetterRun),
     // and when no open letter list of that kind resumes nearby (interior (x)/(y) under an open item).
     const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, atLineStart, stack });
     const startCandidates = candidates.filter((c) => c.index === 1);
-    if ((restarted !== null || startCandidates.length > 0) && stack.length < 6) {
+    if ((restarted !== null || startCandidates.length > 0) && stack.length < 6 && (restarted !== null || mayStartStructuralLevel)) {
       // F-2 mechanism 2: a new family after a hanging paragraph attaches above the innermost list
       // only when that inner list does not itself resume at a later line-start before an outer list does.
       if (hangingParagraphBefore && stack.length >= 2 && !innerResumesBeforeOuter(sectionText, occurrences, occIndex, stack)) stack.length -= 1;
