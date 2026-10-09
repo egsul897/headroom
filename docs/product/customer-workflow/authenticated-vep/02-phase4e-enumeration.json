@@ -1,0 +1,41 @@
+{
+  "schema": "authenticated-vep-phase4e-enumeration.v1",
+  "paidProvidersCalled": false,
+  "verifiedExecutionPackage": "docs/product/customer-workflow/authenticated-vep/verified-execution-package.json",
+  "sourceCertification": "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json",
+  "results": [
+    {
+      "transactionKind": "INCUR_DEBT",
+      "secured": false,
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "incompleteReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
+          "action": "INCUR_DEBT",
+          "capacityKind": null
+        }
+      ]
+    },
+    {
+      "transactionKind": "INCUR_DEBT",
+      "secured": true,
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "incompleteReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
+          "action": "INCUR_DEBT",
+          "capacityKind": null
+        }
+      ]
+    }
+  ],
+  "criticalFalsePermissions": 0,
+  "notes": [
+    "enumerateCertifiedPaths over authentic DERIVED VEP returns CERTIFIED_4E.",
+    "evaluateVerifiedCapacity(REQUIRE) not invoked in this soft-gate pass."
+  ]
+}

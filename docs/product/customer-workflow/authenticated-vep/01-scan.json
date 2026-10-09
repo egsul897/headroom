@@ -7,11 +7,12 @@
     "docs/phase-3-reliability-stratified-certification",
     "docs/phase-3-conmed-population-verified"
   ],
-  "scannedCertificationFiles": 5,
+  "scannedCertificationFiles": 6,
   "statusCounts": {
-    "REVIEW_REQUIRED": 5
+    "REVIEW_REQUIRED": 5,
+    "CERTIFIED": 1
   },
-  "certifiedCount": 0,
+  "certifiedCount": 1,
   "records": [
     {
       "path": "docs/phase-3-live-validation/7.2c-final-source-authority/10-certification.json",
@@ -44,6 +45,14 @@
       ],
       "hasSiblingVerifiedUnits": true,
       "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-first-certified/09-verified-units.json"
+    },
+    {
+      "path": "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "status": "CERTIFIED",
+      "blockerCodes": [],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/09-verified-units.json"
     },
     {
       "path": "docs/phase-3-live-validation/7.2c-rerun-operative-state/10-certification.json",
@@ -86,16 +95,1189 @@
     }
   ],
   "adapter": {
-    "outcome": "REFUSED",
-    "refusals": [
-      {
-        "code": "NO_CERTIFIED_ARTIFACTS",
-        "detail": "no CERTIFIED candidate artifacts were supplied",
-        "refs": []
-      }
+    "outcome": "DERIVED",
+    "package": {
+      "companyId": "conmed-pilot",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "rules": [
+        {
+          "action": "INCUR_DEBT",
+          "capacityExpression": {
+            "gatedBy": null,
+            "kind": "UNLIMITED_CAPACITY",
+            "provenance": {
+              "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "excerpt": null,
+              "sourceCitation": "§7.2(c)",
+              "sourceNodeKey": null
+            },
+            "type": "CAPACITY"
+          },
+          "companyId": "conmed-pilot",
+          "compilerVersion": "semantic-accountability-compiler.v12",
+          "conditions": [
+            {
+              "conditionId": "rule[r-c].condition[0]",
+              "conditionType": "OTHER_RULE_SATISFIED",
+              "description": "Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance.",
+              "evaluationBasis": {
+                "asOfSelector": "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available",
+                "deemedEffectiveAt": "first day of each relevant period for testing such compliance",
+                "proForma": true,
+                "provenance": {
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "excerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "excerptResolution": {
+                    "absCharEnd": 48630,
+                    "absCharStart": 48166,
+                    "boundSha256": "c38b02510d3d1c6f847357bbcbe5090010236d1d06968d067b537aca19063d15",
+                    "charEnd": 527,
+                    "charStart": 63,
+                    "detail": "exact excerpt located exactly once; bound to its source span",
+                    "reason": null,
+                    "segments": 1,
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sourceKey": "operative",
+                    "sourceKind": "OPERATIVE",
+                    "sourceSectionRef": "7.2(c)",
+                    "status": "SOURCE_BOUND_EXACT",
+                    "version": "provenance-source-binding.v2"
+                  },
+                  "rawModelExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceNodeKey": null
+                },
+                "testingPeriod": null,
+                "transactionEffect": "after giving effect to the incurrence of such Indebtedness"
+              },
+              "expression": null,
+              "inventoryItemIds": [
+                "ec8b311518c4ef230e54f0b3",
+                "55c1c59cc23002bacf0f41f8",
+                "197d6a75e518b433abd00585",
+                "a898fe5b6cdf0d0ca5334548"
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "excerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                "excerptResolution": {
+                  "absCharEnd": 48630,
+                  "absCharStart": 48166,
+                  "boundSha256": "c38b02510d3d1c6f847357bbcbe5090010236d1d06968d067b537aca19063d15",
+                  "charEnd": 527,
+                  "charStart": 63,
+                  "detail": "exact excerpt located exactly once; bound to its source span",
+                  "reason": null,
+                  "segments": 1,
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "sourceKey": "operative",
+                  "sourceKind": "OPERATIVE",
+                  "sourceSectionRef": "7.2(c)",
+                  "status": "SOURCE_BOUND_EXACT",
+                  "version": "provenance-source-binding.v2"
+                },
+                "rawModelExcerpt": "provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                "sourceCitation": "§7.2(c)",
+                "sourceNodeKey": null
+              },
+              "referencesDefinitionId": null,
+              "referencesRuleTargets": [
+                {
+                  "boundSemanticTargetIds": [],
+                  "exactSourceTargetRef": "Section 7.1",
+                  "normalizedTargetRef": "7.1",
+                  "owningCandidateRefs": [
+                    "discovery-candidate:a26970121ceb558846ff8d1c",
+                    "discovery-candidate:e37352369564a1e784e0560b"
+                  ],
+                  "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+                  "resolvedStructuralTarget": {
+                    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "sectionRef": "7.1",
+                    "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79"
+                  },
+                  "selector": {
+                    "kind": "QUALIFIED_RULE_SET",
+                    "qualifierText": "financial covenants contained in",
+                    "sourceText": "financial covenants contained in Section 7.1"
+                  }
+                }
+              ],
+              "targetCombination": "ALL_SATISFIED"
+            }
+          ],
+          "covenantFamily": "INDEBTEDNESS",
+          "dependsOn": [],
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "entityScopeAudit": {
+            "before": {
+              "entityScope": [
+                "BORROWER"
+              ],
+              "entityScopeExcluded": [],
+              "sufficiency": "COMPLETE"
+            },
+            "diagnostics": [
+              "ENTITY_SCOPE_UNRECOGNIZED_TAG: wire entity tag(s) \"Restricted Subsidiary\" (entityScope) are not EntityClassTag values; preserved verbatim in entityScopeAudit, not guessed - outranked by the source-derived scope"
+            ],
+            "guardVersion": "entity-scope-consistency-guard.v4",
+            "modelDiscrepancy": {
+              "governingScope": [
+                "BORROWER",
+                "ANY_SUBSIDIARY"
+              ],
+              "modelScope": [
+                "BORROWER"
+              ],
+              "rawEmitted": [
+                "Parent Borrower",
+                "Restricted Subsidiary"
+              ],
+              "relation": "MODEL_UNRECOGNIZED"
+            },
+            "precedence": "GOVERNING_SCOPE_SOURCE",
+            "rawEmitted": {
+              "entityScope": [
+                "Parent Borrower",
+                "Restricted Subsidiary"
+              ],
+              "entityScopeExcluded": [],
+              "source": "RULE_FIELD"
+            },
+            "reasonCodes": [
+              "ENTITY_SCOPE_UNRECOGNIZED_TAG",
+              "ENTITY_SCOPE_SOURCE_DERIVED",
+              "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
+            ],
+            "safeToRely": true,
+            "status": "SOURCE_SCOPE_DERIVED",
+            "tagNormalization": [
+              {
+                "field": "entityScope",
+                "normalized": "BORROWER",
+                "outcome": "RECOGNIZED_ENTITY_TAG",
+                "raw": "Parent Borrower",
+                "viaAlias": true
+              },
+              {
+                "field": "entityScope",
+                "normalized": null,
+                "outcome": "UNRECOGNIZED_ENTITY_TAG",
+                "raw": "Restricted Subsidiary",
+                "viaAlias": false
+              }
+            ],
+            "witness": {
+              "citedUnitLeadIn": null,
+              "decidedBy": "GOVERNING_SCOPE",
+              "governingScope": {
+                "ancestorDistance": 2,
+                "basisRole": "GOVERNING_SCOPE",
+                "basisSectionRef": "article-group:7",
+                "derivedScope": [
+                  "BORROWER",
+                  "ANY_SUBSIDIARY"
+                ],
+                "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+                "phrases": [
+                  "Borrower",
+                  "Subsidiaries"
+                ]
+              },
+              "ownExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+              "parentScopeLeadIn": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:",
+              "signals": [
+                {
+                  "excludedContext": false,
+                  "index": 84,
+                  "partialOnly": false,
+                  "phrase": "Borrower",
+                  "requiresAnyOf": [
+                    "BORROWER"
+                  ],
+                  "role": "CONDITION_SUBJECT",
+                  "satisfied": true,
+                  "satisfiedBy": [
+                    "BORROWER"
+                  ],
+                  "tier": "OWN_EXCERPT"
+                },
+                {
+                  "excludedContext": false,
+                  "index": 338,
+                  "partialOnly": false,
+                  "phrase": "Borrower",
+                  "requiresAnyOf": [
+                    "BORROWER"
+                  ],
+                  "role": "MEASUREMENT_CONTEXT",
+                  "satisfied": true,
+                  "satisfiedBy": [
+                    "BORROWER"
+                  ],
+                  "tier": "OWN_EXCERPT"
+                },
+                {
+                  "excludedContext": false,
+                  "index": 355,
+                  "partialOnly": false,
+                  "phrase": "Subsidiaries",
+                  "requiresAnyOf": [
+                    "GUARANTOR_RS",
+                    "NON_GUARANTOR_RS",
+                    "UNRESTRICTED_SUB"
+                  ],
+                  "role": "MEASUREMENT_CONTEXT",
+                  "satisfied": false,
+                  "satisfiedBy": [],
+                  "tier": "OWN_EXCERPT"
+                },
+                {
+                  "excludedContext": false,
+                  "index": 30,
+                  "partialOnly": false,
+                  "phrase": "Borrower",
+                  "requiresAnyOf": [
+                    "BORROWER"
+                  ],
+                  "role": "OBLIGOR",
+                  "satisfied": true,
+                  "satisfiedBy": [
+                    "BORROWER"
+                  ],
+                  "tier": "GOVERNING_SCOPE"
+                },
+                {
+                  "excludedContext": false,
+                  "index": 246,
+                  "partialOnly": false,
+                  "phrase": "Borrower",
+                  "requiresAnyOf": [
+                    "BORROWER"
+                  ],
+                  "role": "OBLIGOR",
+                  "satisfied": true,
+                  "satisfiedBy": [
+                    "BORROWER"
+                  ],
+                  "tier": "GOVERNING_SCOPE"
+                },
+                {
+                  "excludedContext": false,
+                  "index": 298,
+                  "partialOnly": false,
+                  "phrase": "Subsidiaries",
+                  "requiresAnyOf": [
+                    "GUARANTOR_RS",
+                    "NON_GUARANTOR_RS",
+                    "UNRESTRICTED_SUB"
+                  ],
+                  "role": "OBLIGOR",
+                  "satisfied": false,
+                  "satisfiedBy": [],
+                  "tier": "GOVERNING_SCOPE"
+                }
+              ]
+            }
+          },
+          "entityScopeExcluded": [],
+          "exceptions": [],
+          "inheritedAttributes": [
+            {
+              "ancestorDistance": 2,
+              "attribute": "governingProhibition",
+              "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+              "sourceAuthority": "GOVERNING_SCOPE",
+              "sourceSectionRef": "article-group:7",
+              "sourceSpan": {
+                "charEnd": 44516,
+                "charStart": 44178,
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9",
+                "structuralNodeId": null
+              }
+            },
+            {
+              "ancestorDistance": 1,
+              "attribute": "action",
+              "canonicalValue": "INCUR_DEBT",
+              "compatibility": "COMPATIBLE",
+              "evidence": "Create, incur, assume or suffer to exist any Indebtedness",
+              "sourceAuthority": "PARENT_SCOPE",
+              "sourceSectionRef": "7.2",
+              "sourceSpan": {
+                "charEnd": 47898,
+                "charStart": 47792,
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sha256": "595db524693580f02b0aeaa4cfaeb6c877fa334075a82842b0fb88b348259128",
+                "structuralNodeId": "structural-node:a9b723686e58119d7cd922a5"
+              }
+            },
+            {
+              "ancestorDistance": 2,
+              "attribute": "entityScope",
+              "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+              "compatibility": "INCOMPATIBLE",
+              "evidence": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+              "sourceAuthority": "GOVERNING_SCOPE",
+              "sourceSectionRef": "article-group:7",
+              "sourceSpan": {
+                "charEnd": 44516,
+                "charStart": 44178,
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sha256": "cff2af8f4410fc942f7c589386600559eaca19970589ba1d975418f439921ce9",
+                "structuralNodeId": null
+              }
+            }
+          ],
+          "instrumentKey": "conmed-eighth-ar-credit-agreement",
+          "inventoryItemIds": [
+            "ac31a719a47d4995cf16b375"
+          ],
+          "irSchemaVersion": "headroom-covenant-ir.v1",
+          "operativeLineage": null,
+          "posture": "PERMISSION",
+          "provenance": {
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "excerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "excerptResolution": {
+              "absCharEnd": 48630,
+              "absCharStart": 48107,
+              "boundSha256": "552e4bf94a3e5c9be4a9ef06120dbe1e7aa409cc21a308f635035ef857fbdefa",
+              "charEnd": 527,
+              "charStart": 4,
+              "detail": "exact excerpt located exactly once; bound to its source span",
+              "reason": null,
+              "segments": 1,
+              "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+              "sourceKey": "operative",
+              "sourceKind": "OPERATIVE",
+              "sourceSectionRef": "7.2(c)",
+              "status": "SOURCE_BOUND_EXACT",
+              "version": "provenance-source-binding.v2"
+            },
+            "rawModelExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+            "sourceCitation": "§7.2(c)",
+            "sourceNodeKey": null
+          },
+          "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "sourceContentVersion": "sscv2:01656889c92f40c27ec0c4af29d11d7b602bd7bfe6d38c71a76cfdda54048d1f",
+          "sourceDependencies": [
+            {
+              "boundSemanticTargetIds": [],
+              "description": "requires that the terms of Section 7.3(g) are satisfied; the semantics of Section 7.3(g) are separately owned and resolved at package level",
+              "exactSourceTargetRef": "Section 7.3(g)",
+              "normalizedTargetRef": "7.3(g)",
+              "owningCandidateRefs": [
+                "discovery-candidate:082c80836268c7277cc39c18"
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "excerpt": null,
+                "sourceCitation": "§7.2(c)",
+                "sourceNodeKey": null
+              },
+              "relationshipType": "REQUIRES",
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sectionRef": "7.3(g)",
+                "structuralNodeId": "structural-node:31a18e83f13af616c76add29"
+              },
+              "selector": {
+                "kind": "WHOLE_PROVISION",
+                "qualifierText": null,
+                "sourceText": "Section 7.3(g)"
+              }
+            },
+            {
+              "boundSemanticTargetIds": [],
+              "description": "requires that the terms of Section 7.1 are satisfied; the semantics of Section 7.1 are separately owned and resolved at package level",
+              "exactSourceTargetRef": "Section 7.1",
+              "normalizedTargetRef": "7.1",
+              "owningCandidateRefs": [
+                "discovery-candidate:a26970121ceb558846ff8d1c",
+                "discovery-candidate:e37352369564a1e784e0560b"
+              ],
+              "provenance": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "excerpt": null,
+                "sourceCitation": "§7.2(c)",
+                "sourceNodeKey": null
+              },
+              "relationshipType": "REQUIRES",
+              "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+              "resolvedStructuralTarget": {
+                "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                "sectionRef": "7.1",
+                "structuralNodeId": "structural-node:9f5e530c88ebe99dbd321f79"
+              },
+              "selector": {
+                "kind": "QUALIFIED_RULE_SET",
+                "qualifierText": "financial covenants contained in",
+                "sourceText": "financial covenants contained in Section 7.1"
+              }
+            }
+          ],
+          "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "sourceReferenceAudit": {
+            "entries": [
+              {
+                "authoritative": false,
+                "classification": "MODEL_NARROWED_REFERENCE",
+                "detail": "a sub-clause of the drafted reference \"Section 7.1\"; the source states the whole reference - restored to it",
+                "emitted": "Section 7.1(a)",
+                "path": "rule[r-c].condition[0].referencesRuleTargets",
+                "restoredTo": "Section 7.1",
+                "statedRefs": [
+                  "Section 7.1"
+                ]
+              },
+              {
+                "authoritative": false,
+                "classification": "MODEL_NARROWED_REFERENCE",
+                "detail": "a sub-clause of the drafted reference \"Section 7.1\"; the source states the whole reference - restored to it",
+                "emitted": "Section 7.1(b)",
+                "path": "rule[r-c].condition[0].referencesRuleTargets",
+                "restoredTo": "Section 7.1",
+                "statedRefs": [
+                  "Section 7.1"
+                ]
+              },
+              {
+                "authoritative": false,
+                "classification": "MODEL_NARROWED_REFERENCE",
+                "detail": "a sub-clause of the drafted reference \"Section 7.1\"; the source states the whole reference - restored to it",
+                "emitted": "Section 7.1(c)",
+                "path": "rule[r-c].condition[0].referencesRuleTargets",
+                "restoredTo": "Section 7.1",
+                "statedRefs": [
+                  "Section 7.1"
+                ]
+              },
+              {
+                "authoritative": false,
+                "classification": "MODEL_NARROWED_REFERENCE",
+                "detail": "a sub-clause of the drafted reference \"Section 7.1\"; the source states the whole reference - restored to it",
+                "emitted": "Section 7.1(d)",
+                "path": "rule[r-c].condition[0].referencesRuleTargets",
+                "restoredTo": "Section 7.1",
+                "statedRefs": [
+                  "Section 7.1"
+                ]
+              },
+              {
+                "authoritative": true,
+                "classification": "EXACT_SOURCE_REFERENCE",
+                "detail": "the reference as drafted",
+                "emitted": "Section 7.3(g)",
+                "path": "rule[r-c].dependsOn[0]",
+                "restoredTo": null,
+                "statedRefs": [
+                  "Section 7.3(g)"
+                ]
+              },
+              {
+                "authoritative": true,
+                "classification": "EXACT_SOURCE_REFERENCE",
+                "detail": "the reference as drafted",
+                "emitted": "Section 7.1",
+                "path": "rule[r-c].dependsOn[1]",
+                "restoredTo": null,
+                "statedRefs": [
+                  "Section 7.1"
+                ]
+              }
+            ],
+            "note": "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
+            "statedReferences": [
+              {
+                "normalized": "7.3(g)",
+                "origin": "OPERATIVE_TEXT",
+                "raw": "Section 7.3(g)"
+              },
+              {
+                "normalized": "7.1",
+                "origin": "OPERATIVE_TEXT",
+                "raw": "Section 7.1"
+              }
+            ],
+            "version": "source-reference-fidelity.v3"
+          },
+          "sourceSectionRef": "7.2(c)",
+          "sufficiency": "COMPLETE",
+          "sufficiencyReasons": [
+            "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing ancestor scope article-group:7 (\"Borrower\", \"Subsidiaries\") establishes the applicability exactly; the model's emitted scope [\"Parent Borrower\",\"Restricted Subsidiary\"] is recorded as a discrepancy and did not control the result"
+          ],
+          "transactionScope": null
+        }
+      ],
+      "definitions": [],
+      "sharedCapacities": [],
+      "verifications": [
+        {
+          "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+          "kind": "RULE",
+          "verifiedIdentity": {
+            "companyId": "conmed-pilot",
+            "compilerVersion": "semantic-accountability-compiler.v12",
+            "instrumentKey": "conmed-eighth-ar-credit-agreement",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+            "sourceContentVersion": "sscv2:01656889c92f40c27ec0c4af29d11d7b602bd7bfe6d38c71a76cfdda54048d1f"
+          },
+          "result": {
+            "admissibleEvidence": {
+              "algorithmVersion": "phase-3-f4-retrieved-evidence.v1",
+              "authenticated": [
+                {
+                  "authenticationStatus": "AUTHENTICATED",
+                  "charEnd": 44561,
+                  "charStart": 44517,
+                  "checks": [
+                    {
+                      "code": "A_DOCUMENT_IN_PACKAGE",
+                      "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]",
+                      "passed": true
+                    },
+                    {
+                      "code": "B_SPAN_RESOLVES",
+                      "detail": "provision \"Section 7.1\" resolved to node structural-node:9f5e530c88ebe99dbd321f79 span [44517, 44561)",
+                      "passed": true
+                    },
+                    {
+                      "code": "G_SPAN_IN_BOUNDS",
+                      "detail": "span [44517, 44561) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)",
+                      "passed": true
+                    },
+                    {
+                      "code": "C_RAW_TEXT_MATCH",
+                      "detail": "resolved text is byte-identical to document.text.slice(44517, 44561)",
+                      "passed": true
+                    },
+                    {
+                      "code": "D_HASH_MATCH",
+                      "detail": "compiler-recorded content hash 681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95 and raw text match the independently resolved text (1 record(s))",
+                      "passed": true
+                    },
+                    {
+                      "code": "F_NOT_UNRELATED_DOCUMENT",
+                      "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:9f5e530c88ebe99dbd321f79) is the same source this verifier resolved",
+                      "passed": true
+                    },
+                    {
+                      "code": "E_OPERATIVE_VERSION",
+                      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)",
+                      "passed": true
+                    }
+                  ],
+                  "compilerRecord": {
+                    "matched": true,
+                    "present": true,
+                    "toolCallIndexes": [
+                      1
+                    ]
+                  },
+                  "contentHash": "681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95",
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "documentVersion": "BASE_DOCUMENT",
+                  "duplicatesLocalWindow": false,
+                  "evidenceId": "1af34532d2a1c4de4af8ae822fc2eb42748b5b4498515be458a730e3f1f57ff9",
+                  "linkage": [
+                    {
+                      "compilerRecordedContentHash": "681e58e3cc689d8bf6409d5bee748444f762e7aa873571d19ff13a97b8c42d95",
+                      "detail": "toolCallLog[1] getReferencedProvision {\"ref\":\"Section 7.1\"}",
+                      "origin": "COMPILER_TOOL_CALL"
+                    }
+                  ],
+                  "operativeEvidenceStatus": "CURRENT",
+                  "provenanceClass": "AUTHENTICATED_RETRIEVED",
+                  "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+                  "rawText": "SECTION 7.1 Financial Condition\nCovenants .\n",
+                  "relationshipToUnit": "section \"Section 7.1\" consulted for candidate discovery-candidate:7a3f36589dacd05c41331a80 (7.2(c)) - support only",
+                  "representedDefinitionIds": [],
+                  "requestKey": "Section 7.1",
+                  "requestKind": "PROVISION",
+                  "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+                  "role": "REFERENCED_ONLY",
+                  "scopeKey": "7.1",
+                  "sourceNodeId": "structural-node:9f5e530c88ebe99dbd321f79",
+                  "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.1"
+                },
+                {
+                  "authenticationStatus": "AUTHENTICATED",
+                  "charEnd": 59556,
+                  "charStart": 58598,
+                  "checks": [
+                    {
+                      "code": "A_DOCUMENT_IN_PACKAGE",
+                      "detail": "document \"conmed-doc-a-eighth-ar-credit-agreement\" belongs to this instrument's package [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-d-first-omnibus-amendment-2026]",
+                      "passed": true
+                    },
+                    {
+                      "code": "B_SPAN_RESOLVES",
+                      "detail": "provision \"Section 7.3(g)\" resolved to node structural-node:31a18e83f13af616c76add29 span [58598, 59556)",
+                      "passed": true
+                    },
+                    {
+                      "code": "G_SPAN_IN_BOUNDS",
+                      "detail": "span [58598, 59556) lies within document \"conmed-doc-a-eighth-ar-credit-agreement\" (94258 chars)",
+                      "passed": true
+                    },
+                    {
+                      "code": "C_RAW_TEXT_MATCH",
+                      "detail": "resolved text is byte-identical to document.text.slice(58598, 59556)",
+                      "passed": true
+                    },
+                    {
+                      "code": "D_HASH_MATCH",
+                      "detail": "compiler-recorded content hash 2fb31f873b2a8c72ae75a7bc44659d43b4cc908ec95173ad6134f60ecd21e6e8 and raw text match the independently resolved text (1 record(s))",
+                      "passed": true
+                    },
+                    {
+                      "code": "F_NOT_UNRELATED_DOCUMENT",
+                      "detail": "compiler-recorded document/node (conmed-doc-a-eighth-ar-credit-agreement / structural-node:31a18e83f13af616c76add29) is the same source this verifier resolved",
+                      "passed": true
+                    },
+                    {
+                      "code": "E_OPERATIVE_VERSION",
+                      "detail": "confirmed current operative text (CURRENT, BASE_DOCUMENT)",
+                      "passed": true
+                    }
+                  ],
+                  "compilerRecord": {
+                    "matched": true,
+                    "present": true,
+                    "toolCallIndexes": [
+                      0
+                    ]
+                  },
+                  "contentHash": "2fb31f873b2a8c72ae75a7bc44659d43b4cc908ec95173ad6134f60ecd21e6e8",
+                  "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "documentVersion": "BASE_DOCUMENT",
+                  "duplicatesLocalWindow": false,
+                  "evidenceId": "db28aa57ea82fb8db29844a459f83966ec3b541f17c3956ddc8e5a0e64be9a5f",
+                  "linkage": [
+                    {
+                      "compilerRecordedContentHash": "2fb31f873b2a8c72ae75a7bc44659d43b4cc908ec95173ad6134f60ecd21e6e8",
+                      "detail": "toolCallLog[0] getReferencedProvision {\"ref\":\"Section 7.3(g)\"}",
+                      "origin": "COMPILER_TOOL_CALL"
+                    }
+                  ],
+                  "operativeEvidenceStatus": "CURRENT",
+                  "provenanceClass": "AUTHENTICATED_RETRIEVED",
+                  "provenanceOrigin": "VERIFIER_INDEPENDENT_RESOLUTION",
+                  "rawText": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n",
+                  "relationshipToUnit": "section \"Section 7.3(g)\" consulted for candidate discovery-candidate:7a3f36589dacd05c41331a80 (7.2(c)) - support only",
+                  "representedDefinitionIds": [],
+                  "requestKey": "Section 7.3(g)",
+                  "requestKind": "PROVISION",
+                  "retrievalReason": "the compiler's own evidence tool retrieved it during compilation",
+                  "role": "REFERENCED_ONLY",
+                  "scopeKey": "7.3(g)",
+                  "sourceNodeId": "structural-node:31a18e83f13af616c76add29",
+                  "sourceNodeKey": "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)"
+                }
+              ],
+              "evidenceSetHash": "95024a734f6fe2c203c336b0c1c6dd16c6ed33d61d798b9e4b16cb45e781b95f",
+              "localSourceHash": "d1d9ba7d8d98729d30df82d6b5e3ac4016a7e9155917786247592d57d3477472",
+              "packageDocumentIds": [
+                "conmed-doc-a-eighth-ar-credit-agreement",
+                "conmed-doc-d-first-omnibus-amendment-2026"
+              ],
+              "rejected": []
+            },
+            "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+            "conditionSuspicion": null,
+            "evidenceSetHash": "95024a734f6fe2c203c336b0c1c6dd16c6ed33d61d798b9e4b16cb45e781b95f",
+            "findings": [],
+            "irInventory": {
+              "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+              "definitionCount": 0,
+              "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2",
+              "items": [
+                {
+                  "currency": null,
+                  "irPath": "rules[0].action",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "43e576c81d252e3d66b81c98cbae3ac4023ed99d7029f89f10481670563451f7",
+                  "kind": "ACTION",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "INCUR_DEBT"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].posture",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4e4953f4cb9365dccea388b87ebaa20696c36d2ae3593fee58497d8ba67f5a04",
+                  "kind": "POSTURE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "PERMISSION"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].entityScope",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "d716fdfd46d0451413fab71c2ab3ecbeeace1aff4e4c07f772f72870cb9857f5",
+                  "kind": "ENTITY_SCOPE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].conditions[0]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "5dc92fd3a0b9af973a095570deb42e59eca8b62999eaa61528b34a0c9718d520",
+                  "kind": "CONDITION",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section 7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance."
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].conditions[0].referencesRuleTargets[0]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "930a2a5cd4df7b06f2910c95fd61b80b9e1dcb8eefbe27bd09a29e14075abbfd",
+                  "kind": "CROSS_RULE_TARGET",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "7.1|ALL_SATISFIED|SOURCE_REFERENCE_RESOLVED"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].conditions[0].evaluationBasis",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "cfb8628cfad11fdfbf4f67045fcc72ae5135313eaa8d32fb508b9aa9d50dd50a",
+                  "kind": "EVALUATION_BASIS",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                  "textValue": "proForma:true;transactionEffect:true;asOfSelector:true;deemedEffectiveAt:true;testingPeriod:false"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].sourceDependencies[0]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4a203a700e0751cda669d7e58a957a57fd133e4549e813f6eaf543064992729c",
+                  "kind": "SOURCE_DEPENDENCY",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": null,
+                  "textValue": "REQUIRES:7.3(g)|SOURCE_REFERENCE_RESOLVED"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].sourceDependencies[1]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "3b3c3ea88f01a7ba076bf28d9298d27dca3fa33cdd93d9686ee6b9f1b51ebd4f",
+                  "kind": "SOURCE_DEPENDENCY",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": null,
+                  "textValue": "REQUIRES:7.1|SOURCE_REFERENCE_RESOLVED"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].inheritedAttributes[0]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "356191e9a9ac60572af0bd214aec6b6e616ebabefff3ebf0b9061e9666fe5816",
+                  "kind": "INHERITED_ATTRIBUTE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "article-group:7",
+                  "sourceExcerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+                  "textValue": "governingProhibition:@GOVERNING_SCOPE:article-group:7"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].inheritedAttributes[1]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "f21274ea9bad0b205a45e0c26e8cae84a02dd83a09c8666870eb4fc43edd8e4c",
+                  "kind": "INHERITED_ATTRIBUTE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "7.2",
+                  "sourceExcerpt": "Create, incur, assume or suffer to exist any Indebtedness",
+                  "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.2"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].inheritedAttributes[2]",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "63a8dac7c48ccf06dab3d8e82eb8e7b5346010c8bde480d244c2cf87ad79fd57",
+                  "kind": "INHERITED_ATTRIBUTE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "article-group:7",
+                  "sourceExcerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the P",
+                  "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@GOVERNING_SCOPE:article-group:7"
+                },
+                {
+                  "currency": null,
+                  "irPath": "rules[0].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "555a338a90248c855f58b158474f357a44b472cc3aa31da0df0b5403bd893e88",
+                  "kind": "UNLIMITED_CAPACITY_MARKER",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                  "sourceCitation": "§7.2(c)",
+                  "sourceExcerpt": null,
+                  "textValue": null
+                }
+              ],
+              "ruleCount": 1
+            },
+            "numericAssertions": {
+              "groundings": [],
+              "inventory": {
+                "algorithmVersion": "fix-b-numeric-assertion.v1",
+                "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+                "fieldsWalked": 4,
+                "items": []
+              }
+            },
+            "qualitativeLineage": {
+              "inventoryAvailable": true,
+              "materialUngrounded": 0,
+              "nonMaterialLineageGaps": 0,
+              "sourceTextsConsulted": 24,
+              "units": [
+                {
+                  "excerptLocated": true,
+                  "grounded": [
+                    "posture",
+                    "action",
+                    "ruleType",
+                    "covenantFamily",
+                    "entityScope",
+                    "conditions[0]"
+                  ],
+                  "hasProvenance": true,
+                  "inventoryItemIds": [
+                    "ac31a719a47d4995cf16b375"
+                  ],
+                  "kind": "RULE",
+                  "ungrounded": [],
+                  "unitId": "ir-rule:29309c463e06b77b4b243eda",
+                  "unknownInventoryItemIds": [
+                    "ac31a719a47d4995cf16b375"
+                  ],
+                  "verdict": "GROUNDED"
+                }
+              ],
+              "version": "qualitative-grounding.v4"
+            },
+            "reconciliation": {
+              "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+              "items": [
+                {
+                  "classification": "POSSIBLY_ACCOUNTED_FOR",
+                  "irItems": [],
+                  "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+                  "sourceItem": {
+                    "charEnd": 96,
+                    "charStart": 81,
+                    "itemId": "c133c4516a32b27ff474b7609daf1e11b9be18e18c24f8e8a8cab366185cb845",
+                    "kind": "METRIC_MENTION",
+                    "numericValue": null,
+                    "rawText": "Parent Borrower",
+                    "sourceCitation": "7.2(c)",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "structuralNodeKey": null
+                  }
+                },
+                {
+                  "classification": "POSSIBLY_ACCOUNTED_FOR",
+                  "irItems": [],
+                  "reason": "source mention \"Parent Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+                  "sourceItem": {
+                    "charEnd": 350,
+                    "charStart": 335,
+                    "itemId": "038d93da25de501a4e93f81fbeee3a932e89e95ad068de09a5681a455bc949c6",
+                    "kind": "METRIC_MENTION",
+                    "numericValue": null,
+                    "rawText": "Parent Borrower",
+                    "sourceCitation": "7.2(c)",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "structuralNodeKey": null
+                  }
+                },
+                {
+                  "classification": "ACCOUNTED_FOR",
+                  "irItems": [
+                    {
+                      "currency": null,
+                      "irPath": "rules[0].sourceDependencies[0]",
+                      "isAlternativeWithinSelection": false,
+                      "itemId": "4a203a700e0751cda669d7e58a957a57fd133e4549e813f6eaf543064992729c",
+                      "kind": "SOURCE_DEPENDENCY",
+                      "numericValue": null,
+                      "ownerTermName": null,
+                      "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                      "sourceCitation": "§7.2(c)",
+                      "sourceExcerpt": null,
+                      "textValue": "REQUIRES:7.3(g)|SOURCE_REFERENCE_RESOLVED"
+                    }
+                  ],
+                  "reason": "source reference \"Section 7.3(g)\" is represented by 1 typed reference item(s) (SOURCE_DEPENDENCY)",
+                  "sourceItem": {
+                    "charEnd": 61,
+                    "charStart": 47,
+                    "itemId": "e8f9625d6cb08a96cb2a995a5585119aa590d081f5eb9ac432065f90ff1111a6",
+                    "kind": "SECTION_REFERENCE",
+                    "normalizedRef": "7.3(g)",
+                    "numericValue": null,
+                    "provenanceClass": "PRIMARY_LOCAL",
+                    "rawText": "Section 7.3(g)",
+                    "sourceCitation": "7.2(c)",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "structuralNodeKey": null
+                  }
+                },
+                {
+                  "classification": "ACCOUNTED_FOR",
+                  "irItems": [
+                    {
+                      "currency": null,
+                      "irPath": "rules[0].conditions[0].referencesRuleTargets[0]",
+                      "isAlternativeWithinSelection": false,
+                      "itemId": "930a2a5cd4df7b06f2910c95fd61b80b9e1dcb8eefbe27bd09a29e14075abbfd",
+                      "kind": "CROSS_RULE_TARGET",
+                      "numericValue": null,
+                      "ownerTermName": null,
+                      "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                      "sourceCitation": "§7.2(c)",
+                      "sourceExcerpt": "provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance",
+                      "textValue": "7.1|ALL_SATISFIED|SOURCE_REFERENCE_RESOLVED"
+                    },
+                    {
+                      "currency": null,
+                      "irPath": "rules[0].sourceDependencies[1]",
+                      "isAlternativeWithinSelection": false,
+                      "itemId": "3b3c3ea88f01a7ba076bf28d9298d27dca3fa33cdd93d9686ee6b9f1b51ebd4f",
+                      "kind": "SOURCE_DEPENDENCY",
+                      "numericValue": null,
+                      "ownerTermName": null,
+                      "ruleOrDefinitionId": "ir-rule:29309c463e06b77b4b243eda",
+                      "sourceCitation": "§7.2(c)",
+                      "sourceExcerpt": null,
+                      "textValue": "REQUIRES:7.1|SOURCE_REFERENCE_RESOLVED"
+                    }
+                  ],
+                  "reason": "source reference \"Section 7.1\" is represented by 2 typed reference item(s) (CROSS_RULE_TARGET + SOURCE_DEPENDENCY)",
+                  "sourceItem": {
+                    "charEnd": 255,
+                    "charStart": 244,
+                    "itemId": "0411a1a3f94447a9e6da35035ee3d8b2b8aaf1f0904993ab17dcdfd63bd31e0b",
+                    "kind": "SECTION_REFERENCE",
+                    "normalizedRef": "7.1",
+                    "numericValue": null,
+                    "provenanceClass": "PRIMARY_LOCAL",
+                    "rawText": "Section 7.1",
+                    "sourceCitation": "7.2(c)",
+                    "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                    "structuralNodeKey": null
+                  }
+                }
+              ],
+              "materialUnresolvedCount": 0
+            },
+            "semanticReviewInvoked": true,
+            "semanticReviewSkippedReason": null,
+            "sourceInventory": {
+              "apparentIndependentUnitCount": 1,
+              "apparentIndependentUnitEvidence": [
+                "(c)"
+              ],
+              "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+              "inventoryAlgorithmVersion": "phase-3c-source-inventory.v4",
+              "items": [
+                {
+                  "charEnd": 76,
+                  "charStart": 63,
+                  "itemId": "4d93f1467a33ae4ae192ec36784adc6cff3e9a4d895f4e8f9d0b57ee9155441a",
+                  "kind": "CONDITIONAL_PHRASE",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "provided that",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 141,
+                  "charStart": 126,
+                  "itemId": "9fc0ba98ccd54d31a7d4dde4bbc0882cf3179dfed9face3b93d362e0633146ba",
+                  "kind": "CONDITIONAL_PHRASE",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "pro forma basis",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 164,
+                  "charStart": 148,
+                  "itemId": "83203a2783592e169bd9797cd7bce83bab68cf211c9a83d959ad6bc2d2b05172",
+                  "kind": "CONDITIONAL_PHRASE",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "giving effect to",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 96,
+                  "charStart": 88,
+                  "itemId": "c711960503070c51ff32710396d4d09948a944273f3e0661ea6f52de9ef137b8",
+                  "kind": "ENTITY_SCOPE_TERM",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "Borrower",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 350,
+                  "charStart": 342,
+                  "itemId": "fda5ed4432185f356b222bf8f4fdcaa4c43ed4af78f3a02b14a46606b2463d9c",
+                  "kind": "ENTITY_SCOPE_TERM",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "Borrower",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 179,
+                  "charStart": 169,
+                  "itemId": "e6e40f38f3a7e1ee2b45ff9c902052916cad81bd4fd318361d60d4dc821438d9",
+                  "kind": "TRANSACTION_ACTION_SIGNAL",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "incurrence",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 96,
+                  "charStart": 81,
+                  "itemId": "c133c4516a32b27ff474b7609daf1e11b9be18e18c24f8e8a8cab366185cb845",
+                  "kind": "METRIC_MENTION",
+                  "numericValue": null,
+                  "rawText": "Parent Borrower",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 350,
+                  "charStart": 335,
+                  "itemId": "038d93da25de501a4e93f81fbeee3a932e89e95ad068de09a5681a455bc949c6",
+                  "kind": "METRIC_MENTION",
+                  "numericValue": null,
+                  "rawText": "Parent Borrower",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 61,
+                  "charStart": 47,
+                  "itemId": "e8f9625d6cb08a96cb2a995a5585119aa590d081f5eb9ac432065f90ff1111a6",
+                  "kind": "SECTION_REFERENCE",
+                  "normalizedRef": "7.3(g)",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "Section 7.3(g)",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": 255,
+                  "charStart": 244,
+                  "itemId": "0411a1a3f94447a9e6da35035ee3d8b2b8aaf1f0904993ab17dcdfd63bd31e0b",
+                  "kind": "SECTION_REFERENCE",
+                  "normalizedRef": "7.1",
+                  "numericValue": null,
+                  "provenanceClass": "PRIMARY_LOCAL",
+                  "rawText": "Section 7.1",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                },
+                {
+                  "charEnd": -1,
+                  "charStart": -1,
+                  "itemId": "c24b3f0e2cb3f7434a0afc79ab7b4be57c758bf802f126754f06c5581f73025b",
+                  "kind": "INDEPENDENT_LIST_ITEM",
+                  "numericValue": null,
+                  "rawText": "(c)",
+                  "sourceCitation": "7.2(c)",
+                  "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+                  "structuralNodeKey": null
+                }
+              ],
+              "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for.",
+              "supersessionStatus": "CURRENT_OPERATIVE"
+            },
+            "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+            "verificationProjection": {
+              "hash": "98634253155fd483e250e9860c12b876e6db32dff2780329c71333aa96292c28",
+              "shownToReviewer": true,
+              "version": "phase-3c-verification-projection.v4"
+            },
+            "verifiedAt": "2026-10-09T18:39:37.192Z",
+            "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
+          }
+        }
+      ]
+    },
+    "included": [
+      "discovery-candidate:7a3f36589dacd05c41331a80"
     ],
-    "included": [],
-    "excluded": []
+    "excluded": [],
+    "artifactPackageHashes": [
+      "ff8d96c9ad6f2bbca6c84c5c84288f917fdcc2f3e2b21c15d3c8b37202d79f98"
+    ]
   },
   "evaluateVerifiedCapacityInvoked": false,
   "certifyPackageInvoked": false,

@@ -22,7 +22,7 @@ import type { ContractAction } from "../../types";
 // module reconstructs from another regex's `source` preserves that regex's own flags (`withFlags`). v1 rebuilt the object
 // regexes flag-less, so a capitalised object noun as drafted ("Dispose of any of its Property") was not an ASSET object,
 // the scan skipped the first verb cluster and recorded a LATER cluster as the governing act - a false source act.
-export const CANONICAL_ACTION_ONTOLOGY_VERSION = "canonical-action-ontology.v2";
+export const CANONICAL_ACTION_ONTOLOGY_VERSION = "canonical-action-ontology.v3";
 
 export type ActionCoverage = "COVERED" | "MIXED_CATEGORIES" | "ONTOLOGY_GAP" | "NO_ACTION_FOUND";
 export type ActionCompatibility = "COMPATIBLE" | "INCOMPATIBLE" | "UNDETERMINED";
@@ -47,7 +47,9 @@ interface ObjectFamily { family: string; re: RegExp; byVerbGroup: { group: strin
 /** Verb lemma groups. Each regex matches an inflected verb or verb phrase; `group` names the semantic group the ontology maps per object family. */
 const VERB_GROUPS: readonly { group: string; re: RegExp }[] = [
   { group: "GUARANTEE", re: /\bguarant(?:y|ee|ees|eed|eeing|ies)\b/i },
-  { group: "PREPAY", re: /\b(?:prepay(?:s|ment)?|redeem(?:s)?|repurchase(?:s)?|defease(?:s)?|retire(?:s)?|repay(?:s)?|purchase(?:s)?|make (?:any )?(?:optional |voluntary )?(?:prepayment|payment of principal))\b/i },
+  // IPV-13: bare "purchase" must not match the term of art "purchase money …" (that is
+  // an Indebtedness kind being incurred, not a prepayment/purchase of debt).
+  { group: "PREPAY", re: /\b(?:prepay(?:s|ment)?|redeem(?:s)?|repurchase(?:s)?|defease(?:s)?|retire(?:s)?|repay(?:s)?|purchase(?:s)?(?!\s+money)|make (?:any )?(?:optional |voluntary )?(?:prepayment|payment of principal))\b/i },
   { group: "INCUR", re: /\b(?:create(?:s)?|incur(?:s)?|assume(?:s)?|suffer(?:s)? to exist|permit(?:s)? to exist|become(?:s)? liable|issue(?:s)?|exist(?:s)?)\b/i },
   { group: "GRANT_SECURITY", re: /\b(?:grant(?:s)?|pledge(?:s)?|mortgage(?:s)?|encumber(?:s)?)\b/i },
   { group: "MAKE", re: /\b(?:make(?:s)?|hold(?:s)?|acquire(?:s)?|own(?:s)?)\b/i },
@@ -68,7 +70,9 @@ const OBJECT_FAMILIES: readonly ObjectFamily[] = [
   { family: "INVESTMENT", re: /\b(?:Investments?|loans? or advances?|Acquisitions?)\b/i, byVerbGroup: [{ group: "MAKE", action: "MAKE_INVESTMENT" }, { group: "INCUR", action: "MAKE_INVESTMENT" }], defaultAction: "MAKE_INVESTMENT" },
   { family: "RESTRICTED_PAYMENT", re: /\b(?:dividends?|Restricted Payments?|distributions?)\b/i, byVerbGroup: [{ group: "PAY", action: "PAY_DIVIDEND" }, { group: "MAKE", action: "PAY_DIVIDEND" }], defaultAction: "PAY_DIVIDEND" },
   { family: "EQUITY_REPURCHASE", re: /\b(?:Capital Stock|Equity Interests?|shares)\b/i, byVerbGroup: [{ group: "PREPAY", action: "REPURCHASE_EQUITY" }], defaultAction: null },
-  { family: "ASSET", re: /\b(?:assets?|propert(?:y|ies)|Dispositions?)\b/i, byVerbGroup: [{ group: "DISPOSE", action: "SELL_ASSET" }], defaultAction: null },
+  // IPV-13: "make any Disposition" is the standard ASSET_SALES lead-in (MAKE + Disposition),
+  // not only "dispose of / sell … Property".
+  { family: "ASSET", re: /\b(?:assets?|propert(?:y|ies)|Dispositions?)\b/i, byVerbGroup: [{ group: "DISPOSE", action: "SELL_ASSET" }, { group: "MAKE", action: "SELL_ASSET" }], defaultAction: null },
   { family: "AFFILIATE_TRANSACTION", re: /\b(?:transactions? (?:with|involving) (?:any )?(?:of its )?Affiliates?)\b/i, byVerbGroup: [{ group: "ENTER", action: "ENTER_AFFILIATE_TRANSACTION" }], defaultAction: "ENTER_AFFILIATE_TRANSACTION" },
   { family: "UNRESTRICTED_DESIGNATION", re: /\b(?:as an? Unrestricted Subsidiary|Unrestricted Subsidiar(?:y|ies))\b/i, byVerbGroup: [{ group: "DESIGNATE", action: "DESIGNATE_UNRESTRICTED_SUBSIDIARY" }], defaultAction: null },
   { family: "DOCUMENT", re: /\b(?:agreements?|documents?|certificate of incorporation|organizational documents?)\b/i, byVerbGroup: [{ group: "AMEND", action: "AMEND_DOCUMENT" }], defaultAction: null },

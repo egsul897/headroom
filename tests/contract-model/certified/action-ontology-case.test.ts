@@ -15,8 +15,8 @@ const same = (a: ReturnType<typeof classifySourceAction>, b: ReturnType<typeof c
 };
 
 describe("defect C - case does not decide an object family", () => {
-  it("version: canonical-action-ontology.v2", () => {
-    expect(CANONICAL_ACTION_ONTOLOGY_VERSION).toBe("canonical-action-ontology.v2");
+  it("version: canonical-action-ontology.v3", () => {
+    expect(CANONICAL_ACTION_ONTOLOGY_VERSION).toBe("canonical-action-ontology.v3");
   });
 
   it("C1: 'Dispose of any of its Property' -> ASSET / SELL_ASSET / COVERED", () => {

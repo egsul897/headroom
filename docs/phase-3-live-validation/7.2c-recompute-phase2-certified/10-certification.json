@@ -1,0 +1,34 @@
+{
+  "decisionVersion": "phase3-candidate-certification.v1",
+  "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+  "status": "CERTIFIED",
+  "blockers": [],
+  "warnings": [
+    {
+      "code": "SEMANTIC_BINDING_PENDING_PACKAGE",
+      "detail": "rule ir-rule:29309c463e06b77b4b243eda references Section 7.3(g), Section 7.1 - structurally resolved (owned by discovery-candidate:082c80836268c7277cc39c18, discovery-candidate:a26970121ceb558846ff8d1c, discovery-candidate:e37352369564a1e784e0560b); semantic target binding is a package-level step",
+      "refs": [
+        "ir-rule:29309c463e06b77b4b243eda"
+      ]
+    },
+    {
+      "code": "TARGET_ECONOMICS_EXCLUDED",
+      "detail": "figures the model restated from referenced provisions were excluded from this unit's dependency semantics",
+      "refs": [
+        "80%"
+      ]
+    }
+  ],
+  "sourceIdentityStrength": "STRONG",
+  "semanticSourceIdentityStrength": "STRONG",
+  "operativeSourceVersion": "scv1:da3e85c09630c76552b6312c0a4044a276f5cef7ee569b0db851fa50bd720d9a",
+  "semanticSourceContractVersion": "sscv2:01656889c92f40c27ec0c4af29d11d7b602bd7bfe6d38c71a76cfdda54048d1f",
+  "artifactPackageHash": "ff8d96c9ad6f2bbca6c84c5c84288f917fdcc2f3e2b21c15d3c8b37202d79f98",
+  "snapshotHash": "559ac7156830fc405222ae46df4bc6798c0fea39cdafbdb4f4afb4d1221cbd76",
+  "unitIds": [
+    "ir-rule:29309c463e06b77b4b243eda"
+  ],
+  "unitArtifactHashes": {
+    "ir-rule:29309c463e06b77b4b243eda": "d7e61f9db798ca61d2aa22a6ddbe861e4e2f382058833e4c98e8c6d845ef153f"
+  }
+}

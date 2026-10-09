@@ -163,6 +163,32 @@ describe("POST-3F.2 Unit B3-B6 - restatement chain resolution", () => {
 });
 
 describe("POST-3F.2 Unit B7-B10 - ambiguity and false-positive safeguards", () => {
+  it("B6b: an earlier amendment that quotes a prior-generation date must not type-only-match a later restatement that did not yet exist (CONMED Second Amendment → Eighth shape)", () => {
+    // Synthetic: Amendment dated March 2023 amends "Credit Agreement dated January 10, 2023", but the only
+    // CREDIT_AGREEMENT in the package is a later A&R dated June 2024. Type-only matching would falsely attach
+    // the earlier amendment to the later restatement; chronological absurdity must leave the edge UNRESOLVED.
+    const priorGenerationAmendment: PackageDocumentInput = {
+      documentId: "amend-prior-gen",
+      label: "Amendment No. 2",
+      text: `AMENDMENT NO. 2 dated as of March 15, 2023 to the Credit Agreement, dated as of January 10, 2023 (as amended, supplemented or otherwise modified from time to time, the "Credit Agreement"), among Zenith Robotics, Inc. and Meridian Capital, LLC.\n\nSection 6.01 of the Credit Agreement is hereby amended by inserting a proviso at the end thereof.`,
+      declaredType: "AMENDMENT",
+    };
+    const laterRestatement: PackageDocumentInput = {
+      documentId: "ar-later",
+      label: "Amended and Restated Credit Agreement",
+      text: `AMENDED AND RESTATED CREDIT AGREEMENT dated as of June 10, 2024, among Zenith Robotics, Inc., as Borrower, and Meridian Capital, LLC, as Lender.\n\nSECTION 6.01 Indebtedness. The Borrower will not incur Indebtedness in excess of $25,000,000.`,
+      declaredType: "CREDIT_AGREEMENT",
+    };
+    const docs = [laterRestatement, priorGenerationAmendment];
+    const classifications = classifyPackageDocuments(docs);
+    const identities = extractPackageDocumentIdentities(docs);
+    const result = resolvePackageRelationships(docs, classifications, identities, [], []);
+    const edge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend-prior-gen" && r.relationshipType === "AMENDS");
+    expect(edge?.status).toBe("UNRESOLVED");
+    expect(edge?.targetDocumentId).toBeNull();
+    expect(edge?.resolutionMethod).toBe("DETERMINISTIC_TYPE_ONLY_CHRONOLOGICALLY_IMPOSSIBLE");
+  });
+
   it("B7: two candidate documents share the same type AND the same referenced execution date - never guessed, UNRESOLVED", () => {
     const amendmentDoc: PackageDocumentInput = { documentId: "amend-1", label: "Amendment No. 1", text: `AMENDMENT NO. 1 dated as of June 1, 2023 to the Credit Agreement, dated as of January 10, 2023.\n\nSection 6.01 of the Credit Agreement is hereby amended.`, declaredType: "AMENDMENT" };
     const candidateA: PackageDocumentInput = { documentId: "candidate-a", label: "Credit Agreement A", text: `CREDIT AGREEMENT dated as of January 10, 2023, among Zenith Robotics, Inc. and Meridian Capital, LLC.\n\nSECTION 6.01 Indebtedness. Up to $10,000,000.`, declaredType: "CREDIT_AGREEMENT" };
