@@ -199,3 +199,17 @@
 - Explicit non-split: incomplete CKF wiring blocks legal promotion only, not this research overlay
 - No Phase 5 / paid inference / certification in merge action
 
+---
+
+## 2026-10-09T00:02:00Z — North Star knowledge-system integration audit
+
+- **startingMainSha:** `e5b8a21261bb47eadc6bb552e4204473276b15e8`
+- **tipAtReport:** `c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8` (PR #139 DEF merged during audit)
+- **verdict:** `CANONICAL_KNOWLEDGE_SYSTEM_FRAGMENTED`
+- **knowledgeAccumulation:** NO on main — first broken link is durable CKF hub (`lib/knowledge-factory` absent; #154 durability NONE)
+- **authoritative independent research metrics unchanged:** Recall@5 0.4314 / citation 0.5714
+- **artifacts:** `docs/audits/north-star-knowledge-system-integration/**`; dashboard v2 refresh
+- **provider-free tests:** parallel-agents + definition-encyclopedia + research independent-eval → 39 passed
+- **immediate merge candidate:** #163 (hierarchy); **blocked:** #154 rebase, #146 C-DUP-KF, legal-core #136/#168
+- actualExternalCostsUsd: 0
+

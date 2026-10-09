@@ -1,283 +1,176 @@
 {
   "artifact": "continuous-main-integration-dashboard",
-  "version": 1,
-  "updatedAt": "2026-10-08T23:25:35Z",
+  "version": 2,
+  "updatedAt": "2026-10-09T00:02:00Z",
   "role": "WS-PAR Integration Lead",
-  "startingMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
-  "currentMainSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
+  "startingMainSha": "e5b8a21261bb47eadc6bb552e4204473276b15e8",
+  "currentMainSha": "c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8",
+  "auditRef": "docs/audits/north-star-knowledge-system-integration/00-audit-report.md",
+  "integrationVerdict": "CANONICAL_KNOWLEDGE_SYSTEM_FRAGMENTED",
   "mergeMethod": "merge-commit with --match-head-commit",
-  "mergedInOrder": [
+  "mergedSincePriorDashboard": [
     {
-      "pr": 155,
-      "title": "Parser Gibraltar merge-gate audit",
-      "headSha": "b4769ee8",
-      "mergeSha": "5cf928eec24d52afeb3fc2bc6be6b236ea2b5a7b",
+      "pr": 152,
+      "title": "Covenant precedent research interface",
+      "headSha": "a3fc44138f39",
+      "mergeSha": "e5b8a21261bb47eadc6bb552e4204473276b15e8",
       "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 138,
-      "title": "Parallel agent operating rules / coordination pack",
-      "mergeSha": "f44ada7b77032be2f280349bdf516f9ea7d21c5a",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 126,
-      "title": "Track E scoreboard honesty",
-      "mergeSha": "58383e1c9bed7823883913759ab8558a02f03a01",
-      "band": "STANDARD",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 125,
-      "title": "Phase3 category reclass unsupported",
-      "mergeSha": "723d027685c216733149d699236ea11646156dc3",
-      "band": "STANDARD",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 127,
-      "title": "Track B definition scope",
-      "mergeSha": "74b951d5c301cccbc225bfce8bad26990781936c",
-      "band": "STANDARD",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 140,
-      "title": "Covenant dependency atlas",
-      "mergeSha": "46912066e419bb446b703921011019587a430096",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 132,
-      "title": "Clause hierarchy letter/roman",
-      "mergeSha": "4c44edc18a31046422734b6296ae98f86a16085b",
-      "band": "STANDARD",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 137,
-      "title": "Independent product validation",
-      "mergeSha": "ef644c4a3dd38984a584c12318e86ca5e11ae458",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 145,
-      "title": "Covenant knowledge generalization bench",
-      "mergeSha": "adc385801debdce396fecdf8c5abc50a4bc2f656",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR"
-    },
-    {
-      "pr": 151,
-      "title": "WS-FDP financial-definitions precedent atlas",
-      "headSha": "6b02442b250e6154f07a2e172a1bc98dd84620b6",
-      "mergeSha": "502db938614eec35085c67b70424d7ef92047c43",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR",
-      "notes": "docs+tests only; independentlyLegallyReviewedCount=0"
-    },
-    {
-      "pr": 130,
-      "title": "P3 Track A fail-closed carve-out",
-      "headSha": "857804867ae19efb3d502628a513bd0c94bcc2e2",
-      "mergeSha": "31a3818418e5a9ea7a51fe21055f527c9f902c92",
-      "band": "RESTRICTED",
-      "mergedBy": "PEER_CONCURRENT"
-    },
-    {
-      "pr": 144,
-      "title": "WS-PCI Precedent Comparison Intelligence sidecar",
-      "headSha": "7ba6a081da46e5f371ba27ac3b7c8ea330dce389",
-      "mergeSha": "4e1da169798950ce9fbea2609206168855087c64",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR",
-      "notes": "sidecar + import-boundary; no app/prisma/covenant-engine wiring"
-    },
-    {
-      "pr": 148,
-      "title": "Basket/capacity formula research corpus",
-      "headSha": "01a1972817091f6bd4c074d2d8b9c75dfb6fcd18",
-      "mergeSha": "42eb32163095dcfe6ca0d7b90118bc145eec802c",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR",
-      "notes": "typedFormula.executable hardcoded false; hypothesis import lane; no production capacity engine edits"
-    },
-    {
-      "pr": 150,
-      "title": "Amendment-chain research corpus",
-      "mergeSha": "098edde59e125a4ab608e9cfcf99c1974582ee99",
-      "band": "FAST_TRACK",
-      "mergedBy": "PEER_CONCURRENT"
-    },
-    {
-      "pr": 159,
-      "title": "FDP noUncheckedIndexedAccess hotfix",
-      "headSha": "164f2dcd5ca85a7957a04abbc9a307d9759f0c24",
-      "mergeSha": "aff253e1ad315af864f3b38706353fab16a1e5a1",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR",
-      "notes": "stopped queue after #151 tsc regression; fixed tests; tsc clean"
-    },
-    {
-      "pr": 158,
-      "title": "Amendment-chain remediation replay",
-      "headSha": "1cb13e2b10a3bc7844a6adbddc852ff2eca652e8",
-      "mergeSha": "64e5b5c23d153714a78659c408f3078227084a49",
-      "band": "FAST_TRACK",
-      "mergedBy": "PEER_CONCURRENT",
-      "notes": "required #150 on main first"
-    },
-    {
-      "pr": 143,
-      "title": "Offline NCEDB Phases 1\u20134 + current-head integration gate",
-      "headSha": "ed2216ab21dc3813b81f8629b1ae5a342687046c",
-      "mergeSha": "b2740f7df07a22cdaa336e92b67bd3e3f2a52802",
-      "band": "FAST_TRACK",
-      "mergedBy": "WS-PAR",
-      "notes": "Non-promoting research overlay; productionCapacityApproved=false; IQ-009 retired from active queue"
-    }
-  ],
-  "postMergeValidation": {
-    "tscNoEmit": "clean after #159",
-    "vitestFocused": {
-      "financial-definitions-precedent": "25 passed",
-      "precedent-comparison": "52 passed",
-      "basket-formula-corpus": "21 passed",
-      "covenant-engine": "18 passed",
-      "discovery-fail-closed": "9 passed",
-      "amendment-operative-state-adversarial": "23 passed",
-      "parallel-agents": "21 passed"
-    },
-    "dbDependentContractModelSuite": "skipped locally (no DATABASE_URL); not introduced by these merges"
-  },
-  "blockedOpenPrs": [
-    {
-      "pr": 128,
-      "reason": "Owner grant soft-gate DEVELOPMENT\u2260CERTIFIED; PR body says do not merge; production compiler discovery edits"
-    },
-    {
-      "pr": 146,
-      "reason": "C-DUP-KF vs WS-CKF lib/knowledge-factory; DIRTY rebase required"
-    },
-    {
-      "pr": 154,
-      "reason": "CKF production ingest/registry; DIRTY; coordinate schema ownership before merge"
-    },
-    {
-      "pr": 136,
-      "reason": "Architecture remediation legal core; CI fail on certified path; RESTRICTED"
-    },
-    {
-      "pr": 141,
-      "reason": "DIRTY after main moves; soft-gate CI failures; rebase onto main"
-    },
-    {
-      "pr": 160,
-      "reason": "Exact duplicate of merged #158 content (identical blobs); close as noop"
-    },
-    {
-      "pr": 161,
-      "reason": "P0 parser fix; keep draft until independent replay per PR; CI not fully green at audit"
-    },
-    {
-      "pr": 135,
-      "reason": "DIRTY + CI fail; Haiku compile research"
-    },
-    {
-      "pr": 139,
-      "reason": "DIRTY + CI fail; Definition Encyclopedia"
+      "notes": "Authoritative independent eval Recall@5 0.4314 / citation 0.5714; DB_INTEGRATION_UNVERIFIED; realExportTested=false"
     },
     {
       "pr": 142,
-      "reason": "DIRTY; EHB EDGAR backfill \u2014 rebase"
+      "title": "WS-EHB EDGAR historical backfill",
+      "headSha": "3a3070a2735d",
+      "mergeSha": "cb89db8a82b5",
+      "band": "FAST_TRACK",
+      "notes": "149 fetchable handoff; bodies ephemeral; consumer is CKF (not on main)"
     },
     {
-      "pr": 147,
-      "reason": "DIRTY; RCD novelty discovery \u2014 rebase"
+      "pr": 170,
+      "title": "Basket Formula Library Phase 4",
+      "headSha": "be01bf590d46",
+      "mergeSha": "4feff69f05ef",
+      "band": "FAST_TRACK",
+      "notes": "Non-executable; governing binding; peer integration without capacity promotion"
     },
     {
       "pr": 149,
-      "reason": "DIRTY; source-to-covenant dataset \u2014 rebase"
+      "title": "Source-to-covenant dataset Phase 2",
+      "headSha": "0c98acd99f3e",
+      "mergeSha": "ab87979fe6e7",
+      "band": "FAST_TRACK"
     },
     {
-      "pr": 152,
-      "reason": "DIRTY; precedent research interface \u2014 rebase"
+      "pr": 147,
+      "title": "Rare covenant drafting novelty discovery",
+      "headSha": "2090056dfddd",
+      "mergeSha": "deae3435b58f",
+      "band": "FAST_TRACK"
+    },
+    {
+      "pr": 139,
+      "title": "Definition Encyclopedia Phase 2",
+      "headSha": "93b908265484",
+      "mergeSha": "c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8",
+      "band": "FAST_TRACK",
+      "notes": "82 sources / 5491 definition examples; verificationStatus SOURCE_ONLY; KF hub still absent"
+    }
+  ],
+  "postMergeValidation": {
+    "providerFreeFocused": {
+      "parallel-agents": "21 passed",
+      "definition-encyclopedia": "16 passed",
+      "covenant-research phase3-independent-eval": "2 passed"
+    },
+    "knowledgeFactoryProbeOnMain": "STALE — still reports DEF/BFL/NCEDB/Atlas PARTIAL/UNAVAILABLE via exports/* placeholders despite peer trees on main",
+    "libKnowledgeFactoryPresent": false,
+    "dbDependentContractModelSuite": "skipped locally without shared corpus DB; product DATABASE_URL not assumed"
+  },
+  "blockedOpenPrs": [
+    {
+      "pr": 154,
+      "reason": "CKF canonical hub; DIRTY/CONFLICTING; durability claim NONE on branch; highest Track A priority after rebase + schema ownership"
+    },
+    {
+      "pr": 146,
+      "reason": "C-DUP-KF second knowledge store under lib/contract-model/covenant-knowledge; must not merge"
+    },
+    {
+      "pr": 136,
+      "reason": "Architecture remediation legal core; certified-path CI fail; RESTRICTED"
+    },
+    {
+      "pr": 168,
+      "reason": "IPV-16 stacked on #136; certified-path CI fail"
+    },
+    {
+      "pr": 135,
+      "reason": "DIRTY Haiku compile research on Track D stack"
     },
     {
       "pr": 153,
-      "reason": "DIRTY + CI fail; live corpus quality gate"
+      "reason": "Live corpus quality gate; depends on CKF; DIRTY"
+    },
+    {
+      "pr": 141,
+      "reason": "WS-CCA soft-gate infra; CONFLICTING after main moves; rebase"
+    },
+    {
+      "pr": 161,
+      "reason": "Overlaps #163 Chewy hierarchy family — consolidate; do not double-merge"
+    },
+    {
+      "pr": 164,
+      "reason": "Overlaps #163 Chewy hierarchy family — consolidate"
     },
     {
       "pr": 156,
-      "reason": "CI fail; challenge of #150 (research already on main via #150/#158)"
+      "reason": "Challenge of already-merged #150/#158 research; do not reopen merged corpus"
+    },
+    {
+      "pr": 169,
+      "reason": "Gibraltar offline remeasure soft-gate; not knowledge-hub unlock"
     }
   ],
   "nextFiveMergeCandidates": [
     {
       "rank": 1,
-      "pr": 149,
-      "action": "Rebase onto main; FAST_TRACK research dataset if still docs/tests-only and CI green"
+      "pr": 163,
+      "action": "Merge glued (i)(A) hierarchy fix when tip CI remains green; close/supersede overlapping #161/#164"
     },
     {
       "rank": 2,
-      "pr": 147,
-      "action": "Rebase; FAST_TRACK if remaining research-only and non-promoting"
+      "pr": 154,
+      "action": "Rebase CKF onto tip; coordinate Prisma ownership; land non-promoting hub with honest durability probe"
     },
     {
       "rank": 3,
-      "pr": 152,
-      "action": "Rebase; research interface \u2014 confirm no permission-engine wiring"
+      "pr": 141,
+      "action": "Rebase CCA soft-gate infra after CKF path clarity; no paid inference"
     },
     {
       "rank": 4,
-      "pr": 142,
-      "action": "Rebase EHB; keep EDGAR discovery behind shared SEC scheduler contract"
+      "action": "PAR follow-up: refresh consumer probes to real peer trees (docs/definition-encyclopedia, lib/basket-formula-corpus, docs/covenant-dependency-atlas, NCEDB) — not exports/* placeholders"
     },
     {
       "rank": 5,
-      "pr": 161,
-      "action": "After independent replay + CI green on tip; STANDARD parser fix (not legal permission)"
+      "pr": 153,
+      "action": "After CKF: re-audit live corpus quality gate"
     }
   ],
   "workstreamGuidance": {
     "sharedInterfacesNowOnMain": [
-      "docs/architecture/parallel-agents/** (identity, SEC scheduler, dataset, gates)",
-      "docs/financial-definitions-precedent/** + tests (WS-FDP)",
-      "lib/precedent-comparison/** sidecar (WS-PCI)",
-      "lib/basket-formula-corpus/** research corpus (non-executable)",
-      "docs/amendment-chain-research/** + remediation replay",
+      "docs/architecture/parallel-agents/**",
+      "lib/edgar-historical-backfill/** (WS-EHB)",
+      "lib/covenant-research/** (WS-CRI)",
+      "lib/definition-encyclopedia/** + docs/definition-encyclopedia/** (WS-DEF)",
+      "lib/basket-formula-corpus/** (WS-BFL non-executable)",
+      "lib/precedent-comparison/** (WS-PCI)",
       "docs/covenant-dependency-atlas/**",
-      "fail-closed carve-out Track A (#130)"
+      "docs/negative-covenant-exception-database/**",
+      "docs/amendment-chain-research/**",
+      "docs/financial-definitions-precedent/**",
+      "datasets/source-to-covenant/**",
+      "lib/evaluation/ckg-benchmark/**"
     ],
-    "mustIncorporate": "origin/main @ 64e5b5c23d153714a78659c408f3078227084a49",
-    "rebaseRequired": [
-      141,
-      142,
-      146,
-      147,
-      149,
-      152,
-      153,
-      154,
-      135,
-      139
-    ],
+    "missingCanonicalHub": "lib/knowledge-factory/** (WS-CKF PR #154)",
+    "mustIncorporate": "origin/main @ c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8",
     "doNotDuplicate": [
       "Do not add second KF store under lib/contract-model/covenant-knowledge (C-DUP-KF)",
-      "Do not invent competing basket/FDP canonical schemas \u2014 join via published contracts",
-      "PCI/basket/FDP are research/hypothesis lanes; no auto-promotion into affirmative permissions"
+      "Do not invent competing basket/FDP/DEF canonical schemas — join via published contracts",
+      "Research/hypothesis lanes must not auto-promote into affirmative permissions or capacity"
     ]
   },
+  "knowledgeAccumulationTest": {
+    "question": "If we ingest one new authentic debt document today, does Headroom become more knowledgeable tomorrow?",
+    "answerOnMain": false,
+    "firstBrokenLink": "durable CKF source storage + canonical registry not on main"
+  },
   "conflictsAndRisks": [
-    "C-DUP-KF remains the top structural merge blocker for #146",
-    "Many DIRTY PRs after rapid main advancement \u2014 rebase before re-audit",
-    "#143/#148-class capacity/exception work must stay non-promoting",
-    "#128/#161 soft-gate DEVELOPMENT\u2260CERTIFIED",
-    "Prisma/DB contract-model suite not runnable in this environment without DATABASE_URL"
+    "Overlay workstreams merged before CKF hub contrary to published merge sequence",
+    "Stale KF probes understate peer availability and overstate isolation",
+    "Parser hierarchy + shared-capacity legal-core defects remain RESTRICTED gates",
+    "No reconciled authentic financing-document count — do not sum inventories"
   ],
   "actualExternalCostsUsd": 0
 }
