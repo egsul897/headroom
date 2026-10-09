@@ -4,10 +4,15 @@
  */
 
 import { createHash } from "node:crypto";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 function stubHash(seed: string): string {
   return createHash("sha256").update(seed).digest("hex");
+}
+
+function asInputJson(value: Record<string, unknown>): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
 export async function upsertWorkspaceMetaSource(params: {
@@ -17,6 +22,7 @@ export async function upsertWorkspaceMetaSource(params: {
   metadata: Record<string, unknown>;
 }): Promise<void> {
   const hash = stubHash(params.sourceId);
+  const metadata = asInputJson(params.metadata);
   await prisma.knowledgeSource.upsert({
     where: { sourceId: params.sourceId },
     create: {
@@ -38,12 +44,12 @@ export async function upsertWorkspaceMetaSource(params: {
       provenance: "workspace-meta",
       usageRightsReviewStatus: "UNREVIEWED",
       byteSize: 0,
-      metadata: params.metadata,
+      metadata,
     },
     update: {
       companyId: params.companyId,
       documentTitle: params.title,
-      metadata: params.metadata,
+      metadata,
     },
   });
 }

@@ -28,20 +28,21 @@ function item(partial: Partial<CovenantSummaryItem> & { sectionRef: string; cate
   sourceId: string;
   documentTitle: string;
 } {
+  const { category, ...rest } = partial;
   const base: CovenantSummaryItem = {
-    category: partial.category,
-    categoryLabel: partial.category,
-    heading: partial.heading ?? `Section ${partial.sectionRef}`,
-    posture: partial.posture ?? "GENERAL_PROHIBITION",
-    plainEnglish: partial.plainEnglish ?? "The Borrower shall not incur Indebtedness except as permitted.",
-    restriction: partial.restriction !== undefined ? partial.restriction : "shall not incur Indebtedness",
-    permissions: partial.permissions ?? ["except Permitted Indebtedness"],
+    category,
+    categoryLabel: category,
+    heading: rest.heading ?? `Section ${partial.sectionRef}`,
+    posture: rest.posture ?? "GENERAL_PROHIBITION",
+    plainEnglish: rest.plainEnglish ?? "The Borrower shall not incur Indebtedness except as permitted.",
+    restriction: rest.restriction !== undefined ? rest.restriction : "shall not incur Indebtedness",
+    permissions: rest.permissions ?? ["except Permitted Indebtedness"],
     coveredEntities: [],
-    exceptions: partial.exceptions ?? ["provided that no Default"],
-    conditions: partial.conditions ?? ["so long as no Event of Default"],
-    materialBasketsThresholds: partial.materialBasketsThresholds ?? ["greater of $50 million and 5% of EBITDA"],
+    exceptions: rest.exceptions ?? ["provided that no Default"],
+    conditions: rest.conditions ?? ["so long as no Event of Default"],
+    materialBasketsThresholds: rest.materialBasketsThresholds ?? ["greater of $50 million and 5% of EBITDA"],
     draftingPatterns: [],
-    operativeLanguageExcerpt: partial.operativeLanguageExcerpt ?? "shall not incur Indebtedness except…",
+    operativeLanguageExcerpt: rest.operativeLanguageExcerpt ?? "shall not incur Indebtedness except…",
     sourceCitation: `§${partial.sectionRef}`,
     governingAgreement: "Test Credit Agreement",
     families: [],
@@ -61,12 +62,12 @@ function item(partial: Partial<CovenantSummaryItem> & { sectionRef: string; cate
     unresolvedQuestions: [],
     analysis: {
       sectionRef: partial.sectionRef,
-      heading: partial.heading ?? `Section ${partial.sectionRef}`,
-      category: partial.category,
-      categoryLabel: partial.category,
+      heading: rest.heading ?? `Section ${partial.sectionRef}`,
+      category,
+      categoryLabel: category,
       families: [],
-      posture: partial.posture ?? "GENERAL_PROHIBITION",
-      plainEnglish: partial.plainEnglish ?? "",
+      posture: rest.posture ?? "GENERAL_PROHIBITION",
+      plainEnglish: rest.plainEnglish ?? "",
       restriction: null,
       permissions: [],
       coveredEntities: [],
@@ -83,8 +84,11 @@ function item(partial: Partial<CovenantSummaryItem> & { sectionRef: string; cate
       epistemicStatus: "DISCOVERED_CANDIDATE",
       interpretationNote: "",
       unresolved: [],
+      alternativeInterpretations: [],
+      assumptions: [],
+      judgmentCalls: [],
     },
-    ...partial,
+    ...rest,
   };
   return { ...base, sourceId: "src-test", documentTitle: "Test Credit Agreement" };
 }

@@ -2,6 +2,7 @@
  * Run a subset of transaction exercises + dependency scaffold + adversarial pass
  * against one authentic Neon source with covenant summaries.
  */
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import {
   buildContextFromMetadata,
@@ -16,7 +17,7 @@ async function main() {
   const row = await prisma.knowledgeSource.findFirst({
     where: {
       NOT: { provenance: "workspace-meta" },
-      metadata: { path: ["covenantSummary", "items"], not: null },
+      metadata: { path: ["covenantSummary", "items"], not: Prisma.DbNull },
     },
     orderBy: { updatedAt: "desc" },
   });
