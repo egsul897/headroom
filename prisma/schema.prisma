@@ -3895,3 +3895,81 @@ model KnowledgeImportBatch {
   @@index([family])
   @@map("knowledge_import_batches")
 }
+
+// =============================================================================
+// NS-4 — append-only approved financial snapshot store (Phase 4B identity 1:1).
+// Distinct from legacy FinancialSnapshot / financial_snapshots. Additive only.
+// APPROVED only via attributable approval transition; never mutate published rows.
+// =============================================================================
+
+model ContractInputSnapshot {
+  id                   String   @id @default(cuid())
+  snapshotId           String   @unique
+  companyId            String
+  version              String
+  asOf                 String?
+  reportingPeriod      String?
+  status               String // DRAFT | REVIEW_REQUIRED | APPROVED | SUPERSEDED
+  supersedesSnapshotId String?
+  provenanceJson       Json
+  reviewedBy           String?
+  reviewedAt           String?
+  approvalRef          String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  facts  ContractInputFact[]
+  events ContractInputSnapshotEvent[]
+
+  @@index([companyId, status])
+  @@index([companyId, reportingPeriod])
+  @@map("contract_input_snapshots")
+}
+
+model ContractInputFact {
+  id                    String  @id @default(cuid())
+  snapshotId            String
+  identityJson          Json
+  valueJson             Json
+  displayName           String?
+  sourceVersion         String?
+  overridesDefinitionId String?
+  note                  String?
+
+  snapshot ContractInputSnapshot      @relation(fields: [snapshotId], references: [snapshotId], onDelete: Cascade)
+  locators ContractInputFactLocator[]
+
+  @@index([snapshotId])
+  @@map("contract_input_facts")
+}
+
+model ContractInputFactLocator {
+  id                String  @id @default(cuid())
+  factId            String
+  sourceDocumentId  String?
+  sourceVersionHash String?
+  locatorJson       Json?
+
+  fact ContractInputFact @relation(fields: [factId], references: [id], onDelete: Cascade)
+
+  @@index([factId])
+  @@index([sourceDocumentId])
+  @@map("contract_input_fact_locators")
+}
+
+model ContractInputSnapshotEvent {
+  id          String   @id @default(cuid())
+  eventId     String   @unique
+  snapshotId  String?
+  companyId   String
+  type        String // SNAPSHOT_APPENDED | SNAPSHOT_APPROVED | SNAPSHOT_SUPERSEDED
+  at          DateTime
+  payloadJson Json
+  createdAt   DateTime @default(now())
+
+  snapshot ContractInputSnapshot? @relation(fields: [snapshotId], references: [snapshotId], onDelete: SetNull)
+
+  @@index([companyId, at])
+  @@index([snapshotId])
+  @@map("contract_input_snapshot_events")
+}
