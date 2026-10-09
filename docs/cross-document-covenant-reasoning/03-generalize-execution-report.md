@@ -14,7 +14,7 @@
 | 8 | Verified engine integration | A8-01 `NOT_SATISFIED` floor from PR #229; Agent 4 sequential runner + restore-authority on `simulateVerifiedTransaction`; Phase 4D/4E reused (no competing capacity engine) |
 | 9 | Sequential state integration | `buildConmedSequentialDemo`: debt → RP → overflow; updates debt/liens/RP/shared basket/ratios; `postsToLedger: false`; utilization UNKNOWN without affirmation |
 | 10 | UI consistency | Ask exposes `crossDocumentVerdict` ∥ `legacySimulation` ∥ `permissionLayers` on the same draft; numerical deferred on Ask; Simulate handoff unchanged |
-| 11 | Tests, CI, PR, SHA, cost | See MISSION-REPORT tip SHA; tests in `cross-document-generalize.test.ts` + A8 regression + Agent 4 sequential suites |
+| 11 | Tests, CI, PR, SHA, cost | PR #218; impl `dc579f75`; tests in `cross-document-generalize.test.ts` + A8 regression + Agent 4 sequential; cost $0 |
 
 ## Honesty layers
 
@@ -36,4 +36,4 @@
 | chwy-2026-credit-agreement | 2 | Shared RP/Investment + Incremental |
 | fwrg-2021-credit-agreement | 1 | Non-Loan Party §6.01(j) basket |
 
-**Implementation SHA:** `6fddaf90f5ab7cf24dae56360a7981c003165998`
+**Implementation SHA:** `dc579f75949dbf4c667ed79e164d989cd8cf5a68`
