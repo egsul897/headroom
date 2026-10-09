@@ -1,8 +1,10 @@
 {
   "artifact": "pr-integration-sequence",
   "version": 1,
-  "updatedAt": "2026-10-09T22:26:30Z",
+  "updatedAt": "2026-10-09T22:35:00Z",
   "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "status": "SUPERSEDED_BY_EMERGENCY_RECONCILIATION",
+  "supersededBy": "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md",
   "policy": {
     "autoMerge": false,
     "paidInference": false,
@@ -10,6 +12,7 @@
     "forbidUnverifiedCertifiedClaims": true
   },
   "waveInventory": "docs/architecture/parallel-agents/20-specialist-pr-wave-2026-10-09.json",
+  "note": "Do not execute the older recommendedOrder without reading 21-emergency-reconciliation. P0 is now #213+#215+#215b before authentic-path stacking.",
   "recommendedOrder": [
     {
       "order": 1,
@@ -114,6 +117,10 @@
     {
       "pr": 168,
       "reason": "stacked on architecture-remediation; keep with IPV-16 track"
+    },
+    {
+      "pr": 217,
+      "reason": "COLLISION with Neon #210/#212 on docs/intelligence-factory/progress-manifest.json — rebase first"
     }
   ],
   "postMergeCoordinatorActions": [

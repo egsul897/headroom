@@ -269,3 +269,17 @@
 - actualExternalCostsUsd: 0
 - ownershipViolations: path-drift disclosures only (no silent rewrite of peer contracts)
 
+---
+
+## 2026-10-09T22:35:00Z — EMERGENCY RECONCILIATION (founder directive)
+
+- Refreshed GitHub truth: main still `bae24ced`; specialist wave #205–#223 **unmerged**
+- **Superseded** prior merge sequence in `18-pr-integration-sequence.json`
+- Published `21-emergency-reconciliation-*`, `22-usage-zero-regression-matrix.md`, `23-integration-plan-v2.md`, `24-e2e-benchmark-plan.md`
+- BLK-USAGE-ZERO: #213 closes Position overview paint; #215 partial solver wire; **#215b required**; `run-package-path` still zeros
+- Dual UCP: **#221 canonical**, #213 honesty must land/cherry-pick first
+- Agent1 50% FP vs Agent5 FP=0: **not contradictory** (CKG synthetic 2-case vs 8 cross-doc scenarios)
+- Neon expansion continues via #219 under write gates — not paused
+- Integration order P0-first: 216→208→213→215→210→212→205→207→211→218→221→…
+- actualExternalCostsUsd: 0 · merges: 0
+

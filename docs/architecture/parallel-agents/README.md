@@ -27,6 +27,10 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `18-pr-integration-sequence.json` | Recommended PR order / do-not-merge (no auto-merge) |
 | `19-blk-usage-zero-assignment.md` | P0 WS-CAP brief: unknown utilization ≠ zero |
 | `20-specialist-pr-wave-2026-10-09.json` | Specialist PR wave inventory + collision calls |
+| `21-emergency-reconciliation-2026-10-09.md` | **Controlling** live PR matrix + integration order |
+| `22-usage-zero-regression-matrix.md` | Customer-reachable unknown≠zero path matrix |
+| `23-integration-plan-v2.md` | Specialist assignments + merge recommendations |
+| `24-e2e-benchmark-plan.md` | Shared Coherent/CONMED E2E benchmark plan |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |

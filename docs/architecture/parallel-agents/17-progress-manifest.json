@@ -2,7 +2,8 @@
   "schemaVersion": "headroom.engineering-coordinator.progress-manifest.v1",
   "artifact": "shared-progress-manifest",
   "ownerWorkstream": "WS-AEC",
-  "updatedAt": "2026-10-09T22:26:30Z",
+  "updatedAt": "2026-10-09T22:35:00Z",
+  "emergencyReconciliation": "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md",
   "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
   "coordinatorBcId": "bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
   "coordinatorBranch": "cursor/engineering-coordinator-10ff",
@@ -156,21 +157,13 @@
         "No invented financials for CONMED clearance"
       ]
     },
-    "WS-CAP": {
-      "status": "PRS_OPEN_PARTIAL",
-      "prs": [214, 215],
-      "next": [
-        "Review #215 residual: default omitted basketUsage still zeros usage — do not claim BLK-USAGE-ZERO CLOSED",
-        "Accept #214 matrix path drift if non-promoting",
-        "Require fail-closed when usage unknown for named-member constraints"
-      ]
-    },
     "WS-TXN": {
-      "status": "RUNNING_NO_PR",
+      "status": "PR_OPEN",
+      "prs": [223],
       "next": [
-        "Await #205/#209 file ownership clarity",
-        "Additive txn-effect cases under exclusive tree",
-        "Reuse simulateVerifiedTransaction only"
+        "Reuse simulate APIs only; no second simulator",
+        "Sequence after #209/#221 when possible",
+        "CI green before merge"
       ]
     },
     "WS-XDOC": {
@@ -191,12 +184,23 @@
       ]
     },
     "WS-UCP": {
-      "status": "PR_OPEN",
-      "prs": [213],
+      "status": "DUAL_PR_RECONCILED",
+      "prs": [221, 213],
+      "canonical": 221,
       "next": [
-        "CI on #213 unify Position/Simulate/Ask (LEGACY_labeled)",
-        "Preserve NOT_TRACKED → null utilization (never paint 0)",
-        "No CERTIFIED numeric claims from this PR"
+        "Land or cherry-pick #213 overview null honesty first",
+        "Canonical façade is #221 lib/product/unified-customer/**",
+        "Rebase #221 onto post-#213; wire unknown usage → MISSING_EVIDENCE",
+        "No CERTIFIED numeric claims without VEP + approved inputs"
+      ]
+    },
+    "WS-CAP": {
+      "status": "PRS_OPEN_PARTIAL",
+      "prs": [214, 215],
+      "next": [
+        "After #215: open #215b fail-closed status propagation — do not claim BLK-USAGE-ZERO CLOSED",
+        "Land consolidated usage-zero matrix tests (22-usage-zero-regression-matrix.md)",
+        "Fix #214 CI before merge"
       ]
     },
     "WS-ADV": {
