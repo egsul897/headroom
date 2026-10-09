@@ -136,7 +136,7 @@ Artifacts: `docs/knowledge-factory/continuous/neon-massive-batch*.json`, `latest
 ## 11. Starting / ending SHA
 
 - **Start:** `967d54e1d50cc8745f45ba0f3de7df5237de2896` (main)  
-- **End:** see tip of `cursor/neon-massive-corpus-expansion-8a8b` after this report commit  
+- **End:** `9bb90c3ec79f7f5ea510500e3699a6215ea8b7cd`
 
 ## 12. PRs, tests, and costs
 
