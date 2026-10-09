@@ -1074,6 +1074,21 @@ function overlapsAny(candidate: RegExpExecArray, existing: RegExpExecArray[]): b
   });
 }
 
+/**
+ * IPV-11 — classic table-of-contents row: a heading title followed by dot leaders
+ * and a page number ("SECTION 7.01 Indebtedness ..... 62"). These must never mint
+ * structural nodes on the plain parse path (acceptance / certified pipelines that
+ * call parseDocumentStructure), or every operative covenant becomes AMBIGUOUS.
+ */
+const TOC_DOT_LEADER_PAGE = /\.{3,}\s*\d+\s*$/;
+
+export function isContentsListingMatch(text: string, match: RegExpExecArray): boolean {
+  const lineStart = text.lastIndexOf("\n", Math.max(0, match.index - 1)) + 1;
+  const lineEnd = text.indexOf("\n", match.index);
+  const line = text.slice(lineStart, lineEnd < 0 ? text.length : lineEnd).replace(/\s+$/, "");
+  return TOC_DOT_LEADER_PAGE.test(line);
+}
+
 export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNode[] {
   const { articleMatches, sectionMatches } = decideAcceptedStructuralMatches(doc);
   return buildStructuralNodesFromAcceptedMatches(doc, articleMatches, sectionMatches);
@@ -1106,7 +1121,9 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
   // ARTICLE candidates are resolved first, using signals (A)/(B)/document-
   // start ONLY - never signal (C), which is section-specific and anchors TO
   // an already-resolved ARTICLE, so it cannot apply here without circularity.
-  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS).filter((m) => isPlausibleByPositionalSignals(doc.text, m.index, m.index + m[0].length));
+  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS)
+    .filter((m) => isPlausibleByPositionalSignals(doc.text, m.index, m.index + m[0].length))
+    .filter((m) => !isContentsListingMatch(doc.text, m));
   // Signal (C)'s own anchor set - only the ARTICLE ends that themselves
   // survived (A)/(B)/document-start above, sorted ascending (bestMatches
   // already returns matches in left-to-right document order for a single
@@ -1124,6 +1141,7 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
   const isPlausible = (m: RegExpExecArray) => {
     const matchEnd = m.index + m[0].length;
     if (!titleBodySeparationHolds(doc.text, m.index, matchEnd)) return false;
+    if (isContentsListingMatch(doc.text, m)) return false; // IPV-11: TOC rows are never headings
     return isPlausibleByPositionalSignals(doc.text, m.index, matchEnd) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
   };
 

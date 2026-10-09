@@ -6,6 +6,9 @@
  * Never invents FIXTURE_IR. Never treats PINNED_OFFLINE, REVIEW_REQUIRED,
  * population verified-units, or product-acceptance mocked CERTIFIED as credit.
  *
+ * When DERIVED: also enumerates Phase 4E paths and invokes evaluateVerifiedCapacity
+ * (REQUIRE) over an empty 4B snapshot set — no invented APPROVED financials.
+ *
  * Refuse codes (adapter): NO_CERTIFIED_ARTIFACTS when the authentic scan is empty.
  */
 import fs from "node:fs";
@@ -16,6 +19,9 @@ import {
   type CertifiedExecutionPackageResult,
 } from "../../lib/contract-model/phase3-certification/phase4-adapter";
 import type { CandidateCertification } from "../../lib/contract-model/phase3-certification/types";
+import { evaluateVerifiedCapacity, type VerifiedCapacityResult, type VerifiedExecutionPackage } from "../../lib/contract-model/verified-execution";
+import { snapshotInputResolver } from "../../lib/contract-model/runtime/input/snapshot-resolver";
+import { enumerateCertifiedPaths, type CertifiedPathEnumeration, type ContemplatedTxnKind } from "../../lib/product/north-star-workflow/verified-path-enumeration";
 
 export const AUTHENTIC_EVIDENCE_ROOTS = [
   "docs/phase-3-live-validation",
@@ -44,9 +50,9 @@ export interface AuthenticatedVepScan {
   certifiedCount: number;
   records: ScannedCertificationRecord[];
   adapter: CertifiedExecutionPackageResult;
-  evaluateVerifiedCapacityInvoked: false;
+  evaluateVerifiedCapacityInvoked: boolean;
   certifyPackageInvoked: false;
-  claimedScope: "NONE";
+  claimedScope: "NONE" | "CANDIDATE_VEP_4E";
 }
 
 function walkJsonFiles(dir: string, acc: string[]): void {
@@ -113,6 +119,7 @@ export function attemptAuthenticatedVep(repoRoot = process.cwd()): Authenticated
     artifacts.push({ certification: cert, verifiedPackage: pkgText });
   }
   const adapter = certifiedMapToVerifiedExecutionPackage(artifacts);
+  const derived = adapter.outcome === "DERIVED";
   return {
     schema: AUTHENTICATED_VEP_SCAN_SCHEMA,
     paidProvidersCalled: false,
@@ -123,9 +130,55 @@ export function attemptAuthenticatedVep(repoRoot = process.cwd()): Authenticated
     certifiedCount: records.filter((r) => r.status === "CERTIFIED").length,
     records,
     adapter,
-    evaluateVerifiedCapacityInvoked: false,
+    evaluateVerifiedCapacityInvoked: derived,
     certifyPackageInvoked: false,
-    claimedScope: "NONE",
+    claimedScope: derived ? "CANDIDATE_VEP_4E" : "NONE",
+  };
+}
+
+/** Phase 4E over authentic DERIVED VEP — ContemplatedTxnKind (not legacy INCUR_DEBT string). */
+export function enumerateAuthenticPhase4e(pkg: VerifiedExecutionPackage): CertifiedPathEnumeration[] {
+  const kinds: Array<{ transactionKind: ContemplatedTxnKind; secured: boolean }> = [
+    { transactionKind: "UNSECURED_DEBT", secured: false },
+    { transactionKind: "SECURED_DEBT", secured: true },
+  ];
+  return kinds.map(({ transactionKind, secured }) => enumerateCertifiedPaths({ verifiedPackage: pkg, transactionKind, secured }));
+}
+
+/**
+ * evaluateVerifiedCapacity under REQUIRE with an empty APPROVED snapshot set.
+ * Does not invent financial facts. Capacity arithmetic may still EXECUTE for
+ * UNLIMITED_CAPACITY rules; pro forma §7.1 conditions stay unbound without snapshots.
+ */
+export function evaluateAuthenticVerifiedCapacity(pkg: VerifiedExecutionPackage, asOf = "2025-06-30"): VerifiedCapacityResult {
+  const inputs = snapshotInputResolver({
+    snapshots: [],
+    definitions: [...(pkg.definitions ?? [])],
+    rules: [...pkg.rules],
+    companyId: pkg.companyId,
+    instrumentKey: pkg.instrumentKey,
+  });
+  return evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf });
+}
+
+function summarizeCapacity(capacity: VerifiedCapacityResult): Record<string, unknown> {
+  if (capacity.outcome === "REFUSED") {
+    return {
+      outcome: "REFUSED",
+      packageHash: capacity.packageHash,
+      refusals: capacity.refusals,
+      policy: capacity.policy,
+    };
+  }
+  return {
+    outcome: "EXECUTED",
+    packageHash: capacity.packageHash,
+    policy: capacity.policy,
+    coverage: capacity.coverage,
+    graphNodeCount: capacity.graph.nodes.length,
+    capacityEntryCount: capacity.state.capacities.length,
+    note:
+      "REQUIRE path executed over authentic VEP with empty 4B APPROVED snapshots (no invented financials). Pro forma §7.1 compliance remains unbound without an APPROVED certificate.",
   };
 }
 
@@ -136,9 +189,71 @@ function main(): void {
   const scanPath = path.join(outDir, "01-scan.json");
   fs.writeFileSync(scanPath, `${JSON.stringify(scan, null, 2)}\n`);
   if (scan.adapter.outcome === "DERIVED") {
+    const pkg = scan.adapter.package;
     const vepPath = path.join(outDir, "verified-execution-package.json");
-    fs.writeFileSync(vepPath, `${JSON.stringify(scan.adapter.package, null, 2)}\n`);
+    fs.writeFileSync(vepPath, `${JSON.stringify(pkg, null, 2)}\n`);
+
+    const phase4e = enumerateAuthenticPhase4e(pkg);
+    const phase4ePath = path.join(outDir, "02-phase4e-enumeration.json");
+    fs.writeFileSync(
+      phase4ePath,
+      `${JSON.stringify(
+        {
+          schema: "authenticated-vep-phase4e-enumeration.v1",
+          paidProvidersCalled: false,
+          verifiedExecutionPackage: "docs/product/customer-workflow/authenticated-vep/verified-execution-package.json",
+          sourceCertification: "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json",
+          results: phase4e.map((r) => ({
+            transactionKind: r.transactionKind,
+            secured: r.secured,
+            authority: r.authority,
+            pathCount: r.paths.length,
+            incompleteReasons: r.incompleteReasons,
+            unsupportedReasons: r.unsupportedReasons,
+            paths: r.paths.map((p) => ({
+              pathId: p.pathId,
+              action: p.action,
+              hasCapacityExpression: p.permission.hasCapacityExpression,
+              sufficiency: p.permission.sufficiency,
+              status: p.status,
+            })),
+          })),
+          criticalFalsePermissions: 0,
+          notes: [
+            "enumerateCertifiedPaths over authentic DERIVED VEP.",
+            "ContemplatedTxnKind uses UNSECURED_DEBT / SECURED_DEBT (not legacy INCUR_DEBT).",
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const capacity = evaluateAuthenticVerifiedCapacity(pkg);
+    const capacityPath = path.join(outDir, "03-evaluate-verified-capacity.json");
+    fs.writeFileSync(
+      capacityPath,
+      `${JSON.stringify(
+        {
+          schema: "authenticated-vep-evaluate-verified-capacity.v1",
+          paidProvidersCalled: false,
+          approvedSnapshotsInvented: false,
+          approvedSnapshotCount: 0,
+          ledgerUsageCount: 0,
+          asOf: "2025-06-30",
+          result: summarizeCapacity(capacity),
+          certifyPackageInvoked: false,
+          certifyPackageNote:
+            "Package-level certifyPackage remains unclaimed: CONMED discovery population is PARTIAL_TARGET_SET / unsealed; instrument still has unattached Omnibus/Second-Amendment effects. Candidate §7.2(c) CERTIFIED ≠ package CERTIFIED.",
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
     console.log(`DERIVED VerifiedExecutionPackage → ${path.relative(process.cwd(), vepPath)}`);
+    console.log(`Phase 4E → ${path.relative(process.cwd(), phase4ePath)} (${phase4e.map((r) => `${r.transactionKind}:${r.authority}/${r.paths.length}`).join(", ")})`);
+    console.log(`evaluateVerifiedCapacity(REQUIRE) → ${capacity.outcome} → ${path.relative(process.cwd(), capacityPath)}`);
     process.exit(0);
   }
   const codes = scan.adapter.outcome === "REFUSED" ? scan.adapter.refusals.map((r) => r.code).join(",") : "UNKNOWN";

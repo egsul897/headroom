@@ -171,7 +171,7 @@ describe("ACT1-ACT3 canonical action vs source act breadth", () => {
     expect(r.sufficiency).toBe("PARTIAL");
   });
   it("ACT4 object-family matching is case-insensitive (v2): a capitalized defined-term object ('Property') is ASSET/SELL_ASSET; a lead-in that also later mentions selling shares still classifies the first covered act, never skips to the later equity cluster", () => {
-    expect(CANONICAL_ACTION_ONTOLOGY_VERSION).toBe("canonical-action-ontology.v2");
+    expect(CANONICAL_ACTION_ONTOLOGY_VERSION).toBe("canonical-action-ontology.v3");
     // Alone: drafting commonly capitalizes defined terms; v1 reconstructed object regexes without `i` and missed them.
     const alone = classifySourceAction("Dispose of any of its Property");
     expect(alone).toMatchObject({

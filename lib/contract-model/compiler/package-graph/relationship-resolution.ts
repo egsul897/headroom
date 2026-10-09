@@ -397,7 +397,24 @@ function resolveAgreementReference(
   }
   // No date match at all - fall back to type-only match, but only when it is unique.
   if (typeMatches.length === 1) {
-    return { targetDocumentId: typeMatches[0]!.documentId, confidence: 0.55, status: "REVIEW_REQUIRED", unresolvedReason: `type matches but execution date "${ref.date}" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation`, resolutionMethod: "DETERMINISTIC_TYPE_ONLY_MATCH" };
+    const only = typeMatches[0]!;
+    // An earlier amending instrument cannot target a later restatement that did
+    // not yet exist (CONMED shape: Second Amendment to the Seventh A&R dated
+    // July 16, 2021 must not provisionally AMENDS the Eighth A&R dated June 10,
+    // 2025 merely because that is the only CREDIT_AGREEMENT in the package).
+    // Leave UNRESOLVED - the referenced generation is absent from the package.
+    const sourceExecutionMs = parseDateForComparison(identityById.get(sourceDocumentId)?.executionDate ?? null);
+    const candidateExecutionMs = parseDateForComparison(identityById.get(only.documentId)?.executionDate ?? null);
+    if (sourceExecutionMs !== null && candidateExecutionMs !== null && candidateExecutionMs > sourceExecutionMs) {
+      return {
+        targetDocumentId: null,
+        confidence: 0,
+        status: "UNRESOLVED",
+        unresolvedReason: `type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated "${ref.date}" is not in this package`,
+        resolutionMethod: "DETERMINISTIC_TYPE_ONLY_CHRONOLOGICALLY_IMPOSSIBLE",
+      };
+    }
+    return { targetDocumentId: only.documentId, confidence: 0.55, status: "REVIEW_REQUIRED", unresolvedReason: `type matches but execution date "${ref.date}" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation`, resolutionMethod: "DETERMINISTIC_TYPE_ONLY_MATCH" };
   }
   return { targetDocumentId: null, confidence: 0.1, status: "UNRESOLVED", unresolvedReason: `${typeMatches.length} candidate documents of type ${ref.typeHint} exist in this package and none matches the referenced execution date ("${ref.date}") - never guessed from title similarity alone`, resolutionMethod: "DETERMINISTIC_AMBIGUOUS" };
 }

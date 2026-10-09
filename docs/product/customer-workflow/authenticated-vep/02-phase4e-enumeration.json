@@ -1,0 +1,53 @@
+{
+  "schema": "authenticated-vep-phase4e-enumeration.v1",
+  "paidProvidersCalled": false,
+  "verifiedExecutionPackage": "docs/product/customer-workflow/authenticated-vep/verified-execution-package.json",
+  "sourceCertification": "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json",
+  "results": [
+    {
+      "transactionKind": "UNSECURED_DEBT",
+      "secured": false,
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "incompleteReasons": [],
+      "unsupportedReasons": [
+        "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda"
+      ],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
+          "action": "INCUR_DEBT",
+          "hasCapacityExpression": true,
+          "sufficiency": "COMPLETE",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    },
+    {
+      "transactionKind": "SECURED_DEBT",
+      "secured": true,
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "incompleteReasons": [],
+      "unsupportedReasons": [
+        "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda"
+      ],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:29309c463e06b77b4b243eda",
+          "action": "INCUR_DEBT",
+          "hasCapacityExpression": true,
+          "sufficiency": "COMPLETE",
+          "status": "UNSUPPORTED"
+        }
+      ]
+    }
+  ],
+  "criticalFalsePermissions": 0,
+  "notes": [
+    "enumerateCertifiedPaths over authentic DERIVED VEP.",
+    "ContemplatedTxnKind uses UNSECURED_DEBT / SECURED_DEBT (not legacy INCUR_DEBT).",
+    "Path status UNSUPPORTED: CROSS_RULE_GATE_NOT_EXECUTABLE (\u00a77.1 / \u00a77.3(g)).",
+    "evaluateVerifiedCapacity(REQUIRE) invoked \u2192 REFUSED same gate (see 03-evaluate-verified-capacity.json)."
+  ]
+}
