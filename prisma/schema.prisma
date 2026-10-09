@@ -2104,6 +2104,8 @@ enum CovenantFamily {
   SALE_LEASEBACKS
   FINANCIAL_COVENANTS
   MANDATORY_PREPAYMENTS
+  // IPV-18: voluntary junior/subordinated/restricted debt prepayments (not cash-sweep mandatory prepayments)
+  RESTRICTED_DEBT_PAYMENTS
   REPORTING_INFORMATION
   FUNDAMENTAL_CHANGES
   AFFILIATE_TRANSACTIONS

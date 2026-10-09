@@ -193,6 +193,26 @@ function dedupeByOverlap(all: RegExpExecArray[]): RegExpExecArray[] {
  * each to its enclosing structural node. `nodes` must be this document's
  * own structural nodes only.
  */
+/**
+ * IPV-08 — unquoted "Title Case Term: prose" lines are definition records only inside a
+ * definitions context (Article/Section heading containing "defin"), or when the body itself
+ * uses a defining verb. A non-operative exhibit summary ("Indebtedness: the Borrower may…")
+ * has neither, and must not enter the definition index.
+ */
+function isDefinitionsContext(enclosing: StructuralNode | undefined, sorted: StructuralNode[]): boolean {
+  if (!enclosing) return false;
+  // Ancestors by span containment (works before parentNodeId wiring is consulted).
+  return sorted.some(
+    (n) =>
+      (n.nodeType === "SECTION" || n.nodeType === "ARTICLE") &&
+      n.charStart <= enclosing.charStart &&
+      n.charEnd > enclosing.charStart &&
+      /defin/i.test(n.heading),
+  );
+}
+
+const UNQUOTED_COLON_DEFINING_VERB = /^\s*(?:means|shall\s+mean|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b/i;
+
 export function detectStructuralDefinitions(documentId: string, text: string, nodes: StructuralNode[]): DetectedDefinition[] {
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
 
@@ -204,12 +224,17 @@ export function detectStructuralDefinitions(documentId: string, text: string, no
   const results: DetectedDefinition[] = [];
   const meansSet = new Set(meansMatches);
   const quotedColonSet = new Set(quotedColonMatches);
+  const unquotedColonSet = new Set(unquotedColonMatches);
   for (const m of merged) {
     const exactTerm = (m[1] ?? "").trim();
     if (exactTerm.length === 0) continue;
     const charStart = m.index;
     const charEnd = m.index + m[0].length;
     const enclosing = findEnclosingNode(charStart, sorted);
+    if (unquotedColonSet.has(m) && !meansSet.has(m) && !quotedColonSet.has(m)) {
+      const body = text.slice(charEnd, Math.min(text.length, charEnd + 80));
+      if (!isDefinitionsContext(enclosing ?? undefined, sorted) && !UNQUOTED_COLON_DEFINING_VERB.test(body)) continue;
+    }
     const forwardingTarget = meansSet.has(m) ? parseForwardingTarget(m[0]!, text.slice(charEnd, charEnd + 160)) : null;
     const declarationKind: DefinitionDeclarationKind = forwardingTarget ? "FORWARDING" : meansSet.has(m) ? "MEANS" : quotedColonSet.has(m) ? "QUOTED_COLON" : "UNQUOTED_COLON";
     results.push({

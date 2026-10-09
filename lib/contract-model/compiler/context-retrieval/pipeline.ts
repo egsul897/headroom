@@ -275,11 +275,9 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
 
   // IPV-04: definition / undeclared-term scans must use the same amendment-aware
   // operative text already bound on OPERATIVE_SOURCE (resolveOperativeSource),
-  // not the base structural DESCENDANTS span. Otherwise a restated proviso that
-  // introduces terms like "Default" is invisible to retrieveDirectDefinitions
-  // while the auditor correctly observes those terms in the operative text.
-  // Architecture gate: only candidate-span.ts may derive operative text from the
-  // anchor's descendant span; this pipeline uses the already-bound excerpt only.
+  // not the base structural DESCENDANTS span. Empty excerpt (withheld / deleted)
+  // means no definition scan — never re-read DESCENDANTS here (architecture:
+  // only candidate-span.ts derives operative text from the anchor span).
   const operativeText = operativeItem.excerptText.trim();
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);

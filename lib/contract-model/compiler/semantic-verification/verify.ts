@@ -21,6 +21,7 @@ import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { figureRoleFindings } from "./figure-role";
 import { evaluationBasisFindings } from "./evaluation-basis";
+import { definitionKillSwitchFindings, type DefinitionText } from "./definition-kill-switch";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
@@ -439,11 +440,29 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const reconciliation = reconcileInventories(sourceInventory, irInventory, retrievedInventory, { inventory: numericAssertionInventory, evidence: numericAssertionEvidence });
   // qualitative accountability: material qualitative claims without source-backed lineage are MATERIAL findings
   const qualitativeAudit = auditQualitativeLineage({ rules: compilationResult.rules, definitions: compilationResult.definitions, frozenInventory: compilationResult.frozenInventory ?? compilerInput.frozenInventory ?? null, sourceTexts: [compilerInput.operativeSourceText, ...((compilationResult.sourceContext ?? compilerInput.sourceContext)?.regions.map((r) => r.text) ?? []), ...compilerInput.contextBundle.items.map((i) => i.excerptText)] });
+  // Definition texts that may carry a Default kill-switch on a builder basket (Available Amount pattern).
+  const definitionTextsForKillSwitch: DefinitionText[] = [];
+  for (const d of compilationResult.definitions) {
+    const excerpt = d.provenance?.excerpt ?? "";
+    if (excerpt) definitionTextsForKillSwitch.push({ termName: d.termName, text: excerpt });
+  }
+  for (const e of admissibleEvidence.authenticated) {
+    if (e.requestKind === "DEFINITION" && e.requestKey && e.rawText) {
+      definitionTextsForKillSwitch.push({ termName: e.requestKey, text: e.rawText });
+    }
+  }
+  for (const item of compilerInput.contextBundle.items) {
+    if ((item.type === "DEFINITION" || item.type === "DEFINITION_DEPENDENCY") && item.normalizedRef && item.excerptText) {
+      definitionTextsForKillSwitch.push({ termName: item.normalizedRef, text: item.excerptText });
+    }
+  }
+  const killSwitchCtx = { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef };
   const deterministicFindings = [
     ...buildFindingsFromReconciliation(input, reconciliation),
     ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
     ...figureRoleFindings(buildFigureRoleSourceText(compilerInput), compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
-    ...evaluationBasisFindings(compilerInput.operativeSourceText, compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...evaluationBasisFindings(compilerInput.operativeSourceText, compilationResult.rules, killSwitchCtx),
+    ...definitionKillSwitchFindings(compilationResult.rules, definitionTextsForKillSwitch, killSwitchCtx),
   ];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing

@@ -59,10 +59,15 @@ export function buildConmedOfflineMap(): OfflineMapBuild {
     const scv = computeSourceContentVersion({ documentId: candidate.documentId, structuralNodeId: anchor, operativeSourceText: opText });
     const base = { candidate, input: null, bundle: null, verification: null, operativeProvision: null, operativeSourceText: opText, sourceContentVersion: scv.version, identityStrength: scv.strength, telemetry: null } as const;
     if (!eligibility.eligible) { results.push({ ...base, compilation: null, outcome: "INELIGIBLE", failure: { kind: "INELIGIBLE", detail: eligibility.reason ?? "ineligible" } }); continue; }
-    if (!anchor) { results.push({ ...base, compilation: null, outcome: "NO_STRUCTURAL_ANCHOR", failure: { kind: "NO_STRUCTURAL_ANCHOR", detail: "sealed candidate has no resolvable structural node" } }); continue; }
-    if (opText.trim().length === 0) { results.push({ ...base, compilation: null, outcome: "EMPTY_OPERATIVE_TEXT", failure: { kind: "EMPTY_OPERATIVE_TEXT", detail: "anchor node carries no text" } }); continue; }
     const ev = evidenceByRef.get(candidate.discoveryId) as { compilation: SemanticCompilationResult & { outputHash: string }; verification: (SemanticVerificationResult & { findings: SemanticVerificationResult["findings"] }) | null; run: { timedOut: boolean; costUsd: number | null; inputTokens: number | null; outputTokens: number | null; wallClockMs: number | null } } | undefined;
+    // Preserved run-original evidence is authoritative for offline maps. Sub-enumerator
+    // node keys may fail to rehydrate when the current index collapses them into a parent
+    // — still represent the evidence exactly once rather than rewriting the run as
+    // NO_STRUCTURAL_ANCHOR / UNSERVED.
+    if (!anchor && !ev) { results.push({ ...base, compilation: null, outcome: "NO_STRUCTURAL_ANCHOR", failure: { kind: "NO_STRUCTURAL_ANCHOR", detail: "sealed candidate has no resolvable structural node" } }); continue; }
+    if (opText.trim().length === 0 && !ev) { results.push({ ...base, compilation: null, outcome: "EMPTY_OPERATIVE_TEXT", failure: { kind: "EMPTY_OPERATIVE_TEXT", detail: "anchor node carries no text" } }); continue; }
     if (!ev) { results.push({ ...base, compilation: null, outcome: "UNSERVED", failure: { kind: "UNSERVED", detail: "no preserved evidence record for this candidate in run-original (never attempted or unserved at HTTP 402)" } }); continue; }
+    if (!anchor) notes.push(`evidence retained for ${candidate.discoveryId} despite offline rehydration miss (${(candidate.structuralNodeKeys ?? []).join(", ") || "no node keys"})`);
     const compilation = { ...ev.compilation, cacheKey: `offline:${ev.compilation.outputHash}`, compiledAt: ev.compilation.compiledAt ?? "", telemetry: ev.compilation.telemetry ?? null } as SemanticCompilationResult;
     const verification = ev.verification ? ({ ...ev.verification, candidateRef: candidate.discoveryId, verifiedAt: "", semanticReviewSkippedReason: null } as unknown as SemanticVerificationResult) : null;
     const outcome = outcomeFromEvidence({ compilation: ev.compilation, verification: ev.verification });

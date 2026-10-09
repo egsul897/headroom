@@ -180,6 +180,28 @@ describe("buildClauseTree", () => {
     expect(tree.some((n) => n.marker === "(y)")).toBe(false);
   });
 
+  it("IPV-07: a dropped letter at line start mints the later sibling instead of absorbing it", () => {
+    const tree = buildClauseTree(
+      "The Borrower shall not make any Investment, except:\n(a) Investments in Subsidiaries;\n(b) Cash Equivalents; and\n(d) other Investments not to exceed $2,500,000.",
+    );
+    expect(tree.map((n) => n.marker)).toEqual(["(a)", "(b)", "(d)"]);
+    expect(tree.every((n) => n.parentMarkerPath.length === 0)).toBe(true);
+  });
+
+  it("IPV-06: mid-sentence inline enumeration inside a definition does not mint structural nodes", () => {
+    const tree = buildClauseTree(
+      '"Payment Conditions" means, with respect to any transaction, that (i) no Default has occurred and is continuing and (ii) Availability is not less than the greater of (A) $12,500,000 and (B) 12.5% of the Borrowing Base.\n\n"Subsidiary" means any controlled entity.',
+    );
+    expect(tree).toEqual([]);
+  });
+
+  it("IPV-06: inline (a)/(b)/(c) after 'equal to' without list punctuation does not mint nodes", () => {
+    const tree = buildClauseTree(
+      '"Available Amount" means an amount equal to (a) $15,000,000 plus (b) 50% of Consolidated Net Income minus (c) prior Restricted Payments.',
+    );
+    expect(tree).toEqual([]);
+  });
+
   it("still opens a restarted (x)/(y) letter run under an outer letter when that letter resumes only after a longer nested run", () => {
     // Gibraltar-shaped: numbered children under (a), then (x)/(y) with a multi-limb roman
     // sum under (y), and only then outer (b). The outer letter does not resume "nearby".

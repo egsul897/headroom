@@ -96,17 +96,29 @@ export function auditStructure(pkg: CorpusPackage, s: DeterministicStages, L: Le
   for (const d of pkg.documents.filter((d) => d.operative)) {
     for (const n of index.allNodes().filter((n) => n.documentId === d.documentId && n.nodeType === "SECTION")) {
       const raw = index.getNodeText(n.nodeId, "DESCENDANTS");
-      // walk the lettered enumerators in source order: (a) is expected first, then (b), ... ; a nested (i)/(ii)/(A) never matches
-      // the expected letter, an inline "(a) ... (b)" inside one line counts like a hanging-indent list (the parser mints both)
-      let expected = "a"; let counted = 0; const gaps: string[] = [];
-      for (const m of raw.matchAll(/(^|\n|\s)\(([^\s()]{1,4})\)\s/g)) {
-        const tok = m[2]!; const atLineStart = m[1] !== " ";
+      // Count structural lettered enumerators: line-start hanging indents, or markers introduced by
+      // list/heading punctuation ("Title . (a)", "except: (a)", "...; (b)"). Mid-sentence inline lists
+      // inside a definition or "greater of (a) … and (b)" (IPV-06) must not inflate the expected count.
+      // Amendment restatements ("to read as follows: (c) …") quote a target clause letter and are not
+      // a structural list under the amendment section — ignore list-introduced markers until a real
+      // list opens at (a) (or a line-start hanging indent begins the sequence).
+      let expected = "a"; let counted = 0; const gaps: string[] = []; let listOpen = false;
+      for (const m of raw.matchAll(/(^|\n|[;:.])([ \t]*)\(([^\s()]{1,4})\)\s/g)) {
+        const tok = m[3]!;
+        const atLineStart = m[1] === "" || m[1] === "\n";
+        const listIntroduced = /[;:.]/.test(m[1]!);
+        if (!atLineStart && !listIntroduced) continue;
         if (/^[a-z]$/.test(tok)) {
+          if (!listOpen) {
+            if (tok !== "a" && !atLineStart) continue; // restated mid-list letter (e.g. ": (c)") — not this section's children
+            listOpen = true;
+          }
           if (tok === expected) { counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1); }
-          else if (atLineStart && tok > expected && !/^[ivx]$/.test(tok)) { gaps.push(`(${expected}) absent before (${tok})`); counted += 1; expected = String.fromCharCode(tok.charCodeAt(0) + 1); }
+          else if (tok > expected && !/^[ivx]$/.test(tok)) { gaps.push(`(${expected}) absent before (${tok})`); counted += 1; expected = String.fromCharCode(tok.charCodeAt(0) + 1); }
           // a roman (i)/(v)/(x) or a letter below the expected one is a nested or restarted list, not a top-level clause
         } else if (atLineStart && tok.length === 1 && /[^\x00-\x7f]/.test(tok)) {
           // a single non-ASCII enumerator at line start (homoglyph scan noise) was meant to be the next letter
+          listOpen = true;
           gaps.push(`unrecognised enumerator (${tok}) where (${expected}) was expected`); counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1);
         }
       }
@@ -197,23 +209,27 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     const applied = provision?.appliedChain.length ?? 0;
     const current = provision?.currentText ?? null;
     const problems: string[] = [];
-    // IPV-19: a definition-targeted amendment correctly leaves Section 1.01
-    // without a SECTION provision view; the DEFINITION provision carries the
-    // restatement and the section node must stay CURRENT_OPERATIVE (not wiped).
+    // IPV-19: a definition-targeted amendment leaves the Section 1.01 node
+    // CURRENT_OPERATIVE (not wiped). The DEFINITION provision carries the
+    // restatement; sectionViewsAfterDefinitionReplacements may also derive a
+    // SECTION provision with spliced text — that is reconstruction, not a
+    // whole-section REPLACE, so CURRENT_OPERATIVE on the base node is correct.
     let definitionTargeted = false;
-    if (e.status === "SUPERSEDED" && !e.definitionTerm && !provision && e.supersededBy) {
+    if (e.status === "SUPERSEDED" && !e.definitionTerm && e.supersededBy) {
       const defViews = state.provisions.filter(
         (p) => p.kind === "DEFINITION" && p.appliedChain.some((a) => a.amendmentDocumentId === e.supersededBy) && p.status === "OPERATIVE_STATE_RESOLVED",
       );
       if (defViews.length > 0 && (supStatus === "N/A" || supStatus === "CURRENT_OPERATIVE")) {
         definitionTargeted = true;
-        const combined = ws([baseText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
+        const sectionText = provision?.kind === "SECTION" ? (provision.currentText ?? baseText) : baseText;
+        const combined = ws([sectionText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
         for (const t of e.mustContain) if (!combined.includes(ws(t))) problems.push(`lacks "${t}"`);
         for (const t of e.mustNotContain) {
           if (defViews.some((p) => p.currentText && ws(p.currentText).includes(ws(t)))) problems.push(`amended definition still carries superseded "${t}"`);
+          else if (provision?.kind === "SECTION" && provision.currentText && ws(provision.currentText).includes(ws(t))) problems.push(`reconstructed section still carries superseded "${t}"`);
         }
         if (problems.length === 0) {
-          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} untouched (IPV-19)`);
+          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} node CURRENT (IPV-19)`);
           continue;
         }
       }
@@ -372,7 +388,14 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
     const detail = `${defs.length} definition item(s) [${[...new Set(defs.map((d) => d.documentId))].join(",")}], ${unresolved.length} unresolved, sufficiency ${build.bundle.sufficiencyState}, operative text ${build.operativeSourceText.length} chars`;
     if (danglingRefs.length > 0) L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:cross-references`, { severity: "MISSING_DEPENDENCY", outcomeClass: "INCORRECT_RESULT", expected: `declared cross-reference(s) resolve: ${(c.crossReferences ?? []).filter((x) => x.mustResolve).map((x) => `${x.documentId}#${x.sectionRef}`).join(", ")}`, actual: danglingRefs.join("; "), repro: `index.findReferencesFrom(candidateFor("${c.documentId}","${c.sectionRef}").structuralNodeIds[0], true)`, deterministic: true });
     else if ((c.crossReferences ?? []).some((x) => x.mustResolve)) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:cross-references`, `${(c.crossReferences ?? []).filter((x) => x.mustResolve).length} declared cross-reference(s) reachable in the declared document (${reachedVia.join("; ")})`);
-    if (missing.length > 0) L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:definitions`, { severity: "NONMATERIAL_OMISSION", outcomeClass: "INCORRECT_RESULT", expected: `same-document definition(s) used by the operative text are retrieved: ${missing.join(", ")}`, actual: `not in bundle (retrieved: ${defs.filter((d) => d.documentId === c.documentId).map((d) => d.normalizedRef).join(", ") || "none"}); operative text uses the term as "${missing.map((t) => (build.operativeSourceText.match(new RegExp(`\\b${t}s?\\b`)) ?? [t])[0]).join('", "')}"`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}")).bundle.items`, deterministic: true });
+    // IPV-16 / architecture: when operative text is withheld (empty excerpt — side-letter
+    // REVIEW_REQUIRED, deleted provision), definition scan must not read DESCENDANTS. Manifest
+    // dependsOnTerms are then not "used by the operative text"; treat as fail-closed success.
+    if (missing.length > 0 && build.operativeSourceText.trim().length === 0) {
+      L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:definitions`, `fail-closed: operative text withheld; definition scan skipped for ${missing.join(", ")}`);
+    } else if (missing.length > 0) {
+      L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", `${ref}:definitions`, { severity: "NONMATERIAL_OMISSION", outcomeClass: "INCORRECT_RESULT", expected: `same-document definition(s) used by the operative text are retrieved: ${missing.join(", ")}`, actual: `not in bundle (retrieved: ${defs.filter((d) => d.documentId === c.documentId).map((d) => d.normalizedRef).join(", ") || "none"}); operative text uses the term as "${missing.map((t) => (build.operativeSourceText.match(new RegExp(`\\b${t}s?\\b`)) ?? [t])[0]).join('", "')}"`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}")).bundle.items`, deterministic: true });
+    }
     if (problems.length === 0) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, detail);
     else L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, { severity: problems.some((p) => p.includes("resolved to") || p.includes("retrieved from")) ? "WRONG_OPERATIVE_SOURCE" : "UNSUPPORTED_AS_COMPLETE", outcomeClass: "INCORRECT_RESULT", expected: "definitions sourced from the covenant's own document; undefined terms reported unresolved", actual: `${problems.join("; ")} (${detail})`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}"))`, deterministic: true });
   }
