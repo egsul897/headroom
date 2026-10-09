@@ -39,7 +39,10 @@ const REPLACEMENT_TEXT_CAPTURE_RE = /(?:amended and restated in its entirety to 
 
 const DEFINITION_ADD_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?added/i;
 const DEFINITION_DELETE_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?deleted/i;
-const DEFINITION_REPLACE_RE = /the definition of[\s]*[""]?([A-Z][A-Za-z0-9 ]{1,60})[""]?\s+is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*["“]?([\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)/i;
+const DEFINITION_REPLACE_RE = new RegExp(
+  String.raw`the definition of[\s]*["“"]?([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)["”"]?\s+(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?is (?:hereby )?amended and restated (?:in its entirety )?to read(?: in its entirety)? as follows\s*:?\s*["“]?([\s\S]{1,3000}?)["”]?(?:\n\s*\n|$)`,
+  "i",
+);
 
 const REAFFIRMATION_RE = /\bhereby\s+reaffirms?\b.{0,80}\b(?:guarantee|guaranty|obligations?|liability)\b/i;
 const NO_TEXTUAL_CHANGE_RE = /\b(?:remains?|shall remain)\s+(?:in full force and effect\s+)?unchanged\b|for the avoidance of doubt.{0,120}\bno (?:other )?(?:amendment|change|modification)\b/i;

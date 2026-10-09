@@ -126,7 +126,21 @@ export async function runDeterministicStages(pkg: CorpusPackage): Promise<Determ
   const t1 = Date.now();
   try {
     for (const asOfDate of pkg.manifest.operativeState.asOfDates) {
-      const states = [...instrumentKeys].map(([baseDocumentId, instrumentKey]) => ({ baseDocumentId, state: computeOperativeContractState({ instrumentKey, baseDocumentId, asOfDate, index, allEffects: amendment?.effects ?? [] }) }));
+      // IPV-05: mirror production orchestrator — unresolved/null-instrument effects
+      // must be disclosed so an unmatched amendment cannot leave a false RESOLVED state.
+      const allEffects = amendment?.effects ?? [];
+      const unresolvedTargetEffectsForThisInstrument = allEffects.filter((e) => e.target.targetInstrumentKey === null);
+      const states = [...instrumentKeys].map(([baseDocumentId, instrumentKey]) => ({
+        baseDocumentId,
+        state: computeOperativeContractState({
+          instrumentKey,
+          baseDocumentId,
+          asOfDate,
+          index,
+          allEffects,
+          unresolvedTargetEffectsForThisInstrument,
+        }),
+      }));
       operativeStates.set(asOfDate, states.find((x) => x.baseDocumentId === base.documentId)!.state);
       for (const x of states) if (x.baseDocumentId !== base.documentId) operativeStates.set(`${asOfDate}::${x.baseDocumentId}`, x.state);
       supersessionIndexes.set(asOfDate, buildNodeSupersessionIndex(states));

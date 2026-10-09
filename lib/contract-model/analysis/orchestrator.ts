@@ -413,7 +413,9 @@ async function analyzeInstrument(params: {
     // resolves through structural-index's real `nodesById` map, so the occurrence-safe
     // `structuralNodeIds` is used here, never the label-shaped, @deprecated `structuralNodeKeys`
     // - a label-shaped key never matches and would silently yield empty source text.)
-    const operativeSourceText = operativeSourceTextFor(candidate, index);
+    // IPV-04/16: pass operativeState so descendant amendments / unresolved overrides
+    // splice or withhold — never serve superseded child text as current.
+    const operativeSourceText = operativeSourceTextFor(candidate, index, operativeState);
     // Phase 3F.1.6.RX orchestrator-integration fix (paired with the
     // supersessionIndex wiring above): operativeLineage was previously
     // hardcoded null, silently disabling normalize.ts's own
