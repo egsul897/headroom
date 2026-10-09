@@ -19,10 +19,10 @@ import { loadCompanyFinancialCoreData } from "./financial-core-db/adapter";
 import { buildSolverContext, getCompanySummary, type CompanySummary } from "./dashboard-service";
 import { buildCovenantOverview, type CovenantOverviewCore, type PermissionRowInput, type CoverageDeclarationInput } from "./covenant-overview-builder";
 import {
-  loadAttributedUtilization,
   serializeAttributedUtilization,
   type AttributedUtilizationSerialized,
 } from "./product/unified-position/attributed-utilization";
+import { loadAttributedUtilization } from "./product/unified-position/attributed-utilization-server";
 
 export type {
   AttentionItem,

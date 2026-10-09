@@ -27,10 +27,10 @@ import {
 import {
   applyAttributedUsageToCapacity,
   indexAttributedUsages,
-  loadAttributedUtilization,
   resolveRowAttribution,
+  type AttributedLedgerUsageInput,
 } from "../../lib/product/unified-position/attributed-utilization";
-import type { LedgerUsageRecord } from "../../lib/contract-model/north-star-bridge";
+import { loadAttributedUtilization } from "../../lib/product/unified-position/attributed-utilization-server";
 
 const COMPANY_ID = process.argv[2] ?? process.env.DEMO_COMPANY_ID ?? "coherent";
 const OUT_DIR = resolve("docs/product/unified-position");
@@ -95,22 +95,11 @@ async function main() {
     const inputs = await loadCovenantOverviewInputs(COMPANY_ID);
     const joinCode = inputs.permissionRows.find((p) => p.code)?.code ?? null;
     if (joinCode) {
-      const synthetic: LedgerUsageRecord = {
+      const synthetic: AttributedLedgerUsageInput = {
         usageId: `demo-attr-${COMPANY_ID}-${joinCode}`.slice(0, 80),
-        companyId: COMPANY_ID,
-        instrumentKey: "demo-instrument",
-        effectiveAsOf: "2026-06-30",
         amount: { amount: "75000000", currency: "USD" },
         capacityPath: { kind: "RULE", ruleId: joinCode },
-        transactionRef: "demo-only-not-persisted",
         status: "RECORDED",
-        supersededByUsageId: null,
-        provenance: {
-          source: "unified-position-demo synthetic attribution",
-          sourceVersion: "1",
-          approvalRef: null,
-          approvalState: "APPROVED",
-        },
       };
       const index = indexAttributedUsages(COMPANY_ID, [synthetic]);
       const overviewWithAttr = buildCovenantOverview({

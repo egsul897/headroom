@@ -6,30 +6,19 @@ import {
   resolveRowAttribution,
   serializeAttributedUtilization,
 } from "@/lib/product/unified-position/attributed-utilization";
-import type { LedgerUsageRecord } from "@/lib/contract-model/north-star-bridge";
+import type { AttributedLedgerUsageInput } from "@/lib/product/unified-position/attributed-utilization";
 
 function usage(args: {
   usageId: string;
   ruleId?: string;
   amountUsd?: string;
-  status?: LedgerUsageRecord["status"];
-}): LedgerUsageRecord {
+  status?: string;
+}): AttributedLedgerUsageInput {
   return {
     usageId: args.usageId,
-    companyId: "co",
-    instrumentKey: "ca",
-    effectiveAsOf: "2026-06-30",
     amount: { amount: args.amountUsd ?? "25000000", currency: "USD" },
     capacityPath: { kind: "RULE", ruleId: args.ruleId ?? "§7.02(b)" },
-    transactionRef: null,
     status: args.status ?? "RECORDED",
-    supersededByUsageId: null,
-    provenance: {
-      source: "test",
-      sourceVersion: "1",
-      approvalRef: "apr",
-      approvalState: "APPROVED",
-    },
   };
 }
 

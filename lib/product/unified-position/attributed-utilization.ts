@@ -1,16 +1,24 @@
 /**
- * Phase 4C attributed utilization → Position capacity rows.
+ * Phase 4C attributed utilization → Position capacity rows (client-safe).
  *
  * Aggregates active ContractLedgerUsage by capacityPath.ruleId / sharedCapacityId.
  * TRACKED only when an overview row's Permission.code (or exact action) matches —
  * never fuzzy. Unmatched / unresolved → UNKNOWN (null), never zero.
+ *
+ * Server I/O lives in attributed-utilization-server.ts so DashboardClient can
+ * import this module without pulling Prisma / node:crypto into the webpack graph.
  */
 
-import { prisma } from "@/lib/prisma";
-import {
-  loadLedgerUsagesFromPrisma,
-  type LedgerUsageRecord,
-} from "@/lib/contract-model/north-star-bridge";
+/** Minimal ledger shape — avoids importing north-star-bridge (node:crypto). */
+export interface AttributedLedgerUsageInput {
+  usageId: string;
+  status: string;
+  amount: { amount: string; currency?: string | null };
+  capacityPath:
+    | { kind: "RULE"; ruleId: string }
+    | { kind: "SHARED_CAPACITY"; sharedCapacityId: string }
+    | { kind: string; [k: string]: unknown };
+}
 
 export interface AttributedUsageBucket {
   key: string;
@@ -30,13 +38,22 @@ export interface AttributedUtilizationIndex {
   entries: AttributedUsageBucket[];
 }
 
-function pathKey(path: LedgerUsageRecord["capacityPath"]): { key: string; kind: "RULE" | "SHARED_CAPACITY" } | null {
-  if (path.kind === "RULE") return { key: path.ruleId, kind: "RULE" };
-  if (path.kind === "SHARED_CAPACITY") return { key: path.sharedCapacityId, kind: "SHARED_CAPACITY" };
+function pathKey(
+  path: AttributedLedgerUsageInput["capacityPath"],
+): { key: string; kind: "RULE" | "SHARED_CAPACITY" } | null {
+  if (path.kind === "RULE" && typeof (path as { ruleId?: string }).ruleId === "string") {
+    return { key: (path as { ruleId: string }).ruleId, kind: "RULE" };
+  }
+  if (
+    path.kind === "SHARED_CAPACITY" &&
+    typeof (path as { sharedCapacityId?: string }).sharedCapacityId === "string"
+  ) {
+    return { key: (path as { sharedCapacityId: string }).sharedCapacityId, kind: "SHARED_CAPACITY" };
+  }
   return null;
 }
 
-function moneyAmount(u: LedgerUsageRecord): number | null {
+function moneyAmount(u: AttributedLedgerUsageInput): number | null {
   const a = u.amount;
   if (!a || typeof a.amount !== "string") return null;
   const n = Number(a.amount);
@@ -46,7 +63,7 @@ function moneyAmount(u: LedgerUsageRecord): number | null {
 /** Aggregate active (non-SUPERSEDED) 4C usages. Currency mismatch → skip that usage (fail closed). */
 export function indexAttributedUsages(
   companyId: string,
-  usages: LedgerUsageRecord[],
+  usages: AttributedLedgerUsageInput[],
 ): AttributedUtilizationIndex {
   const byKey = new Map<string, AttributedUsageBucket>();
   let unresolvedCount = 0;
@@ -95,11 +112,6 @@ export function indexAttributedUsages(
     activeUsageCount,
     entries: [...byKey.values()].sort((a, b) => a.key.localeCompare(b.key)),
   };
-}
-
-export async function loadAttributedUtilization(companyId: string): Promise<AttributedUtilizationIndex> {
-  const usages = await loadLedgerUsagesFromPrisma(prisma, companyId);
-  return indexAttributedUsages(companyId, usages);
 }
 
 /**
