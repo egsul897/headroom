@@ -71,5 +71,6 @@ export function collectDebtSignals(haystack: string): string[] {
 /** Exhibit-type codes that are often material contracts but not always debt. */
 export function isMaterialContractExhibitType(exhibitType: string): boolean {
   const t = exhibitType.trim().toUpperCase();
-  return /^EX-10(\.|$)/.test(t) || /^EX-4(\.|$)/.test(t) || t === "EX-99.1" || t.startsWith("EX-99");
+  // Bound EX-10 / EX-4 so EX-101 (XBRL) is never treated as a material contract exhibit.
+  return /^EX-10(\.|$)/.test(t) || /^EX-4(\.|$)/.test(t) || /^EX-99(\.|$)/.test(t);
 }
