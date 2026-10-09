@@ -59,7 +59,7 @@ export const XREF_AGREEMENT = [
   "",
   "(b) Liens on property acquired after the Closing Date securing Indebtedness in a principal amount not exceeding 65% of the fair market value of such property.",
   "",
-  "SECTION 7.04 General Debt Basket . The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+  "SECTION 7.04 General Debt Basket . The Borrower may incur Indebtedness under this Section 7.04 in an aggregate principal amount not to exceed the greater of $123,000,000 and 17% of Total Assets.",
   "",
   "SECTION 7.05 Restricted Payments . The Borrower shall not make any Restricted Payment, except Restricted Payments made subject to Section 7.06.",
   "",
@@ -96,7 +96,7 @@ export const X = {
   lien_chapeau: "The Borrower shall not create any Lien on any property, except:",
   lien_a: "(a) Liens securing Indebtedness under the Loan Documents;",
   lien_b: "(b) Liens on property acquired after the Closing Date securing Indebtedness in a principal amount not exceeding 65% of the fair market value of such property.",
-  basket: "The aggregate principal amount of Indebtedness incurred under this Section 7.04 shall not at any time exceed the greater of $123,000,000 and 17% of Total Assets.",
+  basket: "The Borrower may incur Indebtedness under this Section 7.04 in an aggregate principal amount not to exceed the greater of $123,000,000 and 17% of Total Assets.",
   rp: "The Borrower shall not make any Restricted Payment, except Restricted Payments made subject to Section 7.06.",
   inv: "The Borrower shall not make any Investment, except Investments made subject to Section 7.05.",
 };
@@ -127,7 +127,7 @@ export const XREF_INVENTORY: ScriptedInventory = {
     item("7.03", X.lien_a, "PERMISSION", "MATERIAL", "Liens securing Loan Document Indebtedness"),
     item("7.03", X.lien_b, "PERMISSION", "CRITICAL", "acquired-property Liens up to 65% of fair market value"),
   ],
-  "7.04": [item("7.04", X.basket, "THRESHOLD", "CRITICAL", "general debt basket: greater of $123,000,000 and 17% of Total Assets")],
+  "7.04": [item("7.04", X.basket, "PERMISSION", "CRITICAL", "general debt basket: greater of $123,000,000 and 17% of Total Assets")],
   "7.05": [item("7.05", X.rp, "PROHIBITION", "CRITICAL", "restricted payments prohibited except subject to Section 7.06")],
   "7.06": [item("7.06", X.inv, "PROHIBITION", "CRITICAL", "investments prohibited except subject to Section 7.05")],
 };

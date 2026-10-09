@@ -33,7 +33,9 @@ const variation = (pkg: CorpusPackage, id: string, edits: Mutation["edits"]): Co
 
 async function bundleFor(pkg: CorpusPackage, s: DeterministicStages, doc: string, ref: string, family: string, asOf?: string): Promise<CandidateCompilerInputBuild> {
   const m = pkg.manifest; const d = asOf ?? m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
-  const candidatePkg = { companyId: m.companyId, instrumentKey: m.instrumentKey, packageKey: `${pkg.packageId}-package`, index: s.index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(d) ?? null, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(d) };
+  const operativeState = doc === s.baseDocumentId ? s.operativeStates.get(d) ?? null : s.operativeStates.get(`${d}::${doc}`) ?? s.operativeStates.get(d) ?? null;
+  const instrumentKey = s.instrumentKeys.get(doc) ?? m.instrumentKey;
+  const candidatePkg = { companyId: m.companyId, instrumentKey, packageKey: `${pkg.packageId}-package`, index: s.index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(d) };
   const cand = candidateFor(s.index, doc, ref, [family as never], "PERMISSION_BASKET" as never, ref);
   if (!cand) throw new Error(`candidate ${doc}#${ref} not uniquely resolvable`);
   return buildCandidateCompilerInput(cand, candidatePkg as never);

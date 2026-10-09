@@ -4,6 +4,7 @@
  * class) on failure. The auditor never consults compiler self-assessments to decide a check.
  */
 import { buildCandidateCompilerInput } from "../../lib/contract-model/covenant-map/candidate-input";
+import { textCarries } from "./mocks";
 import { resolveUniqueDefinitionByRef, getNodeSupersessionStatus } from "../../lib/contract-model/compiler/amendment/operative-state";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
 import type { StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
@@ -220,8 +221,8 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     if (!definitionTargeted && e.status === "CURRENT") {
       if (applied > 0) problems.push(`${applied} effect(s) applied at ${e.asOfDate} although none expected`);
       if (supStatus !== "N/A" && supStatus !== "CURRENT_OPERATIVE") problems.push(`supersession status ${supStatus}`);
-      for (const t of e.mustContain) if (!ws(current ?? baseText).includes(ws(t))) problems.push(`operative text lacks "${t}"`);
-      for (const t of e.mustNotContain) if (ws(current ?? baseText).includes(ws(t))) problems.push(`operative text contains forbidden "${t}"`);
+      for (const t of e.mustContain) if (!textCarries(current ?? baseText, t)) problems.push(`operative text lacks "${t}"`);
+      for (const t of e.mustNotContain) if (textCarries(current ?? baseText, t)) problems.push(`operative text contains forbidden "${t}"`);
     } else if (!definitionTargeted) {
       if (!provision) problems.push("no provision view recorded for this section/term");
       else {
@@ -230,10 +231,10 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
         if (provision.status === "OPERATIVE_STATE_CONFLICTED") problems.push("CONFLICTED");
         if (e.status === "SUPERSEDED") {
           if (current === null) problems.push("currentText null (not derivable)");
-          for (const t of e.mustContain) if (current && !ws(current).includes(ws(t))) problems.push(`current text lacks "${t}"`);
-          for (const t of e.mustNotContain) if (current && ws(current).includes(ws(t))) problems.push(`current text contains superseded "${t}"`);
+          for (const t of e.mustContain) if (current && !textCarries(current, t)) problems.push(`current text lacks "${t}"`);
+          for (const t of e.mustNotContain) if (current && textCarries(current, t)) problems.push(`current text contains superseded "${t}"`);
         } else {
-          for (const t of e.mustNotContain) if (current && ws(current).includes(ws(t))) problems.push(`deleted provision still reads "${t}"`);
+          for (const t of e.mustNotContain) if (current && textCarries(current, t)) problems.push(`deleted provision still reads "${t}"`);
         }
       }
       if (supStatus !== "N/A" && supStatus === "CURRENT_OPERATIVE") problems.push(`base node still reported CURRENT_OPERATIVE at ${e.asOfDate}`);
@@ -302,12 +303,17 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
   const { index } = s;
   const m = pkg.manifest;
   const asOf = m.operativeState.asOfDates[m.operativeState.asOfDates.length - 1]!;
-  const candidatePkg = { companyId: m.companyId, instrumentKey: m.instrumentKey, packageKey: `${pkg.packageId}-package`, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState: s.operativeStates.get(asOf) ?? null, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
   const forbidden = new Map<string, (typeof m.definitions.mustNotResolveFrom)[number]>(m.definitions.mustNotResolveFrom.map((f) => [`${f.documentId}|${f.term.toLowerCase()}`, f]));
   for (const c of m.covenants.filter((c) => c.operative)) {
     const cand = candidateFor(index, c.documentId, c.sectionRef, [c.family as never], c.role as never, c.id, c.occurrence);
     const ref = `context:${c.id}`;
     if (!cand) { L.notTested("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, "candidate node not uniquely resolvable (see STRUCTURE)"); continue; }
+    // IPV-04: use the instrument that owns this candidate's document, not only the package base.
+    const operativeState = c.documentId === s.baseDocumentId
+      ? s.operativeStates.get(asOf) ?? null
+      : s.operativeStates.get(`${asOf}::${c.documentId}`) ?? s.operativeStates.get(asOf) ?? null;
+    const instrumentKey = s.instrumentKeys.get(c.documentId) ?? m.instrumentKey;
+    const candidatePkg = { companyId: m.companyId, instrumentKey, packageKey: `${pkg.packageId}-package`, index, packageGraph: s.packageGraph, exactTermsByDocument: s.exactTermsByDocument, operativeState, amendmentEffects: s.amendment?.effects ?? null, supersessionIndex: s.supersessionIndexes.get(asOf) };
     let build: ReturnType<typeof buildCandidateCompilerInput>;
     try { build = buildCandidateCompilerInput(cand, candidatePkg); }
     catch (e) { L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", ref, { severity: "EVIDENCE_INCOMPLETE", outcomeClass: "TEST_INFRASTRUCTURE_FAILURE", expected: "context bundle", actual: `threw: ${e instanceof Error ? e.message : String(e)}`, repro: `buildCandidateCompilerInput(${c.id})`, deterministic: true }); continue; }
@@ -355,7 +361,7 @@ export function auditContextRetrieval(pkg: CorpusPackage, s: DeterministicStages
       const cref = `${ref}:definition-currency:${e.definitionTerm}`;
       if (!item) { L.notTested("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, `definition "${e.definitionTerm}" not in the bundle (see :definitions)`); continue; }
       const text = ws(item.excerptText);
-      const stale = [...e.mustContain.filter((t) => !text.includes(ws(t))).map((t) => `lacks amended text "${t}"`), ...e.mustNotContain.filter((t) => text.includes(ws(t))).map((t) => `still carries superseded text "${t}"`)];
+      const stale = [...e.mustContain.filter((t) => !textCarries(text, t)).map((t) => `lacks amended text "${t}"`), ...e.mustNotContain.filter((t) => textCarries(text, t)).map((t) => `still carries superseded text "${t}"`)];
       if (stale.length === 0) L.pass("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, `definition "${e.definitionTerm}" handed to the compiler is the amended text (${e.supersededBy})`);
       else L.fail("CONTEXT_RETRIEVAL", "PRODUCTION", "INVARIANT", cref, { severity: "WRONG_OPERATIVE_SOURCE", outcomeClass: "INCORRECT_RESULT", expected: `definition "${e.definitionTerm}" as amended by ${e.supersededBy} at ${asOf}: contains [${e.mustContain.join(", ")}] not [${e.mustNotContain.join(", ")}]`, actual: `${stale.join("; ")} (item ${item.type} from ${item.documentId}: "${item.excerptText.slice(0, 120)}…")`, repro: `buildCandidateCompilerInput(candidateFor("${c.documentId}","${c.sectionRef}")).bundle.items (DEFINITION "${e.definitionTerm}") with operativeState(${asOf})`, deterministic: true });
     }

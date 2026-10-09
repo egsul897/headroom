@@ -126,11 +126,11 @@ export async function runDeterministicStages(pkg: CorpusPackage): Promise<Determ
   const t1 = Date.now();
   try {
     for (const asOfDate of pkg.manifest.operativeState.asOfDates) {
-      // IPV-05: amendment effects that could not resolve a target instrument must still
-      // surface as unattached REVIEW material on every candidate instrument — never leave
-      // the instrument OPERATIVE_STATE_RESOLVED with zero disclosure.
-      const unresolvedOrphanEffects = (amendment?.effects ?? []).filter(
-        (e) => (e.status === "UNRESOLVED" || e.status === "REVIEW_REQUIRED") && !e.target.targetInstrumentKey,
+      // IPV-05: mirror production orchestrator — unresolved/null-instrument effects
+      // must be disclosed so an unmatched amendment cannot leave a false RESOLVED state.
+      const allEffects = amendment?.effects ?? [];
+      const unresolvedTargetEffectsForThisInstrument = allEffects.filter(
+        (e) => e.target.targetInstrumentKey === null || ((e.status === "UNRESOLVED" || e.status === "REVIEW_REQUIRED") && !e.target.targetInstrumentKey),
       );
       const states = [...instrumentKeys].map(([baseDocumentId, instrumentKey]) => ({
         baseDocumentId,
@@ -139,8 +139,8 @@ export async function runDeterministicStages(pkg: CorpusPackage): Promise<Determ
           baseDocumentId,
           asOfDate,
           index,
-          allEffects: amendment?.effects ?? [],
-          unresolvedTargetEffectsForThisInstrument: unresolvedOrphanEffects,
+          allEffects,
+          unresolvedTargetEffectsForThisInstrument,
         }),
       }));
       // Per-instrument keys for operative-state auditor lookups; package-level

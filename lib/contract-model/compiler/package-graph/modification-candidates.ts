@@ -40,8 +40,8 @@ interface StatementPattern {
 // rest of the clause - never CONMED-specific text, just the parenthetical
 // itself.
 const OPTIONAL_SECTION_HEADING = String.raw`(?:\(\s*[A-Za-z][A-Za-z0-9 ,.'&-]{0,60}\s*\)\s+)?`;
-/** Optional "in Section N.NN of the Credit Agreement" / "set forth in Section …" between a defined term and the amend verb (IPV-19 forms F1/F3). */
-const OPTIONAL_DEFINITION_SECTION_LOCUS = String.raw`(?:(?:set\s+forth\s+)?in\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?`;
+/** Optional "in/under Section N.NN …" / "set forth|contained|appearing|provided …" between a defined term and the amend verb (IPV-19 forms F1/F3). */
+const OPTIONAL_DEFINITION_SECTION_LOCUS = String.raw`(?:(?:(?:set\s+forth|contained|appearing|provided)\s+)?(?:in|under)\s+Section\s+\d+\.\d+(?:\([a-zA-Z0-9]{1,7}\))*\s+(?:of\s+the\s+[A-Za-z ]+?\s+)?)?`;
 
 const PATTERNS: StatementPattern[] = [
   // IPV-19 (priority): "the definition of "Consolidated EBITDA" in Section 1.01
@@ -52,7 +52,7 @@ const PATTERNS: StatementPattern[] = [
   {
     operation: "MODIFY",
     re: new RegExp(
-      String.raw`the definition of\s*["“]?\s*([A-Z][A-Za-z0-9 ,.'&-]{1,60}?)\s*["”]?\s+${OPTIONAL_DEFINITION_SECTION_LOCUS}is (?:hereby )?amended`,
+      String.raw`the definition of\s*["“]?\s*([A-Z][A-Za-z0-9 ,.'&-]{1,80}?)\s*["”]?\s+${OPTIONAL_DEFINITION_SECTION_LOCUS}is (?:hereby )?amended`,
       "gi",
     ),
     sectionRef: () => null,
@@ -171,7 +171,10 @@ export function detectModificationCandidates(doc: PackageDocumentInput): Modific
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }
-      if (pattern.operation === "UNKNOWN_CHANGE" && !sectionRef && !definedTermRef && claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
+      // A more specific candidate already owns this span. A section
+      // pattern must not retarget the locator inside "the definition of X
+      // in Section 1.01 is hereby amended and restated".
+      if (claimedSpans.some(([start, end]) => m!.index >= start && m!.index < end)) {
         if (m.index === re.lastIndex) re.lastIndex++;
         continue;
       }

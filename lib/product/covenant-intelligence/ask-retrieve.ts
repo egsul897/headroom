@@ -531,6 +531,8 @@ export function answerFromSummaryItems(params: {
     })
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
+  // Sync helper keeps ranking+compose; the customer-facing async path
+  // (`answerFromCorpus`) runs full legal excellence (retrieval + adversarial verify).
 
   // Prefer at least one debt + one lien hit for cross-regime questions.
   if (intent === "SECURED_DEBT" || intent === "DEBT_LIEN_CROSS") {
@@ -634,17 +636,18 @@ export async function answerFromCorpus(params: {
     }
   }
 
-  // Workstream 1/4/8: complete retrieval + omission detection on the same
-  // persisted analyses (no parallel architecture; no invented permissions).
-  const { completeRetrieveAndAnswer } = await import("./complete-retrieval");
-  const complete = completeRetrieveAndAnswer({
+  // Customer-facing Ask path: complete retrieval + independent adversarial
+  // verification + certification bridge (never invent executable capacity).
+  const { runLegalExcellence } = await import("./legal-excellence");
+  const excellence = runLegalExcellence({
     question: q,
     items,
     researchOnly,
     amendmentNote,
+    transactionDescription: q,
     limit: params.limit ?? 6,
   });
-  return complete.answer;
+  return excellence.bridged.ask;
 }
 
 export async function listSummariesInNeon(limit = 50): Promise<

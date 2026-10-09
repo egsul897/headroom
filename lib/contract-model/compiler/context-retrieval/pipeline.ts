@@ -21,8 +21,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
-import { resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
-import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
+import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
@@ -184,18 +183,8 @@ function retrieveCrossDocumentDefinitionFallback(
     if (knownTermCoversPhrase(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
-      const evidenceResolution = resolveOperativeDefinitionEvidence({
-        index: access.index,
-        operativeState: state.operativeState,
-        term: resolved.exactTerm,
-        searchDocumentIds: [resolved.documentId],
-        supersessionIndex: state.supersessionIndex,
-      });
       const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
-      const fullText =
-        evidenceResolution.outcome === "FOUND" && evidenceResolution.text && evidenceResolution.text.trim().length > 0
-          ? evidenceResolution.text
-          : baseText;
+      const fullText = operativeDefinitionText(state, access.index, resolved.documentId, resolved.exactTerm, baseText);
       if (fullText.trim().length === 0) continue;
       if (!withinBudget(state, fullText.length)) return;
       const evidenceState = resolveDefinitionEvidenceState(state, access.index, resolved.documentId, resolved.exactTerm);

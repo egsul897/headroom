@@ -112,7 +112,7 @@ describe("Phase 3C - top-level verify orchestration", () => {
   it("incomplete context bundle sufficiency produces VERIFICATION_INCOMPLETE even with no findings", async () => {
     const bundle = emptyContextBundle({ sufficiencyState: "INCOMPLETE" });
     const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 1, currency: "USD" } });
-    const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: "not to exceed $1.", contextBundle: bundle }), compilationResult: compilationResult({ rules: [r] }) };
+    const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: "The Company may incur Indebtedness in an amount not to exceed $1.", contextBundle: bundle }), compilationResult: compilationResult({ rules: [r] }) };
     const result = await verifyCompiledCandidate(input, { reviewCaller: fakeCaller(emptyFindingsResponse) });
     expect(result.status).toBe("VERIFICATION_INCOMPLETE");
   });
@@ -120,7 +120,7 @@ describe("Phase 3C - top-level verify orchestration", () => {
   it("a CONFLICTED operative lineage never allows VERIFIED_NO_MATERIAL_GAP_FOUND even when no finding exists (task §18)", async () => {
     const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 1, currency: "USD" } });
     const input: VerificationInput = {
-      compilerInput: testCompilerInput({ operativeSourceText: "not to exceed $1.", operativeLineage: { instrumentKey: "i", provisionKey: "p", asOfDate: "2026-01-01", operativeStatus: "OPERATIVE_STATE_CONFLICTED", currentSourceDocumentId: "doc-1" } }),
+      compilerInput: testCompilerInput({ operativeSourceText: "The Company may incur Indebtedness in an amount not to exceed $1.", operativeLineage: { instrumentKey: "i", provisionKey: "p", asOfDate: "2026-01-01", operativeStatus: "OPERATIVE_STATE_CONFLICTED", currentSourceDocumentId: "doc-1" } }),
       compilationResult: compilationResult({ rules: [r] }),
     };
     const result = await verifyCompiledCandidate(input, { reviewCaller: fakeCaller(emptyFindingsResponse) });
@@ -137,7 +137,7 @@ describe("Phase 3C - top-level verify orchestration", () => {
   it("a real UNCERTAIN-only outcome (semantic review runs, finds only a low-confidence issue) produces REVIEW_REQUIRED, never a clean pass", async () => {
     const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 1, currency: "USD" }, dependsOn: [{ relationshipType: "REQUIRES", targetRuleId: "ir-rule:other", description: "x" }] });
     const def = { definitionId: "ir-def:1", irSchemaVersion: "v1", companyId: "c", instrumentKey: "i", sourceDocumentId: "d", termName: "Some Term", covenantFamily: "DEFINITIONS_CALCULATION_RULES" as const, calculationExpression: null, dependsOnTerms: [], sufficiency: "COMPLETE" as const, sufficiencyReasons: [], provenance: null, compilerVersion: "v1", sourceContentVersion: null };
-    const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: "not to exceed $1." }), compilationResult: compilationResult({ rules: [r], definitions: [def] }) };
+    const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: "The Company may incur Indebtedness in an amount not to exceed $1." }), compilationResult: compilationResult({ rules: [r], definitions: [def] }) };
     const caller = fakeCaller(() => ({ findings: [{ findingType: "OTHER_MATERIAL_SEMANTIC_DISCREPANCY", severity: "UNCERTAIN", ruleOrDefinitionId: null, irPath: null, sourceEvidence: "x", sourceCitation: "§9.01", proposedIrEvidence: "y", reasoning: "not fully resolvable from available evidence" }], overallNotes: [] }));
     const result = await verifyCompiledCandidate(input, { reviewCaller: caller });
     expect(result.semanticReviewInvoked).toBe(true); // 2 units -> routed to review regardless of reconciliation

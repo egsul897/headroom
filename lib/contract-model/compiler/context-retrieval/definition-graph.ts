@@ -9,8 +9,7 @@
  * structural-definitions.ts already declared, never a fuzzy guess.
  */
 import type { StructuralIndex } from "../structural-index";
-import { resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
-import { addEdge, addItem, makeItemInput, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, operativeDefinitionText, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { computeItemId } from "./identity";
 import type { ContextItem } from "./types";
 
@@ -142,20 +141,9 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
       continue;
     }
 
-    // IPV-20: serve the operative definition text when a RESOLVED amendment
-    // targets this term — never the static base-document index alone.
-    const evidenceResolution = resolveOperativeDefinitionEvidence({
-      index,
-      operativeState: state.operativeState,
-      term: mention.exactTerm,
-      searchDocumentIds: [documentId],
-      supersessionIndex: state.supersessionIndex,
-    });
     const baseText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
-    const fullText =
-      evidenceResolution.outcome === "FOUND" && evidenceResolution.text && evidenceResolution.text.trim().length > 0
-        ? evidenceResolution.text
-        : baseText;
+    // IPV-20: prefer RESOLVED amended definition text over the base-index span.
+    const fullText = operativeDefinitionText(state, index, documentId, mention.exactTerm, baseText);
     if (!withinBudget(state, fullText.length)) return;
 
     // Phase 3F.1 FIX-2 - evidenceState is computed BEFORE this item is ever

@@ -6,6 +6,7 @@
  * document relationships here.
  */
 import type { OperativeProvisionView } from "../amendment/types";
+import { isNestedSectionRef } from "../amendment/operative-state";
 import type { StructuralIndex } from "../structural-index";
 import type { InstrumentGroupingResult, ModificationCandidate, PackageGraphResult, RelationshipCandidate } from "../package-graph/types";
 import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
@@ -50,7 +51,7 @@ export function resolveCrossDocumentDefinition(fromDocumentId: string, normalize
   return undefined;
 }
 
-/** Amendment/supplement leads targeting this covenant's own section, or a definition it depends on - never resolved into operative text (task §19). */
+/** Amendment/supplement leads targeting this covenant's own section (or a nested clause under it), or a definition it depends on - never resolved into operative text (task §19). */
 export function retrieveAmendmentLeadsForSection(state: RetrievalState, packageGraph: PackageGraphResult, documentId: string, sectionRef: string, parentItemId: string): void {
   const norm = (r: string) => r.replace(/\s+/g, "");
   const parent = norm(sectionRef);
@@ -60,7 +61,7 @@ export function retrieveAmendmentLeadsForSection(state: RetrievalState, packageG
   const candidates = packageGraph.modificationCandidates.filter((mc: ModificationCandidate) => {
     if (mc.targetDocumentId !== documentId || !mc.targetSectionRef) return false;
     const t = norm(mc.targetSectionRef);
-    return t === parent || t.startsWith(`${parent}(`) || t.startsWith(`${parent}.`);
+    return t === parent || isNestedSectionRef(sectionRef, mc.targetSectionRef) || t.startsWith(`${parent}(`) || t.startsWith(`${parent}.`);
   });
   for (const mc of candidates) {
     addAmendmentLeadItem(state, packageGraph, mc, parentItemId);
