@@ -160,8 +160,11 @@ function validateGraphForCompany(snapshots: FinancialSnapshot[]): StoreWriteIssu
 
 /**
  * Append a DRAFT or REVIEW_REQUIRED snapshot. Refuses APPROVED / SUPERSEDED on raw append.
- * When `supersedesSnapshotId` is set and the predecessor exists in-company, emits
- * SNAPSHOT_SUPERSEDED for the predecessor (append-only; prior bytes untouched).
+ *
+ * A proposal may name `supersedesSnapshotId` (successor → predecessor edge) without
+ * immediately flipping the predecessor to SUPERSEDED. Authoritative APPROVED reporting
+ * stays live until the successor itself is attributable-approved (see `approveSnapshot`).
+ * Graph checks still refuse competing successors / unknown edges on the named edge alone.
  */
 export function appendSnapshot(backend: SnapshotStoreBackend, request: AppendSnapshotRequest): WriteResult {
   const snapshot = cloneSnapshot(request.snapshot);
@@ -204,6 +207,18 @@ export function appendSnapshot(backend: SnapshotStoreBackend, request: AppendSna
     return { ok: false, issues };
   }
 
+  if (snapshot.supersedesSnapshotId) {
+    const pred = current.get(snapshot.supersedesSnapshotId);
+    if (pred && pred.companyId !== snapshot.companyId) {
+      issues.push({
+        code: "SUCCESSOR_OF_ANOTHER_COMPANY",
+        message: `snapshot ${snapshot.snapshotId} supersedes ${snapshot.supersedesSnapshotId}, which belongs to a different company`,
+        snapshotIds: [snapshot.snapshotId, snapshot.supersedesSnapshotId],
+      });
+      return { ok: false, issues };
+    }
+  }
+
   const prospectiveEvents: StoreEvent[] = [
     {
       type: "SNAPSHOT_APPENDED",
@@ -215,28 +230,6 @@ export function appendSnapshot(backend: SnapshotStoreBackend, request: AppendSna
       },
     },
   ];
-
-  if (snapshot.supersedesSnapshotId) {
-    const pred = current.get(snapshot.supersedesSnapshotId);
-    if (pred && pred.companyId !== snapshot.companyId) {
-      issues.push({
-        code: "SUCCESSOR_OF_ANOTHER_COMPANY",
-        message: `snapshot ${snapshot.snapshotId} supersedes ${snapshot.supersedesSnapshotId}, which belongs to a different company`,
-        snapshotIds: [snapshot.snapshotId, snapshot.supersedesSnapshotId],
-      });
-      return { ok: false, issues };
-    }
-    if (pred && pred.status !== "SUPERSEDED") {
-      prospectiveEvents.push({
-        type: "SNAPSHOT_SUPERSEDED",
-        eventId: nextEventId(),
-        at: nowIso(),
-        snapshotId: pred.snapshotId,
-        companyId: pred.companyId,
-        supersededBy: snapshot.snapshotId,
-      });
-    }
-  }
 
   const prospective = materializeFromEvents([...backend.events, ...prospectiveEvents]);
   const companySnaps = [...prospective.values()].filter((s) => s.companyId === snapshot.companyId);
@@ -251,6 +244,8 @@ export function appendSnapshot(backend: SnapshotStoreBackend, request: AppendSna
 /**
  * Attributable DRAFT | REVIEW_REQUIRED → APPROVED transition.
  * Appends SNAPSHOT_APPROVED; materialization flips status and sets review fields.
+ * When the approved snapshot names `supersedesSnapshotId`, also emits SNAPSHOT_SUPERSEDED
+ * for that predecessor (immutable supersession only on attributable approval of the successor).
  * Refuses if missing, already APPROVED/SUPERSEDED, or approval fields incomplete.
  */
 export function approveSnapshot(backend: SnapshotStoreBackend, approval: ApprovalTransition): WriteResult {
@@ -286,22 +281,46 @@ export function approveSnapshot(backend: SnapshotStoreBackend, approval: Approva
     return { ok: false, issues };
   }
 
-  const event: StoreEvent = {
-    type: "SNAPSHOT_APPROVED",
-    eventId: nextEventId(),
-    at: nowIso(),
-    snapshotId,
-    companyId: existing.companyId,
-    reviewedBy,
-    reviewedAt,
-    approvalRef,
-  };
+  const prospectiveEvents: StoreEvent[] = [
+    {
+      type: "SNAPSHOT_APPROVED",
+      eventId: nextEventId(),
+      at: nowIso(),
+      snapshotId,
+      companyId: existing.companyId,
+      reviewedBy,
+      reviewedAt,
+      approvalRef,
+    },
+  ];
 
-  const prospective = materializeFromEvents([...backend.events, event]);
+  if (existing.supersedesSnapshotId) {
+    const pred = current.get(existing.supersedesSnapshotId);
+    if (pred && pred.companyId !== existing.companyId) {
+      issues.push({
+        code: "SUCCESSOR_OF_ANOTHER_COMPANY",
+        message: `snapshot ${snapshotId} supersedes ${existing.supersedesSnapshotId}, which belongs to a different company`,
+        snapshotIds: [snapshotId, existing.supersedesSnapshotId],
+      });
+      return { ok: false, issues };
+    }
+    if (pred && pred.status !== "SUPERSEDED") {
+      prospectiveEvents.push({
+        type: "SNAPSHOT_SUPERSEDED",
+        eventId: nextEventId(),
+        at: nowIso(),
+        snapshotId: pred.snapshotId,
+        companyId: pred.companyId,
+        supersededBy: snapshotId,
+      });
+    }
+  }
+
+  const prospective = materializeFromEvents([...backend.events, ...prospectiveEvents]);
   const companySnaps = [...prospective.values()].filter((s) => s.companyId === existing.companyId);
   const graphIssues = validateGraphForCompany(companySnaps);
   if (graphIssues.length > 0) return { ok: false, issues: graphIssues };
 
-  backend.commit([event]);
-  return { ok: true, snapshot: cloneSnapshot(prospective.get(snapshotId)!), events: [event] };
+  backend.commit(prospectiveEvents);
+  return { ok: true, snapshot: cloneSnapshot(prospective.get(snapshotId)!), events: prospectiveEvents };
 }

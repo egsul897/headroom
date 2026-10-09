@@ -30,6 +30,13 @@ export {
   type TransactionAnalysisResult,
 } from "./transaction-analysis";
 export {
+  enumerateCertifiedPaths,
+  type CertifiedPathEnumeration,
+  type EnumeratedCertifiedPath,
+  type CertifiedPathAuthority,
+  type ContemplatedTxnKind,
+} from "./verified-path-enumeration";
+export {
   DEMO_TRANSACTION_FIXTURES,
   listDemoTransactionFixtures,
   type DemoTransactionFixture,

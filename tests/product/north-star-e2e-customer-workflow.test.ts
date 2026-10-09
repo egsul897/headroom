@@ -100,7 +100,7 @@ describeDb("North Star E2E customer workflow", () => {
     expect(readiness.cutoff?.reportingPeriodKey).toBe("FY2026-Q2");
     expect(readiness.cutoff?.snapshotId).toBe(proposed.snapshotId);
 
-    // Restatement append with supersedesSnapshotId immediately SUPERSEDES predecessor (fail-closed).
+    // Restatement DRAFT names predecessor but must not invalidate APPROVED reporting until approved.
     const restated = await proposeCertificateRestatement({
       companyId: CO,
       predecessorSnapshotId: proposed.snapshotId,
@@ -109,14 +109,15 @@ describeDb("North Star E2E customer workflow", () => {
     expect(restated.status).toBe("DRAFT");
     const store3 = await PrismaApprovedSnapshotStore.open(prisma2, CO);
     expect(store3.getSnapshot(restated.snapshotId)?.supersedesSnapshotId).toBe(proposed.snapshotId);
-    expect(store3.getSnapshot(proposed.snapshotId)?.status).toBe("SUPERSEDED");
+    expect(store3.getSnapshot(proposed.snapshotId)?.status).toBe("APPROVED");
     readiness = await loadTransactionWorkflowReadiness(CO, {
       evaluationDate: "2026-08-01",
       selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
     });
-    expect(readiness.cutoff?.state).not.toBe("RESOLVED");
+    expect(readiness.cutoff?.state).toBe("RESOLVED");
+    expect(readiness.cutoff?.snapshotId).toBe(proposed.snapshotId);
 
-    // Approve restatement → cutoff binds again
+    // Approve restatement → predecessor SUPERSEDED; cutoff binds to successor
     const restatedApproved = await approveWorkspaceCertificate({
       companyId: CO,
       snapshotId: restated.snapshotId,
@@ -125,6 +126,8 @@ describeDb("North Star E2E customer workflow", () => {
       reviewedAt: "2026-07-25T18:00:00Z",
     });
     expect(restatedApproved.ok).toBe(true);
+    const store3b = await PrismaApprovedSnapshotStore.open(prisma2, CO);
+    expect(store3b.getSnapshot(proposed.snapshotId)?.status).toBe("SUPERSEDED");
     readiness = await loadTransactionWorkflowReadiness(CO, {
       evaluationDate: "2026-08-01",
       selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",

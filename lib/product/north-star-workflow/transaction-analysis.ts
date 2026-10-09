@@ -5,6 +5,7 @@
 import { attemptCertifiedTransaction } from "./certified-transaction";
 import { loadAuthoritativeCapacity } from "./authoritative-capacity";
 import { loadTransactionWorkflowReadiness } from "./transaction-readiness";
+import { enumerateCertifiedPaths, type CertifiedPathEnumeration } from "./verified-path-enumeration";
 import { answerFromCorpus } from "@/lib/product/covenant-intelligence/ask-retrieve";
 import type { VerifiedExecutionPackage } from "@/lib/contract-model/verified-execution";
 
@@ -23,12 +24,8 @@ export interface TransactionAnalysisResult {
   authoritative: Awaited<ReturnType<typeof loadAuthoritativeCapacity>>;
   certifiedAttempt: Awaited<ReturnType<typeof attemptCertifiedTransaction>>;
   corpus: Awaited<ReturnType<typeof answerFromCorpus>> | null;
-  /** Neutral path enumeration placeholder — certified 4E not available. */
-  pathEnumeration: {
-    authority: "NOT_CERTIFIED_4E" | "CERTIFIED_4E";
-    paths: Array<{ pathId: string; label: string; status: string; note: string }>;
-    note: string;
-  };
+  /** Neutral Phase 4E path enumeration over verified package (or truthful incomplete state). */
+  pathEnumeration: CertifiedPathEnumeration;
   answer: {
     kind: "needs_confirmation" | "insufficient_evidence" | "review_required" | "certified" | "legacy_labeled";
     headline: string;
@@ -117,12 +114,11 @@ export async function analyzeContemplatedTransaction(args: {
     verifiedPackage: args.verifiedPackage ?? null,
   });
 
-  const pathEnumeration = {
-    authority: "NOT_CERTIFIED_4E" as const,
-    paths: [] as Array<{ pathId: string; label: string; status: string; note: string }>,
-    note:
-      "Certified Phase 4E neutral path enumeration is unavailable (Phase 3 foundation failed; CERTIFIED 0/12 strata). Heuristic multipath on Intelligence remains LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E.",
-  };
+  const pathEnumeration = enumerateCertifiedPaths({
+    verifiedPackage: args.verifiedPackage ?? null,
+    transactionKind: draft.kind,
+    secured: draft.secured,
+  });
 
   let corpus: Awaited<ReturnType<typeof answerFromCorpus>> | null = null;
   try {

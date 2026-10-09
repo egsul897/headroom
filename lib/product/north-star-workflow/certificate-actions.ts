@@ -257,8 +257,9 @@ export async function appendContractLedgerUsage(args: {
 }
 
 /**
- * Explicit restatement: propose a new DRAFT snapshot that supersedes an APPROVED predecessor.
- * Never mutates the predecessor in place.
+ * Explicit restatement: propose a new DRAFT that names an APPROVED predecessor via
+ * supersedesSnapshotId. The predecessor stays APPROVED until this DRAFT is attributable-approved
+ * (immutable supersession on approve only). Never mutates the predecessor in place.
  */
 export async function proposeCertificateRestatement(args: {
   companyId: string;

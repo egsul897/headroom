@@ -133,8 +133,9 @@ export function CertificatesClient({
             </div>
             {s.status === "APPROVED" && (
               <div className="row-note">
-                Proposing a restatement immediately SUPERSEDES this APPROVED snapshot (fail-closed). Capacity stays
-                withheld until the restatement DRAFT is attributable-approved.
+                Propose a restatement DRAFT that names this snapshot via supersedesSnapshotId. Authoritative APPROVED
+                reporting stays live until that DRAFT is attributable-approved; only then is this row SUPERSEDED
+                (append-only history preserved).
               </div>
             )}
 
