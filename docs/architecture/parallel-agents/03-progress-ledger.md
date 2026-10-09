@@ -199,3 +199,16 @@
 - Explicit non-split: incomplete CKF wiring blocks legal promotion only, not this research overlay
 - No Phase 5 / paid inference / certification in merge action
 
+---
+
+## 2026-10-09T00:12:00Z — END-TO-END PRODUCT PROOF EXECUTION ORDER
+
+- **Gate A1 PASS:** merged CKF #154 head `262dc0e9` → merge `2a8b70cd` (non-promoting hub; durability unfinished did not block).
+- **Gate A2 BLOCKED (first broken arrow):** no shared `DATABASE_URL` / blob token in this environment — cannot prove cross-VM durable byte rehydrate. Existing `lib/document-storage` + CKF `probeDurability` ready once credentials exist (WS-CKF owns wiring).
+- **Gate A3 PASS (adapter-level):** `knowledge-factory.consumer-export.v1` → Definition Encyclopedia forward import; pass2 idempotent; `promotedToLegalTruth=0`. Vitest phase3-preservation green.
+- **Gate A4 PASS (committed corpus):** issuer-disjoint precedent retrieval with `replacesVerification=false` / non-certified.
+- **B1 BLOCKED:** #163 CLEAN/CI-green; awaiting independent acceptance close before merge.
+- **B2 BLOCKED:** #136 draft; certified-path FAILURE (`REVIEW_REQUIRED` vs expected `CERTIFIED`).
+- **C1 BLOCKED:** depends on A2.
+- Verdict: **END_TO_END_NOT_YET_PROVEN**. Board: `15-e2e-product-proof-execution-board.json`. Probe: `scripts/parallel-agents/e2e-product-proof-status.ts`.
+
