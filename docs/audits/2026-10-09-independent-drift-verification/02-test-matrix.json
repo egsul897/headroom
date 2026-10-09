@@ -1,0 +1,56 @@
+{
+  "artifact": "02 - test and CI matrix",
+  "testedTree": "claude/audit-drift-remediation-2026-10-09 at 9a15d856 (commits 79e6b4eb, a8e1748b, fbec7248, 9a15d856 on base 2338e9e0); the evidence commit that follows changes docs only",
+  "execution": "local, Linux container, Node 22, Prisma client regenerated from prisma/schema.prisma; no DATABASE_URL, no provider keys",
+  "checks": [
+    {
+      "command": "npx tsc --noEmit -p .",
+      "exitCode": 0,
+      "result": "0 errors",
+      "baseline": "0 errors on 2338e9e0 with the same regenerated client (an earlier figure of 14 in session notes was a stale-client artifact)"
+    },
+    {
+      "command": "npx next lint",
+      "exitCode": 0,
+      "result": "No ESLint warnings or errors"
+    },
+    {
+      "command": "npm run test:product",
+      "exitCode": 0,
+      "result": "14 files passed, 1 file skipped; 265 tests passed, 28 skipped (pre-existing skips)"
+    },
+    {
+      "command": "npm run test:knowledge-factory",
+      "exitCode": 0,
+      "result": "12 files; 67 passed, 0 skipped"
+    },
+    {
+      "command": "npx vitest run tests/product/tenant-boundary.test.ts tests/product/legal-intelligence-verified-boundary.test.ts tests/knowledge-factory/corpus-acceptance.test.ts tests/knowledge-factory/live-write-approval.test.ts",
+      "exitCode": 0,
+      "result": "4 files; 41 passed (17 tenant boundary, 13 legal boundary, 7 corpus acceptance, 4 approval)"
+    },
+    {
+      "command": "npm run test:phase3-certification",
+      "exitCode": 0,
+      "result": "Tests  481 passed (481)"
+    },
+    {
+      "command": "npx next build",
+      "exitCode": 0,
+      "result": "production build succeeded (all routes dynamic); the Google-font override warning is non-fatal"
+    },
+    {
+      "command": "Postgres-backed suites (tests/ledger, tests/feeds, tests/onboarding, tests/company-state, tests/foundation-audit, tests/contract-model DB suites)",
+      "exitCode": null,
+      "result": "NOT_VERIFIED locally (no DATABASE_URL); p3-r0-soft-gate runs tests/ledger/supersede-ledger-entry.test.ts and tests/feeds/snapshot-update-no-carry-forward.test.ts in CI on an ephemeral Postgres and is path-triggered by this branch"
+    },
+    {
+      "command": "GitHub Actions on the PR head",
+      "exitCode": null,
+      "result": "pending at the time this artifact was written; see the PR checks. Vercel deployment success is not evidence of correctness"
+    }
+  ],
+  "failingCasesRemovedOrWeakened": "none",
+  "goldenLabelsChanged": "none",
+  "thresholdsChanged": "none"
+}
