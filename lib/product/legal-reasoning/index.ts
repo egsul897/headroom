@@ -88,3 +88,8 @@ export {
   generateExercisesFromSource,
   type GeneratedExercise,
 } from "./exercise-factory";
+
+export {
+  buildWorkspacePackageGraph,
+  packageGraphMetadataSummary,
+} from "./package-graph-wire";

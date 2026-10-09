@@ -436,6 +436,31 @@ export async function analyzeCustomerDocument(params: {
       sources: packageSources,
       relationships,
     });
+    // Phase 2C package graph (title caption for siblings; full text for focal doc).
+    try {
+      const { buildWorkspacePackageGraph, packageGraphMetadataSummary } = await import(
+        "../legal-reasoning/package-graph-wire"
+      );
+      const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+      let focalText: string | null = null;
+      try {
+        focalText = (await extractTextAsync(params.bytes, params.filename)).text;
+      } catch {
+        focalText = null;
+      }
+      const graph = buildWorkspacePackageGraph({
+        companyId: params.companyId,
+        documents: packageSources.map((s) => ({
+          sourceId: s.sourceId,
+          documentTitle: s.documentTitle,
+          documentClass: s.documentClass,
+          text: s.sourceId === sourceId ? focalText : null,
+        })),
+      });
+      Object.assign(amendment, { packageGraph: packageGraphMetadataSummary(graph) });
+    } catch {
+      /* non-blocking — title/metadata amendment package still returned */
+    }
     // Persist discovered agreement edges into Neon (idempotent). Failures must not block analysis.
     try {
       const { persistAmendmentGraph } = await import("../legal-reasoning/amendment-graph");

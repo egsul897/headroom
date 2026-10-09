@@ -10,7 +10,8 @@ export type DependencyEdgeKind =
   | "RP_TO_INVESTMENT"
   | "CROSS_REFERENCE"
   | "SHARED_CATEGORY"
-  | "DEFINITION";
+  | "DEFINITION"
+  | "SHARED_CAPACITY";
 
 export interface CovenantDependencyEdge {
   kind: DependencyEdgeKind;
@@ -129,6 +130,29 @@ export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependen
     }
   }
 
+  // Shared-capacity / aggregate basket links (discovery hints — not certified shared-cap IR).
+  const sharedCandidates = items.filter((i) => {
+    const hay = `${i.heading} ${i.plainEnglish} ${(i.materialBasketsThresholds ?? []).join(" ")}`.toLowerCase();
+    return /shared|in the aggregate|aggregate(?:d)?\s+(?:amount|basket|cap)|reclassif/.test(hay);
+  });
+  for (let i = 0; i < sharedCandidates.length; i++) {
+    for (let j = i + 1; j < Math.min(sharedCandidates.length, i + 4); j++) {
+      const a = sharedCandidates[i]!;
+      const b = sharedCandidates[j]!;
+      edges.push({
+        kind: "SHARED_CAPACITY",
+        fromSectionRef: a.sectionRef,
+        fromCategory: a.category,
+        toSectionRef: b.sectionRef,
+        toCategory: b.category,
+        rationale:
+          "Shared-capacity / aggregate / reclassification language — usage under one basket may reduce remaining capacity under linked baskets; do not stack without analysis.",
+        fromDocumentTitle: a.documentTitle,
+        toDocumentTitle: b.documentTitle,
+      });
+    }
+  }
+
   // Deduplicate
   const seen = new Set<string>();
   const uniq = edges.filter((e) => {
@@ -142,7 +166,7 @@ export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependen
 
   return {
     edgeCount: uniq.length,
-    edges: uniq.slice(0, 40),
+    edges: uniq.slice(0, 60),
     cycles,
     note: "Edges are discovery-backed relationship hints for review. They do not authorize transactions or establish shared capacity.",
   };
