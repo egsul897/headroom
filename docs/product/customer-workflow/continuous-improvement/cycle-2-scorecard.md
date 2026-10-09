@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 2 |
 | Starting SHA | `bae24ced33fdd6963d0615265a1e67cb181233e8` (`origin/main`) |
-| Ending SHA | (PR tip) |
+| Ending SHA | `93d83c1aa57964028d69fef777be8a2b70121c79` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 | Prior cycle | Cycle 1 — Stage D lien-companion fail-closed ([#207](https://github.com/egsul897/headroom/pull/207)); planning map from explore shortlist |
@@ -76,7 +76,7 @@ Customer-grade paths verified: **0**.
 
 | Item | URL |
 |---|---|
-| This cycle | (PR for `cursor/stage-c-ratio-pkgn-f673`) |
+| This cycle | https://github.com/egsul897/headroom/pull/208 (pending create) |
 
 ## Recommended next cycle
 
