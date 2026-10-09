@@ -1,7 +1,7 @@
 /**
  * Stage D Cycle 4 — pkg-i entity-scope COUNTERPARTY unblocks §7.01 CERTIFY
- * and SECURED_DEBT dual-path enumeration; REQUIRE capacity stays fail-closed
- * on the §7.02(b)→§7.01(b) cross-rule gate.
+ * and SECURED_DEBT dual-path enumeration. (Cycle 5 companion-REQUIRES discharge
+ * then opens REQUIRE capacity; see stage-d-pkgi-cross-rule.test.ts.)
  */
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -14,12 +14,9 @@ import {
 } from "../../lib/contract-model/phase3-certification/phase4-adapter";
 import { serializeVerifiedUnitPackage } from "../../lib/contract-model/verified-units";
 import { enumerateCertifiedPaths } from "../../lib/product/north-star-workflow/verified-path-enumeration";
-import { evaluateVerifiedCapacity } from "../../lib/contract-model/verified-execution";
-import { snapshotInputResolver } from "../../lib/contract-model/runtime/input/snapshot-resolver";
 import { ENTITY_SCOPE_GUARD_VERSION } from "../../lib/contract-model/compiler/semantic/entity-scope-guard";
 
 const PACKAGE_ID = "pkg-i-secured-debt-lien";
-const AS_OF = "2026-12-31";
 const ARTIFACTS = "docs/product/customer-workflow/stage-d-pkgi-entity-scope";
 
 describe("Stage D pkg-i entity-scope COUNTERPARTY → dual-path 4E", () => {
@@ -56,7 +53,7 @@ describe("Stage D pkg-i entity-scope COUNTERPARTY → dual-path 4E", () => {
     expect(d?.entityScopeAudit?.witness?.signals?.some((s) => s.role === "COUNTERPARTY")).toBe(true);
   });
 
-  it("enumerates SECURED_DEBT CERTIFIED_4E with debt and lien CANDIDATE paths; REQUIRE capacity refuses cross-rule gate", async () => {
+  it("enumerates SECURED_DEBT CERTIFIED_4E with debt and lien CANDIDATE paths", async () => {
     const pkg = loadPackage(PACKAGE_ID);
     const stages = await runDeterministicStages(pkg);
     const sem = await runSemanticStage(pkg, stages);
@@ -82,30 +79,11 @@ describe("Stage D pkg-i entity-scope COUNTERPARTY → dual-path 4E", () => {
     expect(enumeration.authority).toBe("CERTIFIED_4E");
     expect(enumeration.paths.some((p) => p.sourceSectionRef === "7.01(b)" && p.status === "CANDIDATE")).toBe(true);
     expect(enumeration.paths.some((p) => p.sourceSectionRef === "7.02(b)" && p.status === "CANDIDATE")).toBe(true);
-
-    const inputs = snapshotInputResolver({
-      snapshots: [],
-      definitions: [...(adapter.package.definitions ?? [])],
-      rules: [...adapter.package.rules],
-      companyId: adapter.package.companyId,
-      instrumentKey: adapter.package.instrumentKey,
-    });
-    const capacity = evaluateVerifiedCapacity({
-      package: adapter.package,
-      inputs,
-      ledger: [],
-      asOf: AS_OF,
-    });
-    expect(capacity.outcome).toBe("REFUSED");
-    if (capacity.outcome !== "REFUSED") throw new Error("expected REFUSED");
-    expect(capacity.refusals.some((r) => r.code === "CROSS_RULE_GATE_NOT_EXECUTABLE")).toBe(true);
   });
 
-  it("probe artifacts record dual-path CERTIFIED_4E and capacity refusal", () => {
+  it("probe artifacts record dual-path CERTIFIED_4E (Cycle 4 capacity refusal superseded by Cycle 5 companion discharge)", () => {
     const enumPath = pathJoin(ARTIFACTS, "02-phase4e-enumeration.json");
-    const capPath = pathJoin(ARTIFACTS, "04-capacity-require.json");
     expect(fs.existsSync(enumPath)).toBe(true);
-    expect(fs.existsSync(capPath)).toBe(true);
     const enumeration = JSON.parse(fs.readFileSync(enumPath, "utf8")) as {
       results: Array<{ transactionKind: string; authority: string; paths: Array<{ sourceSectionRef: string }> }>;
     };
@@ -113,12 +91,6 @@ describe("Stage D pkg-i entity-scope COUNTERPARTY → dual-path 4E", () => {
     expect(secured?.authority).toBe("CERTIFIED_4E");
     expect(secured?.paths.some((p) => p.sourceSectionRef === "7.01(b)")).toBe(true);
     expect(secured?.paths.some((p) => p.sourceSectionRef === "7.02(b)")).toBe(true);
-    const capacity = JSON.parse(fs.readFileSync(capPath, "utf8")) as {
-      outcome: string;
-      refusals: Array<{ code: string }>;
-    };
-    expect(capacity.outcome).toBe("REFUSED");
-    expect(capacity.refusals.some((r) => r.code === "CROSS_RULE_GATE_NOT_EXECUTABLE")).toBe(true);
   });
 });
 
