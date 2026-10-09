@@ -9,7 +9,7 @@
       "compile": [
         {
           "status": "COMPILED",
-          "permissionId": "cmv0icqhe0003ugrxk5nba2ow",
+          "permissionId": "cmv0ietqt0003xqwp4pqjnnah",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
           "grantType": "DEBT_INCURRENCE",
           "formulaType": "FLAT_AMOUNT",
@@ -22,7 +22,7 @@
         },
         {
           "status": "COMPILED",
-          "permissionId": "cmv0icqsr0007ugrxhbi8ky8d",
+          "permissionId": "cmv0ieu2h0007xqwpf3q1njsq",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
           "grantType": "LIEN",
           "formulaType": "FLAT_AMOUNT",
@@ -54,7 +54,7 @@
   },
   "permissions": [
     {
-      "id": "cmv0icqhe0003ugrxk5nba2ow",
+      "id": "cmv0ietqt0003xqwp4pqjnnah",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
       "grantType": "DEBT_INCURRENCE",
       "formulaType": "FLAT_AMOUNT",
@@ -63,7 +63,7 @@
       "sectionRef": "7.2"
     },
     {
-      "id": "cmv0icqsr0007ugrxhbi8ky8d",
+      "id": "cmv0ieu2h0007xqwpf3q1njsq",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
       "grantType": "LIEN",
       "formulaType": "FLAT_AMOUNT",
@@ -174,7 +174,7 @@
         "notes": [
           "Pro forma total leverage 2.86x; secured 2.02x",
           "Counsel-compiled basket remaining before txn $50M → after $0M",
-          "Engine secured remaining: $50M (undefined)",
+          "Engine secured remaining: $50M (status unavailable)",
           "$100M exceeds counsel-compiled remaining basket capacity"
         ],
         "drilldown": {
@@ -223,7 +223,7 @@
           "calculationHistory": [
             "PF total leverage = (1100+100)/420",
             "PF secured leverage = (750+100)/420",
-            "Engine secured remaining: $50M (undefined)"
+            "Engine secured remaining: $50M (status unavailable)"
           ],
           "missingInputs": [],
           "hrefs": [
