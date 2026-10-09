@@ -224,9 +224,8 @@ export async function analyzeContemplatedTransaction(args: {
     };
   }
 
-  const legacyOk = legacySimulation && !("refused" in legacySimulation);
-  if (legacyOk) {
-    const leg = legacySimulation;
+  if (legacySimulation && !("refused" in legacySimulation)) {
+    const leg: LegacySimulateBridgeResult = legacySimulation;
     return {
       draft,
       readiness,
