@@ -31,6 +31,11 @@ const mocks = vi.hoisted(() => ({
   sourceArtifactCount: vi.fn(),
 }));
 
+// The live-write approval contract (token + committed, owner-attributable record) is tested in
+// live-write-approval.test.ts; this file tests the durable-store path, so the record is stubbed.
+vi.mock("../../lib/knowledge-factory/live-write-approval", () => ({
+  assertLiveWriteApproval: () => ({ ref: "docs/knowledge-factory/approvals/stub.md", approvedBy: "test", approvedAt: "2026-10-09T00:00:00Z", environment: "test", scope: "test", operations: ["consolidation-import"] }),
+}));
 vi.mock("../../lib/prisma", () => ({
   prisma: {
     $queryRawUnsafe: mocks.queryRaw,

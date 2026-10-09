@@ -11,6 +11,7 @@ import path from "node:path";
 import { prisma } from "../../prisma";
 import type { KnowledgeSourceRecord } from "../types";
 import { LIVE_WRITE_ENV, LIVE_WRITE_TOKEN } from "./import-original-bytes";
+import { assertLiveWriteApproval } from "../live-write-approval";
 
 export interface MetadataImportResult {
   mode: "dry-run" | "live";
@@ -31,6 +32,7 @@ function assertLive(live: boolean) {
       `Live metadata import refused: set ${LIVE_WRITE_ENV}=${LIVE_WRITE_TOKEN} after owner approval.`,
     );
   }
+  assertLiveWriteApproval({ operation: "derived-export-import" });
 }
 
 function loadExportSources(repoRoot: string): KnowledgeSourceRecord[] {
