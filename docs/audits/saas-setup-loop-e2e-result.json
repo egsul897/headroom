@@ -1,0 +1,558 @@
+{
+  "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+  "asOf": "2026-06-30",
+  "uploaded": [
+    {
+      "id": "cmv1b0hca0001ormdf0r38my0",
+      "type": "CREDIT_AGREEMENT",
+      "filename": "harbor-lane-credit-agreement.txt",
+      "source": "pkg-a-basic-credit-agreement"
+    },
+    {
+      "id": "cmv1b0i5k000kormdwu9n8414",
+      "type": "COMPLIANCE_CERTIFICATE",
+      "filename": "test-compliance-certificate.txt",
+      "source": "labeled-test-fixture"
+    }
+  ],
+  "analysisReadiness": {
+    "ready": true,
+    "reason": "READY",
+    "runStatus": "COMPLETED_WITH_REVIEW"
+  },
+  "review": {
+    "approvedCount": 22,
+    "approved": [
+      {
+        "id": "cmv1b0jit000xormdddeutvmt",
+        "kind": "DOCUMENT_RELATIONSHIP"
+      },
+      {
+        "id": "cmv1b0ka9001hormdn6nfe0x6",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka9001dormd6a556lzh",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka9001formdgvua7pfa",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka8000zormdwv54qvbx",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka80011ormdat2vuy8g",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka80013ormdircu6i82",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka80015ormdz1jyjzb5",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka80017ormdr5pz95cg",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka80019ormd95rei3bb",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0ka9001bormdpvuxg5bd",
+        "kind": "DEFINED_TERM"
+      },
+      {
+        "id": "cmv1b0lac001jormd5lbqpz5y",
+        "kind": "PERMISSION",
+        "detail": "MODELED"
+      },
+      {
+        "id": "cmv1b0n36001pormdwvhijwp4",
+        "kind": "EXTERNAL_INPUT_REQUIREMENT"
+      },
+      {
+        "id": "cmv1b0vff003eormdbb5qn3tu",
+        "kind": "DOCUMENT_RELATIONSHIP"
+      },
+      {
+        "id": "cmv1b12oe0045ormdg67sdtph",
+        "kind": "FINANCIAL_FACT",
+        "detail": "covenant_ebitda"
+      },
+      {
+        "id": "cmv1b12s00047ormdmbe5amaq",
+        "kind": "FINANCIAL_FACT",
+        "detail": "total_debt"
+      },
+      {
+        "id": "cmv1b12tu0049ormdpvdqc58i",
+        "kind": "FINANCIAL_FACT",
+        "detail": "secured_debt"
+      },
+      {
+        "id": "cmv1b12vo004bormdm3h750or",
+        "kind": "FINANCIAL_FACT",
+        "detail": "cash"
+      },
+      {
+        "id": "cmv1b12xj004dormd17nzuwpv",
+        "kind": "FINANCIAL_FACT",
+        "detail": "interest_expense"
+      },
+      {
+        "id": "cmv1b12zd004formd8q27z0id",
+        "kind": "FINANCIAL_FACT",
+        "detail": "cumulative_net_income"
+      },
+      {
+        "id": "cmv1b1317004hormdbggvtlva",
+        "kind": "FINANCIAL_FACT",
+        "detail": "equity_proceeds"
+      },
+      {
+        "id": "cmv1b1332004jormddmb90aqv",
+        "kind": "FINANCIAL_FACT",
+        "detail": "assumed_new_debt_rate_pct"
+      }
+    ],
+    "skippedReview": [
+      {
+        "id": "cmv1b0mhl001lormd4ikf6wls",
+        "kind": "PERMISSION",
+        "reason": "KNOWN_NOT_MODELED — REJECTED (not operative)"
+      },
+      {
+        "id": "cmv1b0mhl001normdmrju814n",
+        "kind": "PERMISSION",
+        "reason": "KNOWN_NOT_MODELED — REJECTED (not operative)"
+      }
+    ]
+  },
+  "promotion": {
+    "promotedCount": 22,
+    "skipped": [],
+    "onboardingStatus": "ACTIVE"
+  },
+  "provenance": {
+    "permissions": [
+      {
+        "id": "cmv1b1c7u006iormd5g8u9i03",
+        "code": "7.01",
+        "grantType": "DEBT_INCURRENCE",
+        "modelingStatus": "MODELED",
+        "reviewStatus": "UNVERIFIED",
+        "thresholdValue": "30000000",
+        "sectionRef": "7.01"
+      }
+    ],
+    "financialSnapshots": [
+      {
+        "id": "cmv1b1cmn006mormd6ic1guh5",
+        "asOfDate": "2026-06-30T00:00:00.000Z",
+        "ebitda": 1700,
+        "totalDebt": 3258,
+        "securedDebt": 2221,
+        "cash": 1162,
+        "interestExpense": 190
+      }
+    ],
+    "financialStateCount": 1,
+    "ns4Snapshots": [
+      {
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e",
+        "status": "APPROVED",
+        "asOf": "2026-06-30",
+        "reportingPeriod": "asOf=2026-06-30",
+        "reviewedBy": "saas-setup-e2e@headroom.app",
+        "approvalRef": "fin-fact-promote:cmv1b12oe0045ormdg67sdtph,cmv1b12s00047ormdmbe5amaq,cmv1b12tu0049ormdpvdqc58i,cmv1b12vo004bormdm3h750or,cmv1b12xj004dormd17nzuwpv,cmv1b12zd004formd8q27z0id,cmv1b1317004hormdbggvtlva,cmv1b1332004jormddmb90aqv|doc=cmv1b0i5k000kormdwu9n8414|ver=sha256:3d70649df00e47106895a3dfefc13c8b00aa6c9af5956bbbe46ce7cc5aa0c2f3|proposer=human"
+      }
+    ],
+    "ns4ApprovedFacts": [
+      {
+        "identityJson": {
+          "key": "Consolidated EBITDA",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "1700000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Consolidated EBITDA"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Consolidated EBITDA",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Consolidated Total Debt",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "3258000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Consolidated Total Debt"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Consolidated Total Debt",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Secured Debt",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "2221000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Secured Debt"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Secured Debt",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Unrestricted Cash",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "1162000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Unrestricted Cash"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Unrestricted Cash",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Interest Expense",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "190000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Interest Expense"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Interest Expense",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Cumulative Net Income",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "400000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Cumulative Net Income"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Cumulative Net Income",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Equity Proceeds",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": "USD",
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "MONEY",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "MONEY",
+          "amount": "50000000",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Equity Proceeds"
+            ]
+          },
+          "currency": "USD"
+        },
+        "displayName": "Equity Proceeds",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      },
+      {
+        "identityJson": {
+          "key": "Assumed New Debt Rate",
+          "asOf": {
+            "kind": "EXACT_DATE",
+            "isoDate": "2026-06-30"
+          },
+          "scope": {
+            "kind": "COMPANY_LEVEL",
+            "instrumentApplicability": {
+              "kind": "ALL_INSTRUMENTS"
+            }
+          },
+          "period": {
+            "key": "asOf=2026-06-30",
+            "kind": "VERBATIM_CONTRACT_PERIOD_KEY"
+          },
+          "currency": null,
+          "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+          "inputKind": "METRIC",
+          "valueType": "PERCENT",
+          "identityStrength": "CONTRACT_NAME_ONLY"
+        },
+        "valueJson": {
+          "type": "PERCENT",
+          "lineage": {
+            "exprId": null,
+            "inputKeys": [
+              "Assumed New Debt Rate"
+            ]
+          },
+          "fraction": "0.075"
+        },
+        "displayName": "Assumed New Debt Rate",
+        "snapshotId": "ns4:saas-setup-loop-e2e-mv1b0gp8:2026-06-30:3d70649df00e"
+      }
+    ]
+  },
+  "status": {
+    "setup": {
+      "companyId": "saas-setup-loop-e2e-mv1b0gp8",
+      "companyName": "Harbor Lane Industries (SaaS setup E2E)",
+      "onboardingStatus": "ACTIVE",
+      "documentsUploaded": 2,
+      "extractedDocuments": 2,
+      "analysisReady": true,
+      "analysisReason": "READY",
+      "pendingReview": 0,
+      "readyToPromote": 0,
+      "promoted": 22,
+      "financialSnapshots": 1,
+      "ns4ApprovedSnapshots": 1,
+      "phase3TrustedUnitCount": 0,
+      "phase3TrustedRuleCount": 0,
+      "permissions": 1,
+      "unverifiedPermissions": 1,
+      "dashboardReady": true,
+      "capacityCertified": false
+    },
+    "next": {
+      "href": "/saas-setup-loop-e2e-mv1b0gp8",
+      "label": "Open dashboard",
+      "detail": "Legacy engine figures with NS-4 APPROVED financial snapshots on file. Not Phase 4E-certified capacity. 1 UNVERIFIED Permission(s) on the legacy path."
+    },
+    "capacity": {
+      "status": "EXECUTABLE_PATH_AVAILABLE",
+      "canEvaluateExecutableCapacity": true,
+      "capacityAuthority": "LEGACY_ENGINE",
+      "headline": "Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=LEGACY_ENGINE · not Phase 3 package CERTIFIED · not certified Phase 4E). NS-4 / North-Star APPROVED financial snapshots on file: 1. No Phase 3 VERIFIED semantic units yet. Promoted Permissions include 1 UNVERIFIED row(s) (legacy path · not Phase 3 CERTIFIED).",
+      "ns4ApprovedSnapshotCount": 1,
+      "phase3TrustedUnitCount": 0,
+      "phase3TrustedRuleCount": 0,
+      "unverifiedPermissionCount": 1,
+      "blockers": [],
+      "guidance": "AI-first: analysis appears for counsel review without waiting for outside counsel. DISCOVERED ≠ counsel-approved. Promoted Permission rows are UNVERIFIED and are not the Phase 3 certified rulebook. Phase 3 VERIFIED SemanticTruthRecord units are trusted semantic outputs when present — they do not alone certify package-level or Phase 4E capacity. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. LEGACY_ENGINE ≠ certified Phase 4A–4E. Missing inputs stay blank — never fabricated remaining capacity."
+    },
+    "phase3TrustedRulebook": {
+      "hasTrustedSemanticUnits": false,
+      "trustedUnitCount": 0,
+      "trustedRuleCount": 0,
+      "trustedDefinitionCount": 0,
+      "instrumentKeysWithTrustedTruth": [],
+      "nonTrustedByStatus": {},
+      "note": "VERIFIED SemanticTruthRecord only (existing getTrustedSemanticTruth gate). Not package CERTIFIED. Not Phase 4E. Phase 3 agent owns certification logic."
+    }
+  },
+  "dashboard": {
+    "financials": {
+      "ebitda": 1700,
+      "cash": 1162,
+      "interestExpense": 190,
+      "cumulativeNetIncome": 400,
+      "equityProceedsSinceIssue": 50,
+      "assumedNewDebtRatePct": 7.5,
+      "totalDebt": 3258,
+      "securedDebt": 2221
+    },
+    "contractualMetrics": {
+      "totalNetLeverage": 1.2329411764705882,
+      "seniorSecuredNetLeverage": 0.6229411764705882,
+      "fixedChargeCoverage": 8.947368421052632,
+      "netDebt": 2096,
+      "netSecured": 1059,
+      "definition": "computeLeverageMetrics over approved FinancialSnapshotInput (covenant definitions)"
+    },
+    "overviewKeys": [
+      "alerts",
+      "transactions",
+      "covenantsAtRisk",
+      "nextTest",
+      "headroomOverTime",
+      "capacitySummary",
+      "statusTable",
+      "drivers",
+      "totalHeadroom",
+      "utilization",
+      "exportState"
+    ],
+    "capacityCertified": false
+  },
+  "success": true,
+  "blockers": []
+}

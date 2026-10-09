@@ -3900,9 +3900,9 @@ model KnowledgeImportBatch {
 }
 
 // =============================================================================
-// NS-4 — Phase 4B-compatible append-only approved financial snapshot store
-// Distinct from legacy FinancialSnapshot / financial_snapshots.
-// APPROVED only via attributable approval events; no in-place mutation of published rows.
+// NS-4 — append-only approved financial snapshot store (Phase 4B identity 1:1).
+// Distinct from legacy FinancialSnapshot / financial_snapshots. Additive only.
+// APPROVED only via attributable approval transition; never mutate published rows.
 // =============================================================================
 
 model ContractInputSnapshot {
@@ -3977,6 +3977,7 @@ model ContractInputSnapshotEvent {
   @@map("contract_input_snapshot_events")
 }
 
+
 // =============================================================================
 // Phase 4C — append-only contract ledger (capacity usage). Distinct from legacy
 // ledger_entries. Corrections supersede; rows are never hard-deleted for history.
@@ -4017,3 +4018,4 @@ model ContractLedgerUsageEvent {
   @@index([usageId])
   @@map("contract_ledger_usage_events")
 }
+

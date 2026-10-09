@@ -3,10 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { runExtractionForDocument } from "@/lib/onboarding/documents";
+import { proposeFinancialFactsFromDocument } from "@/lib/onboarding/financial-facts-from-document";
 import { uploadDocumentThroughIngestion } from "@/lib/connectors/upload-connector";
 import { getExtractionProvider } from "@/lib/extraction/get-provider";
 import { runContractAnalysis } from "@/lib/contract-model/analysis";
 import { analyzeCustomerDocument } from "@/lib/product/customer-intelligence/analyze-upload";
+import { connectSource } from "@/lib/connectors/registry";
+import { createIngestionJob, runAllPendingIngestionStages } from "@/lib/connectors/ingestion";
 import { prisma } from "@/lib/prisma";
 import type { DocumentType } from "@prisma/client";
 
@@ -139,7 +142,28 @@ export async function runExtractionAction(companyId: string, documentId: string)
     console.error(`[analyzeCustomerDocument] re-analyze after extraction failed:`, err);
   }
 
+  try {
+    await proposeFinancialFactsFromDocument(companyId, documentId);
+  } catch (err) {
+    console.error(`[proposeFinancialFactsFromDocument] failed for ${documentId}:`, err);
+  }
+
   revalidatePath(`/${companyId}/onboarding/documents`);
+  revalidatePath(`/${companyId}/onboarding/review`);
   revalidatePath(`/${companyId}/documents`);
   redirect(`/${companyId}/onboarding/review`);
+}
+
+/** CSV financials → FINANCIAL_FACT candidates (same connector as the sources stage). */
+export async function uploadFinancialCsvAction(companyId: string, formData: FormData) {
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) throw new Error("Choose a CSV file to upload.");
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const connection = await connectSource({ companyId, connectorType: "CSV_FINANCIAL" });
+  const kind = connection.lastSuccessfulSyncAt ? "SYNC" : "INITIALIZE";
+  const job = await createIngestionJob({ companyId, kind, sourceConnectionId: connection.id, rawInput: buffer });
+  await runAllPendingIngestionStages(job.id);
+  revalidatePath(`/${companyId}/onboarding/documents`);
+  revalidatePath(`/${companyId}/onboarding/review`);
+  revalidatePath(`/${companyId}/onboarding/sources`);
 }

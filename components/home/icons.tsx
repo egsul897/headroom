@@ -83,6 +83,10 @@ export function PositionIcon() {
   return strokeIcon("M4 18V6M4 18h16M7 14l3-4 3 2 4-6");
 }
 
+export function CapacityIcon() {
+  return strokeIcon("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 7v5l3 2");
+}
+
 export function LedgerIcon() {
   return strokeIcon("M5 4h14v16H5zM9 8h6M9 12h6M9 16h4");
 }

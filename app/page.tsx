@@ -102,7 +102,9 @@ export default async function Home() {
 
         <Card>
           <div className="card-title">Connect a new company</div>
-          <div className="card-subtitle">Upload financing documents and financial data to start a new workspace.</div>
+          <div className="card-subtitle">
+            Create a workspace, upload debt documents and financials, review what Headroom extracted, then open the dashboard.
+          </div>
           <Link className="button button-primary" href="/companies/new">
             Connect your company
           </Link>
