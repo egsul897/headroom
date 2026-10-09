@@ -39,9 +39,11 @@
 
 | Item | Value |
 |---|---|
-| PR #225 | Synthetic extraction prose fix (merged into this branch) |
-| PR #227 | Neon E2E activation proof (merged into this branch) |
-| This PR | Repeatable activation: A8-01 + matrix + lifecycle/funnel |
+| PR #225 | Synthetic extraction prose fix (included) |
+| PR #227 | Neon E2E activation proof (included) |
+| PR #232 | Repeatable activation: A8-01 + matrix + lifecycle/funnel |
+| Head SHA | `2047fa69213e6b7e50dcdf9862e342950a40d63e` |
+| Base (`main`) | `bae24ced33fdd6963d0615265a1e67cb181233e8` |
 | Paid inference | **$0** |
 | Artifacts | `neon-activation-e2e-proof.json`, `neon-activation-matrix.json` |
 
