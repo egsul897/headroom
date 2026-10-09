@@ -2,8 +2,7 @@
 
 **As of:** 2026-10-09  
 **Branch:** `cursor/neon-activation-repeatable-2229`  
-**SHA:** `2047fa69213e6b7e50dcdf9862e342950a40d63e`  
-**PR:** https://github.com/egsul897/headroom/pull/232  
+**PR:** https://github.com/egsul897/headroom/pull/232 (head SHA on branch)  
 **Depends on / includes:** #225, #227  
 **Paid inference:** $0  
 **Neon corpus writes:** 0 (ephemeral E2E/matrix companies cleaned up)  
@@ -42,7 +41,7 @@
 | PR #225 | Synthetic extraction prose fix (included) |
 | PR #227 | Neon E2E activation proof (included) |
 | PR #232 | Repeatable activation: A8-01 + matrix + lifecycle/funnel |
-| Head SHA | `2047fa69213e6b7e50dcdf9862e342950a40d63e` |
+| Head SHA | `d1058a88b388e9b7d52dfb2b048fadf6e45abe6e` |
 | Base (`main`) | `bae24ced33fdd6963d0615265a1e67cb181233e8` |
 | Paid inference | **$0** |
 | Artifacts | `neon-activation-e2e-proof.json`, `neon-activation-matrix.json` |
