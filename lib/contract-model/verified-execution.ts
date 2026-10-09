@@ -32,9 +32,11 @@ import { evaluateCapacityState } from "./runtime/capacity/state";
 import type { CapacityGraph, CapacityState, LedgerPolicy, LedgerUsageRecord } from "./runtime/capacity/types";
 import { simulateTransaction } from "./runtime/transaction/simulate";
 import type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult } from "./runtime/transaction/types";
+import { assertRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 
 /** Re-export 4D caller types so product never imports `runtime/transaction/*`. */
 export type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult };
+export { assertRestoreAuthority, formatRestoreReason, extractRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 import { hashOf } from "./runtime/input/identity";
 import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
 import { blocksUnit, interpretVerificationStatus, type VerificationCoverage as UnitCoverage } from "./runtime/verification-gate";
@@ -100,7 +102,9 @@ export type BoundaryRefusalCode =
   /** The IR package is not one instrument's consistent unit set (a unit for another company/instrument, or an id claimed twice). */
   | "IR_PACKAGE_INCONSISTENT"
   /** A rule's permission is gated on another rule's satisfaction (a cross-rule condition or a REQUIRES/LIMITED_BY source dependency). The runtime has no certified cross-rule satisfaction evaluator yet (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE), so the package fails closed: the gate is never treated as satisfied and an UNLIMITED_CAPACITY behind it never executes. */
-  | "CROSS_RULE_GATE_NOT_EXECUTABLE";
+  | "CROSS_RULE_GATE_NOT_EXECUTABLE"
+  /** RESTORE_CAPACITY without contractual authority marker — shared product/verified boundary (TE-D2). */
+  | "UNAUTHORIZED_CAPACITY_RESTORE";
 
 export interface BoundaryRefusal { code: BoundaryRefusalCode; message: string; refs: string[] }
 
@@ -309,6 +313,19 @@ export function evaluateVerifiedCapacity(args: VerifiedCapacityArgs): VerifiedCa
 export function simulateVerifiedTransaction(args: VerifiedTransactionArgs): VerifiedTransactionResult {
   const capacity = evaluateVerifiedCapacity(args);
   if (capacity.outcome === "REFUSED") return capacity;
+  const auth = assertRestoreAuthority(args.transaction);
+  if (!auth.ok) {
+    return {
+      outcome: "REFUSED",
+      policy: VERIFIED_EXECUTION_POLICY,
+      packageHash: capacity.packageHash,
+      refusals: auth.issues.map((i) => ({
+        code: UNAUTHORIZED_RESTORE_CODE as BoundaryRefusalCode,
+        message: i.message,
+        refs: [i.effectId, i.usageId],
+      })),
+    };
+  }
   const pkg = args.package;
   const simulation = simulateTransaction({
     transaction: args.transaction, currentState: capacity.state, capacityGraph: capacity.graph, selectedPath: args.selectedPath, inputs: args.inputs,

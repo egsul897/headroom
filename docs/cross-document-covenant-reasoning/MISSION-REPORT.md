@@ -2,73 +2,63 @@
 
 **Branch:** `cursor/cross-document-covenant-reasoning-5d11`  
 **PR:** https://github.com/egsul897/headroom/pull/218  
-**SHA:** `af759388e62156c426365ad8f0f962542142e7b3`  
+**SHA:** _(see tip after push)_  
 **Cost:** $0 (zero provider calls; offline fixture reasoning)  
-**False-permission count:** **0** (independent verifier on all 8 scenarios)
+**False-permission count:** **0**
 
 ## Mission
 
 Make Headroom evaluate a proposed transaction against **all independently applicable operative agreements**, without duplicating the document graph, amendment precedence, verified rulebook, Phase 4E path enumeration, or cross-rule capacity systems.
 
+## Generalize mission (this tip)
+
+See [`03-generalize-execution-report.md`](./03-generalize-execution-report.md).
+
+| Gate | Result |
+|------|--------|
+| Completeness audit (CONMED+DSGR) | Missed **0**, false non-applicability **0** |
+| Authentic EDGAR scenarios | **12/12** (CONMED, DSGR, Gibraltar, Chewy, FWRG) |
+| Synthetic baseline | **8/8** preserved |
+| Adversarial | **10/10** FP=0 preserved |
+| A8-01 failed-gate | `NOT_SATISFIED` floor + permanent regression suite |
+| Sequential state | CONMED debt→RP→overflow; hypothetical isolation |
+| Ask honesty layers | `crossDocumentVerdict` ∥ `legacySimulation` ∥ `permissionLayers` |
+
 ## What was built (composition, not duplication)
 
 | Existing system | How Agent 5 consumes it |
 |---|---|
-| Phase 2C package graph (`buildWorkspacePackageGraph`) | Optional wire; unresolved relationships → unknowns |
-| Operative amendment precedence (`operative-resolution`) | Effective/supersession dating on facts; helper reuse |
-| Phase 3 trusted rulebook | Optional readiness signal (`verifiedRulebookHasTrustedUnits`) |
-| Phase 4E `enumerateCertifiedPaths` | Called when a VEP is supplied; scenarios pass `null` → truthful `NOT_CERTIFIED_4E` |
-| Cross-covenant analysis (`analyzeCrossCovenant`) | Optional within-family / shared-cap notes |
-| Legacy `combineCrossDocument` MIN capacity | **Not reimplemented** — basket capacity stays in covenant-engine / 4E |
-
-**New module:** `lib/product/covenant-intelligence/cross-document-covenant.ts`  
-**Scenarios:** `lib/product/covenant-intelligence/cross-document-scenarios.ts`  
-**Tests:** `tests/product/cross-document-covenant.test.ts` (19 pass)  
-**Runner:** `scripts/product/run-cross-document-scenarios.ts` → `scenario-results.json`
+| Phase 2C package graph | Optional wire; unresolved relationships → unknowns |
+| Operative amendment precedence | Effective/supersession dating on facts |
+| Phase 3 trusted rulebook | Optional readiness signal |
+| Phase 4E `enumerateCertifiedPaths` | Called when a VEP is supplied |
+| Phase 4D / verified execution | Agent 4 sequential runner + A8-01 capacity status floor |
+| Cross-covenant analysis | Optional within-family / shared-cap notes |
+| Legacy covenant-engine capacity | Attached numerically — **never** certified package permission |
 
 ### Invariants enforced
 
-1. **Conjunction across applicable documents** — permission in one never overrides prohibition in another (`ALL_APPLICABLE_DOCUMENTS_MUST_PERMIT`).
-2. **OR within a document’s basket exceptions** — unused-basket overflow is not a controlling prohibition when another basket clears.
-3. **Irrelevant documents need not authorize** — e.g. CA Indebtedness definition excluding Capital Leases → `NOT_APPLICABLE`.
+1. **Conjunction across applicable documents** — permission in one never overrides prohibition in another.
+2. **OR within a document’s basket exceptions** — unused-basket overflow is not controlling when another basket clears.
+3. **Irrelevant documents need not authorize**.
 4. **Missing restrictions / absent docs are unknowns** — never inferred satisfied.
+5. **Legacy numerical ≠ certified permission** — `permissionLayers.certificationStatus.legacyIsCertifiedPackagePermission === false`.
 
-## Scenario corpus (corrected)
+## Scenario corpus
 
-**Baseline eight (PR #218):** **SYNTHETIC** product-acceptance fixtures (`pkg-b` / `pkg-i` / `pkg-h` / `pkg-c`) — see [`01-authenticity-audit.md`](./01-authenticity-audit.md). Do not call these authentic EDGAR packages.
-
-**Next mission authentic packages:** CONMED + DSGR EDGAR fixtures — see [`02-authentic-package-reasoning-report.md`](./02-authentic-package-reasoning-report.md).
-
-## Eight synthetic scenarios (independently verified)
-
-| ID | Focus | Overall | Key citations |
-|---|---|---|---|
-| xd-01 | One permits, another prohibits | **PROHIBITED** | CA §7.01(a) permits Loan Documents; Indenture §4.09(a) caps CA at $150M — pro forma $170M fails |
-| xd-02 | Different conditions | **PERMITTED** | CA §7.01(b) $30M and Indenture §4.09(c) $75M (post-amd) both clear $20M; not stacked |
-| xd-03 | Debt + lien authority | **PROHIBITED** | §7.01(b) $50M debt clears; §7.02(b) $20M lien + §9.15 $25M secured cap prohibit |
-| xd-04 | Cross-section definition | **PROHIBITED** | Indenture §4.09 → §1.01 FCCR unevidenced; baskets fail at $100M |
-| xd-05 | Amendment effect | **PROHIBITED** | Pre-2026-05-01 Indenture §4.09(c)=$50M; CA $30M; post-amd indenture alone still blocked by CA |
-| xd-06 | Absent document | **UNDETERMINED** | ABL §7.02(b) Term Loan Liens “subject to Intercreditor”; ICA absent |
-| xd-07 | Classification divergence | **PERMITTED** | Capital Lease ∉ CA Indebtedness; ∈ Indenture Indebtedness — CA not required to authorize; Indenture §4.09(c) clears $10M |
-| xd-08 | Multiple pathways | **CONDITIONALLY_PERMITTED** | §7.03(c) too small; §7.03(b) Available Amount path needs Payment Conditions — pathways listed, not stacked |
-
-Machine-readable outcomes: [`scenario-results.json`](./scenario-results.json).
-
-## Demonstrated improvements
-
-1. **Cross-document conjunction** as a first-class product verdict (not OR across agreements).
-2. **False-permission guard** (`verifyCrossDocumentVerdictIndependently`) — suite count **0**.
-3. **Amendment-dated operative facts** — same provision id, different capacity pre/post supplemental.
-4. **Definition-scoped instrument classification** — avoids forcing irrelevant CA authorization.
-5. **Absent controlling instrument → UNDETERMINED** — no silent grant.
-6. **Debt∩Lien∩shared secured cap** — anti-stacking notes from §7.02(b)/§9.15 peers.
-7. **Neutral pathway listing** composed with Phase 4E authority honesty (`NOT_CERTIFIED_4E` when no VEP).
-8. **Coverage of debt, liens, RP gate language, investments, guarantor, intercreditor, amendments, shared capacity** without a parallel compiler.
+| Layer | Count | Label |
+|-------|-------|-------|
+| Synthetic baseline | 8 | `SYNTHETIC_PRODUCT_ACCEPTANCE` |
+| Authentic EDGAR | 12 | `AUTHENTIC_EDGAR_FIXTURE` |
+| Adversarial | 10 | Attack scenarios |
 
 ## Test / cost
 
 ```
-npx vitest run tests/product/cross-document-covenant.test.ts   # 19 passed
-npx tsx scripts/product/run-cross-document-scenarios.ts        # 8/8 match, FP=0
+npx vitest run tests/product/cross-document-*.test.ts \
+  tests/contract-model/runtime/capacity/a8-gate-status-regression.test.ts \
+  tests/product/sequential-*.test.ts \
+  tests/product/transaction-effect-recipes.test.ts
+# 115 passed in last local run
 Cost: $0.00
 ```

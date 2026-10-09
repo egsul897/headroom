@@ -21,7 +21,40 @@ import {
   type CrossDocumentCovenantVerdict,
   type OperativeProvisionFact,
 } from "@/lib/product/covenant-intelligence/cross-document-covenant";
-import { contemplatedFromAskDraft } from "@/lib/product/covenant-intelligence/cross-document-capacity";
+import {
+  contemplatedFromAskDraft,
+  CROSS_DOCUMENT_CAPACITY_VERSION,
+  type CrossDocumentNumericalLayer,
+} from "@/lib/product/covenant-intelligence/cross-document-capacity";
+import {
+  projectPermissionLayers,
+  type CrossDocumentPermissionLayers,
+} from "@/lib/product/covenant-intelligence/cross-document-permission-layers";
+
+/** Ask does not invent a financial snapshot — numerical capacity stays labeled deferred. */
+function deferredAskNumericalLayer(): CrossDocumentNumericalLayer {
+  return {
+    version: CROSS_DOCUMENT_CAPACITY_VERSION,
+    authority: "LEGACY_ENGINE_CAPACITY",
+    postsToLedger: false,
+    financialsUsed: {
+      ebitda: 0,
+      totalDebt: 0,
+      securedDebt: 0,
+      cash: 0,
+      totalAssets: null,
+    },
+    pathwayCapacities: [],
+    documentSummaries: [],
+    mostRestrictiveMillions: null,
+    mostRestrictiveDocumentId: null,
+    antiStackingNotes: [],
+    conditionsSeparatelyEvaluated: true,
+    nonNumericRestrictions: [],
+    note:
+      "Ask surface: numerical capacity deferred to Simulate/Position on the same draft — not treated as certified package permission.",
+  };
+}
 
 export interface TransactionDraft {
   rawQuestion: string;
@@ -51,8 +84,14 @@ export interface TransactionAnalysisResult {
    * Cross-document covenant conjunction over optional operative facts.
    * Uses the same draft amount/kind/secured/asOf as Ask + Simulate.
    * Null when no operative provision facts were supplied (never invents a package).
+   * Kept strictly separate from legacySimulation — never a certified package grant.
    */
   crossDocumentVerdict: CrossDocumentCovenantVerdict | null;
+  /**
+   * Honesty projection: numerical capacity vs legal restrictions vs conditions vs
+   * certification. Present only when crossDocumentVerdict is evaluated.
+   */
+  permissionLayers: CrossDocumentPermissionLayers | null;
   answer: {
     kind: "needs_confirmation" | "insufficient_evidence" | "review_required" | "certified" | "legacy_labeled";
     headline: string;
@@ -215,6 +254,14 @@ export async function analyzeContemplatedTransaction(args: {
         })
       : null;
 
+  const permissionLayers: CrossDocumentPermissionLayers | null = crossDocumentVerdict
+    ? projectPermissionLayers({
+        verdict: crossDocumentVerdict,
+        numerical: deferredAskNumericalLayer(),
+        pathEnumeration,
+      })
+    : null;
+
   if (draft.missingConfirmations.length > 0 && !args.confirmed) {
     return {
       draft,
@@ -226,6 +273,7 @@ export async function analyzeContemplatedTransaction(args: {
       legacySimulation,
       simulateHref,
       crossDocumentVerdict,
+      permissionLayers,
       answer: {
         kind: "needs_confirmation",
         headline: "Confirm essential transaction details",
@@ -246,6 +294,7 @@ export async function analyzeContemplatedTransaction(args: {
       legacySimulation,
       simulateHref,
       crossDocumentVerdict,
+      permissionLayers,
       answer: {
         kind: "certified",
         headline: "Certified capacity evaluated under verified-execution REQUIRE",
@@ -267,6 +316,7 @@ export async function analyzeContemplatedTransaction(args: {
       legacySimulation,
       simulateHref,
       crossDocumentVerdict,
+      permissionLayers,
       answer: {
         kind: "legacy_labeled",
         headline: `LEGACY_ENGINE simulation: ${leg.overallStatus} (open Simulate for interactive slider)`,
@@ -304,6 +354,7 @@ export async function analyzeContemplatedTransaction(args: {
       legacySimulation,
       simulateHref,
       crossDocumentVerdict,
+      permissionLayers,
       answer: {
         kind: "insufficient_evidence",
         headline: "Transaction inputs incomplete — capacity withheld",
@@ -331,7 +382,8 @@ export async function analyzeContemplatedTransaction(args: {
     pathEnumeration,
     legacySimulation,
     simulateHref,
-      crossDocumentVerdict,
+    crossDocumentVerdict,
+    permissionLayers,
     answer: {
       kind: "review_required",
       headline: "Source-backed analysis available; certified execution not available",

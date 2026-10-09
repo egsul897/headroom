@@ -205,7 +205,10 @@ function familiesForKind(kind: ContemplatedTxnKind, secured: boolean | null): Se
       out.add("DEBT_INCURRENCE");
       out.add("SUBSIDIARY_GUARANTOR");
       out.add("SHARED_CAPACITY");
-      if (secured === true) out.add("LIENS");
+      if (secured === true) {
+        out.add("LIENS");
+        out.add("INTERCREDITOR");
+      }
       break;
     case "RESTRICTED_PAYMENT":
       out.add("RESTRICTED_PAYMENTS");
@@ -475,9 +478,13 @@ function evaluateFactAgainstTxn(
     };
   }
 
-  if (fact.posture === "PRIORITY" || fact.family === "INTERCREDITOR") {
+  if (fact.posture === "PRIORITY" || fact.posture === "CONDITION" || fact.family === "INTERCREDITOR") {
     for (const c of fact.conditions.length ? fact.conditions : [fact.statement]) {
-      unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: intercreditor/priority condition requires evidence — ${c}`);
+      unknowns.push(
+        `${fact.documentLabel} §${fact.sectionRef}: ${
+          fact.family === "INTERCREDITOR" ? "intercreditor/priority" : "operative"
+        } condition requires evidence — ${c}`,
+      );
     }
     return { stance: "CONDITIONAL", permissions, prohibitions, conditions: fact.conditions, unknowns };
   }
@@ -542,7 +549,12 @@ function aggregateDocumentResult(args: {
 }
 
 function isAndConstraint(fact: OperativeProvisionFact): boolean {
-  if (fact.family === "SHARED_CAPACITY" || fact.family === "SUBSIDIARY_GUARANTOR" || fact.family === "INTERCREDITOR") {
+  if (
+    fact.family === "SHARED_CAPACITY" ||
+    fact.family === "SUBSIDIARY_GUARANTOR" ||
+    fact.family === "INTERCREDITOR" ||
+    fact.family === "AMENDMENT_EFFECT"
+  ) {
     return true;
   }
   if (fact.family === "LIENS") return true;
