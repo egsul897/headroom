@@ -338,7 +338,10 @@ function independentRecompute(
   return viewState(state, utilizationStatus);
 }
 
-function snapshotsEqual(a: CapacitySnapshotView[], b: CapacitySnapshotView[]): boolean {
+/** Compare capacity snapshots excluding utilization-honesty fields (those differ by design). */
+type CapacitySnapshotCore = Omit<CapacitySnapshotView, "honestRemaining" | "honestRemainingKind">;
+
+function snapshotsEqual(a: CapacitySnapshotCore[], b: CapacitySnapshotCore[]): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
