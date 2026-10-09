@@ -13,6 +13,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { prisma } from "../../prisma";
 import { EdgarKnowledgeClient } from "../edgar/client";
+import { classifyDebtDocument } from "../classify/debt-document";
 import { processAcquiredDocument } from "../pipeline/run";
 import { persistDurableKnowledgeSource } from "../preservation/durable-store";
 import { CorpusStore, defaultCorpusPaths } from "../store/corpus-store";
@@ -535,15 +536,21 @@ async function importLiveEdgar(params: {
       params.out.discovered += discovered.length;
 
       const ranked = [...discovered]
-        .map((d) => ({
-          d,
-          score: scoreExhibitForTargets(
-            d.exhibit.description || d.exhibit.filename,
-            d.exhibit.filename,
-            target.priorityClasses,
-          ),
-        }))
-        .filter((x) => x.score > 0)
+        .map((d) => {
+          const title = d.exhibit.description || d.exhibit.filename;
+          let score = scoreExhibitForTargets(title, d.exhibit.filename, target.priorityClasses);
+          const size = d.exhibit.sizeBytes ?? 0;
+          const type = (d.exhibit.exhibitType || "").toUpperCase();
+          const isEx10or4 = /^EX-10(\.|$)/.test(type) || /^EX-4(\.|$)/.test(type);
+          // Prefer large material exhibits when description is only "EX-10.1"
+          if (isEx10or4 && size >= 80_000) score += 5;
+          if (isEx10or4 && size >= 400_000) score += 8;
+          // Drop tiny EX-99 earnings/press exhibits unless debt-titled
+          if (/^EX-99/i.test(type) && score < 8 && size < 80_000) score = -1;
+          if (/\b(?:earnings|press release|xbrl)\b/i.test(title) && score < 10) score = -1;
+          return { d, score };
+        })
+        .filter((x) => x.score >= 0)
         .sort((a, b) => b.score - a.score);
 
       let perIssuer = 0;
@@ -555,6 +562,35 @@ async function importLiveEdgar(params: {
           continue;
         }
         try {
+          const title = d.exhibit.description || d.exhibit.filename;
+          const preClass = classifyDebtDocument({
+            title,
+            description: d.exhibit.description,
+            exhibitType: d.exhibit.exhibitType,
+            filename: d.exhibit.filename,
+          });
+          const indexSize = d.exhibit.sizeBytes ?? 0;
+          // Pre-filter before network fetch to protect SEC budget / storage.
+          if (
+            indexSize > 0 &&
+            !isSubstantiveFinancingPrecedent({
+              sourceId: d.sourceId,
+              documentTitle: title,
+              documentClass: preClass.documentClass,
+              exhibitFilename: d.exhibit.filename,
+              provenance: "sec-edgar-continuous-expand",
+              byteSize: indexSize,
+            })
+          ) {
+            params.out.skippedNonFinancing += 1;
+            continue;
+          }
+          const type = (d.exhibit.exhibitType || "").toUpperCase();
+          if (/^EX-99/i.test(type) && !/\b(?:indenture|credit|loan|intercreditor|guarantee|security agreement)\b/i.test(title)) {
+            params.out.skippedNonFinancing += 1;
+            continue;
+          }
+
           const { bytes, contentHash } = await params.client.fetchDocument(d);
           params.out.fetched += 1;
           if (!looksLikeAuthenticExhibit(bytes)) {
@@ -565,12 +601,11 @@ async function importLiveEdgar(params: {
             params.out.skippedExisting += 1;
             continue;
           }
-          const title = d.exhibit.description || d.exhibit.filename;
           if (
             !isSubstantiveFinancingPrecedent({
               sourceId: d.sourceId,
               documentTitle: title,
-              documentClass: "UNKNOWN",
+              documentClass: preClass.documentClass,
               exhibitFilename: d.exhibit.filename,
               provenance: "sec-edgar-continuous-expand",
               byteSize: bytes.length,
@@ -590,7 +625,7 @@ async function importLiveEdgar(params: {
             filingDate: d.filing.filingDate,
             formType: d.filing.formType,
             documentTitle: title,
-            documentClass: "UNKNOWN",
+            documentClass: preClass.documentClass,
             originalBytesHash: contentHash,
             acquisitionTimestamp: new Date().toISOString(),
             parserVersion: "neon-massive-expand.v1",
@@ -727,9 +762,12 @@ export async function runNeonExpandBatch(
   if (live) await ensureBatchRow(batchKey, maxNew);
 
   const store = new CorpusStore(defaultCorpusPaths(path.join(repoRoot, ".local-knowledge-corpus")));
+  // requireDebtSignal=false: many modern indexes label exhibits only as "EX-10.1".
+  // We still gate on size + post-fetch classification / substantive financing checks.
   const client = new EdgarKnowledgeClient({
     cacheDir: path.join(store.paths.cache, "sec"),
     logDir: path.join(store.paths.root, "logs"),
+    requireDebtSignal: false,
   });
   const existing = await loadExistingIdentity();
 

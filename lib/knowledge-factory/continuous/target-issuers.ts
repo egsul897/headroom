@@ -14,7 +14,7 @@ export interface ExpandTarget {
 export const DIVERSITY_EXPAND_TARGETS: ExpandTarget[] = [
   // ABL / borrowing-base heavy
   { ticker: "GPK", priorityClasses: ["ABL_AGREEMENT", "CREDIT_AGREEMENT", "AMENDMENT"], debtHint: "ABL", rationale: "ABL sparse in Neon" },
-  { ticker: "SEE", priorityClasses: ["ABL_AGREEMENT", "CREDIT_AGREEMENT", "SECURITY_AGREEMENT"], debtHint: "ABL", rationale: "ABL / packaging borrower" },
+  { ticker: "SON", priorityClasses: ["ABL_AGREEMENT", "CREDIT_AGREEMENT", "SECURITY_AGREEMENT"], debtHint: "ABL", rationale: "packaging credit / ABL-adjacent" },
   { ticker: "URI", priorityClasses: ["CREDIT_AGREEMENT", "TERM_LOAN_AGREEMENT", "AMENDMENT"], debtHint: "TLB", rationale: "equipment rental leveraged credit" },
   { ticker: "WHR", priorityClasses: ["REVOLVING_CREDIT_AGREEMENT", "CREDIT_AGREEMENT"], debtHint: "IG_MIXED", rationale: "IG revolver coverage" },
   // Intercreditor / secured packages
@@ -49,6 +49,22 @@ export const DIVERSITY_EXPAND_TARGETS: ExpandTarget[] = [
   { ticker: "CHEF", priorityClasses: ["CREDIT_AGREEMENT", "ABL_AGREEMENT"], debtHint: "ABL", rationale: "foodservice ABL-adjacent" },
   { ticker: "AEO", priorityClasses: ["CREDIT_AGREEMENT", "ABL_AGREEMENT", "AMENDMENT"], debtHint: "ABL", rationale: "retail ABL" },
   { ticker: "MRVI", priorityClasses: ["CREDIT_AGREEMENT", "AMENDMENT"], debtHint: "TLB", rationale: "life sciences credit" },
+  // Additional diversity wave (under-covered relative to airline/media supplements)
+  { ticker: "AXP", priorityClasses: ["CREDIT_AGREEMENT", "REVOLVING_CREDIT_AGREEMENT", "INDENTURE"], debtHint: "IG", rationale: "IG financial credit" },
+  { ticker: "MAR", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "MIXED", rationale: "hospitality credit stack" },
+  { ticker: "RCL", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "HY", rationale: "cruise leveraged credit" },
+  { ticker: "NCLH", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "HY", rationale: "cruise HY / credit" },
+  { ticker: "CCL", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "HY", rationale: "cruise financing" },
+  { ticker: "WYNN", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "HY", rationale: "gaming HY credit" },
+  { ticker: "MGM", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "INTERCREDITOR_AGREEMENT"], debtHint: "HY", rationale: "gaming intercreditor-rich" },
+  { ticker: "CZR", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "INTERCREDITOR_AGREEMENT"], debtHint: "HY", rationale: "gaming secured package" },
+  { ticker: "PENN", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT"], debtHint: "HY", rationale: "gaming / interactive credit" },
+  { ticker: "DKNG", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE"], debtHint: "HY", rationale: "consumer HY / convertible-adjacent" },
+  { ticker: "CAR", priorityClasses: ["CREDIT_AGREEMENT", "ABL_AGREEMENT", "AMENDMENT"], debtHint: "ABL", rationale: "rental fleet ABL-style" },
+  { ticker: "HTZ", priorityClasses: ["CREDIT_AGREEMENT", "ABL_AGREEMENT", "INDENTURE"], debtHint: "ABL", rationale: "rental ABL / notes" },
+  { ticker: "XPO", priorityClasses: ["CREDIT_AGREEMENT", "TERM_LOAN_AGREEMENT", "AMENDMENT"], debtHint: "TLB", rationale: "logistics TLB" },
+  { ticker: "ODFL", priorityClasses: ["CREDIT_AGREEMENT", "REVOLVING_CREDIT_AGREEMENT"], debtHint: "IG", rationale: "transport IG credit" },
+  { ticker: "CSGP", priorityClasses: ["CREDIT_AGREEMENT", "INDENTURE"], debtHint: "MIXED", rationale: "tech/services credit" },
 ];
 
 const CLASS_KEYWORDS: Record<string, RegExp> = {
@@ -72,16 +88,18 @@ export function scoreExhibitForTargets(
   priorityClasses: string[],
 ): number {
   const hay = `${title} ${filename}`;
-  let score = 0;
+  let score = 1; // EDGAR discovery already debt-filtered — never zero out candidates
   for (const cls of priorityClasses) {
     const re = CLASS_KEYWORDS[cls];
     if (re?.test(hay)) score += 10;
   }
-  // General financing signal
-  if (/\b(?:credit agreement|indenture|intercreditor|security agreement|term loan|revolving)\b/i.test(hay)) {
-    score += 3;
-  }
-  // Prefer larger material contracts over tiny side letters when class unknown
+  // Prefer governing base agreements over already-dense supplemental indentures
+  if (/\b(?:credit agreement|loan agreement|amended and restated)\b/i.test(hay)) score += 8;
+  if (/\bindenture\b/i.test(hay) && !/\bsupplemental\b/i.test(hay)) score += 6;
+  if (/\bintercreditor\b/i.test(hay)) score += 12;
+  if (/\b(?:asset[- ]based|abl|borrowing base)\b/i.test(hay)) score += 12;
+  if (/\b(?:security|guarantee|guaranty)\s+agreement\b/i.test(hay)) score += 8;
+  if (/\bsupplemental\s+indenture\b/i.test(hay)) score -= 4;
   if (/\bex-?(?:10|4)\b/i.test(filename)) score += 1;
   return score;
 }
