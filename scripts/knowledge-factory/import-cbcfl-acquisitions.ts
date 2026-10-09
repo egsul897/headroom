@@ -128,8 +128,8 @@ async function main() {
       originalBytesHash: hash,
       acquisitionTimestamp: new Date().toISOString(),
       parserVersion: "cbcfl-import-v1",
-      extractionStatus: "DOWNLOADED",
-      representationLevel: "RAW_BYTES",
+      extractionStatus: "ACQUIRED",
+      representationLevel: "SOURCE_ONLY",
       provenance: "cbcfl-phase2-edgar-acquisition",
       usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
     };

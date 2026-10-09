@@ -59,7 +59,7 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
       kind: "ANALYSIS_FAILED",
       severity: "attention",
       title: `Analysis incomplete: ${d.filename}`,
-      detail: d.errorMessage || `extractionStatus=${d.extractionStatus}`,
+      detail: d.analysisError || `extractionStatus=${d.extractionStatus}`,
       sourceRefs: [d.sourceId],
     });
   }

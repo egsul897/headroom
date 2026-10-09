@@ -360,7 +360,7 @@ function composeAnswer(params: {
     if (defs.length > 0) {
       bits.push(
         `Material definitions: ${defs
-          .map((d) => `${d.term}${d.definitionExcerpt ? ` — “${d.definitionExcerpt.slice(0, 160)}”` : ""}`)
+          .map((d) => `${d.term}${d.excerpt ? ` — “${d.excerpt.slice(0, 160)}”` : ""}`)
           .join("; ")}.`,
       );
     } else if ((item.relatedDefinedTerms ?? []).length > 0) {

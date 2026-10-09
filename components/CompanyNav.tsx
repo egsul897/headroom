@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
 import {
   AskIcon,
+  BellIcon,
   CovenantsIcon,
   DocumentsIcon,
   EvidenceIcon,
@@ -26,6 +27,7 @@ const ICONS: Record<CompanyNavKey, () => ReactNode> = {
   simulate: SimulateIcon,
   evidence: EvidenceIcon,
   ask: AskIcon,
+  alerts: BellIcon,
   onboarding: OnboardingIcon,
 };
 

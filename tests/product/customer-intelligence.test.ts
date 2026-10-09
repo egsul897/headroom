@@ -143,7 +143,12 @@ describe("covenant summary substance", () => {
 
 describe("dependency graph and amendment compare", () => {
   function stubItem(
-    overrides: Partial<CovenantSummaryItem> & { sectionRef: string; category: CovenantSummaryItem["category"] },
+    overrides: Partial<CovenantSummaryItem> & {
+      sectionRef: string;
+      category: CovenantSummaryItem["category"];
+      sourceId?: string;
+      documentTitle?: string;
+    },
   ): CovenantSummaryItem & { sourceId: string; documentTitle: string } {
     return {
       categoryLabel: overrides.category,
