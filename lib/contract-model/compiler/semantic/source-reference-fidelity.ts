@@ -109,30 +109,11 @@ export interface ClassifyReferencesInput {
   baseSectionRef?: string | null;
   index?: StructuralIndex | null;
   documentId?: string | null;
-  /**
-   * IPV-15: excerpts of DEFINITION / DEFINITION_DEPENDENCY items already in the unit's
-   * context bundle. Section references stated inside those retrieved definitions are
-   * admissible for dependsOn / shared-capacity linkage for this unit only — never a
-   * whole-package search, never invented refs outside retrieved definition text.
-   */
-  retrievedDefinitionTexts?: readonly string[] | null;
 }
 
-/** The authenticated stated-reference set for a node: operative text plus retrieved definition excerpts (IPV-15). */
+/** The authenticated stated-reference set for a node: the deterministic scan of the operative text, nothing else. */
 export function statedReferencesFor(input: Omit<ClassifyReferencesInput, "emitted">): StatedSourceReference[] {
-  const fromOperative = statedSectionReferencesInText(input.operativeText, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId });
-  const seen = new Set(fromOperative.map((s) => s.normalized ?? norm(s.raw)));
-  const fromDefinitions: StatedSourceReference[] = [];
-  for (const text of input.retrievedDefinitionTexts ?? []) {
-    if (!text.trim()) continue;
-    for (const ref of statedSectionReferencesInText(text, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId })) {
-      const key = ref.normalized ?? norm(ref.raw);
-      if (seen.has(key)) continue;
-      seen.add(key);
-      fromDefinitions.push(ref);
-    }
-  }
-  return [...fromOperative, ...fromDefinitions];
+  return statedSectionReferencesInText(input.operativeText, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId });
 }
 
 export function classifyEmittedReferences(input: ClassifyReferencesInput): ReferenceFidelityOutcome {
