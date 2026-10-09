@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 3 |
 | Starting SHA | `bae24ced33fdd6963d0615265a1e67cb181233e8` (`origin/main`) |
-| Ending SHA | (PR tip) |
+| Ending SHA | `cc9cbccc9d9a0a83dfec7b4995cb7e4b1f3663db` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
@@ -74,7 +74,7 @@ Customer-grade paths: **0**.
 
 | Item | URL |
 |---|---|
-| This cycle | (PR for `cursor/stage-d-pkgi-secured-lien-f673`) |
+| This cycle | https://github.com/egsul897/headroom/pull/210 (pending) |
 
 ## Recommended next cycle
 
