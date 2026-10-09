@@ -8,7 +8,9 @@ import { prisma } from "../../lib/prisma";
 import { loadDurableSourceBytes } from "../../lib/knowledge-factory/preservation/durable-store";
 import { processAcquiredDocument } from "../../lib/knowledge-factory/pipeline/run";
 import { openMassPrecedentCorpus } from "../../lib/knowledge-factory/mass-precedent/corpus-paths";
-import { writePrecedentRetrievalIndex } from "../../lib/knowledge-factory/mass-precedent/retrieval-index";
+import {
+  publishPrecedentRetrievalIndex,
+} from "../../lib/knowledge-factory/mass-precedent/retrieval-index";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
 import { summarizeFromStoredMetadata } from "../../lib/product/covenant-intelligence/summarize";
 import path from "node:path";
@@ -20,9 +22,22 @@ function argInt(name: string, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
+function argList(name: string): string[] {
+  const hit = process.argv.find((a) => a.startsWith(`${name}=`));
+  if (!hit) return [];
+  return hit
+    .slice(name.length + 1)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 async function main() {
   const limit = argInt("--limit", 10_000);
   const onlyCustomer = process.argv.includes("--customer-only");
+  // Explicit intentional removals only — never inferred from a partial batch.
+  const removeSourceIds = argList("--remove-source-ids");
+  const fullRebuild = process.argv.includes("--full-index-rebuild");
   const rows = await prisma.knowledgeSource.findMany({
     where: {
       storageRef: { not: null },
@@ -121,11 +136,34 @@ async function main() {
     }
   }
 
-  writePrecedentRetrievalIndex(
+  // Merge-preserving publish: a partial/skipped/failed batch must not shrink
+  // the published retrieval index. Use --full-index-rebuild only when the
+  // local corpus is the complete eligible set; use --remove-source-ids=… for
+  // intentional invalidation.
+  const index = publishPrecedentRetrievalIndex(
     store,
     path.join(process.cwd(), "docs/knowledge-factory/mass-precedent/retrieval-index.json"),
+    {
+      // Partial batches must merge; --full-index-rebuild replaces from corpus only.
+      mergeWithExisting: !fullRebuild,
+      removeSourceIds,
+    },
   );
-  console.log(JSON.stringify({ total: rows.length, updated, skipped, failed }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        total: rows.length,
+        updated,
+        skipped,
+        failed,
+        indexSources: index.totals.sources,
+        mergeWithExisting: !fullRebuild,
+        removed: removeSourceIds.length,
+      },
+      null,
+      2,
+    ),
+  );
   await prisma.$disconnect();
 }
 
