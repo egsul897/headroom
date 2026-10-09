@@ -44,8 +44,15 @@ Files: `lib/contract-model/runtime/capacity/types.ts`, `lib/contract-model/runti
 2. No tested customer-reachable path emits AVAILABLE for unsatisfied gate — **YES** (see `04-available-consumer-audit.md`)
 3. Legitimate favorable outcomes remain AVAILABLE — **YES** (regression cases 1, 2, 8; Agent 8 CORRECT_EXECUTABLE 16)
 4. Independent adversarial tests pass — **YES** (32/32)
-5. Coordinator integration / CI — evidence on this PR after push
+5. Coordinator integration / CI — production fix at `9720ebdc`; typecheck follow-up `7ac4bb37` (awaiting GitHub CI green)
+
+## CI typecheck follow-up
+
+Agent 8 scripts/tests used invalid conditionType `RATIO_TEST` (correct: `RATIO_SATISFIED`), referenced nonexistent `CapacityEffectResult.note`, omitted `CompilerDocumentInput.label`, and compared narrowed `NOT_SATISFIED` to `AVAILABLE`. Fixed without changing production capacity semantics.
 
 ## Exclusive ownership
 
 See `03-remediation-ownership.md`. No automatic merge.
+
+**PR:** https://github.com/egsul897/headroom/pull/229  
+**SHA:** `7ac4bb37` (typecheck) atop `9720ebdc` (status semantics)
