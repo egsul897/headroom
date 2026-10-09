@@ -19,6 +19,11 @@ import {
   compareAmendmentSummaries,
   type AmendmentCompareView,
 } from "./amendment-compare";
+import {
+  resolveOperativePrecedence,
+  type OperativeResolutionView,
+} from "./operative-resolution";
+import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
 
 export interface CovenantReviewCategoryBlock {
   category: CovenantCategoryKey;
@@ -43,6 +48,7 @@ export interface CovenantReviewWorkspace {
   amendmentPackage: AmendmentPackageView | null;
   dependencyGraph: CovenantDependencyGraph;
   amendmentCompare: AmendmentCompareView;
+  operativeResolution: OperativeResolutionView | null;
 }
 
 function pickMaterial(items: CovenantReviewCategoryBlock["items"], limit: number): string[] {
@@ -137,6 +143,50 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     items: allItems,
   });
 
+  const packageSources: KnowledgeSourceRecord[] = documents.map((d) => ({
+    sourceId: d.sourceId,
+    issuerCik: "0000000000",
+    documentTitle: d.filename,
+    documentClass: d.documentClass as never,
+    formType: "UPLOAD",
+    filingDate: d.filingDate,
+    accessionNumber: d.sourceId,
+    exhibitFilename: d.filename,
+    sourceUrl: d.storageRef ?? `fixture://customer/${companyId}/${d.documentId}`,
+    originalBytesHash: d.originalBytesHash,
+    acquisitionTimestamp: new Date().toISOString(),
+    parserVersion: "customer",
+    extractionStatus: d.extractionStatus as never,
+    representationLevel: d.representationLevel as never,
+    provenance: "customer-upload",
+    usageRightsReviewStatus: "UNREVIEWED",
+  }));
+
+  let operativeResolution: OperativeResolutionView | null = null;
+  let amendmentPackageOut = amendmentPackage;
+  if (amendmentPackage) {
+    operativeResolution = resolveOperativePrecedence({
+      sources: packageSources,
+      amendmentPackage,
+      compare: amendmentCompare,
+    });
+    if (
+      operativeResolution.status === "RESOLVED" ||
+      operativeResolution.status === "RESOLVED_PARTIAL"
+    ) {
+      amendmentPackageOut = {
+        ...amendmentPackage,
+        operativeResolution: "RESOLVED",
+        unresolvedReasons: operativeResolution.unresolvedReasons,
+        askGuidance: operativeResolution.note,
+      };
+      // Prefer counsel-visible operative status in executive unresolved list
+      if (unresolved[0]?.startsWith("Amendment package:")) {
+        unresolved[0] = `Amendment package: ${operativeResolution.status} — ${operativeResolution.note}`;
+      }
+    }
+  }
+
   return {
     companyId,
     documentCount: documents.length,
@@ -151,8 +201,21 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     },
     categories,
     documents,
-    amendmentPackage,
+    amendmentPackage: amendmentPackageOut,
     dependencyGraph,
-    amendmentCompare,
+    amendmentCompare: {
+      ...amendmentCompare,
+      operativeResolution: amendmentPackageOut?.operativeResolution ?? amendmentCompare.operativeResolution,
+      unresolvedReasons:
+        operativeResolution?.unresolvedReasons?.length
+          ? operativeResolution.unresolvedReasons
+          : amendmentCompare.unresolvedReasons,
+      note:
+        operativeResolution &&
+        (operativeResolution.status === "RESOLVED" || operativeResolution.status === "RESOLVED_PARTIAL")
+          ? operativeResolution.note
+          : amendmentCompare.note,
+    },
+    operativeResolution,
   };
 }

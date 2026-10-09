@@ -63,6 +63,9 @@ export interface CustomerAnalyzeResult {
 /** Files at/above this size stage durable bytes first, then analyze outside the upload critical path. */
 export const LARGE_UPLOAD_DEFER_BYTES = 1_500_000;
 
+/** Hard cap — reject before memory blowups / request body exhaustion (~80MB). */
+export const MAX_CUSTOMER_UPLOAD_BYTES = 80 * 1024 * 1024;
+
 /**
  * Persist original customer bytes + a PENDING KnowledgeSource row before heavy analysis.
  * Idempotent on (companyId, documentId, contentHash).
@@ -144,6 +147,101 @@ export async function stageCustomerDocument(params: {
   });
 
   return { sourceId, storageRef, contentHash, reusedBytes };
+}
+
+/** Mark staged source as analyzing / failed without deleting durable bytes. */
+export async function markCustomerProcessingStatus(params: {
+  sourceId: string;
+  status: "STAGED_PENDING_ANALYSIS" | "ANALYZING" | "ANALYZED" | "FAILED_RETRYABLE";
+  error?: string;
+}): Promise<void> {
+  const row = await prisma.knowledgeSource.findUnique({ where: { sourceId: params.sourceId } });
+  if (!row) return;
+  const meta =
+    row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+      ? { ...(row.metadata as Record<string, unknown>) }
+      : {};
+  meta.processingStatus = params.status;
+  if (params.error) meta.analysisError = params.error;
+  else if (params.status === "ANALYZED") delete meta.analysisError;
+  await prisma.knowledgeSource.update({
+    where: { sourceId: params.sourceId },
+    data: {
+      metadata: JSON.parse(JSON.stringify(meta)),
+      ...(params.status === "FAILED_RETRYABLE" ? { extractionStatus: "FAILED" as never } : {}),
+    },
+  });
+}
+
+/**
+ * Re-run analysis from durable storage (retry / background worker path).
+ * Does not require the original upload request to still hold bytes in memory.
+ */
+export async function reanalyzeCustomerDocumentFromStorage(params: {
+  companyId: string;
+  documentId: string;
+}): Promise<CustomerAnalyzeResult> {
+  const row = await prisma.knowledgeSource.findFirst({
+    where: { companyId: params.companyId, documentId: params.documentId },
+    orderBy: { acquisitionTimestamp: "desc" },
+  });
+  const doc = await prisma.document.findFirst({
+    where: { id: params.documentId, companyId: params.companyId },
+  });
+  const storageRef = row?.storageRef ?? doc?.storageRef;
+  if (!storageRef) {
+    return {
+      ok: false,
+      documentId: params.documentId,
+      companyId: params.companyId,
+      extractionStatus: "FAILED",
+      covenantItemCount: 0,
+      definitionCount: 0,
+      structuralNodeCount: 0,
+      error: "No durable storageRef — re-upload required",
+      promotedToLegalTruth: 0,
+    };
+  }
+  if (row) await markCustomerProcessingStatus({ sourceId: row.sourceId, status: "ANALYZING" });
+  try {
+    const { getDocumentStorageProvider } = await import("../../document-storage");
+    const bytes = await getDocumentStorageProvider().retrieve(storageRef);
+    const result = await analyzeCustomerDocument({
+      companyId: params.companyId,
+      documentId: params.documentId,
+      bytes,
+      filename: doc?.originalFilename || doc?.name || row?.exhibitFilename || "document",
+      declaredType: doc?.type ?? undefined,
+    });
+    if (result.sourceId) {
+      await markCustomerProcessingStatus({
+        sourceId: result.sourceId,
+        status: result.ok ? "ANALYZED" : "FAILED_RETRYABLE",
+        error: result.error,
+      });
+    }
+    return result;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (row) {
+      await markCustomerProcessingStatus({
+        sourceId: row.sourceId,
+        status: "FAILED_RETRYABLE",
+        error: message,
+      });
+    }
+    return {
+      ok: false,
+      documentId: params.documentId,
+      companyId: params.companyId,
+      extractionStatus: "FAILED",
+      covenantItemCount: 0,
+      definitionCount: 0,
+      structuralNodeCount: 0,
+      error: message,
+      promotedToLegalTruth: 0,
+    };
+  }
 }
 
 /**
@@ -351,6 +449,7 @@ export async function analyzeCustomerDocument(params: {
         covenantSummary: summary,
         amendmentPackage: amendment,
         storageProvider: stored.provider,
+        processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,
       }),
     );

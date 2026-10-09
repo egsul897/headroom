@@ -118,6 +118,32 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
+      {review.operativeResolution &&
+        (review.operativeResolution.status === "RESOLVED" ||
+          review.operativeResolution.status === "RESOLVED_PARTIAL") && (
+          <Card>
+            <div className="card-title">Operative amendment bindings</div>
+            <div className="card-subtitle">{review.operativeResolution.note}</div>
+            <div className="row">
+              <div className="row-label">Status</div>
+              <div className="row-value">
+                <Chip tone="pass">{review.operativeResolution.status}</Chip>
+              </div>
+            </div>
+            {review.operativeResolution.effectiveDate && (
+              <div className="row">
+                <div className="row-label">Effective / filing</div>
+                <div className="row-value">{review.operativeResolution.effectiveDate}</div>
+              </div>
+            )}
+            {review.operativeResolution.bindings.slice(0, 20).map((b, i) => (
+              <div key={`${b.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
+                §{b.sectionRef} → {b.operativeSourceId} ({b.changeKind}) — {b.rationale}
+              </div>
+            ))}
+          </Card>
+        )}
+
       {review.amendmentCompare.rows.length > 0 && (
         <Card>
           <div className="card-title">Amendment before / after (discovery)</div>

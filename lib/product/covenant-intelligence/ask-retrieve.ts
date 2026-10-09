@@ -126,9 +126,9 @@ function intentCategories(intent: QuestionIntent): string[] {
         "BASKETS_EXCEPTIONS_CONDITIONS",
       ];
     case "ASSET_SALES":
-      return ["ASSET_SALES"];
+      return ["ASSET_SALES", "OTHER", "BASKETS_EXCEPTIONS_CONDITIONS"];
     case "LEVERAGE_DEFINITIONS":
-      return ["FINANCIAL_MAINTENANCE", "BASKETS_EXCEPTIONS_CONDITIONS", "DEBT_INCURRENCE"];
+      return ["FINANCIAL_MAINTENANCE", "DEBT_INCURRENCE", "BASKETS_EXCEPTIONS_CONDITIONS", "OTHER"];
     case "DEBT_INCURRENCE":
       return ["DEBT_INCURRENCE"];
     case "AMENDMENT_CHANGES":
@@ -248,15 +248,33 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   if (intent === "SHARED_CAPACITY") {
     if (/aggregate|shared|builder|available amount|in the aggregate/i.test(hay)) score += 6;
   }
-  if (intent === "ASSET_SALES" && item.category === "ASSET_SALES") score += 6;
+  if (intent === "ASSET_SALES") {
+    if (item.category === "ASSET_SALES") score += 8;
+    if (/\b(asset sale|disposition|sell.*property|sale of assets)\b/i.test(hay)) score += 6;
+    // Do not let RP/builder baskets masquerade as asset-sale answers
+    if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS" && !/disposition|asset sale/i.test(hay)) {
+      score -= 6;
+    }
+  }
   if (intent === "NON_GUARANTOR_DEBT") {
     if (/foreign subsidiar|not a loan party|non-guarantor/i.test(hay)) score += 5;
   }
   if (intent === "LEVERAGE_DEFINITIONS") {
-    if (/leverage|coverage|consolidated ebitda/i.test(hay)) score += 4;
-    if ((item.applicableDefinitions ?? []).some((d) => /leverage|ebitda|coverage/i.test(d.term))) {
-      score += 4;
+    const defHit = (item.applicableDefinitions ?? []).some((d) =>
+      /leverage|ebitda|coverage|consolidated total debt|total net leverage/i.test(d.term),
+    );
+    if (defHit) score += 10;
+    if (/definition|means|shall mean/i.test(hay) && /leverage|ebitda|coverage/i.test(hay)) score += 8;
+    if (item.category === "FINANCIAL_MAINTENANCE") score += 5;
+    // Penalize RP baskets that merely mention leverage in a ratio-debt exception
+    if (
+      item.category === "RESTRICTED_PAYMENTS_INVESTMENTS" &&
+      !defHit &&
+      !/financial condition covenant|leverage ratio means/i.test(hay)
+    ) {
+      score -= 8;
     }
+    if (item.category === "BASKETS_EXCEPTIONS_CONDITIONS" && !defHit) score -= 4;
   }
   if (intent === "AMENDMENT_CHANGES") {
     if (/amend|restat/i.test(item.governingAgreement + item.heading)) score += 3;

@@ -141,52 +141,54 @@ describe("covenant summary substance", () => {
   });
 });
 
-describe("dependency graph and amendment compare", () => {
-  function stubItem(
-    overrides: Partial<CovenantSummaryItem> & {
-      sectionRef: string;
-      category: CovenantSummaryItem["category"];
-      sourceId?: string;
-      documentTitle?: string;
+function stubItem(
+  overrides: Partial<CovenantSummaryItem> & {
+    sectionRef: string;
+    category: CovenantSummaryItem["category"];
+    sourceId?: string;
+    documentTitle?: string;
+  },
+): CovenantSummaryItem & { sourceId: string; documentTitle: string } {
+  return {
+    categoryLabel: overrides.category,
+    heading: overrides.heading ?? overrides.sectionRef,
+    posture: "GENERAL_PROHIBITION",
+    plainEnglish: "Test provision.",
+    restriction: "No action except baskets.",
+    permissions: [],
+    coveredEntities: ["Borrower"],
+    exceptions: [],
+    conditions: [],
+    materialBasketsThresholds: [],
+    draftingPatterns: [],
+    operativeLanguageExcerpt: "The Borrower shall not…",
+    sourceCitation: `§${overrides.sectionRef}`,
+    governingAgreement: "CA",
+    families: [],
+    relatedDefinedTerms: [],
+    applicableDefinitions: [],
+    entityScope: {
+      borrower: true,
+      guarantor: false,
+      restrictedSubsidiary: false,
+      unrestrictedSubsidiary: false,
+      notes: [],
     },
-  ): CovenantSummaryItem & { sourceId: string; documentTitle: string } {
-    return {
-      categoryLabel: overrides.category,
-      heading: overrides.heading ?? overrides.sectionRef,
-      posture: "GENERAL_PROHIBITION",
-      plainEnglish: "Test provision.",
-      restriction: "No action except baskets.",
-      permissions: [],
-      coveredEntities: ["Borrower"],
-      exceptions: [],
-      conditions: [],
-      materialBasketsThresholds: [],
-      draftingPatterns: [],
-      operativeLanguageExcerpt: "The Borrower shall not…",
-      sourceCitation: `§${overrides.sectionRef}`,
-      governingAgreement: "CA",
-      families: [],
-      relatedDefinedTerms: [],
-      applicableDefinitions: [],
-      entityScope: {
-        borrower: true,
-        guarantor: false,
-        restrictedSubsidiary: false,
-        unrestrictedSubsidiary: false,
-        notes: [],
-      },
-      crossReferences: overrides.crossReferences ?? [],
-      dependencies: overrides.dependencies ?? [],
-      epistemicStatus: "DISCOVERED_CANDIDATE",
-      interpretationNote: "",
-      unresolvedQuestions: [],
-      analysis: {} as CovenantSummaryItem["analysis"],
-      sourceId: "s1",
-      documentTitle: "Credit Agreement",
-      ...overrides,
-    };
-  }
+    crossReferences: overrides.crossReferences ?? [],
+    dependencies: overrides.dependencies ?? [],
+    epistemicStatus: "DISCOVERED_CANDIDATE",
+    interpretationNote: "",
+    unresolvedQuestions: [],
+    analysis: {} as CovenantSummaryItem["analysis"],
+    sourceId: "s1",
+    documentTitle: "Credit Agreement",
+    ...overrides,
+    category: overrides.category,
+    sectionRef: overrides.sectionRef,
+  };
+}
 
+describe("dependency graph and amendment compare", () => {
   it("builds debt-to-lien dependency edges without inventing permission", () => {
     const graph = buildCovenantDependencyGraph([
       stubItem({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
@@ -236,6 +238,98 @@ describe("dependency graph and amendment compare", () => {
   });
 });
 
+describe("operative amendment resolution", () => {
+  it("resolves restatement supersession when chronology is consistent", async () => {
+    const { analyzeAmendmentPackage } = await import(
+      "../../lib/product/customer-intelligence/amendment-package"
+    );
+    const { compareAmendmentSummaries } = await import(
+      "../../lib/product/customer-intelligence/amendment-compare"
+    );
+    const { resolveOperativePrecedence } = await import(
+      "../../lib/product/customer-intelligence/operative-resolution"
+    );
+    const sources = [
+      baseSource({
+        sourceId: "base-ca",
+        documentClass: "CREDIT_AGREEMENT",
+        documentTitle: "Credit Agreement dated as of 2022-01-15",
+        filingDate: "2022-01-15",
+      }),
+      baseSource({
+        sourceId: "restated",
+        documentClass: "RESTATEMENT",
+        documentTitle: "Amended and Restated Credit Agreement dated as of 2024-06-01",
+        exhibitFilename: "restated.htm",
+        filingDate: "2024-06-01",
+      }),
+    ];
+    const ap = analyzeAmendmentPackage({ companyId: "co", sources, relationships: [] });
+    const compare = compareAmendmentSummaries({ amendmentPackage: ap, items: [] });
+    const op = resolveOperativePrecedence({ sources, amendmentPackage: ap, compare });
+    expect(op.status).toBe("RESOLVED");
+    expect(op.operativeDocumentSourceId).toBe("restated");
+    expect(op.baseDocumentSourceId).toBe("base-ca");
+  });
+
+  it("binds amended sections when threshold shifts are evidenced", async () => {
+    const { analyzeAmendmentPackage } = await import(
+      "../../lib/product/customer-intelligence/amendment-package"
+    );
+    const { compareAmendmentSummaries } = await import(
+      "../../lib/product/customer-intelligence/amendment-compare"
+    );
+    const { resolveOperativePrecedence } = await import(
+      "../../lib/product/customer-intelligence/operative-resolution"
+    );
+    const sources = [
+      baseSource({
+        sourceId: "base",
+        documentClass: "CREDIT_AGREEMENT",
+        documentTitle: "Credit Agreement",
+        filingDate: "2023-01-01",
+      }),
+      baseSource({
+        sourceId: "amd1",
+        documentClass: "AMENDMENT",
+        documentTitle: "First Amendment dated as of 2024-03-15 — Section 7.01 is hereby amended",
+        exhibitFilename: "amd.htm",
+        filingDate: "2024-03-15",
+      }),
+    ];
+    const ap = analyzeAmendmentPackage({ companyId: "co", sources, relationships: [] });
+    const compare = compareAmendmentSummaries({
+      amendmentPackage: ap,
+      items: [
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "base",
+          materialBasketsThresholds: ["$50,000,000"],
+        }),
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "amd1",
+          documentTitle: "First Amendment",
+          materialBasketsThresholds: ["$100,000,000"],
+          operativeLanguageExcerpt: "Amended basket language…",
+        }),
+        stubItem({
+          sectionRef: "7.02",
+          category: "LIENS_SECURED_DEBT",
+          sourceId: "base",
+        }),
+      ],
+    });
+    const op = resolveOperativePrecedence({ sources, amendmentPackage: ap, compare });
+    expect(["RESOLVED", "RESOLVED_PARTIAL"]).toContain(op.status);
+    expect(op.bindings.some((b) => b.sectionRef === "7.01" && b.operativeSourceId === "amd1")).toBe(
+      true,
+    );
+  });
+});
+
 describe("HTML definition discovery", () => {
   it("extracts quoted terms from HTML exhibits with entities and tags", async () => {
     const { discoverDefinitions } = await import("../../lib/knowledge-factory/pipeline/structural");
@@ -272,6 +366,7 @@ describe("export formats", () => {
         unresolvedReasons: [],
         note: "n/a",
       },
+      operativeResolution: null,
     };
     const html = renderCovenantReviewHtml(review);
     expect(html).toContain("<!DOCTYPE html>");
@@ -313,6 +408,7 @@ describe("covenant review markdown export", () => {
         unresolvedReasons: [],
         note: "Upload a base agreement and an amendment to enable before/after comparison.",
       },
+      operativeResolution: null,
     };
     const md = renderCovenantReviewMarkdown(review);
     expect(md).toContain("# Covenant review — co-export");
