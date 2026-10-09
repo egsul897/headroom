@@ -511,7 +511,13 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
       const at = text.indexOf(replacement.oldText);
       if (at < 0 || text.indexOf(replacement.oldText, at + 1) >= 0 || !replacement.view.currentText) { spliced = false; break; }
       const trailing = replacement.oldText.match(/\s*$/)?.[0] ?? "";
-      text = text.slice(0, at) + replacement.view.currentText.replace(/\s*$/, "") + trailing + text.slice(at + replacement.oldText.length);
+      // IPV-19: if the captured restatement dropped the leading quote that the
+      // base definition carries, restore it so `"Term" means` remains matchable.
+      let replacementText = replacement.view.currentText.replace(/\s*$/, "");
+      if (replacement.oldText.trimStart().startsWith('"') && !replacementText.startsWith('"') && /^[A-Z][^"\n]{0,80}"\s+means\b/i.test(replacementText)) {
+        replacementText = `"${replacementText}`;
+      }
+      text = text.slice(0, at) + replacementText + trailing + text.slice(at + replacement.oldText.length);
     }
     if (!spliced || !text) {
       derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, views, "OPERATIVE_STATE_REVIEW_REQUIRED", [`Section ${section.sectionRef} could not be reconstructed from its definition amendments.`]));

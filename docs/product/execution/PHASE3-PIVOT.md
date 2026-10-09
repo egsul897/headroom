@@ -27,9 +27,15 @@ Package `j-restricted-payments-builder` `certification:credit-agreement::7.08` n
 - Nested undefined-term scan recognizes IPV-09 plural surface forms (`Restricted Payments` → `Restricted Payment`) and keeps administrative denylist phrases (`Closing Date`) at LOW so the 7.08 bundle can be SUFFICIENT.
 - IPV-10 preserved: `7.06(c)` stays REVIEW_REQUIRED for undefined Consolidated EBITDA / Consolidated Total Debt.
 
+## IPV-19 — CLOSED
+
+Definition amendments target DEFINITION (not whole Section 1.01). Captured restatement text restores the leading `"` so section splice keeps `"Term" means` matchable; pkg-i/m/h `semantic:*::1.01` compile every expected term. INV-05/05b PRODUCT failures cleared.
+
+Also: inbound override retrieval for Article/section `notwithstanding` caps (INV-04 / 9.15 on package I).
+
 ## Queue (existing Phase 3 / legal excellence)
 
-1. Finish remaining OPEN residuals: **IPV-19**, **IPV-16** (priority order after IPV-15).
+1. Finish remaining OPEN residual: **IPV-16** (side-letter override text derivation + MUT-* / package-M operative residuals).
 2. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
 3. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
 4. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.

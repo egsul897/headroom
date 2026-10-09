@@ -170,6 +170,18 @@ describe("Definitions", () => {
     expect(bundle.unresolvedDependencies.some((u) => u.dependencyType === "UNRESOLVED_DEFINED_TERM" && u.sourceText === "Applicable Threshold Amount")).toBe(true);
   });
 
+  it("10c. INV-04: inbound notwithstanding Article override is retrieved for a section under that article", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `ARTICLE VII NEGATIVE COVENANTS\n\nSECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness except Indebtedness not exceeding $10,000,000.\n\nARTICLE IX MISCELLANEOUS\n\nSECTION 9.15 Secured Indebtedness. Notwithstanding anything to the contrary in Article VII, the Borrower shall not permit secured Indebtedness to exceed $25,000,000.`,
+      },
+    ];
+    const bundle = build(docs, "7.01");
+    expect(bundle.items.some((i) => i.normalizedRef === "9.15" && (i.type === "RELATED_COVENANT" || i.type === "CROSS_REFERENCE"))).toBe(true);
+  });
+
   it("10b. IPV-15/09/10: nested plural of a declared term and administrative Closing Date do not force REVIEW_REQUIRED; real undefined Consolidated metrics still do", () => {
     const docs: TestDocument[] = [
       {

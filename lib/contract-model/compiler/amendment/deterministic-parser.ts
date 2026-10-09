@@ -53,6 +53,20 @@ function excerpt(text: string, charStart: number, matchLength: number): string {
   return text.slice(start, end).replace(/\s+/g, " ").trim();
 }
 
+/**
+ * DEFINITION_REPLACE_RE's optional opening-quote delimiter can consume the
+ * leading `"` of a restated `"Term" means …` block. Without that quote, the
+ * section-1.01 splice produces `Term" means` and every downstream matcher
+ * that looks for `"Term" means` reports the definition as missing (IPV-19).
+ */
+function restoreRestatedDefinitionLeadingQuote(captured: string): string {
+  const text = captured.trim();
+  if (text.startsWith('"') || text.startsWith("\u201C")) return text;
+  // Term name closed by a quote then "means" — the opening quote was eaten as delimiter.
+  if (/^[A-Z][^"\n]{0,80}"\s+means\b/i.test(text)) return `"${text}`;
+  return text;
+}
+
 /** Refines a coarse Phase-2C ModificationCandidate into the finer AmendmentOperation taxonomy + captures verbatim text where the amendment's own source explicitly supplies it. */
 function refineOperationAndText(mc: ModificationCandidate, amendmentText: string): { operation: AmendmentOperation; newText: string | null } {
   const region = mc.sourceText;
@@ -61,7 +75,7 @@ function refineOperationAndText(mc: ModificationCandidate, amendmentText: string
     if (DEFINITION_ADD_RE.test(region)) return { operation: "ADD_DEFINITION", newText: null };
     if (DEFINITION_DELETE_RE.test(region)) return { operation: "DELETE_DEFINITION", newText: null };
     const replaceMatch = DEFINITION_REPLACE_RE.exec(amendmentText.slice(Math.max(0, amendmentText.indexOf(region.slice(0, 40)) - 20), undefined));
-    if (replaceMatch) return { operation: "REPLACE_DEFINITION", newText: replaceMatch[2]!.trim() };
+    if (replaceMatch) return { operation: "REPLACE_DEFINITION", newText: restoreRestatedDefinitionLeadingQuote(replaceMatch[2]!) };
     return { operation: "MODIFY_DEFINITION", newText: null };
   }
 
