@@ -390,7 +390,6 @@ export async function runConmedDebtPackageTransactionAnswer(args?: {
     const ask = answerFromSummaryItems({
       question: s.question,
       items: summary.items.map((i) => ({ ...i, sourceId })),
-      definedTerms: definitions.map((d) => ({ term: d.term, excerpt: (d.excerpt ?? "").slice(0, 300) })),
       researchOnly: true,
       limit: 5,
     });
