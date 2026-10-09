@@ -1,0 +1,101 @@
+{
+  "artifact": "north-star-knowledge-system-integration-audit",
+  "version": 1,
+  "role": "WS-PAR Integration Lead",
+  "auditedAt": "2026-10-08T23:59:00Z",
+  "startingMainSha": "e5b8a21261bb47eadc6bb552e4204473276b15e8",
+  "tipAtReportSha": "c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8",
+  "tipAdvanceDuringAudit": {
+    "pr": 139,
+    "title": "Definition Encyclopedia Phase 2",
+    "mergeSha": "c51d96c3fc5a2d3e532e1223bf9b7f4ebc11c9c8"
+  },
+  "finalVerdict": "CANONICAL_KNOWLEDGE_SYSTEM_FRAGMENTED",
+  "persistenceVerdict": "NOT_CROSS_WORKSPACE_DURABLE",
+  "knowledgeAccumulationVerdict": "NO_NEW_DOC_DOES_NOT_IMPROVE_TOMORROW_ON_MAIN",
+  "firstBrokenLink": "durable original-source storage + canonical Knowledge Factory registry (lib/knowledge-factory absent on main; PR #154 durability claim NONE)",
+  "unseenPackageValidation": {
+    "authoritativeIndependentResearch": {
+      "recallAt5": 0.4314,
+      "citationCorrectness": 0.5714,
+      "queryCount": 57,
+      "issuerDisjoint": "SUP",
+      "superseded": false,
+      "sources": [
+        "docs/covenant-precedent-research-integration-gate.md",
+        "docs/covenant-precedent-research-phase3-report.md"
+      ]
+    },
+    "phase3f2": "PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED",
+    "lightweightUnseen": "LIGHTWEIGHT_UNSEEN_TRUST_BOUNDARY_FAILED",
+    "ckg": "CKG_BENCHMARK_STANDUP_COMPLETE_OFFLINE_BASELINE_RECORDED"
+  },
+  "workstreamLabels": {
+    "A_edgar_ehb": ["IMPLEMENTED_ISOLATED"],
+    "B_knowledge_factory": ["NOT_IMPLEMENTED"],
+    "C_structural_parsing": ["REAL_EXPORT_INTEGRATED"],
+    "D_discovery_semantic": ["REAL_EXPORT_INTEGRATED"],
+    "E_definition_encyclopedia": ["IMPLEMENTED_ISOLATED", "PERSISTED"],
+    "F_dependency_atlas": ["IMPLEMENTED_ISOLATED"],
+    "G_basket_formula": ["IMPLEMENTED_ISOLATED"],
+    "H_covenant_research": ["FIXTURE_INTEGRATED"],
+    "I_amendment_operative": ["REAL_EXPORT_INTEGRATED"],
+    "J_ledger_capacity": ["REAL_EXPORT_INTEGRATED"],
+    "K_source_storage_db": ["IMPLEMENTED_ISOLATED"],
+    "L_unseen_eval": ["IMPLEMENTED_ISOLATED"]
+  },
+  "corpusReconciliation": {
+    "singleReconciledRegistry": false,
+    "doNotSumAcrossInventories": true,
+    "researchPhase3": {
+      "entries": 6607,
+      "distinctDocuments": 25,
+      "distinctIssuers": 9,
+      "sourceVerified": 0,
+      "independentlyLegallyVerified": 0
+    },
+    "definitionEncyclopedia": {
+      "sources": 82,
+      "definitionExamples": 5491,
+      "verificationStatus": "SOURCE_ONLY"
+    },
+    "ehbPilot100v2": {
+      "distinctCiks": 100,
+      "fetchableQueueItems": 149,
+      "bodiesOnMain": false
+    },
+    "ckfPr154NotOnMain": {
+      "financingDocuments": 113,
+      "durable": false,
+      "durabilityClaim": "NONE"
+    }
+  },
+  "top10Blockers": [
+    "CKF hub absent on main (#154)",
+    "No cross-VM durable source bytes",
+    "Fragmented overlapping registries",
+    "Stale consumer probes/exports/* adapters",
+    "Parser hierarchy defects (#163 family)",
+    "Phase 3 generalization/trust-boundary failures",
+    "Shared-capacity/IPV-16 legal-core stack (#136/#168)",
+    "C-DUP-KF (#146)",
+    "Research knowledge unverified (0 SOURCE_VERIFIED)",
+    "Product surfaces disconnected from Contract Evidence Substrate"
+  ],
+  "immediateMerge": {
+    "mergeNow": [163],
+    "alreadyMergedDuringAudit": [139],
+    "rebaseThenReaudit": [154, 141, 153],
+    "remainBlocked": [146, 136, 168, 135, 161, 164, 156, 169]
+  },
+  "providerFreeTestsRun": {
+    "passed": true,
+    "files": [
+      "tests/architecture/parallel-agents",
+      "tests/definition-encyclopedia",
+      "tests/covenant-research/phase3-independent-eval.test.ts"
+    ],
+    "totals": "39 passed"
+  },
+  "actualExternalCostsUsd": 0
+}
