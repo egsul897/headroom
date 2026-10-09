@@ -99,18 +99,26 @@ export function auditStructure(pkg: CorpusPackage, s: DeterministicStages, L: Le
       // Count structural lettered enumerators: line-start hanging indents, or markers introduced by
       // list/heading punctuation ("Title . (a)", "except: (a)", "...; (b)"). Mid-sentence inline lists
       // inside a definition or "greater of (a) … and (b)" (IPV-06) must not inflate the expected count.
-      let expected = "a"; let counted = 0; const gaps: string[] = [];
+      // Amendment restatements ("to read as follows: (c) …") quote a target clause letter and are not
+      // a structural list under the amendment section — ignore list-introduced markers until a real
+      // list opens at (a) (or a line-start hanging indent begins the sequence).
+      let expected = "a"; let counted = 0; const gaps: string[] = []; let listOpen = false;
       for (const m of raw.matchAll(/(^|\n|[;:.])([ \t]*)\(([^\s()]{1,4})\)\s/g)) {
         const tok = m[3]!;
         const atLineStart = m[1] === "" || m[1] === "\n";
         const listIntroduced = /[;:.]/.test(m[1]!);
         if (!atLineStart && !listIntroduced) continue;
         if (/^[a-z]$/.test(tok)) {
+          if (!listOpen) {
+            if (tok !== "a" && !atLineStart) continue; // restated mid-list letter (e.g. ": (c)") — not this section's children
+            listOpen = true;
+          }
           if (tok === expected) { counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1); }
           else if (tok > expected && !/^[ivx]$/.test(tok)) { gaps.push(`(${expected}) absent before (${tok})`); counted += 1; expected = String.fromCharCode(tok.charCodeAt(0) + 1); }
           // a roman (i)/(v)/(x) or a letter below the expected one is a nested or restarted list, not a top-level clause
         } else if (atLineStart && tok.length === 1 && /[^\x00-\x7f]/.test(tok)) {
           // a single non-ASCII enumerator at line start (homoglyph scan noise) was meant to be the next letter
+          listOpen = true;
           gaps.push(`unrecognised enumerator (${tok}) where (${expected}) was expected`); counted += 1; expected = String.fromCharCode(expected.charCodeAt(0) + 1);
         }
       }
