@@ -3,7 +3,7 @@
 ## Starting and ending SHA
 
 - **Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8` (origin/main at branch cut)
-- **Ending SHA:** `466924fe3bbeee9e128fb979fb29deff86faefc7`
+- **Ending SHA:** `edac945f312d64e4bb765d1fc2cb9fd65579f73e`
 
 ## New agreements and provisions processed
 
