@@ -11,7 +11,16 @@ import {
   PrismaContractLedgerStore,
   CONMED_FORM_INSPIRED_CERT,
   type SyntheticCertificate,
+  type BasketUsageScheduleLine,
 } from "@/lib/contract-model/north-star-bridge";
+
+/** In-process cache of basket lines proposed with a snapshot (lost on process restart; re-seed covers). */
+const pendingBasketBySnapshot = new Map<string, BasketUsageScheduleLine[]>();
+
+function asOfIsoFromLine(line: BasketUsageScheduleLine): string {
+  if (line.asOf.kind === "EXACT_DATE") return line.asOf.isoDate;
+  return new Date().toISOString().slice(0, 10);
+}
 
 export interface SeedCertificateResult {
   ok: boolean;
@@ -67,6 +76,8 @@ export async function proposeSyntheticCertificateForCompany(
       label: "SYNTHETIC — proposal refused",
     };
   }
+  // Hold basket lines until attributable approval — never auto-apply into 4C capacity truth.
+  pendingBasketBySnapshot.set(snapshotId, cert.basketUsageLines.map((l) => structuredClone(l)));
   return {
     ok: true,
     companyId,
@@ -127,12 +138,86 @@ export async function approveWorkspaceCertificate(args: {
       issues: result.issues.map((i) => i.message),
     };
   }
+
+  // Promote certificate basket schedule lines into attributed 4C RECORDED usages (same approval).
+  const basketLines =
+    pendingBasketBySnapshot.get(args.snapshotId) ??
+    // Fallback for synthetic CONMED-form seed after process restart.
+    (snap.provenance.source?.includes("conmed-form")
+      ? CONMED_FORM_INSPIRED_CERT.basketUsageLines.map((l) => ({
+          ...l,
+          // Keep fixture instrument keys; company already bound via snapshot.
+        }))
+      : []);
+  const promoteIssues: string[] = [];
+  if (basketLines.length > 0) {
+    const promoted = await promoteBasketLinesToContractLedger({
+      companyId: args.companyId,
+      snapshotId: args.snapshotId,
+      approvalRef: args.approvalRef,
+      lines: basketLines,
+    });
+    if (!promoted.ok) promoteIssues.push(...(promoted.issues ?? []));
+    else pendingBasketBySnapshot.delete(args.snapshotId);
+  }
+
   return {
     ok: true,
     snapshotId: args.snapshotId,
     status: "APPROVED",
     approvalRef: args.approvalRef,
+    issues: promoteIssues.length ? promoteIssues : undefined,
   };
+}
+
+/**
+ * Map certificate basket-usage schedule lines → attributed Phase 4C ledger usages.
+ * Requires explicit approvalRef — never silent apply from extractor proposals alone.
+ */
+export async function promoteBasketLinesToContractLedger(args: {
+  companyId: string;
+  snapshotId: string;
+  approvalRef: string;
+  lines: BasketUsageScheduleLine[];
+}): Promise<{ ok: boolean; appended: number; issues?: string[] }> {
+  const store = await PrismaContractLedgerStore.open(prisma, args.companyId);
+  const issues: string[] = [];
+  let appended = 0;
+  for (let i = 0; i < args.lines.length; i++) {
+    const line = args.lines[i]!;
+    const usageId = `cert-basket-${args.snapshotId}-${i}-${line.basketKey}`.replace(/\s+/g, "_").slice(0, 180);
+    const existing = store.getUsage(usageId);
+    if (existing && existing.status !== "SUPERSEDED") {
+      appended += 1;
+      continue;
+    }
+    const status = line.direction === "REPAYMENT" ? "REVERSED" : "RECORDED";
+    const result = await store.appendUsage({
+      usage: {
+        usageId,
+        companyId: args.companyId,
+        instrumentKey: line.instrumentKey ?? "company",
+        effectiveAsOf: asOfIsoFromLine(line),
+        amount: { amount: line.amount, currency: line.currency },
+        capacityPath: { kind: "RULE", ruleId: line.basketKey },
+        transactionRef: `certificate:${args.snapshotId}:${line.basketKey}`,
+        status,
+        supersededByUsageId: null,
+        provenance: {
+          source: `certificate-basket:${args.snapshotId}`,
+          sourceVersion: line.locator.section ?? null,
+          approvalRef: args.approvalRef,
+          approvalState: "APPROVED",
+        },
+      },
+    });
+    if (!result.ok) {
+      issues.push(...result.issues.map((x) => x.message));
+    } else {
+      appended += 1;
+    }
+  }
+  return { ok: issues.length === 0, appended, issues: issues.length ? issues : undefined };
 }
 
 /** Record one attributed contract-ledger usage (4C) for historical basket capacity. */

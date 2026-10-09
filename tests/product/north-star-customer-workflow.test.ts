@@ -68,6 +68,17 @@ describeDb("North Star customer workflow (product)", () => {
     });
     expect(approved.ok).toBe(true);
     expect(approved.status).toBe("APPROVED");
+    // Basket schedule lines from the certificate must land in 4C under the same approval.
+    expect(approved.issues ?? []).toEqual([]);
+
+    readiness = await loadTransactionWorkflowReadiness(CO, {
+      evaluationDate: "2026-08-01",
+      selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+    });
+    // Permissions may be absent → canRun false, but APPROVED snapshot + cutoff should resolve.
+    expect(readiness.northStar.approvedSnapshotCount).toBeGreaterThanOrEqual(1);
+    // Certificate basket promotion and/or manual append — at least one attributed usage.
+    expect(readiness.northStar.activeLedgerUsageCount).toBeGreaterThanOrEqual(1);
 
     const usage = await appendContractLedgerUsage({
       companyId: CO,
@@ -86,9 +97,7 @@ describeDb("North Star customer workflow (product)", () => {
       evaluationDate: "2026-08-01",
       selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
     });
-    // Permissions may be absent → canRun false, but APPROVED snapshot + cutoff should resolve.
-    expect(readiness.northStar.approvedSnapshotCount).toBeGreaterThanOrEqual(1);
-    expect(readiness.northStar.activeLedgerUsageCount).toBeGreaterThanOrEqual(1);
+    expect(readiness.northStar.activeLedgerUsageCount).toBeGreaterThanOrEqual(2);
     expect(readiness.cutoff?.state).toBe("RESOLVED");
     expect(readiness.cutoff?.reportingPeriodKey).toBe("FY2026-Q2");
     expect(readiness.cutoff?.snapshotId).toBe(proposed.snapshotId);

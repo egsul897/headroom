@@ -1,6 +1,9 @@
 import { ASK_CASES, type AskCaseId } from "./copy";
 import { answerFromCorpus, type AskRetrieveAnswer } from "../product/covenant-intelligence/ask-retrieve";
-import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow";
+import {
+  attemptCertifiedTransaction,
+  loadTransactionWorkflowReadiness,
+} from "@/lib/product/north-star-workflow";
 import { prisma } from "@/lib/prisma";
 import { summarizeFromStoredMetadata } from "../product/covenant-intelligence/summarize";
 import {
@@ -108,7 +111,18 @@ export async function answerAsk(input: {
         transactionWorkflow: tw,
       };
     }
-    // Ready: still retrieve corpus citations; multipath numbers stay on Intelligence (LEGACY label).
+    // Attempt certified 4A–4D path (fail-closed without VerifiedExecutionPackage).
+    const certified = await attemptCertifiedTransaction({
+      companyId,
+      evaluationDate,
+      selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+      verifiedPackage: null,
+    });
+    const certifiedLine = certified.capacity?.outcome === "EXECUTED"
+      ? "CERTIFIED capacity evaluated under verified-execution REQUIRE."
+      : `CERTIFIED path blocked (${certified.blockers.join(", ") || "unknown"}). ${certified.authorityNote}`;
+
+    // Corpus citations for governing text; multipath numbers stay LEGACY on Intelligence.
     const result = await answerFromCorpus({
       question: input.question,
       sourceId: input.sourceId,
@@ -122,22 +136,28 @@ export async function answerAsk(input: {
         kind: "answered",
         caseId: "TRANSACTION_READINESS",
         headline: result.headline,
-        detail: `${cutoffLine} ${result.detail} Review neutral paths on Intelligence (LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E).${dependencyNote ? ` ${dependencyNote}` : ""}`,
+        detail: `${cutoffLine} ${certifiedLine} ${result.detail} Review neutral paths on Intelligence (LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E).${dependencyNote ? ` ${dependencyNote}` : ""}`,
         citations: result.citations,
-        limitations: [...(result.limitations ?? []), workflow.authorityNote],
+        limitations: [...(result.limitations ?? []), workflow.authorityNote, certified.authorityNote],
         restrictions: result.restrictions,
         permissions: result.permissions,
-        unresolved: result.unresolved,
+        unresolved: [
+          ...(result.unresolved ?? []),
+          ...certified.blockers,
+        ],
         transactionWorkflow: tw,
       };
     }
     return {
       kind: "insufficient_evidence",
       caseId: "TRANSACTION_READINESS",
-      headline: "Cutoff resolved; provision retrieval incomplete",
-      detail: `${cutoffLine} ${result.kind === "insufficient_evidence" ? result.detail : "No governing excerpts retrieved."} Open Intelligence for multipath analysis when Permissions exist.`,
-      limitations: [workflow.authorityNote],
-      unresolved: result.kind === "insufficient_evidence" ? result.unresolved : workflow.blockers,
+      headline: "Cutoff resolved; certified execution and/or provision retrieval incomplete",
+      detail: `${cutoffLine} ${certifiedLine} ${result.kind === "insufficient_evidence" ? result.detail : "No governing excerpts retrieved."} Open Intelligence for multipath analysis when Permissions exist (NOT_CERTIFIED_4E).`,
+      limitations: [workflow.authorityNote, certified.authorityNote],
+      unresolved: [
+        ...(result.kind === "insufficient_evidence" ? result.unresolved ?? [] : workflow.blockers),
+        ...certified.blockers,
+      ],
       transactionWorkflow: tw,
     };
   }

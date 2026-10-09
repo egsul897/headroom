@@ -19,4 +19,10 @@ export type {
 export { LedgerProposalRecorder } from "./ledger-proposals";
 export { proposeFromCertificate, proposeFromCertificateAsync } from "./propose";
 export { approveCertificateProposal, approveCertificateProposalAsync } from "./approve";
-export { certificateIdentityKey, factToFinancialInput, factToIdentity } from "./map-fact";
+export {
+  certificateIdentityKey,
+  factToFinancialInput,
+  factToIdentity,
+  encodeLocatorNote,
+  decodeLocatorFromNote,
+} from "./map-fact";
