@@ -6,6 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { CANONICAL_UNIT_BY_METRIC, IncompatibleUnitError, UnrecognizedMetricError, isFinancialUnit, normalizeFinancialValue } from "../../lib/connectors/units";
+import { FINANCIAL_METRIC_FIELD_MAP } from "../../lib/onboarding/financial";
 
 describe("normalizeFinancialValue - dollar units", () => {
   it("USD -> USD_MILLIONS divides by 1,000,000 (the exact regression this fix closes)", () => {
@@ -98,7 +99,20 @@ describe("CANONICAL_UNIT_BY_METRIC", () => {
     // unreachable for it (UnrecognizedMetricError instead of a real unit),
     // which is the CORRECT fail-closed behavior but should be a deliberate
     // choice, not an oversight - so this test spells out the expected set.
-    const expectedMetrics = ["cash", "total_debt", "secured_debt", "covenant_ebitda", "interest_expense", "cumulative_net_income", "equity_proceeds", "assumed_new_debt_rate_pct"];
+    // gaap_ebitda is extractable/normalizable but deliberately absent from
+    // FINANCIAL_METRIC_FIELD_MAP so it never promotes into capacity ebitda.
+    const expectedMetrics = [
+      "cash",
+      "total_debt",
+      "secured_debt",
+      "covenant_ebitda",
+      "gaap_ebitda",
+      "interest_expense",
+      "cumulative_net_income",
+      "equity_proceeds",
+      "assumed_new_debt_rate_pct",
+    ];
     expect(Object.keys(CANONICAL_UNIT_BY_METRIC).sort()).toEqual(expectedMetrics.sort());
+    expect(Object.keys(FINANCIAL_METRIC_FIELD_MAP)).not.toContain("gaap_ebitda");
   });
 });

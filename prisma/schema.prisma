@@ -167,6 +167,9 @@ enum DocumentType {
   AMENDMENT
   INTERCREDITOR_AGREEMENT
   COMPLIANCE_CERTIFICATE
+  // Financial statements / 10-Q / 10-K style uploads (Agent 2 financial
+  // certificate engine). Additive ALTER TYPE ADD VALUE — no existing row affected.
+  FINANCIAL_STATEMENT
   // Phase 2C (docs/phase-2c-debt-package-graph.md §4) - additive, same
   // ALTER TYPE ADD VALUE safety as the block above. UNKNOWN is a real,
   // legitimate classification result (task §4 - "UNKNOWN with evidence is
