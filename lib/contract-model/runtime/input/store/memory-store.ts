@@ -55,6 +55,16 @@ function sealWriteResult(result: WriteResult): WriteResult {
 export class InMemoryApprovedSnapshotStore {
   readonly #log = new PrivateEventLog();
 
+  /**
+   * Rebuild a store from previously persisted append-only events (NS-4 durable hydrate).
+   * Does not re-run write validation — events are assumed already sealed at first write.
+   */
+  static fromPersistedEvents(events: readonly StoreEvent[]): InMemoryApprovedSnapshotStore {
+    const store = new InMemoryApprovedSnapshotStore();
+    if (events.length) store.#log.commit([...events]);
+    return store;
+  }
+
   /** Deep-frozen copy of the event log — `pop` / mutate does not affect the store. */
   get events(): readonly StoreEvent[] {
     return publicEventLog(this.#log.events);
