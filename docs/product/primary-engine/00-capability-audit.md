@@ -193,7 +193,7 @@ Order is deliberately minimal. **Do not rewrite architecture. Do not invent CERT
 | Field | Value |
 |---|---|
 | Starting SHA | `bae24ced33fdd6963d0615265a1e67cb181233e8` |
-| Ending SHA | *(set at commit of this audit)* |
+| Ending SHA | `d5645a4dcd983c16c5d3f9bdc805c46ca54bb8a6` |
 | PR | *(opened with this deliverable — documentation only)* |
 | Cost | **$0 paid inference** this mission (offline VEP attempt + audit). Agent compute cost not metered here. |
 
