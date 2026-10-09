@@ -2,7 +2,7 @@
   "verdict": "DURABILITY_NOT_YET_PROVEN",
   "status": "DURABILITY_BLOCKED_CREDENTIALS",
   "startingSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
-  "endingSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
+  "endingSha": "964a1c8a59c53a02de673bbe85393ef22db700d0",
   "missingDependencies": [
     "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
     "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
@@ -41,5 +41,6 @@
     "claiming durability from committed metadata/hashes",
     "mocked DocumentStorageProvider"
   ],
-  "nextAction": "Configure shared DATABASE_URL (with KnowledgeSource migrations applied) and BLOB_READ_WRITE_TOKEN on this environment, then re-run: npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts"
+  "nextAction": "Configure shared DATABASE_URL (with KnowledgeSource migrations applied) and BLOB_READ_WRITE_TOKEN on this environment, then re-run: npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts",
+  "branch": "cursor/ckf-durable-knowledge-proof-f673"
 }

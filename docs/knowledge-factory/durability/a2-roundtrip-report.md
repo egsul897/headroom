@@ -8,7 +8,7 @@
 | Field | Value |
 |---|---|
 | Starting main (CKF merged) | `2a8b70cd7683c6522087f4535f7ee996a6012c3c` (PR #154) |
-| Ending tip | see commit on this branch after evidence landing |
+| Ending tip | 964a1c8a59c53a02de673bbe85393ef22db700d0 |
 
 PR #154 was **not** reopened. No second registry was created.
 
