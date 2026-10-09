@@ -144,7 +144,7 @@ describe("routes", () => {
 
 describe("Ask shell", () => {
   it("has no answer export, and a question is refused rather than classified unsupported", () => {
-    expect(Object.keys(askRunner).sort()).toEqual(["askEmpty", "refuseAsk", "resolveAskShell"]);
+    expect(Object.keys(askRunner).sort()).toEqual(["answerAsk", "askEmpty", "refuseAsk", "resolveAskShell"]);
     expect(askRunner.resolveAskShell({ companyId: "co" }).caseId).toBe("NOT_AVAILABLE_ON_DEAL");
     expect(askRunner.resolveAskShell({ companyId: "  " }).caseId).toBe("NO_COMPANY");
     expect(askRunner.resolveAskShell({ companyId: null }).caseId).toBe("NO_COMPANY");

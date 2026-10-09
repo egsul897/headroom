@@ -8,20 +8,53 @@ import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
 
+/** Expand heading-only spans to the next section start so body text is analyzed. */
+function operativeSpan(
+  node: StructuralNodeRecord,
+  sectionNodes: StructuralNodeRecord[],
+  textLen: number,
+): { start: number; end: number } {
+  const start = node.charStart;
+  const later = sectionNodes
+    .filter((n) => n.charStart > node.charStart)
+    .sort((a, b) => a.charStart - b.charStart);
+  const nextStart = later[0]?.charStart;
+  // Prefer next-section boundary; fall back to at least 2.5k chars of body.
+  const end = Math.min(
+    textLen,
+    Math.max(node.charEnd, nextStart ?? node.charStart + 2500, node.charStart + 2500),
+  );
+  // If next section is close, stop before it.
+  if (nextStart != null && nextStart > start) {
+    return { start, end: Math.min(textLen, Math.max(node.charEnd, nextStart)) };
+  }
+  return { start, end };
+}
+
 export function discoverCovenantCandidates(
   sourceId: string,
   text: string,
   nodes: StructuralNodeRecord[],
 ): CovenantCandidateRecord[] {
   const out: CovenantCandidateRecord[] = [];
-  const sectionNodes = nodes.filter((n) => !n.ambiguous && (n.nodeType === "SECTION" || n.nodeType === "ARTICLE" || n.nodeType === "SUBSECTION"));
+  // Include ambiguous section candidates when they carry a usable sectionRef —
+  // curated/HTML exhibits often triage headings as ambiguous while still
+  // providing source-backed spans suitable for discovery (not verification).
+  const sectionNodes = nodes
+    .filter(
+      (n) =>
+        (n.nodeType === "SECTION" || n.nodeType === "ARTICLE" || n.nodeType === "SUBSECTION") &&
+        (!n.ambiguous || /^[\dA-Za-z.()-]+$/.test(n.sectionRef)),
+    )
+    .sort((a, b) => a.charStart - b.charStart);
 
   for (const node of sectionNodes) {
-    const excerpt = text.slice(node.charStart, Math.min(node.charEnd, node.charStart + 2500));
+    const span = operativeSpan(node, sectionNodes, text.length);
+    const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
     const families = classifyFamiliesFromText(excerpt, node.heading);
     if (families.length === 1 && families[0] === "UNKNOWN") {
       // Keep UNKNOWN only when heading still looks covenant-relevant.
-      if (!/\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Subsidiary|Prepayment|Incremental|Available Amount)\b/i.test(node.heading)) {
+      if (!/\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Subsidiary|Prepayment|Incremental|Available Amount|Sale|Fundamental)\b/i.test(node.heading + excerpt.slice(0, 400))) {
         continue;
       }
     }
@@ -34,7 +67,7 @@ export function discoverCovenantCandidates(
       nodeId: node.nodeId,
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
-      excerpt: excerpt.slice(0, 800),
+      excerpt: excerpt.slice(0, 1600),
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });

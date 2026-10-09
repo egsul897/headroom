@@ -4,15 +4,22 @@ import { getDocumentDetails } from "@/lib/dashboard-service";
 import { fmtDate } from "@/lib/format";
 import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
 import { listConmedPackageFacts } from "@/lib/product/conmed-demo/covenant-catalog";
+import {
+  getLatestAmendmentPackage,
+  listCustomerDocumentIntelligence,
+} from "@/lib/product/customer-intelligence/load";
 
 export const metadata = { title: "Headroom — Documents" };
 
 /**
- * Documents workspace — governing financing package with source navigation.
+ * Documents workspace — upload, status, covenant intelligence, amendment package.
  */
 export default async function DocumentsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const documents = await getDocumentDetails(companyId);
+  const intelligence = await listCustomerDocumentIntelligence(companyId);
+  const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
+  const amendment = await getLatestAmendmentPackage(companyId);
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
   const facts = isConmed ? listConmedPackageFacts() : [];
 
@@ -21,13 +28,70 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
       <Card>
         <div className="card-title">Financing documents</div>
         <div className="card-subtitle">
-          Governing agreements and amendments for this workspace. Open a document to inspect source text and package relationships.
+          Upload credit agreements, indentures, and amendments. Review covenant summaries and ask
+          workspace-grounded questions. Public precedents never govern this package.
+        </div>
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>
+            Upload document
+          </Link>
+          <Link className="button" href={`/${companyId}/ask`}>
+            Ask Headroom
+          </Link>
+          <Link className="button" href="/research/compare">
+            Compare precedents
+          </Link>
         </div>
       </Card>
+
+      {amendment && (
+        <Card>
+          <div className="card-title">Amendment package</div>
+          <div className="card-subtitle">{amendment.note}</div>
+          <div className="row">
+            <div className="row-label">Operative resolution</div>
+            <div className="row-value">
+              <Chip
+                tone={
+                  amendment.operativeResolution === "UNRESOLVED_PRECEDENCE"
+                    ? "tight"
+                    : amendment.operativeResolution === "RESOLVED"
+                      ? "pass"
+                      : "idle"
+                }
+              >
+                {amendment.operativeResolution}
+              </Chip>
+            </div>
+          </div>
+          {amendment.unresolvedReasons.length > 0 && (
+            <div className="row-note" style={{ marginTop: 8 }}>
+              {amendment.unresolvedReasons.join(" · ")}
+            </div>
+          )}
+          {amendment.provisionChangeSignals.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              {amendment.provisionChangeSignals.slice(0, 6).map((s, i) => (
+                <div key={i} className="row-note">
+                  <Chip tone="navy">{s.kind}</Chip> {s.evidence}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            {amendment.askGuidance}
+          </div>
+        </Card>
+      )}
 
       {documents.length === 0 && (
         <Card>
           <div className="card-subtitle">No governing documents on record for this company.</div>
+          <div className="button-row" style={{ marginTop: 12 }}>
+            <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>
+              Create / upload in workspace
+            </Link>
+          </div>
           {isConmed && (
             <div className="row-note" style={{ marginTop: 8 }}>
               Run <code>npm run product:setup-conmed-demo</code> (dry-run) then authorize live setup to persist the authentic CONMED package.
@@ -36,35 +100,62 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
-      {documents.map((d) => (
-        <Card key={d.id}>
-          <div className="card-title">{d.name}</div>
-          <div className="card-subtitle">
-            {d.type}
-            {d.governs ? ` — ${d.governs}` : ""}
-          </div>
-          <div className="row">
-            <div className="row-label">Effective from</div>
-            <div className="row-value">{d.effectiveFrom ? fmtDate(d.effectiveFrom) : "Since inception"}</div>
-          </div>
-          <div className="row">
-            <div className="row-label">Effective to</div>
-            <div className="row-value">{d.effectiveTo ? fmtDate(d.effectiveTo) : "Current"}</div>
-          </div>
-          <div className="row">
-            <div className="row-label">Modeled provisions</div>
-            <div className="row-value">{d.provisionCount}</div>
-          </div>
-          <div className="button-row" style={{ marginTop: 12 }}>
-            <Link className="button button-primary" href={`/${companyId}/documents/${d.id}`}>
-              Open source
-            </Link>
-            <Link className="button" href={`/${companyId}/covenants`}>
-              View covenants
-            </Link>
-          </div>
-        </Card>
-      ))}
+      {documents.map((d) => {
+        const intel = intelByDoc.get(d.id);
+        return (
+          <Card key={d.id}>
+            <div className="card-title">{d.name}</div>
+            <div className="card-subtitle">
+              {d.type}
+              {d.governs ? ` — ${d.governs}` : ""}
+            </div>
+            <div className="row">
+              <div className="row-label">Effective from</div>
+              <div className="row-value">{d.effectiveFrom ? fmtDate(d.effectiveFrom) : "Since inception"}</div>
+            </div>
+            <div className="row">
+              <div className="row-label">Effective to</div>
+              <div className="row-value">{d.effectiveTo ? fmtDate(d.effectiveTo) : "Current"}</div>
+            </div>
+            <div className="row">
+              <div className="row-label">Modeled provisions</div>
+              <div className="row-value">{d.provisionCount}</div>
+            </div>
+            <div className="row">
+              <div className="row-label">Document intelligence</div>
+              <div className="row-value">
+                {intel ? (
+                  <>
+                    <Chip tone={intel.analysisOk ? "pass" : "trip"}>
+                      {intel.analysisOk ? "ANALYZED" : "FAILED"}
+                    </Chip>{" "}
+                    {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
+                  </>
+                ) : (
+                  <Chip tone="idle">Not yet analyzed</Chip>
+                )}
+              </div>
+            </div>
+            {intel && !intel.analysisOk && (
+              <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
+                Analysis did not succeed
+                {intel.analysisError ? `: ${intel.analysisError}` : "."} Do not treat this document as analyzed.
+              </div>
+            )}
+            <div className="button-row" style={{ marginTop: 12 }}>
+              <Link className="button button-primary" href={`/${companyId}/documents/${d.id}`}>
+                Open document
+              </Link>
+              <Link className="button" href={`/${companyId}/ask`}>
+                Ask about package
+              </Link>
+              <Link className="button" href={`/${companyId}/covenants`}>
+                View covenants
+              </Link>
+            </div>
+          </Card>
+        );
+      })}
 
       {facts.length > 0 && (
         <Card>

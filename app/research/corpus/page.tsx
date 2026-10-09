@@ -2,13 +2,10 @@ import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { listCorpusBrowseRows, loadCorpusBrowseSummary } from "@/lib/product/knowledge-corpus";
 import { getPrecedentIndexSummary, searchPrecedents } from "@/lib/product/precedent-search";
+import { listSummariesInNeon } from "@/lib/product/covenant-intelligence/ask-retrieve";
 
 export const metadata = { title: "Headroom — Research corpus" };
 
-/**
- * Issuer-disjoint precedent browse + search over retrieval index / Neon KnowledgeSource.
- * Never treats similarity as operative authority for a customer workspace.
- */
 export default async function ResearchCorpusPage({
   searchParams,
 }: {
@@ -19,22 +16,57 @@ export default async function ResearchCorpusPage({
   const family = sp.family?.trim() ?? "";
 
   const summary = await loadCorpusBrowseSummary();
-  const rows = await listCorpusBrowseRows(50);
+  const rows = await listCorpusBrowseRows(100);
   const indexSummary = getPrecedentIndexSummary();
   const hits = searchPrecedents({ q: q || undefined, family: family || undefined, limit: 40 });
+  const neonSummaries = await listSummariesInNeon(100);
+  const withSummary = neonSummaries.filter((s) => s.candidateCount > 0).length;
 
   return (
     <div className="stack" style={{ maxWidth: 960, margin: "0 auto", padding: "24px 16px 48px" }}>
       <Card>
         <div className="card-title">Research corpus</div>
         <div className="card-subtitle">
-          Persisted Neon KnowledgeSource rows and the local precedent retrieval index. Precedents
-          inform research — they do not override a company&apos;s governing documents.
+          Durable Neon KnowledgeSource rows with covenant intelligence. Precedents inform research —
+          they do not override a company&apos;s governing documents.
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href="/">
             Home
           </Link>
+          <Link className="button button-primary" href="/research/ask">
+            Ask the corpus
+          </Link>
+          <Link className="button" href="/research/compare">
+            Compare precedents
+          </Link>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="card-title">Durable corpus</div>
+        <div className="row">
+          <div className="row-label">KnowledgeSource with storageRef</div>
+          <div className="row-value">{summary.withStorageRef}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Substantive financing precedents</div>
+          <div className="row-value">{summary.substantiveFinancingSources}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Non-financing exhibits (excluded from browse)</div>
+          <div className="row-value">{summary.nonFinancingExhibits}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">With covenant summaries (substantive)</div>
+          <div className="row-value">{withSummary}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Distinct issuers (substantive)</div>
+          <div className="row-value">{summary.distinctIssuers}</div>
+        </div>
+        <div className="row-note" style={{ marginTop: 8 }}>
+          {summary.note}
         </div>
       </Card>
 
@@ -59,15 +91,10 @@ export default async function ResearchCorpusPage({
         </form>
         {indexSummary.available ? (
           <div className="row-note" style={{ marginTop: 8 }}>
-            Index: {indexSummary.totals!.sources} sources · {indexSummary.totals!.definitions}{" "}
-            definitions · {indexSummary.totals!.covenantCandidates} covenant candidates ·{" "}
-            {indexSummary.totals!.distinctIssuers} issuers
+            Local index: {indexSummary.totals!.sources} sources · {indexSummary.totals!.definitions}{" "}
+            definitions · {indexSummary.totals!.covenantCandidates} candidates
           </div>
-        ) : (
-          <div className="row-note" style={{ marginTop: 8 }}>
-            {indexSummary.note}
-          </div>
-        )}
+        ) : null}
       </Card>
 
       {hits.length > 0 && (
@@ -78,51 +105,16 @@ export default async function ResearchCorpusPage({
               <div>
                 <div className="row-label">{h.title}</div>
                 <div className="row-note">
-                  {h.issuer} — {h.documentClass} — {h.filingDate}
+                  {h.issuer} — {h.documentClass}
                 </div>
-                <div className="row-note" style={{ wordBreak: "break-all" }}>
-                  {h.sourceId}
-                </div>
-                {h.families.length > 0 && (
-                  <div className="row-note">Families: {h.families.slice(0, 6).join(", ")}</div>
-                )}
-                {h.definitionHits.length > 0 && (
-                  <div className="row-note">Terms: {h.definitionHits.join(", ")}</div>
-                )}
               </div>
-              <div>
-                <Chip tone="idle">score {h.score}</Chip>{" "}
-                <Chip tone="idle">{h.representationLevel}</Chip>
-              </div>
+              <Link className="button" href={`/research/corpus/${encodeURIComponent(h.sourceId)}`}>
+                Open
+              </Link>
             </div>
           ))}
         </Card>
       )}
-
-      <Card>
-        <div className="card-title">Neon KnowledgeSource (durable)</div>
-        <div className="row">
-          <div className="row-label">Rows</div>
-          <div className="row-value">{summary.totalSources}</div>
-        </div>
-        <div className="row">
-          <div className="row-label">With storageRef</div>
-          <div className="row-value">{summary.withStorageRef}</div>
-        </div>
-        <div className="row">
-          <div className="row-label">Distinct issuers</div>
-          <div className="row-value">{summary.distinctIssuers}</div>
-        </div>
-        <div className="row-note" style={{ marginTop: 8 }}>
-          {summary.note}
-        </div>
-        {summary.totalSources === 0 && (
-          <div className="row-note" style={{ marginTop: 8 }}>
-            Neon durable persist blocked pending owner migrate + LIVE WRITE approval. Local index
-            still searchable above.
-          </div>
-        )}
-      </Card>
 
       {rows.map((r) => (
         <Card key={r.sourceId}>
@@ -140,6 +132,20 @@ export default async function ResearchCorpusPage({
               )}{" "}
               <Chip tone="idle">{r.representationLevel}</Chip>
             </div>
+          </div>
+          <div className="button-row" style={{ marginTop: 8 }}>
+            <Link
+              className="button button-primary"
+              href={`/research/corpus/${encodeURIComponent(r.sourceId)}`}
+            >
+              Covenant summary
+            </Link>
+            <Link
+              className="button"
+              href={`/research/ask?sourceId=${encodeURIComponent(r.sourceId)}`}
+            >
+              Ask
+            </Link>
           </div>
         </Card>
       ))}
