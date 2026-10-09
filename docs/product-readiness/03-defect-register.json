@@ -144,6 +144,16 @@
           "packageId": "pkg-c-amendment-supersession",
           "expectationRef": "certification:credit-agreement::7.01",
           "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "semantic:indenture::4.09",
+          "severity": "EVIDENCE_INCOMPLETE"
+        },
+        {
+          "packageId": "pkg-c-amendment-supersession",
+          "expectationRef": "semantic:credit-agreement::7.01",
+          "severity": "EVIDENCE_INCOMPLETE"
         }
       ],
       "failingInput": "Amendment No. 1 restates 7.01(b) ($25m \u2192 $40m + no-Default proviso); Amendment No. 2 deletes 7.01(e). Operative state resolves both (RESOLVED). Candidate anchored at SECTION 7.01, as of 2026-06-30.",
@@ -153,7 +163,7 @@
       "impact": "Any section-level unit over an amended agreement is verified against the wrong text; a deleted basket can be certified as live.",
       "hypothesis": "Supersession is attached per physical node; the parent section's operative text is the base DESCENDANTS span and the per-node supersession index is not consulted when assembling it; the clause-level path binds provenance against the amendment text but context retrieval scans the base node.",
       "acceptance": "A candidate whose descendants are superseded/deleted at the as-of date must have its operative text spliced from the operative provisions (or be refused with an explicit lineage status); context retrieval and provenance binding must use the operative text.",
-      "fixNote": "Parent section operative text is spliced from descendant provision views; context definition scan uses amended operative text; multi-instrument package state merges indenture provisions so indenture::4.09 excludes superseded dollars. | operativeSourceTextFor + descendant splice + multi-instrument package operative state merge. Remaining signatures: context:C-7.01(b)-amended:definitions, certification:credit-agreement::7.01.",
+      "fixNote": "Parent section operative text is spliced from descendant provision views; context definition scan uses amended operative text; multi-instrument package state merges indenture provisions so indenture::4.09 excludes superseded dollars. | operativeSourceTextFor + descendant splice + multi-instrument package operative state merge. Remaining signatures: context:C-7.01(b)-amended:definitions, certification:credit-agreement::7.01. | Post-merge #194 re-sync: semantic:indenture::4.09 and semantic:credit-agreement::7.01 still EVIDENCE_INCOMPLETE under unioned operative splice/withhold path.",
       "fixedIn": "cursor/database-legal-intelligence-0e3f"
     },
     {
@@ -627,11 +637,6 @@
           "expectationRef": "certification:credit-agreement::7.08"
         },
         {
-          "packageId": "pkg-c-amendment-supersession",
-          "expectationRef": "certification:credit-agreement::7.01",
-          "severity": "NONMATERIAL_OMISSION"
-        },
-        {
           "packageId": "pkg-b-multi-document",
           "expectationRef": "certification:credit-agreement::7.01",
           "severity": "NONMATERIAL_OMISSION"
@@ -872,6 +877,11 @@
           "packageId": "pkg-m-composed-p0",
           "expectationRef": "semantic:credit-agreement::7.01",
           "severity": "EVIDENCE_INCOMPLETE"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "context:M-7.01:definitions",
+          "severity": "NONMATERIAL_OMISSION"
         }
       ],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) \u2026 exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) \u2026 as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
@@ -881,7 +891,7 @@
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not \u2026 exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
       "acceptance": "A side letter / waiver / override document that names a section of the base agreement yields at least an unattached or REVIEW_REQUIRED effect for that instrument (operative state not RESOLVED), or a documented package-level 'unclassified override document' blocker that the certification path consumes. Verified by MUT-08/MUT-12 PRODUCT verdicts passing.",
-      "fixNote": "Side-letter/consent notwithstanding overrides attach as UNKNOWN_CHANGE/REVIEW_REQUIRED on the named provision; instrument not RESOLVED; clause and parent section retrieval withhold isCurrentTruth; section certification refused (INV-16b). Acceptance auditor treats attached REVIEW_REQUIRED as fail-closed success vs demanding derived override dollars without a model. | Unclassified overrides attach/withhold (INV-16b); CRITICAL_FALSE_PERMISSION on M is closed. Remaining work: derive superseding override text when safe.",
+      "fixNote": "Side-letter/consent notwithstanding overrides attach as UNKNOWN_CHANGE/REVIEW_REQUIRED on the named provision; instrument not RESOLVED; clause and parent section retrieval withhold isCurrentTruth; section certification refused (INV-16b). Acceptance auditor treats attached REVIEW_REQUIRED as fail-closed success vs demanding derived override dollars without a model. | Unclassified overrides attach/withhold (INV-16b); CRITICAL_FALSE_PERMISSION on M is closed. Remaining work: derive superseding override text when safe. | Post-merge #194 re-sync: context:M-7.01:definitions NONMATERIAL_OMISSION still observed.",
       "fixedIn": "cursor/database-legal-intelligence-0e3f"
     },
     {
