@@ -291,9 +291,47 @@ function skipDeepestForOuterLetter(args: {
 }
 
 /**
+ * True when an already-open letter list of the same kind will resume its next letter at a
+ * nearby line-start after this token. In that case an ambiguous mid-alphabet marker such as
+ * "(x)" then "(y)" is interior content of the open letter item (often under an undetected
+ * deeper parent such as a glued "(i)(A)"), not a new lettered list nested under that item.
+ * A genuine restarted run under an outer letter (e.g. "(x)"/"(y)" after a numbered list,
+ * with the outer "(b)" many line-starts later) does not trip this window.
+ */
+function openLetterResumesNearby(args: {
+  sectionText: string;
+  occurrences: RawMarkerOccurrence[];
+  occIndex: number;
+  stack: OpenLevel[];
+  letterKind: "LOWER_ALPHA" | "UPPER_ALPHA";
+  letterIndex: number;
+}): boolean {
+  const openLetters = args.stack.filter((level) => level.kind === args.letterKind);
+  if (openLetters.length === 0) return false;
+  let lineStarts = 0;
+  for (let i = args.occIndex + 1; i < args.occurrences.length; i++) {
+    const later = args.occurrences[i];
+    if (!later || !isLineStart(args.sectionText, later.charStart)) continue;
+    lineStarts += 1;
+    if (lineStarts > 4) return false;
+    const cands = classifyMarker(later.token);
+    // The immediate successor of the ambiguous run ("(y)" after "(x)") is part of that run.
+    if (lineStarts === 1 && cands.some((c) => c.kind === args.letterKind && c.index === args.letterIndex + 1)) {
+      continue;
+    }
+    if (openLetters.some((outer) => cands.some((c) => c.kind === outer.kind && c.index === outer.lastIndex + 1))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * restartedLetterRun: a line-start single letter past "a", continuing no open sequence, may open
  * a lettered run when the next line-start marker is the following letter and is not the following roman.
  * A lone "(x)" stays unparsed. "(x)" then "(xi)" does not become a letter run.
+ * Do not open when an open letter list of the same kind resumes nearby — that would nest the
+ * ambiguous run under the current letter item and truncate that item's owned span.
  */
 function restartedLetterCandidate(args: {
   sectionText: string;
@@ -302,6 +340,7 @@ function restartedLetterCandidate(args: {
   token: string;
   candidates: MarkerCandidate[];
   atLineStart: boolean;
+  stack: OpenLevel[];
 }): MarkerCandidate | null {
   if (!args.atLineStart || args.token.length !== 1) return null;
   const letter = args.candidates.find((c) => (c.kind === "LOWER_ALPHA" || c.kind === "UPPER_ALPHA") && c.index > 1);
@@ -319,6 +358,16 @@ function restartedLetterCandidate(args: {
   const expectedRoman = romanToken(romanKind, roman.index + 1);
   const nextMarker = args.occurrences[args.occIndex + 1];
   if (expectedRoman && ((nextMarker && nextMarker.token === expectedRoman) || nextLine.token === expectedRoman)) return null;
+  if (openLetterResumesNearby({
+    sectionText: args.sectionText,
+    occurrences: args.occurrences,
+    occIndex: args.occIndex,
+    stack: args.stack,
+    letterKind: letter.kind,
+    letterIndex: letter.index,
+  })) {
+    return null;
+  }
   return letter;
 }
 
@@ -337,8 +386,8 @@ function innerResumesBeforeOuter(sectionText: string, occurrences: RawMarkerOccu
     const later = occurrences[i];
     if (!later || !isLineStart(sectionText, later.charStart)) continue;
     lineStarts += 1;
-    // Chewy §6.08(a)(3)(b) resumes at (c) after the short (x)/(y) run. A continuation
-    // further down a definition section is a different list.
+    // A short window only: a continuation many line-starts later is a different list
+    // (e.g. a later letter sibling after a long nested roman run under a restarted letter).
     if (lineStarts > 4) return false;
     const cands = classifyMarker(later.token);
     const continuesInner = cands.some((c) => c.kind === inner.kind && c.index === expected);
@@ -425,8 +474,9 @@ export function buildClauseTree(sectionText: string): ClauseTreeNode[] {
 
     // 3. Start a brand-new nested level under the current top. Index 1 (a/i/A/1) always may.
     // A line-start single letter past "a" may also open a restarted letter run when the next
-    // line-start marker is the following letter and not the following roman (restartedLetterRun).
-    const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, atLineStart });
+    // line-start marker is the following letter and not the following roman (restartedLetterRun),
+    // and when no open letter list of that kind resumes nearby (interior (x)/(y) under an open item).
+    const restarted = restartedLetterCandidate({ sectionText, occurrences, occIndex, token: occ.token, candidates, atLineStart, stack });
     const startCandidates = candidates.filter((c) => c.index === 1);
     if ((restarted !== null || startCandidates.length > 0) && stack.length < 6) {
       // F-2 mechanism 2: a new family after a hanging paragraph attaches above the innermost list

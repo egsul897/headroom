@@ -1,6 +1,7 @@
 /**
  * Historical Haiku rows are auditable and are not current-tree evidence.
  * DEVELOPMENT ≠ CERTIFIED. No paid provider call.
+ * Current provider-free record parserCodeSha256 must match live clause-hierarchy.ts.
  */
 import fs from "node:fs";
 import path from "node:path";

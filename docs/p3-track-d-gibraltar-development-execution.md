@@ -26,7 +26,7 @@ The ceiling is the pre-dispatch reservation in `reservedMaxInputTokens` plus `DE
 
 HTML sha256 `6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a` and extracted-text sha256 `4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5` match `provenance.json`. Parsed characters 1,029,323. Chunks 511 (444 with a section ref). Structural nodes 2,064. Definitions 564. References 1,459 (505 resolved, 154 unresolved, 800 ambiguous). Pass A candidates 938. Health findings 849. Supersession index empty, so Pass A status stays `UNKNOWN_SUPERSESSION_STATUS`.
 
-The record binds those source hashes, parser code sha256 `8ddef00641005e2f8fd784ccf38776df5784c6cc395224ea65f4b0fc51d81101` (`lib/contract-model/compiler/clause-hierarchy.ts`), the structural-tree hash, the Pass A candidate-set hash, `PROVIDER_EXECUTION_REQUIRED`, `verificationState` `NOT_EXECUTED`, and the producing-code hash of the pipeline sources. A provider candidate set whose parser or tree identity differs from this record is refused.
+The record binds those source hashes, parser code sha256 `0f04548f499e50c2e1691193a523af3e4c3c1ba3b08b0b94838f7a40bbbc023d` (`lib/contract-model/compiler/clause-hierarchy.ts`), the structural-tree hash, the Pass A candidate-set hash, `PROVIDER_EXECUTION_REQUIRED`, `verificationState` `NOT_EXECUTED`, and the producing-code hash of the pipeline sources. A provider candidate set whose parser or tree identity differs from this record is refused.
 
 ## Historical Haiku execution
 
