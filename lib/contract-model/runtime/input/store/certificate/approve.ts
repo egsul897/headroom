@@ -4,19 +4,11 @@
  * Extractor / PUBLIC_FILING_RECONSTRUCTION proposals stay DRAFT | REVIEW_REQUIRED until this
  * attributable transition runs. There is no auto-approve path.
  */
-import { InMemoryApprovedSnapshotStore } from "../memory-store";
+import type { AsyncApprovedSnapshotStore, SyncApprovedSnapshotStore } from "../store-api";
 import type { WriteResult } from "../types";
 import type { ApproveCertificateProposalRequest, CertificateProposerKind } from "./types";
 
-/**
- * Attributable approval for a certificate-sourced proposal.
- * Requires the same fields as approveSnapshot; optional certificate provenance is
- * encoded into approvalRef when not already present in the caller's ref.
- */
-export function approveCertificateProposal(
-  store: InMemoryApprovedSnapshotStore,
-  request: ApproveCertificateProposalRequest,
-): WriteResult {
+function approvalArgs(request: ApproveCertificateProposalRequest) {
   const {
     snapshotId,
     reviewedBy,
@@ -34,12 +26,32 @@ export function approveCertificateProposal(
     proposerKind,
   });
 
-  return store.approveSnapshot({
+  return {
     snapshotId,
     reviewedBy,
     reviewedAt,
     approvalRef: enrichedRef,
-  });
+  };
+}
+
+/**
+ * Attributable approval for a certificate-sourced proposal.
+ * Requires the same fields as approveSnapshot; optional certificate provenance is
+ * encoded into approvalRef when not already present in the caller's ref.
+ */
+export function approveCertificateProposal(
+  store: SyncApprovedSnapshotStore,
+  request: ApproveCertificateProposalRequest,
+): WriteResult {
+  return store.approveSnapshot(approvalArgs(request));
+}
+
+/** Durable-store variant — awaits Prisma flush. */
+export async function approveCertificateProposalAsync(
+  store: AsyncApprovedSnapshotStore,
+  request: ApproveCertificateProposalRequest,
+): Promise<WriteResult> {
+  return store.approveSnapshot(approvalArgs(request));
 }
 
 function enrichApprovalRef(
