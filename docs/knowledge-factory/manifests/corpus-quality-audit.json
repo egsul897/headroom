@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-10-08T22:20:16.055Z",
+  "sourceCoverage": {
+    "issuers": 19,
+    "documents": 63,
+    "byFormType": {
+      "8-K": 23,
+      "10-Q": 6,
+      "10-K": 18,
+      "S-4": 2,
+      "S-1": 2,
+      "FIXTURE": 12
+    },
+    "byDocumentClass": {
+      "UNKNOWN": 8,
+      "RESTATEMENT": 11,
+      "CONSENT": 6,
+      "CREDIT_AGREEMENT": 10,
+      "AMENDMENT": 15,
+      "SUPPLEMENTAL_INDENTURE": 4,
+      "INDENTURE": 3,
+      "OTHER_DEBT_RELATED": 2,
+      "TERM_LOAN_AGREEMENT": 1,
+      "ABL_AGREEMENT": 3
+    }
+  },
+  "covenantFamilyCoverage": {
+    "ASSET_SALES": 126,
+    "GENERAL_CONDITIONS_AND_EXCEPTIONS": 1775,
+    "DESIGNATIONS": 33,
+    "LIENS": 346,
+    "INVESTMENTS": 183,
+    "EVENTS_OF_DEFAULT": 534,
+    "FINANCIAL_MAINTENANCE_COVENANTS": 55,
+    "RESTRICTED_PAYMENTS": 53,
+    "GUARANTEES": 282,
+    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS": 31,
+    "RATIO_BASED_PERMISSIONS": 49,
+    "SHARED_CAPACITY_PROVISIONS": 142,
+    "FUNDAMENTAL_CHANGES": 93,
+    "INCREMENTAL_DEBT_AND_FACILITIES": 114,
+    "INDEBTEDNESS": 210,
+    "UNKNOWN": 13,
+    "RESTRICTED_SUBSIDIARIES": 96,
+    "AFFILIATE_TRANSACTIONS": 6,
+    "MANDATORY_PREPAYMENTS": 59,
+    "JUNIOR_DEBT_PREPAYMENTS": 36,
+    "UNRESTRICTED_SUBSIDIARIES": 13
+  },
+  "uncoveredTaxonomyFamilies": [],
+  "definitionDiversity": {
+    "uniqueTerms": 42,
+    "totalDefinitions": 61
+  },
+  "amendmentChainCompleteness": {
+    "amendments": 26,
+    "linkedAmendments": 15,
+    "unlinkedAmendments": 11
+  },
+  "parsingSuccess": {
+    "structurallyIndexed": 63,
+    "failed": 0,
+    "unsupported": 0,
+    "ambiguousNodes": 3296
+  },
+  "missingOperativeAuthority": 47,
+  "duplicateContamination": {
+    "exactBytePairs": 1,
+    "normalizedPairs": 1
+  },
+  "unverifiedSemanticHypotheses": 0,
+  "notes": [
+    "Discovery labels and taxonomy coverage are not operative legal authority.",
+    "Unlinked amendments are expected when title/metadata evidence is insufficient — chronology alone is not used.",
+    "Measure legal coverage via family/definition/amendment completeness, not document count alone."
+  ]
+}

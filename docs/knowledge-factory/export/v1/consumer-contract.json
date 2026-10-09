@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "knowledge-factory.consumer-export.v1",
+  "exportKind": "ckf-canonical-readonly-corpus",
+  "knowledgeFactoryVersion": "knowledge-factory.v1",
+  "structuralParserVersion": "phase-3f1-open1-wiring-structural-ambiguity.v1",
+  "sourceVersionId": "srcver:0142083f8cdf8149a432a13381bb75bc",
+  "idempotencyKey": "352f92688156d104f19cab865adfd22bfc8f14f097f6075418c4fd1f32550527",
+  "durabilityClaim": "NONE",
+  "safety": {
+    "automaticLegalVerification": false,
+    "automaticCapacityPromotion": false,
+    "paidInference": false,
+    "merges": false,
+    "certificationChanges": false,
+    "productionLegalRuleModifications": false,
+    "fixturesSeparatedFromSecAcquisitions": true
+  },
+  "peerCoordination": {
+    "consumers": [
+      "EDGAR Historical Backfill",
+      "Vercel-Independent Compilation",
+      "Definition Encyclopedia",
+      "Dependency Atlas",
+      "Basket Formula Library",
+      "Negative Covenant Exception Database",
+      "Financial Definitions Precedent",
+      "Amendment Chain Research"
+    ],
+    "notes": [
+      "Upsert by sourceId / nodeId / edgeId / candidateId; never invent parallel source registries.",
+      "representationLevel and legalTruth are discovery-only; consumers must not auto-promote.",
+      "Fixtures remain corpusRole=FIXTURE and usageRightsReviewStatus=FIXTURE_INTERNAL."
+    ]
+  },
+  "counts": {
+    "sources": 125,
+    "financingDocuments": 113,
+    "fixtureDocuments": 12,
+    "uniqueInstrumentIdentities": 112,
+    "structuralNodes": 37789,
+    "covenantCandidates": 4590,
+    "definitions": 257,
+    "dependencyEdges": 23876,
+    "conditionExceptionRecords": 14975,
+    "documentRelationships": 46,
+    "unresolvedUncertainties": 3333
+  },
+  "sliceDigests": {
+    "sources": "8d59bc5b1c70ea223fbd5b696dba6515901537c839e76dfc62f2d00938a15ca4",
+    "structuralNodes": "01ce670845620e6392a15b0ab18e48df95e6447cf22d2ff7923ffb809f031ef4",
+    "covenantCandidates": "9eac3e622c5e9e3fa263af0e5b38a573bd08f697af055a186fd2efd0e99deabd",
+    "definitions": "45556a53c7ee1545354a9066338576c18f2ff27119d277f7fc071e79ab6507a9",
+    "dependencyEdges": "987425ebfa6d3cc2cd44939a4f8f52f87ccb23004681608b145819c40892d2c2",
+    "conditionExceptionRecords": "75eaaefb12b2524b7024752c84b907c1725043db62f5414ceb64761941356dc0",
+    "documentRelationships": "b63eed0732128ed5064ff028afca2910311b237ac68efdbd6fe8345d560950c9"
+  },
+  "shards": {
+    "sources": "sources.json",
+    "structuralNodes": "structural-nodes.json",
+    "covenantCandidates": "covenant-candidates.json",
+    "definitions": "definitions.json",
+    "dependencyEdges": "dependency-edges.json",
+    "conditionExceptionRecords": "conditions-exceptions.json",
+    "documentRelationships": "document-relationships.json",
+    "unresolvedUncertainties": "unresolved-uncertainties.json"
+  }
+}
