@@ -2,10 +2,12 @@
 
 ## Status
 
-**Durability claim: NONE** in this environment.
+**Durability claim: NONE** until independent cross-agent retrieve succeeds (see `docs/knowledge-factory/durability/a2-independent-proof-plan-postgres.md`).
 
-- Missing: DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied
-- Missing: BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes
+Cursor-first durable bytes use PostgreSQL BYTEA (`document_byte_objects`) on the same `DATABASE_URL` as `KnowledgeSource`. Vercel Blob is optional (`KF_BYTE_STORE=vercel-blob`).
+
+- Required: `DATABASE_URL` with KnowledgeSource* **and** `document_byte_objects` migrations applied (migrate deploy requires explicit authorization)
+- Optional: `BLOB_READ_WRITE_TOKEN` only when forcing Blob byte store
 
 ## Manifest
 
@@ -40,4 +42,4 @@ Use identifying User-Agent, ≤10 req/s shared budget, cache, retries. Coordinat
 
 - Not cross-VM durable storage.
 - Not automatic legal verification or capacity promotion.
-- Not a substitute for Postgres + object-storage persistence once approved credentials exist.
+- Not a substitute for Postgres BYTEA (or optional Blob) persistence once approved credentials and migrations exist.

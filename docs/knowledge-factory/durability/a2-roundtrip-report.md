@@ -1,69 +1,78 @@
-# Track A2 — Durable canonical knowledge proof
+# Track A2 — Durable canonical knowledge proof (Cursor-first Postgres BYTEA)
 
-**Verdict:** `DURABILITY_NOT_YET_PROVEN`  
-**Status:** `DURABILITY_BLOCKED_CREDENTIALS`
+**Verdict:** `IMPLEMENTED` (code path) / `DURABILITY_NOT_YET_PROVEN` (live cross-agent)  
+**Status:** Awaiting authorized `document_byte_objects` migrate deploy + independent Agent B retrieve
 
 ## SHAs
 
 | Field | Value |
 |---|---|
-| Starting main (CKF merged) | `2a8b70cd7683c6522087f4535f7ee996a6012c3c` (PR #154) |
-| Ending tip | 964a1c8a59c53a02de673bbe85393ef22db700d0 |
+| CKF foundation merge | PR #154 |
+| Blob durable path merge | PR #174 |
+| Postgres BYTEA implementation | this PR (`cursor/postgres-bytea-durable-store-0e3f`) |
 
-PR #154 was **not** reopened. No second registry was created.
+No second registry was created. Legal non-promotion semantics unchanged.
 
 ## Existing infrastructure reused
 
 | Concern | Path | Credential |
 |---|---|---|
-| Object storage | `lib/document-storage/vercel-blob-provider.ts` | `BLOB_READ_WRITE_TOKEN` |
-| Storage factory | `lib/document-storage/index.ts` | rejects silent local fallback on Vercel |
-| Canonical registry | Prisma `KnowledgeSource` (+ migration `20261008220000_knowledge_factory_foundation`) | `DATABASE_URL` |
+| **Byte store (Cursor default)** | `lib/document-storage/postgres-bytea-provider.ts` | `DATABASE_URL` + migration `20261009013000_document_byte_objects` |
+| Byte store (optional) | `lib/document-storage/vercel-blob-provider.ts` | `KF_BYTE_STORE=vercel-blob` + `BLOB_READ_WRITE_TOKEN` |
+| Storage factory | `lib/document-storage/index.ts` | `DOCUMENT_STORAGE_BACKEND=postgres` or Blob token |
+| Canonical registry | Prisma `KnowledgeSource` | `DATABASE_URL` + `20261008220000_knowledge_factory_foundation` |
 | Pipeline / export / consumers | existing `lib/knowledge-factory/**` | n/a |
 
-**Rejected as durability substitutes:** `LocalFilesystemStorageProvider`, `.local-knowledge-corpus/`, committed metadata/hashes alone, mocked providers.
+**Rejected as durability substitutes:** `LocalFilesystemStorageProvider`, `.local-knowledge-corpus/`, committed metadata/hashes alone, temporary agent files, mocked providers, same-VM-only read-after-write.
 
-## Minimum durable integration added
+## Architecture
 
-- `lib/knowledge-factory/preservation/durable-store.ts` — fail-closed persist/retrieve against Blob + `KnowledgeSource`
-- `scripts/knowledge-factory/durable-roundtrip-proof.ts` — independently runnable proof (`npm run kf:durable-proof`)
-- Credential gate tests: `tests/knowledge-factory/durable-store-credentials.test.ts`
+See:
 
-Behavior: if either credential is missing, the proof **exits without writing source bytes to local disk** and records `DURABILITY_BLOCKED_CREDENTIALS`.
+- `ADR-postgres-bytea-durable-store.md`
+- `postgres-bytea-cost-scale.md`
+- `a2-independent-proof-plan-postgres.md`
 
-## Intended authentic source (ready, not persisted)
+`storageRef` format: `pgbytea:v1:<sha256-hex>`. Content-addressed; unique on `contentHash`.
+
+## Tests
+
+- `tests/document-storage/postgres-bytea-provider.test.ts` — store, idempotent reuse, P2002 race, missing/corrupt retrieve, delete best-effort
+- `tests/knowledge-factory/durable-store-postgres.test.ts` — persist without Blob, conflict, orphan cleanup, retrieve
+- `tests/knowledge-factory/durable-store-credentials.test.ts` — DATABASE_URL alone → `POSTGRES_BYTEA_DURABLE`
+- `tests/knowledge-factory/durable-store-safety.test.ts` — Blob-path safety with `KF_BYTE_STORE=vercel-blob`
+
+## Migration requirements (not deployed by this PR)
+
+```sql
+-- prisma/migrations/20261009013000_document_byte_objects/migration.sql
+CREATE TABLE "document_byte_objects" ( ... "bytes" BYTEA NOT NULL ... );
+UNIQUE ("contentHash");
+```
+
+**Do not** run `prisma migrate deploy` without explicit authorization.
+
+## Intended authentic source
 
 | Field | Value |
 |---|---|
 | sourceId | `edgar:0001140361-26-003087:ef20064499_ex10-1.htm` |
 | Fixture | `tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm` |
-| Byte length | 2,266,666 (from prior CKF gate) |
-| Content hash | sha256 of fixture body (computed at proof time when credentials exist) |
+| Byte length | 2,266,666 |
 
-Durable object/database identifiers: **not created** — blocked before persist.
+## Independent proof
 
-## Independent fresh-environment retrieval
+Follow `a2-independent-proof-plan-postgres.md`:
 
-**Not executed.** Requires shared credentials. Originating-workspace termination + cross-session retrieve is implemented in the proof script and will run when credentials are present.
+1. Authorized migrate deploy  
+2. Agent A: `npm run kf:durable-proof`  
+3. Agent B: `--phase=retrieve` only  
+4. Then `DURABILITY_PROVEN`  
+5. Then Gibraltar → Chewy issuer-disjoint reuse
 
-## Consumer export / idempotency
+## Precise remaining gates
 
-Deferred until durable retrieve succeeds. Script rebuilds `consumer-export.v1` from retrieved bytes and runs DEF + Atlas pass-2 idempotency with `promotedToLegalTruth: 0`.
+1. Explicit authorization to apply `20261009013000_document_byte_objects` on Neon  
+2. Independent agent retrieve of identical original bytes  
 
-## Precise missing dependencies
-
-1. `DATABASE_URL` pointing at an approved **shared** Postgres instance with `KnowledgeSource*` migrations applied  
-2. `BLOB_READ_WRITE_TOKEN` or `VERCEL_BLOB_READ_WRITE_TOKEN` for durable private object storage of source bytes  
-
-## Next action
-
-Configure both credentials on the Cloud Agent environment (or a shared durable destination), then:
-
-```bash
-npx prisma migrate deploy
-npm run kf:durable-proof
-# second process / fresh workspace:
-npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts --phase=retrieve --sourceId=edgar:0001140361-26-003087:ef20064499_ex10-1.htm
-```
-
-Machine twin: `a2-roundtrip-evidence.json`.
+Blob token is **not** required for Cursor-first A2.

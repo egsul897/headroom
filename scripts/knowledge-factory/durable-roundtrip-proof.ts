@@ -1,14 +1,20 @@
 /**
- * Independently runnable Track A2 durability proof.
+ * Independently runnable Track A2 durability proof (Cursor-first).
  *
- * Requires BOTH:
- *   DATABASE_URL  — shared Postgres with KnowledgeSource* migrations
- *   BLOB_READ_WRITE_TOKEN (or VERCEL_BLOB_READ_WRITE_TOKEN) — durable object storage
+ * Requires:
+ *   DATABASE_URL — shared Postgres with KnowledgeSource* AND
+ *                  document_byte_objects migrations applied
+ *
+ * Optional:
+ *   KF_BYTE_STORE=vercel-blob + BLOB_READ_WRITE_TOKEN — use Blob instead of BYTEA
  *
  * Refuses local-disk / mocked / metadata-only substitutes.
+ * Does NOT claim DURABILITY_PROVEN until a separate agent environment
+ * retrieves identical original bytes (use --phase=retrieve in a fresh VM).
  *
  * Usage:
- *   npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts
+ *   npm run kf:durable-proof
+ *   npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts --phase=gate
  *   npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts --phase=retrieve --sourceId=...
  */
 import { execSync } from "node:child_process";
@@ -67,26 +73,32 @@ async function main() {
       missingDependencies: gate.missing,
       probe: gate.probe,
       existingInfrastructureReuse: {
-        objectStorage: "lib/document-storage/vercel-blob-provider.ts (requires BLOB_READ_WRITE_TOKEN)",
-        registry: "prisma KnowledgeSource (requires DATABASE_URL + migration 20261008220000_knowledge_factory_foundation)",
+        byteStoreDefault:
+          "lib/document-storage/postgres-bytea-provider.ts (DATABASE_URL + migration 20261009013000_document_byte_objects)",
+        byteStoreOptional:
+          "lib/document-storage/vercel-blob-provider.ts (KF_BYTE_STORE=vercel-blob + BLOB_READ_WRITE_TOKEN)",
+        registry:
+          "prisma KnowledgeSource (requires DATABASE_URL + migration 20261008220000_knowledge_factory_foundation)",
         localFallbackRejected: [
           "lib/document-storage/local-fs-provider.ts",
           ".local-knowledge-corpus/",
           "committed docs/knowledge-factory manifests alone",
+          "temporary agent workspace files",
         ],
       },
       intendedProofSource: {
         sourceId: GIBRALTAR_SOURCE_ID,
         fixturePath: GIBRALTAR_FIXTURE,
-        note: "Authentic Gibraltar EX-10.1 ready; not persisted because credentials are absent.",
+        note: "Authentic Gibraltar EX-10.1 ready; not persisted because credentials or migrations are absent.",
       },
       refusedSubstitutes: [
         "local disk write under .local-knowledge-corpus",
         "claiming durability from committed metadata/hashes",
         "mocked DocumentStorageProvider",
+        "same-VM read-after-write without independent agent retrieve",
       ],
       nextAction:
-        "Configure shared DATABASE_URL (with KnowledgeSource migrations applied) and BLOB_READ_WRITE_TOKEN on this environment, then re-run: npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts",
+        "Ensure DATABASE_URL points at approved Neon with KnowledgeSource + document_byte_objects migrations applied (explicit migrate deploy authorization required), then re-run: npm run kf:durable-proof. After persist, prove in a separate agent VM with --phase=retrieve.",
     };
     const evidencePath = writeEvidence("a2-roundtrip-evidence.json", blocked);
     writeEvidence("a2-credential-gate.json", gate);
@@ -106,8 +118,11 @@ async function main() {
     const evidence = {
       phase: "independent-retrieve",
       startingSha,
+      byteStore: gate.byteStore,
       retrieved,
       verdict: retrieved.hashEqual && retrieved.byteEqual ? "RETRIEVE_OK" : "RETRIEVE_MISMATCH",
+      durabilityClaimNote:
+        "RETRIEVE_OK in a separate agent environment (no local corpus) is required before DURABILITY_PROVEN.",
     };
     writeEvidence("a2-independent-retrieve.json", evidence);
     console.log(JSON.stringify(evidence, null, 2));
@@ -115,7 +130,7 @@ async function main() {
     return;
   }
 
-  // --- full proof ---
+  // --- full proof (same environment persist + retrieve; not yet cross-agent DURABILITY_PROVEN) ---
   const bytes = readFileSync(GIBRALTAR_FIXTURE);
   const contentHash = hashBytes(bytes);
 
@@ -170,7 +185,7 @@ async function main() {
     throw new Error("failed to terminate originating workspace directory");
   }
 
-  // Independent fresh retrieval using only durable identifiers + credentials.
+  // Fresh retrieval using only durable identifiers + credentials (same process; cross-agent still required).
   const retrieved = await retrieveDurableKnowledgeSource({ sourceId: GIBRALTAR_SOURCE_ID });
   const { bytes: freshBytes } = await loadDurableSourceBytes({ sourceId: GIBRALTAR_SOURCE_ID });
   const freshHash = hashBytesSha256(freshBytes);
@@ -201,7 +216,7 @@ async function main() {
   rmSync(rebuildRoot, { recursive: true, force: true });
 
   const endingSha = execSync("git rev-parse HEAD").toString().trim();
-  const proven =
+  const roundtripOk =
     retrieved.hashEqual &&
     retrieved.byteEqual &&
     freshHash === contentHash &&
@@ -215,8 +230,13 @@ async function main() {
       rebuilt.source.representationLevel === "STRUCTURALLY_INDEXED");
 
   const evidence = {
-    verdict: proven ? "DURABLE_KNOWLEDGE_ROUNDTRIP_PROVEN" : "DURABILITY_NOT_YET_PROVEN",
-    status: proven ? "ROUNDTRIP_OK" : "ROUNDTRIP_FAILED",
+    // Same-VM roundtrip is necessary but not sufficient for DURABILITY_PROVEN.
+    verdict: roundtripOk
+      ? "SAME_ENV_ROUNDTRIP_OK_AWAITING_INDEPENDENT_RETRIEVE"
+      : "DURABILITY_NOT_YET_PROVEN",
+    status: roundtripOk ? "ROUNDTRIP_OK_PENDING_CROSS_AGENT" : "ROUNDTRIP_FAILED",
+    durabilityProven: false,
+    byteStore: gate.byteStore,
     startingSha,
     endingSha,
     source: {
@@ -275,11 +295,14 @@ async function main() {
       noCertificationPromotion: true,
       noCapacityPromotion: true,
     },
+    nextAction:
+      "In a separate Cursor Cloud Agent VM with the same DATABASE_URL (no local corpus), run: " +
+      `npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts --phase=retrieve --sourceId=${GIBRALTAR_SOURCE_ID}`,
   };
 
   writeEvidence("a2-roundtrip-evidence.json", evidence);
   console.log(JSON.stringify(evidence, null, 2));
-  if (!proven) process.exit(1);
+  if (!roundtripOk) process.exit(1);
 }
 
 main().catch((e) => {

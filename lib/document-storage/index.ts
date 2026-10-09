@@ -6,15 +6,28 @@
  * branches on environment to decide which DocumentStorageProvider backs the
  * pipeline - every other caller (parsing, chunking, a later phase's upload
  * route) programs against the DocumentStorageProvider interface only.
+ *
+ * Cursor-first durable bytes: when DOCUMENT_STORAGE_BACKEND=postgres (or
+ * KF durable path selects postgres), use PostgresDocumentStorageProvider.
+ * Vercel Blob remains available when BLOB_READ_WRITE_TOKEN is set.
  */
 
 import { LocalFilesystemStorageProvider } from "./local-fs-provider";
+import { PostgresDocumentStorageProvider } from "./postgres-bytea-provider";
 import { VercelBlobStorageProvider } from "./vercel-blob-provider";
 import type { DocumentStorageProvider } from "./types";
 
 export type { DocumentStorageProvider } from "./types";
 export { LocalFilesystemStorageProvider } from "./local-fs-provider";
 export { VercelBlobStorageProvider } from "./vercel-blob-provider";
+export {
+  PostgresDocumentStorageProvider,
+  POSTGRES_BYTEA_PROVIDER_ID,
+  POSTGRES_BYTEA_REF_PREFIX,
+  isPostgresByteaStorageRef,
+  buildPostgresByteaStorageRef,
+  parsePostgresByteaStorageRef,
+} from "./postgres-bytea-provider";
 
 /**
  * Thrown by getDocumentStorageProvider() when running on Vercel
@@ -35,9 +48,33 @@ export class MissingBlobStorageConfigError extends Error {
   }
 }
 
+export class MissingPostgresByteaConfigError extends Error {
+  constructor() {
+    super(
+      "DOCUMENT_STORAGE_BACKEND=postgres requires DATABASE_URL (shared Neon/Postgres with document_byte_objects migration applied).",
+    );
+  }
+}
+
+/**
+ * Resolve storage backend for general onboarding callers.
+ *
+ * Priority:
+ * 1. BLOB_READ_WRITE_TOKEN → Vercel Blob (unchanged production path)
+ * 2. DOCUMENT_STORAGE_BACKEND=postgres → Postgres BYTEA (requires DATABASE_URL)
+ * 3. VERCEL without blob → fail loud
+ * 4. else local filesystem (dev/test only — never durable)
+ */
 export function getDocumentStorageProvider(): DocumentStorageProvider {
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     return new VercelBlobStorageProvider();
+  }
+  const backend = (process.env.DOCUMENT_STORAGE_BACKEND || "").trim().toLowerCase();
+  if (backend === "postgres" || backend === "postgres-bytea") {
+    if (!process.env.DATABASE_URL?.trim()) {
+      throw new MissingPostgresByteaConfigError();
+    }
+    return new PostgresDocumentStorageProvider();
   }
   if (process.env.VERCEL) {
     throw new MissingBlobStorageConfigError();
