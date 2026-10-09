@@ -4,7 +4,7 @@
 
 **Branch:** `cursor/agent6-authentic-company-e2e-aebc`  
 **PR:** https://github.com/egsul897/headroom/pull/226  
-**SHA:** `9e306886f58d8733b8540ff9854863d6e391bdb1`  
+**SHA:** `5bfa096f332931ae5416503f32ea6d9a05067aed`  
 **Cost:** `$0.00` (no provider calls; credential gate `BLOCKED_BY_MISSING_CREDENTIAL`)
 
 ## Exact stopping stage per company
