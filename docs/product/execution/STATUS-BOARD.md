@@ -1,21 +1,21 @@
 # Headroom — Full repository execution status board
 
 **Generated:** 2026-10-09  
-**Current main SHA:** `617dbd4738d469fbe4bf123694839950adc222e9`  
-**Integration branch:** `cursor/full-repo-execution-0e3f`  
-**Integration tip: `d5743f1be74a661131eeb9421e3d9ef6d20e25a6`
+**Current main SHA:** `42bba2d3a7d15786d2e98183adf8f477465116e3` (A2 live proof #195 merged)  
+**A2 evidence tip:** `8b24c0d721db840b25222698b69c759e4de73275`  
+**A2 close-out:** `docs/knowledge-factory/durability/a2-complete.md`
 
 ## Verdicts (evidence-gated)
 
 | Verdict | Status | Evidence |
 |---|---|---|
 | REPOSITORY_EXECUTION_PROVEN | **YES** | `tsc` clean; `npm run build` success; 302 tests green in KF/storage/product/acceptance/verified-execution |
-| PERSISTENCE_IMPLEMENTED | **YES (code)** | BYTEA provider + KF durable-store + consolidation importers merged on branch; migrations **not deployed** |
-| DURABLE_CORPUS_PROVEN | **NO** | Needs authorized migrate + Gibraltar persist + independent Agent B retrieve |
+| PERSISTENCE_IMPLEMENTED | **YES** | BYTEA provider + KF durable-store on main; Neon migrations applied |
+| DURABLE_CORPUS_PROVEN | **YES** | PR #195 — Gibraltar persist + fresh-process retrieve + hash verify; see `a2-complete.md`. **Not legal certification.** |
 | COVENANT_WORKSPACE_WORKING | **YES** | `/conmed-demo/covenants` + source docs; 48 explorer rows; manual UI PASS |
 | CAPACITY_WORKSPACE_WORKING | **PARTIAL** | Coherent engine path works; CONMED shows NOT DETERMINABLE (correct). #136 blocks unsafe positive conclusions |
 | TRANSACTION_WORKFLOW_WORKING | **PARTIAL** | Simulate runs real engine; Coherent path usable; CONMED honest not-determinable |
-| END_TO_END_HEADROOM_VERIFIED | **NO** | Requires DURABLE_CORPUS_PROVEN + full reviewer checklist on persisted capacity path |
+| END_TO_END_HEADROOM_VERIFIED | **NO** | Durable corpus proven; still needs certified executable provisions + Ask/4E on authentic CERTIFIED IR |
 
 ## Counts
 
@@ -23,15 +23,15 @@
 |---|---|
 | Authentic documents available (committed HTML) | 29 (~35.6 MiB) |
 | Authentic documents persisted (Neon Document rows for CONMED) | 4 (`conmed-demo`) |
-| Canonical KnowledgeSource rows | 0 |
-| document_byte_objects table | absent |
+| Canonical KnowledgeSource rows | 700+ (live Neon; Gibraltar + Chewy proven) |
+| document_byte_objects table | present (696+ objects at A2 proof) |
 | Definitions/dependency in Neon encyclopedia tables | not used (file corpora) |
 | Covenant provisions surfaced in UI | 48 CONMED explorer rows |
 | Capacity determinations safely supported | Coherent yes; CONMED none (blocked) |
 | Simulations executable | Yes (engine); clearance only where IR+financials exist |
-| End-to-end durability flow | Pending approval |
-| DB changes approved/pending | CONMED demo company **done**; BYTEA migrate + bulk KF **PENDING OWNER APPROVAL** |
-| companies / financialSnapshots | 6 / 3 (snapshots preserved) |
+| End-to-end durability flow | **Proven** (A2 #195) — not legal certification |
+| DB changes approved/pending | A2 migrate+proof **done**; bulk KF import optional |
+| companies / financialSnapshots | preserved through A2 proof |
 
 ## M1 commands executed
 
@@ -58,13 +58,13 @@ npm run kf:consolidation-dry-run → SKIP_MISSING_BYTES×29 (table absent); meta
 
 ## Next actionable step
 
-**Owner approval** to:
+**A2 STOPPED.** Redirect to Phase 3 covenant intelligence (see `PHASE3-PIVOT.md`):
 
-1. Merge #175 → #176 → #177 (or this integration PR) to main  
-2. `npx prisma migrate deploy` (BYTEA + import batches) on Neon `neondb`  
-3. Gibraltar-only live BYTEA persist + Agent B retrieve → `DURABLE_CORPUS_PROVEN`  
-4. Keep capacity positive conclusions blocked where #136/IR incomplete  
+1. Close residual **IPV-04** (amended `Default` context + section CERTIFIED REVIEW on `c-amendment-supersession`)  
+2. Keep CRITICAL_FALSE_PERMISSION at 0 on authentic-agreement acceptance  
+3. Produce authentic CERTIFIED executable provisions (currently 0 VerifiedExecutionPackages)  
+4. Wire those into Phase 4E + Ask Headroom — no dashboard expansion, no new storage systems  
 
 ## Legal posture
 
-IMPLEMENTED ≠ CERTIFIED · DISCOVERED ≠ VERIFIED · PRECEDENT ≠ OPERATIVE AUTHORITY · Missing inputs ≠ zero usage
+IMPLEMENTED ≠ CERTIFIED · DISCOVERED ≠ VERIFIED · PRECEDENT ≠ OPERATIVE AUTHORITY · DURABLE ≠ CERTIFIED · Missing inputs ≠ zero usage
