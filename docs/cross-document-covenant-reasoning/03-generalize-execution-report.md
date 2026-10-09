@@ -35,3 +35,5 @@
 | gibraltar-2026-credit-agreement | 3 | General basket, missing ICA, RP builder |
 | chwy-2026-credit-agreement | 2 | Shared RP/Investment + Incremental |
 | fwrg-2021-credit-agreement | 1 | Non-Loan Party §6.01(j) basket |
+
+**Tip SHA:** `dc579f75949dbf4c667ed79e164d989cd8cf5a68`
