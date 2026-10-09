@@ -215,6 +215,12 @@ async function main() {
   const missedCond = audits.filter((a) => a.materialOmissions.includes("missed_condition_language"));
   const missedShared = audits.filter((a) => a.materialOmissions.includes("missed_shared_capacity_dependency"));
   const badEntity = audits.filter((a) => a.materialOmissions.includes("entity_scope_unresolved"));
+  const missedExceptions = audits.filter((a) =>
+    a.fields.some((f) => f.field === "exceptions_present_in_operative" && /exception language present/i.test(f.detail)) &&
+    !/\b(?:except|provided,? however)\b/i.test(
+      sample.find((c) => c.sourceId === a.sourceId && c.sectionRef === a.sectionRef)?.excerptEvidence ?? "",
+    ),
+  );
 
   function rate(successes: number, n: number) {
     const w = wilsonInterval(successes, n);
@@ -299,6 +305,7 @@ async function main() {
       thresholdPrecision: rate(thresholdOk.length, evaluated.length),
       incorrectGreaterVsLesserOf: rate(lesserOfFails.length, audits.length),
       missedConditions: rate(missedCond.length, audits.length),
+      missedExceptions: rate(missedExceptions.length, audits.length),
       missedSharedCapacity: rate(missedShared.length, audits.length),
       incorrectEntityScope: rate(badEntity.length, audits.length),
       materialLegalOmissionRate: rate(materialOm.length, audits.length),
@@ -323,10 +330,33 @@ async function main() {
     newDurablePermissions: 0,
     authorizationNote: "No counsel ACCEPT and no Permission writes performed.",
     authenticCalculationExamples: authenticExamples,
+    // Full audits kept for local analysis; commit-friendly sample below.
     auditSample: audits,
   };
 
   writeFileSync(path.join(outDir, "independent-audit-report.json"), JSON.stringify(report, null, 2));
+  // Compact report for humans / PR (rates + short sample)
+  writeFileSync(
+    path.join(outDir, "independent-audit-summary.json"),
+    JSON.stringify(
+      {
+        ...report,
+        auditSample: audits.slice(0, 12).map((a) => ({
+          sourceId: a.sourceId,
+          sectionRef: a.sectionRef,
+          formulaType: a.formulaType,
+          disposition: a.disposition,
+          independentFormula: a.independentFormula,
+          independentThresholdMillions: a.independentThresholdMillions,
+          materialOmissions: a.materialOmissions,
+          sufficientForExecutableEvaluation: a.sufficientForExecutableEvaluation,
+          falseExecutableClassification: a.falseExecutableClassification,
+        })),
+      },
+      null,
+      2,
+    ),
+  );
   writeFileSync(
     path.join(outDir, "review-ready-activation-records.json"),
     JSON.stringify(

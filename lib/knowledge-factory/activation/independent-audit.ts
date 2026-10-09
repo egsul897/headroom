@@ -70,29 +70,114 @@ function stripHtml(raw: string): string {
     .trim();
 }
 
-/** Locate an operative window for a section ref inside full document text. */
-export function extractOperativeWindow(fullText: string, sectionRef: string): string {
+function isTocLike(window: string): boolean {
+  // Table-of-contents rows pack many "SECTION x.y Title …. 92" lines with page numbers.
+  const sectionHits = (window.match(/\b(?:Section|SECTION|§)\s*\d/g) ?? []).length;
+  const pageNumRows = (window.match(/\b\d{1,3}\s+(?:SECTION|Section|ARTICLE)\b/g) ?? []).length;
+  const dollarHits = (window.match(/\$\s*[\d,]+/g) ?? []).length;
+  if (dollarHits === 0 && sectionHits >= 4) return true;
+  if (pageNumRows >= 2 && dollarHits === 0) return true;
+  // Dense short lines of headings without operative verbs
+  if (dollarHits === 0 && !/\b(?:shall not|may not|not to exceed|greater of|lesser of|Indebtedness|Liens)\b/i.test(window)) {
+    if (sectionHits >= 3) return true;
+  }
+  return false;
+}
+
+function scoreOperativeWindow(window: string): number {
+  let score = 0;
+  if (/\$\s*[\d,]+/.test(window)) score += 5;
+  if (/\bgreater of\b|\blesser of\b/i.test(window)) score += 4;
+  if (/\b(?:shall not|may not|not to exceed|provided that)\b/i.test(window)) score += 3;
+  if (/\b(?:Indebtedness|Liens|Restricted Payments|Investments)\b/i.test(window)) score += 2;
+  if (isTocLike(window)) score -= 10;
+  score += Math.min(3, Math.floor(window.length / 400));
+  return score;
+}
+
+/** Slice a covenant window from a section heading start index. */
+function windowFromStart(text: string, startIdx: number): string {
+  const from = text.slice(startIdx, startIdx + 4500);
+  // Skip past opening heading token, cut at next Section/ARTICLE heading.
+  const afterHeading = from.search(/(?<=\n|\.\s)/);
+  const scanFrom = afterHeading > 0 && afterHeading < 80 ? afterHeading : Math.min(24, from.length);
+  const next = from.slice(scanFrom).search(/\b(?:Section|SECTION|ARTICLE)\s+\d+/i);
+  if (next >= 0 && scanFrom + next >= 24) return from.slice(0, scanFrom + next);
+  return from;
+}
+
+/**
+ * Locate an operative window for a section ref inside full document text.
+ * Prefers body covenants over TOC/index hits. Optional excerptHint anchors
+ * into the document without trusting the candidate's formula classification.
+ */
+export function extractOperativeWindow(
+  fullText: string,
+  sectionRef: string,
+  excerptHint?: string,
+): string {
   const text = stripHtml(fullText);
   if (!text || text.length < 80) return "";
-  const ref = sectionRef.trim().replace(/^§\s*/, "");
-  if (!ref) return "";
-  const escaped = ref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  // Prefer "Section 7.01" / "§7.01" / bare "7.01(" starts
-  const patterns = [
-    new RegExp(`(?:Section|§)\\s*${escaped}\\b[\\s\\S]{0,4500}`, "i"),
-    new RegExp(`(?:^|\\s)${escaped}\\s*[.(][\\s\\S]{0,4500}`, "i"),
-  ];
-  for (const re of patterns) {
-    const m = text.match(re);
-    if (m?.[0] && m[0].length > 40) {
-      // Cut at next major section heading if present mid-window
-      const body = m[0];
-      const next = body.slice(80).search(/\b(?:Section|ARTICLE)\s+\d+/i);
-      if (next > 200) return body.slice(0, 80 + next);
-      return body.slice(0, 4500);
+
+  // 1) Anchor via excerpt evidence when present (operative text location, not formula trust)
+  if (excerptHint && excerptHint.trim().length >= 48) {
+    const rawNeedle = excerptHint.trim().slice(0, 120);
+    const variants = [
+      rawNeedle,
+      rawNeedle.replace(/\s+/g, " "),
+      rawNeedle.slice(0, 64).replace(/\s+/g, " "),
+    ];
+    for (const needle of variants) {
+      if (needle.length < 32) continue;
+      const idx = text.indexOf(needle);
+      if (idx < 0) {
+        const collapsed = text.replace(/\s+/g, " ");
+        const j = collapsed.indexOf(needle.replace(/\s+/g, " "));
+        if (j >= 0) {
+          const win = collapsed.slice(Math.max(0, j - 80), j + 2800);
+          if (scoreOperativeWindow(win) >= 4) return win.slice(0, 4500);
+        }
+      } else {
+        const win = text.slice(Math.max(0, idx - 80), idx + 2800);
+        if (scoreOperativeWindow(win) >= 3) return win.slice(0, 4500);
+      }
     }
   }
-  return "";
+
+  const ref = sectionRef.trim().replace(/^§\s*/, "");
+  if (!ref) return "";
+  const baseRef = ref.replace(/\([^)]*\)\s*$/, "").trim();
+  const startIdxs = new Set<number>();
+
+  for (const tryRef of [...new Set([ref, baseRef])]) {
+    if (!tryRef) continue;
+    const escaped = tryRef.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // Non-greedy start finders only — do not consume the body in the match.
+    const patterns = [
+      new RegExp(`(?:Section|SECTION|§)\\s*${escaped}\\b`, "gi"),
+      new RegExp(`(?:^|\\s)(${escaped})\\s*[.(]`, "gi"),
+    ];
+    for (const re of patterns) {
+      let m: RegExpExecArray | null;
+      let guard = 0;
+      while ((m = re.exec(text)) != null && guard < 16) {
+        guard += 1;
+        startIdxs.add(m.index + (m[0].startsWith(" ") || m[0].startsWith("\n") ? 1 : 0));
+      }
+    }
+  }
+
+  const candidates: string[] = [];
+  for (const idx of startIdxs) {
+    const body = windowFromStart(text, idx);
+    if (body.length > 40) candidates.push(body);
+  }
+
+  if (candidates.length === 0) return "";
+  candidates.sort((a, b) => scoreOperativeWindow(b) - scoreOperativeWindow(a));
+  const best = candidates[0]!;
+  if (scoreOperativeWindow(best) < 2) return ""; // refuse TOC-only / empty hits
+  return best;
 }
 
 function parseMoneyMillions(text: string): number | null {
@@ -113,29 +198,76 @@ function parsePct(text: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-/** Independent formula classification from operative window only. */
-export function independentFormulaFromOperative(operative: string): {
+/**
+ * Independent formula classification from operative window only.
+ * When preferThresholdMillions is set, prefer a money figure near that value
+ * so multi-basket sections are scored against the claimed basket's dollars —
+ * still derived from operative text, not from trusting formulaType.
+ */
+export function independentFormulaFromOperative(
+  operative: string,
+  preferThresholdMillions?: number | null,
+): {
   formulaType: FormulaMechanic | null;
   thresholdMillions: number | null;
   pct: number | null;
   comparator: "GREATER_OF" | "LESSER_OF" | "FLAT" | "RATIO" | "BUILDER" | null;
 } {
-  const greater = /\bgreater of\b/i.test(operative);
-  const lesser = /\blesser of\b/i.test(operative);
-  const builder = /\bAvailable Amount\b|\bbuilder basket\b|\bCumulative Credit\b/i.test(operative);
-  const ebitda = /\bEBITDA\b/i.test(operative);
+  const moneyMatches = [...operative.matchAll(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/gi)];
+  const moneyAmounts: number[] = [];
+  for (const m of moneyMatches) {
+    let n = Number(m[1]!.replace(/,/g, ""));
+    if (!Number.isFinite(n)) continue;
+    if (/billion/i.test(m[2] ?? "")) n *= 1000;
+    else if (!m[2] && n >= 1_000_000) n = n / 1_000_000;
+    else if (!m[2] && n > 10_000) n = n / 1_000_000;
+    moneyAmounts.push(n);
+  }
+
+  let money: number | null = moneyAmounts[0] ?? null;
+  let moneyIdx = 0;
+  if (preferThresholdMillions != null && moneyAmounts.length) {
+    let bestI = 0;
+    let bestD = Infinity;
+    for (let i = 0; i < moneyAmounts.length; i++) {
+      const d = Math.abs(moneyAmounts[i]! - preferThresholdMillions);
+      if (d < bestD) {
+        bestD = d;
+        bestI = i;
+      }
+    }
+    // Only retarget when within 15% or $2M absolute — else first dollar stands
+    if (bestD <= Math.max(2, preferThresholdMillions * 0.15)) {
+      money = moneyAmounts[bestI]!;
+      moneyIdx = bestI;
+    }
+  }
+
+  // Local window around chosen money for greater/lesser/base classification
+  let local = operative;
+  if (moneyMatches[moneyIdx]) {
+    const at = moneyMatches[moneyIdx]!.index ?? 0;
+    local = operative.slice(Math.max(0, at - 220), Math.min(operative.length, at + 420));
+  }
+
+  const greater = /\bgreater of\b/i.test(local) || /\bgreater of\b/i.test(operative.slice(0, 800));
+  const lesser = /\blesser of\b/i.test(local);
+  const builder = /\bAvailable Amount\b|\bbuilder basket\b|\bCumulative Credit\b|\bBuilder Basket\b/i.test(
+    operative,
+  );
+  const ebitda = /\bEBITDA\b/i.test(local) || /\bEBITDA\b/i.test(operative.slice(0, 1200));
   const assets =
-    /\b(?:Consolidated\s+)?Total Assets\b/i.test(operative) ||
-    /\btotal consolidated assets\b/i.test(operative) ||
-    /\bConsolidated Total Tangible Assets\b/i.test(operative);
-  const ratio = /\b(?:Leverage|Coverage)\s+Ratio\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?/i.test(operative);
-  const money = parseMoneyMillions(operative);
-  const pct = parsePct(operative);
+    /\b(?:Consolidated\s+)?Total Assets\b/i.test(local) ||
+    /\btotal consolidated assets\b/i.test(local) ||
+    /\bConsolidated Total Tangible Assets\b/i.test(local) ||
+    /\b(?:Consolidated\s+)?Total Assets\b/i.test(operative.slice(0, 1200));
+  const ratio = /\b(?:Leverage|Coverage)\s+Ratio\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?/i.test(local);
+  const pct = parsePct(local) ?? parsePct(operative);
 
   if (lesser && money != null) {
     return { formulaType: null, thresholdMillions: money, pct, comparator: "LESSER_OF" };
   }
-  if (greater && money != null && ebitda && pct != null) {
+  if (greater && money != null && ebitda && pct != null && !assets) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
       thresholdMillions: money,
@@ -144,8 +276,45 @@ export function independentFormulaFromOperative(operative: string): {
     };
   }
   if (greater && money != null && assets && pct != null) {
+    // Prefer assets when both words appear near grower; EBITDA-only growers handled above
+    const assetsNear = /\b(?:Total Assets|total consolidated assets|Total Tangible Assets)\b/i.test(local);
+    const ebitdaNear = /\bEBITDA\b/i.test(local);
+    if (assetsNear && !ebitdaNear) {
+      return {
+        formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        thresholdMillions: money,
+        pct,
+        comparator: "GREATER_OF",
+      };
+    }
+    if (ebitdaNear && !assetsNear) {
+      return {
+        formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        thresholdMillions: money,
+        pct,
+        comparator: "GREATER_OF",
+      };
+    }
+    if (assetsNear) {
+      return {
+        formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        thresholdMillions: money,
+        pct,
+        comparator: "GREATER_OF",
+      };
+    }
+    if (ebitda) {
+      return {
+        formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        thresholdMillions: money,
+        pct,
+        comparator: "GREATER_OF",
+      };
+    }
+  }
+  if (greater && money != null && ebitda && pct != null) {
     return {
-      formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
       thresholdMillions: money,
       pct,
       comparator: "GREATER_OF",
@@ -185,7 +354,11 @@ export function auditCandidateAgainstOperative(params: {
   fullDocumentText: string;
 }): IndependentAuditResult {
   const c = params.candidate;
-  const operative = extractOperativeWindow(params.fullDocumentText, c.sectionRef);
+  const operative = extractOperativeWindow(
+    params.fullDocumentText,
+    c.sectionRef,
+    c.excerptEvidence,
+  );
   const fields: FieldVerdict[] = [];
   const omissions: string[] = [];
 
@@ -214,7 +387,7 @@ export function auditCandidateAgainstOperative(params: {
     };
   }
 
-  const indep = independentFormulaFromOperative(operative);
+  const indep = independentFormulaFromOperative(operative, c.thresholdValue);
 
   // Formula precision
   const formulaOk =

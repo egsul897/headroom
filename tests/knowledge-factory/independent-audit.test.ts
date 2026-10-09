@@ -77,6 +77,24 @@ describe("independent operative-text audit", () => {
     expect(w.length).toBeGreaterThan(40);
   });
 
+  it("skips TOC hits in favor of operative body or excerpt anchor", () => {
+    const toc =
+      "SECTION 6.01 Indebtedness 58 SECTION 6.02 Liens 59 SECTION 6.03 Investments 60 SECTION 6.04 Restricted Payments 61 ";
+    const body =
+      "Section 6.01 Indebtedness. The Borrower shall not create Indebtedness except in an aggregate amount not to exceed the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA. Loan Parties only.";
+    const text = toc + "\n\n" + body;
+    const w = extractOperativeWindow(text, "6.01");
+    expect(w).toMatch(/\$30,000,000/);
+    expect(w).not.toMatch(/SECTION 6\.02 Liens 59/);
+
+    const viaExcerpt = extractOperativeWindow(
+      text,
+      "99.99",
+      "aggregate amount not to exceed the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA",
+    );
+    expect(viaExcerpt).toMatch(/\$30,000,000/);
+  });
+
   it("wilsonInterval returns sensible bounds", () => {
     const w = wilsonInterval(8, 10);
     expect(w.p).toBeCloseTo(0.8, 5);
