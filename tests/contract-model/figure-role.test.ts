@@ -4,6 +4,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { classifyFigures, figureRoleIssues } from "../../lib/contract-model/compiler/semantic-verification/figure-role";
+import { classifyFigureRoleInText } from "../../lib/contract-model/compiler/semantic/figure-role-guard";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
 import type { VerificationInput } from "../../lib/contract-model/compiler/semantic-verification/types";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
@@ -59,6 +60,15 @@ async function verify(text: string, capacity: IRRule["capacityExpression"]) {
 }
 
 describe("figure roles", () => {
+  it("treats shall-not-in-excess-of as a prohibition ceiling for normalize (IPV-22 / package G)", () => {
+    const prohibition = "The Borrower shall not create, incur or assume any Indebtedness in excess of $35,000,000 in the aggregate at any time outstanding.";
+    expect(classifyFigureRoleInText("$35,000,000", prohibition)).toBe("CAP");
+    expect(classifyFigureRoleInText("35000000", prohibition)).toBe("CAP");
+    // A bare approval threshold stays a threshold — not borrowable capacity.
+    const condition = "any other transaction involving aggregate consideration in excess of $5,000,000, so long as such transaction has been approved";
+    expect(classifyFigureRoleInText("$5,000,000", condition)).toBe("THRESHOLD");
+  });
+
   it("classifies permission, condition, trigger, ratio, prohibition, and exception amounts", () => {
     const text = [
       "SECTION 9.01 Indebtedness. The Borrower shall not incur Indebtedness, except other Indebtedness in an aggregate principal amount not to exceed $10,000,000.",

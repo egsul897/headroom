@@ -63,16 +63,27 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
   };
 }
 
+/**
+ * Authentic credit agreements (Gibraltar, Chewy, etc.) often draft definitions as
+ * `“ ABR Loan ” means` / `“ Acquisition Agreement ” shall mean` — curly quotes with
+ * interior whitespace / NBSP around the term. The prior pattern required the term to
+ * start immediately after the opening quote and only accepted `means`, so full-package
+ * definition coverage collapsed to a handful of accidental hits.
+ */
 const DEFINITION_RE =
-  /[“"]([A-Z][^“"]{1,80})[”"]\s+means\b|“([A-Z][^”]{1,80})”\s+means\b|"([A-Z][^"]{1,80})"\s+means\b/g;
+  /[“"]\s*([A-Z][^“”"]{0,80}?)\s*[”"]\s*(?:means|shall\s+mean)\b/gi;
 
 export function discoverDefinitions(sourceId: string, text: string, _nodes: StructuralNodeRecord[]): DefinitionRecord[] {
   const out: DefinitionRecord[] = [];
+  const seen = new Set<string>();
   let m: RegExpExecArray | null;
-  const re = new RegExp(DEFINITION_RE.source, "g");
+  const re = new RegExp(DEFINITION_RE.source, "gi");
   while ((m = re.exec(text)) !== null && out.length < 2000) {
-    const term = (m[1] ?? m[2] ?? m[3] ?? "").trim();
-    if (!term) continue;
+    const term = (m[1] ?? "").replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
+    if (!term || term.length < 2) continue;
+    const key = term.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
     const charStart = m.index;
     const charEnd = Math.min(text.length, charStart + 400);
     out.push({

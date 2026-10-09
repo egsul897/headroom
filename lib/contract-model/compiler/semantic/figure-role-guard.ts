@@ -63,6 +63,13 @@ function roleAround(text: string, index: number, len: number): SourceFigureRole 
   const window = text.slice(Math.max(0, index - 100), Math.min(text.length, index + len + 50));
   const isCap = CAP_INTRODUCERS.test(window);
   const isThreshold = THRESHOLD_INTRODUCERS.test(window);
+  // "shall not / will not / may not … in excess of $X" is a prohibition
+  // ceiling (the maximum that may be incurred), not a permission-basket
+  // threshold. Without this, IPV-22 incorrectly strips MONEY capacity from
+  // duplicate-section drafting like package G's second 7.01.
+  if (/\b(?:shall|will|may)\s+not\b/i.test(window) && /\bin\s+excess\s+of\b/i.test(window)) {
+    return "CAP";
+  }
   if (isThreshold && !isCap) return "THRESHOLD";
   if (isCap && !isThreshold) return "CAP";
   return "AMBIGUOUS";

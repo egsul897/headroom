@@ -545,6 +545,16 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
 }
 
 function derivedSectionView(source: OperativeProvisionView, section: StructuralNode, baseDocumentId: string, text: string | null, views: OperativeProvisionView[], status: OperativeProvisionView["status"], unresolvedIssues: string[]): OperativeProvisionView {
+  // When a definition replacement is successfully spliced into the enclosing
+  // section, the base section node's DESCENDANTS span is no longer the sole
+  // operative text. Publish that node as superseded so consumers (and the
+  // product-acceptance operative exact check) cannot treat the pre-amendment
+  // physical occurrence as CURRENT_OPERATIVE. Sibling definitions remain in
+  // the spliced `currentText` — this is not a whole-section wipe.
+  const publishedSupersession =
+    status === "OPERATIVE_STATE_RESOLVED" && !!text && text.trim().length > 0
+      ? { supersededSourceNodeKeys: [section.nodeKey], supersededSourceNodeIds: [section.nodeId] }
+      : { supersededSourceNodeKeys: [] as string[], supersededSourceNodeIds: [] as string[] };
   return {
     instrumentKey: source.instrumentKey,
     provisionKey: `${source.instrumentKey}::SECTION::${section.sectionRef}`,
@@ -559,8 +569,7 @@ function derivedSectionView(source: OperativeProvisionView, section: StructuralN
     currentText: text,
     fullChain: views.flatMap((r) => r.fullChain),
     appliedChain: views.flatMap((r) => r.appliedChain),
-    supersededSourceNodeKeys: [],
-    supersededSourceNodeIds: [],
+    ...publishedSupersession,
     status,
     unresolvedIssues,
     conflicts: [],
