@@ -719,7 +719,7 @@
       "signatures": [],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "CLOSED: MUT-08/12/13/14/15/16 PRODUCT verdicts pass; INV-16b PRODUCT 5/5; operative:7.01(b) and semantic:7.01 PASS as fail-closed (override attached unresolved; section text withheld). Superseding $15,000,000 capacity is deliberately not derived. Package-M certification:7.02 REVIEW under OPERATIVE_STATE_UNACCEPTABLE is correct fail-closed.",
+      "actual": "CLOSED: side-letter captureSafeOverrideNewText derives unique superseding capacity (pkg-M 7.01(b) $15,000,000; source side-letter; applied); consents/multi-amount windows keep newText null; MUT-08/12/13/14/15/16 PRODUCT pass; INV-16b PRODUCT pass; parent semantic:7.01 / certification:7.02 remain fail-closed under UNCLASSIFIED_OVERRIDE REVIEW_REQUIRED.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
@@ -727,7 +727,7 @@
       "fixNote": "CLOSED: fail-closed attach/withhold + MUT PRODUCT gates met; auditor/semantic accept SUPERSEDED+$new-cap and EMPTY_OPERATIVE_TEXT under UNCLASSIFIED_OVERRIDE. Residual (optional): derive superseding override capacity text when safe without inventing permissions.",
       "fixedIn": "cursor/phase3-ipv04-amended-default-f673",
       "closedIn": "cursor/phase3-ipv04-amended-default-f673",
-      "resolution": "CLOSED 2026-10-09 — fail-closed override attachment/withhold accepted; no silent CURRENT base-text permission."
+      "resolution": "CLOSED 2026-10-09 — side-letter unique-amount superseding language derived; no silent CURRENT base-text permission; authority unresolved stays fail-closed."
     },
     {
       "id": "IPV-17",

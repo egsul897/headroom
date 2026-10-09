@@ -253,11 +253,12 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
       // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
       const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
-      // IPV-16 / INV-16b: an unclassified override that stays attached with last
-      // authoritative text preserved is the intended fail-closed outcome. Do not
-      // keep failing the SUPERSEDED/$new-cap row — that would demand inventing
-      // override capacity the detector deliberately refuses to certify.
-      if (attachedUnresolved && e.status === "SUPERSEDED" && e.supersededBy) {
+      // IPV-16 / INV-16b: when superseding capacity could not be safely derived,
+      // an attached unresolved override with last authoritative text preserved
+      // is the intended fail-closed outcome. When mustContain is already present
+      // on currentText (safe derivation), fall through to the normal checks.
+      const supersedingDerived = !!current && e.mustContain.every((t) => textCarries(current, t));
+      if (attachedUnresolved && e.status === "SUPERSEDED" && e.supersededBy && !supersedingDerived) {
         L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed override attached (${e.supersededBy}); provision REVIEW_REQUIRED with last authoritative text preserved; superseding capacity not derived (${detail})`);
         continue;
       }

@@ -27,29 +27,39 @@ import type { OperativeContractState } from "../../lib/contract-model/compiler/a
 /**
  * Package-level operative state for semantic/certification.
  *
- * `runDeterministicStages` already stores a merged multi-instrument state at
- * the bare as-of key (and per-instrument copies at `${asOf}::${documentId}`).
- * Re-merging those copies here duplicated provision views, which made
- * spliceDescendantAmendments see overlapping edits and withhold parent section
- * text (EMPTY_OPERATIVE_TEXT on credit-agreement::7.01) — IPV-04 residual.
+ * `runDeterministicStages` stores the primary (base-document) instrument at the
+ * bare as-of key and every other instrument at `${asOf}::${documentId}`.
+ * Semantic/certification must see ALL instruments — otherwise an indenture
+ * amendment (e.g. package B 4.09(c) $50m→$75m) never reaches Pass B and the
+ * superseded base text is compiled. Provisions are deduped by provisionKey so
+ * re-merge cannot recreate the IPV-04 EMPTY_OPERATIVE_TEXT double-splice.
  */
 function packageOperativeState(s: DeterministicStages, asOfDate: string): OperativeContractState | null {
-  const merged = s.operativeStates.get(asOfDate);
-  if (merged) return merged;
+  const primary = s.operativeStates.get(asOfDate) ?? null;
   const extras = [...s.operativeStates.entries()]
     .filter(([key]) => key.startsWith(`${asOfDate}::`))
     .map(([, state]) => state);
-  if (extras.length === 0) return null;
-  if (extras.length === 1) return extras[0]!;
+  const parts = [primary, ...extras].filter((x): x is OperativeContractState => x !== null);
+  if (parts.length === 0) return null;
+  if (parts.length === 1) return parts[0]!;
   const statusRank = (status: OperativeContractState["status"]): number =>
     status === "OPERATIVE_STATE_CONFLICTED" ? 3 : status === "OPERATIVE_STATE_REVIEW_REQUIRED" ? 2 : status === "OPERATIVE_STATE_PARTIAL" ? 1 : 0;
-  const worst = extras.reduce((a, b) => (statusRank(b.status) > statusRank(a.status) ? b : a));
+  const worst = parts.reduce((a, b) => (statusRank(b.status) > statusRank(a.status) ? b : a));
+  const seen = new Set<string>();
+  const provisions: OperativeContractState["provisions"] = [];
+  for (const part of parts) {
+    for (const p of part.provisions) {
+      if (seen.has(p.provisionKey)) continue;
+      seen.add(p.provisionKey);
+      provisions.push(p);
+    }
+  }
   return {
-    ...extras[0]!,
+    ...parts[0]!,
     status: worst.status,
     summary: worst.summary,
-    provisions: extras.flatMap((e) => e.provisions),
-    unattachedEffects: extras.flatMap((e) => e.unattachedEffects),
+    provisions,
+    unattachedEffects: parts.flatMap((e) => e.unattachedEffects),
   };
 }
 

@@ -20,6 +20,7 @@ import { collectNumericAssertions } from "./numeric-assertion";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { figureRoleFindings } from "./figure-role";
+import { evaluationBasisFindings } from "./evaluation-basis";
 import { buildRetrievedEvidenceInventory, collectAdmissibleEvidence } from "./retrieved-evidence";
 import { runAdversarialSemanticReview } from "./reviewer";
 import { buildSemanticVerificationProjection, computeSemanticVerificationProjectionHash, SEMANTIC_VERIFICATION_PROJECTION_VERSION } from "./projection";
@@ -442,6 +443,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     ...buildFindingsFromReconciliation(input, reconciliation),
     ...qualitativeGroundingFindings(qualitativeAudit, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
     ...figureRoleFindings(buildFigureRoleSourceText(compilerInput), compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
+    ...evaluationBasisFindings(compilerInput.operativeSourceText, compilationResult.rules, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId, candidateRef: compilerInput.candidateRef, sourceSectionRef: compilerInput.sourceSectionRef }),
   ];
 
   // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing

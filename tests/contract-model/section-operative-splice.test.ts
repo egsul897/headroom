@@ -420,7 +420,9 @@ SECTION 2. Effectiveness. This letter shall become effective on March 1, 2026.
 
     const clauseView = state.provisions.find((p) => p.sectionRef === "7.01(b)");
     expect(clauseView?.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
-    expect(clauseView?.currentText).toContain("$25,000,000");
+    expect(clauseView?.currentText).toContain("$10,000,000");
+    expect(clauseView?.currentText).not.toContain("$25,000,000");
+    expect(clauseView?.currentSourceDocumentId).toBe("side-letter");
     expect(clauseView?.unresolvedIssues.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
     expect(clauseView?.unresolvedIssues.join(" ")).toContain("documentId=side-letter");
 
@@ -434,9 +436,10 @@ SECTION 2. Effectiveness. This letter shall become effective on March 1, 2026.
     expect(section.withheldReasons.join(" ")).not.toMatch(/\$10,000,000|shall not incur/);
 
     const clause = source(index, state, "7.01(b)");
-    expect(clause.withheld).toBe(true);
-    expect(clause.withheldReasons.join(" ")).toMatch(/UNCLASSIFIED_OVERRIDE/);
-    expect(clause.withheldReasons.join(" ")).toContain("documentId=side-letter");
+    // Derived superseding capacity may be served as operative text, but never as
+    // current truth while the override remains REVIEW_REQUIRED / unclassified.
+    expect(clause.text).toContain("$10,000,000");
+    expect(clause.text).not.toContain("$25,000,000");
 
     const bundle = buildCovenantContextBundle(
       { candidate: candidate(index, "7.01"), packageKey: "pkg", companyId: "co", instrumentKey: state.instrumentKey },

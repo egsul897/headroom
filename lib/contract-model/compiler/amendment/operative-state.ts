@@ -39,6 +39,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, computeOperativeDocument, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
+import { spliceOverrideAmountIntoClause, uniqueOverrideAmount } from "./unclassified-override";
 import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
@@ -285,11 +286,15 @@ function isUnclassifiedOverride(effect: AmendmentEffectCandidate): boolean {
 
 function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfDate: string, index: StructuralIndex): OperativeProvisionView {
   // An unclassified side letter, consent, or waiver names the provision and
-  // does not establish a replacement. It must not be applied as an amendment,
-  // must not be treated as a deletion, and must not erase the last text that
-  // does have authority. The provision stays REVIEW_REQUIRED because the
-  // override is unresolved.
-  const textualGroup: ProvisionGroup = { ...group, effects: group.effects.filter((effect) => !isUnclassifiedOverride(effect)) };
+  // stays REVIEW_REQUIRED. When the detector captured safe superseding
+  // language (newText), that text is applied chronologically like any other
+  // replacement so the operative reading carries the override capacity.
+  // When newText is null, the override must not erase the last text that
+  // does have authority — it stays attached as unresolved evidence only.
+  const textualGroup: ProvisionGroup = {
+    ...group,
+    effects: group.effects.filter((effect) => !isUnclassifiedOverride(effect) || !!effect.newText),
+  };
   const { fullChain, conflicts } = buildProvisionChain(textualGroup);
   const asOfMs = new Date(asOfDate).getTime();
   const appliedChain = fullChain.filter((e) => e.effectiveDate.date !== null && new Date(e.effectiveDate.date).getTime() <= asOfMs).map((e) => ({ ...e, appliedAsOfQuery: true }));
@@ -325,7 +330,12 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
       attemptedText = null;
       lastAppliedWasCleanDeletion = true;
     } else if (effect.newText) {
-      currentText = effect.newText;
+      // Unclassified overrides carry a verbatim window (for source verification).
+      // Prefer splicing the unique override amount into the last authoritative
+      // clause text so prior amendment wording is preserved except the capacity.
+      const overrideAmount = isUnclassifiedOverride(effect) ? uniqueOverrideAmount(effect.newText) : null;
+      const spliced = overrideAmount && currentText ? spliceOverrideAmountIntoClause(currentText, overrideAmount) : null;
+      currentText = spliced ?? effect.newText;
       attemptedText = effect.newText;
       lastAppliedWasCleanDeletion = false;
     } else if (effect.status === "REVIEW_REQUIRED" || effect.status === "UNRESOLVED" || effect.operation === "UNKNOWN_CHANGE") {
