@@ -28,6 +28,7 @@ export type {
   ApproveCertificateProposalRequest,
   BasketUsageScheduleLine,
   LedgerProposal,
+  CertificateFactProposal,
 } from "./runtime/input/store";
 
 export {

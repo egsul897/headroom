@@ -34,7 +34,7 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
           Onboarding status: <Chip tone={company.onboardingStatus === "ACTIVE" ? "pass" : company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? "tight" : "idle"}>{onboardingStatusLabel(company.onboardingStatus)}</Chip>
         </div>
         <div className="row-note">
-          {readyToPromote} candidate(s) approved/edited and ready to promote. Promotion is transactional and only ever reads APPROVED/EDITED candidates — a KNOWN_NOT_MODELED permission is excluded even if approved (fail-closed, a documented gap).
+          {readyToPromote} candidate(s) approved/edited and ready to promote. Promotion writes legacy Permission / financial rows after Phase 3 contract analysis is ready — promoted Permissions stay UNVERIFIED. Phase 3 VERIFIED semantic units (when analysis produces them) are surfaced separately and are not package CERTIFIED or Phase 4E capacity. A KNOWN_NOT_MODELED permission is excluded even if approved.
         </div>
         <form action={promote} style={{ marginTop: 10 }}>
           <button type="submit" className="button-primary" disabled={readyToPromote === 0}>

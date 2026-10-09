@@ -1,7 +1,12 @@
 # Authentic VerifiedExecutionPackage — blocker report
 
+<<<<<<< HEAD
 **Verdict:** authentic `VerifiedExecutionPackage` **DERIVED** for CONMED §7.2(c).  
 **Tip SHA at investigation:** see PR #201 tip after this commit.  
+=======
+**Verdict:** no authentic `VerifiedExecutionPackage` was produced.  
+**Tip SHA at investigation:** `657a7e8b` (PR #202; typecheck restored after main merge; certification 481/481; acceptance 703/CFP0). Authentic scan remains `NO_CERTIFIED_ARTIFACTS` (5× REVIEW_REQUIRED).  
+>>>>>>> origin/main
 **Soft gate:** no live / paid certification re-runs. Offline fixtures and frozen packets only.  
 **Gates:** `certifyCandidate` / `certifyPackage` / `certifiedMapToVerifiedExecutionPackage` / `toVerifiedExecutionPackage` / `evaluateVerifiedCapacity` (REQUIRE) were not weakened.
 

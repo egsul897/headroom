@@ -96,6 +96,20 @@ export async function reviewCandidate(params: ReviewCandidateParams): Promise<Ex
     throw new Error(`ExtractionCandidate ${candidateId} was already promoted at ${candidate.promotedAt.toISOString()} - a promoted candidate's review decision is final.`);
   }
 
+  // FINDING-7 continuity: covenant candidates are not reviewable until Phase 3
+  // contract analysis covers the current contract-document set. FINANCIAL_FACT
+  // (CSV / certificate figures) is not a covenant interpretation — it may be
+  // reviewed without waiting on the rulebook analysis run.
+  if (candidate.kind !== "FINANCIAL_FACT") {
+    const { getAnalysisReadinessForCompany } = await import("@/lib/contract-model/analysis");
+    const readiness = await getAnalysisReadinessForCompany(candidate.companyId);
+    if (!readiness.ready) {
+      throw new Error(
+        `Cannot review covenant candidates until contract analysis is ready for this company (reason: ${readiness.reason}). Run extraction on every uploaded agreement first.`,
+      );
+    }
+  }
+
   const newStatus = NEXT_STATUS[action];
   let editedValueToStore: Prisma.InputJsonValue | undefined;
 

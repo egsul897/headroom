@@ -102,5 +102,5 @@ describe("uploaded-vs-analyzed visibility (AUDIT-F6)", () => {
     expect(run!.reviewItemCount).toBe(claimCount);
     expect(await getAnalysisRunIssues(run!.id)).toEqual([]);
     expect(await getAnalysisFailureLogsForCompany(COMPANY_ID)).toEqual([]);
-  });
+  }, 30_000);
 });

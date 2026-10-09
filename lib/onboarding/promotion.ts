@@ -36,6 +36,7 @@ import { classifyCompanyCoverage } from "../solver/coverage";
 import type { CoverageResult } from "../solver/types";
 import { loadCompanySolverStaticData } from "../covenant-engine";
 import { CONFLICTING_FINANCIAL_FACTS, upsertFinancialFactsForDate } from "./financial";
+import { persistPromotedFinancialFactsToNs4, type Ns4FactInput } from "./ns4-financial-persist";
 
 const VALID_ENTITY_CLASS_TAGS = new Set(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS", "FOREIGN_RS", "UNRESTRICTED_SUB", "SECURITIZATION_SUB", "IMMATERIAL_SUB"]);
 
@@ -104,8 +105,24 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     orderBy: { createdAt: "asc" },
   });
 
+  // Phase 3 gate: do not promote covenant interpretations (Permissions, terms,
+  // relationships, …) until contract analysis covers the current contract-
+  // document set. FINANCIAL_FACT-only batches may promote without that run
+  // (they write financial tables + NS-4, not the certified rulebook).
+  const hasCovenantCandidates = candidates.some((c) => c.kind !== "FINANCIAL_FACT");
+  if (hasCovenantCandidates) {
+    const { getAnalysisReadinessForCompany } = await import("@/lib/contract-model/analysis");
+    const analysisReady = await getAnalysisReadinessForCompany(companyId);
+    if (!analysisReady.ready) {
+      throw new Error(
+        `Cannot promote covenant candidates until contract analysis is ready (reason: ${analysisReady.reason}). Run extraction so Phase 3 analysis completes before Permissions become operative.`,
+      );
+    }
+  }
+
   const skipped: PromotionSkip[] = [];
   const promotions: { candidateId: string; promotedToId: string }[] = [];
+  const ns4Facts: Ns4FactInput[] = [];
 
   const result = await prisma.$transaction(async (tx) => {
     // Permission refs are resolved company-wide across this promotion batch
@@ -604,6 +621,17 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
           continue;
         }
         promotions.push({ candidateId: outcome.key, promotedToId });
+        const src = group.find((g) => g.candidate.id === outcome.key);
+        if (src) {
+          ns4Facts.push({
+            metricName: src.metricName,
+            value: src.value,
+            asOfDate,
+            candidateId: src.candidate.id,
+            sourceDocumentId: src.candidate.sourceDocumentId,
+            reviewedBy: src.candidate.reviewedBy,
+          });
+        }
       }
     }
 
@@ -627,6 +655,27 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
 
     return { skipped, promotedCount: promotions.length, onboardingStatus };
   });
+
+  // NS-4 authoritative path — after legacy dual-write commits. Failures are
+  // recorded as skips (never invent APPROVED status).
+  if (ns4Facts.length > 0) {
+    const byDate = new Map<string, Ns4FactInput[]>();
+    for (const f of ns4Facts) {
+      const k = f.asOfDate.toISOString();
+      const list = byDate.get(k) ?? [];
+      list.push(f);
+      byDate.set(k, list);
+    }
+    for (const group of byDate.values()) {
+      const ns4 = await persistPromotedFinancialFactsToNs4(companyId, group);
+      if (!ns4.ok) {
+        console.error(
+          `[promoteCompanyCandidates] NS-4 persist failed for ${companyId} (legacy tables already updated):`,
+          ns4.reason,
+        );
+      }
+    }
+  }
 
   const staticData = await loadCompanySolverStaticData(prisma, companyId, asOfDate);
   const legacyFormulaPresence = new Map<string, boolean>();

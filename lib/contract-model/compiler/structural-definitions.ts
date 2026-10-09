@@ -233,7 +233,7 @@ export function detectStructuralDefinitions(documentId: string, text: string, no
     const enclosing = findEnclosingNode(charStart, sorted);
     if (unquotedColonSet.has(m) && !meansSet.has(m) && !quotedColonSet.has(m)) {
       const body = text.slice(charEnd, Math.min(text.length, charEnd + 80));
-      if (!isDefinitionsContext(enclosing, sorted) && !UNQUOTED_COLON_DEFINING_VERB.test(body)) continue;
+      if (!isDefinitionsContext(enclosing ?? undefined, sorted) && !UNQUOTED_COLON_DEFINING_VERB.test(body)) continue;
     }
     const forwardingTarget = meansSet.has(m) ? parseForwardingTarget(m[0]!, text.slice(charEnd, charEnd + 160)) : null;
     const declarationKind: DefinitionDeclarationKind = forwardingTarget ? "FORWARDING" : meansSet.has(m) ? "MEANS" : quotedColonSet.has(m) ? "QUOTED_COLON" : "UNQUOTED_COLON";

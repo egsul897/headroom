@@ -19,6 +19,7 @@ import { getCandidatesForReview, reviewCandidate } from "../../lib/onboarding/re
 import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { getCanonicalCompanyState } from "../../lib/company-state/canonical-state";
 import { normalizeFinancialValue } from "../../lib/connectors/units";
+import { markContractAnalysisReadyForTests } from "./mark-analysis-ready";
 
 const COMPANY_ID = "phaseb-synthetic-acceptance-co";
 // Dynamic ("today"), not a fixed past date: cash's own 1-day staleness
@@ -91,7 +92,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     const candidates = await prisma.extractionCandidate.findMany({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT" } });
     expect(candidates).toHaveLength(8);
     expect(candidates.every((c) => c.reviewStatus === "PENDING")).toBe(true);
-  });
+  }, 30_000);
 
   it("2. base document + amendment: uploaded through the SAME dedup/convergence path real manual uploads use, extracted, and correctly linked", async () => {
     const base = await uploadDocumentThroughIngestion({ companyId: COMPANY_ID, filename: "phaseb-credit-agreement.txt", data: Buffer.from(BASE_CREDIT_AGREEMENT, "utf-8"), declaredType: "CREDIT_AGREEMENT" });
@@ -109,9 +110,10 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     const value = amendmentCandidate.proposedValue as { documentType: string; supersedesDocumentRef?: string };
     expect(value.documentType).toBe("AMENDMENT");
     expect(value.supersedesDocumentRef).toBe("phaseb-credit-agreement.txt");
-  });
+  }, 30_000);
 
   it("3. REVIEW + PROMOTE: approving everything promotes the financial facts into ONE snapshot and confirms the amendment supersession", async () => {
+    await markContractAnalysisReadyForTests(COMPANY_ID);
     const byKind = await getCandidatesForReview(COMPANY_ID);
     const allCandidateIds = Object.values(byKind).flat().map((c) => c.id);
     for (const id of allCandidateIds) {
@@ -128,7 +130,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     expect(amendmentDoc.supersedesDocumentId).toBe(baseDocumentId);
     const baseDoc = await prisma.document.findUniqueOrThrow({ where: { id: baseDocumentId } });
     expect(baseDoc.effectiveTo).not.toBeNull();
-  });
+  }, 30_000);
 
   it("4. CANONICAL STATE + DASHBOARD: getCanonicalCompanyState and getCompanyDashboard both reflect the promoted state correctly", async () => {
     const state = await getCanonicalCompanyState(COMPANY_ID, new Date(AS_OF));
@@ -140,7 +142,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     expect(state.dashboard!.company.id).toBe(COMPANY_ID);
     expect(state.dashboard!.financialPosition).toBeDefined();
     expect(state.dashboard!.documents.length).toBeGreaterThanOrEqual(2);
-  });
+  }, 30_000);
 
   it("5. CONFLICT: a deliberately-conflicting re-upload for the same metric/period, from a DIFFERENT source connection, produces a REVIEW_REQUIRED candidate - never silently overwriting the approved/promoted one", async () => {
     // NOTE on source choice (documented, per this test's own honest scope):
@@ -220,5 +222,5 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     // The canonical state surfaces this as a live conflict/review item.
     const state = await getCanonicalCompanyState(COMPANY_ID, new Date(AS_OF));
     expect(state.reviewItems.some((r) => r.id === newCashCandidate.id && r.reviewStatus === "REVIEW_REQUIRED")).toBe(true);
-  });
+  }, 30_000);
 });

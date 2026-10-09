@@ -103,6 +103,7 @@
 import { prisma } from "../../prisma";
 import { Prisma } from "@prisma/client";
 import type { AnalysisRun, AnalysisRunStatus } from "@prisma/client";
+import { CONTRACT_DOCUMENT_TYPES } from "./types";
 
 /**
  * A RUNNING row younger than this is treated as an active, in-flight run -
@@ -419,18 +420,25 @@ export interface AnalysisReadiness {
  * document package + algorithm version has actually completed appropriately
  * (COMPLETED or COMPLETED_WITH_REVIEW, not PENDING/RUNNING/FAILED/absent)."
  *
- * A company with zero documents at all is treated as trivially "ready" -
- * there is nothing to analyze, and gating an empty onboarding company would
- * only block the pre-existing "no candidates yet" empty state, not close any
- * real bypass. Once at least one Document exists, this requires BOTH a
- * completed-appropriately run AND that every current document id is covered
- * by that run's own documentIds - a document uploaded after the last
- * completed run (before a fresh analysis has run over it) is the same
- * bypass shape as never having analyzed at all, and must not read as ready
- * either.
+ * Scoped to the same CONTRACT_DOCUMENT_TYPE_SET the live orchestrator
+ * analyzes (lib/contract-model/analysis/types.ts). CSV financial uploads and
+ * compliance certificates materialize as Document rows of type OTHER /
+ * COMPLIANCE_CERTIFICATE — those are deliberately excluded from Phase 3
+ * analysis and must not make this gate report NEVER_ANALYZED / STALE.
+ *
+ * A company with zero contract documents is treated as trivially "ready" -
+ * there is nothing to analyze. Once at least one contract Document exists,
+ * this requires BOTH a completed-appropriately run AND that every current
+ * contract document id is covered by that run's own documentIds.
  */
 export async function getAnalysisReadinessForCompany(companyId: string): Promise<AnalysisReadiness> {
-  const [documentIds, run] = await Promise.all([prisma.document.findMany({ where: { companyId }, select: { id: true } }), getLatestAnalysisRunForCompany(companyId)]);
+  const [documentIds, run] = await Promise.all([
+    prisma.document.findMany({
+      where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPES] } },
+      select: { id: true },
+    }),
+    getLatestAnalysisRunForCompany(companyId),
+  ]);
 
   if (documentIds.length === 0) return { ready: true, run, reason: "NO_DOCUMENTS" };
   if (!run) return { ready: false, run: null, reason: "NEVER_ANALYZED" };

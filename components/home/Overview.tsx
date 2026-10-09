@@ -21,7 +21,7 @@ import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
 
 /**
- * Company overview. Each slot renders from its own load state.
+ * Company overview / dashboard. Each slot renders from its own load state.
  * The default load is UNKNOWN for every slot (sources unwired).
  * The bell badge renders only for a queried non-zero alert count.
  */
@@ -29,10 +29,16 @@ export function CompanyOverview({
   companyId,
   identityName = null,
   load = UNWIRED_OVERVIEW_LOAD,
+  readinessHeadline = null,
+  authorityNote = null,
+  setupCta = null,
 }: {
   companyId: string;
   identityName?: string | null;
   load?: Partial<OverviewLoad>;
+  readinessHeadline?: string | null;
+  authorityNote?: string | null;
+  setupCta?: { href: string; label: string; detail: string } | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -45,6 +51,11 @@ export function CompanyOverview({
         <div className="home-greeting-block">
           <h1 className="home-greeting">{greeting.heading}</h1>
           {greeting.subheading ? <p className="home-greeting-sub">{greeting.subheading}</p> : null}
+          {readinessHeadline ? (
+            <p className="home-readiness" data-readiness-headline hidden>
+              {readinessHeadline}
+            </p>
+          ) : null}
         </div>
         <div className="home-top-actions">
           <Link className="button button-primary" href={`/${companyId}/intelligence`}>
@@ -75,6 +86,17 @@ export function CompanyOverview({
         </div>
       </header>
 
+      {setupCta ? (
+        <section className="home-card home-setup-banner" data-region="setup">
+          <h2 className="home-eyebrow">Set up this workspace</h2>
+          <p className="home-headline">{setupCta.label}</p>
+          <p className="home-detail">{setupCta.detail}</p>
+          <Link className="button button-primary" href={setupCta.href} style={{ textDecoration: "none", marginTop: 12, display: "inline-flex" }}>
+            {setupCta.label}
+          </Link>
+        </section>
+      ) : null}
+
       <div className="home-regions">
         <div className="home-kpis">
           <TotalHeadroomCard state={slots.totalHeadroom} />
@@ -95,6 +117,11 @@ export function CompanyOverview({
           <TransactionsCard state={slots.transactions} />
         </div>
       </div>
+      {authorityNote ? (
+        <p className="home-authority-note" data-authority-note>
+          {authorityNote}
+        </p>
+      ) : null}
     </div>
   );
 }

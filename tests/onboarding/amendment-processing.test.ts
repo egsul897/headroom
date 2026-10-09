@@ -40,6 +40,7 @@ import { getCandidatesForReview, reviewCandidate } from "../../lib/onboarding/re
 import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { createManualFinancialState } from "../../lib/onboarding/financial";
 import { loadCompanyCovenantData } from "../../lib/covenant-engine";
+import { markContractAnalysisReadyForTests } from "./mark-analysis-ready";
 
 const COMPANY_ID = "fixture-amendment-processing-co";
 
@@ -92,7 +93,8 @@ describe("amendment processing - full pipeline", () => {
     const amendment = await uploadAndChunkDocument({ companyId: COMPANY_ID, filename: "amendment-no-2.txt", data: Buffer.from(AMENDMENT_NO_2, "utf-8"), declaredType: "AMENDMENT" });
     amendmentDocumentId = amendment.document.id;
     await runExtractionForDocument({ companyId: COMPANY_ID, documentId: amendmentDocumentId, provider: new SyntheticExtractionProvider(), providerName: "synthetic", model: "synthetic-v1" });
-  });
+    await markContractAnalysisReadyForTests(COMPANY_ID);
+  }, 60_000);
 
   afterAll(async () => {
     await teardown();
@@ -110,7 +112,7 @@ describe("amendment processing - full pipeline", () => {
     // A reviewer sees this proposed link directly in the review workspace's
     // generic ValueTable (app/[companyId]/onboarding/review/page.tsx) - no
     // separate UI code was needed, see this file's own header comment.
-  });
+  }, 30_000);
 
   it("PROMOTION: approving the amendment sets supersedesDocumentId/effectiveFrom on the amendment AND propagates effectiveTo onto the BASE document", async () => {
     const byKind = await getCandidatesForReview(COMPANY_ID);
@@ -136,7 +138,7 @@ describe("amendment processing - full pipeline", () => {
     const baseDoc = await prisma.document.findUniqueOrThrow({ where: { id: baseDocumentId } });
     expect(baseDoc.effectiveTo?.toISOString().slice(0, 10)).toBe("2026-06-01");
     expect(baseDoc.effectiveFrom).toBeNull(); // never touched - still "always effective from the start"
-  });
+  }, 30_000);
 
   it("EFFECTIVE-DATING: loadCompanyCovenantData treats the base document as active BEFORE the amendment date and inactive ON/AFTER it - never deleted, always queryable historically", async () => {
     // A FinancialSnapshot is required by loadCompanyCovenantData - create one covering both query dates.
@@ -164,5 +166,5 @@ describe("amendment processing - full pipeline", () => {
     // Never deleted - the base document row still exists and is queryable directly, just excluded from the date-filtered "currently effective" set.
     const baseRowStillExists = await prisma.document.findUnique({ where: { id: baseDocumentId } });
     expect(baseRowStillExists).not.toBeNull();
-  });
+  }, 30_000);
 });

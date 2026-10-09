@@ -23,13 +23,17 @@ export type KillSwitchIssue = { ruleId: string; termName: string; detail: string
 
 function collectDefinedTermNames(expr: IRExpression | IRCapacityExpression | null | undefined, out: Set<string>): void {
   if (!expr || typeof expr !== "object") return;
-  const e = expr as IRExpression & { termName?: string; operands?: IRExpression[]; left?: IRExpression; right?: IRExpression; gatedBy?: IRExpression; operand?: IRExpression };
-  if (e.kind === "DEFINED_TERM_REFERENCE" && typeof e.termName === "string" && e.termName.trim()) out.add(e.termName.trim());
-  if (e.kind === "UNLIMITED_CAPACITY") collectDefinedTermNames(e.gatedBy ?? null, out);
-  if (Array.isArray(e.operands)) for (const op of e.operands) collectDefinedTermNames(op, out);
-  if (e.left) collectDefinedTermNames(e.left, out);
-  if (e.right) collectDefinedTermNames(e.right, out);
-  if (e.operand) collectDefinedTermNames(e.operand, out);
+  if (expr.kind === "DEFINED_TERM_REFERENCE" && "termName" in expr && typeof expr.termName === "string" && expr.termName.trim()) {
+    out.add(expr.termName.trim());
+  }
+  if (expr.kind === "UNLIMITED_CAPACITY") {
+    collectDefinedTermNames(expr.gatedBy ?? null, out);
+    return;
+  }
+  if ("operands" in expr && Array.isArray(expr.operands)) for (const op of expr.operands) collectDefinedTermNames(op, out);
+  if ("left" in expr && expr.left) collectDefinedTermNames(expr.left, out);
+  if ("right" in expr && expr.right) collectDefinedTermNames(expr.right, out);
+  if ("operand" in expr && expr.operand) collectDefinedTermNames(expr.operand, out);
 }
 
 function ruleCapacityTermNames(rule: IRRule): string[] {

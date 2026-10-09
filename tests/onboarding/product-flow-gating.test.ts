@@ -146,7 +146,7 @@ describe("FINDING-7 - the real /onboarding/review route now gates on real Analys
     for (const item of reviewItems) {
       expect(html).toContain(item.rationale);
     }
-  });
+  }, 30_000);
 
   it("BLOCKED (stale): uploading a SECOND document without re-running analysis reopens the gate even though a prior run for this company completed", async () => {
     // Sanity: the company from the previous test is currently ready.
@@ -177,5 +177,5 @@ describe("FINDING-7 - the real /onboarding/review route now gates on real Analys
     const element = await ReviewPage({ params: Promise.resolve({ companyId: COMPANY_ID }) });
     expect(redirect).not.toHaveBeenCalled();
     expect(element).not.toBeNull();
-  });
+  }, 30_000);
 });

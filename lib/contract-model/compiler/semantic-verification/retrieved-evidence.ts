@@ -251,10 +251,37 @@ function authenticate(req: RetrievalRequest, resolved: ResolvedText, index: Stru
     checks.push({ code: "F_NOT_UNRELATED_DOCUMENT", passed: true, detail: "no compiler-recorded document/node identity to compare - resolved within the package by this verifier alone" });
   } else {
     const servedHash = resolved.servedText === resolved.text ? contentHash : computeSourceContentHash(resolved.servedText);
-    const mismatches = req.compilerRecords.filter(({ record }) => record.contentHash !== servedHash || record.rawText !== resolved.servedText);
+    const docText = resolved.documentVersion === "BASE_DOCUMENT" ? index.getDocumentText(resolved.documentId) : undefined;
+    const recordMatches = (record: RetrievedSourceRecord): boolean => {
+      if (record.contentHash === servedHash && record.rawText === resolved.servedText) return true;
+      // Budget-truncated authentic serve: the tool returned a proper prefix of the
+      // independently resolved provision (same node, same start, document-byte-identical
+      // at the recorded span). Still authentic source — not a substituted or wrong text.
+      if (
+        resolved.documentVersion === "BASE_DOCUMENT"
+        && docText
+        && record.documentId === resolved.documentId
+        && record.sourceNodeId !== null
+        && resolved.sourceNodeId !== null
+        && record.sourceNodeId === resolved.sourceNodeId
+        && record.charStart !== null
+        && record.charEnd !== null
+        && record.charStart === resolved.charStart
+        && record.charEnd > record.charStart
+        && record.rawText.length > 0
+        && record.contentHash === computeSourceContentHash(record.rawText)
+        && docText.slice(record.charStart, record.charEnd) === record.rawText
+        && resolved.text.startsWith(record.rawText)
+      ) {
+        return true;
+      }
+      return false;
+    };
+    const mismatches = req.compilerRecords.filter(({ record }) => !recordMatches(record));
     compilerMatched = mismatches.length === 0;
-    const bounded = resolved.servedText !== resolved.text ? ` (the served text was ${resolved.servedText.length} chars; the admitted evidence is bounded to its enclosing section, ${resolved.text.length} chars, hash ${contentHash})` : "";
-    checks.push({ code: "D_HASH_MATCH", passed: compilerMatched, detail: compilerMatched ? `compiler-recorded content hash ${servedHash} and raw text match the independently resolved text (${req.compilerRecords.length} record(s))${bounded}` : `compiler-recorded text/hash differs from the authentic source (recorded ${mismatches.map((m) => m.record.contentHash).join(", ")} vs authentic ${servedHash}) - the compiler was not shown this text as it exists` });
+    const truncatedOk = compilerMatched && req.compilerRecords.some(({ record }) => record.rawText !== resolved.servedText && resolved.text.startsWith(record.rawText));
+    const bounded = resolved.servedText !== resolved.text ? ` (the served text was ${resolved.servedText.length} chars; the admitted evidence is bounded to its enclosing section, ${resolved.text.length} chars, hash ${contentHash})` : truncatedOk ? ` (compiler serve was an authentic ${req.compilerRecords[0]!.record.rawText.length}-char prefix of the ${resolved.text.length}-char provision; admitted evidence is the full independently resolved text, hash ${contentHash})` : "";
+    checks.push({ code: "D_HASH_MATCH", passed: compilerMatched, detail: compilerMatched ? `compiler-recorded content hash matches the independently resolved source (${req.compilerRecords.length} record(s))${bounded}` : `compiler-recorded text/hash differs from the authentic source (recorded ${mismatches.map((m) => m.record.contentHash).join(", ")} vs authentic ${servedHash}) - the compiler was not shown this text as it exists` });
     const unrelated = req.compilerRecords.filter(({ record }) => record.documentId !== resolved.documentId || (record.sourceNodeId !== null && resolved.sourceNodeId !== null && record.sourceNodeId !== resolved.sourceNodeId));
     checks.push({ code: "F_NOT_UNRELATED_DOCUMENT", passed: unrelated.length === 0, detail: unrelated.length === 0 ? `compiler-recorded document/node (${resolved.documentId} / ${resolved.sourceNodeId ?? "(none)"}) is the same source this verifier resolved` : `compiler claims text from ${unrelated.map((u) => `${u.record.documentId} / ${u.record.sourceNodeId ?? "(none)"}`).join(", ")} but the authentic source for this request is ${resolved.documentId} / ${resolved.sourceNodeId ?? "(none)"}` });
   }
