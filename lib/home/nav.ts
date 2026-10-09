@@ -1,17 +1,27 @@
 import type { OnboardingStatus } from "@prisma/client";
 
-/** Legacy product pages that remain reachable from Deal setup & tools. */
+/** Legacy product pages still reachable from Deal setup & tools. */
 export const LEGACY_TOOLS = [
-  { segment: "dashboard", label: "Dashboard", note: "Existing covenant dashboard." },
-  { segment: "simulate", label: "Simulate", note: "Existing scenario tool." },
-  { segment: "feeds", label: "Feeds", note: "Existing feed queue." },
-  { segment: "docs", label: "Docs", note: "Existing document view." },
-  { segment: "ledger", label: "Ledger", note: "Existing ledger." },
+  { segment: "dashboard", label: "Legacy dashboard", note: "Prior covenant dashboard layout." },
+  { segment: "docs", label: "Legacy docs", note: "Coherent defined-term browse." },
+  { segment: "feeds", label: "Feeds", note: "Feed queue." },
+  { segment: "capacity", label: "Capacity detail", note: "Engine capacity breakdown." },
+  { segment: "capital-structure", label: "Capital structure", note: "Facilities view." },
+  { segment: "tools", label: "All tools", note: "Full tools index." },
 ] as const;
 
 export type LegacyToolSegment = (typeof LEGACY_TOOLS)[number]["segment"];
 
-export type CompanyNavKey = "home" | "ask" | "tools" | "onboarding";
+export type CompanyNavKey =
+  | "home"
+  | "documents"
+  | "covenants"
+  | "position"
+  | "ledger"
+  | "simulate"
+  | "evidence"
+  | "ask"
+  | "onboarding";
 
 export interface CompanyNavItem {
   key: CompanyNavKey;
@@ -25,11 +35,20 @@ export function companyOpenHref(company: { id: string; onboardingStatus: Onboard
   return `/${company.id}`;
 }
 
+/**
+ * Institutional product navigation — Documents / Covenants / Position / Ledger / Simulate / Evidence.
+ * Ask remains available; onboarding only while setup is incomplete.
+ */
 export function companyNavItems(companyId: string, onboardingStatus: OnboardingStatus): CompanyNavItem[] {
   const items: CompanyNavItem[] = [
-    { key: "home", href: `/${companyId}`, label: "Home" },
+    { key: "home", href: `/${companyId}`, label: "Overview" },
+    { key: "documents", href: `/${companyId}/documents`, label: "Documents" },
+    { key: "covenants", href: `/${companyId}/covenants`, label: "Covenants" },
+    { key: "position", href: `/${companyId}/position`, label: "Position" },
+    { key: "ledger", href: `/${companyId}/ledger`, label: "Ledger" },
+    { key: "simulate", href: `/${companyId}/simulate`, label: "Simulate" },
+    { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
     { key: "ask", href: `/${companyId}/ask`, label: "Ask" },
-    { key: "tools", href: `/${companyId}/tools`, label: "Deal setup & tools" },
   ];
   if (onboardingStatus === "ONBOARDING" || onboardingStatus === "ACTIVE_WITH_LIMITATIONS") {
     items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Onboarding" });
@@ -39,12 +58,15 @@ export function companyNavItems(companyId: string, onboardingStatus: OnboardingS
 
 export function isCompanyNavItemActive(pathname: string, item: CompanyNavItem, companyId: string): boolean {
   if (item.key === "home") return pathname === `/${companyId}`;
-  if (item.key === "ask" || item.key === "onboarding") {
-    return pathname === item.href || pathname.startsWith(`${item.href}/`);
-  }
   if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
-  return LEGACY_TOOLS.some((tool) => {
-    const href = `/${companyId}/${tool.segment}`;
-    return pathname === href || pathname.startsWith(`${href}/`);
-  });
+  // Position aliases the legacy dashboard route for deep links.
+  if (item.key === "position") {
+    const dash = `/${companyId}/dashboard`;
+    if (pathname === dash || pathname.startsWith(`${dash}/`)) return true;
+  }
+  if (item.key === "evidence") {
+    const review = `/${companyId}/onboarding/review`;
+    if (pathname === review || pathname.startsWith(`${review}/`)) return true;
+  }
+  return false;
 }

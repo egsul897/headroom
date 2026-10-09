@@ -1,21 +1,17 @@
+import Link from "next/link";
+import { Card, Chip } from "@/components/ui";
 import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
 import { buildSolverContext } from "@/lib/dashboard-service";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
+import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
 
 /**
- * The Simulate tab (task "MAKE THE UI MATCH THE PROTOTYPE EXACTLY" -
- * reference/headroom-coherent.jsx's Simulate tab: action-type picker,
- * amount slider, pass/fail verdict, per-document breakdown, allocation
- * waterfall, pro forma ratio table). Generalized off app/simulate/page.tsx
- * (Coherent-only) - same real engine (lib/covenant-engine.ts, unmodified),
- * now explicitly companyId-scoped and passing a real `solverContext` (built
- * the same way the Dashboard tab does, via `buildSolverContext` in
- * lib/dashboard-service.ts) into the debt-incurrence simulation so a
- * solver-native document (Matthews) is actually evaluated rather than
- * silently skipped.
+ * Simulate — runs the shared covenant engine. A simulation is not a legal approval.
+ * CONMED demo has no capacity IR/financials; the engine will return not-determinable
+ * rather than inventing clearance.
  */
 export default async function SimulatePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -26,13 +22,42 @@ export default async function SimulatePage({ params }: { params: Promise<{ compa
     getDefinedTermsByProvision(companyId),
     buildSolverContext(companyId, asOfDate),
   ]);
+
+  const conmedBanner =
+    companyId === CONMED_DEMO_COMPANY_ID ? (
+      <Card>
+        <div className="card-title">Simulation limits for CONMED demo</div>
+        <div className="card-subtitle">
+          The form below runs the <strong>real</strong> shared simulation engine. Without capacity formulas and an approved financial snapshot, expect{" "}
+          <Chip tone="tight">NOT DETERMINABLE</Chip> / unmet input results — not a fabricated pass.
+        </div>
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/covenants`}>
+            Review covenant structure
+          </Link>
+          <Link className="button" href={`/${companyId}/evidence`}>
+            Evidence / unresolved
+          </Link>
+        </div>
+      </Card>
+    ) : null;
+
   return (
-    <SimulateClient
-      companyId={companyId}
-      data={data}
-      documents={documents}
-      definedTermsByProvision={definedTermsByProvision}
-      solverContext={{ ...solverContext, activationState: { ...solverContext.activationState, unknownKeysArray: [...solverContext.activationState.unknownKeys] } }}
-    />
+    <div className="stack">
+      {conmedBanner}
+      <SimulateClient
+        companyId={companyId}
+        data={data}
+        documents={documents}
+        definedTermsByProvision={definedTermsByProvision}
+        solverContext={{
+          ...solverContext,
+          activationState: {
+            ...solverContext.activationState,
+            unknownKeysArray: [...solverContext.activationState.unknownKeys],
+          },
+        }}
+      />
+    </div>
   );
 }
