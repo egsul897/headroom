@@ -12,12 +12,14 @@ function parseCapacity(display: string): { total: string; segments: { name: stri
   const amounts: { name: string; amount: string; value: number }[] = [];
   for (const part of parts.slice(1)) {
     const m = part.match(/^(.+?):\s*(\$[\d,.]+[MBK]?)$/i);
-    if (!m) continue;
-    const raw = m[2].replace(/[$,]/g, "");
-    const mult = /B$/i.test(m[2]) ? 1000 : /K$/i.test(m[2]) ? 0.001 : 1;
+    const name = m?.[1];
+    const amount = m?.[2];
+    if (!name || !amount) continue;
+    const raw = amount.replace(/[$,]/g, "");
+    const mult = /B$/i.test(amount) ? 1000 : /K$/i.test(amount) ? 0.001 : 1;
     const value = Number(raw) * mult;
     if (!Number.isFinite(value) || value <= 0) continue;
-    amounts.push({ name: m[1], amount: m[2], value });
+    amounts.push({ name, amount, value });
   }
 
   const sum = amounts.reduce((a, b) => a + b.value, 0);

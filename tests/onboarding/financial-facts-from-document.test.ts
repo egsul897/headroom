@@ -15,13 +15,23 @@ describe("parseFinancialFactsFromText", () => {
   it("extracts labeled certificate figures with declared million units", () => {
     const rows = parseFinancialFactsFromText(CERTIFICATE);
     const byMetric = Object.fromEntries(rows.map((r) => [r.metricName, r]));
-    expect(byMetric.covenant_ebitda.value).toBe(1700);
-    expect(byMetric.total_debt.value).toBe(3258);
-    expect(byMetric.secured_debt.value).toBe(2221);
-    expect(byMetric.cash.value).toBe(1162);
-    expect(byMetric.interest_expense.value).toBe(190);
-    expect(byMetric.covenant_ebitda.asOfDate).toBe("2026-06-30");
-    expect(byMetric.covenant_ebitda.originalUnit).toBe("USD_MILLIONS");
+    const ebitda = byMetric.covenant_ebitda!;
+    const totalDebt = byMetric.total_debt!;
+    const securedDebt = byMetric.secured_debt!;
+    const cash = byMetric.cash!;
+    const interest = byMetric.interest_expense!;
+    expect(ebitda).toBeDefined();
+    expect(totalDebt).toBeDefined();
+    expect(securedDebt).toBeDefined();
+    expect(cash).toBeDefined();
+    expect(interest).toBeDefined();
+    expect(ebitda.value).toBe(1700);
+    expect(totalDebt.value).toBe(3258);
+    expect(securedDebt.value).toBe(2221);
+    expect(cash.value).toBe(1162);
+    expect(interest.value).toBe(190);
+    expect(ebitda.asOfDate).toBe("2026-06-30");
+    expect(ebitda.originalUnit).toBe("USD_MILLIONS");
   });
 
   it("does not invent facts when the period or units are missing", () => {
