@@ -35,7 +35,10 @@ Cursor work. Provider calls: none in this workstream.
 | 25 | PR #161 independent Chewy P0 replay (doc 23) — INDEPENDENT_PARSER_REMEDIATION_PASSED with disclosed limitations | done (this commit) |
 | 26 | PR #168 IPV-16 remediation acceptance (doc 24) — IPV16_INDEPENDENT_REMEDIATION_PASSED (section-level path only) | done (this commit) |
 | 27 | PR #163 independent parser acceptance (doc 25) — PR163_PARSER_REMEDIATION_REQUIRED; #161 stays the selected correction; #169 blocked. PR #161 merge preparation: disclosure + regression pins pushed to its branch (`4736ea4a`; tip `2c8383fa` after merging main `c51d96c3`), PR body corrected, Gibraltar record pin refresh handed to the Integration Lead | done (this commit) |
-| 28 | Doc 21 §11 remainder (INV-04 back-reference path, shared-cap plan, real-fixture IPV rows); then W1–W4 | next |
+| 28 | PR #171 qualitative condition-loss acceptance (doc 26) — PR171_INDEPENDENT_SAFETY_ACCEPTANCE_PASSED, four non-blocking observations | done (this commit) |
+| 29 | Chewy parser comparative acceptance #161 (merged) / #163 / #164 (doc 27) — PARSER_REMEDIATION_INCOMPLETE; preferred #164 narrowed to line-start chains, #161 guard removed, nestingRank kept, #163 closed; consolidated path prototyped (Gibraltar 2064/938 reproduced) | done (this commit) |
+| 30 | PR #136 @ab917087 governing-limit enforcement challenge (doc 28) — GOVERNING_LIMIT_ENFORCEMENT_GAP: evaluator unconsumed, capacity graph ignores LIMITED_BY, unverified primitives publish UNLIMITED AVAILABLE, Phase-4 gate reads sourceDependencies only; xref failures obsolete expectations | done (this commit) |
+| 31 | Doc 21 §11 remainder (INV-04 back-reference path, shared-cap plan, real-fixture IPV rows); then W1–W4 | next |
 
 Known limits of the evidence produced here: model stages are mocked (labelled MOCKED everywhere), discovery Pass B–D
 not run, runtime over fixture IR. See `02-acceptance-matrix.md` "What this matrix does not say".
