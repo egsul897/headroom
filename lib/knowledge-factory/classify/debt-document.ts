@@ -67,7 +67,17 @@ const RULES: Rule[] = [
     documentClass: "CREDIT_AGREEMENT",
     weight: 0.85,
     signal: "credit_agreement",
-    test: (c) => /\bcredit\s+agreement\b/i.test(c.title + " " + c.description + " " + c.headingSample),
+    test: (c) =>
+      /\bcredit\s+agreement\b/i.test(c.title + " " + c.description + " " + c.headingSample) ||
+      /\b(?:senior\s+secured\s+)?credit\s+facility\b/i.test(c.title + " " + c.description),
+  },
+  {
+    documentClass: "TERM_LOAN_AGREEMENT",
+    weight: 0.86,
+    signal: "term_facility",
+    test: (c) =>
+      /\bterm\s+(?:loan\s+)?facility\b/i.test(c.title + " " + c.description) &&
+      !/\brevolving\b/i.test(c.title + " " + c.description),
   },
   {
     documentClass: "INTERCREDITOR_AGREEMENT",
@@ -136,11 +146,23 @@ const RULES: Rule[] = [
   },
   {
     documentClass: "OTHER_DEBT_RELATED",
+    weight: 0.62,
+    signal: "senior_notes_indenture_package",
+    test: (c) =>
+      /\b(?:senior\s+(?:secured\s+|unsecured\s+)?notes|notes\s+due\s+\d{4}|bridge\s+(?:credit\s+)?facility|commitment\s+letter)\b/i.test(
+        c.title + " " + c.description,
+      ),
+  },
+  {
+    documentClass: "OTHER_DEBT_RELATED",
     weight: 0.55,
     signal: "debt_related_structural",
     test: (c) =>
-      /\b(?:loan\s+agreement|facility\s+agreement|note\s+purchase|pledge\s+agreement|joinder)\b/i.test(c.title + " " + c.description) ||
-      (/\bArticle\s+(?:VI|VII|6|7)\b/i.test(c.headingSample) && /\b(?:Indebtedness|Liens|Restricted Payments)\b/i.test(c.textSample)),
+      /\b(?:loan\s+agreement|facility\s+agreement|note\s+purchase|pledge\s+agreement|joinder|loan\s+and\s+security)\b/i.test(
+        c.title + " " + c.description,
+      ) ||
+      (/\bArticle\s+(?:VI|VII|6|7)\b/i.test(c.headingSample) &&
+        /\b(?:Indebtedness|Liens|Restricted Payments)\b/i.test(c.textSample)),
   },
 ];
 
@@ -153,12 +175,48 @@ export interface ClassifyDebtDocumentInput {
   textSample?: string;
 }
 
+/** Expand truncated EDGAR filenames into title-like tokens for classification. */
+function expandFilenameSignals(filename: string): string {
+  const base = filename.replace(/\.[a-z0-9]+$/i, "").toLowerCase();
+  const hints: string[] = [];
+  if (/creditagre|credit_agreement|creditagreement/.test(base)) hints.push("credit agreement");
+  if (/termloan|term_loan/.test(base)) hints.push("term loan agreement");
+  if (/revolvingcredit|revolver/.test(base)) hints.push("revolving credit agreement");
+  if (/indenture/.test(base) && !/supplemental/.test(base)) hints.push("indenture");
+  if (/supplemental.*indenture|supplementalindenture/.test(base)) hints.push("supplemental indenture");
+  // EDGAR filenames often truncate "bylaws" to "byla".
+  if (/bylaws?|byla$|articlesofinc|certificateofincorp/.test(base)) {
+    hints.push("bylaws");
+    return hints.join(" ");
+  }
+  if (/a(?:nd)?rcredit|amendedandrestatedcredit/.test(base)) {
+    hints.push("amended and restated credit agreement");
+  } else if (/amendedandrestat|amended_and_restated/.test(base) && /credit|loan|facility|indenture/.test(base)) {
+    hints.push("amended and restated credit agreement");
+  } else if (/amendedandrestat|amended_and_restated/.test(base)) {
+    // Truncated restatement filenames without an instrument noun stay ambiguous.
+    hints.push("amended and restated agreement");
+  }
+  if (/amendmentno|amendment_no|omnibusamend/.test(base)) {
+    hints.push(
+      /credit|loan|facility|indenture|term/.test(base)
+        ? "amendment no. 1 to credit agreement"
+        : "amendment no. 1",
+    );
+  }
+  if (/securityagre|collateralagre/.test(base)) hints.push("security agreement");
+  if (/intercreditor/.test(base)) hints.push("intercreditor agreement");
+  if (/guarant(?:y|ee)/.test(base) && /agreement|agre/.test(base)) hints.push("guarantee agreement");
+  return hints.join(" ");
+}
+
 export function classifyDebtDocument(input: ClassifyDebtDocumentInput): ClassificationResult {
   const textSample = input.textSample ?? "";
   const headingSample = extractHeadingSample(textSample);
+  const filenameExpanded = expandFilenameSignals(input.filename ?? "");
   const ctx: ClassifyContext = {
-    title: input.title ?? "",
-    description: input.description ?? "",
+    title: `${input.title ?? ""} ${filenameExpanded}`.trim(),
+    description: `${input.description ?? ""} ${filenameExpanded}`.trim(),
     exhibitType: input.exhibitType ?? "",
     filename: input.filename ?? "",
     headingSample,
@@ -173,6 +231,18 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
       signals: [],
       rationale: "No title, exhibit metadata, or text sample available — preserving UNKNOWN.",
     };
+  }
+
+  // Corporate governance exhibits are not financing documents.
+  if (/\b(?:bylaws?|articles of incorporation|certificate of incorporation)\b/i.test(combinedMeta + " " + filenameExpanded)) {
+    if (!/\b(?:credit|loan|indenture|facility)\b/i.test(`${input.title ?? ""} ${input.description ?? ""}`)) {
+      return {
+        documentClass: "UNKNOWN",
+        confidence: 0.9,
+        signals: ["non_financing_governance_exhibit"],
+        rationale: "Filename/title indicates corporate governance exhibit, not a financing instrument.",
+      };
+    }
   }
 
   let best: { rule: Rule; score: number } | null = null;
