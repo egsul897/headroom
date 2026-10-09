@@ -91,12 +91,35 @@ function pickRelatedBase(doc: KnowledgeSourceRecord, bases: KnowledgeSourceRecor
 }
 
 function titlesLikelyRelated(a: KnowledgeSourceRecord, b: KnowledgeSourceRecord): boolean {
-  return titleOverlap(a.documentTitle, b.documentTitle) >= 2 || sameInstrumentHint(a, b);
+  if (sameInstrumentHint(a, b)) return true;
+  if (titleOverlap(a.documentTitle, b.documentTitle) >= 2) return true;
+  // Amendment/supplement titles often share only the instrument family token
+  // ("credit", "indenture") with the base — allow that when classes align.
+  if (amendmentFamilyLink(a, b) && titleOverlap(a.documentTitle, b.documentTitle) >= 1) return true;
+  return false;
+}
+
+function amendmentFamilyLink(a: KnowledgeSourceRecord, b: KnowledgeSourceRecord): boolean {
+  const amd = new Set(["AMENDMENT", "RESTATEMENT", "WAIVER", "CONSENT", "SIDE_LETTER", "SUPPLEMENTAL_INDENTURE"]);
+  const base = new Set([
+    "CREDIT_AGREEMENT",
+    "REVOLVING_CREDIT_AGREEMENT",
+    "TERM_LOAN_AGREEMENT",
+    "ABL_AGREEMENT",
+    "INDENTURE",
+    "RESTATEMENT",
+  ]);
+  return (amd.has(a.documentClass) && base.has(b.documentClass)) || (amd.has(b.documentClass) && base.has(a.documentClass));
 }
 
 function sameInstrumentHint(a: KnowledgeSourceRecord, b: KnowledgeSourceRecord): boolean {
   if (a.instrumentIdentity && b.instrumentIdentity && a.instrumentIdentity === b.instrumentIdentity) return true;
-  return /\b(?:Credit Agreement|Indenture|Facility)\b/i.test(a.documentTitle) && /\b(?:Credit Agreement|Indenture|Facility)\b/i.test(b.documentTitle);
+  const family =
+    /\b(?:Credit Agreement|Indenture|Facility|Term Loan|Revolving)\b/i.test(a.documentTitle) &&
+    /\b(?:Credit Agreement|Indenture|Facility|Term Loan|Revolving)\b/i.test(b.documentTitle);
+  if (!family) return false;
+  // Same issuer + both name the instrument family is enough for DISCOVERED linkage.
+  return a.issuerCik === b.issuerCik || Boolean(a.companyId && a.companyId === b.companyId);
 }
 
 function titleOverlap(a: string, b: string): number {
@@ -106,12 +129,21 @@ function titleOverlap(a: string, b: string): number {
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, " ")
         .split(/\s+/)
-        .filter((t) => t.length > 3 && !["agreement", "dated", "among", "between", "amendment"].includes(t)),
+        .filter(
+          (t) =>
+            t.length > 3 &&
+            !["agreement", "dated", "among", "between", "amendment", "first", "second", "third", "fourth", "fifth"].includes(
+              t,
+            ),
+        ),
     );
   const A = tokens(a);
   const B = tokens(b);
   let n = 0;
   for (const t of A) if (B.has(t)) n += 1;
+  // Shared instrument family tokens count even if short
+  if (/\bcredit\b/i.test(a) && /\bcredit\b/i.test(b)) n += 1;
+  if (/\bindenture\b/i.test(a) && /\bindenture\b/i.test(b)) n += 1;
   return n;
 }
 

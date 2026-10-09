@@ -436,6 +436,13 @@ export async function analyzeCustomerDocument(params: {
       sources: packageSources,
       relationships,
     });
+    // Persist discovered agreement edges into Neon (idempotent). Failures must not block analysis.
+    try {
+      const { persistAmendmentGraph } = await import("../legal-reasoning/amendment-graph");
+      await persistAmendmentGraph({ companyId: params.companyId });
+    } catch {
+      /* non-blocking */
+    }
 
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
     const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });

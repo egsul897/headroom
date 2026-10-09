@@ -64,3 +64,27 @@ export {
   type PrecedentClauseQuery,
   type PrecedentClauseHit,
 } from "./precedent-clause-search";
+
+export {
+  persistAmendmentGraph,
+  loadAmendmentGraphCoverage,
+  type AmendmentGraphPersistResult,
+} from "./amendment-graph";
+
+export {
+  discoverProvisionEdgesFromItems,
+  persistProvisionGraph,
+  type ProvisionGraphEdge,
+  type ProvisionGraphPersistResult,
+} from "./provision-graph";
+
+export {
+  scoreDocumentQuality,
+  suggestCategoryForUnknown,
+  type DocumentQualityScore,
+} from "./document-quality";
+
+export {
+  generateExercisesFromSource,
+  type GeneratedExercise,
+} from "./exercise-factory";

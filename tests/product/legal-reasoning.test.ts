@@ -12,8 +12,13 @@ import {
   searchPrecedentClauses,
   listPrecedentClauseQueries,
   LEGAL_BENCHMARK_CASES,
+  discoverProvisionEdgesFromItems,
+  scoreDocumentQuality,
+  suggestCategoryForUnknown,
+  generateExercisesFromSource,
 } from "../../lib/product/legal-reasoning";
 import { detectPatternsInText, allPatterns } from "../../lib/knowledge-factory/patterns/library";
+import { discoverDocumentRelationships } from "../../lib/knowledge-factory/relationships/discover";
 import { seedDraftingPatterns } from "../../lib/product/covenant-intelligence-loop/patterns";
 import { listExercises } from "../../lib/product/covenant-intelligence-loop/exercise-library";
 import { challengeLegalConclusions } from "../../lib/product/legal-intelligence/challenge";
@@ -255,6 +260,131 @@ describe("benchmarks + precedent clause search", () => {
       expect(h.authorityNote).toMatch(/PRECEDENT/);
       expect(h).not.toHaveProperty("marketFrequency");
     }
+  });
+});
+
+describe("provision graph / quality / exercise factory", () => {
+  it("discovers provision-level definition and condition edges", () => {
+    const edges = discoverProvisionEdgesFromItems([
+      item({
+        sectionRef: "7.06",
+        category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+        applicableDefinitions: [{ term: "Available Amount", excerpt: "means…", resolved: true }],
+        crossReferences: ["Section 1.01", "Section 7.01"],
+        exceptions: ["except as permitted"],
+        conditions: ["provided that no Default"],
+        plainEnglish: "shared basket capacity for RP and investments",
+        materialBasketsThresholds: ["shared capacity aggregate"],
+      }),
+      item({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
+    ]);
+    expect(edges.some((e) => e.kind === "PROVISION_DEFINITION")).toBe(true);
+    expect(edges.some((e) => e.kind === "PROVISION_CROSS_REFERENCE")).toBe(true);
+    expect(edges.some((e) => e.kind === "PROVISION_CONDITION")).toBe(true);
+    expect(edges.some((e) => e.kind === "PROVISION_SHARED_CAPACITY")).toBe(true);
+  });
+
+  it("scores document quality and suggests unknown categories", () => {
+    const score = scoreDocumentQuality({
+      sourceId: "s1",
+      documentClass: "CREDIT_AGREEMENT",
+      documentTitle: "Credit Agreement",
+      exhibitFilename: "ex10.htm",
+      provenance: "sec-edgar",
+      summary: {
+        schemaVersion: "product.covenant-summary.v2",
+        sourceId: "s1",
+        governingAgreement: "CA",
+        issuerCik: "1",
+        documentClass: "CREDIT_AGREEMENT",
+        generatedAt: new Date().toISOString(),
+        promotedToLegalTruth: 0,
+        note: "",
+        countsByCategory: {},
+        definedTermsSample: [{ term: "EBITDA", excerpt: "means" }],
+        items: [
+          item({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
+          item({ sectionRef: "7.02", category: "LIENS_SECURED_DEBT" }),
+          item({
+            sectionRef: "9.99",
+            category: "OTHER",
+            plainEnglish: "Limitation on Indebtedness miscellaneous",
+            posture: "UNRESOLVED",
+            restriction: null,
+            permissions: [],
+          }),
+        ],
+      },
+    });
+    expect(score.score).toBeGreaterThan(0.2);
+    const suggestion = suggestCategoryForUnknown(
+      item({
+        sectionRef: "9.99",
+        category: "OTHER",
+        plainEnglish: "Limitation on Indebtedness of the Borrower",
+        posture: "UNRESOLVED",
+      }),
+    );
+    expect(suggestion.suggested).toBe("DEBT_INCURRENCE");
+  });
+
+  it("generates synthetic exercises from authentic categories", () => {
+    const gens = generateExercisesFromSource({
+      sourceId: "src-ca",
+      documentTitle: "Test Credit Agreement",
+      items: [
+        item({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
+        item({ sectionRef: "7.02", category: "LIENS_SECURED_DEBT" }),
+        item({ sectionRef: "7.06", category: "RESTRICTED_PAYMENTS_INVESTMENTS" }),
+        item({ sectionRef: "7.05", category: "ASSET_SALES" }),
+      ],
+      maxVariants: 6,
+    });
+    expect(gens.length).toBeGreaterThan(0);
+    expect(gens.every((g) => g.syntheticAssumptions.some((a) => /SYNTHETIC/.test(a)))).toBe(true);
+    expect(gens.every((g) => /NOT ground truth/i.test(g.note))).toBe(true);
+  });
+
+  it("discovers amendment links with family-token overlap", () => {
+    const rels = discoverDocumentRelationships([
+      {
+        sourceId: "base",
+        issuerCik: "0000000001",
+        accessionNumber: "a",
+        exhibitFilename: "ex.htm",
+        sourceUrl: "u",
+        filingDate: "2020-01-01",
+        formType: "8-K",
+        documentTitle: "Credit Agreement dated as of January 1, 2020",
+        documentClass: "CREDIT_AGREEMENT",
+        originalBytesHash: "h1",
+        acquisitionTimestamp: "2020-01-01T00:00:00.000Z",
+        parserVersion: "t",
+        extractionStatus: "STRUCTURALLY_INDEXED",
+        representationLevel: "STRUCTURALLY_INDEXED",
+        provenance: "sec-edgar",
+        usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
+      },
+      {
+        sourceId: "amd",
+        issuerCik: "0000000001",
+        accessionNumber: "b",
+        exhibitFilename: "ex2.htm",
+        sourceUrl: "u2",
+        filingDate: "2021-01-01",
+        formType: "8-K",
+        documentTitle: "First Amendment to Credit Agreement",
+        documentClass: "AMENDMENT",
+        originalBytesHash: "h2",
+        acquisitionTimestamp: "2021-01-01T00:00:00.000Z",
+        parserVersion: "t",
+        extractionStatus: "STRUCTURALLY_INDEXED",
+        representationLevel: "STRUCTURALLY_INDEXED",
+        provenance: "sec-edgar",
+        usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
+      },
+    ]);
+    expect(rels.some((r) => r.kind === "AGREEMENT_AMENDMENT")).toBe(true);
   });
 });
 
