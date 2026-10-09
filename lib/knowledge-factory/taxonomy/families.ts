@@ -21,14 +21,22 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "INDEBTEDNESS",
     label: "Indebtedness",
     aliases: ["debt", "permitted indebtedness"],
-    headingPatterns: [/\bIndebtedness\b/i, /\bLimitation on Indebtedness\b/i],
-    bodyPatterns: [/\bPermitted\s+Indebtedness\b/i, /\bshall not\s+(?:incur|create|assume).{0,40}Indebtedness\b/i],
+    headingPatterns: [
+      /\bIndebtedness\b/i,
+      /\bLimitations?\s+on\s+(?:the\s+)?(?:Incurrence\s+of\s+)?Indebtedness\b/i,
+      /\bIncurrence\s+of\s+Indebtedness\b/i,
+    ],
+    bodyPatterns: [
+      /\bPermitted\s+Indebtedness\b/i,
+      /\bshall not\s+(?:incur|create|assume).{0,40}Indebtedness\b/i,
+      /\bIncur\s+any\s+Indebtedness\b/i,
+    ],
   },
   {
     family: "LIENS",
     label: "Liens",
     aliases: ["permitted liens", "negative pledge"],
-    headingPatterns: [/\bLiens?\b/i],
+    headingPatterns: [/\bLiens?\b/i, /\bLimitations?\s+on\s+Liens?\b/i, /\bNegative\s+Pledge\b/i],
     bodyPatterns: [/\bPermitted\s+Liens?\b/i, /\bshall not\s+(?:create|incur|suffer).{0,40}Lien\b/i],
   },
   {

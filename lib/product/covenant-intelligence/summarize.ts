@@ -163,6 +163,53 @@ export function buildDocumentCovenantSummary(params: {
     items.push(itemFromAnalysis(analysis, params.documentTitle));
   }
 
+  // Surface grower / shared-capacity mechanics buried in Permitted * definitions
+  // onto the matching negative-covenant summary items (common IG / mid-market drafting).
+  for (const d of params.definitions) {
+    if (!/^Permitted (?:Liens?|Investments?|Indebtedness)\b/i.test(d.term)) continue;
+    const excerpt = d.excerpt || "";
+    if (!/\bgreater of\b|\btaken together with\b/i.test(excerpt)) continue;
+    const growerHits = [
+      ...excerpt.matchAll(
+        /greater\s+of\s*\(\s*(?:x|i|A)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*\(\s*(?:y|ii|B)\s*\)\s*(?:[a-z\s-]+percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,60})/gi,
+      ),
+    ];
+    const labels: string[] = [];
+    for (const m of growerHits.slice(0, 4)) {
+      const dollars = /million|billion/i.test(m[2] || "")
+        ? `$${m[1]} ${m[2]}`
+        : `$${m[1]}`;
+      labels.push(`Greater-of / grower basket: ${dollars} and ${m[3]}% of ${m[4]}`.replace(/\s+/g, " "));
+    }
+    if (!labels.length && /\bgreater of\b/i.test(excerpt)) {
+      const clip = excerpt.match(/greater\s+of\b[\s\S]{0,140}/i);
+      if (clip) labels.push(`Greater-of construct: ${clip[0].replace(/\s+/g, " ").slice(0, 140)}`);
+    }
+    if (/\btaken together with\b/i.test(excerpt)) {
+      labels.push("Shared / aggregated capacity or cross-clause stacking language present.");
+    }
+    if (!labels.length) continue;
+    for (const item of items) {
+      const matchLien = /Lien/i.test(d.term) && item.category === "LIENS_SECURED_DEBT";
+      const matchInv =
+        /Investment/i.test(d.term) && item.category === "RESTRICTED_PAYMENTS_INVESTMENTS";
+      const matchDebt = /Indebtedness/i.test(d.term) && item.category === "DEBT_INCURRENCE";
+      if (!matchLien && !matchInv && !matchDebt) continue;
+      if (item.posture !== "GENERAL_PROHIBITION" && !/^(?:limitations?\s+on\s+)?(?:liens?|investments?|indebtedness)\b/i.test(item.heading)) {
+        continue;
+      }
+      for (const label of labels) {
+        if (!item.materialBasketsThresholds.includes(label)) {
+          item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 18);
+        }
+      }
+      const dep = `Basket mechanics also appear in definition of “${d.term}”`;
+      if (!item.dependencies.includes(dep)) {
+        item.dependencies = [...item.dependencies, dep].slice(0, 12);
+      }
+    }
+  }
+
   // Attach builder / Available Amount / NOA / Incremental definition pointers.
   for (const d of params.definitions) {
     const isBuilder = /Available Amount|Builder Basket/i.test(d.term);

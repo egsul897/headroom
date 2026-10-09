@@ -405,8 +405,9 @@ function selectAnswerItems<T extends CovenantSummaryItem & { sourceId: string; s
     /^(?:limitations?\s+on\s+)?liens?\b/i.test(i.heading) ||
     /\blimitations?\s+on\s+liens?\b/i.test(i.heading);
   const isDebtCovenantHeading = (i: T) =>
-    /^(?:limitations?\s+on\s+)?indebtedness\b/i.test(i.heading) ||
-    /\blimitations?\s+on\s+indebtedness\b/i.test(i.heading);
+    /^(?:limitations?\s+on\s+(?:the\s+)?(?:incurrence\s+of\s+)?)?indebtedness\b/i.test(i.heading) ||
+    /\blimitations?\s+on\s+(?:the\s+)?(?:incurrence\s+of\s+)?indebtedness\b/i.test(i.heading) ||
+    /\bincurrence\s+of\s+indebtedness\b/i.test(i.heading);
 
   const lienGp =
     scored.find(
@@ -531,9 +532,19 @@ function composeAnswer(params: {
   const uniqRestrictions = Array.from(new Set(restrictions)).slice(0, 6);
   const uniqPermissions = Array.from(new Set(permissions)).slice(0, 10);
 
+  const hasLiensRegime = top.some((i) => i.category === "LIENS_SECURED_DEBT");
+  const hasDebtRegime = top.some((i) => i.category === "DEBT_INCURRENCE");
+  const securedDebtLead =
+    hasLiensRegime && hasDebtRegime
+      ? "Additional secured debt is governed jointly by the indebtedness and liens regimes — both must be satisfied. Source-backed analysis of matching provisions from each regime:"
+      : hasLiensRegime
+        ? "Matching analyzed liens / secured-debt provisions say (indebtedness-regime text was not retrieved from this package):"
+        : hasDebtRegime
+          ? "Matching analyzed indebtedness provisions say (liens-regime text was not retrieved from this package):"
+          : "Matching analyzed provisions relevant to secured debt say:";
+
   const intentLead: Record<QuestionIntent, string> = {
-    SECURED_DEBT:
-      "Additional secured debt is governed jointly by the indebtedness and liens regimes — both must be satisfied. Source-backed analysis of matching provisions from each regime:",
+    SECURED_DEBT: securedDebtLead,
     RESTRICTED_PAYMENTS:
       "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:",
     NON_GUARANTOR_DEBT:

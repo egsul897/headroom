@@ -104,7 +104,13 @@ export function discoverDefinitions(sourceId: string, text: string, _nodes: Stru
     if (seen.has(key)) continue;
     seen.add(key);
     const charStart = m.index;
-    const charEnd = Math.min(scan.length, charStart + 400);
+    // Basket-heavy defined terms bury growers / shared caps deep in lettered clauses.
+    const basketHeavy =
+      /^(?:Permitted (?:Liens?|Investments?|Indebtedness)|Available Amount|Not Otherwise Applied|Incremental (?:Cap|Amount)|Fixed Incremental|Ratio Incremental)/i.test(
+        term,
+      );
+    const excerptLen = basketHeavy ? 3200 : 400;
+    const charEnd = Math.min(scan.length, charStart + excerptLen);
     out.push({
       term,
       sourceId,

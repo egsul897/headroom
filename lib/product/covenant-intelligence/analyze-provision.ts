@@ -223,11 +223,12 @@ function extractBaskets(excerpt: string): string[] {
     if (!out.some((x) => x === s)) out.push(s);
   };
 
-  // Grower: greater of (x)/(y) OR (i)/(ii) OR unlabeled, including "$108.0 million" drafting.
+  // Grower: greater of (x)/(y), (i)/(ii), (A)/(B), or unlabeled — including
+  // "$108.0 million" and spelled percents like "fifteen percent (15%)".
   const greaterOfPatterns = [
-    /greater\s+of\s*\(\s*(?:x|i)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*\(\s*(?:y|ii)\s*\)\s*([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s*(?:\(|,|;|\.|\)| at | for | calculated))/gi,
-    /greater\s+of\s*\(\s*(?:i)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*and\s*\(\s*(?:ii)\s*\)\s*([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s|$|,|;|\))/gi,
-    /greater\s+of\s*\(?\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*(?:\(\s*(?:y|ii)\s*\)\s*)?([\d.]+)\s*%\s*(?:of\s+)?([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\)|,|;|\.|$)/gi,
+    /greater\s+of\s*\(\s*(?:x|i|A)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*\(\s*(?:y|ii|B)\s*\)\s*(?:[a-z][a-z\s-]{0,40}?percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s*(?:\(|,|;|\.|\)| at | for | calculated))/gi,
+    /greater\s+of\s*\(\s*(?:i|A)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*and\s*\(\s*(?:ii|B)\s*\)\s*(?:[a-z][a-z\s-]{0,40}?percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s|$|,|;|\))/gi,
+    /greater\s+of\s*\(?\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*(?:\(\s*(?:y|ii|B)\s*\)\s*)?(?:[a-z][a-z\s-]{0,40}?percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*(?:of\s+)?([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\)|,|;|\.|$)/gi,
   ];
   for (const re of greaterOfPatterns) {
     for (const m of excerpt.matchAll(re)) {

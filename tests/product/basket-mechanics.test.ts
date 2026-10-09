@@ -59,6 +59,18 @@ describe("quantitative basket / relationship mechanics", () => {
     expect(a.basketsAndThresholds.some((b) => /outstanding/i.test(b))).toBe(true);
   });
 
+  it("captures (A)/(B) growers with spelled percent of Consolidated Net Tangible Assets", () => {
+    const a = run(
+      "Investments not to exceed the greater of (A) $150,000,000 and (B) fifteen percent (15%) of Consolidated Net Tangible Assets at the time outstanding.",
+      "Investments",
+      "INVESTMENTS",
+    );
+    expect(a.basketsAndThresholds.some((b) => /Greater-of|grower/i.test(b) && /150/.test(b) && /15/.test(b))).toBe(
+      true,
+    );
+    expect(a.basketsAndThresholds.some((b) => /Consolidated Net Tangible Assets/i.test(b))).toBe(true);
+  });
+
   it("captures $X million grower drafting", () => {
     const a = run(
       "Investments not to exceed the greater of (x) $108.0 million and (y) 15% of Consolidated EBITDA for the most recently ended Test Period.",
