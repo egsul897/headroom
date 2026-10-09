@@ -7,6 +7,7 @@ import {
   type CapacityDeterminationStatus,
 } from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
+import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Covenants" };
 
@@ -27,7 +28,10 @@ function statusTone(status: CapacityDeterminationStatus): "navy" | "tight" | "id
 
 export default async function CovenantsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const review = await loadCovenantReviewWorkspace(companyId);
+  const [review, rulebook] = await Promise.all([
+    loadCovenantReviewWorkspace(companyId),
+    loadRulebookReadiness(companyId),
+  ]);
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
   const provisions = await prisma.covenantProvision.findMany({
     where: { companyId },
@@ -60,6 +64,13 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <div className="row-note" style={{ marginTop: 8 }}>
           DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. Summaries and Ask share the same persisted analyses.
         </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Rulebook stage</div>
+          <div className="row-value">
+            <Chip tone={rulebook.stage === "EXECUTABLE" ? "pass" : "tight"}>{rulebook.stage}</Chip>
+          </div>
+        </div>
+        <div className="row-note">{rulebook.headline}</div>
       </Card>
 
       {review.amendmentPackage && (

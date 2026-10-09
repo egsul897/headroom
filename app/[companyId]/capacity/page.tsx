@@ -5,6 +5,7 @@ import { fmtM, maxCapacityDetail } from "@/lib/format";
 import type { PerDocumentRemainingCapacity } from "@/lib/covenant-engine";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Capacity" };
 
@@ -94,12 +95,38 @@ function ReadinessBanner({
  */
 export default async function CapacityPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const readiness = await loadCapacityReadiness(companyId);
+  const [readiness, rulebook] = await Promise.all([
+    loadCapacityReadiness(companyId),
+    loadRulebookReadiness(companyId),
+  ]);
 
   if (!readiness.canEvaluateExecutableCapacity) {
     return (
       <div className="stack">
         <ReadinessBanner companyId={companyId} readiness={readiness} />
+        <Card>
+          <div className="card-title">Legal rulebook stage</div>
+          <div className="card-subtitle">{rulebook.headline}</div>
+          <div className="row">
+            <div className="row-label">Stage</div>
+            <div className="row-value">
+              <Chip tone={rulebook.stage === "EXECUTABLE" ? "pass" : "tight"}>{rulebook.stage}</Chip>
+            </div>
+          </div>
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Discovered summaries: {rulebook.discoveredSummaries} · Interpreted: {rulebook.interpretedProvisions} ·
+            Reviewed permissions: {rulebook.reviewedPermissions} · Executable permissions:{" "}
+            {rulebook.executablePermissions}
+          </div>
+          {rulebook.blockers.map((b, i) => (
+            <div key={i} className="row-note">
+              • {b}
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            {rulebook.note}
+          </div>
+        </Card>
         <Card>
           <div className="card-title">Secured / unsecured debt capacity</div>
           <div className="card-subtitle">
