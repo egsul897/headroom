@@ -9,14 +9,33 @@ export const metadata = { title: "Headroom — Research corpus" };
 export default async function ResearchCorpusPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; family?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    family?: string;
+    issuer?: string;
+    documentClass?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    analysis?: string;
+  }>;
 }) {
   const sp = await searchParams;
   const q = sp.q?.trim() ?? "";
   const family = sp.family?.trim() ?? "";
+  const issuer = sp.issuer?.trim() ?? "";
+  const documentClass = sp.documentClass?.trim() ?? "";
+  const dateFrom = sp.dateFrom?.trim() ?? "";
+  const dateTo = sp.dateTo?.trim() ?? "";
+  const analysisReady = sp.analysis === "ready";
 
   const summary = await loadCorpusBrowseSummary();
-  const rows = await listCorpusBrowseRows(100);
+  const rows = await listCorpusBrowseRows(100, {
+    issuer: issuer || undefined,
+    documentClass: documentClass || undefined,
+    dateFrom: dateFrom || undefined,
+    dateTo: dateTo || undefined,
+    analysisReady: analysisReady || undefined,
+  });
   const indexSummary = getPrecedentIndexSummary();
   const hits = searchPrecedents({ q: q || undefined, family: family || undefined, limit: 40 });
   const neonSummaries = await listSummariesInNeon(100);
@@ -27,8 +46,9 @@ export default async function ResearchCorpusPage({
       <Card>
         <div className="card-title">Research corpus</div>
         <div className="card-subtitle">
-          Durable Neon KnowledgeSource rows with covenant intelligence. Precedents inform research —
-          they do not override a company&apos;s governing documents.
+          Durable Neon KnowledgeSource rows with AI-generated covenant intelligence for lawyer review.
+          Precedents inform research — they do not override a company&apos;s governing documents. Customer
+          counsel accepts, edits, or rejects interpretations; DISCOVERED ≠ VERIFIED.
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href="/">
@@ -85,6 +105,38 @@ export default async function ResearchCorpusPage({
             placeholder="Covenant family filter (optional)"
             style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
           />
+          <input
+            name="issuer"
+            defaultValue={issuer}
+            placeholder="Issuer ticker or name"
+            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+          />
+          <input
+            name="documentClass"
+            defaultValue={documentClass}
+            placeholder="Document class (e.g. CREDIT_AGREEMENT, INDENTURE)"
+            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+          />
+          <div className="button-row" style={{ gap: 8, flexWrap: "wrap" }}>
+            <input
+              name="dateFrom"
+              type="date"
+              defaultValue={dateFrom}
+              aria-label="Filing date from"
+              style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)" }}
+            />
+            <input
+              name="dateTo"
+              type="date"
+              defaultValue={dateTo}
+              aria-label="Filing date to"
+              style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)" }}
+            />
+            <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <input type="checkbox" name="analysis" value="ready" defaultChecked={analysisReady} />
+              Analysis available
+            </label>
+          </div>
           <button className="button button-primary" type="submit">
             Search index
           </button>

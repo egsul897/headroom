@@ -178,6 +178,56 @@ export const SEED_PATTERNS: PatternLibraryEntry[] = [
     verificationStatus: "UNVERIFIED",
     sourceExampleIds: [],
   },
+  {
+    patternId: "ratio-lien",
+    name: "Ratio lien permission",
+    structuralCharacteristics: ["Permitted Lien", "leverage / secured leverage ratio", "pro forma"],
+    supportedSemanticHypotheses: ["ratio-conditioned lien capacity"],
+    counterexamples: ["fixed-dollar lien baskets only"],
+    knownFailureModes: ["treating ratio debt permission as automatic lien permission"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "available-amount-definition",
+    name: "Available Amount definition",
+    structuralCharacteristics: ["Available Amount means", "starter", "builder components", "reductions for usage"],
+    supportedSemanticHypotheses: ["definitional builder capacity"],
+    counterexamples: ["fixed RP basket with no builder"],
+    knownFailureModes: ["missing reduction for prior RP/investments"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "subsidiary-designation",
+    name: "Subsidiary designation mechanics",
+    structuralCharacteristics: ["designate Unrestricted Subsidiary", "redesignate Restricted Subsidiary", "investment capacity for designation"],
+    supportedSemanticHypotheses: ["entity-status election with investment implications"],
+    counterexamples: ["static restricted group with no designation rights"],
+    knownFailureModes: ["ignoring investment cost of designation"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "financial-covenant-cure",
+    name: "Financial covenant equity cure",
+    structuralCharacteristics: ["cure", "equity contribution", "EBITDA add-back for cure", "limited number of cures"],
+    supportedSemanticHypotheses: ["maintenance-covenant cure right"],
+    counterexamples: ["incurrence-only covenants with no cure"],
+    knownFailureModes: ["assuming cure available without contractual grant"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "liability-management",
+    name: "Liability management / debt exchange",
+    structuralCharacteristics: ["exchange offer", "open market purchase", "debt repurchase", "refinancing with different creditors"],
+    supportedSemanticHypotheses: ["LME pathway under refinancing / RP / investment rules"],
+    counterexamples: ["ordinary scheduled amortization"],
+    knownFailureModes: ["missing concurrent lien and RP analysis"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
 ];
 
 const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
@@ -198,6 +248,11 @@ const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
   { patternId: "acquisition-debt", re: /\bacquisition\s+(?:debt|indebtedness)\b|\bAcquired\s+Indebtedness\b/i },
   { patternId: "general-debt-basket", re: /\bother\s+Indebtedness\b|\bgeneral\s+(?:debt|basket)\b/i },
   { patternId: "conditional-amendment-effectiveness", re: /\bshall\s+become\s+effective\s+(?:upon|on)\b/i },
+  { patternId: "ratio-lien", re: /\bPermitted\s+Liens?\b[\s\S]{0,240}\b(?:Secured\s+)?(?:Net\s+)?Leverage\s+Ratio\b/i },
+  { patternId: "available-amount-definition", re: /\bAvailable\s+Amount\s+means\b/i },
+  { patternId: "subsidiary-designation", re: /\b(?:designate|designat(?:ion|ed))\b[\s\S]{0,80}\bUnrestricted\s+Subsidiary\b/i },
+  { patternId: "financial-covenant-cure", re: /\b(?:equity\s+)?cure\b[\s\S]{0,120}\b(?:EBITDA|financial\s+covenant)\b/i },
+  { patternId: "liability-management", re: /\b(?:exchange\s+offer|open[\s-]market\s+purchase|debt\s+repurchase|liability\s+management)\b/i },
 ];
 
 export function detectPatternsInText(text: string): string[] {

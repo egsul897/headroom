@@ -437,11 +437,14 @@
       "operative": true,
       "material": true,
       "mustContain": [
+        "$75,000,000"
+      ],
+      "mustNotContain": [
         "$50,000,000"
       ],
       "value": {
         "kind": "MONEY",
-        "amount": 50000000,
+        "amount": 75000000,
         "currency": "USD",
         "basis": "AT_ANY_TIME_OUTSTANDING"
       },
@@ -450,6 +453,7 @@
         "Indebtedness"
       ],
       "crossReferences": [],
+      "operativeTextDocumentId": "supplemental-indenture-1",
       "textSha256": "89163d017264847be676849315197bdbdbb8f99343329f1e584f1cc91cb3357f"
     },
     {

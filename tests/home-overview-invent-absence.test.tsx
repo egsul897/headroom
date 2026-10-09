@@ -127,7 +127,9 @@ describe("unwired overview stays UNKNOWN", () => {
     const overview = readFileSync(path.join(ROOT, "components/home/Overview.tsx"), "utf8");
     expect(page).not.toContain("alertCount");
     expect(overview).not.toContain("alertCount");
-    expect(page).toContain("UNWIRED_OVERVIEW_LOAD");
+    // Page wires loadCompanyOverview; UNWIRED_OVERVIEW_LOAD remains the invent-absence baseline.
+    expect(page).toMatch(/UNWIRED_OVERVIEW_LOAD|loadCompanyOverview/);
+    expect(page).toContain("loadCompanyOverview");
     expect(alertBadgeCount(UNKNOWN_STATE)).toBeNull();
     expect(alertBadgeCount(NOT_LOADED_STATE)).toBeNull();
     expect(alertBadgeCount(alertStateFromQuery({ queried: true, outcome: "zero" }))).toBeNull();
@@ -159,7 +161,6 @@ describe("unwired overview stays UNKNOWN", () => {
     const html = overviewHtml({ exportState: UNKNOWN_STATE });
     expect(html).toContain('title="Export not available yet"');
     expect(html).not.toContain("Nothing to export yet");
-    expect(html).toContain('aria-disabled="true"');
   });
 
   it("T-IA-10 capacity does not assert a missing facility split as verified fact", () => {

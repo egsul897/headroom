@@ -1,0 +1,489 @@
+{
+  "companyId": "demo-customer-workflow",
+  "runId": "cil-20261009-1bc429c782",
+  "mandateExercises": [
+    "debt.secured.100",
+    "debt.unsecured.150",
+    "rp.dividend.50",
+    "inv.75",
+    "debt.non_guarantor",
+    "ratio.ebitda_down_20",
+    "amd.refinance",
+    "amd.threshold_change"
+  ],
+  "publishSummary": {
+    "documentsProcessed": 1,
+    "exerciseTypes": 8,
+    "executions": 8,
+    "substantive": 0,
+    "conditional": 8,
+    "unsupported": 0,
+    "failed": 0,
+    "gapHistogram": {
+      "CONFLICTING_INTERPRETATIONS": 8,
+      "MISSING_COVENANT": 2,
+      "FINANCIAL_INPUT_MISSING": 1,
+      "AMENDMENT_PRECEDENCE_UNRESOLVED": 1
+    }
+  },
+  "stages": [
+    {
+      "stage": "INGEST",
+      "status": "OK",
+      "message": "Selected 1 source(s)"
+    },
+    {
+      "stage": "STRUCTURE",
+      "status": "OK",
+      "message": "Structured summaries available for 1/1"
+    },
+    {
+      "stage": "INTERPRET",
+      "status": "OK",
+      "message": "Retained source-backed narrative interpretations alongside structured items"
+    },
+    {
+      "stage": "COMPILE",
+      "status": "CONDITIONAL",
+      "message": "Compiled reusable contractual model fragments (conditional capacity)"
+    },
+    {
+      "stage": "EXERCISE",
+      "status": "OK",
+      "message": "Executed 8 exercise(s)"
+    },
+    {
+      "stage": "DIAGNOSE",
+      "status": "OK",
+      "message": "Recorded 12 gap(s)"
+    },
+    {
+      "stage": "IMPROVE",
+      "status": "OK",
+      "message": "Captured 7 pattern obs; 4 open eng tasks"
+    },
+    {
+      "stage": "REEXERCISE",
+      "status": "OK",
+      "message": "Reexecuted 13 exercise type(s); 8 comparisons"
+    },
+    {
+      "stage": "PUBLISH",
+      "status": "OK",
+      "message": "Published overlay for demo-customer-workflow"
+    }
+  ],
+  "exerciseOutcomes": [
+    {
+      "exerciseId": "debt.unsecured.150",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Supported amount for $150 million is CONDITIONAL: apply cited baskets [7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; 7.2 basket/threshold: Cap measured on outstanding amount at any time.] after "
+    },
+    {
+      "exerciseId": "debt.secured.100",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Supported amount for $100 million is CONDITIONAL: apply cited baskets [7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; 7.2 basket/threshold: Cap measured on outstanding amount at any time.] after "
+    },
+    {
+      "exerciseId": "debt.non_guarantor",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "DOCUMENT_ABSENT:MISSING_COVENANT",
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Conditional pathway: 7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets"
+    },
+    {
+      "exerciseId": "rp.dividend.50",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [
+        "cumulativeNetIncome"
+      ],
+      "gaps": [
+        "CUSTOMER_INPUT_ABSENT:FINANCIAL_INPUT_MISSING",
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Supported amount for $50 million is CONDITIONAL: apply cited baskets [7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; 7.2 basket/threshold: Cap measured on outstanding amount at any time.; 7.6: (i"
+    },
+    {
+      "exerciseId": "inv.75",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "AI source-backed covenant analysis (for counsel review — not a legal determination)",
+      "conditionalFormula": "Supported amount for $75 million is CONDITIONAL: apply cited baskets [7.8 basket/threshold: Amount/threshold: $5,000,000; 7.8 basket/threshold: Cap measured on outstanding amount at any time.; 7.6: (ii) cash payments made in lieu of issuing"
+    },
+    {
+      "exerciseId": "ratio.ebitda_down_20",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Conditional pathway: 7.1 basket/threshold: Ratio threshold: 3.75 to 1.00"
+    },
+    {
+      "exerciseId": "amd.threshold_change",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "DOCUMENT_ABSENT:MISSING_COVENANT",
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS",
+        "AMBIGUITY:AMENDMENT_PRECEDENCE_UNRESOLVED"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Conditional pathway: 7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets"
+    },
+    {
+      "exerciseId": "amd.refinance",
+      "outcome": "CONDITIONAL",
+      "citations": 6,
+      "missingInputs": [],
+      "gaps": [
+        "AMBIGUITY:CONFLICTING_INTERPRETATIONS"
+      ],
+      "headline": "Source-backed covenant analysis (includes counsel-approved interpretations)",
+      "conditionalFormula": "Conditional pathway: 7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets"
+    }
+  ],
+  "engineeringTasks": [
+    {
+      "taskId": "4c8a6463a2e3",
+      "category": "RETRIEVAL_MISS",
+      "priority": 200,
+      "title": "[RETRIEVAL_MISS] software — 11 occurrence(s)",
+      "affectedSourceIds": [
+        "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+        "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.ratio_basket",
+        "ratio.total_leverage",
+        "rp.dividend.50",
+        "inv.unrestricted_sub",
+        "multi.secured_acq"
+      ],
+      "occurrenceCount": 11,
+      "expectedImprovement": "Improve Ask scoring so required covenant categories surface for the exercise family.",
+      "relevantModules": [
+        "lib/product/covenant-intelligence/ask-retrieve.ts"
+      ],
+      "reproductionNotes": "exercise=debt.ratio_basket source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6 | exercise=rp.dividend.50 source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6 | exercise=inv.unrestricted_sub source=edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:59:00.938Z",
+      "updatedAt": "2026-10-09T04:59:00.938Z"
+    },
+    {
+      "taskId": "623d1fed5961",
+      "category": "CONFLICTING_INTERPRETATIONS",
+      "priority": 115,
+      "title": "[CONFLICTING_INTERPRETATIONS] ambiguity — 8 occurrence(s)",
+      "affectedSourceIds": [
+        "customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8"
+      ],
+      "affectedExerciseIds": [
+        "debt.unsecured.150",
+        "debt.secured.100",
+        "debt.non_guarantor",
+        "rp.dividend.50",
+        "inv.75",
+        "ratio.ebitda_down_20",
+        "amd.threshold_change",
+        "amd.refinance"
+      ],
+      "occurrenceCount": 24,
+      "expectedImprovement": "Reduce recurrence of this analytical failure class across the corpus.",
+      "relevantModules": [
+        "lib/product/covenant-intelligence/analyze-provision.ts",
+        "lib/product/customer-intelligence/reviewer-approvals.ts"
+      ],
+      "reproductionNotes": "exercise=debt.unsecured.150 source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6 | exercise=debt.secured.100 source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6 | exercise=debt.non_guarantor source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T05:10:36.942Z",
+      "updatedAt": "2026-10-09T05:17:31.868Z"
+    },
+    {
+      "taskId": "53e50d8f97ae",
+      "category": "BASKET_NOT_EXTRACTED",
+      "priority": 75,
+      "title": "[BASKET_NOT_EXTRACTED] software — 1 occurrence(s)",
+      "affectedSourceIds": [
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.ratio_basket"
+      ],
+      "occurrenceCount": 1,
+      "expectedImprovement": "Segment fixed/grower/ratio baskets from matching provisions with citations.",
+      "relevantModules": [
+        "lib/product/covenant-intelligence/analyze-provision.ts",
+        "lib/knowledge-factory/patterns/library.ts"
+      ],
+      "reproductionNotes": "exercise=debt.ratio_basket source=edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:59:00.938Z",
+      "updatedAt": "2026-10-09T04:59:00.938Z"
+    },
+    {
+      "taskId": "68aceba9888a",
+      "category": "DEFINITION_NOT_RESOLVED",
+      "priority": 60,
+      "title": "[DEFINITION_NOT_RESOLVED] software — 1 occurrence(s)",
+      "affectedSourceIds": [
+        "fixture:conmed-article-vii-loop",
+        "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+        "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+        "fixture:conmed-article-vii",
+        "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+        "edgar:0000950157-21-000696:ex10-1.htm"
+      ],
+      "affectedExerciseIds": [
+        "debt.secured.100",
+        "debt.unsecured.50",
+        "debt.ratio_basket",
+        "rp.dividend.50",
+        "ratio.total_leverage",
+        "multi.secured_acq"
+      ],
+      "occurrenceCount": 65,
+      "expectedImprovement": "Attach applicable defined terms from summary items to exercise results.",
+      "relevantModules": [
+        "lib/knowledge-factory/pipeline/structural.ts",
+        "lib/product/covenant-intelligence/analyze-provision.ts"
+      ],
+      "reproductionNotes": "exercise=ratio.total_leverage source=edgar:0001104659-14-087365:a14-26274_1ex4d1.htm outcome=CONDITIONAL matched=6",
+      "status": "OPEN",
+      "createdAt": "2026-10-09T04:58:01.661Z",
+      "updatedAt": "2026-10-09T05:00:45.916Z"
+    }
+  ],
+  "capacity": {
+    "companyId": "demo-customer-workflow",
+    "status": "EXECUTABLE_PATH_AVAILABLE",
+    "canEvaluateExecutableCapacity": true,
+    "analyzedDocumentCount": 1,
+    "summaryCount": 15,
+    "permissionCount": 2,
+    "provisionCount": 2,
+    "hasFinancialSnapshot": true,
+    "headline": "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone.",
+    "blockers": [],
+    "guidance": "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration."
+  },
+  "intelligence": {
+    "rulebookStage": "EXECUTABLE",
+    "capacityStatus": "EXECUTABLE_PATH_AVAILABLE",
+    "basketsComputed": 1,
+    "ratiosComputed": 7,
+    "proForma": [
+      {
+        "metricId": "proforma:secured:100",
+        "scenario": "Proposed $100M secured debt incurrence",
+        "amountMillions": 100,
+        "secured": true,
+        "status": "CONDITIONAL",
+        "proFormaTotalLeverage": "2.86x",
+        "proFormaSecuredLeverage": "2.02x",
+        "proFormaInterestCoverage": "6.83x",
+        "basketRemainingAfter": "$0M",
+        "engineCapacityRemaining": "$84M",
+        "notes": [
+          "Pro forma total leverage 2.86x; secured 2.02x",
+          "Counsel-compiled basket remaining before txn $84M → after $0M",
+          "Engine secured remaining: $84M (status unavailable)",
+          "$100M exceeds counsel-compiled remaining basket capacity"
+        ],
+        "drilldown": {
+          "metricId": "proforma:secured:100",
+          "title": "Pro forma $100M secured debt",
+          "module": "TRANSACTIONS",
+          "governingAgreement": null,
+          "sectionCitation": null,
+          "definitions": [],
+          "contractualFormula": "Pro forma Debt/EBITDA after +$100M secured; basket remaining − $100M",
+          "financialInputs": [
+            {
+              "label": "Transaction amount",
+              "value": "$100M",
+              "required": true
+            },
+            {
+              "label": "Opening total debt",
+              "value": "$1,100M",
+              "required": true
+            },
+            {
+              "label": "Opening secured debt",
+              "value": "$750M",
+              "required": true
+            },
+            {
+              "label": "EBITDA",
+              "value": "$420M",
+              "required": true
+            },
+            {
+              "label": "Assumed new-debt rate",
+              "value": "6.5%",
+              "required": false
+            }
+          ],
+          "historicalUtilization": [],
+          "conditions": [],
+          "exceptions": [],
+          "relatedCovenants": [],
+          "aiInterpretation": null,
+          "alternatives": [],
+          "assumptions": [],
+          "reviewerCorrections": [],
+          "calculationHistory": [
+            "PF total leverage = (1100+100)/420",
+            "PF secured leverage = (750+100)/420",
+            "Engine secured remaining: $84M (status unavailable)"
+          ],
+          "missingInputs": [],
+          "hrefs": [
+            {
+              "label": "Covenant review",
+              "href": "/demo-customer-workflow/covenants"
+            },
+            {
+              "label": "Lawyer review",
+              "href": "/demo-customer-workflow/rulebook"
+            },
+            {
+              "label": "Ask Headroom",
+              "href": "/demo-customer-workflow/ask"
+            },
+            {
+              "label": "Financial inputs",
+              "href": "/demo-customer-workflow/onboarding/financials"
+            },
+            {
+              "label": "Simulate",
+              "href": "/demo-customer-workflow/simulate"
+            },
+            {
+              "label": "Capacity",
+              "href": "/demo-customer-workflow/capacity"
+            }
+          ]
+        }
+      }
+    ],
+    "sampleBaskets": [
+      {
+        "metricId": "basket:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2",
+        "category": "Lien baskets",
+        "sectionRef": "7.2",
+        "heading": "SECTION 7.2 Limitation on Indebtedness.",
+        "contractualCapacity": "Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets",
+        "utilization": null,
+        "remaining": "$84M",
+        "status": "COMPUTED",
+        "reviewDecision": "ACCEPTED",
+        "drilldown": {
+          "metricId": "basket:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2",
+          "title": "§7.2 — SECTION 7.2 Limitation on Indebtedness.",
+          "module": "BASKETS",
+          "governingAgreement": "CONMED Eighth A&R Credit Agreement (Article VII)",
+          "sectionCitation": "customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 · 7.2",
+          "definitions": [],
+          "contractualFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS @ 50; Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; Cap measured on outstanding amount at any time.",
+          "financialInputs": [],
+          "historicalUtilization": [],
+          "conditions": [
+            "provided_that: provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial co…"
+          ],
+          "exceptions": [],
+          "relatedCovenants": [
+            "Section 7.3(g)",
+            "Section 7.1",
+            "Depends on / references Section 7.3(g)",
+            "Depends on / references Section 7.1"
+          ],
+          "aiInterpretation": "Section 7.2 (“SECTION 7.2 Limitation on Indebtedness.”) is a general debt incurrence prohibition covering Parent Borrower, Borrower, Loan Parties, Guarantor(s), Subsidiary Guarantor(s), Subsidiaries. Create, incur, assume or suffer to exist any Indebtedness, — except as expressly permitted It is subject to enumerated exceptions/permissions, including: (a) Indebtedness of any Loan Party pursuant to any Loan Document; (b) Indebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or any other Subsidiary; (c) Indebtedness secured by Liens permitted by Section 7; (d) Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3. Material baskets/thresholds identified: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; Cap measured on outstanding amount at any time.. Conditions/provisos signaled: provided_that: provided that the Parent Borrower shall be in compliance, on a pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial co…. Cross-provision dependencies: Depends on / references Section 7.3(g); Depends on / references Section 7.1. This is Headroom’s AI-generated, source-backed interpretation for counsel review — not a determination of current capacity, utilization, or amendment-operative status. Unresolved: Whether this provision is currently operative after amendments is unresolved; Numerical capacity/utilization is unresolved without approved financial inputs and ledger.",
+          "alternatives": [
+            "Primary reading: general prohibition with enumerated exceptions. Competing reading: some listed baskets may operate as free-standing permissions if the chapeau does not clearly govern them.",
+            "Primary reading: permission is unavailable unless stated conditions are satisfied. Competing reading: some conditions may be timing or notice requirements rather than substantive eligibility tests.",
+            "Multiple baskets/thresholds appear in the excerpt — they may be cumulative, mutually exclusive, or shared-capacity. Primary analysis lists them without assuming stacking rules."
+          ],
+          "assumptions": [
+            "Cited excerpt is treated as representative of the operative section body.",
+            "Amendment precedence has not been independently resolved unless separately analyzed."
+          ],
+          "reviewerCorrections": [
+            {
+              "decision": "ACCEPTED",
+              "note": "Demo counsel acceptance — compile executable debt basket",
+              "at": "2026-10-09T05:17:20.695Z"
+            }
+          ],
+          "calculationHistory": [
+            "Counsel ACCEPTED 2026-10-09T05:17:20.695Z",
+            "Executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE: capacity $84M − ledger $0M = $84M",
+            "No ledger utilization attributed"
+          ],
+          "missingInputs": [],
+          "hrefs": [
+            {
+              "label": "Covenant review",
+              "href": "/demo-customer-workflow/covenants"
+            },
+            {
+              "label": "Lawyer review",
+              "href": "/demo-customer-workflow/rulebook"
+            },
+            {
+              "label": "Ask Headroom",
+              "href": "/demo-customer-workflow/ask"
+            },
+            {
+              "label": "Financial inputs",
+              "href": "/demo-customer-workflow/onboarding/financials"
+            },
+            {
+              "label": "Simulate",
+              "href": "/demo-customer-workflow/simulate"
+            },
+            {
+              "label": "Capacity",
+              "href": "/demo-customer-workflow/capacity"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "engineCapacity": {
+    "securedRemaining": 84,
+    "unsecuredRemaining": 84,
+    "permissionsTotal": 2
+  }
+}

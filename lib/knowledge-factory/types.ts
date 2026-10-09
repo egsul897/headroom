@@ -206,6 +206,13 @@ export interface CrossReferenceRecord {
   rawReference: string;
   charStart: number;
   charEnd: number;
+  /** Normalized legal target ref when Phase 2 structural detection ran. */
+  targetSectionRef?: string | null;
+  /** Unique target nodeId when resolution is UNIQUE; null if unresolved/ambiguous. */
+  targetNodeId?: string | null;
+  resolved?: boolean;
+  targetAmbiguous?: boolean;
+  unresolvedReason?: string | null;
 }
 
 export interface PatternLibraryEntry {

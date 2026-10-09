@@ -232,7 +232,7 @@ export interface ContextRetrievalPerformance {
  * resumed as-is, since compile.ts's own inputHasUnresolvedOperativeEvidence
  * gate depends on it.
  */
-export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v4";
+export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v5";
 
 export interface CovenantContextBundle {
   /** Deterministic, content-derived (never random) - see identity.ts. */

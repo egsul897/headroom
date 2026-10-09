@@ -115,11 +115,13 @@ describe("routes", () => {
       "Overview",
       "Documents",
       "Covenants",
+      "Intelligence",
       "Position",
       "Ledger",
       "Simulate",
       "Evidence",
       "Ask",
+      "Alerts",
     ]);
     expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Onboarding");
     const position = companyNavItems("co", "ACTIVE").find((item) => item.key === "position")!;
@@ -163,7 +165,8 @@ describe("Ask shell", () => {
     expect(askHtml).not.toContain("Interrogation");
     expect(askHtml).not.toContain("Secondary to the overview");
     expect(askHtml).toContain("<button");
-    expect(askHtml).toMatch(/<button[^>]*disabled[^>]*>Submit question<\/button>/);
+    // Default Ask mode is North-Star transaction analysis; empty question keeps submit disabled.
+    expect(askHtml).toMatch(/<button[^>]*disabled[^>]*>(Submit question|Analyze transaction)<\/button>/);
 
     for (const caseId of Object.keys(ASK_CASES) as (keyof typeof ASK_CASES)[]) {
       const view = askRunner.askEmpty(caseId);

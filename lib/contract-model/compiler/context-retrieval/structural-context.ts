@@ -7,8 +7,10 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
+import { resolveOperativeSource } from "../candidate-span";
+import { unparsedExceptionParentage } from "../clause-hierarchy";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
-import type { ContextItem } from "./types";
+import type { ContextItem, ContextItemEvidenceState } from "./types";
 
 /**
  * Task §7's own "nearby concluding language" list, plus aggregate/shared-
@@ -19,7 +21,16 @@ import type { ContextItem } from "./types";
 const PROVISO_SIGNALS = [/\bprovided(?:,)? that\b/i, /\bprovided further\b/i, /\bnotwithstanding\b/i, /\bso long as\b/i];
 const EXCEPTION_SIGNALS = [/\bexcept that\b/i, /\bexcept as\b/i, /\bother than\b/i];
 const CONDITION_SIGNALS = [/\bin each case\b/i, /\bsubject to\b/i, /\bno Default (?:or Event of Default )?(?:shall have occurred|exists)\b/i];
-const SHARED_CAP_SIGNALS = [/\bin the aggregate\b/i, /\baggregate (?:amount|cap|limit)\b/i, /\bshared\b.*\bcap\b/i, /\banti-duplication\b/i];
+// A bare aggregate ceiling is still a reason to disclose the sibling. It is
+// not, by itself, a SHARED_CAP type. Relationship language is required for
+// that type; a relevant clause backreference can also establish it.
+const AGGREGATE_DISCLOSURE_RE = /\b(?:in the aggregate|aggregate (?:amount|cap|limit))\b/i;
+// Sibling SHARED_CAP typing requires relationship language. Bare "in the
+// aggregate" / "aggregate amount" alone is an ordinary ceiling, not a shared pool.
+const SHARED_CAP_SIGNALS = [
+  /\b(?:combined(?:\s+with)?\s+(?:with|capacity|basket)|shared\s+(?:capacity|basket|pool)|in\s+the\s+aggregate\s+(?:with|under)|together\s+with\b[^.]{0,240}?\b(?:pursuant\s+to|under)\s+(?:Sections?|§|Articles?|Clauses?)|when\s+combined\s+with|(?:this\s+)?clause\s*\([a-z0-9]+\)[^.]{0,80}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|(?:made\s+)?in\s+reliance\s+on\s+this\s+clause\s*\([a-z0-9]+\)[^.]{0,120}?\band\b[^.]{0,80}?clause\s*\([a-z0-9]+\)|without\s+duplication\b[^.]{0,160}?\b(?:together\s+with|combined\s+with|in\s+the\s+aggregate\s+with))/i,
+  /\banti-duplication\b/i,
+];
 
 function classifySiblingSignal(text: string): { type: "PROVISO" | "EXCEPTION" | "CONDITION" | "SHARED_CAP"; signal: string } | null {
   for (const re of PROVISO_SIGNALS) if (re.test(text)) return { type: "PROVISO", signal: re.source };
@@ -129,11 +140,103 @@ function assessSiblingRelevance(candidateText: string, candidateSectionRef: stri
   return { relevant: signals.length > 0, signals };
 }
 
+/**
+ * INV-04: reverse override discovery. A section in Article IX that says
+ * "Notwithstanding anything to the contrary in Article VII" governs every
+ * Article VII covenant even though VII never cites IX. Scan same-document
+ * SECTION nodes for that drafting and retrieve them as CROSS_REFERENCE.
+ */
+export function retrieveArticleOverrideLeads(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
+  const article = index.getAncestors(nodeId).find((n) => n.nodeType === "ARTICLE");
+  if (!article) return;
+  const articleLabel = article.sectionRef.replace(/\s+/g, "");
+  if (!articleLabel) return;
+  const overrideRe = new RegExp(
+    String.raw`notwithstanding\s+anything\s+to\s+the\s+contrary\s+in\s+Article\s+${articleLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\b`,
+    "i",
+  );
+  for (const n of index.allNodes()) {
+    if (n.documentId !== documentId || n.nodeType !== "SECTION") continue;
+    if (n.nodeId === nodeId) continue;
+    // Skip sections inside the same article (siblings are handled elsewhere).
+    const nArticle = index.getAncestors(n.nodeId).find((a) => a.nodeType === "ARTICLE");
+    if (nArticle?.nodeId === article.nodeId) continue;
+    const text = index.getNodeText(n.nodeId, "DESCENDANTS");
+    if (!overrideRe.test(text)) continue;
+    if (!withinBudget(state, text.length)) return;
+    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: n.nodeId, sectionRef: n.sectionRef });
+    const item = addItem(
+      state,
+      makeItemInput(
+        "CROSS_REFERENCE",
+        documentId,
+        n.nodeKey,
+        n.nodeId,
+        n.sectionRef,
+        `Section ${n.sectionRef}`,
+        text,
+        `Override of Article ${articleLabel}: Section ${n.sectionRef} states "notwithstanding anything to the contrary in Article ${articleLabel}" and therefore governs this candidate.`,
+        1,
+        [operativeItemId],
+        "STRUCTURAL_TRAVERSAL",
+        1,
+        evidenceState,
+      ),
+    );
+    addEdge(state, operativeItemId, item.itemId, "REFERENCES", `Article-level notwithstanding override from Section ${n.sectionRef}.`);
+  }
+}
+
+function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documentId: string, node: { nodeId: string; sectionRef: string }, ownWhenUnamended: boolean): { text: string; evidenceState: ContextItemEvidenceState } {
+  const resolved = resolveOperativeSource({ structuralNodeIds: [node.nodeId], documentId, normalizedSourceRef: node.sectionRef }, index, state.operativeState);
+  if (resolved.withheld) {
+    const reason =
+      resolved.withheldReasons.length > 0
+        ? resolved.withheldReasons.join("; ")
+        : "An amendment to a clause inside this text could not be applied without guessing, so the base text is not current operative text.";
+    return { text: "", evidenceState: { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason } };
+  }
+  const text = resolved.origin === "OPERATIVE_STATE_CURRENT_TEXT" || !ownWhenUnamended ? resolved.text : index.getNodeText(node.nodeId, "OWN");
+  const structural = index.getNodeById(node.nodeId);
+  const parent = structural ? index.getParent(structural.nodeId) : undefined;
+  const own = structural ? index.getNodeText(structural.nodeId, "OWN") : "";
+  const parentOwn = parent ? index.getNodeText(parent.nodeId, "OWN") : null;
+  if (structural && unparsedExceptionParentage(own, parentOwn)) {
+    return {
+      text,
+      evidenceState: {
+        status: "AMBIGUOUS_TARGET",
+        isCurrentTruth: false,
+        reason: "This clause still contains the next marker of its own list, and an except introduces that list. The structural parent is not the definitive exception scope.",
+      },
+    };
+  }
+  let evidenceState = resolveSectionEvidenceState(state, documentId, node);
+  // IPV-16: a parent section whose descendant clause carries an unresolved
+  // side-letter / override must not present the whole DESCENDANTS span as
+  // confirmed-current truth (the overridden clause's dollars would otherwise
+  // certify as the live basket).
+  const parentNorm = node.sectionRef.replace(/\s+/g, "");
+  const blockedChild = state.operativeState?.provisions.find((p) => {
+    if (p.kind !== "SECTION" || p.status === "OPERATIVE_STATE_RESOLVED") return false;
+    const ref = (p.sectionRef ?? "").replace(/\s+/g, "");
+    return ref !== parentNorm && (ref.startsWith(`${parentNorm}(`) || ref.startsWith(`${parentNorm}.`));
+  });
+  if (blockedChild && evidenceState.isCurrentTruth) {
+    const overrideDocs = blockedChild.appliedChain.map((e) => e.amendmentDocumentId).join(", ");
+    evidenceState = {
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      isCurrentTruth: false,
+      reason: `Descendant Section ${blockedChild.sectionRef} is ${blockedChild.status} (override/amendment activity from ${overrideDocs || "unresolved source"}); the parent section's DESCENDANTS text is not confirmed-current while that override remains open.`,
+    };
+  }
+  return { text, evidenceState };
+}
+
 export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
   const node = index.getNodeById(nodeId);
   if (!node) return null;
-  const text = index.getNodeText(nodeId, "DESCENDANTS");
-  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  const { text, evidenceState } = operativeExcerpt(state, index, documentId, node, false);
   return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 
@@ -190,11 +293,18 @@ export function retrieveChildRules(state: RetrievalState, index: StructuralIndex
   // primary candidate's own DESCENDANTS span never covers.
   const children = index.getChildren(nodeId);
   for (const child of children) {
-    const text = index.getNodeText(child.nodeId, "OWN");
-    if (text.trim().length === 0) continue;
-    if (!withinBudget(state, text.length)) return;
-    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: child.nodeId, sectionRef: child.sectionRef });
-    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
+    const excerpt = operativeExcerpt(state, index, documentId, child, true);
+    const text = excerpt.text;
+    // A withheld / non-current child must still be retained: empty text is a disclosure
+    // that the clause is not CURRENT, not a reason to silently drop it from the bundle.
+    // Dropping it would let the parent section certify without hasUnresolvedOperativeEvidence.
+    const unresolvedChild = excerpt.evidenceState != null && !excerpt.evidenceState.isCurrentTruth;
+    if (text.trim().length === 0 && !unresolvedChild) continue;
+    if (!withinBudget(state, Math.max(text.length, 1))) return;
+    const reason = unresolvedChild
+      ? `A sub-rule of the discovered candidate's own section whose operative state is not confirmed current${excerpt.evidenceState?.reason ? ` (${excerpt.evidenceState.reason})` : ""}.`
+      : `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`;
+    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, reason, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, excerpt.evidenceState));
     addEdge(state, operativeItemId, item.itemId, "CHILD_OF", "Independently operative sub-rule of the discovered section.");
   }
 }
@@ -223,7 +333,8 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     const text = index.getNodeText(sibling.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     const classification = classifySiblingSignal(text);
-    if (!classification) continue;
+    const aggregateDisclosure = AGGREGATE_DISCLOSURE_RE.test(text);
+    if (!classification && !aggregateDisclosure) continue;
     if (!withinBudget(state, text.length)) return;
 
     // Evidence is assessed over the sibling's own DESCENDANTS span, not
@@ -240,23 +351,28 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     const siblingEvidenceText = index.getNodeText(sibling.nodeId, "DESCENDANTS");
     const assessment = assessSiblingRelevance(candidateText, candidateSectionRef, siblingEvidenceText);
     const siblingEvidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sibling.nodeId, sectionRef: sibling.sectionRef });
-    if (assessment.relevant) {
+    const sharedByCorrespondence = !classification && aggregateDisclosure && assessment.relevant;
+    const typed = classification && assessment.relevant ? classification : sharedByCorrespondence ? { type: "SHARED_CAP" as const, signal: "aggregate ceiling tied to another permission" } : null;
+    if (typed) {
       const item = addItem(
         state,
-        makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7, siblingEvidenceState)
+        makeItemInput(typed.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${typed.type.toLowerCase().replace("_", " ")} language ("${typed.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7, siblingEvidenceState)
       );
-      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${classification.type.toLowerCase()} language.`);
+      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${typed.type.toLowerCase()} language.`);
     } else {
       // WRONG-CONTEXT CONTAMINATION guard: the sibling matched a generic
       // keyword only - no clause backreference, no shared named resource,
       // no enclosing-scope linkage, no grammatical continuation of the
       // candidate's own list (and possibly an explicit relationship
-      // negation). Never silently attached at normal confidence/shape.
+      // negation). An ordinary aggregate ceiling is disclosed here and is
+      // not typed SHARED_CAP. Never silently dropped.
+      const label = classification ? classification.type.toLowerCase().replace("_", " ") : "ordinary aggregate ceiling";
+      const signal = classification?.signal ?? "aggregate amount";
       const item = addItem(
         state,
-        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified ${classification.type} item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2, siblingEvidenceState)
+        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${label} language ("${signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified shared cap item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2, siblingEvidenceState)
       );
-      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Unverified/possible ${classification.type.toLowerCase()} language - relevance not established.`);
+      addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Unverified/possible ${label} language - relevance not established.`);
     }
   }
 }

@@ -69,6 +69,7 @@ export type FormulaType =
   | "FLAT_AMOUNT"
   | "FLAT_NET_OF_DEBT"
   | "GREATER_OF_FLAT_OR_PCT_EBITDA"
+  | "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
   | "LEVERAGE_RATIO_ROOM"
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
@@ -106,6 +107,8 @@ function combineReasons(parts: { status: EvaluationStatus; reason?: string }[]):
 export interface FormulaParams {
   /** GREATER_OF_FLAT_OR_PCT_EBITDA, BUILDER_BASKET: the EBITDA percentage (e.g. 0.25 for 25%). */
   pctEbitda?: number;
+  /** GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS: percentage of Consolidated Total Assets (e.g. 0.03 for 3%). */
+  pctTotalAssets?: number;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
@@ -208,6 +211,11 @@ export interface FinancialSnapshotInput {
   assumedNewDebtRatePct: number;
   totalDebt: number;
   securedDebt: number;
+  /**
+   * Consolidated Total Assets ($M) when available from FinancialState.
+   * Required to model GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS growers; absent → review_required.
+   */
+  totalAssets?: number;
 }
 
 export type LedgerBasket = "EQUITY" | "DEBT_INCUR" | "DEBT_REPAY" | "ASSET_SALE" | "DIVIDEND" | "INVESTMENT";
@@ -318,6 +326,29 @@ export function evaluateProvision(
     case "GREATER_OF_FLAT_OR_PCT_EBITDA": {
       const pct = params.pctEbitda ?? 0;
       return { provision: p, status: "modeled", capacity: Math.max(p.thresholdValue, pct * fin.ebitda) };
+    }
+    case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+      const pct = params.pctTotalAssets ?? 0;
+      if (fin.totalAssets == null || !Number.isFinite(fin.totalAssets) || fin.totalAssets < 0) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Total Assets basket — enter Consolidated Total Assets on the financial snapshot to evaluate the grower leg (fixed floor $${p.thresholdValue}M is not presented alone as remaining capacity).`,
+        };
+      }
+      return {
+        provision: p,
+        status: "modeled",
+        capacity: Math.max(p.thresholdValue, pct * fin.totalAssets),
+        components: [
+          { label: "Fixed-dollar floor", sectionRef: p.sectionRef, value: p.thresholdValue },
+          {
+            label: `${(pct * 100).toFixed(1)}% of Consolidated Total Assets`,
+            sectionRef: p.sectionRef,
+            value: pct * fin.totalAssets,
+          },
+        ],
+      };
     }
     case "LEVERAGE_RATIO_ROOM": {
       const basis = leverageBasisValue(params.debtBasis, metrics);
@@ -1497,6 +1528,8 @@ export interface CovenantEnginePrismaClient {
   covenantProvision: { findMany(args: any): Promise<DbProvisionRow[]> };
   financialSnapshot: { findMany(args: any): Promise<DbSnapshotRow[]> };
   ledgerEntry: { findMany(args: any): Promise<DbLedgerRow[]> };
+  /** Optional: used to resolve Consolidated Total Assets for Total-Assets growers. */
+  financialState?: { findMany(args: any): Promise<Array<{ asOfDate: Date; balanceSheetFacts: unknown }>> };
 }
 
 interface DecimalLike {
@@ -1576,7 +1609,7 @@ export async function loadCompanyCovenantData(
   asOfDate: Date = new Date()
 ): Promise<CompanyCovenantData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [documents, provisions, snapshotResolution, ledger] = await Promise.all([
+  const [documents, provisions, snapshotResolution, ledger, financialStates] = await Promise.all([
     prisma.document.findMany({ where: { companyId, ...dateFilter } }),
     prisma.covenantProvision.findMany({ where: { companyId, ...dateFilter } }),
     resolveCanonicalFinancialIdentity<DbSnapshotRow>(
@@ -1587,6 +1620,13 @@ export async function loadCompanyCovenantData(
     // after the product Supersede action (P3-R0 C10). This is a status
     // filter, not a ledger rewrite.
     prisma.ledgerEntry.findMany({ where: { companyId, date: { lte: asOfDate }, status: "ACTIVE" } }),
+    prisma.financialState
+      ? prisma.financialState.findMany({
+          where: { companyId, asOfDate: { lte: asOfDate } },
+          orderBy: { asOfDate: "desc" },
+          take: 5,
+        })
+      : Promise.resolve([] as Array<{ asOfDate: Date; balanceSheetFacts: unknown }>),
   ]);
 
   if (snapshotResolution.status === "AMBIGUOUS") {
@@ -1600,6 +1640,7 @@ export async function loadCompanyCovenantData(
     throw new FinancialIdentityError("UNKNOWN", 0, `No financial snapshot found for company ${companyId} as of ${asOfDate.toISOString()}`);
   }
   const snapshot = snapshotResolution.row;
+  const totalAssets = extractTotalAssetsFromStates(financialStates);
 
   return {
     companyId,
@@ -1632,9 +1673,23 @@ export async function loadCompanyCovenantData(
       assumedNewDebtRatePct: toNumber(snapshot.assumedNewDebtRatePct),
       totalDebt: toNumber(snapshot.totalDebt),
       securedDebt: toNumber(snapshot.securedDebt),
+      ...(totalAssets != null ? { totalAssets } : {}),
     },
     ledger: ledger.map((e) => ({ basket: e.basket, amount: toNumber(e.amount), direction: e.direction })),
   };
+}
+
+/** Read Consolidated Total Assets ($M) from the newest FinancialState balanceSheetFacts, if present. */
+function extractTotalAssetsFromStates(
+  states: Array<{ asOfDate: Date; balanceSheetFacts: unknown }>,
+): number | undefined {
+  for (const state of states) {
+    const facts = state.balanceSheetFacts as { totalAssets?: { value?: unknown } } | null;
+    const raw = facts?.totalAssets?.value;
+    const n = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw) : NaN;
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------

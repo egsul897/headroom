@@ -15,6 +15,10 @@ import { PostgresDocumentStorageProvider } from "../../document-storage/postgres
 import type { DebtDocumentClass } from "../../knowledge-factory/types";
 import { buildDocumentCovenantSummary } from "../covenant-intelligence/summarize";
 import { analyzeAmendmentPackage } from "./amendment-package";
+import {
+  mergePreservedReviewerDecisions,
+  type ReviewerApproval,
+} from "./reviewer-approvals";
 
 function sha256(buf: Buffer): string {
   return createHash("sha256").update(buf).digest("hex");
@@ -56,6 +60,192 @@ export interface CustomerAnalyzeResult {
   structuralNodeCount: number;
   error?: string;
   promotedToLegalTruth: 0;
+  /** True when bytes were staged and analysis was deferred off the request path. */
+  deferred?: boolean;
+}
+
+/** Files at/above this size stage durable bytes first, then analyze outside the upload critical path. */
+export const LARGE_UPLOAD_DEFER_BYTES = 1_500_000;
+
+/** Hard cap — reject before memory blowups / request body exhaustion (~80MB). */
+export const MAX_CUSTOMER_UPLOAD_BYTES = 80 * 1024 * 1024;
+
+/**
+ * Persist original customer bytes + a PENDING KnowledgeSource row before heavy analysis.
+ * Idempotent on (companyId, documentId, contentHash).
+ */
+export async function stageCustomerDocument(params: {
+  companyId: string;
+  documentId: string;
+  bytes: Buffer;
+  filename: string;
+  declaredType?: string;
+  /** Prefer existing Document storageRef when present to avoid double BYTEA write. */
+  existingStorageRef?: string | null;
+}): Promise<{ sourceId: string; storageRef: string; contentHash: string; reusedBytes: boolean }> {
+  const contentHash = sha256(params.bytes);
+  const sourceId = customerSourceId(params.companyId, params.documentId, contentHash);
+  const company = await prisma.company.findUniqueOrThrow({ where: { id: params.companyId } });
+
+  let storageRef = params.existingStorageRef ?? null;
+  let reusedBytes = Boolean(storageRef);
+  if (!storageRef) {
+    const provider = new PostgresDocumentStorageProvider();
+    const stored = await provider.store({
+      companyId: params.companyId,
+      filename: params.filename,
+      contentType: contentTypeFor(params.filename),
+      data: params.bytes,
+    });
+    storageRef = stored.storageRef;
+    reusedBytes = false;
+  }
+
+  const pendingMeta = JSON.parse(
+    JSON.stringify({
+      workspaceScope: "CUSTOMER",
+      companyId: params.companyId,
+      documentId: params.documentId,
+      declaredType: params.declaredType ?? null,
+      processingStatus: "STAGED_PENDING_ANALYSIS",
+      promotedToLegalTruth: 0,
+    }),
+  );
+
+  await prisma.knowledgeSource.upsert({
+    where: { sourceId },
+    create: {
+      sourceId,
+      companyId: params.companyId,
+      documentId: params.documentId,
+      issuerCik: "0000000000",
+      issuerTicker: company.ticker,
+      issuerName: company.name,
+      accessionNumber: `customer-${params.documentId}`,
+      exhibitFilename: params.filename,
+      sourceUrl: `fixture://customer/${params.companyId}/${params.documentId}/${params.filename}`,
+      filingDate: new Date(),
+      formType: "UPLOAD",
+      documentTitle: params.filename,
+      documentClass: documentClassFromDeclared(params.declaredType, "UNKNOWN") as never,
+      originalBytesHash: contentHash,
+      acquisitionTimestamp: new Date(),
+      parserVersion: "customer-stage-v1",
+      extractionStatus: "PENDING",
+      representationLevel: "SOURCE_ONLY",
+      provenance: "customer-upload",
+      usageRightsReviewStatus: "UNREVIEWED",
+      byteSize: params.bytes.length,
+      storageRef,
+      metadata: pendingMeta,
+    },
+    update: {
+      companyId: params.companyId,
+      documentId: params.documentId,
+      storageRef,
+      byteSize: params.bytes.length,
+      issuerName: company.name,
+      issuerTicker: company.ticker,
+      metadata: pendingMeta,
+    },
+  });
+
+  return { sourceId, storageRef, contentHash, reusedBytes };
+}
+
+/** Mark staged source as analyzing / failed without deleting durable bytes. */
+export async function markCustomerProcessingStatus(params: {
+  sourceId: string;
+  status: "STAGED_PENDING_ANALYSIS" | "ANALYZING" | "ANALYZED" | "FAILED_RETRYABLE";
+  error?: string;
+}): Promise<void> {
+  const row = await prisma.knowledgeSource.findUnique({ where: { sourceId: params.sourceId } });
+  if (!row) return;
+  const meta =
+    row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+      ? { ...(row.metadata as Record<string, unknown>) }
+      : {};
+  meta.processingStatus = params.status;
+  if (params.error) meta.analysisError = params.error;
+  else if (params.status === "ANALYZED") delete meta.analysisError;
+  await prisma.knowledgeSource.update({
+    where: { sourceId: params.sourceId },
+    data: {
+      metadata: JSON.parse(JSON.stringify(meta)),
+      ...(params.status === "FAILED_RETRYABLE" ? { extractionStatus: "FAILED" as never } : {}),
+    },
+  });
+}
+
+/**
+ * Re-run analysis from durable storage (retry / background worker path).
+ * Does not require the original upload request to still hold bytes in memory.
+ */
+export async function reanalyzeCustomerDocumentFromStorage(params: {
+  companyId: string;
+  documentId: string;
+}): Promise<CustomerAnalyzeResult> {
+  const row = await prisma.knowledgeSource.findFirst({
+    where: { companyId: params.companyId, documentId: params.documentId },
+    orderBy: { acquisitionTimestamp: "desc" },
+  });
+  const doc = await prisma.document.findFirst({
+    where: { id: params.documentId, companyId: params.companyId },
+  });
+  const storageRef = row?.storageRef ?? doc?.storageRef;
+  if (!storageRef) {
+    return {
+      ok: false,
+      documentId: params.documentId,
+      companyId: params.companyId,
+      extractionStatus: "FAILED",
+      covenantItemCount: 0,
+      definitionCount: 0,
+      structuralNodeCount: 0,
+      error: "No durable storageRef — re-upload required",
+      promotedToLegalTruth: 0,
+    };
+  }
+  if (row) await markCustomerProcessingStatus({ sourceId: row.sourceId, status: "ANALYZING" });
+  try {
+    const { getDocumentStorageProvider } = await import("../../document-storage");
+    const bytes = await getDocumentStorageProvider().retrieve(storageRef);
+    const result = await analyzeCustomerDocument({
+      companyId: params.companyId,
+      documentId: params.documentId,
+      bytes,
+      filename: doc?.originalFilename || doc?.name || row?.exhibitFilename || "document",
+      declaredType: doc?.type ?? undefined,
+    });
+    if (result.sourceId) {
+      await markCustomerProcessingStatus({
+        sourceId: result.sourceId,
+        status: result.ok ? "ANALYZED" : "FAILED_RETRYABLE",
+        error: result.error,
+      });
+    }
+    return result;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (row) {
+      await markCustomerProcessingStatus({
+        sourceId: row.sourceId,
+        status: "FAILED_RETRYABLE",
+        error: message,
+      });
+    }
+    return {
+      ok: false,
+      documentId: params.documentId,
+      companyId: params.companyId,
+      extractionStatus: "FAILED",
+      covenantItemCount: 0,
+      definitionCount: 0,
+      structuralNodeCount: 0,
+      error: message,
+      promotedToLegalTruth: 0,
+    };
+  }
 }
 
 /**
@@ -246,6 +436,52 @@ export async function analyzeCustomerDocument(params: {
       sources: packageSources,
       relationships,
     });
+    // Phase 2C package graph (title caption for siblings; full text for focal doc).
+    try {
+      const { buildWorkspacePackageGraph, packageGraphMetadataSummary } = await import(
+        "../legal-reasoning/package-graph-wire"
+      );
+      const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+      let focalText: string | null = null;
+      try {
+        focalText = (await extractTextAsync(params.bytes, params.filename)).text;
+      } catch {
+        focalText = null;
+      }
+      const graph = buildWorkspacePackageGraph({
+        companyId: params.companyId,
+        documents: packageSources.map((s) => ({
+          sourceId: s.sourceId,
+          documentTitle: s.documentTitle,
+          documentClass: s.documentClass,
+          text: s.sourceId === sourceId ? focalText : null,
+        })),
+      });
+      Object.assign(amendment, { packageGraph: packageGraphMetadataSummary(graph) });
+    } catch {
+      /* non-blocking — title/metadata amendment package still returned */
+    }
+    // Persist discovered agreement edges into Neon (idempotent). Failures must not block analysis.
+    try {
+      const { persistAmendmentGraph } = await import("../legal-reasoning/amendment-graph");
+      await persistAmendmentGraph({ companyId: params.companyId });
+    } catch {
+      /* non-blocking */
+    }
+
+    // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
+    const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+    const priorMeta =
+      priorRow?.metadata && typeof priorRow.metadata === "object" && !Array.isArray(priorRow.metadata)
+        ? (priorRow.metadata as Record<string, unknown>)
+        : {};
+    const priorApprovals = Array.isArray(priorMeta.reviewerApprovals)
+      ? (priorMeta.reviewerApprovals as ReviewerApproval[])
+      : [];
+    const merged = mergePreservedReviewerDecisions({
+      summary,
+      priorApprovals,
+    });
 
     const metadata = JSON.parse(
       JSON.stringify({
@@ -260,10 +496,15 @@ export async function analyzeCustomerDocument(params: {
           crossReferences: processed.crossReferenceCount,
           processingMs: processed.processingMs,
         },
-        covenantSummary: summary,
+        covenantSummary: merged.summary,
         amendmentPackage: amendment,
         storageProvider: stored.provider,
+        processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,
+        reviewerApprovals: priorApprovals,
+        reviewerDecisionHistory: priorMeta.reviewerDecisionHistory ?? [],
+        reviewerReanalysisConflicts: merged.conflicts,
+        aiFirstLawyerReview: true,
       }),
     );
 
