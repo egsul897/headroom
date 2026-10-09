@@ -2,6 +2,7 @@
 
 **PR:** https://github.com/egsul897/headroom/pull/217  
 **Branch:** `cursor/covenant-intelligence-factory-f761`  
+**Tip SHA:** `15809e3e6ca3e0e37fe3b113bba4a372f2a7e189`  
 **Paid inference:** $0  
 **Neon mutations applied:** 0  
 
