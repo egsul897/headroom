@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 1 |
 | Starting SHA | `610e9e2a6465f56416391247703eaf7c8d45516e` (pre-rebase tip of #205) |
-| Ending SHA | (see PR tip) |
+| Ending SHA | `ea2d1dfbba70c64f96d55e77667f341eba42da71` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
@@ -93,7 +93,7 @@ Customer-grade paths verified: **0** (synthetic financials only).
 | Item | URL / status |
 |---|---|
 | #205 authentic §7.2(d) + 7.5j expectation fix | https://github.com/egsul897/headroom/pull/205 |
-| This cycle (lien companion fail-closed) | (PR for `cursor/secured-debt-lien-companion-f673`) |
+| This cycle (lien companion fail-closed) | https://github.com/egsul897/headroom/pull/207 |
 
 ## Recommended next cycle
 
