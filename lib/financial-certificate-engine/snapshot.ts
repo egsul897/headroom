@@ -171,18 +171,38 @@ export async function proposeNs4SnapshotFromEngine(params: {
 }): Promise<ProposeNs4Result> {
   const cert = buildCertificateProposalFromEngine(params);
   if (!cert) return { ok: false, reason: "No metrics available to propose." };
-  if (cert.proposalStatus === "APPROVED") {
-    return { ok: false, reason: "Refusing to propose APPROVED from extraction." };
-  }
+  // proposalStatus is typed DRAFT | REVIEW_REQUIRED only — APPROVED is unreachable here.
 
   const { prisma } = await import("@/lib/prisma");
+  const existing = await prisma.contractInputSnapshot.findFirst({
+    where: { companyId: params.companyId, snapshotId: cert.snapshotId },
+    select: { status: true },
+  });
+  if (existing) {
+    if (existing.status === "APPROVED") {
+      return { ok: true, snapshotId: cert.snapshotId, status: "APPROVED", reason: "Already APPROVED." };
+    }
+    return {
+      ok: true,
+      snapshotId: cert.snapshotId,
+      status: existing.status,
+      reason: "Proposal already persisted (not re-appended).",
+    };
+  }
+
   const store = await PrismaApprovedSnapshotStore.open(prisma, params.companyId);
   const recorder = new LedgerProposalRecorder();
   const result = await proposeFromCertificateAsync(store, cert, recorder);
   if (!result.ok) {
+    const detail = result.issues
+      .map((i) => {
+        const storeMsgs = i.storeIssues?.map((s) => s.message).join("; ") ?? "";
+        return storeMsgs ? `${i.message} (${storeMsgs})` : i.message;
+      })
+      .join("; ");
     return {
       ok: false,
-      reason: result.issues.map((i) => i.message).join("; ") || "NS-4 propose failed",
+      reason: detail || "NS-4 propose failed",
     };
   }
   return { ok: true, snapshotId: cert.snapshotId, status: cert.proposalStatus };

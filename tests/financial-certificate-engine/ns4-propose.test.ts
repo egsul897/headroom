@@ -15,7 +15,24 @@ import { COHERENT_COMPLIANCE_CERTIFICATE_FY2026, COHERENT_FINANCIAL_STATEMENT_FY
 const COMPANY_ID = "fce-ns4-propose-co";
 
 async function cleanUp() {
-  await prisma.contractInputSnapshot.deleteMany({ where: { companyId: COMPANY_ID } }).catch(() => undefined);
+  const snaps = await prisma.contractInputSnapshot.findMany({
+    where: { companyId: COMPANY_ID },
+    select: { snapshotId: true },
+  });
+  const snapshotIds = snaps.map((s) => s.snapshotId);
+  if (snapshotIds.length > 0) {
+    const facts = await prisma.contractInputFact.findMany({
+      where: { snapshotId: { in: snapshotIds } },
+      select: { id: true },
+    });
+    const factIds = facts.map((f) => f.id);
+    if (factIds.length > 0) {
+      await prisma.contractInputFactLocator.deleteMany({ where: { factId: { in: factIds } } });
+    }
+    await prisma.contractInputFact.deleteMany({ where: { snapshotId: { in: snapshotIds } } });
+  }
+  await prisma.contractInputSnapshotEvent.deleteMany({ where: { companyId: COMPANY_ID } });
+  await prisma.contractInputSnapshot.deleteMany({ where: { companyId: COMPANY_ID } });
   await prisma.company.deleteMany({ where: { id: COMPANY_ID } });
 }
 
@@ -54,7 +71,9 @@ describe("financial-certificate-engine → NS-4 propose (no auto-approve)", () =
     expect(cert!.facts.some((f) => f.key === "Consolidated EBITDA")).toBe(true);
 
     const proposed = await proposeNs4SnapshotFromEngine({ companyId: COMPANY_ID, run });
-    expect(proposed.ok).toBe(true);
+    if (!proposed.ok) {
+      throw new Error(`NS-4 propose failed: ${proposed.reason}`);
+    }
     expect(proposed.snapshotId).toBeTruthy();
 
     const row = await prisma.contractInputSnapshot.findFirst({
