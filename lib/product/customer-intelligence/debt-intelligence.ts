@@ -1074,7 +1074,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     documentCount: review.documentCount,
     interpretedCount: rulebook.interpretedProvisions,
     acceptedCount,
-    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses. Multi-path analyses enumerate alternative contractual pathways without assuming basket stacking.",
+    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses. Multi-path analyses enumerate alternative contractual pathways without assuming basket stacking. Capacity authority: LEGACY_ENGINE / NOT_CERTIFIED_4E — figures use counsel-compiled Permissions + covenant-engine against dated FinancialState, not Phase 4B APPROVED snapshots or Phase 4E certified path enumeration.",
   };
 }
 

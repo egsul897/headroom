@@ -56,6 +56,11 @@ export interface MultiPathAnalysis {
     secured: boolean;
     label: string;
   };
+  /**
+   * Authority of numerical capacity on these paths.
+   * Product multipath uses legacy covenant-engine + counsel Permissions — NOT Phase 4E.
+   */
+  authority: "LEGACY_ENGINE_MULTIPATH" | "AI_PROPOSED_ONLY";
   paths: TransactionPath[];
   /** Paths that alone can support the full amount (executable or computed). */
   sufficientSinglePaths: TransactionPath[];
@@ -362,6 +367,10 @@ export function analyzeMultiPathTransaction(params: {
     missingForFullExecutable.push("Counsel ACCEPT/EDIT on AI-proposed pathways");
   }
 
+  const hasExecutableCapacity = deduped.some(
+    (p) => p.status === "EXECUTABLE" || p.status === "INSUFFICIENT",
+  );
+
   return {
     transaction: {
       amountMillions: params.amountMillions,
@@ -369,16 +378,20 @@ export function analyzeMultiPathTransaction(params: {
       secured: params.secured,
       label: params.label,
     },
+    authority: hasExecutableCapacity ? "LEGACY_ENGINE_MULTIPATH" : "AI_PROPOSED_ONLY",
     paths: deduped,
     sufficientSinglePaths,
     partialPaths,
     combination: {
       stackingAssumed: false,
       note:
-        "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together.",
+        "Stacking across debt/lien baskets is NOT assumed. Only expressly shared pools (e.g. RP waterfall steps) may be allocated together. Numerical path capacity is LEGACY_ENGINE_MULTIPATH — not certified Phase 4E neutral enumeration.",
       feasibleAllocation,
     },
-    narrative: narrativeParts.join(" "),
+    narrative: [
+      ...narrativeParts,
+      "Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+    ].join(" "),
     citations: [...new Set(deduped.map((p) => p.citation).filter(Boolean))].slice(0, 24),
     missingForFullExecutable,
   };

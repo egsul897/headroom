@@ -13,11 +13,24 @@ export type CapacityReadinessStatus =
   | "NO_FINANCIAL_SNAPSHOT"
   | "NO_DOCUMENTS";
 
+/** Authority of capacity figures — North Star forbids presenting legacy engine results as certified 4A–4E. */
+export type CapacityAuthority =
+  | "LEGACY_ENGINE"
+  | "NOT_CERTIFIED_4E"
+  | "DISCOVERY_ONLY"
+  | "NONE";
+
 export interface CapacityReadiness {
   companyId: string;
   status: CapacityReadinessStatus;
   /** True only when the legacy/engine capacity path can run without inventing inputs. */
   canEvaluateExecutableCapacity: boolean;
+  /**
+   * Provenance label for any numerical capacity this surface may show.
+   * LEGACY_ENGINE / NOT_CERTIFIED_4E: counsel-compiled Prisma Permissions + covenant-engine
+   * against dated FinancialState — not Phase 4B APPROVED snapshots or Phase 4E paths.
+   */
+  capacityAuthority: CapacityAuthority;
   analyzedDocumentCount: number;
   summaryCount: number;
   permissionCount: number;
@@ -53,7 +66,9 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     );
   }
   if (!hasFinancialSnapshot) {
-    blockers.push("No approved FinancialState snapshot — ratio/grower tests and engine capacity cannot be evaluated.");
+    blockers.push(
+      "No dated FinancialState on the legacy path — ratio/grower tests and engine capacity cannot be evaluated (Phase 4B APPROVED snapshots are a separate North-Star store).",
+    );
   }
 
   let status: CapacityReadinessStatus;
@@ -65,22 +80,30 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
 
   // Engine capacity requires both an executable model and a financial snapshot.
   const canEvaluateExecutableCapacity = hasExecutableModel && hasFinancialSnapshot;
+  const capacityAuthority: CapacityAuthority = canEvaluateExecutableCapacity
+    ? "LEGACY_ENGINE"
+    : hasExecutableModel
+      ? "NOT_CERTIFIED_4E"
+      : analyzedDocumentCount > 0
+        ? "DISCOVERY_ONLY"
+        : "NONE";
 
   const headline = canEvaluateExecutableCapacity
-    ? "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone."
+    ? "Legacy executable capacity path available — figures use counsel-compiled Permissions + covenant-engine against dated FinancialState (LEGACY_ENGINE · NOT Phase 4E / NOT Phase 4B APPROVED)."
     : status === "DISCOVERY_ONLY"
       ? "AI covenant interpretations are available for counsel review now. Numerical capacity remains conditional until a counsel-reviewed executable rulebook and financial inputs exist — Headroom will not invent figures."
       : status === "NO_FINANCIAL_SNAPSHOT"
-        ? "AI interpretations and baskets are available; financial snapshot missing — numerical capacity cannot be evaluated without inventing inputs. Supply financials or use conditional Ask analysis."
+        ? "AI interpretations and baskets are available; dated financial snapshot missing — numerical capacity cannot be evaluated without inventing inputs. Supply financials or use conditional Ask analysis."
         : "No capacity evaluation yet — upload financing documents and run AI analysis first (external legal verification is not required to start).";
 
   const guidance =
-    "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration.";
+    "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. LEGACY_ENGINE capacity ≠ certified Phase 4A–4E North-Star capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration.";
 
   return {
     companyId,
     status,
     canEvaluateExecutableCapacity,
+    capacityAuthority,
     analyzedDocumentCount,
     summaryCount,
     permissionCount,

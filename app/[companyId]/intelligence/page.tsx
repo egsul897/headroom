@@ -268,7 +268,7 @@ export default async function DebtIntelligencePage({
         <div className="card-title">6. Multi-path transaction analysis</div>
         <div className="card-subtitle">
           Enumerates alternative contractual pathways. Stacking across debt/lien baskets is not assumed unless the
-          agreement expressly shares capacity.
+          agreement expressly shares capacity. Authority: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E (not Phase 4E).
         </div>
         {(d.multiPath ?? []).length === 0 ? (
           <div className="row-note">Analyze a financing package to enumerate pathways.</div>
