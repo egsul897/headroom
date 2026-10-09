@@ -1,0 +1,83 @@
+{
+  "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+  "contentHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1399,
+    "definitions": 2,
+    "covenantCandidates": 67,
+    "crossReferences": 843,
+    "conditionExceptions": 400,
+    "processingMs": 74
+  },
+  "processingMs": 74,
+  "records": [
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.580Z",
+      "finishedAt": "2026-10-09T01:27:35.654Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1399; defs=2; candidates=67; xrefs=843; ms=74",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.654Z",
+      "finishedAt": "2026-10-09T01:27:35.654Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.654Z",
+      "finishedAt": "2026-10-09T01:27:35.654Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.654Z",
+      "finishedAt": "2026-10-09T01:27:35.654Z",
+      "diagnostics": "crossReferences=843 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.655Z",
+      "finishedAt": "2026-10-09T01:27:35.655Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "startedAt": "2026-10-09T01:27:35.655Z",
+      "finishedAt": "2026-10-09T01:27:35.655Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

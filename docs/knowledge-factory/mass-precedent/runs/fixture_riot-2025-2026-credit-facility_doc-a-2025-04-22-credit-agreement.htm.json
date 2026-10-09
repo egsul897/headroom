@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+  "contentHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 363,
+    "definitions": 0,
+    "covenantCandidates": 11,
+    "crossReferences": 226,
+    "conditionExceptions": 108,
+    "processingMs": 18
+  },
+  "processingMs": 18,
+  "records": [
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.892Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=363; defs=0; candidates=11; xrefs=226; ms=18",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.910Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.910Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.910Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "diagnostics": "crossReferences=226 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.910Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f",
+      "startedAt": "2026-10-09T01:27:34.910Z",
+      "finishedAt": "2026-10-09T01:27:34.910Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

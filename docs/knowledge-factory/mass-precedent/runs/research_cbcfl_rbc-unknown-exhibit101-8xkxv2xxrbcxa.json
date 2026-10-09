@@ -1,0 +1,83 @@
+{
+  "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+  "contentHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 591,
+    "definitions": 356,
+    "covenantCandidates": 22,
+    "crossReferences": 938,
+    "conditionExceptions": 400,
+    "processingMs": 47
+  },
+  "processingMs": 47,
+  "records": [
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.069Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=591; defs=356; candidates=22; xrefs=938; ms=47",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.116Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.116Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.116Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "diagnostics": "crossReferences=938 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.116Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "startedAt": "2026-10-09T01:27:36.116Z",
+      "finishedAt": "2026-10-09T01:27:36.116Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

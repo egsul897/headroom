@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+  "contentHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 21,
+    "definitions": 0,
+    "covenantCandidates": 4,
+    "crossReferences": 6,
+    "conditionExceptions": 8,
+    "processingMs": 3
+  },
+  "processingMs": 3,
+  "records": [
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.407Z",
+      "finishedAt": "2026-10-09T01:27:34.410Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=21; defs=0; candidates=4; xrefs=6; ms=3",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.410Z",
+      "finishedAt": "2026-10-09T01:27:34.410Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.410Z",
+      "finishedAt": "2026-10-09T01:27:34.410Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.410Z",
+      "finishedAt": "2026-10-09T01:27:34.410Z",
+      "diagnostics": "crossReferences=6 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.410Z",
+      "finishedAt": "2026-10-09T01:27:34.411Z",
+      "diagnostics": "relationshipEdgesForSource=1; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2",
+      "startedAt": "2026-10-09T01:27:34.411Z",
+      "finishedAt": "2026-10-09T01:27:34.411Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+  "contentHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 0,
+    "definitions": 340,
+    "covenantCandidates": 1,
+    "crossReferences": 737,
+    "conditionExceptions": 400,
+    "processingMs": 33
+  },
+  "processingMs": 33,
+  "records": [
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.289Z",
+      "finishedAt": "2026-10-09T01:27:36.322Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=0; defs=340; candidates=1; xrefs=737; ms=33",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.322Z",
+      "finishedAt": "2026-10-09T01:27:36.322Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.322Z",
+      "finishedAt": "2026-10-09T01:27:36.322Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.322Z",
+      "finishedAt": "2026-10-09T01:27:36.322Z",
+      "diagnostics": "crossReferences=737 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.322Z",
+      "finishedAt": "2026-10-09T01:27:36.323Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "startedAt": "2026-10-09T01:27:36.323Z",
+      "finishedAt": "2026-10-09T01:27:36.323Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

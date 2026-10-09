@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+  "contentHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1308,
+    "definitions": 0,
+    "covenantCandidates": 225,
+    "crossReferences": 785,
+    "conditionExceptions": 400,
+    "processingMs": 77
+  },
+  "processingMs": 77,
+  "records": [
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.283Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1308; defs=0; candidates=225; xrefs=785; ms=77",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.361Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.361Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.361Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "diagnostics": "crossReferences=785 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.361Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=0",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d",
+      "startedAt": "2026-10-09T01:27:34.361Z",
+      "finishedAt": "2026-10-09T01:27:34.361Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

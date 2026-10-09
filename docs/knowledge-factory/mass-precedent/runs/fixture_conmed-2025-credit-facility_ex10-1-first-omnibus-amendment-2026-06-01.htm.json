@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+  "contentHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1373,
+    "definitions": 5,
+    "covenantCandidates": 251,
+    "crossReferences": 756,
+    "conditionExceptions": 400,
+    "processingMs": 84
+  },
+  "processingMs": 84,
+  "records": [
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:33.919Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1373; defs=5; candidates=251; xrefs=756; ms=84",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:34.003Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:34.003Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:34.003Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "diagnostics": "crossReferences=756 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:34.003Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=0",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97",
+      "startedAt": "2026-10-09T01:27:34.003Z",
+      "finishedAt": "2026-10-09T01:27:34.003Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

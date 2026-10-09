@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+  "contentHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 259,
+    "definitions": 0,
+    "covenantCandidates": 57,
+    "crossReferences": 80,
+    "conditionExceptions": 75,
+    "processingMs": 18
+  },
+  "processingMs": 18,
+  "records": [
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.051Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=259; defs=0; candidates=57; xrefs=80; ms=18",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.069Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.069Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.069Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "diagnostics": "crossReferences=80 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.069Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=0",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a",
+      "startedAt": "2026-10-09T01:27:34.069Z",
+      "finishedAt": "2026-10-09T01:27:34.069Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

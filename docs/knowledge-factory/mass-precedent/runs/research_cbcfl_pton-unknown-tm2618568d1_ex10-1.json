@@ -1,0 +1,83 @@
+{
+  "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+  "contentHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1135,
+    "definitions": 0,
+    "covenantCandidates": 95,
+    "crossReferences": 1044,
+    "conditionExceptions": 400,
+    "processingMs": 71
+  },
+  "processingMs": 71,
+  "records": [
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:35.953Z",
+      "finishedAt": "2026-10-09T01:27:36.024Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1135; defs=0; candidates=95; xrefs=1044; ms=71",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:36.024Z",
+      "finishedAt": "2026-10-09T01:27:36.024Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:36.024Z",
+      "finishedAt": "2026-10-09T01:27:36.024Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:36.024Z",
+      "finishedAt": "2026-10-09T01:27:36.024Z",
+      "diagnostics": "crossReferences=1044 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:36.024Z",
+      "finishedAt": "2026-10-09T01:27:36.025Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "startedAt": "2026-10-09T01:27:36.025Z",
+      "finishedAt": "2026-10-09T01:27:36.025Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+  "contentHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 31,
+    "definitions": 0,
+    "covenantCandidates": 6,
+    "crossReferences": 19,
+    "conditionExceptions": 14,
+    "processingMs": 5
+  },
+  "processingMs": 5,
+  "records": [
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.845Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=31; defs=0; candidates=6; xrefs=19; ms=5",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.850Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.850Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.850Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "diagnostics": "crossReferences=19 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.850Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325",
+      "startedAt": "2026-10-09T01:27:34.850Z",
+      "finishedAt": "2026-10-09T01:27:34.850Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

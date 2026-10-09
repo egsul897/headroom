@@ -105,3 +105,11 @@ describe("mass precedent cost model", () => {
     expect(first!.estimatedNeonFootprintGiB).toBeGreaterThan(0);
   });
 });
+
+describe("precedent product search", () => {
+  it("returns empty hits when index missing without throwing", async () => {
+    const { searchPrecedents } = await import("../../lib/product/precedent-search");
+    const hits = searchPrecedents({ q: "Indebtedness", repoRoot: "/tmp/no-such-headroom-root" });
+    expect(hits).toEqual([]);
+  });
+});

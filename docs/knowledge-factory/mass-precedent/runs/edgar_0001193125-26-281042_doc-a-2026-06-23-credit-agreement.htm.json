@@ -1,0 +1,83 @@
+{
+  "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+  "contentHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1618,
+    "definitions": 4,
+    "covenantCandidates": 158,
+    "crossReferences": 928,
+    "conditionExceptions": 400,
+    "processingMs": 88
+  },
+  "processingMs": 88,
+  "records": [
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.596Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1618; defs=4; candidates=158; xrefs=928; ms=88",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.685Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.685Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.685Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "diagnostics": "crossReferences=928 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.685Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=0",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
+      "startedAt": "2026-10-09T01:27:33.685Z",
+      "finishedAt": "2026-10-09T01:27:33.685Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

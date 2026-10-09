@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+  "contentHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1734,
+    "definitions": 0,
+    "covenantCandidates": 126,
+    "crossReferences": 979,
+    "conditionExceptions": 400,
+    "processingMs": 79
+  },
+  "processingMs": 79,
+  "records": [
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.723Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1734; defs=0; candidates=126; xrefs=979; ms=79",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.802Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.802Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.802Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "diagnostics": "crossReferences=979 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.802Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568",
+      "startedAt": "2026-10-09T01:27:34.802Z",
+      "finishedAt": "2026-10-09T01:27:34.802Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

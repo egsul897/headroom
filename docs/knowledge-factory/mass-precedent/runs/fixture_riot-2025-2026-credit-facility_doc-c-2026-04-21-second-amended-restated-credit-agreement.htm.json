@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+  "contentHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 319,
+    "definitions": 0,
+    "covenantCandidates": 30,
+    "crossReferences": 235,
+    "conditionExceptions": 107,
+    "processingMs": 21
+  },
+  "processingMs": 21,
+  "records": [
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.007Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=319; defs=0; candidates=30; xrefs=235; ms=21",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.029Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.029Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.029Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "diagnostics": "crossReferences=235 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.029Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f",
+      "startedAt": "2026-10-09T01:27:35.029Z",
+      "finishedAt": "2026-10-09T01:27:35.029Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

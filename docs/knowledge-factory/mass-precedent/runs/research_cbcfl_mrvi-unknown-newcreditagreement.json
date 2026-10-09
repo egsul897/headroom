@@ -1,0 +1,83 @@
+{
+  "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+  "contentHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1275,
+    "definitions": 3,
+    "covenantCandidates": 105,
+    "crossReferences": 1045,
+    "conditionExceptions": 400,
+    "processingMs": 76
+  },
+  "processingMs": 76,
+  "records": [
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.829Z",
+      "finishedAt": "2026-10-09T01:27:35.905Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1275; defs=3; candidates=105; xrefs=1045; ms=76",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.905Z",
+      "finishedAt": "2026-10-09T01:27:35.905Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.905Z",
+      "finishedAt": "2026-10-09T01:27:35.905Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.905Z",
+      "finishedAt": "2026-10-09T01:27:35.905Z",
+      "diagnostics": "crossReferences=1045 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.905Z",
+      "finishedAt": "2026-10-09T01:27:35.906Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "startedAt": "2026-10-09T01:27:35.906Z",
+      "finishedAt": "2026-10-09T01:27:35.906Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

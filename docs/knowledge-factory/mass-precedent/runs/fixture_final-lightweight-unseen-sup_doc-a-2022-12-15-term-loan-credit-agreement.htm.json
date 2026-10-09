@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+  "contentHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1661,
+    "definitions": 0,
+    "covenantCandidates": 143,
+    "crossReferences": 971,
+    "conditionExceptions": 400,
+    "processingMs": 79
+  },
+  "processingMs": 79,
+  "records": [
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.598Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1661; defs=0; candidates=143; xrefs=971; ms=79",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.677Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.677Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.677Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "diagnostics": "crossReferences=971 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.677Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=1",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde",
+      "startedAt": "2026-10-09T01:27:34.677Z",
+      "finishedAt": "2026-10-09T01:27:34.677Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

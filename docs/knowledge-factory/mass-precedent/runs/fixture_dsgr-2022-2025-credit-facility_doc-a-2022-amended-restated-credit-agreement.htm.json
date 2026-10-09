@@ -1,0 +1,83 @@
+{
+  "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+  "contentHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+  "counts": {
+    "sources": 1,
+    "structuralNodes": 1227,
+    "definitions": 0,
+    "covenantCandidates": 206,
+    "crossReferences": 777,
+    "conditionExceptions": 400,
+    "processingMs": 75
+  },
+  "processingMs": 75,
+  "records": [
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.163Z",
+      "finishedAt": "2026-10-09T01:27:34.238Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1227; defs=0; candidates=206; xrefs=777; ms=75",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.238Z",
+      "finishedAt": "2026-10-09T01:27:34.238Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.238Z",
+      "finishedAt": "2026-10-09T01:27:34.238Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "DEPENDENCY_MAP",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.238Z",
+      "finishedAt": "2026-10-09T01:27:34.238Z",
+      "diagnostics": "crossReferences=777 (intra-document); package-graph pending for multi-doc packages",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "AMENDMENT_RELATION",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.238Z",
+      "finishedAt": "2026-10-09T01:27:34.239Z",
+      "diagnostics": "relationshipEdgesForSource=0; corpusRelationships=0",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "f73415beb0da5b78dbdbed96ec9a8e13210659c3",
+      "inputHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f",
+      "startedAt": "2026-10-09T01:27:34.239Z",
+      "finishedAt": "2026-10-09T01:27:34.239Z",
+      "diagnostics": "source retained in .local-knowledge-corpus/mass-precedent for retrieval index",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}
