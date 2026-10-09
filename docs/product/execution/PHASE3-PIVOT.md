@@ -9,8 +9,8 @@
 Package `c-amendment-supersession`:
 
 - Section operative splice largely fixed on PR #194 tip.
-- Remaining: context retrieval for amended `Default` definition at `C-7.01(b)`; section-level `credit-agreement::7.01` still CERTIFIED REVIEW (fail-closed).
-- Signatures (PR #194 register):  
+- **In progress fix:** `buildCovenantContextBundle` now scans `operativeItem.excerptText` (amendment-aware) for definitions instead of base `DESCENDANTS` — so restated provisos that introduce `Default` are retrieved. Regression: `section-operative-splice.test.ts` IPV-04 case.
+- Still OPEN until acceptance signatures pass:  
   - `pkg-c-amendment-supersession` → `context:C-7.01(b)-amended:definitions`  
   - `pkg-c-amendment-supersession` → `certification:credit-agreement::7.01`
 
