@@ -3,26 +3,43 @@
  * Does not invent research essays; only invalidates or confirms executability claims.
  */
 
-import type { ChallengeFinding, LegalConclusion } from "./types";
+import type { ChallengeFinding, LegalChallengeContext, LegalConclusion } from "./types";
+
+const EXECUTABLE_CLAIMS = new Set(["EXECUTABLE_VERIFIED", "LEGACY_ENGINE"]);
+
+/** Conclusions that survived challenge as legally verified executable capacity. LEGACY_ENGINE never qualifies. */
+export function countSurvivingExecutable(conclusions: readonly LegalConclusion[]): number {
+  return conclusions.filter((c) => c.executability === "EXECUTABLE_VERIFIED").length;
+}
+
+/** Legacy covenant-engine conclusions that survived challenge — reported separately, never as verified capability. */
+export function countSurvivingLegacy(conclusions: readonly LegalConclusion[]): number {
+  return conclusions.filter((c) => c.executability === "LEGACY_ENGINE").length;
+}
 
 export function challengeLegalConclusions(params: {
   companyId: string;
   conclusions: LegalConclusion[];
-  context: {
-    hasApprovedFinancialSnapshot: boolean;
-    hasUtilizationLedger: boolean;
-    hasVerifiedIrPackage: boolean;
-    outOfPackageAmendments: string[];
-    unresolvedDefinitionTerms: string[];
-    entityScopeUnresolved: boolean;
-  };
+  context: LegalChallengeContext;
 }): ChallengeFinding[] {
   const findings: ChallengeFinding[] = [];
   let n = 0;
   const id = (suffix: string) => `challenge-${++n}-${suffix}`;
 
   for (const c of params.conclusions) {
-    if (c.executability === "EXECUTABLE_VERIFIED" || c.executability === "LEGACY_ENGINE") {
+    if (c.executability === "LEGACY_ENGINE") {
+      // A historical engine calculation is not a verified legal conclusion: it may be reported, never
+      // counted or promoted as executable capacity, whatever the package's other evidence says.
+      findings.push({
+        id: id("legacy"),
+        severity: "BLOCKER",
+        targetConclusionId: c.id,
+        category: "LEGACY_EXECUTION",
+        statement: `Conclusion ${c.id} is a legacy covenant-engine calculation; it is not legally verified executable capacity.`,
+        invalidatesExecutability: true,
+      });
+    }
+    if (EXECUTABLE_CLAIMS.has(c.executability)) {
       if (!params.context.hasApprovedFinancialSnapshot) {
         findings.push({
           id: id("fin"),
@@ -34,13 +51,15 @@ export function challengeLegalConclusions(params: {
         });
       }
       if (!params.context.hasUtilizationLedger && c.kind === "CAPACITY_EXECUTED") {
+        // Missing utilization evidence is not zero utilization: a remaining-capacity claim without a
+        // ledger cannot be executable.
         findings.push({
           id: id("util"),
-          severity: "MATERIAL",
+          severity: "BLOCKER",
           targetConclusionId: c.id,
           category: "UTILIZATION_UNKNOWN",
-          statement: `Capacity conclusion ${c.id} lacks utilization ledger — remaining capacity may be overstated if usage is unknown.`,
-          invalidatesExecutability: c.promotedToLegalTruth === 1,
+          statement: `Capacity conclusion ${c.id} lacks utilization ledger evidence — remaining capacity cannot be executed while usage is unknown.`,
+          invalidatesExecutability: true,
         });
       }
       if (c.executability === "EXECUTABLE_VERIFIED" && !params.context.hasVerifiedIrPackage) {
@@ -114,14 +133,37 @@ export function challengeLegalConclusions(params: {
     });
   }
 
-  if (!params.context.hasVerifiedIrPackage && params.companyId === "conmed-demo") {
+  for (const ref of params.context.unresolvedCrossReferences ?? []) {
+    findings.push({
+      id: id("xref"),
+      severity: "BLOCKER",
+      targetConclusionId: null,
+      category: "UNRESOLVED_CROSS_REFERENCE",
+      statement: `Cross-reference not resolved to a governing provision: ${ref}. No executable claim can rest on an unresolved reference.`,
+      invalidatesExecutability: true,
+    });
+  }
+
+  for (const prov of params.context.ambiguousGoverningProvisions ?? []) {
+    findings.push({
+      id: id("governing"),
+      severity: "BLOCKER",
+      targetConclusionId: null,
+      category: "AMBIGUOUS_GOVERNING_PROVISION",
+      statement: `Governing provision is ambiguous: ${prov}. Which document or version governs must be established before any execution.`,
+      invalidatesExecutability: true,
+    });
+  }
+
+  // Generalized, not issuer-specific: without a Phase-3 verified IR package no company's package can
+  // execute under REQUIRE, so every executable claim in the package is blocked.
+  if (!params.context.hasVerifiedIrPackage) {
     findings.push({
       id: id("no-ir"),
       severity: "BLOCKER",
       targetConclusionId: null,
       category: "MISSING_IR",
-      statement:
-        "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE.",
+      statement: `No Phase-3 verified IR package is bound for ${params.companyId} — evaluateVerifiedCapacity cannot execute under REQUIRE.`,
       invalidatesExecutability: true,
     });
   }
@@ -134,14 +176,16 @@ export function applyChallengeVerdict(
   conclusions: LegalConclusion[],
   challenges: ChallengeFinding[],
 ): { surviving: LegalConclusion[]; blockedIds: string[] } {
+  // A finding that invalidates executability does so at any severity: an unresolved entity scope or
+  // an unresolved definition on an executable claim is enough to stop it being executable.
   const blocked = new Set(
     challenges
-      .filter((c) => c.invalidatesExecutability && c.severity === "BLOCKER" && c.targetConclusionId)
+      .filter((c) => c.invalidatesExecutability && c.targetConclusionId)
       .map((c) => c.targetConclusionId!),
   );
-  // Package-level blockers invalidate all executable claims
+  // Package-level invalidations stop every executable claim in the package.
   const packageBlock = challenges.some(
-    (c) => c.invalidatesExecutability && c.severity === "BLOCKER" && c.targetConclusionId === null,
+    (c) => c.invalidatesExecutability && c.targetConclusionId === null,
   );
 
   const surviving: LegalConclusion[] = [];
