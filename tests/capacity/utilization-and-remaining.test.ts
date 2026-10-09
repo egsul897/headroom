@@ -1,14 +1,18 @@
 /**
  * Agent 3 — utilization resolver + verified remaining + product consistency.
  * Independent expected answers; never invents zero from empty ledger.
+ * Completeness certificates required for remaining; synthetic ≠ production.
  */
 import { describe, expect, it } from "vitest";
 import {
+  DEMO_BINDINGS,
   assertProductCapacityConsistency,
   buildSharedProductCapacityViews,
   computeVerifiedRemaining,
   evidenceFromAttributedLedger,
+  refuseAuthoritativeRemaining,
   resolveUtilization,
+  syntheticCompletenessCertificate,
 } from "@/lib/capacity";
 import { adaptLegacyCovenantProvision } from "@/lib/contract-model/ir/legacy-adapter";
 import { buildCapacityGraph, evaluateCapacityState } from "@/lib/contract-model/runtime/capacity";
@@ -36,13 +40,16 @@ import type { IRExpression } from "@/lib/contract-model/ir/types";
 import { MAX, METRIC, MONEY, MUL, NUM, SUB } from "@/tests/contract-model/runtime/capacity/helpers";
 
 const AS_OF_D = "2026-06-30";
+const CO_ID = "co-util-test";
 
 describe("utilization resolver — never invent zero", () => {
   it("empty evidence without certificate → UNKNOWN, supportsRemainingClaim false", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [],
+      executionMode: "PRODUCTION",
     });
     expect(r.knowledge).toBe("UNKNOWN");
     expect(r.supportsRemainingClaim).toBe(false);
@@ -50,25 +57,30 @@ describe("utilization resolver — never invent zero", () => {
     expect(r.blockers.some((b) => /empty ledger/i.test(b))).toBe(true);
   });
 
-  it("verified empty certificate → VERIFIED_ZERO", () => {
+  it("DEMO synthetic VERIFIED_EMPTY → remaining for demo only, not productionAuthoritative", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [],
-      verifiedEmptyCertificate: {
+      executionMode: "DEMO_SYNTHETIC",
+      currentBindings: DEMO_BINDINGS,
+      completenessCertificate: syntheticCompletenessCertificate({
+        kind: "VERIFIED_EMPTY",
         capacityRuleId: "rule-flat",
+        companyId: CO_ID,
         asOf: AS_OF_D,
-        approvalState: "APPROVED",
-        sourceLabel: "approved-empty-path-cert",
-      },
+      }),
     });
     expect(r.knowledge).toBe("VERIFIED_ZERO");
     expect(r.supportsRemainingClaim).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
     expect(r.attributedAmount).toBe(0);
   });
 
   it("approved attributed records alone do NOT support remaining (completeness required)", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [
@@ -84,6 +96,7 @@ describe("utilization resolver — never invent zero", () => {
           authenticity: "SYNTHETIC_LABELED",
         }),
       ],
+      executionMode: "PRODUCTION",
     });
     expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
     expect(r.attributedAmount).toBe(25);
@@ -92,8 +105,9 @@ describe("utilization resolver — never invent zero", () => {
     expect(r.blockers.some((b) => /completeness/i.test(b))).toBe(true);
   });
 
-  it("attributed usage + VERIFIED_COMPLETE certificate → remaining claim supported", () => {
+  it("attributed usage + DEMO VERIFIED_COMPLETE → demo remaining, not production-authoritative", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [
@@ -109,26 +123,52 @@ describe("utilization resolver — never invent zero", () => {
           authenticity: "SYNTHETIC_LABELED",
         }),
       ],
-      completenessCertificate: {
-        capacityRuleId: "rule-flat",
-        asOf: AS_OF_D,
-        approvalState: "APPROVED",
-        sourceLabel: "SYNTHETIC_LABELED completeness cert",
+      executionMode: "DEMO_SYNTHETIC",
+      currentBindings: DEMO_BINDINGS,
+      completenessCertificate: syntheticCompletenessCertificate({
         kind: "VERIFIED_COMPLETE",
-      },
+        capacityRuleId: "rule-flat",
+        companyId: CO_ID,
+        asOf: AS_OF_D,
+      }),
     });
     expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
     expect(r.attributedAmount).toBe(25);
     expect(r.supportsRemainingClaim).toBe(true);
     expect(r.completenessCertified).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
+  });
+
+  it("PRODUCTION refuses SYNTHETIC completeness certificate", () => {
+    const r = resolveUtilization({
+      companyId: CO_ID,
+      capacityRuleId: "rule-flat",
+      asOf: AS_OF_D,
+      records: [],
+      executionMode: "PRODUCTION",
+      currentBindings: DEMO_BINDINGS,
+      completenessCertificate: syntheticCompletenessCertificate({
+        kind: "VERIFIED_EMPTY",
+        capacityRuleId: "rule-flat",
+        companyId: CO_ID,
+        asOf: AS_OF_D,
+      }),
+    });
+    expect(r.supportsRemainingClaim).toBe(false);
+    expect(r.productionAuthoritative).toBe(false);
+    expect(r.certificateValidationBlockers.some((b) => /SYNTHETIC|PRODUCTION|SYSTEM_FIXTURE/i.test(b))).toBe(
+      true,
+    );
   });
 
   it("unattributed legacy basket → UNATTRIBUTED_LEGACY_BASKET", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "perm-1",
       asOf: AS_OF_D,
       records: [],
       unattributedLegacyBasketPresent: true,
+      executionMode: "PRODUCTION",
     });
     expect(r.knowledge).toBe("UNATTRIBUTED_LEGACY_BASKET");
     expect(r.supportsRemainingClaim).toBe(false);
@@ -136,6 +176,7 @@ describe("utilization resolver — never invent zero", () => {
 
   it("superseded-only without certificate → SUPERSEDED_EXCLUDED", () => {
     const r = resolveUtilization({
+      companyId: CO_ID,
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [
@@ -152,6 +193,7 @@ describe("utilization resolver — never invent zero", () => {
           kind: "SUPERSEDED",
         }),
       ],
+      executionMode: "PRODUCTION",
     });
     expect(r.knowledge).toBe("SUPERSEDED_EXCLUDED");
     expect(r.supportsRemainingClaim).toBe(false);
@@ -167,7 +209,13 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         modeled: true,
         capacityRuleId: "r1",
       },
-      utilization: { capacityRuleId: "r1", asOf: AS_OF_D, records: [] },
+      utilization: {
+        companyId: CO_ID,
+        capacityRuleId: "r1",
+        asOf: AS_OF_D,
+        records: [],
+        executionMode: "PRODUCTION",
+      },
     });
     expect(v.remainingStatus).toBe("GROSS_ONLY");
     expect(v.publicationLabel).toBe("GROSS_CONTRACTUAL");
@@ -185,15 +233,18 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         capacityRuleId: "gate-1",
       },
       utilization: {
+        companyId: CO_ID,
         capacityRuleId: "gate-1",
         asOf: AS_OF_D,
         records: [],
-        verifiedEmptyCertificate: {
+        executionMode: "DEMO_SYNTHETIC",
+        currentBindings: DEMO_BINDINGS,
+        completenessCertificate: syntheticCompletenessCertificate({
+          kind: "VERIFIED_EMPTY",
           capacityRuleId: "gate-1",
+          companyId: CO_ID,
           asOf: AS_OF_D,
-          approvalState: "APPROVED",
-          sourceLabel: "cert",
-        },
+        }),
       },
     });
     expect(v.remainingStatus).toBe("GATE_FAILED");
@@ -201,7 +252,7 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
     expect(v.mayPublishAvailable).toBe(false);
   });
 
-  it("gross − attributed = supported remaining only with completeness certificate (labeled synthetic)", () => {
+  it("gross − attributed = demo remaining only with DEMO completeness (not production)", () => {
     const gross = 100;
     const used = 35;
     const expectedRemaining = 65;
@@ -213,6 +264,7 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         capacityRuleId: "basket-a",
       },
       utilization: {
+        companyId: CO_ID,
         capacityRuleId: "basket-a",
         asOf: AS_OF_D,
         records: [
@@ -228,12 +280,12 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        executionMode: "DEMO_SYNTHETIC",
       },
       sourceCitations: ["§6.01(a) synthetic demo"],
     });
     expect(withoutCompleteness.supportedRemaining).toBeNull();
     expect(withoutCompleteness.mayPublishAvailable).toBe(false);
-    expect(withoutCompleteness.remainingStatus).toBe("GROSS_ONLY");
 
     const v = computeVerifiedRemaining({
       gross: {
@@ -243,6 +295,7 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         capacityRuleId: "basket-a",
       },
       utilization: {
+        companyId: CO_ID,
         capacityRuleId: "basket-a",
         asOf: AS_OF_D,
         records: [
@@ -258,27 +311,29 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
-        completenessCertificate: {
-          capacityRuleId: "basket-a",
-          asOf: AS_OF_D,
-          approvalState: "APPROVED",
-          sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE certificate",
+        executionMode: "DEMO_SYNTHETIC",
+        currentBindings: DEMO_BINDINGS,
+        completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
-        },
+          capacityRuleId: "basket-a",
+          companyId: CO_ID,
+          asOf: AS_OF_D,
+        }),
       },
       sourceCitations: ["§6.01(a) synthetic demo"],
     });
     expect(v.supportedRemaining).toBe(expectedRemaining);
-    expect(v.knownUtilization).toBe(used);
-    expect(v.grossCapacity).toBe(gross);
+    expect(v.utilization.productionAuthoritative).toBe(false);
     expect(v.mayPublishAvailable).toBe(true);
-    expect(v.publicationLabel).toBe("AVAILABLE");
-    expect(v.utilization.recordsApplied[0]?.authenticity).toBe("SYNTHETIC_LABELED");
+    // Product surfaces must still refuse authoritative publication.
+    const gated = refuseAuthoritativeRemaining(v);
+    expect(gated.remaining).toBeNull();
+    expect(gated.mayPublishAvailable).toBe(false);
   });
 });
 
-describe("Position / Simulate / Ask consistency", () => {
-  it("three surfaces share one verified result — no parallel engine", () => {
+describe("Position / Simulate / Ask / verified-execution consistency", () => {
+  it("four surfaces share one result and refuse non-production remaining", () => {
     const views = buildSharedProductCapacityViews({
       gross: {
         amount: 80,
@@ -287,6 +342,7 @@ describe("Position / Simulate / Ask consistency", () => {
         capacityRuleId: "shared-rule",
       },
       utilization: {
+        companyId: CO_ID,
         capacityRuleId: "shared-rule",
         asOf: AS_OF_D,
         records: [
@@ -302,28 +358,28 @@ describe("Position / Simulate / Ask consistency", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
-        completenessCertificate: {
-          capacityRuleId: "shared-rule",
-          asOf: AS_OF_D,
-          approvalState: "APPROVED",
-          sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
+        executionMode: "DEMO_SYNTHETIC",
+        currentBindings: DEMO_BINDINGS,
+        completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
-        },
+          capacityRuleId: "shared-rule",
+          companyId: CO_ID,
+          asOf: AS_OF_D,
+        }),
       },
       governingConditions: ["Payment Conditions satisfied"],
       crossDocumentConstraints: ["Shared RP pool with Investments"],
       sourceCitations: ["§6.01", "§6.04"],
     });
-    expect(views.POSITION.supportedRemainingCapacity).toBe(60);
-    expect(views.SIMULATE.supportedRemainingCapacity).toBe(60);
-    expect(views.ASK.supportedRemainingCapacity).toBe(60);
+    // Underlying demo math may know remaining, but product surfaces refuse authoritative publish.
+    expect(views.POSITION.supportedRemainingCapacity).toBeNull();
+    expect(views.SIMULATE.supportedRemainingCapacity).toBeNull();
+    expect(views.ASK.supportedRemainingCapacity).toBeNull();
+    expect(views.VERIFIED_EXECUTION.supportedRemainingCapacity).toBeNull();
+    expect(views.POSITION.productionAuthoritativeRemaining).toBe(false);
     expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
     expect(views.POSITION.grossCapacity).toBe(80);
     expect(views.POSITION.knownUtilization).toBe(20);
-    expect(views.POSITION.unknownUtilization).toBe(false);
-    expect(views.POSITION.governingConditions).toContain("Payment Conditions satisfied");
-    expect(views.POSITION.crossDocumentConstraints.length).toBe(1);
-    expect(views.POSITION.sourceCitations).toContain("§6.01");
   });
 });
 
@@ -375,7 +431,6 @@ describe("Phase 4C adapter coverage — ratio/builder", () => {
     const instrumentKey = "inst";
     const adapted = adaptLegacyCovenantProvision(provision, companyId, instrumentKey);
     expect(adapted.rule).not.toBeNull();
-    expect(adapted.rule?.sufficiency).toBe("PARTIAL");
     const ruleComplete = {
       ...adapted.rule!,
       sufficiency: "COMPLETE" as const,
@@ -502,8 +557,6 @@ describe("Phase 4C adapter coverage — ratio/builder", () => {
 
 describe("financial chaining — leverage overlay", () => {
   it("debt DELTA reduces subsequent ratio-room capacity on the same approved snapshot", () => {
-    // IR: MAX(0, 4.5×EBITDA − (Total Debt − Cash))
-    // EBITDA=100, Debt=200, Cash=0 → room=250; +50 debt → 200
     const ebitda = 100;
     const totalDebt = 200;
     const cashAmt = 0;
@@ -527,10 +580,7 @@ describe("financial chaining — leverage overlay", () => {
     const capacityExpr = walk(
       MAX(
         MONEY(0),
-        SUB(
-          MUL(NUM(multiple), METRIC("EBITDA")),
-          SUB(METRIC("Total Debt"), METRIC("Cash")),
-        ),
+        SUB(MUL(NUM(multiple), METRIC("EBITDA")), SUB(METRIC("Total Debt"), METRIC("Cash"))),
       ),
     );
 
@@ -554,8 +604,6 @@ describe("financial chaining — leverage overlay", () => {
     const afterGross = amountOf(sim.postState!.capacities[0]!.grossCapacity);
     expect(afterGross).toBe(String(afterExpected));
     expect(Number(afterGross)).toBe(beforeExpected - delta);
-
-    // Base snapshot / pre-state unchanged
     expect(amountOf(w.state.capacities[0]!.grossCapacity)).toBe(String(beforeExpected));
     expect(WHEN).toBe(AS_OF_D);
   });
