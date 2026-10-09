@@ -1,0 +1,213 @@
+/**
+ * Searchable drafting-pattern library.
+ * A drafting pattern is NOT automatically an executable legal rule.
+ */
+
+import type { PatternLibraryEntry } from "../types";
+
+export const PATTERN_LIBRARY_VERSION = "covenant-patterns.v1";
+
+export const SEED_PATTERNS: PatternLibraryEntry[] = [
+  {
+    patternId: "fixed-dollar-basket",
+    name: "Fixed-dollar basket",
+    structuralCharacteristics: ["dollar amount", "permission/exception clause", "often capped"],
+    supportedSemanticHypotheses: ["fixed capacity quantum"],
+    counterexamples: ["ratio-only baskets with no dollar floor"],
+    knownFailureModes: ["confusing thresholds with permissions"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "greater-of-basket",
+    name: "Greater-of basket",
+    structuralCharacteristics: ["greater of", "dollar amount", "percentage of EBITDA/assets"],
+    supportedSemanticHypotheses: ["max of fixed and growth component"],
+    counterexamples: ["lesser-of constructions"],
+    knownFailureModes: ["misreading comparator direction"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "ratio-basket",
+    name: "Ratio basket",
+    structuralCharacteristics: ["leverage/coverage ratio test", "pro forma language"],
+    supportedSemanticHypotheses: ["ratio-conditioned permission"],
+    counterexamples: ["maintenance covenants without permission effect"],
+    knownFailureModes: ["confusing maintenance tests with incurrence permissions"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "builder-basket",
+    name: "Builder basket",
+    structuralCharacteristics: ["Available Amount / Cumulative Credit", "starter amount", "builder components"],
+    supportedSemanticHypotheses: ["accumulating capacity"],
+    counterexamples: ["one-time fixed baskets"],
+    knownFailureModes: ["missing shared-cap interactions"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "general-debt-basket",
+    name: "General debt basket",
+    structuralCharacteristics: ["catch-all indebtedness exception", "often dollar/greater-of"],
+    supportedSemanticHypotheses: ["residual debt capacity"],
+    counterexamples: ["category-specific acquisition debt only"],
+    knownFailureModes: ["over-attributing general basket to specific categories"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "purchase-money-debt",
+    name: "Purchase-money debt",
+    structuralCharacteristics: ["purchase money", "capital lease", "acquired asset financing"],
+    supportedSemanticHypotheses: ["asset-linked debt permission"],
+    counterexamples: ["general unsecured debt"],
+    knownFailureModes: ["entity-scope misidentification"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "acquisition-debt",
+    name: "Acquisition debt",
+    structuralCharacteristics: ["acquired indebtedness", "permitted acquisition financing"],
+    supportedSemanticHypotheses: ["acquisition-conditioned debt"],
+    counterexamples: ["ordinary working-capital debt"],
+    knownFailureModes: ["missing conditions precedent"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "refinancing-debt",
+    name: "Refinancing debt",
+    structuralCharacteristics: ["refinance/refund/replace", "principal not increased beyond permitted cushion"],
+    supportedSemanticHypotheses: ["refinancing permission"],
+    counterexamples: ["new-money incremental facilities"],
+    knownFailureModes: ["ignoring maturity/priority constraints"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "incremental-equivalent-debt",
+    name: "Incremental equivalent debt",
+    structuralCharacteristics: ["Incremental Equivalent Debt", "shares incremental cap"],
+    supportedSemanticHypotheses: ["shared incremental capacity"],
+    counterexamples: ["standalone general debt basket"],
+    knownFailureModes: ["missing shared caps with Incremental Facilities"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "permitted-liens",
+    name: "Permitted liens",
+    structuralCharacteristics: ["Permitted Liens definition or schedule of exceptions"],
+    supportedSemanticHypotheses: ["lien exception catalog"],
+    counterexamples: ["negative pledge without enumerated exceptions"],
+    knownFailureModes: ["treating definition list as operative permission without parent covenant"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "restricted-payment-builder",
+    name: "Restricted-payment builder",
+    structuralCharacteristics: ["RP builder", "Available Amount usage for dividends/buybacks"],
+    supportedSemanticHypotheses: ["RP capacity from builder"],
+    counterexamples: ["ratio-only RP baskets"],
+    knownFailureModes: ["shared capacity with investments/junior debt missed"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "asset-sale-reinvestment",
+    name: "Asset-sale reinvestment",
+    structuralCharacteristics: ["reinvestment right", "time window", "prepayment alternative"],
+    supportedSemanticHypotheses: ["conditional prepayment deferral"],
+    counterexamples: ["mandatory prepay with no reinvestment"],
+    knownFailureModes: ["misparenting reinvestment exceptions"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "no-default-condition",
+    name: "No-default condition",
+    structuralCharacteristics: ["no Default / no Event of Default condition on permission"],
+    supportedSemanticHypotheses: ["permission gated on default status"],
+    counterexamples: ["unconditional baskets"],
+    knownFailureModes: ["missing condition attachment"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "pro-forma-compliance",
+    name: "Pro forma compliance",
+    structuralCharacteristics: ["pro forma", "as if transaction occurred", "ratio compliance"],
+    supportedSemanticHypotheses: ["pro forma ratio gate"],
+    counterexamples: ["historical-ratio-only tests"],
+    knownFailureModes: ["wrong measurement date assumptions"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "shared-capacity",
+    name: "Shared capacity",
+    structuralCharacteristics: ["aggregate/combined/shared basket language across categories"],
+    supportedSemanticHypotheses: ["cross-category capacity sharing"],
+    counterexamples: ["independent siloed baskets"],
+    knownFailureModes: ["under-detecting shared caps"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "reclassification",
+    name: "Reclassification",
+    structuralCharacteristics: ["reclassify", "deemed incurred under", "redesignate basket usage"],
+    supportedSemanticHypotheses: ["basket reclassification right"],
+    counterexamples: ["static basket allocation"],
+    knownFailureModes: ["unusual reclassification provisions missed"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "conditional-amendment-effectiveness",
+    name: "Conditional amendment effectiveness",
+    structuralCharacteristics: ["amendment effective upon", "conditions precedent", "consent thresholds"],
+    supportedSemanticHypotheses: ["conditional effectiveness"],
+    counterexamples: ["immediately effective amendments"],
+    knownFailureModes: ["inferring legal effectiveness from filing chronology alone"],
+    verificationStatus: "UNVERIFIED",
+    sourceExampleIds: [],
+  },
+];
+
+const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
+  { patternId: "greater-of-basket", re: /\bgreater of\b/i },
+  { patternId: "ratio-basket", re: /\b(?:Leverage|Coverage)\s+Ratio\b/i },
+  { patternId: "builder-basket", re: /\bAvailable\s+Amount\b|\bbuilder\s+basket\b/i },
+  { patternId: "fixed-dollar-basket", re: /\$[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/i },
+  { patternId: "incremental-equivalent-debt", re: /\bIncremental\s+Equivalent\s+Debt\b/i },
+  { patternId: "permitted-liens", re: /\bPermitted\s+Liens?\b/i },
+  { patternId: "restricted-payment-builder", re: /\bRestricted\s+Payments?\b[\s\S]{0,200}\bAvailable\s+Amount\b/i },
+  { patternId: "asset-sale-reinvestment", re: /\breinvest/i },
+  { patternId: "no-default-condition", re: /\bno\s+(?:Default|Event of Default)\b/i },
+  { patternId: "pro-forma-compliance", re: /\bpro\s+forma\s+compliance\b/i },
+  { patternId: "shared-capacity", re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b/i },
+  { patternId: "reclassification", re: /\breclassif/i },
+  { patternId: "refinancing-debt", re: /\brefinanc/i },
+  { patternId: "purchase-money-debt", re: /\bpurchase\s+money\b/i },
+  { patternId: "acquisition-debt", re: /\bacquisition\s+(?:debt|indebtedness)\b|\bAcquired\s+Indebtedness\b/i },
+  { patternId: "general-debt-basket", re: /\bother\s+Indebtedness\b|\bgeneral\s+(?:debt|basket)\b/i },
+  { patternId: "conditional-amendment-effectiveness", re: /\bshall\s+become\s+effective\s+(?:upon|on)\b/i },
+];
+
+export function detectPatternsInText(text: string): string[] {
+  return PATTERN_DETECT.filter((p) => p.re.test(text)).map((p) => p.patternId);
+}
+
+export function getPattern(patternId: string): PatternLibraryEntry | undefined {
+  return SEED_PATTERNS.find((p) => p.patternId === patternId);
+}
+
+export function allPatterns(): PatternLibraryEntry[] {
+  return SEED_PATTERNS;
+}

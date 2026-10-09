@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-10-08T22:42:07.419Z",
+  "persistence": {
+    "mode": "LOCAL_DURABLE_CORPUS_STORE",
+    "databaseUrlPresent": false,
+    "localRoot": "/workspace/.local-knowledge-corpus",
+    "limitation": "Bulk bytes and per-document JSON manifests persist under .local-knowledge-corpus/ (gitignored). Git holds git-safe summary manifests under docs/knowledge-factory/manifests/. No Vercel Blob / Postgres credentials in this environment — do not claim cross-VM durability."
+  },
+  "coordination": {
+    "ehbBranch": "cursor/edgar-historical-backfill-c45c",
+    "ehbHandoffPath": "docs/knowledge-factory/coordination/ehb-handoff-summary.json",
+    "secFetchOwner": "WS-CKF"
+  },
+  "counts": {
+    "downloadedFinancingDocuments": 113,
+    "uniqueInstrumentIdentities": 112,
+    "structuralNodes": 37789,
+    "ambiguousStructuralNodes": 6913,
+    "covenantCandidates": 4590,
+    "definitions": 257,
+    "dependencyEdgesCrossReferences": 23876,
+    "conditionExceptionRecords": 14975,
+    "documentRelationships": 46,
+    "unresolvedUncertaintyItems": 3333,
+    "verifiedExamples": 0,
+    "semanticHypotheses": 0,
+    "fixtureDocumentsSeparate": 12,
+    "falsePositiveExhibitsExcluded": 9
+  },
+  "pilot": {
+    "target": 100,
+    "reprocessed": 134,
+    "ehb": {
+      "acquired": 0,
+      "duplicates": 0,
+      "errors": []
+    },
+    "topup": {
+      "acquired": 0,
+      "errors": []
+    },
+    "reached": 113
+  },
+  "dedupeDemonstration": {
+    "sampleSourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+    "firstHash": "48044e21d0315919915a3a2be453da08a9886c4a5b5c88a0bd82b30fc427cdd9",
+    "secondWasDuplicate": true,
+    "sourceCountBefore": 134,
+    "sourceCountAfter": 134
+  },
+  "paidInference": {
+    "enabled": false,
+    "actualSpendUsd": 0
+  },
+  "legalCertification": "NONE — discovery/structural levels only"
+}

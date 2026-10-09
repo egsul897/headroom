@@ -28,7 +28,20 @@
     "compute:phase2-real-edgar": "tsx scripts/cursor-cloud-compute/run-phase2-real-edgar.ts",
     "compute:phase3": "tsx scripts/cursor-cloud-compute/run-phase3.ts",
     "compute:phase3-forensic": "tsx scripts/cursor-cloud-compute/phase3-forensic-classify.ts",
-    "test:cursor-cloud-compute": "vitest run tests/cursor-cloud-compute"
+    "test:cursor-cloud-compute": "vitest run tests/cursor-cloud-compute",
+    "kf:ingest-fixtures": "tsx scripts/knowledge-factory/ingest-fixtures.ts",
+    "kf:discover": "tsx scripts/knowledge-factory/discover-documents.ts",
+    "kf:download": "tsx scripts/knowledge-factory/download-documents.ts",
+    "kf:parse": "tsx scripts/knowledge-factory/parse-documents.ts",
+    "kf:index": "tsx scripts/knowledge-factory/build-index.ts",
+    "kf:refresh": "tsx scripts/knowledge-factory/refresh-corpus.ts",
+    "kf:audit": "tsx scripts/knowledge-factory/audit-corpus.ts",
+    "kf:query": "tsx scripts/knowledge-factory/query-examples.ts",
+    "kf:costs": "tsx scripts/knowledge-factory/estimate-costs.ts",
+    "kf:pilot-100": "tsx scripts/knowledge-factory/run-pilot-100.ts",
+    "kf:phase3": "tsx scripts/knowledge-factory/phase3-preserve-and-export.ts",
+    "kf:recover": "tsx scripts/knowledge-factory/recover-from-manifest.ts",
+    "test:knowledge-factory": "vitest run tests/knowledge-factory"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

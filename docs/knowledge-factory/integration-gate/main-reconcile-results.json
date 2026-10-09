@@ -1,0 +1,200 @@
+{
+  "mission": "CKF PR #154 main reconcile integration gate",
+  "startingPrHead": "0e5b3e75b284caee2072444847d8ebf9a01938e2",
+  "mainShaAtReconcile": "4fb1ab7e6ab34a722f901a69e5a29906b27e4f68",
+  "reconcileHead": "89332b364043aaf838d253b461b21d9a7a3cee82",
+  "durability": {
+    "status": "DURABILITY_NOT_PROVEN",
+    "probe": {
+      "mode": "LOCAL_ONLY_NOT_CROSS_VM_DURABLE",
+      "durable": false,
+      "databaseUrlPresent": false,
+      "objectStorageTokenPresent": false,
+      "missingPrerequisites": [
+        "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
+        "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
+      ],
+      "notes": [
+        "Local .local-knowledge-corpus/ is session-scoped and gitignored; Cursor Cloud Agent VMs do not share those bytes.",
+        "Git-committed acquisition manifests + content hashes enable deterministic recovery, not durability.",
+        "Do not claim read-after-write durability or independent-session retrieval until both Postgres and object storage are available and verified."
+      ]
+    }
+  },
+  "authenticSourceRun": {
+    "fixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
+    "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "accessionNumber": "0001140361-26-003087",
+    "issuerCik": "0000912562",
+    "bodyBytes": 2266666,
+    "contentHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "pass1": {
+      "wasDuplicate": false,
+      "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "structuralNodeCount": 2071,
+      "candidateCount": 203,
+      "definitionCount": 4,
+      "conditionExceptionCount": 400,
+      "processingMs": 143
+    },
+    "pass2AliasReplay": {
+      "wasDuplicate": true,
+      "canonicalSourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+      "note": "Second ingest with alias sourceId must not create a new canonical row"
+    },
+    "export": {
+      "schemaVersion": "knowledge-factory.consumer-export.v1",
+      "sourceVersionId": "srcver:13b8027b3240ca470c84f40c6c928842",
+      "idempotencyKey": "f6c9a09a1f5e6e4a576859c3b2b3f55498d9580e5e76912597d15410c7a14683",
+      "durabilityClaim": "NONE",
+      "counts": {
+        "sources": 1,
+        "financingDocuments": 1,
+        "fixtureDocuments": 0,
+        "uniqueInstrumentIdentities": 1,
+        "structuralNodes": 2071,
+        "covenantCandidates": 203,
+        "definitions": 4,
+        "dependencyEdges": 1203,
+        "conditionExceptionRecords": 400,
+        "documentRelationships": 0,
+        "unresolvedUncertainties": 0
+      },
+      "safety": {
+        "automaticLegalVerification": false,
+        "automaticCapacityPromotion": false,
+        "paidInference": false,
+        "merges": false,
+        "certificationChanges": false,
+        "productionLegalRuleModifications": false,
+        "fixturesSeparatedFromSecAcquisitions": true
+      }
+    },
+    "consumersFreshExport": {
+      "definitionEncyclopedia": {
+        "pass1": {
+          "ok": true,
+          "pass": 1,
+          "sourcesUpserted": 1,
+          "sourcesSkipped": 0,
+          "definitionsUpserted": 4,
+          "definitionsSkipped": 0,
+          "idempotent": false,
+          "promotedToLegalTruth": 0,
+          "capacityCalculationAllowed": false,
+          "errors": []
+        },
+        "pass2": {
+          "ok": true,
+          "pass": 2,
+          "sourcesUpserted": 0,
+          "sourcesSkipped": 1,
+          "definitionsUpserted": 0,
+          "definitionsSkipped": 4,
+          "idempotent": true,
+          "promotedToLegalTruth": 0,
+          "capacityCalculationAllowed": false,
+          "errors": []
+        },
+        "sharedSourceIdsWithExport": true
+      },
+      "dependencyAtlas": {
+        "pass1": {
+          "ok": true,
+          "pass": 1,
+          "sourcesUpserted": 1,
+          "nodesUpserted": 3495,
+          "edgesUpserted": 1203,
+          "nodesSkipped": 0,
+          "edgesSkipped": 0,
+          "idempotent": false,
+          "promotedToLegalTruth": 0,
+          "errors": []
+        },
+        "pass2": {
+          "ok": true,
+          "pass": 2,
+          "sourcesUpserted": 0,
+          "nodesUpserted": 0,
+          "edgesUpserted": 0,
+          "nodesSkipped": 2071,
+          "edgesSkipped": 1203,
+          "idempotent": true,
+          "promotedToLegalTruth": 0,
+          "errors": []
+        },
+        "sharedSourceIdsWithExport": true
+      }
+    }
+  },
+  "committedExportConsumers": {
+    "schemaVersion": "knowledge-factory.consumer-export.v1",
+    "sourceCount": 125,
+    "sampleAuthenticSource": {
+      "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+      "issuerCik": "0000006201",
+      "accessionNumber": "0000006201-22-000097",
+      "originalBytesHash": "48044e21d0315919915a3a2be453da08a9886c4a5b5c88a0bd82b30fc427cdd9",
+      "representationLevel": "STRUCTURALLY_INDEXED"
+    },
+    "gibraltarPresentInCommittedExport": true,
+    "definitionEncyclopedia": {
+      "pass1": {
+        "ok": true,
+        "pass": 1,
+        "sourcesUpserted": 125,
+        "sourcesSkipped": 0,
+        "definitionsUpserted": 257,
+        "definitionsSkipped": 0,
+        "idempotent": false,
+        "promotedToLegalTruth": 0,
+        "capacityCalculationAllowed": false,
+        "errors": []
+      },
+      "pass2": {
+        "ok": true,
+        "pass": 2,
+        "sourcesUpserted": 0,
+        "sourcesSkipped": 125,
+        "definitionsUpserted": 0,
+        "definitionsSkipped": 257,
+        "idempotent": true,
+        "promotedToLegalTruth": 0,
+        "capacityCalculationAllowed": false,
+        "errors": []
+      },
+      "sharedSourceIdsWithExport": true
+    },
+    "dependencyAtlas": {
+      "pass1": {
+        "ok": true,
+        "pass": 1,
+        "sourcesUpserted": 125,
+        "nodesUpserted": 69230,
+        "edgesUpserted": 23876,
+        "nodesSkipped": 0,
+        "edgesSkipped": 0,
+        "idempotent": false,
+        "promotedToLegalTruth": 0,
+        "errors": []
+      },
+      "pass2": {
+        "ok": true,
+        "pass": 2,
+        "sourcesUpserted": 0,
+        "nodesUpserted": 0,
+        "edgesUpserted": 0,
+        "nodesSkipped": 37789,
+        "edgesSkipped": 23876,
+        "idempotent": true,
+        "promotedToLegalTruth": 0,
+        "errors": []
+      },
+      "sharedSourceIdsWithExport": true,
+      "sharedWithDefPeer": true
+    }
+  },
+  "defOnMainAdapterNote": "lib/definition-encyclopedia/kf-import-adapter.ts emits CKF-shaped records FROM the encyclopedia (reverse direction). Forward consume of consumer-export.v1 is implemented by lib/knowledge-factory/consumers/definition-encyclopedia-import.ts and was exercised above.",
+  "endingSha": "89332b364043aaf838d253b461b21d9a7a3cee82"
+}
