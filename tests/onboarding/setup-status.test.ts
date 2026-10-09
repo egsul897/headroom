@@ -15,7 +15,10 @@ function base(over: Partial<CompanySetupStatus> = {}): CompanySetupStatus {
     promoted: 0,
     financialSnapshots: 0,
     ns4ApprovedSnapshots: 0,
+    phase3TrustedUnitCount: 0,
+    phase3TrustedRuleCount: 0,
     permissions: 0,
+    unverifiedPermissions: 0,
     dashboardReady: false,
     capacityCertified: false,
     ...over,
@@ -71,12 +74,17 @@ describe("nextSetupStep", () => {
         financialSnapshots: 1,
         promoted: 3,
         permissions: 2,
+        unverifiedPermissions: 2,
         ns4ApprovedSnapshots: 1,
+        phase3TrustedUnitCount: 3,
+        phase3TrustedRuleCount: 2,
         dashboardReady: true,
       }),
     );
     expect(open.label).toBe("Open dashboard");
     expect(open.detail).toMatch(/not Phase 4E-certified/i);
+    expect(open.detail).toMatch(/Phase 3 VERIFIED semantic units: 3/);
+    expect(open.detail).toMatch(/UNVERIFIED Permission/);
   });
 
   it("never claims capacityCertified", () => {

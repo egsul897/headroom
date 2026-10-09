@@ -18,6 +18,7 @@ import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { getCompanySetupStatus, nextSetupStep } from "../../lib/onboarding/setup-status";
 import { getAnalysisReadinessForCompany } from "../../lib/contract-model/analysis";
 import { loadCapacityReadiness } from "../../lib/product/customer-intelligence/capacity-readiness";
+import { loadPhase3TrustedRulebookStatus } from "../../lib/product/customer-intelligence/phase3-trusted-rulebook";
 import { computeLeverageMetrics } from "../../lib/covenant-engine";
 import { loadCovenantOverviewInputs } from "../../lib/covenant-overview-service";
 import { loadCompanyOverview } from "../../lib/home/load-overview";
@@ -192,16 +193,30 @@ async function main() {
   const setup = await getCompanySetupStatus(COMPANY_ID);
   const next = setup ? nextSetupStep(setup) : null;
   const capacity = await loadCapacityReadiness(COMPANY_ID);
+  const phase3Rulebook = await loadPhase3TrustedRulebookStatus(COMPANY_ID);
   report.status = {
     setup,
     next,
     capacity: {
       status: capacity.status,
       canEvaluateExecutableCapacity: capacity.canEvaluateExecutableCapacity,
+      capacityAuthority: capacity.capacityAuthority,
       headline: capacity.headline,
       ns4ApprovedSnapshotCount: capacity.ns4ApprovedSnapshotCount,
+      phase3TrustedUnitCount: capacity.phase3TrustedUnitCount,
+      phase3TrustedRuleCount: capacity.phase3TrustedRuleCount,
+      unverifiedPermissionCount: capacity.unverifiedPermissionCount,
       blockers: capacity.blockers,
       guidance: capacity.guidance,
+    },
+    phase3TrustedRulebook: {
+      hasTrustedSemanticUnits: phase3Rulebook.hasTrustedSemanticUnits,
+      trustedUnitCount: phase3Rulebook.trustedUnitCount,
+      trustedRuleCount: phase3Rulebook.trustedRuleCount,
+      trustedDefinitionCount: phase3Rulebook.trustedDefinitionCount,
+      instrumentKeysWithTrustedTruth: phase3Rulebook.instrumentKeysWithTrustedTruth,
+      nonTrustedByStatus: phase3Rulebook.nonTrustedByStatus,
+      note: "VERIFIED SemanticTruthRecord only (existing getTrustedSemanticTruth gate). Not package CERTIFIED. Not Phase 4E. Phase 3 agent owns certification logic.",
     },
   };
 

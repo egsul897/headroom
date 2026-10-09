@@ -7,6 +7,7 @@
 import { prisma } from "@/lib/prisma";
 import { getReviewProgress } from "@/lib/onboarding/review";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
+import { loadPhase3TrustedRulebookStatus } from "@/lib/product/customer-intelligence/phase3-trusted-rulebook";
 import type { OnboardingStatus } from "@prisma/client";
 
 export interface CompanySetupStatus {
@@ -24,7 +25,15 @@ export interface CompanySetupStatus {
   financialSnapshots: number;
   /** NS-4 APPROVED ContractInputSnapshot count (authoritative North Star store). */
   ns4ApprovedSnapshots: number;
+  /**
+   * Phase 3 VERIFIED SemanticTruthRecord count (existing trust gate).
+   * Eligible trusted outputs when > 0 — never implies package CERTIFIED / 4E.
+   */
+  phase3TrustedUnitCount: number;
+  phase3TrustedRuleCount: number;
   permissions: number;
+  /** Promoted Permission rows still UNVERIFIED. */
+  unverifiedPermissions: number;
   /**
    * True when the legacy executable path can run. Never means Phase 3 CERTIFIED
    * or Phase 4E-certified capacity.
@@ -38,20 +47,32 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
   const company = await prisma.company.findUnique({ where: { id: companyId } });
   if (!company) return null;
 
-  const [documentsUploaded, extractedDocuments, progress, financialSnapshots, permissions, analysis, ns4ApprovedSnapshots, readyToPromote] =
-    await Promise.all([
-      prisma.document.count({ where: { companyId } }),
-      prisma.extractionRun.count({ where: { companyId } }),
-      getReviewProgress(companyId),
-      prisma.financialState.count({ where: { companyId } }),
-      prisma.permission.count({ where: { companyId } }),
-      getAnalysisReadinessForCompany(companyId),
-      prisma.contractInputSnapshot.count({ where: { companyId, status: "APPROVED" } }).catch(() => 0),
-      // Approved/edited but not yet promoted — do not count already-promoted rows.
-      prisma.extractionCandidate.count({
-        where: { companyId, reviewStatus: { in: ["APPROVED", "EDITED"] }, promotedAt: null },
-      }),
-    ]);
+  const [
+    documentsUploaded,
+    extractedDocuments,
+    progress,
+    financialSnapshots,
+    permissions,
+    unverifiedPermissions,
+    analysis,
+    ns4ApprovedSnapshots,
+    readyToPromote,
+    phase3,
+  ] = await Promise.all([
+    prisma.document.count({ where: { companyId } }),
+    prisma.extractionRun.count({ where: { companyId } }),
+    getReviewProgress(companyId),
+    prisma.financialState.count({ where: { companyId } }),
+    prisma.permission.count({ where: { companyId } }),
+    prisma.permission.count({ where: { companyId, reviewStatus: "UNVERIFIED" } }),
+    getAnalysisReadinessForCompany(companyId),
+    prisma.contractInputSnapshot.count({ where: { companyId, status: "APPROVED" } }).catch(() => 0),
+    // Approved/edited but not yet promoted — do not count already-promoted rows.
+    prisma.extractionCandidate.count({
+      where: { companyId, reviewStatus: { in: ["APPROVED", "EDITED"] }, promotedAt: null },
+    }),
+    loadPhase3TrustedRulebookStatus(companyId).catch(() => null),
+  ]);
 
   const dashboardReady =
     (company.onboardingStatus === "ACTIVE" || company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS") &&
@@ -72,7 +93,10 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
     promoted: progress.promoted,
     financialSnapshots,
     ns4ApprovedSnapshots,
+    phase3TrustedUnitCount: phase3?.trustedUnitCount ?? 0,
+    phase3TrustedRuleCount: phase3?.trustedRuleCount ?? 0,
     permissions,
+    unverifiedPermissions,
     dashboardReady,
     capacityCertified: false,
   };
@@ -121,12 +145,20 @@ export function nextSetupStep(status: CompanySetupStatus): {
       detail: "Promote approved candidates. Activation enables the legacy engine path — it is not Phase 3 / 4E certification.",
     };
   }
+  const phase3Detail =
+    status.phase3TrustedUnitCount > 0
+      ? ` Phase 3 VERIFIED semantic units: ${status.phase3TrustedUnitCount} (${status.phase3TrustedRuleCount} rules) — not package CERTIFIED.`
+      : "";
+  const unverifiedDetail =
+    status.unverifiedPermissions > 0
+      ? ` ${status.unverifiedPermissions} UNVERIFIED Permission(s) on the legacy path.`
+      : "";
   return {
     href: `/${id}`,
     label: "Open dashboard",
     detail:
       status.ns4ApprovedSnapshots > 0
-        ? "Legacy engine figures with NS-4 APPROVED financial snapshots on file. Not Phase 4E-certified capacity."
-        : "Figures come from uploaded documents and approved financials (legacy engine · not certified Phase 4E).",
+        ? `Legacy engine figures with NS-4 APPROVED financial snapshots on file. Not Phase 4E-certified capacity.${phase3Detail}${unverifiedDetail}`
+        : `Figures come from uploaded documents and approved financials (legacy engine · not certified Phase 4E).${phase3Detail}${unverifiedDetail}`,
   };
 }
