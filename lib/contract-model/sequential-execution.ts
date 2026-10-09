@@ -338,7 +338,14 @@ function independentRecompute(
   return viewState(state, utilizationStatus);
 }
 
-function snapshotsEqual(a: CapacitySnapshotView[], b: CapacitySnapshotView[]): boolean {
+/** Phase-4C capacity figures only (honestRemaining is a product overlay, not compared). */
+type CapacityCompareView = Omit<CapacitySnapshotView, "honestRemaining" | "honestRemainingKind">;
+
+function forCompare(views: CapacitySnapshotView[]): CapacityCompareView[] {
+  return views.map(({ honestRemaining: _h, honestRemainingKind: _hk, ...rest }) => rest);
+}
+
+function snapshotsEqual(a: CapacityCompareView[], b: CapacityCompareView[]): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
@@ -483,10 +490,7 @@ export function runSequentialTransactions(args: {
       postViews = viewState(simulation.postState, utilizationStatus);
       postHash = simulation.postState.stateHash;
       independent = independentRecompute(advanced, utilizationStatus);
-      match = snapshotsEqual(
-        postViews.map(({ honestRemaining: _h, honestRemainingKind: _hk, ...rest }) => rest),
-        independent.map(({ honestRemaining: _h, honestRemainingKind: _hk, ...rest }) => rest),
-      );
+      match = snapshotsEqual(forCompare(postViews), forCompare(independent));
       world = advanced;
 
       if (args.mode === "COMPLETED") {
