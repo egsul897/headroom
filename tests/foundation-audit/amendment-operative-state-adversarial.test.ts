@@ -489,3 +489,40 @@ describe("GENERALIZED: deeply nested amendment chain with an ambiguous target - 
     expect(stateAfterAll.provisions[0]!.fullChain).toHaveLength(3);
   });
 });
+
+describe("DOCUMENT-kind markup-exhibit effects surface under product instrument keys (operative authority)", () => {
+  it("a REVIEW_REQUIRED DOCUMENT effect targeting baseDocumentId is unattached even when its package-graph instrument key differs from the product instrument key", () => {
+    const { index } = buildIndex(BASE_DOC, SIMPLE_TEXT);
+    const productInstrumentKey = "product-human-instrument-key";
+    const packageGraphInstrumentKey = `instrument:${BASE_DOC}`;
+    const effect = baseEffect({
+      effectId: "omnibus-markup",
+      operation: "UNKNOWN_CHANGE",
+      status: "REVIEW_REQUIRED",
+      effectiveDate: CONDITIONAL,
+      unresolvedReason: "markup exhibit blackline not in analyzed source",
+      target: {
+        kind: "DOCUMENT",
+        targetDocumentId: BASE_DOC,
+        targetInstrumentKey: packageGraphInstrumentKey,
+        targetStructuralNodeKey: null,
+        targetSectionRef: null,
+        targetDefinedTermRef: null,
+        targetHint: "Credit Agreement",
+      },
+      newText: null,
+    });
+
+    // Wrong-key query without the baseDocumentId inclusion would silently drop the effect.
+    const state = computeOperativeContractState({
+      instrumentKey: productInstrumentKey,
+      baseDocumentId: BASE_DOC,
+      asOfDate: "2024-06-01",
+      index,
+      allEffects: [effect],
+    });
+    expect(state.status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
+    expect(state.provisions).toHaveLength(0);
+    expect(state.unattachedEffects.map((e) => e.effectId)).toContain("omnibus-markup");
+  });
+});

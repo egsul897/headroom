@@ -582,9 +582,8 @@
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
       "stage": "CERTIFICATION",
-      "title": "Residual fail-closed outcomes on faithful submissions (recorded, not defects): unaccounted Layer-1 items on 2.05 and 7.01 (C) and the stale-text rejection of the correct amended basket",
+      "title": "Residual fail-closed outcomes on faithful submissions (recorded, not defects): unaccounted Layer-1 items on 7.01 (C) and other residual certification REVIEW rows",
       "packages": [
-        "pkg-d-qualitative-restrictions",
         "pkg-g-adversarial-evidence",
         "pkg-i-secured-debt-lien",
         "pkg-k-three-way-builder",
@@ -593,11 +592,6 @@
         "pkg-h-unseen-composition"
       ],
       "signatures": [
-        {
-          "packageId": "pkg-d-qualitative-restrictions",
-          "expectationRef": "certification:credit-agreement::2.05",
-          "severity": "NONMATERIAL_OMISSION"
-        },
         {
           "packageId": "pkg-g-adversarial-evidence",
           "expectationRef": "certification:credit-agreement::7.01#2",
@@ -654,12 +648,12 @@
           "severity": "CRITICAL_FALSE_PERMISSION"
         }
       ],
-      "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
-      "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed). Package B indenture 4.09: section/clause operative text still carries superseded $50,000,000 (WRONG_OPERATIVE_SOURCE); B-IND-4.09(c) provenance excerpt null. UPDATED: B indenture 4.09 operative-text / B-IND-4.09(c) provenance signatures cleared by multi-instrument operative-state merge. UPDATED 2026-10-09 acceptance-runs/3441691989e2: 16 CORRECT_FAIL_CLOSED + 1 CAPABILITY_NOT_IMPLEMENTED; CFP 0; INCORRECT_RESULT 0; IPV-11/13 signatures cleared.",
-      "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
+      "failingInput": "G second SECTION 7.01 occurrence (a genuine duplicate label); residual certification REVIEW on E/F/I/K/L/M baskets.",
+      "expected": "AMBIGUOUS/REVIEW for a genuinely duplicated section (G); other residuals remain fail-closed until mock/model completeness catches up.",
+      "actual": "D 2.05 CERTIFIED after faithful-mock TIME_PERIOD mapping + uncovered subsection rule emission + DAYS inventory values (signature removed). G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE (correct). Remaining OPEN: E/F/I/K/L/M certification REVIEW residuals. CFP 0; INCORRECT_RESULT 0.",
+      "repro": "faithful submission for credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
-      "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",
+      "hypothesis": "Correct behaviour (G); residual mock incompleteness on other packages.",
       "acceptance": "Close when the acceptance matrix no longer reports them, or re-classify if a real cause emerges."
     },
     {
