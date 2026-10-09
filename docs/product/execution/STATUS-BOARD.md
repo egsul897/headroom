@@ -63,7 +63,7 @@ npm run kf:consolidation-dry-run → SKIP_MISSING_BYTES×29 (table absent); meta
 1. IPV-04 / IPV-15 / IPV-16 / IPV-19 closed on PR #197 — keep CFP at 0 on `run-all`  
 2. Produce authentic CERTIFIED executable provisions (VerifiedExecutionPackage)  
 3. Wire those into Phase 4E + Ask Headroom — no dashboard expansion, no new storage systems  
-4. Optional: IPV-18 junior-debt family; safe override-text derivation (IPV-16 residual)  
+4. Optional: IPV-18 junior-debt family  
 
 ## Legal posture
 

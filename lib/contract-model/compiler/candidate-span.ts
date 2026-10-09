@@ -166,6 +166,13 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
       if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
       return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
     }
+    // Applied superseding text under REVIEW_REQUIRED (e.g. a side-letter capacity
+    // derivation) must not fall through to the superseded base amount. Serve the
+    // derived currentText when present; otherwise withhold.
+    if (provision.appliedChain.length > 0 && !!provision.currentText && provision.currentText.trim().length > 0) {
+      if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
+      return { text: provision.currentText, origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
+    }
     if (isResolvedDeletion(provision)) {
       if (relatedAmendmentIsNotStrictlyEarlier(provision, anchorNodeId, index, operativeState)) return withheldResult(anchorNodeId, provision);
       return { text: "", origin: "OPERATIVE_STATE_CURRENT_TEXT", anchorNodeId, provision, withheld: false, withheldReasons: [] };
@@ -174,6 +181,9 @@ export function resolveOperativeSource(candidate: Pick<DiscoveredCandidate, "str
     // only when no descendant clause has its own applied amendment. Otherwise the base text still contains that clause.
     const descendant = spliceDescendantAmendments(anchorNodeId, base, index, operativeState);
     if (descendant.amended || descendant.withheld) return withheldResult(anchorNodeId, provision, descendant.withheldReasons.length > 0 ? descendant.withheldReasons : provision.unresolvedIssues);
+    if (provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" || provision.status === "OPERATIVE_STATE_PARTIAL" || provision.status === "OPERATIVE_STATE_CONFLICTED") {
+      return withheldResult(anchorNodeId, provision);
+    }
     return { text: base, origin: "STRUCTURAL_NODE", anchorNodeId, provision, withheld: false, withheldReasons: [] };
   }
   // A derived section view with no safe text means a definition amendment could not be reconstructed.

@@ -29,13 +29,13 @@ Package `j-restricted-payments-builder` `certification:credit-agreement::7.08` n
 
 ## IPV-16 — CLOSED
 
-Unclassified side-letter / override fail-closed path accepted:
+Unclassified side-letter / override path:
 
+- Safe side-letter capacity capture derives superseding operative language when the override window has exactly one money figure (package M: `$15,000,000` on 7.01(b)); consents / multi-amount windows stay `newText` null (fail-closed).
 - MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced).
-- INV-16b PRODUCT 5/5; clause and parent-section operative text withheld.
-- `operative:7.01(b)` and `semantic:credit-agreement::7.01` PASS as fail-closed (no invented `$15,000,000`).
-- Package-M `certification:7.02` REVIEW under `OPERATIVE_STATE_UNACCEPTABLE` is correct fail-closed.
-- Residual (optional): derive superseding override text when a safe extractor exists.
+- INV-16b PRODUCT: override attached; derived `$15,000,000` (or preserved base when capture fails); clause/parent retrieval withheld.
+- `operative:7.01(b)` SUPERSEDED by side-letter with `$15,000,000`; parent `semantic:7.01` still fail-closed while the override remains REVIEW_REQUIRED.
+- Package-M `certification:7.02` REVIEW under `OPERATIVE_STATE_UNACCEPTABLE` remains correct fail-closed.
 
 ## IPV-19 — CLOSED
 
