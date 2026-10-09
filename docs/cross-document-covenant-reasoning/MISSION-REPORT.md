@@ -2,7 +2,8 @@
 
 **Branch:** `cursor/cross-document-covenant-reasoning-5d11`  
 **PR:** https://github.com/egsul897/headroom/pull/218  
-**SHA:** `6fddaf90f5ab7cf24dae56360a7981c003165998`  
+**Implementation SHA:**   
+**Branch tip:** see latest commit on this branch`6fddaf90f5ab7cf24dae56360a7981c003165998`  
 **Cost:** $0 (zero provider calls; offline fixture reasoning)  
 **False-permission count:** **0**
 
