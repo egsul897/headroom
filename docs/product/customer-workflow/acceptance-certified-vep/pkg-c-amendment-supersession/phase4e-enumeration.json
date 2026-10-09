@@ -1,0 +1,169 @@
+{
+  "authority": "CERTIFIED_4E",
+  "transactionKind": "INCUR_DEBT",
+  "secured": false,
+  "paths": [
+    {
+      "pathId": "path:ir-rule:6fc343c364168e0ed4d7323d",
+      "label": "7.01(b) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:6fc343c364168e0ed4d7323d",
+      "sourceSectionRef": "7.01(b)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r1].condition[0]",
+          "type": "NO_DEFAULT",
+          "summary": "NO_DEFAULT: NO_DEFAULT: no Default has occurred and is continuing at the time of incurrence",
+          "referencesRuleTargets": []
+        }
+      ],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:8fbac7b49fafe94bfe01d333",
+      "label": "7.01 · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:8fbac7b49fafe94bfe01d333",
+      "sourceSectionRef": "7.01",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PROHIBITION",
+        "ruleType": "PROHIBITION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:9e3b331187254060bd7609f8",
+      "label": "7.01(a) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:9e3b331187254060bd7609f8",
+      "sourceSectionRef": "7.01(a)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:a81b47db3e1098dc90aac6ba",
+      "label": "7.01(d) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:a81b47db3e1098dc90aac6ba",
+      "sourceSectionRef": "7.01(d)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:cdb5c460a664fcf0c94270fd",
+      "label": "7.01(c) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:cdb5c460a664fcf0c94270fd",
+      "sourceSectionRef": "7.01(c)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:eeb364ecba487bbd90e02b31",
+      "label": "7.01(b) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:eeb364ecba487bbd90e02b31",
+      "sourceSectionRef": "7.01(b)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r3].condition[0]",
+          "type": "NO_DEFAULT",
+          "summary": "NO_DEFAULT: NO_DEFAULT: no Default has occurred and is continuing at the time of incurrence",
+          "referencesRuleTargets": []
+        }
+      ],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:fa379ef4683cf54484b712bb",
+      "label": "7.02 · CREATE_LIEN",
+      "status": "UNSUPPORTED",
+      "ruleId": "ir-rule:fa379ef4683cf54484b712bb",
+      "sourceSectionRef": "7.02",
+      "action": "CREATE_LIEN",
+      "covenantFamily": "LIENS",
+      "permission": {
+        "posture": "PROHIBITION",
+        "ruleType": "PROHIBITION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [
+        "REQUIRES Section 7.01(d)"
+      ],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Path enumerated but not executable under current certified runtime (cross-rule gate or insufficient representation)."
+    }
+  ],
+  "stackingAssumed": false,
+  "incompleteReasons": [],
+  "unsupportedReasons": [
+    "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:fa379ef4683cf54484b712bb"
+  ],
+  "note": "Neutral Phase 4E enumeration over verified package (7 path(s)). Stacking not assumed; no path auto-selected."
+}

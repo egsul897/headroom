@@ -1,0 +1,4213 @@
+{
+  "companyId": "company:lakeshore",
+  "instrumentKey": "instrument:credit-agreement",
+  "rules": [
+    {
+      "action": "MAKE_INVESTMENT",
+      "capacityExpression": null,
+      "companyId": "company:lakeshore",
+      "compilerVersion": "semantic-accountability-compiler.v12",
+      "conditions": [],
+      "covenantFamily": "INVESTMENTS",
+      "dependsOn": [],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "entityScopeAudit": {
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "guardVersion": "entity-scope-consistency-guard.v4",
+        "modelDiscrepancy": null,
+        "precedence": "OWN_OPERATIVE_LANGUAGE",
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "reasonCodes": [
+          "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED"
+        ],
+        "safeToRely": true,
+        "status": "SOURCE_MATCH_CONFIRMED",
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "normalized": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "raw": "BORROWER",
+            "viaAlias": false
+          }
+        ],
+        "witness": {
+          "citedUnitLeadIn": "SECTION 7.08 Investments . The Borrower shall not make any Investment, except:",
+          "decidedBy": "BOTH",
+          "governingScope": {
+            "ancestorDistance": null,
+            "basisRole": null,
+            "basisSectionRef": null,
+            "derivedScope": null,
+            "evidence": null,
+            "phrases": []
+          },
+          "ownExcerpt": "The Borrower shall not make any Investment, except:",
+          "parentScopeLeadIn": null,
+          "signals": [
+            {
+              "excludedContext": false,
+              "index": 4,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "OWN_EXCERPT"
+            },
+            {
+              "excludedContext": false,
+              "index": 31,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "CITED_UNIT_LEAD_IN"
+            }
+          ]
+        }
+      },
+      "entityScopeExcluded": [],
+      "exceptions": [
+        {
+          "appliesToRuleId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+          "conditions": [],
+          "description": "clause 7.08(c)",
+          "exceptionId": "rule[r1].exception[0]",
+          "inventoryItemIds": [
+            "inv-item:b0606c39b368877fa3a57ce6"
+          ],
+          "permissionRuleId": "ir-rule:956323b699eaa95372e9ce2d",
+          "provenance": {
+            "documentId": "credit-agreement",
+            "excerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+            "excerptResolution": {
+              "absCharEnd": 2509,
+              "absCharStart": 2417,
+              "boundSha256": "b9fb546d749977059f24bafcac4c5802c6513a46e0a68ade0321a2db337618b5",
+              "charEnd": 271,
+              "charStart": 179,
+              "detail": "exact excerpt located exactly once; bound to its source span",
+              "reason": null,
+              "segments": 1,
+              "sourceDocumentId": "credit-agreement",
+              "sourceKey": "operative",
+              "sourceKind": "OPERATIVE",
+              "sourceSectionRef": "7.08",
+              "status": "SOURCE_BOUND_EXACT",
+              "version": "provenance-source-binding.v2"
+            },
+            "sourceCitation": "7.08(c)",
+            "sourceNodeKey": null
+          }
+        },
+        {
+          "appliesToRuleId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+          "conditions": [],
+          "description": "clause 7.08(d)",
+          "exceptionId": "rule[r1].exception[1]",
+          "inventoryItemIds": [
+            "inv-item:4c77cc64dc9ed18517a570ba"
+          ],
+          "permissionRuleId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+          "provenance": {
+            "documentId": "credit-agreement",
+            "excerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+            "excerptResolution": {
+              "absCharEnd": 2585,
+              "absCharStart": 2511,
+              "boundSha256": "7983325bdc70d5298fc79d83b9985179ae4095ff79ee409c383cd6b66ccd7da4",
+              "charEnd": 347,
+              "charStart": 273,
+              "detail": "exact excerpt located exactly once; bound to its source span",
+              "reason": null,
+              "segments": 1,
+              "sourceDocumentId": "credit-agreement",
+              "sourceKey": "operative",
+              "sourceKind": "OPERATIVE",
+              "sourceSectionRef": "7.08",
+              "status": "SOURCE_BOUND_EXACT",
+              "version": "provenance-source-binding.v2"
+            },
+            "sourceCitation": "7.08(d)",
+            "sourceNodeKey": null
+          }
+        }
+      ],
+      "inheritedAttributes": [
+        {
+          "attribute": "action",
+          "canonicalValue": "MAKE_INVESTMENT",
+          "compatibility": "COMPATIBLE",
+          "evidence": "make any Investment",
+          "sourceAuthority": "OWN_SOURCE",
+          "sourceSectionRef": "7.08"
+        }
+      ],
+      "instrumentKey": "instrument:credit-agreement",
+      "inventoryItemIds": [
+        "inv-item:a844467706e74a97e8369bd7"
+      ],
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "operativeLineage": null,
+      "posture": "PROHIBITION",
+      "provenance": {
+        "documentId": "credit-agreement",
+        "excerpt": "The Borrower shall not make any Investment, except:",
+        "excerptResolution": {
+          "absCharEnd": 2316,
+          "absCharStart": 2265,
+          "boundSha256": "2d473af1cd4f0c8f3924e98f3c34f2af72ca686ab7062813363c021612477b18",
+          "charEnd": 78,
+          "charStart": 27,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "reason": null,
+          "segments": 1,
+          "sourceDocumentId": "credit-agreement",
+          "sourceKey": "operative",
+          "sourceKind": "OPERATIVE",
+          "sourceSectionRef": "7.08",
+          "status": "SOURCE_BOUND_EXACT",
+          "version": "provenance-source-binding.v2"
+        },
+        "sourceCitation": "7.08",
+        "sourceNodeKey": null
+      },
+      "ruleId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+      "ruleType": "PROHIBITION",
+      "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e",
+      "sourceDocumentId": "credit-agreement",
+      "sourceSectionRef": "7.08",
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasons": [],
+      "transactionScope": null
+    },
+    {
+      "action": "MAKE_INVESTMENT",
+      "capacityExpression": {
+        "amount": 5000000,
+        "currency": "USD",
+        "exprId": "ir-expr:e33fe4e8ffbbb60eee81a270",
+        "inventoryItemIds": [
+          "inv-item:b0606c39b368877fa3a57ce6"
+        ],
+        "kind": "MONEY",
+        "provenance": {
+          "documentId": "credit-agreement",
+          "excerpt": "$5,000,000",
+          "excerptResolution": {
+            "absCharEnd": 2480,
+            "absCharStart": 2470,
+            "boundSha256": "a0f4fc73cfe9342e9a52285f16810c5e9f67d83944d061b86c86ed29e46c7d76",
+            "charEnd": 242,
+            "charStart": 232,
+            "detail": "exact excerpt located exactly once; bound to its source span",
+            "reason": null,
+            "segments": 1,
+            "sourceDocumentId": "credit-agreement",
+            "sourceKey": "operative",
+            "sourceKind": "OPERATIVE",
+            "sourceSectionRef": "7.08",
+            "status": "SOURCE_BOUND_EXACT",
+            "version": "provenance-source-binding.v2"
+          },
+          "sourceCitation": "7.08(c)",
+          "sourceNodeKey": null
+        },
+        "type": "MONEY"
+      },
+      "companyId": "company:lakeshore",
+      "compilerVersion": "semantic-accountability-compiler.v12",
+      "conditions": [],
+      "covenantFamily": "INVESTMENTS",
+      "dependsOn": [],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "entityScopeAudit": {
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "guardVersion": "entity-scope-consistency-guard.v4",
+        "modelDiscrepancy": null,
+        "precedence": "MODEL_EMITTED",
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "reasonCodes": [
+          "ENTITY_SCOPE_UNWITNESSED"
+        ],
+        "safeToRely": false,
+        "status": "UNWITNESSED",
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "normalized": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "raw": "BORROWER",
+            "viaAlias": false
+          }
+        ],
+        "witness": {
+          "citedUnitLeadIn": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+          "decidedBy": "NONE",
+          "governingScope": {
+            "ancestorDistance": null,
+            "basisRole": null,
+            "basisSectionRef": null,
+            "derivedScope": null,
+            "evidence": null,
+            "phrases": []
+          },
+          "ownExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+          "parentScopeLeadIn": null,
+          "signals": []
+        }
+      },
+      "entityScopeExcluded": [],
+      "exceptions": [],
+      "instrumentKey": "instrument:credit-agreement",
+      "inventoryItemIds": [
+        "inv-item:b0606c39b368877fa3a57ce6"
+      ],
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "operativeLineage": null,
+      "posture": "PERMISSION",
+      "provenance": {
+        "documentId": "credit-agreement",
+        "excerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+        "excerptResolution": {
+          "absCharEnd": 2509,
+          "absCharStart": 2417,
+          "boundSha256": "b9fb546d749977059f24bafcac4c5802c6513a46e0a68ade0321a2db337618b5",
+          "charEnd": 271,
+          "charStart": 179,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "reason": null,
+          "segments": 1,
+          "sourceDocumentId": "credit-agreement",
+          "sourceKey": "operative",
+          "sourceKind": "OPERATIVE",
+          "sourceSectionRef": "7.08",
+          "status": "SOURCE_BOUND_EXACT",
+          "version": "provenance-source-binding.v2"
+        },
+        "sourceCitation": "7.08(c)",
+        "sourceNodeKey": null
+      },
+      "ruleId": "ir-rule:956323b699eaa95372e9ce2d",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e",
+      "sourceDocumentId": "credit-agreement",
+      "sourceSectionRef": "7.08(c)",
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasons": [],
+      "transactionScope": null
+    },
+    {
+      "action": "MAKE_INVESTMENT",
+      "capacityExpression": {
+        "companyId": "company:lakeshore",
+        "exprId": "ir-expr:be50d25a7f24674858566316",
+        "instrumentKey": "instrument:credit-agreement",
+        "inventoryItemIds": [
+          "inv-item:4c77cc64dc9ed18517a570ba"
+        ],
+        "kind": "DEFINED_TERM_REFERENCE",
+        "resolvedDefinitionId": null,
+        "termName": "Available Amount",
+        "type": "MONEY"
+      },
+      "companyId": "company:lakeshore",
+      "compilerVersion": "semantic-accountability-compiler.v12",
+      "conditions": [
+        {
+          "conditionId": "rule[r3].condition[0]",
+          "conditionType": "NO_DEFAULT",
+          "description": "NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing",
+          "expression": null,
+          "provenance": {
+            "documentId": "credit-agreement",
+            "excerpt": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+            "excerptResolution": {
+              "absCharEnd": null,
+              "absCharStart": null,
+              "boundSha256": "d165b006e8cf09d2056b15a0b4a8755c42286e6779630620d2aa1c59bd6de985",
+              "charEnd": 388,
+              "charStart": 301,
+              "detail": "exact excerpt located exactly once; bound to its source span",
+              "reason": null,
+              "segments": 1,
+              "sourceDocumentId": "credit-agreement",
+              "sourceKey": "context-item:d2fd7c903d6b64e5a65443f330ee20f67b65227bdcb57ca50a14b8a10aaa357d",
+              "sourceKind": "CONTEXT_ITEM",
+              "sourceSectionRef": "Available Amount",
+              "status": "SOURCE_BOUND_EXACT",
+              "version": "provenance-source-binding.v2"
+            },
+            "sourceCitation": "7.08(d)",
+            "sourceNodeKey": null
+          },
+          "referencesDefinitionId": null
+        }
+      ],
+      "covenantFamily": "INVESTMENTS",
+      "dependsOn": [],
+      "entityScope": [
+        "BORROWER"
+      ],
+      "entityScopeAudit": {
+        "before": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "sufficiency": "COMPLETE"
+        },
+        "guardVersion": "entity-scope-consistency-guard.v4",
+        "modelDiscrepancy": null,
+        "precedence": "MODEL_EMITTED",
+        "rawEmitted": {
+          "entityScope": [
+            "BORROWER"
+          ],
+          "entityScopeExcluded": [],
+          "source": "RULE_FIELD"
+        },
+        "reasonCodes": [
+          "ENTITY_SCOPE_UNWITNESSED"
+        ],
+        "safeToRely": false,
+        "status": "UNWITNESSED",
+        "tagNormalization": [
+          {
+            "field": "entityScope",
+            "normalized": "BORROWER",
+            "outcome": "RECOGNIZED_ENTITY_TAG",
+            "raw": "BORROWER",
+            "viaAlias": false
+          }
+        ],
+        "witness": {
+          "citedUnitLeadIn": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+          "decidedBy": "NONE",
+          "governingScope": {
+            "ancestorDistance": null,
+            "basisRole": null,
+            "basisSectionRef": null,
+            "derivedScope": null,
+            "evidence": null,
+            "phrases": []
+          },
+          "ownExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+          "parentScopeLeadIn": null,
+          "signals": []
+        }
+      },
+      "entityScopeExcluded": [],
+      "exceptions": [],
+      "instrumentKey": "instrument:credit-agreement",
+      "inventoryItemIds": [
+        "inv-item:4c77cc64dc9ed18517a570ba"
+      ],
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "operativeLineage": null,
+      "posture": "PERMISSION",
+      "provenance": {
+        "documentId": "credit-agreement",
+        "excerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+        "excerptResolution": {
+          "absCharEnd": 2585,
+          "absCharStart": 2511,
+          "boundSha256": "7983325bdc70d5298fc79d83b9985179ae4095ff79ee409c383cd6b66ccd7da4",
+          "charEnd": 347,
+          "charStart": 273,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "reason": null,
+          "segments": 1,
+          "sourceDocumentId": "credit-agreement",
+          "sourceKey": "operative",
+          "sourceKind": "OPERATIVE",
+          "sourceSectionRef": "7.08",
+          "status": "SOURCE_BOUND_EXACT",
+          "version": "provenance-source-binding.v2"
+        },
+        "sourceCitation": "7.08(d)",
+        "sourceNodeKey": null
+      },
+      "ruleId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+      "ruleType": "QUANTITATIVE_PERMISSION",
+      "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e",
+      "sourceDocumentId": "credit-agreement",
+      "sourceSectionRef": "7.08(d)",
+      "sufficiency": "COMPLETE",
+      "sufficiencyReasons": [],
+      "transactionScope": null
+    }
+  ],
+  "definitions": [],
+  "sharedCapacities": [
+    {
+      "capExpression": {
+        "companyId": "company:lakeshore",
+        "exprId": "ir-expr:be50d25a7f24674858566316",
+        "instrumentKey": "instrument:credit-agreement",
+        "kind": "DEFINED_TERM_REFERENCE",
+        "resolvedDefinitionId": null,
+        "termName": "Available Amount",
+        "type": "MONEY"
+      },
+      "companyId": "company:lakeshore",
+      "compilerVersion": "semantic-accountability-compiler.v12",
+      "description": "Available Amount definition",
+      "instrumentKey": "instrument:credit-agreement",
+      "irSchemaVersion": "headroom-covenant-ir.v1",
+      "memberRuleIds": [
+        "ir-rule:f5b50fa84a99ea0e0d59c5f3"
+      ],
+      "provenance": {
+        "documentId": "credit-agreement",
+        "excerpt": "minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d)",
+        "excerptResolution": {
+          "absCharEnd": null,
+          "absCharStart": null,
+          "boundSha256": "1f587915ed19dd72da17bac0c44cd864fb08d8e96b779ef47e36eb6f9a361023",
+          "charEnd": 266,
+          "charStart": 147,
+          "detail": "exact excerpt located exactly once; bound to its source span",
+          "reason": null,
+          "segments": 1,
+          "sourceDocumentId": "credit-agreement",
+          "sourceKey": "context-item:d2fd7c903d6b64e5a65443f330ee20f67b65227bdcb57ca50a14b8a10aaa357d",
+          "sourceKind": "CONTEXT_ITEM",
+          "sourceSectionRef": "Available Amount",
+          "status": "SOURCE_BOUND_EXACT",
+          "version": "provenance-source-binding.v2"
+        },
+        "sourceCitation": "7.08",
+        "sourceNodeKey": null
+      },
+      "sharedCapId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+      "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e"
+    }
+  ],
+  "verifications": [
+    {
+      "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+      "kind": "RULE",
+      "verifiedIdentity": {
+        "companyId": "company:lakeshore",
+        "compilerVersion": "semantic-accountability-compiler.v12",
+        "instrumentKey": "instrument:credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+        "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e"
+      },
+      "result": {
+        "admissibleEvidence": {
+          "algorithmVersion": "phase-3-f4-retrieved-evidence.v1",
+          "authenticated": [],
+          "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+          "localSourceHash": "9f079c7b85fce83a26c31c06de6e70564b116b600c4e057025b3021886e26b23",
+          "packageDocumentIds": [
+            "credit-agreement"
+          ],
+          "rejected": []
+        },
+        "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+        "conditionSuspicion": null,
+        "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+        "findings": [],
+        "irInventory": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "definitionCount": 0,
+          "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2",
+          "items": [
+            {
+              "currency": null,
+              "irPath": "rules[0].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1e84f8cec09d574f6d3b93713421ade936365687f17ef9af7302a86af33cfd3d",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "baf9542b6fb6e57552a87604bcc60b095b76bc8a9910a0d2b1e6f8f5f33c5743",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "PROHIBITION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "2d059fa1683f9ede0a1296c7ae0e0af911028f6967ad62e4f3c75fda0361dafb",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "06b0ead4af39168e34ffe6563313b251f183172f2dbdd605de07713bce847bdf",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "clause 7.08(c)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "cfb12cc3343b03257b0c46f03f519e21711158656ae2d10773753babcc14f693",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "clause 7.08(d)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a3c20cede4c564182262b323fe5b47f9173c41606c82993826255202bfd54a07",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "make any Investment",
+              "textValue": "action:MAKE_INVESTMENT@OWN_SOURCE:7.08"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fa49853e2678cf85f285c714ad77843ca1809ec6ccffe8de3614eda9dd2798e5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "13272681b47dea679181f92090471da83dd2443c3b44ec83f0767d39cc0152dd",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b59b0febd5d0fa5e8215ca048e4b80c91d50ec12b678a83eb6e950fc990e8d3b",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": "USD",
+              "irPath": "rules[1].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "$5,000,000",
+              "textValue": null
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e17b0c3cc4eb04b7e086da40894faacf7ab20e3752a812e8afbf2dd2c08625b5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d6caccb5eb37b35b3546635a859ee872f697c8978f0b2f33331055da82ca786f",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fd20746d870791781ac22406973f408eb203f2f16c826e359c6930ef52917349",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].conditions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a99e9dd297eaaa6b53e2eb006f7368a7adbaf32b46ad2cbc6b39720b5fe39081",
+              "kind": "CONDITION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+              "textValue": "NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].memberRuleIds[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4483663ad7754df76570e76015057d72e9a7f414654dbeab2a45a68e35ca389f",
+              "kind": "DEPENDENCY",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "SHARED_CAP_MEMBER:ir-rule:f5b50fa84a99ea0e0d59c5f3"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].capExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            }
+          ],
+          "ruleCount": 3
+        },
+        "numericAssertions": {
+          "groundings": [
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            }
+          ],
+          "inventory": {
+            "algorithmVersion": "fix-b-numeric-assertion.v1",
+            "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+            "fieldsWalked": 11,
+            "items": [
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              }
+            ]
+          }
+        },
+        "qualitativeLineage": {
+          "inventoryAvailable": true,
+          "materialUngrounded": 0,
+          "nonMaterialLineageGaps": 0,
+          "sourceTextsConsulted": 16,
+          "units": [
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "exceptions[0]",
+                "exceptions[1]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:a844467706e74a97e8369bd7"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:b0606c39b368877fa3a57ce6"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:956323b699eaa95372e9ce2d",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "conditions[0]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:4c77cc64dc9ed18517a570ba"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            }
+          ],
+          "version": "qualitative-grounding.v4"
+        },
+        "reconciliation": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "items": [
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": "USD",
+                  "irPath": "rules[1].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+                  "kind": "AMOUNT",
+                  "numericValue": 5000000,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "sourceCitation": "7.08(c)",
+                  "sourceExcerpt": "$5,000,000",
+                  "textValue": null
+                }
+              ],
+              "reason": "source AMOUNT 5000000 (canonical 5000000 USD) matches 1 compiled IR AMOUNT node(s)",
+              "sourceItem": {
+                "charEnd": 242,
+                "charStart": 232,
+                "currency": "USD",
+                "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+                "kind": "AMOUNT",
+                "numericValue": 5000000,
+                "parsedAmount": 5000000,
+                "provenanceClass": "PRIMARY_LOCAL",
+                "rawText": "$5,000,000",
+                "scaleMultiplier": null,
+                "scaleStatus": "NONE",
+                "scaleToken": null,
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"The Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 39,
+                "charStart": 27,
+                "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "The Borrower",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 124,
+                "charStart": 108,
+                "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Cash Equivalents",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": null,
+                  "irPath": "rules[2].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                },
+                {
+                  "currency": null,
+                  "irPath": "sharedCapacities[0].capExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                }
+              ],
+              "reason": "source mention \"Available Amount\" matches a compiled metric/defined-term reference",
+              "sourceItem": {
+                "charEnd": 346,
+                "charStart": 330,
+                "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Available Amount",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08",
+                    "7.08(c)",
+                    "7.08(d)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 10,
+                  "charStart": 0,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                  "fieldText": "$5,000,000",
+                  "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            }
+          ],
+          "materialUnresolvedCount": 0
+        },
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "sourceInventory": {
+          "apparentIndependentUnitCount": 4,
+          "apparentIndependentUnitEvidence": [
+            "(a)",
+            "(b)",
+            "(c)",
+            "(d)"
+          ],
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "inventoryAlgorithmVersion": "phase-3c-source-inventory.v4",
+          "items": [
+            {
+              "charEnd": 242,
+              "charStart": 232,
+              "currency": "USD",
+              "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "parsedAmount": 5000000,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "$5,000,000",
+              "scaleMultiplier": null,
+              "scaleStatus": "NONE",
+              "scaleToken": null,
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 231,
+              "charStart": 218,
+              "itemId": "467305ee3a19d09ea9ce845199316a58e3649c8a033c1bd2dccf0ef767b9e1f7",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 325,
+              "charStart": 312,
+              "itemId": "3eb6e68215d8de91bc2cb9db69bf1b0fc6a18c6e7bb8f739fcfffaeb0ca3107b",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 77,
+              "charStart": 71,
+              "itemId": "6e41a8bd9c7f26b70304758da46a1526b813694def7c848643b64ac44d6ba9e2",
+              "kind": "CONDITIONAL_PHRASE",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "except",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "0fdc94f711cf81cd228ef92487c023955b011456c51b8541ad30665697127a45",
+              "kind": "BUILDER_SIGNAL",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 31,
+              "itemId": "dfdffb16cd1cd592f9d833c08f13a8fc7bf9bc2974b907ac37e4debc42a6406a",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 158,
+              "charStart": 150,
+              "itemId": "2e320611beeb4c2b93aa0281bcb0b621db638bd6dd28112f8853b252f4f46e26",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 27,
+              "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "The Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 124,
+              "charStart": 108,
+              "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Cash Equivalents",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "865fee58622bc7a390fb43357516a833510b54a09b706f7541653dd6bbe2657e",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(a)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "e79a342e99e118c313fbfdd49a1fc62905ecd988659c2472ebf87a60446f3d86",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(b)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "cda2ddb74f6d7f908f3697fb679a90e51770f95f1e101e4e0dea18c96ebb05d7",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(c)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "3631ef4308bed9fb3ec51adcd4612193fe9a31ab6a634d8c545700ed60913828",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(d)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            }
+          ],
+          "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for.",
+          "supersessionStatus": "CURRENT_OPERATIVE"
+        },
+        "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+        "verificationProjection": {
+          "hash": "3ec4d466f2f8f659eb465d3be288543b7510c4b408cbde943e2b5e67676941a7",
+          "shownToReviewer": true,
+          "version": "phase-3c-verification-projection.v4"
+        },
+        "verifiedAt": "2026-10-09T18:17:06.740Z",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
+      }
+    },
+    {
+      "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+      "kind": "RULE",
+      "verifiedIdentity": {
+        "companyId": "company:lakeshore",
+        "compilerVersion": "semantic-accountability-compiler.v12",
+        "instrumentKey": "instrument:credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+        "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e"
+      },
+      "result": {
+        "admissibleEvidence": {
+          "algorithmVersion": "phase-3-f4-retrieved-evidence.v1",
+          "authenticated": [],
+          "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+          "localSourceHash": "9f079c7b85fce83a26c31c06de6e70564b116b600c4e057025b3021886e26b23",
+          "packageDocumentIds": [
+            "credit-agreement"
+          ],
+          "rejected": []
+        },
+        "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+        "conditionSuspicion": null,
+        "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+        "findings": [],
+        "irInventory": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "definitionCount": 0,
+          "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2",
+          "items": [
+            {
+              "currency": null,
+              "irPath": "rules[0].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1e84f8cec09d574f6d3b93713421ade936365687f17ef9af7302a86af33cfd3d",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "baf9542b6fb6e57552a87604bcc60b095b76bc8a9910a0d2b1e6f8f5f33c5743",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "PROHIBITION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "2d059fa1683f9ede0a1296c7ae0e0af911028f6967ad62e4f3c75fda0361dafb",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "06b0ead4af39168e34ffe6563313b251f183172f2dbdd605de07713bce847bdf",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "clause 7.08(c)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "cfb12cc3343b03257b0c46f03f519e21711158656ae2d10773753babcc14f693",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "clause 7.08(d)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a3c20cede4c564182262b323fe5b47f9173c41606c82993826255202bfd54a07",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "make any Investment",
+              "textValue": "action:MAKE_INVESTMENT@OWN_SOURCE:7.08"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fa49853e2678cf85f285c714ad77843ca1809ec6ccffe8de3614eda9dd2798e5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "13272681b47dea679181f92090471da83dd2443c3b44ec83f0767d39cc0152dd",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b59b0febd5d0fa5e8215ca048e4b80c91d50ec12b678a83eb6e950fc990e8d3b",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": "USD",
+              "irPath": "rules[1].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "$5,000,000",
+              "textValue": null
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e17b0c3cc4eb04b7e086da40894faacf7ab20e3752a812e8afbf2dd2c08625b5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d6caccb5eb37b35b3546635a859ee872f697c8978f0b2f33331055da82ca786f",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fd20746d870791781ac22406973f408eb203f2f16c826e359c6930ef52917349",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].conditions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a99e9dd297eaaa6b53e2eb006f7368a7adbaf32b46ad2cbc6b39720b5fe39081",
+              "kind": "CONDITION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+              "textValue": "NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].memberRuleIds[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4483663ad7754df76570e76015057d72e9a7f414654dbeab2a45a68e35ca389f",
+              "kind": "DEPENDENCY",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "SHARED_CAP_MEMBER:ir-rule:f5b50fa84a99ea0e0d59c5f3"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].capExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            }
+          ],
+          "ruleCount": 3
+        },
+        "numericAssertions": {
+          "groundings": [
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            }
+          ],
+          "inventory": {
+            "algorithmVersion": "fix-b-numeric-assertion.v1",
+            "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+            "fieldsWalked": 11,
+            "items": [
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              }
+            ]
+          }
+        },
+        "qualitativeLineage": {
+          "inventoryAvailable": true,
+          "materialUngrounded": 0,
+          "nonMaterialLineageGaps": 0,
+          "sourceTextsConsulted": 16,
+          "units": [
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "exceptions[0]",
+                "exceptions[1]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:a844467706e74a97e8369bd7"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:b0606c39b368877fa3a57ce6"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:956323b699eaa95372e9ce2d",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "conditions[0]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:4c77cc64dc9ed18517a570ba"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            }
+          ],
+          "version": "qualitative-grounding.v4"
+        },
+        "reconciliation": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "items": [
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": "USD",
+                  "irPath": "rules[1].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+                  "kind": "AMOUNT",
+                  "numericValue": 5000000,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "sourceCitation": "7.08(c)",
+                  "sourceExcerpt": "$5,000,000",
+                  "textValue": null
+                }
+              ],
+              "reason": "source AMOUNT 5000000 (canonical 5000000 USD) matches 1 compiled IR AMOUNT node(s)",
+              "sourceItem": {
+                "charEnd": 242,
+                "charStart": 232,
+                "currency": "USD",
+                "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+                "kind": "AMOUNT",
+                "numericValue": 5000000,
+                "parsedAmount": 5000000,
+                "provenanceClass": "PRIMARY_LOCAL",
+                "rawText": "$5,000,000",
+                "scaleMultiplier": null,
+                "scaleStatus": "NONE",
+                "scaleToken": null,
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"The Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 39,
+                "charStart": 27,
+                "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "The Borrower",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 124,
+                "charStart": 108,
+                "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Cash Equivalents",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": null,
+                  "irPath": "rules[2].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                },
+                {
+                  "currency": null,
+                  "irPath": "sharedCapacities[0].capExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                }
+              ],
+              "reason": "source mention \"Available Amount\" matches a compiled metric/defined-term reference",
+              "sourceItem": {
+                "charEnd": 346,
+                "charStart": 330,
+                "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Available Amount",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08",
+                    "7.08(c)",
+                    "7.08(d)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 10,
+                  "charStart": 0,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                  "fieldText": "$5,000,000",
+                  "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            }
+          ],
+          "materialUnresolvedCount": 0
+        },
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "sourceInventory": {
+          "apparentIndependentUnitCount": 4,
+          "apparentIndependentUnitEvidence": [
+            "(a)",
+            "(b)",
+            "(c)",
+            "(d)"
+          ],
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "inventoryAlgorithmVersion": "phase-3c-source-inventory.v4",
+          "items": [
+            {
+              "charEnd": 242,
+              "charStart": 232,
+              "currency": "USD",
+              "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "parsedAmount": 5000000,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "$5,000,000",
+              "scaleMultiplier": null,
+              "scaleStatus": "NONE",
+              "scaleToken": null,
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 231,
+              "charStart": 218,
+              "itemId": "467305ee3a19d09ea9ce845199316a58e3649c8a033c1bd2dccf0ef767b9e1f7",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 325,
+              "charStart": 312,
+              "itemId": "3eb6e68215d8de91bc2cb9db69bf1b0fc6a18c6e7bb8f739fcfffaeb0ca3107b",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 77,
+              "charStart": 71,
+              "itemId": "6e41a8bd9c7f26b70304758da46a1526b813694def7c848643b64ac44d6ba9e2",
+              "kind": "CONDITIONAL_PHRASE",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "except",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "0fdc94f711cf81cd228ef92487c023955b011456c51b8541ad30665697127a45",
+              "kind": "BUILDER_SIGNAL",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 31,
+              "itemId": "dfdffb16cd1cd592f9d833c08f13a8fc7bf9bc2974b907ac37e4debc42a6406a",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 158,
+              "charStart": 150,
+              "itemId": "2e320611beeb4c2b93aa0281bcb0b621db638bd6dd28112f8853b252f4f46e26",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 27,
+              "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "The Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 124,
+              "charStart": 108,
+              "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Cash Equivalents",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "865fee58622bc7a390fb43357516a833510b54a09b706f7541653dd6bbe2657e",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(a)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "e79a342e99e118c313fbfdd49a1fc62905ecd988659c2472ebf87a60446f3d86",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(b)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "cda2ddb74f6d7f908f3697fb679a90e51770f95f1e101e4e0dea18c96ebb05d7",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(c)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "3631ef4308bed9fb3ec51adcd4612193fe9a31ab6a634d8c545700ed60913828",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(d)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            }
+          ],
+          "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for.",
+          "supersessionStatus": "CURRENT_OPERATIVE"
+        },
+        "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+        "verificationProjection": {
+          "hash": "3ec4d466f2f8f659eb465d3be288543b7510c4b408cbde943e2b5e67676941a7",
+          "shownToReviewer": true,
+          "version": "phase-3c-verification-projection.v4"
+        },
+        "verifiedAt": "2026-10-09T18:17:06.740Z",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
+      }
+    },
+    {
+      "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+      "kind": "RULE",
+      "verifiedIdentity": {
+        "companyId": "company:lakeshore",
+        "compilerVersion": "semantic-accountability-compiler.v12",
+        "instrumentKey": "instrument:credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+        "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e"
+      },
+      "result": {
+        "admissibleEvidence": {
+          "algorithmVersion": "phase-3-f4-retrieved-evidence.v1",
+          "authenticated": [],
+          "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+          "localSourceHash": "9f079c7b85fce83a26c31c06de6e70564b116b600c4e057025b3021886e26b23",
+          "packageDocumentIds": [
+            "credit-agreement"
+          ],
+          "rejected": []
+        },
+        "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+        "conditionSuspicion": null,
+        "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+        "findings": [],
+        "irInventory": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "definitionCount": 0,
+          "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2",
+          "items": [
+            {
+              "currency": null,
+              "irPath": "rules[0].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1e84f8cec09d574f6d3b93713421ade936365687f17ef9af7302a86af33cfd3d",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "baf9542b6fb6e57552a87604bcc60b095b76bc8a9910a0d2b1e6f8f5f33c5743",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "PROHIBITION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "2d059fa1683f9ede0a1296c7ae0e0af911028f6967ad62e4f3c75fda0361dafb",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "06b0ead4af39168e34ffe6563313b251f183172f2dbdd605de07713bce847bdf",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "clause 7.08(c)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "cfb12cc3343b03257b0c46f03f519e21711158656ae2d10773753babcc14f693",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "clause 7.08(d)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a3c20cede4c564182262b323fe5b47f9173c41606c82993826255202bfd54a07",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "make any Investment",
+              "textValue": "action:MAKE_INVESTMENT@OWN_SOURCE:7.08"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fa49853e2678cf85f285c714ad77843ca1809ec6ccffe8de3614eda9dd2798e5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "13272681b47dea679181f92090471da83dd2443c3b44ec83f0767d39cc0152dd",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b59b0febd5d0fa5e8215ca048e4b80c91d50ec12b678a83eb6e950fc990e8d3b",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": "USD",
+              "irPath": "rules[1].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "$5,000,000",
+              "textValue": null
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e17b0c3cc4eb04b7e086da40894faacf7ab20e3752a812e8afbf2dd2c08625b5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d6caccb5eb37b35b3546635a859ee872f697c8978f0b2f33331055da82ca786f",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fd20746d870791781ac22406973f408eb203f2f16c826e359c6930ef52917349",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].conditions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a99e9dd297eaaa6b53e2eb006f7368a7adbaf32b46ad2cbc6b39720b5fe39081",
+              "kind": "CONDITION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+              "textValue": "NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].memberRuleIds[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4483663ad7754df76570e76015057d72e9a7f414654dbeab2a45a68e35ca389f",
+              "kind": "DEPENDENCY",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "SHARED_CAP_MEMBER:ir-rule:f5b50fa84a99ea0e0d59c5f3"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].capExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            }
+          ],
+          "ruleCount": 3
+        },
+        "numericAssertions": {
+          "groundings": [
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            }
+          ],
+          "inventory": {
+            "algorithmVersion": "fix-b-numeric-assertion.v1",
+            "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+            "fieldsWalked": 11,
+            "items": [
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              }
+            ]
+          }
+        },
+        "qualitativeLineage": {
+          "inventoryAvailable": true,
+          "materialUngrounded": 0,
+          "nonMaterialLineageGaps": 0,
+          "sourceTextsConsulted": 16,
+          "units": [
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "exceptions[0]",
+                "exceptions[1]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:a844467706e74a97e8369bd7"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:b0606c39b368877fa3a57ce6"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:956323b699eaa95372e9ce2d",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "conditions[0]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:4c77cc64dc9ed18517a570ba"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            }
+          ],
+          "version": "qualitative-grounding.v4"
+        },
+        "reconciliation": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "items": [
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": "USD",
+                  "irPath": "rules[1].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+                  "kind": "AMOUNT",
+                  "numericValue": 5000000,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "sourceCitation": "7.08(c)",
+                  "sourceExcerpt": "$5,000,000",
+                  "textValue": null
+                }
+              ],
+              "reason": "source AMOUNT 5000000 (canonical 5000000 USD) matches 1 compiled IR AMOUNT node(s)",
+              "sourceItem": {
+                "charEnd": 242,
+                "charStart": 232,
+                "currency": "USD",
+                "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+                "kind": "AMOUNT",
+                "numericValue": 5000000,
+                "parsedAmount": 5000000,
+                "provenanceClass": "PRIMARY_LOCAL",
+                "rawText": "$5,000,000",
+                "scaleMultiplier": null,
+                "scaleStatus": "NONE",
+                "scaleToken": null,
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"The Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 39,
+                "charStart": 27,
+                "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "The Borrower",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 124,
+                "charStart": 108,
+                "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Cash Equivalents",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": null,
+                  "irPath": "rules[2].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                },
+                {
+                  "currency": null,
+                  "irPath": "sharedCapacities[0].capExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                }
+              ],
+              "reason": "source mention \"Available Amount\" matches a compiled metric/defined-term reference",
+              "sourceItem": {
+                "charEnd": 346,
+                "charStart": 330,
+                "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Available Amount",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08",
+                    "7.08(c)",
+                    "7.08(d)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 10,
+                  "charStart": 0,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                  "fieldText": "$5,000,000",
+                  "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            }
+          ],
+          "materialUnresolvedCount": 0
+        },
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "sourceInventory": {
+          "apparentIndependentUnitCount": 4,
+          "apparentIndependentUnitEvidence": [
+            "(a)",
+            "(b)",
+            "(c)",
+            "(d)"
+          ],
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "inventoryAlgorithmVersion": "phase-3c-source-inventory.v4",
+          "items": [
+            {
+              "charEnd": 242,
+              "charStart": 232,
+              "currency": "USD",
+              "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "parsedAmount": 5000000,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "$5,000,000",
+              "scaleMultiplier": null,
+              "scaleStatus": "NONE",
+              "scaleToken": null,
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 231,
+              "charStart": 218,
+              "itemId": "467305ee3a19d09ea9ce845199316a58e3649c8a033c1bd2dccf0ef767b9e1f7",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 325,
+              "charStart": 312,
+              "itemId": "3eb6e68215d8de91bc2cb9db69bf1b0fc6a18c6e7bb8f739fcfffaeb0ca3107b",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 77,
+              "charStart": 71,
+              "itemId": "6e41a8bd9c7f26b70304758da46a1526b813694def7c848643b64ac44d6ba9e2",
+              "kind": "CONDITIONAL_PHRASE",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "except",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "0fdc94f711cf81cd228ef92487c023955b011456c51b8541ad30665697127a45",
+              "kind": "BUILDER_SIGNAL",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 31,
+              "itemId": "dfdffb16cd1cd592f9d833c08f13a8fc7bf9bc2974b907ac37e4debc42a6406a",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 158,
+              "charStart": 150,
+              "itemId": "2e320611beeb4c2b93aa0281bcb0b621db638bd6dd28112f8853b252f4f46e26",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 27,
+              "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "The Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 124,
+              "charStart": 108,
+              "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Cash Equivalents",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "865fee58622bc7a390fb43357516a833510b54a09b706f7541653dd6bbe2657e",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(a)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "e79a342e99e118c313fbfdd49a1fc62905ecd988659c2472ebf87a60446f3d86",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(b)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "cda2ddb74f6d7f908f3697fb679a90e51770f95f1e101e4e0dea18c96ebb05d7",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(c)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "3631ef4308bed9fb3ec51adcd4612193fe9a31ab6a634d8c545700ed60913828",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(d)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            }
+          ],
+          "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for.",
+          "supersessionStatus": "CURRENT_OPERATIVE"
+        },
+        "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+        "verificationProjection": {
+          "hash": "3ec4d466f2f8f659eb465d3be288543b7510c4b408cbde943e2b5e67676941a7",
+          "shownToReviewer": true,
+          "version": "phase-3c-verification-projection.v4"
+        },
+        "verifiedAt": "2026-10-09T18:17:06.740Z",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
+      }
+    },
+    {
+      "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+      "kind": "SHARED_CAPACITY",
+      "verifiedIdentity": {
+        "companyId": "company:lakeshore",
+        "compilerVersion": "semantic-accountability-compiler.v12",
+        "instrumentKey": "instrument:credit-agreement",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+        "sourceContentVersion": "sscv2:fbb6b184707cecc979ce1e65e50c55ec3f83704d0d40e6305e9230976d8cc85e"
+      },
+      "result": {
+        "admissibleEvidence": {
+          "algorithmVersion": "phase-3-f4-retrieved-evidence.v1",
+          "authenticated": [],
+          "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+          "localSourceHash": "9f079c7b85fce83a26c31c06de6e70564b116b600c4e057025b3021886e26b23",
+          "packageDocumentIds": [
+            "credit-agreement"
+          ],
+          "rejected": []
+        },
+        "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+        "conditionSuspicion": null,
+        "evidenceSetHash": "3a7315b9ec75488b2879b62f30d9e2b95622437d7b80b19a9421563018fc1fe7",
+        "findings": [],
+        "irInventory": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "definitionCount": 0,
+          "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v2",
+          "items": [
+            {
+              "currency": null,
+              "irPath": "rules[0].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1e84f8cec09d574f6d3b93713421ade936365687f17ef9af7302a86af33cfd3d",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "baf9542b6fb6e57552a87604bcc60b095b76bc8a9910a0d2b1e6f8f5f33c5743",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "PROHIBITION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "2d059fa1683f9ede0a1296c7ae0e0af911028f6967ad62e4f3c75fda0361dafb",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "The Borrower shall not make any Investment, except:",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "06b0ead4af39168e34ffe6563313b251f183172f2dbdd605de07713bce847bdf",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "clause 7.08(c)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].exceptions[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "cfb12cc3343b03257b0c46f03f519e21711158656ae2d10773753babcc14f693",
+              "kind": "EXCEPTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "clause 7.08(d)"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[0].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a3c20cede4c564182262b323fe5b47f9173c41606c82993826255202bfd54a07",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "sourceCitation": "7.08",
+              "sourceExcerpt": "make any Investment",
+              "textValue": "action:MAKE_INVESTMENT@OWN_SOURCE:7.08"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fa49853e2678cf85f285c714ad77843ca1809ec6ccffe8de3614eda9dd2798e5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "13272681b47dea679181f92090471da83dd2443c3b44ec83f0767d39cc0152dd",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b59b0febd5d0fa5e8215ca048e4b80c91d50ec12b678a83eb6e950fc990e8d3b",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": "USD",
+              "irPath": "rules[1].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+              "sourceCitation": "7.08(c)",
+              "sourceExcerpt": "$5,000,000",
+              "textValue": null
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].action",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e17b0c3cc4eb04b7e086da40894faacf7ab20e3752a812e8afbf2dd2c08625b5",
+              "kind": "ACTION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "MAKE_INVESTMENT"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].posture",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d6caccb5eb37b35b3546635a859ee872f697c8978f0b2f33331055da82ca786f",
+              "kind": "POSTURE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "PERMISSION"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].entityScope",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fd20746d870791781ac22406973f408eb203f2f16c826e359c6930ef52917349",
+              "kind": "ENTITY_SCOPE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "(d) Investments in an aggregate amount not to exceed the Available Amount.",
+              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].conditions[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a99e9dd297eaaa6b53e2eb006f7368a7adbaf32b46ad2cbc6b39720b5fe39081",
+              "kind": "CONDITION",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": "7.08(d)",
+              "sourceExcerpt": "the Available Amount shall be zero at any time a Default has occurred and is continuing",
+              "textValue": "NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].capacityExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].memberRuleIds[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4483663ad7754df76570e76015057d72e9a7f414654dbeab2a45a68e35ca389f",
+              "kind": "DEPENDENCY",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "SHARED_CAP_MEMBER:ir-rule:f5b50fa84a99ea0e0d59c5f3"
+            },
+            {
+              "currency": null,
+              "irPath": "sharedCapacities[0].capExpression",
+              "isAlternativeWithinSelection": false,
+              "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+              "sourceCitation": null,
+              "sourceExcerpt": null,
+              "textValue": "Available Amount"
+            }
+          ],
+          "ruleCount": 3
+        },
+        "numericAssertions": {
+          "groundings": [
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            },
+            {
+              "assertion": {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              "groundedIn": "OPERATIVE",
+              "matchedEvidenceId": "PRIMARY_LOCAL",
+              "matchedText": "$5,000,000",
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "relation": "the candidate's own operative source window",
+              "status": "GROUNDED_OPERATIVE",
+              "unrelatedEvidenceIds": []
+            }
+          ],
+          "inventory": {
+            "algorithmVersion": "fix-b-numeric-assertion.v1",
+            "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+            "fieldsWalked": 11,
+            "items": [
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08",
+                  "7.08(c)",
+                  "7.08(d)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 63,
+                "charStart": 53,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].provenance.excerpt",
+                "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              },
+              {
+                "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                "charEnd": 10,
+                "charStart": 0,
+                "currency": "USD",
+                "fieldClass": "SOURCE_QUOTATION_FIELD",
+                "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                "fieldText": "$5,000,000",
+                "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                "kind": "CURRENCY_AMOUNT",
+                "normalizedValue": 5000000,
+                "ownerCitation": "7.08(c)",
+                "ownerTermName": null,
+                "rawText": "$5,000,000",
+                "referencedSections": [
+                  "7.08(c)"
+                ],
+                "referencedTerms": [],
+                "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                "unit": "USD",
+                "withheldReason": null
+              }
+            ]
+          }
+        },
+        "qualitativeLineage": {
+          "inventoryAvailable": true,
+          "materialUngrounded": 0,
+          "nonMaterialLineageGaps": 0,
+          "sourceTextsConsulted": 16,
+          "units": [
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "exceptions[0]",
+                "exceptions[1]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:a844467706e74a97e8369bd7"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:b0606c39b368877fa3a57ce6"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:956323b699eaa95372e9ce2d",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            },
+            {
+              "excerptLocated": true,
+              "grounded": [
+                "posture",
+                "action",
+                "ruleType",
+                "covenantFamily",
+                "entityScope",
+                "conditions[0]"
+              ],
+              "hasProvenance": true,
+              "inventoryItemIds": [
+                "inv-item:4c77cc64dc9ed18517a570ba"
+              ],
+              "kind": "RULE",
+              "ungrounded": [],
+              "unitId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+              "unknownInventoryItemIds": [],
+              "verdict": "GROUNDED"
+            }
+          ],
+          "version": "qualitative-grounding.v4"
+        },
+        "reconciliation": {
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "items": [
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": "USD",
+                  "irPath": "rules[1].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "8aefb637deb033fe9e94dcc7ca40cf0142713316368713e23fd2d0d2b123df16",
+                  "kind": "AMOUNT",
+                  "numericValue": 5000000,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "sourceCitation": "7.08(c)",
+                  "sourceExcerpt": "$5,000,000",
+                  "textValue": null
+                }
+              ],
+              "reason": "source AMOUNT 5000000 (canonical 5000000 USD) matches 1 compiled IR AMOUNT node(s)",
+              "sourceItem": {
+                "charEnd": 242,
+                "charStart": 232,
+                "currency": "USD",
+                "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+                "kind": "AMOUNT",
+                "numericValue": 5000000,
+                "parsedAmount": 5000000,
+                "provenanceClass": "PRIMARY_LOCAL",
+                "rawText": "$5,000,000",
+                "scaleMultiplier": null,
+                "scaleStatus": "NONE",
+                "scaleToken": null,
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"The Borrower\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 39,
+                "charStart": 27,
+                "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "The Borrower",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "POSSIBLY_ACCOUNTED_FOR",
+              "irItems": [],
+              "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own",
+              "sourceItem": {
+                "charEnd": 124,
+                "charStart": 108,
+                "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Cash Equivalents",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [
+                {
+                  "currency": null,
+                  "irPath": "rules[2].capacityExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4f093236ca147c24cf2a13b298238ffec5913bfce4d75e20a371556f7aa4a840",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                },
+                {
+                  "currency": null,
+                  "irPath": "sharedCapacities[0].capExpression",
+                  "isAlternativeWithinSelection": false,
+                  "itemId": "4d013631c2f45598f1a76ef14187d73b3cf5dc5ae157d7fd6468af46c60b3b44",
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "numericValue": null,
+                  "ownerTermName": null,
+                  "ruleOrDefinitionId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+                  "sourceCitation": null,
+                  "sourceExcerpt": null,
+                  "textValue": "Available Amount"
+                }
+              ],
+              "reason": "source mention \"Available Amount\" matches a compiled metric/defined-term reference",
+              "sourceItem": {
+                "charEnd": 346,
+                "charStart": 330,
+                "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+                "kind": "METRIC_MENTION",
+                "numericValue": null,
+                "rawText": "Available Amount",
+                "sourceCitation": "7.08",
+                "sourceDocumentId": "credit-agreement",
+                "structuralNodeKey": null
+              }
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[0].exceptions[0].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "e8545fb58b25684a20b9a0067d1e2baeb78547a4eb47597b03eb541247e0fb28",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08",
+                    "7.08(c)",
+                    "7.08(d)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[0].exceptions[0].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 63,
+                  "charStart": 53,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].provenance.excerpt",
+                  "fieldText": "(c) Investments in an aggregate amount not to exceed $5,000,000 at any time outstanding; and",
+                  "itemId": "85add0613d880755d25997607ce70d38486a2b8fa0f76dd39e78ce44dea7e42f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            },
+            {
+              "classification": "ACCOUNTED_FOR",
+              "irItems": [],
+              "numericGrounding": {
+                "assertion": {
+                  "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+                  "charEnd": 10,
+                  "charStart": 0,
+                  "currency": "USD",
+                  "fieldClass": "SOURCE_QUOTATION_FIELD",
+                  "fieldPath": "rules[1].capacityExpression.provenance.excerpt",
+                  "fieldText": "$5,000,000",
+                  "itemId": "b0432bcd28d3c327693102cc929780e42ffa7fdfedab697cb7d951310ae4005f",
+                  "kind": "CURRENCY_AMOUNT",
+                  "normalizedValue": 5000000,
+                  "ownerCitation": "7.08(c)",
+                  "ownerTermName": null,
+                  "rawText": "$5,000,000",
+                  "referencedSections": [
+                    "7.08(c)"
+                  ],
+                  "referencedTerms": [],
+                  "ruleOrDefinitionId": "ir-rule:956323b699eaa95372e9ce2d",
+                  "unit": "USD",
+                  "withheldReason": null
+                },
+                "groundedIn": "OPERATIVE",
+                "matchedEvidenceId": "PRIMARY_LOCAL",
+                "matchedText": "$5,000,000",
+                "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+                "relation": "the candidate's own operative source window",
+                "status": "GROUNDED_OPERATIVE",
+                "unrelatedEvidenceIds": []
+              },
+              "reason": "numeric assertion \"$5,000,000\" at rules[1].capacityExpression.provenance.excerpt appears verbatim in the candidate's own operative source window, which is related to this assertion because the candidate's own operative source window",
+              "sourceItem": null
+            }
+          ],
+          "materialUnresolvedCount": 0
+        },
+        "semanticReviewInvoked": true,
+        "semanticReviewSkippedReason": null,
+        "sourceInventory": {
+          "apparentIndependentUnitCount": 4,
+          "apparentIndependentUnitEvidence": [
+            "(a)",
+            "(b)",
+            "(c)",
+            "(d)"
+          ],
+          "candidateRef": "discovery-candidate:manifest-credit-agreement-7.08",
+          "inventoryAlgorithmVersion": "phase-3c-source-inventory.v4",
+          "items": [
+            {
+              "charEnd": 242,
+              "charStart": 232,
+              "currency": "USD",
+              "itemId": "ed803812323a6760266e806070f385d8e94a13027e9abf80dbf3dccbf1fe7f15",
+              "kind": "AMOUNT",
+              "numericValue": 5000000,
+              "parsedAmount": 5000000,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "$5,000,000",
+              "scaleMultiplier": null,
+              "scaleStatus": "NONE",
+              "scaleToken": null,
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 231,
+              "charStart": 218,
+              "itemId": "467305ee3a19d09ea9ce845199316a58e3649c8a033c1bd2dccf0ef767b9e1f7",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 325,
+              "charStart": 312,
+              "itemId": "3eb6e68215d8de91bc2cb9db69bf1b0fc6a18c6e7bb8f739fcfffaeb0ca3107b",
+              "kind": "COMPARISON_OPERATOR",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "not to exceed",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 77,
+              "charStart": 71,
+              "itemId": "6e41a8bd9c7f26b70304758da46a1526b813694def7c848643b64ac44d6ba9e2",
+              "kind": "CONDITIONAL_PHRASE",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "except",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "0fdc94f711cf81cd228ef92487c023955b011456c51b8541ad30665697127a45",
+              "kind": "BUILDER_SIGNAL",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 31,
+              "itemId": "dfdffb16cd1cd592f9d833c08f13a8fc7bf9bc2974b907ac37e4debc42a6406a",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 158,
+              "charStart": 150,
+              "itemId": "2e320611beeb4c2b93aa0281bcb0b621db638bd6dd28112f8853b252f4f46e26",
+              "kind": "ENTITY_SCOPE_TERM",
+              "numericValue": null,
+              "provenanceClass": "PRIMARY_LOCAL",
+              "rawText": "Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 39,
+              "charStart": 27,
+              "itemId": "7b9675f6786245eb73fd17caa9350d1e4efdfa5d4ccdfa8c6bcc4aed87d2e1ac",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "The Borrower",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 124,
+              "charStart": 108,
+              "itemId": "7a8ce62c49ca759afae43ccd530c7fb4f0279a075f97da6e6b9c441081379cd8",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Cash Equivalents",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": 346,
+              "charStart": 330,
+              "itemId": "e1e82a97d3a8585abad80f2e2ad1eab3cd306ce300367f991e0f77f7f023a8ba",
+              "kind": "METRIC_MENTION",
+              "numericValue": null,
+              "rawText": "Available Amount",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "865fee58622bc7a390fb43357516a833510b54a09b706f7541653dd6bbe2657e",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(a)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "e79a342e99e118c313fbfdd49a1fc62905ecd988659c2472ebf87a60446f3d86",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(b)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "cda2ddb74f6d7f908f3697fb679a90e51770f95f1e101e4e0dea18c96ebb05d7",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(c)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            },
+            {
+              "charEnd": -1,
+              "charStart": -1,
+              "itemId": "3631ef4308bed9fb3ec51adcd4612193fe9a31ab6a634d8c545700ed60913828",
+              "kind": "INDEPENDENT_LIST_ITEM",
+              "numericValue": null,
+              "rawText": "(d)",
+              "sourceCitation": "7.08",
+              "sourceDocumentId": "credit-agreement",
+              "structuralNodeKey": null
+            }
+          ],
+          "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for.",
+          "supersessionStatus": "CURRENT_OPERATIVE"
+        },
+        "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
+        "verificationProjection": {
+          "hash": "3ec4d466f2f8f659eb465d3be288543b7510c4b408cbde943e2b5e67676941a7",
+          "shownToReviewer": true,
+          "version": "phase-3c-verification-projection.v4"
+        },
+        "verifiedAt": "2026-10-09T18:17:06.740Z",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
+      }
+    }
+  ]
+}

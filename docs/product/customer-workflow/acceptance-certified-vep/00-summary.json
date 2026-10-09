@@ -1,0 +1,58 @@
+{
+  "schema": "acceptance-certified-vep.v1",
+  "paidProvidersCalled": false,
+  "fixtureIrInvented": false,
+  "authenticLiveCertifiedClaimed": false,
+  "note": "VEPs derived from product-acceptance CERTIFIED candidates (deterministic gates; Layer-2 mocked silent). Not live/authentic CONMED CERTIFIED.",
+  "packages": [
+    {
+      "packageId": "pkg-n-clean-ratio",
+      "certified": 2,
+      "adapterOutcome": "DERIVED",
+      "refusals": [],
+      "included": [
+        "discovery-candidate:manifest-credit-agreement-7.01",
+        "discovery-candidate:manifest-credit-agreement-7.03"
+      ],
+      "phase4eAuthority": "CERTIFIED_4E",
+      "phase4ePathCount": 4
+    },
+    {
+      "packageId": "pkg-a-basic-credit-agreement",
+      "certified": 3,
+      "adapterOutcome": "DERIVED",
+      "refusals": [],
+      "included": [
+        "discovery-candidate:manifest-credit-agreement-7.01",
+        "discovery-candidate:manifest-credit-agreement-7.02",
+        "discovery-candidate:manifest-credit-agreement-7.03"
+      ],
+      "phase4eAuthority": "CERTIFIED_4E",
+      "phase4ePathCount": 5
+    },
+    {
+      "packageId": "pkg-j-restricted-payments-builder",
+      "certified": 1,
+      "adapterOutcome": "DERIVED",
+      "refusals": [],
+      "included": [
+        "discovery-candidate:manifest-credit-agreement-7.08"
+      ],
+      "phase4eAuthority": "CERTIFIED_4E",
+      "phase4ePathCount": 3
+    },
+    {
+      "packageId": "pkg-c-amendment-supersession",
+      "certified": 3,
+      "adapterOutcome": "DERIVED",
+      "refusals": [],
+      "included": [
+        "discovery-candidate:manifest-credit-agreement-7.01",
+        "discovery-candidate:manifest-credit-agreement-7.02",
+        "discovery-candidate:manifest-credit-agreement-7.01(b)"
+      ],
+      "phase4eAuthority": "CERTIFIED_4E",
+      "phase4ePathCount": 7
+    }
+  ]
+}

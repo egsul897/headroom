@@ -1,0 +1,86 @@
+{
+  "authority": "CERTIFIED_4E",
+  "transactionKind": "INCUR_DEBT",
+  "secured": false,
+  "paths": [
+    {
+      "pathId": "path:ir-rule:0edd8bff66c7a992a2cc0cab",
+      "label": "7.08 · MAKE_INVESTMENT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:0edd8bff66c7a992a2cc0cab",
+      "sourceSectionRef": "7.08",
+      "action": "MAKE_INVESTMENT",
+      "covenantFamily": "INVESTMENTS",
+      "permission": {
+        "posture": "PROHIBITION",
+        "ruleType": "PROHIBITION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:956323b699eaa95372e9ce2d",
+      "label": "7.08(c) · MAKE_INVESTMENT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:956323b699eaa95372e9ce2d",
+      "sourceSectionRef": "7.08(c)",
+      "action": "MAKE_INVESTMENT",
+      "covenantFamily": "INVESTMENTS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:f5b50fa84a99ea0e0d59c5f3",
+      "label": "7.08(d) · MAKE_INVESTMENT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:f5b50fa84a99ea0e0d59c5f3",
+      "sourceSectionRef": "7.08(d)",
+      "action": "MAKE_INVESTMENT",
+      "covenantFamily": "INVESTMENTS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r3].condition[0]",
+          "type": "NO_DEFAULT",
+          "summary": "NO_DEFAULT: NO_DEFAULT: the Available Amount shall be zero at any time a Default has occurred and is continuing",
+          "referencesRuleTargets": []
+        }
+      ],
+      "financialTests": [],
+      "sharedCapacityInteractions": [
+        {
+          "sharedCapId": "ir-sharedcap:4f0ce3202b7a8e09243bcee6",
+          "memberRuleIds": [
+            "ir-rule:f5b50fa84a99ea0e0d59c5f3"
+          ],
+          "note": "Rule participates in shared capacity ir-sharedcap:4f0ce3202b7a8e09243bcee6 with 1 member(s); stacking across members is not assumed."
+        }
+      ],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    }
+  ],
+  "stackingAssumed": false,
+  "incompleteReasons": [],
+  "unsupportedReasons": [],
+  "note": "Neutral Phase 4E enumeration over verified package (3 path(s)). Stacking not assumed; no path auto-selected."
+}

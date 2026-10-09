@@ -1,0 +1,107 @@
+{
+  "authority": "CERTIFIED_4E",
+  "transactionKind": "INCUR_DEBT",
+  "secured": false,
+  "paths": [
+    {
+      "pathId": "path:ir-rule:041ee566180d7781e9fda24a",
+      "label": "7.01(b) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:041ee566180d7781e9fda24a",
+      "sourceSectionRef": "7.01(b)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:482a6fb7f6984ae5932dec28",
+      "label": "7.01(c) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:482a6fb7f6984ae5932dec28",
+      "sourceSectionRef": "7.01(c)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "hasCapacityExpression": true,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [
+        {
+          "conditionId": "rule[r4].condition[0]",
+          "type": "RATIO_SATISFIED",
+          "summary": "RATIO_SATISFIED: RATIO_TEST: Total Net Leverage Ratio does not exceed 3.00 to 1.00",
+          "referencesRuleTargets": []
+        },
+        {
+          "conditionId": "rule[r4].condition[1]",
+          "type": "RATIO_SATISFIED",
+          "summary": "RATIO_SATISFIED: PRO_FORMA: after giving pro forma effect thereto",
+          "referencesRuleTargets": []
+        }
+      ],
+      "financialTests": [
+        "rule[r4].condition[0]: RATIO_TEST: Total Net Leverage Ratio does not exceed 3.00 to 1.00 (pro forma)",
+        "rule[r4].condition[1]: PRO_FORMA: after giving pro forma effect thereto"
+      ],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:93b74e03d8f510ede896dde9",
+      "label": "7.01(a) · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:93b74e03d8f510ede896dde9",
+      "sourceSectionRef": "7.01(a)",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PERMISSION",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    },
+    {
+      "pathId": "path:ir-rule:a619f57c4c1e7085baefe437",
+      "label": "7.01 · INCUR_DEBT",
+      "status": "CANDIDATE",
+      "ruleId": "ir-rule:a619f57c4c1e7085baefe437",
+      "sourceSectionRef": "7.01",
+      "action": "INCUR_DEBT",
+      "covenantFamily": "INDEBTEDNESS",
+      "permission": {
+        "posture": "PROHIBITION",
+        "ruleType": "PROHIBITION",
+        "hasCapacityExpression": false,
+        "sufficiency": "COMPLETE"
+      },
+      "conditions": [],
+      "financialTests": [],
+      "sharedCapacityInteractions": [],
+      "companionRestrictions": [],
+      "note": "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+    }
+  ],
+  "stackingAssumed": false,
+  "incompleteReasons": [],
+  "unsupportedReasons": [],
+  "note": "Neutral Phase 4E enumeration over verified package (4 path(s)). Stacking not assumed; no path auto-selected."
+}

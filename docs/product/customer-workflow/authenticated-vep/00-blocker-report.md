@@ -1,7 +1,7 @@
 # Authentic VerifiedExecutionPackage — blocker report
 
 **Verdict:** no authentic `VerifiedExecutionPackage` was produced.  
-**Tip SHA at investigation:** `8cdbbe1a` (IPV priority-register closures on this branch).  
+**Tip SHA at investigation:** `7bd5f67d` (PR #197; IPV-23 OCR + definition Default kill-switch).  
 **Soft gate:** no live / paid certification re-runs. Offline fixtures and frozen packets only.  
 **Gates:** `certifyCandidate` / `certifyPackage` / `certifiedMapToVerifiedExecutionPackage` / `toVerifiedExecutionPackage` / `evaluateVerifiedCapacity` (REQUIRE) were not weakened.
 
@@ -117,3 +117,10 @@ Offline scanner: `scripts/product/attempt-authenticated-vep.ts` (exit 2 when ref
 4. Only then `evaluateVerifiedCapacity({ package, … })` under REQUIRE.
 
 Authorized paid recertification is **outside** this mission.
+
+
+---
+
+## Related (not authentic live)
+
+Product-acceptance deterministic CERTIFIED candidates (Layer-2 mocked) were packaged separately via `scripts/product/derive-acceptance-certified-vep.ts` → `docs/product/customer-workflow/acceptance-certified-vep/`. Those VEPs drive Phase 4E `enumerateCertifiedPaths` with `CERTIFIED_4E` for packages N/A/J/C. They do **not** satisfy the authentic live CERTIFIED claim above.
