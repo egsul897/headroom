@@ -1,0 +1,75 @@
+{
+  "artifact": "reconciliation-v3",
+  "version": 1,
+  "updatedAt": "2026-10-09T22:45:00Z",
+  "mainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "controlsSequencing": true,
+  "supersedes": [
+    "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md#E",
+    "docs/architecture/parallel-agents/18-pr-integration-sequence.json"
+  ],
+  "narrative": "docs/architecture/parallel-agents/25-reconciliation-v3-2026-10-09.md",
+  "autoMerge": false,
+  "paidInferenceCostUsd": 0,
+  "batches": {
+    "A0": [216, 208, 224],
+    "A1_correctness": [229],
+    "A2_utilization": [227],
+    "A2_superseded": [215],
+    "A2_followUp": ["215b"],
+    "B_activation": [225, 210, 212, 219, 220, 190],
+    "C_crossDoc": [205, 207, 211, 222, 228, 209],
+    "D_capacityEvidence": [230],
+    "D_superseded": [214],
+    "E_txnUi": [223, 218, 221, 213, 206],
+    "F_kf": [217],
+    "HOLD": [200, 136, 163, 135, 226]
+  },
+  "criticalCollisions": [
+    {
+      "id": "COLL-UI-213-218-221",
+      "severity": "CRITICAL",
+      "prs": [213, 218, 221],
+      "resolution": "Strip #218 UI; #221 façade; cherry-pick #213 honesty"
+    },
+    {
+      "id": "COLL-USAGE-215-227",
+      "severity": "HIGH",
+      "prs": [215, 227],
+      "resolution": "Land #227; supersede #215; still require 215b fail-closed"
+    },
+    {
+      "id": "COLL-VE-223-228",
+      "severity": "HIGH",
+      "prs": [223, 228],
+      "resolution": "Land #228 then rebase #223"
+    },
+    {
+      "id": "COLL-CAPMATH-214-230",
+      "severity": "MEDIUM",
+      "prs": [214, 230],
+      "resolution": "Prefer #230; preserve 51 authentic matrix"
+    }
+  ],
+  "blockers": {
+    "A8-01": { "pr": 229, "closed": false, "await": "CI" },
+    "unknownUtilization": { "partialPrs": [213, 227], "required": "215b", "closed": false },
+    "TE-D3": { "pr": 223, "claimed": "MITIGATED", "await": "CI" },
+    "TE-D2": { "pr": 223, "residual": "Phase4D simulateTransaction primitive ungated" }
+  },
+  "benchmarkLevels": {
+    "L1_syntheticFinancials": "PARTIAL",
+    "L2_approvedFinancials": "PARTIAL",
+    "L3_attributedUtilization": "MISSING_FOR_MOST",
+    "L4_crossDocumentVerified": "FORMING",
+    "L5_customerReadyCertified": "NOT_REACHED"
+  },
+  "authenticCapacityMatrix": {
+    "pr": 230,
+    "provisions": 51,
+    "correctExecutableGross": 45,
+    "correctRefusals": 6,
+    "incorrect": 0,
+    "blockedMissingUtilizationRemaining": 45
+  }
+}

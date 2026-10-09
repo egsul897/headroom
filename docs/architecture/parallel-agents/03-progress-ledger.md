@@ -293,3 +293,16 @@
 - No duplicate rewrite of specialist deliverables; prior merge sequence remains SUPERSEDED
 - actualExternalCostsUsd: 0 · merges: 0
 
+---
+
+## 2026-10-09T22:45:00Z — RECONCILIATION V3
+
+- Refreshed heads for #223–#230 + moved tips (#213 FAIL, #217 FAIL, #206 PASS, #220 head moved)
+- Published `25-reconciliation-v3-2026-10-09.{md,json}` as **controlling** sequence (supersedes doc 21 §E)
+- **P0:** #229 A8-01/A8-02 before status consumers; CI PEND
+- **#227 supersedes #215** usage wire (parallel forks); **#215b still required**
+- **#218 scope collision** with #213/#221 UI — must strip unified-position absorption
+- **#230** preferred over #214; preserve 51 authentic matrix (45 exec / 6 refuse / 45 util-blocked remaining)
+- TE-D3 claimed mitigated in #223; TE-D2 residual at Phase4D primitive; await CI
+- Batches A0→F documented; no merges; $0 paid
+
