@@ -21,7 +21,7 @@ import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
 
 /**
- * Company overview. Each slot renders from its own load state.
+ * Company overview / dashboard. Each slot renders from its own load state.
  * The default load is UNKNOWN for every slot (sources unwired).
  * The bell badge renders only for a queried non-zero alert count.
  */
@@ -29,10 +29,14 @@ export function CompanyOverview({
   companyId,
   identityName = null,
   load = UNWIRED_OVERVIEW_LOAD,
+  readinessHeadline = null,
+  authorityNote = null,
 }: {
   companyId: string;
   identityName?: string | null;
   load?: Partial<OverviewLoad>;
+  readinessHeadline?: string | null;
+  authorityNote?: string | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -45,6 +49,11 @@ export function CompanyOverview({
         <div className="home-greeting-block">
           <h1 className="home-greeting">{greeting.heading}</h1>
           {greeting.subheading ? <p className="home-greeting-sub">{greeting.subheading}</p> : null}
+          {readinessHeadline ? (
+            <p className="home-readiness" data-readiness-headline>
+              {readinessHeadline}
+            </p>
+          ) : null}
         </div>
         <div className="home-top-actions">
           <Link className="home-ask-hero" href={`/${companyId}/ask`} data-ask-hero>
@@ -86,6 +95,11 @@ export function CompanyOverview({
           <TransactionsCard state={slots.transactions} />
         </div>
       </div>
+      {authorityNote ? (
+        <p className="home-authority-note" data-authority-note>
+          {authorityNote}
+        </p>
+      ) : null}
     </div>
   );
 }

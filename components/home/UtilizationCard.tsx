@@ -7,9 +7,9 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
   return (
     <RegionCard region="utilization" eyebrow="Utilization">
       {presented.kind === "VERIFIED_POPULATED" ? (
-        <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="utilization">
-          <p className="home-headline">{HOME_SLOTS.utilization.headline}</p>
-          <p className="home-detail">{presented.display}</p>
+        <div className="home-kpi-figure" data-load-kind="VERIFIED_POPULATED" data-slot="utilization">
+          <p className="home-kpi-value home-kpi-value-sm">{presented.display}</p>
+          <p className="home-kpi-caption">{HOME_SLOTS.utilization.headline} · facilities</p>
         </div>
       ) : (
         <EmptyCopy slot="utilization" state={presented} />

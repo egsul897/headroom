@@ -21,10 +21,22 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
           <tbody>
             {presented.kind === "VERIFIED_POPULATED" ? (
               presented.rows.map((row) => (
-                <tr key={row.covenant} data-load-kind="VERIFIED_POPULATED">
+                <tr key={`${row.covenant}-${row.facility}`} data-load-kind="VERIFIED_POPULATED">
                   <td>{row.covenant}</td>
                   <td>{row.facility}</td>
-                  <td>{row.status}</td>
+                  <td>
+                    <span
+                      className={
+                        row.status === "Within capacity"
+                          ? "home-status-pill home-status-ok"
+                          : row.status === "At capacity" || row.status === "Needs review"
+                            ? "home-status-pill home-status-warn"
+                            : "home-status-pill"
+                      }
+                    >
+                      {row.status}
+                    </span>
+                  </td>
                   <td>{row.headroom}</td>
                   <td>{row.trend}</td>
                   <td>{row.nextTest}</td>

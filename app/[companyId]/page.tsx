@@ -1,13 +1,22 @@
 import { CompanyOverview } from "@/components/home/Overview";
-import { UNWIRED_OVERVIEW_LOAD } from "@/lib/home/load-state";
+import { loadCompanyOverview } from "@/lib/home/load-overview";
 
-export const metadata = { title: "Headroom — Overview" };
+export const metadata = { title: "Headroom — Dashboard" };
 
 /**
- * Company home. Overview sources are unwired, so every slot is UNKNOWN.
- * This page does not pass a numeric alert count.
+ * Company home dashboard. Slots load from authoritative queries via
+ * `loadCompanyOverview` — invent-absence when unwired or not determinable.
  */
 export default async function CompanyIndexPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  return <CompanyOverview companyId={companyId} identityName={null} load={UNWIRED_OVERVIEW_LOAD} />;
+  const overview = await loadCompanyOverview(companyId);
+  return (
+    <CompanyOverview
+      companyId={companyId}
+      identityName={overview.identityName}
+      load={overview.load}
+      readinessHeadline={overview.readinessHeadline}
+      authorityNote={overview.authorityNote}
+    />
+  );
 }

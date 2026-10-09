@@ -2,7 +2,7 @@
 
 **Status:** implementation slice 2 (certificate fact-proposal types + pipeline + synthetic fixtures + adversarial tests)  
 **Charter:** `docs/architecture/NS-4-PARALLEL-CHARTER.md` / `docs/architecture/NS-4-AGENT-CHARTER.md`  
-**Auth:** COO PASS 2026-10-06 — slice 2 AUTHORIZED (bounded). Slice 3 (loader parity) is **HOLD**.  
+**Auth:** COO PASS 2026-10-06 — slice 2 AUTHORIZED (bounded). Slice 3 (loader parity + durable Prisma) lands separately — see `NS-4-STORE-SLICE-3.md`.  
 **Gate:** `docs/headroom-north-star-reconciliation/07-next-implementation-gate.json` → NS-4  
 **Depends on:** slice 1 append-only store (`NS-4-STORE-SLICE-1.md`, #72)
 
@@ -53,13 +53,13 @@
 - Legacy Prisma `FinancialSnapshot` untouched
 - Public store façade remains sealed from slice 1 (no unvalidated `commit` export; frozen event copies)
 
-## Explicitly NOT in this slice (slice 3 HOLD)
+## Explicitly NOT in this slice
 
-- **Loader parity** vs hand-built 4B fixtures (byte-identical load into `snapshotInputResolver`) — **HOLD; do not implement**
-- Prisma migration / durable adapter
+- **Loader parity** + Prisma durable adapter — slice 3 (`NS-4-STORE-SLICE-3.md`)
 - Real certificate ingest (NS-5)
 - Any Phase-3 file edits
 - Applying ledger proposals into capacity truth (later 4C)
+- Ask UI / certificates pages / NS-6 selector
 
 ## Module map
 

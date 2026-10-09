@@ -112,14 +112,15 @@ describe("routes", () => {
 
   it("nav is institutional product IA with onboarding only while setup remains", () => {
     expect(companyNavItems("co", "ACTIVE").map((item) => item.label)).toEqual([
-      "Overview",
-      "Documents",
-      "Covenants",
+      "Dashboard",
       "Position",
-      "Ledger",
-      "Simulate",
-      "Evidence",
+      "Covenants",
+      "Capacity",
+      "Simulations",
+      "Transactions",
+      "Documents",
       "Ask",
+      "Evidence",
     ]);
     expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Onboarding");
     const position = companyNavItems("co", "ACTIVE").find((item) => item.key === "position")!;

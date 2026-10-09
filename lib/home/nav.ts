@@ -14,13 +14,14 @@ export type LegacyToolSegment = (typeof LEGACY_TOOLS)[number]["segment"];
 
 export type CompanyNavKey =
   | "home"
-  | "documents"
-  | "covenants"
   | "position"
-  | "ledger"
+  | "covenants"
+  | "capacity"
   | "simulate"
-  | "evidence"
+  | "ledger"
+  | "documents"
   | "ask"
+  | "evidence"
   | "onboarding";
 
 export interface CompanyNavItem {
@@ -36,19 +37,20 @@ export function companyOpenHref(company: { id: string; onboardingStatus: Onboard
 }
 
 /**
- * Institutional product navigation — Documents / Covenants / Position / Ledger / Simulate / Evidence.
- * Ask remains available; onboarding only while setup is incomplete.
+ * Dashboard IA aligned to product mockup:
+ * Dashboard · Position · Covenants · Capacity · Simulations · Transactions · Documents · Ask
  */
 export function companyNavItems(companyId: string, onboardingStatus: OnboardingStatus): CompanyNavItem[] {
   const items: CompanyNavItem[] = [
-    { key: "home", href: `/${companyId}`, label: "Overview" },
-    { key: "documents", href: `/${companyId}/documents`, label: "Documents" },
-    { key: "covenants", href: `/${companyId}/covenants`, label: "Covenants" },
+    { key: "home", href: `/${companyId}`, label: "Dashboard" },
     { key: "position", href: `/${companyId}/position`, label: "Position" },
-    { key: "ledger", href: `/${companyId}/ledger`, label: "Ledger" },
-    { key: "simulate", href: `/${companyId}/simulate`, label: "Simulate" },
-    { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
+    { key: "covenants", href: `/${companyId}/covenants`, label: "Covenants" },
+    { key: "capacity", href: `/${companyId}/capacity`, label: "Capacity" },
+    { key: "simulate", href: `/${companyId}/simulate`, label: "Simulations" },
+    { key: "ledger", href: `/${companyId}/ledger`, label: "Transactions" },
+    { key: "documents", href: `/${companyId}/documents`, label: "Documents" },
     { key: "ask", href: `/${companyId}/ask`, label: "Ask" },
+    { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
   ];
   if (onboardingStatus === "ONBOARDING" || onboardingStatus === "ACTIVE_WITH_LIMITATIONS") {
     items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Onboarding" });
@@ -59,7 +61,6 @@ export function companyNavItems(companyId: string, onboardingStatus: OnboardingS
 export function isCompanyNavItemActive(pathname: string, item: CompanyNavItem, companyId: string): boolean {
   if (item.key === "home") return pathname === `/${companyId}`;
   if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
-  // Position aliases the legacy dashboard route for deep links.
   if (item.key === "position") {
     const dash = `/${companyId}/dashboard`;
     if (pathname === dash || pathname.startsWith(`${dash}/`)) return true;

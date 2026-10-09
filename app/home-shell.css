@@ -166,6 +166,72 @@ main:has(.app-shell) {
   font-size: 15px;
 }
 
+.home-readiness {
+  margin: 10px 0 0;
+  max-width: 52rem;
+  color: var(--shell-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.home-authority-note {
+  margin: 4px 0 0;
+  max-width: 72rem;
+  color: var(--shell-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.home-kpi-figure {
+  display: grid;
+  gap: 6px;
+  min-height: 72px;
+  align-content: center;
+}
+
+.home-kpi-value {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.home-kpi-value-sm {
+  font-size: 18px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.home-kpi-caption {
+  margin: 0;
+  font-size: 12px;
+  color: var(--shell-muted);
+}
+
+.home-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #ece8df;
+  color: #3c3a34;
+}
+
+.home-status-ok {
+  background: #e3f0e6;
+  color: #1f5c32;
+}
+
+.home-status-warn {
+  background: #f7ead7;
+  color: #8a4b12;
+}
+
 .home-top-actions {
   display: flex;
   align-items: center;
