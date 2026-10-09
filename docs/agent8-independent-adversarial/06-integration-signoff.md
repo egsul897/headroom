@@ -1,7 +1,7 @@
 # A8 remediation — integration sign-off (PR #229)
 
 **Integration candidate:** PR #229 → `main`  
-**Head SHA under review:** see git / PR tip (must match CI)  
+**Head SHA under review:** `7f7939b5a2cc6af66f61aea364f7a3d2ff760f78` (must match CI)  
 **Independent correctness owner:** Agent 8  
 **Production ownership:** exclusive on `lib/contract-model/runtime/capacity/{state,types}.ts` (see `03-remediation-ownership.md`)
 
