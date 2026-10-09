@@ -46,8 +46,9 @@ export default async function ResearchCorpusPage({
       <Card>
         <div className="card-title">Research corpus</div>
         <div className="card-subtitle">
-          Durable Neon KnowledgeSource rows with covenant intelligence. Precedents inform research —
-          they do not override a company&apos;s governing documents.
+          Durable Neon KnowledgeSource rows with AI-generated covenant intelligence for lawyer review.
+          Precedents inform research — they do not override a company&apos;s governing documents. Customer
+          counsel accepts, edits, or rejects interpretations; DISCOVERED ≠ VERIFIED.
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href="/">
