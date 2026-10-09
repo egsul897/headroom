@@ -31,12 +31,14 @@ export function CompanyOverview({
   load = UNWIRED_OVERVIEW_LOAD,
   readinessHeadline = null,
   authorityNote = null,
+  setupCta = null,
 }: {
   companyId: string;
   identityName?: string | null;
   load?: Partial<OverviewLoad>;
   readinessHeadline?: string | null;
   authorityNote?: string | null;
+  setupCta?: { href: string; label: string; detail: string } | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -74,6 +76,17 @@ export function CompanyOverview({
           </button>
         </div>
       </header>
+
+      {setupCta ? (
+        <section className="home-card home-setup-banner" data-region="setup">
+          <h2 className="home-eyebrow">Set up this workspace</h2>
+          <p className="home-headline">{setupCta.label}</p>
+          <p className="home-detail">{setupCta.detail}</p>
+          <Link className="button button-primary" href={setupCta.href} style={{ textDecoration: "none", marginTop: 12, display: "inline-flex" }}>
+            {setupCta.label}
+          </Link>
+        </section>
+      ) : null}
 
       <div className="home-regions">
         <div className="home-kpis">

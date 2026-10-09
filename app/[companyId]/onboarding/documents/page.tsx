@@ -5,7 +5,7 @@ import { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailur
 import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import type { AnalysisRunStatus } from "@prisma/client";
 import { fmtDate } from "@/lib/format";
-import { uploadDocumentAction, runExtractionAction } from "./actions";
+import { uploadDocumentAction, runExtractionAction, uploadFinancialCsvAction } from "./actions";
 
 export const metadata = { title: "Headroom — Onboarding documents" };
 export const dynamic = "force-dynamic";
@@ -109,8 +109,9 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
       <Card>
         <div className="card-title">Upload a financing document</div>
         <div className="card-subtitle">
-          PDF, HTML, DOCX, or TXT. Bytes are stored in Neon (BYTEA), then analyzed for covenant categories and summaries.
-          Failures are shown honestly — Headroom never claims analysis succeeded when extraction failed.
+          Credit agreements, indentures, amendments, and compliance certificates. PDF, HTML, DOCX, or TXT. After upload,
+          click &ldquo;Run extraction&rdquo; so Headroom can read covenants and propose financial figures. Failures are shown
+          honestly — Headroom never claims analysis succeeded when extraction failed.
         </div>
         <form action={upload} className="stack" style={{ gap: 10 }}>
           <div className="field">
@@ -139,6 +140,26 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           </div>
           <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
             Upload &amp; analyze
+          </button>
+        </form>
+      </Card>
+
+      <Card>
+        <div className="card-title">Upload financial figures (CSV)</div>
+        <div className="card-subtitle">
+          Optional if the compliance certificate already contains labeled figures. Header must be{" "}
+          <code>metricName,value,asOfDate,unit,notes</code>. Units are required (USD_MILLIONS, USD, …) — never guessed.
+          Proposed facts go to Review before they reach the dashboard.
+        </div>
+        <form action={uploadFinancialCsvAction.bind(null, companyId)} className="stack" style={{ gap: 10 }}>
+          <div className="field">
+            <div className="field-label">CSV file</div>
+            <div className="field-control">
+              <input type="file" name="file" accept=".csv,text/csv" required />
+            </div>
+          </div>
+          <button type="submit" className="button" style={{ width: "fit-content" }}>
+            Upload financial CSV
           </button>
         </form>
       </Card>

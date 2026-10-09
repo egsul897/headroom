@@ -53,7 +53,7 @@ export function companyNavItems(companyId: string, onboardingStatus: OnboardingS
     { key: "evidence", href: `/${companyId}/evidence`, label: "Evidence" },
   ];
   if (onboardingStatus === "ONBOARDING" || onboardingStatus === "ACTIVE_WITH_LIMITATIONS") {
-    items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Onboarding" });
+    items.push({ key: "onboarding", href: `/${companyId}/onboarding`, label: "Set up" });
   }
   return items;
 }

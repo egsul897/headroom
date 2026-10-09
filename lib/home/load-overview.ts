@@ -29,6 +29,7 @@ import {
   type OverviewLoad,
   type StatusRow,
 } from "@/lib/home/load-state";
+import { getCompanySetupStatus, nextSetupStep, type CompanySetupStatus } from "@/lib/onboarding/setup-status";
 
 export interface CompanyOverviewBundle {
   companyId: string;
@@ -36,6 +37,8 @@ export interface CompanyOverviewBundle {
   load: OverviewLoad;
   readinessHeadline: string;
   authorityNote: string;
+  setup: CompanySetupStatus | null;
+  setupCta: { href: string; label: string; detail: string } | null;
 }
 
 function formatLedgerRow(entry: {
@@ -176,8 +179,11 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
     readiness?.guidance ??
     "LEGACY_ENGINE capacity ≠ certified Phase 4A–4E. Missing inputs stay blank.";
 
+  const setup = await getCompanySetupStatus(companyId).catch(() => null);
+  const setupCta = setup && !setup.dashboardReady ? nextSetupStep(setup) : null;
+
   if (!readiness?.canEvaluateExecutableCapacity) {
-    return { companyId, identityName, load, readinessHeadline, authorityNote };
+    return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
   }
 
   try {
@@ -270,5 +276,5 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
     load.statusTable = statusTableStateFromQuery({ outcome: "failed" });
   }
 
-  return { companyId, identityName, load, readinessHeadline, authorityNote };
+  return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
 }

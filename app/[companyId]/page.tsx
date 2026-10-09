@@ -20,6 +20,7 @@ export default async function CompanyIndexPage({ params }: { params: Promise<{ c
       load={overview.load}
       readinessHeadline={overview.readinessHeadline}
       authorityNote={overview.authorityNote}
+      setupCta={overview.setupCta}
     />
   );
 }

@@ -122,7 +122,7 @@ describe("routes", () => {
       "Ask",
       "Evidence",
     ]);
-    expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Onboarding");
+    expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Set up");
     const position = companyNavItems("co", "ACTIVE").find((item) => item.key === "position")!;
     expect(isCompanyNavItemActive("/co", companyNavItems("co", "ACTIVE")[0]!, "co")).toBe(true);
     expect(isCompanyNavItemActive("/co/dashboard", position, "co")).toBe(true);
