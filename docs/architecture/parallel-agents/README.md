@@ -32,6 +32,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `23-integration-plan-v2.md` | Specialist assignments + merge recommendations |
 | `24-e2e-benchmark-plan.md` | Shared Coherent/CONMED E2E benchmark plan |
 | `25-reconciliation-v3-2026-10-09.md` | **Controlling** V3 batches, collisions, A8/TE/activation |
+| `26-first-integration-batch.md` | V3 acceptance return — first human-merge batches (SHAs/CI/deps) |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |

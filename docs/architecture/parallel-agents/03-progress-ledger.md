@@ -306,3 +306,17 @@
 - TE-D3 claimed mitigated in #223; TE-D2 residual at Phase4D primitive; await CI
 - Batches A0→F documented; no merges; $0 paid
 
+---
+
+## 2026-10-09T22:52:00Z — V3 ACCEPTANCE + first integration-ready batch
+
+- Founder accepted V3 with required corrections (refresh heads; safety hard gate; overlap reconcile; Agent1 extraction gate; integrated regressions; E2E levels; small batches)
+- Refreshed GitHub truth: main still `bae24ced33fd`
+- **#229 tip `b33f86554e39`:** ALL checks SUCCESS · MERGEABLE/CLEAN — Batch 1 **READY** for human merge
+- **#232 tip `f9b77f2098a7`:** moved; adopted #229 `NOT_SATISFIED` contract (`state.ts` identical); CI UNSTABLE — **hold** until after #229
+- **#217** still FAIL — DISCOVERED≠executable hard gate retained; 61-case cohort preserved
+- Published `26-first-integration-batch.md` (required return)
+- Coordinator regressions on #229 tip: capacity + A8 suites **197/197 pass**; false favorables **0** in those suites
+- **BLK-USAGE-ZERO remains OPEN** (#215b + run-package-path)
+- actualExternalCostsUsd: 0 · merges: 0 · Neon writes: 0
+
