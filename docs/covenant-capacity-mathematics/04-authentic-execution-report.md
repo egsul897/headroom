@@ -61,6 +61,13 @@ Companies: Coherent Corp. (VERIFIED population), Matthews International (VERIFIE
 - `docs/covenant-capacity-mathematics/03-integration-blockers.json`
 - Preserved: `capacity-mathematics-matrix.test.ts` (53 cases)
 
-## Cost
+## PR / SHA / cost
 
-**$0** — no paid model/API calls.
+| Field | Value |
+|---|---|
+| PR | https://github.com/egsul897/headroom/pull/230 |
+| Branch | `cursor/authentic-capacity-execution-b580` |
+| SHA | `2cfe59ac1e779d5ce69dddb37a05b5489dd3e7da` |
+| Prior synthetic matrix SHA | `0790a0191167ac0ef78aef115304481bac86579f` |
+| Capacity suite | **236/236** pass |
+| Cost | **$0** |
