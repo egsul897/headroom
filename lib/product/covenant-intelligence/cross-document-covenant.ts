@@ -220,6 +220,7 @@ function familiesForKind(kind: ContemplatedTxnKind, secured: boolean | null): Se
       out.add("DEBT_INCURRENCE");
       out.add("SUBSIDIARY_GUARANTOR");
       out.add("SHARED_CAPACITY");
+      if (secured === true) out.add("LIENS");
       break;
     default:
       out.add("DEBT_INCURRENCE");

@@ -21,6 +21,8 @@ import {
 
 export interface CrossDocumentScenario {
   scenarioId: string;
+  /** All eight baseline scenarios use synthetic product-acceptance fixtures — not EDGAR. */
+  authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE";
   title: string;
   focus:
     | "PERMIT_VS_PROHIBIT"
@@ -404,9 +406,11 @@ function copperlineProvisions(includeIca: boolean): OperativeProvisionFact[] {
   return facts;
 }
 
+/** @deprecated Name retained for PR #218 compatibility — these are SYNTHETIC, not EDGAR-authentic. Prefer SYNTHETIC_CROSS_DOCUMENT_SCENARIOS. */
 export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   {
     scenarioId: "xd-01-permit-vs-prohibit",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "CA Loan Documents carve-out permits; Indenture Credit Agreement cap prohibits",
     focus: "PERMIT_VS_PROHIBIT",
     fixtureSources: [
@@ -430,6 +434,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-02-different-conditions",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "General basket debt permitted under both docs subject to different caps/conditions",
     focus: "DIFFERENT_CONDITIONS",
     fixtureSources: [
@@ -452,6 +457,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-03-debt-and-lien",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Secured debt needs both debt and lien authority; §9.15 shared secured cap binds",
     focus: "DEBT_AND_LIEN",
     fixtureSources: [
@@ -474,6 +480,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-04-cross-section-definition",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Ratio-debt permission depends on Fixed Charge Coverage Ratio definition in §1.01",
     focus: "CROSS_SECTION_DEFINITION",
     fixtureSources: [
@@ -499,6 +506,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-05-amendment-effect",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Supplemental Indenture changes operative §4.09(c) from $50M to $75M",
     focus: "AMENDMENT_EFFECT",
     fixtureSources: [
@@ -521,6 +529,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-06-absent-document",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Term-loan lien permission subject to Intercreditor; ICA absent → undetermined",
     focus: "ABSENT_DOCUMENT",
     fixtureSources: [
@@ -549,6 +558,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-07-classification-divergence",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Capital lease classified as Indebtedness under Indenture but not under CA definition",
     focus: "CLASSIFICATION_DIVERGENCE",
     fixtureSources: [
@@ -575,6 +585,7 @@ export const AUTHENTIC_CROSS_DOCUMENT_SCENARIOS: CrossDocumentScenario[] = [
   },
   {
     scenarioId: "xd-08-multiple-pathways",
+    authenticity: "SYNTHETIC_PRODUCT_ACCEPTANCE",
     title: "Investment with multiple contractual pathways; Payment Conditions / Available Amount / ICA",
     focus: "MULTIPLE_PATHWAYS",
     fixtureSources: [
@@ -646,3 +657,4 @@ export function runAllCrossDocumentScenarios(): {
     total: results.length,
   };
 }
+export const SYNTHETIC_CROSS_DOCUMENT_SCENARIOS = AUTHENTIC_CROSS_DOCUMENT_SCENARIOS;

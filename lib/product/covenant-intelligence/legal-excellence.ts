@@ -94,6 +94,16 @@ export {
 } from "./cross-document-covenant";
 export {
   AUTHENTIC_CROSS_DOCUMENT_SCENARIOS,
+  SYNTHETIC_CROSS_DOCUMENT_SCENARIOS,
   runAllCrossDocumentScenarios,
   runCrossDocumentScenario,
 } from "./cross-document-scenarios";
+export {
+  AUTHENTIC_PACKAGE_SCENARIOS,
+  runAllAuthenticPackageScenarios,
+} from "./cross-document-authentic-packages";
+export {
+  ADVERSARIAL_CROSS_DOCUMENT_SCENARIOS,
+  runAllAdversarialScenarios,
+} from "./cross-document-adversarial";
+export { attachNumericalCapacity, contemplatedFromAskDraft } from "./cross-document-capacity";

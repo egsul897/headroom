@@ -4,6 +4,7 @@ import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
 import { buildSolverContext } from "@/lib/dashboard-service";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { parseSimulateHandoffSearchParams } from "@/lib/product/unified-position/simulate-handoff";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -11,11 +12,19 @@ export const metadata = { title: "Headroom — Simulate" };
 /**
  * Simulate — runs the shared covenant engine. A simulation is not a legal approval.
  * Without an executable rulebook and financial snapshot, expect NOT DETERMINABLE —
- * never a fabricated pass.
+ * never a fabricated pass. Optional ?action=&amount=&secured=&asOf= seeds from Ask.
  */
-export default async function SimulatePage({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function SimulatePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { companyId } = await params;
-  const asOfDate = new Date();
+  const sp = searchParams ? await searchParams : {};
+  const handoff = parseSimulateHandoffSearchParams(sp);
+  const asOfDate = handoff.evaluationDate ? new Date(`${handoff.evaluationDate}T12:00:00.000Z`) : new Date();
   const [readiness, data, documents, definedTermsByProvision, solverContext] = await Promise.all([
     loadCapacityReadiness(companyId),
     loadCovenantDataOrEmpty(companyId, asOfDate),
@@ -67,6 +76,7 @@ export default async function SimulatePage({ params }: { params: Promise<{ compa
         data={data}
         documents={documents}
         definedTermsByProvision={definedTermsByProvision}
+        initialHandoff={handoff}
         solverContext={{
           ...solverContext,
           activationState: {
