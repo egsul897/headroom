@@ -1,0 +1,42 @@
+{
+  "schema": "stage-d-pkgi-cross-rule-phase4d.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "financialInputs": "none (fixed-dollar basket; empty ledger)",
+  "simulation": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "capacityEffects": [
+      {
+        "effectId": "e1",
+        "capacityNodeId": "capacity:rule:ir-rule:1ea3d67e55e82ccbde4edeec",
+        "ruleId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+        "sharedCapacityId": null,
+        "attemptedAmount": {
+          "type": "MONEY",
+          "amount": "15000000",
+          "currency": "USD"
+        },
+        "sharedConstraintIds": [],
+        "availableAmount": {
+          "kind": "AMOUNT",
+          "value": {
+            "type": "MONEY",
+            "amount": "50000000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": "ir-expr:09691fbb468a1a7770f867f4",
+              "inputKeys": [],
+              "rawSource": 50000000
+            }
+          }
+        },
+        "shortfallAmount": null,
+        "outcome": "SATISFIED",
+        "capacityStatus": "AVAILABLE",
+        "provisional": null,
+        "limitations": []
+      }
+    ]
+  }
+}
