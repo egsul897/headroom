@@ -58,7 +58,7 @@ describe("IPV-01 entity-scope over-inclusion", () => {
       instrumentKey: "i",
       sourceDocumentId: "d",
       sourceSectionRef: "7.01(c)",
-      covenantFamily: "DEBT",
+      covenantFamily: "INDEBTEDNESS",
       ruleType: "QUANTITATIVE_PERMISSION",
       posture: "PERMISSION",
       action: "INCUR_DEBT",
@@ -75,7 +75,7 @@ describe("IPV-01 entity-scope over-inclusion", () => {
       provenance: { documentId: "d", sourceNodeKey: null, sourceCitation: "§7.01(c)", excerpt },
       compilerVersion: null,
       sourceContentVersion: null,
-    } as IRRule;
+    } as unknown as IRRule;
     const out = applyEntityScopeGuard(
       rule,
       { ownExcerpt: excerpt, citedUnitLeadIn: `(c) ${excerpt}`, operativeText: excerpt },
@@ -101,7 +101,7 @@ describe("IPV-02 together-with shared-cap inventory", () => {
 describe("IPV-03 role/node compatibility", () => {
   it("rejects CONDITION role consumed only on bare rule lineage", () => {
     const r = roleNodeCompatibility(
-      { semanticRole: "CONDITION", additionalRoles: [] },
+      { semanticRole: "CONDITION", declaredRoles: ["CONDITION"] },
       ["rules[0]"],
     );
     expect(r.ok).toBe(false);
@@ -109,7 +109,7 @@ describe("IPV-03 role/node compatibility", () => {
   });
   it("accepts CONDITION role on conditions[] path", () => {
     const r = roleNodeCompatibility(
-      { semanticRole: "CONDITION", additionalRoles: [] },
+      { semanticRole: "CONDITION", declaredRoles: ["CONDITION"] },
       ["rules[0].conditions[0]"],
     );
     expect(r.ok).toBe(true);

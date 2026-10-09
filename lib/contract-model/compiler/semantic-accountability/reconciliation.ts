@@ -415,15 +415,14 @@ export function isRelatedSeriesAggregationClaim(item: Pick<SemanticInventoryItem
  * REPRESENTED.
  */
 export function roleNodeCompatibility(
-  item: Pick<SemanticInventoryItem, "semanticRole" | "additionalRoles">,
+  item: Pick<SemanticInventoryItem, "semanticRole" | "declaredRoles" | "semanticFunctions">,
   irPaths: readonly string[],
 ): { ok: boolean; reason: string } {
-  const roles = new Set<string>([item.semanticRole, ...(item.additionalRoles ?? [])]);
-  const logic = functionsOf(item as SemanticInventoryItem).logic;
-  const dep = functionsOf(item as SemanticInventoryItem).dependency;
-  const needsCondition = roles.has("CONDITION") || logic.includes("CONDITION");
-  const needsException = roles.has("EXCEPTION") || logic.includes("EXCEPTION");
-  const needsSharedCap = roles.has("SHARED_CAP") || dep.includes("SHARED_CAP");
+  const roles = new Set<string>([item.semanticRole, ...(item.declaredRoles ?? [])]);
+  const fns = functionsOf(item);
+  const needsCondition = roles.has("CONDITION") || fns.logic.includes("CONDITION");
+  const needsException = roles.has("EXCEPTION") || fns.logic.includes("EXCEPTION");
+  const needsSharedCap = roles.has("SHARED_CAP") || fns.dependency.includes("SHARED_CAP");
   if (!needsCondition && !needsException && !needsSharedCap) return { ok: true, reason: "" };
 
   const pathOk = (re: RegExp) => irPaths.some((p) => re.test(p));
