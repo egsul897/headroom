@@ -25,6 +25,7 @@ const CREDIT = `CREDIT AGREEMENT dated as of January 15, 2026, among Harbor Lane
 
 SECTION 1.01 Defined Terms. As used in this Agreement:
 "Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication, Interest Expense, income tax expense and depreciation and amortization expense for such period.
+"Default" means any event that is, or with notice or lapse of time or both would be, an Event of Default.
 "Indebtedness" means, as to any Person, all obligations of such Person for borrowed money.
 
 SECTION 7.01 Indebtedness. The Borrower shall not incur Indebtedness, except:
@@ -210,6 +211,43 @@ describe("section operative text follows clause amendments", () => {
     expect(clause.origin).toBe("OPERATIVE_STATE_CURRENT_TEXT");
     expect(clause.text).toContain("$10,000,000");
     expect(clause.text).not.toContain("$25,000,000");
+  });
+
+  it("IPV-04: context retrieval reads Default from amendment-restated 7.01(b) operative text", async () => {
+    const documents = [
+      doc("credit-agreement", "Credit Agreement", CREDIT),
+      amendment(
+        "amendment-1",
+        "Amendment No. 1",
+        "March 1, 2026",
+        `SECTION 1. Amendments. Section 7.01(b) of the Credit Agreement is hereby amended and restated in its entirety to read as follows: ${REPLACEMENT}`,
+      ),
+    ];
+    const { state, index, result } = await compile(documents);
+    void result;
+    const clause = source(index, state, "7.01(b)");
+    expect(clause.origin).toBe("OPERATIVE_STATE_CURRENT_TEXT");
+    expect(clause.text).toMatch(/no Default has occurred/);
+    expect(clause.text).not.toContain("$25,000,000");
+
+    const exactTermsByDocument = new Map<string, Map<string, string>>();
+    const termMap = new Map<string, string>();
+    for (const def of index.allDefinitions()) {
+      if (def.documentId !== "credit-agreement") continue;
+      termMap.set(def.normalizedTerm, def.exactTerm);
+    }
+    exactTermsByDocument.set("credit-agreement", termMap);
+
+    const bundle = buildCovenantContextBundle(
+      { candidate: candidate(index, "7.01(b)"), packageKey: "pkg", companyId: "co", instrumentKey: state.instrumentKey },
+      { index, packageGraph: null, exactTermsByDocument, operativeState: state },
+    );
+    const defTerms = bundle.items
+      .filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY")
+      .map((i) => (i.normalizedRef ?? "").toLowerCase());
+    expect(defTerms).toContain("default");
+    expect(defTerms).toContain("indebtedness");
+    expect(bundle.items.some((i) => /Event of Default/i.test(i.excerptText))).toBe(true);
   });
 
   it("applies the outer clause replacement once when a nested clause was also amended", () => {

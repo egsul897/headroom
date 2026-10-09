@@ -227,7 +227,15 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
   retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
+  // IPV-04: definition / undeclared-term scans must use the same amendment-aware
+  // operative text already bound on OPERATIVE_SOURCE (resolveOperativeSource),
+  // not the base structural DESCENDANTS span. Otherwise a restated proviso that
+  // introduces terms like "Default" is invisible to retrieveDirectDefinitions
+  // while the auditor correctly observes those terms in the operative text.
+  const operativeText =
+    operativeItem.excerptText.trim().length > 0
+      ? operativeItem.excerptText
+      : access.index.getNodeText(primaryNodeId, "DESCENDANTS");
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
 
