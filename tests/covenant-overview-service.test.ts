@@ -76,6 +76,9 @@ describe.each(COMPANIES)("getCovenantOverview(%s) - same service/contract for ev
         if (row.kind !== "CAPACITY") continue;
         expect(row.usageState).toBe("NOT_TRACKED");
         expect(row.used).toBeNull();
+        // UNKNOWN must not render as zero utilization or invented "full remaining".
+        expect(row.utilizationPct).toBeNull();
+        expect(row.remaining).toBeNull();
       }
     }
   });
