@@ -37,7 +37,7 @@ import {
   evaluateVerifiedCapacity,
   type VerifiedExecutionPackage,
 } from "../../contract-model/verified-execution";
-import { snapshotInputResolver } from "../../contract-model/runtime/input/snapshot-resolver";
+import { snapshotInputResolver } from "../../contract-model/north-star-bridge";
 
 export type ScenarioResultStatus =
   | "PERMITTED"
