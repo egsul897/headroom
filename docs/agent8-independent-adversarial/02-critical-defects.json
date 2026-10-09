@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "agent8-critical-defects.v1",
+  "mission": "HEADROOM AGENT 8 — INDEPENDENT CORRECTNESS AND ADVERSARIAL TESTING",
+  "productionCodeModified": false,
+  "releaseBlocking": [
+    {
+      "id": "DEFECT-A8-01",
+      "caseId": "RT-08b-gated-unlimited-status-not-available",
+      "title": "Failed ratio gate reports capacity status AVAILABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "authenticSource": "Phase-2 sc-ratio-test-failure / sc-conditional-permission; independent FLNL 4.1 vs gate 3.75",
+      "expected": "status != AVAILABLE when gross/remaining kind is GATE_NOT_SATISFIED",
+      "actual": "status=AVAILABLE, gross.kind=GATE_NOT_SATISFIED, rem.kind=GATE_NOT_SATISFIED; simulateTransaction path=NOT_SATISFIED",
+      "minimalReproduction": "npx tsx scripts/agent8-independent-adversarial/probe-gate-status.ts",
+      "generalizableRootCause": "statusFromEvaluation maps EvaluationResult.status EXECUTABLE to AVAILABLE without consulting capacity amount kind GATE_NOT_SATISFIED",
+      "regressionRecommendation": "Floor CapacityStateEntry.status when amount kind is GATE_NOT_SATISFIED; add RT-08b to runtime matrix; audit product consumers of status===AVAILABLE",
+      "executablePathSafe": true,
+      "releaseBlocking": true
+    }
+  ],
+  "materialObservations": [
+    {
+      "id": "DEFECT-A8-02",
+      "caseId": "RT-02b-shared-negative-remaining-published",
+      "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED",
+      "severity": "MATERIAL_OVERSTATEMENT",
+      "outcomeClass": "OBSERVATION",
+      "authenticSource": "Phase-2 sc-negative-capacity; sc-shared-double-spend arithmetic",
+      "expected": "Pool remaining withheld or non-permission presentation consistent with member withholding",
+      "actual": "pool.status=REVIEW_REQUIRED, pool.remaining=-5000000; member effectiveRemaining NOT_DETERMINED",
+      "minimalReproduction": "Case RT-02b in scripts/agent8-independent-adversarial/run.ts",
+      "generalizableRootCause": "SharedConstraintState always publishes computeRemaining arithmetic; member capacities withhold under legalUnsafe",
+      "regressionRecommendation": "Align shared-constraint publishing with member withholding when OVER_CONSUMPTION applies",
+      "releaseBlocking": false
+    }
+  ]
+}
