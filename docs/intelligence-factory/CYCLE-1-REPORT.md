@@ -3,7 +3,7 @@
 ## Starting and ending SHA
 
 - **Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8` (origin/main at branch cut)
-- **Ending SHA:** (set at commit)
+- **Ending SHA:** `466924fe3bbeee9e128fb979fb29deff86faefc7`
 
 ## New agreements and provisions processed
 
