@@ -1,7 +1,7 @@
 # Capacity intelligence loop — status
 
 **Branch:** `cursor/customer-product-workflow-0e3f`  
-**Tip:** `391c59fd`  
+**Tip:** `b994979c`  
 **PR:** https://github.com/egsul897/headroom/pull/187  
 **Related:** PR #181 `05ef5d66` (ready / MERGEABLE) on `cursor/covenant-review-capacity-path-0e3f`
 
