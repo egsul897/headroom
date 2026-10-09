@@ -61,6 +61,9 @@ const VERB_GROUPS: readonly { group: string; re: RegExp }[] = [
 
 const OBJECT_FAMILIES: readonly ObjectFamily[] = [
   { family: "LIEN", re: /\b(?:Liens?|security interests?|mortgages?|pledges?|charges?|encumbrances?)\b/i, byVerbGroup: [{ group: "INCUR", action: "CREATE_LIEN" }, { group: "GRANT_SECURITY", action: "CREATE_LIEN" }], defaultAction: "CREATE_LIEN" },
+  // IPV-18: junior / subordinated / restricted debt prepayments are PAY_JUNIOR_DEBT, not generic PREPAY_DEBT.
+  // Prefer this family when the object noun carries the junior/subordinated qualifier (earlier match than bare Indebtedness).
+  { family: "JUNIOR_DEBT", re: /\b(?:Junior|Subordinated|Restricted)\s+Indebtedness\b/i, byVerbGroup: [{ group: "PREPAY", action: "PAY_JUNIOR_DEBT" }, { group: "PAY", action: "PAY_JUNIOR_DEBT" }], defaultAction: "PAY_JUNIOR_DEBT" },
   { family: "DEBT", re: /\b(?:Indebtedness|Debt|Guarantee Obligations?|obligations? for borrowed money|borrowed money)\b/i, byVerbGroup: [{ group: "GUARANTEE", action: "GUARANTEE_DEBT" }, { group: "PREPAY", action: "PREPAY_DEBT" }, { group: "INCUR", action: "INCUR_DEBT" }], defaultAction: null },
   { family: "INVESTMENT", re: /\b(?:Investments?|loans? or advances?|Acquisitions?)\b/i, byVerbGroup: [{ group: "MAKE", action: "MAKE_INVESTMENT" }, { group: "INCUR", action: "MAKE_INVESTMENT" }], defaultAction: "MAKE_INVESTMENT" },
   { family: "RESTRICTED_PAYMENT", re: /\b(?:dividends?|Restricted Payments?|distributions?)\b/i, byVerbGroup: [{ group: "PAY", action: "PAY_DIVIDEND" }, { group: "MAKE", action: "PAY_DIVIDEND" }], defaultAction: "PAY_DIVIDEND" },
