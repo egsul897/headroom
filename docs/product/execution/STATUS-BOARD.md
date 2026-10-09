@@ -3,7 +3,7 @@
 **Generated:** 2026-10-09  
 **Current main SHA:** `617dbd4738d469fbe4bf123694839950adc222e9`  
 **Integration branch:** `cursor/full-repo-execution-0e3f`  
-**Integration tip:** (see git after commit)
+**Integration tip: `d5743f1be74a661131eeb9421e3d9ef6d20e25a6`
 
 ## Verdicts (evidence-gated)
 
