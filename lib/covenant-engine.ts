@@ -43,6 +43,7 @@ import { runSolver } from "./solver/service";
 import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import type {
   ActivationState,
+  BasketUsageRecord,
   CollateralPoolRef,
   CoverageDeclaration,
   CoverageResult,
@@ -60,6 +61,7 @@ import type {
   SourceCitation,
   Transaction,
 } from "./solver/types";
+import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -1808,6 +1810,17 @@ export interface SolverNativePrismaClient {
   solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
 }
 
+export interface LoadCompanySolverStaticOptions {
+  /**
+   * Optional permission-attributed basket usage. When omitted or empty,
+   * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 (prior
+   * behavior) with status ZERO_NO_ATTRIBUTED_USAGE when inspected via
+   * computeSharedConstraintCurrentUsage. Callers must not treat that zero
+   * as proven empty utilization without attribution.
+   */
+  basketUsage?: BasketUsageRecord[];
+}
+
 /**
  * Loads a company's solver-native graph rows (Permission/PermissionRelationship/
  * SharedCapacityConstraint/PermissionCollateralScope/RuleActivationCondition/
@@ -1816,11 +1829,16 @@ export interface SolverNativePrismaClient {
  * to legacy rows. Zero rows for a company (true for Coherent today) yields
  * empty arrays, which is exactly what makes every document/side for that
  * company resolve LEGACY/NOT_TESTED in `resolveDocumentSideCoverage`.
+ *
+ * SharedConstraint.currentUsage is computed for NAMED_MEMBER_CLAUSES from
+ * optional `options.basketUsage` only. EXTERNAL_INSTRUMENT_BALANCE and
+ * ENTITY_CLASS_FILTER remain 0 (fail-closed — do not invent balances).
  */
 export async function loadCompanySolverStaticData(
   prisma: SolverNativePrismaClient,
   companyId: string,
-  asOfDate: Date = new Date()
+  asOfDate: Date = new Date(),
+  options?: LoadCompanySolverStaticOptions,
 ): Promise<SolverNativeStaticData> {
   const dateFilter = effectiveDateFilter(asOfDate);
   const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
@@ -1896,7 +1914,17 @@ export async function loadCompanySolverStaticData(
     })),
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
-    currentUsage: 0, // computed from ledger/historicalState by the caller when that's wired up; see report §O/M for this scoped follow-up
+    currentUsage: computeSharedConstraintCurrentUsage({
+      aggregationRule: c.aggregationRule,
+      measurementBasis: c.measurementBasis,
+      members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
+        permissionId: m.permissionId ?? undefined,
+        namedInstrument: m.namedInstrument ?? undefined,
+        entityClass: m.entityClass ?? undefined,
+        externalInstrumentRef: m.externalInstrumentRef ?? undefined,
+      })),
+      basketUsage: options?.basketUsage ?? [],
+    }).usage,
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },
   }));
 
