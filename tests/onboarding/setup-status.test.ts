@@ -8,24 +8,43 @@ function base(over: Partial<CompanySetupStatus> = {}): CompanySetupStatus {
     onboardingStatus: "ONBOARDING",
     documentsUploaded: 0,
     extractedDocuments: 0,
+    analysisReady: false,
+    analysisReason: "NEVER_ANALYZED",
     pendingReview: 0,
     readyToPromote: 0,
     promoted: 0,
     financialSnapshots: 0,
+    ns4ApprovedSnapshots: 0,
     permissions: 0,
     dashboardReady: false,
+    capacityCertified: false,
     ...over,
   };
 }
 
 describe("nextSetupStep", () => {
-  it("starts at upload, then read, review, financials, activate", () => {
+  it("starts at upload, then read (until analysis ready), review, financials, activate", () => {
     expect(nextSetupStep(base()).label).toBe("Upload documents");
     expect(nextSetupStep(base({ documentsUploaded: 1 })).label).toBe("Read documents");
-    expect(nextSetupStep(base({ documentsUploaded: 1, extractedDocuments: 1, pendingReview: 4 })).label).toBe("Review findings");
+    expect(nextSetupStep(base({ documentsUploaded: 1, extractedDocuments: 1, analysisReady: false })).label).toBe(
+      "Read documents",
+    );
     expect(
       nextSetupStep(
-        base({ documentsUploaded: 1, extractedDocuments: 1, pendingReview: 0, readyToPromote: 3, financialSnapshots: 0 }),
+        base({ documentsUploaded: 1, extractedDocuments: 1, analysisReady: true, analysisReason: "READY", pendingReview: 4 }),
+      ).label,
+    ).toBe("Review findings");
+    expect(
+      nextSetupStep(
+        base({
+          documentsUploaded: 1,
+          extractedDocuments: 1,
+          analysisReady: true,
+          analysisReason: "READY",
+          pendingReview: 0,
+          readyToPromote: 3,
+          financialSnapshots: 0,
+        }),
       ).label,
     ).toBe("Confirm financials");
     expect(
@@ -33,6 +52,8 @@ describe("nextSetupStep", () => {
         base({
           documentsUploaded: 1,
           extractedDocuments: 1,
+          analysisReady: true,
+          analysisReason: "READY",
           pendingReview: 0,
           readyToPromote: 0,
           promoted: 3,
@@ -40,17 +61,25 @@ describe("nextSetupStep", () => {
         }),
       ).label,
     ).toBe("Activate workspace");
-    expect(
-      nextSetupStep(
-        base({
-          onboardingStatus: "ACTIVE",
-          documentsUploaded: 1,
-          extractedDocuments: 1,
-          financialSnapshots: 1,
-          promoted: 3,
-          dashboardReady: true,
-        }),
-      ).label,
-    ).toBe("Open dashboard");
+    const open = nextSetupStep(
+      base({
+        onboardingStatus: "ACTIVE",
+        documentsUploaded: 1,
+        extractedDocuments: 1,
+        analysisReady: true,
+        analysisReason: "READY",
+        financialSnapshots: 1,
+        promoted: 3,
+        permissions: 2,
+        ns4ApprovedSnapshots: 1,
+        dashboardReady: true,
+      }),
+    );
+    expect(open.label).toBe("Open dashboard");
+    expect(open.detail).toMatch(/not Phase 4E-certified/i);
+  });
+
+  it("never claims capacityCertified", () => {
+    expect(base().capacityCertified).toBe(false);
   });
 });

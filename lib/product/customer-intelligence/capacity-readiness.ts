@@ -78,8 +78,13 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
 
   const canEvaluateExecutableCapacity = hasExecutableModel && hasFinancialSnapshot;
 
+  const ns4Note =
+    ns4ApprovedSnapshotCount > 0
+      ? ` NS-4 APPROVED financial snapshots on file: ${ns4ApprovedSnapshotCount}.`
+      : " No NS-4 APPROVED financial snapshot yet.";
+
   const headline = canEvaluateExecutableCapacity
-    ? "Executable capacity path available — figures below come from the covenant engine over uploaded documents and financials (legacy engine · not certified Phase 4E)."
+    ? `Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · not Phase 3 CERTIFIED rulebook · not certified Phase 4E).${ns4Note}`
     : status === "DISCOVERY_ONLY"
       ? "AI covenant interpretations are available for counsel review. Numerical capacity stays blank until an executable rulebook and financial inputs exist."
       : status === "NO_FINANCIAL_SNAPSHOT"
@@ -87,7 +92,7 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
         : "Upload financing documents and financials to begin. Headroom will not invent headroom figures.";
 
   const guidance =
-    "AI-first: analysis appears for counsel review without waiting for outside counsel. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. LEGACY_ENGINE ≠ certified Phase 4A–4E. Missing inputs stay blank — never fabricated remaining capacity.";
+    "AI-first: analysis appears for counsel review without waiting for outside counsel. DISCOVERED ≠ counsel-approved. Promoted Permission rows are UNVERIFIED and are not the Phase 3 certified rulebook. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. LEGACY_ENGINE ≠ certified Phase 4A–4E. Missing inputs stay blank — never fabricated remaining capacity.";
 
   return {
     companyId,

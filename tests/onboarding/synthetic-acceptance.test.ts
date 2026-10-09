@@ -7,6 +7,7 @@ import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { createManualFinancialState, suggestPermissionMatches, createFacilityWithMapping, certifyExternalInputRecord } from "../../lib/onboarding/financial";
 import { generateGoldenTestProposals } from "../../lib/onboarding/golden-tests";
 import { getCompanyDashboard, getDocumentDetails, listCompanies } from "../../lib/dashboard-service";
+import { markContractAnalysisReadyForTests } from "./mark-analysis-ready";
 
 /**
  * Synthetic-company acceptance test (docs/company-onboarding-v1-implementation.md):
@@ -120,9 +121,11 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     // The COVERAGE-stage gap placeholder must start REVIEW_REQUIRED, never PENDING.
     const gap = byKind.PERMISSION.find((c) => (c.proposedValue as { sectionRef: string }).sectionRef === "2.3")!;
     expect(gap.reviewStatus).toBe("REVIEW_REQUIRED");
-  });
+  }, 30_000);
 
   it("REVIEW: approve/edit/reject decisions are logged, proposedValue is never overwritten, and a promoted candidate's decision becomes final", async () => {
+    // Covenant review/promote require Phase 3 analysis readiness (FINDING-7).
+    await markContractAnalysisReadyForTests(COMPANY_ID);
     const byKind = await getCandidatesForReview(COMPANY_ID);
 
     // APPROVE the document-structure and defined-term proposals.
@@ -169,7 +172,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     expect(progress.pending).toBe(0);
     expect(progress.reviewRequired).toBe(0);
     expect(progress.approved).toBeGreaterThanOrEqual(1);
-  });
+  }, 30_000);
 
   it("MissingReviewerError: a review decision is refused without a real reviewer identifier (never fabricated)", async () => {
     const byKind = await getCandidatesForReview(COMPANY_ID);

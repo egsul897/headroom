@@ -19,10 +19,13 @@ const METRIC_LABELS: { metricName: string; pattern: RegExp }[] = [
   { metricName: "interest_expense", pattern: /\binterest\s+expense\b/i },
   { metricName: "cumulative_net_income", pattern: /\bcumulative\s+net\s+income\b|\bconsolidated\s+net\s+income\b/i },
   { metricName: "equity_proceeds", pattern: /\bequity\s+proceeds\b/i },
+  // Required by upsertFinancialFactsForDate's 8-field batch; certificates often state a modeling rate.
+  { metricName: "assumed_new_debt_rate_pct", pattern: /\bassumed\s+new[- ]debt\s+rate\b|\bassumed\s+coupon\b|\bassumed\s+new\s+debt\s+rate\b/i },
 ];
 
 const AMOUNT =
   /\$\s*([\d,]+(?:\.\d+)?)\s*(billion|million|thousand|bn|mm|m|k)?\b|\b([\d,]+(?:\.\d+)?)\s*(billion|million|thousand|bn|mm)\b/i;
+const PERCENT = /\b([\d]+(?:\.\d+)?)\s*%/;
 
 function unitFromWord(word: string | undefined): FinancialUnit | null {
   if (!word) return null;
@@ -51,10 +54,18 @@ function parseAsOfDate(text: string): string | null {
   const labeled =
     text.match(/\bas of\s+([A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4})/i) ??
     text.match(/\bperiod ended\s+([A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4})/i);
-  if (!labeled) return null;
+  if (!labeled?.[1]) return null;
   const parsed = new Date(labeled[1]);
   if (Number.isNaN(parsed.getTime())) return null;
   return parsed.toISOString().slice(0, 10);
+}
+
+function parsePercent(raw: string): { value: number; unit: FinancialUnit } | null {
+  const m = raw.match(PERCENT);
+  if (!m?.[1]) return null;
+  const n = Number(m[1]);
+  if (!Number.isFinite(n)) return null;
+  return { value: n, unit: "PERCENT" };
 }
 
 export interface ProposedFinancialFact {
@@ -84,7 +95,8 @@ export function parseFinancialFactsFromText(text: string, chunkId: string | null
   for (const line of lines) {
     for (const { metricName, pattern } of METRIC_LABELS) {
       if (!pattern.test(line)) continue;
-      const amount = parseAmount(line);
+      const amount =
+        metricName === "assumed_new_debt_rate_pct" ? parsePercent(line) : parseAmount(line);
       if (!amount) continue;
       let normalized;
       try {

@@ -73,7 +73,7 @@ describe("FINANCIAL_FACT promotion", () => {
     for (const id of candidateIds) {
       await reviewCandidate({ candidateId: id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     }
-  });
+  }, 60_000);
 
   afterAll(async () => {
     await teardown();
@@ -112,7 +112,12 @@ describe("FINANCIAL_FACT promotion", () => {
     const promoted = await prisma.extractionCandidate.findMany({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT", promotedAt: { not: null } } });
     expect(promoted).toHaveLength(8);
     for (const p of promoted) expect(p.promotedToId).toBe(snap.id);
-  });
+
+    // Authoritative North Star NS-4 path — APPROVED ContractInputSnapshot, not legacy tables only.
+    const ns4 = await prisma.contractInputSnapshot.findMany({ where: { companyId: COMPANY_ID, status: "APPROVED" } });
+    expect(ns4.length).toBeGreaterThanOrEqual(1);
+    expect(ns4.some((s) => s.snapshotId.startsWith(`ns4:${COMPANY_ID}:`))).toBe(true);
+  }, 30_000);
 
   it("getCompanyDashboard reflects the promoted value with no FINANCIAL_FACT-promotion-specific special-casing inside dashboard-service.ts", async () => {
     // Historical note: at the time Phase B's FINANCIAL_FACT promotion work

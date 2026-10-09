@@ -95,7 +95,11 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
       {(company.onboardingStatus === "ACTIVE" || company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS") && (
         <Card>
           <div className="card-title">Workspace is live</div>
-          <div className="row-note">The dashboard now reads this company&apos;s uploaded documents and approved financials.</div>
+          <div className="row-note">
+            The dashboard can evaluate legacy-engine figures from promoted Permissions and financials. That is not Phase 3
+            CERTIFIED rulebook capacity and not Phase 4E-certified answers
+            {status.ns4ApprovedSnapshots > 0 ? ` · ${status.ns4ApprovedSnapshots} NS-4 APPROVED financial snapshot(s) on file` : ""}.
+          </div>
           <div className="button-row" style={{ marginTop: 10 }}>
             <Link href={`/${companyId}`} className="button button-primary" style={{ textDecoration: "none" }}>
               Open overview

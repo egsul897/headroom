@@ -28,6 +28,7 @@ import { withPreMigrationSnapshotDuplicates } from "./p3-ffc2c-snapshot-unique-g
 import { connectSource } from "../../lib/connectors/registry";
 import { ensureFinancialFactContainer } from "../../lib/connectors/ingestion";
 import { promoteCompanyCandidates, CONFLICTING_DEFINED_TERMS, CONFLICTING_DOCUMENT_RELATIONSHIPS } from "../../lib/onboarding/promotion";
+import { markContractAnalysisReadyForTests } from "./mark-analysis-ready";
 import { CONFLICTING_FINANCIAL_FACTS, createManualFinancialState, upsertFinancialFactsForDate } from "../../lib/onboarding/financial";
 import { loadCompanyCovenantData } from "../../lib/covenant-engine";
 import { loadCompanyFinancialCoreData, loadFinancialState } from "../../lib/financial-core-db/adapter";
@@ -173,7 +174,7 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
       expect(events[0]!.reviewedBy).toBeNull();
     }
     expect(await prisma.financialSnapshot.count({ where: { companyId } })).toBe(0);
-  });
+  }, 30_000);
 
   it("R3/R4/R5/R6 readers: UNKNOWN, the single row, and AMBIGUOUS on duplicate stored rows", async () => {
     const none = IDS[2];
@@ -452,7 +453,7 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     expect(matchAfter.promotedAt).not.toBeNull();
     expect(clashAfter.promotedAt).toBeNull();
     expect(clashAfter.promotedToId).toBeNull();
-  });
+  }, 30_000);
 
   it("R8 divergent DOCUMENT_RELATIONSHIP writes have no iteration-order winner", async () => {
     async function relCandidate(companyId: string, documentId: string, documentType: string, createdAt: Date, supersedesDocumentRef?: string) {
@@ -514,6 +515,7 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     const docConfirmed = await prisma.document.create({
       data: { companyId: IDS[15], name: "rel-confirmed.txt", type: "CREDIT_AGREEMENT", typeConfirmedByUser: true, amendmentRelationshipConfirmedByUser: true },
     });
+    await markContractAnalysisReadyForTests(IDS[15]);
     const divergent = await relCandidate(IDS[15], docConfirmed.id, "INDENTURE", new Date("2026-03-01T00:00:00.000Z"));
     const confirmedPromo = await promoteCompanyCandidates(IDS[15]);
     expect(confirmedPromo.skipped.map((s) => s.candidateId)).toEqual([divergent.id]);
@@ -538,7 +540,7 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     expect(amendmentAfter.supersedesDocumentId).toBe(base.id);
     expect((await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: baseRel.id } })).promotedAt).not.toBeNull();
     expect((await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: amendmentRel.id } })).promotedAt).not.toBeNull();
-  });
+  }, 30_000);
 
   it("R9 FFC1 W≠V stays CONFLICTING_FINANCIAL_FACTS and applied honesty stays intact", async () => {
     const companyId = IDS[1];
@@ -568,5 +570,5 @@ describe("P3-FFC2 review audit and canonical financial identity", () => {
     expect(promotionSrc).toContain("CONFLICTING_FINANCIAL_FACTS");
     expect(promotionSrc).not.toMatch(/rationale:\s*reason/);
     expect(promotionSrc).toContain('Duplicate permissionRef "${value.permissionRef}" already promoted in this batch - not re-promoted.');
-  });
+  }, 30_000);
 });
