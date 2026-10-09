@@ -35,6 +35,6 @@ Shared pool sequential draws refuse over-stack; reclass still requires encoded e
 
 ## 10. PR / SHA / CI / cost
 - **PR:** https://github.com/egsul897/headroom/pull/223
-- **Tip:** see branch head after push
+- **Tip:** `ada9e6b98c711308d1e94d32d2fa394858285953`
 - **Cost:** $0.00
 - **CI:** local mission suite green; unrelated product tests (authenticated-vep-offline, conmed-demo nav) fail on main tip as before
