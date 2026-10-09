@@ -1,7 +1,7 @@
 # #232 Integration Correction
 
 **As of:** 2026-10-09  
-**Merge candidate tip:** `2220dd4a1e28110b33fba8038c02506ffb56fe79`  
+**Merge candidate tip:** `0425caa471b94576a7df34dbab771c6585aa6ec0` (includes completeness alignment @ `2220dd4a`)  
 **Base:** `origin/main` @ `b99f934b` (**includes merged #229**).
 
 ## 1. PR disposition correction
