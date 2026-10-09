@@ -115,6 +115,39 @@ const TARGETS: Target[] = [
     issuer: "Maravai LifeSciences",
     cik: "0000000000",
   },
+  // Unseen Neon holdouts (not used to develop prior fixes)
+  {
+    id: "alkermes",
+    kind: "neon",
+    sourceId: "research:cbcfl:alks-unknown-alks-ex10_1",
+    title: "Alkermes plc",
+    issuer: "Alkermes plc",
+    cik: "0000000000",
+  },
+  {
+    id: "aeo",
+    kind: "neon",
+    sourceId: "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+    title: "American Eagle Outfitters",
+    issuer: "American Eagle Outfitters",
+    cik: "0000000000",
+  },
+  {
+    id: "godaddy",
+    kind: "neon",
+    sourceId: "research:cbcfl:gddy-unknown-ex101-73126",
+    title: "GoDaddy",
+    issuer: "GoDaddy",
+    cik: "0000000000",
+  },
+  {
+    id: "peloton",
+    kind: "neon",
+    sourceId: "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+    title: "Peloton Interactive",
+    issuer: "Peloton Interactive",
+    cik: "0000000000",
+  },
 ];
 
 const ASK_Qs = {
