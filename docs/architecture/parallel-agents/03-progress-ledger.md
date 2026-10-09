@@ -254,3 +254,18 @@
 - WS-CAP instructed to fail closed on unknown usage; no second ledger; no cert-board edits
 - actualExternalCostsUsd: 0
 
+---
+
+## 2026-10-09T22:26:30Z — coverage audit absorbed + specialist PR wave
+
+- Coverage audit from explore agent `bc-e95160c1-251f-5024-b003-3ef2309ab9d3` absorbed into `17-progress-manifest.json` + `20-specialist-pr-wave-2026-10-09.json`
+- Independent correctness pin: acceptance-run `6f0e372daf48` → 706/736 pass, **CFP 0**
+- Nuance: Phase-4C `capacity/state.ts` already fail-closes empty usage as `NOT_DETERMINED`; solver loader `currentUsage:0` remains the critical gap
+- New specialist PRs inventoried: #211–#215, #217–#218
+- **#215** partial BLK-USAGE-ZERO fix — coordinator ack for demonstrated defect scope; residual gap documented (default path still zeros; do not mark blocker CLOSED)
+- **#217** collides with Neon #210/#212 on `docs/intelligence-factory/progress-manifest.json` — rebase required
+- **#211** sequences after #205→#207 (enumeration file overlap)
+- Path drift noted (accepted if non-promoting): #214 `docs/covenant-capacity-mathematics/**`, #218 `docs/cross-document-covenant-reasoning/**`
+- actualExternalCostsUsd: 0
+- ownershipViolations: path-drift disclosures only (no silent rewrite of peer contracts)
+

@@ -26,6 +26,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `17-progress-manifest.json` | Shared engineering progress manifest (session-facing) |
 | `18-pr-integration-sequence.json` | Recommended PR order / do-not-merge (no auto-merge) |
 | `19-blk-usage-zero-assignment.md` | P0 WS-CAP brief: unknown utilization ≠ zero |
+| `20-specialist-pr-wave-2026-10-09.json` | Specialist PR wave inventory + collision calls |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |

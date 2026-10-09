@@ -2,7 +2,7 @@
   "schemaVersion": "headroom.engineering-coordinator.progress-manifest.v1",
   "artifact": "shared-progress-manifest",
   "ownerWorkstream": "WS-AEC",
-  "updatedAt": "2026-10-09T22:22:00Z",
+  "updatedAt": "2026-10-09T22:26:30Z",
   "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
   "coordinatorBcId": "bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
   "coordinatorBranch": "cursor/engineering-coordinator-10ff",
@@ -76,13 +76,20 @@
       "status": "PARTIAL_FAIL_CLOSED_GAPS",
       "neonLedgerEntries": 6,
       "contractLedgerUsages": 1,
+      "phase4CapacityState": {
+        "path": "lib/contract-model/runtime/capacity/state.ts",
+        "posture": "empty usage → NOT_DETERMINED (fail closed) — confirmed by coverage audit"
+      },
       "unknownUtilizationSilentZero": {
         "risk": "CRITICAL",
+        "status": "PARTIAL_FIX_IN_PR_215_NOT_CLOSED",
         "locations": [
-          "SharedCapacityConstraint usage loader hardcoded to 0 (Neon baseline)",
-          "lib/product/legal-intelligence/run-package-path.ts ledger = 0"
+          "lib/covenant-engine.ts:1899 currentUsage: 0 (solver SharedConstraint loader)",
+          "lib/product/legal-intelligence/run-package-path.ts:66 ledger = 0",
+          "PR #215 wires named-member usage only when basketUsage passed; default path still zero"
         ]
-      }
+      },
+      "coverageAuditRef": "bc-e95160c1-251f-5024-b003-3ef2309ab9d3"
     },
     "crossDocument": {
       "status": "PARTIAL",
@@ -110,29 +117,34 @@
     "independentCorrectness": {
       "status": "ACTIVE_CLAUDE_TRACK",
       "productAcceptanceOwner": "claude/independent-product-validation",
+      "pinnedAcceptanceRun": "docs/product-readiness/acceptance-runs/6f0e372daf48/",
+      "pinnedChecks": "706/736 pass",
+      "pinnedCfp": 0,
       "criticalFalsePermissionClassesOpen": [
         "IPV-16 section bundle false certification (see #168 / package M)",
-        "Shared capacity usage=0 overstatement risk",
-        "SECURED_DEBT without lien companion (mitigation in #207)"
+        "Shared capacity usage=0 overstatement risk (PR #215 partial only)",
+        "SECURED_DEBT without lien companion (mitigation in #207/#211)"
       ],
-      "cfpTarget": 0
+      "cfpTarget": 0,
+      "coverageAuditRef": "bc-e95160c1-251f-5024-b003-3ef2309ab9d3"
     }
   },
   "workstreams": {
     "WS-NEON": {
-      "status": "CYCLE_1_PR_OPEN",
-      "pr": 210,
+      "status": "PRS_OPEN_STACK",
+      "prs": [210, 212, 215],
       "next": [
-        "CI green on #210",
-        "Re-run baseline after corpus mutations",
-        "Do not live-write UNKNOWN reclassify without owner gate"
+        "Land #210 then #212 (stack)",
+        "Treat #215 as partial usage wire — document residual gap; do not close BLK-USAGE-ZERO",
+        "Sole owner of docs/intelligence-factory/progress-manifest.json — require #217 rebase"
       ]
     },
     "WS-MECH": {
-      "status": "RUNNING_NO_PR",
+      "status": "PR_OPEN_COLLISION",
+      "prs": [217],
       "next": [
-        "Create exclusive docs/product/covenant-mechanics/**",
-        "Offline mechanic matrix from Neon STRUCTURALLY_INDEXED only",
+        "Rebase #217 off #210/#212 — progress-manifest.json owned by WS-NEON",
+        "Keep shared-capacity Pass A precision; no second engine",
         "Hand offs adversarial cases to WS-CAP / WS-ADV"
       ]
     },
@@ -145,11 +157,12 @@
       ]
     },
     "WS-CAP": {
-      "status": "RUNNING_NO_PR",
+      "status": "PRS_OPEN_PARTIAL",
+      "prs": [214, 215],
       "next": [
-        "P0: demonstrate and fix unknown≠zero for shared-capacity usage",
-        "Regression: capacity REFUSED when usage unknown",
-        "Do not edit #200 DIRTY tip; work from main + exclusive tree"
+        "Review #215 residual: default omitted basketUsage still zeros usage — do not claim BLK-USAGE-ZERO CLOSED",
+        "Accept #214 matrix path drift if non-promoting",
+        "Require fail-closed when usage unknown for named-member constraints"
       ]
     },
     "WS-TXN": {
@@ -161,10 +174,11 @@
       ]
     },
     "WS-XDOC": {
-      "status": "RUNNING_NO_PR",
+      "status": "PRS_OPEN",
+      "prs": [218, 211],
       "next": [
-        "Own lien-companion follow-ups after #207 rebases onto #205",
-        "Cross-rule gate NOT_EXECUTABLE remains fail-closed",
+        "Sequence #211 after #205→#207 (verified-path-enumeration collision)",
+        "CI on #218; path drift docs/cross-document-covenant-reasoning/** accepted if invariants hold",
         "No second amendment engine"
       ]
     },
@@ -177,11 +191,12 @@
       ]
     },
     "WS-UCP": {
-      "status": "RUNNING_NO_PR",
+      "status": "PR_OPEN",
+      "prs": [213],
       "next": [
-        "Adopt #208 audit as implementation backlog",
-        "Wire Position/Simulate/Ask through existing bridges only",
-        "Freeze Coherent working path"
+        "CI on #213 unify Position/Simulate/Ask (LEGACY_labeled)",
+        "Preserve NOT_TRACKED → null utilization (never paint 0)",
+        "No CERTIFIED numeric claims from this PR"
       ]
     },
     "WS-ADV": {
