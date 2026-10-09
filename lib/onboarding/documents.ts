@@ -23,6 +23,8 @@ import type { DocumentType } from "@prisma/client";
 const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
   pdf: "application/pdf",
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  html: "text/html",
+  htm: "text/html",
   txt: "text/plain",
 };
 

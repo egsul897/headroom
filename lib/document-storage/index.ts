@@ -61,16 +61,25 @@ export class MissingPostgresByteaConfigError extends Error {
  *
  * Priority:
  * 1. BLOB_READ_WRITE_TOKEN → Vercel Blob (unchanged production path)
- * 2. DOCUMENT_STORAGE_BACKEND=postgres → Postgres BYTEA (requires DATABASE_URL)
- * 3. VERCEL without blob → fail loud
- * 4. else local filesystem (dev/test only — never durable)
+ * 2. DOCUMENT_STORAGE_BACKEND=postgres|postgres-bytea → Postgres BYTEA
+ * 3. DATABASE_URL present (Cursor/Neon) → Postgres BYTEA by default
+ * 4. VERCEL without blob → fail loud
+ * 5. else local filesystem (dev/test only — never durable)
  */
 export function getDocumentStorageProvider(): DocumentStorageProvider {
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     return new VercelBlobStorageProvider();
   }
   const backend = (process.env.DOCUMENT_STORAGE_BACKEND || "").trim().toLowerCase();
-  if (backend === "postgres" || backend === "postgres-bytea") {
+  const inAutomatedTest =
+    process.env.VITEST === "true" ||
+    process.env.NODE_ENV === "test" ||
+    process.env.DOCUMENT_STORAGE_BACKEND === "local";
+  const preferPostgres =
+    backend === "postgres" ||
+    backend === "postgres-bytea" ||
+    (backend === "" && Boolean(process.env.DATABASE_URL?.trim()) && !inAutomatedTest);
+  if (preferPostgres) {
     if (!process.env.DATABASE_URL?.trim()) {
       throw new MissingPostgresByteaConfigError();
     }

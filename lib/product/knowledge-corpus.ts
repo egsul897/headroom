@@ -32,21 +32,27 @@ export interface CorpusBrowseSummary {
   note: string;
 }
 
+/** Public research corpus only — customer workspace uploads (companyId set) are excluded. */
+const PUBLIC_CORPUS = { companyId: null as string | null };
+
 export async function loadCorpusBrowseSummary(): Promise<CorpusBrowseSummary> {
-  const totalSources = await prisma.knowledgeSource.count();
+  const totalSources = await prisma.knowledgeSource.count({ where: PUBLIC_CORPUS });
   const withStorageRef = await prisma.knowledgeSource.count({
-    where: { storageRef: { not: null } },
+    where: { ...PUBLIC_CORPUS, storageRef: { not: null } },
   });
   const issuers = await prisma.knowledgeSource.findMany({
+    where: PUBLIC_CORPUS,
     select: { issuerCik: true },
     distinct: ["issuerCik"],
   });
   const classes = await prisma.knowledgeSource.groupBy({
     by: ["documentClass"],
+    where: PUBLIC_CORPUS,
     _count: true,
   });
   const levels = await prisma.knowledgeSource.groupBy({
     by: ["representationLevel"],
+    where: PUBLIC_CORPUS,
     _count: true,
   });
 
@@ -56,12 +62,13 @@ export async function loadCorpusBrowseSummary(): Promise<CorpusBrowseSummary> {
     distinctIssuers: issuers.length,
     byDocumentClass: Object.fromEntries(classes.map((c) => [c.documentClass, c._count])),
     byRepresentationLevel: Object.fromEntries(levels.map((l) => [l.representationLevel, l._count])),
-    note: "Row counts are not legal coverage. DISCOVERED ≠ VERIFIED. Precedents do not govern customer capacity.",
+    note: "Public research corpus only (companyId IS NULL). DISCOVERED ≠ VERIFIED. Precedents do not govern customer capacity.",
   };
 }
 
 export async function listCorpusBrowseRows(limit = 100): Promise<CorpusBrowseRow[]> {
   const rows = await prisma.knowledgeSource.findMany({
+    where: PUBLIC_CORPUS,
     orderBy: [{ filingDate: "desc" }, { sourceId: "asc" }],
     take: limit,
   });

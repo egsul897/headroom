@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
 
 /**
- * Ask page — submits questions to a server action for corpus retrieval.
+ * Ask page — submits questions to a server action for workspace-isolated retrieval.
  */
 export function AskShell({
   companyId,
@@ -22,7 +22,7 @@ export function AskShell({
     <div className="home-overview">
       <header className="home-top">
         <div className="home-greeting-block">
-          <h1 className="home-greeting">Ask</h1>
+          <h1 className="home-greeting">Ask Headroom</h1>
         </div>
         <Link className="home-export home-export-link" href={`/${companyId}`}>
           Back to overview
@@ -34,6 +34,26 @@ export function AskShell({
         <p className="home-detail" style={{ whiteSpace: "pre-wrap" }}>
           {result.detail}
         </p>
+        {result.citations && result.citations.length > 0 && (
+          <div style={{ marginTop: 12 }}>
+            <p className="home-eyebrow">Citations</p>
+            <ul style={{ paddingLeft: 18, margin: "8px 0" }}>
+              {result.citations.map((c, i) => (
+                <li key={`${c.sourceId}-${c.sectionRef}-${i}`} style={{ marginBottom: 8 }}>
+                  <strong>
+                    {c.governingAgreement} — {c.sectionRef}
+                  </strong>
+                  <div style={{ fontSize: 13, whiteSpace: "pre-wrap" }}>
+                    “{c.excerpt}”
+                  </div>
+                  <div style={{ fontSize: 12, opacity: 0.8 }}>
+                    [{c.sourceId}] · {c.epistemicStatus}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {result.limitations && result.limitations.length > 0 && (
           <p className="home-detail">Limitations: {result.limitations.join(" · ")}</p>
         )}
@@ -65,7 +85,7 @@ export function AskShell({
         }}
       >
         <label className="home-eyebrow" htmlFor="ask-question">
-          Question
+          Question about this workspace’s financing documents
         </label>
         <textarea
           id="ask-question"
@@ -73,13 +93,17 @@ export function AskShell({
           onChange={(event) => setQuestion(event.target.value)}
           rows={4}
           disabled={pending}
+          placeholder="e.g. What restricted-payment baskets are available?"
         />
         <button type="submit" className="button" disabled={pending || !question.trim()}>
           {pending ? "Retrieving…" : "Submit question"}
         </button>
         <p className="home-detail" style={{ marginTop: 8 }}>
-          Or use the{" "}
-          <Link href="/research/ask">research corpus Ask</Link> for issuer-disjoint precedents.
+          Answers cite uploaded package text only.{" "}
+          <Link href={`/${companyId}/documents`}>Documents</Link>
+          {" · "}
+          <Link href="/research/ask">Research corpus Ask</Link> for issuer-disjoint precedents
+          (never governing for this deal).
         </p>
       </form>
     </div>

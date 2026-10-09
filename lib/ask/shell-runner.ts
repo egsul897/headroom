@@ -24,9 +24,9 @@ export function resolveAskShell(input: { companyId: string | null | undefined })
   return {
     kind: "empty",
     caseId: "NOT_AVAILABLE_ON_DEAL",
-    headline: "Ask with retrieved corpus evidence",
+    headline: ASK_CASES.NOT_AVAILABLE_ON_DEAL.headline,
     detail:
-      "Submit a question to retrieve matching covenant excerpts from the durable research corpus. Headroom will not invent permissions or capacity.",
+      "Submit a question to retrieve matching covenant excerpts from this workspace’s uploaded financing documents. Answers cite specific provisions. Headroom will not invent permissions, capacity, or amendment conclusions. Public precedents are not used as governing authority.",
   };
 }
 

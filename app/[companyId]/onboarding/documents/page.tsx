@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Card, Chip, type ChipTone } from "@/components/ui";
 import { getDocumentsWithExtractionStatus } from "@/lib/onboarding/documents";
 import { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany } from "@/lib/contract-model/analysis";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import type { AnalysisRunStatus } from "@prisma/client";
 import { fmtDate } from "@/lib/format";
 import { uploadDocumentAction, runExtractionAction } from "./actions";
@@ -99,18 +100,23 @@ async function ContractAnalysisStatusCard({ companyId }: { companyId: string }) 
 export default async function OnboardingDocumentsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const documents = await getDocumentsWithExtractionStatus(companyId);
+  const intelligence = await listCustomerDocumentIntelligence(companyId);
+  const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
   const upload = uploadDocumentAction.bind(null, companyId);
 
   return (
     <div className="stack">
       <Card>
-        <div className="card-title">Upload a document</div>
-        <div className="card-subtitle">PDF, DOCX, or TXT. The file is stored via the configured DocumentStorageProvider, then parsed and chunked immediately.</div>
+        <div className="card-title">Upload a financing document</div>
+        <div className="card-subtitle">
+          PDF, HTML, DOCX, or TXT. Bytes are stored in Neon (BYTEA), then analyzed for covenant categories and summaries.
+          Failures are shown honestly — Headroom never claims analysis succeeded when extraction failed.
+        </div>
         <form action={upload} className="stack" style={{ gap: 10 }}>
           <div className="field">
             <div className="field-label">File</div>
             <div className="field-control">
-              <input type="file" name="file" accept=".pdf,.docx,.txt" required />
+              <input type="file" name="file" accept=".pdf,.html,.htm,.docx,.txt" required />
             </div>
           </div>
           <div className="field">
@@ -132,18 +138,43 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
             </div>
           </div>
           <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
-            Upload &amp; chunk
+            Upload &amp; analyze
           </button>
         </form>
       </Card>
 
-      {documents.map((d) => (
+      {documents.map((d) => {
+        const intel = intelByDoc.get(d.id);
+        return (
         <Card key={d.id}>
           <div className="card-title">{d.name}</div>
           <div className="card-subtitle">
             {d.type}
             {!d.typeConfirmedByUser && " (unconfirmed — review the DOCUMENT_RELATIONSHIP candidate to confirm)"} · {d.chunkCount} chunk(s)
             {d.uploadedAt ? ` · uploaded ${fmtDate(d.uploadedAt)}` : ""}
+          </div>
+          <div className="button-row" style={{ marginBottom: 8 }}>
+            {intel ? (
+              <>
+                <Chip tone={intel.analysisOk ? "pass" : "trip"}>
+                  Intelligence: {intel.analysisOk ? "ANALYZED" : "FAILED"}
+                </Chip>
+                <Chip tone="idle">{intel.covenantItemCount} covenant summaries</Chip>
+                <Chip tone="idle">{intel.extractionStatus}</Chip>
+              </>
+            ) : (
+              <Chip tone="idle">Intelligence: pending / not run</Chip>
+            )}
+          </div>
+          {intel?.analysisError && (
+            <div className="row-note" style={{ marginBottom: 8, color: "var(--color-danger, #b91c1c)" }}>
+              Analysis did not succeed: {intel.analysisError}
+            </div>
+          )}
+          <div className="button-row" style={{ marginBottom: 8 }}>
+            <Link className="button" href={`/${companyId}/documents/${d.id}`}>
+              Open document intelligence
+            </Link>
           </div>
           {d.latestRun ? (
             <>
@@ -174,7 +205,8 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
             </button>
           </form>
         </Card>
-      ))}
+        );
+      })}
 
       {documents.length > 0 && <ContractAnalysisStatusCard companyId={companyId} />}
 

@@ -14,7 +14,7 @@ export default async function ResearchAskPage({
   const q = sp.q?.trim() ?? "";
   const sourceId = sp.sourceId?.trim();
   const answer = q
-    ? await answerFromCorpus({ question: q, sourceId, limit: 8 })
+    ? await answerFromCorpus({ question: q, sourceId, researchOnly: true, limit: 8 })
     : null;
 
   return (
