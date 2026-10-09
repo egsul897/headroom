@@ -351,9 +351,25 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         c.members.some((mem) => mem.permissionId === permissionId) ||
         (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
     );
-  const headroomAndConsume = (permissionId: string, desiredAlloc: number): { cappedAlloc: number; constraintId?: string } => {
+  /**
+   * Shared-constraint headroom. Utilization integrity (Neon activation P0):
+   * when `currentUsageAuthoritative` is not true, do NOT treat numeric zero as
+   * proven-empty usage / full remaining — that would be a false-favorable
+   * remaining-capacity conclusion. Fail closed with utilizationUnknown.
+   */
+  const headroomAndConsume = (
+    permissionId: string,
+    desiredAlloc: number,
+  ): { cappedAlloc: number; constraintId?: string; utilizationUnknown?: boolean } => {
     const constraint = constraintFor(permissionId);
     if (!constraint) return { cappedAlloc: desiredAlloc };
+    if (constraint.currentUsageAuthoritative !== true) {
+      return {
+        cappedAlloc: 0,
+        constraintId: constraint.id,
+        utilizationUnknown: true,
+      };
+    }
     if (!sharedRemaining.has(constraint.id)) {
       const cap = "amount" in constraint.cap ? constraint.cap.amount : evaluateProvision({ ...permissionAsProvision(permissionsById.get(permissionId)!), formulaType: constraint.cap.formulaType, thresholdValue: constraint.cap.thresholdValue, params: constraint.cap.params }, financials, computeLeverageMetrics(financials)).capacity;
       sharedRemaining.set(constraint.id, Math.max(0, (cap ?? 0) - constraint.currentUsage));
@@ -363,6 +379,34 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     sharedRemaining.set(constraint.id, before - consumed);
     sharedConsumption.push({ constraintId: constraint.id, amountConsumed: consumed, headroomBefore: before, headroomAfter: before - consumed });
     return { cappedAlloc: consumed, constraintId: constraint.id };
+  };
+
+  const pushSharedCapRequirement = (
+    permissionId: string,
+    constraintId: string,
+    cappedAlloc: number,
+    desiredForSharedCheck: number,
+    utilizationUnknown: boolean | undefined,
+  ) => {
+    if (utilizationUnknown) {
+      const status = constraintFor(permissionId)?.currentUsageStatus ?? "ZERO_NO_ATTRIBUTED_USAGE";
+      requirements.push({
+        class: "SHARED_CAP",
+        scope: { permissionId, constraintId },
+        status: "UNKNOWN",
+        detail:
+          `Shared constraint ${constraintId} utilization is not authoritative (${status}); ` +
+          `non-authoritative usage must not produce favorable remaining capacity.`,
+        reasonCategory: "EXTERNAL_INPUT",
+      });
+      return;
+    }
+    requirements.push({
+      class: "SHARED_CAP",
+      scope: { permissionId, constraintId },
+      status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
+      detail: `Shared constraint ${constraintId} headroom consumed by ${permissionId}: ${cappedAlloc}.`,
+    });
   };
 
   for (const f of fixed) {
@@ -380,15 +424,10 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     }
     let standalone = evaluated.capacity!;
     const desiredForSharedCheck = Math.min(remaining, standalone);
-    const { cappedAlloc, constraintId } = headroomAndConsume(f.id, desiredForSharedCheck);
+    const { cappedAlloc, constraintId, utilizationUnknown } = headroomAndConsume(f.id, desiredForSharedCheck);
     if (constraintId !== undefined) {
       standalone = Math.min(standalone, cappedAlloc);
-      requirements.push({
-        class: "SHARED_CAP",
-        scope: { permissionId: f.id, constraintId },
-        status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
-        detail: `Shared constraint ${constraintId} headroom consumed by ${f.id}: ${cappedAlloc}.`,
-      });
+      pushSharedCapRequirement(f.id, constraintId, cappedAlloc, desiredForSharedCheck, utilizationUnknown);
     }
     const alloc = Math.max(0, Math.min(remaining, standalone));
     remaining -= alloc;
@@ -441,15 +480,10 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     } else {
       let standalone = evaluated.capacity!;
       const desiredForSharedCheck = Math.min(remaining, standalone);
-      const { cappedAlloc, constraintId } = headroomAndConsume(ratioPermission.id, desiredForSharedCheck);
+      const { cappedAlloc, constraintId, utilizationUnknown } = headroomAndConsume(ratioPermission.id, desiredForSharedCheck);
       if (constraintId !== undefined) {
         standalone = Math.min(standalone, cappedAlloc);
-        requirements.push({
-          class: "SHARED_CAP",
-          scope: { permissionId: ratioPermission.id, constraintId },
-          status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
-          detail: `Shared constraint ${constraintId} headroom consumed by ${ratioPermission.id}: ${cappedAlloc}.`,
-        });
+        pushSharedCapRequirement(ratioPermission.id, constraintId, cappedAlloc, desiredForSharedCheck, utilizationUnknown);
       }
       const alloc = Math.max(0, Math.min(remaining, standalone));
       remaining -= alloc;
@@ -554,16 +588,11 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
       const primary = sortedRatio[0]!;
       const primaryCapacity = perMemberCapacity.get(primary.id)!;
       const desiredForSharedCheck = Math.min(remaining, primaryCapacity);
-      const { cappedAlloc, constraintId } = headroomAndConsume(primary.id, desiredForSharedCheck);
+      const { cappedAlloc, constraintId, utilizationUnknown } = headroomAndConsume(primary.id, desiredForSharedCheck);
       let effectiveCapacity = primaryCapacity;
       if (constraintId !== undefined) {
         effectiveCapacity = Math.min(primaryCapacity, cappedAlloc);
-        requirements.push({
-          class: "SHARED_CAP",
-          scope: { permissionId: primary.id, constraintId },
-          status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
-          detail: `Shared constraint ${constraintId} headroom consumed by ${primary.id}: ${cappedAlloc}.`,
-        });
+        pushSharedCapRequirement(primary.id, constraintId, cappedAlloc, desiredForSharedCheck, utilizationUnknown);
       }
       const alloc = Math.max(0, Math.min(remaining, effectiveCapacity));
       remaining -= alloc;
