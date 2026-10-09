@@ -36,7 +36,12 @@ import { classifyCompanyCoverage } from "../solver/coverage";
 import type { CoverageResult } from "../solver/types";
 import { loadCompanySolverStaticData } from "../covenant-engine";
 import { CONFLICTING_FINANCIAL_FACTS, upsertFinancialFactsForDate } from "./financial";
-import { persistPromotedFinancialFactsToNs4, type Ns4FactInput } from "./ns4-financial-persist";
+import type { Ns4FactInput } from "./ns4-financial-persist";
+import {
+  enqueueNs4FinancialSyncs,
+  runNs4FinancialSyncs,
+  type Ns4SyncAttemptResult,
+} from "./ns4-financial-sync";
 
 const VALID_ENTITY_CLASS_TAGS = new Set(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS", "FOREIGN_RS", "UNRESTRICTED_SUB", "SECURITIZATION_SUB", "IMMATERIAL_SUB"]);
 
@@ -59,12 +64,23 @@ export interface PromotionSkip {
   reason: string;
 }
 
+/** NS-4 sync outcome for financial promotions — never silent on failure. */
+export interface PromotionNs4SyncSummary {
+  /** Complete only when every enqueued cohort SUCCEEDED (or none were needed). */
+  complete: boolean;
+  syncIds: string[];
+  attempts: Ns4SyncAttemptResult[];
+  failures: Ns4SyncAttemptResult[];
+}
+
 export interface PromotionResult {
   companyId: string;
   promotedCount: number;
   skipped: PromotionSkip[];
   coverageResults: CoverageResult[];
   onboardingStatus: OnboardingStatus;
+  /** Present when FINANCIAL_FACT promotions were attempted toward NS-4. */
+  ns4Sync?: PromotionNs4SyncSummary;
 }
 
 type TxClient = Prisma.TransactionClient | PrismaClient;
@@ -653,28 +669,34 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     // -----------------------------------------------------------------------
     const onboardingStatus = await evaluatePostPromotionCoverage(tx, companyId, asOfDate);
 
-    return { skipped, promotedCount: promotions.length, onboardingStatus };
+    // -----------------------------------------------------------------------
+    // 12. Enqueue NS-4 sync outbox rows in the SAME transaction as promotedAt
+    //     so a crash between legacy commit and NS-4 write remains recoverable.
+    // -----------------------------------------------------------------------
+    const ns4SyncIds = await enqueueNs4FinancialSyncs(tx, companyId, ns4Facts);
+
+    return { skipped, promotedCount: promotions.length, onboardingStatus, ns4SyncIds };
   });
 
   // NS-4 authoritative path — after legacy dual-write commits. Failures are
-  // recorded as skips (never invent APPROVED status).
-  if (ns4Facts.length > 0) {
-    const byDate = new Map<string, Ns4FactInput[]>();
-    for (const f of ns4Facts) {
-      const k = f.asOfDate.toISOString();
-      const list = byDate.get(k) ?? [];
-      list.push(f);
-      byDate.set(k, list);
+  // durably recorded on Ns4FinancialSync (never invent APPROVED status) and
+  // explicitly surfaced on the promotion result (never silent success).
+  let ns4Sync: PromotionNs4SyncSummary | undefined;
+  if (result.ns4SyncIds.length > 0) {
+    const attempts = await runNs4FinancialSyncs(result.ns4SyncIds);
+    const failures = attempts.filter((a) => a.status !== "SUCCEEDED");
+    for (const f of failures) {
+      console.error(
+        `[promoteCompanyCandidates] NS-4 persist failed for ${companyId} (legacy tables already updated; syncId=${f.syncId}):`,
+        f.reason,
+      );
     }
-    for (const group of byDate.values()) {
-      const ns4 = await persistPromotedFinancialFactsToNs4(companyId, group);
-      if (!ns4.ok) {
-        console.error(
-          `[promoteCompanyCandidates] NS-4 persist failed for ${companyId} (legacy tables already updated):`,
-          ns4.reason,
-        );
-      }
-    }
+    ns4Sync = {
+      complete: failures.length === 0,
+      syncIds: result.ns4SyncIds,
+      attempts,
+      failures,
+    };
   }
 
   const staticData = await loadCompanySolverStaticData(prisma, companyId, asOfDate);
@@ -689,7 +711,14 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     legacyFormulaPresence,
   });
 
-  return { companyId, promotedCount: result.promotedCount, skipped: result.skipped, coverageResults, onboardingStatus: result.onboardingStatus };
+  return {
+    companyId,
+    promotedCount: result.promotedCount,
+    skipped: result.skipped,
+    coverageResults,
+    onboardingStatus: result.onboardingStatus,
+    ns4Sync,
+  };
 }
 
 /** Read-only coverage-gate snapshot (no writes) - what the Activate page shows both before and after promotion, using the SAME lib/solver/coverage.ts predicate promotion itself uses. */
