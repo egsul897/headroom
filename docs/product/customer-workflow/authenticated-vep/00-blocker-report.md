@@ -1,7 +1,7 @@
 # Authentic VerifiedExecutionPackage — blocker report
 
 **Verdict:** no authentic `VerifiedExecutionPackage` was produced.  
-**Tip SHA at investigation:** `96db1b46` (PR #202; certification D_HASH_MATCH truncated-serve + offline-map evidence retention). Authentic scan reconfirmed `NO_CERTIFIED_ARTIFACTS` (5× REVIEW_REQUIRED).  
+**Tip SHA at investigation:** `657a7e8b` (PR #202; typecheck restored after main merge; certification 481/481; acceptance 703/CFP0). Authentic scan remains `NO_CERTIFIED_ARTIFACTS` (5× REVIEW_REQUIRED).  
 **Soft gate:** no live / paid certification re-runs. Offline fixtures and frozen packets only.  
 **Gates:** `certifyCandidate` / `certifyPackage` / `certifiedMapToVerifiedExecutionPackage` / `toVerifiedExecutionPackage` / `evaluateVerifiedCapacity` (REQUIRE) were not weakened.
 
