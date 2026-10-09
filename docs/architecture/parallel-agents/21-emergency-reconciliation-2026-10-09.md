@@ -31,7 +31,7 @@ Tip merges: #204 NS-4 sync/retrieval-index; #203 Phase 3→4; no specialist wave
 | #217 | `2867a241acb7` | `bae24ced33fd` | CLEAN | MERGEABLE | yes | PASS | 30 |
 | #218 | `3fa338b6d0f3` | `bae24ced33fd` | CLEAN | MERGEABLE | yes | PASS | 7 |
 | #219 | `80f9052f35af` | `bae24ced33fd` | CLEAN | MERGEABLE | yes | PASS | 9 |
-| #220 | `49de9e7990b4` | `bae24ced33fd` | UNSTABLE | MERGEABLE | yes | PEND | 23 |
+| #220 | `49de9e7990b4` | `bae24ced33fd` | CLEAN | MERGEABLE | yes | PASS* | 23 |
 | #221 | `1e45309580d7` | `bae24ced33fd` | CLEAN | MERGEABLE | yes | PASS | 24 |
 | #222 | `2af660c06353` | `bae24ced33fd` | UNSTABLE | MERGEABLE | yes | PEND | 12 |
 | #223 | `569ef3868fd4` | `bae24ced33fd` | UNSTABLE | MERGEABLE | yes | PEND | 12 |

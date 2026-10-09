@@ -215,14 +215,17 @@
     {
       "id": "BLK-USAGE-ZERO",
       "severity": "CRITICAL",
-      "summary": "Shared-capacity / package-path utilization treated as 0 when unknown — multi-workflow false permission risk",
+      "summary": "Unknown utilization treated as zero on Position overview (main) and solver SharedConstraint loader — multi-workflow false permission risk",
       "owner": "WS-CAP",
+      "status": "PARTIAL_213_215_NOT_CLOSED",
       "assignmentBrief": "docs/architecture/parallel-agents/19-blk-usage-zero-assignment.md",
+      "regressionMatrix": "docs/architecture/parallel-agents/22-usage-zero-regression-matrix.md",
       "evidence": [
-        "lib/covenant-engine.ts:1899 currentUsage: 0",
-        "lib/product/legal-intelligence/run-package-path.ts:66 ledger = 0",
-        "PR #210 Neon baseline shared-constraint usage wiring"
+        "lib/covenant-overview-builder.ts NOT_TRACKED paints util%=0 remaining=capacity (fixed in #213)",
+        "lib/covenant-engine.ts currentUsage:0 / #215 discards non-COMPUTED status",
+        "lib/product/legal-intelligence/run-package-path.ts:66 ledger = 0"
       ],
+      "requiredFollowUp": "215b fail-closed status propagation",
       "unlocks": ["Position", "Simulate", "Ask", "shared baskets across packages"]
     },
     {
