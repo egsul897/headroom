@@ -3868,3 +3868,30 @@ model DocumentByteObject {
   @@index([byteSize])
   @@map("document_byte_objects")
 }
+
+// =============================================================================
+// Knowledge import batches — idempotent consolidation checkpoints
+// =============================================================================
+
+model KnowledgeImportBatch {
+  id             String    @id @default(cuid())
+  batchKey       String    @unique
+  mode           String
+  status         String
+  family         String
+  plannedCount   Int       @default(0)
+  insertedCount  Int       @default(0)
+  reusedCount    Int       @default(0)
+  conflictCount  Int       @default(0)
+  errorCount     Int       @default(0)
+  checkpoint     Json?
+  errorSummary   String?
+  startedAt      DateTime  @default(now())
+  finishedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@index([family])
+  @@map("knowledge_import_batches")
+}

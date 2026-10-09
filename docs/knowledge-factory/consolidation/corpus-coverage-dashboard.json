@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "knowledge-factory.corpus-coverage-dashboard.v1",
+  "generatedAt": "2026-10-09T01:02:17.745Z",
+  "startingSha": "0f47d03abd785c647ea92e99dd65106bdd1d47a1",
+  "verdict": "CONSOLIDATION_IMPLEMENTED_AWAITING_LIVE_WRITE_APPROVAL",
+  "neon": {
+    "database": "neondb",
+    "hostFingerprint": "5f83318140c3",
+    "migrationsApplied": 33,
+    "documentByteObjectsTablePresent": false,
+    "existingCounts": {
+      "companies": 5,
+      "financialSnapshots": 3,
+      "documents": 7,
+      "knowledgeSources": 0,
+      "knowledgeRelationshipEdges": 0,
+      "knowledgeCostLedgerEntries": 0,
+      "goldenTests": 48,
+      "definedTerms": 15,
+      "sourceArtifacts": 8,
+      "documentByteObjects": 0
+    }
+  },
+  "gibraltarFixture": {
+    "ok": true,
+    "byteSize": 2266666,
+    "sha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "expectedByteSize": 2266666,
+    "expectedSha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+  },
+  "originalBytes": {
+    "availableFiles": 29,
+    "totalBytes": 37306833,
+    "proposedDurableInserts": 0,
+    "estimatedInsertStorageBytes": 0,
+    "estimatedStorageBytesIfMigrationApplied": 37306833,
+    "proposedIfMigrationApplied": {
+      "insertBytesAndRegistry": 29,
+      "note": "after migrate deploy of document_byte_objects, all scanned candidates become INSERT/REUSE/ALIAS plans"
+    }
+  },
+  "derivedKnowledge": {
+    "exportSourcesConsidered": 125,
+    "metadataWouldInsert": 125,
+    "metadataWouldReuse": 0,
+    "metadataWouldConflict": 0,
+    "note": "Metadata-only rows are NOT durability claims (storageRef null)"
+  },
+  "existingDbCounts": {
+    "companies": 5,
+    "financialSnapshots": 3,
+    "documents": 7,
+    "knowledgeSources": 0,
+    "knowledgeRelationshipEdges": 0,
+    "knowledgeCostLedgerEntries": 0,
+    "goldenTests": 48,
+    "definedTerms": 15,
+    "sourceArtifacts": 8,
+    "documentByteObjects": 0
+  },
+  "blockers": [
+    "Migration 20261009013000_document_byte_objects not applied — required before durable byte inserts",
+    "LIVE WRITE NOT AUTHORIZED by this prompt — return plan for explicit owner approval before bulk import"
+  ],
+  "approvalCheckpoint": "OWNER_APPROVAL_REQUIRED_BEFORE_MIGRATE_DEPLOY_OR_BULK_IMPORT",
+  "families": [
+    {
+      "family": "Canonical Knowledge Factory (code + export)",
+      "availability": "METADATA_ONLY",
+      "originalBytesPresent": false,
+      "volume": "11 files / 28.48 MiB"
+    },
+    {
+      "family": "Local KF corpus bytes",
+      "availability": "UNAVAILABLE",
+      "originalBytesPresent": false,
+      "volume": "0 files / 0.00 MiB"
+    },
+    {
+      "family": "Committed authentic original HTML",
+      "availability": "READY",
+      "originalBytesPresent": true,
+      "volume": "29 files / 35.58 MiB"
+    },
+    {
+      "family": "Definition Encyclopedia",
+      "availability": "READY",
+      "originalBytesPresent": false,
+      "volume": "24 files / 56.62 MiB"
+    },
+    {
+      "family": "Covenant Dependency Atlas",
+      "availability": "ADAPTER_NEEDED",
+      "originalBytesPresent": false,
+      "volume": "39 files / 0.44 MiB"
+    },
+    {
+      "family": "Basket Formula Library",
+      "availability": "ADAPTER_NEEDED",
+      "originalBytesPresent": true,
+      "volume": "100 files / 79.97 MiB"
+    },
+    {
+      "family": "Amendment-chain research",
+      "availability": "ADAPTER_NEEDED",
+      "originalBytesPresent": false,
+      "volume": "66 files / 0.28 MiB"
+    },
+    {
+      "family": "Precedent comparison",
+      "availability": "RESEARCH_ONLY",
+      "originalBytesPresent": false,
+      "volume": "8 files / 0.09 MiB"
+    },
+    {
+      "family": "Rare / novel drafting",
+      "availability": "ADAPTER_NEEDED",
+      "originalBytesPresent": false,
+      "volume": "18 files / 1.87 MiB"
+    },
+    {
+      "family": "EDGAR historical backfill",
+      "availability": "UNAVAILABLE",
+      "originalBytesPresent": false,
+      "volume": "12 files / 0.06 MiB"
+    },
+    {
+      "family": "Golden tests / certification packs",
+      "availability": "READY",
+      "originalBytesPresent": false,
+      "volume": "32 files / 0.34 MiB"
+    },
+    {
+      "family": "Compiler IR / evidence dumps",
+      "availability": "RESEARCH_ONLY",
+      "originalBytesPresent": false,
+      "volume": "large evidence trees under docs/"
+    }
+  ]
+}
