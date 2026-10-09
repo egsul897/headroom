@@ -36,6 +36,8 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
       baskets: item.materialBasketsThresholds ?? [],
       conditions: item.conditions ?? [],
       unresolved: item.unresolvedQuestions ?? [],
+      alternatives: item.alternativeInterpretations ?? item.analysis?.alternativeInterpretations ?? [],
+      assumptions: item.assumptions ?? item.analysis?.assumptions ?? [],
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}`),
@@ -47,6 +49,11 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
       <Card>
         <div className="card-title">AI interpretations — lawyer review</div>
         <div className="card-subtitle">{rulebook.headline}</div>
+        <div className="row-note" style={{ marginTop: 8 }}>
+          Headroom is AI-first: substantive interpretations are generated from your financing documents for your
+          counsel to accept, edit, or reject. External legal verification is not required before analysis appears.
+          Counsel-approved text becomes the controlling workspace reading (subject to later document changes).
+        </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Stage</div>
           <div className="row-value">
@@ -73,6 +80,9 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
           <Link className="button" href={`/${companyId}/capacity`}>
             Capacity
           </Link>
+          <Link className="button" href={`/${companyId}/ask`}>
+            Ask Headroom
+          </Link>
           <Link className="button" href={`/${companyId}/onboarding/financials`}>
             Financial inputs
           </Link>
@@ -88,11 +98,15 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
       <Card>
         <div className="card-title">Review queue</div>
         <div className="card-subtitle">
-          Accept, edit, or reject AI-generated interpretations. Edited plain English becomes the workspace controlling
-          text. Numerical capacity still requires compiler Permission rows.
+          Accept, edit/replace, or reject AI-generated interpretations. Counsel edits become the controlling workspace
+          text for Ask, summaries, and downstream workflows. Numerical capacity still requires a counsel-reviewed
+          executable rulebook and financial inputs — missing numbers stay conditional, never invented.
         </div>
         {candidates.length === 0 ? (
-          <div className="row-note">No interpreted provisions yet — upload and analyze financing documents first.</div>
+          <div className="row-note">
+            No interpreted provisions yet — upload financing documents; AI analysis runs without waiting for external
+            legal verification.
+          </div>
         ) : (
           candidates.slice(0, 50).map((c, i) => (
             <div
@@ -105,7 +119,10 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                 </div>
                 <div className="row-value">
                   {c.decision ? (
-                    <Chip tone={c.decision.decision === "REJECTED" ? "tight" : "pass"}>{c.decision.decision}</Chip>
+                    <Chip tone={c.decision.decision === "REJECTED" ? "tight" : "pass"}>
+                      {c.decision.decision}
+                      {c.decision.version ? ` v${c.decision.version}` : ""}
+                    </Chip>
                   ) : (
                     <Chip tone="idle">AI DRAFT</Chip>
                   )}{" "}
@@ -118,6 +135,16 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
               <div className="row-note" style={{ marginTop: 6 }}>
                 {c.plainEnglish}
               </div>
+              {c.alternatives.slice(0, 2).map((a, j) => (
+                <div key={`alt${j}`} className="row-note">
+                  Alternative: {a}
+                </div>
+              ))}
+              {c.assumptions.slice(0, 2).map((a, j) => (
+                <div key={`as${j}`} className="row-note">
+                  Assumption: {a}
+                </div>
+              ))}
               {c.baskets.slice(0, 3).map((b, j) => (
                 <div key={j} className="row-note">
                   Basket: {b}
@@ -129,21 +156,27 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                 </div>
               ))}
               <div className="row-note">Citation: {c.citation}</div>
+              {c.decision?.note ? <div className="row-note">Prior note: {c.decision.note}</div> : null}
 
               <form action={decide} className="stack" style={{ gap: 8, marginTop: 10 }}>
                 <input type="hidden" name="sourceId" value={c.sourceId} />
                 <input type="hidden" name="sectionRef" value={c.sectionRef} />
                 <input type="hidden" name="category" value={c.category} />
                 <div className="field">
-                  <div className="field-label">Edit interpretation (optional — use with Edit)</div>
+                  <div className="field-label">Edit / replace interpretation (required for Save edit)</div>
                   <div className="field-control">
                     <textarea name="editedPlainEnglish" rows={3} defaultValue={c.plainEnglish} style={{ width: "100%" }} />
                   </div>
                 </div>
                 <div className="field">
-                  <div className="field-label">Reviewer note</div>
+                  <div className="field-label">Reviewer note / legal judgment</div>
                   <div className="field-control">
-                    <input type="text" name="note" placeholder="Optional rationale" style={{ width: "100%" }} />
+                    <input
+                      type="text"
+                      name="note"
+                      placeholder="Optional rationale or amendment precedence judgment"
+                      style={{ width: "100%" }}
+                    />
                   </div>
                 </div>
                 <div className="button-row">
@@ -151,7 +184,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                     Accept
                   </button>
                   <button className="button" type="submit" name="decision" value="EDITED">
-                    Save edit
+                    Save edit / replace
                   </button>
                   <button className="button" type="submit" name="decision" value="REJECTED">
                     Reject

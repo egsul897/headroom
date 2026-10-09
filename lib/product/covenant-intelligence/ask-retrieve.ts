@@ -451,39 +451,46 @@ function composeAnswer(params: {
     "Unresolved:",
     uniqUnresolved.length ? uniqUnresolved.map((u) => `• ${u}`).join("\n") : "• None flagged beyond general discovery limits.",
     "",
-    proposedAmount
-      ? `Capacity conclusion for ${proposedAmount}: NOT DETERMINABLE from discovery summaries alone. Required for a supported yes/no: (1) operative amendment resolution, (2) executable legal rulebook for the selected baskets, (3) approved financial snapshot for any ratio/grower tests, (4) ledger utilization for shared/fixed baskets.`
+      proposedAmount
+      ? `Numerical capacity for ${proposedAmount}: conditional / NOT DETERMINABLE until inputs exist. AI identified the contractual pathways above; required for a supported amount: (1) operative amendment resolution, (2) counsel-reviewed rulebook for selected baskets, (3) financial snapshot matching contractual definitions, (4) ledger utilization for shared/fixed baskets.`
       : "",
     params.intent === "FINANCIAL_INPUTS_CAPACITY"
-      ? "Capacity conclusion: NOT DETERMINABLE until (1) operative amendment resolution, (2) an approved executable rulebook, (3) user-confirmed financial snapshot values that match contractual definitions (GAAP ≠ contract metrics), and (4) ledger utilization where baskets are usage-tracked."
+      ? "AI analysis of permissions/baskets is available for counsel review even without a financial snapshot. Numerical capacity remains conditional until (1) amendment resolution, (2) counsel-reviewed executable rules, (3) user-confirmed financial inputs matching contractual definitions (GAAP ≠ contract metrics), and (4) ledger utilization where usage-tracked."
       : "",
     params.intent === "DEBT_LIEN_CROSS"
       ? "Cross-covenant conclusion: do not treat an Indebtedness basket as a Lien permission. Both regimes must independently support the structure, subject to shared caps and conditions."
       : "",
     params.intent === "RATIO_PERMISSIONS" || params.intent === "SHARED_CAPACITY"
-      ? "Capacity conclusion: NOT DETERMINABLE from discovery alone — ratio tests and shared caps require an executable rulebook, approved financial snapshot, and ledger utilization where applicable."
+      ? "AI identifies ratio/shared-capacity language for counsel review. Numerical results remain conditional on a counsel-reviewed rulebook, financial snapshot, and ledger utilization where applicable — Headroom does not invent missing figures."
       : "",
     params.amendmentNote ? params.amendmentNote : "",
-    "These statements are DISCOVERED_CANDIDATE analyses shared with the covenant-summary store. They do not establish that a transaction is permitted, that capacity exists, or that language is currently operative after amendments.",
+    "These are AI-generated, source-backed interpretations for customer counsel review. They are not a substitute for counsel judgment, do not invent capacity figures, and do not establish that a transaction is permitted until counsel accepts the controlling reading and required inputs exist.",
   ]
     .filter((line) => line !== undefined)
     .join("\n");
 
+  const counselTouched = top.some(
+    (i) => i.reviewerDecision === "ACCEPTED" || i.reviewerDecision === "EDITED",
+  );
+
   return {
     kind: "answered",
-    headline: "Source-backed covenant analysis (not a legal determination)",
+    headline: counselTouched
+      ? "Source-backed covenant analysis (includes counsel-approved interpretations)"
+      : "AI source-backed covenant analysis (for counsel review — not a legal determination)",
     detail,
     citations,
     restrictions: uniqRestrictions,
     permissions: uniqPermissions,
     unresolved: uniqUnresolved,
     limitations: [
-      "Composed from persisted provision analyses — not a second legal engine",
+      "AI-first interpretation composed from persisted provision analyses — counsel reviews and controls the workspace reading",
       "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
       params.researchOnly
         ? "Precedents are not governing authority for any customer agreement"
         : "Workspace-isolated — public corpus language is not substituted for this package",
-      "promotedToLegalTruth remains 0",
+      "Missing financial inputs yield conditional analysis, not invented numbers",
+      "promotedToLegalTruth remains 0 until counsel/compiler promotion",
     ],
     amendmentNote: params.amendmentNote,
     promotedToLegalTruth: 0,
@@ -512,7 +519,12 @@ export function answerFromSummaryItems(params: {
   const intent = classifyIntent(q);
   const tokens = intentTokens(intent, q);
   let scored = params.items
-    .map((item) => ({ ...item, score: scoreItem(item, intent, tokens) }))
+    .map((item) => {
+      let score = scoreItem(item, intent, tokens);
+      // Prefer counsel-accepted / edited interpretations in the workspace.
+      if (item.reviewerDecision === "ACCEPTED" || item.reviewerDecision === "EDITED") score += 4;
+      return { ...item, score };
+    })
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
 
@@ -597,7 +609,23 @@ export async function answerFromCorpus(params: {
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
-    for (const item of summary.items) {
+    const meta =
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : {};
+    const approvals = Array.isArray(meta.reviewerApprovals)
+      ? (meta.reviewerApprovals as import("../customer-intelligence/reviewer-approvals").ReviewerApproval[])
+      : [];
+    const { applyReviewerOverlayToItems } = await import(
+      "../customer-intelligence/reviewer-approvals"
+    );
+    const overlaid = researchOnly
+      ? summary.items
+      : applyReviewerOverlayToItems(
+          summary.items.map((i) => ({ ...i, sourceId: summary.sourceId })),
+          approvals,
+        );
+    for (const item of overlaid) {
       items.push({ ...item, sourceId: summary.sourceId });
     }
   }

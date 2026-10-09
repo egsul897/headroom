@@ -69,13 +69,13 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   const headline = canEvaluateExecutableCapacity
     ? "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone."
     : status === "DISCOVERY_ONLY"
-      ? "Covenant discovery is available; contractual capacity is NOT DETERMINABLE until an executable rulebook and financial inputs exist."
+      ? "AI covenant interpretations are available for counsel review now. Numerical capacity remains conditional until a counsel-reviewed executable rulebook and financial inputs exist — Headroom will not invent figures."
       : status === "NO_FINANCIAL_SNAPSHOT"
-        ? "Financial snapshot missing — capacity cannot be evaluated without inventing inputs."
-        : "No capacity evaluation yet — upload financing documents and complete analysis first.";
+        ? "AI interpretations and baskets are available; financial snapshot missing — numerical capacity cannot be evaluated without inventing inputs. Supply financials or use conditional Ask analysis."
+        : "No capacity evaluation yet — upload financing documents and run AI analysis first (external legal verification is not required to start).";
 
   const guidance =
-    "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. Headroom will not display fabricated remaining capacity. Use Covenants and Ask Headroom for source-backed provision analysis; use Simulate only when the engine has governing configuration.";
+    "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration.";
 
   return {
     companyId,

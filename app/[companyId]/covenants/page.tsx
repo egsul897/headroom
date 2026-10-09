@@ -77,7 +77,8 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
           </Link>
         </div>
         <div className="row-note" style={{ marginTop: 8 }}>
-          DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. Summaries and Ask share the same persisted analyses.
+          AI-first interpretations for counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE
+          capacity. Summaries, Rulebook, and Ask share the same persisted analyses.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Rulebook stage</div>

@@ -15,6 +15,10 @@ import { PostgresDocumentStorageProvider } from "../../document-storage/postgres
 import type { DebtDocumentClass } from "../../knowledge-factory/types";
 import { buildDocumentCovenantSummary } from "../covenant-intelligence/summarize";
 import { analyzeAmendmentPackage } from "./amendment-package";
+import {
+  mergePreservedReviewerDecisions,
+  type ReviewerApproval,
+} from "./reviewer-approvals";
 
 function sha256(buf: Buffer): string {
   return createHash("sha256").update(buf).digest("hex");
@@ -433,6 +437,20 @@ export async function analyzeCustomerDocument(params: {
       relationships,
     });
 
+    // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
+    const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+    const priorMeta =
+      priorRow?.metadata && typeof priorRow.metadata === "object" && !Array.isArray(priorRow.metadata)
+        ? (priorRow.metadata as Record<string, unknown>)
+        : {};
+    const priorApprovals = Array.isArray(priorMeta.reviewerApprovals)
+      ? (priorMeta.reviewerApprovals as ReviewerApproval[])
+      : [];
+    const merged = mergePreservedReviewerDecisions({
+      summary,
+      priorApprovals,
+    });
+
     const metadata = JSON.parse(
       JSON.stringify({
         workspaceScope: "CUSTOMER",
@@ -446,11 +464,15 @@ export async function analyzeCustomerDocument(params: {
           crossReferences: processed.crossReferenceCount,
           processingMs: processed.processingMs,
         },
-        covenantSummary: summary,
+        covenantSummary: merged.summary,
         amendmentPackage: amendment,
         storageProvider: stored.provider,
         processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,
+        reviewerApprovals: priorApprovals,
+        reviewerDecisionHistory: priorMeta.reviewerDecisionHistory ?? [],
+        reviewerReanalysisConflicts: merged.conflicts,
+        aiFirstLawyerReview: true,
       }),
     );
 
