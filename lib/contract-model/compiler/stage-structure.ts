@@ -74,13 +74,34 @@ import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResu
  * probe happened to hit.
  */
 function ciKeyword(word: string): string {
+  // `\s?` between letters tolerates OCR letter-spacing ("S E C T I O N", "A R T I C L E")
+  // while still matching the compact form. Keyword case remains per-letter insensitive;
+  // title-shape classes stay case-sensitive (see doc-comment above).
   return word
     .split("")
     .map((ch) => `[${ch.toLowerCase()}${ch.toUpperCase()}]`)
-    .join("");
+    .join("\\s?");
 }
 const ARTICLE_KEYWORD = ciKeyword("ARTICLE");
 const SECTION_KEYWORD = ciKeyword("Section");
+
+/**
+ * IPV-23 / MUT-18/22 — OCR digit↔letter confusions glued onto a decimal section
+ * number ("7.0l" for "7.01", "4.0l" for "4.01"). Recover the intended label when
+ * every non-digit character is a known confusion; otherwise leave the raw token
+ * unchanged so downstream malformed-label diagnostics still fire.
+ */
+const OCR_SECTION_DIGIT: Readonly<Record<string, string>> = {
+  l: "1", I: "1", "|": "1", O: "0", o: "0", S: "5", s: "5", B: "8", Z: "2", G: "6", q: "9", Q: "9",
+};
+
+export function normalizeOcrSectionNumber(raw: string): string {
+  const trimmed = raw.trim();
+  if (/^\d+(\.\d+)?$/.test(trimmed)) return trimmed;
+  if (!/^[\d.IlOoSsBbZzGgQq|]+$/.test(trimmed)) return trimmed;
+  const mapped = [...trimmed].map((ch) => OCR_SECTION_DIGIT[ch] ?? ch).join("");
+  return /^\d+(\.\d+)?$/.test(mapped) ? mapped : trimmed;
+}
 
 /**
  * Phase 3F.1.6.RX-FINAL finding, surfaced (not introduced) while implementing
@@ -161,10 +182,14 @@ const SECTION_PATTERNS = [
   // real fixtures). Keyword spelling is case-insensitive via `ciKeyword`
   // (see its own doc-comment above `ARTICLE_PATTERNS`) - the title-shape
   // requirement (`[A-Z]` starting the title) stays genuinely case-sensitive.
-  new RegExp(`(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.\\d+)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
-  /^Section\s+(\d+\.\d+)\.?\s*([^\n]*)$/gim,
-  /^§\s?(\d+\.\d+)\.?\s*([^\n]*)$/gim,
-  /^(\d+\.\d+)\s+([A-Z][^\n]*)$/gm,
+  // Number capture allows a trailing OCR-confused letter ("7.0l") so recovery
+  // can restore "7.01" instead of silently minting a truncated "7.0" label (IPV-23).
+  new RegExp(`(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.[\\dA-Za-z]+)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
+  /^Section\s+(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
+  /^§\s?(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
+  // Bare decimal: require a real digit-only major.minor so "7.0l Title" is not
+  // truncated to "7.0"; OCR-garbled bare forms are recovered via the keyword patterns.
+  /^(\d+\.\d+)(?![A-Za-z])\s+([A-Z][^\n]*)$/gm,
 ];
 
 /**
@@ -190,7 +215,7 @@ const SECTION_PATTERNS = [
  */
 const INTEGER_SECTION_PATTERNS = [
   new RegExp(`${SECTION_KEYWORD}\\s+(\\d{1,2})(?!\\.\\d)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
-  /^(?:Section|SECTION)\s+(\d{1,2})(?!\.\d)\.?\s*([^\n]*)$/gim,
+  /^(?:S\s*E\s*C\s*T\s*I\s*O\s*N|Section|SECTION)\s+(\d{1,2})(?!\.\d)\.?\s*([^\n]*)$/gim,
 ];
 
 /**
@@ -767,7 +792,10 @@ function looksLikeNewContentStart(text: string, pos: number): boolean {
   const skipped = after.match(/^\s*/)![0].length;
   const rest = after.slice(skipped, skipped + 20);
   if (rest.length === 0) return true; // end of document/region - trivially self-contained, nothing to bleed into
-  if (/^(?:article|section|§)\b/i.test(rest)) return true; // a recognized heading keyword may legitimately be spelled lowercase (ciKeyword) - never mistaken for an ordinary lowercase prose word
+  // A recognized heading keyword (compact or OCR letter-spaced) starts new content —
+  // never mistaken for ordinary lowercase prose continuation (ciKeyword).
+  if (/^(?:article|section|§)\b/i.test(rest)) return true;
+  if (/^(?:A\s+R\s+T\s+I\s+C\s+L\s+E|S\s+E\s+C\s+T\s+I\s+O\s+N)\b/i.test(rest)) return true;
   return !/[a-z]/.test(rest[0]!);
 }
 
@@ -1159,7 +1187,7 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
     raws.push({ nodeType: "ARTICLE", heading: extractTitleLikeSpan(m[2] ?? ""), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
   }
   for (const m of sectionMatches) {
-    const sectionRef = (m[1] ?? "").trim();
+    const sectionRef = normalizeOcrSectionNumber((m[1] ?? "").trim());
     const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
     raws.push({ nodeType: "SECTION", heading: (m[2] ?? "").trim(), sectionRef, charStart: m.index, parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null });
   }
