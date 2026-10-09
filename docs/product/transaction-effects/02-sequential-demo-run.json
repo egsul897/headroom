@@ -1,0 +1,1003 @@
+{
+  "artifact": "AGENT-4 sequential transaction demonstration",
+  "at": "2026-10-09T22:27:58.394Z",
+  "costUsd": 0,
+  "paidCalls": 0,
+  "mode": "HYPOTHETICAL",
+  "abortedAtStepId": null,
+  "originalLedgerUntouched": true,
+  "utilizationStatus": "RECORDED",
+  "businessTypesCoveredByRecipes": [
+    "DEBT_INCURRENCE",
+    "DEBT_REPAYMENT",
+    "SECURED_BORROWING",
+    "DIVIDEND_PAYMENT",
+    "RESTRICTED_INVESTMENT",
+    "EQUITY_CONTRIBUTION",
+    "INVESTMENT_RETURN",
+    "ASSET_SALE",
+    "REINVESTMENT",
+    "BASKET_RECLASSIFICATION",
+    "AMENDMENT_AFFECTING_CAPACITY",
+    "SEQUENTIAL_TRANSACTIONS"
+  ],
+  "steps": [
+    {
+      "stepId": "1-debt-incurrence",
+      "businessType": "DEBT_INCURRENCE",
+      "recipeOk": true,
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "preStateHash": "1e0202a0d06d1fd9fbcbbd4089c26d317fea151981afa9a7aceed016a0f83395",
+      "postStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
+      "independentPostMatchesSimulation": true,
+      "proposedLedgerUsageIds": [
+        "tx-1-incur::e-incur"
+      ],
+      "preState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": null,
+          "remaining": "500",
+          "honestRemaining": "500",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": null,
+          "remaining": "200",
+          "honestRemaining": "200",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        }
+      ],
+      "postState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": null,
+          "remaining": "200",
+          "honestRemaining": "200",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        }
+      ],
+      "capacityEffects": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "outcome": "SATISFIED",
+          "attempted": {
+            "type": "MONEY",
+            "amount": "100",
+            "currency": "USD"
+          },
+          "available": {
+            "kind": "AMOUNT",
+            "value": {
+              "type": "MONEY",
+              "amount": "500",
+              "currency": "USD",
+              "lineage": {
+                "exprId": "expr-debt-basket",
+                "inputKeys": [],
+                "rawSource": 500
+              }
+            }
+          },
+          "shortfall": null
+        }
+      ],
+      "financialEffects": [
+        {
+          "effectId": "m-debt-up",
+          "metricKey": "total-debt",
+          "state": "APPLIED",
+          "base": {
+            "type": "MONEY",
+            "amount": "1000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          },
+          "result": {
+            "type": "MONEY",
+            "amount": "1100",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          }
+        }
+      ],
+      "ledgerProposed": [
+        {
+          "usageId": "tx-1-incur::e-incur",
+          "amount": {
+            "amount": "100",
+            "currency": "USD"
+          },
+          "kind": "PROPOSED_USAGE",
+          "supersedes": null
+        }
+      ],
+      "ledgerSuperseded": [],
+      "provenance": {
+        "transactionId": "tx-1-incur",
+        "simulationId": "daf5771c40ac8052798e4de5470aec797c1428559eeb616ff1ba80c0ce169e73",
+        "preStateHash": "1e0202a0d06d1fd9fbcbbd4089c26d317fea151981afa9a7aceed016a0f83395",
+        "postStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
+        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "snapshotSetHash": null,
+        "inputViewHash": "8aadd07f01a4c98bfdcc7b6b24c331853ae68170bd6cb5fe26f89f89c1737163",
+        "ledgerPreHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "ledgerPostHash": "477d8b6d8492085f52f4b6e89fbbec91bf8dee4965256e46feee38635d3d7a81",
+        "runtimeVersion": "contract-runtime.v1",
+        "inputContractVersion": "financial-input-contract.v1",
+        "capacityGraphVersion": "capacity-graph.v1",
+        "transactionSimulationVersion": "transaction-simulation.v1",
+        "chain": [
+          {
+            "from": "transaction:tx-1-incur",
+            "to": "selectedPath",
+            "via": "caller-supplied explicit selection"
+          },
+          {
+            "from": "selectedPath",
+            "to": "phase3:rules:debt-basket",
+            "via": "capacity node source identity"
+          },
+          {
+            "from": "phase3:rules",
+            "to": "phase4a:evaluation",
+            "via": "capacity and condition expressions"
+          },
+          {
+            "from": "phase4a:evaluation",
+            "to": "phase4b:snapshots:none",
+            "via": "strict financial input resolution"
+          },
+          {
+            "from": "phase4b:snapshots",
+            "to": "phase4d:overlay:8aadd07f01a4",
+            "via": "explicit pro-forma adjustments"
+          },
+          {
+            "from": "phase4d:overlay",
+            "to": "phase4c:preState:1e0202a0d06d",
+            "via": "capacity state and consumption ledger"
+          },
+          {
+            "from": "phase4c:preState",
+            "to": "phase4d:proposedEffects:1",
+            "via": "explicit transaction effects"
+          },
+          {
+            "from": "phase4d:proposedEffects",
+            "to": "phase4c:postState:c10fd4279916",
+            "via": "re-evaluation over the proposed ledger"
+          }
+        ],
+        "inheritedLimitations": []
+      },
+      "commitPlanExecuted": false
+    },
+    {
+      "stepId": "2-dividend",
+      "businessType": "DIVIDEND_PAYMENT",
+      "recipeOk": true,
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "preStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
+      "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "independentPostMatchesSimulation": true,
+      "proposedLedgerUsageIds": [
+        "tx-2-dividend::e-div"
+      ],
+      "preState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": null,
+          "remaining": "200",
+          "honestRemaining": "200",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        }
+      ],
+      "postState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "capacityEffects": [
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "outcome": "SATISFIED",
+          "attempted": {
+            "type": "MONEY",
+            "amount": "40",
+            "currency": "USD"
+          },
+          "available": {
+            "kind": "AMOUNT",
+            "value": {
+              "type": "MONEY",
+              "amount": "200",
+              "currency": "USD",
+              "lineage": {
+                "exprId": "expr-rp-basket",
+                "inputKeys": [],
+                "rawSource": 200
+              }
+            }
+          },
+          "shortfall": null
+        }
+      ],
+      "financialEffects": [
+        {
+          "effectId": "m-builder-down",
+          "metricKey": "builder-available",
+          "state": "APPLIED",
+          "base": {
+            "type": "MONEY",
+            "amount": "50",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          },
+          "result": {
+            "type": "MONEY",
+            "amount": "10",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          }
+        }
+      ],
+      "ledgerProposed": [
+        {
+          "usageId": "tx-2-dividend::e-div",
+          "amount": {
+            "amount": "40",
+            "currency": "USD"
+          },
+          "kind": "PROPOSED_USAGE",
+          "supersedes": null
+        }
+      ],
+      "ledgerSuperseded": [],
+      "provenance": {
+        "transactionId": "tx-2-dividend",
+        "simulationId": "bad186f2aa7f8404be645b1b67575084a84e521170d89e1e827f0cc2061e2070",
+        "preStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
+        "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "snapshotSetHash": null,
+        "inputViewHash": "0fa328b0dd961cbf164e36e346dddbc0f4770dd4db6ae067a6b160a897efd86b",
+        "ledgerPreHash": "477d8b6d8492085f52f4b6e89fbbec91bf8dee4965256e46feee38635d3d7a81",
+        "ledgerPostHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "runtimeVersion": "contract-runtime.v1",
+        "inputContractVersion": "financial-input-contract.v1",
+        "capacityGraphVersion": "capacity-graph.v1",
+        "transactionSimulationVersion": "transaction-simulation.v1",
+        "chain": [
+          {
+            "from": "transaction:tx-2-dividend",
+            "to": "selectedPath",
+            "via": "caller-supplied explicit selection"
+          },
+          {
+            "from": "selectedPath",
+            "to": "phase3:rules:rp-basket",
+            "via": "capacity node source identity"
+          },
+          {
+            "from": "phase3:rules",
+            "to": "phase4a:evaluation",
+            "via": "capacity and condition expressions"
+          },
+          {
+            "from": "phase4a:evaluation",
+            "to": "phase4b:snapshots:none",
+            "via": "strict financial input resolution"
+          },
+          {
+            "from": "phase4b:snapshots",
+            "to": "phase4d:overlay:0fa328b0dd96",
+            "via": "explicit pro-forma adjustments"
+          },
+          {
+            "from": "phase4d:overlay",
+            "to": "phase4c:preState:c10fd4279916",
+            "via": "capacity state and consumption ledger"
+          },
+          {
+            "from": "phase4c:preState",
+            "to": "phase4d:proposedEffects:1",
+            "via": "explicit transaction effects"
+          },
+          {
+            "from": "phase4d:proposedEffects",
+            "to": "phase4c:postState:59c094146f36",
+            "via": "re-evaluation over the proposed ledger"
+          }
+        ],
+        "inheritedLimitations": []
+      },
+      "commitPlanExecuted": false
+    },
+    {
+      "stepId": "3-equity-contribution",
+      "businessType": "EQUITY_CONTRIBUTION",
+      "recipeOk": true,
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "independentPostMatchesSimulation": true,
+      "proposedLedgerUsageIds": [],
+      "preState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "postState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "capacityEffects": [],
+      "financialEffects": [
+        {
+          "effectId": "m-builder-up",
+          "metricKey": "builder-available",
+          "state": "APPLIED",
+          "base": {
+            "type": "MONEY",
+            "amount": "50",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          },
+          "result": {
+            "type": "MONEY",
+            "amount": "125",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          }
+        },
+        {
+          "effectId": "m-equity",
+          "metricKey": "equity-proceeds",
+          "state": "APPLIED",
+          "base": {
+            "type": "MONEY",
+            "amount": "0",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          },
+          "result": {
+            "type": "MONEY",
+            "amount": "75",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          }
+        }
+      ],
+      "ledgerProposed": [],
+      "ledgerSuperseded": [],
+      "provenance": {
+        "transactionId": "tx-3-equity",
+        "simulationId": "7bf0eb84f95cab9aa1190884b26f66c0d247e74b73a845d90f750905bdd87c68",
+        "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+        "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "snapshotSetHash": null,
+        "inputViewHash": "50d6b0f041ee7b4c0df1b1a8a71239a080e56913956e1f743ea34a1be02e4a12",
+        "ledgerPreHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "ledgerPostHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "runtimeVersion": "contract-runtime.v1",
+        "inputContractVersion": "financial-input-contract.v1",
+        "capacityGraphVersion": "capacity-graph.v1",
+        "transactionSimulationVersion": "transaction-simulation.v1",
+        "chain": [
+          {
+            "from": "transaction:tx-3-equity",
+            "to": "selectedPath",
+            "via": "caller-supplied explicit selection"
+          },
+          {
+            "from": "selectedPath",
+            "to": "phase3:rules:none",
+            "via": "capacity node source identity"
+          },
+          {
+            "from": "phase3:rules",
+            "to": "phase4a:evaluation",
+            "via": "capacity and condition expressions"
+          },
+          {
+            "from": "phase4a:evaluation",
+            "to": "phase4b:snapshots:none",
+            "via": "strict financial input resolution"
+          },
+          {
+            "from": "phase4b:snapshots",
+            "to": "phase4d:overlay:50d6b0f041ee",
+            "via": "explicit pro-forma adjustments"
+          },
+          {
+            "from": "phase4d:overlay",
+            "to": "phase4c:preState:59c094146f36",
+            "via": "capacity state and consumption ledger"
+          },
+          {
+            "from": "phase4c:preState",
+            "to": "phase4d:proposedEffects:0",
+            "via": "explicit transaction effects"
+          },
+          {
+            "from": "phase4d:proposedEffects",
+            "to": "phase4c:postState:59c094146f36",
+            "via": "re-evaluation over the proposed ledger"
+          }
+        ],
+        "inheritedLimitations": []
+      },
+      "commitPlanExecuted": false
+    },
+    {
+      "stepId": "4-restricted-investment",
+      "businessType": "RESTRICTED_INVESTMENT",
+      "recipeOk": true,
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "postStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
+      "independentPostMatchesSimulation": true,
+      "proposedLedgerUsageIds": [
+        "tx-4-invest::e-invest"
+      ],
+      "preState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": null,
+          "remaining": "150",
+          "honestRemaining": "150",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "postState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": "50",
+          "remaining": "100",
+          "honestRemaining": "100",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-4-invest::e-invest"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "capacityEffects": [
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "outcome": "SATISFIED",
+          "attempted": {
+            "type": "MONEY",
+            "amount": "50",
+            "currency": "USD"
+          },
+          "available": {
+            "kind": "AMOUNT",
+            "value": {
+              "type": "MONEY",
+              "amount": "150",
+              "currency": "USD",
+              "lineage": {
+                "exprId": "expr-invest-basket",
+                "inputKeys": [],
+                "rawSource": 150
+              }
+            }
+          },
+          "shortfall": null
+        }
+      ],
+      "financialEffects": [],
+      "ledgerProposed": [
+        {
+          "usageId": "tx-4-invest::e-invest",
+          "amount": {
+            "amount": "50",
+            "currency": "USD"
+          },
+          "kind": "PROPOSED_USAGE",
+          "supersedes": null
+        }
+      ],
+      "ledgerSuperseded": [],
+      "provenance": {
+        "transactionId": "tx-4-invest",
+        "simulationId": "6cba67a12a0f4acff6e81fe8cdfde1135417cfe771672336df4a2187f023cea7",
+        "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+        "postStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
+        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "snapshotSetHash": null,
+        "inputViewHash": "a26808e4be0a698b64f54a110af72f87c33b50738d6e616e81863f45cd94a988",
+        "ledgerPreHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "ledgerPostHash": "6abee25dfb14b6bc61356a775f4a034791f0952884c30a5952da36ebef65065a",
+        "runtimeVersion": "contract-runtime.v1",
+        "inputContractVersion": "financial-input-contract.v1",
+        "capacityGraphVersion": "capacity-graph.v1",
+        "transactionSimulationVersion": "transaction-simulation.v1",
+        "chain": [
+          {
+            "from": "transaction:tx-4-invest",
+            "to": "selectedPath",
+            "via": "caller-supplied explicit selection"
+          },
+          {
+            "from": "selectedPath",
+            "to": "phase3:rules:invest-basket",
+            "via": "capacity node source identity"
+          },
+          {
+            "from": "phase3:rules",
+            "to": "phase4a:evaluation",
+            "via": "capacity and condition expressions"
+          },
+          {
+            "from": "phase4a:evaluation",
+            "to": "phase4b:snapshots:none",
+            "via": "strict financial input resolution"
+          },
+          {
+            "from": "phase4b:snapshots",
+            "to": "phase4d:overlay:a26808e4be0a",
+            "via": "explicit pro-forma adjustments"
+          },
+          {
+            "from": "phase4d:overlay",
+            "to": "phase4c:preState:59c094146f36",
+            "via": "capacity state and consumption ledger"
+          },
+          {
+            "from": "phase4c:preState",
+            "to": "phase4d:proposedEffects:1",
+            "via": "explicit transaction effects"
+          },
+          {
+            "from": "phase4d:proposedEffects",
+            "to": "phase4c:postState:43e4bfa6a631",
+            "via": "re-evaluation over the proposed ledger"
+          }
+        ],
+        "inheritedLimitations": []
+      },
+      "commitPlanExecuted": false
+    },
+    {
+      "stepId": "5-debt-repayment",
+      "businessType": "DEBT_REPAYMENT",
+      "recipeOk": true,
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "preStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
+      "postStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
+      "independentPostMatchesSimulation": true,
+      "proposedLedgerUsageIds": [
+        "tx-5-repay::e-repay"
+      ],
+      "preState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": "100",
+          "remaining": "400",
+          "honestRemaining": "400",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-1-incur::e-incur"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": "50",
+          "remaining": "100",
+          "honestRemaining": "100",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-4-invest::e-invest"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "postState": [
+        {
+          "capacityNodeId": "capacity:rule:debt-basket",
+          "ruleId": "debt-basket",
+          "usage": null,
+          "remaining": "500",
+          "honestRemaining": "500",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": []
+        },
+        {
+          "capacityNodeId": "capacity:rule:invest-basket",
+          "ruleId": "invest-basket",
+          "usage": "50",
+          "remaining": "100",
+          "honestRemaining": "100",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-4-invest::e-invest"
+          ]
+        },
+        {
+          "capacityNodeId": "capacity:rule:rp-basket",
+          "ruleId": "rp-basket",
+          "usage": "40",
+          "remaining": "160",
+          "honestRemaining": "160",
+          "remainingKind": "AMOUNT",
+          "honestRemainingKind": "AMOUNT",
+          "appliedUsageIds": [
+            "tx-2-dividend::e-div"
+          ]
+        }
+      ],
+      "capacityEffects": [],
+      "financialEffects": [
+        {
+          "effectId": "m-debt-down",
+          "metricKey": "total-debt",
+          "state": "APPLIED",
+          "base": {
+            "type": "MONEY",
+            "amount": "1000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          },
+          "result": {
+            "type": "MONEY",
+            "amount": "900",
+            "currency": "USD",
+            "lineage": {
+              "exprId": null,
+              "inputKeys": []
+            }
+          }
+        }
+      ],
+      "ledgerProposed": [
+        {
+          "usageId": "tx-5-repay::e-repay",
+          "amount": {
+            "amount": "100",
+            "currency": "USD"
+          },
+          "kind": "SUPERSEDED_USAGE",
+          "supersedes": "tx-1-incur::e-incur"
+        }
+      ],
+      "ledgerSuperseded": [
+        {
+          "originalUsageId": "tx-1-incur::e-incur",
+          "proposedStatus": "SUPERSEDED",
+          "supersededBy": "tx-5-repay::e-repay"
+        }
+      ],
+      "provenance": {
+        "transactionId": "tx-5-repay",
+        "simulationId": "6f73fc193deeaa0e747300e1985f7b206d9be6888cfdceb0c064bb84cb83d2fb",
+        "preStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
+        "postStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
+        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "snapshotSetHash": null,
+        "inputViewHash": "0d422922ec2897e1cbca7208b5e630460c46c096539e646189894c06dd404f25",
+        "ledgerPreHash": "6abee25dfb14b6bc61356a775f4a034791f0952884c30a5952da36ebef65065a",
+        "ledgerPostHash": "c29e2528bd9f89ce7a9513d54efb78c9dd7ddfe6f10e895ec3d516c6ac484774",
+        "runtimeVersion": "contract-runtime.v1",
+        "inputContractVersion": "financial-input-contract.v1",
+        "capacityGraphVersion": "capacity-graph.v1",
+        "transactionSimulationVersion": "transaction-simulation.v1",
+        "chain": [
+          {
+            "from": "transaction:tx-5-repay",
+            "to": "selectedPath",
+            "via": "caller-supplied explicit selection"
+          },
+          {
+            "from": "selectedPath",
+            "to": "phase3:rules:none",
+            "via": "capacity node source identity"
+          },
+          {
+            "from": "phase3:rules",
+            "to": "phase4a:evaluation",
+            "via": "capacity and condition expressions"
+          },
+          {
+            "from": "phase4a:evaluation",
+            "to": "phase4b:snapshots:none",
+            "via": "strict financial input resolution"
+          },
+          {
+            "from": "phase4b:snapshots",
+            "to": "phase4d:overlay:0d422922ec28",
+            "via": "explicit pro-forma adjustments"
+          },
+          {
+            "from": "phase4d:overlay",
+            "to": "phase4c:preState:43e4bfa6a631",
+            "via": "capacity state and consumption ledger"
+          },
+          {
+            "from": "phase4c:preState",
+            "to": "phase4d:proposedEffects:1",
+            "via": "explicit transaction effects"
+          },
+          {
+            "from": "phase4d:proposedEffects",
+            "to": "phase4c:postState:7240380198b8",
+            "via": "re-evaluation over the proposed ledger"
+          }
+        ],
+        "inheritedLimitations": []
+      },
+      "commitPlanExecuted": false
+    }
+  ],
+  "finalStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
+  "notes": [
+    "Phase 4D simulateTransaction is pure; commit is separate and opt-in.",
+    "Recipe category/label are metadata only.",
+    "initialUtilization=CONFIRMED_EMPTY"
+  ]
+}
