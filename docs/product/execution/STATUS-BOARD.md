@@ -60,10 +60,10 @@ npm run kf:consolidation-dry-run → SKIP_MISSING_BYTES×29 (table absent); meta
 
 **A2 STOPPED.** Redirect to Phase 3 covenant intelligence (see `PHASE3-PIVOT.md`):
 
-1. Close residual **IPV-04** (amended `Default` context + section CERTIFIED REVIEW on `c-amendment-supersession`)  
-2. Keep CRITICAL_FALSE_PERMISSION at 0 on authentic-agreement acceptance  
-3. Produce authentic CERTIFIED executable provisions (currently 0 VerifiedExecutionPackages)  
-4. Wire those into Phase 4E + Ask Headroom — no dashboard expansion, no new storage systems  
+1. IPV-04 / IPV-15 / IPV-16 / IPV-19 closed on PR #197 — keep CFP at 0 on `run-all`  
+2. Produce authentic CERTIFIED executable provisions (VerifiedExecutionPackage)  
+3. Wire those into Phase 4E + Ask Headroom — no dashboard expansion, no new storage systems  
+4. Optional: IPV-18 junior-debt family; safe override-text derivation (IPV-16 residual)  
 
 ## Legal posture
 

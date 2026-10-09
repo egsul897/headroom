@@ -226,6 +226,14 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
       // (last authoritative text preserved, never RESOLVED) is the fail-closed outcome, even though the expected superseding text is
       // not derived; the base node's CURRENT_OPERATIVE supersession verdict is then an evidence gap, not a certified false permission.
       const attachedUnresolved = !!provision && provision.status === "OPERATIVE_STATE_REVIEW_REQUIRED" && unresolvedUpstream.some((x) => x.target.targetSectionRef === e.sectionRef);
+      // IPV-16 / INV-16b: an unclassified override that stays attached with last
+      // authoritative text preserved is the intended fail-closed outcome. Do not
+      // keep failing the SUPERSEDED/$new-cap row — that would demand inventing
+      // override capacity the detector deliberately refuses to certify.
+      if (attachedUnresolved && e.status === "SUPERSEDED" && e.supersededBy) {
+        L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `fail-closed override attached (${e.supersededBy}); provision REVIEW_REQUIRED with last authoritative text preserved; superseding capacity not derived (${detail})`);
+        continue;
+      }
       const falsePermission = !attachedUnresolved && e.status !== "CURRENT" && (problems.some((p) => p.includes("still reads") || p.includes("superseded") || p.includes("CURRENT_OPERATIVE")));
       const failClosed = attachedUnresolved || !stateClaimsResolved || problems.every((p) => p.includes("null") || p.includes("CONFLICTED") || p.includes("UNKNOWN") || p.includes("REVIEW"));
       const upstreamNote = unresolvedUpstream.length ? ` | upstream: ${unresolvedUpstream.map((x) => `${x.operation} ${x.status}: ${x.unresolvedReason ?? ""}`).join("; ")} while instrument state is ${state.status} with ${state.unattachedEffects.length} unattached` : "";

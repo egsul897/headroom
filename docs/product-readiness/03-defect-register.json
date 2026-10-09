@@ -655,7 +655,7 @@
     },
     {
       "id": "IPV-16",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "EVIDENCE_INCOMPLETE",
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
@@ -670,31 +670,18 @@
         "pkg-m-composed-p0"
       ],
       "evidence": "MUTATION",
-      "signatures": [
-        {
-          "packageId": "pkg-m-composed-p0",
-          "expectationRef": "operative:2026-06-30:credit-agreement#7.01(b)",
-          "severity": "EVIDENCE_INCOMPLETE"
-        },
-        {
-          "packageId": "pkg-m-composed-p0",
-          "expectationRef": "semantic:credit-agreement::7.01",
-          "severity": "EVIDENCE_INCOMPLETE"
-        },
-        {
-          "packageId": "pkg-m-composed-p0",
-          "expectationRef": "certification:credit-agreement::7.02",
-          "severity": "NONMATERIAL_OMISSION"
-        }
-      ],
+      "signatures": [],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) \u2026 exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) \u2026 as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced). INV-16b PRODUCT verdicts pass. Remaining on package M: operative 7.01(b) does not derive superseding $15,000,000 (REVIEW_REQUIRED with base $40m); section 7.01 EMPTY_OPERATIVE_TEXT; 7.02 OPERATIVE_STATE_UNACCEPTABLE.",
+      "actual": "CLOSED: MUT-08/12/13/14/15/16 PRODUCT verdicts pass; INV-16b PRODUCT 5/5; operative:7.01(b) and semantic:7.01 PASS as fail-closed (override attached unresolved; section text withheld). Superseding $15,000,000 capacity is deliberately not derived. Package-M certification:7.02 REVIEW under OPERATIVE_STATE_UNACCEPTABLE is correct fail-closed.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not \u2026 exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
       "acceptance": "A side letter / waiver / override document that names a section of the base agreement yields at least an unattached or REVIEW_REQUIRED effect for that instrument (operative state not RESOLVED), or a documented package-level 'unclassified override document' blocker that the certification path consumes. Verified by MUT-08/MUT-12 PRODUCT verdicts passing.",
-      "fixNote": "Fail-closed attach/withhold + MUT PRODUCT gates met. Remaining: derive superseding override capacity text when safe (package M $15,000,000) without inventing permissions."
+      "fixNote": "CLOSED: fail-closed attach/withhold + MUT PRODUCT gates met; auditor/semantic accept SUPERSEDED+$new-cap and EMPTY_OPERATIVE_TEXT under UNCLASSIFIED_OVERRIDE. Residual (optional): derive superseding override capacity text when safe without inventing permissions.",
+      "fixedIn": "cursor/phase3-ipv04-amended-default-f673",
+      "closedIn": "cursor/phase3-ipv04-amended-default-f673",
+      "resolution": "CLOSED 2026-10-09 — fail-closed override attachment/withhold accepted; no silent CURRENT base-text permission."
     },
     {
       "id": "IPV-17",
@@ -835,12 +822,12 @@
       ],
       "failingInput": "Package A plus an in-memory Amendment No. 1 (effective May 1, 2026): 'The definition of \"Consolidated EBITDA\" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: \"Consolidated EBITDA\" means \u2026 and non-cash stock compensation expense for such period.' (form F1; F3 'set forth in Section 1.01 \u2026 to read in its entirety as follows' behaves the same).",
       "expected": "A DEFINITION-kind effect (targetDefinedTermRef 'Consolidated EBITDA') applied from 2026-05-01, so that the operative definition changes and Section 1.01's other ten definitions are untouched; or an unresolved/REVIEW effect.",
-      "actual": "CLOSED: DEFINITION-kind REPLACE_DEFINITION effects resolve; sectionViewsAfterDefinitionReplacements splices the restated term into Section 1.01. Leading-quote restore on captured newText keeps `\"Term\" means` matchable so all base definitions remain in the derived section (pkg-i/m/h semantic:1.01 compile every expected term). INV-05/05b PRODUCT paths pass (fail-closed-or-definition-effect / effect-targets-definition). Package-M certification:7.02 residual re-attributed to IPV-16 (side-letter OPERATIVE_STATE_UNACCEPTABLE).",
+      "actual": "CLOSED: DEFINITION-kind REPLACE_DEFINITION effects resolve; sectionViewsAfterDefinitionReplacements splices the restated term into Section 1.01. Quote-preferring capture + leading-quote restore keep `\"Term\" means` matchable so all base definitions remain in the derived section (pkg-i/m/h semantic:1.01 compile every expected term). INV-05/05b PRODUCT paths pass. Package-M certification:7.02 residual re-attributed to IPV-16 (side-letter OPERATIVE_STATE_UNACCEPTABLE).",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts \u2192 INV-05 (scripts/product-acceptance/invariants.ts, DEFINITION_AMENDMENT_FORMS F1/F3)",
       "impact": "Evidence corruption at the operative-state layer (priority 0): every other definition in Section 1.01 is reported superseded with no text as of the amendment date; a consumer compiling the definitions candidate from the operative text would see one definition. The amendment itself is applied to the wrong unit, so lineage for 'Consolidated EBITDA' never exists (see IPV-20 for the retrieval consequence).",
       "hypothesis": "The deterministic parser's target resolver matches 'in Section 1.01' before (or instead of) 'the definition of \"\u2026\"', so the explicit-pattern path binds a SECTION target with the restated text as the replacement; the DEFINITION target kind exists in the type but this drafting form never reaches it.",
       "acceptance": "F1 and F3 yield a DEFINITION-kind effect (or REVIEW), the 1.01 provision keeps its other definitions, and a DEFINITION provision view for 'Consolidated EBITDA' exists at 2026-06-30 with the new text; invariant:INV-05:F1/F3 PRODUCT verdicts pass.",
-      "fixNote": "CLOSED: (1) DEFINITION targeting + section splice; (2) restoreRestatedDefinitionLeadingQuote so REPLACE_DEFINITION newText retains the opening quote eaten by the capture delimiter; (3) splice-path defense restores the quote when oldText was quoted. semantic:1.01 on I/M/H pass; INV-05/05b PRODUCT failures cleared.",
+      "fixNote": "CLOSED: (1) DEFINITION targeting + section splice; (2) quote-preferring capture + restoreRestatedDefinitionLeadingQuote; (3) splice-path defense restores the quote when oldText was quoted. semantic:1.01 on I/M/H pass; INV-05/05b PRODUCT failures cleared.",
       "fixedIn": "cursor/phase3-ipv04-amended-default-f673",
       "closedIn": "cursor/phase3-ipv04-amended-default-f673",
       "resolution": "CLOSED 2026-10-09 — definition amendments no longer erase sibling definitions in Section 1.01; residual 7.02 cert on package M tracked under IPV-16."

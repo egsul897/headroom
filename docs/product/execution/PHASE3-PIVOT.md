@@ -27,21 +27,27 @@ Package `j-restricted-payments-builder` `certification:credit-agreement::7.08` n
 - Nested undefined-term scan recognizes IPV-09 plural surface forms (`Restricted Payments` → `Restricted Payment`) and keeps administrative denylist phrases (`Closing Date`) at LOW so the 7.08 bundle can be SUFFICIENT.
 - IPV-10 preserved: `7.06(c)` stays REVIEW_REQUIRED for undefined Consolidated EBITDA / Consolidated Total Debt.
 
+## IPV-16 — CLOSED
+
+Unclassified side-letter / override fail-closed path accepted:
+
+- MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced).
+- INV-16b PRODUCT 5/5; clause and parent-section operative text withheld.
+- `operative:7.01(b)` and `semantic:credit-agreement::7.01` PASS as fail-closed (no invented `$15,000,000`).
+- Package-M `certification:7.02` REVIEW under `OPERATIVE_STATE_UNACCEPTABLE` is correct fail-closed.
+- Residual (optional): derive superseding override text when a safe extractor exists.
+
 ## IPV-19 — CLOSED
 
-Definition amendments target DEFINITION (not whole Section 1.01). Captured restatement text restores the leading `"` so section splice keeps `"Term" means` matchable; pkg-i/m/h `semantic:*::1.01` compile every expected term. INV-05/05b PRODUCT failures cleared.
+Definition amendments target DEFINITION (not whole Section 1.01). Quote-preferring capture + leading-`"` restore keep `"Term" means` matchable; pkg-i/m/h `semantic:*::1.01` compile every expected term. INV-05/05b PRODUCT failures cleared.
 
 Also: inbound override retrieval for Article/section `notwithstanding` caps (INV-04 / 9.15 on package I).
 
-## IPV-16 — fail-closed met; override text open
-
-MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced). INV-16b PRODUCT verdicts pass. Remaining package-M residuals: derive superseding $15,000,000 override text; clear `semantic:7.01` EMPTY_OPERATIVE_TEXT and `certification:7.02` OPERATIVE_STATE_UNACCEPTABLE.
-
 ## Queue (existing Phase 3 / legal excellence)
 
-1. Finish **IPV-16** package-M override-text derivation (no invented permissions).
-2. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
-3. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
-4. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
+1. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
+2. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
+3. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
+4. Optional later: derive superseding text for unclassified overrides; junior-debt family (IPV-18).
 
 Primary work surface: PR #197 — not new storage.
