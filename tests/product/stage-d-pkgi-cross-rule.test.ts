@@ -35,7 +35,12 @@ describe("Stage D companion-REQUIRES discharge", () => {
     const lien = pkg.rules.find((r) => r.sourceSectionRef === "7.02(b)")!;
     const unlimited = {
       ...lien,
-      capacityExpression: { kind: "UNLIMITED_CAPACITY" as const, citation: "x", excerpt: "x", inventoryItemIds: [] },
+      capacityExpression: {
+        kind: "UNLIMITED_CAPACITY" as const,
+        type: "CAPACITY" as const,
+        gatedBy: null,
+        inventoryItemIds: [] as string[],
+      },
     };
     expect(isCompanionRequiresDischargeable(unlimited, pkg.rules)).toBe(false);
   });
