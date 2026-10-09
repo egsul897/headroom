@@ -259,8 +259,13 @@ describe("entity-scope guard - frozen blocker replay (test 7; zero-cost, no mode
     expect(byId.get("ir-rule:b21ac832418c33bcf91d0625")!.sufficiency).toBe("PARTIAL");
     // and nothing anywhere in the transformed IR carries an UNDERINCLUSIVE/UNRECOGNIZED status with a surviving scope
     expect(after.filter((r) => ["UNDERINCLUSIVE_VS_SOURCE", "UNRECOGNIZED_TAG"].includes(r.entityScopeAudit!.status) && r.entityScope.length > 0)).toEqual([]);
-    // the guard never widens: no rule gained a tag it did not have
-    for (const r of after) expect(r.entityScope.every((t) => frozen.rules.find((f) => f.ruleId === r.ruleId)!.entityScope.includes(t))).toBe(true);
+    // the guard never widens a non-empty under-inclusive submission by guess. Empty→SOURCE_SCOPE_DERIVED
+    // (model omitted scope; source establishes it) is allowed and is not a widening of a false claim.
+    for (const r of after) {
+      const before = frozen.rules.find((f) => f.ruleId === r.ruleId)!;
+      if (before.entityScope.length === 0) continue;
+      expect(r.entityScope.every((t) => before.entityScope.includes(t)), r.ruleId).toBe(true);
+    }
   });
 
   it("the replay is deterministic and idempotent", () => {

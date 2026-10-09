@@ -192,7 +192,7 @@ describe("§35-§42 the frozen live submission re-normalized with the governing 
   const r = after.rule;
   it("F2 entity: BORROWER + ANY_SUBSIDIARY from the governing source outranks the model's unrecognized 'Restricted Subsidiary'; the raw tag and the discrepancy are preserved", () => {
     expect(r.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
-    expect(r.entityScopeAudit).toMatchObject({ guardVersion: "entity-scope-consistency-guard.v3", status: "SOURCE_SCOPE_DERIVED", safeToRely: true, precedence: "GOVERNING_SCOPE_SOURCE" });
+    expect(r.entityScopeAudit).toMatchObject({ guardVersion: "entity-scope-consistency-guard.v4", status: "SOURCE_SCOPE_DERIVED", safeToRely: true, precedence: "GOVERNING_SCOPE_SOURCE" });
     expect(r.entityScopeAudit!.witness.decidedBy).toBe("GOVERNING_SCOPE");
     expect(r.entityScopeAudit!.witness.governingScope).toMatchObject({ derivedScope: ["BORROWER", "ANY_SUBSIDIARY"], basisSectionRef: "article-group:7", basisRole: "GOVERNING_SCOPE", ancestorDistance: 2 });
     expect(r.entityScopeAudit!.rawEmitted.entityScope).toEqual(["Parent Borrower", "Restricted Subsidiary"]);

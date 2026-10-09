@@ -61,7 +61,8 @@
     "product:capacity-loop-exercises": "tsx scripts/product/run-capacity-loop-exercises.ts",
     "product:multipath-exercises": "tsx scripts/product/run-multipath-exercises.ts",
     "test:knowledge-factory": "vitest run tests/knowledge-factory",
-    "test:product": "vitest run tests/product tests/home-overview-empty.test.tsx"
+    "test:product": "vitest run tests/product tests/home-overview-empty.test.tsx",
+    "test:legal-excellence": "vitest run tests/product/legal-excellence.test.ts tests/product/substantive-covenant-intelligence.test.ts tests/contract-model/entity-scope-guard.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
