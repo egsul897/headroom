@@ -598,11 +598,26 @@
           "packageId": "pkg-b-multi-document",
           "expectationRef": "certification:indenture::4.09(c)@clause",
           "severity": "NONMATERIAL_OMISSION"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "operative-text:indenture::4.09",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "operative-text:indenture::4.09(c)@clause",
+          "severity": "WRONG_OPERATIVE_SOURCE"
+        },
+        {
+          "packageId": "pkg-b-multi-document",
+          "expectationRef": "semantic:B-IND-4.09(c)",
+          "severity": "SOURCE_PROVENANCE_FAILURE"
         }
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
       "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed).",
+      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed). Package B indenture 4.09: section/clause operative text still carries superseded $50,000,000 (WRONG_OPERATIVE_SOURCE); B-IND-4.09(c) provenance excerpt null.",
       "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
       "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",
@@ -657,78 +672,6 @@
       "evidence": "MUTATION",
       "signatures": [
         {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "mutation:MUT-12:instrument-status:2026-06-30",
-          "severity": "CRITICAL_FALSE_PERMISSION",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "mutation:MUT-12:effects:side-letter",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "mutation:MUT-08:instrument-status:2026-06-30",
-          "severity": "UNSUPPORTED_AS_COMPLETE",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "mutation:MUT-08:effects:side-letter",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-a-basic-credit-agreement",
-          "expectationRef": "mutation:MUT-13:instrument-status:2026-06-30",
-          "severity": "CRITICAL_FALSE_PERMISSION",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-a-basic-credit-agreement",
-          "expectationRef": "mutation:MUT-13:effects:side-letter",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-c-amendment-supersession",
-          "expectationRef": "mutation:MUT-14:instrument-status:2026-06-30",
-          "severity": "CRITICAL_FALSE_PERMISSION",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-c-amendment-supersession",
-          "expectationRef": "mutation:MUT-14:effects:side-letter",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-h-unseen-composition",
-          "expectationRef": "mutation:MUT-15:instrument-status:2027-03-31",
-          "severity": "CRITICAL_FALSE_PERMISSION",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-h-unseen-composition",
-          "expectationRef": "mutation:MUT-15:effects:side-letter",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "mutation:MUT-16:instrument-status:2026-12-31",
-          "severity": "UNSUPPORTED_AS_COMPLETE",
-          "evidence": "MUTATION"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "mutation:MUT-16:effects:consent",
-          "severity": "MISSING_DEPENDENCY",
-          "evidence": "MUTATION"
-        },
-        {
           "packageId": "pkg-m-composed-p0",
           "expectationRef": "operative:2026-06-30:credit-agreement#7.01(b)",
           "severity": "EVIDENCE_INCOMPLETE"
@@ -746,12 +689,12 @@
       ],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) \u2026 exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) \u2026 as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "INV-16b PRODUCT verdicts pass (override attaches/withholds; section with overridden clause not certified). Remaining: operative state does not derive the superseding $15,000,000 text (still REVIEW_REQUIRED with base $40m); package M 7.01 EMPTY_OPERATIVE_TEXT and 7.02 OPERATIVE_STATE_UNACCEPTABLE; MUT-* side-letter product verdicts still open.",
+      "actual": "MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced). INV-16b PRODUCT verdicts pass. Remaining on package M: operative 7.01(b) does not derive superseding $15,000,000 (REVIEW_REQUIRED with base $40m); section 7.01 EMPTY_OPERATIVE_TEXT; 7.02 OPERATIVE_STATE_UNACCEPTABLE.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not \u2026 exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
       "acceptance": "A side letter / waiver / override document that names a section of the base agreement yields at least an unattached or REVIEW_REQUIRED effect for that instrument (operative state not RESOLVED), or a documented package-level 'unclassified override document' blocker that the certification path consumes. Verified by MUT-08/MUT-12 PRODUCT verdicts passing.",
-      "fixNote": "INV-16b closed (fail-closed attach/withhold). Remaining: derive superseding override text when safe; clear MUT-* and package-M operative/cert residuals."
+      "fixNote": "Fail-closed attach/withhold + MUT PRODUCT gates met. Remaining: derive superseding override capacity text when safe (package M $15,000,000) without inventing permissions."
     },
     {
       "id": "IPV-17",

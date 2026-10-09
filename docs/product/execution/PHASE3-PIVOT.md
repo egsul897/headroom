@@ -33,9 +33,13 @@ Definition amendments target DEFINITION (not whole Section 1.01). Captured resta
 
 Also: inbound override retrieval for Article/section `notwithstanding` caps (INV-04 / 9.15 on package I).
 
+## IPV-16 — fail-closed met; override text open
+
+MUT-08/12/13/14/15/16 PRODUCT verdicts pass (instrument not RESOLVED; effect surfaced). INV-16b PRODUCT verdicts pass. Remaining package-M residuals: derive superseding $15,000,000 override text; clear `semantic:7.01` EMPTY_OPERATIVE_TEXT and `certification:7.02` OPERATIVE_STATE_UNACCEPTABLE.
+
 ## Queue (existing Phase 3 / legal excellence)
 
-1. Finish remaining OPEN residual: **IPV-16** (side-letter override text derivation + MUT-* / package-M operative residuals).
+1. Finish **IPV-16** package-M override-text derivation (no invented permissions).
 2. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
 3. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
 4. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
