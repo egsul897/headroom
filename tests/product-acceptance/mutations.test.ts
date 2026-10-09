@@ -47,7 +47,7 @@ describe("HARNESS verdicts: expectation deltas and kill predictions", () => {
   it("mutants that change legal content are killed by the unchanged manifest; only the equivalent and the declared-gap mutants survive", () => {
     const survivors = MUTATIONS.filter((m) => obs.get(m.id)!.kill.verdict === "SURVIVED").map((m) => m.id).sort();
     expect(survivors).toEqual(MUTATIONS.filter((m) => m.expect.survival !== "KILLED").map((m) => m.id).sort());
-    expect(survivors).toEqual(["MUT-08", "MUT-09", "MUT-12", "MUT-13", "MUT-15", "MUT-16"]); // MUT-14 incidental CONTEXT kill (Default on withheld clause); MUT-02 killed by text-hash pinning
+    expect(survivors).toEqual(["MUT-09", "MUT-15", "MUT-16"]); // side-letter capacity derivation kills MUT-08/12/13/14 at OPERATIVE_STATE; MUT-15/16 remain declared GAP; MUT-09 equivalent
   });
   it("a killed mutant never makes a baseline failure vanish for free (no expectation was weakened by the mutation)", () => {
     for (const m of MUTATIONS) { const o = obs.get(m.id)!; if (o.kill.verdict === "KILLED") expect(o.kill.vanishedFailures.filter((r) => !r.startsWith("context:")), `${m.id} vanished: ${o.kill.vanishedFailures.join(", ")}`).toEqual([]); }
