@@ -1,0 +1,497 @@
+{
+  "schemaVersion": "intelligence-factory.metadata-repair-batch.v1",
+  "generatedAt": "2026-10-09T22:32:03.710Z",
+  "authorizationRequired": "KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE",
+  "applied": false,
+  "neonMutations": 0,
+  "identityBackfill": {
+    "proposed": 675,
+    "sampleOperations": [
+      {
+        "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:ae9723d33f5362ba5f9dd23a",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:49f9244ba9c19005571ac107",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:ad860ca47b392c95b66090d5",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:68aec7a6d01e0498c3e1ced0",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:0f66fd796d50500d6f694e6d",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:7ebf907b0f2af8a2c85f3ba7",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:87adab37d9592e6bc0d3ec57",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:32cec442e3f7174ba049fcb4",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:chef-unknown-ex_975043",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:310ffaf648a8821206f81337",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:6b9697779f81c7f430f6d9c9",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:515066290a989acdca104e97",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:4f08b4cb014635dee09a759b",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:193d98d65e5a11c4cb27cd58",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:d63a4cd0fb45c1c9036e8b65",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:784dc6fdf9ec1fde910cdc18",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:fd559fd7654e0b8608cbcc44",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:26bd87f7ce888c60aa80219e",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:66fffbbb5f5c22e887ad78e5",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:98d6269f9b89963018e01111",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:7187b22bfb45f8886bc2984a",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:b35aa381ee2b9553932b284d",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:f1c7d4f692ddd77b6e23a1f5",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:4ca23e030783efdcb8217eca",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:f2ea507ae99b5021dc90d799",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:eb6c208fcdd6328f30cb035d",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:51ce9110c3e8fc6347474c87",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:f6b8f4277474ad164853e4d2",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:a8811f76e9def04ecb8edbd9",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:8b29f2e2650a38ed745d0def",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000063296-23-000103:ex32amendedandrestatedbyla.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:b38a2620349d4fc3297b121f",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:a04dc7bf9eccb635ec128b5a",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:b7ceed410039116f1989b1f7",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:6f00bce48cb7b85a3a80c103",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:f0d65a43a46d22761056bfb2",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:2c938d4d2f493d173813786a",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:346612273a086e23ff0af9ca",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      },
+      {
+        "sourceId": "ehb:9894ff1967340fee44815670",
+        "op": "SET_INSTRUMENT_IDENTITY",
+        "before": null,
+        "after": "inst:c66add63232f45b8ee12152d",
+        "basis": "deterministic computeInstrumentIdentity(title,class,cik)"
+      }
+    ],
+    "note": "Full operations regenerated via npm run kf:prepare-metadata-repair"
+  },
+  "unknownReclassify": {
+    "proposedSafeFromMetadata": 13,
+    "holdForByteReview": 167,
+    "sampleOperations": [
+      {
+        "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "CREDIT_AGREEMENT",
+        "signals": [
+          "credit_agreement"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "CREDIT_AGREEMENT",
+        "signals": [
+          "credit_agreement"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:9892e6df9cfd54bf26192d5a",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "CREDIT_AGREEMENT",
+        "signals": [
+          "credit_agreement"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:59c763cb30f0543730fb97a0",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "INDENTURE",
+        "signals": [
+          "indenture_title"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0001585689-26-000037:hiltonamendedandrestated20.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "RESTATEMENT",
+        "signals": [
+          "amended_and_restated"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:7002fd3c2a09be33a5d0ce13",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "INDENTURE",
+        "signals": [
+          "indenture_title"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000100493-17-000095:exhibit101termloanagreemen.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "TERM_LOAN_AGREEMENT",
+        "signals": [
+          "term_loan",
+          "debt_related_structural"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:6b63505e24ea1c646748cf64",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "INDENTURE",
+        "signals": [
+          "indenture_title"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:048e6fd9a6fe325c374d787d",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "INDENTURE",
+        "signals": [
+          "indenture_title"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "ehb:54f03f59245b168780b04ac4",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "INDENTURE",
+        "signals": [
+          "indenture_title"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "RESTATEMENT",
+        "signals": [
+          "amended_and_restated"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "RESTATEMENT",
+        "signals": [
+          "amended_and_restated"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
+        "op": "RECLASSIFY_DOCUMENT_CLASS",
+        "before": "UNKNOWN",
+        "after": "CREDIT_AGREEMENT",
+        "signals": [
+          "credit_agreement"
+        ],
+        "basis": "metadata_only_title_filename",
+        "requiresByteReview": false,
+        "preservedOriginalClass": "UNKNOWN"
+      }
+    ],
+    "sampleHolds": [
+      {
+        "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000063296-23-000103:ex32amendedandrestatedbyla.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [
+          "non_financing_governance_exhibit"
+        ],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [
+          "non_financing_governance_exhibit"
+        ],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      },
+      {
+        "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
+        "op": "HOLD_FOR_BYTE_REVIEW",
+        "before": "UNKNOWN",
+        "after": "UNKNOWN",
+        "signals": [],
+        "basis": "metadata_insufficient",
+        "requiresByteReview": true,
+        "preservedOriginalClass": "UNKNOWN"
+      }
+    ],
+    "note": "Full operations regenerated via npm run kf:prepare-metadata-repair"
+  },
+  "auditTrail": {
+    "preserveOriginalClass": true,
+    "note": "Original documentClass UNKNOWN retained in before/preservedOriginalClass fields. Apply is idempotent on sourceId."
+  }
+}

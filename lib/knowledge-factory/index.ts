@@ -58,6 +58,8 @@ export {
   assertHoldoutUntouched,
 } from "./corpus/population-registry";
 export type { CorpusPopulation, PopulationPackage } from "./corpus/population-registry";
+export { activateSummaryItem } from "./activation/provision-candidates";
+export type { ActivatedProvisionCandidate, ActivationReadiness } from "./activation/provision-candidates";
 export {
   NON_DEBT_TITLE,
   isDebtSource,

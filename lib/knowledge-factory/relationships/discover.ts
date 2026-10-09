@@ -83,8 +83,10 @@ function isBaseAgreement(c: DebtDocumentClass): boolean {
 }
 
 function pickRelatedBase(doc: KnowledgeSourceRecord, bases: KnowledgeSourceRecord[]): KnowledgeSourceRecord | null {
-  if (bases.length === 0) return null;
-  const scored = bases
+  // Restatements are also base-class documents — never link a document to itself.
+  const candidates = bases.filter((b) => b.sourceId !== doc.sourceId);
+  if (candidates.length === 0) return null;
+  const scored = candidates
     .map((b) => ({ b, score: titleOverlap(doc.documentTitle, b.documentTitle) }))
     .sort((a, b) => b.score - a.score);
   return scored[0]!.score > 0 ? scored[0]!.b : null;

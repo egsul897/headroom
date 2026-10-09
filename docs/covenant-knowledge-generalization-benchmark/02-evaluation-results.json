@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ckg-benchmark.v1",
-  "generatedAt": "2026-10-09T22:22:30.511Z",
-  "headSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "generatedAt": "2026-10-09T22:32:24.639Z",
+  "headSha": "2867a241acb723b55aa018cce21f1ebbc23bc408",
   "branch": "cursor/covenant-intelligence-factory-f761",
   "paidCalls": 0,
   "dataset": {
@@ -14,14 +14,14 @@
     {
       "metric": "amendment_reconstruction",
       "evaluated": 3,
-      "success": 2,
-      "failure": 1,
+      "success": 3,
+      "failure": 0,
       "unlabeled": 0,
       "notEvaluated": 0,
-      "rate": 0.6666666666666666,
+      "rate": 1,
       "lowerIsBetter": false,
       "costUsdOnSourceVerifiedSuccesses": 0,
-      "sourceVerifiedSuccesses": 2
+      "sourceVerifiedSuccesses": 3
     },
     {
       "metric": "comparator_correctness",
@@ -158,11 +158,11 @@
     {
       "metric": "unseen_document_performance",
       "evaluated": 1,
-      "success": 0,
-      "failure": 1,
+      "success": 1,
+      "failure": 0,
       "unlabeled": 0,
       "notEvaluated": 0,
-      "rate": 0,
+      "rate": 1,
       "lowerIsBetter": false,
       "costUsdOnSourceVerifiedSuccesses": 0,
       "sourceVerifiedSuccesses": 0
@@ -186,10 +186,10 @@
       "dimension": "agreementType",
       "value": "AMENDED_AND_RESTATED_AGREEMENT",
       "cases": 4,
-      "success": 2,
-      "failure": 2,
+      "success": 4,
+      "failure": 0,
       "unlabeled": 0,
-      "rate": 0.5
+      "rate": 1
     },
     {
       "key": "agreementType=AMENDMENT",
@@ -286,10 +286,10 @@
       "dimension": "covenantFamily",
       "value": "OTHER",
       "cases": 9,
-      "success": 5,
-      "failure": 3,
+      "success": 7,
+      "failure": 1,
       "unlabeled": 1,
-      "rate": 0.625
+      "rate": 0.875
     },
     {
       "key": "covenantFamily=RESTRICTED_PAYMENTS",
@@ -306,10 +306,10 @@
       "dimension": "draftingComplexity",
       "value": "HIGH",
       "cases": 12,
-      "success": 5,
-      "failure": 5,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 1,
-      "rate": 0.5
+      "rate": 0.6
     },
     {
       "key": "draftingComplexity=LOW",
@@ -326,10 +326,10 @@
       "dimension": "draftingComplexity",
       "value": "MEDIUM",
       "cases": 11,
-      "success": 9,
-      "failure": 2,
+      "success": 10,
+      "failure": 1,
       "unlabeled": 0,
-      "rate": 0.8181818181818182
+      "rate": 0.9090909090909091
     },
     {
       "key": "issuer=Gibraltar Industries, Inc.",
@@ -346,10 +346,10 @@
       "dimension": "issuer",
       "value": "Superior Industries International, Inc.",
       "cases": 10,
-      "success": 4,
-      "failure": 6,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 0,
-      "rate": 0.4
+      "rate": 0.6
     },
     {
       "key": "issuer=SYNTHETIC",
@@ -688,7 +688,7 @@
     {
       "caseId": "sup-amend-doc-b-restates-doc-a",
       "metric": "amendment_reconstruction",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "SOURCE_VERIFIED",
       "strata": {
         "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
@@ -696,7 +696,7 @@
         "covenantFamily": "OTHER",
         "draftingComplexity": "MEDIUM"
       },
-      "detail": "rel=\"none\" status=\"missing\" vs \"doc-b restates doc-a\"/\"resolved\"",
+      "detail": "rel=\"doc-b restates doc-a\" status=\"resolved\" vs \"doc-b restates doc-a\"/\"resolved\"",
       "attributedCostUsd": 0
     },
     {
@@ -730,7 +730,7 @@
     {
       "caseId": "sup-unseen-aggregate",
       "metric": "unseen_document_performance",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "REVIEWER_APPROVED",
       "strata": {
         "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
@@ -738,7 +738,7 @@
         "covenantFamily": "OTHER",
         "draftingComplexity": "HIGH"
       },
-      "detail": "unseen subcases 2/3",
+      "detail": "unseen subcases 3/3",
       "attributedCostUsd": 0
     },
     {
