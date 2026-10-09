@@ -1,0 +1,103 @@
+{
+  "schema": "authenticated-vep-offline-scan.v1",
+  "paidProvidersCalled": false,
+  "fixtureIrInvented": false,
+  "authenticRoots": [
+    "docs/phase-3-live-validation",
+    "docs/phase-3-reliability-stratified-certification",
+    "docs/phase-3-conmed-population-verified"
+  ],
+  "scannedCertificationFiles": 5,
+  "statusCounts": {
+    "REVIEW_REQUIRED": 5
+  },
+  "certifiedCount": 0,
+  "records": [
+    {
+      "path": "docs/phase-3-live-validation/7.2c-final-source-authority/10-certification.json",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "status": "REVIEW_REQUIRED",
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "OPERATIVE_STATE_UNACCEPTABLE",
+        "SUPPORT_UNACCEPTABLE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-final-source-authority/09-verified-units.json"
+    },
+    {
+      "path": "docs/phase-3-live-validation/7.2c-first-certified/10-certification.json",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "status": "REVIEW_REQUIRED",
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "CONTEXT_CONTRACT_UNACCEPTABLE",
+        "DEPENDENCY_INVALID",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "OPERATIVE_STATE_UNACCEPTABLE",
+        "SUPPORT_UNACCEPTABLE",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "UNIT_SUFFICIENCY_INCOMPLETE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-first-certified/09-verified-units.json"
+    },
+    {
+      "path": "docs/phase-3-live-validation/7.2c-rerun-operative-state/10-certification.json",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "status": "REVIEW_REQUIRED",
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "OPERATIVE_STATE_UNACCEPTABLE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-rerun-operative-state/09-verified-units.json"
+    },
+    {
+      "path": "docs/phase-3-live-validation/7.2c-rerun-projection-v1/10-certification.json",
+      "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80",
+      "status": "REVIEW_REQUIRED",
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "OPERATIVE_STATE_UNACCEPTABLE",
+        "UNIT_SUFFICIENCY_INCOMPLETE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.2c-rerun-projection-v1/09-verified-units.json"
+    },
+    {
+      "path": "docs/phase-3-live-validation/7.5j-end-to-end-certification/10-certification.json",
+      "candidateRef": "discovery-candidate:5aeac47ab31feb23331e4f89",
+      "status": "REVIEW_REQUIRED",
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "UNIT_SUFFICIENCY_INCOMPLETE"
+      ],
+      "hasSiblingVerifiedUnits": true,
+      "siblingVerifiedUnitsPath": "docs/phase-3-live-validation/7.5j-end-to-end-certification/09-verified-units.json"
+    }
+  ],
+  "adapter": {
+    "outcome": "REFUSED",
+    "refusals": [
+      {
+        "code": "NO_CERTIFIED_ARTIFACTS",
+        "detail": "no CERTIFIED candidate artifacts were supplied",
+        "refs": []
+      }
+    ],
+    "included": [],
+    "excluded": []
+  },
+  "evaluateVerifiedCapacityInvoked": false,
+  "certifyPackageInvoked": false,
+  "claimedScope": "NONE"
+}
