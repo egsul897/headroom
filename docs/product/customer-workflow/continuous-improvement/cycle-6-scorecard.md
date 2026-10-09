@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 6 |
 | Starting SHA | `c517820bd36d302b5124c156ad1dd9d6af2c3a8e` (#228 tip) |
-| Ending SHA | _(branch tip after commit)_ |
+| Ending SHA | `c2086f2bb23e6ed0704d6b546ef8ac27d74b7427` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
@@ -91,7 +91,7 @@ Customer-grade paths: **0** (synthetic evidence only).
 
 | Item | URL |
 |---|---|
-| This cycle | _(filled after open)_ |
+| This cycle | https://github.com/egsul897/headroom/pull/233 |
 | Prior (companion) | https://github.com/egsul897/headroom/pull/228 |
 | Prior (entity-scope) | https://github.com/egsul897/headroom/pull/222 |
 
