@@ -18,7 +18,11 @@ import { certifyPackage } from "../../lib/contract-model/phase3-certification/pa
 import { unsealedPopulation } from "../../lib/contract-model/phase3-certification/discovery-population";
 import type { CandidateCertification } from "../../lib/contract-model/phase3-certification/types";
 import type { CanonicalCovenantMap } from "../../lib/contract-model/covenant-map/types";
-import { evaluateVerifiedCapacity, simulateVerifiedTransaction } from "../../lib/contract-model/verified-execution";
+import {
+  evaluateVerifiedCapacity,
+  simulateVerifiedTransaction,
+  type VerifiedExecutionPackage,
+} from "../../lib/contract-model/verified-execution";
 import { enumerateCertifiedPaths } from "../../lib/product/north-star-workflow/verified-path-enumeration";
 import type { InputResolver } from "../../lib/contract-model/runtime/types";
 import type { HypotheticalTransaction, SelectedPath } from "../../lib/contract-model/runtime/transaction/types";
@@ -38,10 +42,10 @@ function asCertification(raw: unknown): CandidateCertification | null {
   return inner as unknown as CandidateCertification;
 }
 
-function nullInputs(pkg: { rules: { ruleId: string }[] }): InputResolver {
+function nullInputs(pkg: VerifiedExecutionPackage): InputResolver {
   return {
     resolveMetric: () => null,
-    resolveTerm: () => ({ status: "UNRESOLVED", definitionId: null, value: null, provenance: null } as never),
+    resolveTerm: () => null,
     resolveRule: (id) => pkg.rules.find((x) => x.ruleId === id) ?? null,
     resolveLedgerUsage: () => null,
     resolveTransactionInput: () => null,
@@ -123,7 +127,7 @@ function main(): void {
   const missingInputs: string[] = [];
   if (capacity.outcome === "EXECUTED") {
     for (const c of capacity.state.capacities) {
-      if (c.status === "NEEDS_INPUT" || c.status === "NOT_DETERMINED" || c.status === "UNSUPPORTED" || c.status === "ERROR") {
+      if (c.status === "NEEDS_INPUT" || c.status === "UNSUPPORTED" || c.status === "ERROR" || c.status === "AMBIGUOUS" || c.status === "REVIEW_REQUIRED") {
         const lim = c.limitations?.map((l) => l.message).join("; ") ?? "";
         missingInputs.push(`${c.ruleId}:${c.status}${lim ? `(${lim})` : ""}`);
       }
@@ -170,12 +174,12 @@ function main(): void {
   // --- Phase 4E ---
   const enumDebt = enumerateCertifiedPaths({
     verifiedPackage: adapter.package,
-    transactionKind: "INCUR_DEBT",
+    transactionKind: "UNSECURED_DEBT",
     secured: false,
   });
   const enumSecured = enumerateCertifiedPaths({
     verifiedPackage: adapter.package,
-    transactionKind: "INCUR_DEBT",
+    transactionKind: "SECURED_DEBT",
     secured: true,
   });
   write("02-phase4e-enumeration.json", {
@@ -185,7 +189,7 @@ function main(): void {
     sourceCertification: certified.find((r) => r.candidateRef === TARGET)?.path ?? certified[0]?.path ?? null,
     results: [
       {
-        transactionKind: "INCUR_DEBT",
+        transactionKind: "UNSECURED_DEBT",
         secured: false,
         authority: enumDebt.authority,
         pathCount: enumDebt.paths.length,
@@ -200,7 +204,7 @@ function main(): void {
         })),
       },
       {
-        transactionKind: "INCUR_DEBT",
+        transactionKind: "SECURED_DEBT",
         secured: true,
         authority: enumSecured.authority,
         pathCount: enumSecured.paths.length,
@@ -217,7 +221,7 @@ function main(): void {
     ],
     criticalFalsePermissions: 0,
     notes: [
-      "enumerateCertifiedPaths over authentic DERIVED VEP.",
+      "enumerateCertifiedPaths over authentic DERIVED VEP (ContemplatedTxnKind UNSECURED_DEBT / SECURED_DEBT).",
       "evaluateVerifiedCapacity(REQUIRE) invoked with null financial/ledger resolvers — see 04-capacity-require.json.",
     ],
   });
@@ -263,7 +267,7 @@ function main(): void {
           ? {
               policy: sim.policy,
               packageHash: sim.packageHash,
-              simulationStatus: sim.simulation.status,
+              simulationStatus: sim.simulation.simulationStatus,
               selectedPathRuleId: ruleId,
               capacityStatuses: sim.capacity.capacities.map((c) => ({ ruleId: c.ruleId, status: c.status })),
               note: candidatePath.status === "UNSUPPORTED"

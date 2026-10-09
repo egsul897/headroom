@@ -157,7 +157,8 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
       const ids = inventoryIdsFor(user, own);
       if (child.nodeType === "SUBSECTION") {
         const family = covs[0]?.family ?? "INDEBTEDNESS";
-        const posture = /shall\s+(?:not|prepay|maintain|pay)/i.test(own) ? "OBLIGATION" : "PERMISSION";
+        // Wire/IR posture includes OBLIGATION; manifest Cov.posture is only PERMISSION|PROHIBITION, so cast the push.
+        const posture = (/shall\s+(?:not|prepay|maintain|pay)/i.test(own) ? "OBLIGATION" : "PERMISSION") as (typeof rules)[number]["posture"];
         rules.push({ localRef: `q${rules.length + 1}`, sourceSectionRef: child.sectionRef, covenantFamily: family, ruleType: "QUALITATIVE_OBLIGATION", posture, action: ACTION_BY_FAMILY[family] ?? null, entityScope: ["BORROWER"], entityScopeExcluded: [], capacityExpression: { kind: "UNLIMITED_CAPACITY", citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: child.sectionRef, excerpt: own.slice(0, 300), inventoryItemIds: ids });
         if (exceptLead && lead && lead.ruleType === "PROHIBITION") (lead.exceptions as unknown[]).push({ description: `clause ${child.sectionRef}`, permissionRef: `q${rules.length}`, conditions: [], citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids });
       } else if (lead) {
