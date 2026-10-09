@@ -19,11 +19,19 @@ Fixes that closed residual signatures (no test weakening):
 3. Figure-role verification prepends PARENT_SCOPE lead-in so clause-only exception baskets are not UNCLASSIFIED.
 4. Entity-scope lead-in markers recognized after `;` / `:`.
 
+## IPV-15 — CLOSED
+
+Package `j-restricted-payments-builder` `certification:credit-agreement::7.08` now CERTIFIED:
+
+- Faithful plan emits a BUILDER `sharedCapacity` (Available Amount) with local member `7.08(d)` instead of an invented `dependsOn` to `7.06(c)` (SA-1 preserved).
+- Nested undefined-term scan recognizes IPV-09 plural surface forms (`Restricted Payments` → `Restricted Payment`) and keeps administrative denylist phrases (`Closing Date`) at LOW so the 7.08 bundle can be SUFFICIENT.
+- IPV-10 preserved: `7.06(c)` stays REVIEW_REQUIRED for undefined Consolidated EBITDA / Consolidated Total Debt.
+
 ## Queue (existing Phase 3 / legal excellence)
 
-1. Finish remaining OPEN residuals: **IPV-19**, **IPV-15**, **IPV-16** (priority order after IPV-04).
+1. Finish remaining OPEN residuals: **IPV-19**, **IPV-16** (priority order after IPV-15).
 2. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
 3. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
 4. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
 
-Primary work surface: PR #197 / #194 tip — not new storage.
+Primary work surface: PR #197 — not new storage.

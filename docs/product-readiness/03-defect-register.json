@@ -610,7 +610,7 @@
     },
     {
       "id": "IPV-15",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "NONMATERIAL_OMISSION",
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
@@ -628,11 +628,15 @@
       ],
       "failingInput": "\"Available Amount\" means \u2026 minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d) \u2026; 7.08(d) permits Investments up to the Available Amount.",
       "expected": "7.08(d) and 7.06(c) are linked as sharing one pool (via the definition) and the Default kill-switch inside the definition is attached to both.",
-      "actual": "A dependsOn from 7.08(d) to Section 7.06(c) is excluded as MODEL_INVENTED_REFERENCE (the clause's own text never names 7.06(c)) and the unit stays REVIEW. The link exists only in the definition text; neither sharedCapacities (member rules) nor dependsOn can carry a definition-mediated relationship without the source-reference guard rejecting it.",
+      "actual": "CLOSED: faithful 7.08 emits a BUILDER sharedCapacity (Available Amount) with local member 7.08(d) instead of an invented dependsOn to 7.06(c); certification CERTIFIED. Nested IPV-09 plural surface forms and administrative Closing Date no longer force REVIEW_REQUIRED on the 7.08 bundle (IPV-10 still MEDIUM-refuses 7.06(c) for undefined Consolidated EBITDA / Consolidated Total Debt).",
       "repro": "faithful submission for pkg-j credit-agreement::7.08 \u2192 compilation.unresolvedIssues (MODEL_INVENTED_REFERENCE_EXCLUDED)",
       "impact": "Fail-closed today (REVIEW). A future model that drops the link to satisfy the guard would report two independent $20,000,000 baskets (J-P2).",
       "hypothesis": "The source-reference fidelity guard scopes admissible references to the unit's own text and its retrieved regions; definition text that names other sections is not an admissible reference source for the citing unit.",
-      "acceptance": "References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists."
+      "acceptance": "References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists.",
+      "fixNote": "CLOSED: (1) acceptance mock plans skip definition-mediated dependsOn and emit BUILDER sharedCapacities when any local participant is present; (2) nested undefined-term scan honors IPV-09 plural surface forms of declared terms; (3) administrative denylist phrases (Closing Date) stay LOW under IPV-10 nested morphology. pkg-j certification:credit-agreement::7.08 CERTIFIED; sharedCap present; J-7.06(c) remains REVIEW_REQUIRED for undefined leverage inputs.",
+      "fixedIn": "cursor/phase3-ipv04-amended-default-f673",
+      "closedIn": "cursor/phase3-ipv04-amended-default-f673",
+      "resolution": "CLOSED 2026-10-09 — definition-mediated shared pool represented via sharedCapacities; 7.08 CERTIFIED without weakening SA-1 or IPV-10."
     },
     {
       "id": "IPV-16",

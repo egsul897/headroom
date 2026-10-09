@@ -23,7 +23,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext } from "./structural-context";
-import { retrieveDirectDefinitions } from "./definition-graph";
+import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
@@ -151,7 +151,9 @@ function retrieveCrossDocumentDefinitionFallback(
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
     const normalized = phrase.toLowerCase();
-    if (sameDocTerms.has(normalized)) continue; // already handled by the same-document exact-match pass.
+    // Same-document exact match OR IPV-09 plural/inflected surface form of a declared term —
+    // already handled by findKnownTermMentions; do not re-report as undefined.
+    if (phraseMatchesDeclaredTerm(phrase, sameDocTerms)) continue;
     const resolved = access.packageGraph ? resolveCrossDocumentDefinition(documentId, normalized, access.exactTermsByDocument, access.packageGraph, new Map<string, PackageDocumentAccess>([[documentId, { index: access.index }]])) : undefined;
     if (resolved) {
       const baseText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
@@ -167,7 +169,10 @@ function retrieveCrossDocumentDefinitionFallback(
       const seenKey = `${documentId}::${normalized}`;
       if (state.seenUnresolvedTermPhrases.has(seenKey)) continue;
       state.seenUnresolvedTermPhrases.add(seenKey);
-      const unresolvedSeverity = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      // Administrative denylist (Closing Date, GAAP, …) stays LOW even when morphology looks high-confidence —
+      // matches definition-graph materiality gating so IPV-10 cannot refuse on boilerplate.
+      const unresolvedSeverity =
+        isAdministrativeTerm(normalized) ? "LOW" : scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "UNRESOLVED_DEFINED_TERM",
@@ -176,6 +181,8 @@ function retrieveCrossDocumentDefinitionFallback(
         reason:
           unresolvedSeverity === "MEDIUM"
             ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            : isAdministrativeTerm(normalized)
+              ? "Administrative/boilerplate Title-Case phrase is not declared; disclosed at LOW severity (does not materially affect covenant analysis)."
             : scanMode === "NESTED"
               ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10 disclosure; LOW severity — not high-confidence financial/covenant morphology)."
               : "Not declared in this document, and no related document in the package declares it either.",

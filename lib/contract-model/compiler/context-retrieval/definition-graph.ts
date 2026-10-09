@@ -23,7 +23,8 @@ import type { ContextItem } from "./types";
  */
 const ADMINISTRATIVE_TERM_DENYLIST = new Set(["person", "business day", "governmental authority", "requirements of law", "us", "united states", "dollars", "administrative agent", "collateral agent", "lender", "agent", "closing date", "code", "gaap"]);
 
-function isAdministrativeTerm(normalizedTerm: string): boolean {
+/** Boilerplate terms that do not materially affect covenant analysis (task §9). Shared with the nested undefined-term scan so IPV-10 MEDIUM morphology cannot refuse a bundle for an administrative phrase. */
+export function isAdministrativeTerm(normalizedTerm: string): boolean {
   return ADMINISTRATIVE_TERM_DENYLIST.has(normalizedTerm);
 }
 
@@ -37,7 +38,7 @@ interface KnownTermMention {
  * Deterministic English inflection only (Subsidiaries/ies, Guarantors, Liens) —
  * never fuzzy synonym matching across distinct defined terms.
  */
-function termSurfaceForms(exactTerm: string): string[] {
+export function termSurfaceForms(exactTerm: string): string[] {
   const forms = new Set<string>([exactTerm]);
   if (/y$/i.test(exactTerm) && !/[aeiou]y$/i.test(exactTerm)) {
     forms.add(exactTerm.replace(/y$/i, exactTerm.endsWith("Y") ? "IES" : "ies"));
@@ -48,6 +49,16 @@ function termSurfaceForms(exactTerm: string): string[] {
   }
   // Common credit-agreement plurals already ending in "Subsidiary" etc. are covered above.
   return [...forms];
+}
+
+/** True when `phrase` is an exact declared term or an IPV-09 plural/inflected surface form of one (normalizedTerm → exactTerm map). */
+export function phraseMatchesDeclaredTerm(phrase: string, exactTermsByNormalized: Map<string, string>): boolean {
+  const normalized = phrase.toLowerCase();
+  if (exactTermsByNormalized.has(normalized)) return true;
+  for (const exactTerm of exactTermsByNormalized.values()) {
+    if (termSurfaceForms(exactTerm).some((form) => form.toLowerCase() === normalized)) return true;
+  }
+  return false;
 }
 
 /** Every term THIS document declared (structural-definitions.ts's own detection) that appears verbatim in `text` - exact match only, word-boundary-safe (plus deterministic plural surface forms — IPV-09). */
