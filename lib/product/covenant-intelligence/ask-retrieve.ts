@@ -2,6 +2,10 @@
  * Question answering over persisted covenant analyses (same objects as summaries).
  * Retrieves relevant provisions, composes an explanation, cites sections.
  * Does not invent capacity, permissions, or amendment conclusions.
+ *
+ * For lawyer-grade complete retrieval + independent verification + Phase 3
+ * bridging, prefer `runLegalExcellence` from `./legal-excellence` (extends
+ * this ranking with recursive expansion and omission detection).
  */
 
 import { prisma } from "../../prisma";
@@ -397,13 +401,17 @@ export async function answerFromCorpus(params: {
     }
   }
 
-  return answerFromSummaryItems({
+  // Workstream 1/4/8: complete retrieval + omission detection on the same
+  // persisted analyses (no parallel architecture; no invented permissions).
+  const { completeRetrieveAndAnswer } = await import("./complete-retrieval");
+  const complete = completeRetrieveAndAnswer({
     question: q,
     items,
     researchOnly,
     amendmentNote,
     limit: params.limit ?? 6,
   });
+  return complete.answer;
 }
 
 export async function listSummariesInNeon(limit = 50): Promise<

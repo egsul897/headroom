@@ -409,6 +409,46 @@ export function isRelatedSeriesAggregationClaim(item: Pick<SemanticInventoryItem
 }
 
 /**
+ * IPV-03 — lineage laundering guard. CONDITION / EXCEPTION / SHARED_CAP roles must be
+ * consumed by a node of a compatible kind. Citing the inventory item on the parent rule
+ * (or definition) while dropping the actual condition/shared-cap structure must not earn
+ * REPRESENTED.
+ */
+export function roleNodeCompatibility(
+  item: Pick<SemanticInventoryItem, "semanticRole" | "additionalRoles">,
+  irPaths: readonly string[],
+): { ok: boolean; reason: string } {
+  const roles = new Set<string>([item.semanticRole, ...(item.additionalRoles ?? [])]);
+  const logic = functionsOf(item as SemanticInventoryItem).logic;
+  const dep = functionsOf(item as SemanticInventoryItem).dependency;
+  const needsCondition = roles.has("CONDITION") || logic.includes("CONDITION");
+  const needsException = roles.has("EXCEPTION") || logic.includes("EXCEPTION");
+  const needsSharedCap = roles.has("SHARED_CAP") || dep.includes("SHARED_CAP");
+  if (!needsCondition && !needsException && !needsSharedCap) return { ok: true, reason: "" };
+
+  const pathOk = (re: RegExp) => irPaths.some((p) => re.test(p));
+  if (needsCondition && !pathOk(/\.conditions(?:\[|\.|$)/) && !pathOk(/\.condition(?:\.|$)/)) {
+    return {
+      ok: false,
+      reason: `CONDITION-role inventory item is cited only on incompatible IR path(s) (${irPaths.join(", ") || "none"}) — must be consumed by a conditions[] / condition node, not a bare rule lineage citation (IPV-03 lineage laundering)`,
+    };
+  }
+  if (needsException && !pathOk(/\.exceptions(?:\[|\.|$)/)) {
+    return {
+      ok: false,
+      reason: `EXCEPTION-role inventory item is cited only on incompatible IR path(s) (${irPaths.join(", ") || "none"}) — must be consumed by an exceptions[] node`,
+    };
+  }
+  if (needsSharedCap && !pathOk(/sharedCapacit/) && !pathOk(/LEDGER_USAGE_REFERENCE/) && !pathOk(/dependsOn/)) {
+    return {
+      ok: false,
+      reason: `SHARED_CAP-role inventory item is cited only on incompatible IR path(s) (${irPaths.join(", ") || "none"}) — must be consumed by a shared capacity / ledger-usage / dependsOn relationship`,
+    };
+  }
+  return { ok: true, reason: "" };
+}
+
+/**
  * Interim B: the General Covenant IR has no licensed primitive for related-series
  * aggregation (option A deferred). Until an additive IR shape or an honest
  * metric/measurement-basis encoding (option C) lands, this is always false -
@@ -556,6 +596,18 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
     if (disposition === "REPRESENTED" && isRelatedSeriesAggregationClaim(item) && !irStructurallyRepresentsRelatedSeriesAggregation(composition)) {
       disposition = "UNSUPPORTED";
       reasons.push(`related-series aggregation claim ("series of related …") is not structurally represented in the IR (Phase 3 reliability interim posture B); lineage/correspondence alone (${[...lineage.map((e) => e.irPath), ...inferredPaths].join(", ") || "none"}) does not establish an evaluable series aggregation`);
+    }
+
+    // IPV-03: role/node compatibility — a CONDITION/EXCEPTION/SHARED_CAP inventory item
+    // cited only on a bare rule/definition node (lineage laundering) is not represented.
+    // Compatible paths: conditions[], exceptions[], sharedCapacities[], or nested condition
+    // expressions under those. A rule-level inventoryItemIds citation alone does not consume them.
+    if (disposition === "REPRESENTED") {
+      const roleCompat = roleNodeCompatibility(item, [...lineage.map((e) => e.irPath), ...inferredPaths]);
+      if (!roleCompat.ok) {
+        disposition = "MISSING_FROM_COMPOSITION";
+        reasons.push(roleCompat.reason);
+      }
     }
 
     const diagnostics: ModelContractViolationDiagnostic[] = [];

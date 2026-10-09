@@ -99,18 +99,29 @@ function retrieveCrossDocumentDependenciesForDefinitions(state: RetrievalState, 
   void documentId;
 }
 
-/** Types whose own retrieved text can carry a real defined-term usage that the operative node's own DESCENDANTS text does not contain - e.g. a proviso/sibling clause holding the covenant's real economic detail (task §32 test scenarios routinely retrieve this material as its own item). Undeclared-term detection must see this text too, not just the primary operative span, or a real dependency living entirely inside a retrieved sibling/parent/child item is silently never checked at all. */
-const STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN = new Set(["PARENT_SCOPE", "CHILD_RULE", "SIBLING_CONTEXT", "PROVISO", "EXCEPTION", "CONDITION", "SHARED_CAP"]);
+/** Types whose own retrieved text can carry a real defined-term usage that the operative node's own DESCENDANTS text does not contain - e.g. a proviso/sibling clause holding the covenant's real economic detail (task §32 test scenarios routinely retrieve this material as its own item). Undeclared-term detection must see this text too, not just the primary operative span, or a real dependency living entirely inside a retrieved sibling/parent/child item is silently never checked at all.
+ * IPV-10: DEFINITION / DEFINITION_DEPENDENCY bodies are included so nested undefined Title-Case phrases inside a retrieved definition are reported rather than silently leaving the bundle SUFFICIENT. */
+const STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN = new Set(["PARENT_SCOPE", "CHILD_RULE", "SIBLING_CONTEXT", "PROVISO", "EXCEPTION", "CONDITION", "SHARED_CAP", "DEFINITION", "DEFINITION_DEPENDENCY"]);
 
 function retrieveCrossDocumentDependenciesForStructuralContext(state: RetrievalState, access: PackageAccess): void {
   for (const item of [...state.items.values()]) {
     if (!STRUCTURAL_CONTEXT_TYPES_FOR_FALLBACK_SCAN.has(item.type)) continue;
-    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId);
+    // IPV-10: nested undefined terms inside a retrieved definition body must
+    // degrade sufficiency (MEDIUM), not hide under the LOW operative-text bar.
+    const nestedInDefinition = item.type === "DEFINITION" || item.type === "DEFINITION_DEPENDENCY";
+    retrieveCrossDocumentDefinitionFallback(state, access, item.documentId, item.excerptText, item.itemId, nestedInDefinition ? "MEDIUM" : "LOW");
   }
 }
 
 /** Cross-document/cross-instrument fallback for a Title-Case phrase mentioned in the operative text but NOT declared in the same document - task §9's "recursive definition dependencies" extended across documents (task §18/§21), always via the exact resolution order, never a whole-package search. */
-function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: PackageAccess, documentId: string, operativeText: string, operativeItemId: string): void {
+function retrieveCrossDocumentDefinitionFallback(
+  state: RetrievalState,
+  access: PackageAccess,
+  documentId: string,
+  operativeText: string,
+  operativeItemId: string,
+  unresolvedSeverity: "LOW" | "MEDIUM" = "LOW",
+): void {
   const sameDocTerms = access.exactTermsByDocument.get(documentId) ?? new Map();
   const phrases = extractCandidatePhrases(operativeText);
   for (const phrase of phrases) {
@@ -135,10 +146,13 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
         dependencyType: "UNRESOLVED_DEFINED_TERM",
         sourceText: phrase,
         attemptedResolution: "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
-        reason: "Not declared in this document, and no related document in the package declares it either.",
+        reason:
+          unresolvedSeverity === "MEDIUM"
+            ? "Nested Title-Case phrase inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            : "Not declared in this document, and no related document in the package declares it either.",
         candidateTargets: [],
         citation: phrase,
-        severity: "LOW",
+        severity: unresolvedSeverity,
       });
     }
   }
