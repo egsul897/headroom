@@ -219,6 +219,10 @@ function money(amount: string, currency = "USD"): RuntimeValue {
   return { type: "MONEY", amount: rationalFromString(amount), currency, lineage: { exprId: null, inputKeys: [] } };
 }
 
+function numberValue(value: string): RuntimeValue {
+  return { type: "NUMBER", value: rationalFromString(value), lineage: { exprId: null, inputKeys: [] } };
+}
+
 function factInput(companyId: string, instrumentKey: string, key: string, amountMillions: number, asOf: string): FinancialInput {
   return {
     identity: {
@@ -237,6 +241,24 @@ function factInput(companyId: string, instrumentKey: string, key: string, amount
   };
 }
 
+function numberFactInput(companyId: string, instrumentKey: string, key: string, value: number, asOf: string): FinancialInput {
+  return {
+    identity: {
+      companyId,
+      scope: { kind: "INSTRUMENT_LEVEL", instrumentKey },
+      inputKind: "METRIC",
+      key,
+      identityStrength: "CONTRACT_NAME_ONLY",
+      period: { kind: "NOT_PERIOD_SPECIFIC" },
+      asOf: { kind: "EXACT_DATE", isoDate: asOf },
+      valueType: "NUMBER",
+      currency: null,
+    },
+    value: numberValue(String(value)),
+    sourceVersion: "authentic-neon-snapshot",
+  };
+}
+
 function tryPhase4c(provision: CovenantProvisionInput, companyId: string, instrumentKey: string, fin: FinancialSnapshotInput, asOf: string) {
   const adapted = adaptLegacyCovenantProvision(provision, companyId, instrumentKey);
   if (!adapted.rule) {
@@ -249,8 +271,16 @@ function tryPhase4c(provision: CovenantProvisionInput, companyId: string, instru
     factInput(companyId, instrumentKey, "EBITDA", fin.ebitda, asOf),
     factInput(companyId, instrumentKey, "Total Debt", fin.totalDebt, asOf),
     factInput(companyId, instrumentKey, "Secured Debt", fin.securedDebt, asOf),
+    factInput(companyId, instrumentKey, "Cash", fin.cash, asOf),
+    factInput(companyId, instrumentKey, "Interest Expense", fin.interestExpense, asOf),
+    factInput(companyId, instrumentKey, "Cumulative Net Income", fin.cumulativeNetIncome, asOf),
+    factInput(companyId, instrumentKey, "Equity Proceeds Since Issue", fin.equityProceedsSinceIssue, asOf),
   ];
   if (fin.totalAssets != null) inputs.push(factInput(companyId, instrumentKey, "Consolidated Total Assets", fin.totalAssets, asOf));
+  const rateFrac = fin.assumedNewDebtRatePct / 100;
+  if (rateFrac > 0) {
+    inputs.push(numberFactInput(companyId, instrumentKey, "Assumed New Debt Rate Reciprocal", 1 / rateFrac, asOf));
+  }
   const graph = buildCapacityGraph({ rules: [rule], companyId, instrumentKey, asOf });
   const resolver = snapshotInputResolver({
     snapshots: [{
@@ -276,7 +306,11 @@ function tryPhase4c(provision: CovenantProvisionInput, companyId: string, instru
     ? entry.remaining.value.amount
     : entry.provisional?.remaining.kind === "AMOUNT" && entry.provisional.remaining.value.type === "MONEY"
       ? entry.provisional.remaining.value.amount
-      : null;
+      : entry.grossCapacity.kind === "UNLIMITED"
+        ? "UNLIMITED"
+        : entry.provisional?.grossCapacity.kind === "UNLIMITED"
+          ? "UNLIMITED"
+          : null;
   return {
     adapted: true,
     refusalReason: null,
