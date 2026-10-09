@@ -163,26 +163,67 @@ export function buildDocumentCovenantSummary(params: {
     items.push(itemFromAnalysis(analysis, params.documentTitle));
   }
 
-  // Attach builder / Available Amount definition pointers onto matching sections.
+  // Attach builder / Available Amount / NOA / Incremental definition pointers.
   for (const d of params.definitions) {
-    if (!/Available Amount|Builder Basket/i.test(d.term)) continue;
-    const pointed =
-      d.excerpt.match(/Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i)?.[1] ??
-      d.excerpt.match(/meaning specified in Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i)?.[1];
-    if (!pointed) continue;
+    const isBuilder = /Available Amount|Builder Basket/i.test(d.term);
+    const isNoa = /Not Otherwise Applied/i.test(d.term);
+    const isIncremental =
+      /Incremental (?:Amount|Cap)|Fixed Incremental|Ratio Incremental|Voluntary Prepayment Incremental|Cash-Capped Incremental|Ratio-Based Incremental|Prepayment-Based Incremental/i.test(
+        d.term,
+      );
+    if (!isBuilder && !isNoa && !isIncremental) continue;
+
+    // Only treat "has the meaning specified in Section X" as a section pointer —
+    // do not grab the first Section cite inside a full "means … pursuant to Section" body.
+    const meaningSpecified = d.excerpt.match(
+      /(?:has the )?meaning specified in Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i,
+    )?.[1];
+
+    const label = isNoa
+      ? `Not Otherwise Applied / builder netting referenced (via definition “${d.term}”).`
+      : isIncremental
+        ? `Incremental path construct referenced (via definition “${d.term}”).`
+        : `Builder / Available Amount construct referenced (via definition “${d.term}”).`;
+
     for (const item of items) {
-      if (
-        item.sectionRef === pointed ||
-        item.sectionRef.startsWith(pointed) ||
-        pointed.startsWith(item.sectionRef)
-      ) {
-        const label = `Builder / Available Amount construct referenced (via definition “${d.term}”).`;
-        if (!item.materialBasketsThresholds.includes(label)) {
-          item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 14);
-        }
-        const dep = `Meaning controlled by definition of “${d.term}”`;
-        if (!item.dependencies.includes(dep)) {
-          item.dependencies = [...item.dependencies, dep].slice(0, 12);
+      const sectionHit =
+        meaningSpecified != null &&
+        (item.sectionRef === meaningSpecified ||
+          item.sectionRef.startsWith(meaningSpecified) ||
+          meaningSpecified.startsWith(item.sectionRef));
+      const topicalHit =
+        meaningSpecified == null &&
+        ((isBuilder &&
+          /Available Amount|Restricted Payment|Investment/i.test(
+            `${item.heading} ${item.plainEnglish} ${(item.materialBasketsThresholds ?? []).join(" ")}`,
+          )) ||
+          (isNoa &&
+            /Available Amount|Not Otherwise Applied/i.test(
+              `${item.heading} ${item.plainEnglish} ${(item.materialBasketsThresholds ?? []).join(" ")}`,
+            )) ||
+          (isIncremental &&
+            (/incremental/i.test(item.heading) ||
+              /Incremental path|Incremental Amount|Incremental Cap/i.test(
+                (item.materialBasketsThresholds ?? []).join(" "),
+              ))));
+
+      if (!sectionHit && !topicalHit) continue;
+
+      if (!item.materialBasketsThresholds.includes(label)) {
+        item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 18);
+      }
+      const dep = `Meaning controlled by definition of “${d.term}”`;
+      if (!item.dependencies.includes(dep)) {
+        item.dependencies = [...item.dependencies, dep].slice(0, 12);
+      }
+
+      if (isNoa) {
+        const sections = d.excerpt.match(/Section\s+[\dA-Za-z.()-]+|clause\s+\([^)]+\)/gi) ?? [];
+        if (sections.length) {
+          const noaLabel = `NOA deductions / prior applications: ${sections.slice(0, 4).join("; ")}`;
+          if (!item.materialBasketsThresholds.includes(noaLabel)) {
+            item.materialBasketsThresholds = [...item.materialBasketsThresholds, noaLabel].slice(0, 18);
+          }
         }
       }
     }

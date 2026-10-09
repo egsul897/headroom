@@ -96,4 +96,45 @@ describe("quantitative basket / relationship mechanics", () => {
     expect(a.basketsAndThresholds.some((b) => /Borrower election|optional ratio/i.test(b))).toBe(true);
     expect(a.basketsAndThresholds.some((b) => /Ratio threshold/i.test(b))).toBe(true);
   });
+
+  it("extracts Chewy-style Fixed/Ratio/Voluntary incremental paths and reallocations", () => {
+    const a = run(
+      "Incremental Cap means (a) the Fixed Incremental Amount; plus (b) the Voluntary Prepayment Incremental Amount; plus (c) the Ratio Incremental Amount; plus (d) the Extension Amount. Fixed Incremental Amount includes unused amounts under the General Lien Basket Reallocated Amount minus, without duplication, prior Incremental Facilities. Unless the Initial Borrower elects otherwise, each Incremental Facility shall be deemed incurred first under the Ratio Incremental Amount.",
+      "Incremental Facilities",
+    );
+    expect(a.basketsAndThresholds.some((b) => /Fixed \/ Cash-Capped Incremental/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Ratio Incremental Amount/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Voluntary Prepayment/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /multi-component sum/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /default utilization order|election dependency/i.test(b))).toBe(
+      true,
+    );
+    expect(a.basketsAndThresholds.some((b) => /reallocation|reclassification/i.test(b))).toBe(true);
+  });
+
+  it("extracts Gibraltar-style Cash-Capped / Ratio-Based / Prepayment-Based incremental paths", () => {
+    const a = run(
+      "an amount equal to the Cash-Capped Incremental Facility, plus an unlimited amount (the Ratio-Based Incremental Facility) so long as the Maximum Leverage Requirement is satisfied, plus the Prepayment-Based Incremental Facility (such sum, the Incremental Amount). Unless the Borrower elects otherwise, the Borrower shall be deemed to have used amounts under the Ratio-Based Incremental Facility prior to the Prepayment-Based Incremental Facility or the Cash-Capped Incremental Facility. Indebtedness originally designated as incurred under the Cash-Capped Incremental Facility shall automatically cease to be deemed incurred thereunder and shall instead be deemed incurred under the Ratio-Based Incremental Facility when permitted, without duplication of such Indebtedness originally designated under the Cash-Capped Incremental Facility.",
+      "Incremental Facilities",
+    );
+    expect(a.basketsAndThresholds.some((b) => /Fixed \/ Cash-Capped Incremental/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Ratio Incremental Amount/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Prepayment-Based|Voluntary Prepayment/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /multi-component sum/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /redesignation into ratio/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Anti-stacking|without-duplication/i.test(b))).toBe(true);
+  });
+
+  it("extracts anti-stacking, divide-and-classify, and NOA deduction paths", () => {
+    const a = run(
+      "Investments (without duplication for purposes of Section 7.05 of any amounts applied pursuant to clause (y) of Section 7.05(a)) not to exceed the Available Amount that is Not Otherwise Applied. The Borrower may divide, classify and reclassify such transaction as an Investment or Restricted Payment. Not Otherwise Applied means, with reference to the Available Amount, that was not previously applied pursuant to Section 6.01(b)(32), clause (46)(ii) of the definition of Permitted Liens or Section 6.08(a)(3).",
+      "Investments",
+      "INVESTMENTS",
+    );
+    expect(a.basketsAndThresholds.some((b) => /Anti-stacking/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Divide-and-classify|reclassify/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /Not Otherwise Applied/i.test(b))).toBe(true);
+    expect(a.basketsAndThresholds.some((b) => /NOA deductions|NOA usage/i.test(b))).toBe(true);
+    expect(a.dependencies.some((d) => /Not Otherwise Applied/i.test(d))).toBe(true);
+  });
 });

@@ -76,6 +76,7 @@ const QUESTIONS = [
   "What guarantee capacity exists for subsidiaries?",
   "How do debt and lien permissions interact?",
   "Which baskets share capacity or use an Available Amount builder?",
+  "What incremental facility capacity paths are available?",
   "What constitutes Consolidated EBITDA?",
 ];
 
@@ -119,6 +120,14 @@ function mechStats(items: ReturnType<typeof buildDocumentCovenantSummary>["items
     growerBaskets: allBaskets.filter((b) => /Greater-of|grower/i.test(b)).length,
     sharedCapacitySignals: allBaskets.filter((b) => /Shared|aggregated capacity/i.test(b)).length,
     builderSignals: allBaskets.filter((b) => /Available Amount|Builder/i.test(b)).length,
+    noaSignals: allBaskets.filter((b) => /Not Otherwise Applied|NOA /i.test(b)).length,
+    antiStackSignals: allBaskets.filter((b) => /Anti-stacking|without-duplication/i.test(b)).length,
+    reclassSignals: allBaskets.filter((b) => /reclassif|Divide-and-classify/i.test(b)).length,
+    incrementalPathSignals: allBaskets.filter((b) => /Incremental path|Incremental Amount is a multi-component/i.test(b))
+      .length,
+    incrementalElectionSignals: allBaskets.filter((b) =>
+      /default utilization order|redesignation into ratio/i.test(b),
+    ).length,
     ratioThresholds: allBaskets.filter((b) => /Ratio threshold|Pro forma leverage|Borrower election/i.test(b)).length,
     reallocationSignals: allBaskets.filter((b) => /reallocation|reclassification/i.test(b)).length,
     itemsWithDependencies: items.filter((i) => (i.dependencies?.length ?? 0) > 0).length,
@@ -171,16 +180,24 @@ async function analyzeOne(t: Target) {
       researchOnly: true,
       limit: 5,
     });
-    const basketMentions = (answer.detail.match(/Greater-of|grower|Available Amount|Shared|Ratio threshold|\$[\d,]+/gi) || [])
-      .length;
+    const basketMentions = (answer.detail.match(
+      /Greater-of|grower|Available Amount|Shared|Ratio threshold|Incremental path|Not Otherwise Applied|Anti-stack|\$[\d,]+/gi,
+    ) || []).length;
+    const dualRegime =
+      /secured debt/i.test(question) &&
+      /\[LIENS REGIME\]/i.test(answer.detail) &&
+      /\[INDEBTEDNESS REGIME\]/i.test(answer.detail);
     return {
       question,
       kind: answer.kind,
       sections: answer.citations.map((c) => c.sectionRef).slice(0, 5),
       defLead: answer.citations.some((c) => /^Definition:/i.test(c.sectionRef)),
       basketMentions,
+      dualRegime: /secured debt/i.test(question) ? dualRegime : undefined,
+      hasLiensRegime: /\[LIENS REGIME\]/i.test(answer.detail),
+      hasDebtRegime: /\[INDEBTEDNESS REGIME\]/i.test(answer.detail),
       hasRestrictions: /Contractual restrictions identified:/i.test(answer.detail),
-      preview: answer.detail.slice(0, 280).replace(/\s+/g, " "),
+      preview: answer.detail.slice(0, 320).replace(/\s+/g, " "),
     };
   });
 
@@ -238,6 +255,12 @@ async function analyzeOne(t: Target) {
         textSignals.greaterOf > 10 && mech.growerBaskets < Math.min(8, Math.floor(textSignals.greaterOf / 8)),
       missingBuilderWhileTextHasAA: textSignals.availableAmount > 0 && mech.builderSignals === 0,
       missingSharedWhileTextHasTT: textSignals.takenTogether > 3 && mech.sharedCapacitySignals === 0,
+      missingIncrementalPaths:
+        (text.match(/\b(?:Fixed Incremental Amount|Cash-Capped Incremental|Ratio-Based Incremental|Ratio Incremental Amount)\b/g) || [])
+          .length > 0 &&
+        mech.incrementalPathSignals === 0,
+      missingNoaWhileTextHasNoa:
+        (text.match(/\bNot Otherwise Applied\b/g) || []).length > 0 && mech.noaSignals === 0,
     },
     answers,
     persisted,
@@ -252,12 +275,18 @@ async function main() {
     const r = await analyzeOne(t);
     results.push(r);
     console.log(
-      `families=${r.families.length} growers=${r.mechanics.growerBaskets} shared=${r.mechanics.sharedCapacitySignals} builders=${r.mechanics.builderSignals} ratios=${r.mechanics.ratioThresholds}`,
+      `families=${r.families.length} growers=${r.mechanics.growerBaskets} shared=${r.mechanics.sharedCapacitySignals} builders=${r.mechanics.builderSignals} noa=${r.mechanics.noaSignals} antiStack=${r.mechanics.antiStackSignals} incr=${r.mechanics.incrementalPathSignals} reclass=${r.mechanics.reclassSignals}`,
     );
     console.log(`gaps=${JSON.stringify(r.coverageGaps)}`);
-    for (const a of r.answers.slice(0, 4)) {
-      console.log(`  Q: ${a.question}`);
-      console.log(`    ${a.sections.slice(0, 3).join(", ")} baskets~${a.basketMentions}`);
+    for (const a of r.answers) {
+      if (/secured debt|incremental facility|Available Amount|Consolidated EBITDA/i.test(a.question)) {
+        console.log(`  Q: ${a.question}`);
+        console.log(
+          `    ${a.sections.slice(0, 3).join(", ")} baskets~${a.basketMentions}${
+            a.dualRegime != null ? ` dualRegime=${a.dualRegime}` : ""
+          }`,
+        );
+      }
     }
   }
 

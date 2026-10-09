@@ -270,6 +270,22 @@ function extractBaskets(excerpt: string): string[] {
   }
   if (/\bNot Otherwise Applied\b/i.test(excerpt)) {
     pushUnique("Not Otherwise Applied / builder netting referenced.");
+    const noaUses = excerpt.match(
+      /Not Otherwise Applied[^.…]{0,220}(?:Section\s+[\dA-Za-z.()-]+|clause\s+\([^)]+\))/gi,
+    );
+    for (const hit of (noaUses ?? []).slice(0, 2)) {
+      pushUnique(`NOA usage / deduction path: ${normalizeWs(hit).slice(0, 160)}`);
+    }
+    // Definition-style NOA: "previously applied pursuant to Section …"
+    const noaDef = excerpt.match(
+      /Not Otherwise Applied[^.…]{0,40}(?:means|that was not previously applied)[^.…]{0,280}/i,
+    );
+    if (noaDef) {
+      const sections = noaDef[0].match(/Section\s+[\dA-Za-z.()-]+|clause\s+\([^)]+\)/gi) ?? [];
+      if (sections.length) {
+        pushUnique(`NOA deductions / prior applications: ${sections.slice(0, 4).join("; ")}`);
+      }
+    }
   }
   if (
     /\btaken together with\b|\bin reliance on this (?:clause|Section)\b|\bin the aggregate(?:\s+outstanding)?\b|\bshared\s+(?:basket|capacity)\b|\bGeneral (?:Debt|Investment|RP) Basket\b/i.test(
@@ -278,8 +294,84 @@ function extractBaskets(excerpt: string): string[] {
   ) {
     pushUnique("Shared / aggregated capacity or cross-clause stacking language present.");
   }
-  if (/\breallocated amount\b|\bGeneral Debt Basket Reallocated Amount\b/i.test(excerpt)) {
+  if (
+    /\bwithout duplication\s+for purposes of\s+Section\b/i.test(excerpt) ||
+    (/\bwithout duplication\b/i.test(excerpt) &&
+      /\b(?:Section|clause|basket|Indebtedness|Investment|Restricted Payment)\b/i.test(excerpt))
+  ) {
+    pushUnique("Anti-stacking / without-duplication across clauses referenced.");
+    const forPurposes = excerpt.match(
+      /without duplication\s+for purposes of\s+Section\s+[\dA-Za-z.()-]+/gi,
+    );
+    for (const hit of (forPurposes ?? []).slice(0, 2)) {
+      pushUnique(`Anti-stacking scope: ${normalizeWs(hit)}`);
+    }
+  }
+  if (
+    /\b(?:classify|reclassify|classification|reclassification)\b/i.test(excerpt) &&
+    /\b(?:basket|clause|Section|Indebtedness|Lien|Investment|Restricted Payment|Permitted)\b/i.test(excerpt)
+  ) {
+    pushUnique("Classification / reclassification election present (basket designation may change).");
+  }
+  if (
+    /\bdivide(?:\s+and)?,?\s*classify\b|\bdivide and classify or reclassify\b|\bdivide,\s*classify\b/i.test(
+      excerpt,
+    )
+  ) {
+    pushUnique("Divide-and-classify / reclassify election across covenant categories.");
+  }
+  if (
+    /\breallocated amount\b|\bGeneral (?:Debt|Lien) Basket Reallocated Amount\b|\breallocated from\b/i.test(
+      excerpt,
+    )
+  ) {
     pushUnique("Basket reallocation / reclassification right referenced.");
+  }
+  // Incremental facility alternative paths (Chewy-style names + Gibraltar-style facilities)
+  if (/\bFixed Incremental Amount\b|\bCash-Capped Incremental Facility\b/i.test(excerpt)) {
+    pushUnique("Incremental path: Fixed / Cash-Capped Incremental Amount.");
+  }
+  if (
+    /\bRatio Incremental Amount\b|\bRatio-Based Incremental(?:\s+Facility|\s+Amount)?\b/i.test(excerpt)
+  ) {
+    pushUnique("Incremental path: Ratio Incremental Amount (ratio condition).");
+  }
+  if (
+    /\bVoluntary Prepayment Incremental Amount\b|\bPrepayment-Based Incremental Facility\b/i.test(
+      excerpt,
+    )
+  ) {
+    pushUnique("Incremental path: Voluntary Prepayment / Prepayment-Based Incremental Amount.");
+  }
+  if (
+    (/\bIncremental (?:Amount|Cap)\b/i.test(excerpt) && /\b(?:plus|minus|sum of)\b/i.test(excerpt)) ||
+    (/\bCash-Capped Incremental\b/i.test(excerpt) &&
+      /\bRatio-Based Incremental\b/i.test(excerpt) &&
+      /\bPrepayment-Based Incremental\b/i.test(excerpt))
+  ) {
+    pushUnique("Incremental Amount is a multi-component sum (fixed / ratio / voluntary / reallocations).");
+  }
+  if (
+    /\bunless the (?:Initial )?Borrower elects otherwise\b/i.test(excerpt) &&
+    /\b(?:Ratio[- ]Based Incremental|Ratio Incremental|Fixed Incremental|Cash-Capped)\b/i.test(excerpt)
+  ) {
+    pushUnique("Incremental default utilization order / election dependency present.");
+  }
+  if (
+    /\b(?:redesignat|automatically cease to be deemed incurred|deemed incurred under the Ratio)\b/i.test(
+      excerpt,
+    ) &&
+    /\bIncremental\b/i.test(excerpt)
+  ) {
+    pushUnique("Incremental redesignation into ratio path when ratio test later satisfied.");
+  }
+  if (/\bAvailable Amount\b/i.test(excerpt)) {
+    if (/\b(?:minus|reduced|reduction|deduct|Not Otherwise Applied)\b/i.test(excerpt)) {
+      pushUnique("Available Amount subject to deductions / reductions.");
+    }
+    if (/\bplus\b/i.test(excerpt)) {
+      pushUnique("Available Amount builder includes additive components.");
+    }
   }
   if (/\bat any (?:one )?time outstanding\b|\bthen outstanding\b/i.test(excerpt)) {
     pushUnique("Cap measured on outstanding amount at any time.");
@@ -290,7 +382,7 @@ function extractBaskets(excerpt: string): string[] {
   if (/\bpro forma\b/i.test(excerpt) && /\b(?:Leverage|Coverage)\s+Ratio\b/i.test(excerpt)) {
     pushUnique("Pro forma leverage/coverage test gates capacity.");
   }
-  return out.slice(0, 14);
+  return out.slice(0, 18);
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {
@@ -534,6 +626,16 @@ export function analyzeProvision(params: {
   }
   if (/\bAvailable Amount\b/i.test(excerpt) && !/definition of “Available Amount”/i.test(dependencies.join(" "))) {
     dependencies.push("Uses Available Amount / builder capacity (see definition and RP/Investment gates).");
+  }
+  if (/\bNot Otherwise Applied\b/i.test(excerpt)) {
+    dependencies.push("Builder capacity limited to amounts Not Otherwise Applied (cross-basket netting).");
+  }
+  if (
+    /\b(?:Fixed Incremental Amount|Ratio Incremental Amount|Cash-Capped Incremental|Ratio-Based Incremental|Prepayment-Based Incremental|Incremental Cap)\b/i.test(
+      excerpt,
+    )
+  ) {
+    dependencies.push("Incremental capacity depends on alternative Fixed/Ratio/Prepayment paths and elections.");
   }
   if (/\bNo Default\b|\bno Event of Default\b/i.test(excerpt)) {
     dependencies.push("Conditioned on absence of Default / Event of Default.");

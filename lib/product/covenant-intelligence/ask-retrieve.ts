@@ -42,6 +42,7 @@ type QuestionIntent =
   | "INVESTMENTS_ACQUISITIONS"
   | "REFINANCING"
   | "GUARANTEES"
+  | "INCREMENTAL_FACILITIES"
   | "GENERAL";
 
 /** Extract a defined-term query ("What constitutes Consolidated EBITDA?" → term). */
@@ -81,6 +82,13 @@ function classifyIntent(q: string): QuestionIntent {
   if (/restricted.?payment|dividend|rp basket|distribution/.test(s)) return "RESTRICTED_PAYMENTS";
   if (/non.?guarantor|unguaranteed|foreign subsidiar/.test(s)) return "NON_GUARANTOR_DEBT";
   if (/asset.?sale|disposition/.test(s)) return "ASSET_SALES";
+  if (
+    /incremental (?:facilit|amount|equivalent|cap)|ratio incremental|fixed incremental|cash-capped incremental|prepayment-based incremental|ratio-based incremental/.test(
+      s,
+    )
+  ) {
+    return "INCREMENTAL_FACILITIES";
+  }
   if (/refinanc|refund|extend|replace.*debt|permitted refinancing/.test(s)) return "REFINANCING";
   if (/guarant(?:y|ee)|guarantee obligation/.test(s)) return "GUARANTEES";
   if (/investment|acquisition|acquire|permitted acquisition/.test(s)) return "INVESTMENTS_ACQUISITIONS";
@@ -149,6 +157,8 @@ function intentCategories(intent: QuestionIntent): string[] {
       return ["DEBT_INCURRENCE", "LIENS_SECURED_DEBT", "BASKETS_EXCEPTIONS_CONDITIONS"];
     case "GUARANTEES":
       return ["GUARANTEES", "DEBT_INCURRENCE"];
+    case "INCREMENTAL_FACILITIES":
+      return ["DEBT_INCURRENCE", "LIENS_SECURED_DEBT", "FINANCIAL_MAINTENANCE", "BASKETS_EXCEPTIONS_CONDITIONS"];
     case "AMENDMENT_CHANGES":
       return Object.keys({
         DEBT_INCURRENCE: 1,
@@ -195,6 +205,18 @@ function intentTokens(intent: QuestionIntent, question: string): string[] {
       break;
     case "GUARANTEES":
       extra.push("guarantee", "guaranty", "guarantor", "obligation");
+      break;
+    case "INCREMENTAL_FACILITIES":
+      extra.push(
+        "incremental",
+        "facility",
+        "ratio",
+        "fixed",
+        "voluntary",
+        "prepayment",
+        "leverage",
+        "reallocated",
+      );
       break;
     case "AMENDMENT_CHANGES":
       extra.push("amendment", "amended", "restated");
@@ -255,6 +277,20 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   if (intent === "GUARANTEES") {
     if (item.category === "GUARANTEES") score += 7;
     if (/guarant/i.test(hay)) score += 4;
+  }
+  if (intent === "INCREMENTAL_FACILITIES") {
+    if (/\bincremental\b/i.test(hay)) score += 8;
+    if ((item.materialBasketsThresholds ?? []).some((b) => /Incremental path|Incremental Amount/i.test(b))) {
+      score += 6;
+    }
+    if (
+      /ratio incremental|fixed incremental|voluntary prepayment incremental|cash-capped incremental|ratio-based incremental|prepayment-based incremental/i.test(
+        hay,
+      )
+    ) {
+      score += 5;
+    }
+    if (/reclassif|reallocated|redesignat|default utilization/i.test(hay)) score += 3;
   }
   // Prefer provisions that surface quantitative mechanics for capacity questions
   if (
@@ -328,6 +364,58 @@ function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
   return ap as AmendmentPackageView;
 }
 
+function itemKey(item: { sourceId: string; sectionRef: string; heading: string }): string {
+  return `${item.sourceId}|${item.sectionRef}|${item.heading}`;
+}
+
+/**
+ * Secured-debt questions require BOTH the indebtedness and liens regimes.
+ * Do not return only the single highest-scoring provision (often incremental debt).
+ */
+function selectAnswerItems<T extends CovenantSummaryItem & { sourceId: string; score: number }>(
+  scored: T[],
+  intent: QuestionIntent,
+  limit: number,
+): T[] {
+  if (scored.length === 0) return [];
+  if (intent !== "SECURED_DEBT") return scored.slice(0, limit);
+
+  const picked: T[] = [];
+  const used = new Set<string>();
+  const take = (item: T | undefined) => {
+    if (!item) return;
+    const k = itemKey(item);
+    if (used.has(k)) return;
+    used.add(k);
+    picked.push(item);
+  };
+
+  const lienGp = scored.find(
+    (i) =>
+      i.category === "LIENS_SECURED_DEBT" &&
+      (i.posture === "GENERAL_PROHIBITION" || /^(?:limitation on\s+)?liens?\b/i.test(i.heading)),
+  );
+  const lienAny = scored.find((i) => i.category === "LIENS_SECURED_DEBT");
+  const debtGp = scored.find(
+    (i) =>
+      i.category === "DEBT_INCURRENCE" &&
+      i.posture === "GENERAL_PROHIBITION" &&
+      !/\bincremental\b/i.test(i.heading),
+  );
+  const debtAny = scored.find(
+    (i) => i.category === "DEBT_INCURRENCE" && !/\bincremental\b/i.test(i.heading),
+  );
+
+  take(lienGp ?? lienAny);
+  take(debtGp ?? debtAny);
+
+  for (const item of scored) {
+    if (picked.length >= limit) break;
+    take(item);
+  }
+  return picked;
+}
+
 function composeAnswer(params: {
   question: string;
   intent: QuestionIntent;
@@ -336,7 +424,7 @@ function composeAnswer(params: {
   amendmentNote?: string;
   matchedDefinition?: { term: string; excerpt: string; sourceId?: string; governingAgreement?: string } | null;
 }): AskRetrieveAnswer {
-  const top = params.items.slice(0, 6);
+  const top = selectAnswerItems(params.items, params.intent, 6);
   if (top.length === 0 && !params.matchedDefinition) {
     return {
       kind: "insufficient_evidence",
@@ -403,7 +491,7 @@ function composeAnswer(params: {
 
   const intentLead: Record<QuestionIntent, string> = {
     SECURED_DEBT:
-      "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is:",
+      "Additional secured debt is governed jointly by the indebtedness and liens regimes — both must be satisfied. Source-backed analysis of matching provisions from each regime:",
     RESTRICTED_PAYMENTS:
       "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:",
     NON_GUARANTOR_DEBT:
@@ -424,6 +512,8 @@ function composeAnswer(params: {
       "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say:",
     GUARANTEES:
       "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say:",
+    INCREMENTAL_FACILITIES:
+      "Incremental capacity typically combines fixed, ratio-based, and voluntary-prepayment prongs, with possible reallocations and reclassifications. Matching analyzed provisions say:",
     GENERAL: "Matching analyzed provisions say:",
   };
 
@@ -436,8 +526,16 @@ function composeAnswer(params: {
     : "";
 
   const explanationBlocks = top.map((item, i) => {
+    const regime =
+      params.intent === "SECURED_DEBT"
+        ? item.category === "LIENS_SECURED_DEBT"
+          ? "LIENS REGIME"
+          : item.category === "DEBT_INCURRENCE"
+            ? "INDEBTEDNESS REGIME"
+            : null
+        : null;
     const bits = [
-      `(${i + 1}) §${item.sectionRef} — ${item.heading} [${item.posture}]`,
+      `(${i + 1}) §${item.sectionRef} — ${item.heading} [${item.posture}]${regime ? ` [${regime}]` : ""}`,
       item.plainEnglish,
     ];
     const matchedDefs = (item.applicableDefinitions ?? []).filter((d) =>
@@ -449,6 +547,12 @@ function composeAnswer(params: {
     if (matchedDefs[0]) {
       bits.push(`Applicable definition (${matchedDefs[0].term}): ${matchedDefs[0].excerpt.slice(0, 220)}`);
     }
+    const mech = (item.materialBasketsThresholds ?? []).filter((b) =>
+      /reclassif|anti-stack|without-duplication|Incremental|Available Amount|Not Otherwise Applied|shared|grower|Ratio-based incremental/i.test(
+        b,
+      ),
+    );
+    if (mech[0]) bits.push(`Capacity mechanics: ${mech.slice(0, 3).join("; ")}`);
     if (item.coveredEntities?.length) {
       bits.push(`Covered entities: ${item.coveredEntities.join(", ")}.`);
     }
@@ -550,10 +654,13 @@ export function answerFromSummaryItems(params: {
     })
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
+
+  // For secured-debt, keep a larger scored pool so regime selection can find Liens + Debt.
+  const poolLimit = intent === "SECURED_DEBT" ? Math.max(params.limit ?? 6, 16) : params.limit ?? 6;
   return composeAnswer({
     question: q,
     intent,
-    items: scored.slice(0, params.limit ?? 6),
+    items: scored.slice(0, poolLimit),
     researchOnly: params.researchOnly ?? true,
     amendmentNote: params.amendmentNote,
     matchedDefinition: matchedDefinition

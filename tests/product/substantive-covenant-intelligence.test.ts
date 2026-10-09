@@ -71,6 +71,13 @@ describe("substantive CONMED covenant intelligence", () => {
     expect(answer.citations[0]!.sectionRef).toBeTruthy();
     // Must not be only a raw excerpt list
     expect(answer.detail).not.toMatch(/^Based only on discovered covenant excerpts/);
+    // Dual-regime: both Liens and Indebtedness when present in the summary
+    const hasLiens = summary.items.some((i) => i.category === "LIENS_SECURED_DEBT");
+    const hasDebt = summary.items.some((i) => i.category === "DEBT_INCURRENCE");
+    if (hasLiens && hasDebt) {
+      expect(answer.detail).toMatch(/\[LIENS REGIME\]/);
+      expect(answer.detail).toMatch(/\[INDEBTEDNESS REGIME\]/);
+    }
   });
 
   it("answers restricted-payment questions against CONMED analyses", () => {

@@ -70,7 +70,7 @@ export function discoverCovenantCandidates(
     // Negative-covenant / capacity sections often bury growers, Available Amount
     // builders, and shared caps deep in lettered exceptions — keep a longer span.
     const capacitySection =
-      /\b(?:Indebtedness|Liens?|Restricted\s+Payments?|Investments?|Dispositions?|Asset\s+Sales?|Available\s+Amount)\b/i.test(
+      /\b(?:Indebtedness|Liens?|Restricted\s+Payments?|Investments?|Dispositions?|Asset\s+Sales?|Available\s+Amount|Incremental)\b/i.test(
         headingForFamily,
       ) ||
       mergedFamilies.some((f) =>
