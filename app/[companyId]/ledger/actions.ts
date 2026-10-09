@@ -36,7 +36,7 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
  */
 export async function supersedeLedgerEntry(companyId: string, id: string) {
   await requireCompanyAccess(companyId);
-  const entry = await prisma.ledgerEntry.findFirstOrThrow({ where: { id, companyId } });
+  const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
   if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
   await prisma.ledgerEntry.update({

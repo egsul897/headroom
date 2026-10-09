@@ -133,8 +133,8 @@ describe("structural coverage of company-scoped entry points", () => {
     expect(route).toMatch(/status: 403/);
   });
   it("object-level mutations bind the object to the authorized company", () => {
-    expect(read("app/[companyId]/feeds/actions.ts")).not.toMatch(/findUniqueOrThrow\(\{ where: \{ id \} \}\)/);
-    expect(read("app/[companyId]/ledger/actions.ts")).toMatch(/findFirstOrThrow\(\{ where: \{ id, companyId \} \}\)/);
+    expect(read("app/[companyId]/feeds/actions.ts").match(/does not belong to this company/g)).toHaveLength(2);
+    expect(read("app/[companyId]/ledger/actions.ts")).toMatch(/does not belong to this company/);
     expect(read("app/[companyId]/onboarding/sources/actions.ts")).toMatch(/where: \{ id: sourceConnectionId, companyId \}/);
   });
 });

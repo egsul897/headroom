@@ -81,7 +81,7 @@ function completeSnapshotUpdate(payload: FeedQueueSnapshotPayload): { ok: true; 
 
 export async function approveFeedItem(companyId: string, id: string) {
   await requireCompanyAccess(companyId);
-  const item = await prisma.feedQueueItem.findFirstOrThrow({ where: { id, companyId } });
+  const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
 
@@ -132,7 +132,7 @@ export async function approveFeedItem(companyId: string, id: string) {
 
 export async function dismissFeedItem(companyId: string, id: string) {
   await requireCompanyAccess(companyId);
-  const item = await prisma.feedQueueItem.findFirstOrThrow({ where: { id, companyId } });
+  const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
   await prisma.feedQueueItem.update({ where: { id }, data: { status: "DISMISSED", resolvedAt: new Date() } });

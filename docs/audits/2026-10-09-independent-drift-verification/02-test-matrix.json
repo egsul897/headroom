@@ -45,9 +45,14 @@
       "result": "NOT_VERIFIED locally (no DATABASE_URL); p3-r0-soft-gate runs tests/ledger/supersede-ledger-entry.test.ts and tests/feeds/snapshot-update-no-carry-forward.test.ts in CI on an ephemeral Postgres and is path-triggered by this branch"
     },
     {
-      "command": "GitHub Actions on the PR head",
+      "command": "GitHub Actions on cd5cdc86 (first push)",
       "exitCode": null,
-      "result": "pending at the time this artifact was written; see the PR checks. Vercel deployment success is not evidence of correctness"
+      "result": "P3-R0 carry-forward and supersession (soft gate): FAILURE on tests/ledger/supersede-ledger-entry.test.ts:96 \u2014 the branch's bound query replaced the explicit 'does not belong to this company' refusal (regression introduced by this branch, reverted in the following commit); home overview, feeds invent-absence, Vercel: success; canonical-compiler and stratified-cert not path-triggered (lib/contract-model untouched)"
+    },
+    {
+      "command": "GitHub Actions on the corrected head",
+      "exitCode": null,
+      "result": "recorded in the PR checks and in the final return"
     }
   ],
   "failingCasesRemovedOrWeakened": "none",

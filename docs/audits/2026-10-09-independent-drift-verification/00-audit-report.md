@@ -43,10 +43,13 @@ make the later approval claim evidenced.
 
 ## Part VII — Cross-cutting regression audit (material items only)
 
-1. **Object-level authorization gaps beside the tenant gap** (fixed where trivial): feed items and ledger entries were loaded by
-   id without `companyId` (`feeds/actions.ts:84,135`, `ledger/actions.ts:39`), source connections likewise
-   (`sources/actions.ts:25`). Now bound to the authorized company. Still open: `lib/onboarding/review.ts:94,152` loads
-   extraction candidates by id without company binding (the review actions are now tenant-gated; the object binding is not).
+1. **Object-level authorization beside the tenant gap**: feed items and ledger entries were already loaded by id and then
+   checked against `companyId` with an explicit refusal (`feeds/actions.ts:86,136`, `ledger/actions.ts:40`; the P3-R0 C10 test
+   asserts that refusal) — correct and unchanged. Source-connection sync (`sources/actions.ts:25`) loaded the connection by id
+   with no company check; now bound. Still open: `lib/onboarding/review.ts:94,152` loads extraction candidates by id without
+   company binding (the review actions are now tenant-gated; the object binding is not). An earlier draft of this report and
+   the first push of this branch (`cd5cdc86`) wrongly replaced the feed/ledger check with a bound query, which changed the
+   refusal wording and failed the C10 test in CI; reverted in the next commit.
 2. **Invalidating findings that did not invalidate**: `challenge.ts` honoured `invalidatesExecutability` only at BLOCKER
    severity, so an unresolved entity scope (MATERIAL, `invalidatesExecutability: true`) never blocked. Fixed (any severity).
 3. **Fixture-specific UI**: `app/[companyId]/position/page.tsx` renders a CONMED-only panel keyed on `CONMED_DEMO_COMPANY_ID`.
