@@ -8,6 +8,8 @@ export {
   approveWorkspaceCertificate,
   appendContractLedgerUsage,
   promoteBasketLinesToContractLedger,
+  proposeCertificateRestatement,
+  listCertificateFactsForSnapshot,
   type SeedCertificateResult,
   type ApproveCertificateResult,
 } from "./certificate-actions";

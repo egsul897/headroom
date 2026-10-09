@@ -4,8 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
 
+type AskMode = "corpus" | "transaction";
+
 /**
- * Ask page — submits questions to a server action for workspace-isolated retrieval.
+ * Ask page — corpus retrieval (/api/ask) or structured transaction analysis (/api/ask/transaction).
  */
 export function AskShell({
   companyId,
@@ -15,7 +17,9 @@ export function AskShell({
   initial: AskShellResult;
 }) {
   const [question, setQuestion] = useState("");
+  const [mode, setMode] = useState<AskMode>("transaction");
   const [result, setResult] = useState<AskShellResult>(initial);
+  const [txnJson, setTxnJson] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   return (
@@ -116,31 +120,94 @@ export function AskShell({
         )}
       </section>
 
+      {txnJson && (
+        <section className="home-card" style={{ marginTop: 12 }}>
+          <h2 className="home-headline">Transaction analysis (structured)</h2>
+          <pre style={{ whiteSpace: "pre-wrap", fontSize: 12, overflow: "auto" }}>{txnJson}</pre>
+        </section>
+      )}
+
       <form
         className="home-card ask-form"
         onSubmit={async (event) => {
           event.preventDefault();
           setPending(true);
+          setTxnJson(null);
           try {
-            const res = await fetch("/api/ask", {
-              method: "POST",
-              headers: { "content-type": "application/json" },
-              body: JSON.stringify({ companyId, question }),
-            });
-            const data = (await res.json()) as AskShellResult;
-            setResult(data);
+            if (mode === "transaction") {
+              const res = await fetch("/api/ask/transaction", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ companyId, question, confirmed: true }),
+              });
+              const data = (await res.json()) as {
+                answer?: { kind: string; headline: string; detail: string; limitations?: string[] };
+                draft?: { missingConfirmations?: string[] };
+                authoritative?: { status: string; authority: string; missingInputs?: string[] };
+                pathEnumeration?: { authority: string; note: string };
+                error?: string;
+              };
+              if (data.error) {
+                setResult({
+                  kind: "refused",
+                  caseId: "REFUSE_NOT_INVENT",
+                  headline: "Transaction analysis refused",
+                  detail: data.error,
+                });
+              } else {
+                setTxnJson(JSON.stringify(data, null, 2));
+                setResult({
+                  kind:
+                    data.answer?.kind === "certified"
+                      ? "answered"
+                      : data.answer?.kind === "needs_confirmation" || data.answer?.kind === "insufficient_evidence"
+                        ? "insufficient_evidence"
+                        : "answered",
+                  caseId: "TRANSACTION_READINESS",
+                  headline: data.answer?.headline ?? "Transaction analysis",
+                  detail: data.answer?.detail ?? "",
+                  limitations: data.answer?.limitations,
+                  unresolved: [
+                    ...(data.draft?.missingConfirmations ?? []),
+                    ...(data.authoritative?.missingInputs ?? []),
+                  ],
+                });
+              }
+            } else {
+              const res = await fetch("/api/ask", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ companyId, question }),
+              });
+              const data = (await res.json()) as AskShellResult;
+              setResult(data);
+            }
           } catch {
             setResult({
               kind: "refused",
               caseId: "REFUSE_NOT_INVENT",
               headline: "Ask failed",
-              detail: "The retrieval request failed. No invented answer was produced.",
+              detail: "The request failed. No invented answer was produced.",
             });
           } finally {
             setPending(false);
           }
         }}
       >
+        <label className="home-eyebrow" htmlFor="ask-mode">
+          Mode
+        </label>
+        <select
+          id="ask-mode"
+          value={mode}
+          onChange={(e) => setMode(e.target.value as AskMode)}
+          disabled={pending}
+          className="input"
+          style={{ maxWidth: 280, marginBottom: 8 }}
+        >
+          <option value="transaction">Transaction analysis (North Star gated)</option>
+          <option value="corpus">Corpus research (citations only)</option>
+        </select>
         <label className="home-eyebrow" htmlFor="ask-question">
           Question about this workspace’s financing documents
         </label>
@@ -150,17 +217,19 @@ export function AskShell({
           onChange={(event) => setQuestion(event.target.value)}
           rows={4}
           disabled={pending}
-          placeholder='e.g. Can the borrower incur an additional $100 million of secured debt?'
+          placeholder='e.g. Can we incur $100 million of secured debt on 2026-08-01?'
         />
         <button type="submit" className="button" disabled={pending || !question.trim()}>
-          {pending ? "Retrieving…" : "Submit question"}
+          {pending ? "Working…" : mode === "transaction" ? "Analyze transaction" : "Submit question"}
         </button>
         <p className="home-detail" style={{ marginTop: 8 }}>
-          Answers cite uploaded package text only.{" "}
+          Transaction mode uses APPROVED NS-4 snapshots, cutoff resolution, and attributed ledger — never invents
+          capacity. Certified 4E enumeration requires a VerifiedExecutionPackage.{" "}
+          <Link href={`/${companyId}/certificates`}>Certificates</Link>
+          {" · "}
           <Link href={`/${companyId}/documents`}>Documents</Link>
           {" · "}
-          <Link href="/research/ask">Research corpus Ask</Link> for issuer-disjoint precedents
-          (never governing for this deal).
+          <Link href="/research/ask">Research corpus Ask</Link>
         </p>
       </form>
     </div>

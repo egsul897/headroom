@@ -5,6 +5,7 @@ import {
   approveWorkspaceCertificate,
   appendContractLedgerUsage,
   proposeSyntheticCertificateForCompany,
+  proposeCertificateRestatement,
 } from "@/lib/product/north-star-workflow";
 
 export async function seedSyntheticCertificateAction(companyId: string) {
@@ -59,5 +60,17 @@ export async function appendHistoricalUsageAction(
   revalidatePath(`/${companyId}/certificates`);
   revalidatePath(`/${companyId}/capacity`);
   revalidatePath(`/${companyId}/ledger`);
+  return result;
+}
+
+export async function restateCertificateAction(companyId: string, predecessorSnapshotId: string) {
+  const result = await proposeCertificateRestatement({
+    companyId,
+    predecessorSnapshotId,
+    reviewedByNote: "workspace restatement",
+  });
+  revalidatePath(`/${companyId}/certificates`);
+  revalidatePath(`/${companyId}/capacity`);
+  revalidatePath(`/${companyId}/ask`);
   return result;
 }

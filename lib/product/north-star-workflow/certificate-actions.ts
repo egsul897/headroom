@@ -255,3 +255,95 @@ export async function appendContractLedgerUsage(args: {
   if (!result.ok) return { ok: false, issues: result.issues.map((i) => i.message) };
   return { ok: true };
 }
+
+/**
+ * Explicit restatement: propose a new DRAFT snapshot that supersedes an APPROVED predecessor.
+ * Never mutates the predecessor in place.
+ */
+export async function proposeCertificateRestatement(args: {
+  companyId: string;
+  predecessorSnapshotId: string;
+  reviewedByNote?: string;
+}): Promise<SeedCertificateResult> {
+  const store = await PrismaApprovedSnapshotStore.open(prisma, args.companyId);
+  const pred = store.getSnapshot(args.predecessorSnapshotId);
+  if (!pred) {
+    return {
+      ok: false,
+      companyId: args.companyId,
+      snapshotId: args.predecessorSnapshotId,
+      status: "MISSING",
+      ledgerProposalCount: 0,
+      issues: ["predecessor snapshot not found"],
+      label: "RESTATEMENT refused — predecessor missing",
+    };
+  }
+  if (pred.status !== "APPROVED") {
+    return {
+      ok: false,
+      companyId: args.companyId,
+      snapshotId: args.predecessorSnapshotId,
+      status: pred.status,
+      ledgerProposalCount: 0,
+      issues: ["predecessor must be APPROVED before restatement"],
+      label: "RESTATEMENT refused — predecessor not APPROVED",
+    };
+  }
+  const snapshotId = `${args.predecessorSnapshotId}-restatement-${Date.now()}`.slice(0, 180);
+  const cert: SyntheticCertificate = {
+    ...CONMED_FORM_INSPIRED_CERT,
+    companyId: args.companyId,
+    snapshotId,
+    reportingPeriod: pred.reportingPeriod ?? CONMED_FORM_INSPIRED_CERT.reportingPeriod,
+    asOf: pred.asOf ?? CONMED_FORM_INSPIRED_CERT.asOf,
+    documentId: `synth-restatement-${args.companyId}`,
+    versionHash: `sha256:restatement-${snapshotId}`,
+    supersedesSnapshotId: args.predecessorSnapshotId,
+    note: `SYNTHETIC restatement of ${args.predecessorSnapshotId} — ${args.reviewedByNote ?? "explicit correction"}`,
+    facts: CONMED_FORM_INSPIRED_CERT.facts.map((f) => ({ ...f, companyId: args.companyId })),
+    basketUsageLines: [],
+  };
+  const ledger = new LedgerProposalRecorder();
+  const proposed = await proposeFromCertificateAsync(store, cert, ledger);
+  if (!proposed.ok) {
+    return {
+      ok: false,
+      companyId: args.companyId,
+      snapshotId,
+      status: "REJECTED",
+      ledgerProposalCount: 0,
+      issues: proposed.issues.map((i) => i.message),
+      label: "RESTATEMENT proposal refused",
+    };
+  }
+  return {
+    ok: true,
+    companyId: args.companyId,
+    snapshotId,
+    status: cert.proposalStatus,
+    ledgerProposalCount: 0,
+    label: `SYNTHETIC restatement DRAFT superseding ${args.predecessorSnapshotId}`,
+  };
+}
+
+/** Load fact rows + locators for certificate UI (company-scoped). */
+export async function listCertificateFactsForSnapshot(companyId: string, snapshotId: string) {
+  const snap = await prisma.contractInputSnapshot.findFirst({
+    where: { companyId, snapshotId },
+    include: { facts: { include: { locators: true } } },
+  });
+  if (!snap) return [];
+  return snap.facts.map((f) => {
+    const identity = f.identityJson as { key?: string; valueType?: string; currency?: string | null };
+    const locator = f.locators[0]?.locatorJson as Record<string, unknown> | undefined;
+    return {
+      factId: f.id,
+      key: identity.key ?? "—",
+      valueType: identity.valueType ?? null,
+      currency: identity.currency ?? null,
+      displayName: f.displayName,
+      note: f.note,
+      locator,
+    };
+  });
+}

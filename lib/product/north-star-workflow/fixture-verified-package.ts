@@ -529,7 +529,7 @@ export function buildFixtureDebtRpSharedPackage(): FixtureVerifiedPackage {
       snapshotAsOf: "2026-06-30",
       selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER" as const,
     },
-  } as DemoExercise;
+  } as unknown as DemoExercise;
   const built = buildFixtureVerifiedPackage(syntheticExercise);
   if ("blocked" in built && built.blocked) {
     throw new Error(`FIXTURE debt/RP/shared package refused: ${built.reason}`);

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { loadDebtIntelligenceDashboard } from "@/lib/product/customer-intelligence/debt-intelligence";
+import { loadAuthoritativeCapacity, listDemoTransactionFixtures } from "@/lib/product/north-star-workflow";
 import { fmtM } from "@/lib/format";
 import { MetricRow } from "@/components/debt-intelligence/MetricRow";
 
@@ -24,12 +25,51 @@ export default async function DebtIntelligencePage({
   const { companyId } = await params;
   const sp = await searchParams;
   const openMetric = sp.metric?.trim() || null;
-  const d = await loadDebtIntelligenceDashboard(companyId);
+  const [d, authoritative, demoFixtures] = await Promise.all([
+    loadDebtIntelligenceDashboard(companyId),
+    loadAuthoritativeCapacity({ companyId }),
+    Promise.resolve(listDemoTransactionFixtures()),
+  ]);
   const cs = d.capitalStructure;
   const agg = cs.aggregates;
 
   return (
     <div className="stack">
+      <Card>
+        <div className="card-title">North-Star authoritative capacity</div>
+        <div className="card-subtitle">
+          Certified numbers require VerifiedExecutionPackage + cutoff-bound APPROVED snapshot + attributed ledger.
+          Demo multipath scenarios below are SYNTHETIC fixtures — not customer financial facts.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Status</div>
+          <div className="row-value">
+            <Chip tone={authoritative.status === "CERTIFIED_EXECUTED" ? "pass" : "tight"}>{authoritative.status}</Chip>
+          </div>
+        </div>
+        <div className="row-note">
+          Authority: {authoritative.authority} · Cutoff: {authoritative.cutoff.state}
+          {authoritative.cutoff.reportingPeriodKey ? ` (${authoritative.cutoff.reportingPeriodKey})` : ""} · APPROVED:{" "}
+          {authoritative.approvedSnapshotCount} · 4C active: {authoritative.activeLedgerUsageCount}
+        </div>
+        {authoritative.missingInputs.map((m, i) => (
+          <div key={i} className="row-note">
+            • Missing: {m}
+          </div>
+        ))}
+        <div className="row-note" style={{ marginTop: 8 }}>
+          Demo fixtures (not workspace facts): {demoFixtures.map((f) => f.label).join(" · ")}
+        </div>
+        <div className="button-row" style={{ marginTop: 10 }}>
+          <Link className="button button-primary" href={`/${companyId}/ask`}>
+            Ask transaction
+          </Link>
+          <Link className="button" href={`/${companyId}/certificates`}>
+            Certificates
+          </Link>
+        </div>
+      </Card>
+
       <Card>
         <div className="card-title">Debt intelligence dashboard</div>
         <div className="card-subtitle">{d.headline}</div>
