@@ -23,7 +23,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
-import { retrieveDirectDefinitions } from "./definition-graph";
+import { isAdministrativeTerm, retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
@@ -196,7 +196,17 @@ function retrieveCrossDocumentDefinitionFallback(
       const seenKey = `${documentId}::${normalized}`;
       if (state.seenUnresolvedTermPhrases.has(seenKey)) continue;
       state.seenUnresolvedTermPhrases.add(seenKey);
-      const unresolvedSeverity = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      // Administrative boilerplate (Closing Date, etc.) and same-document section
+      // captions ("Restricted Payments" naming SECTION 7.06) are not undefined
+      // defined-term failures — disclose LOW so definition-mediated shared
+      // capacity (IPV-15) is not refused for covenant-category wording.
+      const sectionCaption = access.index.allNodes().some((n) => {
+        if (n.documentId !== documentId || (n.nodeType !== "SECTION" && n.nodeType !== "ARTICLE")) return false;
+        const own = access.index.getNodeText(n.nodeId, "OWN");
+        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(own);
+      });
+      let unresolvedSeverity: "LOW" | "MEDIUM" = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      if (isAdministrativeTerm(normalized) || sectionCaption) unresolvedSeverity = "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
         dependencyType: "UNRESOLVED_DEFINED_TERM",

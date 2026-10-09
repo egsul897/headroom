@@ -892,6 +892,9 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const sourceReferenceAudit: IRSourceReferenceAudit | undefined = ctx.referenceAudit.length > 0 ? {
       version: SOURCE_REFERENCE_FIDELITY_VERSION,
       note: "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
+      // SA-1 audit surface: operative-text scan only. Definition-mediated refs are
+      // admitted in fidelityFor (IPV-15) when the model emits them; they are not
+      // bulk-listed here as if the clause itself stated every cross-ref in every retrieved definition.
       statedReferences: statedReferencesFor({ operativeText: input.operativeSourceText, lineageRefs: [...new Set((wireRule.inventoryItemIds ?? []).flatMap((id) => inventoryRefs.get(id) ?? []))], baseSectionRef: input.sourceSectionRef ?? null, index: referenceIndex, documentId }).map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })),
       entries: [...ctx.referenceAudit],
     } : undefined;
