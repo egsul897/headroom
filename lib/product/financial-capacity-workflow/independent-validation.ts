@@ -430,9 +430,8 @@ export async function runIndependentValidation(args?: {
   });
   const goldenTotal = golden.reduce((s, g) => s + g._count, 0);
   const goldenVerified = golden
-    .filter((g) => g.status === "VERIFIED" || g.status === "LAWYER_VERIFIED")
+    .filter((g) => g.status === "VERIFIED")
     .reduce((s, g) => s + g._count, 0);
-  // hasCompletedQualifiedLegalReview statuses — count non-UNVERIFIED as verified for report
   const goldenVerifiedLoose = golden
     .filter((g) => g.status !== "UNVERIFIED")
     .reduce((s, g) => s + g._count, 0);
