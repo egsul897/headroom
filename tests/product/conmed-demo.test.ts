@@ -63,9 +63,9 @@ describe("CONMED authentic package fixtures", () => {
 });
 
 describe("product nav", () => {
-  it("includes Documents, Covenants, Position, Simulations, Evidence, Transactions", () => {
+  it("includes Documents, Covenants, Position, Simulate, Evidence, Ask", () => {
     const labels = companyNavItems(CONMED_DEMO_COMPANY_ID, "ACTIVE").map((i) => i.label);
-    for (const label of ["Documents", "Covenants", "Position", "Simulations", "Evidence", "Transactions", "Dashboard", "Capacity"]) {
+    for (const label of ["Documents", "Covenants", "Position", "Simulate", "Evidence", "Ask", "Ledger"]) {
       expect(labels).toContain(label);
     }
   });
