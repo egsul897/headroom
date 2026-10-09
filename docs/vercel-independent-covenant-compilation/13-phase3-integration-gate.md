@@ -54,4 +54,7 @@ No frozen Claude fixtures, certification alterations, or duplicate Knowledge Fac
 
 ## Verdict
 
-Filled after exact-head CI: see end of this file / PR comment.
+**Verdict (pending CI):** will set to NONPROMOTING_MERGE_READY or INTEGRATION_BLOCKED after exact-head CI.
+
+**Ending SHA (pre-CI pin):** `dee7c65530fad627141f8175464488f857326826`
+**Starting SHA:** `0dbe81f4f67a7eb5b453b596376925e7f52c1f8a`
