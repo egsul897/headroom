@@ -146,4 +146,4 @@ npx vitest run tests/agent8-independent-adversarial
 
 ## Release recommendation
 
-**Do not treat Phase-4 capacity `status: AVAILABLE` as authoritative permission** until DEFECT-A8-01 is fixed. Prefer amount-kind + simulation path outcomes. Shared negative remaining (A8-02) should be cleaned before any UI surfaces `sharedConstraints.remaining` as headroom.
+**DEFECT-A8-01 / A8-02 are CLOSED** on `main` (`b99f934b`, PR #229). Failed gates publish `status=NOT_SATISFIED` with amount `GATE_NOT_SATISFIED`. Shared over-consumption withholds remaining as `NOT_DETERMINED` while preserving deficit diagnostics. Continue preferring amount-kind + simulation path outcomes for pathway decisions; do not invent favorable remaining from empty utilization (next priority).
