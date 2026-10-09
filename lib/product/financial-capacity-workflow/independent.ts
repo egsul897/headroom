@@ -23,10 +23,15 @@ export const COHERENT_INDEPENDENT = {
     equityProceedsSinceIssue: 2150,
     assumedNewDebtRatePct: 6.5,
   },
-  /** CA §6.11 TNL room at seed financials. */
+  /** CA §6.11 TNL room at seed financials — package-wide UNSECURED binding, not secured. */
   tnlRoom: 4.25 * 1700 - (3258 - 1162), // 5129
-  /** Notes MILA secured SSNL ≤ 3.00x room. */
+  /** Notes MILA secured SSNL ≤ 3.00x room — package-wide SECURED binding. */
   milaSecuredRoom: 3.0 * 1700 - (2221 - 1162), // 4041
+  /**
+   * Builder Available Amount: max(330, 0.25×EBITDA) + 0.5×CNI + equityProceeds
+   * = max(330,425) + 260 + 2150 = 2835.
+   */
+  builderHeadline: Math.max(330, 0.25 * 1700) + 0.5 * 520 + 2150, // 2835
   /** Known ledger RP debit (dividends) against shared Available Amount pool. */
   ledgerRpDebit: 150,
   notesIndentureId: "coherent-2029-notes-indenture",

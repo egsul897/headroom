@@ -34,7 +34,10 @@ describe("financial capacity positions — multi-company", () => {
       expect(coherent?.eligibility.executableCapacity).toBe(true);
       expect(matthews?.eligibility.executableCapacity).toBe(false);
       expect(coherent?.baskets.length).toBeGreaterThanOrEqual(10);
-      expect(coherent?.remainingCapacity.secured).toBe(5129);
+      // Package-wide: secured = Indenture mila_secured $4,041M; unsecured = CA TNL $5,129M
+      expect(coherent?.remainingCapacity.secured).toBe(4041);
+      expect(coherent?.remainingCapacity.unsecured).toBe(5129);
+      expect(coherent?.remainingCapacity.securedMethod).toBe("MODELED_CROSS_DOCUMENT");
       expect(coherent?.contractualMetrics?.ebitda).toBe(1700);
 
       const kinds = new Set(report.scenarios.map((s) => s.kind));

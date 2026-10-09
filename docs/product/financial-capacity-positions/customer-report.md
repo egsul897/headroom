@@ -1,7 +1,7 @@
 # Financial capacity positions — milestone report
 
-Generated: 2026-10-09T22:42:03.748Z
-SHA: bae24ced33fdd6963d0615265a1e67cb181233e8
+Generated: 2026-10-09T22:53:47.575Z
+SHA: 3f1e6c5feb377cab68b8277be128037e44aa3b4b
 paidInferenceCalls: 0
 promotedToLegalTruth: 0
 
@@ -15,7 +15,7 @@ promotedToLegalTruth: 0
 6. Correct refusals: **1**
 7. Incorrect outcomes: **0**
 8. Transactions with validated state changes: **5**
-9. New reusable covenant knowledge stored in Neon: **1**
+9. New reusable covenant knowledge stored in Neon: **0**
 
 ## Companies
 
@@ -24,7 +24,7 @@ promotedToLegalTruth: 0
 - As of: 2026-06-30T00:00:00.000Z
 - Executable capacity: true
 - EBITDA $1700M · Net leverage 1.233x · FCCR 8.95x
-- Remaining secured capacity: 5129 (binding: Credit Agreement (2022, as amended))
+- Remaining secured capacity: 4041 (binding: 2029 Senior Notes Indenture)
 - Remaining unsecured capacity: 5129 (binding: Credit Agreement (2022, as amended))
 - Eligibility gaps: No NS-4 APPROVED ContractInputSnapshot (legacy FinancialSnapshot/State path used when present)
 - Baskets modeled: 15
@@ -50,7 +50,7 @@ promotedToLegalTruth: 0
 - Pathway: simulateDebtIncurrence + computeRemainingCapacityAfterDebtIncurrence (solver-native)
 - Consumed: Financial Covenants — Total Net Leverage (-50); MILA — secured prong (-50); MILA — unsecured prong (-50); Credit Facilities basket — flat (-50); Lien capacity — ratio prong (-50)
 - Unaffected baskets: 8
-- Independent rationale: TNL room 4.25×EBITDA − netDebt = 5129; post cash-unchanged convention → 5079.
+- Independent rationale: Package secured = mila_secured 4041; unsecured TNL room 5129. Post cash-unchanged → secured 3991, TNL 5079.
 
 ### COH-S2-debt-repay-50 — Repay $50M Term Loan A
 
@@ -111,5 +111,4 @@ Scenarios: S1-unsecured-debt, S2-secured-debt, S3-restricted-payment, S4-ratio-g
 
 ## Neon intelligence
 
-- `financial-capacity-coherent-3d0af53f61a00b08` (financial_capacity_calculation_case) — DISCOVERED_NOT_LEGAL_TRUTH; created=true; promotedToLegalTruth=0
-- `financial-capacity-matthews-blocker-99b97880f15d278d` (capacity_blocker_pattern) — DISCOVERED_NOT_LEGAL_TRUTH; created=false; promotedToLegalTruth=0
+- `financial-capacity-coherent-ab21c68c0fd15e57` (financial_capacity_calculation_case) — DISCOVERED_NOT_LEGAL_TRUTH; created=false; promotedToLegalTruth=0

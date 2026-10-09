@@ -269,13 +269,29 @@ async function buildCompanyPosition(companyId: string): Promise<CompanyFinancial
       known: true as const,
     })),
     unknownUtilization,
+    // Package-wide binding from computeCovenantPosition cross-document
+    // (matches golden Q1/Q2). Do NOT use dashboard solver-native remaining
+    // for secured — it currently reports CA TNL $5,129M and is FALSE FAVORABLE
+    // vs Indenture mila_secured $4,041M.
     remainingCapacity: {
-      secured: dash?.capacity.secured.remainingCapacity ?? null,
-      unsecured: dash?.capacity.unsecured.remainingCapacity ?? null,
-      securedBinding: dash?.capacity.secured.binding?.documentName ?? null,
-      unsecuredBinding: dash?.capacity.unsecured.binding?.documentName ?? null,
-      securedMethod: dash?.capacity.secured.binding?.method ?? null,
-      unsecuredMethod: dash?.capacity.unsecured.binding?.method ?? null,
+      secured:
+        position?.crossDocumentSecured.status === "modeled"
+          ? (position.crossDocumentSecured.capacity ?? null)
+          : null,
+      unsecured:
+        position?.crossDocumentUnsecured.status === "modeled"
+          ? (position.crossDocumentUnsecured.capacity ?? null)
+          : null,
+      securedBinding: position?.crossDocumentSecured.bindingDocumentName ?? null,
+      unsecuredBinding: position?.crossDocumentUnsecured.bindingDocumentName ?? null,
+      securedMethod:
+        position?.crossDocumentSecured.status === "modeled"
+          ? "MODELED_CROSS_DOCUMENT"
+          : null,
+      unsecuredMethod:
+        position?.crossDocumentUnsecured.status === "modeled"
+          ? "MODELED_CROSS_DOCUMENT"
+          : null,
     },
     crossDocumentRestrictions,
     certificatesProcessed: 0,
@@ -347,14 +363,21 @@ async function runCoherentScenarios(): Promise<TransactionScenarioResult[]> {
     const postMap = capacityMap(postPos);
     const deltas = classifyDeltas(preMap.values, postMap.values, preMap.names);
     const tnlKey = `${COHERENT_INDEPENDENT.creditAgreementId}:ca_leverage_cap`;
+    const packageSecuredPre = position.crossDocumentSecured.capacity ?? null;
+    const packageSecuredPost = postPos.crossDocumentSecured.capacity ?? null;
+    const expectedPackageSecuredPre = COHERENT_INDEPENDENT.milaSecuredRoom;
+    const expectedPackageSecuredPost = expectedPackageSecuredPre - amount;
     const assessment = assessExecutable({
       expectedStatus: "clear",
       observedStatus: sim.status,
-      expectedPre,
-      observedPre: dash.capacity.secured.remainingCapacity,
-      expectedPost: expectedPostEngine,
-      observedPost: postCap.remainingCapacity,
-      expectedEffects: [{ key: tnlKey, effect: "CONSUMED", delta: -amount }],
+      expectedPre: expectedPackageSecuredPre,
+      observedPre: packageSecuredPre,
+      expectedPost: expectedPackageSecuredPost,
+      observedPost: packageSecuredPost,
+      expectedEffects: [
+        { key: `${COHERENT_INDEPENDENT.notesIndentureId}:mila_secured`, effect: "CONSUMED", delta: -amount },
+        { key: tnlKey, effect: "CONSUMED", delta: -amount },
+      ],
       observedDeltas: deltas,
     });
     results.push({
@@ -363,27 +386,36 @@ async function runCoherentScenarios(): Promise<TransactionScenarioResult[]> {
       kind: "DEBT_INCURRENCE",
       title: "Incur $50M secured debt",
       amount,
-      detail: "Solver-native debt incurrence against CA + Notes; post capacity recomputed.",
+      detail:
+        "Package-wide secured binding is Indenture mila_secured ($4,041M), not CA TNL ($5,129M). Post capacity from cross-document recomputation.",
       independent: {
         expectedStatus: "clear",
-        expectedPreCapacity: expectedPre,
-        expectedPostCapacity: expectedPostEngine,
-        expectedBasketEffects: [{ key: tnlKey, effect: "CONSUMED", delta: -amount }],
-        rationale: `TNL room 4.25×EBITDA − netDebt = ${expectedPre}; post cash-unchanged convention → ${expectedPostEngine}.`,
-        source: "CA §6.11 + Neon FinancialSnapshot/State as of 2026-06-30",
+        expectedPreCapacity: expectedPackageSecuredPre,
+        expectedPostCapacity: expectedPackageSecuredPost,
+        expectedBasketEffects: [
+          { key: "mila_secured", effect: "CONSUMED", delta: -amount },
+          { key: tnlKey, effect: "CONSUMED", delta: -amount },
+        ],
+        rationale: `Package secured = mila_secured ${expectedPackageSecuredPre}; unsecured TNL room ${expectedPre}. Post cash-unchanged → secured ${expectedPackageSecuredPost}, TNL ${expectedPostEngine}.`,
+        source: "Indenture §3.3(b)(i)(C) + CA §6.11 + Neon financials as of 2026-06-30",
       },
       observed: {
         status: sim.status,
         pre: {
-          securedRemaining: dash.capacity.secured.remainingCapacity ?? null,
+          packageSecured: packageSecuredPre,
+          packageUnsecured: position.crossDocumentUnsecured.capacity ?? null,
           tnlRoom: preMap.values.get(tnlKey) ?? null,
+          milaSecured: preMap.values.get(`${COHERENT_INDEPENDENT.notesIndentureId}:mila_secured`) ?? null,
           totalNetLeverage: position.metrics.totalNetLeverage,
+          dashboardSolverSecuredRemaining: dash.capacity.secured.remainingCapacity ?? null,
         },
         post: {
-          securedRemaining: postCap.remainingCapacity ?? null,
+          packageSecured: packageSecuredPost,
+          packageUnsecured: postPos.crossDocumentUnsecured.capacity ?? null,
           tnlRoom: postMap.values.get(tnlKey) ?? null,
           totalNetLeverage: postPos.metrics.totalNetLeverage,
           proFormaTnl: sim.proForma.totalNetLeverage,
+          solverNativePostRemaining: postCap.remainingCapacity ?? null,
         },
         basketsConsumed: deltas.filter((d) => d.effect === "CONSUMED"),
         basketsRestored: deltas.filter((d) => d.effect === "INCREASED" || d.effect === "RESTORED"),
