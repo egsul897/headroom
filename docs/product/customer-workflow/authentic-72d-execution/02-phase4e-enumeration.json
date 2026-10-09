@@ -1,0 +1,40 @@
+{
+  "schema": "authentic-72d-phase4e.v1",
+  "paidProvidersCalled": false,
+  "results": [
+    {
+      "transactionKind": "UNSECURED_DEBT",
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "unsupportedReasons": [],
+      "incompleteReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:817fb6fce7f8b666081509b5",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+          "sourceSectionRef": "7.2(d)"
+        }
+      ]
+    },
+    {
+      "transactionKind": "SECURED_DEBT",
+      "authority": "CERTIFIED_4E",
+      "pathCount": 1,
+      "unsupportedReasons": [],
+      "incompleteReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:817fb6fce7f8b666081509b5",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "ruleId": "ir-rule:817fb6fce7f8b666081509b5",
+          "sourceSectionRef": "7.2(d)"
+        }
+      ]
+    }
+  ],
+  "criticalFalsePermissions": 0,
+  "note": "§7.2(d) Finance Lease Obligations basket — no cross-rule gate; path status CANDIDATE."
+}

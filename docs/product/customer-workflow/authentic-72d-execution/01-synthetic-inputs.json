@@ -1,0 +1,38 @@
+{
+  "schema": "authentic-72d-synthetic-inputs.v1",
+  "label": "SYNTHETIC_LABELED_TECHNICAL_DEMO — not a certified customer result",
+  "certifiedCustomerResult": false,
+  "asOf": "2026-06-30",
+  "snapshot": {
+    "snapshotId": "synthetic-cta-72d-demo-1",
+    "version": "1",
+    "companyId": "conmed-pilot",
+    "asOf": "2026-06-30",
+    "reportingPeriod": "FY2026-Q2-SYNTHETIC",
+    "status": "APPROVED",
+    "supersedesSnapshotId": null,
+    "provenance": {
+      "source": "SYNTHETIC_LABELED_TECHNICAL_DEMO",
+      "sourceVersion": "demo-1",
+      "note": "Labeled synthetic Consolidated Total Assets for isolated technical demonstration — NEVER a certified customer financial result"
+    },
+    "review": {
+      "reviewedBy": "technical-demo-script",
+      "reviewedAt": "2026-10-09T00:00:00Z",
+      "approvalRef": "SYNTHETIC_NOT_CUSTOMER"
+    },
+    "inputs": [
+      {
+        "key": "Consolidated Total Assets",
+        "asOf": {
+          "kind": "VERBATIM_CONTRACT_AS_OF_KEY",
+          "key": "date of incurrence of such Finance Lease Obligations"
+        },
+        "note": "SYNTHETIC: Consolidated Total Assets = $2,000,000,000 so 3.0% = $60,000,000; greater-of vs $50,000,000 → $60,000,000",
+        "amountUsd": "2000000000"
+      }
+    ]
+  },
+  "ledger": [],
+  "note": "Empty ledger = zero outstanding Finance Lease Obligations under §7.2(d)."
+}

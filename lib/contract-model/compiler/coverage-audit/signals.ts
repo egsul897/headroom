@@ -166,6 +166,26 @@ const ENUMERATION_MARKER = /\((?:[ivxlcdm]{1,6}|[a-z]{1,2})\)/gi;
 const MIN_GAP_CHARS = 12;
 const SUBSTANTIVE_NEARBY_GAP = /[$%]|greater of|lesser of|shall not|provided|so long as|notwithstanding|except|Indebtedness|Investment|Restricted Payment|Lien|Disposition/i;
 
+/**
+ * Spans of a greater-of / lesser-of formula (from the keyword through the next
+ * clause-ending semicolon or end of text). Markers inside these spans are
+ * comparison legs of one basket (e.g. "(x) $50,000,000 and (y) 3.0%"), not
+ * independent operative units — counting them as separate baskets is a
+ * structural false positive on every grower / greater-of exception.
+ */
+function greaterOrLesserOfSpans(text: string): Array<[number, number]> {
+  const spans: Array<[number, number]> = [];
+  const re = /\b(?:greater|lesser)\s+of\b/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    const start = m.index;
+    const rest = text.slice(start);
+    const semi = rest.search(/;/);
+    spans.push([start, semi >= 0 ? start + semi : text.length]);
+  }
+  return spans;
+}
+
 export function countInlineEnumerationMarkers(text: string): string[] {
   const re = new RegExp(ENUMERATION_MARKER.source, ENUMERATION_MARKER.flags);
   const occurrences: { marker: string; start: number; end: number }[] = [];
@@ -179,9 +199,14 @@ export function countInlineEnumerationMarkers(text: string): string[] {
     occurrences.push({ marker: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
   }
 
+  const formulaSpans = greaterOrLesserOfSpans(text);
+  const inFormulaSpan = (at: number) => formulaSpans.some(([a, b]) => at >= a && at < b);
+
   const genuine = new Set<string>();
   for (let i = 0; i < occurrences.length; i++) {
     const cur = occurrences[i]!;
+    // Greater-of / lesser-of legs are alternatives inside one capacity expression, not sibling baskets.
+    if (inFormulaSpan(cur.start)) continue;
     const nextStart = i + 1 < occurrences.length ? occurrences[i + 1]!.start : text.length;
     const gapText = text.slice(cur.end, nextStart);
     if (gapText.trim().length >= MIN_GAP_CHARS || SUBSTANTIVE_NEARBY_GAP.test(gapText)) genuine.add(cur.marker);

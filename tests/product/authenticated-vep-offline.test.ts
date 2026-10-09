@@ -11,27 +11,27 @@ import {
 import { certifiedMapToVerifiedExecutionPackage } from "../../lib/contract-model/phase3-certification/phase4-adapter";
 
 describe("authenticated VEP offline scan", () => {
-  it("finds authentic 10-certification.json packets and none are CERTIFIED", () => {
+  it("finds authentic CERTIFIED packets including §7.2(c) and §7.2(d) offline recomputes", () => {
     const scan = attemptAuthenticatedVep();
     expect(scan.paidProvidersCalled).toBe(false);
     expect(scan.fixtureIrInvented).toBe(false);
     expect(scan.authenticRoots).toEqual([...AUTHENTIC_EVIDENCE_ROOTS]);
     expect(scan.scannedCertificationFiles).toBeGreaterThan(0);
-    expect(scan.certifiedCount).toBe(0);
-    expect(scan.statusCounts.CERTIFIED ?? 0).toBe(0);
-    expect(scan.statusCounts.REVIEW_REQUIRED).toBeGreaterThan(0);
+    expect(scan.certifiedCount).toBeGreaterThanOrEqual(2);
+    expect(scan.statusCounts.CERTIFIED ?? 0).toBeGreaterThanOrEqual(2);
+    expect(scan.records.some((r) => r.path.includes("7.2c-recompute-phase2-certified") && r.status === "CERTIFIED")).toBe(true);
+    expect(scan.records.some((r) => r.path.includes("7.2d-recompute-phase2-certified") && r.status === "CERTIFIED")).toBe(true);
     expect(scan.records.some((r) => r.path.includes("7.2c-first-certified") && r.status === "REVIEW_REQUIRED")).toBe(true);
     expect(scan.records.some((r) => r.path.includes("7.5j-end-to-end-certification") && r.status === "REVIEW_REQUIRED")).toBe(true);
   });
 
-  it("refuses certifiedMapToVerifiedExecutionPackage with NO_CERTIFIED_ARTIFACTS", () => {
+  it("derives a VEP from authentic CERTIFIED artifacts (merged package may still fail capacity on §7.2(c) cross-rule gates)", () => {
     const scan = attemptAuthenticatedVep();
-    expect(scan.adapter.outcome).toBe("REFUSED");
-    if (scan.adapter.outcome !== "REFUSED") throw new Error("expected REFUSED");
-    expect(scan.adapter.refusals.map((r) => r.code)).toEqual(["NO_CERTIFIED_ARTIFACTS"]);
-    expect(scan.adapter.included).toEqual([]);
-    expect(scan.evaluateVerifiedCapacityInvoked).toBe(false);
-    expect(scan.claimedScope).toBe("NONE");
+    expect(scan.adapter.outcome).toBe("DERIVED");
+    if (scan.adapter.outcome !== "DERIVED") throw new Error("expected DERIVED");
+    expect(scan.adapter.included.length).toBeGreaterThanOrEqual(2);
+    expect(scan.evaluateVerifiedCapacityInvoked).toBe(true);
+    expect(scan.claimedScope).toBe("CANDIDATE_VEP_4E");
   });
 
   it("empty artifact list is the same refusal the production adapter uses", () => {
