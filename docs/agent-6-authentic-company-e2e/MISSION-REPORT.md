@@ -3,6 +3,8 @@
 **Verdict:** Authentic packages can be onboarded through a company-agnostic deterministic pipeline with **honest missing-evidence Position reports** and **zero critical false permissions**. Three generalizable extraction/structure defects were found and fixed. Full covenant→rulebook→ratio→basket certification remains blocked without LLM credentials (not faked).
 
 **Branch:** `cursor/agent6-authentic-company-e2e-aebc`  
+**PR:** https://github.com/egsul897/headroom/pull/226  
+**SHA:** `1d0455eb123d339293701d5d8059d3fe76f52b28`  
 **Cost:** `$0.00` (no provider calls; credential gate `BLOCKED_BY_MISSING_CREDENTIAL`)
 
 ## Packages (genuinely unseen at selection)
