@@ -54,7 +54,18 @@ No frozen Claude fixtures, certification alterations, or duplicate Knowledge Fac
 
 ## Verdict
 
-**Verdict (pending CI):** will set to NONPROMOTING_MERGE_READY or INTEGRATION_BLOCKED after exact-head CI.
+**`NONPROMOTING_MERGE_READY`**
 
-**Ending SHA (pre-CI pin):** `dee7c65530fad627141f8175464488f857326826`
-**Starting SHA:** `0dbe81f4f67a7eb5b453b596376925e7f52c1f8a`
+| Item | Value |
+| --- | --- |
+| Starting SHA | `0dbe81f4f67a7eb5b453b596376925e7f52c1f8a` |
+| Ending SHA (exact head) | `bd90f79167058131797e8797b74f6d5631b0a86c` |
+| Merge conflict resolutions | `.gitignore` union only (see above) |
+| `gh` mergeable | `MERGEABLE` (was `CONFLICTING`/`DIRTY` pre-merge) |
+| Draft → ready for review | Marked ready after exact-head CI green |
+| Focused VIC tests | 20/20 pass |
+| `tsc --noEmit` | exit 0 |
+| Exact-head CI | `certified path (provider-free)` **pass** (+ soft gates pass) |
+| Real-export status | `NO_CONSUMABLE_EXPORTS` |
+
+Candidate discovery remains **not** legal certification.
