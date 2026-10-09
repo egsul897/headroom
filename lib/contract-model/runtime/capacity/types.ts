@@ -120,17 +120,30 @@ export interface CapacityNode {
 /**
  * Every distinguishable reason a capacity is not a plain available number stays distinguishable.
  * A missing fact, an unsupported expression, an ambiguous legal state, a legal state that needs
- * review, and a runtime error never collapse into one null.
+ * review, a determined unsatisfied gate, and a runtime error never collapse into one null.
+ *
+ * NOT_SATISFIED is the capacity-status counterpart of CapacityAmount.GATE_NOT_SATISFIED and of
+ * ConditionResult/SelectedPathResult "NOT_SATISFIED". It is never AVAILABLE: a failed mandatory
+ * gate is a determined negative permission outcome, not missing input and not review ambiguity
+ * (Agent 8 DEFECT-A8-01).
  */
-export type CapacityStatus = "AVAILABLE" | "NEEDS_INPUT" | "UNSUPPORTED" | "AMBIGUOUS" | "REVIEW_REQUIRED" | "ERROR";
+export type CapacityStatus =
+  | "AVAILABLE"
+  | "NOT_SATISFIED"
+  | "NEEDS_INPUT"
+  | "UNSUPPORTED"
+  | "AMBIGUOUS"
+  | "REVIEW_REQUIRED"
+  | "ERROR";
 
 export const CAPACITY_STATUS_PRECEDENCE: Record<CapacityStatus, number> = {
   AVAILABLE: 0,
-  NEEDS_INPUT: 1,
-  AMBIGUOUS: 2,
-  REVIEW_REQUIRED: 3,
-  UNSUPPORTED: 4,
-  ERROR: 5,
+  NOT_SATISFIED: 1,
+  NEEDS_INPUT: 2,
+  AMBIGUOUS: 3,
+  REVIEW_REQUIRED: 4,
+  UNSUPPORTED: 5,
+  ERROR: 6,
 };
 
 /**
@@ -179,12 +192,7 @@ export type CapacityLimitationCode =
   /** Verification refused a node this capacity depends on, or the whole unit (message names the condition). */
   | "PHASE3_VERIFICATION_MATERIAL_FINDING"
   /** Verification of the unit (or one it depends on) did not complete. Reviewable, not defective; never conflated with the above. */
-  | "PHASE3_VERIFICATION_INCOMPLETE"
-  /**
-   * A8-01: capacity evaluated to GATE_NOT_SATISFIED (e.g. ratio gate failed).
-   * Distinct from a zero amount and from missing input; must not surface as AVAILABLE.
-   */
-  | "CAPACITY_GATE_NOT_SATISFIED";
+  | "PHASE3_VERIFICATION_INCOMPLETE";
 
 export interface CapacityLimitation {
   code: CapacityLimitationCode;
@@ -292,6 +300,11 @@ export interface SharedConstraintState {
   status: CapacityStatus;
   grossCapacity: CapacityAmount;
   usage: CapacityAmount;
+  /**
+   * Authoritative remaining. When the pool is over-consumed (or otherwise non-authoritative),
+   * this is NOT_DETERMINED — never a negative money amount presented as headroom (Agent 8 A8-02).
+   * The arithmetic deficit lives under `overConsumption` / `provisional`.
+   */
   remaining: CapacityAmount;
   memberRuleIds: string[];
   /** Usage counted against the pool, per member, so a shared result traces to member consumption. */
@@ -300,6 +313,14 @@ export interface SharedConstraintState {
   directUsageIds: string[];
   limitations: CapacityLimitation[];
   evaluation: EvaluationResult | null;
+  /** Present when recorded usage exceeds the pool; deficit is diagnostic, not permission. */
+  overConsumption: OverConsumption | null;
+  /**
+   * Arithmetic kept when published remaining is withheld (OVER_CONSUMPTION / REVIEW_REQUIRED /
+   * AMBIGUOUS). Mirrors CapacityStateEntry.provisional so consumers never read negative headroom
+   * from `remaining` while diagnostics remain available.
+   */
+  provisional: { grossCapacity: CapacityAmount; remaining: CapacityAmount } | null;
 }
 
 // ---------------------------------------------------------------------------
