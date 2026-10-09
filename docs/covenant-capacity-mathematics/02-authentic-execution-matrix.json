@@ -1,0 +1,2775 @@
+{
+  "cases": [
+    {
+      "caseId": "coherent:ca_leverage_cap",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.11 — TNL ≤ 4.25x",
+      "code": "ca_leverage_cap",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 4.25×EBITDA − net total debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 5129
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 5129,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ca-leverage-cap"
+      }
+    },
+    {
+      "caseId": "coherent:ca_coverage_cap",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.11 — IC ≥ 2.50x",
+      "code": "ca_coverage_cap",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2.5 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 7538.461538461538
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 7538.461538461538,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ca-coverage-cap"
+      }
+    },
+    {
+      "caseId": "coherent:ratio_debt_fccr",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(a) — FCCR ≥ 2.00x",
+      "code": "ratio_debt_fccr",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-ratio-debt-fccr"
+      }
+    },
+    {
+      "caseId": "coherent:mila_secured",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+      "code": "mila_secured",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3×EBITDA − net secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 4041
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 4041,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-mila-secured"
+      }
+    },
+    {
+      "caseId": "coherent:mila_unsecured",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(C) — TNL ≤ 5.00x",
+      "code": "mila_unsecured",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 5×EBITDA − net total debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 6404
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 6404,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-mila-unsecured"
+      }
+    },
+    {
+      "caseId": "coherent:facility_flat",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(A) — $4,000M",
+      "code": "facility_flat",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_NET_OF_DEBT",
+      "formulaNarrative": "max(0, 4000 − secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 1779
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 1779,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "1779",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-facility-flat"
+      }
+    },
+    {
+      "caseId": "coherent:facility_grower",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(B) — greater of $1,320M / 100% EBITDA",
+      "code": "facility_grower",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(1320, 100% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 1700
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 1700,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "1700",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-facility-grower"
+      }
+    },
+    {
+      "caseId": "coherent:general_debt",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(xii) — greater of $530M / 40% EBITDA",
+      "code": "general_debt",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(530, 40% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 680
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 680,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "680",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-general-debt"
+      }
+    },
+    {
+      "caseId": "coherent:lien_ratio",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (24) — SSNL ≤ 3.00x",
+      "code": "lien_ratio",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3×EBITDA − net secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 4041
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 4041,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-lien-ratio"
+      }
+    },
+    {
+      "caseId": "coherent:lien_general",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (25) — greater of $530M / 40% EBITDA",
+      "code": "lien_general",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(530, 40% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 680
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 680,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "680",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-lien-general"
+      }
+    },
+    {
+      "caseId": "coherent:rp_builder",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.4(a)(C)",
+      "code": "rp_builder",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "available_amount_builder",
+      "formulaType": "BUILDER_BASKET",
+      "formulaNarrative": "max(330, 25%×EBITDA) + 50%×CNI + equity proceeds",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 2835
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 2835,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType BUILDER_BASKET is a genuine multi-component basket whose params can reference OTHER provisions by sectionRef (starterSectionRef/cniSectionRef/equitySectionRef) - faithfully representing it requires the whole document's provision set, which this single-provision adapter does not have, so it refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-rp-builder"
+      }
+    },
+    {
+      "caseId": "coherent:rp_general",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.4(b)(x) — greater of $600M / 45% EBITDA",
+      "code": "rp_general",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "restricted_payment",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(600, 45% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 765
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 765,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "765",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-rp-general"
+      }
+    },
+    {
+      "caseId": "coherent:rp_ratio_gate",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.4(b)(xvii)(i) — TNL ≤ 3.25x",
+      "code": "rp_ratio_gate",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "restricted_payment",
+      "formulaType": "RATIO_GATE",
+      "formulaNarrative": "unlimited if total leverage ≤ 3.25x, else 0",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "unlimited",
+        "capacityMillions": null,
+        "unlimited": true
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": null,
+        "unlimited": true,
+        "reason": null
+      },
+      "difference": null,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType RATIO_GATE depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-rp-ratio-gate"
+      }
+    },
+    {
+      "caseId": "coherent:inv_ratio_gate",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.4(b)(xvii)(ii) — TNL ≤ 3.50x",
+      "code": "inv_ratio_gate",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "investment",
+      "formulaType": "RATIO_GATE",
+      "formulaNarrative": "unlimited if total leverage ≤ 3.5x, else 0",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "unlimited",
+        "capacityMillions": null,
+        "unlimited": true
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": null,
+        "unlimited": true,
+        "reason": null
+      },
+      "difference": null,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType RATIO_GATE depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-inv-ratio-gate"
+      }
+    },
+    {
+      "caseId": "coherent:asset_sale_threshold",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.7(d) — greater of $35M / 2.5% EBITDA",
+      "code": "asset_sale_threshold",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(35, 2.5% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 42.5
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 42.5,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "42.5",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "prov-ind-asset-sale-threshold"
+      }
+    },
+    {
+      "caseId": "coherent:ind_ratio_debt_fccr",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(a)",
+      "code": "ind_ratio_debt_fccr",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-ratio-fccr",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_scf_basket_a_flat",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(A)",
+      "code": "ind_scf_basket_a_flat",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_NET_OF_DEBT",
+      "formulaNarrative": "max(0, 4000 − secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 1779
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 1779,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "1779",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-scf-flat",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_scf_basket_b_grower",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(B)",
+      "code": "ind_scf_basket_b_grower",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(1320, 100% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 1700
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 1700,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "1700",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-scf-grower",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_mila_secured",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(i)(C) / Maximum Leverage Requirement(a)",
+      "code": "ind_mila_secured",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3×EBITDA − net secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 4041
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 4041,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-mila-secured",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_mila_unsecured_tnl",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Maximum Leverage Requirement(b)(i)",
+      "code": "ind_mila_unsecured_tnl",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 5×EBITDA − net total debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 6404
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 6404,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-mila-unsec-tnl",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_mila_unsecured_fccr",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Maximum Leverage Requirement(b)(ii)",
+      "code": "ind_mila_unsecured_fccr",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-mila-unsec-fccr",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_capex_debt_biv",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(iv)",
+      "code": "ind_capex_debt_biv",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(465, 35% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 595
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 595,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "595",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-capex-biv",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_general_debt_bxii",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(xii)",
+      "code": "ind_general_debt_bxii",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(530, 40% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 680
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 680,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "680",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-general-bxii",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_acquisition_debt_bxv_ratiodebt_path",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(xv)",
+      "code": "ind_acquisition_debt_bxv_ratiodebt_path",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 10153.846153846154,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-bxv-ratiodebt-path",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_acquisition_debt_bxv_fccr_noworse_path",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(xv)",
+      "code": "ind_acquisition_debt_bxv_fccr_noworse_path",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/8.947368 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 0.00013755656727181093
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0.00013755656727181093,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-bxv-fccr-noworse-path",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_nonguarantor_debt_bxx",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "§3.3(b)(xx)",
+      "code": "ind_nonguarantor_debt_bxx",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(465, 35% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 595
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 595,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "595",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-d-bxx-nonguarantor",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_lien_cl6_linked_scf",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (6)",
+      "code": "ind_lien_cl6_linked_scf",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-l-cl6-linked-scf",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_lien_cl6_linked_capex",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (6) proviso",
+      "code": "ind_lien_cl6_linked_capex",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-l-cl6-linked-capex",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_lien_cl24_ratio",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (24)",
+      "code": "ind_lien_cl24_ratio",
+      "grantOrFamily": "LIEN",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3×EBITDA − net secured debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 4041
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 4041,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-l-cl24-ratio",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ind_lien_cl25_general",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "2029 Senior Notes Indenture",
+      "section": "Permitted Liens cl. (25)",
+      "code": "ind_lien_cl25_general",
+      "grantOrFamily": "LIEN",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(530, 40% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 680
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 680,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "680",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ind-l-cl25-general",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_general_debt_601k",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.01(k)",
+      "code": "ca_general_debt_601k",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(786, 55.00000000000001% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "935",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-d-general-601k",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_incremental_cash_capped",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "Incremental Amount def., clause (x)",
+      "code": "ca_incremental_cash_capped",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "incremental_facility",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(1428, 100% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 1700
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 1700,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "1700",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-d-incr-cashcapped",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_incremental_prepayment_based",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "Incremental Amount def., clause (z)",
+      "code": "ca_incremental_prepayment_based",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "incremental_facility",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 502",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 502
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 502,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "502",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-d-incr-prepaymentbased",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_permitted_debt_601p",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.01(p)",
+      "code": "ca_permitted_debt_601p",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 4.25×EBITDA − net total debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 5129
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 5129,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-d-permitted-601p",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_lien_hh_linked_601v",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.02(hh)",
+      "code": "ca_lien_hh_linked_601v",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-l-hh-linked-601v",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_general_lien_602kk",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "§6.02(kk)",
+      "code": "ca_general_lien_602kk",
+      "grantOrFamily": "LIEN",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(786, 55.00000000000001% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "935",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-l-general-602kk",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:ca_incremental_ratio_based_unsecured_or_junior",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "Credit Agreement (2022, as amended)",
+      "section": "Incremental Amount def., clause (y); §6.11(a)",
+      "code": "ca_incremental_ratio_based_unsecured_or_junior",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "incremental_facility",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 4.25×EBITDA − net total debt)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 5129
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 5129,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-ca-d-incr-ratiobased-unsecjr",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "coherent:coh-scc-nonguarantor-ratiodebt",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "coherent",
+      "section": "§3.3(a) proviso",
+      "code": "coh-scc-nonguarantor-ratiodebt",
+      "grantOrFamily": "SHARED_CAPACITY",
+      "mechanic": "shared_capacity",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(400, 30% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed; SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData until attributed ledger wiring exists",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 510
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 510,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "510",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-scc-nonguarantor-ratiodebt"
+      }
+    },
+    {
+      "caseId": "coherent:coh-scc-reallocated-amount",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "agreement": "coherent",
+      "section": "§6.01(k) proviso; Incremental Amount def. clause (x)(2)",
+      "code": "coh-scc-reallocated-amount",
+      "grantOrFamily": "SHARED_CAPACITY",
+      "mechanic": "shared_capacity",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "formulaNarrative": "max(786, 55.00000000000001% × EBITDA)",
+      "financialInputs": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 3258,
+        "securedDebt": 2221
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "ACTIVE ledger rows exist by basket family only; none are attributed to a Permission/Provision id — remaining capacity after utilization cannot be claimed; SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData until attributed ledger wiring exists",
+        "ledgerBasketRows": 5
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 935.0000000000001,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "935",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "coh-scc-reallocated-amount"
+      }
+    },
+    {
+      "caseId": "matthews:ind_ratio_debt_fccr",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "§4.09(a)",
+      "code": "ind_ratio_debt_fccr",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 110.33623188405791
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 110.33623188405791,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType COVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-d-ratio-fccr",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_1a_flat",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "Permitted Debt def., cl. (1)(a)",
+      "code": "ind_permitted_debt_1a_flat",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_NET_OF_DEBT",
+      "formulaNarrative": "max(0, 1300 − secured debt)",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 521.118
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 521.118,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "521.118",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-d-permitted-1a-flat",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_1b_ratio_secured",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "Permitted Debt def., cl. (1)(b)(x)",
+      "code": "ind_permitted_debt_1b_ratio_secured",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "ratio_debt",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3.5×EBITDA − net secured debt)",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 0
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": false,
+        "refusalReason": "FormulaType LEVERAGE_RATIO_ROOM depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it",
+        "status": null,
+        "remaining": null,
+        "note": "legacy adapter correctly refused — not counted as executable Phase-4C calculation"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-d-permitted-1b-ratio-secured",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_2_notes",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "Permitted Debt def., cl. (2)",
+      "code": "ind_permitted_debt_2_notes",
+      "grantOrFamily": "DEBT_INCURRENCE",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 300",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 300
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 300,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "300",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-d-notes-fixed",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ind_lien_permitted_cl2_creditfacility",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "§4.10 / Permitted Liens def., cl. (2)",
+      "code": "ind_lien_permitted_cl2_creditfacility",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-l-first-creditfacility",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ind_lien_second_priority_notes",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+      "section": "8-K Item 1.01 (accession 0001193125-24-228450) / §4.10",
+      "code": "ind_lien_second_priority_notes",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ind-l-second-notes",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:ca_lien_601j_2024notes",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "Third Amended and Restated Loan Agreement, dated March 27, 2020, as amended through the Sixth Amendment dated September 23, 2024",
+      "section": "§6.01(j), as restated by the Sixth Amendment (9/23/2024)",
+      "code": "ca_lien_601j_2024notes",
+      "grantOrFamily": "LIEN",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "REFUSAL_ALIGNED",
+      "outcomeClass": "CORRECT_REFUSAL",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "0",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-ca-l-2024notes",
+        "modelingStatus": "MODELED"
+      }
+    },
+    {
+      "caseId": "matthews:matw-scc-nonguarantor-ratiodebt",
+      "authenticity": "VERIFIED_POPULATION",
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "agreement": "matthews",
+      "section": "§4.09(a) proviso — cap is the greater of $125.0M or 7.0% of Total Assets ($1,791.719M as of 12/31/2024 -> ~$125.4M); modeled at the $125.0M FLAT FLOOR only (capFormulaType left null — GREATER_OF_FLAT_OR_PCT_EBITDA has no Total-Assets-percentage grower; see script header item 5). Numerically minor at Matthews' current asset base; the underlying formula-type gap is general.",
+      "code": "matw-scc-nonguarantor-ratiodebt",
+      "grantOrFamily": "SHARED_CAPACITY",
+      "mechanic": "shared_capacity",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 125",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown; SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData until attributed ledger wiring exists",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 125
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 125,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "125",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "Permission",
+        "sourceId": "matw-scc-nonguarantor-ratiodebt"
+      }
+    },
+    {
+      "caseId": "demo-customer-workflow:counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
+      "authenticity": "DEMO_COUNSEL_EXTRACTED",
+      "companyId": "demo-customer-workflow",
+      "companyName": "Demo Customer Workflow (CONMED Article VII)",
+      "agreement": "CONMED Credit Agreement — Article VII (demo)",
+      "section": "7.2",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "formulaNarrative": "max(50, 3% × Total Assets)",
+      "financialInputs": {
+        "ebitda": 420,
+        "cash": 80,
+        "interestExpense": 55,
+        "cumulativeNetIncome": 200,
+        "equityProceedsSinceIssue": 50,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 1100,
+        "securedDebt": 750,
+        "totalAssets": 2800
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 84
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 84,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "84",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "cmv0yziiu00052uguxf66p9s1"
+      }
+    },
+    {
+      "caseId": "demo-customer-workflow:counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
+      "authenticity": "DEMO_COUNSEL_EXTRACTED",
+      "companyId": "demo-customer-workflow",
+      "companyName": "Demo Customer Workflow (CONMED Article VII)",
+      "agreement": "CONMED Credit Agreement — Article VII (demo)",
+      "section": "7.2",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "greater_of_grower",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "formulaNarrative": "max(50, 3% × Total Assets)",
+      "financialInputs": {
+        "ebitda": 420,
+        "cash": 80,
+        "interestExpense": 55,
+        "cumulativeNetIncome": 200,
+        "equityProceedsSinceIssue": 50,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 1100,
+        "securedDebt": 750,
+        "totalAssets": 2800
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 84
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 84,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "84",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "cmv0yzisf00092ugup5i7ykwp"
+      }
+    },
+    {
+      "caseId": "demo-customer-workflow:counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:RESTRICTED_PAYMENT",
+      "authenticity": "DEMO_COUNSEL_EXTRACTED",
+      "companyId": "demo-customer-workflow",
+      "companyName": "Demo Customer Workflow (CONMED Article VII)",
+      "agreement": "CONMED Credit Agreement — Article VII (demo)",
+      "section": "7.6",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:RESTRICTED_PAYMENT",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "restricted_payment",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 25",
+      "financialInputs": {
+        "ebitda": 420,
+        "cash": 80,
+        "interestExpense": 55,
+        "cumulativeNetIncome": 200,
+        "equityProceedsSinceIssue": 50,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 1100,
+        "securedDebt": 750,
+        "totalAssets": 2800
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 25
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 25,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "25",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "cmv0yzk35000d2uguas9safhc"
+      }
+    },
+    {
+      "caseId": "demo-customer-workflow:counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:INVESTMENT",
+      "authenticity": "DEMO_COUNSEL_EXTRACTED",
+      "companyId": "demo-customer-workflow",
+      "companyName": "Demo Customer Workflow (CONMED Article VII)",
+      "agreement": "CONMED Credit Agreement — Article VII (demo)",
+      "section": "7.6",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.6:INVESTMENT",
+      "grantOrFamily": "CovenantProvision",
+      "mechanic": "fixed_basket",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 25",
+      "financialInputs": {
+        "ebitda": 420,
+        "cash": 80,
+        "interestExpense": 55,
+        "cumulativeNetIncome": 200,
+        "equityProceedsSinceIssue": 50,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 1100,
+        "securedDebt": 750,
+        "totalAssets": 2800
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 25
+      },
+      "engineResult": {
+        "status": "modeled",
+        "capacityMillions": 25,
+        "unlimited": false,
+        "reason": null
+      },
+      "difference": 0,
+      "verificationStatus": "MATCH",
+      "outcomeClass": "EXECUTABLE_CORRECT",
+      "phase4c": {
+        "adapted": true,
+        "refusalReason": null,
+        "status": "AVAILABLE",
+        "remaining": "25",
+        "note": "Phase-4C cross-check uses Neon snapshot metrics as MONEY in $M units (same unit as legacy engine); not a second calculator"
+      },
+      "provenance": {
+        "sourceKind": "CovenantProvision",
+        "sourceId": "cmv0yzkau000h2ugu26afd2pi"
+      }
+    }
+  ],
+  "summary": {
+    "authenticProvisionsEvaluated": 51,
+    "successfullyRepresented": 51,
+    "independentlyCorrectExecutableResults": 45,
+    "correctlyRefused": 6,
+    "incorrectlyEvaluated": 0,
+    "blockedByMissingFinancials": 0,
+    "blockedByMissingUtilization": 45,
+    "blockedByCertification": 0,
+    "blockedByUnsupportedRepresentation": 0,
+    "mechanicsCovered": [
+      "available_amount_builder",
+      "fixed_basket",
+      "greater_of_grower",
+      "incremental_facility",
+      "investment",
+      "ratio_debt",
+      "restricted_payment",
+      "shared_capacity"
+    ],
+    "phase4cAdapted": 31,
+    "phase4cAdapterRefused": 20,
+    "neonCorpusContext": {
+      "note": "KnowledgeSource corpus is large but does not write Permission/CovenantProvision rows"
+    }
+  },
+  "blockers": {
+    "knowledgeSourcesByRepresentation": {
+      "DISCOVERED_CANDIDATE/CANDIDATES_DISCOVERED": 672,
+      "STRUCTURALLY_INDEXED/CANDIDATES_DISCOVERED": 62
+    },
+    "permissionsTotal": 39,
+    "permissionsModeled": 39,
+    "covenantProvisions": 19,
+    "semanticTruthRecords": 0,
+    "contractLedgerUsages": 1,
+    "approvedContractInputSnapshots": 6,
+    "blockers": [
+      {
+        "category": "Extraction failures",
+        "finding": "672/734 KnowledgeSources are DISCOVERED_CANDIDATE only; 62 STRUCTURALLY_INDEXED. None reach executable Permission compilation from the KF path."
+      },
+      {
+        "category": "Definition-resolution failures",
+        "finding": "KF covenant summaries do not resolve defined-term graphs into IRDefinition calculationExpression trees bound to Permissions."
+      },
+      {
+        "category": "Unsupported representations",
+        "finding": "Legacy→Phase-4C adapter refuses LEVERAGE_RATIO_ROOM, COVERAGE_RATIO_ROOM, RATIO_GATE, BUILDER_BASKET (documented). Those still execute on the legacy leaf evaluator."
+      },
+      {
+        "category": "Missing financial inputs",
+        "finding": "Legacy FinancialSnapshot covers EBITDA/debt/cash/interest/CNI/equity/rate; Total Assets only via FinancialState.balanceSheetFacts (Matthews has it; Coherent provisions evaluated do not require it). North-Star APPROVED snapshots exist for fixture companies, not Coherent/Matthews production packages."
+      },
+      {
+        "category": "Missing utilization",
+        "finding": "Coherent has 6 ACTIVE LedgerEntry rows by basket family, none attributed to Permission/Provision ids. SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData. contract_ledger_usages has 1 synthetic row for an ns-e2e company."
+      },
+      {
+        "category": "Verification and certification blockers",
+        "finding": "semantic_truth_records = 0. KF representation never promotes to certified Phase-3 IR. Coherent/Matthews Permissions are manually populated VERIFIED MODELED rows, not corpus-compiled certificates."
+      },
+      {
+        "category": "Runtime execution failures",
+        "finding": "None demonstrated on authentic VERIFIED rows once financial snapshots exist — evaluateProvision matched independent arithmetic for all modeled gross-capacity cases in this run."
+      }
+    ]
+  },
+  "costUsd": 0,
+  "generatedAt": "2026-10-09T22:35:26.171Z"
+}

@@ -263,9 +263,14 @@ export interface SharedConstraint {
     | "VERIFIED_ZERO"
     | "ZERO_NO_ATTRIBUTED_USAGE"
     | "PARTIAL_ATTRIBUTED_USAGE"
+    | "ATTRIBUTED_INCOMPLETE"
     | "EXTERNAL_INPUT_REQUIRED"
     | "ENTITY_CLASS_USAGE_UNAVAILABLE";
-  /** True only when currentUsage may be used as an established utilization fact. */
+  /**
+   * True only when currentUsage may be subtracted for remaining-capacity claims.
+   * Requires APPROVED completeness certificate (see lib/capacity/utilization-authority.ts).
+   * Attributed records alone never set this true.
+   */
   currentUsageAuthoritative?: boolean;
   sourceProvision: SourceProvisionRef;
 }

@@ -23,7 +23,7 @@
 import type { CovenantFamily, ContractRuleType } from "@prisma/client";
 import type { CovenantProvisionInput, FormulaType } from "../../covenant-engine";
 import type { CandidateContractRule } from "../types";
-import type { IRRule, IRCapacityExpression, SourceProvenance } from "./types";
+import type { IRRule, IRCapacityExpression, IRExpression, SourceProvenance } from "./types";
 import { computeRuleId, withExpressionId } from "./identity";
 
 export const LEGACY_ADAPTER_VERSION = "phase-3a-legacy-adapter.v1";
@@ -39,18 +39,17 @@ function provenanceFor(companyId: string, documentId: string, sectionRef: string
 }
 
 /**
- * (A) Legacy CovenantProvisionInput -> IR. Supports exactly the three
- * FormulaType shapes whose full economics are captured by the provision
- * row alone: FLAT_AMOUNT, GREATER_OF_FLAT_OR_PCT_EBITDA, FLAT_NET_OF_DEBT.
- * Refuses LEVERAGE_RATIO_ROOM/COVERAGE_RATIO_ROOM/RATIO_GATE (their real
- * "how much room remains" economics depend on the live solver/ratio
- * machinery in lib/covenant-engine.ts - translating them here would mean
- * re-deriving that machinery, not adapting a value, which is exactly the
- * "do not try to translate every rule" instruction) and BUILDER_BASKET
- * (a genuine multi-component basket whose own params can reference OTHER
- * provisions by sectionRef - starterSectionRef/cniSectionRef/
- * equitySectionRef - which this narrow, single-provision adapter cannot
- * safely resolve without the whole document's provision set).
+ * (A) Legacy CovenantProvisionInput -> IR.
+ *
+ * Supports shapes whose full economics are captured by the provision row
+ * plus named METRIC_REFERENCE trees isomorphic to the leaf evaluator:
+ * FLAT_AMOUNT, GREATER_OF_*, FLAT_NET_OF_DEBT, LEVERAGE_RATIO_ROOM,
+ * COVERAGE_RATIO_ROOM (when rate metric is representable), RATIO_GATE,
+ * BUILDER_BASKET (sectionRef params are citation labels, not cross-rule
+ * lookups — confirmed against evaluateProvision).
+ *
+ * Still PARTIAL / compilerVersion null — never a certification bypass.
+ * Refuses only when params are incomplete or mechanics are not representable.
  */
 export function adaptLegacyCovenantProvision(provision: CovenantProvisionInput, companyId: string, instrumentKey: string): LegacyAdapterResult {
   const provenance = provenanceFor(companyId, provision.documentId, provision.sectionRef);
@@ -131,12 +130,125 @@ export function adaptLegacyCovenantProvision(provision: CovenantProvisionInput, 
       const capacity = withExpressionId({ kind: "SUBTRACT", type: "MONEY", left: flat, right: metric, provenance });
       return { rule: baseRule(capacity, [`basketName "${provision.basketName}"`, `netOfBasis "${basis}"`]), refusalReason: null };
     }
-    case "LEVERAGE_RATIO_ROOM":
-    case "COVERAGE_RATIO_ROOM":
-    case "RATIO_GATE":
-      return { rule: null, refusalReason: `FormulaType ${type} depends on the legacy solver/ratio machinery (live financial inputs, debtBasis-scoped debt figures) to compute real remaining headroom - translating it here would mean re-deriving that machinery, not adapting one provision's own stored fields, so this narrow adapter refuses rather than approximate it` };
-    case "BUILDER_BASKET":
-      return { rule: null, refusalReason: `FormulaType BUILDER_BASKET is a genuine multi-component basket whose params can reference OTHER provisions by sectionRef (starterSectionRef/cniSectionRef/equitySectionRef) - faithfully representing it requires the whole document's provision set, which this single-provision adapter does not have, so it refuses rather than approximate it` };
+    case "LEVERAGE_RATIO_ROOM": {
+      // Leaf: max(0, threshold × EBITDA − netDebt|netSecured). Net = Debt − Cash.
+      const basis = provision.params?.debtBasis ?? "total";
+      const debtMetricName = basis === "secured" ? "Secured Debt" : "Total Debt";
+      const multiple = withExpressionId({ kind: "NUMBER", type: "NUMBER", value: provision.thresholdValue, provenance });
+      const ebitda = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "EBITDA", companyId, instrumentKey, resolvedDefinitionId: null });
+      const grossDebt = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: debtMetricName, companyId, instrumentKey, resolvedDefinitionId: null });
+      const cash = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "Cash", companyId, instrumentKey, resolvedDefinitionId: null });
+      const netDebt = withExpressionId({ kind: "SUBTRACT", type: "MONEY", left: grossDebt, right: cash, provenance });
+      const room = withExpressionId({ kind: "SUBTRACT", type: "MONEY", left: withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [multiple, ebitda] }), right: netDebt, provenance });
+      const zero = withExpressionId({ kind: "MONEY", type: "MONEY", amount: 0, currency: "USD", provenance });
+      const capacity = withExpressionId({ kind: "MAX", type: "MONEY", operands: [zero, room], provenance });
+      return {
+        rule: baseRule(capacity, [
+          `basketName "${provision.basketName}"`,
+          `debtBasis "${basis}" → net (${debtMetricName} − Cash)`,
+          "IR tree matches leaf LEVERAGE_RATIO_ROOM; PARTIAL until Phase 3B certification",
+        ]),
+        refusalReason: null,
+      };
+    }
+    case "COVERAGE_RATIO_ROOM": {
+      // Leaf: max(0, (EBITDA/threshold − interest) / rate).
+      // IR DIVIDE cannot declare MONEY, so express as MULTIPLY by reciprocal rate metric.
+      if (!(provision.thresholdValue > 0)) {
+        return {
+          rule: null,
+          refusalReason: `FormulaType COVERAGE_RATIO_ROOM requires a positive coverage threshold; provision "${provision.code}" has thresholdValue ${provision.thresholdValue} — refusing rather than dividing by zero`,
+        };
+      }
+      const invThreshold = withExpressionId({ kind: "NUMBER", type: "NUMBER", value: 1 / provision.thresholdValue, provenance });
+      const ebitda = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "EBITDA", companyId, instrumentKey, resolvedDefinitionId: null });
+      const interest = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "Interest Expense", companyId, instrumentKey, resolvedDefinitionId: null });
+      const maxInterest = withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [invThreshold, ebitda] });
+      const headroomInterest = withExpressionId({ kind: "SUBTRACT", type: "MONEY", left: maxInterest, right: interest, provenance });
+      const rateReciprocal = withExpressionId({
+        kind: "METRIC_REFERENCE",
+        type: "NUMBER",
+        metricName: "Assumed New Debt Rate Reciprocal",
+        companyId,
+        instrumentKey,
+        resolvedDefinitionId: null,
+      });
+      const room = withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [rateReciprocal, headroomInterest] });
+      const zero = withExpressionId({ kind: "MONEY", type: "MONEY", amount: 0, currency: "USD", provenance });
+      const capacity = withExpressionId({ kind: "MAX", type: "MONEY", operands: [zero, room], provenance });
+      return {
+        rule: baseRule(capacity, [
+          `basketName "${provision.basketName}"`,
+          "requires metrics EBITDA, Interest Expense, Assumed New Debt Rate Reciprocal; missing rate → NEEDS_INPUT",
+          "IR tree matches leaf COVERAGE_RATIO_ROOM economics; PARTIAL until Phase 3B certification",
+        ]),
+        refusalReason: null,
+      };
+    }
+    case "RATIO_GATE": {
+      // Leaf: unlimited if leverage ≤ threshold, else 0. Represent as UnlimitedCapacity gated by COMPARE.
+      const basis = provision.params?.debtBasis ?? "total";
+      const debtMetricName = basis === "secured" ? "Secured Debt" : "Total Debt";
+      const grossDebt = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: debtMetricName, companyId, instrumentKey, resolvedDefinitionId: null });
+      const cash = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "Cash", companyId, instrumentKey, resolvedDefinitionId: null });
+      const netDebt = withExpressionId({ kind: "SUBTRACT", type: "MONEY", left: grossDebt, right: cash, provenance });
+      const ebitda = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "EBITDA", companyId, instrumentKey, resolvedDefinitionId: null });
+      const leverage = withExpressionId({ kind: "DIVIDE", type: "RATIO", numerator: netDebt, denominator: ebitda, provenance });
+      const threshold = withExpressionId({ kind: "RATIO", type: "RATIO", value: provision.thresholdValue, provenance });
+      const gate = withExpressionId({ kind: "COMPARE", type: "BOOLEAN", left: leverage, operator: "LTE", right: threshold, provenance });
+      const capacity: IRCapacityExpression = { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy: gate, provenance };
+      return {
+        rule: baseRule(capacity, [
+          `basketName "${provision.basketName}"`,
+          `debtBasis "${basis}" net leverage gate`,
+          "IR UnlimitedCapacity+COMPARE matches leaf RATIO_GATE; PARTIAL until Phase 3B certification",
+        ]),
+        refusalReason: null,
+      };
+    }
+    case "BUILDER_BASKET": {
+      // Leaf: max(threshold, pct×EBITDA) + cniShare×max(0,CNI) + optional equity.
+      // starterSectionRef/cniSectionRef/equitySectionRef are citation labels only (evaluateProvision),
+      // not cross-provision value lookups — classification was (1) missing representation support, now fixed.
+      const pct = provision.params?.pctEbitda ?? 0;
+      const flat = withExpressionId({ kind: "MONEY", type: "MONEY", amount: provision.thresholdValue, currency: "USD", provenance });
+      const percentNode = withExpressionId({ kind: "PERCENT", type: "PERCENT", value: pct, provenance });
+      const ebitda = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "EBITDA", companyId, instrumentKey, resolvedDefinitionId: null });
+      const grower = withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [percentNode, ebitda] });
+      const starter = withExpressionId({ kind: "MAX", type: "MONEY", operands: [flat, grower], provenance });
+      const operands: IRExpression[] = [starter];
+      const reasons = [
+        `basketName "${provision.basketName}"`,
+        `starterSectionRef "${provision.params?.starterSectionRef ?? provision.sectionRef}" (citation label)`,
+      ];
+      if (provision.params?.cniSharePct) {
+        const cniShare = withExpressionId({ kind: "PERCENT", type: "PERCENT", value: provision.params.cniSharePct, provenance });
+        const cni = withExpressionId({ kind: "METRIC_REFERENCE", type: "MONEY", metricName: "Cumulative Net Income", companyId, instrumentKey, resolvedDefinitionId: null });
+        const zero = withExpressionId({ kind: "MONEY", type: "MONEY", amount: 0, currency: "USD", provenance });
+        const cniFloor = withExpressionId({ kind: "MAX", type: "MONEY", operands: [zero, cni] });
+        operands.push(withExpressionId({ kind: "MULTIPLY", type: "MONEY", operands: [cniShare, cniFloor] }));
+        reasons.push(`cniSharePct ${provision.params.cniSharePct}; cniSectionRef "${provision.params.cniSectionRef ?? provision.sectionRef}" (citation)`);
+      }
+      if (provision.params?.includeEquityProceeds) {
+        operands.push(
+          withExpressionId({
+            kind: "METRIC_REFERENCE",
+            type: "MONEY",
+            metricName: "Equity Proceeds Since Issue",
+            companyId,
+            instrumentKey,
+            resolvedDefinitionId: null,
+          }),
+        );
+        reasons.push(`includeEquityProceeds; equitySectionRef "${provision.params.equitySectionRef ?? provision.sectionRef}" (citation)`);
+      }
+      const capacity: IRCapacityExpression =
+        operands.length === 1
+          ? operands[0]!
+          : withExpressionId({ kind: "ADD", type: "MONEY", operands, provenance });
+      reasons.push("IR tree matches leaf BUILDER_BASKET; PARTIAL until Phase 3B certification");
+      return { rule: baseRule(capacity, reasons), refusalReason: null };
+    }
   }
 }
 

@@ -1,40 +1,46 @@
 /**
  * Shared-constraint pre-transaction usage helpers.
  *
- * Utilization integrity contract (Neon activation P0):
- * - VERIFIED_ZERO: attributed records establish zero outstanding (authoritative empty).
- * - ZERO_NO_ATTRIBUTED_USAGE: no attributed records — NOT an authoritative zero-usage claim.
- * - COMPUTED: known attributed usage summed for named members (authoritative).
- * - EXTERNAL_INPUT_REQUIRED / ENTITY_CLASS_USAGE_UNAVAILABLE: unknown external usage.
- * - PARTIAL_ATTRIBUTED_USAGE: some named members attributed, others not (not fully established).
+ * Utilization authority is owned by `lib/capacity/utilization-authority.ts`
+ * (reconciles #232 solver statuses with #234 completeness certificates).
  *
- * EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER deliberately return usage 0 with a
- * non-authoritative status — those require external balances that must not be invented.
+ * Remaining = cap − usage is allowed only when `authoritative === true`, which
+ * requires an APPROVED completeness certificate matching the evidence shape.
  */
 
+import { decideSolverUtilizationAuthority } from "../capacity/utilization-authority";
 import type {
   AggregationRule,
   BasketUsageRecord,
   MeasurementBasis,
   SharedConstraintMember,
 } from "./types";
+import type { UtilizationCompletenessCertificate } from "../capacity/utilization-types";
 
 export type SharedUsageComputationStatus =
   | "COMPUTED"
   | "VERIFIED_ZERO"
   | "ZERO_NO_ATTRIBUTED_USAGE"
   | "PARTIAL_ATTRIBUTED_USAGE"
+  | "ATTRIBUTED_INCOMPLETE"
   | "EXTERNAL_INPUT_REQUIRED"
   | "ENTITY_CLASS_USAGE_UNAVAILABLE";
 
-/** Statuses under which `usage` may be treated as an established utilization fact. */
+/** Statuses under which `usage` may be treated as established for remaining claims. */
 export const AUTHORITATIVE_USAGE_STATUSES: readonly SharedUsageComputationStatus[] = [
   "COMPUTED",
   "VERIFIED_ZERO",
 ];
 
-export function isAuthoritativeUsageStatus(status: SharedUsageComputationStatus): boolean {
-  return AUTHORITATIVE_USAGE_STATUSES.includes(status);
+export function isAuthoritativeUsageStatus(
+  status: SharedUsageComputationStatus,
+  authoritativeFlag?: boolean,
+): boolean {
+  if (authoritativeFlag === false) return false;
+  if (authoritativeFlag === true) return AUTHORITATIVE_USAGE_STATUSES.includes(status);
+  // Without the flag, only statuses that historically meant remaining-safe —
+  // post-reconciliation callers must pass the authoritative boolean from computeSharedConstraintCurrentUsage.
+  return false;
 }
 
 export function measureBasketUsageAmount(
@@ -89,44 +95,54 @@ export function computeSharedConstraintCurrentUsage(params: {
   measurementBasis: MeasurementBasis;
   members: SharedConstraintMember[];
   basketUsage: BasketUsageRecord[];
-}): { usage: number; status: SharedUsageComputationStatus; authoritative: boolean } {
-  if (params.aggregationRule === "EXTERNAL_INSTRUMENT_BALANCE") {
-    return { usage: 0, status: "EXTERNAL_INPUT_REQUIRED", authoritative: false };
-  }
-  if (params.aggregationRule === "ENTITY_CLASS_FILTER") {
-    return { usage: 0, status: "ENTITY_CLASS_USAGE_UNAVAILABLE", authoritative: false };
-  }
-
+  /**
+   * Completeness certificate required for authoritative remaining.
+   * VERIFIED_EMPTY when usage is zero; VERIFIED_COMPLETE when attributed set is full.
+   */
+  completenessCertificate?: (UtilizationCompletenessCertificate & {
+    authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+  }) | null;
+  /** Test-only — never set in production loaders. */
+  allowSyntheticRemaining?: boolean;
+}): {
+  usage: number;
+  status: SharedUsageComputationStatus;
+  authoritative: boolean;
+  knowledge: string;
+  blockers: string[];
+  note: string;
+} {
   const byPermission = new Map<string, BasketUsageRecord>();
   for (const row of params.basketUsage) {
     if (row.permissionId) byPermission.set(row.permissionId, row);
   }
 
   const namedMembers = params.members.filter((m) => m.permissionId);
-  if (namedMembers.length === 0) {
-    return { usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false };
-  }
-
-  let usage = 0;
+  let measuredUsage = 0;
   let attributedMembers = 0;
   for (const member of namedMembers) {
     const record = byPermission.get(member.permissionId!);
     if (record) {
       attributedMembers++;
-      usage += measureBasketUsageAmount(record, params.measurementBasis);
+      measuredUsage += measureBasketUsageAmount(record, params.measurementBasis);
     }
   }
 
-  if (attributedMembers === 0) {
-    return { usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false };
-  }
-  if (attributedMembers < namedMembers.length) {
-    return {
-      usage: Math.max(0, usage),
-      status: "PARTIAL_ATTRIBUTED_USAGE",
-      authoritative: false,
-    };
-  }
-  const status: SharedUsageComputationStatus = usage === 0 ? "VERIFIED_ZERO" : "COMPUTED";
-  return { usage: Math.max(0, usage), status, authoritative: true };
+  const decision = decideSolverUtilizationAuthority({
+    namedMemberCount: namedMembers.length,
+    attributedMemberCount: attributedMembers,
+    measuredUsage,
+    aggregation: params.aggregationRule,
+    completenessCertificate: params.completenessCertificate ?? null,
+    allowSyntheticRemaining: params.allowSyntheticRemaining,
+  });
+
+  return {
+    usage: decision.attributedAmount ?? 0,
+    status: decision.solverStatus,
+    authoritative: decision.authoritativeForRemaining,
+    knowledge: decision.kind,
+    blockers: decision.blockers,
+    note: decision.note,
+  };
 }

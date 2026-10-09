@@ -127,6 +127,32 @@ export interface FormulaParams {
   equitySectionRef?: string;
 }
 
+/**
+ * Legal / modeling condition flags sometimes stored in the same JSON column as
+ * FormulaParams. These are NOT numerical formula inputs: they describe whether
+ * a permission has an independent capacity path at all (e.g. automatic-link
+ * liens that only travel with another permission). Callers must read them via
+ * {@link readProvisionLegalConditionFlags}, never fold them into FormulaParams.
+ */
+export interface ProvisionLegalConditionFlags {
+  /** Lien (or similar) exists only as an automatic link — no independent ceiling. */
+  automaticLinkOnly: boolean;
+  /** Automatic-link capacity further restricted to a named asset scope. */
+  assetScopeRestricted: boolean;
+}
+
+/** Extract legal-condition flags from raw provision/permission params JSON. */
+export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalConditionFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { automaticLinkOnly: false, assetScopeRestricted: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    automaticLinkOnly: o.automaticLinkOnly === true,
+    assetScopeRestricted: o.assetScopeRestricted === true,
+  };
+}
+
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
 export interface EvaluatedProvisionComponent {
   label: string;
@@ -1818,6 +1844,22 @@ export interface LoadCompanySolverStaticOptions {
    * Callers must not treat that zero as proven empty utilization.
    */
   basketUsage?: BasketUsageRecord[];
+  /**
+   * Optional completeness certificates keyed by SharedCapacityConstraint id.
+   * Required for currentUsageAuthoritative=true (remaining = cap − usage).
+   * See lib/capacity/utilization-authority.ts.
+   */
+  completenessCertificatesByConstraintId?: Record<
+    string,
+    {
+      capacityRuleId: string;
+      asOf: string;
+      approvalState: "APPROVED";
+      sourceLabel: string;
+      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+    }
+  >;
 }
 
 /**
@@ -1925,6 +1967,7 @@ export async function loadCompanySolverStaticData(
           externalInstrumentRef: m.externalInstrumentRef ?? undefined,
         })),
         basketUsage: options?.basketUsage ?? [],
+        completenessCertificate: options?.completenessCertificatesByConstraintId?.[c.id] ?? null,
       });
       return {
         currentUsage: computed.usage,

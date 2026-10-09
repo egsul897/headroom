@@ -1,38 +1,35 @@
 # Utilization integrity audit
 
-## Distinctions
+**Superseded in part by** `UTILIZATION-AUTHORITY-CONTRACT.md` (reconciled #232 + #234).
 
-| Status | Meaning | Authoritative? |
+## Distinctions (solver)
+
+| Status | Meaning | Authoritative remaining? |
 |---|---|---|
-| `VERIFIED_ZERO` | Attributed basketUsage records establish zero outstanding for all named members | **Yes** |
-| `ZERO_NO_ATTRIBUTED_USAGE` | No attributed usage records for named members | **No** — must not become a zero-usage claim |
-| `COMPUTED` | Known attributed usage summed | **Yes** |
-| `EXTERNAL_INPUT_REQUIRED` | EXTERNAL_INSTRUMENT_BALANCE — balances not supplied | **No** |
-| `ENTITY_CLASS_USAGE_UNAVAILABLE` | ENTITY_CLASS_FILTER — class outstanding unknown | **No** |
-| `PARTIAL_ATTRIBUTED_USAGE` | Some named members attributed, others not | **No** |
-
-Shared-pool utilization uses the same helper; pool remaining claims require authoritative member/pool usage.
+| `VERIFIED_ZERO` | Completeness cert `VERIFIED_EMPTY` + no attributed usage | **Yes** |
+| `COMPUTED` | Completeness cert `VERIFIED_COMPLETE` + attributed usage | **Yes** |
+| `ATTRIBUTED_INCOMPLETE` | Attributed rows without completeness cert | **No** |
+| `ZERO_NO_ATTRIBUTED_USAGE` | No attributed records | **No** |
+| `PARTIAL_ATTRIBUTED_USAGE` | Some named members attributed | **No** |
+| `EXTERNAL_INPUT_REQUIRED` | EXTERNAL_INSTRUMENT_BALANCE | **No** |
+| `ENTITY_CLASS_USAGE_UNAVAILABLE` | ENTITY_CLASS_FILTER | **No** |
 
 ## Loader contract
 
-`loadCompanySolverStaticData` now attaches:
+`loadCompanySolverStaticData` attaches:
 
 - `currentUsage`
 - `currentUsageStatus`
 - `currentUsageAuthoritative`
 
-Numeric `currentUsage === 0` with `ZERO_NO_ATTRIBUTED_USAGE` is **not** proven empty.
+Optional `completenessCertificatesByConstraintId` is required for authoritative remaining.
 
-## Product rule
-
-Do not claim company-level **remaining** capacity unless utilization status is authoritative (`COMPUTED` or `VERIFIED_ZERO`). Gross contractual capacity may still be reported with that caveat.
+Numeric `currentUsage === 0` with `ZERO_NO_ATTRIBUTED_USAGE` or `ATTRIBUTED_INCOMPLETE` is **not** proven empty for remaining claims.
 
 ## Solver consumer enforcement
 
-`lib/solver/election.ts` `headroomAndConsume` requires `currentUsageAuthoritative === true` before computing `cap − currentUsage`. Otherwise:
+`lib/solver/election.ts` `headroomAndConsume` requires `currentUsageAuthoritative === true` before computing `cap − currentUsage`.
 
-- SHARED_CAP requirement → `UNKNOWN` / `EXTERNAL_INPUT`
-- Allocation from shared headroom → `0`
-- Path cannot CLEAR on assumed-empty utilization
+## Product
 
-Legacy Position/Simulate paths that report gross provision capacity must not be relabeled as utilization-adjusted remaining without attribution.
+Debt intelligence and `computeVerifiedRemaining` refuse AVAILABLE / remaining without completeness-certified utilization. See silent-zero audit.
