@@ -114,11 +114,11 @@ function deserializeSnapshotFromJson(raw: unknown): FinancialSnapshot {
     reportingPeriod: s.reportingPeriod,
     status: s.status,
     supersedesSnapshotId: s.supersedesSnapshotId,
-    inputs: s.inputs.map((inp) => ({
+    inputs: s.inputs.map((inp): FinancialInput => ({
       identity: inp.identity,
       value: deserializeRuntimeValue(inp.value),
       displayName: inp.displayName ?? undefined,
-      sourceVersion: inp.sourceVersion ?? undefined,
+      sourceVersion: inp.sourceVersion ?? null,
       overridesDefinitionId: inp.overridesDefinitionId ?? undefined,
       note: inp.note ?? undefined,
     })),
@@ -322,23 +322,23 @@ export async function loadApprovedSnapshotsFromPrisma(
     include: { facts: { include: { locators: true } } },
     orderBy: { snapshotId: "asc" },
   });
-  return rows.map((row) => ({
+  return rows.map((row): FinancialSnapshot => ({
     snapshotId: row.snapshotId,
     version: row.version,
     companyId: row.companyId,
     asOf: row.asOf,
     reportingPeriod: row.reportingPeriod,
-    status: "APPROVED" as const,
+    status: "APPROVED",
     supersedesSnapshotId: row.supersedesSnapshotId,
-    inputs: row.facts.map((f) => ({
-      identity: f.identityJson as FinancialInput["identity"],
-      value: deserializeRuntimeValue(f.valueJson as SerializedRuntimeValue),
+    inputs: row.facts.map((f): FinancialInput => ({
+      identity: f.identityJson as unknown as FinancialInput["identity"],
+      value: deserializeRuntimeValue(f.valueJson as unknown as SerializedRuntimeValue),
       displayName: f.displayName ?? undefined,
-      sourceVersion: f.sourceVersion ?? undefined,
+      sourceVersion: f.sourceVersion ?? null,
       overridesDefinitionId: f.overridesDefinitionId ?? undefined,
       note: f.note ?? undefined,
     })),
-    provenance: row.provenanceJson as FinancialSnapshot["provenance"],
+    provenance: row.provenanceJson as unknown as FinancialSnapshot["provenance"],
     review: {
       reviewedBy: row.reviewedBy,
       reviewedAt: row.reviewedAt,
