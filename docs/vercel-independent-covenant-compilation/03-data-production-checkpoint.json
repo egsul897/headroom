@@ -1,0 +1,332 @@
+{
+  "artifact": "DATA_PRODUCTION_CHECKPOINT",
+  "measuredAt": "2026-10-08T22:10:04.816Z",
+  "session": {
+    "wallClockMs": 34781,
+    "paidInferenceUsd": 0,
+    "paidInferenceAuthorized": false,
+    "ollamaAvailable": false,
+    "vllmAvailable": false,
+    "note": "This session ran DETERMINISTIC_ONLY + offline adapters. No Vercel AI Gateway calls. No independently verified legal representations produced."
+  },
+  "corpusExistingInRepo": {
+    "label": "MEASURED_FROM_FIXTURES",
+    "realPackageKeys": [
+      "chwy-2026-credit-agreement",
+      "conmed-2025-credit-facility",
+      "dsgr-2022-2025-credit-facility",
+      "fwrg-2021-credit-agreement",
+      "gibraltar-2026-credit-agreement",
+      "lsb-2023-abl-credit-agreement",
+      "riot-2025-2026-credit-facility",
+      "final-lightweight-unseen-sup"
+    ],
+    "accessionFilingsDiscoveredInReadmesAndUrlLists": 128,
+    "accessionSample": [
+      "0001174947-25-000941",
+      "0001193125-22-209154",
+      "0002077096-26-000190",
+      "0001193125-22-095177",
+      "0001193125-24-202196",
+      "0001193125-25-070858",
+      "0001193125-25-328786",
+      "0001193125-21-293207",
+      "0001193125-23-303035",
+      "0001140361-26-003087",
+      "0000912562-15-000006",
+      "0000912562-15-000009",
+      "0000912562-15-000016",
+      "0000912562-15-000033",
+      "0000912562-15-000042",
+      "0000912562-15-000044",
+      "0000912562-15-000050",
+      "0000912562-15-000055",
+      "0000912562-15-000060",
+      "0000912562-15-000062"
+    ],
+    "issuersFromPackageKeys": [
+      "chwy",
+      "conmed",
+      "dsgr",
+      "fwrg",
+      "gibraltar",
+      "lsb",
+      "riot",
+      "final-lightweight-unseen-sup"
+    ],
+    "issuerCount": 8,
+    "rawHtmlOrSourceDocumentsAcquiredOnDisk": 16,
+    "processableExtractedOrCuratedTextDocuments": 22,
+    "historicalDiscoveryCandidates_examples": {
+      "note": "Historical run artifacts already in repo \u2014 not re-executed this session",
+      "phase3fFirstBlind": 2847,
+      "finalLightweightUnseenSup": 1810,
+      "riotUnseen": 887
+    },
+    "historicalVerification_examples": {
+      "note": "Prior gateway-era verification results on disk; not produced by this vercel-independent pipeline",
+      "phase3fFirstBlind": {
+        "MATERIAL_DISCREPANCY": 15,
+        "VERIFICATION_INCOMPLETE": 13
+      },
+      "finalLightweight": {
+        "VERIFICATION_FAILED": 13
+      }
+    },
+    "clarifications": {
+      "accessionIdsInReadmesOnly": 9,
+      "accessionIdsIncludingGibraltarUrlDiscoveryList": 128,
+      "note": "Gibraltar retrieval/urls.txt lists many EDGAR index URLs discovered for research; only one Gibraltar credit-agreement raw HTML is acquired on disk. Do not equate 128 discovered accessions with 128 acquired debt documents.",
+      "distinctIssuersFromPackageKeys": [
+        "chwy",
+        "conmed",
+        "dsgr",
+        "fwrg",
+        "gibraltar",
+        "lsb",
+        "riot",
+        "final-lightweight-unseen-sup"
+      ],
+      "issuerCountIncludingAllPackages": 8,
+      "uniqueInstrumentsEstimate": "At least 8 credit facilities/packages on disk; instrument-level graph not re-derived this session (historical package-graph artifacts exist per package). Label: ESTIMATE pending package-graph re-run."
+    }
+  },
+  "thisSessionPipeline": {
+    "label": "MEASURED",
+    "documentsProcessedDeterministically": 22,
+    "provisionsStructurallyWindowed": 1555,
+    "noteOnProvisions": "Lightweight section splitter over extracted text \u2014 NOT a full Phase 2A structural-index re-run",
+    "deterministicFactsExtracted": 24915,
+    "sourceBackedDefinitions": 1684,
+    "crossReferenceDependencyEdges": 5701,
+    "selectiveCompileUnitsPlanned": 409,
+    "omittedSourcesAudited": 630,
+    "semanticHypothesesStored": 54,
+    "independentlyVerifiedRepresentations": 0,
+    "unresolvedAmbiguousIssues": 956,
+    "newlyDiscoveredDraftingPatterns": 0,
+    "noteOnPatterns": "No novel drafting-pattern classifier run this session",
+    "dangerousOmissionsOrFalsePermissionsDetected": 44,
+    "falsePermissionDefectIds": [
+      "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt::1031::15:missing-restriction",
+      "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt::6.01(b)::17:missing-restriction",
+      "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt::957::19:missing-restriction",
+      "conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt::chunk-1::0:missing-restriction",
+      "conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt::7.2::2:missing-restriction",
+      "conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt::7.5::0:missing-restriction",
+      "conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt::7.::7:missing-restriction",
+      "conmed-2025-credit-facility/curated/first-omnibus-amendment-2026-curated.txt::10.::10:missing-restriction",
+      "conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt::3.::8:missing-restriction",
+      "conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt::2.2::10:missing-restriction",
+      "conmed-2025-credit-facility/curated/guarantee-and-collateral-agreement-full.txt::2::12:missing-restriction",
+      "conmed-2025-credit-facility/curated/second-amendment-2022-full.txt::3.::2:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt::3.22.::3:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt::1.01.::8:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-a-2022-amended-restated-credit-agreement.txt::6.08(a)::10:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt::2.09::0:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt::3.22.::4:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt::9.03(c)::15:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt::3.17::0:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt::3.22.::4:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt::1.01.::9:missing-restriction",
+      "dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt::6.08(a)::11:missing-restriction",
+      "fwrg-2021-credit-agreement/article-6-negative-covenants.txt::6.09::0:missing-restriction",
+      "fwrg-2021-credit-agreement/definitions-excerpt.txt::6.04(a)::0:missing-restriction",
+      "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt::1.01::16:missing-restriction",
+      "gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt::2.01(a)::17:missing-restriction",
+      "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::6.01::1:missing-restriction",
+      "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::6.03::4:missing-restriction",
+      "lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt::6.04::5:missing-restriction",
+      "lsb-2023-abl-credit-agreement/definitions-excerpt.txt::2.01(b)::0:missing-restriction",
+      "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt::2.::1:missing-restriction",
+      "lsb-2023-abl-credit-agreement/intercreditor-joinder.txt::6.::5:missing-restriction",
+      "riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt::2.03.::13:missing-restriction",
+      "riot-2025-2026-credit-facility/extracted-text/doc-b-2025-05-19-amended-restated-credit-agreement.txt::2.03.::12:missing-restriction",
+      "riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt::1.05.::12:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt::10.07(g)::13:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt::7.03::14:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt::6.11::15:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt::10.07(g)::13:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt::7.03::14:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt::6.11::16:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt::3.::3:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt::4.::4:missing-restriction",
+      "final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt::5.::5:missing-restriction"
+    ],
+    "knowledgeStorageBytes": 2506886,
+    "modelCostUsd": 0,
+    "dangerousOmissionsClarification": "The 44 MISSING_LEGAL_RESTRICTION flags were raised by adversarial heuristics against DETERMINISTIC_ONLY compile outputs that intentionally emit zero semantic rules. They are NOT confirmed false-permission findings from a semantic model, and are NOT independently verified legal defects. They seed the engineering ledger for local-model comparison once Ollama/vLLM is available."
+  },
+  "scaleBenchmark": {
+    "version": "scale-benchmark.v1",
+    "ranAt": "2026-10-08T22:10:00.619Z",
+    "availableDocuments": 22,
+    "tiers": [
+      {
+        "tier": 10,
+        "executed": true,
+        "documentsProcessed": 10,
+        "wallClockMs": 2636,
+        "parsingThroughputDocsPerSec": 3.793626707132018,
+        "candidateCount": 830,
+        "compileUnitCount": 581,
+        "modelInputChars": 2810192,
+        "fullInventoryChars": 3113651,
+        "modelInputReductionRatio": 0.09746082653450883,
+        "storageBytes": 8395831,
+        "errors": [],
+        "measured": true
+      },
+      {
+        "tier": 100,
+        "executed": true,
+        "documentsProcessed": 22,
+        "wallClockMs": 9585,
+        "parsingThroughputDocsPerSec": 2.2952529994783513,
+        "candidateCount": 1555,
+        "compileUnitCount": 1135,
+        "modelInputChars": 5170193,
+        "fullInventoryChars": 5653309,
+        "modelInputReductionRatio": 0.0854572074514236,
+        "storageBytes": 17635790,
+        "errors": [
+          "Requested 100 documents but only 22 available; measured on 22."
+        ],
+        "measured": true
+      },
+      {
+        "tier": 1000,
+        "executed": true,
+        "documentsProcessed": 22,
+        "wallClockMs": 11667,
+        "parsingThroughputDocsPerSec": 1.88566040970258,
+        "candidateCount": 1555,
+        "compileUnitCount": 1135,
+        "modelInputChars": 5170193,
+        "fullInventoryChars": 5653309,
+        "modelInputReductionRatio": 0.0854572074514236,
+        "storageBytes": 17635790,
+        "errors": [
+          "Requested 1000 documents but only 22 available; measured on 22."
+        ],
+        "measured": true
+      }
+    ],
+    "extrapolated10k": {
+      "label": "EXTRAPOLATED",
+      "basisTier": 1000,
+      "assumedDocs": 10000,
+      "projectedWallClockMs": 5303182,
+      "projectedStorageBytes": 8016268182,
+      "projectedCompileUnits": 515909,
+      "projectedModelInputChars": 2350087727,
+      "notes": [
+        "EXTRAPOLATED figures are linear projections from the largest executed tier.",
+        "They are not measured 10,000-document results.",
+        "Semantic model cost is excluded from deterministic parsing throughput.",
+        "Basis: 22 docs in 11667ms."
+      ]
+    }
+  },
+  "modelComparison": {
+    "harnessVersion": "model-comparison.v1",
+    "ranAt": "2026-10-08T22:10:00.650Z",
+    "hardwareNote": "Cloud agent VM; Ollama/vLLM not installed; model weights not present; paid gateway not authorized",
+    "modelsAttempted": [
+      "deterministic-none",
+      "ollama-probe"
+    ],
+    "rows": [
+      {
+        "modelId": "deterministic-none",
+        "mode": "DETERMINISTIC_ONLY",
+        "caseId": "ipv22-threshold",
+        "status": "DETERMINISTIC",
+        "latencyMs": 0,
+        "memoryUsageMb": 0,
+        "costUsd": 0,
+        "invalidStructuredOutput": false,
+        "falsePermissionSuspected": false,
+        "sourceSpanPresent": true,
+        "ipvFlags": [],
+        "notes": [],
+        "measured": true
+      },
+      {
+        "modelId": "deterministic-none",
+        "mode": "DETERMINISTIC_ONLY",
+        "caseId": "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt:",
+        "status": "DETERMINISTIC",
+        "latencyMs": 0,
+        "memoryUsageMb": 0,
+        "costUsd": 0,
+        "invalidStructuredOutput": false,
+        "falsePermissionSuspected": false,
+        "sourceSpanPresent": true,
+        "ipvFlags": [],
+        "notes": [],
+        "measured": true
+      },
+      {
+        "modelId": "ollama-probe",
+        "mode": "OLLAMA_LOCAL",
+        "caseId": "ipv22-threshold",
+        "status": "TRANSPORT_ERROR",
+        "latencyMs": 18,
+        "memoryUsageMb": 3,
+        "costUsd": null,
+        "invalidStructuredOutput": false,
+        "falsePermissionSuspected": false,
+        "sourceSpanPresent": true,
+        "ipvFlags": [],
+        "notes": [
+          "fetch failed"
+        ],
+        "measured": true
+      },
+      {
+        "modelId": "ollama-probe",
+        "mode": "OLLAMA_LOCAL",
+        "caseId": "chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt:",
+        "status": "TRANSPORT_ERROR",
+        "latencyMs": 1,
+        "memoryUsageMb": 1,
+        "costUsd": null,
+        "invalidStructuredOutput": false,
+        "falsePermissionSuspected": false,
+        "sourceSpanPresent": true,
+        "ipvFlags": [],
+        "notes": [
+          "fetch failed"
+        ],
+        "measured": true
+      }
+    ],
+    "limitations": [
+      "ollama-probe/ipv22-threshold: fetch failed",
+      "ollama-probe/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt:: fetch failed",
+      "OLLAMA_LOCAL requested but OLLAMA_BASE_URL may be unreachable in this environment; transport errors are recorded, not invented as quality scores."
+    ]
+  },
+  "blockers": [
+    "No Ollama or vLLM runtime/weights in this environment",
+    "No founder paid-inference authorization; Vercel AI Gateway not used",
+    "Full Phase 2A structural index + discovery not re-executed on all packages in this session",
+    "FWRG/LSB packages are excerpt-only (no full raw HTML on disk)",
+    "Semantic hypotheses are UNVERIFIED \u2014 not legally validated knowledge"
+  ],
+  "nextExecutableBatch": [
+    "Finish automated regression tests for inference adapters + planner + knowledge store",
+    "Commit/push draft PR for provider-independent compilation",
+    "If Ollama becomes available: run local structured compile on CONMED Article VII seeds",
+    "Wire BridgedSemanticCaller into an offline replay of one frozen candidate without paid calls",
+    "Do not advance certification gates"
+  ],
+  "git": {
+    "branch": "cursor/vercel-independent-covenant-compilation-6d1d",
+    "sha": "135ade41be76722d339e1e03a6f34f6153856dae",
+    "pr": "https://github.com/egsul897/headroom/pull/146",
+    "prNumber": 146,
+    "ci": "PENDING_ON_HEAD_135ade4"
+  }
+}

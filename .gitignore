@@ -21,3 +21,9 @@ data/
 .local-amendment-research/
 # Covenant Dependency Atlas / KF bulky generated exports & acquired corpus bytes
 .local-dependency-atlas/
+
+# Vercel-independent compilation bulk artifacts (model weights, run outputs)
+covenant-knowledge-data/
+.ollama/
+.vllm/
+*.gguf
