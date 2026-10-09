@@ -1,0 +1,28 @@
+{
+  "schema": "authenticated-vep-capacity-require.v1",
+  "paidProvidersCalled": false,
+  "inventedNumericHeadroom": false,
+  "asOf": "2026-10-05",
+  "financialInputsSupplied": false,
+  "ledgerSupplied": false,
+  "capacity": {
+    "outcome": "REFUSED",
+    "policy": "REQUIRE",
+    "packageHash": "914f261d161286054181800f39d3e3ca1107cadd5e747bdfe385455caf2d9ebd",
+    "refusals": [
+      {
+        "code": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+        "message": "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+        "refs": [
+          "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.1 [SOURCE_REFERENCE_RESOLVED]",
+          "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.3(g) [SOURCE_REFERENCE_RESOLVED]",
+          "ir-rule:29309c463e06b77b4b243eda rule[r-c].condition[0] -> Section 7.1 [SOURCE_REFERENCE_RESOLVED]"
+        ]
+      }
+    ]
+  },
+  "missingInputs": [
+    "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed"
+  ],
+  "note": "REQUIRE invoked without fabricated financial/ledger bindings. Numeric headroom is not claimed."
+}

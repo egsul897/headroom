@@ -1,11 +1,10 @@
-# Authentic VerifiedExecutionPackage — blocker report
+# Authentic VerifiedExecutionPackage — Phase 3→4 completion
 
 **Verdict:** authentic `VerifiedExecutionPackage` **DERIVED** for CONMED §7.2(c).  
-**Tip SHA at investigation:** PR #201 tip after merge of main (#202) + capacity probe.  
 **Soft gate:** no live / paid certification re-runs. Offline fixtures and frozen packets only.  
-**Gates:** `certifyCandidate` / `certifyPackage` / `certifiedMapToVerifiedExecutionPackage` / `toVerifiedExecutionPackage` / `evaluateVerifiedCapacity` (REQUIRE) were not weakened.
+**Gates:** `certifyCandidate` / `certifyPackage` / `certifiedMapToVerifiedExecutionPackage` / `evaluateVerifiedCapacity` (REQUIRE) / `simulateVerifiedTransaction` were not weakened.
 
-`certifiedMapToVerifiedExecutionPackage` → **DERIVED**. Phase 4E `enumerateCertifiedPaths` → **CERTIFIED_4E** (paths status **UNSUPPORTED** for cross-rule gates). `evaluateVerifiedCapacity` (REQUIRE) → **REFUSED** `CROSS_RULE_GATE_NOT_EXECUTABLE` (fail-closed; no invented evaluator).
+`certifiedMapToVerifiedExecutionPackage` → **DERIVED**. Phase 4E `enumerateCertifiedPaths` → **CERTIFIED_4E** (path status **UNSUPPORTED** for cross-rule gates). `evaluateVerifiedCapacity` (REQUIRE) → **REFUSED** `CROSS_RULE_GATE_NOT_EXECUTABLE` (fail-closed; no invented evaluator / numeric headroom).
 
 ---
 
@@ -29,7 +28,7 @@ Offline Phase-2 recompute (`runAmendmentPipeline` + `computeOperativeContractSta
 |---|---|
 | Second Amd Indebtedness mods | `[{ status: "UNRESOLVED", target: null }]` |
 | REVIEW_REQUIRED **provisions** (reconstructed) | **0** |
-| Unattached effects (instrument) | **5** (Omnibus DOCUMENT/exhibit + Second Amd unresolved) |
+| Unattached effects (instrument) | Omnibus DOCUMENT/exhibit + Second Amd unresolved (+ Eighth RESTATE when present) |
 | §7.2(c) `bundle.hasUnresolvedOperativeEvidence` | **false** |
 | Compilation | **COMPLETED** |
 | Verification | **VERIFIED_NO_MATERIAL_GAP_FOUND** |
@@ -46,10 +45,28 @@ Instrument-level `OPERATIVE_STATE_REVIEW_REQUIRED` remains true because of those
 | CONMED §7.2(c) candidate is Phase-3 CERTIFIED (offline recompute) | **Claimed** — `docs/phase-3-live-validation/7.2c-recompute-phase2-certified/` |
 | An authentic `VerifiedExecutionPackage` exists for product execution | **Claimed** — `authenticated-vep/verified-execution-package.json` |
 | Phase 4E path enumeration over that VEP | **Claimed** — `CERTIFIED_4E`, 1 path each for UNSECURED_DEBT / SECURED_DEBT (`02-phase4e-enumeration.json`); path status **UNSUPPORTED** (cross-rule gate) |
-| `evaluateVerifiedCapacity(REQUIRE)` EXECUTED | **Cannot claim** — **REFUSED** `CROSS_RULE_GATE_NOT_EXECUTABLE` (`03-evaluate-verified-capacity.json`). §7.2(c) REQUIRES / OTHER_RULE_SATISFIED → §7.1 and §7.3(g); runtime has no certified cross-rule satisfaction evaluator (fail-closed by design). No paid recertify of companions; no new architecture. |
+| `evaluateVerifiedCapacity(REQUIRE)` invoked | **Claimed** — **REFUSED** `CROSS_RULE_GATE_NOT_EXECUTABLE` (`03-evaluate-verified-capacity.json` / `04-capacity-require.json`). No invented numeric headroom. |
 | Numeric debt ∩ lien capacity for a CONMED incurrence | **Cannot claim** — capacity refused above; also no APPROVED 4B snapshots invented |
-| Package-level `certifyPackage` CERTIFIED for CONMED | **Cannot claim** — discovery population PARTIAL_TARGET_SET / unsealed; instrument unattached effects remain |
-| Stratified board 12/12 CERTIFIED | **Cannot claim** |
+| Package-level `certifyPackage` CERTIFIED for CONMED | **Cannot claim** — status `PARTIAL` (`03-certify-package.json`: DISCOVERY_POPULATION_UNSEALED, PARTIAL_TARGET_SET, REVIEW_UNRESOLVED_ITEM) |
+| Stratified board 12/12 CERTIFIED | **Cannot claim** (`06-stratified-board.json`: PINNED_OFFLINE / BASELINE_PINNED; live CERTIFIED 0) |
+| Phase 4D simulation EXECUTED | **Cannot claim** — capacity REFUSED under REQUIRE; simulation withheld fail-closed (`05-phase4d-simulation.json`) |
+
+---
+
+## Capacity REQUIRE — missing inputs / blockers
+
+- `CROSS_RULE_GATE_NOT_EXECUTABLE` — §7.2(c) REQUIRES / OTHER_RULE_SATISFIED → §7.1 and §7.3(g); runtime has no certified cross-rule satisfaction evaluator (fail-closed by design).
+- Approved financial snapshots binding Consolidated EBITDA / leverage metrics as of the evaluation date — **not supplied**
+- Attributed ledger usages for the instrument — **not supplied**
+- Certified companion units for §7.1 / §7.3(g) — **not in this soft-gate package**
+
+No numeric headroom was invented.
+
+---
+
+## Omnibus DOCUMENT / exhibit CONDITIONAL
+
+Omnibus markup-exhibit / schedule DOCUMENT effects remain `CONDITIONAL_UNRESOLVED` (First Amendment Effective Date conditions precedent; exhibit blackline not in fixture). `computeOperativeContractState` includes DOCUMENT effects targeting `baseDocumentId` even when package-graph instrument keys (`instrument:${documentId}`) differ from the product instrument key, so they surface as **unattached** whole-document activity rather than silently dropping. They do **not** attach Indebtedness leads to §7.2(c)'s bundle — isolation preserved.
 
 ---
 
@@ -60,21 +77,15 @@ Instrument-level `OPERATIVE_STATE_REVIEW_REQUIRED` remains true because of those
 3. Indebtedness AMENDMENT_LEAD cleared from §7.2(c) bundle; compilation **COMPLETED**.
 4. Frozen `toolCallLog` retrieval hashes for §7.3(g) refreshed to current structural spans.
 5. Frozen model output re-normalized; scripted Layer-2; `certifyCandidate` → **CERTIFIED**.
-6. `certifiedMapToVerifiedExecutionPackage` → **DERIVED**; `enumerateCertifiedPaths` → **CERTIFIED_4E**; `evaluateVerifiedCapacity` → **REFUSED** (cross-rule gate).
+6. `certifiedMapToVerifiedExecutionPackage` → **DERIVED**; `enumerateCertifiedPaths` → **CERTIFIED_4E**; `evaluateVerifiedCapacity` → **REFUSED** (cross-rule gate); `certifyPackage` → **PARTIAL**.
 
-Scripts: `scripts/phase-3-live-validation/recompute-72c-certify-offline.ts`, `scripts/product/attempt-authenticated-vep.ts`.
+Scripts: `scripts/phase-3-live-validation/recompute-72c-certify-offline.ts`, `scripts/product/attempt-authenticated-vep.ts`, `scripts/product/complete-authenticated-phase4-path.ts`.
 
 ---
 
-## Residual (honest fail-closed)
+## Stratified board
 
-| Item | Status |
-|---|---|
-| Second Amendment → Seventh A&R (absent) | UNRESOLVED / unattached — correct; do not invent Seventh text |
-| Omnibus DOCUMENT/exhibit CONDITIONAL_UNRESOLVED | Unattached; exhibit pages curated out of fixture |
-| Cross-rule §7.1 / §7.3(g) gate | Blocks REQUIRE capacity until certified companions + certified cross-rule evaluator exist |
-| Package CERTIFIED | Blocked by PARTIAL_TARGET_SET / unsealed population |
-| Other live packets (7.5j, stratified pins) | Still REVIEW_REQUIRED / PINNED_OFFLINE |
+Matrix status: `OFFLINE_PIN_MATRIX_PARTIAL`. Live CERTIFIED: **0**. Soft gate forbids live/paid stratified certification.
 
 ---
 

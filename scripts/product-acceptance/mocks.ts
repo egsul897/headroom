@@ -45,12 +45,21 @@ const MONEY_RE = /(?:\$|EUR )[\d,]+(?:\.\d+)?/g;
 const PERCENT_RE = /\d+(?:\.\d+)?%/g;
 const RATIO_RE = /\d+\.\d{2} to 1\.00/g;
 const REF_RE = /\b(?:Section|Sections|clause|clauses)\s+(?:[0-9]+(?:\.[0-9]+)*(?:\([a-zA-Z0-9]+\))*|\([a-zA-Z0-9]+\)(?:\s+and\s+\([a-zA-Z0-9]+\))?)/g;
+/** IPV-14: "within five Business Days" is a TIME_PERIOD unit the faithful mock must represent. */
+const DAYS_RE = /\b(?:within\s+)?(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+Business\s+Days?\b/gi;
+const DAY_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
 
 function values(text: string): MockItem["quantitativeValues"] {
   const out: MockItem["quantitativeValues"] = [];
   for (const m of text.match(MONEY_RE) ?? []) out.push({ kind: "MONEY", rawText: m, normalizedValue: Number(m.replace(/[^0-9.]/g, "")), unit: m.startsWith("EUR") ? "EUR" : "USD" });
   for (const m of text.match(PERCENT_RE) ?? []) out.push({ kind: "PERCENT", rawText: m, normalizedValue: Number(m.replace("%", "")), unit: "%" });
   for (const m of text.match(RATIO_RE) ?? []) out.push({ kind: "RATIO", rawText: m, normalizedValue: Number(m.split(" ")[0]), unit: null });
+  for (const m of text.match(DAYS_RE) ?? []) {
+    const numTok = m.match(/(one|two|three|four|five|six|seven|eight|nine|ten|\d+)/i)?.[1] ?? "";
+    const n = DAY_WORDS[numTok.toLowerCase()] ?? Number(numTok);
+    // unit bound is valueUnitChars=12 ("Business Days" is 13); use "Bus. Days".
+    if (Number.isFinite(n)) out.push({ kind: "DAYS", rawText: m.slice(0, 48), normalizedValue: n, unit: "Bus. Days" });
+  }
   return out.slice(0, 8);
 }
 

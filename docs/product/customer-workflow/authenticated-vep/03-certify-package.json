@@ -1,0 +1,81 @@
+{
+  "schema": "authenticated-vep-certify-package.v1",
+  "paidProvidersCalled": false,
+  "mapSource": "docs/phase-3-live-validation/7.2c-first-certified/12-map.json",
+  "candidateCount": 1,
+  "packageCertification": {
+    "version": "phase3-package-certification.v3",
+    "status": "PARTIAL",
+    "blockers": [
+      {
+        "code": "DISCOVERY_POPULATION_UNSEALED",
+        "severity": "PARTIAL",
+        "detail": "the candidate population was not sealed by discovery; its completeness cannot be asserted",
+        "refs": []
+      },
+      {
+        "code": "PARTIAL_TARGET_SET",
+        "severity": "PARTIAL",
+        "detail": "the population is a declared partial target set; a package certification is never claimed over a subset",
+        "refs": []
+      },
+      {
+        "code": "REVIEW_UNRESOLVED_ITEM",
+        "severity": "REVIEW",
+        "detail": "4 unresolved item(s) require review",
+        "refs": [
+          "7141fa48e5cccf9bad91d49d",
+          "76652b9e41cc3e3ec40bec66",
+          "8fd7dd1c7ee4981f8d25e056",
+          "d3035ab321b6c3d0681e1f5c"
+        ]
+      }
+    ],
+    "warnings": [
+      {
+        "code": "NON_SEMANTIC_EXECUTABLE_EDGE",
+        "detail": "RULE_SUBJECT_TO_GENERAL_PROHIBITION ir-rule:11f0445de25e714a1a3cfe31 -> ir-rule:c9757e8a02da1880d66214f2 is DETERMINISTIC_STRUCTURAL; Phase 4 does not act on it",
+        "refs": [
+          "14384b87be95f9d896c95b6d"
+        ]
+      }
+    ],
+    "discoveryPopulation": {
+      "scope": "PARTIAL_TARGET_SET",
+      "sealedDiscoveryIdentity": null,
+      "candidatePopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+      "discoveryVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+      "candidatesDiscovered": 1
+    },
+    "representedPopulationHash": "cph1:d3a9ae904586ce469f4fddcb8455d63be22b9630b2f72d78c1d6ac8eb6510c00",
+    "candidates": {
+      "total": 1,
+      "eligible": 1,
+      "represented": 1,
+      "certified": 1,
+      "reviewRequired": 0,
+      "notCertified": 0
+    },
+    "edges": {
+      "executable": 1,
+      "certifiedSemantic": 0,
+      "reviewOnly": 0,
+      "deterministicStructural": 1,
+      "contextualInference": 0
+    },
+    "bindings": {
+      "total": 0,
+      "bound": 0,
+      "executable": 0,
+      "notInTargetSet": 0,
+      "notCompiled": 0,
+      "unitNotFound": 0,
+      "unknown": 0,
+      "reviewRequired": 0,
+      "oneToMany": 0,
+      "selectorReview": 0,
+      "qualifiedOneToMany": 0
+    }
+  },
+  "note": "Soft gate: PARTIAL_TARGET_SET / unsealed population expected. Full sealed CERTIFIED package requires paid population certification (forbidden)."
+}

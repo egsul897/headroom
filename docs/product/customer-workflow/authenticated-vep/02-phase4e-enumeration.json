@@ -19,7 +19,9 @@
           "action": "INCUR_DEBT",
           "hasCapacityExpression": true,
           "sufficiency": "COMPLETE",
-          "status": "UNSUPPORTED"
+          "status": "UNSUPPORTED",
+          "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+          "sourceSectionRef": "7.2(c)"
         }
       ]
     },
@@ -38,7 +40,9 @@
           "action": "INCUR_DEBT",
           "hasCapacityExpression": true,
           "sufficiency": "COMPLETE",
-          "status": "UNSUPPORTED"
+          "status": "UNSUPPORTED",
+          "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+          "sourceSectionRef": "7.2(c)"
         }
       ]
     }
@@ -47,7 +51,7 @@
   "notes": [
     "enumerateCertifiedPaths over authentic DERIVED VEP.",
     "ContemplatedTxnKind uses UNSECURED_DEBT / SECURED_DEBT (not legacy INCUR_DEBT).",
-    "Path status UNSUPPORTED: CROSS_RULE_GATE_NOT_EXECUTABLE (\u00a77.1 / \u00a77.3(g)).",
-    "evaluateVerifiedCapacity(REQUIRE) invoked \u2192 REFUSED same gate (see 03-evaluate-verified-capacity.json)."
+    "Path status UNSUPPORTED: CROSS_RULE_GATE_NOT_EXECUTABLE (§7.1 / §7.3(g)).",
+    "evaluateVerifiedCapacity(REQUIRE) invoked → REFUSED same gate (see 03-evaluate-verified-capacity.json / 04-capacity-require.json)."
   ]
 }

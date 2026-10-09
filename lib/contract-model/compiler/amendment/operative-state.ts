@@ -591,7 +591,18 @@ function derivedSectionView(source: OperativeProvisionView, section: StructuralN
 }
 
 export function computeOperativeContractState(input: OperativeStateInput): OperativeContractState {
-  const instrumentEffects = input.allEffects.filter((e) => e.target.targetInstrumentKey === input.instrumentKey);
+  // Instrument-key strings are not always identical across layers (package-graph
+  // uses `instrument:${documentId}`; product pilots may use a stable human key).
+  // DOCUMENT-kind effects that resolve to this instrument's base document still
+  // affect whole-document operative authority (markup-exhibit / schedule mods)
+  // and must surface as unattached activity — never silently drop because the
+  // key strings differ. They do not attach to provision groups (no section/
+  // definition ref), so provision-level isolation (e.g. §7.2(c)) is preserved.
+  const instrumentEffects = input.allEffects.filter(
+    (e) =>
+      e.target.targetInstrumentKey === input.instrumentKey ||
+      (e.target.kind === "DOCUMENT" && e.target.targetDocumentId === input.baseDocumentId),
+  );
   const { groups, unattachedEffects: unattachedFromResolved } = groupEffectsByProvision(instrumentEffects);
 
   const fromEffects = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));

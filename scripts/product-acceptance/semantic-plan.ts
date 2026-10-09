@@ -29,6 +29,8 @@ const RULE_TYPE_BY_ROLE: Record<string, string> = {
 const COND_TYPE: Record<string, string> = {
   NO_DEFAULT: "NO_DEFAULT", RATIO_TEST: "RATIO_SATISFIED", PRO_FORMA: "RATIO_SATISFIED", CONSIDERATION_FORM: "UNSUPPORTED", PROCEEDS_APPLICATION: "OTHER_RULE_SATISFIED", SCOPE_CARVEOUT: "SECURITY_SCOPE",
   UNSECURED: "SECURITY_SCOPE", ELECTION: "UNSUPPORTED", SUBJECT_TO_INSTRUMENT: "OTHER_RULE_SATISFIED", PAYMENT_CONDITIONS: "OTHER_RULE_SATISFIED", AVAILABILITY_TEST: "MINIMUM_LIQUIDITY", TRIGGER: "MINIMUM_LIQUIDITY", CURE: "TIME_PERIOD",
+  // IPV-14: manifest TIME_PERIOD (e.g. "within five Business Days") must map to the IR vocabulary, never fall through to UNSUPPORTED.
+  TIME_PERIOD: "TIME_PERIOD",
 };
 
 export interface CandidateSpec {
@@ -141,8 +143,10 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
       const ruleType = isProhibition && (c.value as { kind?: string } | undefined)?.kind === "MONEY" ? "QUANTITATIVE_RESTRICTION" : RULE_TYPE_BY_ROLE[c.role] ?? "QUALITATIVE_OBLIGATION";
       return { localRef: `r${i + 1}`, sourceSectionRef: c.sectionRef, covenantFamily: c.family, ruleType, posture: c.posture, action: ACTION_BY_FAMILY[c.family] ?? null, entityScope: c.entityScope ?? ["BORROWER"], entityScopeExcluded: [], capacityExpression: capacityFor(c, ids, excerpt), conditions, exceptions, dependsOn, sufficiency: sufficiencyFor(c), sufficiencyReasons: sufficiencyFor(c) === "COMPLETE" ? [] : [`${c.unresolvedTerms?.join(", ") ?? ""}${c.truncated ? " source truncated" : ""}`.trim()], citation: c.sectionRef, excerpt, inventoryItemIds: ids };
     });
-    // enumerated children of the section that the manifest does not single out: a faithful model still represents them
-    // (as qualitative permissions under an "except:" lead-in) or carries their items on the lead rule (formula parts)
+    // Enumerated children the manifest does not single out: a faithful model still emits a rule per
+    // independent lettered subsection (IPV-14 D 2.05(a) voluntary prepayment). Merging inventory onto
+    // the lead without a rule leaves Layer-1 AMBIGUOUS ("N enumerated units, 1 rule") → UNACCOUNTED.
+    // Under an "except:" lead-in, also attach the child as an exception of the parent prohibition.
     const anchor = index.getNodeById(spec.nodeId);
     const covered = new Set(covs.map((c) => c.sectionRef));
     const lead = rules.find((r) => r.sourceSectionRef === spec.sectionRef) ?? rules[0];
@@ -151,10 +155,11 @@ export function faithfulPlan(index: StructuralIndex, m: ExpectationsManifest, sp
       if (covered.has(child.sectionRef) || [...covered].some((r) => child.sectionRef.startsWith(r + "("))) continue;
       const own = index.getNodeText(child.nodeId, "OWN").trim();
       const ids = inventoryIdsFor(user, own);
-      if (exceptLead && child.nodeType === "SUBSECTION") {
+      if (child.nodeType === "SUBSECTION") {
         const family = covs[0]?.family ?? "INDEBTEDNESS";
-        rules.push({ localRef: `q${rules.length + 1}`, sourceSectionRef: child.sectionRef, covenantFamily: family, ruleType: "QUALITATIVE_OBLIGATION", posture: "PERMISSION", action: ACTION_BY_FAMILY[family] ?? null, entityScope: ["BORROWER"], entityScopeExcluded: [], capacityExpression: { kind: "UNLIMITED_CAPACITY", citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: child.sectionRef, excerpt: own.slice(0, 300), inventoryItemIds: ids });
-        if (lead && lead.ruleType === "PROHIBITION") (lead.exceptions as unknown[]).push({ description: `clause ${child.sectionRef}`, permissionRef: `q${rules.length}`, conditions: [], citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids });
+        const posture = /shall\s+(?:not|prepay|maintain|pay)/i.test(own) ? "OBLIGATION" : "PERMISSION";
+        rules.push({ localRef: `q${rules.length + 1}`, sourceSectionRef: child.sectionRef, covenantFamily: family, ruleType: "QUALITATIVE_OBLIGATION", posture, action: ACTION_BY_FAMILY[family] ?? null, entityScope: ["BORROWER"], entityScopeExcluded: [], capacityExpression: { kind: "UNLIMITED_CAPACITY", citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids }, conditions: [], exceptions: [], dependsOn: [], sufficiency: "COMPLETE", sufficiencyReasons: [], citation: child.sectionRef, excerpt: own.slice(0, 300), inventoryItemIds: ids });
+        if (exceptLead && lead && lead.ruleType === "PROHIBITION") (lead.exceptions as unknown[]).push({ description: `clause ${child.sectionRef}`, permissionRef: `q${rules.length}`, conditions: [], citation: child.sectionRef, excerpt: own.slice(0, 160), inventoryItemIds: ids });
       } else if (lead) {
         (lead.inventoryItemIds as string[]).push(...ids);
         const firstCond = (lead.conditions as Array<{ inventoryItemIds?: string[] }>)[0];
