@@ -8,7 +8,7 @@
 | PR | Tip SHA | CI (tip) | Role |
 |---|---|---|---|
 | **#229** | `b33f86554e398af4eb3204120b5f5046e21ffe7d` | **Green** (certified path, Vercel) | Canonical A8-01/A8-02 capacity status |
-| **#232** | tip after this integration commit | **Was green** at `f9b77f20`; re-check after push | Activation + supersession vehicle |
+| **#232** | `9a3a663ff768a276f81e992ddf18d9e8049a537c` | **Was green** at `f9b77f20`; re-check after push | Activation + supersession vehicle |
 | **#225** | `d2d1dca0b542a6d6cc6ea15b11a9dfbc87c7055e` | N/A (superseded) | Extraction prose fix |
 | **#227** | `8b81dffb6ec0bd29945aeda76d3f2bfffff9fe89` | N/A (superseded) | E2E activation proof |
 | **#230** | `bf10361daacdda653e536e1e2211b8b1e536fcf7` | **Red** (certified path + Vercel fail) | Authentic capacity matrix (Agent 3) — do not block #232 |
