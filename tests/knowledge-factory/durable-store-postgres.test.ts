@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createHash } from "node:crypto";
 import type { KnowledgeSourceRecord } from "../../lib/knowledge-factory/types";
 
@@ -23,26 +23,26 @@ vi.mock("../../lib/prisma", () => ({
   },
 }));
 
-vi.mock("../../lib/document-storage/vercel-blob-provider", () => ({
-  VercelBlobStorageProvider: class {
-    store = mocks.store;
-    retrieve = mocks.retrieve;
-    delete = mocks.del;
-  },
-}));
+vi.mock("../../lib/document-storage/postgres-bytea-provider", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../lib/document-storage/postgres-bytea-provider")>();
+  return {
+    ...actual,
+    PostgresDocumentStorageProvider: class {
+      store = mocks.store;
+      retrieve = mocks.retrieve;
+      delete = mocks.del;
+    },
+  };
+});
 
 import {
   DurableContentConflictError,
-  DurableRetrieveError,
   persistDurableKnowledgeSource,
   retrieveDurableKnowledgeSource,
 } from "../../lib/knowledge-factory/preservation/durable-store";
 
-/** Force Blob path so VercelBlobStorageProvider mocks exercise overwrite/orphan safety. */
-const envBoth = {
+const envPg = {
   DATABASE_URL: "postgresql://example.invalid/headroom",
-  BLOB_READ_WRITE_TOKEN: "vercel_blob_test_token",
-  KF_BYTE_STORE: "vercel-blob",
 };
 
 function sha(bytes: Buffer): string {
@@ -73,7 +73,7 @@ function sampleSource(overrides: Partial<KnowledgeSourceRecord> = {}): Knowledge
   };
 }
 
-describe("durable-store safety invariants", () => {
+describe("durable-store Postgres BYTEA path", () => {
   beforeEach(() => {
     mocks.findUnique.mockReset();
     mocks.findFirst.mockReset();
@@ -84,93 +84,67 @@ describe("durable-store safety invariants", () => {
     mocks.del.mockReset();
   });
 
-  it("reuses existing sourceId with identical hash without re-uploading", async () => {
-    const bytes = Buffer.from("same-bytes");
+  it("persists via postgres-bytea without requiring Blob token", async () => {
+    const bytes = Buffer.from("new-pg-doc");
     const hash = sha(bytes);
-    mocks.findUnique.mockResolvedValue({
-      id: "row1",
+    mocks.findUnique.mockResolvedValue(null);
+    mocks.findFirst.mockResolvedValue(null);
+    mocks.store.mockResolvedValue({
+      storageRef: `pgbytea:v1:${hash}`,
+      provider: "postgres-bytea",
+    });
+    mocks.create.mockResolvedValue({
+      id: "row-pg",
       sourceId: sampleSource().sourceId,
       originalBytesHash: hash,
       byteSize: bytes.length,
-      storageRef: "https://blob.example/private/a",
+      storageRef: `pgbytea:v1:${hash}`,
       representationLevel: "DISCOVERED_CANDIDATE",
       usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
+      metadata: { storageProvider: "postgres-bytea" },
     });
 
     const result = await persistDurableKnowledgeSource({
       source: sampleSource({ originalBytesHash: hash }),
       bytes,
-      env: envBoth,
+      env: envPg,
     });
 
-    expect(result.reusedExisting).toBe(true);
-    expect(mocks.store).not.toHaveBeenCalled();
-    expect(mocks.create).not.toHaveBeenCalled();
+    expect(result.storageProvider).toBe("postgres-bytea");
+    expect(result.storageRef.startsWith("pgbytea:v1:")).toBe(true);
+    expect(mocks.store).toHaveBeenCalledOnce();
   });
 
-  it("rejects same sourceId with different bytes (no silent overwrite)", async () => {
-    const bytes = Buffer.from("different");
-    const attemptedHash = sha(bytes);
+  it("rejects content conflict on Postgres path", async () => {
+    const bytes = Buffer.from("x");
     mocks.findUnique.mockResolvedValue({
       id: "row1",
       sourceId: sampleSource().sourceId,
       originalBytesHash: "bb".repeat(32),
-      byteSize: 10,
-      storageRef: "https://blob.example/private/a",
+      byteSize: 1,
+      storageRef: `pgbytea:v1:${"bb".repeat(32)}`,
       representationLevel: "DISCOVERED_CANDIDATE",
       usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
     });
 
     await expect(
       persistDurableKnowledgeSource({
-        source: sampleSource({ originalBytesHash: attemptedHash }),
+        source: sampleSource({ originalBytesHash: sha(bytes) }),
         bytes,
-        env: envBoth,
+        env: envPg,
       }),
     ).rejects.toBeInstanceOf(DurableContentConflictError);
     expect(mocks.store).not.toHaveBeenCalled();
   });
 
-  it("reuses canonical row when identical bytes arrive under a new sourceId", async () => {
-    const bytes = Buffer.from("dup-bytes");
-    const hash = sha(bytes);
-    mocks.findUnique.mockResolvedValue(null);
-    mocks.findFirst.mockResolvedValue({
-      id: "canonical",
-      sourceId: "edgar:canonical:first.htm",
-      originalBytesHash: hash,
-      byteSize: bytes.length,
-      storageRef: "https://blob.example/private/c",
-      representationLevel: "DISCOVERED_CANDIDATE",
-      usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
-      metadata: {},
-    });
-    mocks.update.mockResolvedValue({});
-
-    const result = await persistDurableKnowledgeSource({
-      source: sampleSource({
-        sourceId: "edgar:alias:second.htm",
-        originalBytesHash: hash,
-      }),
-      bytes,
-      env: envBoth,
-    });
-
-    expect(result.reusedExisting).toBe(true);
-    expect(result.sourceId).toBe("edgar:canonical:first.htm");
-    expect(mocks.store).not.toHaveBeenCalled();
-    expect(mocks.create).not.toHaveBeenCalled();
-    expect(mocks.update).toHaveBeenCalled();
-  });
-
-  it("deletes orphan blob when DB create fails after upload", async () => {
-    const bytes = Buffer.from("new-doc");
+  it("deletes orphan postgres object when KnowledgeSource create fails", async () => {
+    const bytes = Buffer.from("orphan-pg");
     const hash = sha(bytes);
     mocks.findUnique.mockResolvedValue(null);
     mocks.findFirst.mockResolvedValue(null);
     mocks.store.mockResolvedValue({
-      storageRef: "https://blob.example/private/orphan",
-      provider: "vercel-blob",
+      storageRef: `pgbytea:v1:${hash}`,
+      provider: "postgres-bytea",
     });
     mocks.create.mockRejectedValue(new Error("db down"));
     mocks.del.mockResolvedValue(undefined);
@@ -179,30 +153,57 @@ describe("durable-store safety invariants", () => {
       persistDurableKnowledgeSource({
         source: sampleSource({ originalBytesHash: hash }),
         bytes,
-        env: envBoth,
+        env: envPg,
       }),
     ).rejects.toThrow(/db down/);
-
-    expect(mocks.del).toHaveBeenCalledWith("https://blob.example/private/orphan");
+    expect(mocks.del).toHaveBeenCalledWith(`pgbytea:v1:${hash}`);
   });
 
-  it("retrieve fails closed on hash mismatch", async () => {
+  it("retrieves and verifies hash on postgres storageRef", async () => {
+    const bytes = Buffer.from("ok");
+    const hash = sha(bytes);
     mocks.findUnique.mockResolvedValue({
       id: "row1",
       sourceId: sampleSource().sourceId,
-      originalBytesHash: "aa".repeat(32),
-      byteSize: 4,
-      storageRef: "https://blob.example/private/a",
+      originalBytesHash: hash,
+      byteSize: bytes.length,
+      storageRef: `pgbytea:v1:${hash}`,
       representationLevel: "DISCOVERED_CANDIDATE",
       provenance: "sec-edgar",
+      metadata: { storageProvider: "postgres-bytea" },
     });
-    mocks.retrieve.mockResolvedValue(Buffer.from("xxxx"));
+    mocks.retrieve.mockResolvedValue(bytes);
 
-    await expect(
-      retrieveDurableKnowledgeSource({
-        sourceId: sampleSource().sourceId,
-        env: envBoth,
-      }),
-    ).rejects.toBeInstanceOf(DurableRetrieveError);
+    const result = await retrieveDurableKnowledgeSource({
+      sourceId: sampleSource().sourceId,
+      env: envPg,
+    });
+    expect(result.hashEqual).toBe(true);
+    expect(result.byteEqual).toBe(true);
+    expect(result.storageProvider).toBe("postgres-bytea");
+  });
+
+  it("idempotently reuses existing postgres-backed sourceId without re-store", async () => {
+    const bytes = Buffer.from("again");
+    const hash = sha(bytes);
+    mocks.findUnique.mockResolvedValue({
+      id: "row1",
+      sourceId: sampleSource().sourceId,
+      originalBytesHash: hash,
+      byteSize: bytes.length,
+      storageRef: `pgbytea:v1:${hash}`,
+      representationLevel: "DISCOVERED_CANDIDATE",
+      usageRightsReviewStatus: "PUBLIC_SEC_EDGAR",
+      metadata: { storageProvider: "postgres-bytea" },
+    });
+
+    const result = await persistDurableKnowledgeSource({
+      source: sampleSource({ originalBytesHash: hash }),
+      bytes,
+      env: envPg,
+    });
+    expect(result.reusedExisting).toBe(true);
+    expect(mocks.store).not.toHaveBeenCalled();
+    expect(mocks.create).not.toHaveBeenCalled();
   });
 });

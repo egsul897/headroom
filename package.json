@@ -42,9 +42,15 @@
     "kf:phase3": "tsx scripts/knowledge-factory/phase3-preserve-and-export.ts",
     "kf:recover": "tsx scripts/knowledge-factory/recover-from-manifest.ts",
     "kf:durable-proof": "tsx scripts/knowledge-factory/durable-roundtrip-proof.ts",
+<<<<<<< HEAD
     "product:setup-conmed-demo": "tsx scripts/product/setup-conmed-demo.ts",
     "test:knowledge-factory": "vitest run tests/knowledge-factory",
     "test:product": "vitest run tests/product tests/home-overview-empty.test.tsx"
+=======
+    "kf:consolidation-dry-run": "tsx scripts/knowledge-factory/consolidation-dry-run.ts",
+    "kf:consolidation-import": "tsx scripts/knowledge-factory/consolidation-import.ts",
+    "test:knowledge-factory": "vitest run tests/knowledge-factory"
+>>>>>>> origin/cursor/neon-knowledge-consolidation-0e3f
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

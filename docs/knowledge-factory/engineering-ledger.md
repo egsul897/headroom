@@ -55,7 +55,7 @@ See `docs/knowledge-factory/manifests/data-production-checkpoint.json` and
 
 ## Phase 3 — durable preservation & cross-agent integration
 
-- **Durability claim: NONE** — no shared Postgres or object storage credentials; local bytes are not cross-VM durable.
+- **Durability claim: IMPLEMENTED (Postgres BYTEA) / not yet DURABILITY_PROVEN** — Cursor-first path uses `document_byte_objects` on shared Neon; Blob optional. Live proof gated on authorized migrate deploy + independent agent retrieve (`docs/knowledge-factory/durability/`).
 - Source inventory: `docs/knowledge-factory/preservation/source-inventory.json`
 - Acquisition manifest + recovery: `docs/knowledge-factory/preservation/acquisition-manifest.json`, `scripts/knowledge-factory/recover-from-manifest.ts`
 - Canonical consumer export: `knowledge-factory.consumer-export.v1` under `docs/knowledge-factory/export/v1/`

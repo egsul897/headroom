@@ -3844,3 +3844,54 @@ model KnowledgeCostLedgerEntry {
   @@index([category, estimated])
   @@map("knowledge_cost_ledger_entries")
 }
+
+// =============================================================================
+// Document byte objects — PostgreSQL BYTEA content-addressed store
+// (Cursor-first durable bytes; Vercel Blob remains optional via DocumentStorageProvider)
+// storageRef format: pgbytea:v1:<sha256-hex>
+// =============================================================================
+
+model DocumentByteObject {
+  id           String   @id @default(cuid())
+  /// SHA-256 hex of `bytes` — content-addressed identity (no silent overwrite).
+  contentHash  String   @unique
+  byteSize     Int
+  contentType  String
+  /// Caller namespace (e.g. companyId or kf-corpus). Informational; identity is contentHash.
+  namespace    String
+  filename     String
+  bytes        Bytes
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([namespace])
+  @@index([byteSize])
+  @@map("document_byte_objects")
+}
+
+// =============================================================================
+// Knowledge import batches — idempotent consolidation checkpoints
+// =============================================================================
+
+model KnowledgeImportBatch {
+  id             String    @id @default(cuid())
+  batchKey       String    @unique
+  mode           String
+  status         String
+  family         String
+  plannedCount   Int       @default(0)
+  insertedCount  Int       @default(0)
+  reusedCount    Int       @default(0)
+  conflictCount  Int       @default(0)
+  errorCount     Int       @default(0)
+  checkpoint     Json?
+  errorSummary   String?
+  startedAt      DateTime  @default(now())
+  finishedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@index([family])
+  @@map("knowledge_import_batches")
+}
