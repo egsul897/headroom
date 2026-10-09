@@ -69,29 +69,48 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
  * interior whitespace / NBSP around the term. The prior pattern required the term to
  * start immediately after the opening quote and only accepted `means`, so full-package
  * definition coverage collapsed to a handful of accidental hits.
+ *
+ * SEC HTML exhibits frequently leave curly quotes as entities (`&#x201C;`) or as
+ * Windows-1252 C1 controls (`\u0093`/`\u0094`) after extraction. Normalize those into
+ * Unicode curly quotes before scanning so definition discovery is not format-dependent.
  */
 const DEFINITION_RE =
   /[“"]\s*([A-Z][^“”"]{0,80}?)\s*[”"]\s*(?:means|shall\s+mean)\b/gi;
 
+/** Map HTML entities / CP1252 smart quotes onto Unicode “ ” for definition scanning. */
+export function normalizeDefinitionScanText(text: string): string {
+  return text
+    .replace(/&#x201[Cc];|&#8220;|&ldquo;/gi, "“")
+    .replace(/&#x201[Dd];|&#8221;|&rdquo;/gi, "”")
+    .replace(/&#x201[8];|&#8216;|&lsquo;/gi, "‘")
+    .replace(/&#x201[9];|&#8217;|&rsquo;/gi, "’")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#34;/g, '"')
+    // CP1252 smart quotes mis-decoded as C1 controls, plus Unicode curly forms.
+    .replace(/[\u0093\u201C\u201E\u201F]/g, "“")
+    .replace(/[\u0094\u201D]/g, "”");
+}
+
 export function discoverDefinitions(sourceId: string, text: string, _nodes: StructuralNodeRecord[]): DefinitionRecord[] {
+  const scan = normalizeDefinitionScanText(text);
   const out: DefinitionRecord[] = [];
   const seen = new Set<string>();
   let m: RegExpExecArray | null;
   const re = new RegExp(DEFINITION_RE.source, "gi");
-  while ((m = re.exec(text)) !== null && out.length < 2000) {
+  while ((m = re.exec(scan)) !== null && out.length < 2000) {
     const term = (m[1] ?? "").replace(/\u00a0/g, " ").replace(/\s+/g, " ").trim();
     if (!term || term.length < 2) continue;
     const key = term.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
     const charStart = m.index;
-    const charEnd = Math.min(text.length, charStart + 400);
+    const charEnd = Math.min(scan.length, charStart + 400);
     out.push({
       term,
       sourceId,
       charStart,
       charEnd,
-      excerpt: text.slice(charStart, charEnd),
+      excerpt: scan.slice(charStart, charEnd),
     });
   }
   return out;

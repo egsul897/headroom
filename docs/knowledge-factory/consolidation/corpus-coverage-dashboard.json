@@ -1,24 +1,24 @@
 {
   "schemaVersion": "knowledge-factory.corpus-coverage-dashboard.v1",
-  "generatedAt": "2026-10-09T01:18:32.014Z",
-  "startingSha": "b654dbd0dbad5be60d9cee07133a6569df3b4ee2",
+  "generatedAt": "2026-10-09T17:08:54.287Z",
+  "startingSha": "1e6ecfc61cb152a684b1f2319c436217bf5bb0a1",
   "verdict": "CONSOLIDATION_IMPLEMENTED_AWAITING_LIVE_WRITE_APPROVAL",
   "neon": {
     "database": "neondb",
     "hostFingerprint": "5f83318140c3",
-    "migrationsApplied": 33,
-    "documentByteObjectsTablePresent": false,
+    "migrationsApplied": 39,
+    "documentByteObjectsTablePresent": true,
     "existingCounts": {
-      "companies": 6,
-      "financialSnapshots": 3,
-      "documents": 11,
-      "knowledgeSources": 0,
-      "knowledgeRelationshipEdges": 0,
+      "companies": 13,
+      "financialSnapshots": 5,
+      "documents": 23,
+      "knowledgeSources": 724,
+      "knowledgeRelationshipEdges": 8193,
       "knowledgeCostLedgerEntries": 0,
       "goldenTests": 48,
-      "definedTerms": 15,
-      "sourceArtifacts": 8,
-      "documentByteObjects": 0
+      "definedTerms": 45,
+      "sourceArtifacts": 17,
+      "documentByteObjects": 710
     }
   },
   "gibraltarFixture": {
@@ -35,31 +35,30 @@
     "estimatedInsertStorageBytes": 0,
     "estimatedStorageBytesIfMigrationApplied": 37306833,
     "proposedIfMigrationApplied": {
-      "insertBytesAndRegistry": 29,
-      "note": "after migrate deploy of document_byte_objects, all scanned candidates become INSERT/REUSE/ALIAS plans"
+      "insertBytesAndRegistry": 0,
+      "note": "table present — see proposed.*"
     }
   },
   "derivedKnowledge": {
     "exportSourcesConsidered": 125,
-    "metadataWouldInsert": 125,
-    "metadataWouldReuse": 0,
-    "metadataWouldConflict": 0,
+    "metadataWouldInsert": 20,
+    "metadataWouldReuse": 1,
+    "metadataWouldConflict": 104,
     "note": "Metadata-only rows are NOT durability claims (storageRef null)"
   },
   "existingDbCounts": {
-    "companies": 6,
-    "financialSnapshots": 3,
-    "documents": 11,
-    "knowledgeSources": 0,
-    "knowledgeRelationshipEdges": 0,
+    "companies": 13,
+    "financialSnapshots": 5,
+    "documents": 23,
+    "knowledgeSources": 724,
+    "knowledgeRelationshipEdges": 8193,
     "knowledgeCostLedgerEntries": 0,
     "goldenTests": 48,
-    "definedTerms": 15,
-    "sourceArtifacts": 8,
-    "documentByteObjects": 0
+    "definedTerms": 45,
+    "sourceArtifacts": 17,
+    "documentByteObjects": 710
   },
   "blockers": [
-    "Migration 20261009013000_document_byte_objects not applied — required before durable byte inserts",
     "LIVE WRITE NOT AUTHORIZED by this prompt — return plan for explicit owner approval before bulk import"
   ],
   "approvalCheckpoint": "OWNER_APPROVAL_REQUIRED_BEFORE_MIGRATE_DEPLOY_OR_BULK_IMPORT",

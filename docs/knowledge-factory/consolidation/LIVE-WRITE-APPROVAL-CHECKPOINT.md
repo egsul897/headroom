@@ -1,7 +1,10 @@
 # LIVE WRITE APPROVAL CHECKPOINT
 
-**Status:** AWAITING OWNER APPROVAL  
-**Verdict:** `CONSOLIDATION_IMPLEMENTED_AWAITING_LIVE_WRITE_APPROVAL`
+**Status:** SUPERSEDED FOR BYTE DURABILITY — A2 live proof + subsequent mass-precedent imports already populated Neon (`document_byte_objects` present; KnowledgeSource count ≫ 0).  
+**Current ops path:** reuse existing Neon BYTEA; refresh analysis/summaries via `npm run kf:backfill-covenant-summaries` (deterministic; no paid inference). See `docs/knowledge-factory/mass-precedent/neon-intelligence-refresh-report.md`.  
+**Still gated:** any *new* bulk byte import still requires `KF_CONSOLIDATION_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE` (dry-run currently proposes `insertBytesAndRegistry: 0`).
+
+Historical gate text (retained for audit):
 
 This checkpoint must be explicitly cleared before:
 

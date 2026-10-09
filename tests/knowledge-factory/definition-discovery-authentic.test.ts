@@ -36,4 +36,22 @@ describe("authentic definition discovery", () => {
     const defs = discoverDefinitions("fixture:tight", text, []);
     expect(defs.map((d) => d.term).sort()).toEqual(["Consolidated EBITDA", "Indebtedness"]);
   });
+
+  it("recovers definitions drafted with HTML entity curly quotes (SEC HTML)", () => {
+    const text =
+      "&#x201C; Acquisition &#x201D; means any transaction.\n" +
+      "&#x201c;Adjusted LIBOR Rate&#x201d; means the rate.\n" +
+      "&ldquo;Administrative Agent&rdquo; shall mean CoBank.";
+    const defs = discoverDefinitions("fixture:html-entities", text, []);
+    const terms = new Set(defs.map((d) => d.term));
+    expect(terms.has("Acquisition")).toBe(true);
+    expect(terms.has("Adjusted LIBOR Rate")).toBe(true);
+    expect(terms.has("Administrative Agent")).toBe(true);
+  });
+
+  it("recovers definitions drafted with CP1252 C1 smart quotes", () => {
+    const text = "\u0093 Account Debtor \u0094 means any Person obligated on an Account.";
+    const defs = discoverDefinitions("fixture:cp1252", text, []);
+    expect(defs.map((d) => d.term)).toEqual(["Account Debtor"]);
+  });
 });
