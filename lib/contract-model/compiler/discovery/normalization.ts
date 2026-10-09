@@ -182,6 +182,10 @@ const FAMILY_ALIASES: Record<string, CovenantFamily> = {
   security_grant: "COLLATERAL_SECURITY",
   reporting: "REPORTING_INFORMATION",
   guarantee_and_suretyship: "GUARANTEES",
+  // IPV-18
+  prepayments_of_junior_debt: "RESTRICTED_DEBT_PAYMENTS",
+  junior_debt_prepayments: "RESTRICTED_DEBT_PAYMENTS",
+  restricted_debt_payments: "RESTRICTED_DEBT_PAYMENTS",
 };
 
 /**

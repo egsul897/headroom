@@ -55,11 +55,14 @@ Structural / provenance on packages G/H:
 
 Pro forma evaluation basis is accountable on ratio gates (A-P5 / N-P5 refuse without `evaluationBasis.proForma`).
 
+## IPV-18 — CLOSED
+
+`CovenantFamily.RESTRICTED_DEBT_PAYMENTS` with action `PAY_JUNIOR_DEBT`; wire aliases `PREPAYMENTS_OF_JUNIOR_DEBT` / `JUNIOR_DEBT_PREPAYMENTS`.
+
 ## Queue (existing Phase 3 / legal excellence)
 
 1. Keep CRITICAL_FALSE_PERMISSION at 0 on product-acceptance `run-all`.
 2. Produce genuinely CERTIFIED executable provisions (authentic VerifiedExecutionPackage).
 3. Integrate certified paths into Phase 4E + Ask Headroom without inventing capacity.
-4. Optional later: junior-debt family (IPV-18).
 
 Primary work surface: PR #197 — not new storage.

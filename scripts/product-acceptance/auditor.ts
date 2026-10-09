@@ -199,23 +199,27 @@ export function auditOperativeState(pkg: CorpusPackage, s: DeterministicStages, 
     const applied = provision?.appliedChain.length ?? 0;
     const current = provision?.currentText ?? null;
     const problems: string[] = [];
-    // IPV-19: a definition-targeted amendment correctly leaves Section 1.01
-    // without a SECTION provision view; the DEFINITION provision carries the
-    // restatement and the section node must stay CURRENT_OPERATIVE (not wiped).
+    // IPV-19: a definition-targeted amendment leaves the Section 1.01 node
+    // CURRENT_OPERATIVE (not wiped). The DEFINITION provision carries the
+    // restatement; sectionViewsAfterDefinitionReplacements may also derive a
+    // SECTION provision with spliced text — that is reconstruction, not a
+    // whole-section REPLACE, so CURRENT_OPERATIVE on the base node is correct.
     let definitionTargeted = false;
-    if (e.status === "SUPERSEDED" && !e.definitionTerm && !provision && e.supersededBy) {
+    if (e.status === "SUPERSEDED" && !e.definitionTerm && e.supersededBy) {
       const defViews = state.provisions.filter(
         (p) => p.kind === "DEFINITION" && p.appliedChain.some((a) => a.amendmentDocumentId === e.supersededBy) && p.status === "OPERATIVE_STATE_RESOLVED",
       );
       if (defViews.length > 0 && (supStatus === "N/A" || supStatus === "CURRENT_OPERATIVE")) {
         definitionTargeted = true;
-        const combined = ws([baseText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
+        const sectionText = provision?.kind === "SECTION" ? (provision.currentText ?? baseText) : baseText;
+        const combined = ws([sectionText, ...defViews.map((p) => p.currentText ?? "")].join("\n"));
         for (const t of e.mustContain) if (!combined.includes(ws(t))) problems.push(`lacks "${t}"`);
         for (const t of e.mustNotContain) {
           if (defViews.some((p) => p.currentText && ws(p.currentText).includes(ws(t)))) problems.push(`amended definition still carries superseded "${t}"`);
+          else if (provision?.kind === "SECTION" && provision.currentText && ws(provision.currentText).includes(ws(t))) problems.push(`reconstructed section still carries superseded "${t}"`);
         }
         if (problems.length === 0) {
-          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} untouched (IPV-19)`);
+          L.pass("OPERATIVE_STATE", "PRODUCTION", "EXACT", ref, `definition-targeted amendment (${defViews.map((p) => p.definedTermRef).join(", ")}); Section ${e.sectionRef} node CURRENT (IPV-19)`);
           continue;
         }
       }

@@ -48,6 +48,27 @@ function matchEnum<T extends string>(raw: string | null | undefined, validValues
   return validValues.find((v) => v === upper) ?? null;
 }
 
+/**
+ * IPV-18 — wire / taxonomy aliases for voluntary junior / subordinated / restricted
+ * debt prepayment covenants. Canonical family is RESTRICTED_DEBT_PAYMENTS.
+ */
+const COVENANT_FAMILY_ALIASES: Record<string, string> = {
+  PREPAYMENTS_OF_JUNIOR_DEBT: "RESTRICTED_DEBT_PAYMENTS",
+  JUNIOR_DEBT_PREPAYMENTS: "RESTRICTED_DEBT_PAYMENTS",
+  RESTRICTED_DEBT_PAYMENTS: "RESTRICTED_DEBT_PAYMENTS",
+};
+
+function resolveCovenantFamily(raw: string | null | undefined): { family: string | null; aliasedFrom: string | null } {
+  if (!raw) return { family: null, aliasedFrom: null };
+  const upper = raw.trim().toUpperCase().replace(/[\s-]+/g, "_");
+  const aliased = COVENANT_FAMILY_ALIASES[upper];
+  if (aliased) {
+    const family = matchEnum(aliased, Object.values(CovenantFamily));
+    return { family, aliasedFrom: upper === aliased ? null : upper };
+  }
+  return { family: matchEnum(raw, Object.values(CovenantFamily)), aliasedFrom: null };
+}
+
 export interface NormalizationWarning {
   scope: string; // e.g. "rule[localRef=r1].covenantFamily"
   message: string;
@@ -816,8 +837,10 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const ctx = baseCtx(`rule[${wireRule.localRef}]`);
     scopeUnits[`rule[${wireRule.localRef}]`] = wireRule.sourceSectionRef;
     const ruleId = ruleIdByLocalRef.get(wireRule.localRef)!;
-    const covenantFamily = matchEnum(wireRule.covenantFamily, Object.values(CovenantFamily)) ?? "QUALITATIVE_NEGATIVE_COVENANTS";
-    if (!matchEnum(wireRule.covenantFamily, Object.values(CovenantFamily))) warn(ctx, `covenantFamily "${wireRule.covenantFamily}" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)`);
+    const resolvedFamily = resolveCovenantFamily(wireRule.covenantFamily);
+    const covenantFamily = resolvedFamily.family ?? "QUALITATIVE_NEGATIVE_COVENANTS";
+    if (!resolvedFamily.family) warn(ctx, `covenantFamily "${wireRule.covenantFamily}" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)`);
+    else if (resolvedFamily.aliasedFrom) warn(ctx, `covenantFamily "${resolvedFamily.aliasedFrom}" aliased to ${covenantFamily}`);
     const ruleType = matchEnum(wireRule.ruleType, Object.values(ContractRuleType)) ?? "QUALITATIVE_OBLIGATION";
     if (!matchEnum(wireRule.ruleType, Object.values(ContractRuleType))) warn(ctx, `ruleType "${wireRule.ruleType}" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)`);
     const posture = matchEnum(wireRule.posture, Object.values(ContractRulePosture)) ?? "N_A";
@@ -944,9 +967,13 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       guarded.inheritedAttributes = [...(guarded.inheritedAttributes ?? []), { attribute: "entityScope", sourceAuthority: authority, sourceSectionRef: sectionRef, evidence: evidence.slice(0, 240), canonicalValue: guarded.entityScope.join("+"), compatibility: audit.modelDiscrepancy && audit.modelDiscrepancy.relation !== "AGREES" ? "INCOMPATIBLE" : "COMPATIBLE", ...spanOf(basisRegionId) }];
     }
     // IPV-22: a MONEY capacity whose figure is a comparator-introduced threshold
-    // ("in excess of $X", "less than $X") is never a basket cap.
+    // ("in excess of $X", "less than $X") is never a basket *permission* cap.
+    // Exception: a PROHIBITION / QUANTITATIVE_RESTRICTION ("shall not … in excess of
+    // $X") uses that figure as the permitted ceiling — stripping it would erase the
+    // quantitative bound of the prohibition (pkg-G duplicate 7.01 "$35,000,000").
     const cap = guarded.capacityExpression;
-    if (cap && cap.kind === "MONEY" && typeof (cap as { amount?: unknown }).amount === "number") {
+    const prohibitionCeiling = guarded.posture === "PROHIBITION";
+    if (cap && cap.kind === "MONEY" && typeof (cap as { amount?: unknown }).amount === "number" && !prohibitionCeiling) {
       const amount = (cap as { amount: number; excerpt?: string | null }).amount;
       const excerpt = (cap as { excerpt?: string | null }).excerpt ?? String(amount);
       const role = classifyFigureRoleInText(excerpt, input.operativeSourceText) !== "ABSENT"

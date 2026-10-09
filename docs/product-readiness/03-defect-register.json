@@ -636,21 +636,6 @@
           "severity": "NONMATERIAL_OMISSION"
         },
         {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "operative-text:indenture::4.09",
-          "severity": "WRONG_OPERATIVE_SOURCE"
-        },
-        {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "operative-text:indenture::4.09(c)@clause",
-          "severity": "WRONG_OPERATIVE_SOURCE"
-        },
-        {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "semantic:B-IND-4.09(c)",
-          "severity": "SOURCE_PROVENANCE_FAILURE"
-        },
-        {
           "packageId": "pkg-c-amendment-supersession",
           "expectationRef": "certification:credit-agreement::7.01(b)@clause",
           "severity": "NONMATERIAL_OMISSION"
@@ -663,7 +648,7 @@
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
       "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed). Package B indenture 4.09: section/clause operative text still carries superseded $50,000,000 (WRONG_OPERATIVE_SOURCE); B-IND-4.09(c) provenance excerpt null.",
+      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed). Package B indenture 4.09: section/clause operative text still carries superseded $50,000,000 (WRONG_OPERATIVE_SOURCE); B-IND-4.09(c) provenance excerpt null. UPDATED: B indenture 4.09 operative-text / B-IND-4.09(c) provenance signatures cleared by multi-instrument operative-state merge.",
       "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
       "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",
@@ -757,7 +742,7 @@
     },
     {
       "id": "IPV-18",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "UNSUPPORTED_AS_COMPLETE",
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
@@ -785,7 +770,7 @@
       ],
       "failingInput": "SECTION 7.09 Prepayments of Junior Indebtedness. The Borrower shall not prepay, redeem or repurchase any Junior Indebtedness, except: (a) … equity proceeds; (b) prepayments in an aggregate amount not to exceed the Available Amount. Submission labels the family PREPAYMENTS_OF_JUNIOR_DEBT (no production family fits: the Prisma CovenantFamily enum has RESTRICTED_PAYMENTS, MANDATORY_PREPAYMENTS, … but nothing for restricted debt payments).",
       "expected": "A family for restricted debt payments (junior / subordinated debt prepayment covenants are standard in leveraged credit agreements and share builder pools with Restricted Payments and Investments), or an explicit UNSUPPORTED_FAMILY refusal that names the gap.",
-      "actual": "normalize.ts: matchEnum fails and defaults to QUALITATIVE_NEGATIVE_COVENANTS with a 'verify manually' issue; compilation REVIEW_REQUIRED; certification REVIEW_REQUIRED [COMPILATION_NOT_COMPLETED, UNIT_SUFFICIENCY_INCOMPLETE]. The harness's semantic audit records the family mismatch as WRONG_OPERATIVE_SOURCE (its label for 'representation does not match the source'); the product outcome is fail-closed.",
+      "actual": "normalize.ts: matchEnum fails and defaults to QUALITATIVE_NEGATIVE_COVENANTS with a 'verify manually' issue; compilation REVIEW_REQUIRED; certification REVIEW_REQUIRED [COMPILATION_NOT_COMPLETED, UNIT_SUFFICIENCY_INCOMPLETE]. The harness's semantic audit records the family mismatch as WRONG_OPERATIVE_SOURCE (its label for 'representation does not match the source'); the product outcome is fail-closed. FIXED: CovenantFamily.RESTRICTED_DEBT_PAYMENTS + PAY_JUNIOR_DEBT action; wire aliases PREPAYMENTS_OF_JUNIOR_DEBT / JUNIOR_DEBT_PREPAYMENTS; pkg-K 7.09 family updated.",
       "repro": "pkg-k faithful submission for credit-agreement::7.09 → compilation.unresolvedIssues ('covenantFamily \"PREPAYMENTS_OF_JUNIOR_DEBT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS')",
       "impact": "Fail-closed today (REVIEW). The relabelled unit loses its action (null) and family cue, so a builder pool shared with 7.06(c)/7.08(d) cannot be represented across all three members even once IPV-15 is fixed; the runtime's shared-pool arithmetic would exclude 7.09(b).",
       "hypothesis": "The family enum was grown from the covenant families seen in the evaluation packages; junior-debt prepayment covenants were absent from them.",
