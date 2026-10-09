@@ -1,106 +1,130 @@
-# Agent 2 — Financial and Compliance Certificate Engine
+# Agent 2 — Financial and Compliance Certificate Engine (next mission)
 
-**Mission:** Make Headroom reliably ingest, reconcile, and use company financial statements and officer/compliance certificates.  
+**Mission:** Approval→execution bridge, sequential financial effects, expanded contractual metrics/reconciliation, authentic capacity integration, shared Position/Simulate/Ask financial view.  
 **Branch:** `cursor/financial-certificate-engine-8d31`  
 **PR:** https://github.com/egsul897/headroom/pull/220  
-**SHA:** `49de9e7990b4f2fcb1e8e3ada90044ad0af088bb`  
+**SHA:** _(set at commit)_  
 **Cost:** $0 paid inference (deterministic extraction; no provider calls).
 
 ---
 
-## Existing capabilities reused
+## Preserved behavior (from prior tip)
 
-| Component | Role |
-|---|---|
-| `lib/onboarding/financial-facts-from-document.ts` | Propose path now delegates to FCE extract |
-| `lib/onboarding/promotion.ts` + `FINANCIAL_METRIC_FIELD_MAP` | Attributable promotion into legacy snapshot/state |
-| `lib/onboarding/ns4-financial-persist.ts` | Pattern for NS-4 propose→approve |
-| `lib/contract-model/runtime/input/store/certificate/**` | NS-4 propose / attributable approve |
-| `lib/connectors/units.ts` + `reconciliation.ts` | Unit normalize; multi-source fact reconcile (unchanged) |
-| `lib/financial-core/solver-adapter.ts` | `projectToLegacySnapshot` prefers covenant EBITDA |
-| `lib/product/customer-intelligence/capacity-readiness.ts` | Position/capacity readiness over FinancialState + NS-4 |
-| Prisma `ContractInputSnapshot` / Neon | Persistence for proposed snapshots |
-
-**Not rebuilt:** NS-4 store, promotion transaction, CSV connector, covenant engine, Phase 3 IR.
+- GAAP ≠ contractual EBITDA (never substituted).
+- Source-fact reconciliation with provenance.
+- Strict capacity inputs (`projectEngineRunToCapacitySnapshotStrict`).
+- NS-4 propose without auto-approve.
 
 ---
 
-## Authentic source coverage
+## P0 — Approval-to-execution bridge
 
-| Source | Period | Role | Notes |
-|---|---|---|---|
-| Matthews International (MATW) | 2024-12-31 (Q1 FY2025) | 10-Q style statement + compliance certificate | Figures from `scripts/populate-matthews-financial-provenance.ts` / EDGAR accession `0000063296-25-000006` |
-| Coherent Corp. (seed) | 2026-06-30 (FY2026) | 10-K style statement + certificate | Aligns with `prisma/seed-data.ts` `COHERENT_DATA.financials`; GAAP EBITDA omitted (honest) |
-| `SYNTHETIC_CALCULATION_TEST` | 2026-06-30 / stale 2024-01-31 | Calculation tests only | Explicitly labeled; debt mismatch + stale period |
-
----
-
-## Extraction accuracy (demonstrated)
-
-- Issuer, obligor group, reporting period, fiscal date, currency, document role identified (Matthews / Coherent).
-- GAAP EBITDA **77.675** vs Consolidated EBITDA **128.313** (Matthews) — distinct families.
-- Certificate addbacks, footnotes, and `"Consolidated EBITDA" means…` definition excerpts preserved with source locators.
-- Ratios, assumed new-debt rate, debt/cash/interest extracted when labeled with units.
-- Unit-less or conflicting amounts skipped (never invented).
-
----
-
-## Reconciliation accuracy (demonstrated)
-
-| Case | Result |
-|---|---|
-| Matching total debt / cash (Matthews, Coherent) | `MATCH` |
-| GAAP vs contractual EBITDA | `GAAP_VS_CONTRACTUAL_EBITDA` (never substituted) |
-| Synthetic debt mismatch 400 vs 480 | `MATERIAL_DIFFERENCE` → `REVIEW_REQUIRED` |
-| Stale as-of (2024-01-31 vs now 2026-10-09) | `STALE_PERIOD` |
-| Statement-only GAAP EBITDA | Capacity `NOT_COMPUTABLE`; missing `covenant_ebitda` |
-| Any extraction | Always emits `UNAPPROVED_EXTRACTION` |
-
----
-
-## Missing inputs (surfaced, not invented)
-
-- `contractual_ebitda` when only GAAP present
-- `assumed_new_debt_rate_pct` / builder fields when absent from sources
-- `financial_statement` or `compliance_certificate` when one side missing
-- `basket_usage_schedule` when baskets referenced without a schedule
-- Currency / fiscal date when unparseable
-
----
-
-## Demonstrated fixes
-
-1. **Certificate ↔ statement reconciler** — new `lib/financial-certificate-engine/reconcile.ts` (audit gap #9).
-2. **`FINANCIAL_STATEMENT` DocumentType** — Prisma enum + onboarding upload select.
-3. **GAAP vs contractual separation** — `gaap_ebitda` normalizable but **not** in `FINANCIAL_METRIC_FIELD_MAP`.
-4. **No auto-approve** — NS-4 propose stays `DRAFT` / `REVIEW_REQUIRED` (integration test).
-5. **Capacity bridge** — `projectEngineRunToCapacitySnapshotStrict` + Position leverage from contractual metrics only.
-
----
-
-## Working financial-to-capacity integration
+Lifecycle wired in `approval-bridge.ts`:
 
 ```
-statement + certificate text
-  → runFinancialCertificateEngine
-  → capacityMetrics (covenant_ebitda preferred)
-  → projectEngineRunToCapacitySnapshotStrict → FinancialSnapshotInput
-  → buildFinancialStateFromEngineRun → projectToLegacySnapshot (solver boundary)
-  → positionLeverageInputsFromEngine → Position/dashboard leverage
-  → proposeNs4SnapshotFromEngine → ContractInputSnapshot (REVIEW_REQUIRED/DRAFT)
+extract → reconcile → propose ContractInputSnapshot (DRAFT|REVIEW_REQUIRED)
+  → attributable approve → APPROVED snapshot
+  → loadVerifiedFinancialCapacityInput → verified capacity / simulation inputs
 ```
 
-Capacity ebitda for Matthews projection = **128.313** (contractual), not 77.675 (GAAP).  
-Coherent projection = **1700** ebitda / TNL ≈ **1.23×** — seed-aligned.
+| Guard | Behavior |
+|---|---|
+| `assertSnapshotAuthoritative` | Throws on DRAFT / REVIEW_REQUIRED / SUPERSEDED / ABSENT |
+| `loadVerifiedFinancialCapacityInput` | Ignores non-APPROVED rows; returns `NOT_AUTHORITATIVE` when snapshotId is non-approved |
+| Propose path | `authoritative: false` always |
+| Persistence | Existing Prisma `ContractInputSnapshot` / Neon NS-4 store only — no competing truth store |
+
+---
+
+## P0 — Sequential financial effects (coord TE-D3 / Agent 4)
+
+`sequential-financial.ts` chains financial-core `runScenario` pro forma state:
+
+1. Transaction changes debt/cash (borrow+dividend = net-debt rise).
+2. Pro forma state updated; contractual ratios recomputed.
+3. Next step uses chained state (not stale base metrics).
+4. Missing fixed charges → `MISSING_FIXED_CHARGES` uncertainty (not invented).
+5. `reusedStaleMetrics: false` always; non-authoritative base refuses to run steps.
+
+---
+
+## P1 — Contractual metric derivation
+
+`derived-metrics.ts` covers (when evidence supports):
+
+Consolidated EBITDA · Total debt · Secured debt · Net debt · Interest expense · Fixed charges · Total assets · Total net leverage · Interest coverage · Fixed-charge coverage.
+
+Missing evidence → `MISSING_INPUT` / `REVIEW_REQUIRED`. No invented addbacks.
+
+Authentic expansion: Matthews Q1 FY2025 + Coherent FY2026 + Coherent Q1 FY2027 incomplete feed-queue period (seed-aligned).
+
+---
+
+## P1 — Certificate reconciliation cases
+
+| Case | Finding |
+|---|---|
+| Different reporting periods | `PERIOD_MISMATCH` |
+| Stale certificates | `STALE_PERIOD` |
+| Conflicting values | `MATERIAL_DIFFERENCE` (both values preserved) |
+| Different currencies | `CURRENCY_MISMATCH` |
+| Unit mismatches | `UNIT_MISMATCH` (no silent rescaling) |
+| Different obligor scopes | `OBLIGOR_SCOPE_MISMATCH` |
+| Pro forma acquisitions | `PRO_FORMA_ACQUISITION` |
+| Covenant addbacks without amounts | `ADDBACK_WITHOUT_AMOUNT` |
+| Missing supporting schedules | `MISSING_SCHEDULE` |
+
+Source provenance and reviewer decisions preserved on NS-4 propose/approve path.
+
+---
+
+## P1 — Authentic capacity (coord Agent 3 / PR #230)
+
+`authentic-capacity-bridge.ts`:
+
+- Loads APPROVED FCE capacity snapshot.
+- Evaluates authentic provisions via `evaluateProvision` + approved financials.
+- **Gross capacity** reported separately from **remaining**.
+- Remaining claimed only with attributed historical utilization; otherwise null (Agent 3 finding: ledger not provision-attributed).
+- Incorrect-favorable tripwire: refuses remaining=gross when unattributed.
+
+---
+
+## P2 — Position / Simulate / Ask shared view
+
+`financial-view.ts` — one `SharedFinancialCertificationView` for all three surfaces:
+
+`asOfDate` · `sourcePeriod` · `approvalStatus` · `assumptions` · `missingInputs` · derived metrics · certification metadata.
+
+Coordinates with unified-customer (PR #221) without forking financial state.
+
+---
+
+## Required return checklist
+
+1. **Authentic financial sources:** Matthews Q1 FY2025, Coherent FY2026, Coherent Q1 FY2027 (incomplete).
+2. **Derived contractual metrics:** EBITDA/debt/cash/net debt/interest/fixed charges/assets/leverage/coverage where evidenced.
+3. **Conflicts & stale:** synthetic + authentic cases above.
+4. **Approved vs unapproved:** DRAFT/REVIEW_REQUIRED never authoritative; APPROVED loads verified capacity.
+5. **Verified capacity:** contractual EBITDA-bound `FinancialSnapshotInput`; authentic provision gross capacity.
+6. **Sequential tests:** debt/cash propagate; next txn uses updated state; missing FC → uncertainty.
+7. **Incorrect favorable:** remaining ≠ gross without attribution; GAAP never used as capacity EBITDA.
+8. **Tests / CI / PR / SHA / cost:** see below.
 
 ---
 
 ## Tests
 
-- `tests/financial-certificate-engine/engine.test.ts` (11)
-- `tests/financial-certificate-engine/ns4-propose.test.ts` (1)
-- Updated: `tests/connectors/units.test.ts` (gaap_ebitda tripwire)
-- Regression: `tests/onboarding/certificate-financial-facts.test.ts`
+| File | Coverage |
+|---|---|
+| `tests/financial-certificate-engine/engine.test.ts` | Authentic extract/reconcile/capacity |
+| `tests/financial-certificate-engine/ns4-propose.test.ts` | No auto-approve |
+| `tests/financial-certificate-engine/approval-bridge.test.ts` | Authority guards + propose→approve→verified |
+| `tests/financial-certificate-engine/sequential-financial.test.ts` | Chained pro forma effects |
+| `tests/financial-certificate-engine/derived-and-reconcile.test.ts` | Metrics + recon stress |
+| `tests/financial-certificate-engine/authentic-capacity-bridge.test.ts` | Gross vs remaining + shared view |
+
+**Result:** 32 passed · **Cost:** $0
 
 ---
 
@@ -110,5 +134,7 @@ Coherent projection = **1700** ebitda / TNL ≈ **1.23×** — seed-aligned.
 lib/financial-certificate-engine/
   identity.ts | extract.ts | reconcile.ts | snapshot.ts
   capacity-bridge.ts | pipeline.ts | types.ts | index.ts
-  fixtures/   (authentic Matthews, Coherent, synthetic calc)
+  approval-bridge.ts | sequential-financial.ts | derived-metrics.ts
+  financial-view.ts | authentic-capacity-bridge.ts
+  fixtures/   (Matthews, Coherent FY2026, Coherent Q1 FY2027, synthetic)
 ```

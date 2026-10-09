@@ -44,6 +44,7 @@ Interest Expense: $190 million
 Cumulative Net Income: $520 million
 Equity Proceeds: $2,150 million
 Assumed new debt rate: 6.5%
+Consolidated Fixed Charges: $210 million
 Total Net Leverage Ratio: 1.23x
 Interest Coverage Ratio: 8.95x
 

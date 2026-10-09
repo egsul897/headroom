@@ -15,6 +15,7 @@ import {
   positionLeverageInputsFromEngine,
   projectEngineRunToCapacitySnapshotStrict,
 } from "./capacity-bridge";
+import { deriveContractualMetrics, type DerivedContractualMetric } from "./derived-metrics";
 import type { CapacityMetricName, DocumentExtraction, EngineRunResult } from "./types";
 
 export interface PipelineDocumentInput {
@@ -120,6 +121,20 @@ export function runFinancialCertificateEngine(params: RunFinancialCertificateEng
   };
 }
 
+/** Engine run plus contractual metric derivation (missing → MISSING_INPUT, never invented). */
+export function runFinancialCertificateEngineWithDerivedMetrics(
+  params: RunFinancialCertificateEngineParams,
+): EngineRunResult & { derivedMetrics: DerivedContractualMetric[] } {
+  const run = runFinancialCertificateEngine(params);
+  return {
+    ...run,
+    derivedMetrics: deriveContractualMetrics({
+      statement: run.statement,
+      certificate: run.certificate,
+    }),
+  };
+}
+
 /** Convenience: engine run + capacity/position projections for dashboard consumers. */
 export function runEngineWithCapacityProjection(params: RunFinancialCertificateEngineParams) {
   const run = runFinancialCertificateEngine(params);
@@ -127,5 +142,9 @@ export function runEngineWithCapacityProjection(params: RunFinancialCertificateE
     run,
     capacity: projectEngineRunToCapacitySnapshotStrict(run),
     positionLeverage: positionLeverageInputsFromEngine(run),
+    derivedMetrics: deriveContractualMetrics({
+      statement: run.statement,
+      certificate: run.certificate,
+    }),
   };
 }

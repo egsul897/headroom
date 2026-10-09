@@ -22,8 +22,38 @@ export {
 } from "./capacity-bridge";
 export {
   runFinancialCertificateEngine,
+  runFinancialCertificateEngineWithDerivedMetrics,
   runEngineWithCapacityProjection,
 } from "./pipeline";
+export {
+  assertSnapshotAuthoritative,
+  isAuthoritativeSnapshotStatus,
+  NonAuthoritativeSnapshotError,
+  proposeFinancialSnapshotLifecycle,
+  approveProposedFinancialSnapshot,
+  loadVerifiedFinancialCapacityInput,
+  resolveApprovedSnapshotInputs,
+  runApprovalToCapacityBridge,
+} from "./approval-bridge";
+export {
+  computeContractualRatios,
+  runSequentialFinancialEffects,
+  netDebtIncreasingBorrowActions,
+  cashOutflowActions,
+  tagStateAsOf,
+} from "./sequential-financial";
+export { deriveContractualMetrics } from "./derived-metrics";
+export {
+  SHARED_FINANCIAL_SURFACES,
+  buildSharedFinancialViewFromEngineRun,
+  buildSharedFinancialViewFromVerified,
+  loadSharedFinancialCertificationView,
+  financialStateForSurfaces,
+} from "./financial-view";
+export {
+  evaluateAuthenticCapacityWithApprovedFinancials,
+  toAuthenticCapacityRow,
+} from "./authentic-capacity-bridge";
 export type {
   DocumentRole,
   MetricFamily,
@@ -44,4 +74,28 @@ export type {
 export type { PipelineDocumentInput, RunFinancialCertificateEngineParams } from "./pipeline";
 export type { CapacityProjection } from "./capacity-bridge";
 export type { ProposeNs4Result } from "./snapshot";
+export type {
+  SnapshotAuthorityStatus,
+  VerifiedFinancialCapacityInput,
+  ApprovalBridgeProposeResult,
+  ApprovalBridgeApproveResult,
+} from "./approval-bridge";
+export type {
+  SequentialFinancialRun,
+  SequentialFinancialStep,
+  ContractualRatioView,
+  SequentialUncertaintyCode,
+  SequentialStepSpec,
+} from "./sequential-financial";
+export type { DerivedContractualMetric, DerivedMetricStatus } from "./derived-metrics";
+export type {
+  SharedFinancialCertificationView,
+  CustomerSurface,
+} from "./financial-view";
+export type {
+  AuthenticCapacityWithApprovedFinancials,
+  AuthenticProvisionCapacityRow,
+  AuthenticCapacityBridgeResult,
+  AuthenticCapacityBlockReason,
+} from "./authentic-capacity-bridge";
 export * from "./fixtures";

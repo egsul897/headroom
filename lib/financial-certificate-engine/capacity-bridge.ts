@@ -93,6 +93,10 @@ export function projectEngineRunToCapacitySnapshotStrict(run: EngineRunResult): 
     };
   }
 
+  const totalAssets =
+    run.statement?.metrics.find((m) => m.family === "TOTAL_ASSETS")?.canonicalValue ??
+    run.certificate?.metrics.find((m) => m.family === "TOTAL_ASSETS")?.canonicalValue;
+
   return {
     status: "OK",
     asOfDate,
@@ -107,6 +111,7 @@ export function projectEngineRunToCapacitySnapshotStrict(run: EngineRunResult): 
       assumedNewDebtRatePct: valueOf(run, "assumed_new_debt_rate_pct")!,
       totalDebt: valueOf(run, "total_debt")!,
       securedDebt: valueOf(run, "secured_debt")!,
+      ...(totalAssets !== undefined ? { totalAssets } : {}),
     },
   };
 }
@@ -128,6 +133,10 @@ export function buildFinancialStateFromEngineRun(
   const gaap = run.statement?.metrics.find((m) => m.family === "GAAP_EBITDA");
   const snap = projected.snapshot;
 
+  const totalAssetsMetric =
+    run.statement?.metrics.find((m) => m.family === "TOTAL_ASSETS") ??
+    run.certificate?.metrics.find((m) => m.family === "TOTAL_ASSETS");
+
   const state: FinancialState = {
     id: ids.stateId,
     companyId: ids.companyId,
@@ -140,6 +149,9 @@ export function buildFinancialStateFromEngineRun(
       cash: fact(snap.cash, "EXTERNAL_CERTIFICATE", asOf),
       totalDebtPrincipal: fact(snap.totalDebt, "EXTERNAL_CERTIFICATE", asOf),
       securedDebtPrincipal: fact(snap.securedDebt, "EXTERNAL_CERTIFICATE", asOf),
+      ...(totalAssetsMetric
+        ? { totalAssets: fact(totalAssetsMetric.canonicalValue, "EXTERNAL_CERTIFICATE", asOf) }
+        : {}),
     },
     incomeStatementFacts: {
       ...(gaap

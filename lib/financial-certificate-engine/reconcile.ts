@@ -143,6 +143,58 @@ export function reconcileStatementAgainstCertificate(params: ReconcileParams): R
     });
   }
 
+  if (
+    statement?.identity.reportingPeriod &&
+    certificate?.identity.reportingPeriod &&
+    statement.identity.reportingPeriod !== certificate.identity.reportingPeriod
+  ) {
+    findings.push({
+      code: "PERIOD_MISMATCH",
+      metricFamily: "PERIOD",
+      message: `Reporting period mismatch: statement "${statement.identity.reportingPeriod}" vs certificate "${certificate.identity.reportingPeriod}".`,
+      statementValue: null,
+      certificateValue: null,
+      relativeDifference: null,
+      statementSource: null,
+      certificateSource: null,
+    });
+  }
+
+  if (
+    statement?.identity.currency &&
+    certificate?.identity.currency &&
+    statement.identity.currency !== certificate.identity.currency
+  ) {
+    findings.push({
+      code: "CURRENCY_MISMATCH",
+      metricFamily: "PROCESS",
+      message: `Currency mismatch: statement ${statement.identity.currency} vs certificate ${certificate.identity.currency}. Values are not FX-converted.`,
+      statementValue: null,
+      certificateValue: null,
+      relativeDifference: null,
+      statementSource: null,
+      certificateSource: null,
+    });
+    missingInputKeys.push("aligned_currency");
+  }
+
+  if (
+    statement?.identity.obligorGroup &&
+    certificate?.identity.obligorGroup &&
+    statement.identity.obligorGroup.toLowerCase() !== certificate.identity.obligorGroup.toLowerCase()
+  ) {
+    findings.push({
+      code: "OBLIGOR_SCOPE_MISMATCH",
+      metricFamily: "PROCESS",
+      message: `Obligor scope mismatch: statement "${statement.identity.obligorGroup}" vs certificate "${certificate.identity.obligorGroup}".`,
+      statementValue: null,
+      certificateValue: null,
+      relativeDifference: null,
+      statementSource: null,
+      certificateSource: null,
+    });
+  }
+
   if (asOfDate && staleDays(asOfDate, now) > staleAfterDays) {
     findings.push({
       code: "STALE_PERIOD",
@@ -168,6 +220,39 @@ export function reconcileStatementAgainstCertificate(params: ReconcileParams): R
       certificateSource: null,
     });
     missingInputKeys.push(schedule);
+  }
+
+  // Pro forma acquisition adjustments and amount-less covenant addbacks — preserve, do not invent.
+  const allAdjustments = [...(statement?.adjustments ?? []), ...(certificate?.adjustments ?? [])];
+  for (const adj of allAdjustments) {
+    if (adj.kind === "PRO_FORMA") {
+      findings.push({
+        code: "PRO_FORMA_ACQUISITION",
+        metricFamily: "CONTRACTUAL_EBITDA",
+        message: `Pro forma / acquisition adjustment preserved ("${adj.label}") — amount ${
+          adj.amountMissing ? "missing (not invented)" : `${adj.amountMillions} ($M)`
+        }; capacity does not silently apply undocumented pro forma effects.`,
+        statementValue: adj.source.documentRole === "FINANCIAL_STATEMENT" ? adj.amountMillions : null,
+        certificateValue: adj.source.documentRole !== "FINANCIAL_STATEMENT" ? adj.amountMillions : null,
+        relativeDifference: null,
+        statementSource: adj.source.documentRole === "FINANCIAL_STATEMENT" ? adj.source : null,
+        certificateSource: adj.source.documentRole !== "FINANCIAL_STATEMENT" ? adj.source : null,
+      });
+      if (adj.amountMissing) missingInputKeys.push(`pro_forma:${adj.label}`);
+    }
+    if ((adj.kind === "ADDBACK" || adj.kind === "EXCLUSION") && adj.amountMissing) {
+      findings.push({
+        code: "ADDBACK_WITHOUT_AMOUNT",
+        metricFamily: "CONTRACTUAL_EBITDA",
+        message: `Covenant-defined ${adj.kind.toLowerCase()} "${adj.label}" lacks a numeric amount — label preserved; value not invented.`,
+        statementValue: null,
+        certificateValue: null,
+        relativeDifference: null,
+        statementSource: adj.source.documentRole === "FINANCIAL_STATEMENT" ? adj.source : null,
+        certificateSource: adj.source.documentRole !== "FINANCIAL_STATEMENT" ? adj.source : null,
+      });
+      missingInputKeys.push(`addback_amount:${adj.label}`);
+    }
   }
 
   // GAAP vs contractual EBITDA — always surface when both exist.
@@ -276,6 +361,20 @@ export function reconcileStatementAgainstCertificate(params: ReconcileParams): R
       continue;
     }
     if (!s || !c) continue;
+    if (s.canonicalUnit !== c.canonicalUnit) {
+      findings.push({
+        code: "UNIT_MISMATCH",
+        metricFamily: family,
+        message: `${family} unit mismatch: statement ${s.canonicalUnit} vs certificate ${c.canonicalUnit}. No silent rescaling across incompatible units.`,
+        statementValue: s.canonicalValue,
+        certificateValue: c.canonicalValue,
+        relativeDifference: null,
+        statementSource: s.source,
+        certificateSource: c.source,
+      });
+      missingInputKeys.push(`unit_aligned:${family}`);
+      continue;
+    }
     const rel = relativeDifference(s.canonicalValue, c.canonicalValue);
     if (rel <= tolerance) {
       matchedMetricCount += 1;
@@ -321,7 +420,12 @@ export function reconcileStatementAgainstCertificate(params: ReconcileParams): R
       f.code === "MATERIAL_DIFFERENCE" ||
       f.code === "PERIOD_MISMATCH" ||
       f.code === "INCONSISTENT_DEFINITION" ||
-      f.code === "MISSING_SCHEDULE",
+      f.code === "MISSING_SCHEDULE" ||
+      f.code === "CURRENCY_MISMATCH" ||
+      f.code === "UNIT_MISMATCH" ||
+      f.code === "OBLIGOR_SCOPE_MISMATCH" ||
+      f.code === "PRO_FORMA_ACQUISITION" ||
+      f.code === "ADDBACK_WITHOUT_AMOUNT",
   ).length;
 
   let disposition: SnapshotDisposition;

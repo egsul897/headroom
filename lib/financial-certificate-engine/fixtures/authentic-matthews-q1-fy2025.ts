@@ -56,6 +56,8 @@ Interest Expense: $54.640 million
 Cumulative Net Income: $-3.472 million
 Equity Proceeds: $0 million
 Assumed new debt rate: 8.625%
+Total Assets: $1,791.719 million
+Consolidated Fixed Charges: $54.640 million
 Total Net Leverage Ratio: 6.05x
 
 Plus add-back: Depreciation and amortization $93.751 million
