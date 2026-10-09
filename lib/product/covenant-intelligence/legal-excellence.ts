@@ -86,3 +86,14 @@ export {
   verifyLegalAnalysisIndependently,
   bridgeToCertificationPipeline,
 };
+
+export {
+  evaluateCrossDocumentTransaction,
+  verifyCrossDocumentVerdictIndependently,
+  CROSS_DOCUMENT_COVENANT_VERSION,
+} from "./cross-document-covenant";
+export {
+  AUTHENTIC_CROSS_DOCUMENT_SCENARIOS,
+  runAllCrossDocumentScenarios,
+  runCrossDocumentScenario,
+} from "./cross-document-scenarios";
