@@ -16,8 +16,10 @@ import {
   snapshotInputResolver,
   type SyntheticCertificate,
 } from "@/lib/contract-model/north-star-bridge";
-import type { FinancialSnapshot } from "@/lib/contract-model/runtime/input/types";
 import type { FinancialSnapshotInput } from "@/lib/covenant-engine";
+
+/** NS-4 APPROVED snapshot shape via the product bridge — never import raw runtime paths. */
+type FinancialSnapshot = Awaited<ReturnType<typeof loadApprovedSnapshotsFromPrisma>>[number];
 import {
   approveNs4SnapshotAttributable,
   buildCertificateProposalFromEngine,
