@@ -3,7 +3,7 @@
 ## Starting and ending SHA
 
 - **Starting SHA:** `f7fc1e51a2e6e027854dbe79d2f4fef152ecd51d` (Cycle 1 tip / branch cut)
-- **Ending SHA:** `278f5744b6b52f0bd06b1422acd9a1ad8b0a686c`
+- **Ending SHA:** `d884f6ea67de00c2d883a1feaf38787728600653`
 - **Related PR:** Cycle 1 baseline — https://github.com/egsul897/headroom/pull/210
 
 ## New agreements and provisions processed
