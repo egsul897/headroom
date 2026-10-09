@@ -15,6 +15,8 @@ import { prisma } from "../../prisma";
 import { openMassPrecedentCorpus } from "./corpus-paths";
 import { writePrecedentRetrievalIndex } from "./retrieval-index";
 import { buildDocumentCovenantSummary } from "../../product/covenant-intelligence/summarize";
+import { assertLiveWriteApproval, type LiveWriteApprovalRecord } from "../live-write-approval";
+import { decideCorpusAcceptance, type CorpusAcceptance } from "./corpus-acceptance";
 
 export const MASS_LIVE_ENV = "KF_MASS_PRECEDENT_LIVE_WRITE";
 export const MASS_LIVE_TOKEN = "I_AUTHORIZE_NEON_BULK_WRITE";
@@ -38,8 +40,18 @@ export interface SecBatchPersistResult {
   skippedFalsePositive: number;
   hashMismatchesRecorded: number;
   rejectedBlockedOrTiny: number;
+  /** Persisted (bytes preserved) but excluded from financing-precedent acceptance: unrelated exhibits, unknown class without financing cues. */
+  quarantinedNonFinancing: number;
+  /** Fetched bytes whose hash differs from the manifest's; source-byte identity across acquisitions is UNRECONCILED, not corrupt and not confirmed. */
+  sourceIdentityUnreconciled: number;
   errors: Array<{ sourceId: string; error: string }>;
+  /** Every persisted source id, financing or quarantined. */
   persistedSourceIds: string[];
+  /** The subset whose substantive relevance as a financing precedent is established. */
+  financingPrecedentSourceIds: string[];
+  quarantinedSourceIds: string[];
+  /** The approval record a live run was executed under (null for dry runs). */
+  approval: { ref: string; approvedBy: string; approvedAt: string; environment: string; scope: string } | null;
 }
 
 /** Reject SEC fair-access blocks and empty/error bodies — accept real exhibit HTML even if manifest hash drifts. */
@@ -65,6 +77,8 @@ export async function persistSecManifestBatch(params?: {
       `Live SEC persist refused: set ${MASS_LIVE_ENV}=${MASS_LIVE_TOKEN} after owner approval`,
     );
   }
+  // The token is intent; the committed approval record is authority. Both, or no live write.
+  const approval: LiveWriteApprovalRecord | null = live ? assertLiveWriteApproval({ operation: "mass-precedent-sec-batch", repoRoot }) : null;
 
   process.env.HEADROOM_SEC_FETCH_OWNER = process.env.HEADROOM_SEC_FETCH_OWNER || "WS-CKF";
 
@@ -98,11 +112,19 @@ export async function persistSecManifestBatch(params?: {
     skippedFalsePositive: 0,
     hashMismatchesRecorded: 0,
     rejectedBlockedOrTiny: 0,
+    quarantinedNonFinancing: 0,
+    sourceIdentityUnreconciled: 0,
     errors: [],
     persistedSourceIds: [],
+    financingPrecedentSourceIds: [],
+    quarantinedSourceIds: [],
+    approval: approval ? { ref: approval.ref, approvedBy: approval.approvedBy, approvedAt: approval.approvedAt, environment: approval.environment, scope: approval.scope } : null,
   };
 
   const financing = manifest.locators.filter((l) => l.corpusRole !== "FALSE_POSITIVE_EXHIBIT");
+  // Manifest locators already marked FALSE_POSITIVE_EXHIBIT are excluded up front; count them so the
+  // metric is not a constant zero.
+  out.skippedFalsePositive = manifest.locators.length - financing.length;
   const pending = financing.filter((l) => !existingIds.has(l.sourceId));
   const batch = pending.slice(0, params?.limit ?? 71);
   const checkpointEvery = params?.checkpointEvery ?? 25;
@@ -152,7 +174,10 @@ export async function persistSecManifestBatch(params?: {
       const manifestHash = loc.rawContentSha256;
       const hashDrift =
         Boolean(manifestHash) && actual !== manifestHash && contentHash !== manifestHash;
-      if (hashDrift) out.hashMismatchesRecorded += 1;
+      if (hashDrift) {
+        out.hashMismatchesRecorded += 1;
+        out.sourceIdentityUnreconciled += 1;
+      }
 
       const source: KnowledgeSourceRecord = {
         sourceId: loc.sourceId,
@@ -193,6 +218,23 @@ export async function persistSecManifestBatch(params?: {
       });
       out.analyzed += 1;
 
+      // Substantive acceptance: bytes are preserved either way; only documents whose class or title
+      // establishes a financing instrument count as financing precedents. Everything else is
+      // quarantined (kept for audit, excluded from precedent counts and retrieval).
+      const acceptance: CorpusAcceptance = decideCorpusAcceptance({
+        source: { ...processed.source, byteSize: bytes.length },
+        manifestHash: manifestHash ?? null,
+        fetchedHash: actual,
+        clientHash: contentHash,
+        bodyHeadSample: bytes.subarray(0, 120_000).toString("utf8").replace(/<[^>]+>/g, " ").replace(/\s+/g, " "),
+      });
+      if (acceptance.corpusRole === "QUARANTINED_NON_FINANCING") {
+        out.quarantinedNonFinancing += 1;
+        if (live) out.quarantinedSourceIds.push(loc.sourceId);
+      } else if (live) {
+        out.financingPrecedentSourceIds.push(loc.sourceId);
+      }
+
       const summary = buildDocumentCovenantSummary({
         sourceId: loc.sourceId,
         documentTitle: processed.source.documentTitle,
@@ -225,6 +267,10 @@ export async function persistSecManifestBatch(params?: {
                   ...prev,
                   manifestRawContentSha256: manifestHash ?? null,
                   contentHashDriftFromManifest: hashDrift,
+                  sourceByteIdentity: acceptance.sourceByteIdentity,
+                  corpusRole: acceptance.corpusRole,
+                  corpusRoleReason: acceptance.reason,
+                  liveWriteApprovalRef: approval?.ref ?? null,
                   analysis: {
                     structuralNodes: processed.structuralNodeCount,
                     definitions: processed.definitionCount,
