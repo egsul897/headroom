@@ -14,3 +14,4 @@ export {
   searchIssuerDisjoint,
   RETRIEVAL_INDEX_SCHEMA,
 } from "./retrieval-index";
+export { persistSecManifestBatch } from "./sec-batch-persist";

@@ -3,15 +3,20 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
-import { refuseAsk } from "@/lib/ask/shell-runner";
 
 /**
- * Ask page. Plain heading plus the empty case.
- * Chunk A′ does not run Ask, so the question control stays disabled.
+ * Ask page — submits questions to a server action for corpus retrieval.
  */
-export function AskShell({ companyId, initial }: { companyId: string; initial: AskShellResult }) {
+export function AskShell({
+  companyId,
+  initial,
+}: {
+  companyId: string;
+  initial: AskShellResult;
+}) {
   const [question, setQuestion] = useState("");
-  const unrunnable = initial.kind === "empty";
+  const [result, setResult] = useState<AskShellResult>(initial);
+  const [pending, setPending] = useState(false);
 
   return (
     <div className="home-overview">
@@ -24,17 +29,39 @@ export function AskShell({ companyId, initial }: { companyId: string; initial: A
         </Link>
       </header>
 
-      <section className="home-card ask-card" data-ask-case={initial.caseId}>
-        <h2 className="home-headline">{initial.headline}</h2>
-        <p className="home-detail">{initial.detail}</p>
+      <section className="home-card ask-card" data-ask-case={result.caseId}>
+        <h2 className="home-headline">{result.headline}</h2>
+        <p className="home-detail" style={{ whiteSpace: "pre-wrap" }}>
+          {result.detail}
+        </p>
+        {result.limitations && result.limitations.length > 0 && (
+          <p className="home-detail">Limitations: {result.limitations.join(" · ")}</p>
+        )}
       </section>
 
       <form
         className="home-card ask-form"
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-          // Disabled in A′. If a control is forced through, still refuse rather than answer.
-          refuseAsk({ companyId, question });
+          setPending(true);
+          try {
+            const res = await fetch("/api/ask", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ companyId, question }),
+            });
+            const data = (await res.json()) as AskShellResult;
+            setResult(data);
+          } catch {
+            setResult({
+              kind: "refused",
+              caseId: "REFUSE_NOT_INVENT",
+              headline: "Ask failed",
+              detail: "The retrieval request failed. No invented answer was produced.",
+            });
+          } finally {
+            setPending(false);
+          }
         }}
       >
         <label className="home-eyebrow" htmlFor="ask-question">
@@ -45,11 +72,15 @@ export function AskShell({ companyId, initial }: { companyId: string; initial: A
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           rows={4}
-          disabled={unrunnable}
+          disabled={pending}
         />
-        <button type="submit" className="button" disabled={unrunnable} title={initial.headline}>
-          Submit question
+        <button type="submit" className="button" disabled={pending || !question.trim()}>
+          {pending ? "Retrieving…" : "Submit question"}
         </button>
+        <p className="home-detail" style={{ marginTop: 8 }}>
+          Or use the{" "}
+          <Link href="/research/ask">research corpus Ask</Link> for issuer-disjoint precedents.
+        </p>
       </form>
     </div>
   );
