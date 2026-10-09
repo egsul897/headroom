@@ -103,10 +103,11 @@ describe("definition dependency graph", () => {
       "SECTION 7.11 Financial Covenant. The Borrower shall maintain a Fixed Charge Coverage Ratio of at least 1.00 to 1.00.",
     ].join("\n\n");
     const result = cycles(text, "7.11");
-    expect(result.unresolvedTerms.some((u) => /Fixed Charges/i.test(u.text) && u.severity === "MEDIUM")).toBe(true);
+    const unresolved = result.unresolvedTerms ?? [];
+    expect(unresolved.some((u) => /Fixed Charges/i.test(u.text) && u.severity === "MEDIUM")).toBe(true);
     expect(result.sufficiency).not.toBe("SUFFICIENT");
     // Security Documents is disclosed but must not alone refuse ordinary paths at MEDIUM.
-    const security = result.unresolvedTerms.find((u) => /Security Documents/i.test(u.text));
+    const security = unresolved.find((u) => /Security Documents/i.test(u.text));
     if (security) expect(security.severity).toBe("LOW");
   });
 });
