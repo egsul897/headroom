@@ -25,7 +25,17 @@
       "/workspace/data/ckf-exports",
       "/workspace/data/ehb-exports"
     ],
-    "note": "WS-VIC consumes CKF/EHB outputs read-only. No independent SEC crawler. URLs are not counted as documents. VicRunStore is not the canonical corpus."
+    "note": "WS-VIC consumes CKF/EHB outputs read-only. No independent SEC crawler. URLs are not counted as documents. VicRunStore is not the canonical corpus.",
+    "postMainMergeReprobe": {
+      "measuredAt": "2026-10-09T00:02:56.504Z",
+      "libKnowledgeFactoryPresent": false,
+      "docsKnowledgeFactoryPresent": false,
+      "ehbHandoffPath": "docs/edgar-historical-backfill/ckf-handoff-summary.json",
+      "ehbFetchableUrls": 149,
+      "ehbStorageStatus": "COMMITTED_DOCS_SUMMARY",
+      "ehbBodiesOnDisk": 0,
+      "note": "URLs and peer metadata exports are not authentic financing source bodies. VicRunStore is not a CKF corpus adapter. NO_CONSUMABLE_EXPORTS preserved; no second registry invented."
+    }
   },
   "architecturalBoundaries": {
     "vicRunStore": "noncanonical inference artifact store (phase3/run-store)",
