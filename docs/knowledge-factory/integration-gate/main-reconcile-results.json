@@ -2,7 +2,7 @@
   "mission": "CKF PR #154 main reconcile integration gate",
   "startingPrHead": "0e5b3e75b284caee2072444847d8ebf9a01938e2",
   "mainShaAtReconcile": "4fb1ab7e6ab34a722f901a69e5a29906b27e4f68",
-  "reconcileHead": "f71e072379b69ba1721971c31d618389fe8bbb80",
+  "reconcileHead": "5ee3056ee5a27a866f6d95f017e8a5b9d906a52d",
   "durability": {
     "status": "DURABILITY_NOT_PROVEN",
     "probe": {
@@ -195,5 +195,6 @@
       "sharedWithDefPeer": true
     }
   },
-  "defOnMainAdapterNote": "lib/definition-encyclopedia/kf-import-adapter.ts emits CKF-shaped records FROM the encyclopedia (reverse direction). Forward consume of consumer-export.v1 is implemented by lib/knowledge-factory/consumers/definition-encyclopedia-import.ts and was exercised above."
+  "defOnMainAdapterNote": "lib/definition-encyclopedia/kf-import-adapter.ts emits CKF-shaped records FROM the encyclopedia (reverse direction). Forward consume of consumer-export.v1 is implemented by lib/knowledge-factory/consumers/definition-encyclopedia-import.ts and was exercised above.",
+  "endingSha": "5ee3056ee5a27a866f6d95f017e8a5b9d906a52d"
 }
