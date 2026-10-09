@@ -62,6 +62,8 @@ export {
   loadDurableSourceBytes,
   hashBytesSha256,
   DurableCredentialsError,
+  DurableContentConflictError,
+  DurableRetrieveError,
   DURABILITY_BLOCKED_CREDENTIALS,
   KF_CORPUS_STORAGE_NAMESPACE,
 } from "./preservation/durable-store";
