@@ -123,6 +123,12 @@ export interface FormulaParams {
   cniSectionRef?: string;
   /** BUILDER_BASKET: section ref for the equity proceeds contribution, if distinct from the provision's own sectionRef. */
   equitySectionRef?: string;
+  /**
+   * FLAT_AMOUNT lien baskets that exist only as automatic links to another
+   * capacity path — no independent ceiling. When true, leaf/authentic
+   * evaluators treat independent capacity as zero (threshold is documentary only).
+   */
+  automaticLinkOnly?: boolean;
 }
 
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */

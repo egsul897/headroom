@@ -204,7 +204,7 @@ describe("asset-based and EBITDA-based growers", () => {
   it("ASSET-GROWER: 15% of Total Assets (name is data)", () => {
     // Independent: 0.15 * 400m = 60m
     const { state } = runCapacity({
-      rules: [rule("lien-assets", MUL(PCT(0.15), METRIC("Total Assets")), { covenantFamily: "LIENS", action: "PERMIT_LIEN" })],
+      rules: [rule("lien-assets", MUL(PCT(0.15), METRIC("Total Assets")), { covenantFamily: "LIENS", action: "CREATE_LIEN" })],
       facts: [fact("Total Assets", "400000000")],
     });
     assertCapacity(cap(state, "lien-assets"), { status: "AVAILABLE", remaining: "60000000" }, "ASSET-GROWER");
@@ -331,7 +331,7 @@ describe("Available Amount builders", () => {
       SUM(MONEY(25_000_000), METRIC("Cumulative Consolidated Net Income"), METRIC("Qualified Equity Proceeds")),
     );
     const { state } = runCapacity({
-      rules: [rule("rp-aa", TERM("Available Amount", "MONEY", "def-aa"), { covenantFamily: "RESTRICTED_PAYMENTS", action: "MAKE_RESTRICTED_PAYMENT" })],
+      rules: [rule("rp-aa", TERM("Available Amount", "MONEY", "def-aa"), { covenantFamily: "RESTRICTED_PAYMENTS", action: "PAY_DIVIDEND" })],
       definitions: [aaDef],
       facts: [
         fact("Cumulative Consolidated Net Income", "40000000"),
@@ -358,10 +358,10 @@ describe("Available Amount builders", () => {
 // ===========================================================================
 describe("covenant-family baskets (engine is family-agnostic)", () => {
   const families: Array<{ id: string; family: IRRule["covenantFamily"]; action: IRRule["action"]; amount: number }> = [
-    { id: "RP-FIXED", family: "RESTRICTED_PAYMENTS", action: "MAKE_RESTRICTED_PAYMENT", amount: 40_000_000 },
+    { id: "RP-FIXED", family: "RESTRICTED_PAYMENTS", action: "PAY_DIVIDEND", amount: 40_000_000 },
     { id: "INV-FIXED", family: "INVESTMENTS", action: "MAKE_INVESTMENT", amount: 55_000_000 },
     { id: "DEBT-FIXED", family: "INDEBTEDNESS", action: "INCUR_DEBT", amount: 100_000_000 },
-    { id: "LIEN-FIXED", family: "LIENS", action: "PERMIT_LIEN", amount: 75_000_000 },
+    { id: "LIEN-FIXED", family: "LIENS", action: "CREATE_LIEN", amount: 75_000_000 },
   ];
 
   it.each(families)("$id: family=$family evaluates identically to any other flat basket", (f) => {
@@ -501,10 +501,10 @@ describe("reclassification", () => {
     if (ok) {
       expect(amountString(cap(result.after!, "src").usage)).toBe(srcUsage);
       expect(amountString(cap(result.after!, "dst").usage)).toBe(dstUsage);
-      expect(result.outcomes[0]!.conservation.holds).toBe(true);
+      expect(result.outcomes[0]?.conservation?.holds).toBe(true);
     } else {
       expect(result.after).toBeNull();
-      expect(result.outcomes[0]!.blockedBy.map((b) => b.code)).toContain("SOURCE_USAGE_INSUFFICIENT");
+      expect(result.outcomes[0]?.blockedBy.map((b) => b.code) ?? []).toContain("SOURCE_USAGE_INSUFFICIENT");
     }
   });
 });

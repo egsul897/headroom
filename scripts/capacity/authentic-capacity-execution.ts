@@ -160,7 +160,8 @@ function mechanicOf(formulaType: FormulaType, grant: string, code: string): stri
   if (formulaType === "GREATER_OF_FLAT_OR_PCT_EBITDA" || formulaType === "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS") return "greater_of_grower";
   if (formulaType === "LEVERAGE_RATIO_ROOM" || formulaType === "COVERAGE_RATIO_ROOM" || formulaType === "RATIO_GATE") return "ratio_debt";
   if (formulaType === "FLAT_AMOUNT" || formulaType === "FLAT_NET_OF_DEBT") return "fixed_basket";
-  return formulaType.toLowerCase();
+  // All FormulaType cases handled above; keep a stable fallback for exhaustiveness.
+  return "other_mechanic";
 }
 
 function classify(
@@ -496,9 +497,17 @@ async function blockerAudit() {
   const permissions = await prisma.permission.count();
   const modeled = await prisma.permission.count({ where: { modelingStatus: "MODELED" } });
   const provisions = await prisma.covenantProvision.count();
-  const semanticTruth = await prisma.$queryRawUnsafe(`SELECT COUNT(*)::int AS c FROM semantic_truth_records`).then((r: { c: number }[]) => r[0]?.c ?? 0).catch(() => 0);
-  const contractUsages = await prisma.$queryRawUnsafe(`SELECT COUNT(*)::int AS c FROM contract_ledger_usages`).then((r: { c: number }[]) => r[0]?.c ?? 0).catch(() => 0);
-  const approvedNs = await prisma.$queryRawUnsafe(`SELECT COUNT(*)::int AS c FROM contract_input_snapshots WHERE status = 'APPROVED'`).then((r: { c: number }[]) => r[0]?.c ?? 0).catch(() => 0);
+  const countRaw = async (sql: string): Promise<number> => {
+    try {
+      const rows = (await prisma.$queryRawUnsafe(sql)) as { c: number }[];
+      return rows[0]?.c ?? 0;
+    } catch {
+      return 0;
+    }
+  };
+  const semanticTruth = await countRaw(`SELECT COUNT(*)::int AS c FROM semantic_truth_records`);
+  const contractUsages = await countRaw(`SELECT COUNT(*)::int AS c FROM contract_ledger_usages`);
+  const approvedNs = await countRaw(`SELECT COUNT(*)::int AS c FROM contract_input_snapshots WHERE status = 'APPROVED'`);
   return {
     knowledgeSourcesByRepresentation: Object.fromEntries(ks.map((k) => [`${k.representationLevel}/${k.extractionStatus}`, k._count])),
     permissionsTotal: permissions,
