@@ -34,6 +34,42 @@ export function AskShell({
         <p className="home-detail" style={{ whiteSpace: "pre-wrap" }}>
           {result.detail}
         </p>
+        {result.restrictions && result.restrictions.length > 0 && (
+          <div style={{ marginTop: 12 }}>
+            <p className="home-eyebrow">Restrictions</p>
+            <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+              {result.restrictions.map((r, i) => (
+                <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {result.permissions && result.permissions.length > 0 && (
+          <div style={{ marginTop: 8 }}>
+            <p className="home-eyebrow">Permissions / baskets (not capacity)</p>
+            <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+              {result.permissions.map((p, i) => (
+                <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {result.unresolved && result.unresolved.length > 0 && (
+          <div style={{ marginTop: 8 }}>
+            <p className="home-eyebrow">Unresolved</p>
+            <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+              {result.unresolved.map((u, i) => (
+                <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                  {u}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {result.citations && result.citations.length > 0 && (
           <div style={{ marginTop: 12 }}>
             <p className="home-eyebrow">Citations</p>
@@ -42,6 +78,7 @@ export function AskShell({
                 <li key={`${c.sourceId}-${c.sectionRef}-${i}`} style={{ marginBottom: 8 }}>
                   <strong>
                     {c.governingAgreement} — {c.sectionRef}
+                    {c.posture ? ` [${c.posture}]` : ""}
                   </strong>
                   <div style={{ fontSize: 13, whiteSpace: "pre-wrap" }}>
                     “{c.excerpt}”
@@ -93,7 +130,7 @@ export function AskShell({
           onChange={(event) => setQuestion(event.target.value)}
           rows={4}
           disabled={pending}
-          placeholder="e.g. What restricted-payment baskets are available?"
+          placeholder='e.g. Can the borrower incur an additional $100 million of secured debt?'
         />
         <button type="submit" className="button" disabled={pending || !question.trim()}>
           {pending ? "Retrieving…" : "Submit question"}

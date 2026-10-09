@@ -85,6 +85,21 @@ describe("substantive CONMED covenant intelligence", () => {
       expect(answer.citations.length).toBeGreaterThan(0);
     }
   });
+
+  it("answers $100M secured-debt amount questions as NOT DETERMINABLE without rulebook/financials", () => {
+    const answer = answerFromSummaryItems({
+      question: "Can the borrower incur an additional $100 million of secured debt?",
+      items: summary.items.map((i) => ({ ...i, sourceId })),
+      limit: 8,
+    });
+    expect(answer.kind).toBe("answered");
+    expect(answer.detail).toMatch(/\$100 million/);
+    expect(answer.detail).toMatch(/NOT DETERMINABLE/);
+    expect(answer.detail.toLowerCase()).toMatch(/lien|indebtedness|secured/);
+    expect(answer.detail).toMatch(/executable legal rulebook|financial/);
+    expect(answer.citations.length).toBeGreaterThan(0);
+    expect(answer.permissions?.length ?? answer.detail).toBeTruthy();
+  });
 });
 
 describe("corpus quality", () => {

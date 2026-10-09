@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { analyzeAmendmentPackage } from "../../lib/product/customer-intelligence/amendment-package";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
@@ -131,5 +133,40 @@ describe("covenant summary substance", () => {
     expect(item.applicableDefinitions.some((d) => d.term === "Consolidated EBITDA")).toBe(true);
     expect(item.sourceCitation).toContain("7.01");
     expect(item.unresolvedQuestions.length).toBeGreaterThan(0);
+  });
+});
+
+describe("capacity / simulate honesty wiring", () => {
+  const root = path.join(__dirname, "../..");
+
+  it("capacity page fail-closes without inventing figures when readiness blocks evaluation", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/capacity/page.tsx"), "utf8");
+    const readiness = readFileSync(
+      path.join(root, "lib/product/customer-intelligence/capacity-readiness.ts"),
+      "utf8",
+    );
+    expect(source).toContain("loadCapacityReadiness");
+    expect(source).toContain("NOT DETERMINABLE");
+    expect(source).toContain("canEvaluateExecutableCapacity");
+    expect(source).toMatch(/never rendered as \$0 or Unlimited/);
+    expect(source).not.toMatch(/remainingCapacity\s*\?\?\s*0/);
+    expect(readiness).toContain("DISCOVERED ≠ VERIFIED");
+    expect(readiness).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
+    expect(readiness).toContain("canEvaluateExecutableCapacity");
+  });
+
+  it("simulate page shows readiness for every company, not only CONMED", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/simulate/page.tsx"), "utf8");
+    expect(source).toContain("loadCapacityReadiness");
+    expect(source).toContain("NOT DETERMINABLE");
+    expect(source).not.toContain("CONMED_DEMO_COMPANY_ID");
+    expect(source).toContain("never modify the live transaction ledger");
+  });
+
+  it("covenant review workspace is the covenants page data source", () => {
+    const source = readFileSync(path.join(root, "app/[companyId]/covenants/page.tsx"), "utf8");
+    expect(source).toContain("loadCovenantReviewWorkspace");
+    expect(source).toContain("DISCOVERED ≠ VERIFIED");
+    expect(source).toContain("SOURCE_BACKED ≠ LEGALLY_EXECUTABLE");
   });
 });

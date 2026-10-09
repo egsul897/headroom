@@ -169,6 +169,19 @@ function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
   return ap as AmendmentPackageView;
 }
 
+function parseProposedAmount(question: string): string | null {
+  const m =
+    question.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i) ||
+    question.match(/\b([\d,]+(?:\.\d+)?)\s*(million|billion)\s+(?:of\s+)?(?:secured\s+)?debt\b/i);
+  if (!m) return null;
+  const n = Number((m[1] ?? "").replace(/,/g, ""));
+  if (!Number.isFinite(n)) return null;
+  const unit = (m[2] ?? "").toLowerCase();
+  if (unit === "billion") return `$${n} billion`;
+  if (unit === "million") return `$${n} million`;
+  return `$${n.toLocaleString("en-US")}`;
+}
+
 function composeAnswer(params: {
   question: string;
   intent: QuestionIntent;
@@ -177,6 +190,7 @@ function composeAnswer(params: {
   amendmentNote?: string;
 }): AskRetrieveAnswer {
   const top = params.items.slice(0, 6);
+  const proposedAmount = parseProposedAmount(params.question);
   if (top.length === 0) {
     return {
       kind: "insufficient_evidence",
@@ -229,9 +243,15 @@ function composeAnswer(params: {
   const uniqRestrictions = Array.from(new Set(restrictions)).slice(0, 6);
   const uniqPermissions = Array.from(new Set(permissions)).slice(0, 10);
 
+  const amountLead =
+    proposedAmount && (params.intent === "SECURED_DEBT" || params.intent === "DEBT_INCURRENCE")
+      ? `Proposed amount ${proposedAmount}: Headroom can identify the contractual path (debt + lien regimes, baskets, conditions) but cannot determine whether ${proposedAmount} is available without approved financial inputs, basket utilization, and an executable rulebook. `
+      : "";
+
   const intentLead: Record<QuestionIntent, string> = {
     SECURED_DEBT:
-      "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is:",
+      amountLead +
+      "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. Both regimes typically apply — permission under a debt basket does not alone authorize a Lien. The source-backed analysis of matching provisions is:",
     RESTRICTED_PAYMENTS:
       "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:",
     NON_GUARANTOR_DEBT:
@@ -243,6 +263,7 @@ function composeAnswer(params: {
     LEVERAGE_DEFINITIONS:
       "Leverage and related ratios are controlled by the cited maintenance covenants and any matched definitions. Matching analyzed provisions say:",
     DEBT_INCURRENCE:
+      amountLead +
       "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:",
     GENERAL: "Matching analyzed provisions say:",
   };
@@ -276,6 +297,9 @@ function composeAnswer(params: {
     "Unresolved:",
     uniqUnresolved.length ? uniqUnresolved.map((u) => `• ${u}`).join("\n") : "• None flagged beyond general discovery limits.",
     "",
+    proposedAmount
+      ? `Capacity conclusion for ${proposedAmount}: NOT DETERMINABLE from discovery summaries alone. Required for a supported yes/no: (1) operative amendment resolution, (2) executable legal rulebook for the selected baskets, (3) approved financial snapshot for any ratio/grower tests, (4) ledger utilization for shared/fixed baskets.`
+      : "",
     params.amendmentNote ? params.amendmentNote : "",
     "These statements are DISCOVERED_CANDIDATE analyses shared with the covenant-summary store. They do not establish that a transaction is permitted, that capacity exists, or that language is currently operative after amendments.",
   ]

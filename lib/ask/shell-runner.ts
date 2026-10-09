@@ -9,6 +9,9 @@ export interface AskShellResult {
   detail: string;
   citations?: AskRetrieveAnswer["citations"];
   limitations?: string[];
+  restrictions?: string[];
+  permissions?: string[];
+  unresolved?: string[];
 }
 
 export function askEmpty(caseId: AskCaseId): AskShellResult {
@@ -54,6 +57,9 @@ export async function answerAsk(input: {
       detail: result.detail,
       citations: result.citations,
       limitations: result.limitations,
+      restrictions: result.restrictions,
+      permissions: result.permissions,
+      unresolved: result.unresolved,
     };
   }
   if (result.kind === "insufficient_evidence") {
@@ -63,6 +69,7 @@ export async function answerAsk(input: {
       headline: result.headline,
       detail: result.detail,
       limitations: result.limitations,
+      unresolved: result.unresolved,
     };
   }
   return askEmpty("REFUSE_NOT_INVENT");
