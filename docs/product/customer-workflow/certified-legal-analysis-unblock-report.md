@@ -8,7 +8,7 @@ Coordinates with PR #194 legal excellence (`ff6c5ace` in ancestry via `ba4af25a`
 
 | Ref | SHA | Notes |
 |---|---|---|
-| PR #192 tip | `72937395` | #194 tip re-sync + IPV work + VEP blockers + restatement + Phase 4E |
+| PR #192 tip | `50c881ca` | #194 tip re-sync + IPV work + VEP blockers + restatement + Phase 4E |
 | PR #194 tip | `ff6c5ace` | Covenant retrieval / legal excellence; MERGEABLE |
 | Integrate merges | `7895edaf`, `ba4af25a` | Initial #194 integrate; re-sync to tip `ff6c5ace` |
 | Pre-unblock green #192 tip | `e49a14d9` | Soft gates SUCCESS before IPV tip tsc regression |
