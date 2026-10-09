@@ -68,7 +68,7 @@ async function teardown() {
 describe("runExtractionAction (the real, wired document-onboarding server action) now reaches lib/contract-model/compiler/** (BLOCKER-10)", () => {
   beforeAll(async () => {
     await teardown();
-    await prisma.company.create({ data: { id: COMPANY_ID, name: "Live analysis app-action test co (test-only)", onboardingStatus: "ONBOARDING" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_ID, name: "Live analysis app-action test co (test-only)", onboardingStatus: "ONBOARDING" } });
   });
 
   afterAll(async () => {

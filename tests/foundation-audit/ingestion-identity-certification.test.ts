@@ -54,8 +54,8 @@ async function teardown() {
 describe("Section 12: Ingestion Identity Certification (independent auditor evidence)", () => {
   beforeAll(async () => {
     await teardown();
-    await prisma.company.create({ data: { id: AUDIT_CO_1, name: "Audit S12 Tenant Alpha (certification, test-only)" } });
-    await prisma.company.create({ data: { id: AUDIT_CO_2, name: "Audit S12 Tenant Beta (certification, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: AUDIT_CO_1, name: "Audit S12 Tenant Alpha (certification, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: AUDIT_CO_2, name: "Audit S12 Tenant Beta (certification, test-only)" } });
     // Pre-warm each tenant's DOCUMENT_UPLOAD CompanySourceConnection row
     // before any dedup/identity test below fires concurrent uploads.
     // AUDITOR FINDING (see repro-connection-race.test.ts, reported

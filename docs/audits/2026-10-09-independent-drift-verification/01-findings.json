@@ -1,0 +1,80 @@
+{
+  "artifact": "01 - independent verdicts on the four reported findings",
+  "auditBaseSha": "2338e9e09fc9a6435bcfa4a330c424dd240ffb4d",
+  "currentMainSha": "2338e9e09fc9a6435bcfa4a330c424dd240ffb4d",
+  "findings": [
+    {
+      "id": "F1",
+      "title": "Cross-tenant authorization",
+      "reportedSeverity": "HIGH",
+      "independentVerdict": "PARTIALLY_CONFIRMED",
+      "severity": "HIGH (application layer); mitigated at the deployment layer",
+      "rootCause": "No identity provider, principal or membership model exists; app/page.tsx and app/[companyId]/layout.tsx document that there is no signed-in user. Every company-scoped route, server action and the Ask API treated the caller-supplied companyId as sufficient. Database isolation (where: { companyId }) was the only scoping and is not authorization.",
+      "exactLocations": [
+        "app/api/ask/route.ts:4-16 (companyId from request body passed straight to answerAsk)",
+        "app/[companyId]/layout.tsx:16-18 (getCompanySummary(companyId), notFound only when the company is missing)",
+        "app/[companyId]/onboarding/documents/actions.ts:13 uploadDocumentAction(companyId, formData) and the other 17 exported actions under app/[companyId]/**/actions.ts",
+        "app/[companyId]/documents/[documentId]/page.tsx:66-67 (stored bytes read after a companyId-scoped findFirst only)",
+        "app/[companyId]/onboarding/sources/actions.ts:25 (connection loaded by id without companyId)"
+      ],
+      "externalControl": "Both the production host https://headroom-debt-compass.vercel.app/ and PR preview hosts answer HTTP 302 to https://vercel.com/sso-api (Vercel Deployment Protection, team SSO) for an anonymous request. That is a demonstrated external control for the current deployment; it is a deployment setting outside the repository, it does not distinguish companies, and it does not satisfy the North Star's fail-closed requirement in the application.",
+      "reproduction": "Code reading above; tests/product/tenant-boundary.test.ts encodes the pre-fix behaviour as failing expectations (structural coverage test fails on 2338e9e0 because no entry point calls the boundary).",
+      "correctiveAction": "lib/auth/tenant-boundary.ts (deny by default for CUSTOMER tenants without a trusted principal; membership-bound when a principal exists; fail closed on identity/lookup failure; existence-neutral denials); wired into the layout, the Ask API (403), the document page, all 18 company-scoped actions, the delete action; object-level company binding on source-connection sync (feed and ledger mutations already checked the object's companyId explicitly and are unchanged); HEADROOM_TENANT_BOUNDARY operator acknowledgement documented in .env.example.",
+      "residualRisk": "No identity provider is integrated: CUSTOMER tenants are unreachable unless the operator sets HEADROOM_TENANT_BOUNDARY=UNAUTHENTICATED_EVALUATION_INSTANCE, which must be set only on a single-operator evaluation deployment; EVALUATION tenants remain reachable by id by design; review-candidate mutations (lib/onboarding/review.ts) still load candidates by id without companyId; the deployed instance's Vercel protection is not under repository control.",
+      "gateDisposition": "REMEDIATED_PENDING_CI"
+    },
+    {
+      "id": "F2",
+      "title": "Live Neon write approval and evidence reconciliation",
+      "reportedSeverity": "HIGH",
+      "independentVerdict": "CONFIRMED (evidence inconsistency); approval APPROVAL_UNVERIFIED; persistence NOT_VERIFIED",
+      "severity": "HIGH",
+      "rootCause": "The only authorization evidence is a string an agent wrote into live-import-evidence.json (commit 35d9b90b, 01:40:05Z) thirteen minutes after the checkpoint (4b9b33f2, 01:27:51Z) recorded live write authorized: false. No owner-authored commit, PR comment, review, issue or dispatch log exists (PR #154 has zero comments and zero reviews and was merged by cursor[bot]). The 39-document SEC live persist (sec-batch-result.json, 01:50:55Z) carries no approval claim at all although the checkpoint lists it as a separately approved step. The live-write token is an intent gate, not an approval record.",
+      "exactLocations": [
+        "docs/knowledge-factory/mass-precedent/APPROVAL_CHECKPOINT.md:3-5",
+        "docs/knowledge-factory/mass-precedent/live-import-evidence.json:4",
+        "docs/knowledge-factory/mass-precedent/sec-batch-result.json:2-12",
+        "lib/knowledge-factory/mass-precedent/sec-batch-persist.ts:24-29 liveAuthorized() (token only)",
+        "lib/knowledge-factory/consolidation/import-original-bytes.ts:42-50 assertLiveAuthorized() (token only)"
+      ],
+      "reproduction": "git log --format='%h %ad %an %s' --date=iso -- docs/knowledge-factory/mass-precedent/; gh api repos/egsul897/headroom/issues/154/comments and /pulls/154/reviews (empty).",
+      "correctiveAction": "Append-only reconciliation artifact docs/knowledge-factory/mass-precedent/approval-reconciliation-2026-10-09.md (originals untouched); lib/knowledge-factory/live-write-approval.ts requiring KF_LIVE_WRITE_APPROVAL_REF to name a committed, owner-attributable record covering the operation, wired into the SEC batch, consolidation import and derived-export import; approval reference recorded in results and row metadata; docs/knowledge-factory/approvals/README.md. No approval record fabricated; no import reversed.",
+      "residualRisk": "Neon state (35 migrations, 29 + 39 rows, byte round-trips) could not be verified: no DATABASE_URL in this environment. prisma migrate deploy itself is not code-gated (shell / workflow_dispatch). Additional live migrations, destructive operations or bulk writes require an owner-authored approval record before they run.",
+      "gateDisposition": "APPROVAL_UNVERIFIED"
+    },
+    {
+      "id": "F3",
+      "title": "SEC corpus quality and hash mismatches",
+      "reportedSeverity": "MEDIUM",
+      "independentVerdict": "CONFIRMED (counts and mismatches reproduced from the artifacts; hash basis INDETERMINATE without both byte streams)",
+      "severity": "MEDIUM",
+      "rootCause": "manifest.rawContentSha256 is the hash of bytes stored by a previous acquisition (preservation/inventory.ts:142 originalBytesHash); the batch hashes freshly fetched bytes; the two were never compared as byte streams, and 39/39 differ \u2014 systematic, not SEC variation. The batch's only content gate was a shape test (looksLikeAuthenticExhibit); the manifest marked an ESPP, executive severance plans and a certificate of amendment as corpusRole FINANCING; skippedFalsePositive could never increment because false positives were pre-filtered. Retrieval (corpus-quality.ts isSubstantiveFinancingPrecedent) already excluded most non-financing titles, so the exposure was in persistence counts, corpus metrics and manifest roles rather than in the Ask research path.",
+      "exactLocations": [
+        "lib/knowledge-factory/mass-precedent/sec-batch-persist.ts:48-55 (shape filter), 101-103 (pre-filter), 152-155 (hashDrift), 191-193 (documentClass UNKNOWN at persist)",
+        "docs/knowledge-factory/preservation/acquisition-manifest.json (ESPP / certificate-of-amendment locators with corpusRole FINANCING)",
+        "lib/product/covenant-intelligence/corpus-quality.ts:29-33 (FINANCING_TITLE accepted 'amended and restated' alone; no compensation-plan exclusions)"
+      ],
+      "reproduction": "docs/audits/2026-10-09-independent-drift-verification/03-sec-batch-reconciliation.json (39 rows: 10 substantive by title/class, 29 quarantined pending content re-analysis; 39/39 UNRECONCILED identity). tests/knowledge-factory/corpus-acceptance.test.ts data-driven case over sec-batch-result.json.",
+      "correctiveAction": "corpus-acceptance.ts (identity vs relevance decided separately; body-heading evidence for uninformative filenames; quarantine with bytes preserved); sec-batch-persist.ts records corpusRole, sourceByteIdentity, approval ref per row and reports quarantined / unreconciled / financing vs quarantined ids; corpus-quality.ts excludes compensation and governance exhibits and honours an explicit quarantine marker in retrieval.",
+      "residualRisk": "The 39 persisted rows in Neon still carry their original metadata (no database access to re-analyze); corpus dashboards (status-board.json financingLocators 113, operational-dashboard.json precedentsIndexedAndSearchable) still count manifest FINANCING roles including misclassified ones; the manifest's corpusRole labels were not rewritten (historical artifact); the cause of the 100% hash drift needs both byte streams to settle.",
+      "gateDisposition": "REMEDIATED_PENDING_CI"
+    },
+    {
+      "id": "F4",
+      "title": "Legacy execution misrepresented as verified legal capability",
+      "reportedSeverity": "MEDIUM",
+      "independentVerdict": "CONFIRMED",
+      "severity": "MEDIUM",
+      "rootCause": "run-package-path.ts counted LEGACY_ENGINE conclusions in survivingExecutableConclusions (Coherent: 2, published in docs/product/legal-intelligence/summary.json), hardcoded hasUtilizationLedger: true for Coherent, dispatched on companyId === 'conmed-demo' / 'coherent' and threw for any other company; challenge.ts fired the missing-IR package blocker only for conmed-demo and let a MATERIAL entity-scope finding marked invalidatesExecutability pass without blocking.",
+      "exactLocations": [
+        "lib/product/legal-intelligence/run-package-path.ts:99-101,152-154 (LEGACY_ENGINE counted), 134 (hasUtilizationLedger: true), 186-191 (issuer dispatch, throw)",
+        "lib/product/legal-intelligence/challenge.ts:49-58 (MATERIAL, invalidates only if promoted), 131-141 (companyId === 'conmed-demo')",
+        "docs/product/legal-intelligence/summary.json:34-47 (survivingExecutableConclusions: 2, capacityExecuted: 2)"
+      ],
+      "reproduction": "tests/product/legal-intelligence-verified-boundary.test.ts: on 2338e9e0 a LEGACY_ENGINE conclusion with full evidence survives as executable, an unseen company throws, ledger availability is not derived from data.",
+      "correctiveAction": "LEGACY_EXECUTION blocker; EXECUTABLE_VERIFIED-only counting with survivingLegacyConclusions reported separately; ledger availability from ACTIVE ledger rows (unreadable = unknown); generalized missing-IR blocker; unresolved cross-reference and ambiguous governing provision blockers; invalidating findings block at any severity; FIXTURE_PATH registry vs GENERALIZED_FAIL_CLOSED path. summary.json / path-results.json preserved.",
+      "residualRisk": "No loader for a persisted Phase-3 verified IR package exists for product companies, so the generalized path can only ever report not-determinable (correct, but no affirmative capability); app/[companyId]/position/page.tsx still renders a CONMED-specific panel (UI, gated to that id); live capability counts could not be regenerated (no database).",
+      "gateDisposition": "REMEDIATED_PENDING_CI"
+    }
+  ]
+}

@@ -41,20 +41,47 @@ export interface ChallengeFinding {
     | "CROSS_PROVISION_RESTRICTION"
     | "UTILIZATION_UNKNOWN"
     | "ENTITY_SCOPE"
-    | "CONTRADICTION";
+    | "CONTRADICTION"
+    /** A legacy covenant-engine number: never legally verified executable capacity. */
+    | "LEGACY_EXECUTION"
+    | "UNRESOLVED_CROSS_REFERENCE"
+    | "AMBIGUOUS_GOVERNING_PROVISION";
   statement: string;
   invalidatesExecutability: boolean;
 }
 
+/** Everything the challenge stage needs to know about a package's evidentiary state. Every field is evidence-derived, never assumed. */
+export interface LegalChallengeContext {
+  hasApprovedFinancialSnapshot: boolean;
+  /** True only when the company has ACTIVE utilization ledger evidence; never hardcoded. */
+  hasUtilizationLedger: boolean;
+  hasVerifiedIrPackage: boolean;
+  outOfPackageAmendments: string[];
+  unresolvedDefinitionTerms: string[];
+  entityScopeUnresolved: boolean;
+  /** Cross-references the package could not resolve to a governing provision. */
+  unresolvedCrossReferences?: string[];
+  /** Provisions whose governing authority (which document / version governs) is ambiguous. */
+  ambiguousGoverningProvisions?: string[];
+}
+
+/** How a package result was produced. Fixture paths are regression surfaces, never generalized capability. */
+export type LegalExecutionBasis = "FIXTURE_PATH" | "GENERALIZED_FAIL_CLOSED";
+
 export interface PackageLegalPathResult {
-  schemaVersion: "product.legal-intelligence-path.v1";
+  schemaVersion: "product.legal-intelligence-path.v1" | "product.legal-intelligence-path.v2";
+  /** v2: present on every result produced after the legacy/verified separation. */
+  executionBasis?: LegalExecutionBasis;
   generatedAt: string;
   companyId: string;
   packageKey: string;
   pathExecuted: string[];
   conclusions: LegalConclusion[];
   challenges: ChallengeFinding[];
+  /** Conclusions whose executability is EXECUTABLE_VERIFIED after challenge. LEGACY_ENGINE never counts. */
   survivingExecutableConclusions: number;
+  /** v2: legacy covenant-engine conclusions that survived challenge as LEGACY_ENGINE (reported, never verified capability). */
+  survivingLegacyConclusions?: number;
   blockedReasons: string[];
   metrics: {
     covenantRowsExamined: number;

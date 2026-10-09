@@ -22,8 +22,8 @@ async function teardown() {
 describe("P3-R0 C10 — ledger supersession preserves history", () => {
   beforeAll(async () => {
     await teardown();
-    await prisma.company.create({ data: { id: COMPANY_ID, name: "Fixture P3-R0 C10 (synthetic, test-only)" } });
-    await prisma.company.create({ data: { id: OTHER_COMPANY_ID, name: "Fixture P3-R0 C10 other (synthetic, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_ID, name: "Fixture P3-R0 C10 (synthetic, test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: OTHER_COMPANY_ID, name: "Fixture P3-R0 C10 other (synthetic, test-only)" } });
     await prisma.financialSnapshot.create({
       data: {
         companyId: COMPANY_ID,

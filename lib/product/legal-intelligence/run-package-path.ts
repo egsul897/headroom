@@ -1,5 +1,15 @@
 /**
- * Integrated legal-intelligence path over authentic packages already in the repo.
+ * Integrated legal-intelligence path.
+ *
+ * Two kinds of path exist and are never mixed:
+ *   - FIXTURE_PATH: the CONMED and Coherent evaluation fixtures already in the repo. They are
+ *     regression surfaces. Their numbers (legacy covenant engine, seed formulas) are reported as
+ *     LEGACY_ENGINE and are never counted as verified executable capacity.
+ *   - GENERALIZED_FAIL_CLOSED: every other company. No issuer-specific branch exists; the path
+ *     derives its evidentiary context from the database (approved snapshots, ACTIVE ledger
+ *     entries, verified IR package: none is loadable yet) and the challenge stage blocks every
+ *     executable claim it cannot support.
+ *
  * Reuses existing engines — does not fabricate capacity or bypass REQUIRE.
  */
 
@@ -10,8 +20,24 @@ import {
   listConmedCovenantExplorerRows,
   listConmedPackageFacts,
 } from "../conmed-demo/covenant-catalog";
-import { applyChallengeVerdict, challengeLegalConclusions } from "./challenge";
+import { applyChallengeVerdict, challengeLegalConclusions, countSurvivingExecutable, countSurvivingLegacy } from "./challenge";
 import type { LegalConclusion, PackageLegalPathResult } from "./types";
+
+/** Evidence, not assumption: ACTIVE ledger rows are the only basis for "utilization is known". */
+async function utilizationLedgerEvidence(companyId: string): Promise<{ activeEntries: number | null; hasUtilizationLedger: boolean }> {
+  try {
+    const activeEntries = await prisma.ledgerEntry.count({ where: { companyId, status: "ACTIVE" } });
+    return { activeEntries, hasUtilizationLedger: activeEntries > 0 };
+  } catch {
+    // Unreadable ledger evidence is unknown utilization, never "no utilization".
+    return { activeEntries: null, hasUtilizationLedger: false };
+  }
+}
+
+/** No persisted Phase-3 verified IR package loader exists for product companies yet; this is the one place that fact is stated. */
+async function verifiedIrPackageEvidence(): Promise<{ hasVerifiedIrPackage: false }> {
+  return { hasVerifiedIrPackage: false };
+}
 
 async function runConmedPath(): Promise<PackageLegalPathResult> {
   const pathExecuted = [
@@ -63,7 +89,8 @@ async function runConmedPath(): Promise<PackageLegalPathResult> {
   const snap = await prisma.financialSnapshot.count({
     where: { companyId: CONMED_DEMO_COMPANY_ID },
   });
-  const ledger = 0; // no utilization ledger model populated for CONMED demo
+  const ledger = await utilizationLedgerEvidence(CONMED_DEMO_COMPANY_ID);
+  const ir = await verifiedIrPackageEvidence();
 
   const unresolvedTerms = [
     ...new Set(rows.flatMap((r) => r.requiredDefinedTerms)),
@@ -74,8 +101,8 @@ async function runConmedPath(): Promise<PackageLegalPathResult> {
     conclusions,
     context: {
       hasApprovedFinancialSnapshot: snap > 0,
-      hasUtilizationLedger: ledger > 0,
-      hasVerifiedIrPackage: false,
+      hasUtilizationLedger: ledger.hasUtilizationLedger,
+      hasVerifiedIrPackage: ir.hasVerifiedIrPackage,
       outOfPackageAmendments: [
         "Doc C Second Amendment amends Seventh A&R (not in package)",
       ],
@@ -90,16 +117,16 @@ async function runConmedPath(): Promise<PackageLegalPathResult> {
   ];
 
   return {
-    schemaVersion: "product.legal-intelligence-path.v1",
+    schemaVersion: "product.legal-intelligence-path.v2",
+    executionBasis: "FIXTURE_PATH",
     generatedAt: new Date().toISOString(),
     companyId: CONMED_DEMO_COMPANY_ID,
     packageKey: CONMED_DEMO_PACKAGE_KEY,
     pathExecuted,
     conclusions: surviving,
     challenges,
-    survivingExecutableConclusions: surviving.filter(
-      (c) => c.executability === "EXECUTABLE_VERIFIED" || c.executability === "LEGACY_ENGINE",
-    ).length,
+    survivingExecutableConclusions: countSurvivingExecutable(surviving),
+    survivingLegacyConclusions: countSurvivingLegacy(surviving),
     blockedReasons,
     metrics: {
       covenantRowsExamined: rows.length,
@@ -147,13 +174,15 @@ async function runCoherentPath(): Promise<PackageLegalPathResult> {
   });
 
   const snap = await prisma.financialSnapshot.count({ where: { companyId: "coherent" } });
+  const ledger = await utilizationLedgerEvidence("coherent");
+  const ir = await verifiedIrPackageEvidence();
   const challenges = challengeLegalConclusions({
     companyId: "coherent",
     conclusions,
     context: {
       hasApprovedFinancialSnapshot: snap > 0,
-      hasUtilizationLedger: true,
-      hasVerifiedIrPackage: false,
+      hasUtilizationLedger: ledger.hasUtilizationLedger,
+      hasVerifiedIrPackage: ir.hasVerifiedIrPackage,
       outOfPackageAmendments: [],
       unresolvedDefinitionTerms: [],
       entityScopeUnresolved: false,
@@ -162,17 +191,17 @@ async function runCoherentPath(): Promise<PackageLegalPathResult> {
   const { surviving } = applyChallengeVerdict(conclusions, challenges);
 
   return {
-    schemaVersion: "product.legal-intelligence-path.v1",
+    schemaVersion: "product.legal-intelligence-path.v2",
+    executionBasis: "FIXTURE_PATH",
     generatedAt: new Date().toISOString(),
     companyId: "coherent",
     packageKey: "coherent-evaluation-seed",
     pathExecuted,
     conclusions: surviving,
     challenges,
-    survivingExecutableConclusions: surviving.filter(
-      (c) => c.executability === "EXECUTABLE_VERIFIED" || c.executability === "LEGACY_ENGINE",
-    ).length,
-    blockedReasons: challenges.filter((c) => c.severity === "BLOCKER").map((c) => c.statement),
+    survivingExecutableConclusions: countSurvivingExecutable(surviving),
+    survivingLegacyConclusions: countSurvivingLegacy(surviving),
+    blockedReasons: [...new Set(challenges.filter((c) => c.severity === "BLOCKER").map((c) => c.statement))],
     metrics: {
       covenantRowsExamined: dash.documents?.length ?? 0,
       packageFacts: 0,
@@ -183,12 +212,63 @@ async function runCoherentPath(): Promise<PackageLegalPathResult> {
   };
 }
 
+/**
+ * Generalized path for any company: no issuer branch, no fabricated conclusions. The context is
+ * evidence-derived; with no verified IR package loadable the challenge stage blocks every
+ * executable claim, so the result is an explicit, reviewable "not determinable", never a number.
+ */
+async function runGeneralizedFailClosedPath(companyId: string): Promise<PackageLegalPathResult> {
+  const pathExecuted = ["generalized/evidence-context", "challenge-stage", "verified-execution:SKIPPED_NO_IR_PACKAGE"];
+  const snap = await prisma.financialSnapshot.count({ where: { companyId } });
+  const ledger = await utilizationLedgerEvidence(companyId);
+  const ir = await verifiedIrPackageEvidence();
+  const conclusions: LegalConclusion[] = [];
+  const challenges = challengeLegalConclusions({
+    companyId,
+    conclusions,
+    context: {
+      hasApprovedFinancialSnapshot: snap > 0,
+      hasUtilizationLedger: ledger.hasUtilizationLedger,
+      hasVerifiedIrPackage: ir.hasVerifiedIrPackage,
+      outOfPackageAmendments: [],
+      unresolvedDefinitionTerms: [],
+      // Entity scope is unresolved until a verified IR package states it.
+      entityScopeUnresolved: true,
+    },
+  });
+  const { surviving } = applyChallengeVerdict(conclusions, challenges);
+  return {
+    schemaVersion: "product.legal-intelligence-path.v2",
+    executionBasis: "GENERALIZED_FAIL_CLOSED",
+    generatedAt: new Date().toISOString(),
+    companyId,
+    packageKey: `${companyId}:no-verified-package`,
+    pathExecuted,
+    conclusions: surviving,
+    challenges,
+    survivingExecutableConclusions: countSurvivingExecutable(surviving),
+    survivingLegacyConclusions: countSurvivingLegacy(surviving),
+    blockedReasons: [...new Set(challenges.filter((c) => c.severity === "BLOCKER").map((c) => c.statement))],
+    metrics: { covenantRowsExamined: 0, packageFacts: 0, capacityExecuted: 0, unresolved: 0 },
+  };
+}
+
+/** Evaluation fixtures with a dedicated path. Regression surfaces only — never generalized capability. */
+const FIXTURE_LEGAL_PATHS: Readonly<Record<string, () => Promise<PackageLegalPathResult>>> = {
+  [CONMED_DEMO_COMPANY_ID]: runConmedPath,
+  coherent: runCoherentPath,
+};
+
+export function isFixtureLegalPath(companyId: string): boolean {
+  return Object.prototype.hasOwnProperty.call(FIXTURE_LEGAL_PATHS, companyId);
+}
+
 export async function runPackageLegalPath(
   companyId: string,
 ): Promise<PackageLegalPathResult> {
-  if (companyId === CONMED_DEMO_COMPANY_ID) return runConmedPath();
-  if (companyId === "coherent") return runCoherentPath();
-  throw new Error(`No integrated legal path registered for companyId=${companyId}`);
+  const fixture = isFixtureLegalPath(companyId) ? FIXTURE_LEGAL_PATHS[companyId] : undefined;
+  if (fixture) return fixture();
+  return runGeneralizedFailClosedPath(companyId);
 }
 
 export async function runIntegratedLegalIntelligence(): Promise<{

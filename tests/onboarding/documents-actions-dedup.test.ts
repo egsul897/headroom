@@ -53,8 +53,8 @@ async function teardown() {
 describe("uploadDocumentAction (the real, wired onboarding upload action) is now dedup-safe", () => {
   beforeAll(async () => {
     await teardown();
-    await prisma.company.create({ data: { id: COMPANY_A, name: "Fixture Onboarding Action Dedup A (test-only)" } });
-    await prisma.company.create({ data: { id: COMPANY_B, name: "Fixture Onboarding Action Dedup B (test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_A, name: "Fixture Onboarding Action Dedup A (test-only)" } });
+    await prisma.company.create({ data: { tenantKind: "EVALUATION", id: COMPANY_B, name: "Fixture Onboarding Action Dedup B (test-only)" } });
   });
 
   afterAll(async () => {

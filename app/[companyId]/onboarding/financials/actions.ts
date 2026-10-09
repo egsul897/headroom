@@ -1,5 +1,7 @@
 "use server";
 
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
+
 import { revalidatePath } from "next/cache";
 import { createManualFinancialState } from "@/lib/onboarding/financial";
 
@@ -10,6 +12,7 @@ function num(formData: FormData, name: string): number {
 }
 
 export async function submitFinancialsAction(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   await createManualFinancialState({
     companyId,
     asOfDate: new Date(String(formData.get("asOfDate"))),

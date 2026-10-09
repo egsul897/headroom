@@ -16,6 +16,7 @@ import {
   type DurableSourcePersistResult,
 } from "../preservation/durable-store";
 import { scanOriginalByteCandidates } from "./scan-original-bytes";
+import { assertLiveWriteApproval } from "../live-write-approval";
 import type { ImportAction, OriginalByteCandidate } from "./types";
 
 export const LIVE_WRITE_ENV = "KF_CONSOLIDATION_LIVE_WRITE" as const;
@@ -38,7 +39,7 @@ export interface ImportBatchResult {
   }>;
 }
 
-function assertLiveAuthorized(live: boolean): void {
+function assertLiveAuthorized(live: boolean, repoRoot: string): void {
   if (!live) return;
   if (process.env[LIVE_WRITE_ENV] !== LIVE_WRITE_TOKEN) {
     throw new Error(
@@ -46,6 +47,8 @@ function assertLiveAuthorized(live: boolean): void {
         "only after explicit owner approval. Prefer dry-run.",
     );
   }
+  // The token is intent; a committed, owner-attributable approval record is the authority.
+  assertLiveWriteApproval({ operation: "consolidation-import", repoRoot });
 }
 
 function toSourceRecord(c: OriginalByteCandidate): KnowledgeSourceRecord {
@@ -80,8 +83,8 @@ export async function importOriginalByteCandidates(params: {
   limit?: number;
 }): Promise<ImportBatchResult> {
   const live = Boolean(params.live);
-  assertLiveAuthorized(live);
   const repoRoot = params.repoRoot ?? process.cwd();
+  assertLiveAuthorized(live, repoRoot);
   let candidates = scanOriginalByteCandidates(repoRoot);
   if (params.onlySourceIds?.length) {
     const allow = new Set(params.onlySourceIds);

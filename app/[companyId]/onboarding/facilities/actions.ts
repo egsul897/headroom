@@ -1,10 +1,13 @@
 "use server";
 
+import { requireCompanyAccess } from "@/lib/auth/tenant-boundary";
+
 import { revalidatePath } from "next/cache";
 import { createFacilityWithMapping } from "@/lib/onboarding/financial";
 import type { CouponType, FacilityType } from "@prisma/client";
 
 export async function createFacilityAction(companyId: string, formData: FormData) {
+  await requireCompanyAccess(companyId);
   const originatingPermissionIds = formData.getAll("originatingPermissionIds").map(String).filter(Boolean);
   await createFacilityWithMapping({
     companyId,
