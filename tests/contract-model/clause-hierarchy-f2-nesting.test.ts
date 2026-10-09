@@ -132,4 +132,49 @@ const CHEWY = "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extract
     const again = runStructureStage([{ documentId: "doc-a", label: "chwy", text }]).output;
     expect(again.map((n) => [n.nodeId, n.sectionRef, n.charStart, n.charEnd])).toEqual(nodes.map((n) => [n.nodeId, n.sectionRef, n.charStart, n.charEnd]));
   });
+
+  it("6.08(a)(3)(b) keeps its full owned span through its internal limbs and does not invent (x)/(y) children", () => {
+    // Exact contractual span from F-2 golden / source: (b) starts at 664123 and ends where (c) begins at 666205.
+    const a3b = byRef.get("6.08(a)(3)(b)")!;
+    const a3c = byRef.get("6.08(a)(3)(c)")!;
+    expect(a3b.charStart).toBe(664123);
+    expect(a3b.charEnd).toBe(666205);
+    expect(a3c.charStart).toBe(666205);
+    expect(a3b.parentNodeId).toBe(byRef.get("6.08(a)(3)")?.nodeId);
+    const owned = text.slice(a3b.charStart, a3b.charEnd);
+    // Internal limbs remain inside (b)'s owned bytes even when glued "(i)(A)" is not its own node.
+    expect(owned).toMatch(/^\(b\) 100% of the aggregate net cash proceeds/);
+    expect(owned).toContain("(i)(A) Equity Interests of the Borrowers");
+    expect(owned).toContain("(x) Equity Interests to any");
+    expect(owned).toContain("(y) Designated Preferred Stock");
+    expect(owned).toContain("(B) to the extent such net cash proceeds");
+    expect(owned).toContain("(ii) Indebtedness of any Restricted Party");
+    expect(owned.endsWith("plus\n\n") || owned.includes("Excluded Contributions; plus")).toBe(true);
+    // Fabricated restarted-letter children must not exist (the P0 regression).
+    expect(byRef.has("6.08(a)(3)(b)(x)")).toBe(false);
+    expect(byRef.has("6.08(a)(3)(b)(y)")).toBe(false);
+    expect(inside.some((n) => n.sectionRef === "6.08(a)(3)(b)(x)" || n.sectionRef === "6.08(a)(3)(b)(y)")).toBe(false);
+    // No direct child of (b) may start at the interior (x)/(y) offsets.
+    const childrenOfB = inside.filter((n) => n.parentNodeId === a3b.nodeId);
+    expect(childrenOfB.every((n) => n.charStart !== 664780 && n.charStart !== 665096)).toBe(true);
+  });
+
+  it("preserves TOC/body distinction, builder (a)-(i), true 6.08(b)(1)-(27), and inline proviso exclusion", () => {
+    const all608 = nodes.filter((n) => n.nodeType === "SECTION" && n.sectionRef === "6.08");
+    expect(all608).toHaveLength(2);
+    const toc = all608.find((n) => n.charStart < 8980)!;
+    const body = all608.find((n) => n.charStart > 8980)!;
+    expect(toc.charEnd - toc.charStart).toBeLessThan(200);
+    expect(body.charStart).toBe(659042);
+    expect(body.charEnd).toBe(697571);
+    for (const l of ["a", "b", "c", "d", "e", "f", "g", "h", "i"]) {
+      expect(byRef.get(`6.08(a)(3)(${l})`)?.parentNodeId).toBe(byRef.get("6.08(a)(3)")?.nodeId);
+    }
+    const trueB = byRef.get("6.08(b)")!;
+    expect(trueB.charStart).toBe(670039);
+    for (let i = 1; i <= 27; i++) expect(byRef.get(`6.08(b)(${i})`)?.parentNodeId).toBe(trueB.nodeId);
+    // Inline proviso "this clause\\n(b) shall not include" must not become a structural sibling.
+    expect(inside.filter((n) => n.sectionRef === "6.08(b)" || (n.sectionRef === "6.08(a)(3)(b)" && n.charStart === 665769)).length).toBe(1);
+    expect(inside.some((n) => n.charStart === 665769)).toBe(false);
+  });
 });
