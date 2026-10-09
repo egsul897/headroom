@@ -3,7 +3,7 @@
 **Mission:** Approval→execution bridge, sequential financial effects, expanded contractual metrics/reconciliation, authentic capacity integration, shared Position/Simulate/Ask financial view.  
 **Branch:** `cursor/financial-certificate-engine-8d31`  
 **PR:** https://github.com/egsul897/headroom/pull/220  
-**SHA:** _(set at commit)_  
+**SHA:** `a029a08d84716ce635192f6c3a02cd0cf7397cf5`  
 **Cost:** $0 paid inference (deterministic extraction; no provider calls).
 
 ---
