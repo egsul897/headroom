@@ -1,0 +1,202 @@
+{
+  "exampleId": "stc-sec-lsb-industries-6_04",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "6.04",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Section  6.04 , (vi) mergers, liquidations, sale of assets of a non-Loan Party Subsidiary into or to another non-Loan Party Subsidiary, and (vii) any liquidation or dissolution of any Subsidiary that is not a Loan Party if the\nBorrower Representative determines in good faith that such liquidation or dissolution is in the best interests of the Parent and its Subsidiaries, is not materially disadvantageous to the Lenders, and the assets owned or controlled by such\nliquidated or dissolved Subsidiary are transferred to a Loan Party. \n   83 \n\n \n\n\n \n \n\n \n SECTION  6.04 Disposal of Assets . Other than transactions\npermitted under Section  6.03 , convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that: \n (a) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that (i) to\nthe extent such disposition involves ABL Priority Collateral, the Borrowers shall have, concurrently with or prior to the occurrence of such disposition, delivered a new Borrowing Base Certificate (giving effect to such disposition and any repayment\nof the Obligations to be made in connection therewith) demonstrating compliance with Section  2.01(a) (and such Borrowing Base Certificate shall automatically be effective upon delivery until a new Borrowing Base Certificate\nis delivered pursuant to Section  5.02 or as otherwise required by this Agreement), (ii) such assets are sold for Fair Market Value and (iii) the aggregate Fair Market Value of all such assets sold during any\nfiscal year of the Loan Parties pursuant to this Section  6.04(a) shall not exceed the greater of $10,000,000 and 1.0% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance\nsheet in accordance with GAAP; (b) notwithstanding anything to the contrary contained herein, any Loan Party and any of its respective\nSubsidiaries may sell, transfer or otherwise dispose of any Notes Priority Collateral owned by such Person so long as such disposition is permitted under the Secured Notes Documents or if the requisite holders of the Secured Notes otherwise consent\nto such sale or disposition, it being understood that upon such sale, the Administrative Agent’s security interest (if any) in such assets shall be automatically released, and it being further understood that proceeds from the sale or\ndisposition of Notes Priority Collateral shall be applied by the Loan Parties in accordance with the terms of the Secured Notes Documents and the Secured Notes Indenture; and \n (c) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of its assets, provided that (i) 75% of the\nconsideration received thereunder is paid in cash or Cash Equivalents, (ii) the sale price is at least Fair Market Value, (iii) to the extent such disposition involves ABL Priority Collateral, the Parent shall have, concurrently with or\nprior to the occurrence of such disposition, delivered a new Borrowing Base Certificate (giving effect to such disposition and any repayment of the Obligations to be made in connection therewith) demonstrating compliance with\n Section  2.01(a) (and such Borrowing Base Certificate shall automatically be effective upon delivery until a new Borrowing Base Certificate is delivered pursuant to Section  5.02 or as otherwise\nrequired by this Agreement), and (iv) no Event of Default has occurred and is continuing or would result therefrom; (d) the Parent\nmay at any time issue or sell Stock of the Parent (subject to paragraph (n)  of Article VII ); (e) any Loan Party and any\nof its respective Subsidiaries may sell, transfer or otherwise dispose of Equipment that is substantially worn, damaged, or obsolete in the ordinary course of the applicable Loan Parties’ business; \n any Loan Party and any of its respective Subsidiaries may sell Inventory to buyers in the ordinary course of business; \n (f) any Loan Party and any of its respective Subsidiaries may use or transfer of money or Cash Equivalents in a manner that is not prohibited\nby the terms of this Agreement or the other Loan Documents; (g) any Loan Party and any of its respective Subsidiaries may license, on a non-exclusive basis, patents, trademarks, copyrights, and other intellectual property rights in the ordinary course of the applicable Loan Parties business; \n   84 \n\n \n\n\n \n \n\n \n (h) any Loan Party and any of its respective Subsidiaries may consummate sales, transfers,\nleases or other dispositions of assets to any other Loan Party; provided that no Loan Party that is a Borrower may consummate any such disposition to any Loan Party that is not a Borrower; and \n (i) any Loan Party and any of its respective Subsidiaries may sell or otherwise dispose of Accounts which are not Eligible Accounts. \n ",
+    "charStartInFixture": 6156,
+    "charEndInFixture": 10999,
+    "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "windowSha256": "729b4ac47c5883a6e1d023e3a93e96a19ca6c800515612617d1ab951e1c5b47f",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "ASSET_SALES",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=729b4ac47c5883a6e1d023e3a93e96a19ca6c800515612617d1ab951e1c5b47f",
+      "sectionRef=6.04"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "729b4ac47c5883a6e1d023e3a93e96a19ca6c800515612617d1ab951e1c5b47f",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

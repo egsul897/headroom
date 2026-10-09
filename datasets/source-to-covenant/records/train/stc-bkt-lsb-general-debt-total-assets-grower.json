@@ -1,0 +1,204 @@
+{
+  "exampleId": "stc-bkt-lsb-general-debt-total-assets-grower",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    "cik": "0000060714"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-a-abl-credit-agreement-2023",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "§6.01(i) general debt basket",
+  "input": {
+    "exactText": "terms and conditions of\nthe refinancing, renewal, or extension Indebtedness must be include subordination terms and conditions that are at least as favorable to the Lenders as those that were applicable to the refinanced, renewed, or extended Indebtedness; \n (e) [reserved]; \n (f) Indebtedness owing by any Loan Party to any other Loan Party; \n (g) Subordinated Indebtedness; \n (h) [reserved]; \n (i) other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and\n5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP; \n (j) Indebtedness constituting Permitted Investments; \n (k) [reserved]; \n (l) Indebtedness consisting of the financing of insurance premiums in the ordinary course of business, not in excess of the\namount of such premiums; (m) Indebtedness of the Loan Parties and their Subsidiaries under the Secured Notes and\nguarantees thereof; (n) Indebtedness in respect of Third Party Swap Obligations; \n (o) [reserved]; \n   82 \n\n \n\n\n \n \n\n \n (p) Indebtedness incurred in the ordinary course of business with respect to\nsurety and appeal bonds, performance bonds, bid bonds, appeal bonds, completion guarantee and similar obligations and guarantees thereof; \n (q) customary indemnification obligations to purchasers in connection with Permitted Dispositions and guarantees thereof; and\n (r) Indebtedness incurred in the ordinary course of business in respect of credit cards, credit card processing services,\ndebit cards, stored value cards, commercial cards (including so-called “purchase cards”, “procurement cards” or “p-cards”), or Banking\nServices in an aggregate principal amount not to exceed, with respect to any such Indebtedness owed to any Person that is not a Lender or any Affiliate of a Lender, $2,000,000 at any one time outstanding; \n (s) Guarantees in the form of endorsements of instruments or items of payment for deposit to the ",
+    "charStartInFixture": 2256,
+    "charEndInFixture": 4256,
+    "sourceTextSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+    "windowSha256": "385f7140e14a31e1750302106efee4eccae158cf7ef286bfb621a3ccde515b02",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Loan Parties and their Subsidiaries\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (lsb-general-debt-total-assets-grower). Not independently reviewed.",
+      "figures": [
+        "max($70,000,000, 5.5% total consolidated assets per GAAP balance sheet)"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "total consolidated assets and usage not supplied"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-a-abl-credit-agreement-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "windowSha256=385f7140e14a31e1750302106efee4eccae158cf7ef286bfb621a3ccde515b02",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "§6.01(i) general debt basket",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Loan Parties and their Subsidiaries\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-general-debt-total-assets-grower). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "385f7140e14a31e1750302106efee4eccae158cf7ef286bfb621a3ccde515b02",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

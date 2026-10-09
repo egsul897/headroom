@@ -15,9 +15,13 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "golden-test": "tsx scripts/golden-test.ts",
+    "research:covenant": "tsx scripts/covenant-precedent-research.ts",
+    "dataset:source-to-covenant": "tsx scripts/source-to-covenant/build-dataset.ts",
     "ckg-benchmark": "tsx scripts/ckg-benchmark/run.ts",
     "test:ckg-benchmark": "vitest run tests/covenant-knowledge-generalization/",
-    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts"
+    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts",
+    "definition-encyclopedia:build": "tsx scripts/definition-encyclopedia/build.ts",
+    "definition-encyclopedia:acquire": "tsx scripts/definition-encyclopedia/acquire-expansion.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

@@ -1,0 +1,57 @@
+{
+  "recordId": "ba-matw-514-leverage-caps",
+  "chainId": "matw-2020-03-27-third-ar-loan",
+  "generatedAt": "2026-10-08T22:32:25Z",
+  "subject": "Section 5.14 Financial Covenants \u2014 Leverage / Senior Leverage numeric caps",
+  "operations": [
+    {
+      "op": "CONFIRM_NO_AMENDMENT",
+      "docId": "matw-am1",
+      "evidence": "First Amendment body contains no Section 5.14 / Financial Covenant reference.",
+      "accession": "0000063296-21-000048"
+    },
+    {
+      "op": "BLACKLINE_EMBED_COMPARE",
+      "docId": "matw-am2",
+      "before": "Leverage \u22645.00/4.75/4.50; Senior Leverage \u22644.00/3.75/3.50 to 1.00 (Third A&R)",
+      "after": "Same numeric caps in Am2 embedded blackline Loan Agreement body",
+      "accession": "0000063296-22-000060",
+      "status": "SOURCE_BACKED_UNCHANGED"
+    },
+    {
+      "op": "CONFIRM_NO_AMENDMENT",
+      "docId": "matw-am3",
+      "evidence": "Third Amendment body contains no Section 5.14 / Financial Covenant reference.",
+      "accession": "0000063296-22-000099"
+    },
+    {
+      "op": "BLACKLINE_EMBED_COMPARE",
+      "docId": "matw-am4",
+      "after": "Same numeric caps in Am4 embedded blackline body",
+      "accession": "0000063296-23-000044",
+      "status": "SOURCE_BACKED_UNCHANGED"
+    },
+    {
+      "op": "BLACKLINE_SCHEDULE_SHIFT",
+      "docId": "matw-am5",
+      "beforeQuote": "Fiscal Quarter ending March 31, 2021 ... less than or equal to 4.50 to 1.00",
+      "afterQuote": "Fiscal Quarter ending March 31, 2021 December 31, 2023 ... less than or equal to 4.50 to 1.00",
+      "numericCaps": "UNCHANGED",
+      "accession": "0000063296-24-000010",
+      "status": "SOURCE_BACKED_DATE_ERA_SHIFT",
+      "note": "Blackline date shift is schedule/era authority \u2014 not a silent ratio-level change."
+    },
+    {
+      "op": "CONFIRM_NO_RESTATEMENT",
+      "docId": "matw-am6",
+      "evidence": "Sixth Amendment does not restate \u00a75.14; targets \u00a76.01(j) narrowing.",
+      "accession": "0001193125-24-224129"
+    }
+  ],
+  "adversarialTags": [
+    "DEFINITION_LEVEL_REPLACEMENT",
+    "WRONG_PARENT_GUARD",
+    "CONDITIONAL_EFFECTIVENESS"
+  ],
+  "independentReview": "PENDING_INDEPENDENT_REVIEW"
+}

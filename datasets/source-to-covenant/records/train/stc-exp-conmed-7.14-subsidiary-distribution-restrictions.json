@@ -1,0 +1,208 @@
+{
+  "exampleId": "stc-exp-conmed-7.14-subsidiary-distribution-restrictions",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "7.14(i)-(iii)",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability of any Subsidiary to (a) pay dividends or make any other distributions ... (b) make loans or advances ... or (c) transfer any of its assets ... except for ...",
+  "input": {
+    "exactText": "except for such encumbrances or restrictions existing under or by reason of (i) any restrictions existing under the Loan Documents, (ii) any restrictions with respect to a Subsidiary imposed pursuant to an agreement which has been entered into in connection with the Disposition of all or substantially all of the Capital Stock or assets of such Subsidiary and (iii) any restrictions imposed pursuant to a Receivables Transfer Program with respect to a Subsidiary established solely for the purpose of a Receivables Transfer Program.",
+    "charStartInFixture": null,
+    "charEndInFixture": null,
+    "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "windowSha256": "bd8b69546c494b3d284113c2cefe11374668aa4d2c4da9bb95430f07806ac11f",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [
+      "7.14(i)-(iii)"
+    ],
+    "conditions": [
+      "[object Object]",
+      "[object Object]",
+      "[object Object]"
+    ],
+    "crossReferences": [
+      "[object Object]"
+    ],
+    "entityScopeNotes": [
+      "{\"includes\":[\"any Subsidiary\"],\"excludes\":[]}"
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "NONE_QUALITATIVE",
+      "description": "Peer exception-catalog hypothesis for 7.14(i)-(iii). Not independently reviewed.",
+      "figures": [],
+      "capacityUnlimited": false
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "[object Object]"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Expanded from peer exception catalog; Phase-2 marks as HUMAN_HYPOTHESIS only"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC source window. Candidate label imported from negative-covenant exception catalog as a hypothesis — not independent ground truth."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "windowSha256=bd8b69546c494b3d284113c2cefe11374668aa4d2c4da9bb95430f07806ac11f",
+      "sectionRef=7.14(i)-(iii)"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "SOURCE_WINDOW_PRESENT",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability of any Subsid",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "{\"includes\":[\"any Subsidiary\"],\"excludes\":[]}",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Not required for this record"
+      }
+    ],
+    "missingRequiredDependencies": [],
+    "auditNotes": "SOURCE_WINDOW_PRESENT only — do not certify controlling-context completeness from extraction success alone.",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_DEV_DIAGNOSTIC",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.14(i)-(iii). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "bd8b69546c494b3d284113c2cefe11374668aa4d2c4da9bb95430f07806ac11f",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "exampleId": "stc-sec-conmed-7_1",
+  "polarity": "POSITIVE",
+  "role": "OPERATIVE_COVENANT",
+  "split": "train",
+  "document": {
+    "issuerId": "conmed",
+    "issuerName": "CONMED Corporation",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+    "cik": "0000816956"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "7.1",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "OPERATIVE_COVENANT"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "SECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or (b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent\n94\nBorrower\n(the notice of which election shall be given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant\nMaterial Acquisition and (ii) the date by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a)\nor (b) in respect of the fiscal quarter in which such Material Acquisition was consummated), the Consolidated Total Leverage Ratio may\nbe 0.50 to 1.00 (or such lesser amount as is required to comply with clause (x) of the proviso below) greater than the ratio set forth\nabove for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition is consummated; provided\nthat (x) the required Consolidated Total Leverage Ratio that would apply as a result of any such step-up shall be no more than 6.00 to\n1.00, (y) such step-up shall be permitted only twice during this Agreement and (z) there shall be at least two fiscal quarters in between\nany such step-ups.\n(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum of (i) $75,000,000 plus (ii) the aggregate outstanding principal amount of the Early Maturing Debt.\n",
+    "charStartInFixture": 339,
+    "charEndInFixture": 3614,
+    "sourceTextSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+    "windowSha256": "2f13484ecf26ca7c0ec9ecf5cd8b8abdd6fa737ab2e51f19c75099e667209598",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": "FINANCIAL_COVENANTS",
+    "candidatePermissionProhibitionClass": "UNRESOLVED",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [],
+    "missingInputs": [
+      "Per-limb economics",
+      "Definition pack"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Section sweep expansion; unresolved semantics"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic SEC section window from fixture sweep. Not independently verified."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "conmed-eighth-ar-credit-agreement",
+    "operativeVersion": "conmed-doc-a-eighth-ar-credit-agreement",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "windowSha256=2f13484ecf26ca7c0ec9ecf5cd8b8abdd6fa737ab2e51f19c75099e667209598",
+      "sectionRef=7.1"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "REMOTE_CONDITION:remote/compound conditions",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: REMOTE_CONDITION:remote/compound conditions; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "2f13484ecf26ca7c0ec9ecf5cd8b8abdd6fa737ab2e51f19c75099e667209598",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

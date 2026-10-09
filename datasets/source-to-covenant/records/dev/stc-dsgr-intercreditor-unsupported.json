@@ -1,0 +1,219 @@
+{
+  "exampleId": "stc-dsgr-intercreditor-unsupported",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "polarity": "NEGATIVE",
+  "role": "UNSUPPORTED_SEMANTICS",
+  "split": "dev",
+  "document": {
+    "issuerId": "lsb-industries",
+    "issuerName": "LSB Industries, Inc.",
+    "instrumentKey": "lsb-2023-abl-credit-agreement",
+    "documentId": "lsb-doc-intercreditor-joinder-2023",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+    "filingAccession": "0001193125-23-303035",
+    "cik": "0000060714",
+    "exhibit": "EX-10.3",
+    "agreementDate": "2023-12-21",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/60714/000119312523303035/"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "lsb-doc-intercreditor-joinder-2023",
+    "asOfDate": "2023-12-21",
+    "amendmentIdentity": "lsb-intercreditor-joinder-2023-12-21",
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "joinder",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "UNSUPPORTED_SEMANTICS"
+  },
+  "governingProhibition": null,
+  "input": {
+    "exactText": "Joinder Agreement ”) to that certain INTERCREDITOR AGREEMENT dated as of August 7, 2013 (as amended by that certain Amendment No. 1 to Intercreditor Agreement dated as of\nApril 25, 2018 and supplemented by that certain Joinder Agreement dated as of October 14, 2021, the “ Existing Intercreditor Agreement ” and, as supplemented by this Joinder Agreement and as may be further amended,\nsupplemented or modified from time to time, the “ Intercreditor Agreement ”), by and among WELLS FARGO CAPITAL FINANCE, LLC, in its capacity as agent under the ABL Loan Documents (the “ Existing ABL Agent ”), and\nWILMINGTON TRUST, NATIONAL ASSOCIATION, in its capacity as collateral agent under the Notes Documents (the “ Notes Agent ”). Capitalized terms used herein but not otherwise defined herein shall have the meanings assigned to such terms\nin the Existing Intercreditor Agreement. RECITALS \n A. WHEREAS, LSB Industries, Inc., a Delaware corporation (the “ Company ”) entered into that certain Third Amended and Restated\nLoan and Security Agreement, dated as of January 17, 2017 (as amended, supplemented, amended and restated or otherwise modified from time to time prior to the date hereof, the “ Existing ABL Credit Agreement ”) among, inter\nalios , the Company and Wells Fargo Capital Finance, LLC, as the Existing ABL Agent providing for a revolving credit facility in favor of the Company and certain of its Subsidiaries (the “ Wells Revolver ”). \n B. WHEREAS, the Company intends to Refinance the Wells Revolver and enter into a new credit agreement, dated as of the date hereof (the\n“ New ABL Credit Agreement ” and, together with the other Loan Documents (as defined therein), the “ New ABL Loan Documents ”), among, inter alios , the Company and JPMorgan Chase Bank, N.A., as administrative\nagent thereunder (in such capacity, the “ New ABL Agent ”) providing for a revolving credit facility in favor of the Company and certain of its Subsidiaries (the “ JPM Revolver ”). \n C. WHEREAS, as a condition to the ability of the Company to Refinance and replace the Wells Revolver with the JPM Revolver pursuant to the New\nABL Credit Agreement and to secure the Secured Obligations (as defined in the New ABL Credit Agreement) (collectively, the “ New ABL Obligations ”) with the Liens and security interests created by the applicable New ABL Loan\nDocuments, and to have such New ABL Obligations guaranteed by the Grantors on a senior basis, in each case under and pursuant to the New ABL Loan Documents, the New ABL Agent is required to become an Agent under, and such New ABL Loan Obligations\nand the holders of Refinancing debt (together with the New ABL Agent, collectively, the “ New ABL Claimholders ”) in respect thereof are required to become subject to and bound by, the Existing Intercreditor Agreement, pursuant to and\nin accordance with the terms of the Existing Intercreditor Agreement (including Section 5.3(a) thereof). D. WHEREAS, the New ABL\nAgent is executing this Joinder Agreement in accordance with the requirements of the Existing Intercreditor Agreement (including Section 5.3(a) thereof) and the New ABL Loan Documents and, after giving effect hereto, the New ABL Agent will\nreplace the Existing ABL Agent as the “ABL Agent” for all purposes of the Intercreditor Agreement. Accordingly, the Existing\nABL Agent, and the New ABL Agent agree as follows: SECTION 1. (A) In accordance with Section 5.3(a) and Section 9.3 of the\nExisting Intercreditor Agreement, the New ABL Agent by its sign",
+    "charStartInFixture": 153,
+    "charEndInFixture": 3660,
+    "sourceTextSha256": "399d7448d3f2736b58fd91fd9baf39cf9095506036e64f678955d6babfee056f",
+    "windowSha256": "afed612a8b5fca4c52076603438caf4caf2349d180c0f885697a40d3e7d0bb88",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [
+      "Intercreditor Agreement dated August 7, 2013",
+      "ABL Priority Collateral",
+      "Notes Priority Collateral"
+    ],
+    "entityScopeNotes": []
+  },
+  "output": {
+    "candidateCovenantFamily": null,
+    "candidatePermissionProhibitionClass": "NONE",
+    "proposedFormulaOrCapacity": {
+      "shape": null,
+      "description": "Intercreditor joinder / priority mechanics are not a negative-covenant basket representation in the current IR target set.",
+      "figures": [],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "UNRESOLVED_EXTERNAL",
+        "targetRef": "2013 Intercreditor Agreement (not in fixture)",
+        "description": "Underlying ICA not filed in this package"
+      }
+    ],
+    "missingInputs": [
+      "Full 2013 Intercreditor Agreement text",
+      "Notes indenture"
+    ],
+    "uncertainty": {
+      "level": "UNRESOLVED",
+      "reasons": [
+        "Cross-document priority semantics cannot be compiled from the joinder alone"
+      ]
+    },
+    "verificationStatus": "UNSUPPORTED",
+    "labelNotes": "Unsupported-semantics / unresolved external authority example. Negative for covenant-family compilation."
+  },
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "authoredAt": "2026-10-08T00:00:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING",
+  "deliveryVerificationStatus": "REVIEW_REQUIRED",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "lsb-2023-abl-credit-agreement",
+    "operativeVersion": "lsb-doc-intercreditor-joinder-2023",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+      "windowSha256=afed612a8b5fca4c52076603438caf4caf2349d180c0f885697a40d3e7d0bb88",
+      "sectionRef=joinder"
+    ],
+    "reviewerIndependentOfLabelGeneration": null,
+    "verificationRecordId": null,
+    "independenceGap": "Status UNSUPPORTED — no verified legal interpretation asserted."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "(none recorded)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Inferred only from window language if present"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cited terms without pulled definitions: ABL Priority Collateral, Notes Priority Collateral"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Remote condition language detected; full mechanics may be outside window"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "entity scope",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Entity language may exist in window without structured notes"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "lsb-intercreditor-joinder-2023-12-21",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Amendment identity recorded; pre-amendment text may be missing"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": false,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "DEFINED_TERM:(none pulled)",
+      "REMOTE_CONDITION:remote/compound conditions",
+      "AMENDMENT_MODIFICATION:lsb-intercreditor-joinder-2023-12-21",
+      "CROSS_DOCUMENT_CONSTRAINT:cross-document",
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: DEFINED_TERM:(none pulled); REMOTE_CONDITION:remote/compound conditions; AMENDMENT_MODIFICATION:lsb-intercreditor-joinder-2023-12-21; CROSS_DOCUMENT_CONSTRAINT:cross-document; FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+  "evaluationEligibility": "EVAL_ELIGIBLE_BENCHMARK_CASE",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Intercreditor joinder / priority mechanics are not a negative-covenant basket representation in the current IR target set.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "afed612a8b5fca4c52076603438caf4caf2349d180c0f885697a40d3e7d0bb88",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HYPOTHESIS_OR_UNRESOLVED",
+      "usage_rights_review_required"
+    ]
+  }
+}

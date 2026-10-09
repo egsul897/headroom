@@ -42,6 +42,13 @@ const SIGNAL_PATTERNS: SignalPattern[] = [
 
 const HEADLINE_HEADING_WORDS = /\b(?:Indebtedness|Debt|Liens?|Restricted Payments?|Investments?|Dispositions?|Asset Sales?|Affiliate Transactions?|Financial Covenants?|Guarant(?:y|ies|ee)|Subsidiar(?:y|ies)|Merger|Consolidation|Fundamental Changes?|Change of Control|Sale.?Leaseback|Prepayment|Subordinat|Business|Line of Business|Nature of Business|Amendment|Modification)\b/i;
 
+/** Disposition / asset-sale arm of HEADLINE_HEADING_WORDS. A heading match is not a sealed ASSET_SALES family. */
+const ASSET_DISPOSITION_HEADING = /\b(?:Dispositions?|Asset Sales?)\b/i;
+
+export function isAssetDispositionHeading(heading: string): boolean {
+  return ASSET_DISPOSITION_HEADING.test(heading);
+}
+
 function detectSignals(text: string): string[] {
   return SIGNAL_PATTERNS.filter((p) => p.re.test(text)).map((p) => p.name);
 }

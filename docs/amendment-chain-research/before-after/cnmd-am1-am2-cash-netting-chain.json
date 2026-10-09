@@ -1,0 +1,72 @@
+{
+  "recordId": "ba-cnmd-am1-am2-cash-netting-chain",
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "comparisons": [
+    {
+      "changeClass": "DEFINITION",
+      "target": {
+        "kind": "DEFINITION",
+        "definedTerm": "Consolidated Senior Secured Leverage Ratio"
+      },
+      "timeline": [
+        {
+          "asOf": "2021-07-16",
+          "docId": "cnmd-seventh-ar",
+          "text": "minus (iii) an amount equal to the lesser of (x) $25,000,000 and (y) the amount of unrestricted cash and Cash Equivalents...",
+          "authority": {
+            "status": "SOURCE_BACKED",
+            "accession": "0001193125-21-217426",
+            "exhibit": "EX-10.1"
+          }
+        },
+        {
+          "asOf": "2022-06-06",
+          "docId": "cnmd-am1-2022",
+          "text": "$25,000,000 deleted and replaced with $75,000,000",
+          "authority": {
+            "status": "SOURCE_BACKED",
+            "accession": "0001193125-22-169336",
+            "exhibit": "EX-10.25",
+            "quote": "deleting the reference therein to \"$25,000,000\" and substituting in lieu thereof the dollar amount \"$75,000,000\""
+          }
+        },
+        {
+          "asOf": "2022-08-01",
+          "docId": "cnmd-second-am-2022",
+          "text": "$75,000,000 deleted and replaced with $100,000,000",
+          "authority": {
+            "status": "SOURCE_BACKED",
+            "accession": "0001193125-22-209154",
+            "exhibit": "EX-10.2",
+            "quote": "deleting the reference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\""
+          }
+        }
+      ],
+      "adversarialTags": [
+        "MULTI_AMEND_SAME_DEFINITION",
+        "WRONG_PARENT_IF_SKIP_AM1"
+      ]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": {
+        "kind": "SECTION",
+        "sectionRef": "7.1(b)"
+      },
+      "beforeText": "Permit the Consolidated Total Leverage Ratio ... to exceed (i) ... June 30, 2021 and September 30, 2021, 5.25 to 1.00 and (ii) otherwise, 5.00 to 1.00. [Material Acquisition step-up language follows]",
+      "afterText": "Restated multi-step schedule per Second Amendment (5.25\u21925.00\u21926.25\u21926.00\u21925.75\u21925.50) with revised step-up",
+      "authority": {
+        "before": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001193125-21-217426",
+          "exhibit": "EX-10.1"
+        },
+        "after": {
+          "status": "SOURCE_BACKED",
+          "accession": "0001193125-22-209154",
+          "exhibit": "EX-10.2"
+        }
+      }
+    }
+  ]
+}

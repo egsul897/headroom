@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-10-08T22:45:36.060Z",
+  "runDir": "data/edgar-historical-backfill/pilot-100-v2",
+  "denominators": {
+    "manifests": 100,
+    "exhibitsTotal": 873,
+    "highRelevance": 214,
+    "withUri": 149,
+    "ibrTotal": 74
+  },
+  "relevantExhibitPrecision": {
+    "value": 0.5046728971962616,
+    "numerator": 108,
+    "denominator": 214,
+    "method": "Weak title heuristic (debt keywords ∩ ¬false-positive keywords). Not human-labeled gold.",
+    "confidence": "LOW_TO_MEDIUM"
+  },
+  "missedFinancingRecall": {
+    "value": null,
+    "note": "Recall not measurable without an independent ground-truth index of every financing exhibit per issuer. Not fabricated.",
+    "confidence": "NONE"
+  },
+  "duplicateCollapseAccuracy": {
+    "uniqueAgreementKeys": 209,
+    "highRelevanceExhibits": 214,
+    "note": "Kept exhibits should already be deduped; ratio near 1.0 is expected."
+  },
+  "amendmentVersusOriginal": {
+    "agreementRate": 1,
+    "numerator": 46,
+    "denominator": 46
+  },
+  "ibrResolution": {
+    "MISSING_ACCESSION": 19,
+    "RESOLVED": 45,
+    "NEEDS_ORIGINAL_INDEX": 10
+  },
+  "queueUrlCorrectness": {
+    "goodUriRate": 1,
+    "numerator": 149,
+    "denominator": 149
+  },
+  "caveats": [
+    "Discovered ≠ acquired. This audit scores discovery metadata only.",
+    "Precision uses a heuristic labeler, not adjudicated legal gold.",
+    "Recall is explicitly unmeasured."
+  ]
+}

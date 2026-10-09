@@ -1,0 +1,2327 @@
+{
+  "schemaVersion": "source-to-covenant-eval-benchmark.v1",
+  "compilerOrModelExecuted": false,
+  "performanceMetricsReported": false,
+  "reason": "No compiler or model was executed against this benchmark in Phase 2. Metrics withheld by policy.",
+  "cases": [
+    {
+      "caseId": "bench-stc-lsb-6.01-chapeau-ratio-gated",
+      "exampleId": "stc-lsb-6.01-chapeau-ratio-gated",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Uncapped Indebtedness permission unlocked only if FCCR > 2.0x and Payment Conditions are satisfied; enumerated exceptions follow separately.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6.01-i-greater-of-assets",
+      "exampleId": "stc-lsb-6.01-i-greater-of-assets",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of total consolidated assets per GAAP balance sheet.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6.02-liens-prohibition",
+      "exampleId": "stc-lsb-6.02-liens-prohibition",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "General Lien prohibition subject only to Permitted Liens (including replacement liens for refinanced §6.01(d) debt on the same assets).",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6.11-restricted-payments",
+      "exampleId": "stc-lsb-6.11-restricted-payments",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "General Restricted Payment prohibition with enumerated exceptions; some exceptions gated by Payment Conditions.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-payment-conditions-definition",
+      "exampleId": "stc-lsb-payment-conditions-definition",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Payment Conditions = no Default + Specified Availability ≥ greater of 20% Revolving Commitment and $13,000,000 (pro forma, 30-day lookback) + delivery of certificate.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6.01-chapeau-prohibition",
+      "exampleId": "stc-fwrg-6.01-chapeau-prohibition",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "General Indebtedness prohibition on Borrower/Restricted Subsidiaries subject to lettered exceptions.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6.01-g-i-guaranty-grower",
+      "exampleId": "stc-fwrg-6.01-g-i-guaranty-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course, capped at the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6.04-a-x-rp-grower",
+      "exampleId": "stc-fwrg-6.04-a-x-rp-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Restricted Payments up to the greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, conditioned on no continuing Event of Default.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6.04-a-xi-ratio-unlimited",
+      "exampleId": "stc-fwrg-6.04-a-xi-ratio-unlimited",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Unlimited Restricted Payments so long as Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed 3.50:1.00.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-available-amount-builder",
+      "exampleId": "stc-fwrg-available-amount-builder",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Cumulative Available Amount builder: CNI Growth Amount (ratio-gated) + Qualified Capital Stock proceeds Not Otherwise Applied + other builder components; deep nesting.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7.2-indebtedness",
+      "exampleId": "stc-conmed-7.2-indebtedness",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2 Limitation on Indebtedness — general prohibition with lettered exceptions.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7.8-investments",
+      "exampleId": "stc-conmed-7.8-investments",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "General Investments/loans/advances limitation with enumerated exceptions.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-amd-2022-amendment-identity",
+      "exampleId": "stc-conmed-amd-2022-amendment-identity",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "DEFINITION_LEVEL_AMENDMENT",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Amendment identity / effectiveness mechanics — not itself a basket capacity rule.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-dsgr-fourth-amd-6.08-restatement",
+      "exampleId": "stc-dsgr-fourth-amd-6.08-restatement",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "DEFINITION_LEVEL_AMENDMENT",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Fourth Amendment restates §6.08(a)(v) Restricted Payments basket language (includes an aggregate amount not to exceed $25,000,000 in the restated text).",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-dsgr-intercreditor-unsupported",
+      "exampleId": "stc-dsgr-intercreditor-unsupported",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "CROSS_DOCUMENT_CONDITION",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Intercreditor joinder / priority mechanics are not a negative-covenant basket representation in the current IR target set.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6.01-i-model-hypothesis-contrast",
+      "exampleId": "stc-lsb-6.01-i-model-hypothesis-contrast",
+      "challenges": [
+        "FALSE_AFFIRMATIVE_PERMISSION",
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "MODEL HYPOTHESIS (intentionally not approved): treats the 5.5% limb as % of EBITDA rather than total consolidated assets.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6.02-liens-prohibition-near-dup-probe",
+      "exampleId": "stc-lsb-6.02-liens-prohibition-near-dup-probe",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Duplicate-probe twin of stc-lsb-6.02-liens-prohibition — same controlling window for exact-duplicate detection tests.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-chwy-6.01-indebtedness-heldout",
+      "exampleId": "stc-chwy-6.01-indebtedness-heldout",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "HELD-OUT EVAL: Chewy §6.01 Indebtedness/Disqualified Stock/Preferred Stock limitation. Labels are provisional hypotheses for evaluation only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-gibraltar-reporting-heldout",
+      "exampleId": "stc-gibraltar-reporting-heldout",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "HELD-OUT EVAL: Gibraltar §6.01 region as encountered in extracted text (financial reporting / certificate mechanics appear in this span in this instrument). Family label unresolved pending fuller article mapping.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-riot-negative-covenant-article-heldout",
+      "exampleId": "stc-riot-negative-covenant-article-heldout",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "HELD-OUT EVAL: Riot Second A&R Credit Agreement negative-covenant region. Detailed permission/prohibition decomposition left unresolved for independent evaluation.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+      "exampleId": "stc-exp-conmed-7.2-c-liens-secured-debt-pro-forma-7.1",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.2(c). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.2-d-finance-leases-greater-of",
+      "exampleId": "stc-exp-conmed-7.2-d-finance-leases-greater-of",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.2(d). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.2-k-foreign-sub-debt",
+      "exampleId": "stc-exp-conmed-7.2-k-foreign-sub-debt",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.2(k). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.2-l-permitted-unsecured",
+      "exampleId": "stc-exp-conmed-7.2-l-permitted-unsecured",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.2(l). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.3-g-purchase-money-liens",
+      "exampleId": "stc-exp-conmed-7.3-g-purchase-money-liens",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.3(g). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.3-m-general-liens-basket",
+      "exampleId": "stc-exp-conmed-7.3-m-general-liens-basket",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.3(m). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.5-a-obsolete-ordinary-course",
+      "exampleId": "stc-exp-conmed-7.5-a-obsolete-ordinary-course",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.5(a). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.5-f-asset-sale-dual-caps",
+      "exampleId": "stc-exp-conmed-7.5-f-asset-sale-dual-caps",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.5(f). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.4-a-intercompany-merger",
+      "exampleId": "stc-exp-conmed-7.4-a-intercompany-merger",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.4(a). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.6-e-ratio-gated-unlimited-rp",
+      "exampleId": "stc-exp-conmed-7.6-e-ratio-gated-unlimited-rp",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.6(e). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.6-d-annual-flat-rp",
+      "exampleId": "stc-exp-conmed-7.6-d-annual-flat-rp",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.6(d). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.8-i-foreign-advances-depend-7.2k",
+      "exampleId": "stc-exp-conmed-7.8-i-foreign-advances-depend-7.2k",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.8(i). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.8-j-ratio-gated-investments",
+      "exampleId": "stc-exp-conmed-7.8-j-ratio-gated-investments",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.8(j). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.8-l-general-investments-basket",
+      "exampleId": "stc-exp-conmed-7.8-l-general-investments-basket",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.8(l). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.9-a-optional-prepay-junior-unsecured",
+      "exampleId": "stc-exp-conmed-7.9-a-optional-prepay-junior-unsecured",
+      "challenges": [
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.9(a) except limb. Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+      "exampleId": "stc-exp-conmed-7.10-affiliate-armlength-with-cross-family-carveouts",
+      "challenges": [
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 7.10 except (i)-(v). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "exampleId": "stc-exp-lsb-6.01-chapeau-ratio-and-payment-conditions",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.01 chapeau general permission. Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.01-i-greater-of-flat-assets",
+      "exampleId": "stc-exp-lsb-6.01-i-greater-of-flat-assets",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.01(i). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.11-c-rp-payment-conditions",
+      "exampleId": "stc-exp-lsb-6.11-c-rp-payment-conditions",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.11(c). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.11-d-residual-last-resort-rp",
+      "exampleId": "stc-exp-lsb-6.11-d-residual-last-resort-rp",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.11(d). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.08-a-v-debt-payments-payment-conditions",
+      "exampleId": "stc-exp-lsb-6.08-a-v-debt-payments-payment-conditions",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.08(a)(v). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.13-k-investments-payment-conditions",
+      "exampleId": "stc-exp-lsb-6.13-k-investments-payment-conditions",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.13(k). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.04-b-notes-priority-notwithstanding",
+      "exampleId": "stc-exp-lsb-6.04-b-notes-priority-notwithstanding",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.04(b). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-lsb-6.14-affiliate-transactions",
+      "exampleId": "stc-exp-lsb-6.14-affiliate-transactions",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.14(a)-(d). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-fwrg-6.04-a-iii-available-amount-rp",
+      "exampleId": "stc-exp-fwrg-6.04-a-iii-available-amount-rp",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.04(a)(iii). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-fwrg-6.04-b-iv-rdp-cross-basket-offset",
+      "exampleId": "stc-exp-fwrg-6.04-b-iv-rdp-cross-basket-offset",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.04(b)(iv)/(vi) family. Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-fwrg-6.01-j-non-loan-party-debt-entity-scope",
+      "exampleId": "stc-exp-fwrg-6.01-j-non-loan-party-debt-entity-scope",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.01(j). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-fwrg-6.04-a-xi-ratio-unlimited-rp",
+      "exampleId": "stc-exp-fwrg-6.04-a-xi-ratio-unlimited-rp",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.04(a)(xi). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-exp-fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments",
+      "exampleId": "stc-exp-fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer exception-catalog hypothesis for 6.06(b)(ii). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-fixed-incremental-amount",
+      "exampleId": "stc-bkt-chwy-fixed-incremental-amount",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "RECLASSIFICATION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-fixed-incremental-amount). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-incremental-cap",
+      "exampleId": "stc-bkt-chwy-incremental-cap",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-incremental-cap). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-ratio-incremental-amount",
+      "exampleId": "stc-bkt-chwy-ratio-incremental-amount",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-ratio-incremental-amount). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-available-amount-builder",
+      "exampleId": "stc-bkt-chwy-available-amount-builder",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-available-amount-builder). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-available-amount-starter-grower",
+      "exampleId": "stc-bkt-chwy-available-amount-starter-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-available-amount-starter-grower). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-equity-contribution-builder-leg",
+      "exampleId": "stc-bkt-chwy-equity-contribution-builder-leg",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-equity-contribution-builder-leg). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-general-lien-basket",
+      "exampleId": "stc-bkt-chwy-general-lien-basket",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-general-lien-basket). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-general-lien-reallocated-amount",
+      "exampleId": "stc-bkt-chwy-general-lien-reallocated-amount",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-general-lien-reallocated-amount). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-debt-reclassification",
+      "exampleId": "stc-bkt-chwy-debt-reclassification",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-debt-reclassification). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-automatic-fixed-to-incurrence-reclass",
+      "exampleId": "stc-bkt-chwy-automatic-fixed-to-incurrence-reclass",
+      "challenges": [
+        "SHARED_CAPACITY_RESTRICTION",
+        "RECLASSIFICATION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-automatic-fixed-to-incurrence-reclass). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-basket-replenishment-return-of-capital",
+      "exampleId": "stc-bkt-chwy-basket-replenishment-return-of-capital",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-basket-replenishment-return-of-capital). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-annual-carry-forward",
+      "exampleId": "stc-bkt-chwy-annual-carry-forward",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-annual-carry-forward). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-anti-double-count-available-amount-transactions",
+      "exampleId": "stc-bkt-chwy-anti-double-count-available-amount-transactions",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-anti-double-count-available-amount-transactions). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-cross-covenant-rp-capacity-reduction",
+      "exampleId": "stc-bkt-chwy-cross-covenant-rp-capacity-reduction",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-cross-covenant-rp-capacity-reduction). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-voluntary-prepayment-incremental",
+      "exampleId": "stc-bkt-chwy-voluntary-prepayment-incremental",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-voluntary-prepayment-incremental). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-refinancing-premiums-addon",
+      "exampleId": "stc-bkt-chwy-refinancing-premiums-addon",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-refinancing-premiums-addon). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-non-guarantor-debt-grower",
+      "exampleId": "stc-bkt-gib-non-guarantor-debt-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-non-guarantor-debt-grower). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-general-debt-with-rp-reallocation",
+      "exampleId": "stc-bkt-gib-general-debt-with-rp-reallocation",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-general-debt-with-rp-reallocation). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-investment-grower-with-returns",
+      "exampleId": "stc-bkt-gib-investment-grower-with-returns",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-investment-grower-with-returns). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-asset-disposition-reclassification",
+      "exampleId": "stc-bkt-gib-asset-disposition-reclassification",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-asset-disposition-reclassification). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-available-amount-builder-pointer",
+      "exampleId": "stc-bkt-gib-available-amount-builder-pointer",
+      "challenges": [
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-available-amount-builder-pointer). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-gib-anti-duplication-investment-returns",
+      "exampleId": "stc-bkt-gib-anti-duplication-investment-returns",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (gib-anti-duplication-investment-returns). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-lsb-general-debt-total-assets-grower",
+      "exampleId": "stc-bkt-lsb-general-debt-total-assets-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-general-debt-total-assets-grower). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-lsb-ratio-gated-unlimited-debt",
+      "exampleId": "stc-bkt-lsb-ratio-gated-unlimited-debt",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-ratio-gated-unlimited-debt). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-lsb-refinancing-basket",
+      "exampleId": "stc-bkt-lsb-refinancing-basket",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-refinancing-basket). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-lsb-asset-sale-annual-grower",
+      "exampleId": "stc-bkt-lsb-asset-sale-annual-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-asset-sale-annual-grower). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-lsb-fixed-dollar-card-basket",
+      "exampleId": "stc-bkt-lsb-fixed-dollar-card-basket",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (lsb-fixed-dollar-card-basket). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-fwrg-purchase-money-grower",
+      "exampleId": "stc-bkt-fwrg-purchase-money-grower",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (fwrg-purchase-money-grower). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-fwrg-available-amount-and-excluded-contribution",
+      "exampleId": "stc-bkt-fwrg-available-amount-and-excluded-contribution",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (fwrg-available-amount-and-excluded-contribution). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-builder-returns-without-duplication",
+      "exampleId": "stc-bkt-chwy-builder-returns-without-duplication",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-builder-returns-without-duplication). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-bkt-chwy-cumulative-retained-ecf-pointer",
+      "exampleId": "stc-bkt-chwy-cumulative-retained-ecf-pointer",
+      "challenges": [
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-cumulative-retained-ecf-pointer). Not independently reviewed.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-dsgr-6_02",
+      "exampleId": "stc-sec-dsgr-6_02",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-dsgr-6_08",
+      "exampleId": "stc-sec-dsgr-6_08",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-conmed-7_1",
+      "exampleId": "stc-sec-conmed-7_1",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-conmed-7_3",
+      "exampleId": "stc-sec-conmed-7_3",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-conmed-7_5",
+      "exampleId": "stc-sec-conmed-7_5",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-conmed-7_6",
+      "exampleId": "stc-sec-conmed-7_6",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-lsb-industries-6_04",
+      "exampleId": "stc-sec-lsb-industries-6_04",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-lsb-industries-6_08",
+      "exampleId": "stc-sec-lsb-industries-6_08",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-chewy-6_01",
+      "exampleId": "stc-sec-chewy-6_01",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION",
+        "MISSING_FINANCIAL_INPUT",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-riot-platforms-Article_VI",
+      "exampleId": "stc-sec-riot-platforms-Article_VI",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-gibraltar-7_01",
+      "exampleId": "stc-sec-gibraltar-7_01",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-dsgr-6_01_doc_a",
+      "exampleId": "stc-sec-dsgr-6_01_doc_a",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-dsgr-6_04_doc_a",
+      "exampleId": "stc-sec-dsgr-6_04_doc_a",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-dsgr-6_08_a_v_amd",
+      "exampleId": "stc-sec-dsgr-6_08_a_v_amd",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-riot-platforms-Article_VI_doc_a",
+      "exampleId": "stc-sec-riot-platforms-Article_VI_doc_a",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-riot-platforms-Article_VI_doc_b",
+      "exampleId": "stc-sec-riot-platforms-Article_VI_doc_b",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-chewy-6_02",
+      "exampleId": "stc-sec-chewy-6_02",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-chewy-6_04",
+      "exampleId": "stc-sec-chewy-6_04",
+      "challenges": [
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-gibraltar-7_02",
+      "exampleId": "stc-sec-gibraltar-7_02",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-conmed-omnibus_2026",
+      "exampleId": "stc-sec-conmed-omnibus_2026",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-lsb-industries-6_03",
+      "exampleId": "stc-sec-lsb-industries-6_03",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-fwrg-6_02",
+      "exampleId": "stc-sec-fwrg-6_02",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-fwrg-6_04",
+      "exampleId": "stc-sec-fwrg-6_04",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-sec-fwrg-6_06",
+      "exampleId": "stc-sec-fwrg-6_06",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Section-scale authentic window; detailed permission/prohibition decomposition left as hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-c",
+      "exampleId": "stc-conmed-7_2-c",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(c) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-d",
+      "exampleId": "stc-conmed-7_2-d",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(d) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-g",
+      "exampleId": "stc-conmed-7_2-g",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(g) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-h",
+      "exampleId": "stc-conmed-7_2-h",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(h) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-i",
+      "exampleId": "stc-conmed-7_2-i",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(i) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-k",
+      "exampleId": "stc-conmed-7_2-k",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(k) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-l",
+      "exampleId": "stc-conmed-7_2-l",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(l) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-m",
+      "exampleId": "stc-conmed-7_2-m",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(m) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-n",
+      "exampleId": "stc-conmed-7_2-n",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(n) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-o",
+      "exampleId": "stc-conmed-7_2-o",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(o) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_2-q",
+      "exampleId": "stc-conmed-7_2-q",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "RECLASSIFICATION"
+      ],
+      "datasetAuthorExpectation": "CONMED §7.2(q) exception limb — hypothesis only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-available_amount",
+      "exampleId": "stc-def-fwrg-available_amount",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Available Amount — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-consolidated_adjusted_ebitda",
+      "exampleId": "stc-def-fwrg-consolidated_adjusted_ebitda",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Consolidated Adjusted EBITDA — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-loan_party",
+      "exampleId": "stc-def-fwrg-loan_party",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Loan Party — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-cni_growth_amount",
+      "exampleId": "stc-def-fwrg-cni_growth_amount",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for CNI Growth Amount — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-total_rent_adjusted_net_leverage_ratio",
+      "exampleId": "stc-def-fwrg-total_rent_adjusted_net_leverage_ratio",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Total Rent Adjusted Net Leverage Ratio — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-fwrg-secured_obligations",
+      "exampleId": "stc-def-fwrg-secured_obligations",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Secured Obligations — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-lsb-industries-specified_availability",
+      "exampleId": "stc-def-lsb-industries-specified_availability",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Specified Availability — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-lsb-industries-permitted_liens",
+      "exampleId": "stc-def-lsb-industries-permitted_liens",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Permitted Liens — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-conmed-consolidated_ebitda",
+      "exampleId": "stc-def-conmed-consolidated_ebitda",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Consolidated EBITDA — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-def-conmed-consolidated_senior_secured_leverage_ratio",
+      "exampleId": "stc-def-conmed-consolidated_senior_secured_leverage_ratio",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "SHARED_CAPACITY_RESTRICTION"
+      ],
+      "datasetAuthorExpectation": "Definition excerpt for Consolidated Senior Secured Leverage Ratio — hypothesis mapping only.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6_01-g",
+      "exampleId": "stc-fwrg-6_01-g",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(g) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6_01-j",
+      "exampleId": "stc-fwrg-6_01-j",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(j) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6_01-m",
+      "exampleId": "stc-fwrg-6_01-m",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(m) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-fwrg-6_01-n",
+      "exampleId": "stc-fwrg-6_01-n",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(n) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6_01-d",
+      "exampleId": "stc-lsb-6_01-d",
+      "challenges": [
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(d) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6_01-i",
+      "exampleId": "stc-lsb-6_01-i",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(i) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-lsb-6_01-r",
+      "exampleId": "stc-lsb-6_01-r",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 6.01(r) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_3-g",
+      "exampleId": "stc-conmed-7_3-g",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.3(g) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_3-i",
+      "exampleId": "stc-conmed-7_3-i",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.3(i) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_3-m",
+      "exampleId": "stc-conmed-7_3-m",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.3(m) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_8-d",
+      "exampleId": "stc-conmed-7_8-d",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.8(d) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_8-i",
+      "exampleId": "stc-conmed-7_8-i",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.8(i) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_8-j",
+      "exampleId": "stc-conmed-7_8-j",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.8(j) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_8-l",
+      "exampleId": "stc-conmed-7_8-l",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.8(l) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_5-f",
+      "exampleId": "stc-conmed-7_5-f",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.5(f) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_5-i",
+      "exampleId": "stc-conmed-7_5-i",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE",
+        "MISSING_FINANCIAL_INPUT"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.5(i) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_5-j",
+      "exampleId": "stc-conmed-7_5-j",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.5(j) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_6-b",
+      "exampleId": "stc-conmed-7_6-b",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.6(b) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_6-c",
+      "exampleId": "stc-conmed-7_6-c",
+      "challenges": [
+        "UNSUPPORTED_OR_AMBIGUOUS"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.6(c) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_6-d",
+      "exampleId": "stc-conmed-7_6-d",
+      "challenges": [
+        "COMPARATOR_THRESHOLD"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.6(d) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_6-e",
+      "exampleId": "stc-conmed-7_6-e",
+      "challenges": [
+        "REMOTE_PROVISO"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.6(e) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    },
+    {
+      "caseId": "bench-stc-conmed-7_6-i",
+      "exampleId": "stc-conmed-7_6-i",
+      "challenges": [
+        "COMPARATOR_THRESHOLD",
+        "REMOTE_PROVISO",
+        "ENTITY_SCOPE"
+      ],
+      "datasetAuthorExpectation": "Authentic 7.6(i) exception limb hypothesis.",
+      "independentlyReviewedGroundTruth": null,
+      "execution": {
+        "compilerOrModelExecuted": false,
+        "result": null,
+        "metrics": null
+      }
+    }
+  ]
+}

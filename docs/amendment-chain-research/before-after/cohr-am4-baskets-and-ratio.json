@@ -1,0 +1,64 @@
+{
+  "recordId": "ba-cohr-am4-baskets-ratio",
+  "chainId": "cohr-2022-07-01-credit-agreement",
+  "amendingDocId": "cohr-am4",
+  "confirmedUnchangedBy": "cohr-am5",
+  "comparisons": [
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": { "kind": "SECTION", "sectionRef": "6.01(k)", "covenantFamily": "INDEBTEDNESS" },
+      "label": "General Debt Basket",
+      "beforeText": "greater of $530,000,000 and 40% of Adjusted Consolidated EBITDA",
+      "afterText": "greater of $786,000,000 and 55% of Adjusted Consolidated EBITDA for the most recently ended Test Period, determined on a Pro Forma Basis (the \"General Debt Basket\")",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-25-220656",
+        "exhibit": "EX-10.2 (Am5 clean restated copy confirming Am4 figures)",
+        "quote": "would not exceed the greater of $786,000,000 and 55% of Adjusted Consolidated EBITDA for the most recently ended Test Period, determined on a Pro Forma Basis, when incurred, created or assumed (the \"General Debt Basket\")",
+        "beforeAuthorityNote": "Before figure sourced from prior Headroom reconstruction of original CA / Am1–3 restated copies ($530M/40%); Am4 redline shows both 530,000,000 and 786,000,000 in retrieved Am4 HTML."
+      }
+    },
+    {
+      "changeClass": "BASKET_AMOUNT",
+      "target": { "kind": "DEFINITION", "definedTerm": "Incremental Amount", "covenantFamily": "INDEBTEDNESS" },
+      "label": "Cash-Capped Incremental Facility component",
+      "beforeText": "greater of (i) $1,320 million and (ii) 100% of Adjusted Consolidated EBITDA",
+      "afterText": "at any time on or after the Amendment No. 4 Effective Date, the sum of: (x) (1) the greater of (i) $1,428,000,000 and (ii) 100% of Adjusted Consolidated EBITDA for the most recently ended Test Period, on a Pro Forma Basis plus (2) amounts available under the General Debt Basket at such time (this subclause (2), the \"Reallocated Amount\", and, this clause (x), the \"Cash-Capped Incremental Facility\")",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-25-220656",
+        "exhibit": "EX-10.2",
+        "quote": "\"Incremental Amount\" shall mean, at any time on or after the Amendment No. 4 Effective Date, the sum of: (x) (1) the greater of (i) $1,428,000,000 and (ii) 100% of Adjusted Consolidated EBITDA..."
+      },
+      "adversarialTags": ["BASKET_AMOUNT_CHANGE", "MULTI_COVENANT_FAMILY", "INCORPORATION_BY_REFERENCE"]
+    },
+    {
+      "changeClass": "FINANCIAL_RATIO",
+      "target": { "kind": "SECTION", "sectionRef": "6.11(a)", "covenantFamily": "FINANCIAL_COVENANTS" },
+      "label": "Total Net Leverage Ratio maintenance",
+      "beforeText": "Step-down schedule ending at 4.00 to 1.00 for 12/31/2023 and all periods thereafter (confirmed still present through Am3).",
+      "afterText": "Flat 4.25 to 1.00 with Material Acquisition Financial Covenant Step-Up to 4.75 to 1.00 for four fiscal quarters, subject to Cool Down Period constraints (exact long-form language in Am4/Am5 restated §6.11).",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-25-220656",
+        "exhibit": "EX-10.1 / EX-10.2",
+        "quote": "Defined terms \"Financial Covenant Step-Up\" and \"Cool Down\" appear in Am4/Am5 restated definitions pointing to Section 6.11; full §6.11 operative paragraph previously extracted in docs/coherent-credit-agreement-amendment-reconstruction.md §C."
+      }
+    },
+    {
+      "changeClass": "CROSS_REFERENCE_CORRECTION",
+      "target": { "kind": "DEFINITION", "definedTerm": "Incremental Amount", "covenantFamily": "INDEBTEDNESS" },
+      "label": "§6.11(i) → §6.11(a) cross-reference fix",
+      "beforeText": "...Financial Covenant set forth in Section 6.11(i)...",
+      "afterText": "...Financial Covenant set forth in Section 6.11(a)...",
+      "authority": {
+        "status": "SOURCE_BACKED",
+        "accession": "0001193125-25-220656",
+        "exhibit": "EX-10.1",
+        "quote": "Am4 redline fragment retrieved this session: \"Section 6.11( i a )\""
+      },
+      "adversarialTags": ["PARENT_CHILD_CONFLICT_RISK"]
+    }
+  ],
+  "sameDayNote": "Amendment No. 5 same calendar day (2025-09-26) does not further change these basket/ratio figures in its clean restated copy; confirms Am4 figures."
+}

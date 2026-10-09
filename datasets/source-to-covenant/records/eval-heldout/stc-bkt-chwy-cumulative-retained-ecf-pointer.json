@@ -1,0 +1,214 @@
+{
+  "exampleId": "stc-bkt-chwy-cumulative-retained-ecf-pointer",
+  "polarity": "POSITIVE",
+  "role": "EXCEPTION_BASKET",
+  "split": "eval-heldout",
+  "document": {
+    "issuerId": "chewy",
+    "issuerName": "Chewy, Inc.",
+    "instrumentKey": "chwy-2026-credit-agreement",
+    "documentId": "chwy-doc-a-credit-agreement-2026",
+    "sourceFixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt"
+  },
+  "operativeVersion": {
+    "operativeDocumentId": "chwy-doc-a-credit-agreement-2026",
+    "asOfDate": null,
+    "amendmentIdentity": null,
+    "isRestatedOperativeText": false
+  },
+  "structural": {
+    "sectionRef": "basket",
+    "sourceNodeKey": null,
+    "articleRef": null,
+    "unitKind": "EXCEPTION_BASKET"
+  },
+  "governingProhibition": "Definitions — Retained Excess Cash Flow (Available Amount input)",
+  "input": {
+    "exactText": "restricted Subsidiary; provided , however , that upon the occurrence of an Unrestricted Subsidiary ceasing to be an Unrestricted Subsidiary, such Subsidiary shall be included in the definition of “Restricted\nSubsidiary.”\n“ Retained Asset Sale Proceeds ” shall have the meaning provided in Section 6.05(b)(1).\n\n“ Retained Declined Proceeds ” has the meaning assigned to such term in Section 2.09(d).\n\n“ Retained Excess Cash Flow ” means, at any date of determination, an amount equal to the sum of (a) the portion of the Excess Cash Flow\nof the Borrowers for each Excess Cash Flow Period ending after the Closing Date and prior to such date that is not required to be applied as a mandatory prepayment under Section 2.09(c) plus (b) for each Excess Cash Flow Interim\nPeriod ended prior to such date but as to which the corresponding Excess Cash Flow Period has not ended (or no Excess Cash Flow Period has then ended), an amount equal to the Retained Excess Cash Flow Percentage of Excess Cash Flow of the Borrowers,\nfor such Excess Cash Flow Interim Period.\n“ Revolving Borrowing ” means a Borrowing of Revolving Loans.\n\n“ Revolving Commitment ” means, with respect to each Revolving Lender, the commitment of such Revolving Lender to make Revolving Loans\nhereunder (including pursuant to any applicable Incremental Facility Amendment), expressed as an amount representing the maximum possible aggregate amount of such Revolving Lender’s Revolving Exposure hereunder, as such commitment may be\n(a) reduced from time to time pursuant to Section 2.06, (b) reduced or increased from time to time pursuant to assignments by or to such Lender pursuant to Section 9.04 and (c) increased from time to time pursuant to\nSection 2.18. For the avoidance of doubt, as of the Effective Date, the aggregate amount of the Revolving Commitment is $0.\n\n-69-\n\n“ Revolving Exposure ” means, without duplication, with respect to any Revolving Lender at\nany time, the Dollar Amount of the sum of the outstanding principal",
+    "charStartInFixture": 319184,
+    "charEndInFixture": 321184,
+    "sourceTextSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+    "windowSha256": "096b9869c7fe098df51c9117091c5827339a78824dbd018b729ab1282a37c4b6",
+    "definitions": {},
+    "definitionSourceSha256": null,
+    "exceptions": [],
+    "conditions": [],
+    "crossReferences": [],
+    "entityScopeNotes": [
+      "\"Borrowers / Restricted Parties as defined\""
+    ]
+  },
+  "output": {
+    "candidateCovenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+    "candidatePermissionProhibitionClass": "PERMISSION",
+    "proposedFormulaOrCapacity": {
+      "shape": "",
+      "description": "Peer basket-formula hypothesis (chwy-cumulative-retained-ecf-pointer). Not independently reviewed.",
+      "figures": [
+        "Retained Excess Cash Flow cumulative sum (definition continues); feeds Available Amount clause (a)(y)"
+      ],
+      "capacityUnlimited": null
+    },
+    "proposedConditions": [],
+    "proposedDependencyEdges": [
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "Available Amount",
+        "description": "Shared capacity dependency from basket corpus"
+      },
+      {
+        "edgeType": "SHARES_CAPACITY_WITH",
+        "targetRef": "ECF sweep mechanics",
+        "description": "Shared capacity dependency from basket corpus"
+      }
+    ],
+    "missingInputs": [
+      "full Retained Excess Cash Flow definition and ECF history not supplied in this opening span"
+    ],
+    "uncertainty": {
+      "level": "HIGH",
+      "reasons": [
+        "Basket corpus hypothesis; Phase-2 blocks SFT"
+      ]
+    },
+    "verificationStatus": "HUMAN_HYPOTHESIS",
+    "labelNotes": "Authentic source span from basket formula library export. Hypothesis only."
+  },
+  "authoredAt": "2026-10-08T22:45:00.000Z",
+  "authoringMethod": "HUMAN_SOURCE_READING_PLUS_CATALOG",
+  "schemaVersion": "source-to-covenant-dataset.v2",
+  "toolVersions": {
+    "irSchemaVersion": "headroom-covenant-ir.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticCompilerToolPolicyVersion": "phase-3b1-tool-policy.v2",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "semanticVerifierPromptVersion": "phase-3c-semantic-verifier-prompt.v4",
+    "datasetSchemaVersion": "source-to-covenant-dataset.v1",
+    "datasetBuilderVersion": "source-to-covenant-builder.v1",
+    "pinsAreNotLabelAuthority": true
+  },
+  "nearDuplicateClusterId": null,
+  "contaminationRestrictions": {
+    "excludeFromClaudeAcceptanceCorpus": true,
+    "excludeFromVerifierFewShots": true,
+    "excludeFromCompilerPromptFewShots": true,
+    "usageRightsReviewRequiredBeforeSft": true
+  },
+  "deliveryVerificationStatus": "HYPOTHESIS",
+  "verificationEvidence": {
+    "reviewerId": null,
+    "reviewerDisplayName": null,
+    "reviewDate": null,
+    "sourcePackage": "chwy-2026-credit-agreement",
+    "operativeVersion": "chwy-doc-a-credit-agreement-2026",
+    "exactScopeOfReview": null,
+    "evidenceSupportingInterpretation": [
+      "sourceFixture=tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+      "windowSha256=096b9869c7fe098df51c9117091c5827339a78824dbd018b729ab1282a37c4b6",
+      "sectionRef=basket"
+    ],
+    "reviewerIndependentOfLabelGeneration": false,
+    "verificationRecordId": null,
+    "independenceGap": "Hypothesis label — not independently verified."
+  },
+  "verificationHistory": [],
+  "controllingContextAudit": {
+    "sourceWindowPresent": true,
+    "status": "CONTEXT_INCOMPLETE",
+    "dependencyReferences": [
+      {
+        "kind": "GOVERNING_PROHIBITION",
+        "ref": "Definitions — Retained Excess Cash Flow (Available Amount input)",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Recorded on record"
+      },
+      {
+        "kind": "EXCEPTION_OR_PROVISO",
+        "ref": "exceptions[] / proviso language",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "Window or recorded exceptions"
+      },
+      {
+        "kind": "DEFINED_TERM",
+        "ref": "(none pulled)",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Pulled definitions present or none clearly required"
+      },
+      {
+        "kind": "REMOTE_CONDITION",
+        "ref": "remote/compound conditions",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": true,
+        "notes": "ok or not applicable"
+      },
+      {
+        "kind": "ENTITY_RESTRICTION",
+        "ref": "\"Borrowers / Restricted Parties as defined\"",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "Notes recorded"
+      },
+      {
+        "kind": "SHARED_BASKET",
+        "ref": "shared capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Presence of shared-capacity mechanics not fully resolved from window alone"
+      },
+      {
+        "kind": "RECLASSIFICATION_RULE",
+        "ref": "reclassification",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Not observed in window"
+      },
+      {
+        "kind": "AMENDMENT_MODIFICATION",
+        "ref": "none",
+        "presentInRecord": true,
+        "availableInFixtureCorpus": true,
+        "notes": "No amendment identity"
+      },
+      {
+        "kind": "CROSS_DOCUMENT_CONSTRAINT",
+        "ref": "cross-document",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": null,
+        "notes": "Cross-document constraints often unavailable in a single fixture"
+      },
+      {
+        "kind": "FINANCIAL_INPUT",
+        "ref": "financial facts for capacity",
+        "presentInRecord": false,
+        "availableInFixtureCorpus": false,
+        "notes": "Live financial inputs not part of legal-text window"
+      }
+    ],
+    "missingRequiredDependencies": [
+      "FINANCIAL_INPUT:financial facts for capacity"
+    ],
+    "auditNotes": "CONTEXT_INCOMPLETE: FINANCIAL_INPUT:financial facts for capacity",
+    "auditedAt": "2026-10-08T22:30:00.000Z",
+    "completenessNotInferredFromExtractionAlone": true
+  },
+  "trainingEligibility": "BLOCKED_HELDOUT_ISSUER",
+  "evaluationEligibility": "EVAL_ELIGIBLE_HELD_OUT",
+  "duplicateDecision": null,
+  "datasetAuthorExpectation": "Peer basket-formula hypothesis (chwy-cumulative-retained-ecf-pointer). Not independently reviewed.",
+  "independentlyReviewedGroundTruth": null,
+  "knowledgeFactoryImport": {
+    "contractVersion": "corpus-dataset-delivery-contract.v1",
+    "contentIdentity": "096b9869c7fe098df51c9117091c5827339a78824dbd018b729ab1282a37c4b6",
+    "importable": false,
+    "blockedReasons": [
+      "not_independently_verified",
+      "missing_verification_record_id",
+      "trainingEligibility=BLOCKED_HELDOUT_ISSUER",
+      "usage_rights_review_required"
+    ]
+  }
+}

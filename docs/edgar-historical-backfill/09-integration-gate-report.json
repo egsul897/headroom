@@ -1,0 +1,105 @@
+{
+  "artifact": "ws-ehb-phase2-final-integration-gate",
+  "generatedAt": "2026-10-08T23:43:30Z",
+  "workstreamId": "WS-EHB",
+  "pr": 142,
+  "prUrl": "https://github.com/egsul897/headroom/pull/142",
+  "shas": {
+    "gateStartTip": "97400e5d7f7e65a7612fdc970abcbe8110cb1cdb",
+    "originMainAtReconcile": "ab87979fe6e768ac41f691341f38a3d098e1ebb2",
+    "mergeCommit": "c0a6aa437341e790003080aaecb8d995c79f9c0f",
+    "endingSha": "d6a5a8f3205a389d249b6b294934033cd471bc95",
+    "mergeBaseWithMain": "ab87979fe6e768ac41f691341f38a3d098e1ebb2",
+    "ciVerifiedTip": null,
+    "note": "endingSha equals this file commit parent tip at authorship; PR head after push is authoritative for CI exact-head."
+  },
+  "scopeAudit": {
+    "changedFileCountVsMain": 47,
+    "exclusiveTreesOnlyPlusSharedIgnoreEnv": true,
+    "outOfScopePaths": [],
+    "touchesKnowledgeFactoryLib": false,
+    "touchesConnectorsOrRegistry": false,
+    "secondSourceRegistryCreated": false,
+    "overlapNote": "CKF handoff mirrors DiscoveredFilingDocument shape without importing lib/knowledge-factory; SEC transport is discovery-only fair-access coordinator, not a second downloader."
+  },
+  "secGatesPreserved": {
+    "singleOwnerFetchGate": "HEADROOM_SEC_FETCH_OWNER",
+    "validContactRequired": true,
+    "placeholderContactRejected": true,
+    "rateLimitingProcessLocal": true,
+    "failClosedWhenOwnerNone": true,
+    "ibrAmbiguityFailClosed": true
+  },
+  "ibrReconciliation": {
+    "engineIbrResolved": 80,
+    "residualResolved": 45,
+    "queueIbrResolved": 41,
+    "totalIbrPostDedupe": 74,
+    "distinctDenominators": true,
+    "evidence": "docs/edgar-historical-backfill/07-ibr-denominator-reconciliation.md",
+    "correctionApplied": false,
+    "note": "80 pre-dedupe second-pass completions; 45 post-dedupe kept with URI+filename; 41 ranked into fetchable queue."
+  },
+  "ckfHandoff": {
+    "fetchableDocuments": 149,
+    "byResolution": {
+      "FETCHABLE_INLINE": 108,
+      "IBR_RESOLVED": 41
+    },
+    "contractVersion": 1,
+    "producer": "WS-EHB",
+    "consumer": "WS-CKF",
+    "sourceIdPrefix": "ehb:",
+    "reproducibleQueueIdSet": true,
+    "queueIdSetSha256": "7570a95be2f272c5708068500002aabcf9881993c9eabf51ae6c6d375188f2f9",
+    "schemaCompatible": true,
+    "secondSourceRegistry": false,
+    "offlineValidationOkCount": 149
+  },
+  "storage": {
+    "committedDocsSummaries": "docs/edgar-historical-backfill/**",
+    "runtimeBytes": "data/edgar-historical-backfill/**",
+    "runtimeStorageStatus": "EPHEMERAL_WORKSPACE",
+    "gitignoreCoversRuntimeViaDataSlash": true,
+    "noExhibitBodiesCommitted": true
+  },
+  "verification": {
+    "resumeReplay": {
+      "command": "npx tsx scripts/edgar-historical-backfill/run-pilot-100.ts --resume",
+      "secRequests": 0,
+      "queueCount": 149,
+      "queueIdsUnchanged": true,
+      "ibrResolvedEngineUnchanged": 80
+    },
+    "focusedTests": {
+      "passed": 29,
+      "failed": 0,
+      "command": "npx vitest run tests/edgar-historical-backfill"
+    },
+    "typescript": {
+      "command": "npx tsc --noEmit",
+      "status": "CLEAN",
+      "errors": 0
+    }
+  },
+  "ciAndMerge": {
+    "exactHeadCi": "PENDING_PUSH",
+    "mergeCompatibility": "CLEAN_AFTER_MAIN_MERGE",
+    "dryRunConflictPaths": []
+  },
+  "mergeReadiness": {
+    "draft": false,
+    "readyForReview": true,
+    "agentWillMerge": false,
+    "notifyIntegrationLead": "WS-PAR via PR comment",
+    "blockedOn": []
+  },
+  "explicitNonActions": [
+    "No scale-1000 run",
+    "No additional SEC acquisition",
+    "No paid inference",
+    "No fixture edits outside EHB tests ProcessEnv casts",
+    "No legal certification",
+    "No autonomous merge"
+  ]
+}
