@@ -320,3 +320,11 @@
 - **BLK-USAGE-ZERO remains OPEN** (#215b + run-package-path)
 - actualExternalCostsUsd: 0 · merges: 0 · Neon writes: 0
 
+---
+
+## 2026-10-09T22:55:00Z — coordinator tip CI green
+
+- Branch `cursor/engineering-coordinator-10ff` tip `bbfed26b6abe` — all 2 CI checks SUCCESS
+- Optional Batch 0 companion (#216) remains MERGEABLE for human merge after #208 or same docs wave
+- No production merges by coordinator; Batch 1 human ask unchanged (#229 @ `b33f86554e39`)
+
