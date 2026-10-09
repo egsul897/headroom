@@ -11,8 +11,19 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { analyzeMultiPathTransaction } from "@/lib/product/customer-intelligence/multi-path-analysis";
+import { evaluateVerifiedCapacity } from "@/lib/contract-model/verified-execution";
 import {
+  CONMED_FORM_INSPIRED_CERT,
+  InMemoryApprovedSnapshotStore,
+  LedgerProposalRecorder,
+  approveCertificateProposal,
+  proposeFromCertificate,
+  snapshotInputResolver,
+} from "@/lib/contract-model/north-star-bridge";
+import {
+  DEMO_COMPANY_ID,
   DEMO_EXERCISES,
+  DEMO_INSTRUMENT_KEY,
   DEMO_IR_LABEL,
   DEMO_LABEL,
   DEMO_LEGACY_AUTHORITY,
@@ -25,6 +36,7 @@ import {
   type ExerciseComparisonRow,
 } from "@/lib/product/north-star-workflow/demo-exercises";
 import {
+  buildFixtureDebtRpSharedPackage,
   moneyAmountOf,
   runFixtureCertifiedPath,
 } from "@/lib/product/north-star-workflow/fixture-verified-package";
@@ -272,7 +284,7 @@ describe("SYNTHETIC certified-vs-legacy CONMED-form demo harness", () => {
 
     const hist = rows.find((r) => r.exerciseId === "historical-basket-consumption")!;
     if (hist.certified.ran) {
-      expect(hist.certified.capacities.length).toBeGreaterThan(0);
+      expect(hist.certified.capacities[0]?.remainingUsd).toBe(32_000_000);
       expect(
         hist.discrepancies.some(
           (d) => d.field === "ledgerAwareRemaining" || d.field === "remainingCapacity",
@@ -283,10 +295,55 @@ describe("SYNTHETIC certified-vs-legacy CONMED-form demo harness", () => {
     const rp = rows.find((r) => r.exerciseId === "restricted-payment-75m")!;
     if (rp.certified.ran) {
       expect(rp.certified.outcome).toBe("EXECUTED");
-      expect(rp.certified.capacities.some((c) => c.ruleId.includes("7.06"))).toBe(true);
-      // Ledger-aware remaining may be AVAILABLE or NEEDS_INPUT depending on shared-cap binding;
-      // discrepancies must still be recorded either way.
+      const rem = rp.certified.capacities.find((c) => c.ruleId.includes("7.06(a)"))?.remainingUsd;
+      expect(rem).toBe(20_000_000);
       expect(rp.discrepancies.length).toBeGreaterThan(0);
+    }
+
+    // Debt general + RP + shared capacity package binds under REQUIRE (FIXTURE_IR).
+    const sharedPkg = buildFixtureDebtRpSharedPackage();
+    expect(sharedPkg.label).toBe(DEMO_IR_LABEL);
+    expect(sharedPkg.rules.map((r) => r.ruleId)).toEqual([
+      "rule:fixture-7.01-general",
+      "rule:fixture-7.06-rp",
+      "rule:fixture-7.08-inv",
+    ]);
+    expect(sharedPkg.sharedCapacities?.[0]?.sharedCapId).toBe("shared:fixture-rp-inv");
+    const snapStore = new InMemoryApprovedSnapshotStore();
+    const proposed = proposeFromCertificate(
+      snapStore,
+      CONMED_FORM_INSPIRED_CERT,
+      new LedgerProposalRecorder(),
+    );
+    expect(proposed.ok).toBe(true);
+    approveCertificateProposal(snapStore, {
+      snapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
+      reviewedBy: "synth-shared-pkg",
+      reviewedAt: "2026-07-20T12:00:00Z",
+      approvalRef: "apr-synth-shared-pkg",
+      sourceDocumentId: CONMED_FORM_INSPIRED_CERT.documentId,
+      sourceVersionHash: CONMED_FORM_INSPIRED_CERT.versionHash,
+      proposerKind: "human",
+    });
+    const sharedCap = evaluateVerifiedCapacity({
+      package: sharedPkg,
+      inputs: snapshotInputResolver({
+        snapshots: snapStore.getSnapshots(DEMO_COMPANY_ID),
+        definitions: [],
+        rules: [...sharedPkg.rules],
+        companyId: DEMO_COMPANY_ID,
+        instrumentKey: DEMO_INSTRUMENT_KEY,
+      }),
+      ledger: [],
+      asOf: "2026-08-01",
+    });
+    // Package binds (not REFUSED); shared-pool member remainings may be REVIEW_REQUIRED.
+    expect(sharedCap.outcome).toBe("EXECUTED");
+    if (sharedCap.outcome === "EXECUTED") {
+      expect(sharedCap.coverage.complete).toBe(true);
+      expect(
+        sharedCap.state.capacities.find((c) => c.ruleId === "rule:fixture-7.01-general")?.status,
+      ).toBe("AVAILABLE");
     }
 
     for (const row of rows) {

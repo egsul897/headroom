@@ -59,6 +59,7 @@ export {
 export {
   FIXTURE_IR_LABEL,
   buildFixtureVerifiedPackage,
+  buildFixtureDebtRpSharedPackage,
   seedFixtureApprovedWorld,
   runFixtureCertifiedPath,
   moneyAmountOf,

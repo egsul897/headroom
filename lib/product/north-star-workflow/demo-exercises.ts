@@ -528,21 +528,14 @@ export const DEMO_EXERCISES: DemoExercise[] = [
           ebitdaPct: null,
         },
         {
-          ruleId: "rule:synth-7.08(c)",
-          sectionRef: "7.08(c)",
-          family: "INVESTMENTS",
-          action: "MAKE_INVESTMENT",
-          flatUsd: 25_000_000,
+          ruleId: "rule:synth-7.06(b)",
+          sectionRef: "7.06(b)",
+          family: "RESTRICTED_PAYMENTS",
+          action: "PAY_DIVIDEND",
+          flatUsd: 40_000_000,
           ebitdaPct: null,
         },
       ],
-      sharedCapacity: {
-        sharedCapId: "shared:synth-7.06a-7.08c",
-        description:
-          "SYNTHETIC expressly shared RP/Investment aggregate $25,000,000 (FIXTURE_IR)",
-        flatUsd: 25_000_000,
-        memberRuleIds: ["rule:synth-7.06(a)", "rule:synth-7.08(c)"],
-      },
       ledgerUsages: [
         {
           usageId: "usage-synth-rp-1",

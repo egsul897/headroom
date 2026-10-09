@@ -477,3 +477,62 @@ export function moneyAmountOf(a: {
   const n = Number(a.value.amount);
   return Number.isFinite(n) ? n : null;
 }
+
+/**
+ * Hand-built package shape with debt general basket + RP basket + investment +
+ * expressly shared RP/Investment pool (FIXTURE_IR).
+ *
+ * Bind succeeds under REQUIRE (STRONG artifacts + shared-cap IR inventory).
+ * Member remainings may still be REVIEW_REQUIRED until shared-pool expression
+ * unit binding is complete — do not treat AVAILABLE shared remainings as proven.
+ */
+export function buildFixtureDebtRpSharedPackage(): FixtureVerifiedPackage {
+  const rules: DemoExercise["fixtureIr"]["rules"] = [
+    {
+      ruleId: "rule:fixture-7.01-general",
+      sectionRef: "7.01(b)",
+      family: "INDEBTEDNESS",
+      action: "INCUR_DEBT",
+      flatUsd: 50_000_000,
+      ebitdaPct: null,
+    },
+    {
+      ruleId: "rule:fixture-7.06-rp",
+      sectionRef: "7.06(a)",
+      family: "RESTRICTED_PAYMENTS",
+      action: "PAY_DIVIDEND",
+      flatUsd: 25_000_000,
+      ebitdaPct: null,
+    },
+    {
+      ruleId: "rule:fixture-7.08-inv",
+      sectionRef: "7.08(c)",
+      family: "INVESTMENTS",
+      action: "MAKE_INVESTMENT",
+      flatUsd: 25_000_000,
+      ebitdaPct: null,
+    },
+  ];
+  const sharedCapacity: NonNullable<DemoExercise["fixtureIr"]["sharedCapacity"]> = {
+    sharedCapId: "shared:fixture-rp-inv",
+    description:
+      "SYNTHETIC expressly shared RP/Investment aggregate $25,000,000 (FIXTURE_IR)",
+    flatUsd: 25_000_000,
+    memberRuleIds: ["rule:fixture-7.06-rp", "rule:fixture-7.08-inv"],
+  };
+  const syntheticExercise = {
+    id: "restricted-payment-75m",
+    fixtureIr: { rules, sharedCapacity, ledgerUsages: [] },
+    applicableCutoff: {
+      evaluationDate: "2026-08-01",
+      reportingPeriodKey: "FY2026-Q2",
+      snapshotAsOf: "2026-06-30",
+      selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER" as const,
+    },
+  } as DemoExercise;
+  const built = buildFixtureVerifiedPackage(syntheticExercise);
+  if ("blocked" in built && built.blocked) {
+    throw new Error(`FIXTURE debt/RP/shared package refused: ${built.reason}`);
+  }
+  return built as FixtureVerifiedPackage;
+}
