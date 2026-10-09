@@ -1,0 +1,208 @@
+{
+  "covenantFamily": "LIENS",
+  "count": 2,
+  "exceptionIds": [
+    "conmed-7.3-g-purchase-money-liens",
+    "conmed-7.3-m-general-liens-basket"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.3-g-purchase-money-liens",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "LIENS",
+      "parentProhibition": {
+        "sectionRef": "7.3",
+        "text": "Create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except for:"
+      },
+      "exceptionSectionRef": "7.3(g)",
+      "exactExceptionText": "Liens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the Parent Borrower or any of its Subsidiaries, each of which Liens either (i) existed on such Property before the time of its acquisition and was not created in anticipation thereof or (ii) was created solely for the purpose of securing Indebtedness representing, or incurred to finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided that (A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired or financed, and (B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value (as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.3",
+        "Section 7.3(g)"
+      ],
+      "definedTerms": [
+        "Liens",
+        "Closing Date",
+        "Indebtedness",
+        "Responsible Officer"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "secured Indebtedness permitted by Section 7.2",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.2",
+          "computableHint": "OTHER_RULE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Lien does not extend beyond acquired/financed Property",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.3(g)(A)",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c3",
+          "text": "secured principal \u2264 80% FMV at acquisition",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.3(g)(B)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c4",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "PERCENT_LTV",
+          "value": "80% of fair market value at acquisition"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "7.3 trailing classify/reclassify among lien baskets",
+          "relatedRefs": [
+            "7.3 trailing paragraph"
+          ]
+        }
+      ],
+      "provisos": [
+        {
+          "text": "provided that (A) no spread and (B) 80% LTV",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Both limbs gate the lien."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.2",
+          "role": "secured debt must be permitted debt"
+        },
+        {
+          "targetRef": "7.2(c)",
+          "role": "debt basket that itself depends on this lien basket"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Circular with \u00a77.2(c): debt needs 7.3(g) liens; liens need 7.2-permitted debt."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Mutual dependence with \u00a77.2(c) is a remote-constraint pattern; neither basket is free-standing capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "conmed-7.3-m-general-liens-basket",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "LIENS",
+      "parentProhibition": {
+        "sectionRef": "7.3",
+        "text": "Create, incur, assume or suffer to exist any Lien upon any of its Property or revenues... except for:"
+      },
+      "exceptionSectionRef": "7.3(m)",
+      "exactExceptionText": "Liens not otherwise permitted by this Section 7.3 so long as neither (i) the aggregate outstanding principal amount of the obligations secured thereby nor (ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto exceeds (as to the Parent Borrower and all Subsidiaries) the greater of (A) $50,000,000 and (B) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Liens);",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.3",
+        "Section 7.3(m)"
+      ],
+      "definedTerms": [
+        "Consolidated Total Assets"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "dual cap on secured obligations AND asset FMV",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.3(m)",
+          "computableHint": "MONEY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$50,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "3.0%",
+          "measurementBasis": "Consolidated Total Assets"
+        },
+        {
+          "kind": "DUAL_TEST",
+          "value": "neither secured obligations nor asset FMV may exceed greater-of"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower and all Subsidiaries (aggregate)"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "Subject to 7.3 trailing reclassification",
+          "relatedRefs": [
+            "7.3 trailing paragraph"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "ARTICLE_LEVEL",
+          "description": "Article VII chapeau binds."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "General liens basket with dual quantitative tests; residual 'not otherwise permitted' language interacts with sibling baskets.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

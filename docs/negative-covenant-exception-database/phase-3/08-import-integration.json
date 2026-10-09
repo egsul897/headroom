@@ -1,0 +1,84 @@
+{
+  "artifact": "07-import-integration",
+  "datasetVersion": "ncedb.phase3.v1",
+  "status": "ALIGNED_FOR_REVIEW",
+  "canonicalSchemaOnBranch": false,
+  "canonicalSchemaPeer": {
+    "branch": "cursor/covenant-knowledge-factory-7327",
+    "type": "KnowledgeSourceRecord",
+    "path": "lib/knowledge-factory/types.ts",
+    "fields": [
+      "sourceId",
+      "issuerCik",
+      "issuerTicker",
+      "issuerName",
+      "accessionNumber",
+      "exhibitFilename",
+      "sourceUrl",
+      "filingDate",
+      "formType",
+      "documentTitle",
+      "documentClass",
+      "instrumentIdentity",
+      "originalBytesHash",
+      "normalizedTextHash",
+      "acquisitionTimestamp",
+      "parserVersion",
+      "extractionStatus",
+      "representationLevel",
+      "provenance",
+      "usageRightsReviewStatus"
+    ],
+    "promotionGuards": "lib/knowledge-factory/legal-safety/promotion-guards.ts"
+  },
+  "adapterPath": "lib/negative-covenant-exceptions/import-adapter.ts",
+  "fieldAlignment": {
+    "sourceIdentity.sourceIdentityKey": "sourceId / instrumentIdentity (join key pending)",
+    "sourceIdentity.issuerCik": "issuerCik",
+    "sourceIdentity.issuerTicker": "issuerTicker",
+    "sourceIdentity.sourceSha256": "originalBytesHash",
+    "sourceIdentity.filingAccession": "accessionNumber",
+    "sourceIdentity.sourceUrl": "sourceUrl",
+    "sourceIdentity.documentKind": "documentClass",
+    "representationLevelCeiling": "representationLevel (SOURCE_ONLY / DETERMINISTICALLY_VALIDATED)",
+    "productionCapacityApproved=false": "promotion-guards: no Permission / SharedCapacityConstraint writes"
+  },
+  "proofs": {
+    "idempotentReimport": {
+      "provenLocally": true,
+      "method": "buildDeterministicImportBatch twice \u2192 identical importKeys; second pass with alreadyImportedKeys skips all"
+    },
+    "duplicateHandling": {
+      "provenLocally": true,
+      "duplicatesWithinCatalog": 0,
+      "strategy": "exceptionImportKey(exceptionId, sourceIdentityKey) + seen/already sets"
+    },
+    "sourceVersionPreservation": {
+      "provenLocally": true,
+      "fields": [
+        "sourceSha256",
+        "sourceIdentityKey",
+        "datasetVersion",
+        "exceptionSpan"
+      ]
+    },
+    "amendmentAwareInvalidation": {
+      "provenLocally": true,
+      "method": "sourceIdentityKey includes content hash / ACR docId; amendment docs are distinct keys; re-import of superseded base does not silently merge",
+      "note": "Full CKF relationship-graph invalidation awaits schema wire-up on this branch."
+    },
+    "noPromotionIntoProductionPermissionTables": {
+      "provenLocally": true,
+      "productionCapacityApprovedAlwaysFalse": true,
+      "doesNotWrite": [
+        "Permission",
+        "PermissionRelationship",
+        "SharedCapacityConstraint",
+        "CovenantProvision",
+        "ContractRule",
+        "SemanticTruthRecord"
+      ]
+    }
+  },
+  "reasonNotCompletedIntegration": "lib/knowledge-factory canonical schema is not present on this branch (lives on WS-CKF). Returning ALIGNED_FOR_REVIEW rather than claiming completed integration."
+}

@@ -1,0 +1,20 @@
+{
+  "chainId": "matw-2020-03-27-third-ar-loan",
+  "nodes": [
+    { "id": "matw-third-ar", "date": "2020-03-27", "label": "Third A&R Loan Agreement" },
+    { "id": "matw-am1", "date": "2021-03-30", "label": "First Amendment" },
+    { "id": "matw-am2", "date": "2021-12-27", "label": "Second Amendment (recital-only)" },
+    { "id": "matw-am3", "date": "2022-07-01", "label": "Third Amendment" },
+    { "id": "matw-am4", "date": "2023-03-17", "label": "Fourth Amendment" },
+    { "id": "matw-am5", "date": "2024-01-31", "label": "Fifth Amendment" },
+    { "id": "matw-am6", "date": "2024-09-23", "label": "Sixth Amendment" }
+  ],
+  "edges": [
+    { "from": "matw-third-ar", "to": "matw-am1", "kind": "AMENDS" },
+    { "from": "matw-am1", "to": "matw-am2", "kind": "AMENDS", "authority": "RECITAL_ONLY" },
+    { "from": "matw-am2", "to": "matw-am3", "kind": "AMENDS" },
+    { "from": "matw-am3", "to": "matw-am4", "kind": "AMENDS" },
+    { "from": "matw-am4", "to": "matw-am5", "kind": "AMENDS" },
+    { "from": "matw-am5", "to": "matw-am6", "kind": "AMENDS" }
+  ]
+}

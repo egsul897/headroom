@@ -1,0 +1,2997 @@
+{
+  "manifest": {
+    "datasetId": "ncedb-phase3",
+    "datasetVersion": "ncedb.phase3.v1",
+    "workstreamId": "WS-NED",
+    "status": "OFFLINE_RESEARCH_DATASET",
+    "representationLevelCeiling": "DETERMINISTICALLY_VALIDATED",
+    "exactSourceProvenance": true,
+    "stableContentIdentities": true,
+    "sourceTextHashes": true,
+    "compilerOrModelVersions": {
+      "ncedb": "ncedb.phase3.v1",
+      "mode": "deterministic-offline"
+    },
+    "confidenceAndUncertaintyLabels": true,
+    "verificationStatusField": true,
+    "duplicateDetection": {
+      "strategy": "exceptionImportKey(exceptionId, sourceIdentityKey)"
+    },
+    "deterministicReplay": {
+      "regenerator": "scripts/negative-covenant-exception-database/generate-phase3.py"
+    },
+    "actualRecordCounts": {
+      "exceptionsIncludingControls": 26,
+      "exceptionsExcludingUnresolvedControlStubs": 21,
+      "byPermissionClassification": {
+        "CONDITIONAL": 16,
+        "NOT_AN_AFFIRMATIVE_PERMISSION": 4,
+        "UNKNOWN": 6
+      },
+      "authenticBatchSize": 25,
+      "unconditionalSurviving": 0
+    },
+    "independentQualityMetrics": {
+      "path": "docs/negative-covenant-exception-database/phase-3/06-independent-quality-metrics.json",
+      "status": "MEASURED_HELD_OUT"
+    },
+    "nonGoals": [
+      "No production Permission table writes",
+      "No paid inference",
+      "No certification advancement",
+      "No merge to main",
+      "No Claude-owned fixture changes",
+      "No capacity conclusions from categorical exceptions"
+    ]
+  },
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.2-a-loan-document-debt",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "[Phase-3 audit] Downgraded from UNCONDITIONAL_SOURCE_VERIFIED \u2192 CONDITIONAL. Controlling definitional context for Loan Party / Loan Document is incomplete in the curated source package; cannot verify unconditional legal permission. Distinction: Local clause is a categorical carve-out with no dollar/ratio gate, but entity/instrument scope depends on Loan Party / Loan Document definitions that are not present in the curated definitions excerpt. Categorical exception \u2260 unconditional legal permission; incomplete controlling context requires downgrade.",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "paraphraseSummary": "General Indebtedness prohibition with enumerated exceptions.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 3654,
+          "charEnd": 3720,
+          "exactText": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau binds Parent Borrower and Subsidiaries.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.2(a)",
+      "exactExceptionText": "Indebtedness of any Loan Party pursuant to any Loan Document;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 3725,
+        "charEnd": 3786,
+        "exactText": "Indebtedness of any Loan Party pursuant to any Loan Document;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Permits Indebtedness of Loan Parties under Loan Documents without a local quantitative ceiling.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(a)"
+      ],
+      "definedTerms": [
+        "Loan Party",
+        "Loan Document",
+        "Indebtedness"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+            "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+            "charStart": 235,
+            "charEnd": 338,
+            "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+            "matchStatus": "EXACT"
+          }
+        },
+        {
+          "conditionId": "r2",
+          "text": "Loan Party / Loan Document definitional scope",
+          "location": "DEFINED_TERM",
+          "locationRef": "Loan Party / Loan Document",
+          "computableHint": "ENTITY",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-3",
+          "text": "Article VII chapeau entity restriction (Parent Borrower / Subsidiaries)",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Party"
+        ],
+        "excludes": [],
+        "notes": "Instrument must be a Loan Document.",
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Local-condition count is zero for economics; definitional scope recorded under remote/defined-term fields.",
+      "crossReferences": [
+        {
+          "targetRef": "Loan Document",
+          "role": "instrument scope",
+          "existenceCheck": "PRESENT_IN_DEFINITIONS_EXCERPT"
+        }
+      ],
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Loan Party",
+          "reason": "Phase-3 audit: MISSING_FROM_CURATED_EXCERPT"
+        },
+        {
+          "ref": "Loan Document",
+          "reason": "Phase-3 audit: MISSING_FROM_CURATED_EXCERPT"
+        }
+      ],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false,
+      "phase3Audit": {
+        "priorClassification": "UNCONDITIONAL_SOURCE_VERIFIED",
+        "downgraded": true,
+        "categoricalLocalException": true,
+        "unconditionalLegalPermission": false
+      }
+    },
+    {
+      "exceptionId": "conmed-7.2-d-finance-leases-local-greater-of",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Local greater-of aggregate outstanding cap is in the exception clause; Article VII chapeau is separate entity-scope remote context.",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "paraphraseSummary": "General Indebtedness prohibition.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 3654,
+          "charEnd": 3720,
+          "exactText": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.2(d)",
+      "exactExceptionText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 4458,
+        "charEnd": 4703,
+        "exactText": "Finance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Finance leases capped at greater of $50mm and 3% CTA.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(d)"
+      ],
+      "definedTerms": [
+        "Finance Lease Obligations",
+        "Consolidated Total Assets"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "greater of $50,000,000 and 3.0% Consolidated Total Assets at any one time outstanding",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.2(d)",
+          "computableHint": "MONEY",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "ENTITY",
+          "sourceSpan": {
+            "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+            "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+            "charStart": 235,
+            "charEnd": 338,
+            "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+            "matchStatus": "EXACT"
+          }
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$50,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "3.0%",
+          "measurementBasis": "Consolidated Total Assets"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "financialTests": [],
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "Subject to 7.2 trailing classify/reclassify",
+          "relatedRefs": [
+            "7.2 trailing"
+          ]
+        }
+      ],
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Example of genuinely local quantitative conditions (not remote-only).",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "conmed-7.2-c-remote-lien-and-7.1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Usable only if \u00a77.3(g) Liens available and \u00a77.1 financial covenants met pro forma \u2014 both outside the local exception economics.",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "paraphraseSummary": "General Indebtedness prohibition.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 3654,
+          "charEnd": 3720,
+          "exactText": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.2(c)",
+      "exactExceptionText": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 3929,
+        "charEnd": 4453,
+        "exactText": "Indebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial\nstatements are available as if such Indebtedness had been incurred on the first day of each relevant period for testing such compliance;",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Secured debt tied to 7.3(g) liens and pro forma 7.1 compliance.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "Section 7.2(c)"
+      ],
+      "definedTerms": [
+        "Indebtedness",
+        "Liens"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "secured by Liens permitted by Section 7.3(g)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.3(g)",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "r2",
+          "text": "pro forma compliance with Section 7.1 financial covenants",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.1",
+          "computableHint": "RATIO",
+          "sourceSpan": null
+        }
+      ],
+      "provisoAttachment": [
+        {
+          "text": "provided that ... compliance ... Section 7.1",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Proviso points outside clause.",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [
+        {
+          "testId": "ft1",
+          "description": "Section 7.1 covenants on pro forma basis",
+          "ratioOrAmount": "Section 7.1 suite",
+          "sourceSpan": null
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.3(g)",
+          "role": "lien prerequisite",
+          "existenceCheck": "PRESENT_IN_SOURCE"
+        },
+        {
+          "targetRef": "7.1",
+          "role": "financial covenant gate",
+          "existenceCheck": "PRESENT_IN_SOURCE"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Depends on 7.3(g) and 7.1"
+        }
+      ],
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Remote-condition exemplar.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "conmed-7.2-trailing-classify-not-permission",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "classificationRationale": "Classify/reclassify compliance mechanics are not an affirmative permission basket.",
+      "parentProhibition": {
+        "sectionRef": "7.2",
+        "paraphraseSummary": "General Indebtedness prohibition.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 3654,
+          "charEnd": 3720,
+          "exactText": "Create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.2 trailing paragraph",
+      "exactExceptionText": "For purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses.",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 11523,
+        "charEnd": 12456,
+        "exactText": "For purposes of determining compliance with\nthis Section 7.2, (A) Indebtedness need not be permitted solely by reference to one category of permitted Indebtedness described in Section\n7.2(a) through (s) but may be permitted in part under any combination thereof and (B) in the event that an item of Indebtedness (or any\nportion thereof) meets the criteria of one or more of the categories of permitted Indebtedness described in Sections 7.2(a) through (s),\nthe Parent Borrower shall, in its sole discretion, classify or reclassify, or later divide, classify or reclassify, such item of Indebtedness\n(or any portion thereof) in any manner that complies with this Section 7.2 and will only be required to include the amount and type of\nsuch item of Indebtedness (or any portion thereof) in one of the above clauses and such item of Indebtedness shall be treated as having\nbeen incurred or existing pursuant to only one of such clauses.",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Section-wide classify/reclassify authority among 7.2 baskets.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.2",
+        "trailing compliance paragraph"
+      ],
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "Reallocation among existing baskets only",
+          "relatedRefs": [
+            "7.2(a)",
+            "7.2(s)"
+          ]
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Negative-control class: not an affirmative permission.",
+      "isNegativeControl": true,
+      "negativeControlClass": "NUMERIC_THRESHOLD_NOT_PERMISSION",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": []
+    },
+    {
+      "exceptionId": "conmed-7.1-a-csslr-threshold-not-permission",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "classificationRationale": "Maintenance financial covenant threshold; does not grant Indebtedness/RP/Investment permission.",
+      "parentProhibition": {
+        "sectionRef": "7.1(a)",
+        "paraphraseSummary": "CSSLR maintenance covenant.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 432,
+          "charEnd": 658,
+          "exactText": "Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.",
+          "matchStatus": "NORMALIZED_WHITESPACE"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.1(a)",
+      "exactExceptionText": "Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 432,
+        "charEnd": 658,
+        "exactText": "Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "CSSLR must not exceed 3.75:1.00.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.1",
+        "Section 7.1(a)"
+      ],
+      "definedTerms": [
+        "Consolidated Senior Secured Leverage Ratio"
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "3.75 to 1.00"
+        }
+      ],
+      "financialTests": [
+        {
+          "testId": "csslr",
+          "description": "Consolidated Senior Secured Leverage Ratio ceiling",
+          "ratioOrAmount": "3.75 to 1.00",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower and Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "isNegativeControl": true,
+      "negativeControlClass": "NUMERIC_THRESHOLD_NOT_PERMISSION",
+      "notes": "Negative control: numeric threshold \u2260 permission.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "localConditions": [],
+      "remoteConditions": []
+    },
+    {
+      "exceptionId": "lsb-6.01-i-local-greater-of",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+        "issuerKey": "LXU",
+        "issuerName": "LSB Industries, Inc.",
+        "issuerTicker": "LXU",
+        "issuerCik": "0000060714",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Local greater-of cap in the exception clause; Payment Conditions do NOT apply to this enumerated basket.",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "paraphraseSummary": "Indebtedness limitation with chapeau ratio gate and enumerated exceptions.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+          "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+          "charStart": 1014,
+          "charEnd": 1058,
+          "exactText": "The foregoing limitation shall not apply to:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI duration chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.01(i)",
+      "exactExceptionText": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and\n5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+        "charStart": 2656,
+        "charEnd": 2918,
+        "exactText": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and\n5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP;",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "General debt basket: greater of $70mm and 5.5% consolidated assets.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(i)"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "greater of $70,000,000 and 5.5% total consolidated assets",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(i)",
+          "computableHint": "MONEY",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [],
+      "amountsAndRatios": [
+        {
+          "kind": "FIXED_MONEY",
+          "value": "$70,000,000"
+        },
+        {
+          "kind": "PERCENT_OF",
+          "value": "5.5%",
+          "measurementBasis": "total consolidated assets"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties and Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Local-only economic conditions exemplar (no Payment Conditions on this limb).",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "definedTerms": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "lsb-6.11-c-remote-payment-conditions",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+        "issuerKey": "LXU",
+        "issuerName": "LSB Industries, Inc.",
+        "issuerTicker": "LXU",
+        "issuerCik": "0000060714",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "No local quantum; sole gate is remote defined term Payment Conditions.",
+      "parentProhibition": {
+        "sectionRef": "6.11",
+        "paraphraseSummary": "Restricted Payments prohibition with enumerated exceptions.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+          "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+          "charStart": 13603,
+          "charEnd": 13673,
+          "exactText": "provided , that the foregoing shall not prohibit any of the following:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.11(c)",
+      "exactExceptionText": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+        "charStart": 13792,
+        "charEnd": 13905,
+        "exactText": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "RP permitted if Payment Conditions satisfied.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.11",
+        "Section 6.11(c)"
+      ],
+      "definedTerms": [
+        "Payment Conditions",
+        "Restricted Payment"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL",
+          "sourceSpan": null
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Payment Conditions definition",
+          "reason": "Full definition lives in definitions excerpt / Article I, not in article-6 file alone."
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared across NC families",
+          "relatedRefs": [
+            "6.01",
+            "6.08(a)(v)",
+            "6.13(k)"
+          ]
+        }
+      ],
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Remote defined-term exemplar.",
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote gate",
+          "existenceCheck": "PRESENT_IN_DEFINITIONS_EXCERPT"
+        }
+      ],
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "lsb-6.04-b-external-secured-notes",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:LXU:8aa7151166ce9c0466a83073",
+        "issuerKey": "LXU",
+        "issuerName": "LSB Industries, Inc.",
+        "issuerTicker": "LXU",
+        "issuerCik": "0000060714",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8"
+      },
+      "covenantFamily": "ASSET_SALES",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Notwithstanding overrides local ABL caps but imports Secured Notes Documents \u2014 external controlling source.",
+      "parentProhibition": {
+        "sectionRef": "6.04",
+        "paraphraseSummary": "Disposal of assets prohibition with exceptions.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+          "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+          "charStart": 6712,
+          "charEnd": 6744,
+          "exactText": "SECTION  6.04 Disposal of Assets",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.04(b)",
+      "exactExceptionText": "notwithstanding anything to the contrary contained herein",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+        "charStart": 8002,
+        "charEnd": 8059,
+        "exactText": "notwithstanding anything to the contrary contained herein",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Notes Priority Collateral sales if permitted under Secured Notes Documents.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(b)"
+      ],
+      "definedTerms": [
+        "Notes Priority Collateral",
+        "Secured Notes Documents",
+        "Secured Notes Indenture"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "permitted under the Secured Notes Documents or noteholder consent",
+          "location": "EXTERNAL_DOCUMENT",
+          "locationRef": "Secured Notes Documents",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "provisoAttachment": [
+        {
+          "text": "notwithstanding anything to the contrary contained herein",
+          "attachment": "NOTWITHSTANDING",
+          "scopeNote": "Overrides local ABL disposition limits.",
+          "sourceSpan": null
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Secured Notes Documents",
+          "reason": "External instrument not in this NC article file."
+        },
+        {
+          "ref": "Secured Notes Indenture",
+          "reason": "Proceeds application rules external."
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Party",
+          "Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "isNegativeControl": true,
+      "negativeControlClass": "CONSTRAINED_BY_OTHER_DOCUMENT",
+      "notes": "Negative control: constrained by another document.",
+      "crossReferences": [
+        {
+          "targetRef": "Secured Notes Documents",
+          "role": "external permission",
+          "existenceCheck": "EXTERNAL_OR_UNRESOLVED"
+        }
+      ],
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "remoteConstraintFlags": []
+    },
+    {
+      "exceptionId": "chwy-6.01-a-ratio-gated-incurrence",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CHWY:5273be46be8bcf799b6daee8",
+        "issuerKey": "CHWY",
+        "issuerName": "Chewy, Inc.",
+        "issuerTicker": "CHWY",
+        "issuerCik": "0001766502",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "sourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Chapeau prohibition with proviso permitting unlimited incurrence only if First Lien / Senior Secured / Total leverage or ICR tests are met on Pro Forma Basis \u2014 local to 6.01(a) proviso but uses defined ratio terms.",
+      "parentProhibition": {
+        "sectionRef": "6.01(a)",
+        "paraphraseSummary": "Borrowers/Restricted Subsidiaries shall not incur Indebtedness/Disqualified Stock/Preferred Stock.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "sourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+          "charStart": 609018,
+          "charEnd": 609156,
+          "exactText": "the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI duration chapeau until Commitments terminated and amounts paid.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+          "sourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+          "charStart": 608602,
+          "charEnd": 608655,
+          "exactText": "Until the Commitments have expired or been terminated",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "6.01(a) proviso",
+      "exactExceptionText": "provided , however , that the Borrowers may\nincur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of their Restricted Subsidiaries may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock and Preferred Stock\nthat is, in each case, secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, secured by all or a material portion of the Collateral on a ",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt",
+        "sourceSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+        "charStart": 609562,
+        "charEnd": 610046,
+        "exactText": "provided , however , that the Borrowers may\nincur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock, and any of their Restricted Subsidiaries may incur Indebtedness (including Acquired Indebtedness) and issue shares of Disqualified Stock and Preferred Stock\nthat is, in each case, secured by all or a material portion of the Collateral on a pari passu basis with the Secured Obligations, secured by all or a material portion of the Collateral on a ",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Ratio-gated unlimited incurrence for pari passu / junior / unsecured debt under Chewy \u00a76.01(a).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(a)"
+      ],
+      "definedTerms": [
+        "First Lien Leverage Ratio",
+        "Senior Secured Leverage Ratio",
+        "Interest Coverage Ratio",
+        "Total Leverage Ratio",
+        "Pro Forma Basis",
+        "Restricted Subsidiaries"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "Pro Forma First Lien / Senior Secured / Total leverage or ICR tests in 6.01(a) proviso",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(a) proviso",
+          "computableHint": "RATIO",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "Ratio definitions live in Article I",
+          "location": "DEFINED_TERM",
+          "locationRef": "leverage/ICR definitions",
+          "computableHint": "RATIO",
+          "sourceSpan": null
+        }
+      ],
+      "financialTests": [
+        {
+          "testId": "fllr",
+          "description": "First Lien Leverage Ratio gate for pari passu secured",
+          "ratioOrAmount": "greater of 2.00:1.00 and prior FLLR",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrowers",
+          "Restricted Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "New-issuer (CHWY) diversity record.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "gibraltar-7.01-a-ratio-incurrence-proviso",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30",
+        "issuerKey": "ROCK",
+        "issuerName": "Gibraltar Industries, Inc.",
+        "issuerTicker": "ROCK",
+        "issuerCik": "0000912562",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Primary prohibition with proviso permitting incurrence subject to ratio/conditions stated in \u00a77.01(a) (and related defined tests).",
+      "parentProhibition": {
+        "sectionRef": "7.01(a)",
+        "paraphraseSummary": "Shall not incur Indebtedness except as provided.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+          "charStart": 742338,
+          "charEnd": 742462,
+          "exactText": "Incur any Indebtedness (including Acquired Indebtedness); provided that the Borrower and any Restricted Subsidiary may incur",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau while Commitments/Loans outstanding.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+          "charStart": 691221,
+          "charEnd": 691278,
+          "exactText": "So long as any Lender shall have any Commitment hereunder",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.01(a) proviso",
+      "exactExceptionText": "Incur any Indebtedness (including Acquired Indebtedness); provided that the Borrower and any Restricted Subsidiary may incur\nIndebtedness (including Acquired Indebtedness) in an amount not to exceed the Incremental Amount available as of the date of Incurrence (subject to Section 1.02(i) ); provided , however , that such Indebtedness, other than (x)\u00a0Extendable Bridge Loans/Interim Debt, (y) any Customary Term A Facility and (z) debt incurred\npursuant to the Inside Maturity Basket, has a (i) Stated Maturity that is no earlier than the latest Maturity Date applicable with respect to any then outstanding Term Loans and (ii) a Weighted Average Li",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "charStart": 742338,
+        "charEnd": 742988,
+        "exactText": "Incur any Indebtedness (including Acquired Indebtedness); provided that the Borrower and any Restricted Subsidiary may incur\nIndebtedness (including Acquired Indebtedness) in an amount not to exceed the Incremental Amount available as of the date of Incurrence (subject to Section 1.02(i) ); provided , however , that such Indebtedness, other than (x)\u00a0Extendable Bridge Loans/Interim Debt, (y) any Customary Term A Facility and (z) debt incurred\npursuant to the Inside Maturity Basket, has a (i) Stated Maturity that is no earlier than the latest Maturity Date applicable with respect to any then outstanding Term Loans and (ii) a Weighted Average Li",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Gibraltar \u00a77.01(a) incurrence proviso (ratio-gated family).",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.01",
+        "Section 7.01(a)"
+      ],
+      "definedTerms": [
+        "Acquired Indebtedness",
+        "Restricted Subsidiary"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "proviso-permitted incurrence conditions in 7.01(a)",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.01(a)",
+          "computableHint": "RATIO",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "Article VII duration chapeau",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VII chapeau",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower",
+          "Restricted Subsidiary"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "New-issuer (ROCK) diversity record.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:ROCK:b23a5fbea8d9fe9c419c6e30",
+        "issuerKey": "ROCK",
+        "issuerName": "Gibraltar Industries, Inc.",
+        "issuerTicker": "ROCK",
+        "issuerCik": "0000912562",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5"
+      },
+      "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "[Phase-3 audit] Downgraded from UNCONDITIONAL_SOURCE_VERIFIED \u2192 CONDITIONAL. Closing Date external limb + parent provisos + unresolved definitional closure; phase-2 omitted remote conditions. Distinction: 7.06(b)(1) has two limbs: (x) Loan Documents / Facilities Obligations and (y) instruments in effect on the Closing Date. Limb (y) is an external-document / Closing Date condition. Parent 7.06(a) also carries provisos. Phase-2 remoteConditions were empty \u2014 incomplete. Not unconditional legal permission.",
+      "parentProhibition": {
+        "sectionRef": "7.06(a)",
+        "paraphraseSummary": "Burdensome Agreements restriction on subsidiary distributions.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+          "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+          "charStart": 808858,
+          "charEnd": 808949,
+          "exactText": "Create or otherwise cause or permit to exist or become effective any consensual encumbrance",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "7.06(b)(1)",
+      "exactExceptionText": "any encumbrance or restriction (x) for the benefit of the Lenders with respect to the Facilities and the Obligations or under the Loan Documents or (y)\u00a0pursuant to any instrument or\nagreement in effect at or entered into",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt",
+        "sourceSha256": "4131d3c166f8bddb6fe41d31f626057ec27c0d1ad4917ed2ce46d5b89986a5f5",
+        "charStart": 809672,
+        "charEnd": 809892,
+        "exactText": "any encumbrance or restriction (x) for the benefit of the Lenders with respect to the Facilities and the Obligations or under the Loan Documents or (y)\u00a0pursuant to any instrument or\nagreement in effect at or entered into",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Burdensome-agreement exception for Lender/Loan Document restrictions.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.06",
+        "Section 7.06(b)",
+        "Section 7.06(b)(1)"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "p3-1",
+          "text": "7.06(a) parent provisos (Preferred Stock priority / subordination carve-outs)",
+          "location": "PARENT_CHAPEAU",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-2",
+          "text": "Closing Date instrument limb (external/temporal)",
+          "location": "EXTERNAL_DOCUMENT",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-3",
+          "text": "Loan Document definitional scope",
+          "location": "DEFINED_TERM",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Party other than Borrower (per 7.06(a))",
+          "as applicable"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Local-list categorical exception (no additional economic conditions identified in-clause).",
+      "isNegativeControl": true,
+      "negativeControlClass": "NO_ADDITIONAL_CONDITIONS",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Loan Documents",
+          "reason": "Phase-3 audit: REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+        },
+        {
+          "ref": "Closing Date",
+          "reason": "Phase-3 audit: EXTERNAL_TEMPORAL_ANCHOR"
+        },
+        {
+          "ref": "Obligations / Facilities",
+          "reason": "Phase-3 audit: REFERENCED_NOT_FULLY_CLOSED_IN_RECORD"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "EXTERNAL_DOCUMENT",
+          "description": "instruments/agreements in effect at or entered into on the Closing Date"
+        }
+      ],
+      "definedTerms": [],
+      "phase3Audit": {
+        "priorClassification": "UNCONDITIONAL_SOURCE_VERIFIED",
+        "downgraded": true,
+        "categoricalLocalException": false,
+        "unconditionalLegalPermission": false
+      }
+    },
+    {
+      "exceptionId": "dsgr-6.01-a-secured-obligations",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b",
+        "issuerKey": "DSGR",
+        "issuerName": "Distribution Solutions Group, Inc.",
+        "issuerTicker": "DSGR",
+        "issuerCik": "0000703604",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "[Phase-3 audit] Downgraded from UNCONDITIONAL_SOURCE_VERIFIED \u2192 CONDITIONAL. Incorporated Secured Obligations definition contains controlling provisos; article-level Paid-in-Full duration is a remote condition. Distinction: Local (a) has no quantum gate, but Secured Obligations is definitionally conditioned (Excluded Swap Obligations proviso) and Article VI chapeau limits duration to Paid-in-Full. Definitional/remote conditions \u2192 CONDITIONAL.",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "paraphraseSummary": "No Indebtedness except enumerated baskets.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+          "charStart": 448133,
+          "charEnd": 448268,
+          "exactText": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI until Secured Obligations Paid in Full.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+          "charStart": 414875,
+          "charEnd": 414940,
+          "exactText": "Until all of the Secured Obligations shall have been Paid in Full",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "6.01(a)",
+      "exactExceptionText": "the Secured Obligations and the Guaranteed Obligations;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+        "charStart": 448274,
+        "charEnd": 448329,
+        "exactText": "the Secured Obligations and the Guaranteed Obligations;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Permits the facility's own Secured and Guaranteed Obligations.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(a)"
+      ],
+      "definedTerms": [
+        "Secured Obligations",
+        "Guaranteed Obligations"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "Article VI Paid-in-Full duration",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "Article VI chapeau",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-2",
+          "text": "Article VI Paid-in-Full duration chapeau",
+          "location": "ARTICLE_LEVEL",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-3",
+          "text": "Secured Obligations definitional proviso (Excluded Swap Obligations)",
+          "location": "DEFINED_TERM",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Restricted Subsidiaries as bound by chapeau"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "New-issuer (DSGR) restatement diversity; no-additional-conditions economic profile.",
+      "isNegativeControl": true,
+      "negativeControlClass": "NO_ADDITIONAL_CONDITIONS",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Guaranteed Obligations",
+          "reason": "Phase-3 audit: PARTIALLY_RESOLVED \u2014 Canadian/U.S. Guaranteed Obligations variants; full closure not in phase-2 record"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "phase3Audit": {
+        "priorClassification": "UNCONDITIONAL_SOURCE_VERIFIED",
+        "downgraded": true,
+        "categoricalLocalException": true,
+        "unconditionalLegalPermission": false
+      }
+    },
+    {
+      "exceptionId": "dsgr-6.01-b-intercompany-shared-cap",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:DSGR:8a85c4d48172e73edf61377b",
+        "issuerKey": "DSGR",
+        "issuerName": "Distribution Solutions Group, Inc.",
+        "issuerTicker": "DSGR",
+        "issuerCik": "0000703604",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f"
+      },
+      "covenantFamily": "DEBT_INCURRENCE",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Intercompany debt exception with local proviso limbs plus cross-section caps shared with \u00a76.04 Investments and \u00a76.01(c)(iii) guarantees.",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "paraphraseSummary": "No Indebtedness except enumerated baskets.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+          "charStart": 448133,
+          "charEnd": 448268,
+          "exactText": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.01(b)",
+      "exactExceptionText": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04, (ii)\nIndebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate principal amount\nof Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the\naggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of\nApplicable EBITDA;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-d-2025-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+        "charStart": 448335,
+        "charEnd": 449421,
+        "exactText": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other\nRestricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations set forth in Section 6.04, (ii)\nIndebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and (iii) the aggregate principal amount\nof Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the\naggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of\nApplicable EBITDA;",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Intercompany debt with subordination, 6.04 limits, and 15% Applicable EBITDA shared cap.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(b)"
+      ],
+      "definedTerms": [
+        "Applicable EBITDA",
+        "U.S. Loan Parties",
+        "Restricted Subsidiary"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "non-Loan Party debt to Loan Party subordinated on satisfactory terms",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(b)(ii)",
+          "computableHint": "QUALITATIVE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "l2",
+          "text": "15% Applicable EBITDA aggregate shared cap",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(b)(iii)",
+          "computableHint": "MONEY",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "non-Loan Party borrowings from Loan Parties subject to Section 6.04",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.04",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "r2",
+          "text": "shared with Guarantees 6.01(c)(iii) and Investments 6.04(b)",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.01(c)(iii)/6.04(b)",
+          "computableHint": "SHARED_POOL",
+          "sourceSpan": null
+        }
+      ],
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "15% Applicable EBITDA pool shared across intercompany debt, guarantees, investments",
+          "relatedRefs": [
+            "6.01(b)(iii)",
+            "6.01(c)(iii)",
+            "6.04(b)"
+          ]
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "PERCENT_OF",
+          "value": "15%",
+          "measurementBasis": "Applicable EBITDA"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower",
+          "Restricted Subsidiary"
+        ],
+        "excludes": [],
+        "notes": "U.S. vs non-U.S. Loan Party distinctions in cap.",
+        "sourceSpan": null
+      },
+      "crossReferences": [
+        {
+          "targetRef": "6.04",
+          "role": "investment limitations",
+          "existenceCheck": "PRESENT_IN_SOURCE"
+        },
+        {
+          "targetRef": "6.01(c)(iii)",
+          "role": "shared guarantee cap",
+          "existenceCheck": "PRESENT_IN_SOURCE"
+        }
+      ],
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "New-issuer shared-capacity remote+local mix.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "remoteConstraintFlags": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "dsgr-fourth-amendment-authority-pointer",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:DSGR:e92853e7350c5d996bf8861e",
+        "issuerKey": "DSGR",
+        "issuerName": "Distribution Solutions Group, Inc.",
+        "issuerTicker": "DSGR",
+        "issuerCik": "0000703604",
+        "documentKind": "AMENDMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "sourceSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826"
+      },
+      "covenantFamily": "OTHER_NEGATIVE_COVENANT",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Fourth Amendment exists and amends the credit agreement; this pass does not assert a specific NC basket rewrite without clause-level redline extraction.",
+      "parentProhibition": {
+        "sectionRef": "Amendment preamble",
+        "paraphraseSummary": "Amendment to Existing Credit Agreement.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+          "sourceSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+          "charStart": 143,
+          "charEnd": 200,
+          "exactText": "FOURTH AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "n/a \u2014 amendment document",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "Fourth Amendment",
+      "exactExceptionText": "have\nagreed to amend the Credit Agreement on the terms and conditions set forth herein",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "sourceSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+        "charStart": 1210,
+        "charEnd": 1296,
+        "exactText": "have\nagreed to amend the Credit Agreement on the terms and conditions set forth herein",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Amendment instrument acknowledging agreed amendments; basket-level effects unresolved in this pass.",
+      "structuralHierarchy": [
+        "Fourth Amendment"
+      ],
+      "localConditions": [],
+      "remoteConditions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "DSGR Fourth Amendment 2025-03-31",
+          "effect": "Amends Existing Credit Agreement; clause-level NC impact not fully extracted here",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Fourth Amendment operative amendatory sections",
+          "reason": "Need clause-level mapping to 6.01/6.04 etc. before classification."
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Company / Loan Parties"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "UNVERIFIED",
+      "notes": "Amendment diversity document; unresolved controlling amendatory detail.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "definedTerms": [],
+      "isNegativeControl": false
+    },
+    {
+      "exceptionId": "riot-5.02-a-i-facility-liens",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+        "issuerKey": "RIOT",
+        "issuerName": "Riot Platforms, Inc.",
+        "issuerTicker": "RIOT",
+        "issuerCik": "0001167419",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+      },
+      "covenantFamily": "LIENS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "[Phase-3 audit] Downgraded from UNCONDITIONAL_SOURCE_VERIFIED \u2192 CONDITIONAL. Definitional + external Collateral document restrictions control the exception; phase-2 remoteConditions were empty. Distinction: Clause (i) is categorical in-form (no dollar/ratio), but permission is bounded by Loan Document, Collateral Agent, Secured Parties, and Collateral \u2014 and Collateral is defined by external Pledge and Collateral Account Control Agreement. Not unconditional legal permission; no production capacity inference.",
+      "parentProhibition": {
+        "sectionRef": "5.02(a)",
+        "paraphraseSummary": "No Liens on Collateral except enumerated.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 125808,
+          "charEnd": 126224,
+          "exactText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral, whether now owned or hereafter acquired, or file or permit the filing of, or permit to remain in effect, any financing statement or other similar notice of any Lien with respect to the Collateral under the UCC of any State or under any similar recording or notice statute, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Section 5.02 Negative Covenants.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 125764,
+          "charEnd": 125796,
+          "exactText": "Section 5.02.Negative Covenants.",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "5.02(a)(i)",
+      "exactExceptionText": "Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+        "charStart": 126239,
+        "charEnd": 126351,
+        "exactText": "Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Permits Collateral Agent liens under Loan Documents.",
+      "structuralHierarchy": [
+        "Article V",
+        "Section 5.02",
+        "Section 5.02(a)",
+        "Section 5.02(a)(i)"
+      ],
+      "definedTerms": [
+        "Collateral Agent",
+        "Secured Parties",
+        "Loan Document",
+        "Collateral"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "p3-1",
+          "text": "Loan Document definitional set",
+          "location": "DEFINED_TERM",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "p3-2",
+          "text": "Collateral external definition (Pledge agreement)",
+          "location": "DEFINED_TERM",
+          "locationRef": "phase-3-audit",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": [],
+        "notes": "Collateral-scoped (not all assets).",
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "New-issuer (RIOT) crypto-margin facility; no-additional-conditions exemplar.",
+      "isNegativeControl": true,
+      "negativeControlClass": "NO_ADDITIONAL_CONDITIONS",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Collateral",
+          "reason": "Phase-3 audit: EXTERNAL_DOCUMENT"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "EXTERNAL_DOCUMENT",
+          "description": "Pledge and Collateral Account Control Agreement (Collateral definition)"
+        }
+      ],
+      "phase3Audit": {
+        "priorClassification": "UNCONDITIONAL_SOURCE_VERIFIED",
+        "downgraded": true,
+        "categoricalLocalException": true,
+        "unconditionalLegalPermission": false
+      }
+    },
+    {
+      "exceptionId": "riot-5.02-a-ii-tax-liens-local",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+        "issuerKey": "RIOT",
+        "issuerName": "Riot Platforms, Inc.",
+        "issuerTicker": "RIOT",
+        "issuerCik": "0001167419",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+      },
+      "covenantFamily": "LIENS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Local qualitative conditions (not yet due OR contested + reserves) entirely within the exception clause.",
+      "parentProhibition": {
+        "sectionRef": "5.02(a)",
+        "paraphraseSummary": "No Liens on Collateral except enumerated.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 125808,
+          "charEnd": 126224,
+          "exactText": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral, whether now owned or hereafter acquired, or file or permit the filing of, or permit to remain in effect, any financing statement or other similar notice of any Lien with respect to the Collateral under the UCC of any State or under any similar recording or notice statute, except:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Section 5.02 Negative Covenants.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 125764,
+          "charEnd": 125796,
+          "exactText": "Section 5.02.Negative Covenants.",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "5.02(a)(ii)",
+      "exactExceptionText": "Liens for Taxes not yet due or that are being contested in good faith and by appropriate proceedings diligently conducted, if adequate reserves with respect thereto are maintained on the books of the applicable Person in accordance with Applicable Accounting Rules;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+        "charStart": 126357,
+        "charEnd": 126622,
+        "exactText": "Liens for Taxes not yet due or that are being contested in good faith and by appropriate proceedings diligently conducted, if adequate reserves with respect thereto are maintained on the books of the applicable Person in accordance with Applicable Accounting Rules;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Tax liens if not due or contested with reserves.",
+      "structuralHierarchy": [
+        "Article V",
+        "Section 5.02",
+        "Section 5.02(a)",
+        "Section 5.02(a)(ii)"
+      ],
+      "definedTerms": [
+        "Taxes",
+        "Applicable Accounting Rules"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "not yet due OR contested in good faith with adequate reserves",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "5.02(a)(ii)",
+          "computableHint": "QUALITATIVE",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [],
+      "entityScope": {
+        "includes": [
+          "Borrower / applicable Person"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Genuinely local-conditions exemplar for negative-control sample.",
+      "isNegativeControl": true,
+      "negativeControlClass": "LOCAL_CONDITIONS",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": []
+    },
+    {
+      "exceptionId": "riot-5.02-c-no-collateral-sale-exception",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:RIOT:28d8f8822ba35beac4d62ac2",
+        "issuerKey": "RIOT",
+        "issuerName": "Riot Platforms, Inc.",
+        "issuerTicker": "RIOT",
+        "issuerCik": "0001167419",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349"
+      },
+      "covenantFamily": "ASSET_SALES",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "classificationRationale": "Absolute Collateral disposition prohibition with no 'except' limbs in-clause.",
+      "parentProhibition": {
+        "sectionRef": "5.02(c)",
+        "paraphraseSummary": "No sale/disposition of Collateral.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 127668,
+          "charEnd": 127863,
+          "exactText": "The Borrower shall not sell, assign, transfer, convey or otherwise dispose (including without limitation, any effective transfer or other disposition as a result of a division) of any Collateral.",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Section 5.02 Negative Covenants.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+          "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+          "charStart": 125764,
+          "charEnd": 125796,
+          "exactText": "Section 5.02.Negative Covenants.",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "5.02(c)",
+      "exactExceptionText": "The Borrower shall not sell, assign, transfer, convey or otherwise dispose (including without limitation, any effective transfer or other disposition as a result of a division) of any Collateral.",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+        "sourceSha256": "ef91992838879f9f27e0cf2758e1dbfcb08b061165c13c9488f5aea4f4287349",
+        "charStart": 127668,
+        "charEnd": 127863,
+        "exactText": "The Borrower shall not sell, assign, transfer, convey or otherwise dispose (including without limitation, any effective transfer or other disposition as a result of a division) of any Collateral.",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Flat prohibition on Collateral dispositions; no applicable exception list.",
+      "structuralHierarchy": [
+        "Article V",
+        "Section 5.02",
+        "Section 5.02(c)"
+      ],
+      "definedTerms": [
+        "Collateral"
+      ],
+      "localConditions": [],
+      "remoteConditions": [],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "isNegativeControl": true,
+      "negativeControlClass": "PROHIBITION_NO_EXCEPTION",
+      "notes": "Negative control: prohibition with no applicable exception.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": []
+    },
+    {
+      "exceptionId": "sup-7.01-permitted-liens-definitional",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:SUP:743e93841de67060af081311",
+        "issuerKey": "SUP",
+        "issuerName": "Superior Industries International, Inc.",
+        "issuerTicker": "SUP",
+        "issuerCik": "0000095552",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c"
+      },
+      "covenantFamily": "LIENS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Entire exception capacity is the Permitted Liens definition (remote/defined-term). No local enumerated baskets in \u00a77.01 itself.",
+      "parentProhibition": {
+        "sectionRef": "7.01",
+        "paraphraseSummary": "No Liens securing Indebtedness except Permitted Liens.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+          "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+          "charStart": 527992,
+          "charEnd": 528353,
+          "exactText": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, directly or indirectly, create, incur\nor assume any Lien (except any Permitted Lien(s)) that secures obligations under any Indebtedness or any related guarantee of Indebtedness on any asset or property of the Borrower or any Subsidiary of the Borrower, or any income or profits\ntherefrom.",
+          "matchStatus": "NORMALIZED_WHITESPACE"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII effective while Termination Conditions not satisfied.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+          "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+          "charStart": 527862,
+          "charEnd": 527970,
+          "exactText": "Effective as of the Closing Date and for so long thereafter as the Termination Conditions are not satisfied:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.01 / Permitted Liens",
+      "exactExceptionText": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, directly or indirectly, create, incur\nor assume any Lien (except any Permitted Lien(s)) that secures obligations under any Indebtedness or any related guarantee of Indebtedness on any asset or property of the Borrower or any Subsidiary of the Borrower, or any income or profits\ntherefrom.",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "charStart": 527992,
+        "charEnd": 528353,
+        "exactText": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, directly or indirectly, create, incur\nor assume any Lien (except any Permitted Lien(s)) that secures obligations under any Indebtedness or any related guarantee of Indebtedness on any asset or property of the Borrower or any Subsidiary of the Borrower, or any income or profits\ntherefrom.",
+        "matchStatus": "NORMALIZED_WHITESPACE"
+      },
+      "paraphraseSummary": "Lien negative covenant carved solely by Permitted Liens definition.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.01"
+      ],
+      "definedTerms": [
+        "Permitted Lien",
+        "Indebtedness",
+        "Termination Conditions"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "except any Permitted Lien(s)",
+          "location": "DEFINED_TERM",
+          "locationRef": "Permitted Liens",
+          "computableHint": "OTHER_RULE",
+          "sourceSpan": null
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Permitted Liens definition",
+          "reason": "Full definitional basket inventory not inlined in \u00a77.01."
+        }
+      ],
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "CLASSIFY_RECLASSIFY",
+          "description": "\u00a77.01 trailing classify among Permitted Liens categories",
+          "relatedRefs": [
+            "7.01 trailing",
+            "Permitted Liens"
+          ]
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower",
+          "Subsidiary"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "isNegativeControl": true,
+      "negativeControlClass": "REMOTE_CONDITIONS",
+      "notes": "New-issuer (SUP); remote definitional exception pattern.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": []
+    },
+    {
+      "exceptionId": "sup-7.01-classify-not-permission",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:SUP:743e93841de67060af081311",
+        "issuerKey": "SUP",
+        "issuerName": "Superior Industries International, Inc.",
+        "issuerTicker": "SUP",
+        "issuerCik": "0000095552",
+        "documentKind": "RESTATEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "NOT_AN_AFFIRMATIVE_PERMISSION",
+      "classificationRationale": "Classify/reclassify mechanics for Permitted Liens are not themselves a permission grant.",
+      "parentProhibition": {
+        "sectionRef": "7.01",
+        "paraphraseSummary": "Lien prohibition.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+          "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+          "charStart": 3912,
+          "charEnd": 3930,
+          "exactText": "SECTION\u00a07.01 Liens",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "7.01 trailing classify",
+      "exactExceptionText": "For purposes of determining compliance with this Section\u00a07.01, (A) a Lien need not be incurred solely by reference to one category of\nPermitted Liens described in the definition thereof, but is permitted to be incurred in part under any combination thereof and of any other available exemption and (B)\u00a0in the event that a Lien (or any portion thereof) meets the criteria of one\nor more of the categories of Permitted Liens, the Borrower will, in its sole discretion, be entitled to divide, classify or reclassify, in whole or in part, any such Lien (",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+        "sourceSha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c",
+        "charStart": 528708,
+        "charEnd": 529258,
+        "exactText": "For purposes of determining compliance with this Section\u00a07.01, (A) a Lien need not be incurred solely by reference to one category of\nPermitted Liens described in the definition thereof, but is permitted to be incurred in part under any combination thereof and of any other available exemption and (B)\u00a0in the event that a Lien (or any portion thereof) meets the criteria of one\nor more of the categories of Permitted Liens, the Borrower will, in its sole discretion, be entitled to divide, classify or reclassify, in whole or in part, any such Lien (",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Classify/reclassify among Permitted Liens categories.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.01",
+        "trailing"
+      ],
+      "localConditions": [],
+      "remoteConditions": [],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "isNegativeControl": true,
+      "negativeControlClass": "NUMERIC_THRESHOLD_NOT_PERMISSION",
+      "notes": "Not a numeric threshold; still NOT_AN_AFFIRMATIVE_PERMISSION (mechanics).",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "definedTerms": []
+    },
+    {
+      "exceptionId": "fwrg-6.04-a-iii-builder-remote",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:FWRG:a790344e606a5500545b00bb",
+        "issuerKey": "FWRG",
+        "issuerName": "First Watch Restaurant Group, Inc.",
+        "issuerTicker": "FWRG",
+        "issuerCik": "0001789940",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23"
+      },
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "RP capacity is elective draw on Available Amount / Available Excluded Contribution Amount builders defined in Article I.",
+      "parentProhibition": {
+        "sectionRef": "6.04(a)",
+        "paraphraseSummary": "Borrower shall not make Restricted Payments except enumerated.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+          "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+          "charStart": 38637,
+          "charEnd": 38708,
+          "exactText": "The Borrower shall not pay or make any Restricted Payment, except that:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VI NC.",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.04(a)(iii)",
+      "exactExceptionText": "the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date ",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+        "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+        "charStart": 45590,
+        "charEnd": 45870,
+        "exactText": "the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date ",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Builder-basket RP via Available Amount election.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(a)(iii)"
+      ],
+      "definedTerms": [
+        "Available Amount",
+        "Available Excluded Contribution Amount"
+      ],
+      "localConditions": [],
+      "remoteConditions": [
+        {
+          "conditionId": "r1",
+          "text": "Available Amount elective application",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Amount",
+          "computableHint": "SHARED_POOL",
+          "sourceSpan": null
+        }
+      ],
+      "sharedCapacityRestrictions": [
+        {
+          "kind": "BUILDER_ELECTION",
+          "description": "Shared builder across RP/Investments/RDP",
+          "relatedRefs": [
+            "Available Amount",
+            "6.06",
+            "6.04(b)"
+          ]
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "Available Amount definition",
+          "reason": "Builder component gates live in Article I definitions excerpt."
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "isNegativeControl": true,
+      "negativeControlClass": "REMOTE_CONDITIONS",
+      "notes": "Remote builder exemplar retained from phase-1 family with upgraded classification fields.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": []
+    },
+    {
+      "exceptionId": "conmed-7.5-a-qualitative-gates",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-src:CNMD:b9afabef228cd43830fc71ed",
+        "issuerKey": "CNMD",
+        "issuerName": "CONMED Corporation",
+        "issuerTicker": "CNMD",
+        "issuerCik": "0000816956",
+        "documentKind": "CREDIT_AGREEMENT",
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade"
+      },
+      "covenantFamily": "ASSET_SALES",
+      "permissionClassification": "CONDITIONAL",
+      "classificationRationale": "Unlimited-looking carve-out with two in-clause qualitative gates (obsolete/worn out; ordinary course). Not unconditional.",
+      "parentProhibition": {
+        "sectionRef": "7.5",
+        "paraphraseSummary": "Limitation on Sale of Assets.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 25533,
+          "charEnd": 25575,
+          "exactText": "Dispose of any of its Property or business",
+          "matchStatus": "EXACT"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "Article VII chapeau.",
+        "sourceSpan": {
+          "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+          "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "charStart": 235,
+          "charEnd": 338,
+          "exactText": "the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:",
+          "matchStatus": "EXACT"
+        }
+      },
+      "exceptionSectionRef": "7.5(a)",
+      "exactExceptionText": "the Disposition of obsolete or worn out property in the ordinary course of business;",
+      "exceptionSourceSpan": {
+        "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+        "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+        "charStart": 25788,
+        "charEnd": 25872,
+        "exactText": "the Disposition of obsolete or worn out property in the ordinary course of business;",
+        "matchStatus": "EXACT"
+      },
+      "paraphraseSummary": "Obsolete/worn-out property dispositions in ordinary course.",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.5",
+        "Section 7.5(a)"
+      ],
+      "localConditions": [
+        {
+          "conditionId": "l1",
+          "text": "obsolete or worn out property",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(a)",
+          "computableHint": "QUALITATIVE",
+          "sourceSpan": null
+        },
+        {
+          "conditionId": "l2",
+          "text": "ordinary course of business",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.5(a)",
+          "computableHint": "ORDINARY_COURSE",
+          "sourceSpan": null
+        }
+      ],
+      "remoteConditions": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "verificationStatus": "SOURCE_VERIFIED",
+      "isNegativeControl": true,
+      "negativeControlClass": "LOCAL_CONDITIONS",
+      "notes": "Local qualitative conditions; still CONDITIONAL.",
+      "datasetVersion": "ncedb.phase3.v1",
+      "unconditionalCapacity": false,
+      "provisoAttachment": [],
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "base",
+          "effect": "none noted",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "unresolvedControllingSources": [],
+      "crossReferences": [],
+      "remoteConstraintFlags": [],
+      "definedTerms": []
+    },
+    {
+      "exceptionId": "amb-gib-7.06-a-proviso-hanging",
+      "datasetVersion": "ncedb.phase3.v1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-ctrl:ROCK:amb-gib-7.06-a-proviso-hanging",
+        "issuerKey": "ROCK",
+        "issuerName": "ROCK",
+        "issuerTicker": "ROCK",
+        "documentKind": "OTHER",
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "39f862a5d7f35d3fc0e2e8f422e6ce59946b54c9310fad31b2ec04768c2f23d0"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Phase-3 negative control (HANGING_PROVISO): Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse. Not an affirmative capacity permission.",
+      "parentProhibition": {
+        "sectionRef": "7.06(a) proviso",
+        "paraphraseSummary": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+        "sourceSpan": {
+          "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+          "sourceSha256": "4a1b20fb186ee24ed1e127462e6120fd4a63e1d5fb659592c46f1803987330e3",
+          "charStart": 0,
+          "charEnd": 0,
+          "exactText": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+          "matchStatus": "UNRESOLVED"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "7.06(a) proviso",
+      "exactExceptionText": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+      "exceptionSourceSpan": {
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "4a1b20fb186ee24ed1e127462e6120fd4a63e1d5fb659592c46f1803987330e3",
+        "charStart": 0,
+        "charEnd": 0,
+        "exactText": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+        "matchStatus": "UNRESOLVED"
+      },
+      "paraphraseSummary": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+      "structuralHierarchy": [
+        "HANGING_PROVISO"
+      ],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": [],
+      "provisoAttachment": [],
+      "entityScope": {
+        "includes": [],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "n/a",
+          "effect": "control stub",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "HANGING_PROVISO",
+          "reason": "Negative-control stub \u2014 requires source closure for production use"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "HANGING_PROVISO",
+          "description": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse."
+        }
+      ],
+      "verificationStatus": "SOURCE_ONLY",
+      "notes": "expectedDetectorBehavior=FLAG_AMBIGUOUS_ATTACHMENT",
+      "unconditionalCapacity": false,
+      "isNegativeControl": true,
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "phase3ControlMeta": {
+        "controlId": "amb-gib-7.06-a-proviso-hanging",
+        "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+        "caseType": "HANGING_PROVISO",
+        "issuerKey": "ROCK",
+        "sectionRef": "7.06(a) proviso",
+        "summary": "Parent 7.06(a) proviso (Preferred Stock priority / subordination) \u2014 attachment scope to (b) exceptions is ambiguous without structural parse.",
+        "expectedDetectorBehavior": "FLAG_AMBIGUOUS_ATTACHMENT",
+        "polarity": "NEGATIVE_CONTROL"
+      }
+    },
+    {
+      "exceptionId": "amb-fwrg-nested-except-within-except",
+      "datasetVersion": "ncedb.phase3.v1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-ctrl:FWRG:amb-fwrg-nested-except-within-except",
+        "issuerKey": "FWRG",
+        "issuerName": "FWRG",
+        "issuerTicker": "FWRG",
+        "documentKind": "OTHER",
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "2396f08afc3960ef1853b5c48a6b24f602961179adc658bd216db5786ee8d1ae"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Phase-3 negative control (NESTED_EXCEPTION): Nested exception/builder structures where inner except may re-open outer capacity. Not an affirmative capacity permission.",
+      "parentProhibition": {
+        "sectionRef": "6.04 nested builders",
+        "paraphraseSummary": "Nested exception/builder structures where inner except may re-open outer capacity.",
+        "sourceSpan": {
+          "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+          "sourceSha256": "44ed248f354114eeff2bd93443d98461cad43d2394d2f4ca978e407b815fb807",
+          "charStart": 0,
+          "charEnd": 0,
+          "exactText": "Nested exception/builder structures where inner except may re-open outer capacity.",
+          "matchStatus": "UNRESOLVED"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "6.04 nested builders",
+      "exactExceptionText": "Nested exception/builder structures where inner except may re-open outer capacity.",
+      "exceptionSourceSpan": {
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "44ed248f354114eeff2bd93443d98461cad43d2394d2f4ca978e407b815fb807",
+        "charStart": 0,
+        "charEnd": 0,
+        "exactText": "Nested exception/builder structures where inner except may re-open outer capacity.",
+        "matchStatus": "UNRESOLVED"
+      },
+      "paraphraseSummary": "Nested exception/builder structures where inner except may re-open outer capacity.",
+      "structuralHierarchy": [
+        "NESTED_EXCEPTION"
+      ],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": [],
+      "provisoAttachment": [],
+      "entityScope": {
+        "includes": [],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "n/a",
+          "effect": "control stub",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "NESTED_EXCEPTION",
+          "reason": "Negative-control stub \u2014 requires source closure for production use"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "NESTED_EXCEPTION",
+          "description": "Nested exception/builder structures where inner except may re-open outer capacity."
+        }
+      ],
+      "verificationStatus": "SOURCE_ONLY",
+      "notes": "expectedDetectorBehavior=FLAG_NESTING_UNRESOLVED",
+      "unconditionalCapacity": false,
+      "isNegativeControl": true,
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "phase3ControlMeta": {
+        "controlId": "amb-fwrg-nested-except-within-except",
+        "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+        "caseType": "NESTED_EXCEPTION",
+        "issuerKey": "FWRG",
+        "sectionRef": "6.04 nested builders",
+        "summary": "Nested exception/builder structures where inner except may re-open outer capacity.",
+        "expectedDetectorBehavior": "FLAG_NESTING_UNRESOLVED",
+        "polarity": "NEGATIVE_CONTROL"
+      }
+    },
+    {
+      "exceptionId": "amb-fwrg-ratio-conditional",
+      "datasetVersion": "ncedb.phase3.v1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-ctrl:FWRG:amb-fwrg-ratio-conditional",
+        "issuerKey": "FWRG",
+        "issuerName": "FWRG",
+        "issuerTicker": "FWRG",
+        "documentKind": "OTHER",
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "c5d7ea0e9c013a00195f3cc9fbac6ce4d610914c0ea3ea8225fdf0367005f931"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Phase-3 negative control (CONDITIONAL_RATIO): Ratio-gated baskets where measurement date / pro forma adjustments are remote. Not an affirmative capacity permission.",
+      "parentProhibition": {
+        "sectionRef": "ratio baskets",
+        "paraphraseSummary": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+        "sourceSpan": {
+          "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+          "sourceSha256": "2c130d743f60f731cd95bd8b3b6cd19f72677678c1b0721f0ad8f8e7f99a8251",
+          "charStart": 0,
+          "charEnd": 0,
+          "exactText": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+          "matchStatus": "UNRESOLVED"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "ratio baskets",
+      "exactExceptionText": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+      "exceptionSourceSpan": {
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "2c130d743f60f731cd95bd8b3b6cd19f72677678c1b0721f0ad8f8e7f99a8251",
+        "charStart": 0,
+        "charEnd": 0,
+        "exactText": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+        "matchStatus": "UNRESOLVED"
+      },
+      "paraphraseSummary": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+      "structuralHierarchy": [
+        "CONDITIONAL_RATIO"
+      ],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": [],
+      "provisoAttachment": [],
+      "entityScope": {
+        "includes": [],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "n/a",
+          "effect": "control stub",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "CONDITIONAL_RATIO",
+          "reason": "Negative-control stub \u2014 requires source closure for production use"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CONDITIONAL_RATIO",
+          "description": "Ratio-gated baskets where measurement date / pro forma adjustments are remote."
+        }
+      ],
+      "verificationStatus": "SOURCE_ONLY",
+      "notes": "expectedDetectorBehavior=FLAG_RATIO_REMOTE_CONDITIONS",
+      "unconditionalCapacity": false,
+      "isNegativeControl": true,
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "phase3ControlMeta": {
+        "controlId": "amb-fwrg-ratio-conditional",
+        "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+        "caseType": "CONDITIONAL_RATIO",
+        "issuerKey": "FWRG",
+        "sectionRef": "ratio baskets",
+        "summary": "Ratio-gated baskets where measurement date / pro forma adjustments are remote.",
+        "expectedDetectorBehavior": "FLAG_RATIO_REMOTE_CONDITIONS",
+        "polarity": "NEGATIVE_CONTROL"
+      }
+    },
+    {
+      "exceptionId": "amb-fwrg-shared-basket-available-amount",
+      "datasetVersion": "ncedb.phase3.v1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-ctrl:FWRG:amb-fwrg-shared-basket-available-amount",
+        "issuerKey": "FWRG",
+        "issuerName": "FWRG",
+        "issuerTicker": "FWRG",
+        "documentKind": "OTHER",
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "faaa6a344819c0a773e4e70e352b3b8ec75d1044442b89c08c43fff934f248b5"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Phase-3 negative control (SHARED_BASKET): Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families. Not an affirmative capacity permission.",
+      "parentProhibition": {
+        "sectionRef": "Available Amount / builder",
+        "paraphraseSummary": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+        "sourceSpan": {
+          "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+          "sourceSha256": "9c1222f92eff82b81a5b45eb74de83de9d5335e21f213afd10af5951d8d3706a",
+          "charStart": 0,
+          "charEnd": 0,
+          "exactText": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+          "matchStatus": "UNRESOLVED"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "Available Amount / builder",
+      "exactExceptionText": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+      "exceptionSourceSpan": {
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "9c1222f92eff82b81a5b45eb74de83de9d5335e21f213afd10af5951d8d3706a",
+        "charStart": 0,
+        "charEnd": 0,
+        "exactText": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+        "matchStatus": "UNRESOLVED"
+      },
+      "paraphraseSummary": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+      "structuralHierarchy": [
+        "SHARED_BASKET"
+      ],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": [],
+      "provisoAttachment": [],
+      "entityScope": {
+        "includes": [],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "n/a",
+          "effect": "control stub",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "SHARED_BASKET",
+          "reason": "Negative-control stub \u2014 requires source closure for production use"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families."
+        }
+      ],
+      "verificationStatus": "SOURCE_ONLY",
+      "notes": "expectedDetectorBehavior=REQUIRE_SHARED_CAPACITY_EDGE",
+      "unconditionalCapacity": false,
+      "isNegativeControl": true,
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "phase3ControlMeta": {
+        "controlId": "amb-fwrg-shared-basket-available-amount",
+        "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+        "caseType": "SHARED_BASKET",
+        "issuerKey": "FWRG",
+        "sectionRef": "Available Amount / builder",
+        "summary": "Shared Available Amount basket \u2014 exception shares capacity across RP/Investment families.",
+        "expectedDetectorBehavior": "REQUIRE_SHARED_CAPACITY_EDGE",
+        "polarity": "NEGATIVE_CONTROL"
+      }
+    },
+    {
+      "exceptionId": "amb-sup-amendment-change",
+      "datasetVersion": "ncedb.phase3.v1",
+      "sourceIdentity": {
+        "sourceIdentityKey": "ncedb-ctrl:SUP:amb-sup-amendment-change",
+        "issuerKey": "SUP",
+        "issuerName": "SUP",
+        "issuerTicker": "SUP",
+        "documentKind": "OTHER",
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "7cf28a34c23d045fef4a05dbd14a8bf31add93f11861cca05a663287452f63e8"
+      },
+      "covenantFamily": "NOT_AN_EXCEPTION",
+      "permissionClassification": "UNKNOWN",
+      "classificationRationale": "Phase-3 negative control (AMENDMENT_CHANGE): Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete. Not an affirmative capacity permission.",
+      "parentProhibition": {
+        "sectionRef": "First Amendment 2025-03-31",
+        "paraphraseSummary": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+        "sourceSpan": {
+          "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+          "sourceSha256": "9bc58c68a340c0d622002cceb797848dfe5b42258b2da1f41ffda3c71a7c0564",
+          "charStart": 0,
+          "charEnd": 0,
+          "exactText": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+          "matchStatus": "UNRESOLVED"
+        }
+      },
+      "articleOrSectionChapeau": {
+        "paraphraseSummary": "",
+        "sourceSpan": null
+      },
+      "exceptionSectionRef": "First Amendment 2025-03-31",
+      "exactExceptionText": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+      "exceptionSourceSpan": {
+        "sourcePath": "docs/negative-covenant-exception-database/phase-3/negative-controls/cases.json",
+        "sourceSha256": "9bc58c68a340c0d622002cceb797848dfe5b42258b2da1f41ffda3c71a7c0564",
+        "charStart": 0,
+        "charEnd": 0,
+        "exactText": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+        "matchStatus": "UNRESOLVED"
+      },
+      "paraphraseSummary": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+      "structuralHierarchy": [
+        "AMENDMENT_CHANGE"
+      ],
+      "definedTerms": [],
+      "localConditions": [],
+      "remoteConditions": [],
+      "provisoAttachment": [],
+      "entityScope": {
+        "includes": [],
+        "excludes": [],
+        "sourceSpan": null
+      },
+      "financialTests": [],
+      "amountsAndRatios": [],
+      "sharedCapacityRestrictions": [],
+      "amendmentAuthority": [
+        {
+          "documentRef": "n/a",
+          "effect": "control stub",
+          "status": "UNKNOWN"
+        }
+      ],
+      "unresolvedControllingSources": [
+        {
+          "ref": "AMENDMENT_CHANGE",
+          "reason": "Negative-control stub \u2014 requires source closure for production use"
+        }
+      ],
+      "crossReferences": [],
+      "remoteConstraintFlags": [
+        {
+          "kind": "AMENDMENT_CHANGE",
+          "description": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete."
+        }
+      ],
+      "verificationStatus": "SOURCE_ONLY",
+      "notes": "expectedDetectorBehavior=REQUIRE_AMENDMENT_CHAIN_CLOSURE",
+      "unconditionalCapacity": false,
+      "isNegativeControl": true,
+      "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+      "phase3ControlMeta": {
+        "controlId": "amb-sup-amendment-change",
+        "negativeControlClass": "AMBIGUOUS_CONDITION_SCOPE",
+        "caseType": "AMENDMENT_CHANGE",
+        "issuerKey": "SUP",
+        "sectionRef": "First Amendment 2025-03-31",
+        "summary": "Amendment may alter basket/exception operative text \u2014 base-only parse is incomplete.",
+        "expectedDetectorBehavior": "REQUIRE_AMENDMENT_CHAIN_CLOSURE",
+        "polarity": "NEGATIVE_CONTROL"
+      }
+    }
+  ],
+  "indexes": {
+    "byClassification": {
+      "CONDITIONAL": [
+        "conmed-7.2-a-loan-document-debt",
+        "conmed-7.2-d-finance-leases-local-greater-of",
+        "conmed-7.2-c-remote-lien-and-7.1",
+        "lsb-6.01-i-local-greater-of",
+        "lsb-6.11-c-remote-payment-conditions",
+        "lsb-6.04-b-external-secured-notes",
+        "chwy-6.01-a-ratio-gated-incurrence",
+        "gibraltar-7.01-a-ratio-incurrence-proviso",
+        "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+        "dsgr-6.01-a-secured-obligations",
+        "dsgr-6.01-b-intercompany-shared-cap",
+        "riot-5.02-a-i-facility-liens",
+        "riot-5.02-a-ii-tax-liens-local",
+        "sup-7.01-permitted-liens-definitional",
+        "fwrg-6.04-a-iii-builder-remote",
+        "conmed-7.5-a-qualitative-gates"
+      ],
+      "NOT_AN_AFFIRMATIVE_PERMISSION": [
+        "conmed-7.2-trailing-classify-not-permission",
+        "conmed-7.1-a-csslr-threshold-not-permission",
+        "riot-5.02-c-no-collateral-sale-exception",
+        "sup-7.01-classify-not-permission"
+      ],
+      "UNKNOWN": [
+        "dsgr-fourth-amendment-authority-pointer",
+        "amb-gib-7.06-a-proviso-hanging",
+        "amb-fwrg-nested-except-within-except",
+        "amb-fwrg-ratio-conditional",
+        "amb-fwrg-shared-basket-available-amount",
+        "amb-sup-amendment-change"
+      ]
+    },
+    "byIssuer": {
+      "CNMD": [
+        "conmed-7.2-a-loan-document-debt",
+        "conmed-7.2-d-finance-leases-local-greater-of",
+        "conmed-7.2-c-remote-lien-and-7.1",
+        "conmed-7.2-trailing-classify-not-permission",
+        "conmed-7.1-a-csslr-threshold-not-permission",
+        "conmed-7.5-a-qualitative-gates"
+      ],
+      "LXU": [
+        "lsb-6.01-i-local-greater-of",
+        "lsb-6.11-c-remote-payment-conditions",
+        "lsb-6.04-b-external-secured-notes"
+      ],
+      "CHWY": [
+        "chwy-6.01-a-ratio-gated-incurrence"
+      ],
+      "ROCK": [
+        "gibraltar-7.01-a-ratio-incurrence-proviso",
+        "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+        "amb-gib-7.06-a-proviso-hanging"
+      ],
+      "DSGR": [
+        "dsgr-6.01-a-secured-obligations",
+        "dsgr-6.01-b-intercompany-shared-cap",
+        "dsgr-fourth-amendment-authority-pointer"
+      ],
+      "RIOT": [
+        "riot-5.02-a-i-facility-liens",
+        "riot-5.02-a-ii-tax-liens-local",
+        "riot-5.02-c-no-collateral-sale-exception"
+      ],
+      "SUP": [
+        "sup-7.01-permitted-liens-definitional",
+        "sup-7.01-classify-not-permission",
+        "amb-sup-amendment-change"
+      ],
+      "FWRG": [
+        "fwrg-6.04-a-iii-builder-remote",
+        "amb-fwrg-nested-except-within-except",
+        "amb-fwrg-ratio-conditional",
+        "amb-fwrg-shared-basket-available-amount"
+      ]
+    },
+    "byFamily": {
+      "DEBT_INCURRENCE": [
+        "conmed-7.2-a-loan-document-debt",
+        "conmed-7.2-d-finance-leases-local-greater-of",
+        "conmed-7.2-c-remote-lien-and-7.1",
+        "lsb-6.01-i-local-greater-of",
+        "chwy-6.01-a-ratio-gated-incurrence",
+        "gibraltar-7.01-a-ratio-incurrence-proviso",
+        "dsgr-6.01-a-secured-obligations",
+        "dsgr-6.01-b-intercompany-shared-cap"
+      ],
+      "NOT_AN_EXCEPTION": [
+        "conmed-7.2-trailing-classify-not-permission",
+        "conmed-7.1-a-csslr-threshold-not-permission",
+        "sup-7.01-classify-not-permission",
+        "amb-gib-7.06-a-proviso-hanging",
+        "amb-fwrg-nested-except-within-except",
+        "amb-fwrg-ratio-conditional",
+        "amb-fwrg-shared-basket-available-amount",
+        "amb-sup-amendment-change"
+      ],
+      "RESTRICTED_PAYMENTS": [
+        "lsb-6.11-c-remote-payment-conditions",
+        "fwrg-6.04-a-iii-builder-remote"
+      ],
+      "ASSET_SALES": [
+        "lsb-6.04-b-external-secured-notes",
+        "riot-5.02-c-no-collateral-sale-exception",
+        "conmed-7.5-a-qualitative-gates"
+      ],
+      "SUBSIDIARY_RESTRICTIONS": [
+        "gibraltar-7.06-b-1-loan-docs-burdensome-exception"
+      ],
+      "OTHER_NEGATIVE_COVENANT": [
+        "dsgr-fourth-amendment-authority-pointer"
+      ],
+      "LIENS": [
+        "riot-5.02-a-i-facility-liens",
+        "riot-5.02-a-ii-tax-liens-local",
+        "sup-7.01-permitted-liens-definitional"
+      ]
+    },
+    "negativeControls": [
+      "conmed-7.2-trailing-classify-not-permission",
+      "conmed-7.1-a-csslr-threshold-not-permission",
+      "lsb-6.04-b-external-secured-notes",
+      "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "dsgr-6.01-a-secured-obligations",
+      "riot-5.02-a-i-facility-liens",
+      "riot-5.02-a-ii-tax-liens-local",
+      "riot-5.02-c-no-collateral-sale-exception",
+      "sup-7.01-permitted-liens-definitional",
+      "sup-7.01-classify-not-permission",
+      "fwrg-6.04-a-iii-builder-remote",
+      "conmed-7.5-a-qualitative-gates",
+      "amb-gib-7.06-a-proviso-hanging",
+      "amb-fwrg-nested-except-within-except",
+      "amb-fwrg-ratio-conditional",
+      "amb-fwrg-shared-basket-available-amount",
+      "amb-sup-amendment-change"
+    ],
+    "phase3Audited": [
+      "conmed-7.2-a-loan-document-debt",
+      "gibraltar-7.06-b-1-loan-docs-burdensome-exception",
+      "dsgr-6.01-a-secured-obligations",
+      "riot-5.02-a-i-facility-liens"
+    ]
+  }
+}

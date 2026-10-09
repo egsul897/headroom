@@ -811,6 +811,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     let conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
     // Unlimited carve-out honesty: a property-character object class and an ordinary-course manner are two
     // UNSUPPORTED gates, AND-composed on gatedBy. Sufficiency falls to PARTIAL. No new condition type.
+    // An unattributable pair is not copied, and COMPLETE is not left standing: sufficiency becomes AMBIGUOUS.
     const honestGates = applyUnlimitedCarveOutQualitativeGates({
       operativeText: input.operativeSourceText,
       anchors: [wireRule.excerpt, wireRule.capacityExpression?.excerpt ?? null, ...wireRule.conditions.flatMap((c) => [c.excerpt, c.description])],
@@ -821,6 +822,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       bindExcerpt: (excerpt) => provenanceFor(ctx, wireRule.citation, excerpt) ?? null,
     });
     if (honestGates.applied && honestGates.reason) limitRule(ctx, honestGates.reason);
+    if (honestGates.ambiguousAttribution && honestGates.reason) warn(ctx, honestGates.reason, "SUFFICIENCY");
     capacityExpression = honestGates.capacity;
     conditions = honestGates.conditions;
     // §17: the rule-level fields when the model supplied them; otherwise the entity-scope tags the rule's own
@@ -865,6 +867,10 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
 
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
+    // Unknown attribution of a material qualitative pair is not a complete representation. AMBIGUOUS is the
+    // existing sufficiency for a reading this pass will not adjudicate. CONFLICTED / MISSING_CONTEXT / UNSUPPORTED
+    // already name a different defect and are left as they arrived; the attribution reason is still recorded.
+    if (honestGates.ambiguousAttribution && (consistent.sufficiency === "COMPLETE" || consistent.sufficiency === "PARTIAL")) consistent.sufficiency = "AMBIGUOUS";
     // deterministic limits raised under this rule (invented references, unverifiable references, incompatible action) downgrade a COMPLETE claim
     if (ctx.limits.length > 0 && consistent.sufficiency === "COMPLETE") { consistent.sufficiency = "PARTIAL"; consistent.reasons.push(`deterministic post-processing: ${ctx.limits.length} limit(s) raised under this rule, so COMPLETE was downgraded to PARTIAL`); }
     const sufficiencyWarnings = warnings.filter((w) => w.scope.startsWith(ctx.scopePath) && (w.kind ?? "SUFFICIENCY") === "SUFFICIENCY").map((w) => w.message);

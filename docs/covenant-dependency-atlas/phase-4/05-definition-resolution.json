@@ -1,0 +1,254 @@
+{
+  "gtAssistedMissingDefinitionClass": 627,
+  "bySubtype": {
+    "TRULY_MISSING_DEFINITION": 588,
+    "DEFINITION_IN_ANOTHER_DOCUMENT": 3,
+    "FORWARDING_DEFINITION": 4,
+    "INCORRECT_EXTRACTION_BOUNDARY": 0,
+    "ALIAS_OR_PLURALIZATION": 4,
+    "NON_DEFINITION_REFERENCE": 28,
+    "INCORRECT_CANDIDATE_EDGE": 0
+  },
+  "examples": [
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:ppsa",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'PPSA' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'PPSA' with no local definition unit.",
+      "sourceExcerpt": "The Quebec/PPSA translation provisions are interpretive but are what make the Canadian collateral package function."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::V::5.15-unrestricted-subsidiary-designation::node:doc-a:unresolved:section_6.12",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "NON_DEFINITION_REFERENCE",
+      "evidence": "subtype=NON_DEFINITION_REFERENCE",
+      "unresolvedReason": "Term 'Section 6.12' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::V::5.15-unrestricted-subsidiary-designation (COVENANT) inventory-declares keyDefinedTerm 'Section 6.12' with no local definition unit.",
+      "sourceExcerpt": "CRITICAL: this is the trap-door for moving assets outside the covenant perimeter; the IP restriction in clause (e) plus the 6.05 flush IP prohibition are the anti-drop-down protections."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-c:unit:doc-c::rp-condition-y-pro-forma-6-12-compliance::node:doc-c:unresolved:indebtedness",
+      "documentId": "doc-c",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "ALIAS_OR_PLURALIZATION",
+      "evidence": "subtype=ALIAS_OR_PLURALIZATION",
+      "unresolvedReason": "Term 'Indebtedness' not declared by any DEFINITION unit in doc-c.",
+      "rationale": "Unit doc-c::rp-condition-y-pro-forma-6-12-compliance (FINANCIAL_TEST) inventory-declares keyDefinedTerm 'Indebtedness' with no local definition unit.",
+      "sourceExcerpt": "Pro forma test must sweep in associated debt incurrence/assumption, not just the cash outflow. Compliance is with the Section 6.12 covenants generally (plural), not solely a leverage ratio."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-d:unit:doc-d::II::sec-2-02-loans-and-borrowings::node:doc-d:unresolved:borrowing",
+      "documentId": "doc-d",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "FORWARDING_DEFINITION",
+      "evidence": "subtype=FORWARDING_DEFINITION",
+      "unresolvedReason": "Term 'Borrowing' not declared by any DEFINITION unit in doc-d.",
+      "rationale": "Unit doc-d::II::sec-2-02-loans-and-borrowings (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Borrowing' with no local definition unit.",
+      "sourceExcerpt": "Section 2.02(a) states 'The Term Loans shall amortize as set forth in Section 2.11' but the amortization schedule is actually in Section 2.10(b) - an internal cross-reference error."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-d:unit:doc-d::IV::cp-4-01-h::node:doc-d:unresolved:security_agreements",
+      "documentId": "doc-d",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "DEFINITION_IN_ANOTHER_DOCUMENT",
+      "evidence": "subtype=DEFINITION_IN_ANOTHER_DOCUMENT",
+      "unresolvedReason": "Term 'Security Agreements' not declared by any DEFINITION unit in doc-d.",
+      "rationale": "Unit doc-d::IV::cp-4-01-h (CONDITION) inventory-declares keyDefinedTerm 'Security Agreements' with no local definition unit.",
+      "sourceExcerpt": "Partially deferred: Schedule 5.14 item 4 allows delivery of originals within ten days after the Effective Date to the extent not already delivered."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:sta",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'STA' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'STA' with no local definition unit.",
+      "sourceExcerpt": "The Quebec/PPSA translation provisions are interpretive but are what make the Canadian collateral package function."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.03-terms-generally::node:doc-a:unresolved:ucc",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'UCC' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.03-terms-generally (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'UCC' with no local definition unit.",
+      "sourceExcerpt": "The Quebec/PPSA translation provisions are interpretive but are what make the Canadian collateral package function."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.04-accounting-terms-gaap::node:doc-a:unresolved:gaap",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'GAAP' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.04-accounting-terms-gaap (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'GAAP' with no local definition unit.",
+      "sourceExcerpt": "A GAAP-freeze notice can change every ratio and basket result; note GAAP means U.S. GAAP for U.S. Loan Parties and Canadian GAAP for Canadian Loan Parties."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.06-pro-forma-adjustments::node:doc-a:unresolved:total_net_leverage_ratio_adjustment",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Total Net Leverage Ratio Adjustment' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.06-pro-forma-adjustments (FINANCIAL_TEST) inventory-declares keyDefinedTerm 'Total Net Leverage Ratio Adjustment' with no local definition unit.",
+      "sourceExcerpt": "The exclusion of the Total Net Leverage Ratio Adjustment from pro forma tests (other than Permitted Acquisitions) is easy to miss and directly changes basket availability during a covenant-holiday period."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:alternative_currency",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Alternative Currency' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Alternative Currency' with no local definition unit.",
+      "sourceExcerpt": "The carve-out for financial covenant calculations means FX revaluation drives borrowing-base/exposure tests but not leverage/coverage."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:dollar_equivalent",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Dollar Equivalent' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Dollar Equivalent' with no local definition unit.",
+      "sourceExcerpt": "The carve-out for financial covenant calculations means FX revaluation drives borrowing-base/exposure tests but not leverage/coverage."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.10-exchange-rates::node:doc-a:unresolved:revaluation_date",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Revaluation Date' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.10-exchange-rates (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Revaluation Date' with no local definition unit.",
+      "sourceExcerpt": "The carve-out for financial covenant calculations means FX revaluation drives borrowing-base/exposure tests but not leverage/coverage."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement::node:doc-a:unresolved:effective_date",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Effective Date' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.11-amendment-and-restatement (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Effective Date' with no local definition unit.",
+      "sourceExcerpt": "Determines which agreement is operative and preserves perfection continuity - directly relevant to 'which version is operative today'."
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:doc-a:unit:doc-a::I::1.11-amendment-and-restatement::node:doc-a:unresolved:existing_credit_agreement",
+      "documentId": "doc-a",
+      "kind": "COVENANT_TO_DEFINITION",
+      "subtype": "TRULY_MISSING_DEFINITION",
+      "evidence": "subtype=TRULY_MISSING_DEFINITION",
+      "unresolvedReason": "Term 'Existing Credit Agreement' not declared by any DEFINITION unit in doc-a.",
+      "rationale": "Unit doc-a::I::1.11-amendment-and-restatement (OTHER_OPERATIVE) inventory-declares keyDefinedTerm 'Existing Credit Agreement' with no local definition unit.",
+      "sourceExcerpt": "Determines which agreement is operative and preserves perfection continuity - directly relevant to 'which version is operative today'."
+    }
+  ],
+  "coordinationNotes": [
+    "Definition Encyclopedia: forwarding declarations need one-hop body resolution with provenance.",
+    "Structural Compiler: declaration charEnd ends at 'means' — Atlas uses definitionExcerpt/body window; production span change requires coordination.",
+    "Truly missing vs another-document: do not invent targets; preserve UNRESOLVED.",
+    "Alias/pluralization: coordinate normalized-term identity with encyclopedia; no unsupported merge."
+  ],
+  "structuralFailClosedMissingDefEdges": 1454,
+  "structuralFailClosedSample": [
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:1.01(b)(2)(3)::node:dsgr-doc-a:unresolved:section-1010.230::69a71fe5b94b9092",
+      "rationale": "Structural cross-reference '§ 1010.230' with connective 'as defined in'.",
+      "unresolvedReason": "no SECTION node with ref \"1010.230\" exists among this document's own structural nodes",
+      "excerpt": "cial Ownership Regulation.\n\n“ Beneficial Ownership Regulation ” means 31 C.F.R. § 1010.230.\n\n“ Benefit Plan ” means any of (a) an “employee benefit plan” (as defined in S"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:1.01(b)(2)(b)(i)(e)(i)::node:dsgr-doc-a:unresolved:section-2510.3::fa9505d076bc6047",
+      "rationale": "Structural cross-reference '§ 2510.3' with connective 'as defined in'.",
+      "unresolvedReason": "no SECTION node with ref \"2510.3\" exists among this document's own structural nodes",
+      "excerpt": "” as defined in Section 3(5) of ERISA.\n\n“ Plan Asset\nRegulations ” means 29 CFR § 2510.3-101 et seq., as modified by Section 3(42) of ERISA, as amended from time to tim"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:3.08::node:dsgr-doc-a:unresolved:missing-def-investment::Investment",
+      "rationale": "Section 3.08 contains controlling term 'Investment' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Investment' not declared by any structural definition in this document text.",
+      "excerpt": "SECTION 3.08. Investment Company Status\n\n91\n\n"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:3.08::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 3.08 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "nvestment Company Status . No Loan Party or any Subsidiary is an “inve"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.01(e)::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.01(e) contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": " other materials filed by any Loan Party or any Subsidiary with the SE"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.01(h)::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.01(h) contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "nd financial condition\nof any Loan Party or any Subsidiary, or complia"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.01(j)::node:dsgr-doc-a:unresolved:missing-def-restricted_subsidiaries::Restricted Subsidiaries",
+      "rationale": "Section 5.01(j) contains controlling term 'Restricted Subsidiaries' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Restricted Subsidiaries' not declared by any structural definition in this document text.",
+      "excerpt": " the Company its consolidated Restricted Subsidiaries, all certified by a Financial"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.02::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.02 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "ced or threatened against any Loan Party or any Restricted Subsidiary "
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.02(b)::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.02(b) contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "ced or threatened against any Loan Party or any Restricted Subsidiary "
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.03::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.03 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "e; Conduct of Business . Each Loan Party will, and will cause each Res"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.04::node:dsgr-doc-a:unresolved:missing-def-indebtedness::Indebtedness",
+      "rationale": "Section 5.04 contains controlling term 'Indebtedness' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Indebtedness' not declared by any structural definition in this document text.",
+      "excerpt": "pay or discharge all\nMaterial Indebtedness and all other material liabil"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.04::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.04 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "Payment of Obligations . Each Loan Party will, and will cause each Res"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.04(a)::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.04(a) contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "opriate proceedings, (b) such Loan Party or Restricted Subsidiary has "
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.05::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.05 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "ntenance of Properties . Each Loan Party will, and will cause each Res"
+    },
+    {
+      "edgeId": "COVENANT_TO_DEFINITION::node:dsgr-doc-a:section:5.06::node:dsgr-doc-a:unresolved:missing-def-loan_party::Loan Party",
+      "rationale": "Section 5.06 contains controlling term 'Loan Party' with no local structural definition (fail-closed; definition may live in another document).",
+      "unresolvedReason": "Term 'Loan Party' not declared by any structural definition in this document text.",
+      "excerpt": "rds; Inspection Rights . Each Loan Party will, and\nwill cause each Res"
+    }
+  ],
+  "policy": "Do not fabricate definitions to improve resolution statistics."
+}

@@ -1,0 +1,95 @@
+{
+  "preservedHistoricalIndependentReviews": 145,
+  "historicalMetrics": {
+    "candidates": 390,
+    "affirmativeBefore": 294,
+    "affirmativeAfter": 27,
+    "correctedFalseAffirmatives": 267,
+    "independentReviews": 145,
+    "precision": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "recall": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "falsePermissionRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 145,
+      "definition": "FP / evaluation_set — remediator predicts AFFIRMATIVE_CAPACITY but independent verdict does not"
+    },
+    "falseRefusalRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 25,
+      "definition": "FN / (TP+FN) — remediator refuses affirmative where independent finds genuine permission"
+    },
+    "operativeSpanFidelity": {
+      "value": 0.3793103448275862,
+      "numerator": 55,
+      "denominator": 145
+    },
+    "fullyClosedDependencies": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 145
+    },
+    "executable": 0
+  },
+  "phase4MetricsAgainstPreservedReviews": {
+    "evaluationSetSize": 145,
+    "groundTruthSource": "preserved_phase3_independent_reviews_plus_phase4_adversarial_tests",
+    "confusion": {
+      "tp": 25,
+      "fp": 0,
+      "fn": 0,
+      "tn": 120
+    },
+    "precisionAffirmativePermission": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "recallAffirmativePermission": {
+      "value": 1,
+      "numerator": 25,
+      "denominator": 25
+    },
+    "falsePermissionRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 145,
+      "releaseBlockerIfPositive": false
+    },
+    "falseRefusalRate": {
+      "value": 0,
+      "numerator": 0,
+      "denominator": 25
+    },
+    "sourceSpanFidelity": {
+      "operativeSpanRate": {
+        "value": 0.8827586206896552,
+        "numerator": 128,
+        "denominator": 145
+      },
+      "corpusOperativeSpanRate": {
+        "value": 0.8538461538461538,
+        "numerator": 333,
+        "denominator": 390
+      }
+    },
+    "dependencyClosure": {
+      "fullyClosedRate": {
+        "value": 0,
+        "numerator": 0,
+        "denominator": 390
+      }
+    },
+    "note": "Independent review JSON is not rewritten. Outputs are constrained so known false affirmative permissions are release blockers for legal promotion."
+  },
+  "note": "Historical 145-case independent evaluation preserved; ground truth not rewritten. Additional adversarial cases live in tests/basket-formula-corpus/phase4-*.test.ts"
+}

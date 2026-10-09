@@ -1,0 +1,24 @@
+{
+  "candidateId": "VC-003",
+  "chainId": "cnmd-seventh-ar-to-eighth-ar",
+  "purpose": "Multiple amendments to related definitions in one instrument (CSSLR, CTLR, Indebtedness) plus ratio schedule restatement; also tests missing-parent fail-closed when Seventh A&R is absent.",
+  "mapsToProductionModules": ["deterministic-parser", "chain", "operative-state", "independent-verification"],
+  "expectedFailClosedBehavior": "Without Seventh A&R in package, targetResolutionStatus for definition targets must not claim UNIQUE against Eighth A&R; out-of-package parent must remain unresolved. Independent verification must not confirm RESOLVED effects against the wrong base document.",
+  "queryDates": ["2022-07-31", "2022-08-01", "2022-08-02", "2025-06-10"],
+  "sourcePointers": [
+    {
+      "docId": "cnmd-second-am-2022",
+      "accession": "0001193125-22-209154",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/second-amendment-2022-full.txt",
+      "quote": "The definition of \"Consolidated Senior Secured Leverage Ratio\" is hereby amended by deleting the reference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\"."
+    },
+    {
+      "docId": "cnmd-eighth-ar",
+      "accession": "0001174947-25-000941",
+      "localFixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-definitions-excerpt.txt",
+      "quote": "Eighth A&R Closing Date June 10, 2025 — distinct instrument vintage from Seventh A&R parent of Second Amendment"
+    }
+  ],
+  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/cnmd-am2-definitions-and-ratio.json",
+  "notAProductionPatch": true
+}

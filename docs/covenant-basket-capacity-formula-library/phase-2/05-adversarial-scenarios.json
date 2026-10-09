@@ -1,0 +1,233 @@
+{
+  "scenarioCount": 12,
+  "allPassLegalModel": true,
+  "scenarios": [
+    {
+      "id": "sc-fixed-vs-incurrence",
+      "title": "Fixed versus incurrence-based baskets on same day",
+      "setup": {
+        "ebitda": 800000000,
+        "fixedIncrementalUnusedBefore": 720000000,
+        "firstLienLeveragePre": 1.8,
+        "proposedFixedDraw": 200000000,
+        "proposedRatioDraw": 300000000
+      },
+      "expectedArithmetic": {
+        "fixedCapacityIfStandalone": "max(720e6, 1.0*800e6)=800e6 before prior usage adjustments",
+        "ratioGate": "First Lien \u2264 max(2.00x, pre) \u2192 gate uses pre=1.8 so \u22642.00x",
+        "per_1_08_fixed_disregarded_in_ratio_test": true
+      },
+      "expectedLegalPermission": {
+        "bothMayBeAvailableSameDay": true,
+        "ordering": "Unless elected otherwise, Ratio Incremental first then Fixed (Chewy \u00a71.08)",
+        "cannotTreatThresholdAloneAsCapacity": true
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Arithmetic room \u2260 automatic permission without election/ordering rules."
+    },
+    {
+      "id": "sc-auto-vs-elected-reclass",
+      "title": "Automatic versus elected reclassification",
+      "setup": {
+        "fixedUsage": 100000000,
+        "ratioLaterSatisfied": true,
+        "borrowerOptOut": false
+      },
+      "expectedArithmetic": {
+        "fixedUsageAfterAutoReclass": 0,
+        "incurrenceUsageAfterAutoReclass": 100000000
+      },
+      "expectedLegalPermission": {
+        "automaticReclassApplies": true,
+        "optOutBlocksAutomatic": "if borrowerOptOut true, fixed usage remains classified as Fixed"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Uses Chewy \u00a71.08(f) mechanic from corpus."
+    },
+    {
+      "id": "sc-shared-double-spend",
+      "title": "Shared-capacity double spending",
+      "setup": {
+        "sharedCeiling": "15% Applicable EBITDA",
+        "ebitda": 200000000,
+        "clauseP": 20000000,
+        "clauseGRefi": 15000000
+      },
+      "expectedArithmetic": {
+        "ceiling": 30000000,
+        "combinedUsage": 35000000,
+        "exceeds": true
+      },
+      "expectedLegalPermission": {
+        "permitCombined": false,
+        "errorClass": "SHARED_CAPACITY_EXCEEDED"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "DSGR \u00a76.01(p)/(g) together-with ceiling."
+    },
+    {
+      "id": "sc-available-amount-depletion",
+      "title": "Available Amount depletion across RP and investment",
+      "setup": {
+        "availableAmount": 50000000,
+        "rp": 30000000,
+        "investment": 30000000,
+        "sameDay": true
+      },
+      "expectedArithmetic": {
+        "ifSimultaneousWrong": "both appear to fit 50",
+        "ifSequential": "second fails after first depletes"
+      },
+      "expectedLegalPermission": {
+        "chewy_1_09": "actions determined independently but not simultaneously against same pre-action AA",
+        "secondAction": "NOT_PERMITTED after first consumes"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Anti-double-counting sequencing is a legal constraint, not an arithmetic identity."
+    },
+    {
+      "id": "sc-builder-replenishment",
+      "title": "Builder replenishment via returns",
+      "setup": {
+        "originalInvestment": 10000000,
+        "returns": 4000000,
+        "priorAAUsage": 10000000
+      },
+      "expectedArithmetic": {
+        "aaCredit": 4000000,
+        "capAtOriginal": true
+      },
+      "expectedLegalPermission": {
+        "replenishmentIncreasesAA": true,
+        "cannotExceedOriginalInvestment": true
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "DSGR Available Amount returns limb."
+    },
+    {
+      "id": "sc-ratio-test-failure",
+      "title": "Ratio-test failure blocks ratio debt even if dollar grower open",
+      "setup": {
+        "firstLienNetLeverageProForma": 4.1,
+        "gate": 3.75,
+        "generalDebtGrowerHeadroom": 40000000
+      },
+      "expectedArithmetic": {
+        "ratioRoom": 0,
+        "generalDebtHeadroom": 40000000
+      },
+      "expectedLegalPermission": {
+        "ratioPath": "GATE_NOT_SATISFIED",
+        "generalDebtPath": "may remain available if separate basket",
+        "doNotCollapsePaths": true
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Separate expected arithmetic from legal path availability."
+    },
+    {
+      "id": "sc-missing-ebitda",
+      "title": "Missing EBITDA",
+      "setup": {
+        "fixed": 47500000,
+        "pct": 0.25,
+        "ebitda": null
+      },
+      "expectedArithmetic": {
+        "greaterOf": "NOT_DETERMINED"
+      },
+      "expectedLegalPermission": {
+        "capacityComputable": false,
+        "blocker": "MISSING_FINANCIAL_INPUT"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Must not invent EBITDA or treat fixed leg alone as the basket without source saying lesser/fallback."
+    },
+    {
+      "id": "sc-currency-mismatch",
+      "title": "Currency mismatch",
+      "setup": {
+        "basketCurrency": "USD",
+        "proposedDebtCurrency": "EUR",
+        "fxAvailable": false
+      },
+      "expectedArithmetic": {
+        "usdEquivalent": "NOT_DETERMINED"
+      },
+      "expectedLegalPermission": {
+        "status": "NOT_DETERMINED",
+        "limitation": "CURRENCY_MISMATCH_NO_CONVERSION_MODELED"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Aligned with capacity-engine limitation vocabulary but not executed in engine."
+    },
+    {
+      "id": "sc-measurement-date-mismatch",
+      "title": "Measurement-date mismatch",
+      "setup": {
+        "required": "most recently ended Test Period with delivered financials",
+        "supplied": "stale quarter without delivery"
+      },
+      "expectedArithmetic": {
+        "metric": "NOT_DETERMINED"
+      },
+      "expectedLegalPermission": {
+        "capacityComputable": false,
+        "blocker": "MEASUREMENT_DATE_MISMATCH"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Wrong period cannot be silently substituted."
+    },
+    {
+      "id": "sc-negative-capacity",
+      "title": "Negative capacity from over-usage",
+      "setup": {
+        "ceiling": 47500000,
+        "usage": 60000000
+      },
+      "expectedArithmetic": {
+        "remaining": -12500000
+      },
+      "expectedLegalPermission": {
+        "availableAmountPresented": 0,
+        "overConsumptionFlag": true,
+        "doNotReportNegativeAsPermission": true
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Negative remainder is a diagnostic, not a permission to borrow negative."
+    },
+    {
+      "id": "sc-conditional-permission",
+      "title": "Conditional permission \u2014 Payment Conditions fail",
+      "setup": {
+        "fccr": 2.5,
+        "paymentConditions": false
+      },
+      "expectedArithmetic": {
+        "fccrGate": true
+      },
+      "expectedLegalPermission": {
+        "uncappedPath": "GATE_NOT_SATISFIED",
+        "enumeratedBaskets": "may still apply independently"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "LSB \u00a76.01 chapeau \u2014 both gates required."
+    },
+    {
+      "id": "sc-amendment-changes-formula",
+      "title": "Amendments changing formula mechanics",
+      "setup": {
+        "baseBasket": "greater of $47.5mm and 25% Applicable EBITDA",
+        "amendment": "hypothetical increase to 30% \u2014 NOT applied unless source amendment ingested"
+      },
+      "expectedArithmetic": {
+        "withoutAmendmentSource": "still 25%"
+      },
+      "expectedLegalPermission": {
+        "mustNotSilentlyApplyUningestedAmendment": true,
+        "dependency": "amendment instrument must be in package graph"
+      },
+      "result": "PASS_LEGAL_MODEL",
+      "notes": "Cross-document/amendment dependency; unresolved without amendment text."
+    }
+  ]
+}

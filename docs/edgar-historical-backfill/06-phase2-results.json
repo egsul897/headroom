@@ -1,0 +1,84 @@
+{
+  "artifact": "ws-ehb-phase2-results",
+  "generatedAt": "2026-10-08T22:47:00Z",
+  "baseMainSha": "9de4e5737166fcec84a35fdc9a3404870549211f",
+  "startingSha": "1526986781805da41e2fa477ef6b550696f778d2",
+  "branch": "cursor/edgar-historical-backfill-c45c",
+  "pr": "https://github.com/egsul897/headroom/pull/142",
+  "secIdentity": {
+    "placeholderRemoved": true,
+    "configKeys": ["SEC_EDGAR_USER_AGENT", "SEC_EDGAR_CONTACT_EMAIL"],
+    "liveRunContactSource": "Authorized operator email supplied via SEC_EDGAR_CONTACT_EMAIL environment configuration for this session (not hardcoded in source)",
+    "fleetOwner": "HEADROOM_SEC_FETCH_OWNER=WS-EHB",
+    "processLocalLimiterOnly": true,
+    "sharedBudgetOptionalPath": "HEADROOM_SEC_SHARED_BUDGET_PATH"
+  },
+  "pilot100v2": {
+    "runDir": "data/edgar-historical-backfill/pilot-100-v2",
+    "storageStatus": "EPHEMERAL_WORKSPACE",
+    "issuersPlanned": 100,
+    "issuersCompleted": 100,
+    "issuersFailed": 0,
+    "issuersDeferred": 0,
+    "distinctCiks": 100,
+    "shareClassCollisionFixed": true,
+    "filingsScanned": 78859,
+    "indexesFetched": 992,
+    "secRequests": 1184,
+    "exhibitsDiscoveredAfterDedupe": 873,
+    "distinctAgreements": 868,
+    "duplicatesCollapsed": 478,
+    "ibrResolvedEngine": 80,
+    "queuedForAcquisition": 149,
+    "queueValidationOk": 149,
+    "queueFetchable": 149,
+    "queueByResolution": { "FETCHABLE_INLINE": 108, "IBR_RESOLVED": 41 },
+    "ckfHandoffFetchableDocuments": 149,
+    "ibrResiduals": {
+      "RESOLVED": 45,
+      "MISSING_ACCESSION": 19,
+      "NEEDS_ORIGINAL_INDEX": 10,
+      "totalIbr": 74
+    },
+    "ibrDenominatorNote": "Engine ibrResolved=80 is pre-dedupe second-pass completions; residual RESOLVED=45 is post-dedupe kept IBR with URI+filename; queue IBR_RESOLVED=41 is the ranked fetchable subset. See 07-ibr-denominator-reconciliation.md.",
+    "vsPhase1Pilot": {
+      "newIssuersCompleted": 19,
+      "newExhibitsApprox": 434,
+      "queueDelta": 23,
+      "note": "Phase1 had 81 distinct CIKs / 439 exhibits / 126 queue due to share-class collision"
+    },
+    "resumeIdempotent": true,
+    "queueIdSetSha256": "7570a95be2f272c5708068500002aabcf9881993c9eabf51ae6c6d375188f2f9",
+    "queueByteShaNote": "Byte-level acquisition-queue.json hash changes when resume rewrites pretty JSON; durable fingerprint is queueIdSetSha256 (149 stable ids)."
+  },
+  "legacyPilot100QueueValidation": {
+    "total": 126,
+    "okCount": 126,
+    "fetchableForCkf": 126
+  },
+  "smokeIbrV2": {
+    "ibrResolvedEngine": 14,
+    "queueIbrResolved": 5,
+    "residuals": { "RESOLVED": 7, "MISSING_ACCESSION": 19, "NEEDS_ORIGINAL_INDEX": 10 }
+  },
+  "qualityAuditPilot100v2": {
+    "highRelevancePrecisionHeuristic": 0.505,
+    "precisionNumerator": 108,
+    "precisionDenominator": 214,
+    "recall": null,
+    "amendmentClassificationAgreement": 1.0,
+    "queueUrlCorrectness": 1.0,
+    "confidence": "LOW_TO_MEDIUM for precision; NONE for recall"
+  },
+  "scale1000 readiness": {
+    "secCoordinationGate": "SATISFIED (owner gate + optional shared budget contract published)",
+    "checkpointGate": "SATISFIED (resume hydrates manifests; idempotent queue ids)",
+    "uncontrolledParallelLiveFetch": "FORBIDDEN",
+    "ranScale1000ThisSession": false
+  },
+  "focusedTests": {
+    "command": "npx vitest run tests/edgar-historical-backfill",
+    "passed": 29,
+    "failed": 0
+  }
+}

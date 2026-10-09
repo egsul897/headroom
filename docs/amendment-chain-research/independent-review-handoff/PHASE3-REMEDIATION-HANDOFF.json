@@ -1,0 +1,111 @@
+{
+  "handoffType": "PHASE3_CHALLENGER_REMEDIATION",
+  "researchPr": 150,
+  "challengerPr": 156,
+  "challengerSha": "a66c6466f218b79886a990bed3075fdffb0722b3",
+  "startingShaReviewedByChallenger": "ce07b1525972d1dea00792a2058900fa56291163",
+  "interveningShaBeforeRemediation": "b2074fb60ff272a107032551e267b39df884815c",
+  "interveningNote": "Tip advanced after reviewed SHA with Vercel typecheck fix (effectiveDate null\u2192undefined) before Phase 3 remediation; reconciled rather than overwritten.",
+  "endingSha": "4da4f65b10d65aa89f0d8e32596596cd09f3d315",
+  "promotionStatus": "NOT_INDEPENDENTLY_LEGALLY_VERIFIED",
+  "mergeReady": false,
+  "legallyVerified": false,
+  "paidInference": false,
+  "productionLegalRulesEdited": false,
+  "claudeOwnedFixturesEdited": false,
+  "challengerBranchModified": false,
+  "challengerDefectDispositions": [
+    {
+      "defect": "Manifests MISSING while ledger ACQUIRED (CONMED Seventh, Internap orig/Am1\u20136)",
+      "disposition": "REMEDIATED",
+      "action": "Synced manifests to RETRIEVED/SOURCE_ACQUIRED; added distinct authorityLayerStates; Internap Am1\u20136 listed without claiming OPERATIVE_STATE_RESOLVED"
+    },
+    {
+      "defect": "AZZ absent from Knowledge Factory export",
+      "disposition": "REMEDIATED",
+      "action": "Added azz-2022-05-13-credit-agreement to chainIdentities; Am4 hashed ACQUIRED; orig/Am1\u20133 PHASE1_RETRIEVED_HASH_PENDING"
+    },
+    {
+      "defect": "AZZ defined term Applicable Margin vs Applicable Rate",
+      "disposition": "REMEDIATED",
+      "action": "Relabeled VC-005/before-after/authority/manifest/chronology/as-of/export to Applicable Rate; preserved recital Applicable Margin as non-controlling colloquialism"
+    },
+    {
+      "defect": "Internap before-text still 8-K/UNRESOLVED despite acquired orig CA",
+      "disposition": "REMEDIATED_WITH_EXPLICIT_GAP",
+      "action": "Reconstructed \u00a76.04(m)/\u00a76.01(k) before-text from orig EX-10.1; preserved Am1\u2013Am6 intervening UNRESOLVED_DEPENDENCY and completeOperativeStateReconstruction=false"
+    },
+    {
+      "defect": "DSGR Am4 beforeText null despite Doc B $10M",
+      "disposition": "REMEDIATED",
+      "action": "Set beforeText to Doc B $10,000,000 with fixture citation; afterText remains $25,000,000"
+    },
+    {
+      "defect": "DSGR Am2 wrapper MISSING",
+      "disposition": "PRESERVED_UNRESOLVED",
+      "action": "Kept MISSING_DOCUMENT; 10-Q remains NOT_OPERATIVE"
+    },
+    {
+      "defect": "CONMED Am2\u2192Am1 parent link imprecise",
+      "disposition": "REMEDIATED",
+      "action": "Export/authority now parent=cnmd-seventh-ar with intermediateState=cnmd-am1-2022"
+    },
+    {
+      "defect": "All ED calendars unproven",
+      "disposition": "PRESERVED_UNRESOLVED",
+      "action": "CONDITIONAL_UNRESOLVED retained across chains; WP-006 affirmed"
+    }
+  ],
+  "vcReplayRequired": [
+    {
+      "vc": "VC-005",
+      "reason": "Defined-term correction + KF export inclusion \u2014 independent replay required"
+    },
+    {
+      "vc": "VC-008",
+      "reason": "Before-text now SOURCE_BACKED from orig CA with intervening-gap discipline \u2014 independent replay required"
+    },
+    {
+      "vc": "VC-002",
+      "reason": "Before-text $10M correction \u2014 confirm still PASS under fail-closed ED/deemed model"
+    },
+    {
+      "vc": "VC-003",
+      "reason": "Manifest freshness + parent-instrument link correction \u2014 confirm WP-003 still holds"
+    }
+  ],
+  "vcReplayOptionalConfirm": [
+    "VC-001",
+    "VC-004",
+    "VC-006",
+    "VC-007"
+  ],
+  "remainingUnresolvedLegalQuestions": [
+    "Condition-satisfaction calendars for all CONDITIONAL_UNRESOLVED Effective Dates",
+    "DSGR Am2 operative wrapper text",
+    "Internap Am1\u2013Am6 exhaustive basket/definition propagation",
+    "AZZ orig/Am1\u2013Am3 content hashes (Phase-1 retrieval claimed)",
+    "Independent legal verification of VC-001\u2013008 ground truth"
+  ],
+  "authorityLayerModel": [
+    "SOURCE_ACQUIRED",
+    "TEXT_EXTRACTED",
+    "AMENDMENT_EFFECT_MODELED",
+    "OPERATIVE_STATE_RESOLVED",
+    "INDEPENDENTLY_LEGALLY_VERIFIED"
+  ],
+  "canonicalExportStatus": {
+    "path": "docs/amendment-chain-research/knowledge-factory-export/amendment-chains-export.json",
+    "competingProductionSchema": false,
+    "verificationStatus": "PENDING_INDEPENDENT_REVIEW",
+    "azzIncluded": true,
+    "dsgrAm2WrapperMissing": true
+  },
+  "regressionTests": [
+    "tests/amendment-chain-research/phase2-corpus-integrity.test.ts",
+    "tests/amendment-chain-research/phase3-challenger-remediation.test.ts"
+  ],
+  "currentHeadCi": "SUCCESS",
+  "filesChangedNote": "See git diff / PR #150 files list at endingSha",
+  "ciNote": "Vercel + Vercel Preview Comments green on tip 4da4f65 (2026-10-08)"
+}

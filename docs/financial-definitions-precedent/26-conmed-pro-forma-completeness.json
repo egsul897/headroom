@@ -1,0 +1,35 @@
+{
+  "artifact": "financial-definitions-precedent.conmed-pf-completeness",
+  "version": "fdp.conmed-pf.v1",
+  "modelId": "CM-CONMED-EBITDA-PF-v1",
+  "representationClass": "PARTIAL_SEMANTIC_MODEL",
+  "doNotUpgradeToLegallyCompleteFromArithmetic": true,
+  "taxonomy": {
+    "fullyRepresented": [
+      "clause (i) PF net-of-benefits arithmetic under attested inputs",
+      "15% after-giving-effect cap math under stated assumptions"
+    ],
+    "partiallyRepresented": [
+      "Interaction of clause (i) with other Consolidated EBITDA add-backs",
+      "$30M Transaction/Material Acquisition cost cap (declared, not fully arith suite)"
+    ],
+    "unsupportedLegalSemantics": [
+      "Full multi-clause EBITDA reconstruction as a single certified figure",
+      "Material Acquisition qualification without attested election facts"
+    ],
+    "requiredExternalFinancialAttestations": [
+      "ebitda_before_pf_clause_i",
+      "pro_forma_adjustment_gross",
+      "benefits_realized",
+      "transaction_costs_material_acquisition"
+    ],
+    "representationClass": "PARTIAL_SEMANTIC_MODEL",
+    "doNotUpgradeToLegallyCompleteFromArithmetic": true
+  },
+  "simplifiedAway": [
+    "Full multi-clause EBITDA add-back schedule beyond clause (i) PF model",
+    "Cross-clause without-duplication identity across all EBITDA prongs",
+    "Material Acquisition step-up interaction with PF cap (separate from \u00a77.1)"
+  ],
+  "clauseIScope": "Model covers only Consolidated EBITDA clause (i) pro forma adjustments net of benefits realized, subject to 15% after-giving-effect cap under attested inputs. Other EBITDA clauses are not silently zeroed."
+}

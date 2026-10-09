@@ -1,0 +1,26 @@
+{
+  "gibraltar": {
+    "phase2Label": "evaluation",
+    "phase3Label": "development",
+    "archCertDesignation": "DEVELOPMENT",
+    "howUsed": "Phase 2: extracted for corpus counts under incorrect evaluation label; connective rules were generic English patterns not Gibraltar-tuned. Phase 3: reclassified to development per Arch+Cert; used for development GT spans and corpus extraction only.",
+    "influencedConnectiveTuning": false,
+    "bodyOpened": true
+  },
+  "evaluationPackage": {
+    "documentId": "cnmd-htm-amd2",
+    "policy": "Extract for measurement only; do not tune Atlas connectives against evaluation docs",
+    "note": "cnmd-htm-amd2 sealed for measurement; Atlas connectives not iteratively tuned against it in Phase 3"
+  },
+  "knifeRiver": {
+    "status": "BLIND_PRESERVED_UNREAD",
+    "bodyOpened": false,
+    "registeredInCorpus": false,
+    "evidence": "No Knife River extracted-text body in fixtures; only designation strings in Gibraltar provenance.json"
+  },
+  "independentGtSplits": {
+    "development": 46,
+    "evaluation": 46,
+    "blind": 43
+  }
+}

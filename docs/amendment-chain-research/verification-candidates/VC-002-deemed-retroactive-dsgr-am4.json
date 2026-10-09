@@ -1,0 +1,18 @@
+{
+  "candidateId": "VC-002",
+  "chainId": "dsgr-2022-04-01-ar-credit",
+  "purpose": "Exercise deemed retroactive effectiveness: Fourth Amendment executed 2025-03-31 but parties give deemed effect as of 2025-01-01 for specified clauses.",
+  "mapsToProductionModules": ["effective-date", "chain", "operative-state"],
+  "expectedFailClosedBehavior": "Query date 2025-02-15 must not treat §6.08(a)(v) as amended unless the engine can represent deemed-effect authority; if deemed-effect is unsupported, status must be CONDITIONAL_UNRESOLVED / REVIEW_REQUIRED — never silently use execution date only or silently apply as of 2025-01-01 without modeling the deemed-effect clause.",
+  "queryDates": ["2024-12-31", "2025-01-01", "2025-02-15", "2025-03-31", "2025-04-01"],
+  "sourcePointers": [
+    {
+      "docId": "dsgr-doc-c",
+      "accession": "0001193125-25-070858",
+      "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "quote": "agreeing to give deemed effect to the amendments described in clauses (a) and (b) below as of January 1, 2025"
+    }
+  ],
+  "relatedBeforeAfter": "docs/amendment-chain-research/before-after/dsgr-am4-restricted-payments.json",
+  "notAProductionPatch": true
+}

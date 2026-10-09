@@ -1,0 +1,118 @@
+{
+  "artifact": "02-diversity-acquisition-plan",
+  "targetAdditionalAgreements": 100,
+  "targetIssuers": 50,
+  "actualNewDocumentsIngestedThisPhase": 9,
+  "actualNewIssuersIngestedThisPhase": 5,
+  "actualTotalIssuersInRegistry": 8,
+  "actualTotalDocumentsInRegistry": 12,
+  "phase1IssuersExcludedFromDiversityClaim": [
+    "CNMD",
+    "LXU",
+    "FWRG"
+  ],
+  "coordination": {
+    "WS-EHB": {
+      "pr": "https://github.com/egsul897/headroom/pull/142",
+      "interface": "docs/edgar-historical-backfill/00-interface-contract.md (sibling branch)",
+      "consume": "acquisition-queue.json items (QUEUED) \u2014 do not fork downloader",
+      "status": "COORDINATION_DECLARED_QUEUE_NOT_MATERIALIZED_ON_THIS_BRANCH"
+    },
+    "WS-CKF": {
+      "branch": "cursor/covenant-knowledge-factory-7327",
+      "interface": "lib/knowledge-factory + scripts/knowledge-factory/download-documents.ts",
+      "issuerSample": "PILOT_ISSUER_SEEDS (100 tickers)",
+      "status": "COORDINATION_DECLARED_NO_BULK_BYTES_IN_GIT"
+    }
+  },
+  "queuedIssuerTickersForCkfPilot": [
+    "CAT",
+    "DE",
+    "MMM",
+    "EMR",
+    "ROK",
+    "DOV",
+    "PNR",
+    "IR",
+    "XYL",
+    "AME",
+    "JNJ",
+    "ABT",
+    "MDT",
+    "BSX",
+    "SYK",
+    "CNMD",
+    "TFX",
+    "HOLX",
+    "BAX",
+    "DXCM",
+    "WMT",
+    "TGT",
+    "COST",
+    "MCD",
+    "SBUX",
+    "YUM",
+    "DRI",
+    "CHWY",
+    "WSM",
+    "RH",
+    "AAPL",
+    "MSFT",
+    "ORCL",
+    "IBM",
+    "CSCO",
+    "ADBE",
+    "CRM",
+    "NOW",
+    "PANW",
+    "NET",
+    "XOM",
+    "CVX",
+    "COP",
+    "EOG",
+    "SLB",
+    "HAL",
+    "DVN",
+    "FANG",
+    "FCX",
+    "NEM"
+  ],
+  "queuedIssuerCount": 50,
+  "gapToTarget": {
+    "agreementsStillNeeded": 91,
+    "issuersStillNeeded": 45,
+    "blocker": "On-disk fixtures only provide 5 new issuers / ~9 new docs beyond phase-1. Bulk EDGAR bytes must be acquired via CKF/EHB into gitignored local corpus, not committed."
+  },
+  "indentures": {
+    "ingested": 0,
+    "status": "PENDING_CKF_ACQUISITION"
+  },
+  "amendmentsIngested": [
+    {
+      "registryId": "dsgr_amd4",
+      "issuerKey": "DSGR",
+      "issuerName": "Distribution Solutions Group, Inc.",
+      "issuerTicker": "DSGR",
+      "issuerCik": "0000703604",
+      "documentKind": "AMENDMENT",
+      "sourcePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+      "sourceSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "byteLength": 13862,
+      "ingestionStatus": "INGESTED_FIXTURE",
+      "phase1Source": false
+    },
+    {
+      "registryId": "sup_amd",
+      "issuerKey": "SUP",
+      "issuerName": "Superior Industries International, Inc.",
+      "issuerTicker": "SUP",
+      "issuerCik": "0000095552",
+      "documentKind": "AMENDMENT",
+      "sourcePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt",
+      "sourceSha256": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86",
+      "byteLength": 28489,
+      "ingestionStatus": "INGESTED_FIXTURE",
+      "phase1Source": false
+    }
+  ]
+}

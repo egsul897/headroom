@@ -1,0 +1,69 @@
+{
+  "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+  "derivation": "Offline remapping of documented frozen lightweight-unseen outcomes (docs/final-lightweight-unseen.md / 12-document-classification.json / 13-version-operative-state.json). No new paid calls. Predictions reflect the recorded production behavior, not corrected answers.",
+  "candidates": [
+    {
+      "caseId": "sup-def-ebitda-siblings",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "terms": [] },
+      "notes": "COMPILE_CAP sampling never reached Article I definitions cluster; empty extraction recorded."
+    },
+    {
+      "caseId": "sup-def-amendment-three-terms",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "terms": [] },
+      "notes": "doc-c amendment definitions not in compiled sample."
+    },
+    {
+      "caseId": "sup-xref-secured-net-leverage",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "resolvedTargets": [] },
+      "notes": "Definition cluster not compiled."
+    },
+    {
+      "caseId": "sup-cond-cash-sweep-cure",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "conditions": [] },
+      "notes": "doc-c cash-sweep not in compiled sample."
+    },
+    {
+      "caseId": "sup-shared-ebitda-10pct",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "isSharedCapacity": false },
+      "notes": "Definition proviso not compiled; shared cap not recognized."
+    },
+    {
+      "caseId": "sup-amend-doc-b-restates-doc-a",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "relationship": "NONE", "status": "missing" },
+      "notes": "Historical finding: zero RESTATES candidate for doc-b→doc-a despite caption+recital evidence (classifier whitespace defect)."
+    },
+    {
+      "caseId": "sup-amend-doc-c-amends-doc-b",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "relationship": "doc-c AMENDS doc-b", "status": "review_required" },
+      "notes": "Surfaced at REVIEW_REQUIRED/0.6 — status normalized to resolved for relationship match? Expected status=resolved; predicted review_required → FAILURE on status, relationship string matches."
+    },
+    {
+      "caseId": "sup-prov-doc-b-caption",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": {
+        "citationSectionRef": "caption",
+        "excerpt": "AMENDED AND RESTATED CREDIT AGREEMENT Dated as of August 14, 2024"
+      }
+    },
+    {
+      "caseId": "sup-unseen-aggregate",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": {
+        "successfulCaseIds": ["sup-amend-doc-c-amends-doc-b", "sup-prov-doc-b-caption"]
+      },
+      "notes": "RESTATES edge missing → aggregate unseen performance FAILURE (honest historical outcome)."
+    },
+    {
+      "caseId": "sup-cost-offline",
+      "predictionSource": "FROZEN_PIPELINE_ARTIFACT",
+      "prediction": { "costUsd": 0 }
+    }
+  ]
+}

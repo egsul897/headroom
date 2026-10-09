@@ -1,0 +1,61 @@
+{
+  "specId": "VC-007-SPEC",
+  "schemaVersion": "amendment-chain-research.test-spec.v1",
+  "generatedAt": "2026-10-08T22:24:33Z",
+  "sourceAuthorExpectation": {
+    "purpose": "Confirm engines track waivers/consents separately from permanent amendments using explicit non-waiver clauses in Third and Fourth Amendments.",
+    "expectedFailClosedBehavior": "Presence of lender 'consent' to an amendment document must not create a WAIVER effect for unrelated defaults. Explicit 'shall not operate as a waiver' language must prevent false waiver inference.",
+    "queryDates": [
+      "2024-08-14",
+      "2025-03-31"
+    ],
+    "mapsToProductionModules": [
+      "deterministic-parser",
+      "validation",
+      "operative-state"
+    ],
+    "sourcePointers": [
+      {
+        "docId": "dsgr-doc-b",
+        "accession": "0001193125-24-202196",
+        "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-b-2024-third-amendment.txt",
+        "quote": "Except as expressly provided herein, the execution, delivery and effectiveness of this Amendment shall not operate as a waiver of any right, power or remedy"
+      },
+      {
+        "docId": "dsgr-doc-c",
+        "accession": "0001193125-25-070858",
+        "localFixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+        "quote": "shall not operate as a waiver of any right, power or remedy of the Administrative Agent or the Lenders, nor constitute a waiver of any provision"
+      }
+    ],
+    "relatedScenarios": [
+      {
+        "scenarioId": "DSGR-S4",
+        "asOf": "2025-03-31",
+        "expect": "Fourth Amendment Effective Date conditions; non-waiver clause active",
+        "status": "CONDITIONAL",
+        "vc": "VC-007"
+      }
+    ],
+    "notLegalGroundTruth": true
+  },
+  "independentlyReviewedLegalGroundTruth": {
+    "status": "PENDING_INDEPENDENT_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "disposition": null,
+    "notes": "Source-author expectations above are NOT independently reviewed legal ground truth. Reserved for independent legal challenger."
+  },
+  "replay": {
+    "portable": true,
+    "requiresProductionPatch": false,
+    "claudeOwnedFixturesTouched": false,
+    "inputs": {
+      "chainId": "dsgr-2022-04-01-ar-credit",
+      "acquisitionLedger": "docs/amendment-chain-research/phase2/acquisition-ledger.json",
+      "authorityLayer": "docs/amendment-chain-research/authority-layers/dsgr-2022-04-01-ar-credit.json",
+      "byteCache": ".local-amendment-research/bytes/ (gitignored; reconstruct via EdgarConnector using ledger URIs)"
+    }
+  },
+  "notAProductionPatch": true
+}

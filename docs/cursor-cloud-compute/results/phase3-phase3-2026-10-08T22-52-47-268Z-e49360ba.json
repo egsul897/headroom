@@ -1,0 +1,139 @@
+{
+  "status": "COMPUTE_ASSESSMENT_PHASE3_NOT_CERTIFIED",
+  "generatedAt": "2026-10-08T22:52:55.467Z",
+  "checkpointId": "phase3-2026-10-08T22-52-47-268Z-e49360ba",
+  "startingSha": "bc1abd6934f4ee037ada161695f906506dd6f13d",
+  "northStarPreserved": true,
+  "certificationClaimed": false,
+  "coordination": {
+    "workstreamId": "WS-CCA",
+    "ehbOwnsSecAcquisition": true,
+    "fleet": {
+      "role": "WS-CCA",
+      "designatedOwner": "WS-EHB",
+      "sharedBudgetPath": "/workspace/data/cursor-cloud-compute/sec-shared-budget.json",
+      "sharedBudgetConfigured": true,
+      "liveNetworkAllowedForCca": true,
+      "authorizedUserAgentConfigured": true,
+      "userAgentPreview": "HeadroomCursorCloudCompute/1.0 (contact: ***@gmail.com; research; respectful fair-access; WS-CCA via WS-EHB)",
+      "processLocalLimiterOnly": true,
+      "recommendation": "Shared budget configured — acquire lease via WS-EHB before bursts; do not bypass EHB transport.",
+      "policyReason": "EHB-owner policy: Shared budget path configured (/workspace/data/cursor-cloud-compute/sec-shared-budget.json); live GETs must acquireLease() before each burst. Process-local RPS still applies inside this process.; CCA-direct policy: Shared budget path configured (/workspace/data/cursor-cloud-compute/sec-shared-budget.json); live GETs must acquireLease() before each burst. Process-local RPS still applies inside this process.",
+      "ehbContractPath": "/tmp/peer-worktrees/ehb/docs/edgar-historical-backfill/03-fleet-sec-access-contract.md"
+    },
+    "ehbRunDir": "/workspace/data/edgar-historical-backfill/cca-phase2-pilot100",
+    "scaleRunDir": "/workspace/data/edgar-historical-backfill/cca-phase2-scale1000"
+  },
+  "coverage": {
+    "pilotEligible": 155,
+    "scaleEligible": 85,
+    "scaleOnlyNewDocuments": 0,
+    "unionDistinctDocuments": 155,
+    "uniqueIssuersPilot": 48,
+    "uniqueIssuersScale": 25,
+    "discoveryWallMsPilot": 177830,
+    "discoveryWallMsScale": 94321,
+    "scale1000Blocker": "WS-EHB scale-1000 discovery incomplete (55/1000 issuers; queuedForAcquisition=0; no new fetchable financing docs beyond pilot-100). WS-CCA will not launch discovery."
+  },
+  "forensic": {
+    "structureEmpty": {
+      "count": 42,
+      "byRootCause": {
+        "STRUCTURAL_PARSER_LIMITATION": 35,
+        "WRONG_DOCUMENT_CLASSIFICATION": 2,
+        "INCORRECT_EXHIBIT_BODY_SELECTION": 1,
+        "HTML_VS_TEXT_FORMAT": 3,
+        "MISSING_SOURCE_BODY": 1
+      },
+      "recoverableParserFailures": 38,
+      "unsupportedFormats": 1,
+      "nonRecoverableWrongSelectionOrClass": 3
+    },
+    "missingDefinitions": {
+      "count": 23,
+      "byRootCause": {
+        "PRESENT_BUT_MISSED": 20,
+        "ABSENT_FROM_SOURCE": 3
+      },
+      "presentButMissed": 20,
+      "recoveryRateIfParserFixed": 0.8695652173913043
+    }
+  },
+  "durableHandoff": {
+    "contractVersion": "cca-handoff-v1",
+    "processingVersion": "cca-phase3-pipeline-v1",
+    "localStagingRootNotDurable": "/workspace/data/cursor-cloud-compute/handoff-cas-build",
+    "artifactTarball": "/opt/cursor/artifacts/cursor-cloud-compute/handoff-phase3-2026-10-08T22-52-47-268Z-e49360ba.tar.gz",
+    "artifactTarballSha256": "c2cb47e331e39f1ae35f7cb848b98ea7cb364108fdbd3301ba139668a523222b",
+    "artifactTarballBytes": 8240961,
+    "gitTrackedIndex": "/workspace/docs/cursor-cloud-compute/results/phase3-handoff-index-phase3-2026-10-08T22-52-47-268Z-e49360ba.json",
+    "documentCount": 155,
+    "distinctSourceHashes": 154,
+    "reconstructionProof": {
+      "proved": true,
+      "mode": "artifact-cas-reconstruct",
+      "documentsChecked": 155,
+      "hashMatches": 155,
+      "structuralMatches": 155,
+      "failures": [],
+      "notes": [
+        "Independent reconstruct root: /tmp/cca-handoff-verify-bTzMZ1",
+        "Git-tracked summary alone is not claimed as corpus durability; CAS bytes were required for this proof.",
+        "Manifest checkpointId=phase3-2026-10-08T22-52-47-268Z-e49360ba"
+      ]
+    },
+    "secRefetchHashProof": {
+      "checked": 5,
+      "matches": 5,
+      "failures": []
+    },
+    "vmLocalCorpusNotDurable": true
+  },
+  "warmRebenchmark": {
+    "uniqueDocumentsProcessed": 154,
+    "wallMs": 1807.231545999999,
+    "processingOnlyMs": 1732.7088129999938,
+    "processingOnlyDocsPerSecond": 88.87817667030043,
+    "endToEndDocsPerSecond": 85.21320930948384,
+    "peakRssBytes": 492662784,
+    "cpuUserMs": 1753.062,
+    "cpuSystemMs": 167.785,
+    "storageBytes": 98319863,
+    "storageBytesPerDocument": 638440.6688311688,
+    "errorClassCounts": {
+      "MISSING_DEFINITIONS": 23,
+      "STRUCTURE_EMPTY": 42,
+      "DUPLICATE_IDENTITY": 1
+    },
+    "secProvider": "ehb-SecAccessCoordinator",
+    "secFleetMode": "shared-budget"
+  },
+  "quality": {
+    "portablePath": "/workspace/docs/cursor-cloud-compute/results/phase3-quality-sample-phase3-2026-10-08T22-52-47-268Z-e49360ba.json",
+    "sampleSize": 50,
+    "distinctIssuers": 29,
+    "aggregates": {
+      "meanStructuralCoverage": 0.5524765096599077,
+      "totalFalseStructuralNodes": 0,
+      "totalMissingSections": 161,
+      "totalMissingDefinitionsEstimate": 1,
+      "totalIncorrectReferenceTargets": 3789,
+      "classificationPlausibleRate": 1
+    },
+    "disclaimer": "Independent source-text comparison for structural extraction quality only. Not legal-semantic accuracy. Generated output is never used as its own ground truth."
+  },
+  "cost": {
+    "externalPaidUsd": 0,
+    "anthropicCalls": 0,
+    "gpuProvisioned": false
+  },
+  "readiness1000": {
+    "ready": false,
+    "actualDistinctDocuments": 155,
+    "blockers": [
+      "EHB scale-1000 discovery not finished — only 55/1000 issuers scanned; acquisition queue empty",
+      "No additional authentic financing documents beyond pilot-100 (155) available to consume without launching discovery",
+      "Fleet SEC: further acquisition must remain under WS-EHB ownership / shared budget"
+    ]
+  }
+}

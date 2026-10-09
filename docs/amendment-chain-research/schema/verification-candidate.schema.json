@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "headroom://amendment-chain-research/verification-candidate",
+  "title": "IndependentVerificationCandidate",
+  "type": "object",
+  "required": ["candidateId", "chainId", "purpose", "expectedFailClosedBehavior", "sourcePointers"],
+  "properties": {
+    "candidateId": { "type": "string" },
+    "chainId": { "type": "string" },
+    "purpose": { "type": "string" },
+    "mapsToProductionModules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "effective-date",
+          "chain",
+          "operative-state",
+          "independent-verification",
+          "deterministic-parser",
+          "schedule-modification",
+          "markup-exhibit"
+        ]
+      }
+    },
+    "expectedFailClosedBehavior": { "type": "string" },
+    "queryDates": { "type": "array", "items": { "type": "string" } },
+    "sourcePointers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["docId", "accession"],
+        "properties": {
+          "docId": { "type": "string" },
+          "accession": { "type": "string" },
+          "localFixturePath": { "type": ["string", "null"] },
+          "quote": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "notAProductionPatch": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

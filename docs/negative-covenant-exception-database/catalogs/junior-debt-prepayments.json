@@ -1,0 +1,270 @@
+{
+  "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+  "count": 3,
+  "exceptionIds": [
+    "conmed-7.9-a-optional-prepay-junior-unsecured",
+    "lsb-6.08-a-v-debt-payments-payment-conditions",
+    "fwrg-6.04-b-iv-rdp-cross-basket-offset"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "conmed-7.9-a-optional-prepay-junior-unsecured",
+      "sourcePackage": "conmed-2025-credit-facility",
+      "sourcePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "sourceSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+      "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "7.9(a)",
+        "text": "Make or offer to make any voluntary payment, prepayment, repurchase or redemption of or otherwise defease or segregate funds (any such action, a \"Prepayment\") with respect to Permitted Subordinated Indebtedness or Permitted Unsecured Indebtedness, unless ..."
+      },
+      "exceptionSectionRef": "7.9(a) except limb",
+      "exactExceptionText": "unless (i) both immediately prior to and immediately after giving effect to any such Prepayment, no Default or Event of Default shall have occurred and be continuing, and (ii) the Parent Borrower and the Subsidiaries are in compliance, on a pro forma basis after giving effect to such Prepayment, with the financial covenants contained in Section 7.1 ... except this Section 7.9(a) shall not limit payments or deliveries ... required by the terms of ... any Permitted Unsecured Indebtedness (including making payments of interest and principal thereon, making payments due upon required repurchase thereof and/or making payments and deliveries due upon conversion thereof).",
+      "structuralHierarchy": [
+        "Article VII",
+        "Section 7.9",
+        "Section 7.9(a)"
+      ],
+      "definedTerms": [
+        "Permitted Subordinated Indebtedness",
+        "Permitted Unsecured Indebtedness",
+        "Prepayment"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "no Default/EOD before and after",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "7.9(a)(i)",
+          "computableHint": "NO_DEFAULT"
+        },
+        {
+          "conditionId": "c2",
+          "text": "pro forma compliance with Section 7.1 financial covenants",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "7.1",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Parent Borrower",
+          "Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [
+        {
+          "text": "except this Section 7.9(a) shall not limit required PUI payments/conversions",
+          "attachment": "OWN_CLAUSE",
+          "scopeNote": "Mandatory/required payments carve-out from the junior prepay restriction."
+        }
+      ],
+      "crossReferences": [
+        {
+          "targetRef": "7.1",
+          "role": "pro-forma financial covenant gate"
+        },
+        {
+          "targetRef": "7.6(g)",
+          "role": "overlapping RP permission for PUI required payments"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Voluntary junior/unsecured prepays gated by all of \u00a77.1, not local dollars."
+        },
+        {
+          "kind": "SECTION_WIDE_LIMITATION",
+          "description": "\u00a77.9(b)/(c) amendment restrictions further constrain restructuring of the same instruments."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Junior/unsecured voluntary prepay permission looks broad; \u00a77.1 pro forma + \u00a77.9(b)/(c) amendment limits constrain the stack.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "lsb-6.08-a-v-debt-payments-payment-conditions",
+      "sourcePackage": "lsb-2023-abl-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "3a175ce17390e13f7abbcc703dfe1c58b42d881d8e8fdb48a2ab70be59f65ca8",
+      "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.08(a)",
+        "text": "Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments of Indebtedness shall be permitted:"
+      },
+      "exceptionSectionRef": "6.08(a)(v)",
+      "exactExceptionText": "payments of Indebtedness to the extent the Payment Conditions are satisfied;",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.08",
+        "Section 6.08(a)",
+        "Section 6.08(a)(v)"
+      ],
+      "definedTerms": [
+        "Payment Conditions"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Payment Conditions satisfied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Payment Conditions",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Loan Parties / Subsidiaries"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Payment Conditions shared across debt payments, RP, Investments, and general debt",
+          "relatedRefs": [
+            "6.01",
+            "6.11(c)",
+            "6.13(k)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Payment Conditions",
+          "role": "remote gate"
+        },
+        {
+          "targetRef": "6.08(a)(iv)",
+          "role": "separate Subordinated Indebtedness pathway"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Junior/other debt paydowns via (v) depend entirely on Payment Conditions definition."
+        }
+      ],
+      "capacityShape": "UNLIMITED_GATED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Debt-payment exception with no local quantum; subordination pathway (iv) is separate and also remotely gated by subordination terms.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.04-b-iv-rdp-cross-basket-offset",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(b)",
+        "text": "Restricted Debt Payments restriction (junior/subordinated/unsecured Restricted Debt paydowns) with enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.04(b)(iv)/(vi) family",
+      "exactExceptionText": "Restricted Debt Payments ... in an aggregate amount not to exceed ... [greater-of flat / % EBITDA basket], with express cross-basket offset / election mechanics against Section 6.04(a)(x) Restricted Payments capacity (and related builder elections), as inventoried in FWRG human-ground-truth fwrg-6.04(b)(iv).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(b)"
+      ],
+      "definedTerms": [
+        "Restricted Debt",
+        "Restricted Debt Payments",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "instrument must be Restricted Debt (subordinated / Junior Lien / unsecured above threshold)",
+          "location": "DEFINED_TERM",
+          "locationRef": "Restricted Debt",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "cross-basket offset against Section 6.04(a)(x) RP capacity",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.04(a)(x)",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA (see human-ground-truth)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower / Restricted Subsidiaries per 6.04(b)"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CROSS_BASKET_OFFSET",
+          "description": "RDP basket expressly offsets / elects against 6.04(a)(x) RP basket",
+          "relatedRefs": [
+            "6.04(a)(x)",
+            "6.04(b)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.04(a)(x)",
+          "role": "RP basket offset"
+        },
+        {
+          "targetRef": "Restricted Debt",
+          "role": "instrument-class gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Restricted Debt definition (incl. Junior Lien Debt) lives outside 6.04(b)."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Usable RDP capacity depends on RP basket elections."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Exact dollar/% figures confirmed in FWRG human-ground-truth; excerpt here emphasizes the cross-basket remote constraint. Not unconditional junior-debt capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}

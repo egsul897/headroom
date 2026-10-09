@@ -1,0 +1,543 @@
+{
+  "sourcePackage": "fwrg-2021-credit-agreement",
+  "count": 6,
+  "exceptionIds": [
+    "fwrg-6.04-a-iii-available-amount-rp",
+    "fwrg-6.04-b-iv-rdp-cross-basket-offset",
+    "fwrg-6.05-burdensome-agreements",
+    "fwrg-6.01-j-non-loan-party-debt-entity-scope",
+    "fwrg-6.04-a-xi-ratio-unlimited-rp",
+    "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments"
+  ],
+  "exceptions": [
+    {
+      "exceptionId": "fwrg-6.04-a-iii-available-amount-rp",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(a)",
+        "text": "The Borrower shall not pay or make any Restricted Payment, except that:"
+      },
+      "exceptionSectionRef": "6.04(a)(iii)",
+      "exactExceptionText": "the Borrower may make Restricted Payments in an amount not to exceed (A) the portion, if any, of the Available Amount on such date that the Borrower elects to apply to this clause (iii)(A) and/or (B) the portion, if any, of the Available Excluded Contribution Amount on such date that the Borrower elects to apply to this clause (iii)(B);",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(a)",
+        "Section 6.04(a)(iii)"
+      ],
+      "definedTerms": [
+        "Available Amount",
+        "Available Excluded Contribution Amount",
+        "Restricted Payment"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Available Amount electively applied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Amount",
+          "computableHint": "SHARED_POOL"
+        },
+        {
+          "conditionId": "c2",
+          "text": "Available Excluded Contribution Amount electively applied",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Excluded Contribution Amount",
+          "computableHint": "SHARED_POOL"
+        },
+        {
+          "conditionId": "c3",
+          "text": "CNI Growth Amount component of Available Amount has its own ratio/EOD gates in definition",
+          "location": "DEFINED_TERM",
+          "locationRef": "Available Amount / CNI Growth Amount",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "BUILDER",
+          "value": "Available Amount (multi-component)"
+        },
+        {
+          "kind": "BUILDER",
+          "value": "Available Excluded Contribution Amount"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "BUILDER_ELECTION",
+          "description": "Borrower elects which builder pool to charge; pools also feed Investments/RDPs",
+          "relatedRefs": [
+            "6.04(a)(iii)",
+            "6.06",
+            "6.04(b)"
+          ]
+        },
+        {
+          "kind": "SHARED_BASKET",
+          "description": "Available Amount is shared capacity across RP/Investment/RDP elections",
+          "relatedRefs": [
+            "Available Amount"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Available Amount",
+          "role": "builder definition with remote ratio/EOD gates"
+        },
+        {
+          "targetRef": "6.04(b)",
+          "role": "Restricted Debt Payments may also consume builder"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Builder components and their ratio/EOD limitations live in Article I definitions."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Same pool can be elected into Investments or Restricted Debt Payments elsewhere."
+        }
+      ],
+      "capacityShape": "BUILDER_SHARED",
+      "verificationStatus": "SOURCE_VERIFIED",
+      "notes": "Builder RP basket is never local unconditional capacity; definitional gates and cross-family elections constrain it.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.04-b-iv-rdp-cross-basket-offset",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "JUNIOR_DEBT_PREPAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(b)",
+        "text": "Restricted Debt Payments restriction (junior/subordinated/unsecured Restricted Debt paydowns) with enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.04(b)(iv)/(vi) family",
+      "exactExceptionText": "Restricted Debt Payments ... in an aggregate amount not to exceed ... [greater-of flat / % EBITDA basket], with express cross-basket offset / election mechanics against Section 6.04(a)(x) Restricted Payments capacity (and related builder elections), as inventoried in FWRG human-ground-truth fwrg-6.04(b)(iv).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(b)"
+      ],
+      "definedTerms": [
+        "Restricted Debt",
+        "Restricted Debt Payments",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "instrument must be Restricted Debt (subordinated / Junior Lien / unsecured above threshold)",
+          "location": "DEFINED_TERM",
+          "locationRef": "Restricted Debt",
+          "computableHint": "QUALITATIVE"
+        },
+        {
+          "conditionId": "c2",
+          "text": "cross-basket offset against Section 6.04(a)(x) RP capacity",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.04(a)(x)",
+          "computableHint": "SHARED_POOL"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA (see human-ground-truth)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower / Restricted Subsidiaries per 6.04(b)"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "CROSS_BASKET_OFFSET",
+          "description": "RDP basket expressly offsets / elects against 6.04(a)(x) RP basket",
+          "relatedRefs": [
+            "6.04(a)(x)",
+            "6.04(b)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.04(a)(x)",
+          "role": "RP basket offset"
+        },
+        {
+          "targetRef": "Restricted Debt",
+          "role": "instrument-class gate"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Restricted Debt definition (incl. Junior Lien Debt) lives outside 6.04(b)."
+        },
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Usable RDP capacity depends on RP basket elections."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Exact dollar/% figures confirmed in FWRG human-ground-truth; excerpt here emphasizes the cross-basket remote constraint. Not unconditional junior-debt capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.05-burdensome-agreements",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "SUBSIDIARY_RESTRICTIONS",
+      "parentProhibition": {
+        "sectionRef": "6.05",
+        "text": "Burdensome Agreements: Borrower shall not, nor shall it permit any of its Restricted Subsidiaries to, enter into or permit to exist any Contractual Obligation that limits the ability of ... (dividends / guarantees / liens) except for enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.05 exceptions",
+      "exactExceptionText": "Section 6.05 Burdensome Agreements exceptions include restrictions under the Loan Documents, refinancing/permitted Indebtedness documentation, and other customary carve-outs that themselves depend on Indebtedness and Lien permissions under Sections 6.01 and 6.02 (source positions ~54548+ in article-6-negative-covenants.txt).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.05"
+      ],
+      "definedTerms": [
+        "Restricted Subsidiary",
+        "Contractual Obligation"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "many exceptions require the underlying debt/lien to be permitted under 6.01/6.02",
+          "location": "CROSS_REFERENCED_SECTION",
+          "locationRef": "6.01 / 6.02",
+          "computableHint": "OTHER_RULE"
+        }
+      ],
+      "amountsAndRatios": [],
+      "entityScope": {
+        "includes": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "excludes": [
+          "Unrestricted Subsidiaries typically"
+        ]
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.01",
+          "role": "permitted Indebtedness documentation"
+        },
+        {
+          "targetRef": "6.02",
+          "role": "permitted Liens documentation"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "CROSS_SECTION_CONDITION",
+          "description": "Burdensome-agreement exceptions are derivative of debt/lien permissions."
+        }
+      ],
+      "capacityShape": "NONE_QUALITATIVE",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Subsidiary-restriction family exemplar from FWRG; exceptions are not free-standing capacity.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.01-j-non-loan-party-debt-entity-scope",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "DEBT_INCURRENCE",
+      "parentProhibition": {
+        "sectionRef": "6.01",
+        "text": "Indebtedness negative covenant with enumerated exceptions (a)..."
+      },
+      "exceptionSectionRef": "6.01(j)",
+      "exactExceptionText": "Indebtedness of Restricted Subsidiaries that are not Loan Parties, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA (human-ground-truth fwrg-6.01(j)).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.01",
+        "Section 6.01(j)"
+      ],
+      "definedTerms": [
+        "Restricted Subsidiary",
+        "Loan Party",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "debtor is Restricted Subsidiary that is not a Loan Party",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.01(j)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "EBITDA definition/components remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Consolidated Adjusted EBITDA",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Restricted Subsidiaries that are not Loan Parties"
+        ],
+        "excludes": [
+          "Loan Parties (as debtors under this basket)"
+        ],
+        "notes": "Entity-scope gate is the primary constraint; mis-reading as Borrower-wide overstates capacity."
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Consolidated Adjusted EBITDA",
+          "role": "percent limb"
+        },
+        {
+          "targetRef": "Loan Party",
+          "role": "entity exclusion"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "EBITDA add-backs and entity-class definitions are outside 6.01(j)."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Entity-scope-limited debt basket; treating as general debt capacity is a common over-read.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.04-a-xi-ratio-unlimited-rp",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "RESTRICTED_PAYMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.04(a)",
+        "text": "The Borrower shall not pay or make any Restricted Payment, except that:"
+      },
+      "exceptionSectionRef": "6.04(a)(xi)",
+      "exactExceptionText": "Unlimited (uncapped-dollar) Restricted Payments so long as the Total Rent Adjusted Net Leverage Ratio, calculated Pro Forma, would not exceed a fixed ratio - a ratio-gated unlimited basket (human-ground-truth fwrg-6.04(a)(xi)); no separate Event of Default condition attached in that inventory.",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.04",
+        "Section 6.04(a)",
+        "Section 6.04(a)(xi)"
+      ],
+      "definedTerms": [
+        "Total Rent Adjusted Net Leverage Ratio",
+        "Pro Forma"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "Pro Forma Total Rent Adjusted Net Leverage Ratio \u2264 fixed threshold",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.04(a)(xi)",
+          "computableHint": "RATIO"
+        },
+        {
+          "conditionId": "c2",
+          "text": "ratio definition remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Total Rent Adjusted Net Leverage Ratio",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "RATIO",
+          "value": "fixed Total Rent Adjusted Net Leverage Ratio threshold (see GT)"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Borrower"
+        ],
+        "excludes": []
+      },
+      "sharedCapacityInteractions": [],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "Total Rent Adjusted Net Leverage Ratio",
+          "role": "remote ratio definition"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "Ratio components and Pro Forma adjustments are definitional."
+        }
+      ],
+      "capacityShape": "RATIO_GATED_UNLIMITED",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Unlimited RP is still gated; absence of an EOD condition does not make capacity unconditional.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    },
+    {
+      "exceptionId": "fwrg-6.06-b-ii-loan-party-to-non-loan-party-investments",
+      "sourcePackage": "fwrg-2021-credit-agreement",
+      "sourcePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+      "sourceSha256": "ec183906d99bed71bdec811f0f11c0151e2caf87c1967e09b8d89188d2904d23",
+      "covenantFamily": "INVESTMENTS",
+      "parentProhibition": {
+        "sectionRef": "6.06",
+        "text": "Investments negative covenant with enumerated exceptions."
+      },
+      "exceptionSectionRef": "6.06(b)(ii)",
+      "exactExceptionText": "Investments by a Loan Party in a non-Loan-Party Restricted Subsidiary, capped at the greater of a fixed dollar amount and a % of Consolidated Adjusted EBITDA (human-ground-truth fwrg-6.06(b)(ii)).",
+      "structuralHierarchy": [
+        "Article VI",
+        "Section 6.06",
+        "Section 6.06(b)",
+        "Section 6.06(b)(ii)"
+      ],
+      "definedTerms": [
+        "Loan Party",
+        "Restricted Subsidiary",
+        "Consolidated Adjusted EBITDA"
+      ],
+      "conditions": [
+        {
+          "conditionId": "c1",
+          "text": "investor is Loan Party; investee is non-Loan-Party Restricted Subsidiary",
+          "location": "IN_EXCEPTION_CLAUSE",
+          "locationRef": "6.06(b)(ii)",
+          "computableHint": "ENTITY"
+        },
+        {
+          "conditionId": "c2",
+          "text": "EBITDA remote",
+          "location": "DEFINED_TERM",
+          "locationRef": "Consolidated Adjusted EBITDA",
+          "computableHint": "RATIO"
+        }
+      ],
+      "amountsAndRatios": [
+        {
+          "kind": "GREATER_OF",
+          "value": "fixed dollar and % Consolidated Adjusted EBITDA"
+        }
+      ],
+      "entityScope": {
+        "includes": [
+          "Loan Party investor",
+          "non-Loan-Party Restricted Subsidiary investee"
+        ],
+        "excludes": [
+          "Loan Party investees under this limb"
+        ]
+      },
+      "sharedCapacityInteractions": [
+        {
+          "kind": "BUILDER_ELECTION",
+          "description": "Related Investment limbs may elect Available Amount / RP offsets elsewhere in 6.06",
+          "relatedRefs": [
+            "Available Amount",
+            "6.04(a)"
+          ]
+        }
+      ],
+      "provisos": [],
+      "crossReferences": [
+        {
+          "targetRef": "6.04(a)",
+          "role": "RP/builder interaction in Investments article"
+        }
+      ],
+      "remoteConstraintFlags": [
+        {
+          "kind": "DEFINED_TERM_GATE",
+          "description": "EBITDA and entity-class definitions constrain the basket."
+        }
+      ],
+      "capacityShape": "GREATER_OF_MONEY_OR_PCT",
+      "verificationStatus": "SOURCE_VERIFIED_PARTIAL_CONTEXT",
+      "notes": "Entity-scoped investment basket; builder elections elsewhere can further interact with shared pools.",
+      "unconditionalCapacity": false,
+      "amendments": [
+        {
+          "documentRef": "base",
+          "effect": "none noted in curated NC excerpt",
+          "status": "NONE_NOTED"
+        }
+      ],
+      "seeminglyPermissiveButConstrained": true
+    }
+  ]
+}
