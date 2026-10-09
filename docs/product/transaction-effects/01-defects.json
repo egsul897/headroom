@@ -1,56 +1,57 @@
 {
   "artifact": "AGENT-4 transaction effects — defect ledger",
-  "at": "2026-10-09T22:28:00.000Z",
+  "at": "2026-10-09T22:40:00.000Z",
   "phase4dContractsPreserved": true,
   "defects": [
     {
       "id": "TE-D1",
       "severity": "OPEN",
       "title": "Empty ledger treated as zero consumption unless product affirms completeness",
-      "detail": "Phase 4C computeRemaining treats no applicable usage as determined zero (remaining = gross). Mission requires missing utilization history to remain UNKNOWN. Product-layer honestRemaining(…, UNKNOWN) now refuses to publish full remaining when utilizationAffirmedComplete is false. Phase 4C core unchanged.",
+      "detail": "Phase 4C computeRemaining treats no applicable usage as determined zero (remaining = gross). Product-layer honestRemaining(…, UNKNOWN) refuses to publish full remaining when utilizationAffirmedComplete is false. Phase 4C core unchanged.",
       "evidence": [
         "lib/contract-model/runtime/capacity/state.ts computeRemaining",
-        "lib/product/north-star-workflow/utilization-history.ts",
-        "tests/product/sequential-transaction-effects.test.ts"
+        "lib/contract-model/sequential-execution.ts honestRemaining"
       ]
     },
     {
       "id": "TE-D2",
-      "severity": "OPEN",
-      "title": "RESTORE_CAPACITY has no encoded contractual-authority gate in Phase 4D core",
-      "detail": "Phase 4D restores any existing usageId (LEDGER_USAGE_NOT_FOUND otherwise). Reclassification requires RECLASSIFIABLE_TO; restore does not. Product recipes refuse RESTORE_CAPACITY without contractualAuthorityRef. Core left unchanged to preserve contracts.",
+      "severity": "MITIGATED",
+      "title": "RESTORE_CAPACITY had no authority gate on product/verified paths",
+      "detail": "Root cause: Phase 4D primitive restores by usageId only (by design). Product recipes gated, but simulateVerifiedTransaction and sequential runner did not. Fixed at shared boundary: restore-authority.ts + verified-execution REFUSE + sequential runner pre-check. Primitive unchanged.",
       "evidence": [
-        "lib/product/north-star-workflow/transaction-effect-recipes.ts pushRestore",
-        "docs/phase-4d/03-effect-model.json"
+        "lib/contract-model/restore-authority.ts",
+        "lib/contract-model/verified-execution.ts simulateVerifiedTransaction",
+        "lib/contract-model/sequential-execution.ts",
+        "tests/product/sequential-state-correctness.test.ts",
+        "docs/product/transaction-effects/05-te-d2-d3-remediation.md"
       ]
     },
     {
       "id": "TE-D3",
-      "severity": "OPEN",
-      "title": "Financial overlays do not chain across sequential transactions",
-      "detail": "Each simulateTransaction overlays CHANGE_METRIC on the immutable approved snapshot. advance() chains capacity state + proposed ledger only. Cumulative pro-forma metrics across a sequence require a restated snapshot or cumulative caller-stated deltas. Documented; not a silent ledger mutation.",
+      "severity": "MITIGATED",
+      "title": "Financial overlays did not chain across sequential transactions",
+      "detail": "Root cause: product advanceWorld dropped APPLIED overlay results. Fixed via chainFinancialViewWithScope (SET prior APPLIED into next base resolver). Independently validated ratio-gated sequence: incur raises TNL 3.0→4.0; subsequent dividend NOT_SATISFIED.",
       "evidence": [
-        "lib/contract-model/runtime/transaction/overlay.ts",
-        "tests/contract-model/runtime/transaction/helpers.ts advance",
-        "docs/phase-4d/07-financial-overlay.json"
+        "lib/contract-model/sequential-execution.ts chainFinancialViewWithScope",
+        "docs/product/transaction-effects/04-ratio-gated-sequence.json",
+        "tests/product/sequential-state-correctness.test.ts"
       ]
     },
     {
       "id": "TE-D4",
-      "severity": "OPEN",
-      "title": "No product applicator previously composed the 12 business forms into Phase 4D effects",
-      "detail": "Engine supported compositional effects; product UI still used legacy simulateDebtIncurrence for some paths. Closed for recipe/demo surface by transaction-effect-recipes + sequential runner; live dashboard wiring remains out of scope.",
-      "statusNote": "MITIGATED_IN_PRODUCT_LAYER",
+      "severity": "MITIGATED_IN_PRODUCT_LAYER",
+      "title": "No product applicator composed the 12 business forms into Phase 4D effects",
+      "detail": "Closed by transaction-effect-recipes + sequential-execution boundary.",
       "evidence": [
         "lib/product/north-star-workflow/transaction-effect-recipes.ts",
-        "lib/product/north-star-workflow/sequential-transaction-runner.ts"
+        "lib/contract-model/sequential-execution.ts"
       ]
     },
     {
       "id": "TE-D5",
       "severity": "OPEN",
       "title": "Amendments affecting capacity are not Phase 4D effects",
-      "detail": "recipeAmendmentAffectingCapacity fails closed with AMENDMENT_REQUIRES_NEW_CAPACITY_GRAPH. Operative IR must be re-bound (Phase 3) before capacity re-evaluation.",
+      "detail": "recipeAmendmentAffectingCapacity fails closed with AMENDMENT_REQUIRES_NEW_CAPACITY_GRAPH.",
       "evidence": [
         "lib/product/north-star-workflow/transaction-effect-recipes.ts recipeAmendmentAffectingCapacity"
       ]
@@ -59,8 +60,18 @@
       "id": "TE-D6",
       "severity": "KNOWN_CORPUS",
       "title": "Real frozen corpus has 0 reclassification edges and 0 quantified shared pools",
-      "detail": "Basket reclassification and quantified shared-capacity execution remain synthetic-only proofs (Phase 4D README).",
-      "evidence": ["docs/phase-4d/README.md", "docs/phase-4d/13-real-fixture-proof.json"]
+      "detail": "Shared-capacity sequential anti-stacking and reclassification remain synthetic proofs; no invented real-corpus reclass evidence.",
+      "evidence": ["docs/phase-4d/README.md", "tests/product/sequential-state-correctness.test.ts"]
+    },
+    {
+      "id": "TE-D7",
+      "severity": "MITIGATED",
+      "title": "PR #223 product files imported raw Phase-4 runtime (bypass rule)",
+      "detail": "Moved sequential composition into lib/contract-model/sequential-execution.ts boundary; product re-exports only. Architecture EXEMPT updated.",
+      "evidence": [
+        "tests/contract-model/verified-execution.test.ts N. BYPASS",
+        "lib/product/north-star-workflow/sequential-transaction-runner.ts"
+      ]
     }
   ]
 }

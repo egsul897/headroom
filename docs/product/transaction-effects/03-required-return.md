@@ -1,39 +1,40 @@
-# Required return — Agent 4 transaction effects
+# Required return — Agent 4 sequential financial & covenant state
 
-## Working sequential demonstration
+## 1. TE-D2 / TE-D3 root causes
+- **TE-D3:** product `advanceWorld` chained ledger/capacity but not financial overlays → next tx saw stale snapshot metrics.
+- **TE-D2:** Phase 4D primitive allows restore by usageId; verified + sequential product paths did not enforce contractual authority.
 
-Artifact: `docs/product/transaction-effects/02-sequential-demo-run.json`  
-Script: `npx tsx scripts/run-sequential-transaction-demo.ts`  
-Tests: `tests/product/sequential-transaction-effects.test.ts` (11), `tests/product/transaction-effect-recipes.test.ts` (9) — **20/20 pass**.
+## 2. Production reachability
+Unauthorized restore could reach `simulateTransaction` via `simulateVerifiedTransaction` and the sequential runner. Direct Phase 4D tests still can (primitive preserved).
 
-Sequence: incur debt → dividend → equity contribution → investment → repay debt.  
-Mode: `HYPOTHETICAL`. `originalLedgerUntouched: true`. `abortedAtStepId: null`.
+## 3. Corrected behavior
+- `chainFinancialViewWithScope` SETs prior APPLIED results into the next base resolver.
+- `assertRestoreAuthority` / `[authority:<ref>]` at verified-execution + sequential-execution.
+- Product no longer imports raw `runtime/*`.
 
-## Independently checked pre/post states
+## 4. Independently validated examples
+- Flat five-step demo (`02-sequential-demo-run.json`)
+- Ratio-gated incur→dividend refusal (`04-ratio-gated-sequence.json`) — independent TNL 3.0→4.0 before Headroom
+- Eligible vs ineligible equity → builder
+- Shared-pool sequential anti-stacking
 
-Every step records `preState` / `postState` capacity views and re-runs `evaluateCapacityState` on the advanced ledger (`independentPostMatchesSimulation: true` for all five steps). Pre/post hashes chain.
+## 5. Existing tests preserved
+Phase 4D transaction suites unchanged; `verified-execution` 29/29.
 
-| Step | Pre debt rem | Post debt rem | Notes |
-|------|--------------|---------------|-------|
-| 1-debt-incurrence | 500 | 400 | +proposed `tx-1-incur::e-incur` |
-| 2-dividend | 400 | 400 | RP 200→160 |
-| 3-equity-contribution | 400 | 400 | metrics only (overlay on immutable snapshot) |
-| 4-restricted-investment | 400 | 400 | invest 150→100 |
-| 5-debt-repayment | 400 | 500 | authorized restore of incur usage |
+## 6. New regression results
+`sequential-state-correctness.test.ts` 10/10; recipes 9/9; sequential-effects 11/11. **59/59** on the mission suite.
 
-## Per-transaction determination (recipe surface)
+## 7. Unauthorized restoration blocked
+Yes — verified REFUSE + sequential pre-check. Recipes still refuse empty authority.
 
-For each of the 12 types, recipes produce: identity, entities, contractual pathway, financial CHANGE_METRIC list, basket consumption, basket restoration (authority-gated), shared-capacity ids, selected path, provenance, approval status. Amendments fail closed (`AMENDMENT_REQUIRES_NEW_CAPACITY_GRAPH`).
+## 8. Financial chaining correctness
+Yes — chained resolver shows builder-available 50→125; ratio gate uses post-incur debt.
 
-## Defects
+## 9. Cross-document / shared consistency
+Shared pool sequential draws refuse over-stack; reclass still requires encoded edge (no invented corpus evidence).
 
-`01-defects.json` — TE-D1…TE-D6.
-
-## Cost
-
-**$0.00** — zero paid inference.
-
-## SHA
-
-- Base: `bae24ced33fdd6963d0615265a1e67cb181233e8`
-- Tip: `62681ea882e676507c08073ab6638eb1081073e4`
+## 10. PR / SHA / CI / cost
+- **PR:** https://github.com/egsul897/headroom/pull/223
+- **Tip:** see branch head after push
+- **Cost:** $0.00
+- **CI:** local mission suite green; unrelated product tests (authenticated-vep-offline, conmed-demo nav) fail on main tip as before

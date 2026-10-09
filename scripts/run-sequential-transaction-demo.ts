@@ -4,13 +4,24 @@
  */
 import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
-import { runCanonicalSequentialDemo } from "../lib/product/north-star-workflow/sequential-demo-scenario";
+import { runCanonicalSequentialDemo, buildRatioGatedSequenceSteps } from "../lib/product/north-star-workflow/sequential-demo-scenario";
 import { ALL_BUSINESS_TRANSACTION_TYPES } from "../lib/product/north-star-workflow/transaction-effect-recipes";
+import {
+  RATIO_DEMO_INDEPENDENT_EXPECTATION,
+  runSequentialTransactions,
+} from "../lib/contract-model/sequential-execution";
 
 const outDir = join("docs", "product", "transaction-effects");
 mkdirSync(outDir, { recursive: true });
 
 const run = runCanonicalSequentialDemo({ utilizationAffirmedComplete: true });
+const { world, incur, dividend } = buildRatioGatedSequenceSteps();
+const ratioRun = runSequentialTransactions({
+  world,
+  steps: [incur, dividend],
+  mode: "HYPOTHETICAL",
+  utilizationAffirmedComplete: true,
+});
 
 const summary = {
   artifact: "AGENT-4 sequential transaction demonstration",
@@ -31,6 +42,8 @@ const summary = {
     preStateHash: s.preStateHash,
     postStateHash: s.postStateHash,
     independentPostMatchesSimulation: s.independentPostMatchesSimulation,
+    financialViewChained: s.financialViewChained,
+    chainedMetricKeysAfter: s.chainedMetricKeysAfter,
     proposedLedgerUsageIds: s.proposedLedgerUsageIds,
     preState: s.preState,
     postState: s.postState,
@@ -64,7 +77,28 @@ const summary = {
   })),
   finalStateHash: run.finalStateHash,
   notes: run.notes,
+  ratioGatedIndependentDemo: {
+    independentExpectation: RATIO_DEMO_INDEPENDENT_EXPECTATION,
+    steps: ratioRun.steps.map((s) => ({
+      stepId: s.stepId,
+      simulationStatus: s.simulation?.simulationStatus ?? null,
+      selectedPathResult: s.simulation?.selectedPathResult ?? null,
+      financialViewChained: s.financialViewChained,
+      chainedMetricKeysAfter: s.chainedMetricKeysAfter,
+      limitations: s.simulation?.limitations.map((l) => l.code) ?? s.recipeLimitations.map((l) => l.code),
+      postStatePublished: s.postState !== null,
+    })),
+    abortedAtStepId: ratioRun.abortedAtStepId,
+  },
 };
 
 writeFileSync(join(outDir, "02-sequential-demo-run.json"), JSON.stringify(summary, null, 2) + "\n");
-console.log(JSON.stringify({ wrote: join(outDir, "02-sequential-demo-run.json"), steps: summary.steps.length, aborted: summary.abortedAtStepId }, null, 2));
+writeFileSync(join(outDir, "04-ratio-gated-sequence.json"), JSON.stringify(summary.ratioGatedIndependentDemo, null, 2) + "\n");
+console.log(JSON.stringify({
+  wrote: [join(outDir, "02-sequential-demo-run.json"), join(outDir, "04-ratio-gated-sequence.json")],
+  flatSteps: summary.steps.length,
+  flatAborted: summary.abortedAtStepId,
+  ratioAborted: ratioRun.abortedAtStepId,
+  ratioPath1: ratioRun.steps[0]?.simulation?.selectedPathResult,
+  ratioPath2: ratioRun.steps[1]?.simulation?.selectedPathResult,
+}, null, 2));

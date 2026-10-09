@@ -11,8 +11,9 @@ import type {
   SelectedPath,
   TransactionEffect,
   TransactionQuantity,
-} from "@/lib/contract-model/runtime/transaction/types";
-import type { ReclassificationElection } from "@/lib/contract-model/runtime/capacity/types";
+  ReclassificationElection,
+} from "@/lib/contract-model/sequential-execution";
+import { formatRestoreReason } from "@/lib/contract-model/verified-execution";
 import type { EntityClassTag } from "@prisma/client";
 
 export const TRANSACTION_EFFECT_RECIPES_VERSION = "transaction-effect-recipes.v1" as const;
@@ -213,7 +214,7 @@ function pushRestore(result: RecipeBuildResult, restore: RestoreSpec): void {
     effectId: restore.effectId,
     kind: "RESTORE_CAPACITY",
     usageId: restore.usageId,
-    reason: `${restore.reason} [authority:${restore.contractualAuthorityRef}]`,
+    reason: formatRestoreReason(restore.reason, restore.contractualAuthorityRef),
   });
   result.basketRestoration.push(restore);
   result.contractualPathway.push(restore.contractualAuthorityRef);

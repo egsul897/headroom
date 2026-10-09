@@ -1,6 +1,6 @@
 {
   "artifact": "AGENT-4 sequential transaction demonstration",
-  "at": "2026-10-09T22:27:58.394Z",
+  "at": "2026-10-09T22:39:20.084Z",
   "costUsd": 0,
   "paidCalls": 0,
   "mode": "HYPOTHETICAL",
@@ -28,9 +28,13 @@
       "recipeOk": true,
       "simulationStatus": "SIMULATED",
       "selectedPathResult": "SATISFIED",
-      "preStateHash": "1e0202a0d06d1fd9fbcbbd4089c26d317fea151981afa9a7aceed016a0f83395",
-      "postStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
+      "preStateHash": "8091a347de612fb9cba357aae222ff84a6f13faac9b4803962209ec8503c8730",
+      "postStateHash": "390ab28a335c76154933ad856474c30582242514408b28b52664e7d184112b3b",
       "independentPostMatchesSimulation": true,
+      "financialViewChained": true,
+      "chainedMetricKeysAfter": [
+        "total-debt"
+      ],
       "proposedLedgerUsageIds": [
         "tx-1-incur::e-incur"
       ],
@@ -164,14 +168,14 @@
       "ledgerSuperseded": [],
       "provenance": {
         "transactionId": "tx-1-incur",
-        "simulationId": "daf5771c40ac8052798e4de5470aec797c1428559eeb616ff1ba80c0ce169e73",
-        "preStateHash": "1e0202a0d06d1fd9fbcbbd4089c26d317fea151981afa9a7aceed016a0f83395",
-        "postStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
-        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "simulationId": "b48ce26f1069932895bdb1b3a68d6b6718a769446a7353757a63fedcc820ef8d",
+        "preStateHash": "8091a347de612fb9cba357aae222ff84a6f13faac9b4803962209ec8503c8730",
+        "postStateHash": "390ab28a335c76154933ad856474c30582242514408b28b52664e7d184112b3b",
+        "capacityGraphHash": "3c1904ddad01cd729d4b37b872487f1a072982ede355d32be7db66a735f3f2ef",
         "snapshotSetHash": null,
         "inputViewHash": "8aadd07f01a4c98bfdcc7b6b24c331853ae68170bd6cb5fe26f89f89c1737163",
         "ledgerPreHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-        "ledgerPostHash": "477d8b6d8492085f52f4b6e89fbbec91bf8dee4965256e46feee38635d3d7a81",
+        "ledgerPostHash": "698c7de0cc8c8127d3ca34968784fdafbd203d7503a3c77774cba9e1826f6f07",
         "runtimeVersion": "contract-runtime.v1",
         "inputContractVersion": "financial-input-contract.v1",
         "capacityGraphVersion": "capacity-graph.v1",
@@ -204,7 +208,7 @@
           },
           {
             "from": "phase4d:overlay",
-            "to": "phase4c:preState:1e0202a0d06d",
+            "to": "phase4c:preState:8091a347de61",
             "via": "capacity state and consumption ledger"
           },
           {
@@ -214,7 +218,7 @@
           },
           {
             "from": "phase4d:proposedEffects",
-            "to": "phase4c:postState:c10fd4279916",
+            "to": "phase4c:postState:390ab28a335c",
             "via": "re-evaluation over the proposed ledger"
           }
         ],
@@ -228,9 +232,13 @@
       "recipeOk": true,
       "simulationStatus": "SIMULATED",
       "selectedPathResult": "SATISFIED",
-      "preStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
-      "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "preStateHash": "390ab28a335c76154933ad856474c30582242514408b28b52664e7d184112b3b",
+      "postStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
       "independentPostMatchesSimulation": true,
+      "financialViewChained": true,
+      "chainedMetricKeysAfter": [
+        "builder-available"
+      ],
       "proposedLedgerUsageIds": [
         "tx-2-dividend::e-div"
       ],
@@ -368,14 +376,14 @@
       "ledgerSuperseded": [],
       "provenance": {
         "transactionId": "tx-2-dividend",
-        "simulationId": "bad186f2aa7f8404be645b1b67575084a84e521170d89e1e827f0cc2061e2070",
-        "preStateHash": "c10fd4279916a06fb0280f2d54452e9130c8720bf260d31b148103b76f050a22",
-        "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "simulationId": "3516d63aad627805383a6add2f7b0430ca80d1d14c15e91f7bfaa5a8962571d7",
+        "preStateHash": "390ab28a335c76154933ad856474c30582242514408b28b52664e7d184112b3b",
+        "postStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+        "capacityGraphHash": "3c1904ddad01cd729d4b37b872487f1a072982ede355d32be7db66a735f3f2ef",
         "snapshotSetHash": null,
         "inputViewHash": "0fa328b0dd961cbf164e36e346dddbc0f4770dd4db6ae067a6b160a897efd86b",
-        "ledgerPreHash": "477d8b6d8492085f52f4b6e89fbbec91bf8dee4965256e46feee38635d3d7a81",
-        "ledgerPostHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "ledgerPreHash": "698c7de0cc8c8127d3ca34968784fdafbd203d7503a3c77774cba9e1826f6f07",
+        "ledgerPostHash": "14978a45c32c4c00209d59c02b1a3c9d3e9afc781b4e3da5101bd3c29703e9df",
         "runtimeVersion": "contract-runtime.v1",
         "inputContractVersion": "financial-input-contract.v1",
         "capacityGraphVersion": "capacity-graph.v1",
@@ -408,7 +416,7 @@
           },
           {
             "from": "phase4d:overlay",
-            "to": "phase4c:preState:c10fd4279916",
+            "to": "phase4c:preState:390ab28a335c",
             "via": "capacity state and consumption ledger"
           },
           {
@@ -418,7 +426,7 @@
           },
           {
             "from": "phase4d:proposedEffects",
-            "to": "phase4c:postState:59c094146f36",
+            "to": "phase4c:postState:f24e8dc3c93f",
             "via": "re-evaluation over the proposed ledger"
           }
         ],
@@ -432,9 +440,14 @@
       "recipeOk": true,
       "simulationStatus": "SIMULATED",
       "selectedPathResult": "SATISFIED",
-      "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-      "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
+      "preStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+      "postStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
       "independentPostMatchesSimulation": true,
+      "financialViewChained": true,
+      "chainedMetricKeysAfter": [
+        "builder-available",
+        "equity-proceeds"
+      ],
       "proposedLedgerUsageIds": [],
       "preState": [
         {
@@ -516,7 +529,7 @@
           "state": "APPLIED",
           "base": {
             "type": "MONEY",
-            "amount": "50",
+            "amount": "10",
             "currency": "USD",
             "lineage": {
               "exprId": null,
@@ -525,7 +538,7 @@
           },
           "result": {
             "type": "MONEY",
-            "amount": "125",
+            "amount": "85",
             "currency": "USD",
             "lineage": {
               "exprId": null,
@@ -561,14 +574,14 @@
       "ledgerSuperseded": [],
       "provenance": {
         "transactionId": "tx-3-equity",
-        "simulationId": "7bf0eb84f95cab9aa1190884b26f66c0d247e74b73a845d90f750905bdd87c68",
-        "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-        "postStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "simulationId": "c9067389a4e37bf39ec47239aa8f28108c75bdd03dd3cee448594c53e65c86e9",
+        "preStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+        "postStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+        "capacityGraphHash": "3c1904ddad01cd729d4b37b872487f1a072982ede355d32be7db66a735f3f2ef",
         "snapshotSetHash": null,
-        "inputViewHash": "50d6b0f041ee7b4c0df1b1a8a71239a080e56913956e1f743ea34a1be02e4a12",
-        "ledgerPreHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
-        "ledgerPostHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
+        "inputViewHash": "c2a92082ecbc4e5e29d1441cf83c4175fcc15b67f810587cfae9c03ef23a8fb0",
+        "ledgerPreHash": "14978a45c32c4c00209d59c02b1a3c9d3e9afc781b4e3da5101bd3c29703e9df",
+        "ledgerPostHash": "14978a45c32c4c00209d59c02b1a3c9d3e9afc781b4e3da5101bd3c29703e9df",
         "runtimeVersion": "contract-runtime.v1",
         "inputContractVersion": "financial-input-contract.v1",
         "capacityGraphVersion": "capacity-graph.v1",
@@ -596,12 +609,12 @@
           },
           {
             "from": "phase4b:snapshots",
-            "to": "phase4d:overlay:50d6b0f041ee",
+            "to": "phase4d:overlay:c2a92082ecbc",
             "via": "explicit pro-forma adjustments"
           },
           {
             "from": "phase4d:overlay",
-            "to": "phase4c:preState:59c094146f36",
+            "to": "phase4c:preState:f24e8dc3c93f",
             "via": "capacity state and consumption ledger"
           },
           {
@@ -611,7 +624,7 @@
           },
           {
             "from": "phase4d:proposedEffects",
-            "to": "phase4c:postState:59c094146f36",
+            "to": "phase4c:postState:f24e8dc3c93f",
             "via": "re-evaluation over the proposed ledger"
           }
         ],
@@ -625,9 +638,11 @@
       "recipeOk": true,
       "simulationStatus": "SIMULATED",
       "selectedPathResult": "SATISFIED",
-      "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-      "postStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
+      "preStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+      "postStateHash": "780ad9a7044c9c7ec0bcc1af5119d6e4a41f65d1e4058a2b9d63b0beb5ac7f5f",
       "independentPostMatchesSimulation": true,
+      "financialViewChained": false,
+      "chainedMetricKeysAfter": [],
       "proposedLedgerUsageIds": [
         "tx-4-invest::e-invest"
       ],
@@ -745,14 +760,14 @@
       "ledgerSuperseded": [],
       "provenance": {
         "transactionId": "tx-4-invest",
-        "simulationId": "6cba67a12a0f4acff6e81fe8cdfde1135417cfe771672336df4a2187f023cea7",
-        "preStateHash": "59c094146f3638b1e1e28932ac030fcf7a2b65ab739ec26be0ad7e17562c2d92",
-        "postStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
-        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "simulationId": "856b5191085daceb62264aec0bb6381fbc49fd2ec798b8b25e9fbd0a051c486a",
+        "preStateHash": "f24e8dc3c93f126541219e98cd3a08b00837f3e45d5a8b9262daaa84fbebf217",
+        "postStateHash": "780ad9a7044c9c7ec0bcc1af5119d6e4a41f65d1e4058a2b9d63b0beb5ac7f5f",
+        "capacityGraphHash": "3c1904ddad01cd729d4b37b872487f1a072982ede355d32be7db66a735f3f2ef",
         "snapshotSetHash": null,
         "inputViewHash": "a26808e4be0a698b64f54a110af72f87c33b50738d6e616e81863f45cd94a988",
-        "ledgerPreHash": "2f5aaf354e82ba203f1a70f10306388f0bd028adda124d6ac6a9238ed892d4e3",
-        "ledgerPostHash": "6abee25dfb14b6bc61356a775f4a034791f0952884c30a5952da36ebef65065a",
+        "ledgerPreHash": "14978a45c32c4c00209d59c02b1a3c9d3e9afc781b4e3da5101bd3c29703e9df",
+        "ledgerPostHash": "dd49c7490171b2183c0688f3038716e38c2983c9d3b328973f82237180411fa0",
         "runtimeVersion": "contract-runtime.v1",
         "inputContractVersion": "financial-input-contract.v1",
         "capacityGraphVersion": "capacity-graph.v1",
@@ -785,7 +800,7 @@
           },
           {
             "from": "phase4d:overlay",
-            "to": "phase4c:preState:59c094146f36",
+            "to": "phase4c:preState:f24e8dc3c93f",
             "via": "capacity state and consumption ledger"
           },
           {
@@ -795,7 +810,7 @@
           },
           {
             "from": "phase4d:proposedEffects",
-            "to": "phase4c:postState:43e4bfa6a631",
+            "to": "phase4c:postState:780ad9a7044c",
             "via": "re-evaluation over the proposed ledger"
           }
         ],
@@ -809,9 +824,13 @@
       "recipeOk": true,
       "simulationStatus": "SIMULATED",
       "selectedPathResult": "SATISFIED",
-      "preStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
-      "postStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
+      "preStateHash": "780ad9a7044c9c7ec0bcc1af5119d6e4a41f65d1e4058a2b9d63b0beb5ac7f5f",
+      "postStateHash": "26f01111c0d956561c598daa1ce6ac7ea9c5eff75a5b4d54a0bce045f44503cb",
       "independentPostMatchesSimulation": true,
+      "financialViewChained": true,
+      "chainedMetricKeysAfter": [
+        "total-debt"
+      ],
       "proposedLedgerUsageIds": [
         "tx-5-repay::e-repay"
       ],
@@ -897,7 +916,7 @@
           "state": "APPLIED",
           "base": {
             "type": "MONEY",
-            "amount": "1000",
+            "amount": "1100",
             "currency": "USD",
             "lineage": {
               "exprId": null,
@@ -906,7 +925,7 @@
           },
           "result": {
             "type": "MONEY",
-            "amount": "900",
+            "amount": "1000",
             "currency": "USD",
             "lineage": {
               "exprId": null,
@@ -935,14 +954,14 @@
       ],
       "provenance": {
         "transactionId": "tx-5-repay",
-        "simulationId": "6f73fc193deeaa0e747300e1985f7b206d9be6888cfdceb0c064bb84cb83d2fb",
-        "preStateHash": "43e4bfa6a631e5b6b59b354a33cd13e04e1fdddeffa429b41610f545019e376e",
-        "postStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
-        "capacityGraphHash": "a4e57a1c0ab86b41d63f731406b61c271e0025568558bd562344f9e0a226ffe6",
+        "simulationId": "0bba13ae8b947edc17be4dcaae5c7a8d35b4e43ec2c3918deaeff13de4578028",
+        "preStateHash": "780ad9a7044c9c7ec0bcc1af5119d6e4a41f65d1e4058a2b9d63b0beb5ac7f5f",
+        "postStateHash": "26f01111c0d956561c598daa1ce6ac7ea9c5eff75a5b4d54a0bce045f44503cb",
+        "capacityGraphHash": "3c1904ddad01cd729d4b37b872487f1a072982ede355d32be7db66a735f3f2ef",
         "snapshotSetHash": null,
-        "inputViewHash": "0d422922ec2897e1cbca7208b5e630460c46c096539e646189894c06dd404f25",
-        "ledgerPreHash": "6abee25dfb14b6bc61356a775f4a034791f0952884c30a5952da36ebef65065a",
-        "ledgerPostHash": "c29e2528bd9f89ce7a9513d54efb78c9dd7ddfe6f10e895ec3d516c6ac484774",
+        "inputViewHash": "330bbcfc1f8eaaa0e725ef1f2cb4c17e9613a1903fcea1150a229c3ed0edcdba",
+        "ledgerPreHash": "dd49c7490171b2183c0688f3038716e38c2983c9d3b328973f82237180411fa0",
+        "ledgerPostHash": "538d06c21900aa1b7b2f2739e7b187da790729e0bfc816638994796a01284ac2",
         "runtimeVersion": "contract-runtime.v1",
         "inputContractVersion": "financial-input-contract.v1",
         "capacityGraphVersion": "capacity-graph.v1",
@@ -970,12 +989,12 @@
           },
           {
             "from": "phase4b:snapshots",
-            "to": "phase4d:overlay:0d422922ec28",
+            "to": "phase4d:overlay:330bbcfc1f8e",
             "via": "explicit pro-forma adjustments"
           },
           {
             "from": "phase4d:overlay",
-            "to": "phase4c:preState:43e4bfa6a631",
+            "to": "phase4c:preState:780ad9a7044c",
             "via": "capacity state and consumption ledger"
           },
           {
@@ -985,7 +1004,7 @@
           },
           {
             "from": "phase4d:proposedEffects",
-            "to": "phase4c:postState:7240380198b8",
+            "to": "phase4c:postState:26f01111c0d9",
             "via": "re-evaluation over the proposed ledger"
           }
         ],
@@ -994,10 +1013,54 @@
       "commitPlanExecuted": false
     }
   ],
-  "finalStateHash": "7240380198b82b18e4aac5d0c867da54ae55230b6161f42af9f54abcbbb15694",
+  "finalStateHash": "26f01111c0d956561c598daa1ce6ac7ea9c5eff75a5b4d54a0bce045f44503cb",
   "notes": [
     "Phase 4D simulateTransaction is pure; commit is separate and opt-in.",
-    "Recipe category/label are metadata only.",
+    "Financial overlays chain via SET of prior APPLIED results into the next base resolver.",
+    "Restore authority enforced at sequential-execution boundary.",
     "initialUtilization=CONFIRMED_EMPTY"
-  ]
+  ],
+  "ratioGatedIndependentDemo": {
+    "independentExpectation": {
+      "initialTotalDebt": "300",
+      "initialEbitda": "100",
+      "initialTnl": "3",
+      "leverageGate": "3.5",
+      "debtIncurrence": "100",
+      "postIncurTotalDebt": "400",
+      "postIncurTnl": "4",
+      "dividendAttempt": "40",
+      "expectedAfterIncur": "RP_GATE_FAILS_TNL_ABOVE_3_5",
+      "sourceAuthority": {
+        "debtBasket": "§debt-basket — Indebtedness permission (flat $500)",
+        "rpBasket": "§rp-basket — Restricted Payments (flat $200) subject to TNL ≤ 3.50x",
+        "leverageTest": "COMPARE(DIVIDE(total-debt, ebitda), LTE, RATIO(3.50))"
+      }
+    },
+    "steps": [
+      {
+        "stepId": "1-debt-incurrence",
+        "simulationStatus": "SIMULATED",
+        "selectedPathResult": "SATISFIED",
+        "financialViewChained": true,
+        "chainedMetricKeysAfter": [
+          "total-debt"
+        ],
+        "limitations": [],
+        "postStatePublished": true
+      },
+      {
+        "stepId": "2-dividend-blocked",
+        "simulationStatus": "SIMULATED",
+        "selectedPathResult": "NOT_SATISFIED",
+        "financialViewChained": false,
+        "chainedMetricKeysAfter": [],
+        "limitations": [
+          "CONDITION_NOT_SATISFIED"
+        ],
+        "postStatePublished": false
+      }
+    ],
+    "abortedAtStepId": "2-dividend-blocked"
+  }
 }

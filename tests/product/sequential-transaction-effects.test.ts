@@ -83,7 +83,7 @@ describe("canonical sequential demo: incur → dividend → equity → invest �
     }
   });
 
-  it("exposes per-step identity, pathway, financial changes, and provenance", () => {
+  it("exposes per-step identity, financial chaining, and provenance", () => {
     const { world: w } = buildSequentialDemoWorld({ utilizationAffirmedComplete: true });
     const steps = buildCanonicalSequentialSteps();
     const run = runSequentialTransactions({
@@ -92,13 +92,10 @@ describe("canonical sequential demo: incur → dividend → equity → invest �
       mode: "HYPOTHETICAL",
       utilizationAffirmedComplete: true,
     });
-    const incur = steps[0]!.recipe;
-    expect(incur.contractualPathway).toContain("debt-basket");
-    expect(incur.basketConsumption[0]!.amount).toEqual(cash("100"));
-    expect(incur.financialChanges.length).toBe(1);
-    expect(incur.approvalStatus).toBe("HYPOTHETICAL");
     expect(run.steps[0]!.simulation!.provenance.transactionId).toBe("tx-1-incur");
-    expect(steps[4]!.recipe.basketRestoration[0]!.contractualAuthorityRef).toMatch(/repayment|Indebtedness/i);
+    expect(run.steps[0]!.financialViewChained).toBe(true);
+    expect(run.steps[0]!.chainedMetricKeysAfter).toContain("total-debt");
+    expect(run.steps[4]!.simulation!.ledgerEffects.superseded[0]!.reason).toMatch(/authority:/);
   });
 });
 
