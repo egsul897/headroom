@@ -1,0 +1,121 @@
+{
+  "schema": "stage-d-pkgi-entity-scope-phase4e.v1",
+  "paidProvidersCalled": false,
+  "packageId": "pkg-i-secured-debt-lien",
+  "results": [
+    {
+      "transactionKind": "UNSECURED_DEBT",
+      "authority": "CERTIFIED_4E",
+      "incompleteReasons": [],
+      "unsupportedReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:1ea3d67e55e82ccbde4edeec",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(b)",
+          "ruleId": "ir-rule:1ea3d67e55e82ccbde4edeec"
+        },
+        {
+          "pathId": "path:ir-rule:9ff53e7104046eb62908dd6d",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01",
+          "ruleId": "ir-rule:9ff53e7104046eb62908dd6d"
+        },
+        {
+          "pathId": "path:ir-rule:cb4929708d9b90d8bdfd2d28",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(d)",
+          "ruleId": "ir-rule:cb4929708d9b90d8bdfd2d28"
+        },
+        {
+          "pathId": "path:ir-rule:d0026495335a3c191280d108",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(c)",
+          "ruleId": "ir-rule:d0026495335a3c191280d108"
+        },
+        {
+          "pathId": "path:ir-rule:faeaf9ec96070abfed580d5f",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(a)",
+          "ruleId": "ir-rule:faeaf9ec96070abfed580d5f"
+        }
+      ]
+    },
+    {
+      "transactionKind": "SECURED_DEBT",
+      "authority": "CERTIFIED_4E",
+      "incompleteReasons": [],
+      "unsupportedReasons": [],
+      "paths": [
+        {
+          "pathId": "path:ir-rule:1ea3d67e55e82ccbde4edeec",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(b)",
+          "ruleId": "ir-rule:1ea3d67e55e82ccbde4edeec"
+        },
+        {
+          "pathId": "path:ir-rule:9ff53e7104046eb62908dd6d",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01",
+          "ruleId": "ir-rule:9ff53e7104046eb62908dd6d"
+        },
+        {
+          "pathId": "path:ir-rule:cb4929708d9b90d8bdfd2d28",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(d)",
+          "ruleId": "ir-rule:cb4929708d9b90d8bdfd2d28"
+        },
+        {
+          "pathId": "path:ir-rule:d0026495335a3c191280d108",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(c)",
+          "ruleId": "ir-rule:d0026495335a3c191280d108"
+        },
+        {
+          "pathId": "path:ir-rule:faeaf9ec96070abfed580d5f",
+          "status": "CANDIDATE",
+          "action": "INCUR_DEBT",
+          "sourceSectionRef": "7.01(a)",
+          "ruleId": "ir-rule:faeaf9ec96070abfed580d5f"
+        },
+        {
+          "pathId": "path:restriction:ir-rule:5cd8e9ca65cf2898db655603",
+          "status": "CANDIDATE",
+          "action": "CREATE_LIEN",
+          "sourceSectionRef": "7.02",
+          "ruleId": "ir-rule:5cd8e9ca65cf2898db655603"
+        },
+        {
+          "pathId": "path:restriction:ir-rule:70ae38c6bfb54b40169b5794",
+          "status": "CANDIDATE",
+          "action": "CREATE_LIEN",
+          "sourceSectionRef": "7.02(a)",
+          "ruleId": "ir-rule:70ae38c6bfb54b40169b5794"
+        },
+        {
+          "pathId": "path:restriction:ir-rule:81aa6243b5eb1655b8642df0",
+          "status": "CANDIDATE",
+          "action": "CREATE_LIEN",
+          "sourceSectionRef": "7.02(b)",
+          "ruleId": "ir-rule:81aa6243b5eb1655b8642df0"
+        },
+        {
+          "pathId": "path:restriction:ir-rule:b0f054bcbe8e4d213989cd1a",
+          "status": "CANDIDATE",
+          "action": "CREATE_LIEN",
+          "sourceSectionRef": "7.02(c)",
+          "ruleId": "ir-rule:b0f054bcbe8e4d213989cd1a"
+        }
+      ]
+    }
+  ]
+}

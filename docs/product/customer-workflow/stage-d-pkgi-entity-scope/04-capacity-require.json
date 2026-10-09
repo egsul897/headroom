@@ -1,0 +1,16 @@
+{
+  "schema": "stage-d-pkgi-entity-scope-capacity.v1",
+  "paidProvidersCalled": false,
+  "asOf": "2026-12-31",
+  "outcome": "REFUSED",
+  "refusals": [
+    {
+      "code": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+      "message": "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+      "refs": [
+        "ir-rule:81aa6243b5eb1655b8642df0 REQUIRES Section 7.01(b) [SOURCE_REFERENCE_RESOLVED]"
+      ]
+    }
+  ],
+  "note": "Full dual-path VEP refuses REQUIRE capacity: §7.02(b) carries REQUIRES Section 7.01(b) (SOURCE_REFERENCE_RESOLVED). Fail-closed — not a false permission."
+}

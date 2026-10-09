@@ -117,7 +117,7 @@ describe("GS5 + §9-§12 entity-scope precedence: own actor language > governing
     const r = normalize(idxA, "9.2(a)", [rule({})]).rules[0]!;
     expect(r.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
     expect(r.entityScopeAudit).toMatchObject({ guardVersion: ENTITY_SCOPE_GUARD_VERSION, status: "SOURCE_SCOPE_DERIVED", precedence: "GOVERNING_SCOPE_SOURCE", safeToRely: true });
-    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v4");
+    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v5");
     expect(r.entityScopeAudit!.modelDiscrepancy).toMatchObject({ modelScope: ["BORROWER"], governingScope: ["BORROWER", "ANY_SUBSIDIARY"], relation: "MODEL_NARROWER" });
     expect(r.sufficiency).toBe("COMPLETE");
   });
