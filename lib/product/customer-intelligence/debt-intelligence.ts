@@ -237,7 +237,7 @@ function buildDrilldown(params: {
 }
 
 export async function loadDebtIntelligenceDashboard(companyId: string): Promise<DebtIntelligenceDashboard> {
-  const [review, capacity, rulebook, feed, approvals, snapshot, facilities, ledger, instruments] =
+  const [review, capacity, rulebook, feed, approvals, snapshot, facilities, ledger, instruments, financialState] =
     await Promise.all([
       loadCovenantReviewWorkspace(companyId),
       loadCapacityReadiness(companyId),
@@ -256,6 +256,11 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         take: 40,
       }),
       prisma.debtInstrument.findMany({ where: { companyId }, take: 20 }),
+      prisma.financialState.findFirst({
+        where: { companyId },
+        orderBy: { asOfDate: "desc" },
+        select: { balanceSheetFacts: true },
+      }),
     ]);
 
   const approvalByKey = new Map(
@@ -267,6 +272,12 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
   const cash = snapshot ? num(snapshot.cash) : null;
   const ebitda = snapshot ? num(snapshot.ebitda) : null;
   const interestExpense = snapshot ? num(snapshot.interestExpense) : null;
+  const totalAssets = (() => {
+    const facts = financialState?.balanceSheetFacts as { totalAssets?: { value?: unknown } } | null;
+    const raw = facts?.totalAssets?.value;
+    const n = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw) : NaN;
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  })();
   const unsecuredDebt =
     totalDebt != null && securedDebt != null ? Math.max(0, totalDebt - securedDebt) : null;
   const netDebt = totalDebt != null && cash != null ? totalDebt - cash : null;
@@ -593,6 +604,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
           assumedNewDebtRatePct: num(snapshot.assumedNewDebtRatePct) ?? 0,
           totalDebt,
           securedDebt: securedDebt ?? 0,
+          ...(totalAssets != null ? { totalAssets } : {}),
         }
       : null;
   const leverageMetrics = finForEval ? computeLeverageMetrics(finForEval) : null;

@@ -9,28 +9,24 @@
       "compile": [
         {
           "status": "COMPILED",
-          "permissionId": "cmv0ietqt0003xqwp4pqjnnah",
+          "permissionId": "cmv0ik9m20003nq0bclndnesc",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
           "grantType": "DEBT_INCURRENCE",
-          "formulaType": "FLAT_AMOUNT",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
           "thresholdValue": 50,
           "modelingStatus": "MODELED",
-          "missingFields": [
-            "grower_%_total_assets_formula"
-          ],
+          "missingFields": [],
           "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE"
         },
         {
           "status": "COMPILED",
-          "permissionId": "cmv0ieu2h0007xqwpf3q1njsq",
+          "permissionId": "cmv0ik9xf0007nq0b6q0ug5ok",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
           "grantType": "LIEN",
-          "formulaType": "FLAT_AMOUNT",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
           "thresholdValue": 50,
           "modelingStatus": "MODELED",
-          "missingFields": [
-            "grower_%_total_assets_formula"
-          ],
+          "missingFields": [],
           "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN"
         }
       ]
@@ -54,19 +50,19 @@
   },
   "permissions": [
     {
-      "id": "cmv0ietqt0003xqwp4pqjnnah",
+      "id": "cmv0ik9m20003nq0bclndnesc",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
       "grantType": "DEBT_INCURRENCE",
-      "formulaType": "FLAT_AMOUNT",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
       "thresholdValue": "50",
       "modelingStatus": "MODELED",
       "sectionRef": "7.2"
     },
     {
-      "id": "cmv0ieu2h0007xqwpf3q1njsq",
+      "id": "cmv0ik9xf0007nq0b6q0ug5ok",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
       "grantType": "LIEN",
-      "formulaType": "FLAT_AMOUNT",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
       "thresholdValue": "50",
       "modelingStatus": "MODELED",
       "sectionRef": "7.2"
@@ -119,7 +115,7 @@
       {
         "sectionRef": "7.2",
         "status": "COMPUTED",
-        "remaining": "$50M",
+        "remaining": "$84M",
         "reviewDecision": "ACCEPTED",
         "capacity": "Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets"
       },
@@ -170,11 +166,11 @@
         "proFormaSecuredLeverage": "2.02x",
         "proFormaInterestCoverage": "6.83x",
         "basketRemainingAfter": "$0M",
-        "engineCapacityRemaining": "$50M",
+        "engineCapacityRemaining": "$84M",
         "notes": [
           "Pro forma total leverage 2.86x; secured 2.02x",
-          "Counsel-compiled basket remaining before txn $50M → after $0M",
-          "Engine secured remaining: $50M (status unavailable)",
+          "Counsel-compiled basket remaining before txn $84M → after $0M",
+          "Engine secured remaining: $84M (status unavailable)",
           "$100M exceeds counsel-compiled remaining basket capacity"
         ],
         "drilldown": {
@@ -223,7 +219,7 @@
           "calculationHistory": [
             "PF total leverage = (1100+100)/420",
             "PF secured leverage = (750+100)/420",
-            "Engine secured remaining: $50M (status unavailable)"
+            "Engine secured remaining: $84M (status unavailable)"
           ],
           "missingInputs": [],
           "hrefs": [
@@ -279,8 +275,8 @@
     ]
   },
   "engineCapacity": {
-    "securedRemaining": 50,
-    "unsecuredRemaining": 50,
+    "securedRemaining": 84,
+    "unsecuredRemaining": 84,
     "permissionsTotal": 2
   },
   "documentCapacityFormulas": {

@@ -1,6 +1,6 @@
 {
   "companyId": "demo-customer-workflow",
-  "runId": "cil-20261009-45d8494cac",
+  "runId": "cil-20261009-1bc429c782",
   "mandateExercises": [
     "debt.secured.100",
     "debt.unsecured.150",
@@ -216,7 +216,7 @@
         "amd.threshold_change",
         "amd.refinance"
       ],
-      "occurrenceCount": 16,
+      "occurrenceCount": 24,
       "expectedImprovement": "Reduce recurrence of this analytical failure class across the corpus.",
       "relevantModules": [
         "lib/product/covenant-intelligence/analyze-provision.ts",
@@ -225,7 +225,7 @@
       "reproductionNotes": "exercise=debt.unsecured.150 source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6 | exercise=debt.secured.100 source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6 | exercise=debt.non_guarantor source=customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 outcome=CONDITIONAL matched=6",
       "status": "OPEN",
       "createdAt": "2026-10-09T05:10:36.942Z",
-      "updatedAt": "2026-10-09T05:12:25.907Z"
+      "updatedAt": "2026-10-09T05:17:31.868Z"
     },
     {
       "taskId": "53e50d8f97ae",
@@ -312,11 +312,11 @@
         "proFormaSecuredLeverage": "2.02x",
         "proFormaInterestCoverage": "6.83x",
         "basketRemainingAfter": "$0M",
-        "engineCapacityRemaining": "$50M",
+        "engineCapacityRemaining": "$84M",
         "notes": [
           "Pro forma total leverage 2.86x; secured 2.02x",
-          "Counsel-compiled basket remaining before txn $50M → after $0M",
-          "Engine secured remaining: $50M (status unavailable)",
+          "Counsel-compiled basket remaining before txn $84M → after $0M",
+          "Engine secured remaining: $84M (status unavailable)",
           "$100M exceeds counsel-compiled remaining basket capacity"
         ],
         "drilldown": {
@@ -365,7 +365,7 @@
           "calculationHistory": [
             "PF total leverage = (1100+100)/420",
             "PF secured leverage = (750+100)/420",
-            "Engine secured remaining: $50M (status unavailable)"
+            "Engine secured remaining: $84M (status unavailable)"
           ],
           "missingInputs": [],
           "hrefs": [
@@ -405,7 +405,7 @@
         "heading": "SECTION 7.2 Limitation on Indebtedness.",
         "contractualCapacity": "Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets",
         "utilization": null,
-        "remaining": "$50M",
+        "remaining": "$84M",
         "status": "COMPUTED",
         "reviewDecision": "ACCEPTED",
         "drilldown": {
@@ -415,7 +415,7 @@
           "governingAgreement": "CONMED Eighth A&R Credit Agreement (Article VII)",
           "sectionCitation": "customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8 · 7.2",
           "definitions": [],
-          "contractualFormula": "FLAT_AMOUNT @ 50; Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; Cap measured on outstanding amount at any time.",
+          "contractualFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS @ 50; Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; Cap measured on outstanding amount at any time.",
           "financialInputs": [],
           "historicalUtilization": [],
           "conditions": [
@@ -442,12 +442,12 @@
             {
               "decision": "ACCEPTED",
               "note": "Demo counsel acceptance — compile executable debt basket",
-              "at": "2026-10-09T05:11:29.379Z"
+              "at": "2026-10-09T05:17:20.695Z"
             }
           ],
           "calculationHistory": [
-            "Counsel ACCEPTED 2026-10-09T05:11:29.379Z",
-            "Executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE: capacity $50M − ledger $0M = $50M",
+            "Counsel ACCEPTED 2026-10-09T05:17:20.695Z",
+            "Executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE: capacity $84M − ledger $0M = $84M",
             "No ledger utilization attributed"
           ],
           "missingInputs": [],
@@ -482,8 +482,8 @@
     ]
   },
   "engineCapacity": {
-    "securedRemaining": 50,
-    "unsecuredRemaining": 50,
+    "securedRemaining": 84,
+    "unsecuredRemaining": 84,
     "permissionsTotal": 2
   }
 }

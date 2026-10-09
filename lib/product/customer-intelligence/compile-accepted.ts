@@ -81,6 +81,7 @@ interface ParsedFormula {
   formulaType:
     | "FLAT_AMOUNT"
     | "GREATER_OF_FLAT_OR_PCT_EBITDA"
+    | "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
     | "LEVERAGE_RATIO_ROOM"
     | "RATIO_GATE"
     | "BUILDER_BASKET";
@@ -142,10 +143,25 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
+  if (greaterOf && money != null && assetsBase && pct != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      thresholdValue: money,
+      params: { pctTotalAssets: pct },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: [
+        "Compiled greater-of flat / % Consolidated Total Assets basket from counsel-accepted analysis",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
   if (greaterOf && money != null && assetsBase) {
-    // Engine has no Total-Assets grower formula — compile fixed floor only, fail-closed on grower.
+    // Grower % present in structure but not parseable — model floor only; require counsel % completion.
     notes.push(
-      "Grower component (% of Consolidated Total Assets) not auto-compiled into solver formula; fixed-dollar floor modeled only.",
+      "Grower component (% of Consolidated Total Assets) referenced but percentage not parsed; fixed-dollar floor modeled only.",
     );
     return {
       formulaType: "FLAT_AMOUNT",
@@ -154,7 +170,7 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes,
       modelingStatus: "MODELED",
-      missingFields: ["grower_%_total_assets_formula"],
+      missingFields: ["grower_%_total_assets"],
     };
   }
 

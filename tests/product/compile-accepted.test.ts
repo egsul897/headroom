@@ -36,7 +36,48 @@ describe("compile-accepted formula parsing", () => {
     const parsed = parseCounselFormulaForTest(withBasket!);
     expect(parsed.modelingStatus).toBe("MODELED");
     expect(parsed.thresholdValue).toBeGreaterThan(0);
-    expect(["FLAT_AMOUNT", "GREATER_OF_FLAT_OR_PCT_EBITDA", "BUILDER_BASKET"]).toContain(parsed.formulaType);
+    expect([
+      "FLAT_AMOUNT",
+      "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "BUILDER_BASKET",
+    ]).toContain(parsed.formulaType);
+    if (/Consolidated Total Assets|Total Assets/i.test((withBasket!.materialBasketsThresholds ?? []).join(" "))) {
+      expect(parsed.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS");
+      expect(parsed.params?.pctTotalAssets).toBeGreaterThan(0);
+      expect(parsed.missingFields).not.toContain("grower_%_total_assets_formula");
+    }
+  });
+
+  it("evaluates Total-Assets grower via covenant engine when assets are supplied", async () => {
+    const { evaluateProvision, computeLeverageMetrics } = await import("../../lib/covenant-engine");
+    const fin = {
+      ebitda: 420,
+      cash: 80,
+      interestExpense: 55,
+      cumulativeNetIncome: 200,
+      equityProceedsSinceIssue: 50,
+      assumedNewDebtRatePct: 6.5,
+      totalDebt: 1100,
+      securedDebt: 750,
+      totalAssets: 2800,
+    };
+    const evaluated = evaluateProvision(
+      {
+        id: "t",
+        documentId: "d",
+        code: "grower",
+        basketName: "General debt",
+        sectionRef: "7.2",
+        formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        thresholdValue: 50,
+        params: { pctTotalAssets: 0.03 },
+      },
+      fin,
+      computeLeverageMetrics(fin),
+    );
+    expect(evaluated.status).toBe("modeled");
+    expect(evaluated.capacity).toBe(84); // max(50, 0.03*2800)
   });
 
   it("refuses MODELED compile when no numeric threshold exists", () => {
