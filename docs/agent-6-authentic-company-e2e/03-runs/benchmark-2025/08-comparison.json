@@ -1,0 +1,66 @@
+{
+  "roleComparisons": [
+    {
+      "documentId": "doc-a",
+      "expectedRole": "AMENDMENT",
+      "actualRole": "AMENDMENT",
+      "match": true
+    },
+    {
+      "documentId": "doc-b",
+      "expectedRole": "AMENDMENT",
+      "actualRole": "AMENDMENT",
+      "match": true
+    },
+    {
+      "documentId": "doc-c",
+      "expectedRole": "AMENDED_AND_RESTATED_AGREEMENT",
+      "actualRole": "AMENDED_AND_RESTATED_AGREEMENT",
+      "match": true
+    }
+  ],
+  "operativeBaseOk": true,
+  "expectedOperativeBase": "doc-c",
+  "expectedCovenantFamilies": [
+    "LIENS",
+    "INDEBTEDNESS",
+    "INVESTMENTS",
+    "ASSET_SALES",
+    "RESTRICTED_PAYMENTS",
+    "FINANCIAL"
+  ],
+  "structuralDefinitionsDetected": 1009,
+  "transactions": [
+    {
+      "id": "be-t1",
+      "description": "$40mm incremental term loan",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "No utilization or approved snapshot."
+    },
+    {
+      "id": "be-t2",
+      "description": "$5mm investment in joint venture",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Investment basket remaining capacity unknown."
+    },
+    {
+      "id": "be-t3",
+      "description": "Treat doc-c as operative over amendments 1 and 3",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Package graph should prefer Second A&R."
+    }
+  ],
+  "costUsd": 0
+}

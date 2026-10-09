@@ -150,7 +150,15 @@ export function normalizeOcrSectionNumber(raw: string): string {
 const BOUNDED_GAP = "(?:[^\\S\\n]*\\n[^\\S\\n]*|[^\\S\\n]+)";
 
 const ARTICLE_PATTERNS = [
-  new RegExp(`${ARTICLE_KEYWORD}\\s+([IVXLC]+|\\d+)\\.?${BOUNDED_GAP}([A-Z][A-Z ,&';-]{0,58}?)(?=\\s+[A-Z][a-z]|\\s*$)`, "g"),
+  // Lookahead after the ALL-CAPS title: Title Case prose (classic), OR a
+  // bare decimal section number on the next line (Bank-of-America / Benchmark
+  // style: "ARTICLE I\nDEFINITIONS...\n  1.01\tDefined Terms."), OR end of
+  // string. Agent 6 authentic Benchmark Second A&R collapsed to 3 ARTICLEs
+  // because only titles followed by "Each of the Borrowers..." prose matched
+  // the prior `[A-Z][a-z]` lookahead — Articles I–IV/VIII–X followed by
+  // `1.01`/`2.01`/… were silently dropped. General drafting convention, not
+  // package-specific.
+  new RegExp(`${ARTICLE_KEYWORD}\\s+([IVXLC]+|\\d+)\\.?${BOUNDED_GAP}([A-Z][A-Z ,&';-]{0,58}?)(?=\\s+[A-Z][a-z]|\\s+\\d+\\.\\d+|\\s*$)`, "g"),
   /^ARTICLE\s+([IVXLC]+|\d+)\.?\s*([^\n]*)$/gim,
 ];
 
@@ -189,7 +197,13 @@ const SECTION_PATTERNS = [
   /^§\s?(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   // Bare decimal: require a real digit-only major.minor so "7.0l Title" is not
   // truncated to "7.0"; OCR-garbled bare forms are recovered via the keyword patterns.
-  /^(\d+\.\d+)(?![A-Za-z])\s+([A-Z][^\n]*)$/gm,
+  // Optional leading whitespace + required trailing period on the title:
+  // Bank-of-America exhibits indent body headings (`  1.01\t  Defined Terms.`)
+  // while TOC rows use the same number/title without a trailing period
+  // (`1.01\tDefined Terms` + page). Agent 6 Benchmark Second A&R had ZERO
+  // SECTION nodes until leading whitespace was allowed; the period guard
+  // keeps TOC rows from minting false sections. General convention.
+  /^\s*(\d+\.\d+)(?![A-Za-z])[ \t]+([A-Z][^\n]*\.)\s*$/gm,
 ];
 
 /**

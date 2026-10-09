@@ -1,0 +1,208 @@
+{
+  "reportType": "COMPANY_POSITION",
+  "companyKey": "knife-river-2023-2026",
+  "issuer": "Knife River Corporation",
+  "generatedAt": "2026-10-09T22:31:20.706Z",
+  "capacityConclusion": "MISSING_EVIDENCE",
+  "favorableCapacityClaimed": false,
+  "missingEvidence": [
+    "COMPLETED_OFFICER_COMPLIANCE_CERTIFICATE_WITH_UTILIZATION",
+    "APPROVED_NorthStar_financial_snapshot",
+    "VerifiedExecutionPackage_CERTIFIED",
+    "HISTORICAL_BASKET_UTILIZATION_LEDGER",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC"
+  ],
+  "utilization": {
+    "established": false,
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "all basket utilization",
+      "facility outstandings"
+    ],
+    "certificateScan": {
+      "formOfCertificateReferenced": true,
+      "completedOfficerCertificateWithUtilization": false
+    }
+  },
+  "ratiosCalculated": [],
+  "basketsCalculated": [],
+  "structuralSummary": [
+    {
+      "documentId": "doc-a",
+      "totalNodes": 1147,
+      "nodesByType": {
+        "SECTION": 26,
+        "SUBSECTION": 80,
+        "CLAUSE": 279,
+        "SUBCLAUSE": 762
+      },
+      "definitionsDetected": 542,
+      "referencesDetected": 1325
+    },
+    {
+      "documentId": "doc-b",
+      "totalNodes": 1262,
+      "nodesByType": {
+        "SECTION": 129,
+        "SUBSECTION": 311,
+        "CLAUSE": 307,
+        "SUBCLAUSE": 515
+      },
+      "definitionsDetected": 588,
+      "referencesDetected": 1535
+    },
+    {
+      "documentId": "doc-c",
+      "totalNodes": 1251,
+      "nodesByType": {
+        "SECTION": 129,
+        "SUBSECTION": 311,
+        "CLAUSE": 373,
+        "SUBCLAUSE": 438
+      },
+      "definitionsDetected": 598,
+      "referencesDetected": 1536
+    }
+  ],
+  "packageGraphSummary": {
+    "classifications": [
+      {
+        "documentId": "doc-a",
+        "type": "CREDIT_AGREEMENT",
+        "confidence": 0.9,
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+        "evidence": [
+          "CREDIT AGREEMENT"
+        ]
+      },
+      {
+        "documentId": "doc-b",
+        "type": "AMENDMENT",
+        "confidence": 0.97,
+        "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+        "evidence": [
+          "(this “  Amendment  ”)"
+        ]
+      },
+      {
+        "documentId": "doc-c",
+        "type": "AMENDMENT",
+        "confidence": 0.97,
+        "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+        "evidence": [
+          "(this “  Amendment  ”)"
+        ]
+      }
+    ],
+    "relationshipCount": 2,
+    "instruments": [
+      {
+        "instrumentKey": "instrument:doc-a",
+        "documentIds": [
+          "doc-a"
+        ],
+        "baseDocumentId": "doc-a",
+        "reviewStatus": "RESOLVED"
+      },
+      {
+        "instrumentKey": "instrument:doc-b",
+        "documentIds": [
+          "doc-b"
+        ],
+        "baseDocumentId": "doc-b",
+        "reviewStatus": "RESOLVED"
+      },
+      {
+        "instrumentKey": "instrument:doc-c",
+        "documentIds": [
+          "doc-c"
+        ],
+        "baseDocumentId": "doc-c",
+        "reviewStatus": "RESOLVED"
+      }
+    ],
+    "roleComparisons": [
+      {
+        "documentId": "doc-a",
+        "expectedRole": "CREDIT_AGREEMENT",
+        "actualRole": "CREDIT_AGREEMENT",
+        "match": true
+      },
+      {
+        "documentId": "doc-b",
+        "expectedRole": "AMENDMENT",
+        "actualRole": "AMENDMENT",
+        "match": true
+      },
+      {
+        "documentId": "doc-c",
+        "expectedRole": "AMENDMENT",
+        "actualRole": "AMENDMENT",
+        "match": true
+      }
+    ],
+    "operativeBaseOk": true
+  },
+  "operativeByInstrument": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 1,
+      "unattachedEffects": 2
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "baseDocumentId": "doc-b",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "provisionCount": 0,
+      "unattachedEffects": 0
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "baseDocumentId": "doc-c",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "provisionCount": 0,
+      "unattachedEffects": 0
+    }
+  ],
+  "transactions": [
+    {
+      "id": "kr-t1",
+      "description": "$50mm incremental unsecured debt under general indebtedness basket",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "No utilization or approved financial snapshot."
+    },
+    {
+      "id": "kr-t2",
+      "description": "$10mm restricted payment",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "RP/builder capacity unknown without certificate."
+    },
+    {
+      "id": "kr-t3",
+      "description": "Identify operative package as CA + two amendments",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Legal identification can proceed; capacity cannot."
+    }
+  ],
+  "limitations": [
+    "No invented historical utilization.",
+    "No fabricated officer certificates.",
+    "Missing evidence yields MISSING_EVIDENCE, never a favorable capacity conclusion.",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC"
+  ]
+}

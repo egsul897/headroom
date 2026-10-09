@@ -1,0 +1,69 @@
+{
+  "roleComparisons": [
+    {
+      "documentId": "doc-a",
+      "expectedRole": "CREDIT_AGREEMENT",
+      "actualRole": "CREDIT_AGREEMENT",
+      "match": true
+    },
+    {
+      "documentId": "doc-b",
+      "expectedRole": "INDENTURE",
+      "actualRole": "INDENTURE",
+      "match": true
+    },
+    {
+      "documentId": "doc-c",
+      "expectedRole": "AMENDMENT",
+      "actualRole": "AMENDMENT",
+      "match": true
+    }
+  ],
+  "operativeBaseOk": true,
+  "expectedOperativeBase": "doc-a",
+  "expectedCovenantFamilies": [
+    "LIENS",
+    "INVESTMENTS",
+    "INDEBTEDNESS",
+    "ASSET_SALES",
+    "RESTRICTED_PAYMENTS",
+    "FINANCIAL",
+    "INDEBTEDNESS",
+    "LIENS",
+    "RESTRICTED_PAYMENTS"
+  ],
+  "structuralDefinitionsDetected": 1244,
+  "transactions": [
+    {
+      "id": "in-t1",
+      "description": "$25mm incremental revolving borrowing",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Missing utilization and financial certificate."
+    },
+    {
+      "id": "in-t2",
+      "description": "$15mm restricted payment under indenture",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Builder/Available Amount utilization unknown."
+    },
+    {
+      "id": "in-t3",
+      "description": "Recognize dual-instrument package",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Should identify credit + indenture without claiming capacity."
+    }
+  ],
+  "costUsd": 0
+}

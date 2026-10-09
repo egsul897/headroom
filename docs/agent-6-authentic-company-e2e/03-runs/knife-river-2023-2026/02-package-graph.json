@@ -1,0 +1,86 @@
+{
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ]
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this “  Amendment  ”)"
+      ]
+    },
+    {
+      "documentId": "doc-c",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this “  Amendment  ”)"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": "doc-a",
+      "relationshipType": "AMENDS",
+      "status": "REVIEW_REQUIRED",
+      "confidence": 0.6,
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Credit Agreement, dated as of May 31, 2023\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed AMENDS target"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": "doc-a",
+      "relationshipType": "AMENDS",
+      "status": "REVIEW_REQUIRED",
+      "confidence": 0.6,
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Credit Agreement, dated as of May 31, 2023\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed AMENDS target"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "documentIds": [
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-c",
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 3,
+    "totalCharsScanned": 3196450,
+    "relationshipCandidatesGenerated": 2,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 0,
+    "modificationCandidatesGenerated": 5,
+    "crossDocumentReferenceLeadsGenerated": 192,
+    "wallClockMs": 44,
+    "semanticCallsUsed": 0
+  }
+}

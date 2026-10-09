@@ -1,0 +1,32 @@
+[
+  {
+    "id": "be-t1",
+    "description": "$40mm incremental term loan",
+    "expected": "MISSING_EVIDENCE",
+    "actual": "MISSING_EVIDENCE",
+    "correct": true,
+    "correctRefusal": true,
+    "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+    "rationale": "No utilization or approved snapshot."
+  },
+  {
+    "id": "be-t2",
+    "description": "$5mm investment in joint venture",
+    "expected": "MISSING_EVIDENCE",
+    "actual": "MISSING_EVIDENCE",
+    "correct": true,
+    "correctRefusal": true,
+    "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+    "rationale": "Investment basket remaining capacity unknown."
+  },
+  {
+    "id": "be-t3",
+    "description": "Treat doc-c as operative over amendments 1 and 3",
+    "expected": "REVIEW_REQUIRED",
+    "actual": "REVIEW_REQUIRED",
+    "correct": true,
+    "correctRefusal": false,
+    "detail": "Legal package identification / operative-state review — no capacity claim.",
+    "rationale": "Package graph should prefer Second A&R."
+  }
+]

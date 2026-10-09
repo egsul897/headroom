@@ -1,0 +1,71 @@
+{
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ]
+    },
+    {
+      "documentId": "doc-b",
+      "type": "INDENTURE",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "INDENTURE"
+      ]
+    },
+    {
+      "documentId": "doc-c",
+      "type": "AMENDMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "\n  NINTH AMENDMENT"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": "doc-a",
+      "relationshipType": "AMENDS",
+      "status": "RESOLVED",
+      "confidence": 0.95,
+      "unresolvedReason": null
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "documentIds": [
+        "doc-a",
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-a",
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 3,
+    "totalCharsScanned": 2442946,
+    "relationshipCandidatesGenerated": 1,
+    "relationshipsResolved": 1,
+    "relationshipsUnresolved": 0,
+    "modificationCandidatesGenerated": 2,
+    "crossDocumentReferenceLeadsGenerated": 162,
+    "wallClockMs": 36,
+    "semanticCallsUsed": 0
+  }
+}

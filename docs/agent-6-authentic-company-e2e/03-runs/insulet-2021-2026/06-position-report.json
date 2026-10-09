@@ -1,0 +1,195 @@
+{
+  "reportType": "COMPANY_POSITION",
+  "companyKey": "insulet-2021-2026",
+  "issuer": "Insulet Corporation",
+  "generatedAt": "2026-10-09T22:31:20.501Z",
+  "capacityConclusion": "MISSING_EVIDENCE",
+  "favorableCapacityClaimed": false,
+  "missingEvidence": [
+    "COMPLETED_OFFICER_COMPLIANCE_CERTIFICATE_WITH_UTILIZATION",
+    "APPROVED_NorthStar_financial_snapshot",
+    "VerifiedExecutionPackage_CERTIFIED",
+    "HISTORICAL_BASKET_UTILIZATION_LEDGER",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC",
+    "MISSING_PACKAGE_DOCUMENT:credit agreement amendments 1 through 8"
+  ],
+  "utilization": {
+    "established": false,
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "all basket utilization",
+      "facility outstandings"
+    ],
+    "certificateScan": {
+      "formOfCertificateReferenced": true,
+      "completedOfficerCertificateWithUtilization": false
+    }
+  },
+  "ratiosCalculated": [],
+  "basketsCalculated": [],
+  "structuralSummary": [
+    {
+      "documentId": "doc-a",
+      "totalNodes": 870,
+      "nodesByType": {
+        "SECTION": 127,
+        "SUBSECTION": 371,
+        "CLAUSE": 255,
+        "SUBCLAUSE": 117
+      },
+      "definitionsDetected": 511,
+      "referencesDetected": 563
+    },
+    {
+      "documentId": "doc-b",
+      "totalNodes": 548,
+      "nodesByType": {
+        "SECTION": 94,
+        "SUBSECTION": 186,
+        "CLAUSE": 163,
+        "SUBCLAUSE": 105
+      },
+      "definitionsDetected": 184,
+      "referencesDetected": 392
+    },
+    {
+      "documentId": "doc-c",
+      "totalNodes": 1187,
+      "nodesByType": {
+        "SECTION": 135,
+        "SUBSECTION": 406,
+        "CLAUSE": 290,
+        "SUBCLAUSE": 356
+      },
+      "definitionsDetected": 549,
+      "referencesDetected": 1371
+    }
+  ],
+  "packageGraphSummary": {
+    "classifications": [
+      {
+        "documentId": "doc-a",
+        "type": "CREDIT_AGREEMENT",
+        "confidence": 0.9,
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+        "evidence": [
+          "CREDIT AGREEMENT"
+        ]
+      },
+      {
+        "documentId": "doc-b",
+        "type": "INDENTURE",
+        "confidence": 0.9,
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+        "evidence": [
+          "INDENTURE"
+        ]
+      },
+      {
+        "documentId": "doc-c",
+        "type": "AMENDMENT",
+        "confidence": 0.9,
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+        "evidence": [
+          "\n  NINTH AMENDMENT"
+        ]
+      }
+    ],
+    "relationshipCount": 1,
+    "instruments": [
+      {
+        "instrumentKey": "instrument:doc-a",
+        "documentIds": [
+          "doc-a",
+          "doc-c"
+        ],
+        "baseDocumentId": "doc-a",
+        "reviewStatus": "RESOLVED"
+      },
+      {
+        "instrumentKey": "instrument:doc-b",
+        "documentIds": [
+          "doc-b"
+        ],
+        "baseDocumentId": "doc-b",
+        "reviewStatus": "RESOLVED"
+      }
+    ],
+    "roleComparisons": [
+      {
+        "documentId": "doc-a",
+        "expectedRole": "CREDIT_AGREEMENT",
+        "actualRole": "CREDIT_AGREEMENT",
+        "match": true
+      },
+      {
+        "documentId": "doc-b",
+        "expectedRole": "INDENTURE",
+        "actualRole": "INDENTURE",
+        "match": true
+      },
+      {
+        "documentId": "doc-c",
+        "expectedRole": "AMENDMENT",
+        "actualRole": "AMENDMENT",
+        "match": true
+      }
+    ],
+    "operativeBaseOk": true
+  },
+  "operativeByInstrument": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 0,
+      "unattachedEffects": 2
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "baseDocumentId": "doc-b",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "provisionCount": 0,
+      "unattachedEffects": 0
+    }
+  ],
+  "transactions": [
+    {
+      "id": "in-t1",
+      "description": "$25mm incremental revolving borrowing",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Missing utilization and financial certificate."
+    },
+    {
+      "id": "in-t2",
+      "description": "$15mm restricted payment under indenture",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Builder/Available Amount utilization unknown."
+    },
+    {
+      "id": "in-t3",
+      "description": "Recognize dual-instrument package",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Should identify credit + indenture without claiming capacity."
+    }
+  ],
+  "limitations": [
+    "No invented historical utilization.",
+    "No fabricated officer certificates.",
+    "Missing evidence yields MISSING_EVIDENCE, never a favorable capacity conclusion.",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC"
+  ]
+}

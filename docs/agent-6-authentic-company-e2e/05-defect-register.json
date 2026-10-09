@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "mission": "HEADROOM_AGENT_6_REAL_COMPANY_E2E",
+  "defects": [
+    {
+      "id": "A6-D1",
+      "severity": "HTML_HEX_ENTITY_DECODE",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "stripHtmlPreserveStructure decoded decimal &#NNN; but not hex &#x201c;/&#x201d;, leaving literal entity text that broke definition detectors.",
+      "evidencePackage": "benchmark-2025",
+      "fix": "lib/contract-model/compiler/deterministic-extraction/html-text.ts",
+      "regression": "tests/agent6/html-entity-hex-decode.test.ts"
+    },
+    {
+      "id": "A6-D2",
+      "severity": "CP1252_C1_CURLY_QUOTES",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "Windows-1252 curly quotes misread as Latin-1 landed in U+0091–U+0094 C1 controls; definition detectors expecting Unicode quotes failed.",
+      "evidencePackage": "insulet-2021-2026",
+      "fix": "lib/contract-model/compiler/deterministic-extraction/html-text.ts",
+      "regression": "tests/agent6/html-entity-hex-decode.test.ts"
+    },
+    {
+      "id": "A6-D3",
+      "severity": "BOFA_BARE_DECIMAL_SECTION_AND_ARTICLE_LOOKAHEAD",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "Bank-of-America style credit agreements use indented tab-separated bare decimals (`  1.01\\t  Defined Terms.`) and ARTICLE titles followed immediately by section numbers. Prior patterns yielded 3 ARTICLEs / 0 SECTIONs on Benchmark Second A&R.",
+      "evidencePackage": "benchmark-2025",
+      "fix": "lib/contract-model/compiler/stage-structure.ts",
+      "regression": "tests/agent6/benchmark-bofa-structure.test.ts",
+      "remeasure": "After fix: doc-c ARTICLE=10 SECTION=123 (was ARTICLE=3 SECTION=0)"
+    },
+    {
+      "id": "A6-D4",
+      "severity": "REVIEW_REQUIRED_AMENDS_NOT_GROUPED_INTO_INSTRUMENT",
+      "severity": "MATERIAL_GENERALIZABLE",
+      "status": "OPEN_DOCUMENTED",
+      "summary": "Knife River First/Second Amendments correctly classify as AMENDMENT and surface AMENDS→doc-a at REVIEW_REQUIRED, but instrument grouping keeps each amendment as its own instrument instead of one credit-facility instrument (contrast Insulet ninth amendment RESOLVED AMENDS, which groups).",
+      "evidencePackage": "knife-river-2023-2026",
+      "fix": null,
+      "regression": null,
+      "notes": "Fail-closed REVIEW_REQUIRED is correct for weak WHEREAS evidence; product still needs a path to attach REVIEW_REQUIRED amendments to the base instrument without force-resolving."
+    },
+    {
+      "id": "A6-D5",
+      "severity": "LLM_STAGES_BLOCKED_WITHOUT_CREDENTIAL",
+      "severity": "ENVIRONMENT",
+      "status": "HONEST_BLOCKER",
+      "summary": "No AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY in environment. Discovery/compile/verify not run; covenant/rule/ratio/basket scorecard cells remain 0. Position reports correctly refuse favorable capacity.",
+      "evidencePackage": "all",
+      "fix": null,
+      "regression": "scripts/agent6/run-authentic-company-e2e.ts credentialGate"
+    }
+  ]
+}
