@@ -250,7 +250,7 @@ describe("figure roles", () => {
             reason: "parent lead-in",
             retrievalDepth: 1,
             retrievalPath: [],
-            retrievalMethod: "STRUCTURAL_PARENT",
+            retrievalMethod: "STRUCTURAL_TRAVERSAL",
             confidence: null,
           }],
         }),

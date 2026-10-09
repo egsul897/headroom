@@ -28,7 +28,7 @@ export default async function NewCompanyPage({ searchParams }: { searchParams: P
       <div className="stack">
         <Card>
         <div className="card-title">{isEvaluation ? "Add an evaluation/test company" : "Connect your company"}</div>
-        <div className="card-subtitle">This creates the company record and starts the onboarding wizard — document upload, extraction, review, financials, and activation all happen on the next screens.</div>
+        <div className="card-subtitle">Creates the workspace. Next: upload the credit agreement and financials, review Headroom&apos;s findings, then open the dashboard.</div>
         <form action={createCompanyAction} className="stack" style={{ gap: 10 }}>
           {isEvaluation && <input type="hidden" name="tenantKind" value="EVALUATION" />}
           <div className="field">

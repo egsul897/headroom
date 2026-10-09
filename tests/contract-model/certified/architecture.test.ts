@@ -46,12 +46,21 @@ describe("one operative-source builder", () => {
     expect(operativeSourceTextFor(candidate, index)).toContain("Section 7.01(b).");
     const state = { instrumentKey: "i", asOfDate: "2026-09-01", status: "OPERATIVE_STATE_RESOLVED", summary: "", unattachedEffects: [], provisions: [{ instrumentKey: "i", provisionKey: "i::SECTION::7.02", kind: "SECTION", documentId: "d", sectionRef: "7.02", definedTermRef: null, asOfDate: "2026-09-01", currentSourceDocumentId: "amend", currentSourceNodeKey: null, currentSourceNodeId: null, currentText: "AMENDED 7.02 TEXT", fullChain: [], appliedChain: [{ effectId: "e1", amendmentDocumentId: "amend", operation: "REPLACE_TEXT", effectiveDate: { date: "2026-06-01", status: "EXPLICIT_EFFECTIVE_DATE", evidence: null, reason: "" }, sourceCitation: "", appliedAsOfQuery: true }], supersededSourceNodeKeys: [], supersededSourceNodeIds: [node.node.nodeId], status: "OPERATIVE_STATE_RESOLVED", unresolvedIssues: [], conflicts: [], targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [node.node.nodeId], structuralHealthStatus: "HEALTHY", structuralHealthIssues: [], attemptedText: null, reviewRequired: false, candidateTexts: [] }] } as never;
     expect(resolveOperativeSource(candidate, index, state)).toMatchObject({ origin: "OPERATIVE_STATE_CURRENT_TEXT", text: "AMENDED 7.02 TEXT" });
-    // IPV-16: REVIEW_REQUIRED with applied derived currentText serves that text (safe override derivation).
+    // IPV-16: applied superseding text under REVIEW_REQUIRED is served (not the
+    // superseded base amount). Without substitutable text, withhold (do not
+    // silently serve the base span as current).
     const partial = { ...(state as { provisions: object[] }), provisions: [{ ...(state as { provisions: Record<string, unknown>[] }).provisions[0], status: "OPERATIVE_STATE_REVIEW_REQUIRED" }] } as never;
     expect(resolveOperativeSource(candidate, index, partial)).toMatchObject({ origin: "OPERATIVE_STATE_CURRENT_TEXT", text: "AMENDED 7.02 TEXT", withheld: false });
-    // REVIEW_REQUIRED without substitutable text withholds (does not silently serve the base span as current).
-    const reviewNoText = { ...(state as { provisions: object[] }), provisions: [{ ...(state as { provisions: Record<string, unknown>[] }).provisions[0], status: "OPERATIVE_STATE_REVIEW_REQUIRED", currentText: null }] } as never;
-    expect(resolveOperativeSource(candidate, index, reviewNoText).withheld).toBe(true);
+    const reviewNoText = {
+      ...(state as { provisions: object[] }),
+      provisions: [{
+        ...(state as { provisions: Record<string, unknown>[] }).provisions[0],
+        status: "OPERATIVE_STATE_REVIEW_REQUIRED",
+        currentText: null,
+        appliedChain: [],
+      }],
+    } as never;
+    expect(resolveOperativeSource(candidate, index, reviewNoText)).toMatchObject({ withheld: true, origin: "STRUCTURAL_NODE" });
   });
 });
 

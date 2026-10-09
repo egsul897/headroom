@@ -130,6 +130,8 @@ describe("unwired overview stays UNKNOWN", () => {
     // Page wires loadCompanyOverview; UNWIRED_OVERVIEW_LOAD remains the invent-absence baseline.
     expect(page).toMatch(/UNWIRED_OVERVIEW_LOAD|loadCompanyOverview/);
     expect(page).toContain("loadCompanyOverview");
+    expect(page).toContain("UNWIRED_OVERVIEW_LOAD");
+    expect(overview).toContain("UNWIRED_OVERVIEW_LOAD");
     expect(alertBadgeCount(UNKNOWN_STATE)).toBeNull();
     expect(alertBadgeCount(NOT_LOADED_STATE)).toBeNull();
     expect(alertBadgeCount(alertStateFromQuery({ queried: true, outcome: "zero" }))).toBeNull();
@@ -226,9 +228,18 @@ describe("verified empty is a separate state", () => {
     expect(resolveBuyerCopy("covenantsAtRisk", covenantsAtRiskStateFromQuery({ outcome: "empty" }))).toEqual(
       HOME_VERIFIED_EMPTY.covenantsAtRisk,
     );
-    for (const slot of Object.values(OVERVIEW_SLOT_MATRIX)) {
-      expect(slot.wired).toBe(false);
-    }
+    // Matrix tracks per-slot wiring. Unwired slots must stay false; wired slots
+    // (transactions, figures, status) are true only after loadCompanyOverview binds them.
+    expect(OVERVIEW_SLOT_MATRIX.alerts.wired).toBe(false);
+    expect(OVERVIEW_SLOT_MATRIX.nextTest.wired).toBe(false);
+    expect(OVERVIEW_SLOT_MATRIX.covenantsAtRisk.wired).toBe(true);
+    expect(OVERVIEW_SLOT_MATRIX.drivers.wired).toBe(false);
+    expect(OVERVIEW_SLOT_MATRIX.headroomOverTime.wired).toBe(false);
+    expect(OVERVIEW_SLOT_MATRIX.transactions.wired).toBe(true);
+    expect(OVERVIEW_SLOT_MATRIX.totalHeadroom.wired).toBe(true);
+    expect(OVERVIEW_SLOT_MATRIX.utilization.wired).toBe(true);
+    expect(OVERVIEW_SLOT_MATRIX.capacitySummary.wired).toBe(true);
+    expect(OVERVIEW_SLOT_MATRIX.statusTable.wired).toBe(true);
   });
 
   it("T-IA-20 alerts verified zero shows empty copy and hides the badge", () => {

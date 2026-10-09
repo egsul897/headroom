@@ -154,8 +154,8 @@ export const OVERVIEW_SLOT_MATRIX = {
     verifiedPopulated: "Real rows + badge count",
   },
   transactions: {
-    authoritativeSource: "Ledger query",
-    wired: false,
+    authoritativeSource: "Ledger query (ACTIVE LedgerEntry)",
+    wired: true,
     unknown: HOME_SLOTS.transactions,
     verifiedEmpty: HOME_VERIFIED_EMPTY.transactions,
     verifiedPopulated: "Ledger rows",
@@ -168,18 +168,18 @@ export const OVERVIEW_SLOT_MATRIX = {
     verifiedPopulated: "Next test fields",
   },
   covenantsAtRisk: {
-    authoritativeSource: "Covenant-risk / REVIEW assessment",
-    wired: false,
+    authoritativeSource: "Covenant overview ratio headroom (Moderate / At Risk)",
+    wired: true,
     unknown: HOME_SLOTS.covenantsAtRisk,
     verifiedEmpty: HOME_VERIFIED_EMPTY.covenantsAtRisk,
     verifiedPopulated: "Risk list / Needs review",
   },
   statusTable: {
-    authoritativeSource: "Covenant status row set",
-    wired: false,
+    authoritativeSource: "Covenant overview FINANCIAL_COVENANTS ratios + binding baskets",
+    wired: true,
     unknown: HOME_SLOTS.statusTable,
     verifiedEmpty: HOME_VERIFIED_EMPTY.statusTable,
-    verifiedPopulated: "Real rows; never default Healthy",
+    verifiedPopulated: "Real rows; status from computed headroom only",
   },
   drivers: {
     authoritativeSource: "Explained capacity-change feed",
@@ -196,25 +196,25 @@ export const OVERVIEW_SLOT_MATRIX = {
     verifiedPopulated: "Chart data",
   },
   capacitySummary: {
-    authoritativeSource: "Facility split provenance",
-    wired: false,
+    authoritativeSource: "Facility commitments (Facility table)",
+    wired: true,
     unknown: HOME_SLOTS.capacitySummary,
     verifiedEmpty: null,
-    verifiedPopulated: "Provenance-bound split",
+    verifiedPopulated: "Facility split when commitments exist",
   },
   totalHeadroom: {
-    authoritativeSource: "Certified headroom figure",
-    wired: false,
+    authoritativeSource: "Legacy covenant engine remaining capacity (NOT_CERTIFIED_4E)",
+    wired: true,
     unknown: HOME_SLOTS.totalHeadroom,
     verifiedEmpty: null,
-    verifiedPopulated: "Certified total",
+    verifiedPopulated: "Engine remaining when determinable and > 0",
   },
   utilization: {
-    authoritativeSource: "Certified used/capacity",
-    wired: false,
+    authoritativeSource: "Gross debt vs facility commitments",
+    wired: true,
     unknown: HOME_SLOTS.utilization,
     verifiedEmpty: null,
-    verifiedPopulated: "Certified figures",
+    verifiedPopulated: "Used/capacity when both positive",
   },
 } as const;
 
@@ -226,7 +226,7 @@ const FICTIONAL_PERSON = /^john\s+davis$/i;
  * Mockup person/company names are rejected back to the no-name greeting.
  */
 export function overviewGreeting(identityName: string | null | undefined): { heading: string; subheading: string | null } {
-  const name = identityName?.trim() ?? "";
+  const name = (identityName?.trim() ?? "").replace(/\.+$/, "");
   if (!name || FICTIONAL_PERSON.test(name) || /apex/i.test(name)) {
     return { heading: HOME_GREETING_NO_NAME, subheading: null };
   }

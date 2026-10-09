@@ -1,23 +1,31 @@
 /**
- * Wire the mockup Overview dashboard to real workspace sources.
- * Uses *StateFromQuery constructors only — never invents $0 / 0% / Healthy without evidence.
+ * Company home overview loader — wires invent-absence slots to authoritative queries.
+ *
+ * Wired now:
+ * - identity (company name)
+ * - transactions (ACTIVE LedgerEntry)
+ * - alerts (monitoring feed when available)
+ * - totalHeadroom / utilization / capacitySummary / statusTable / covenantsAtRisk
+ *   from covenant overview + capacity engines when readiness allows
+ *
+ * Unwired (stay UNKNOWN): nextTest, drivers, headroomOverTime, export
+ *
+ * Figure authority: LEGACY_ENGINE / NOT_CERTIFIED_4E until North-Star 4A–4E product paths replace it.
+ * IMPLEMENTED ≠ CERTIFIED.
  */
 
 import { prisma } from "@/lib/prisma";
-import { fmtM } from "@/lib/format";
+import { getCompanyDashboard, getCompanySummary } from "@/lib/dashboard-service";
+import { getCovenantOverview, type OverviewRow } from "@/lib/covenant-overview-service";
+import { fmtM, fmtX } from "@/lib/format";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { loadMonitoringFeed } from "@/lib/product/customer-intelligence/monitoring";
-import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
-import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
 import {
   UNWIRED_OVERVIEW_LOAD,
   UNKNOWN_STATE,
   alertStateFromQuery,
   capacitySummaryStateFromQuery,
   covenantsAtRiskStateFromQuery,
-  driversStateFromQuery,
-  headroomOverTimeStateFromQuery,
-  nextTestStateFromQuery,
   statusTableStateFromQuery,
   totalHeadroomStateFromQuery,
   transactionsStateFromLedger,
@@ -25,31 +33,131 @@ import {
   type OverviewLoad,
   type StatusRow,
 } from "@/lib/home/load-state";
+import { getCompanySetupStatus, nextSetupStep, type CompanySetupStatus } from "@/lib/onboarding/setup-status";
 
-function num(v: unknown): number | null {
-  if (v == null) return null;
-  if (typeof v === "number" && Number.isFinite(v)) return v;
-  if (typeof v === "object" && v !== null && "toNumber" in v) {
-    try {
-      const n = (v as { toNumber: () => number }).toNumber();
-      return Number.isFinite(n) ? n : null;
-    } catch {
-      return null;
-    }
-  }
-  const n = Number(v);
-  return Number.isFinite(n) ? n : null;
+export interface CompanyOverviewBundle {
+  companyId: string;
+  identityName: string | null;
+  load: OverviewLoad;
+  readinessHeadline: string;
+  authorityNote: string;
+  setup: CompanySetupStatus | null;
+  setupCta: { href: string; label: string; detail: string } | null;
 }
 
-export async function loadCompanyOverview(companyId: string): Promise<{
-  load: OverviewLoad;
-  identityName: string | null;
-}> {
-  const company = await prisma.company.findUnique({ where: { id: companyId } });
-  const identityName = company?.name ?? null;
+function formatLedgerRow(entry: {
+  date: Date;
+  description: string;
+  amount: { toNumber(): number } | number;
+  direction: string;
+  basket: string;
+}): string {
+  const amount = typeof entry.amount === "number" ? entry.amount : entry.amount.toNumber();
+  const date = entry.date.toISOString().slice(0, 10);
+  return `${entry.description} (${fmtM(amount)} · ${entry.direction} · ${entry.basket} · ${date})`;
+}
 
+/** Primary headroom figure for the mockup KPI — secured remaining when modeled. */
+function primaryHeadroomDisplay(secured?: number, unsecured?: number): string | null {
+  if (secured !== undefined && Number.isFinite(secured) && secured > 0) {
+    return fmtM(secured);
+  }
+  if (unsecured !== undefined && Number.isFinite(unsecured) && unsecured > 0) {
+    return fmtM(unsecured);
+  }
+  return null;
+}
+
+function utilizationDisplay(used: number, capacity: number): string | null {
+  if (!(capacity > 0) || !(used >= 0) || !Number.isFinite(used) || !Number.isFinite(capacity)) {
+    return null;
+  }
+  const pct = (used / capacity) * 100;
+  if (!(pct > 0)) return null;
+  return `${pct.toFixed(1)}% · ${fmtM(used)} used of ${fmtM(capacity)} capacity`;
+}
+
+type RatioHealth = "Healthy" | "Moderate" | "At Risk";
+
+function ratioHealth(row: Extract<OverviewRow, { kind: "RATIO" }>): RatioHealth | null {
+  if (row.status !== "MODELED" || row.currentRatio === null || row.ratioHeadroom === null) return null;
+  if (!Number.isFinite(row.ratioLimit) || row.ratioLimit <= 0) return null;
+  if (row.ratioHeadroom <= 0) return "At Risk";
+  const cushion = row.ratioHeadroom / row.ratioLimit;
+  if (cushion < 0.15) return "Moderate";
+  return "Healthy";
+}
+
+function collectRatioRows(overview: Awaited<ReturnType<typeof getCovenantOverview>>): Extract<OverviewRow, { kind: "RATIO" }>[] {
+  const preferred = overview.covenantFamilies.find((f) => f.family === "FINANCIAL_COVENANTS")?.rows ?? [];
+  const fromFinancial = preferred.filter((r): r is Extract<OverviewRow, { kind: "RATIO" }> => r.kind === "RATIO" && r.status === "MODELED");
+  if (fromFinancial.length > 0) return fromFinancial;
+
+  const all: Extract<OverviewRow, { kind: "RATIO" }>[] = [];
+  for (const fam of overview.covenantFamilies) {
+    for (const row of fam.rows) {
+      if (row.kind === "RATIO" && row.status === "MODELED") all.push(row);
+    }
+  }
+  return all;
+}
+
+function statusRowsFromOverview(overview: Awaited<ReturnType<typeof getCovenantOverview>>): StatusRow[] {
+  const asOf = overview.asOfDate.toISOString().slice(0, 10);
+  const rows: StatusRow[] = [];
+  const seen = new Set<string>();
+
+  for (const row of collectRatioRows(overview)) {
+    const health = ratioHealth(row);
+    if (!health) continue;
+    const metric = row.name.split(" — ")[0]?.trim() || row.name;
+    if (seen.has(metric)) continue;
+    seen.add(metric);
+    const headroom =
+      row.ratioHeadroom !== null && Number.isFinite(row.ratioHeadroom)
+        ? `${fmtX(row.currentRatio ?? 0)} / ${fmtX(row.ratioLimit)} · ${fmtX(row.ratioHeadroom)} headroom`
+        : fmtX(row.currentRatio ?? 0);
+    rows.push({
+      covenant: metric,
+      facility: row.documentName,
+      status: health,
+      headroom,
+      trend: "—",
+      nextTest: asOf,
+    });
+  }
+
+  // Basket capacity rows that are binding or locked (dollar headroom).
+  for (const fam of overview.covenantFamilies) {
+    if (fam.family !== "INDEBTEDNESS" && fam.family !== "RESTRICTED_PAYMENTS") continue;
+    for (const row of fam.rows) {
+      if (row.kind !== "CAPACITY" || row.status !== "MODELED") continue;
+      if (row.bindingState !== "BINDING" && !(row.currentCapacity !== null && row.currentCapacity <= 0)) continue;
+      const key = `${row.name}:${row.sectionRef}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const rem = row.currentCapacity;
+      rows.push({
+        covenant: row.name,
+        facility: row.documentName,
+        status: rem !== null && rem <= 0 ? "At Risk" : "Healthy",
+        headroom: rem !== null && Number.isFinite(rem) && rem > 0 ? fmtM(rem) : "—",
+        trend: "—",
+        nextTest: "—",
+      });
+    }
+  }
+
+  return rows;
+}
+
+export async function loadCompanyOverview(companyId: string): Promise<CompanyOverviewBundle> {
   const load: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD };
 
+  const company = await getCompanySummary(companyId).catch(() => null);
+  const identityName = company?.name?.trim() ? company.name.trim() : null;
+
+  // Alerts slot from monitoring feed — does not invent capacity figures.
   try {
     const feed = await loadMonitoringFeed(companyId);
     const count = feed.alerts.length;
@@ -57,21 +165,8 @@ export async function loadCompanyOverview(companyId: string): Promise<{
       count === 0
         ? alertStateFromQuery({ queried: true, outcome: "zero" })
         : alertStateFromQuery({ queried: true, outcome: "nonzero", count });
-
-    const riskItems = feed.alerts
-      .filter((a) => a.severity === "blocking" || a.severity === "attention")
-      .map((a) => a.title)
-      .slice(0, 6);
-    if (riskItems.length === 0) {
-      load.covenantsAtRisk = covenantsAtRiskStateFromQuery({ outcome: "empty" });
-    } else if (riskItems.some((t) => /rulebook|capacity|precedence|review/i.test(t))) {
-      load.covenantsAtRisk = covenantsAtRiskStateFromQuery({ outcome: "needs_review" });
-    } else {
-      load.covenantsAtRisk = covenantsAtRiskStateFromQuery({ outcome: "list", items: riskItems });
-    }
   } catch {
     load.alerts = UNKNOWN_STATE;
-    load.covenantsAtRisk = UNKNOWN_STATE;
   }
 
   try {
@@ -80,169 +175,122 @@ export async function loadCompanyOverview(companyId: string): Promise<{
       orderBy: { date: "desc" },
       take: 8,
     });
-    if (entries.length === 0) {
-      load.transactions = transactionsStateFromLedger({
-        sourceAvailable: true,
-        ledgerRead: true,
-        outcome: "empty",
-      });
-    } else {
-      const rows = entries.map((e) => {
-        const amt = num(e.amount);
-        const label = `${e.description} (${e.basket})`;
-        const date = e.date.toISOString().slice(0, 10);
-        return amt != null ? `${date} · ${label} · ${fmtM(amt)}` : `${date} · ${label}`;
-      });
-      load.transactions = transactionsStateFromLedger({
-        sourceAvailable: true,
-        ledgerRead: true,
-        outcome: "populated",
-        rows,
-      });
-    }
+    load.transactions =
+      entries.length === 0
+        ? transactionsStateFromLedger({ sourceAvailable: true, ledgerRead: true, outcome: "empty" })
+        : transactionsStateFromLedger({
+            sourceAvailable: true,
+            ledgerRead: true,
+            outcome: "populated",
+            rows: entries.map(formatLedgerRow),
+          });
   } catch {
-    load.transactions = UNKNOWN_STATE;
+    load.transactions = transactionsStateFromLedger({ sourceAvailable: true, ledgerRead: false });
+  }
+
+  const readiness = await loadCapacityReadiness(companyId).catch(() => null);
+  const readinessHeadline =
+    readiness?.headline ?? "Capacity readiness could not be loaded — figure slots stay blank.";
+  const authorityNote =
+    readiness?.guidance ??
+    "LEGACY_ENGINE capacity ≠ certified Phase 4A–4E. Missing inputs stay blank.";
+
+  const setup = await getCompanySetupStatus(companyId).catch(() => null);
+  const setupCta = setup && !setup.dashboardReady ? nextSetupStep(setup) : null;
+
+  if (!readiness?.canEvaluateExecutableCapacity) {
+    return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
   }
 
   try {
-    const [review, capacity, approvals, snapshot, facilities] = await Promise.all([
-      loadCovenantReviewWorkspace(companyId),
-      loadCapacityReadiness(companyId),
-      listReviewerApprovals(companyId),
-      prisma.financialSnapshot.findFirst({ where: { companyId }, orderBy: { asOfDate: "desc" } }),
-      prisma.facility.findMany({ where: { companyId }, orderBy: { name: "asc" }, take: 12 }),
+    const [dashboard, covenantOverview] = await Promise.all([
+      getCompanyDashboard(companyId),
+      getCovenantOverview(companyId).catch(() => null),
     ]);
 
-    // Status table — AI-surfaced covenants; headroom NOT DETERMINABLE without executable path
-    const statusRows: StatusRow[] = [];
-    for (const cat of review.categories) {
-      for (const item of cat.items.slice(0, 3)) {
-        if (
-          !["FINANCIAL_MAINTENANCE", "DEBT_INCURRENCE", "LIENS_SECURED_DEBT", "RESTRICTED_PAYMENTS_INVESTMENTS"].includes(
-            item.category,
-          )
-        ) {
-          continue;
-        }
-        const decision = approvals.find(
-          (a) => a.sourceId === item.sourceId && a.sectionRef === item.sectionRef,
-        );
-        let status = "Needs review";
-        if (decision?.decision === "ACCEPTED" || decision?.decision === "EDITED") status = "Reviewed";
-        else if (decision?.decision === "REJECTED") status = "Rejected";
-        else if (item.posture === "MAINTENANCE_TEST") status = "Needs review";
+    const securedRem = covenantOverview?.securedCapacity.remainingCapacity ?? dashboard.capacity.secured.remainingCapacity;
+    const unsecuredRem = covenantOverview?.unsecuredCapacity.remainingCapacity ?? dashboard.capacity.unsecured.remainingCapacity;
+    const headroom = primaryHeadroomDisplay(securedRem, unsecuredRem);
+    load.totalHeadroom = headroom
+      ? totalHeadroomStateFromQuery({ outcome: "populated", display: headroom })
+      : totalHeadroomStateFromQuery({ outcome: "failed" });
 
-        const basket = (item.materialBasketsThresholds ?? [])[0];
-        statusRows.push({
-          covenant: item.heading || `§${item.sectionRef}`,
-          facility: item.documentTitle || item.governingAgreement || "Financing package",
+    const grossDebt = dashboard.financialPosition.capitalStructure.grossDebt;
+    const facilities = await prisma.facility.findMany({ where: { companyId } });
+    let commitmentTotal = 0;
+    const facilityParts: string[] = [];
+    for (const f of facilities) {
+      const commitment =
+        f.commitmentAmount != null
+          ? Number(f.commitmentAmount)
+          : f.originalPrincipal != null
+            ? Number(f.originalPrincipal)
+            : NaN;
+      if (Number.isFinite(commitment) && commitment > 0) {
+        commitmentTotal += commitment;
+        facilityParts.push(`${f.name}: ${fmtM(commitment)}`);
+      }
+    }
+
+    const util = utilizationDisplay(grossDebt, commitmentTotal);
+    load.utilization = util
+      ? utilizationStateFromQuery({ outcome: "populated", display: util })
+      : utilizationStateFromQuery({ outcome: "failed" });
+
+    load.capacitySummary =
+      facilityParts.length > 0 && commitmentTotal > 0
+        ? capacitySummaryStateFromQuery({
+            outcome: "populated",
+            display: `${fmtM(commitmentTotal)} total · ${facilityParts.join(" · ")}`,
+          })
+        : capacitySummaryStateFromQuery({ outcome: "failed" });
+
+    const rows: StatusRow[] = covenantOverview ? statusRowsFromOverview(covenantOverview) : [];
+    if (rows.length === 0) {
+      // Fallback: per-document secured capacity (prior wiring).
+      for (const doc of dashboard.capacity.secured.perDocument) {
+        const rem = doc.remainingCapacity;
+        let status: string;
+        if (rem === undefined) {
+          status = doc.method === "NOT_DETERMINABLE" ? "Not determinable" : "Needs review";
+        } else if (rem > 0) {
+          status = "Healthy";
+        } else {
+          status = "At Risk";
+        }
+        rows.push({
+          covenant: `${doc.documentName} (secured debt capacity)`,
+          facility: doc.documentName,
           status,
-          headroom: capacity.canEvaluateExecutableCapacity
-            ? basket || "See capacity engine"
-            : "NOT DETERMINABLE",
+          headroom: rem !== undefined && rem > 0 ? fmtM(rem) : "—",
           trend: "—",
-          nextTest: snapshot?.asOfDate
-            ? `As-of ${snapshot.asOfDate.toISOString().slice(0, 10)}`
-            : "—",
+          nextTest: "—",
         });
       }
     }
+
     load.statusTable =
-      statusRows.length === 0
-        ? statusTableStateFromQuery({ outcome: review.documentCount === 0 ? "empty" : "empty" })
-        : statusTableStateFromQuery({ outcome: "populated", rows: statusRows.slice(0, 8) });
+      rows.length > 0
+        ? statusTableStateFromQuery({ outcome: "populated", rows })
+        : statusTableStateFromQuery({ outcome: "empty" });
 
-    // Next test — testing period from notes / snapshot date
-    const testingHint =
-      snapshot?.notes?.match(/Testing period:\s*([^|]+)/i)?.[1]?.trim() ||
-      (snapshot ? `Financial as-of ${snapshot.asOfDate.toISOString().slice(0, 10)}` : null);
-    load.nextTest = testingHint
-      ? nextTestStateFromQuery({ outcome: "populated", rows: [testingHint] })
-      : nextTestStateFromQuery({ outcome: "empty" });
-
-    // Drivers — only from persisted snapshot notes / financial facts, not invented deltas
-    const driverRows: string[] = [];
-    if (snapshot) {
-      const ebitda = num(snapshot.ebitda);
-      const debt = num(snapshot.totalDebt);
-      const cash = num(snapshot.cash);
-      if (ebitda != null) driverRows.push(`EBITDA (snapshot) · ${fmtM(ebitda)}`);
-      if (debt != null) driverRows.push(`Total debt (snapshot) · ${fmtM(debt)}`);
-      if (cash != null) driverRows.push(`Cash (snapshot) · ${fmtM(cash)}`);
-    }
-    load.drivers =
-      driverRows.length === 0
-        ? driversStateFromQuery({ outcome: "empty" })
-        : driversStateFromQuery({ outcome: "populated", rows: driverRows });
-
-    // Headroom over time — no historical series without a time-series source
-    load.headroomOverTime = headroomOverTimeStateFromQuery({ outcome: "empty" });
-
-    // Capacity figures — ONLY when executable path is available
-    if (capacity.canEvaluateExecutableCapacity) {
-      try {
-        const { getCompanyDashboard } = await import("@/lib/dashboard-service");
-        const dash = await getCompanyDashboard(companyId);
-        const securedRem = num(dash.capacity.secured?.remainingCapacity);
-        const unsecRem = num(dash.capacity.unsecured?.remainingCapacity);
-        const remParts = [securedRem, unsecRem].filter((n): n is number => n != null && n > 0);
-        const totalRem = remParts.length ? remParts.reduce((a, b) => a + b, 0) : null;
-        const totalDebt =
-          num(dash.financialPosition?.capitalStructure?.grossDebt) ?? num(snapshot?.totalDebt);
-
-        if (totalRem != null && totalRem > 0) {
-          load.totalHeadroom = totalHeadroomStateFromQuery({
-            outcome: "populated",
-            display: `${fmtM(totalRem)} remaining (engine)`,
+    const atRisk = rows.filter((r) => r.status === "At Risk" || r.status === "Moderate");
+    load.covenantsAtRisk =
+      atRisk.length === 0
+        ? covenantsAtRiskStateFromQuery({ outcome: "empty" })
+        : covenantsAtRiskStateFromQuery({
+            outcome: "list",
+            items: [
+              `${atRisk.length}`,
+              ...atRisk.map((r) => `${r.covenant} — ${r.status} (${r.headroom})`),
+            ],
           });
-        } else {
-          load.totalHeadroom = totalHeadroomStateFromQuery({ outcome: "empty" });
-        }
-
-        if (totalDebt != null && totalDebt > 0 && totalRem != null) {
-          const capacityTotal = totalDebt + totalRem;
-          const utilPct = (totalDebt / capacityTotal) * 100;
-          if (utilPct > 0) {
-            load.utilization = utilizationStateFromQuery({
-              outcome: "populated",
-              display: `${utilPct.toFixed(1)}% · ${fmtM(totalDebt)} used of ${fmtM(capacityTotal)} capacity`,
-            });
-          } else {
-            load.utilization = utilizationStateFromQuery({ outcome: "empty" });
-          }
-        } else {
-          load.utilization = utilizationStateFromQuery({ outcome: "empty" });
-        }
-
-        if (facilities.length > 0) {
-          const parts = facilities.map((f) => {
-            const commit = num(f.commitmentAmount) ?? num(f.originalPrincipal);
-            return commit != null && commit > 0 ? `${f.name}: ${fmtM(commit)}` : f.name;
-          });
-          const display = parts.filter(Boolean).join(" · ");
-          load.capacitySummary = display
-            ? capacitySummaryStateFromQuery({ outcome: "populated", display })
-            : capacitySummaryStateFromQuery({ outcome: "empty" });
-        } else {
-          load.capacitySummary = capacitySummaryStateFromQuery({ outcome: "empty" });
-        }
-      } catch {
-        load.totalHeadroom = UNKNOWN_STATE;
-        load.utilization = UNKNOWN_STATE;
-        load.capacitySummary = UNKNOWN_STATE;
-      }
-    } else {
-      // Discovery-only workspaces: keep figure slots UNKNOWN (not fabricated zeros)
-      load.totalHeadroom = UNKNOWN_STATE;
-      load.utilization = UNKNOWN_STATE;
-      load.capacitySummary = UNKNOWN_STATE;
-    }
-
-    // Export chrome stays disabled until export query wiring exists (exportChromeTitle lock)
-    load.exportState = { kind: "UNKNOWN" };
   } catch {
-    // leave remaining slots as UNWIRED defaults
+    load.totalHeadroom = totalHeadroomStateFromQuery({ outcome: "failed" });
+    load.utilization = utilizationStateFromQuery({ outcome: "failed" });
+    load.capacitySummary = capacitySummaryStateFromQuery({ outcome: "failed" });
+    load.statusTable = statusTableStateFromQuery({ outcome: "failed" });
   }
 
-  return { load, identityName };
+  return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
 }

@@ -278,7 +278,7 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   // not the base structural DESCENDANTS span. Empty excerpt (withheld / deleted)
   // means no definition scan — never re-read DESCENDANTS here (architecture:
   // only candidate-span.ts derives operative text from the anchor span).
-  const operativeText = operativeItem.excerptText;
+  const operativeText = operativeItem.excerptText.trim();
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
   retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
   // INV-04 / main: inbound notwithstanding + article-level override leads.
