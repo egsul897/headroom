@@ -123,23 +123,18 @@
       "signatures": [
         {
           "packageId": "pkg-c-amendment-supersession",
-          "expectationRef": "context:C-7.01(b)-amended:definitions",
-          "severity": "NONMATERIAL_OMISSION"
-        },
-        {
-          "packageId": "pkg-c-amendment-supersession",
           "expectationRef": "certification:credit-agreement::7.01",
           "severity": "NONMATERIAL_OMISSION"
         }
       ],
       "failingInput": "Amendment No. 1 restates 7.01(b) ($25m → $40m + no-Default proviso); Amendment No. 2 deletes 7.01(e). Operative state resolves both (RESOLVED). Candidate anchored at SECTION 7.01, as of 2026-06-30.",
       "expected": "The operative text handed to composition excludes the superseded $25,000,000 text and the deleted $15,000,000 clause, or the candidate carries lineage/evidence status that forbids treating them as current.",
-      "actual": "Section splice works for credit-agreement::7.01 and indenture::4.09 operative text (stale $25m/$15m/$50m excluded). Remaining: C-7.01(b) context misses amended 'Default' definition; section-level certification still REVIEW (fail-closed).",
+      "actual": "Operative splice + amendment-aware definition scan (IPV-04) retrieve Default from restated 7.01(b). Remaining: section-level certification:credit-agreement::7.01 stays REVIEW (UNIT_SUFFICIENCY_INCOMPLETE) — fail-closed, not a false permission.",
       "repro": "buildCandidateCompilerInput(candidate 7.01, operativeState@2026-06-30).operativeSourceText; faithful submission for credit-agreement::7.01",
       "impact": "Any section-level unit over an amended agreement is verified against the wrong text; a deleted basket can be certified as live.",
       "hypothesis": "Supersession is attached per physical node; the parent section's operative text is the base DESCENDANTS span and the per-node supersession index is not consulted when assembling it; the clause-level path binds provenance against the amendment text but context retrieval scans the base node.",
       "acceptance": "A candidate whose descendants are superseded/deleted at the as-of date must have its operative text spliced from the operative provisions (or be refused with an explicit lineage status); context retrieval and provenance binding must use the operative text.",
-      "fixNote": "operativeSourceTextFor + descendant splice + multi-instrument package operative state merge. Remaining signatures: context:C-7.01(b)-amended:definitions, certification:credit-agreement::7.01."
+      "fixNote": "buildCovenantContextBundle scans OPERATIVE_SOURCE excerpt for defined terms (not base DESCENDANTS). context:C-7.01(b)-amended:definitions observed PASS @ ddb118c23d85. Residual OPEN signature: certification:credit-agreement::7.01."
     },
     {
       "id": "IPV-05",
@@ -575,11 +570,6 @@
           "severity": "NONMATERIAL_OMISSION"
         },
         {
-          "packageId": "pkg-b-multi-document",
-          "expectationRef": "certification:credit-agreement::7.01",
-          "severity": "NONMATERIAL_OMISSION"
-        },
-        {
           "packageId": "pkg-c-amendment-supersession",
           "expectationRef": "certification:credit-agreement::7.01(b)@clause",
           "severity": "NONMATERIAL_OMISSION"
@@ -615,7 +605,7 @@
     },
     {
       "id": "IPV-15",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "NONMATERIAL_OMISSION",
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
@@ -633,11 +623,14 @@
       ],
       "failingInput": "\"Available Amount\" means … minus the aggregate amount of Restricted Payments made under Section 7.06(c) and Investments made under Section 7.08(d) …; 7.08(d) permits Investments up to the Available Amount.",
       "expected": "7.08(d) and 7.06(c) are linked as sharing one pool (via the definition) and the Default kill-switch inside the definition is attached to both.",
-      "actual": "A dependsOn from 7.08(d) to Section 7.06(c) is excluded as MODEL_INVENTED_REFERENCE (the clause's own text never names 7.06(c)) and the unit stays REVIEW. The link exists only in the definition text; neither sharedCapacities (member rules) nor dependsOn can carry a definition-mediated relationship without the source-reference guard rejecting it.",
+      "actual": "source-reference-fidelity.v3 admits Section refs stated in retrieved definition bodies; nested Closing Date / section-caption phrases disclosed LOW. pkg-j certification:credit-agreement::7.08 CERTIFIED @ ddb118c23d85.",
       "repro": "faithful submission for pkg-j credit-agreement::7.08 → compilation.unresolvedIssues (MODEL_INVENTED_REFERENCE_EXCLUDED)",
       "impact": "Fail-closed today (REVIEW). A future model that drops the link to satisfy the guard would report two independent $20,000,000 baskets (J-P2).",
       "hypothesis": "The source-reference fidelity guard scopes admissible references to the unit's own text and its retrieved regions; definition text that names other sections is not an admissible reference source for the citing unit.",
-      "acceptance": "References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists."
+      "acceptance": "References stated inside a retrieved definition the unit depends on are admissible for that unit, or a definition-level shared-capacity construct exists.",
+      "fixNote": "classifyEmittedReferences(definitionAuthorityTexts) + administrative/section-caption severity demotion. Acceptance signature observed PASS.",
+      "fixedIn": "cursor/covenant-retrieval-legal-excellence-8de2",
+      "closedIn": "cursor/covenant-retrieval-legal-excellence-8de2"
     },
     {
       "id": "IPV-16",
@@ -768,16 +761,21 @@
           "packageId": "pkg-m-composed-p0",
           "expectationRef": "semantic:credit-agreement::7.01",
           "severity": "EVIDENCE_INCOMPLETE"
+        },
+        {
+          "packageId": "pkg-m-composed-p0",
+          "expectationRef": "certification:credit-agreement::7.02",
+          "severity": "NONMATERIAL_OMISSION"
         }
       ],
       "failingInput": "Package B plus an in-memory side letter (role AMENDMENT, effective 2026-03-01): 'Notwithstanding Section 7.01(b) of the Credit Agreement, the Borrower agrees that it shall not incur other Indebtedness under Section 7.01(b) … exceeding $10,000,000' (MUT-12; the tightening direction). MUT-08 is the loosening twin ($60,000,000). Also: MUT-13 (A, $10m), MUT-14 (C, $30m 'notwithstanding Section 7.01(b) … as amended by Amendment No. 1'), MUT-15 (H, 7.02(d) $2.5m), MUT-16 (I, consent raising 7.02(b) to $30m).",
       "expected": "The override reaches the operative state as an effect on 7.01(b) (resolved, REVIEW_REQUIRED or unattached) so the instrument state is not reported RESOLVED with the base text as current; at minimum the instrument state carries the unresolved override.",
-      "actual": "Side-letter / override attaches as unresolved REVIEW_REQUIRED (or withholds section operative text) rather than certifying the overridden $40,000,000 as current; expected superseding $15,000,000 text is still not derived. Fail-closed on M; full override application remains open.",
+      "actual": "Side-letter / override attaches as UNCLASSIFIED_OVERRIDE REVIEW_REQUIRED and withholds section operative text rather than inventing a $15,000,000 replacement. Fail-closed on M (operative + EMPTY_OPERATIVE semantic + dependent CERT REVIEW). Full override application (SUPERSEDED with derived $15m text) remains open; unit tests forbid inventing the override amount.",
       "repro": "npx tsx -e \"import('./scripts/product-acceptance/mutations').then(async m=>{const {loadPackage}=await import('./scripts/product-acceptance/corpus');const o=await m.observeMutation(loadPackage('pkg-b-multi-document'),m.MUTATIONS.find(x=>x.id==='MUT-12'));console.log(o.verdicts.filter(v=>v.kind==='PRODUCT'))})\"",
       "impact": "A consumer that answers capacity from the operative state (the certified path's lineage input) would report a $30,000,000 cap where the package caps it at $10,000,000: a false permission of $20,000,000. In the loosening direction (MUT-08) the answer is merely stale ($30m instead of $60m). The dangerous direction is deterministic and silent.",
       "hypothesis": "modification-candidates.ts recognises amend/restate/replace/delete/insert drafting forms only; an override or waiver clause ('notwithstanding', 'the Lenders agree that', 'shall not … exceeding') is not a modification candidate, so the amendment pipeline never sees it and the operative state has no channel for an unparsed override. The REVIEW_REQUIRED cross-document lead at the package-graph level is informational only.",
       "acceptance": "A side letter / waiver / override document that names a section of the base agreement yields at least an unattached or REVIEW_REQUIRED effect for that instrument (operative state not RESOLVED), or a documented package-level 'unclassified override document' blocker that the certification path consumes. Verified by MUT-08/MUT-12 PRODUCT verdicts passing.",
-      "fixNote": "Unclassified overrides attach/withhold (INV-16b); CRITICAL_FALSE_PERMISSION on M is closed. Remaining work: derive superseding override text when safe."
+      "fixNote": "detectUnclassifiedOverrides + provision REVIEW_REQUIRED without applying newText. Dangerous false-permission path closed; derivation of superseding text still OPEN."
     },
     {
       "id": "IPV-17",
@@ -843,7 +841,7 @@
     },
     {
       "id": "IPV-19",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "WRONG_OPERATIVE_SOURCE",
       "outcomeClass": "INCORRECT_RESULT",
       "deterministic": true,
@@ -899,36 +897,18 @@
           "expectationRef": "invariant:INV-05b:C:definition-amendment-targets-definition",
           "severity": "WRONG_OPERATIVE_SOURCE",
           "evidence": "INVARIANT"
-        },
-        {
-          "packageId": "pkg-i-secured-debt-lien",
-          "expectationRef": "semantic:credit-agreement::1.01",
-          "severity": "MISSING_REQUIRED_COVENANT"
-        },
-        {
-          "packageId": "pkg-m-composed-p0",
-          "expectationRef": "semantic:credit-agreement::1.01",
-          "severity": "MISSING_REQUIRED_COVENANT"
-        },
-        {
-          "packageId": "pkg-m-composed-p0",
-          "expectationRef": "certification:credit-agreement::7.02",
-          "severity": "NONMATERIAL_OMISSION"
-        },
-        {
-          "packageId": "pkg-h-unseen-composition",
-          "expectationRef": "semantic:abl-credit-agreement::1.01",
-          "severity": "MISSING_REQUIRED_COVENANT"
         }
       ],
       "failingInput": "Package A plus an in-memory Amendment No. 1 (effective May 1, 2026): 'The definition of \"Consolidated EBITDA\" in Section 1.01 of the Credit Agreement is hereby amended and restated in its entirety to read as follows: \"Consolidated EBITDA\" means … and non-cash stock compensation expense for such period.' (form F1; F3 'set forth in Section 1.01 … to read in its entirety as follows' behaves the same).",
       "expected": "A DEFINITION-kind effect (targetDefinedTermRef 'Consolidated EBITDA') applied from 2026-05-01, so that the operative definition changes and Section 1.01's other ten definitions are untouched; or an unresolved/REVIEW effect.",
-      "actual": "Definition-level amendment targeting works for Foreign Subsidiary / Consolidated EBITDA operative views and definition-currency retrieval (IPV-20). Remaining: definitions-section semantic compile still misses terms when Section 1.01 is mis-targeted on disk packages I/M; some dependent certifications stay REVIEW.",
+      "actual": "Definition restatement capture retains the leading quote; Section 1.01 splice keeps \"Term\" means ownership. semantic:…::1.01 PASS on H/I/M @ ddb118c23d85. Dependent certification:credit-agreement::7.02 on M remains REVIEW under IPV-16 side-letter withhold (moved).",
       "repro": "npx tsx scripts/product-acceptance/run-invariants.ts → INV-05 (scripts/product-acceptance/invariants.ts, DEFINITION_AMENDMENT_FORMS F1/F3)",
       "impact": "Evidence corruption at the operative-state layer (priority 0): every other definition in Section 1.01 is reported superseded with no text as of the amendment date; a consumer compiling the definitions candidate from the operative text would see one definition. The amendment itself is applied to the wrong unit, so lineage for 'Consolidated EBITDA' never exists (see IPV-20 for the retrieval consequence).",
       "hypothesis": "The deterministic parser's target resolver matches 'in Section 1.01' before (or instead of) 'the definition of \"…\"', so the explicit-pattern path binds a SECTION target with the restated text as the replacement; the DEFINITION target kind exists in the type but this drafting form never reaches it.",
       "acceptance": "F1 and F3 yield a DEFINITION-kind effect (or REVIEW), the 1.01 provision keeps its other definitions, and a DEFINITION provision view for 'Consolidated EBITDA' exists at 2026-06-30 with the new text; invariant:INV-05:F1/F3 PRODUCT verdicts pass.",
-      "fixNote": "Definition-kind effects + operativeDefinitionText retrieval. Residual semantic:1.01 / certification gaps tracked by remaining signatures."
+      "fixNote": "DEFINITION_REPLACE_RE captures opening quote inside newText. Acceptance semantic:1.01 signatures observed PASS.",
+      "fixedIn": "cursor/covenant-retrieval-legal-excellence-8de2",
+      "closedIn": "cursor/covenant-retrieval-legal-excellence-8de2"
     },
     {
       "id": "IPV-20",
