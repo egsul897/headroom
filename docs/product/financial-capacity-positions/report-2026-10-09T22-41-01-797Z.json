@@ -1,0 +1,1118 @@
+{
+  "schemaVersion": "product.financial-capacity-positions.v1",
+  "generatedAt": "2026-10-09T22:41:01.797Z",
+  "startingSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "companies": [
+    {
+      "companyId": "coherent",
+      "companyName": "Coherent Corp.",
+      "ticker": "COHR",
+      "tenantKind": "EVALUATION",
+      "asOfDate": "2026-06-30T00:00:00.000Z",
+      "eligibility": {
+        "hasFinancialSnapshot": true,
+        "hasFinancialState": true,
+        "hasLedger": true,
+        "hasCovenantProvisions": true,
+        "hasCapacityFormulas": true,
+        "hasPermissions": true,
+        "hasNs4ApprovedSnapshot": false,
+        "hasRpWaterfall": true,
+        "executableCapacity": true,
+        "refusalReasons": [
+          "No NS-4 APPROVED ContractInputSnapshot (legacy FinancialSnapshot/State path used when present)"
+        ]
+      },
+      "contractualMetrics": {
+        "ebitda": 1700,
+        "cash": 1162,
+        "totalDebt": 3258,
+        "securedDebt": 2221,
+        "interestExpense": 190,
+        "cumulativeNetIncome": 520,
+        "equityProceedsSinceIssue": 2150,
+        "assumedNewDebtRatePct": 6.5,
+        "netDebt": 2096,
+        "totalNetLeverage": 1.2329411764705882,
+        "seniorSecuredNetLeverage": 0.6229411764705882,
+        "fixedChargeCoverage": 8.947368421052632
+      },
+      "documents": [
+        {
+          "id": "coherent-credit-agreement-2022",
+          "name": "Credit Agreement (2022, as amended)",
+          "type": "CREDIT_AGREEMENT",
+          "governs": "Term Loan A · Term Loan B-3 · $700M Revolver (undrawn)",
+          "hasSecuredFormula": true,
+          "hasUnsecuredFormula": true,
+          "hasRpWaterfall": false,
+          "provisionCount": 2,
+          "permissionCount": 7
+        },
+        {
+          "id": "coherent-2029-notes-indenture",
+          "name": "2029 Senior Notes Indenture",
+          "type": "INDENTURE",
+          "governs": "$990M 5.000% Senior Notes due 2029 (unsecured)",
+          "hasSecuredFormula": true,
+          "hasUnsecuredFormula": true,
+          "hasRpWaterfall": true,
+          "provisionCount": 13,
+          "permissionCount": 15
+        }
+      ],
+      "baskets": [
+        {
+          "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+          "documentId": "coherent-credit-agreement-2022",
+          "documentName": "Credit Agreement (2022, as amended)",
+          "code": "ca_leverage_cap",
+          "basketName": "Financial Covenants — Total Net Leverage",
+          "formulaType": "LEVERAGE_RATIO_ROOM",
+          "sectionRef": "§6.11 — TNL ≤ 4.25x",
+          "status": "modeled",
+          "capacity": 5129
+        },
+        {
+          "key": "coherent-credit-agreement-2022:ca_coverage_cap",
+          "documentId": "coherent-credit-agreement-2022",
+          "documentName": "Credit Agreement (2022, as amended)",
+          "code": "ca_coverage_cap",
+          "basketName": "Financial Covenants — Interest Coverage",
+          "formulaType": "COVERAGE_RATIO_ROOM",
+          "sectionRef": "§6.11 — IC ≥ 2.50x",
+          "status": "modeled",
+          "capacity": 7538.461538461538
+        },
+        {
+          "key": "coherent-2029-notes-indenture:ratio_debt_fccr",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "ratio_debt_fccr",
+          "basketName": "Ratio Debt",
+          "formulaType": "COVERAGE_RATIO_ROOM",
+          "sectionRef": "§3.3(a) — FCCR ≥ 2.00x",
+          "status": "modeled",
+          "capacity": 10153.846153846154
+        },
+        {
+          "key": "coherent-2029-notes-indenture:mila_secured",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "mila_secured",
+          "basketName": "MILA — secured prong",
+          "formulaType": "LEVERAGE_RATIO_ROOM",
+          "sectionRef": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+          "status": "modeled",
+          "capacity": 4041
+        },
+        {
+          "key": "coherent-2029-notes-indenture:mila_unsecured",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "mila_unsecured",
+          "basketName": "MILA — unsecured prong",
+          "formulaType": "LEVERAGE_RATIO_ROOM",
+          "sectionRef": "§3.3(b)(i)(C) — TNL ≤ 5.00x",
+          "status": "modeled",
+          "capacity": 6404
+        },
+        {
+          "key": "coherent-2029-notes-indenture:facility_flat",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "facility_flat",
+          "basketName": "Credit Facilities basket — flat",
+          "formulaType": "FLAT_NET_OF_DEBT",
+          "sectionRef": "§3.3(b)(i)(A) — $4,000M",
+          "status": "modeled",
+          "capacity": 1779
+        },
+        {
+          "key": "coherent-2029-notes-indenture:facility_grower",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "facility_grower",
+          "basketName": "Credit Facilities basket — grower",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "sectionRef": "§3.3(b)(i)(B) — greater of $1,320M / 100% EBITDA",
+          "status": "modeled",
+          "capacity": 1700
+        },
+        {
+          "key": "coherent-2029-notes-indenture:general_debt",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "general_debt",
+          "basketName": "General debt basket",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "sectionRef": "§3.3(b)(xii) — greater of $530M / 40% EBITDA",
+          "status": "modeled",
+          "capacity": 680
+        },
+        {
+          "key": "coherent-2029-notes-indenture:lien_ratio",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "lien_ratio",
+          "basketName": "Lien capacity — ratio prong",
+          "formulaType": "LEVERAGE_RATIO_ROOM",
+          "sectionRef": "Permitted Liens cl. (24) — SSNL ≤ 3.00x",
+          "status": "modeled",
+          "capacity": 4041
+        },
+        {
+          "key": "coherent-2029-notes-indenture:lien_general",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "lien_general",
+          "basketName": "Lien capacity — general prong",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "sectionRef": "Permitted Liens cl. (25) — greater of $530M / 40% EBITDA",
+          "status": "modeled",
+          "capacity": 680
+        },
+        {
+          "key": "coherent-2029-notes-indenture:rp_builder",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "rp_builder",
+          "basketName": "Builder Basket (Available Amount)",
+          "formulaType": "BUILDER_BASKET",
+          "sectionRef": "§3.4(a)(C)",
+          "status": "modeled",
+          "capacity": 2835,
+          "components": [
+            {
+              "label": "Builder basket starter",
+              "sectionRef": "§3.4(a)(C)(1)",
+              "value": 425
+            },
+            {
+              "label": "+ 50% CNI since issue",
+              "sectionRef": "§3.4(a)(C)(2)",
+              "value": 260
+            },
+            {
+              "label": "+ equity proceeds since issue",
+              "sectionRef": "§3.4(a)(C)(3)-(4)",
+              "value": 2150
+            }
+          ]
+        },
+        {
+          "key": "coherent-2029-notes-indenture:rp_general",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "rp_general",
+          "basketName": "General RP Basket",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "sectionRef": "§3.4(b)(x) — greater of $600M / 45% EBITDA",
+          "status": "modeled",
+          "capacity": 765
+        },
+        {
+          "key": "coherent-2029-notes-indenture:rp_ratio_gate",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "rp_ratio_gate",
+          "basketName": "Ratio RP (unlimited)",
+          "formulaType": "RATIO_GATE",
+          "sectionRef": "§3.4(b)(xvii)(i) — TNL ≤ 3.25x",
+          "status": "modeled",
+          "capacity": null
+        },
+        {
+          "key": "coherent-2029-notes-indenture:inv_ratio_gate",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "inv_ratio_gate",
+          "basketName": "Ratio Investments (unlimited)",
+          "formulaType": "RATIO_GATE",
+          "sectionRef": "§3.4(b)(xvii)(ii) — TNL ≤ 3.50x",
+          "status": "modeled",
+          "capacity": null
+        },
+        {
+          "key": "coherent-2029-notes-indenture:asset_sale_threshold",
+          "documentId": "coherent-2029-notes-indenture",
+          "documentName": "2029 Senior Notes Indenture",
+          "code": "asset_sale_threshold",
+          "basketName": "Excess Proceeds threshold",
+          "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "sectionRef": "§3.7(d) — greater of $35M / 2.5% EBITDA",
+          "status": "modeled",
+          "capacity": 42.5
+        }
+      ],
+      "ledgerUtilization": [
+        {
+          "basket": "EQUITY",
+          "direction": "CREDIT",
+          "amount": 1998,
+          "known": true
+        },
+        {
+          "basket": "ASSET_SALE",
+          "direction": "CREDIT",
+          "amount": 400,
+          "known": true
+        },
+        {
+          "basket": "ASSET_SALE",
+          "direction": "CREDIT",
+          "amount": -96,
+          "known": true
+        },
+        {
+          "basket": "DEBT_REPAY",
+          "direction": "CREDIT",
+          "amount": 502,
+          "known": true
+        },
+        {
+          "basket": "DIVIDEND",
+          "direction": "DEBIT",
+          "amount": 150,
+          "known": true
+        }
+      ],
+      "unknownUtilization": [
+        "DEBT_INCUR ledger empty — prior debt-basket draws not recorded as ledger utilization"
+      ],
+      "remainingCapacity": {
+        "secured": 5129,
+        "unsecured": 5129,
+        "securedBinding": "Credit Agreement (2022, as amended)",
+        "unsecuredBinding": "Credit Agreement (2022, as amended)",
+        "securedMethod": "SOLVER_NATIVE_RECOMPUTED",
+        "unsecuredMethod": "SOLVER_NATIVE_RECOMPUTED"
+      },
+      "crossDocumentRestrictions": [
+        "Cross-document capacity is the tightest modeled document/side (combineCrossDocument / solver recomputation)"
+      ],
+      "certificatesProcessed": 0,
+      "financialStatementsProcessed": 1
+    },
+    {
+      "companyId": "matthews",
+      "companyName": "Matthews International Corporation",
+      "ticker": "MATW",
+      "tenantKind": "EVALUATION",
+      "asOfDate": "2024-12-31T00:00:00.000Z",
+      "eligibility": {
+        "hasFinancialSnapshot": true,
+        "hasFinancialState": true,
+        "hasLedger": false,
+        "hasCovenantProvisions": false,
+        "hasCapacityFormulas": false,
+        "hasPermissions": true,
+        "hasNs4ApprovedSnapshot": false,
+        "hasRpWaterfall": false,
+        "executableCapacity": false,
+        "refusalReasons": [
+          "No CovenantProvision rows — basket formulas not executable",
+          "No document capacityFormulas for secured/unsecured sides",
+          "No ACTIVE ledger utilization — historical basket drawdowns unknown",
+          "No NS-4 APPROVED ContractInputSnapshot (legacy FinancialSnapshot/State path used when present)"
+        ]
+      },
+      "contractualMetrics": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "netDebt": 775.698,
+        "totalNetLeverage": 6.04535783591686,
+        "seniorSecuredNetLeverage": 5.8089905153803585,
+        "fixedChargeCoverage": 2.3483345534407025
+      },
+      "documents": [
+        {
+          "id": "matw-credit-agreement-2020",
+          "name": "Third Amended and Restated Loan Agreement, dated March 27, 2020, as amended through the Sixth Amendment dated September 23, 2024",
+          "type": "CREDIT_AGREEMENT",
+          "governs": "Domestic senior secured revolving credit facility ($750.0M committed), Citizens Bank, N.A. as administrative agent",
+          "hasSecuredFormula": false,
+          "hasUnsecuredFormula": false,
+          "hasRpWaterfall": false,
+          "provisionCount": 0,
+          "permissionCount": 1
+        },
+        {
+          "id": "matw-2027-second-lien-notes-indenture",
+          "name": "Indenture, dated September 27, 2024, governing the 8.625% Senior Secured Second Lien Notes due 2027",
+          "type": "INDENTURE",
+          "governs": "$300.0M aggregate principal 8.625% Senior Secured Second Lien Notes due October 1, 2027",
+          "hasSecuredFormula": false,
+          "hasUnsecuredFormula": false,
+          "hasRpWaterfall": false,
+          "provisionCount": 0,
+          "permissionCount": 6
+        }
+      ],
+      "baskets": [],
+      "ledgerUtilization": [],
+      "unknownUtilization": [],
+      "remainingCapacity": {
+        "secured": null,
+        "unsecured": null,
+        "securedBinding": null,
+        "unsecuredBinding": null,
+        "securedMethod": null,
+        "unsecuredMethod": null
+      },
+      "crossDocumentRestrictions": [
+        "Matthews permissions exist but CovenantProvision/capacityFormulas are absent — no executable cross-document capacity"
+      ],
+      "certificatesProcessed": 0,
+      "financialStatementsProcessed": 1
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "COH-S1-debt-incur-secured-50",
+      "companyId": "coherent",
+      "kind": "DEBT_INCURRENCE",
+      "title": "Incur $50M secured debt",
+      "amount": 50,
+      "detail": "Solver-native debt incurrence against CA + Notes; post capacity recomputed.",
+      "independent": {
+        "expectedStatus": "clear",
+        "expectedPreCapacity": 5129,
+        "expectedPostCapacity": 5079,
+        "expectedBasketEffects": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "effect": "CONSUMED",
+            "delta": -50
+          }
+        ],
+        "rationale": "TNL room 4.25×EBITDA − netDebt = 5129; post cash-unchanged convention → 5079.",
+        "source": "CA §6.11 + Neon FinancialSnapshot/State as of 2026-06-30"
+      },
+      "observed": {
+        "status": "clear",
+        "pre": {
+          "securedRemaining": 5129,
+          "tnlRoom": 5129,
+          "totalNetLeverage": 1.2329411764705882
+        },
+        "post": {
+          "securedRemaining": 5079,
+          "tnlRoom": 5079,
+          "totalNetLeverage": 1.2623529411764707,
+          "proFormaTnl": 1.2623529411764707
+        },
+        "basketsConsumed": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "basketName": "Financial Covenants — Total Net Leverage",
+            "pre": 5129,
+            "post": 5079,
+            "effect": "CONSUMED",
+            "delta": -50
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_secured",
+            "basketName": "MILA — secured prong",
+            "pre": 4041,
+            "post": 3991,
+            "effect": "CONSUMED",
+            "delta": -50
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_unsecured",
+            "basketName": "MILA — unsecured prong",
+            "pre": 6404,
+            "post": 6354,
+            "effect": "CONSUMED",
+            "delta": -50
+          },
+          {
+            "key": "coherent-2029-notes-indenture:facility_flat",
+            "basketName": "Credit Facilities basket — flat",
+            "pre": 1779,
+            "post": 1729,
+            "effect": "CONSUMED",
+            "delta": -50
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_ratio",
+            "basketName": "Lien capacity — ratio prong",
+            "pre": 4041,
+            "post": 3991,
+            "effect": "CONSUMED",
+            "delta": -50
+          }
+        ],
+        "basketsRestored": [
+          {
+            "key": "coherent-2029-notes-indenture:rp_ratio_gate",
+            "basketName": "Ratio RP (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          },
+          {
+            "key": "coherent-2029-notes-indenture:inv_ratio_gate",
+            "basketName": "Ratio Investments (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          }
+        ],
+        "basketsUnaffected": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_coverage_cap",
+            "basketName": "Financial Covenants — Interest Coverage",
+            "pre": 7538.461538461538,
+            "post": 7538.461538461538,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:ratio_debt_fccr",
+            "basketName": "Ratio Debt",
+            "pre": 10153.846153846154,
+            "post": 10153.846153846154,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:facility_grower",
+            "basketName": "Credit Facilities basket — grower",
+            "pre": 1700,
+            "post": 1700,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:general_debt",
+            "basketName": "General debt basket",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_general",
+            "basketName": "Lien capacity — general prong",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "basketName": "Builder Basket (Available Amount)",
+            "pre": 2835,
+            "post": 2835,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_general",
+            "basketName": "General RP Basket",
+            "pre": 765,
+            "post": 765,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:asset_sale_threshold",
+            "basketName": "Excess Proceeds threshold",
+            "pre": 42.5,
+            "post": 42.5,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "pathway": "simulateDebtIncurrence + computeRemainingCapacityAfterDebtIncurrence (solver-native)",
+        "limitations": [
+          "Debt-funded convention leaves cash unchanged for leverage tests",
+          "Not Phase-4 REQUIRE / VEP certification"
+        ]
+      },
+      "assessment": "CORRECT_EXECUTABLE"
+    },
+    {
+      "id": "COH-S2-debt-repay-50",
+      "companyId": "coherent",
+      "kind": "DEBT_REPAYMENT",
+      "title": "Repay $50M Term Loan A",
+      "amount": 50,
+      "detail": "Financial-core DEBT_REPAYMENT scenario + covenant recomputation.",
+      "independent": {
+        "expectedStatus": "clear",
+        "expectedPreCapacity": 5129,
+        "expectedPostCapacity": 5129,
+        "expectedBasketEffects": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "rationale": "Equal cash/debt reduction leaves net leverage room unchanged.",
+        "source": "financial-core scenario DEBT_REPAYMENT + CA §6.11"
+      },
+      "observed": {
+        "status": "clear",
+        "pre": {
+          "cash": 1162,
+          "totalDebt": 3258,
+          "tnlRoom": 5129
+        },
+        "post": {
+          "cash": 1112,
+          "totalDebt": 3208,
+          "tnlRoom": 5129,
+          "grossDebtDelta": -50,
+          "cashDelta": -50
+        },
+        "basketsConsumed": [],
+        "basketsRestored": [
+          {
+            "key": "coherent-2029-notes-indenture:facility_flat",
+            "basketName": "Credit Facilities basket — flat",
+            "pre": 1779,
+            "post": 1829,
+            "effect": "INCREASED",
+            "delta": 50
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_ratio_gate",
+            "basketName": "Ratio RP (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          },
+          {
+            "key": "coherent-2029-notes-indenture:inv_ratio_gate",
+            "basketName": "Ratio Investments (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          }
+        ],
+        "basketsUnaffected": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "basketName": "Financial Covenants — Total Net Leverage",
+            "pre": 5129,
+            "post": 5129,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-credit-agreement-2022:ca_coverage_cap",
+            "basketName": "Financial Covenants — Interest Coverage",
+            "pre": 7538.461538461538,
+            "post": 7538.461538461538,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:ratio_debt_fccr",
+            "basketName": "Ratio Debt",
+            "pre": 10153.846153846154,
+            "post": 10153.846153846154,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_secured",
+            "basketName": "MILA — secured prong",
+            "pre": 4041,
+            "post": 4041,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_unsecured",
+            "basketName": "MILA — unsecured prong",
+            "pre": 6404,
+            "post": 6404,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:facility_grower",
+            "basketName": "Credit Facilities basket — grower",
+            "pre": 1700,
+            "post": 1700,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:general_debt",
+            "basketName": "General debt basket",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_ratio",
+            "basketName": "Lien capacity — ratio prong",
+            "pre": 4041,
+            "post": 4041,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_general",
+            "basketName": "Lien capacity — general prong",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "basketName": "Builder Basket (Available Amount)",
+            "pre": 2835,
+            "post": 2835,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_general",
+            "basketName": "General RP Basket",
+            "pre": 765,
+            "post": 765,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:asset_sale_threshold",
+            "basketName": "Excess Proceeds threshold",
+            "pre": 42.5,
+            "post": 42.5,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "pathway": "runCompanyScenario(DEBT_REPAYMENT) + computeCovenantPosition overlay",
+        "limitations": [
+          "Read-only scenario — no ledger write"
+        ]
+      },
+      "assessment": "CORRECT_EXECUTABLE"
+    },
+    {
+      "id": "COH-S3-dividend-25",
+      "companyId": "coherent",
+      "kind": "DIVIDEND",
+      "title": "Pay $25M dividend from Available Amount",
+      "amount": 25,
+      "detail": "RP waterfall: builder then general; shared pool with investments.",
+      "independent": {
+        "expectedStatus": "clear",
+        "expectedPreCapacity": 2685,
+        "expectedPostCapacity": 2660,
+        "expectedBasketEffects": [
+          {
+            "key": "rp_builder",
+            "effect": "CONSUMED",
+            "delta": -25
+          },
+          {
+            "key": "rp_general",
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "rationale": "Builder 2835 − ledger RP 150 = 2685; allocate 25.",
+        "source": "Notes §3.4(a)(C) builder + Neon ledger DIVIDEND debit $150M"
+      },
+      "observed": {
+        "status": "clear",
+        "pre": {
+          "builderHeadline": 2835,
+          "builderStepRemaining": 2685,
+          "poolUsed": 150,
+          "generalStep": 765
+        },
+        "post": {
+          "allocatedFromBuilder": 25,
+          "remainingUnallocated": 0,
+          "steps": 1
+        },
+        "basketsConsumed": [
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "basketName": "Builder Basket (Available Amount)",
+            "pre": 2685,
+            "post": 2660,
+            "effect": "CONSUMED",
+            "delta": -25
+          }
+        ],
+        "basketsRestored": [],
+        "basketsUnaffected": [
+          {
+            "key": "coherent-2029-notes-indenture:rp_general",
+            "basketName": "General RP Basket",
+            "pre": 765,
+            "post": 765,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "pathway": "simulateRestrictedPayment(kind=dividend)",
+        "limitations": [
+          "Simulation does not mutate ledger"
+        ]
+      },
+      "assessment": "CORRECT_EXECUTABLE"
+    },
+    {
+      "id": "COH-S4-equity-contribution-100",
+      "companyId": "coherent",
+      "kind": "EQUITY_CONTRIBUTION",
+      "title": "Receive $100M equity contribution",
+      "amount": 100,
+      "detail": "Cash + equityProceedsSinceIssue overlay; builder and TNL room expand.",
+      "independent": {
+        "expectedStatus": "clear",
+        "expectedPreCapacity": 5129,
+        "expectedPostCapacity": 5229,
+        "expectedBasketEffects": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "effect": "INCREASED",
+            "delta": 100
+          }
+        ],
+        "rationale": "+$100M cash raises TNL room by $100M; builder includes equity proceeds dollar-for-dollar.",
+        "source": "CA §6.11 + Notes builder includeEquityProceeds"
+      },
+      "observed": {
+        "status": "clear",
+        "pre": {
+          "tnlRoom": 5129,
+          "builder": 2835,
+          "milaSecured": 4041
+        },
+        "post": {
+          "tnlRoom": 5229,
+          "builder": 2935,
+          "milaSecured": 4141,
+          "expectedBuilderPost": 2935
+        },
+        "basketsConsumed": [],
+        "basketsRestored": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "basketName": "Financial Covenants — Total Net Leverage",
+            "pre": 5129,
+            "post": 5229,
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_secured",
+            "basketName": "MILA — secured prong",
+            "pre": 4041,
+            "post": 4141,
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:mila_unsecured",
+            "basketName": "MILA — unsecured prong",
+            "pre": 6404,
+            "post": 6504,
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_ratio",
+            "basketName": "Lien capacity — ratio prong",
+            "pre": 4041,
+            "post": 4141,
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "basketName": "Builder Basket (Available Amount)",
+            "pre": 2835,
+            "post": 2935,
+            "effect": "INCREASED",
+            "delta": 100
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_ratio_gate",
+            "basketName": "Ratio RP (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          },
+          {
+            "key": "coherent-2029-notes-indenture:inv_ratio_gate",
+            "basketName": "Ratio Investments (unlimited)",
+            "pre": null,
+            "post": null,
+            "effect": "INCREASED",
+            "delta": null
+          }
+        ],
+        "basketsUnaffected": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_coverage_cap",
+            "basketName": "Financial Covenants — Interest Coverage",
+            "pre": 7538.461538461538,
+            "post": 7538.461538461538,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:ratio_debt_fccr",
+            "basketName": "Ratio Debt",
+            "pre": 10153.846153846154,
+            "post": 10153.846153846154,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:facility_flat",
+            "basketName": "Credit Facilities basket — flat",
+            "pre": 1779,
+            "post": 1779,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:facility_grower",
+            "basketName": "Credit Facilities basket — grower",
+            "pre": 1700,
+            "post": 1700,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:general_debt",
+            "basketName": "General debt basket",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:lien_general",
+            "basketName": "Lien capacity — general prong",
+            "pre": 680,
+            "post": 680,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:rp_general",
+            "basketName": "General RP Basket",
+            "pre": 765,
+            "post": 765,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          },
+          {
+            "key": "coherent-2029-notes-indenture:asset_sale_threshold",
+            "basketName": "Excess Proceeds threshold",
+            "pre": 42.5,
+            "post": 42.5,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "pathway": "financial overlay + computeCovenantPosition (no ScenarioAction EQUITY kind)",
+        "limitations": [
+          "ScenarioAction has no EQUITY_CONTRIBUTION kind — demonstrated via financial overlay",
+          "Flat debt baskets (facility_flat/general_debt) unaffected by equity"
+        ]
+      },
+      "assessment": "CORRECT_EXECUTABLE"
+    },
+    {
+      "id": "COH-S5-restricted-investment-25",
+      "companyId": "coherent",
+      "kind": "RESTRICTED_INVESTMENT",
+      "title": "Make $25M restricted investment",
+      "amount": 25,
+      "detail": "Shares Available Amount pool with dividends; consumes builder step.",
+      "independent": {
+        "expectedStatus": "clear",
+        "expectedPreCapacity": 2685,
+        "expectedPostCapacity": 2660,
+        "expectedBasketEffects": [
+          {
+            "key": "rp_builder",
+            "effect": "CONSUMED",
+            "delta": -25
+          }
+        ],
+        "rationale": "Investments and dividends share the Notes RP waterfall / Available Amount.",
+        "source": "Notes §3.4 RP waterfall + inv_ratio_gate companion"
+      },
+      "observed": {
+        "status": "clear",
+        "pre": {
+          "builderStepRemaining": 2685,
+          "poolUsed": 150
+        },
+        "post": {
+          "allocated": 25,
+          "fromBasket": "Builder Basket (Available Amount)",
+          "remaining": 0
+        },
+        "basketsConsumed": [
+          {
+            "key": "coherent-2029-notes-indenture:rp_builder",
+            "basketName": "Builder Basket (Available Amount)",
+            "pre": 2685,
+            "post": 2660,
+            "effect": "CONSUMED",
+            "delta": -25
+          }
+        ],
+        "basketsRestored": [],
+        "basketsUnaffected": [
+          {
+            "key": "coherent-credit-agreement-2022:ca_leverage_cap",
+            "basketName": "Financial Covenants — Total Net Leverage",
+            "pre": 5129,
+            "post": 5129,
+            "effect": "UNAFFECTED",
+            "delta": 0
+          }
+        ],
+        "pathway": "simulateRestrictedPayment(kind=investment)",
+        "limitations": [
+          "Does not reduce cash in covenant overlay (RP sim is capacity-only)"
+        ]
+      },
+      "assessment": "CORRECT_EXECUTABLE"
+    },
+    {
+      "id": "MATW-R1-capacity-refusal",
+      "companyId": "matthews",
+      "kind": "DEBT_INCURRENCE",
+      "title": "Matthews — refuse executable capacity without provisions",
+      "amount": 10,
+      "detail": "Financials + permissions present; CovenantProvision/capacityFormulas absent.",
+      "independent": {
+        "expectedStatus": "NOT_EXECUTABLE",
+        "expectedBasketEffects": [],
+        "rationale": "Authentic Matthews package lacks modeled CovenantProvision rows; capacity must refuse.",
+        "source": "Neon matthews company — zero covenant_provisions"
+      },
+      "observed": {
+        "status": "NOT_EXECUTABLE",
+        "pre": {
+          "provisionCount": 0
+        },
+        "post": {
+          "provisionCount": 0
+        },
+        "basketsConsumed": [],
+        "basketsRestored": [],
+        "basketsUnaffected": [],
+        "pathway": "eligibility gate — no simulateDebtIncurrence without formulas",
+        "limitations": [
+          "7 permissions + 18 golden tests exist but do not substitute for provision formulas"
+        ]
+      },
+      "assessment": "CORRECT_REFUSAL"
+    }
+  ],
+  "neonIntelligence": [
+    {
+      "sourceId": "financial-capacity-coherent-df9054831d7c63eb",
+      "companyId": "coherent",
+      "title": "Coherent financial capacity calculation cases (evaluation seed)",
+      "representationLevel": "DETERMINISTICALLY_VALIDATED",
+      "verificationStatus": "DISCOVERED_NOT_LEGAL_TRUTH",
+      "promotedToLegalTruth": 0,
+      "kind": "financial_capacity_calculation_case",
+      "created": true
+    },
+    {
+      "sourceId": "financial-capacity-matthews-blocker-99b97880f15d278d",
+      "companyId": "matthews",
+      "title": "Matthews capacity refusal — missing provision formulas",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "verificationStatus": "DISCOVERED_NOT_LEGAL_TRUTH",
+      "promotedToLegalTruth": 0,
+      "kind": "capacity_blocker_pattern",
+      "created": true
+    }
+  ],
+  "metrics": {
+    "authenticCompaniesProcessed": 2,
+    "agreementsProcessed": 4,
+    "financialStatementsProcessed": 2,
+    "certificatesProcessed": 0,
+    "independentlyCorrectExecutableCalculations": 5,
+    "correctRefusals": 1,
+    "incorrectOutcomes": 0,
+    "transactionsWithValidatedStateChanges": 5,
+    "newReusableCovenantKnowledgeStored": 2
+  },
+  "blockers": [
+    {
+      "id": "B1-matthews-missing-provisions",
+      "generality": "CLASS_GENERAL",
+      "statement": "Companies may have FinancialSnapshot/State and Permission rows without CovenantProvision/capacityFormulas — capacity must refuse, not invent."
+    },
+    {
+      "id": "B2-no-ns4-on-evaluation-seeds",
+      "generality": "CLASS_GENERAL",
+      "statement": "Coherent/Matthews evaluation seeds use legacy FinancialSnapshot/State, not NS-4 APPROVED ContractInputSnapshot — Phase-4 REQUIRE path remains unavailable for these packages."
+    },
+    {
+      "id": "B3-no-officer-certificates-in-neon",
+      "generality": "PLATFORM",
+      "statement": "No officer/compliance certificate Document rows found for eligible packages — certificate-backed ratio certification not yet demonstrable from Neon."
+    },
+    {
+      "id": "B4-no-equity-scenario-action",
+      "generality": "PLATFORM",
+      "statement": "ScenarioAction lacks EQUITY_CONTRIBUTION; equity effects shown via financial overlay only."
+    },
+    {
+      "id": "B5-unknown-debt-basket-utilization",
+      "generality": "CLASS_GENERAL",
+      "statement": "Even with a ledger, DEBT_INCUR utilization may be unrecorded — remaining debt-basket capacity can overstate unused room if historical draws are unknown."
+    }
+  ],
+  "conmedRefusalRegressionsPreserved": {
+    "note": "PR #206 CONMED six CORRECT_REFUSAL scenarios remain the regression suite for unsupported packages; this milestone does not re-run or weaken them.",
+    "pr": "https://github.com/egsul897/headroom/pull/206",
+    "scenarioIds": [
+      "S1-unsecured-debt",
+      "S2-secured-debt",
+      "S3-restricted-payment",
+      "S4-ratio-gated",
+      "S5-amendment",
+      "S6-insufficient-evidence"
+    ]
+  },
+  "customerReportMarkdown": "# Financial capacity positions — milestone report\n\nGenerated: 2026-10-09T22:41:01.797Z\nSHA: bae24ced33fdd6963d0615265a1e67cb181233e8\npaidInferenceCalls: 0\npromotedToLegalTruth: 0\n\n## Metrics\n\n1. Authentic companies processed: **2**\n2. Agreements processed: **4**\n3. Financial statements processed: **2**\n4. Certificates processed: **0**\n5. Independently correct executable calculations: **5**\n6. Correct refusals: **1**\n7. Incorrect outcomes: **0**\n8. Transactions with validated state changes: **5**\n9. New reusable covenant knowledge stored in Neon: **2**\n\n## Companies\n\n### Coherent Corp. (`coherent`)\n\n- As of: 2026-06-30T00:00:00.000Z\n- Executable capacity: true\n- EBITDA $1700M · Net leverage 1.233x · FCCR 8.95x\n- Remaining secured capacity: 5129 (binding: Credit Agreement (2022, as amended))\n- Remaining unsecured capacity: 5129 (binding: Credit Agreement (2022, as amended))\n- Eligibility gaps: No NS-4 APPROVED ContractInputSnapshot (legacy FinancialSnapshot/State path used when present)\n- Baskets modeled: 15\n- Known ledger entries: 5\n\n### Matthews International Corporation (`matthews`)\n\n- As of: 2024-12-31T00:00:00.000Z\n- Executable capacity: false\n- EBITDA $128.313M · Net leverage 6.045x · FCCR 2.35x\n- Remaining secured capacity: n/a (binding: n/a)\n- Remaining unsecured capacity: n/a (binding: n/a)\n- Eligibility gaps: No CovenantProvision rows — basket formulas not executable; No document capacityFormulas for secured/unsecured sides; No ACTIVE ledger utilization — historical basket drawdowns unknown; No NS-4 APPROVED ContractInputSnapshot (legacy FinancialSnapshot/State path used when present)\n- Baskets modeled: 0\n- Known ledger entries: 0\n\n## Transaction state changes\n\n### COH-S1-debt-incur-secured-50 — Incur $50M secured debt\n\n- Assessment: **CORRECT_EXECUTABLE**\n- Status: clear\n- Pathway: simulateDebtIncurrence + computeRemainingCapacityAfterDebtIncurrence (solver-native)\n- Consumed: Financial Covenants — Total Net Leverage (-50); MILA — secured prong (-50); MILA — unsecured prong (-50); Credit Facilities basket — flat (-50); Lien capacity — ratio prong (-50)\n- Restored/increased: Ratio RP (unlimited) (NaN); Ratio Investments (unlimited) (NaN)\n- Unaffected baskets: 8\n- Independent rationale: TNL room 4.25×EBITDA − netDebt = 5129; post cash-unchanged convention → 5079.\n\n### COH-S2-debt-repay-50 — Repay $50M Term Loan A\n\n- Assessment: **CORRECT_EXECUTABLE**\n- Status: clear\n- Pathway: runCompanyScenario(DEBT_REPAYMENT) + computeCovenantPosition overlay\n- Restored/increased: Credit Facilities basket — flat (50); Ratio RP (unlimited) (NaN); Ratio Investments (unlimited) (NaN)\n- Unaffected baskets: 12\n- Independent rationale: Equal cash/debt reduction leaves net leverage room unchanged.\n\n### COH-S3-dividend-25 — Pay $25M dividend from Available Amount\n\n- Assessment: **CORRECT_EXECUTABLE**\n- Status: clear\n- Pathway: simulateRestrictedPayment(kind=dividend)\n- Consumed: Builder Basket (Available Amount) (-25)\n- Unaffected baskets: 1\n- Independent rationale: Builder 2835 − ledger RP 150 = 2685; allocate 25.\n\n### COH-S4-equity-contribution-100 — Receive $100M equity contribution\n\n- Assessment: **CORRECT_EXECUTABLE**\n- Status: clear\n- Pathway: financial overlay + computeCovenantPosition (no ScenarioAction EQUITY kind)\n- Restored/increased: Financial Covenants — Total Net Leverage (100); MILA — secured prong (100); MILA — unsecured prong (100); Lien capacity — ratio prong (100); Builder Basket (Available Amount) (100); Ratio RP (unlimited) (NaN); Ratio Investments (unlimited) (NaN)\n- Unaffected baskets: 8\n- Independent rationale: +$100M cash raises TNL room by $100M; builder includes equity proceeds dollar-for-dollar.\n\n### COH-S5-restricted-investment-25 — Make $25M restricted investment\n\n- Assessment: **CORRECT_EXECUTABLE**\n- Status: clear\n- Pathway: simulateRestrictedPayment(kind=investment)\n- Consumed: Builder Basket (Available Amount) (-25)\n- Unaffected baskets: 1\n- Independent rationale: Investments and dividends share the Notes RP waterfall / Available Amount.\n\n### MATW-R1-capacity-refusal — Matthews — refuse executable capacity without provisions\n\n- Assessment: **CORRECT_REFUSAL**\n- Status: NOT_EXECUTABLE\n- Pathway: eligibility gate — no simulateDebtIncurrence without formulas\n- Independent rationale: Authentic Matthews package lacks modeled CovenantProvision rows; capacity must refuse.\n\n## Blockers\n\n- **B1-matthews-missing-provisions** (CLASS_GENERAL): Companies may have FinancialSnapshot/State and Permission rows without CovenantProvision/capacityFormulas — capacity must refuse, not invent.\n- **B2-no-ns4-on-evaluation-seeds** (CLASS_GENERAL): Coherent/Matthews evaluation seeds use legacy FinancialSnapshot/State, not NS-4 APPROVED ContractInputSnapshot — Phase-4 REQUIRE path remains unavailable for these packages.\n- **B3-no-officer-certificates-in-neon** (PLATFORM): No officer/compliance certificate Document rows found for eligible packages — certificate-backed ratio certification not yet demonstrable from Neon.\n- **B4-no-equity-scenario-action** (PLATFORM): ScenarioAction lacks EQUITY_CONTRIBUTION; equity effects shown via financial overlay only.\n- **B5-unknown-debt-basket-utilization** (CLASS_GENERAL): Even with a ledger, DEBT_INCUR utilization may be unrecorded — remaining debt-basket capacity can overstate unused room if historical draws are unknown.\n\n## CONMED refusal regressions\n\nPR #206 CONMED six CORRECT_REFUSAL scenarios remain the regression suite for unsupported packages; this milestone does not re-run or weaken them.\nPR: https://github.com/egsul897/headroom/pull/206\nScenarios: S1-unsecured-debt, S2-secured-debt, S3-restricted-payment, S4-ratio-gated, S5-amendment, S6-insufficient-evidence\n\n## Neon intelligence\n\n- `financial-capacity-coherent-df9054831d7c63eb` (financial_capacity_calculation_case) — DISCOVERED_NOT_LEGAL_TRUTH; created=true; promotedToLegalTruth=0\n- `financial-capacity-matthews-blocker-99b97880f15d278d` (capacity_blocker_pattern) — DISCOVERED_NOT_LEGAL_TRUTH; created=true; promotedToLegalTruth=0\n"
+}
