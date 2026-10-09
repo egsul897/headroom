@@ -1,0 +1,80 @@
+{
+  "artifact": "daily-session-report",
+  "date": "2026-10-09",
+  "asOf": "2026-10-09T22:23:00Z",
+  "coordinatorBcId": "bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
+  "currentMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "paidInferenceCostUsd": 0,
+  "mergesPerformed": 0,
+  "autoMerge": false,
+  "activePrsAndDependencies": {
+    "countOpen": 20,
+    "priorityClean": [208, 210, 205, 207, 209],
+    "dirtyOrIsolated": [200, 190, 136, 163, 135],
+    "sequenceDoc": "docs/architecture/parallel-agents/18-pr-integration-sequence.json"
+  },
+  "corpusCoverage": {
+    "neonKnowledgeSources": 730,
+    "distinctHashes": 708,
+    "issuers": 200,
+    "semanticTruth": 0,
+    "kfCertified": 0,
+    "label": "DURABLE_CORPUS_YES_LEGAL_CERTIFICATION_NO"
+  },
+  "financialCertificateCoverage": {
+    "financialSnapshots": 8,
+    "approvedContractInputSnapshots": 6,
+    "ns4SyncOnMain": true,
+    "ns4StorePr": "190 DIRTY",
+    "label": "PARTIAL"
+  },
+  "covenantFormulaCoverage": {
+    "engineLeavesPresent": true,
+    "basketCorpusExecutable": 0,
+    "authentic72dPath": "PR205",
+    "sharedUsageHardcodedZero": true,
+    "label": "PARTIAL_WITH_CRITICAL_USAGE_RISK"
+  },
+  "ledgerStateCoverage": {
+    "ledgerEntries": 6,
+    "contractLedgerUsages": 1,
+    "unknownEqualsZeroRisk": "CRITICAL"
+  },
+  "crossDocumentCoverage": {
+    "conmedMultiDoc": true,
+    "neonContractModelEdges": 0,
+    "kfDiscoveredEdges": 8193,
+    "lienCompanionPr": 207
+  },
+  "customerColdStartResults": {
+    "uploadLoopMerged": true,
+    "endToEndVerified": false,
+    "conmedCapacity": "NOT_DETERMINABLE"
+  },
+  "independentCorrectnessResults": {
+    "claudeTrack": "active",
+    "cfpTarget": 0,
+    "openClasses": ["IPV-16 residual", "usage=0 overstatement", "secured-without-lien (mitigating)"]
+  },
+  "criticalBlockers": [
+    "BLK-USAGE-ZERO",
+    "BLK-CROSS-RULE",
+    "BLK-NS4-DIRTY",
+    "BLK-FILE-COLLISION-205-207",
+    "BLK-PACKAGE-CERTIFIED"
+  ],
+  "workCompleted": [
+    "Main SHA + open PR inventory",
+    "Eight-specialist exclusive ownership map",
+    "Shared progress manifest",
+    "PR integration sequence (no merges)",
+    "Adopted Neon #210 peer progress manifest"
+  ],
+  "workInProgress": [
+    "Specialist PR creation under exclusive trees",
+    "Coverage explore subagent",
+    "E2E board refresh"
+  ],
+  "nextAssignments": "see 17-progress-manifest.json nextAssignments",
+  "milestoneVerdict": "COORDINATION_ACTIVE_PRODUCT_NOT_YET_CUSTOMER_READY"
+}

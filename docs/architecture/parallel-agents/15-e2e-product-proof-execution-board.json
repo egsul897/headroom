@@ -1,104 +1,56 @@
 {
   "artifact": "e2e-product-proof-execution-board",
-  "version": 1,
-  "probedAt": "2026-10-09T00:10:55.036Z",
-  "mainSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
-  "ckfMergeSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
-  "ckfHeadSha": "262dc0e9bcc2a9f0895431a3db79c0b3671364e9",
+  "version": 2,
+  "probedAt": "2026-10-09T22:23:00Z",
+  "mainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "priorBoardVersion": 1,
+  "priorMainSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
+  "refreshNote": "A2 durability proven via merged PR #195 / a2-complete.md on main lineage; legal certification and authentic numeric capacity remain open. First broken arrow moved from A2 infra to capacity/certification product path.",
   "gates": {
     "A1_ckfMerged": {
       "status": "PASS",
       "owner": "WS-CKF",
       "evidence": {
         "pr": 154,
-        "headSha": "262dc0e9bcc2a9f0895431a3db79c0b3671364e9",
-        "mergeSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
-        "nonPromoting": true,
-        "durabilityDidNotBlockMerge": true
+        "nonPromoting": true
       },
-      "nextAction": "Wire smallest durable storage via existing DocumentStorageProvider + Postgres",
+      "nextAction": "Keep KF non-promoting; consume via published exports only",
       "blocker": null
     },
     "A2_durableSourceRoundTrip": {
-      "status": "BLOCKED",
-      "owner": "WS-CKF (storage via existing lib/document-storage)",
+      "status": "PASS",
+      "owner": "WS-CKF / durability",
       "evidence": {
-        "durability": {
-          "mode": "LOCAL_ONLY_NOT_CROSS_VM_DURABLE",
-          "durable": false,
-          "databaseUrlPresent": false,
-          "objectStorageTokenPresent": false,
-          "missingPrerequisites": [
-            "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
-            "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
-          ],
-          "notes": [
-            "Local .local-knowledge-corpus/ is session-scoped and gitignored; Cursor Cloud Agent VMs do not share those bytes.",
-            "Git-committed acquisition manifests + content hashes enable deterministic recovery, not durability.",
-            "Do not claim read-after-write durability or independent-session retrieval until both Postgres and object storage are available and verified."
-          ]
-        }
+        "docs": [
+          "docs/knowledge-factory/durability/a2-complete.md",
+          "docs/product/execution/STATUS-BOARD.md"
+        ],
+        "claimBoundary": "DURABLE_CORPUS_PROVEN ≠ legal certification",
+        "mergedPrs": [175, 195, 204]
       },
-      "nextAction": "Provision approved shared DATABASE_URL + BLOB_READ_WRITE_TOKEN; run recover-from-manifest + hash equality in fresh VM",
-      "blocker": "FIRST_BROKEN_ARROW: no shared DATABASE_URL / blob token in this environment \u2014 cannot prove cross-VM byte rehydrate"
+      "nextAction": "Optional bulk KF import remains owner-gated",
+      "blocker": null
     },
     "A3_canonicalExportRealConsumer": {
       "status": "PASS",
-      "owner": "WS-CKF consumer adapter \u2192 WS-DEF",
+      "owner": "WS-CKF consumer adapter → WS-DEF",
       "evidence": {
         "schemaVersion": "knowledge-factory.consumer-export.v1",
-        "durabilityClaim": "NONE",
-        "pass1": {
-          "ok": true,
-          "sourcesUpserted": 125,
-          "definitionsUpserted": 257
-        },
-        "pass2": {
-          "ok": true,
-          "idempotent": true,
-          "sourcesSkipped": 125,
-          "definitionsSkipped": 257,
-          "promotedToLegalTruth": 0,
-          "capacityCalculationAllowed": false
-        },
-        "vitest": "tests/knowledge-factory/phase3-preservation.test.ts (two independent imports)"
+        "promotedToLegalTruth": 0
       },
-      "nextAction": "Keep exports SOURCE_ONLY; DEF product store may consume same shards",
+      "nextAction": "Keep exports SOURCE_ONLY",
       "blocker": null
     },
     "A4_issuerDisjointRetrieval": {
       "status": "PASS",
       "owner": "WS-CKF (reuse/precedent) + consumers",
       "evidence": {
-        "ok": true,
-        "querySourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
-        "queryIssuerCik": "0000100493",
-        "queryCandidateId": "facbf0adbfaced1710a123f5",
-        "queryExcerptSha256": "7ebded98e5fec4ad79707d7e529ffd3a2bfde7681d1f1e938946d04ab953d8d1",
-        "queryFamilies": [
-          "EVENTS_OF_DEFAULT"
-        ],
-        "representationLevel": "DISCOVERED_CANDIDATE",
-        "precedentSourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
-        "precedentIssuerCik": "0000816956",
-        "precedentCandidateId": "7593faca01f72059c50512e5",
-        "precedentExcerptSha256": "fc6656a37c0834cd978c0eab740845a881b6a84a15cdda8eaa9f477a29f6ceb7",
-        "mode": "SUGGESTED_SEMANTIC_HYPOTHESIS",
-        "similarity": 1,
         "replacesVerification": false,
-        "certified": false,
-        "note": "Precedent may guide analysis; cannot replace verification of the new operative source. Similarity is not legal equivalence."
+        "certified": false
       },
-      "nextAction": "Fold into independent replay script with frozen citation spans once durable Doc A identity exists",
+      "nextAction": "Precedent must not replace operative verification",
       "blocker": null
     }
-  },
-  "authenticDocAFixture": {
-    "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
-    "present": true,
-    "contentHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
-    "expectedHashFromReconcile": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
-    "hashMatchesReconcile": true
   },
   "trackB": {
     "B1_parserIndependentAcceptance": {
@@ -106,13 +58,10 @@
       "owner": "parser / clause-hierarchy (#163)",
       "evidence": {
         "pr": 163,
-        "headSha": "2a536040b7f814e13466ddbe677e982e152debcd",
-        "mergeable": "MERGEABLE",
-        "mergeStateStatus": "CLEAN",
-        "ci": "certified path + Vercel green on tip"
+        "note": "Still awaiting independent acceptance close"
       },
-      "nextAction": "Complete independent acceptance/replay of Chewy \u00a76.08(a)(3)(b) fix; merge only after acceptance evidence",
-      "blocker": "Independent acceptance not yet recorded as closed on this gate"
+      "nextAction": "Keep isolated until acceptance evidence",
+      "blocker": "Independent acceptance not closed"
     },
     "B2_governingLimitsE2E": {
       "status": "BLOCKED",
@@ -120,21 +69,26 @@
       "evidence": {
         "pr": 136,
         "draft": true,
-        "certifiedPath": "FAILURE \u2014 expected CERTIFIED received REVIEW_REQUIRED (xref-fixtures)"
+        "certifiedPath": "FAILURE — keep isolated"
       },
-      "nextAction": "Owner remediates certified-path failures without changing frozen cert expectations unauthorized",
-      "blocker": "certified path CI red; unsafe to merge"
+      "nextAction": "Do not merge; do not reopen without certified-path green",
+      "blocker": "certified path CI red / unsafe"
     }
   },
   "trackC": {
     "C1_authenticFinancingPackageDemo": {
-      "status": "BLOCKED",
-      "owner": "WS-PAR coordination after Track A",
-      "evidence": null,
-      "nextAction": "Trace existing product path once A2\u2013A4 pass",
-      "blocker": "Depends on Track A durable round-trip (A2) first broken arrow"
+      "status": "PARTIAL",
+      "owner": "WS-RCV + knowledge-integration (#205)",
+      "evidence": {
+        "pr205": "Authentic CONMED §7.2(d) Finance Lease path with SYNTHETIC_LABELED_TECHNICAL_DEMO CTA",
+        "pr207": "SECURED_DEBT refuse without lien companion (rebase after #205)",
+        "capacity72c": "REFUSED CROSS_RULE_GATE_NOT_EXECUTABLE (honest)",
+        "packageCertify": "PARTIAL — not customer CERTIFIED"
+      },
+      "nextAction": "Land #205 then #207; WS-CAP kill usage=0; WS-FIN NS-4 #190 rebase",
+      "blocker": "Unknown utilization silent-zero risk + package-level CERTIFIED gap + NS-4 DIRTY"
     }
   },
   "milestoneVerdict": "END_TO_END_NOT_YET_PROVEN",
-  "firstBrokenArrow": "A2 durable source round-trip \u2014 missing shared DATABASE_URL and blob object-storage token for cross-VM rehydrate"
+  "firstBrokenArrow": "BLK-USAGE-ZERO — shared-capacity / path utilization treated as 0 when unknown (false-permission class) plus CONMED package CERTIFIED gap blocking honest customer numeric clearance"
 }

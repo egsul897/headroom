@@ -1,0 +1,87 @@
+{
+  "artifact": "pr-integration-sequence",
+  "version": 1,
+  "updatedAt": "2026-10-09T22:22:30Z",
+  "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "policy": {
+    "autoMerge": false,
+    "paidInference": false,
+    "requireRegressionEvidence": true,
+    "forbidUnverifiedCertifiedClaims": true
+  },
+  "recommendedOrder": [
+    {
+      "order": 1,
+      "pr": 208,
+      "rationale": "Docs-only primary-engine audit; unblocks WS-UCP backlog without code risk",
+      "preMergeChecks": ["CI green", "no production code"]
+    },
+    {
+      "order": 2,
+      "pr": 210,
+      "rationale": "Neon baseline + retrieval honesty; non-promoting; feeds all specialists",
+      "preMergeChecks": ["CI green", "neonWrites=0", "promotedToLegalTruth unchanged"]
+    },
+    {
+      "order": 3,
+      "pr": 205,
+      "rationale": "Authentic §7.2(d) path — highest multi-workflow unlock among CLEAN product PRs; establishes file base for companion work",
+      "preMergeChecks": [
+        "CI certified-path green",
+        "SYNTHETIC_LABELED_TECHNICAL_DEMO preserved",
+        "no gate weakening"
+      ]
+    },
+    {
+      "order": 4,
+      "pr": 207,
+      "rationale": "False-permission prevention for SECURED_DEBT; MUST rebase onto #205 tip to clear COLL-205-207",
+      "preMergeChecks": ["rebase onto post-205 main", "lien companion refuse tested", "no duplicate authentic-72d rewrite"]
+    },
+    {
+      "order": 5,
+      "pr": 209,
+      "rationale": "Stage C ratio path; mostly independent; verify simulate.ts vs #205/#207",
+      "preMergeChecks": ["collision check on lib/contract-model/runtime/transaction/simulate.ts", "CI green"]
+    },
+    {
+      "order": 6,
+      "pr": 206,
+      "rationale": "E2E workflow packaging; hold until CI stable; claims must match answer-sheet evidence",
+      "preMergeChecks": ["CI green", "no CERTIFIED customer claims beyond evidence"]
+    },
+    {
+      "order": 7,
+      "pr": 190,
+      "rationale": "NS-4 durable store — rebase first; unlocks WS-FIN",
+      "preMergeChecks": ["rebase onto main incl #204", "loader parity tests", "migrate review"]
+    }
+  ],
+  "doNotMerge": [
+    {
+      "pr": 136,
+      "reason": "certified-path FAILURE; governing-limit legal core isolated"
+    },
+    {
+      "pr": 163,
+      "reason": "independent acceptance not closed"
+    },
+    {
+      "pr": 200,
+      "reason": "DIRTY large tip; duplication risk vs main Phase 3/4 work"
+    },
+    {
+      "pr": 135,
+      "reason": "DIRTY; Haiku paid-path adjacent; not this fleet"
+    },
+    {
+      "pr": 168,
+      "reason": "stacked on architecture-remediation; keep with IPV-16 track"
+    }
+  ],
+  "postMergeCoordinatorActions": [
+    "Refresh 17-progress-manifest.json coverage SHAs",
+    "Re-probe e2e board gates",
+    "Assign next specialist tasks from unlocked blockers"
+  ]
+}
