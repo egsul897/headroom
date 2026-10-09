@@ -73,6 +73,8 @@ Every matrix case records: operative authority (section/family label), formula, 
 
 ## SHA / PR
 
-- **SHA:** `0790a0191167ac0ef78aef115304481bac86579f`
+- **SHA (matrix commit):** `0790a0191167ac0ef78aef115304481bac86579f`
+- **SHA (branch tip):** see latest push on `cursor/covenant-capacity-mathematics-b580`
+- **PR:** https://github.com/egsul897/headroom/pull/214
 - **Branch:** `cursor/covenant-capacity-mathematics-b580`
 - **Base:** `main`
