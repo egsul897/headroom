@@ -2,6 +2,8 @@
 
 **Branch:** `cursor/unified-position-simulate-ask-05a7`  
 **Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8`  
+**Ending SHA (this tip):** `ce0443f27ce049446d4c95f6655b9743fc676b73`  
+**PR:** https://github.com/egsul897/headroom/pull/213  
 **Soft gates:** no paid inference; no invented CERTIFIED; hypothetical sims never post to ledger  
 
 ## Deliverable summary (v2 — verified integration)
