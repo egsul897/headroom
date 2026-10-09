@@ -1,7 +1,7 @@
 # #232 Integration Correction
 
 **As of:** 2026-10-09  
-**Merge candidate tip:** see git tip of `cursor/neon-activation-repeatable-2229` after this correction.  
+**Merge candidate tip:** `2220dd4a1e28110b33fba8038c02506ffb56fe79`  
 **Base:** `origin/main` @ `b99f934b` (**includes merged #229**).
 
 ## 1. PR disposition correction
