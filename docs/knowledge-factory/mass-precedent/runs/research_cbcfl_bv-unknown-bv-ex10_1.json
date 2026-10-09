@@ -1,0 +1,80 @@
+{
+  "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+  "contentHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+  "counts": {
+    "sources": 0,
+    "structuralNodes": 0,
+    "definitions": 0,
+    "covenantCandidates": 0,
+    "dependencyEdges": 0
+  },
+  "records": [
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "STRUCTURAL_INDEX",
+      "status": "OK",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.021Z",
+      "finishedAt": "2026-10-09T01:24:42.092Z",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "diagnostics": "extractionStatus=CANDIDATES_DISCOVERED; nodes=1213; defs=0; candidates=66",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "DEFINITIONS",
+      "status": "OK",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.092Z",
+      "finishedAt": "2026-10-09T01:24:42.092Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "COVENANT_DISCOVERY",
+      "status": "OK",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.092Z",
+      "finishedAt": "2026-10-09T01:24:42.092Z",
+      "diagnostics": "covered by processAcquiredDocument structural pass",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "DEPENDENCY_MAP",
+      "status": "UNSUPPORTED",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.092Z",
+      "finishedAt": "2026-10-09T01:24:42.092Z",
+      "diagnostics": "Stage requires package-graph / atlas adapters — recorded as UNSUPPORTED for safe replay",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "AMENDMENT_RELATION",
+      "status": "UNSUPPORTED",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.092Z",
+      "finishedAt": "2026-10-09T01:24:42.092Z",
+      "diagnostics": "Stage requires package-graph / atlas adapters — recorded as UNSUPPORTED for safe replay",
+      "promotedToLegalTruth": 0
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "stage": "CONSUMER_EXPORT",
+      "status": "OK",
+      "codeSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+      "inputHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "startedAt": "2026-10-09T01:24:42.092Z",
+      "finishedAt": "2026-10-09T01:24:42.096Z",
+      "diagnostics": "export sources=0 candidates=0 defs=0",
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

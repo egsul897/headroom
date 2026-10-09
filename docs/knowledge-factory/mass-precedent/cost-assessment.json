@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "knowledge-factory.mass-precedent-cost.v1",
+  "generatedAt": "2026-10-09T01:24:31.451Z",
+  "assumptions": [
+    "Average document size extrapolated from 29 committed authentic files (1286443 bytes)",
+    "Neon BYTEA footprint modeled as raw bytes × 1.15 (indexes + row overhead)",
+    "KnowledgeSource / analysis JSON rows are small relative to BYTEA and omitted from GiB estimate",
+    "SEC fair-access ≤10 req/s; no paid AI API costs in this path",
+    "Does not include Neon compute/egress beyond storage footprint"
+  ],
+  "milestones": [
+    {
+      "name": "batch-100 (committed-first)",
+      "documents": 100,
+      "avgBytesPerDoc": 1286443,
+      "estimatedRawBytes": 128644300,
+      "estimatedNeonFootprintBytes": 147940945,
+      "estimatedNeonFootprintGiB": 0.138,
+      "estimatedSecRequests": 70,
+      "estimatedWallClockMinutesAt10Rps": 0.12,
+      "notes": "Assumes networkFraction of docs need SEC fetch; remainder already on disk or cached"
+    },
+    {
+      "name": "batch-500",
+      "documents": 500,
+      "avgBytesPerDoc": 1286443,
+      "estimatedRawBytes": 643221500,
+      "estimatedNeonFootprintBytes": 739704725,
+      "estimatedNeonFootprintGiB": 0.689,
+      "estimatedSecRequests": 425,
+      "estimatedWallClockMinutesAt10Rps": 0.71,
+      "notes": "Assumes networkFraction of docs need SEC fetch; remainder already on disk or cached"
+    },
+    {
+      "name": "batch-1000",
+      "documents": 1000,
+      "avgBytesPerDoc": 1286443,
+      "estimatedRawBytes": 1286443000,
+      "estimatedNeonFootprintBytes": 1479409450,
+      "estimatedNeonFootprintGiB": 1.378,
+      "estimatedSecRequests": 900,
+      "estimatedWallClockMinutesAt10Rps": 1.5,
+      "notes": "Assumes networkFraction of docs need SEC fetch; remainder already on disk or cached"
+    },
+    {
+      "name": "scale-10000",
+      "documents": 10000,
+      "avgBytesPerDoc": 1286443,
+      "estimatedRawBytes": 12864430000,
+      "estimatedNeonFootprintBytes": 14794094500,
+      "estimatedNeonFootprintGiB": 13.778,
+      "estimatedSecRequests": 9500,
+      "estimatedWallClockMinutesAt10Rps": 15.83,
+      "notes": "Assumes networkFraction of docs need SEC fetch; remainder already on disk or cached"
+    }
+  ],
+  "rateLimits": {
+    "secMaxRequestsPerSecond": 10,
+    "recommendedConcurrency": 2,
+    "batchCheckpointEvery": 25
+  }
+}

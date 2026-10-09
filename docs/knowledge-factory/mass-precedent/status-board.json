@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "knowledge-factory.mass-precedent-status.v1",
+  "generatedAt": "2026-10-09T01:24:31.455Z",
+  "startingSha": "fc9aed28e0e00148acff8e620e8b35b7f8a7ac04",
+  "verdict": "MASS_PRECEDENT_DRY_RUN_READY_AWAITING_APPROVAL",
+  "liveWriteAuthorized": false,
+  "approvalCheckpoint": "OWNER_APPROVAL_REQUIRED_BEFORE_MIGRATE_OR_BULK_PRECEDENT_BACKFILL",
+  "neon": {
+    "migrationsApplied": 33,
+    "documentByteObjectsTablePresent": false,
+    "knowledgeSources": 0,
+    "companies": 6,
+    "financialSnapshots": 3
+  },
+  "gibraltarFixture": {
+    "ok": true,
+    "byteSize": 2266666,
+    "sha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "expectedByteSize": 2266666,
+    "expectedSha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+  },
+  "inventory": {
+    "committedBytesAvailable": 29,
+    "committedBytesTotal": 37306833,
+    "manifestUrlOnly": 122,
+    "financingLocators": 113,
+    "falsePositiveLocators": 9,
+    "distinctIssuersInManifest": 34,
+    "exportSources": 125
+  },
+  "batch": {
+    "milestone": "batch-100",
+    "batchSize": 100,
+    "includeNetwork": true,
+    "proposed": {
+      "persistCommittedBytes": 29,
+      "fetchThenPersist": 71,
+      "analyzeOnly": 0,
+      "skipNoBytes": 0,
+      "skipFalsePositive": 0,
+      "skipAlreadyPersisted": 0
+    },
+    "estimatedStorageBytes": 94390624,
+    "estimatedSecRequests": 71,
+    "itemCount": 100
+  },
+  "costMilestones": [
+    {
+      "name": "batch-100 (committed-first)",
+      "documents": 100,
+      "estimatedNeonFootprintGiB": 0.138,
+      "estimatedSecRequests": 70
+    },
+    {
+      "name": "batch-500",
+      "documents": 500,
+      "estimatedNeonFootprintGiB": 0.689,
+      "estimatedSecRequests": 425
+    },
+    {
+      "name": "batch-1000",
+      "documents": 1000,
+      "estimatedNeonFootprintGiB": 1.378,
+      "estimatedSecRequests": 900
+    },
+    {
+      "name": "scale-10000",
+      "documents": 10000,
+      "estimatedNeonFootprintGiB": 13.778,
+      "estimatedSecRequests": 9500
+    }
+  ],
+  "tablesAffectedAfterApproval": [
+    "document_byte_objects",
+    "KnowledgeSource",
+    "knowledge_import_batches"
+  ],
+  "tablesNotTouched": [
+    "Company",
+    "FinancialSnapshot",
+    "Document (product demo rows)"
+  ],
+  "blockers": [
+    "Deploy migrations 20261009013000_document_byte_objects + 20261009020000_knowledge_import_batches before durable persist",
+    "LIVE WRITE NOT AUTHORIZED — stop for owner approval before migrate/bulk precedent backfill",
+    "Network fetch requires HEADROOM_SEC_FETCH_OWNER=WS-CKF and SEC-compliant ≤10 req/s"
+  ],
+  "nextCommandsAfterApproval": [
+    "npx prisma migrate deploy  # document_byte_objects + knowledge_import_batches",
+    "KF_CONSOLIDATION_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE npm run kf:consolidation-import",
+    "KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE npm run kf:mass-precedent-import -- --batch-size=100",
+    "npm run kf:mass-precedent-analyze -- --limit=5"
+  ],
+  "metricsSeparations": {
+    "authenticSourceDocumentsDiscovered": 142,
+    "authenticOriginalDocumentsAcquiredOnDisk": 29,
+    "originalBytesDurablyPersistedInNeon": 0,
+    "distinctIssuersInManifest": 34,
+    "executableVerifiedRecords": 0,
+    "note": "Do not treat total KnowledgeSource row count as legal coverage"
+  }
+}

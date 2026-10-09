@@ -107,6 +107,16 @@ export default async function Home() {
             Connect your company
           </Link>
         </Card>
+
+        <Card>
+          <div className="card-title">Research corpus</div>
+          <div className="card-subtitle">
+            Issuer-disjoint financing precedents persisted in Neon. Not operative authority for any company workspace.
+          </div>
+          <Link className="button" href="/research/corpus">
+            Browse corpus
+          </Link>
+        </Card>
       </div>
     </>
   );

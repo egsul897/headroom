@@ -1,0 +1,824 @@
+{
+  "schemaVersion": "knowledge-factory.mass-precedent-plan.v1",
+  "generatedAt": "2026-10-09T01:24:31.451Z",
+  "batchSize": 100,
+  "milestone": "batch-100",
+  "liveWriteAuthorized": false,
+  "neon": {
+    "migrationsApplied": 33,
+    "documentByteObjectsTablePresent": false,
+    "knowledgeSources": 0,
+    "companies": 6,
+    "financialSnapshots": 3
+  },
+  "inventorySummary": {
+    "committedBytesAvailable": 29,
+    "committedBytesTotal": 37306833,
+    "manifestUrlOnly": 122,
+    "financingLocators": 113,
+    "distinctIssuersInManifest": 34
+  },
+  "proposed": {
+    "persistCommittedBytes": 29,
+    "fetchThenPersist": 71,
+    "analyzeOnly": 0,
+    "skipNoBytes": 0,
+    "skipFalsePositive": 0,
+    "skipAlreadyPersisted": 0
+  },
+  "estimatedStorageBytes": 94390624,
+  "estimatedSecRequests": 71,
+  "rateLimitNotes": [
+    "SEC fair-access: identifying User-Agent required (SEC_EDGAR_USER_AGENT)",
+    "Process rate ≤10 req/s; prefer serial ownership via HEADROOM_SEC_FETCH_OWNER=WS-CKF",
+    "Use SecHttpClient cache; retries with exponential backoff",
+    "Do not start unbounded crawling or paid AI workloads"
+  ],
+  "items": [
+    {
+      "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2266666,
+      "originalBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1306165,
+      "originalBytesHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af"
+    },
+    {
+      "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1285303,
+      "originalBytesHash": "73c8d96ff5bc3f08ad8f7914053aacdc027ab4671d6ab07583bb0b4404ff8260"
+    },
+    {
+      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2525571,
+      "originalBytesHash": "c0e79bde6b3c94e1d4bf7bf6278ce488b24fe5e673f114e4cbc6e1788dd3d7df"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 3065807,
+      "originalBytesHash": "b068c2d0d01d76598a473ddecd2464a5fe31605acec0331af5e388fac48ffe63"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2573649,
+      "originalBytesHash": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436"
+    },
+    {
+      "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1306274,
+      "originalBytesHash": "0d074c12c550df77682c586820b57cec5385d654841f5a0ebfec802a4115fb4a"
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2533074,
+      "originalBytesHash": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b"
+    },
+    {
+      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2360912,
+      "originalBytesHash": "7c0eab5ef50410f9483d90987a3e38aa8c77175d72dfa8022831362b496dca75"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 2350147,
+      "originalBytesHash": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1630600,
+      "originalBytesHash": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442"
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 918492,
+      "originalBytesHash": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d"
+    },
+    {
+      "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1371433,
+      "originalBytesHash": "9b8a1dca733c81fc01cd8f5048474cd4396d8be8dbbf440fd9df5272a6216ac1"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 928789,
+      "originalBytesHash": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad"
+    },
+    {
+      "sourceId": "research:cbcfl:chef-unknown-ex_975043",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 115842,
+      "originalBytesHash": "78f82854e46e2d30f18bddfd4157e7838f390da445a5b6d7343c440418a64aab"
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 826331,
+      "originalBytesHash": "20496bb3c5effc5c85e5d5d3dd2efa5d48cf003b5024964ae613fab140b559ac"
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1268135,
+      "originalBytesHash": "56ac9cc2ee50b73816eb1d5174dd5436a0b0e6e33b7b67745d9c3402b7b97a97"
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1234538,
+      "originalBytesHash": "b12093fd5de51ed389bdac0124acc941b6459011e7bb50d19795c5eab79ad80f"
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1175933,
+      "originalBytesHash": "c88c5a7ca113433e9f0abd6edecb16e5987b05f7a16a6c2fb66296aba199b78d"
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-d-2025-second-amended-restated-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1698197,
+      "originalBytesHash": "273e142d7b5265bcb640e68bf401c5d9df1aae31d3541502c46d575c8f4e1f4c"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1255366,
+      "originalBytesHash": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 1208962,
+      "originalBytesHash": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 534723,
+      "originalBytesHash": "e0760a3ad6adc9892daf7be8818f443210b863f78998d4ec5f50a852258b111f"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-b-2025-05-19-amended-restated-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 551112,
+      "originalBytesHash": "f768df86f1a210a2aa988e2e88b2c8e80a642d0a94d8b8aed3568677146b544e"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 625038,
+      "originalBytesHash": "c6b5db7d97ad87c364676b8c1d91b1126d47334d5d0e940abf4ee881f0626d3f"
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 191561,
+      "originalBytesHash": "c63c1bbc53cfd8fb5e6e1886e2d4212486c702d89c307d2168531daf56ac9e4a"
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 52375,
+      "originalBytesHash": "ddc282d35f1a82a5c6ffa403eb44fd1010a6048988e68baa3eea7fcac82366b2"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 108629,
+      "originalBytesHash": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325"
+    },
+    {
+      "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-second-amendment-2022-08-02.htm",
+      "action": "PERSIST_COMMITTED_BYTES",
+      "reason": "Committed authentic HTML on disk — blocked until document_byte_objects migration + approval",
+      "byteSize": 37209,
+      "originalBytesHash": "45f8abcacf2f0bc0fd0b06b2f4a974b5bb395ebf18a0b667c30e2ac5f5d0851a"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit102amendmentno3tote.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 801850,
+      "originalBytesHash": "236a267bd98641ebe08848a26c81265a0f141055cb6a79c90d5bb9d5c680e5ac",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/100493/000010049318000047/exhibit102amendmentno3tote.htm"
+    },
+    {
+      "sourceId": "edgar:0000320187-15-000153:nikecreditagreement2015.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 947054,
+      "originalBytesHash": "464f2b1d10f4cf53cc3afbea71c3e562b00a258b39ea99b803e3baf9719d5e29",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/320187/000032018715000153/nikecreditagreement2015.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-19-000659:ex10-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 519034,
+      "originalBytesHash": "f4e7770e122ba9527a7d92a9bedacaca3457ad0678146245dfc7cc3fb34105e0",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/76334/000095015719000659/ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 826760,
+      "originalBytesHash": "8a63c8e4251d67ce3f32ccdd9087d0e470bb2f8df61c825da424fd92a93d809e",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/51143/000095015721000696/ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 953563,
+      "originalBytesHash": "ff2f73c8922a08a5b3451790be1b1d8ac32b4d7a282ecd17a424b4c1665af61c",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/51143/000095015722000765/ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 930356,
+      "originalBytesHash": "f8d8a953f28bac2e1c902f06a6deed0fbbe0611f22a8337102e17715598a765c",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/51143/000095015722000765/ex10-2.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 914561,
+      "originalBytesHash": "7dff8845be7b884d4805cd9a6c32efc7440faecde054f1ce6e9e6f2eac27f22a",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/884887/000110465922106834/tm2227571d1_ex4-1.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 974755,
+      "originalBytesHash": "9280119d33132f6a7eddcc992f1e844533e93dbae11d9730945399bcffac7b87",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/884887/000110465922106834/tm2227571d1_ex4-2.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 536966,
+      "originalBytesHash": "f72b86eff7f36f0e264face4b59373ec5bf1c1f806b7aa3a3d7317f5a18a00dc",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1065280/000119312513034798/d477945dex41.htm"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1017865,
+      "originalBytesHash": "61b7988b24f4d7c85883ef215fa167c481da70b99d2db791316e06429119ff63",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/829224/000121390025054811/ea024579601ex10-1_starbucks.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex41dec2017.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 931087,
+      "originalBytesHash": "cdc150dc8f2e8c54ca9484aa3fdc6fb507247f1b45b3c419245858904937e637",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000009/ex41dec2017.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex4dec2017.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 525401,
+      "originalBytesHash": "1a8797206139e8bd673832d98e4ac4adf80fd0e911b09fc21024359b2d42e201",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000009/ex4dec2017.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-19-000005:ex4dec2018.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 578804,
+      "originalBytesHash": "527b7893339174f01fe685c5f2c251ca904d485fff813a6afa21e4bce5ffbbe0",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960119000005/ex4dec2018.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 2286721,
+      "originalBytesHash": "8db8dc43a4a31527a344552794bc4f5580d502d62762784d6dfb7d840a4416a9",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960122000011/exhibit4.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 2653210,
+      "originalBytesHash": "ac3491e2bbd5e170c3a69a1315c08f8b6bc5e8e4c2bcfcc7735c14a6b90f7af4",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960125000009/a4ff-crownseventhamendment.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 2497620,
+      "originalBytesHash": "3346cd970c1f4c4bac705e811694af63dcc70904ecd41dd1ae030443b60c6091",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525824000017/lyv-20231231xex1030xamendm.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1031xamendm.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 2446421,
+      "originalBytesHash": "344ac22cc87b53e56ff93e748f59f8c4dfd1832a44bf2cb40c4a9728784d6386",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525825000028/lyv-20241231xex1031xamendm.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 831114,
+      "originalBytesHash": "5842fbb5bf6d8422c5fa7afa4eba3e711a2366a7793b74bec84561bb5e9d5683",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525825000028/lyv-20241231xex1049x2875co.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 836993,
+      "originalBytesHash": "e22786ac590f4223c864028cbe83a4af97b4d9a81fb3b2ad00dffac6ed8d9fd5",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1034xindent.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1168861,
+      "originalBytesHash": "8ba5a5e493a2c38c5bb17a9868fa600e8b2626265e91cd3425a0bdcb9785e81e",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000035/lyv-20260630xex102xmastert.htm"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1103758,
+      "originalBytesHash": "21416c822fe0e00dc2e784ba87a9418bca6713f064b7370bd37c1d5afc93eceb",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/27904/000168316820003281/delta_8k-ex0401.htm"
+    },
+    {
+      "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1038824,
+      "originalBytesHash": "4a5b4cb36370d11f7fe471e08b96241534f39b2459b4272417b46c2584eabad9",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/27904/000168316822007951/delta_ex1001.htm"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex101364-day.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1152940,
+      "originalBytesHash": "778f4e03618fe5d4c85b11339bee7117b03f4b929733a8e19811f2e81bc10659",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1744489/000174448920000066/fy2020q28kex101364-day.htm"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex1025-yearc.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1089407,
+      "originalBytesHash": "028e6c2cd1f707093c0a0417780c532fbb17b0961f8fc917eb5a5460600e8551",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1744489/000174448920000066/fy2020q28kex1025-yearc.htm"
+    },
+    {
+      "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1268244,
+      "originalBytesHash": "fd34faab7f4e1163e942abb41057ab41cef80201e92371318a918e61e1b062d3",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm"
+    },
+    {
+      "sourceId": "ehb:3d7a2cbca4c404d838c8bd94",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 594160,
+      "originalBytesHash": "2d45a9d5efea715aff03e71401ad771e767ebf9142adeb0e5056bc3e26cd5489",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312519021020/d697836dex41.htm"
+    },
+    {
+      "sourceId": "ehb:8b895fb699886a716ba820b4",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 932507,
+      "originalBytesHash": "a3346db0d688d497b933df78acfb42adc461cde5992b55a7623280d49392f470",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/912562/000119439605000199/gibraltarex101_93736.htm"
+    },
+    {
+      "sourceId": "ehb:8dbd3212a9f91a14a5cf35ae",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 617917,
+      "originalBytesHash": "dabe55b527bce7c07b6af909bc5dde6117b5b4400f5c0579d6a432b609c6b719",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522169336/d320648dex41.htm"
+    },
+    {
+      "sourceId": "ehb:f78f73c096f37e04ec99961e",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1001880,
+      "originalBytesHash": "14e12652d2d7ce75aff30d91be5d5c8ddfb97057afb488c87e4334c7c8ef826d",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/912562/000119439605000199/gibraltarex41_93736.htm"
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 802119,
+      "originalBytesHash": "4817bad95ebd3798f263df13e02a73901b5afcf6506ca91a37870b75ea406aff",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/100493/000010049317000095/exhibit102amendedandrestat.htm"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1043681,
+      "originalBytesHash": "af9077cab7097adaeb2df8db092672e9784d754069c7089d4f57449f8b89b3b0",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/100493/000010049318000047/exhibit101amendedandrestat.htm"
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 915322,
+      "originalBytesHash": "a637e89c00188f7ad7078110d3cbf598270a9c7346fdd654d8f497f584abfa26",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/732717/000073271724000059/exhibit1013q24.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex101.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 534016,
+      "originalBytesHash": "0d3c6666d6da964e857f21947e70531cbdfa23067f46bf4035056c45077f7e92",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1326801/000119312512423438/d424570dex101.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 6519276,
+      "originalBytesHash": "fac20a3ac12f41252816dbf3951d36d9e4f493a97c6f44e884515d2f336fa410",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960117000016/ex4march2017.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 2737656,
+      "originalBytesHash": "18e5240fa3be49ae2c263cf5b7e6665cbe0fa01e41c8b0b2708064112d248fd2",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1019amended.htm"
+    },
+    {
+      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1045552,
+      "originalBytesHash": "23bf21d8d33a2632486bb824fefc8f00b8f3b8af2c8f6e217199f6962d1b180c",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1467858/000146785818000089/ex10106282018cruise.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 753782,
+      "originalBytesHash": "e6bb4926b9a3ce090b964040233ad596e5faa87fe0489e0b43f951b03d01010a",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329616000132/exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:a77c506b087aab39da748554",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1199691,
+      "originalBytesHash": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329624000010/fifthamendmenttothirdamend.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 887845,
+      "originalBytesHash": "61bb92243ddc8a72d85466dd231d7fa0bc54e797e9b39e5dc27ee7f92358cb77",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329620000040/ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 443189,
+      "originalBytesHash": "ad0c5ee74572f6817338242d1374dd2e90fa9ee2a4e9a32eec1e8a3314ff5466",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000397/ss171930_ex1001.htm"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1002.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 76669,
+      "originalBytesHash": "674465241b5e7628620ab90f12bb1fc9a301d43afce3ae1336c0b3afd61fb587",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000527/ss174648_ex1002.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex10d1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 367031,
+      "originalBytesHash": "ca4b61c4aa7042ee219a799f8efe3558ddc53644fb05358b7bc5df56dda4468c",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex10d1.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d6.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 243970,
+      "originalBytesHash": "77dbddaca7f894ba10d6dd100ae2e3cdc1b716f09d5019541d260060596bd14f",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d6.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d7.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 470532,
+      "originalBytesHash": "9da5df6e09ac174885832127aef25ab06887b6401bbc06988a075a416d028744",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d7.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 442172,
+      "originalBytesHash": "e995bcd907935aca7220a36597ae2d7d4b04869a980e2d9c834c44662020eb2f",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516462492/d49534dex42.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex42.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 118107,
+      "originalBytesHash": "cab84f362567e6dba2bb23a2a0d89c433fc4bdbb35b9549cc351bc8e85c84b80",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516559672/d188918dex42.htm"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 313455,
+      "originalBytesHash": "ab6fbcb89a6a34351816280a2791579f70df909b74d33597101003e07a08e734",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/829224/000121390025041096/ea024138601ex4-2_starbucks.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1047x4875se.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 122653,
+      "originalBytesHash": "5112175da30014d779d2d51c727c0fbedd2c11d47e32d34f0438de7bddffcda1",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525824000017/lyv-20231231xex1047x4875se.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1023xthirds.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 130354,
+      "originalBytesHash": "ef75a6797ff4a37edaaaf8fb0dc92be7fabafcbc42e8840fc92e1a123d9208fd",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1023xthirds.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1026xsecond.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 132608,
+      "originalBytesHash": "9ddc5f79571e224e09d6bb7aec50f8602f08f1109d81d0cb653ba1abca4efc74",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1026xsecond.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1029xsecond.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 132808,
+      "originalBytesHash": "e3295a83d188c8d8b95a69649cf538af65c09c5b22f64a8701fddc58fd161aa1",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000009/lyv-20251231xex1029xsecond.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 142931,
+      "originalBytesHash": "c340bf69661e275e2508c29749adc56e31069718f4d9a4d3079a79f685f58e41",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/51143/000095015725000533/ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 140904,
+      "originalBytesHash": "fe87b4f43a74fde1f6832e9febed59bfe70dd64d313f6adf1ad699157dd414ff",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/51143/000095015725000533/ex10-2.htm"
+    },
+    {
+      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 151815,
+      "originalBytesHash": "1454bd2de4882077b0419e9632eafd11964b9e71ad658f0b9bc21e7575fec7a6",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1826011/000121390022078344/ea169690ex10-3_7gcandcohold.htm"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 96852,
+      "originalBytesHash": "07786c53d199a9aa8f02e7ea6e181ffc98e0740ad04a9b68e1bde423e5220999",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1826011/000121390023063838/ea182915ex10-1_7gcandco.htm"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 131108,
+      "originalBytesHash": "45f7a98fe6edcf2cf8f2dc2128e2c243e598bc55f13ebfe75443c006d80f19f3",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1826011/000121390023063838/ea182915ex10-2_7gcandco.htm"
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000007:hgv-xfirstamendmenttosecon.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 74780,
+      "originalBytesHash": "719f6c2e0b7502fcd442faaf15a380a512c947bd29a3fa58d7502ae6d3fafd12",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1585689/000158568926000007/hgv-xfirstamendmenttosecon.htm"
+    },
+    {
+      "sourceId": "ehb:42e4a267e5f11e0fb858e576",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 86666,
+      "originalBytesHash": "298a1a6f2683c850c255c1392b0caf3b785084def573ad46580982eca3049f3e",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329617000103/exhibit10-1xfirstamendment.htm"
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit101termloanagreemen.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 729282,
+      "originalBytesHash": "4c182976b4d46fc95308d28f94b8a9ac6f78e6da689d7cfdf41bd358e703f07b",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/100493/000010049317000095/exhibit101termloanagreemen.htm"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1002.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 45166,
+      "originalBytesHash": "c40374ab86a32bd3e74a9c41288ea834870d98e14322de3f9e926194858f80cc",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000397/ss171930_ex1002.htm"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1001.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 28518,
+      "originalBytesHash": "fc7206836f6d154f12e45d9ead5e7e2060ae0f2cec0d6e739510a911573f61af",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/885725/000094787120000527/ss174648_ex1001.htm"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 896513,
+      "originalBytesHash": "d55b7d4ddf03e5a8d05c5765e278b7e5ffc853d6ba12b04a02c2dfb0be849dad",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/896622/000110465914087365/a14-26274_1ex4d1.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex43.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 32102,
+      "originalBytesHash": "e1aea0e73d60a0e2906790b56d3cace15b720a22ab96d012b7720f73ceec2003",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516462492/d49534dex43.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex41.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 33071,
+      "originalBytesHash": "b7b137121c1d8e93377e7e95300a5611b3e025194eba7a6e7dbfd224e45073d1",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1652044/000119312516559672/d188918dex41.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000050:incamend8kfeb2016.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 32108,
+      "originalBytesHash": "31eae45e6d753353c1106927f71cae9ebafdde051456ba55cbfd441de8492826",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960116000050/incamend8kfeb2016.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 42170,
+      "originalBytesHash": "99469985161cd479d11cebfa7675aec4564817185c7aaae071940320c0191123",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960116000070/creditagreementsep2016.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000011:creditagreement8kapril2017.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 33749,
+      "originalBytesHash": "9a4fe5c3bbbc036bb13086c28ce9993646365720829da624b8e8cec8a5b30e95",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960117000011/creditagreement8kapril2017.htm"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000002:cck8kjan2018.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 34887,
+      "originalBytesHash": "ddfc41f1acdb9ff56c001e8008aa30519a8dc30e635e3f4fb5926f39aa0da792",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1219601/000121960118000002/cck8kjan2018.htm"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1081926,
+      "originalBytesHash": "51441918353b664e6f6600ba81b6c7102516ec1164bdca4e32699776e71c681d",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/1335258/000133525826000035/lyv-20260630xex101xnotepur.htm"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 1084669,
+      "originalBytesHash": "5a1c6cffe92806fb6ce1cb8a205394831ef3eaec8d3bddf6ee972e9968214732",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/27904/000168316820003281/delta_8k-ex1001.htm"
+    },
+    {
+      "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+      "action": "FETCH_THEN_PERSIST",
+      "reason": "Manifest locator — SEC fetch under HEADROOM_SEC_FETCH_OWNER=WS-CKF after migrate + LIVE WRITE approval",
+      "byteSize": 773453,
+      "originalBytesHash": "0432f9d4ad9820d88fbb8f8c8ccb5ca63559665b4d190736a4d8cd8b1169ab3c",
+      "archivesUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329613000045/exhibit10-1loanagrmt7182013.htm"
+    }
+  ],
+  "analysisStages": [
+    "STRUCTURAL_INDEX",
+    "DEFINITIONS",
+    "COVENANT_DISCOVERY",
+    "DEPENDENCY_MAP",
+    "AMENDMENT_RELATION",
+    "CONSUMER_EXPORT"
+  ],
+  "approvalCheckpoint": "OWNER_APPROVAL_REQUIRED_BEFORE_MIGRATE_OR_BULK_PRECEDENT_BACKFILL",
+  "blockers": [
+    "Deploy migrations 20261009013000_document_byte_objects + 20261009020000_knowledge_import_batches before durable persist",
+    "LIVE WRITE NOT AUTHORIZED — stop for owner approval before migrate/bulk precedent backfill",
+    "Network fetch requires HEADROOM_SEC_FETCH_OWNER=WS-CKF and SEC-compliant ≤10 req/s"
+  ]
+}

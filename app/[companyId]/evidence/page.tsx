@@ -39,6 +39,9 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
           <Link className="button" href={`/${companyId}/documents`}>
             Documents
           </Link>
+          <Link className="button" href="/research/corpus">
+            Research corpus
+          </Link>
         </div>
       </Card>
 
