@@ -59,7 +59,13 @@ export function CompanyOverview({
               </span>
             ) : null}
           </a>
-          <button type="button" className="home-export" disabled aria-disabled="true" title={exportChromeTitle(slots.exportState)}>
+          <button
+            type="button"
+            className="home-export"
+            disabled
+            aria-disabled="true"
+            title={exportChromeTitle(slots.exportState)}
+          >
             <ExportIcon />
             Export
           </button>

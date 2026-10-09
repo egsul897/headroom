@@ -36,6 +36,9 @@ export default async function DebtIntelligencePage({ params }: { params: Promise
           Docs {d.documentCount} · Interpreted {d.interpretedCount} · Counsel accepted/edited {d.acceptedCount}
         </div>
         <div className="button-row" style={{ marginTop: 10 }}>
+          <Link className="button button-primary" href={`/${companyId}`}>
+            Overview dashboard
+          </Link>
           <Link className="button" href={`/${companyId}/covenants`}>
             Covenant review
           </Link>
