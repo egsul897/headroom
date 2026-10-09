@@ -5,6 +5,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
+import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/runtime/input/store";
+import { loadLedgerUsagesFromPrisma } from "@/lib/contract-model/runtime/capacity/store";
 import { listCustomerDocumentIntelligence } from "./load";
 
 export type CapacityReadinessStatus =
@@ -36,13 +38,17 @@ export interface CapacityReadiness {
   permissionCount: number;
   provisionCount: number;
   hasFinancialSnapshot: boolean;
+  /** North-Star Phase 4B APPROVED snapshot count (distinct from legacy FinancialState). */
+  approvedNorthStarSnapshotCount: number;
+  /** Active (non-SUPERSEDED) Phase 4C contract ledger usages. */
+  contractLedgerActiveCount: number;
   headline: string;
   blockers: string[];
   guidance: string;
 }
 
 export async function loadCapacityReadiness(companyId: string): Promise<CapacityReadiness> {
-  const [documents, permissionCount, provisionCount, financialResolution] = await Promise.all([
+  const [documents, permissionCount, provisionCount, financialResolution, approvedSnaps, contractLedger] = await Promise.all([
     listCustomerDocumentIntelligence(companyId),
     prisma.permission.count({ where: { companyId } }),
     prisma.covenantProvision.count({ where: { companyId } }),
@@ -50,12 +56,16 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
       where: { companyId },
       selection: "latest-cohort",
     }),
+    loadApprovedSnapshotsFromPrisma(prisma, companyId).catch(() => []),
+    loadLedgerUsagesFromPrisma(prisma, companyId).catch(() => []),
   ]);
 
   const analyzedDocumentCount = documents.filter((d) => d.analysisOk).length;
   const summaryCount = documents.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
   const hasFinancialSnapshot = financialResolution.status === "UNIQUE";
   const hasExecutableModel = permissionCount > 0 || provisionCount > 0;
+  const approvedNorthStarSnapshotCount = approvedSnaps.length;
+  const contractLedgerActiveCount = contractLedger.filter((u) => u.status !== "SUPERSEDED").length;
 
   const blockers: string[] = [];
   if (documents.length === 0) blockers.push("No financing documents uploaded in this workspace.");
@@ -68,6 +78,11 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   if (!hasFinancialSnapshot) {
     blockers.push(
       "No dated FinancialState on the legacy path — ratio/grower tests and engine capacity cannot be evaluated (Phase 4B APPROVED snapshots are a separate North-Star store).",
+    );
+  }
+  if (approvedNorthStarSnapshotCount === 0) {
+    blockers.push(
+      "No APPROVED North-Star financial snapshot — approve a compliance certificate on /certificates (periodic cutoff path).",
     );
   }
 
@@ -109,6 +124,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     permissionCount,
     provisionCount,
     hasFinancialSnapshot,
+    approvedNorthStarSnapshotCount,
+    contractLedgerActiveCount,
     headline,
     blockers,
     guidance,

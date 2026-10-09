@@ -94,6 +94,26 @@ export function AskShell({
         {result.limitations && result.limitations.length > 0 && (
           <p className="home-detail">Limitations: {result.limitations.join(" · ")}</p>
         )}
+        {result.transactionWorkflow && (
+          <div className="stack" style={{ gap: 6, marginTop: 8 }}>
+            <p className="home-detail">
+              Cutoff: {result.transactionWorkflow.cutoffState ?? "—"}
+              {result.transactionWorkflow.reportingPeriodKey
+                ? ` · ${result.transactionWorkflow.reportingPeriodKey}`
+                : ""}
+              {result.transactionWorkflow.approvedSnapshotId
+                ? ` · snapshot ${result.transactionWorkflow.approvedSnapshotId}`
+                : ""}
+            </p>
+            <div className="button-row">
+              {result.transactionWorkflow.nextActions.slice(0, 4).map((a) => (
+                <Link key={a.href} className="button" href={a.href}>
+                  {a.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <form

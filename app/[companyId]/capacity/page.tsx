@@ -63,8 +63,9 @@ function ReadinessBanner({
       </div>
       <div className="row-note" style={{ marginTop: 8 }}>
         Analyzed documents: {readiness.analyzedDocumentCount} · Summaries: {readiness.summaryCount} · Permissions:{" "}
-        {readiness.permissionCount} · Provisions: {readiness.provisionCount} · Financial snapshot:{" "}
-        {readiness.hasFinancialSnapshot ? "yes" : "no"}
+        {readiness.permissionCount} · Provisions: {readiness.provisionCount} · Legacy FinancialState:{" "}
+        {readiness.hasFinancialSnapshot ? "yes" : "no"} · NS-4 APPROVED: {readiness.approvedNorthStarSnapshotCount} ·
+        4C ledger active: {readiness.contractLedgerActiveCount} · Authority: {readiness.capacityAuthority}
       </div>
       {readiness.blockers.map((b, i) => (
         <div key={i} className="row-note">
@@ -77,6 +78,9 @@ function ReadinessBanner({
       <div className="button-row" style={{ marginTop: 12 }}>
         <Link className="button" href={`/${companyId}/covenants`}>
           Covenant review
+        </Link>
+        <Link className="button" href={`/${companyId}/certificates`}>
+          Certificates
         </Link>
         <Link className="button" href={`/${companyId}/ask`}>
           Ask Headroom

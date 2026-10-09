@@ -76,6 +76,9 @@ export default async function DebtIntelligencePage({
           <Link className="button" href={`/${companyId}/simulate`}>
             Simulate
           </Link>
+          <Link className="button" href={`/${companyId}/certificates`}>
+            Certificates
+          </Link>
           <Link className="button" href={`/${companyId}/capacity`}>
             Capacity
           </Link>
