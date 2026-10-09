@@ -1,27 +1,41 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
-import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
-import { buildSolverContext } from "@/lib/dashboard-service";
-import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
+import { UnifiedSimulateClient } from "@/components/product/UnifiedSimulateClient";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
-import { SimulateClient } from "./SimulateClient";
+import {
+  loadVerifiedCustomerState,
+  structuredTransactionFromSearchParams,
+  type StructuredTransactionKind,
+} from "@/lib/product/unified-customer";
 
 export const metadata = { title: "Headroom — Simulate" };
+export const dynamic = "force-dynamic";
 
 /**
- * Simulate — runs the shared covenant engine. A simulation is not a legal approval.
- * Without an executable rulebook and financial snapshot, expect NOT DETERMINABLE —
- * never a fabricated pass.
+ * Simulate — runs the shared covenant engine via /api/product/simulate.
+ * A simulation is not a legal approval. Amount changes clear stale evidence.
  */
-export default async function SimulatePage({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function SimulatePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { companyId } = await params;
-  const asOfDate = new Date();
-  const [readiness, data, documents, definedTermsByProvision, solverContext] = await Promise.all([
+  const sp = (await searchParams) ?? {};
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(sp)) {
+    if (typeof v === "string") qs.set(k, v);
+    else if (Array.isArray(v) && v[0]) qs.set(k, v[0]);
+  }
+  const handoff = structuredTransactionFromSearchParams(qs);
+
+  const [readiness, state] = await Promise.all([
     loadCapacityReadiness(companyId),
-    loadCovenantDataOrEmpty(companyId, asOfDate),
-    getDocuments(companyId),
-    getDefinedTermsByProvision(companyId),
-    buildSolverContext(companyId, asOfDate),
+    loadVerifiedCustomerState(companyId, {
+      evaluationDate: handoff?.evaluationDate ?? null,
+    }),
   ]);
 
   return (
@@ -35,6 +49,12 @@ export default async function SimulatePage({ params }: { params: Promise<{ compa
             <Chip tone={readiness.canEvaluateExecutableCapacity ? "pass" : "tight"}>{readiness.status}</Chip>
           </div>
         </div>
+        <div className="row">
+          <div className="row-label">Verified state</div>
+          <div className="row-value mono" style={{ fontSize: 12 }}>
+            {state.stateFingerprint}
+          </div>
+        </div>
         {!readiness.canEvaluateExecutableCapacity && (
           <>
             {readiness.blockers.map((b, i) => (
@@ -43,37 +63,37 @@ export default async function SimulatePage({ params }: { params: Promise<{ compa
               </div>
             ))}
             <div className="row-note" style={{ marginTop: 8 }}>
-              The form below still runs the <strong>real</strong> shared simulation engine. Without capacity formulas and
-              an approved financial snapshot, expect <Chip tone="tight">NOT DETERMINABLE</Chip> / unmet input results —
-              not a fabricated pass. Simulations never modify the live transaction ledger.
+              The form below still runs the <strong>real</strong> shared simulation engine via the product API.
+              Without capacity formulas and an approved financial snapshot, expect{" "}
+              <Chip tone="tight">NOT DETERMINABLE</Chip> / unmet input results — not a fabricated pass.
+              Simulations never modify the live transaction ledger.
             </div>
           </>
         )}
         <div className="button-row" style={{ marginTop: 12 }}>
-          <Link className="button" href={`/${companyId}/covenants`}>
-            Covenant review
-          </Link>
-          <Link className="button" href={`/${companyId}/capacity`}>
-            Capacity status
+          <Link className="button" href={`/${companyId}/position`}>
+            Position
           </Link>
           <Link className="button" href={`/${companyId}/ask`}>
             Ask Headroom
           </Link>
+          <Link className="button" href={`/${companyId}/capacity`}>
+            Capacity status
+          </Link>
         </div>
       </Card>
 
-      <SimulateClient
+      <UnifiedSimulateClient
         companyId={companyId}
-        data={data}
-        documents={documents}
-        definedTermsByProvision={definedTermsByProvision}
-        solverContext={{
-          ...solverContext,
-          activationState: {
-            ...solverContext.activationState,
-            unknownKeysArray: [...solverContext.activationState.unknownKeys],
-          },
-        }}
+        stateFingerprint={state.stateFingerprint}
+        asOfDateIso={state.asOfDateIso}
+        initialKind={(handoff?.kind as StructuredTransactionKind | undefined) ?? undefined}
+        initialAmount={handoff?.amountMillions ?? undefined}
+        initialSecured={handoff?.secured ?? null}
+        initialDate={handoff?.evaluationDate ?? state.asOfDateIso}
+        initialCurrency={handoff?.currency ?? "USD"}
+        handoffId={handoff?.handoffId ?? null}
+        handoffQuestion={handoff?.rawQuestion ?? null}
       />
     </div>
   );

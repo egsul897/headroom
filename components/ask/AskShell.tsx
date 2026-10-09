@@ -3,11 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
+import type { StructuredTransactionKind } from "@/lib/product/unified-customer/client-safe";
 
 type AskMode = "corpus" | "transaction";
 
+const EXPLORATION_HINTS = [
+  "Can we issue $100 million of secured notes on 2026-08-01?",
+  "Can we draw $50 million on the revolver on 2026-08-01?",
+  "Can we pay a $25 million dividend on 2026-08-01?",
+  "Can we make a $75 million investment on 2026-08-01?",
+  "Can we finance a $150 million acquisition on 2026-08-01?",
+  "Can we refinance $200 million of secured debt on 2026-08-01?",
+  "Can we issue hybrid / convertible preferred securities on 2026-08-01?",
+];
+
 /**
- * Ask page — corpus retrieval (/api/ask) or structured transaction analysis (/api/ask/transaction).
+ * Ask page — corpus retrieval (/api/ask) or structured transaction analysis
+ * (/api/product/ask) with Simulate handoff.
  */
 export function AskShell({
   companyId,
@@ -20,6 +32,8 @@ export function AskShell({
   const [mode, setMode] = useState<AskMode>("transaction");
   const [result, setResult] = useState<AskShellResult>(initial);
   const [txnJson, setTxnJson] = useState<string | null>(null);
+  const [simulateHref, setSimulateHref] = useState<string | null>(null);
+  const [structuredSummary, setStructuredSummary] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   return (
@@ -118,6 +132,18 @@ export function AskShell({
             </div>
           </div>
         )}
+        {simulateHref && (
+          <div className="button-row" style={{ marginTop: 12 }}>
+            <Link className="button button-primary" href={simulateHref} data-testid="ask-open-simulate">
+              Open in Simulate
+            </Link>
+            {structuredSummary && (
+              <span className="home-detail" style={{ fontSize: 12 }}>
+                {structuredSummary}
+              </span>
+            )}
+          </div>
+        )}
       </section>
 
       {txnJson && (
@@ -127,24 +153,55 @@ export function AskShell({
         </section>
       )}
 
+      <section className="home-card" style={{ marginTop: 12 }}>
+        <p className="home-eyebrow">Natural-language exploration starters</p>
+        <div className="button-row" style={{ flexWrap: "wrap", marginTop: 8 }}>
+          {EXPLORATION_HINTS.map((hint) => (
+            <button
+              key={hint}
+              type="button"
+              className="button"
+              onClick={() => {
+                setMode("transaction");
+                setQuestion(hint);
+              }}
+            >
+              {hint.length > 56 ? `${hint.slice(0, 56)}…` : hint}
+            </button>
+          ))}
+        </div>
+      </section>
+
       <form
         className="home-card ask-form"
         onSubmit={async (event) => {
           event.preventDefault();
           setPending(true);
           setTxnJson(null);
+          setSimulateHref(null);
+          setStructuredSummary(null);
           try {
             if (mode === "transaction") {
-              const res = await fetch("/api/ask/transaction", {
+              const res = await fetch("/api/product/ask", {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify({ companyId, question, confirmed: true }),
               });
               const data = (await res.json()) as {
-                answer?: { kind: string; headline: string; detail: string; limitations?: string[] };
-                draft?: { missingConfirmations?: string[] };
-                authoritative?: { status: string; authority: string; missingInputs?: string[] };
-                pathEnumeration?: { authority: string; note: string };
+                analysis?: {
+                  answer?: { kind: string; headline: string; detail: string; limitations?: string[] };
+                  draft?: { missingConfirmations?: string[]; kind?: string; amountMillions?: number | null };
+                  authoritative?: { status: string; authority: string; missingInputs?: string[] };
+                  pathEnumeration?: { authority: string; note: string };
+                };
+                structuredTransaction?: {
+                  kind: StructuredTransactionKind;
+                  amountMillions: number | null;
+                  secured: boolean | null;
+                  evaluationDate: string | null;
+                  handoffId: string;
+                };
+                simulateHref?: string;
                 error?: string;
               };
               if (data.error) {
@@ -155,21 +212,31 @@ export function AskShell({
                   detail: data.error,
                 });
               } else {
+                const answer = data.analysis?.answer;
                 setTxnJson(JSON.stringify(data, null, 2));
+                if (data.simulateHref) setSimulateHref(data.simulateHref);
+                if (data.structuredTransaction) {
+                  const st = data.structuredTransaction;
+                  setStructuredSummary(
+                    `${st.kind}${st.amountMillions != null ? ` · $${st.amountMillions}M` : ""}${
+                      st.evaluationDate ? ` · ${st.evaluationDate}` : ""
+                    } · ${st.handoffId}`,
+                  );
+                }
                 setResult({
                   kind:
-                    data.answer?.kind === "certified"
+                    answer?.kind === "certified"
                       ? "answered"
-                      : data.answer?.kind === "needs_confirmation" || data.answer?.kind === "insufficient_evidence"
+                      : answer?.kind === "needs_confirmation" || answer?.kind === "insufficient_evidence"
                         ? "insufficient_evidence"
                         : "answered",
                   caseId: "TRANSACTION_READINESS",
-                  headline: data.answer?.headline ?? "Transaction analysis",
-                  detail: data.answer?.detail ?? "",
-                  limitations: data.answer?.limitations,
+                  headline: answer?.headline ?? "Transaction analysis",
+                  detail: answer?.detail ?? "",
+                  limitations: answer?.limitations,
                   unresolved: [
-                    ...(data.draft?.missingConfirmations ?? []),
-                    ...(data.authoritative?.missingInputs ?? []),
+                    ...(data.analysis?.draft?.missingConfirmations ?? []),
+                    ...(data.analysis?.authoritative?.missingInputs ?? []),
                   ],
                 });
               }
@@ -223,11 +290,13 @@ export function AskShell({
           {pending ? "Working…" : mode === "transaction" ? "Analyze transaction" : "Submit question"}
         </button>
         <p className="home-detail" style={{ marginTop: 8 }}>
-          Transaction mode uses APPROVED NS-4 snapshots, cutoff resolution, and attributed ledger — never invents
-          capacity. Certified 4E enumeration requires a VerifiedExecutionPackage.{" "}
-          <Link href={`/${companyId}/certificates`}>Certificates</Link>
+          Transaction mode uses the unified product Ask path — structured handoff to Simulate, APPROVED NS-4
+          readiness, and shared verified state. Certified 4E enumeration requires a VerifiedExecutionPackage.{" "}
+          <Link href={`/${companyId}/simulate`}>Simulate</Link>
           {" · "}
-          <Link href={`/${companyId}/documents`}>Documents</Link>
+          <Link href={`/${companyId}/position`}>Position</Link>
+          {" · "}
+          <Link href={`/${companyId}/certificates`}>Certificates</Link>
           {" · "}
           <Link href="/research/ask">Research corpus Ask</Link>
         </p>
