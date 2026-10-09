@@ -62,4 +62,60 @@ describe("enumerateCertifiedPaths", () => {
     expect(r.incompleteReasons.some((x) => x.includes("NO_MATCHING_PRIMARY"))).toBe(true);
     expect(["NOT_CERTIFIED_4E", "INCOMPLETE_PACKAGE"]).toContain(r.authority);
   });
+
+  it("refuses SECURED_DEBT CANDIDATE when the VEP has debt permission but no certified lien companion", () => {
+    const exercise = DEMO_EXERCISES.find((e) => e.id === "secured-borrowing-100m");
+    expect(exercise).toBeTruthy();
+    const full = buildFixtureVerifiedPackage(exercise!);
+    expect("blocked" in full).toBe(false);
+    if ("blocked" in full) return;
+
+    const debtOnly = {
+      ...full,
+      rules: full.rules.filter(
+        (r) => r.action === "INCUR_DEBT" || r.action === "INCUR_SECURED_DEBT" || r.action === "GUARANTEE_DEBT",
+      ),
+    };
+    expect(debtOnly.rules.some((r) => r.action === "CREATE_LIEN" || r.action === "GRANT_COLLATERAL")).toBe(false);
+    expect(debtOnly.rules.length).toBeGreaterThan(0);
+
+    const secured = enumerateCertifiedPaths({
+      verifiedPackage: debtOnly,
+      transactionKind: "SECURED_DEBT",
+      secured: true,
+    });
+    expect(secured.incompleteReasons).toContain("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT");
+    expect(secured.authority).toBe("INCOMPLETE_PACKAGE");
+    expect(secured.paths.every((p) => p.status !== "CANDIDATE")).toBe(true);
+
+    const unsecured = enumerateCertifiedPaths({
+      verifiedPackage: debtOnly,
+      transactionKind: "UNSECURED_DEBT",
+      secured: false,
+    });
+    expect(unsecured.authority).toBe("CERTIFIED_4E");
+    expect(unsecured.paths.some((p) => p.status === "CANDIDATE")).toBe(true);
+  });
+
+  it("does not claim CERTIFIED_4E for SECURED_DEBT when only lien rules are certified (pkg-i shape)", () => {
+    const exercise = DEMO_EXERCISES.find((e) => e.id === "secured-borrowing-100m");
+    const full = buildFixtureVerifiedPackage(exercise!);
+    if ("blocked" in full) return;
+
+    const lienOnly = {
+      ...full,
+      rules: full.rules.filter((r) => r.action === "CREATE_LIEN" || r.action === "GRANT_COLLATERAL"),
+    };
+    expect(lienOnly.rules.length).toBeGreaterThan(0);
+
+    const secured = enumerateCertifiedPaths({
+      verifiedPackage: lienOnly,
+      transactionKind: "SECURED_DEBT",
+      secured: true,
+    });
+    expect(secured.incompleteReasons).toContain("NO_MATCHING_PRIMARY_RULES_FOR_SECURED_DEBT");
+    expect(secured.authority).toBe("INCOMPLETE_PACKAGE");
+    // Lien companions are not surfaced as standalone secured grants without debt primary.
+    expect(secured.paths).toEqual([]);
+  });
 });

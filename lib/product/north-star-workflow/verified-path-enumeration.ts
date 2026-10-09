@@ -235,6 +235,17 @@ export function enumerateCertifiedPaths(args: {
     incompleteReasons.push(`NO_MATCHING_PRIMARY_RULES_FOR_${kind}`);
   }
 
+  // Secured debt / acquisitions require independent lien authority. A debt-only VEP that
+  // never certified a CREATE_LIEN / GRANT_COLLATERAL companion cannot complete secured
+  // enumeration — treating the debt basket alone as a CANDIDATE secured path would be a
+  // false permission (Stage D / pkg-i pattern).
+  const securedRequiresLienCompanion = kind === "SECURED_DEBT" || kind === "ACQUISITION";
+  const missingLienCompanion =
+    securedRequiresLienCompanion && primaryRules.length > 0 && companionRules.length === 0;
+  if (missingLienCompanion) {
+    incompleteReasons.push("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT");
+  }
+
   const companionSummaries = companionRules.map((r) => ({
     ruleId: r.ruleId,
     sourceSectionRef: r.sourceSectionRef,
@@ -259,7 +270,7 @@ export function enumerateCertifiedPaths(args: {
     const crossGate =
       rule.conditions.some((c) => (c.referencesRuleTargets?.length ?? 0) > 0) ||
       (rule.sourceDependencies ?? []).some((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY");
-    const pathStatus: EnumeratedPathStatus =
+    let pathStatus: EnumeratedPathStatus =
       status !== "CANDIDATE"
         ? status
         : crossGate
@@ -269,6 +280,10 @@ export function enumerateCertifiedPaths(args: {
             : "UNSUPPORTED";
     if (crossGate && status === "CANDIDATE") {
       unsupportedReasons.push(`CROSS_RULE_GATE_NOT_EXECUTABLE:${rule.ruleId}`);
+    }
+    if (missingLienCompanion && pathStatus === "CANDIDATE") {
+      pathStatus = "UNSUPPORTED";
+      unsupportedReasons.push(`SECURED_PATH_REQUIRES_LIEN_COMPANION:${rule.ruleId}`);
     }
 
     return {
@@ -290,16 +305,19 @@ export function enumerateCertifiedPaths(args: {
       sharedCapacityInteractions: sharedInteractionsFor(rule, shared),
       companionRestrictions: companionSummaries,
       note:
-        pathStatus === "CANDIDATE"
-          ? "Neutral candidate path from verified IR. Not selected; stacking not assumed."
-          : pathStatus === "UNSUPPORTED"
-            ? "Path enumerated but not executable under current certified runtime (cross-rule gate or insufficient representation)."
-            : "Path enumerated with incomplete or review-required verification — not an available grant.",
+        missingLienCompanion && pathStatus === "UNSUPPORTED"
+          ? "Secured/acquisition path refused: package has no certified CREATE_LIEN/GRANT_COLLATERAL companion. Debt permission alone is not secured authority."
+          : pathStatus === "CANDIDATE"
+            ? "Neutral candidate path from verified IR. Not selected; stacking not assumed."
+            : pathStatus === "UNSUPPORTED"
+              ? "Path enumerated but not executable under current certified runtime (cross-rule gate or insufficient representation)."
+              : "Path enumerated with incomplete or review-required verification — not an available grant.",
     };
   });
 
-  // Also surface companion-only restrictions when primary debt paths exist (lien side for secured debt).
-  if (kind === "SECURED_DEBT" || kind === "ACQUISITION") {
+  // Surface lien companions only when primary debt paths exist. Lien-only packages must not
+  // claim CERTIFIED_4E for SECURED_DEBT — secured authority is debt ∩ lien.
+  if (securedRequiresLienCompanion && primaryRules.length > 0) {
     for (const lien of companionRules) {
       if (paths.some((p) => p.ruleId === lien.ruleId)) continue;
       const status = unitVerificationStatus(pkg, lien.ruleId);
@@ -326,10 +344,17 @@ export function enumerateCertifiedPaths(args: {
     }
   }
 
+  const materialIncomplete = incompleteReasons.some(
+    (r) =>
+      r.startsWith("INCOMPLETE_VERIFICATION") ||
+      r === "NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT" ||
+      r.startsWith("NO_MATCHING_PRIMARY_RULES_FOR_"),
+  );
+
   const allVerified =
     pkg.verifications.length > 0 &&
     paths.every((p) => p.status === "CANDIDATE" || p.status === "UNSUPPORTED") &&
-    incompleteReasons.filter((r) => r.startsWith("INCOMPLETE_VERIFICATION")).length === 0;
+    !materialIncomplete;
 
   const authority: CertifiedPathAuthority =
     paths.length === 0

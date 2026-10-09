@@ -1,0 +1,26 @@
+{
+  "schema": "stage-d-pkgi-phase4e.v1",
+  "paidProvidersCalled": false,
+  "packageId": "pkg-i-secured-debt-lien",
+  "results": [
+    {
+      "transactionKind": "UNSECURED_DEBT",
+      "authority": "INCOMPLETE_PACKAGE",
+      "incompleteReasons": [
+        "NO_MATCHING_PRIMARY_RULES_FOR_UNSECURED_DEBT"
+      ],
+      "unsupportedReasons": [],
+      "paths": []
+    },
+    {
+      "transactionKind": "SECURED_DEBT",
+      "authority": "INCOMPLETE_PACKAGE",
+      "incompleteReasons": [
+        "NO_MATCHING_PRIMARY_RULES_FOR_SECURED_DEBT"
+      ],
+      "unsupportedReasons": [],
+      "paths": []
+    }
+  ],
+  "note": "Only §7.02 lien candidates CERTIFY offline today. SECURED_DEBT must stay INCOMPLETE_PACKAGE until a CERTIFIED debt primary (e.g. 7.01(b)) is in the VEP."
+}

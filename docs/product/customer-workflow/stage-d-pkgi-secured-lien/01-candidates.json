@@ -1,0 +1,60 @@
+{
+  "schema": "stage-d-pkgi-candidates.v1",
+  "paidProvidersCalled": false,
+  "packageId": "pkg-i-secured-debt-lien",
+  "candidateRows": [
+    {
+      "sourceSectionRef": "7.01(b)",
+      "action": "INCUR_DEBT",
+      "sufficiency": "COMPLETE",
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "UNIT_SUFFICIENCY_INCOMPLETE"
+      ]
+    },
+    {
+      "sourceSectionRef": "7.02",
+      "action": "CREATE_LIEN",
+      "sufficiency": "COMPLETE",
+      "certification": "CERTIFIED",
+      "blockers": []
+    },
+    {
+      "sourceSectionRef": "7.04",
+      "action": null,
+      "sufficiency": "PARTIAL",
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "UNIT_SUFFICIENCY_INCOMPLETE"
+      ]
+    },
+    {
+      "sourceSectionRef": "9.15",
+      "action": "INCUR_DEBT",
+      "sufficiency": "COMPLETE",
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "VERIFICATION_NOT_CLEAN"
+      ]
+    },
+    {
+      "sourceSectionRef": null,
+      "action": null,
+      "sufficiency": null,
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "SUPPORT_UNACCEPTABLE",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "VERIFICATION_NOT_CLEAN"
+      ]
+    }
+  ],
+  "certifiedCount": 1
+}
