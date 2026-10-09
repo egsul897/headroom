@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 4 |
 | Starting SHA | `bae24ced33fdd6963d0615265a1e67cb181233e8` (`origin/main`) |
-| Ending SHA | `3f9d69ad049fe7c92626d8cb18c0c785ce368b04` |
+| Ending SHA | `8e72ad0d488c0d419f25475da2e51b27f6adcd02` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
@@ -77,7 +77,7 @@ Customer-grade paths: **0**.
 
 | Item | URL |
 |---|---|
-| This cycle | *(set when opened)* |
+| This cycle | https://github.com/egsul897/headroom/pull/222 |
 
 ## Recommended next cycle
 
