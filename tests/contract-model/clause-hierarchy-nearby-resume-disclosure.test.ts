@@ -3,6 +3,7 @@
  * Real committed fixtures, structure stage only, zero paid calls. These are regression pins, not
  * certification evidence: each asserts that an interior (x)/(y)[/(z)] proviso or exclusion run stays
  * inside the owning clause's text and that no fabricated structural child is minted for it.
+ * (Path touch: re-trigger canonical-compiler after tip typecheck unblock outside this glob.)
  */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
