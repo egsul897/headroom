@@ -4,22 +4,33 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
-import { AskIcon, HomeIcon, OnboardingIcon, ToolsIcon } from "@/components/home/icons";
+import {
+  AskIcon,
+  CovenantsIcon,
+  DocumentsIcon,
+  EvidenceIcon,
+  HomeIcon,
+  LedgerIcon,
+  OnboardingIcon,
+  PositionIcon,
+  SimulateIcon,
+} from "@/components/home/icons";
 import { companyNavItems, isCompanyNavItemActive, type CompanyNavKey } from "@/lib/home/nav";
 
 const ICONS: Record<CompanyNavKey, () => ReactNode> = {
   home: HomeIcon,
+  documents: DocumentsIcon,
+  covenants: CovenantsIcon,
+  position: PositionIcon,
+  ledger: LedgerIcon,
+  simulate: SimulateIcon,
+  evidence: EvidenceIcon,
   ask: AskIcon,
-  tools: ToolsIcon,
   onboarding: OnboardingIcon,
 };
 
 /**
- * Company shell navigation for Chunk A′.
- * Home is primary. Ask is the secondary interrogation route.
- * Deal setup & tools is the door to legacy Dashboard, Simulate, Feeds, Docs, and Ledger.
- * Reports and Settings are omitted — they are not real pages.
- * Onboarding stays only while that company still has setup work.
+ * Institutional company navigation for the Headroom product workspace.
  */
 export function CompanyNav({ companyId, onboardingStatus }: { companyId: string; onboardingStatus: OnboardingStatus }) {
   const pathname = usePathname() ?? "";

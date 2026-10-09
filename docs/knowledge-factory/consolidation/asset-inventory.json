@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "knowledge-factory.asset-inventory.v1",
+  "generatedAt": "2026-10-09T01:18:13.816Z",
+  "families": [
+    {
+      "family": "Canonical Knowledge Factory (code + export)",
+      "authoritativePaths": [
+        "lib/knowledge-factory/**",
+        "docs/knowledge-factory/export/v1/**",
+        "docs/knowledge-factory/preservation/**"
+      ],
+      "format": "TypeScript + consumer-export.v1 JSON",
+      "sourceIdentity": "sourceId edgar:{accession}:{filename} | fixture:*",
+      "provenance": "sec-edgar / FIXTURE_INTERNAL",
+      "verificationStatus": "DISCOVERED_CANDIDATE / STRUCTURALLY_INDEXED; durabilityClaim NONE",
+      "approximateVolume": "11 files / 28.48 MiB",
+      "originalBytesPresent": false,
+      "availability": "METADATA_ONLY",
+      "notes": "125 sources in export; local corpus bytes absent"
+    },
+    {
+      "family": "Local KF corpus bytes",
+      "authoritativePaths": [
+        ".local-knowledge-corpus/**"
+      ],
+      "format": "content-addressed files",
+      "sourceIdentity": "sha256 path layout",
+      "provenance": "session-local",
+      "verificationStatus": "n/a",
+      "approximateVolume": "0 files / 0.00 MiB",
+      "originalBytesPresent": false,
+      "availability": "UNAVAILABLE",
+      "notes": "gitignored; empty in this workspace"
+    },
+    {
+      "family": "Committed authentic original HTML",
+      "authoritativePaths": [
+        "tests/fixtures/unseen-packages/**/raw-html|raw-source|raw",
+        "docs/covenant-basket-capacity-formula-library/phase-2/edgar-acquisitions/**/source.html"
+      ],
+      "format": "HTML",
+      "sourceIdentity": "edgar:… or research:cbcfl:… or fixture:…",
+      "provenance": "SEC EDGAR fixtures / research acquisitions",
+      "verificationStatus": "SOURCE_ONLY (fixture/research labels)",
+      "approximateVolume": "29 files / 35.58 MiB",
+      "originalBytesPresent": true,
+      "availability": "READY",
+      "notes": "Primary live-backfill candidates after approval"
+    },
+    {
+      "family": "Definition Encyclopedia",
+      "authoritativePaths": [
+        "docs/definition-encyclopedia/**"
+      ],
+      "format": "JSON/JSONL",
+      "sourceIdentity": "mixed edgar: + fixture slugs",
+      "provenance": "SOURCE_ONLY",
+      "verificationStatus": "SOURCE_ONLY / TEXT_OBSERVATION_ONLY",
+      "approximateVolume": "24 files / 56.62 MiB",
+      "originalBytesPresent": false,
+      "availability": "READY",
+      "notes": "KF consumer adapter present; do not promote to CERTIFIED"
+    },
+    {
+      "family": "Covenant Dependency Atlas",
+      "authoritativePaths": [
+        "docs/covenant-dependency-atlas/**",
+        ".local-dependency-atlas/**"
+      ],
+      "format": "JSON graphs",
+      "sourceIdentity": "package keys + edgar: via CKF import",
+      "provenance": "offline / CKF demo",
+      "verificationStatus": "legalSemanticVerification NOT_PERFORMED",
+      "approximateVolume": "39 files / 0.44 MiB",
+      "originalBytesPresent": false,
+      "availability": "ADAPTER_NEEDED",
+      "notes": ".local-dependency-atlas absent; docs phase packs RESEARCH_ONLY at scale"
+    },
+    {
+      "family": "Basket Formula Library",
+      "authoritativePaths": [
+        "docs/covenant-basket-capacity-formula-library/**"
+      ],
+      "format": "JSON/JSONL + HTML acquisitions",
+      "sourceIdentity": "instrument package slugs + EDGAR docIds",
+      "provenance": "SOURCE_SUPPORTED_HYPOTHESIS",
+      "verificationStatus": "executable=0 verified=0",
+      "approximateVolume": "100 files / 79.97 MiB",
+      "originalBytesPresent": true,
+      "availability": "ADAPTER_NEEDED",
+      "notes": "HTML acquisitions importable as SOURCE_ONLY bytes; formulas stay non-executable"
+    },
+    {
+      "family": "Amendment-chain research",
+      "authoritativePaths": [
+        "docs/amendment-chain-research/**"
+      ],
+      "format": "JSON",
+      "sourceIdentity": "chain IDs / package paths",
+      "provenance": "PENDING_INDEPENDENT_REVIEW",
+      "verificationStatus": "PENDING_INDEPENDENT_REVIEW",
+      "approximateVolume": "66 files / 0.28 MiB",
+      "originalBytesPresent": false,
+      "availability": "ADAPTER_NEEDED",
+      "notes": "Almost no original HTML committed"
+    },
+    {
+      "family": "Precedent comparison",
+      "authoritativePaths": [
+        "docs/precedent-comparison/**",
+        "lib/precedent-comparison/**"
+      ],
+      "format": "JSON + TS adapters",
+      "sourceIdentity": "public provision excerpts",
+      "provenance": "SOURCE_ONLY",
+      "verificationStatus": "epistemic standings; APPROVED_PRECEDENT gated",
+      "approximateVolume": "8 files / 0.09 MiB",
+      "originalBytesPresent": false,
+      "availability": "RESEARCH_ONLY",
+      "notes": "Explicitly zero Prisma migrations by design"
+    },
+    {
+      "family": "Rare / novel drafting",
+      "authoritativePaths": [
+        "docs/rare-covenant-drafting-discovery/**"
+      ],
+      "format": "JSON",
+      "sourceIdentity": "edgar: handoff + fixture spans",
+      "provenance": "novelty-import.v1",
+      "verificationStatus": "never CERTIFIED via automation",
+      "approximateVolume": "18 files / 1.87 MiB",
+      "originalBytesPresent": false,
+      "availability": "ADAPTER_NEEDED",
+      "notes": ""
+    },
+    {
+      "family": "EDGAR historical backfill",
+      "authoritativePaths": [
+        "docs/edgar-historical-backfill/**",
+        "data/edgar-historical-backfill/**"
+      ],
+      "format": "JSON reports + ephemeral queue",
+      "sourceIdentity": "ehb:… / accession+filename",
+      "provenance": "fleet SEC contract",
+      "verificationStatus": "summary handoff only",
+      "approximateVolume": "12 files / 0.06 MiB",
+      "originalBytesPresent": false,
+      "availability": "UNAVAILABLE",
+      "notes": "data/ absent (gitignored)"
+    },
+    {
+      "family": "Golden tests / certification packs",
+      "authoritativePaths": [
+        "golden_tests_v1_export.csv",
+        "prisma/seed.ts",
+        "docs/phase-3f1-6-final-foundation-certification/**"
+      ],
+      "format": "CSV + Prisma GoldenTest + JSON packs",
+      "sourceIdentity": "coherent:qNN (not KF sourceId)",
+      "provenance": "company-scoped",
+      "verificationStatus": "export UNVERIFIED; foundation cert FAILED",
+      "approximateVolume": "32 files / 0.34 MiB",
+      "originalBytesPresent": false,
+      "availability": "READY",
+      "notes": "Do not weaken frozen certification evidence"
+    },
+    {
+      "family": "Compiler IR / evidence dumps",
+      "authoritativePaths": [
+        "tests/fixtures/ir-examples/**",
+        "docs/phase-3-live-validation/**",
+        "docs/phase-3-conmed-population-verified/**"
+      ],
+      "format": "JSON/MD evidence trees",
+      "sourceIdentity": "package/document fixtures",
+      "provenance": "pipeline runs",
+      "verificationStatus": "run evidence ≠ KnowledgeRepresentationLevel CERTIFIED",
+      "approximateVolume": "large evidence trees under docs/",
+      "originalBytesPresent": false,
+      "availability": "RESEARCH_ONLY",
+      "notes": "Not KF consumer-export families"
+    }
+  ],
+  "originalByteSummary": {
+    "availableFiles": 29,
+    "totalBytes": 37306833,
+    "gibraltarOk": true
+  },
+  "unavailable": [
+    "Local KF corpus bytes: gitignored; empty in this workspace",
+    "EDGAR historical backfill: data/ absent (gitignored)"
+  ]
+}

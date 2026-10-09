@@ -110,20 +110,30 @@ describe("routes", () => {
     expect(companyOpenHref({ id: "co", onboardingStatus: "ONBOARDING" })).toBe("/co/onboarding");
   });
 
-  it("nav is Home, Ask, and Deal setup & tools, with onboarding only while setup remains", () => {
-    expect(companyNavItems("co", "ACTIVE").map((item) => item.label)).toEqual(["Home", "Ask", "Deal setup & tools"]);
+  it("nav is institutional product IA with onboarding only while setup remains", () => {
+    expect(companyNavItems("co", "ACTIVE").map((item) => item.label)).toEqual([
+      "Overview",
+      "Documents",
+      "Covenants",
+      "Position",
+      "Ledger",
+      "Simulate",
+      "Evidence",
+      "Ask",
+    ]);
     expect(companyNavItems("co", "ONBOARDING").map((item) => item.label)).toContain("Onboarding");
-    const tools = companyNavItems("co", "ACTIVE").find((item) => item.key === "tools")!;
+    const position = companyNavItems("co", "ACTIVE").find((item) => item.key === "position")!;
     expect(isCompanyNavItemActive("/co", companyNavItems("co", "ACTIVE")[0]!, "co")).toBe(true);
-    expect(isCompanyNavItemActive("/co/dashboard", tools, "co")).toBe(true);
-    expect(isCompanyNavItemActive("/co/ask", tools, "co")).toBe(false);
+    expect(isCompanyNavItemActive("/co/dashboard", position, "co")).toBe(true);
+    expect(isCompanyNavItemActive("/co/position", position, "co")).toBe(true);
+    expect(isCompanyNavItemActive("/co/ask", position, "co")).toBe(false);
     expect(isCompanyNavItemActive("/co/dashboard", companyNavItems("co", "ACTIVE")[0]!, "co")).toBe(false);
   });
 
   it("links legacy pages from Deal setup & tools", () => {
     const html = renderToStaticMarkup(<ToolsIndex companyId="co" onboardingStatus="ACTIVE" />);
     expect(html).toContain("Deal setup &amp; tools");
-    for (const segment of ["dashboard", "simulate", "feeds", "docs", "ledger"]) {
+    for (const segment of ["dashboard", "feeds", "docs", "capacity"]) {
       expect(html).toContain(`href="/co/${segment}"`);
     }
     expect(html).not.toContain("/co/onboarding");

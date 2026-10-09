@@ -38,9 +38,11 @@ import {
   retrieveDurableKnowledgeSource,
 } from "../../lib/knowledge-factory/preservation/durable-store";
 
+/** Force Blob path so VercelBlobStorageProvider mocks exercise overwrite/orphan safety. */
 const envBoth = {
   DATABASE_URL: "postgresql://example.invalid/headroom",
   BLOB_READ_WRITE_TOKEN: "vercel_blob_test_token",
+  KF_BYTE_STORE: "vercel-blob",
 };
 
 function sha(bytes: Buffer): string {

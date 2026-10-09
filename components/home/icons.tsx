@@ -42,28 +42,24 @@ export function BuildingIcon() {
   );
 }
 
-export function HomeIcon() {
+function strokeIcon(paths: string) {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d={paths} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
+}
+
+export function HomeIcon() {
+  return strokeIcon("M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1Z");
 }
 
 export function AskIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-      <path d="M5 16.5 4 20l3.6-1.2A8 8 0 1 0 5 16.5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-    </svg>
-  );
+  return strokeIcon("M5 16.5 4 20l3.6-1.2A8 8 0 1 0 5 16.5Z");
 }
 
 export function ToolsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-      <path d="M14.5 6.5a3.5 3.5 0 0 0-4.9 4.3L4 16.4 7.6 20l5.6-5.6a3.5 3.5 0 0 0 4.3-4.9l-2.2 2.2-1.8-1.8 2-2.4Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-    </svg>
-  );
+  return strokeIcon("M14.5 6.5a3.5 3.5 0 0 0-4.9 4.3L4 16.4 7.6 20l5.6-5.6a3.5 3.5 0 0 0 4.3-4.9l-2.2 2.2-1.8-1.8 2-2.4Z");
 }
 
 export function OnboardingIcon() {
@@ -73,4 +69,28 @@ export function OnboardingIcon() {
       <path d="M9 13h6M9 16h4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
+}
+
+export function DocumentsIcon() {
+  return strokeIcon("M7 3.5h7l3 3V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1ZM9 11h6M9 15h4");
+}
+
+export function CovenantsIcon() {
+  return strokeIcon("M5 6h14M5 12h14M5 18h9M16 16l2 2 3-4");
+}
+
+export function PositionIcon() {
+  return strokeIcon("M4 18V6M4 18h16M7 14l3-4 3 2 4-6");
+}
+
+export function LedgerIcon() {
+  return strokeIcon("M5 4h14v16H5zM9 8h6M9 12h6M9 16h4");
+}
+
+export function SimulateIcon() {
+  return strokeIcon("M5 12h14M13 6l6 6-6 6");
+}
+
+export function EvidenceIcon() {
+  return strokeIcon("M8 4h6l3 3v13H8zM10 12h5M10 15h3M11 8h.01");
 }

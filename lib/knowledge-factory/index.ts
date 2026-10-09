@@ -54,6 +54,22 @@ export {
   isFalsePositiveDebtExhibit,
 } from "./corpus/financing-filter";
 
+export {
+  buildAssetInventory,
+  buildDryRunPlan,
+  scanOriginalByteCandidates,
+  verifyGibraltarFixture,
+  importOriginalByteCandidates,
+  importExportSourcesMetadataOnly,
+  LIVE_WRITE_ENV,
+  LIVE_WRITE_TOKEN,
+} from "./consolidation";
+export type {
+  AssetFamilyInventory,
+  DryRunPlanSummary,
+  OriginalByteCandidate,
+} from "./consolidation";
+
 export { probeDurability } from "./preservation/durability";
 export {
   requireDurableCredentials,

@@ -2,19 +2,22 @@
  * Durable Knowledge Factory source-byte + registry persistence.
  *
  * Reuses existing infrastructure only:
- * - Object bytes: `lib/document-storage` Vercel Blob provider (BLOB_READ_WRITE_TOKEN)
- * - Registry: Prisma `KnowledgeSource` (DATABASE_URL)
+ * - Object bytes: `lib/document-storage` DocumentStorageProvider
+ *   - Cursor-first default: Postgres BYTEA (`PostgresDocumentStorageProvider`)
+ *   - Optional: Vercel Blob when BLOB_READ_WRITE_TOKEN set and KF_BYTE_STORE=vercel-blob
+ * - Registry: Prisma `KnowledgeSource` (DATABASE_URL) — no competing corpus registry
  *
  * NEVER treats LocalFilesystemStorageProvider / .local-knowledge-corpus as durable.
- * Both Postgres and object storage are required for a durability claim.
  *
  * Safety invariants:
  * - Identical bytes re-ingest → reuse existing canonical row (no conflicting identity).
  * - Same sourceId with different bytes → reject (no silent overwrite).
- * - Blob upload without successful DB bind → best-effort orphan delete; never claim durable.
+ * - Byte upload without successful DB bind → best-effort orphan delete; never claim durable.
  */
 
 import { createHash } from "node:crypto";
+import type { DocumentStorageProvider } from "../../document-storage/types";
+import { PostgresDocumentStorageProvider } from "../../document-storage/postgres-bytea-provider";
 import { VercelBlobStorageProvider } from "../../document-storage/vercel-blob-provider";
 import { prisma } from "../../prisma";
 import type { KnowledgeSourceRecord } from "../types";
@@ -25,11 +28,14 @@ export const KF_CORPUS_STORAGE_NAMESPACE = "kf-corpus";
 
 export const DURABILITY_BLOCKED_CREDENTIALS = "DURABILITY_BLOCKED_CREDENTIALS" as const;
 
+export type DurableByteStoreProviderId = "postgres-bytea" | "vercel-blob";
+
 export interface DurableCredentialGate {
   ok: boolean;
   status: typeof DURABILITY_BLOCKED_CREDENTIALS | "DURABLE_CREDENTIALS_PRESENT";
   probe: DurabilityProbeResult;
   missing: string[];
+  byteStore: DurableByteStoreProviderId | null;
 }
 
 export interface DurableSourcePersistResult {
@@ -37,7 +43,7 @@ export interface DurableSourcePersistResult {
   originalBytesHash: string;
   byteLength: number;
   storageRef: string;
-  storageProvider: "vercel-blob";
+  storageProvider: DurableByteStoreProviderId;
   knowledgeSourceRowId: string;
   representationLevel: KnowledgeSourceRecord["representationLevel"];
   usageRightsReviewStatus: KnowledgeSourceRecord["usageRightsReviewStatus"];
@@ -56,6 +62,7 @@ export interface DurableSourceRetrieveResult {
   hashEqual: boolean;
   representationLevel: string;
   provenance: string;
+  storageProvider: DurableByteStoreProviderId | string;
 }
 
 export class DurableCredentialsError extends Error {
@@ -110,46 +117,80 @@ export class DurableRetrieveError extends Error {
   }
 }
 
+function blobToken(
+  env: NodeJS.ProcessEnv | Record<string, string | undefined>,
+): string | undefined {
+  const t =
+    env.BLOB_READ_WRITE_TOKEN?.trim() || env.VERCEL_BLOB_READ_WRITE_TOKEN?.trim();
+  return t || undefined;
+}
+
+/**
+ * Select durable byte backend.
+ * Cursor-first: Postgres BYTEA when DATABASE_URL is present, unless
+ * KF_BYTE_STORE=vercel-blob explicitly requests Blob (token required).
+ */
+export function selectDurableByteStore(
+  env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
+): DurableByteStoreProviderId | null {
+  const preferBlob = (env.KF_BYTE_STORE || "").trim().toLowerCase() === "vercel-blob";
+  const hasBlob = Boolean(blobToken(env));
+  const hasDb = Boolean(env.DATABASE_URL?.trim());
+  if (preferBlob && hasBlob) return "vercel-blob";
+  if (hasDb) return "postgres-bytea";
+  if (hasBlob) return "vercel-blob";
+  return null;
+}
+
 export function requireDurableCredentials(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
 ): DurableCredentialGate {
   const probe = probeDurability(env as NodeJS.ProcessEnv);
   const missing = [...probe.missingPrerequisites];
-  if (!probe.objectStorageTokenPresent) {
-    if (!missing.some((m) => m.includes("BLOB_READ_WRITE_TOKEN"))) {
-      missing.push("BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN");
-    }
-  }
+  const byteStore = selectDurableByteStore(env);
+
   if (!probe.databaseUrlPresent) {
     if (!missing.some((m) => m.includes("DATABASE_URL"))) {
-      missing.push("DATABASE_URL pointing at shared Postgres with KnowledgeSource migrations");
+      missing.push("DATABASE_URL pointing at shared Postgres with KnowledgeSource + document_byte_objects migrations");
     }
   }
-  const ok = probe.durable && missing.length === 0;
+  if (!byteStore) {
+    missing.push(
+      "durable byte store: DATABASE_URL (Postgres BYTEA) or BLOB_READ_WRITE_TOKEN (optional Vercel Blob)",
+    );
+  }
+
+  const ok = Boolean(probe.databaseUrlPresent && byteStore && missing.length === 0);
   return {
     ok,
     status: ok ? "DURABLE_CREDENTIALS_PRESENT" : DURABILITY_BLOCKED_CREDENTIALS,
     probe,
     missing,
+    byteStore: ok ? byteStore : null,
   };
 }
 
 function assertDurableCredentials(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
-): void {
+): DurableCredentialGate {
   const gate = requireDurableCredentials(env);
   if (!gate.ok) throw new DurableCredentialsError(gate);
+  return gate;
 }
 
-function durableBlobProvider(
+export function resolveDurableByteProvider(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
-): VercelBlobStorageProvider {
-  assertDurableCredentials(env);
-  if (!process.env.BLOB_READ_WRITE_TOKEN?.trim()) {
-    const alt = env.BLOB_READ_WRITE_TOKEN?.trim() || env.VERCEL_BLOB_READ_WRITE_TOKEN?.trim();
-    if (alt) process.env.BLOB_READ_WRITE_TOKEN = alt;
+): { provider: DocumentStorageProvider; id: DurableByteStoreProviderId } {
+  const gate = assertDurableCredentials(env);
+  const id = gate.byteStore!;
+  if (id === "vercel-blob") {
+    const token = blobToken(env);
+    if (!process.env.BLOB_READ_WRITE_TOKEN?.trim() && token) {
+      process.env.BLOB_READ_WRITE_TOKEN = token;
+    }
+    return { provider: new VercelBlobStorageProvider(), id };
   }
-  return new VercelBlobStorageProvider();
+  return { provider: new PostgresDocumentStorageProvider(), id };
 }
 
 export function hashBytesSha256(bytes: Buffer): string {
@@ -165,9 +206,11 @@ function toPersistResult(
     storageRef: string | null;
     representationLevel: KnowledgeSourceRecord["representationLevel"];
     usageRightsReviewStatus: KnowledgeSourceRecord["usageRightsReviewStatus"];
+    metadata?: unknown;
   },
   byteLength: number,
   reusedExisting: boolean,
+  storageProvider: DurableByteStoreProviderId,
 ): DurableSourcePersistResult {
   if (!row.storageRef) {
     throw new Error(`KnowledgeSource ${row.sourceId} missing storageRef after persist`);
@@ -177,7 +220,7 @@ function toPersistResult(
     originalBytesHash: row.originalBytesHash,
     byteLength: row.byteSize ?? byteLength,
     storageRef: row.storageRef,
-    storageProvider: "vercel-blob",
+    storageProvider,
     knowledgeSourceRowId: row.id,
     representationLevel: row.representationLevel,
     usageRightsReviewStatus: row.usageRightsReviewStatus,
@@ -185,8 +228,16 @@ function toPersistResult(
   };
 }
 
+function providerFromRowMetadata(metadata: unknown): DurableByteStoreProviderId | string {
+  if (metadata && typeof metadata === "object" && !Array.isArray(metadata)) {
+    const p = (metadata as Record<string, unknown>).storageProvider;
+    if (typeof p === "string") return p;
+  }
+  return "unknown";
+}
+
 /**
- * Persist original source bytes to durable object storage and bind the
+ * Persist original source bytes to durable storage and bind the
  * canonical KnowledgeSource registry row. Does not invent a parallel registry.
  */
 export async function persistDurableKnowledgeSource(params: {
@@ -196,8 +247,7 @@ export async function persistDurableKnowledgeSource(params: {
   env?: NodeJS.ProcessEnv | Record<string, string | undefined>;
 }): Promise<DurableSourcePersistResult> {
   const env = params.env ?? process.env;
-  assertDurableCredentials(env);
-  const provider = durableBlobProvider(env);
+  const { provider, id: storageProvider } = resolveDurableByteProvider(env);
 
   const expectedHash = params.source.originalBytesHash || hashBytesSha256(params.bytes);
   const actualHash = hashBytesSha256(params.bytes);
@@ -223,7 +273,12 @@ export async function persistDurableKnowledgeSource(params: {
         `sourceId=${params.source.sourceId} exists without storageRef; refusing false durability`,
       );
     }
-    return toPersistResult(bySourceId, params.bytes.length, true);
+    return toPersistResult(
+      bySourceId,
+      params.bytes.length,
+      true,
+      (providerFromRowMetadata(bySourceId.metadata) as DurableByteStoreProviderId) || storageProvider,
+    );
   }
 
   // 2) Identical bytes under another sourceId — reuse canonical row (no conflicting identity).
@@ -237,7 +292,6 @@ export async function persistDurableKnowledgeSource(params: {
         `hash=${actualHash} exists without storageRef; refusing false durability`,
       );
     }
-    // Record alias in metadata of the canonical row; do not create a second durable identity.
     const prevMeta =
       byHash.metadata && typeof byHash.metadata === "object" && !Array.isArray(byHash.metadata)
         ? (byHash.metadata as Record<string, unknown>)
@@ -254,13 +308,18 @@ export async function persistDurableKnowledgeSource(params: {
             ...prevMeta,
             aliasSourceIds: aliases,
             durablePersistence: true,
-            storageProvider: "vercel-blob",
+            storageProvider: prevMeta.storageProvider ?? storageProvider,
             corpusNamespace: KF_CORPUS_STORAGE_NAMESPACE,
           },
         },
       });
     }
-    return toPersistResult(byHash, params.bytes.length, true);
+    return toPersistResult(
+      byHash,
+      params.bytes.length,
+      true,
+      (providerFromRowMetadata(byHash.metadata) as DurableByteStoreProviderId) || storageProvider,
+    );
   }
 
   const filingDate = new Date(params.source.filingDate);
@@ -268,7 +327,7 @@ export async function persistDurableKnowledgeSource(params: {
     throw new Error(`invalid filingDate: ${params.source.filingDate}`);
   }
 
-  // 3) Upload bytes, then bind DB. On DB failure, delete orphan blob — never claim durable.
+  // 3) Store bytes, then bind DB. On DB failure, delete orphan bytes — never claim durable.
   let stored: { storageRef: string; provider: string } | null = null;
   try {
     stored = await provider.store({
@@ -314,7 +373,7 @@ export async function persistDurableKnowledgeSource(params: {
       },
     });
 
-    return toPersistResult(row, params.bytes.length, false);
+    return toPersistResult(row, params.bytes.length, false, storageProvider);
   } catch (err) {
     if (stored?.storageRef) {
       try {
@@ -336,8 +395,7 @@ export async function retrieveDurableKnowledgeSource(params: {
   env?: NodeJS.ProcessEnv | Record<string, string | undefined>;
 }): Promise<DurableSourceRetrieveResult> {
   const env = params.env ?? process.env;
-  assertDurableCredentials(env);
-  const provider = durableBlobProvider(env);
+  const { provider } = resolveDurableByteProvider(env);
 
   const row = await prisma.knowledgeSource.findUnique({ where: { sourceId: params.sourceId } });
   if (!row) {
@@ -350,9 +408,12 @@ export async function retrieveDurableKnowledgeSource(params: {
     );
   }
 
+  // Route retrieve to the provider that matches the storageRef when possible.
+  const { provider: retrieveProvider } = resolveProviderForStorageRef(row.storageRef, env, provider);
+
   let bytes: Buffer;
   try {
-    bytes = await provider.retrieve(row.storageRef);
+    bytes = await retrieveProvider.retrieve(row.storageRef);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new DurableRetrieveError(
@@ -384,7 +445,26 @@ export async function retrieveDurableKnowledgeSource(params: {
     hashEqual: true,
     representationLevel: row.representationLevel,
     provenance: row.provenance,
+    storageProvider: providerFromRowMetadata(row.metadata),
   };
+}
+
+function resolveProviderForStorageRef(
+  storageRef: string,
+  env: NodeJS.ProcessEnv | Record<string, string | undefined>,
+  fallback: DocumentStorageProvider,
+): { provider: DocumentStorageProvider } {
+  if (storageRef.startsWith("pgbytea:v1:")) {
+    return { provider: new PostgresDocumentStorageProvider() };
+  }
+  if (storageRef.startsWith("https://") || storageRef.startsWith("http://")) {
+    const token = blobToken(env);
+    if (token && !process.env.BLOB_READ_WRITE_TOKEN?.trim()) {
+      process.env.BLOB_READ_WRITE_TOKEN = token;
+    }
+    return { provider: new VercelBlobStorageProvider() };
+  }
+  return { provider: fallback };
 }
 
 export async function loadDurableSourceBytes(params: {
@@ -392,8 +472,7 @@ export async function loadDurableSourceBytes(params: {
   env?: NodeJS.ProcessEnv | Record<string, string | undefined>;
 }): Promise<{ bytes: Buffer; row: Awaited<ReturnType<typeof prisma.knowledgeSource.findUniqueOrThrow>> }> {
   const env = params.env ?? process.env;
-  assertDurableCredentials(env);
-  const provider = durableBlobProvider(env);
+  const { provider } = resolveDurableByteProvider(env);
   let row;
   try {
     row = await prisma.knowledgeSource.findUniqueOrThrow({ where: { sourceId: params.sourceId } });
@@ -403,9 +482,10 @@ export async function loadDurableSourceBytes(params: {
   if (!row.storageRef) {
     throw new DurableRetrieveError("MISSING_STORAGE_REF", `sourceId=${params.sourceId}`);
   }
+  const { provider: retrieveProvider } = resolveProviderForStorageRef(row.storageRef, env, provider);
   let bytes: Buffer;
   try {
-    bytes = await provider.retrieve(row.storageRef);
+    bytes = await retrieveProvider.retrieve(row.storageRef);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new DurableRetrieveError("OBJECT_MISSING_OR_UNAUTHORIZED", msg);
