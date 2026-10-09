@@ -14,7 +14,17 @@ export type PrecedentClauseQuery =
   | "available_amount"
   | "restricted_payment_exceptions"
   | "ratio_lien"
-  | "acquisition_financing_liens";
+  | "acquisition_financing_liens"
+  | "shared_capacity"
+  | "anti_stacking"
+  | "grower_basket"
+  | "mfn"
+  | "mandatory_prepayment"
+  | "financial_maintenance"
+  | "investment_exceptions"
+  | "asset_sales"
+  | "events_of_default"
+  | "guarantor_restrictions";
 
 const QUERY_MAP: Record<
   PrecedentClauseQuery,
@@ -59,6 +69,56 @@ const QUERY_MAP: Record<
     q: "acquisition",
     family: "LIENS",
     note: "Lien permissions potentially tied to acquisition financing.",
+  },
+  shared_capacity: {
+    q: "shared",
+    family: "SHARED_CAPACITY_PROVISIONS",
+    note: "Shared-capacity / aggregate ceiling carriers — check operative stacking separately.",
+  },
+  anti_stacking: {
+    q: "without duplication",
+    family: "SHARED_CAPACITY_PROVISIONS",
+    note: "Anti-stacking / without-duplication analogies; never copy thresholds into customer rules.",
+  },
+  grower_basket: {
+    q: "Consolidated EBITDA",
+    family: "INDEBTEDNESS",
+    note: "Grower / percentage-of-EBITDA basket carriers (definition + indebtedness families).",
+  },
+  mfn: {
+    q: "most favored",
+    family: "INCREMENTAL_DEBT_AND_FACILITIES",
+    note: "MFN / most-favored-nation incremental facility analogies.",
+  },
+  mandatory_prepayment: {
+    q: "mandatory",
+    family: "MANDATORY_PREPAYMENTS",
+    note: "Mandatory prepayment provision carriers.",
+  },
+  financial_maintenance: {
+    q: "financial covenant",
+    family: "FINANCIAL_MAINTENANCE_COVENANTS",
+    note: "Financial maintenance covenant carriers (distinct from ratio incurrence permissions).",
+  },
+  investment_exceptions: {
+    q: "investment",
+    family: "INVESTMENTS",
+    note: "Investment permission / exception carriers.",
+  },
+  asset_sales: {
+    q: "asset sale",
+    family: "ASSET_SALES",
+    note: "Asset sale covenant carriers including reinvestment / excess proceeds themes.",
+  },
+  events_of_default: {
+    q: "event of default",
+    family: "EVENTS_OF_DEFAULT",
+    note: "Events of default carriers for cross-default / acceleration comparison.",
+  },
+  guarantor_restrictions: {
+    q: "guarantor",
+    family: "GUARANTEES",
+    note: "Guarantee / guarantor restriction carriers; subsidiary eligibility remains operative-specific.",
   },
 };
 

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "intelligence-factory.progress-manifest.v1",
+  "updatedAt": "2026-10-09T22:16:00.000Z",
+  "northStar": "Accept unfamiliar financing package → source-backed rulebook → capacity → transaction answers with citations",
+  "guardrails": {
+    "neonWrites": "owner-gated only",
+    "paidInference": "not authorized this session",
+    "failClosed": "preserve",
+    "autoMerge": false
+  },
+  "workstreams": {
+    "A_neon_inventory": {
+      "status": "CYCLE_1_COMPLETE",
+      "artifacts": [
+        "docs/intelligence-factory/NEON-INTELLIGENCE-BASELINE.md",
+        "docs/intelligence-factory/neon-intelligence-baseline.raw.json",
+        "scripts/knowledge-factory/neon-intelligence-baseline.ts"
+      ],
+      "next": [
+        "Re-run baseline after any Neon corpus mutation",
+        "Track STRUCTURALLY_INDEXED growth vs DISCOVERED_CANDIDATE"
+      ]
+    },
+    "B_precedent_expansion": {
+      "status": "IN_PROGRESS",
+      "artifacts": [
+        "lib/product/legal-reasoning/precedent-clause-search.ts"
+      ],
+      "blockedOn": [
+        "Owner approval for UNKNOWN reclassify live write (13/180 dry-run ready)"
+      ],
+      "next": [
+        "Refresh retrieval index from Neon STRUCTURALLY_INDEXED sources",
+        "Deduplicate by originalBytesHash in reporting"
+      ]
+    },
+    "C_covenant_reasoning": {
+      "status": "QUEUED",
+      "next": [
+        "Offline interpretation matrix over structurally indexed sources",
+        "Challenge generation over authentic provisions with independent expected answers"
+      ]
+    },
+    "D_capacity_mathematics": {
+      "status": "QUEUED",
+      "next": [
+        "GoldenTest + synthetic input evaluation matrix",
+        "Shared-constraint currentUsage wiring behind tests"
+      ]
+    },
+    "E_customer_cold_start": {
+      "status": "QUEUED",
+      "next": [
+        "Run synthetic onboarding acceptance + unseen fixture readiness report",
+        "Map gaps to existing CapacityReadinessStatus / WorkflowStepStatus"
+      ]
+    }
+  },
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "name": "Neon intelligence baseline + retrieval honesty",
+      "startingSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+      "endingSha": null,
+      "paidInferenceCostUsd": 0,
+      "neonMutations": 0,
+      "outcomes": [
+        "Live Neon inventory quantified",
+        "Relationship edge sourceId semantics documented and coverage loader fixed",
+        "Mechanic-based precedent queries expanded"
+      ]
+    }
+  ]
+}

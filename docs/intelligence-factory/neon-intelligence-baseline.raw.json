@@ -1,0 +1,496 @@
+{
+  "schemaVersion": "neon-intelligence-baseline.v1",
+  "generatedAt": "2026-10-09T22:12:23.701Z",
+  "finishedAt": "2026-10-09T22:12:29.756Z",
+  "accessMode": "READ_ONLY",
+  "databaseHostHint": "neon (pooled) — hostname omitted from report",
+  "layers": {
+    "coreTenantAndLegacyEngine": [
+      {
+        "label": "Company",
+        "count": 16,
+        "extra": {
+          "byOnboardingStatus": {
+            "ONBOARDING": 2,
+            "ACTIVE_WITH_LIMITATIONS": 5,
+            "ACTIVE": 9
+          },
+          "byTenantKind": {
+            "CUSTOMER": 9,
+            "EVALUATION": 7
+          }
+        }
+      },
+      {
+        "label": "Document",
+        "count": 29,
+        "extra": {
+          "byType": {
+            "INDENTURE": 2,
+            "SECURITY_AGREEMENT": 1,
+            "AMENDED_AND_RESTATED_AGREEMENT": 1,
+            "CREDIT_AGREEMENT": 12,
+            "AMENDMENT": 4,
+            "OTHER": 9
+          },
+          "distinctCompanies": 15
+        }
+      },
+      {
+        "label": "DebtInstrument",
+        "count": 6
+      },
+      {
+        "label": "CovenantProvision",
+        "count": 19,
+        "extra": {
+          "byFormulaType": {
+            "LEVERAGE_RATIO_ROOM": 4,
+            "RATIO_GATE": 2,
+            "FLAT_NET_OF_DEBT": 1,
+            "GREATER_OF_FLAT_OR_PCT_EBITDA": 5,
+            "BUILDER_BASKET": 1,
+            "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 2,
+            "FLAT_AMOUNT": 2,
+            "COVERAGE_RATIO_ROOM": 2
+          },
+          "distinctDocuments": 3
+        }
+      },
+      {
+        "label": "DefinedTerm",
+        "count": 75,
+        "extra": {
+          "byStatus": {
+            "UNVERIFIED": 75
+          }
+        }
+      },
+      {
+        "label": "Permission",
+        "count": 39,
+        "extra": {
+          "byReviewStatus": {
+            "VERIFIED": 29,
+            "UNVERIFIED": 10
+          },
+          "byGrantType": {
+            "LIEN": 10,
+            "RESTRICTED_PAYMENT": 1,
+            "INVESTMENT": 1,
+            "DEBT_INCURRENCE": 27
+          },
+          "byModelingStatus": {
+            "MODELED": 39
+          },
+          "byFormulaType": {
+            "LEVERAGE_RATIO_ROOM": 6,
+            "FLAT_NET_OF_DEBT": 2,
+            "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 2,
+            "FLAT_AMOUNT": 16,
+            "GREATER_OF_FLAT_OR_PCT_EBITDA": 8,
+            "COVERAGE_RATIO_ROOM": 5
+          },
+          "distinctDocuments": 11
+        }
+      },
+      {
+        "label": "PermissionRelationship",
+        "count": 27
+      },
+      {
+        "label": "SharedCapacityConstraint",
+        "count": 3
+      },
+      {
+        "label": "SharedCapacityConstraintMember",
+        "count": 3
+      },
+      {
+        "label": "SolverCoverageDeclaration",
+        "count": 22
+      },
+      {
+        "label": "FinancialSnapshot",
+        "count": 8
+      },
+      {
+        "label": "DebtTranche",
+        "count": 4
+      },
+      {
+        "label": "LedgerEntry",
+        "count": 6,
+        "extra": {
+          "byStatus": {
+            "ACTIVE": 6
+          }
+        }
+      },
+      {
+        "label": "FinancialState",
+        "count": 8
+      },
+      {
+        "label": "Facility",
+        "count": 6
+      },
+      {
+        "label": "DebtEvent",
+        "count": 7
+      },
+      {
+        "label": "ExternalInputRecord",
+        "count": 9,
+        "extra": {
+          "byKind": {
+            "CERTIFIED_EXTERNAL_INPUT": 6,
+            "PUBLIC_FILING_RECONSTRUCTION": 3
+          },
+          "byReviewStatus": {
+            "VERIFIED": 1,
+            "UNVERIFIED": 8
+          }
+        }
+      },
+      {
+        "label": "GoldenTest",
+        "count": 48,
+        "extra": {
+          "byStatus": {
+            "VERIFIED": 48
+          },
+          "byQueryType": {
+            "DEBT_SIMULATION": 13,
+            "RP_SIMULATION": 4,
+            "DOCUMENT_CAPACITY": 5,
+            "ASSET_SALE_SIMULATION": 1,
+            "OUT_OF_SCOPE": 11,
+            "CROSS_DOCUMENT_CAPACITY": 5,
+            "PROVISION_CAPACITY": 5,
+            "LEVERAGE_METRIC": 4
+          }
+        }
+      },
+      {
+        "label": "LegalReviewRecord",
+        "count": 109,
+        "extra": {
+          "byReviewStatus": {
+            "VERIFIED": 61,
+            "UNVERIFIED": 48
+          }
+        }
+      }
+    ],
+    "extractionAndIngestion": [
+      {
+        "label": "DocumentChunk",
+        "count": 65
+      },
+      {
+        "label": "ExtractionRun",
+        "count": 18
+      },
+      {
+        "label": "ExtractionCandidate",
+        "count": 166,
+        "extra": {
+          "byReviewStatus": {
+            "REVIEW_REQUIRED": 4,
+            "REJECTED": 8,
+            "PENDING": 16,
+            "APPROVED": 138
+          },
+          "byKind": {
+            "RELATIONSHIP": 1,
+            "FINANCIAL_FACT": 63,
+            "DEFINED_TERM": 61,
+            "EXTERNAL_INPUT_REQUIREMENT": 7,
+            "PERMISSION": 20,
+            "DOCUMENT_RELATIONSHIP": 14
+          }
+        }
+      },
+      {
+        "label": "SourceArtifact",
+        "count": 17
+      },
+      {
+        "label": "IngestionJob",
+        "count": 5
+      },
+      {
+        "label": "CompanySourceConnection",
+        "count": 6
+      }
+    ],
+    "contractModelAndSemanticTruth": [
+      {
+        "label": "DocumentNode",
+        "count": 60
+      },
+      {
+        "label": "DocumentRelationshipEdge",
+        "count": 0,
+        "extra": {
+          "unresolvedOrNullTarget": 0,
+          "byType": {}
+        }
+      },
+      {
+        "label": "DefinedTermNode",
+        "count": 0,
+        "extra": {
+          "byReviewStatus": {}
+        }
+      },
+      {
+        "label": "DefinedTermDependencyEdge",
+        "count": 0
+      },
+      {
+        "label": "ContractReferenceEdge",
+        "count": 0,
+        "extra": {
+          "unresolved": 0
+        }
+      },
+      {
+        "label": "ContractRule",
+        "count": 0,
+        "extra": {
+          "byReviewStatus": {},
+          "byCovenantFamily": {},
+          "distinctSourceDocuments": 0
+        }
+      },
+      {
+        "label": "ContractRuleRelationship",
+        "count": 0
+      },
+      {
+        "label": "AmendmentEffect",
+        "count": 0
+      },
+      {
+        "label": "ContractEventObligation",
+        "count": 0
+      },
+      {
+        "label": "ContractCoverageRecord",
+        "count": 0
+      },
+      {
+        "label": "UnresolvedContractItem",
+        "count": 0,
+        "extra": {
+          "byItemType": {}
+        }
+      },
+      {
+        "label": "ContractCompilerRun",
+        "count": 0
+      },
+      {
+        "label": "AnalysisRun",
+        "count": 6,
+        "extra": {
+          "byStatus": {
+            "COMPLETED_WITH_REVIEW": 6
+          }
+        }
+      },
+      {
+        "label": "AnalysisRunIssue",
+        "count": 0
+      },
+      {
+        "label": "SemanticTruthRecord",
+        "count": 0,
+        "extra": {
+          "byTrustStatus": {},
+          "byKind": {},
+          "distinctSourceDocuments": 0,
+          "trustStatusVerified": 0
+        }
+      },
+      {
+        "label": "ClaimReviewItem",
+        "count": 48
+      },
+      {
+        "label": "ClaimReviewDecision",
+        "count": 0
+      }
+    ],
+    "knowledgeFactory": [
+      {
+        "label": "KnowledgeSource",
+        "count": 730,
+        "extra": {
+          "byUsageRights": {
+            "PUBLIC_SEC_EDGAR": 681,
+            "UNREVIEWED": 35,
+            "FIXTURE_INTERNAL": 14
+          },
+          "byDocumentClass": {
+            "INDENTURE": 58,
+            "TERM_LOAN_AGREEMENT": 12,
+            "ABL_AGREEMENT": 1,
+            "RESTATEMENT": 94,
+            "WAIVER": 1,
+            "SUPPLEMENTAL_INDENTURE": 93,
+            "UNKNOWN": 200,
+            "OTHER_DEBT_RELATED": 35,
+            "CREDIT_AGREEMENT": 135,
+            "INTERCREDITOR_AGREEMENT": 3,
+            "GUARANTEE_AGREEMENT": 3,
+            "AMENDMENT": 60,
+            "REVOLVING_CREDIT_AGREEMENT": 9,
+            "SECURITY_AGREEMENT": 26
+          },
+          "byRepresentationLevel": {
+            "STRUCTURALLY_INDEXED": 60,
+            "DISCOVERED_CANDIDATE": 670
+          },
+          "byExtractionStatus": {
+            "CANDIDATES_DISCOVERED": 730
+          },
+          "linkedToCompany": 16,
+          "withOriginalBytesHash": 730,
+          "distinctIssuers": 200
+        }
+      },
+      {
+        "label": "KnowledgeRelationshipEdge",
+        "count": 8193,
+        "extra": {
+          "byKind": {
+            "AGREEMENT_AMENDMENT": 24,
+            "AGREEMENT_RESTATEMENT": 94,
+            "INDENTURE_SUPPLEMENTAL": 75,
+            "PROVISION_DEFINITION": 1052,
+            "PROVISION_CROSS_REFERENCE": 4017,
+            "PROVISION_EXCEPTION": 1248,
+            "PROVISION_CONDITION": 1633,
+            "PROVISION_SHARED_CAPACITY": 50
+          },
+          "byEvidenceStatus": {
+            "DISCOVERED": 8193
+          },
+          "targetColumnSemantics": "logical_sourceId_not_cuid",
+          "unresolvedIfJoinedAsCuid": 8193,
+          "unresolvedVsLogicalSourceId": 0,
+          "resolvedViaLogicalSourceId": 8193
+        }
+      },
+      {
+        "label": "DocumentByteObject",
+        "count": 710
+      },
+      {
+        "label": "KnowledgeImportBatch",
+        "count": 0
+      },
+      {
+        "label": "KnowledgeCostLedgerEntry",
+        "count": 0
+      }
+    ],
+    "phase4InputsAndLedger": [
+      {
+        "label": "ContractInputSnapshot",
+        "count": 6,
+        "extra": {
+          "byStatus": {
+            "APPROVED": 6
+          }
+        }
+      },
+      {
+        "label": "ContractInputFact",
+        "count": 48
+      },
+      {
+        "label": "ContractLedgerUsage",
+        "count": 1
+      },
+      {
+        "label": "ContractLedgerUsageEvent",
+        "count": 1
+      }
+    ]
+  },
+  "knowledgeMetadata": {
+    "withV2Summaries": 669,
+    "covenantSummaryItems": 30051,
+    "withCovenantCandidatesMeta": 668,
+    "covenantCandidatesMetaSum": 40518,
+    "distinctSourceDocumentKeys": 730,
+    "emptyMetadata": 0
+  },
+  "duplicatePrevalence": {
+    "knowledgeSourcesWithHash": 730,
+    "duplicateHashGroups": 10,
+    "recordsInDuplicateHashGroups": 32,
+    "topDuplicateHashes": [
+      {
+        "hashPrefix": "77551de27aba",
+        "count": 6
+      },
+      {
+        "hashPrefix": "09c20521e6f7",
+        "count": 5
+      },
+      {
+        "hashPrefix": "bdf0184698d9",
+        "count": 4
+      },
+      {
+        "hashPrefix": "87f1ffeeddc3",
+        "count": 4
+      },
+      {
+        "hashPrefix": "e0760a3ad6ad",
+        "count": 3
+      },
+      {
+        "hashPrefix": "114409b72392",
+        "count": 2
+      },
+      {
+        "hashPrefix": "be76b638c6ff",
+        "count": 2
+      },
+      {
+        "hashPrefix": "9fe57437094d",
+        "count": 2
+      },
+      {
+        "hashPrefix": "f768df86f1a2",
+        "count": 2
+      },
+      {
+        "hashPrefix": "ea3232685366",
+        "count": 2
+      }
+    ]
+  },
+  "orphans": {
+    "knowledgeSourceOrphanCompanyId": 0,
+    "knowledgeSourceWithDocumentIdField": 34,
+    "knowledgeSourceDocumentIdResolvesToDocument": 16,
+    "documentByteObjectsUnreferencedByKnowledgeSourceHash": 2,
+    "covenantProvisionOrphanDocument": 0,
+    "permissionOrphanDocument": 0
+  },
+  "customerFacing": {
+    "companiesWithPermissions": 9,
+    "companiesWithCovenantProvisions": 2,
+    "companiesWithFinancialSnapshots": 8,
+    "companiesWithLedgerEntries": 1,
+    "companiesWithGoldenTests": 2,
+    "companiesWithSemanticTruth": 0
+  }
+}

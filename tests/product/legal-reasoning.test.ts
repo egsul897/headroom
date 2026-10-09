@@ -265,6 +265,29 @@ describe("benchmarks + precedent clause search", () => {
       expect(h).not.toHaveProperty("marketFrequency");
     }
   });
+
+  it("exposes mechanic-based precedent queries beyond isolated wording", () => {
+    const queries = listPrecedentClauseQueries();
+    for (const q of [
+      "shared_capacity",
+      "anti_stacking",
+      "grower_basket",
+      "mfn",
+      "mandatory_prepayment",
+      "financial_maintenance",
+      "investment_exceptions",
+      "asset_sales",
+      "events_of_default",
+      "guarantor_restrictions",
+    ] as const) {
+      expect(queries).toContain(q);
+      const hits = searchPrecedentClauses({ query: q, limit: 3 });
+      for (const h of hits) {
+        expect(h.authorityNote).toMatch(/PRECEDENT ≠ OPERATIVE/);
+        expect(h.query).toBe(q);
+      }
+    }
+  });
 });
 
 describe("provision graph / quality / exercise factory", () => {
