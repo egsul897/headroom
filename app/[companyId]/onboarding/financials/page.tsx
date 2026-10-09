@@ -28,7 +28,11 @@ export default async function OnboardingFinancialsPage({ params }: { params: Pro
       <Card>
         <div className="card-title">Financial onboarding — manual entry</div>
         <div className="card-subtitle">
-          No ERP integration in this phase — enter the company&apos;s current financial position directly. This writes both the legacy financial-snapshot record and the newer financial-core record every capacity/liquidity figure on the product pages reads from.
+          No ERP integration in this phase — enter the company&apos;s current financial position directly. This writes both the
+          legacy financial-snapshot record and the newer financial-core record every capacity/liquidity figure on the product
+          pages reads from. GAAP figures are not assumed to equal contractually defined metrics (e.g. Consolidated EBITDA) —
+          confirm definitional alignment before treating capacity as supported. Capacity remains NOT DETERMINABLE without an
+          executable rulebook even after financials are saved.
         </div>
         <form action={submit} className="stack" style={{ gap: 10 }}>
           <div className="field">

@@ -2,9 +2,12 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { analyzeAmendmentPackage } from "../../lib/product/customer-intelligence/amendment-package";
+import { compareAmendmentSummaries } from "../../lib/product/customer-intelligence/amendment-compare";
+import { buildCovenantDependencyGraph } from "../../lib/product/customer-intelligence/dependency-graph";
 import { renderCovenantReviewMarkdown } from "../../lib/product/customer-intelligence/export-review";
 import type { CovenantReviewWorkspace } from "../../lib/product/customer-intelligence/covenant-review";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
+import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
 import type {
   CovenantCandidateRecord,
   DefinitionRecord,
@@ -138,6 +141,96 @@ describe("covenant summary substance", () => {
   });
 });
 
+describe("dependency graph and amendment compare", () => {
+  function stubItem(
+    overrides: Partial<CovenantSummaryItem> & { sectionRef: string; category: CovenantSummaryItem["category"] },
+  ): CovenantSummaryItem & { sourceId: string; documentTitle: string } {
+    return {
+      categoryLabel: overrides.category,
+      heading: overrides.heading ?? overrides.sectionRef,
+      posture: "GENERAL_PROHIBITION",
+      plainEnglish: "Test provision.",
+      restriction: "No action except baskets.",
+      permissions: [],
+      coveredEntities: ["Borrower"],
+      exceptions: [],
+      conditions: [],
+      materialBasketsThresholds: [],
+      draftingPatterns: [],
+      operativeLanguageExcerpt: "The Borrower shall not…",
+      sourceCitation: `§${overrides.sectionRef}`,
+      governingAgreement: "CA",
+      families: [],
+      relatedDefinedTerms: [],
+      applicableDefinitions: [],
+      entityScope: {
+        borrower: true,
+        guarantor: false,
+        restrictedSubsidiary: false,
+        unrestrictedSubsidiary: false,
+        notes: [],
+      },
+      crossReferences: overrides.crossReferences ?? [],
+      dependencies: overrides.dependencies ?? [],
+      epistemicStatus: "DISCOVERED_CANDIDATE",
+      interpretationNote: "",
+      unresolvedQuestions: [],
+      analysis: {} as CovenantSummaryItem["analysis"],
+      sourceId: "s1",
+      documentTitle: "Credit Agreement",
+      ...overrides,
+    };
+  }
+
+  it("builds debt-to-lien dependency edges without inventing permission", () => {
+    const graph = buildCovenantDependencyGraph([
+      stubItem({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
+      stubItem({ sectionRef: "7.02", category: "LIENS_SECURED_DEBT" }),
+    ]);
+    expect(graph.edgeCount).toBeGreaterThan(0);
+    expect(graph.edges.some((e) => e.kind === "DEBT_TO_LIEN")).toBe(true);
+    expect(graph.note.toLowerCase()).toContain("do not authorize");
+  });
+
+  it("compares base vs amendment summaries without selecting operative text", () => {
+    const view = analyzeAmendmentPackage({
+      companyId: "co-1",
+      sources: [
+        baseSource({ sourceId: "base", documentClass: "CREDIT_AGREEMENT", documentTitle: "Credit Agreement" }),
+        baseSource({
+          sourceId: "amd",
+          documentClass: "AMENDMENT",
+          documentTitle: "First Amendment",
+          exhibitFilename: "amd.htm",
+        }),
+      ],
+      relationships: [],
+    });
+    const compare = compareAmendmentSummaries({
+      amendmentPackage: view,
+      items: [
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "base",
+          materialBasketsThresholds: ["$50,000,000"],
+        }),
+        stubItem({
+          sectionRef: "7.01",
+          category: "DEBT_INCURRENCE",
+          sourceId: "amd",
+          documentTitle: "First Amendment",
+          materialBasketsThresholds: ["$100,000,000"],
+          operativeLanguageExcerpt: "Amended basket language…",
+        }),
+      ],
+    });
+    expect(compare.operativeResolution).toBe("UNRESOLVED_PRECEDENCE");
+    expect(compare.rows.some((r) => r.changeKind === "THRESHOLD_OR_TEXT_SHIFT")).toBe(true);
+    expect(compare.note.toLowerCase()).toContain("unresolved");
+  });
+});
+
 describe("covenant review markdown export", () => {
   it("renders executive fields from the shared review object", () => {
     const review: CovenantReviewWorkspace = {
@@ -155,6 +248,18 @@ describe("covenant review markdown export", () => {
       categories: [],
       documents: [],
       amendmentPackage: null,
+      dependencyGraph: {
+        edgeCount: 0,
+        edges: [],
+        cycles: [],
+        note: "Edges are discovery-backed relationship hints for review.",
+      },
+      amendmentCompare: {
+        operativeResolution: "NO_DOCUMENTS",
+        rows: [],
+        unresolvedReasons: [],
+        note: "Upload a base agreement and an amendment to enable before/after comparison.",
+      },
     };
     const md = renderCovenantReviewMarkdown(review);
     expect(md).toContain("# Covenant review — co-export");

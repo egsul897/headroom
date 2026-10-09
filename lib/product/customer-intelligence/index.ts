@@ -17,3 +17,8 @@ export {
   type CapacityReadinessStatus,
 } from "./capacity-readiness";
 export { renderCovenantReviewMarkdown } from "./export-review";
+export {
+  buildCovenantDependencyGraph,
+  type CovenantDependencyGraph,
+  type CovenantDependencyEdge,
+} from "./dependency-graph";

@@ -11,6 +11,14 @@ import {
 import type { AmendmentPackageView } from "./amendment-package";
 import type { CovenantCategoryKey, CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import { COVENANT_CATEGORY_LABELS } from "../covenant-intelligence/summarize";
+import {
+  buildCovenantDependencyGraph,
+  type CovenantDependencyGraph,
+} from "./dependency-graph";
+import {
+  compareAmendmentSummaries,
+  type AmendmentCompareView,
+} from "./amendment-compare";
 
 export interface CovenantReviewCategoryBlock {
   category: CovenantCategoryKey;
@@ -33,6 +41,8 @@ export interface CovenantReviewWorkspace {
   categories: CovenantReviewCategoryBlock[];
   documents: CustomerDocumentIntelligence[];
   amendmentPackage: AmendmentPackageView | null;
+  dependencyGraph: CovenantDependencyGraph;
+  amendmentCompare: AmendmentCompareView;
 }
 
 function pickMaterial(items: CovenantReviewCategoryBlock["items"], limit: number): string[] {
@@ -121,6 +131,12 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     unresolved.unshift(`Amendment package: ${amendmentPackage.unresolvedReasons.join("; ") || "precedence unresolved"}`);
   }
 
+  const dependencyGraph = buildCovenantDependencyGraph(allItems);
+  const amendmentCompare = compareAmendmentSummaries({
+    amendmentPackage,
+    items: allItems,
+  });
+
   return {
     companyId,
     documentCount: documents.length,
@@ -136,5 +152,7 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     categories,
     documents,
     amendmentPackage,
+    dependencyGraph,
+    amendmentCompare,
   };
 }

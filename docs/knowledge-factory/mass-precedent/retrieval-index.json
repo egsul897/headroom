@@ -1,13 +1,13 @@
 {
   "schemaVersion": "knowledge-factory.precedent-retrieval-index.v1",
-  "generatedAt": "2026-10-09T01:51:29.259Z",
+  "generatedAt": "2026-10-09T02:52:17.620Z",
   "note": "DISCOVERED ≠ VERIFIED. PRECEDENT ≠ OPERATIVE AUTHORITY. Index is research retrieval only.",
   "promotedToLegalTruth": 0,
   "totals": {
     "sources": 133,
     "distinctIssuers": 35,
     "definitions": 988,
-    "covenantCandidates": 7636,
+    "covenantCandidates": 9152,
     "crossReferences": 42078,
     "conditionExceptions": 23041,
     "amendmentRelationships": 2,
@@ -49,7 +49,7 @@
       "originalBytesHash": "d2e883a5093d03c9cc022496fedf302974074dbbba219b0c2963d11701e3c5a2",
       "byteSize": 216091,
       "definitionCount": 0,
-      "covenantCandidateCount": 14,
+      "covenantCandidateCount": 15,
       "crossReferenceCount": 227,
       "conditionExceptionCount": 69,
       "definitionTerms": [],
@@ -72,15 +72,15 @@
       "originalBytesHash": "3eae20c5ca1bd5f1dd00e3cfc5d8779a2acc3354a9dfeec24bf317c01984b4a3",
       "byteSize": 205377,
       "definitionCount": 0,
-      "covenantCandidateCount": 23,
+      "covenantCandidateCount": 49,
       "crossReferenceCount": 158,
       "conditionExceptionCount": 72,
       "definitionTerms": [],
       "covenantFamilies": [
         "ASSET_SALES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "FUNDAMENTAL_CHANGES",
         "UNKNOWN",
+        "FUNDAMENTAL_CHANGES",
         "LIENS"
       ],
       "discoveryScore": 10.5
@@ -154,7 +154,7 @@
       "originalBytesHash": "d3a68c4a88506fa1f11e03c52eecbd86f8e9428221093782612c412bb8924eae",
       "byteSize": 129525,
       "definitionCount": 1,
-      "covenantCandidateCount": 5,
+      "covenantCandidateCount": 9,
       "crossReferenceCount": 118,
       "conditionExceptionCount": 42,
       "definitionTerms": [
@@ -163,7 +163,8 @@
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INDEBTEDNESS",
-        "GUARANTEES"
+        "GUARANTEES",
+        "ASSET_SALES"
       ],
       "discoveryScore": 9.5
     },
@@ -202,7 +203,7 @@
       "originalBytesHash": "7c0cf0dd92b42b98c8ceece837124dabdbbf05f137f284616de5eaac003f0bc7",
       "byteSize": 142857,
       "definitionCount": 0,
-      "covenantCandidateCount": 9,
+      "covenantCandidateCount": 14,
       "crossReferenceCount": 135,
       "conditionExceptionCount": 52,
       "definitionTerms": [],
@@ -210,7 +211,9 @@
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INVESTMENTS",
         "ASSET_SALES",
-        "DESIGNATIONS"
+        "DESIGNATIONS",
+        "UNKNOWN",
+        "INDEBTEDNESS"
       ],
       "discoveryScore": 10.5
     },
@@ -245,15 +248,16 @@
       "originalBytesHash": "3b0da16811004c5a6796a9e42d4fe814388706ad79dc3bb1c326e8d460f6ea18",
       "byteSize": 729288,
       "definitionCount": 1,
-      "covenantCandidateCount": 25,
+      "covenantCandidateCount": 65,
       "crossReferenceCount": 364,
       "conditionExceptionCount": 276,
       "definitionTerms": [
         "Subsidiary"
       ],
       "covenantFamilies": [
-        "EVENTS_OF_DEFAULT",
+        "UNKNOWN",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "EVENTS_OF_DEFAULT",
         "INVESTMENTS",
         "FUNDAMENTAL_CHANGES",
         "INDEBTEDNESS",
@@ -261,7 +265,9 @@
         "ASSET_SALES",
         "GUARANTEES",
         "SHARED_CAPACITY_PROVISIONS",
-        "UNKNOWN"
+        "RATIO_BASED_PERMISSIONS",
+        "RESTRICTED_PAYMENTS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
       ],
       "discoveryScore": 33
     },
@@ -277,7 +283,7 @@
       "originalBytesHash": "cc35a033ccfc3c864400e2101899f1a83c27a12fb6438990b243da4f9c9ec494",
       "byteSize": 802125,
       "definitionCount": 1,
-      "covenantCandidateCount": 20,
+      "covenantCandidateCount": 72,
       "crossReferenceCount": 419,
       "conditionExceptionCount": 332,
       "definitionTerms": [
@@ -286,6 +292,7 @@
       "covenantFamilies": [
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "EVENTS_OF_DEFAULT",
         "INVESTMENTS",
         "INDEBTEDNESS",
@@ -293,7 +300,11 @@
         "ASSET_SALES",
         "FUNDAMENTAL_CHANGES",
         "GUARANTEES",
-        "SHARED_CAPACITY_PROVISIONS"
+        "SHARED_CAPACITY_PROVISIONS",
+        "MANDATORY_PREPAYMENTS",
+        "RESTRICTED_PAYMENTS",
+        "RATIO_BASED_PERMISSIONS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
       ],
       "discoveryScore": 39
     },
@@ -309,7 +320,7 @@
       "originalBytesHash": "1d092933e953817ecd90ce1bbd7a38298202fb16b81a3891d8cbef4d09d1adb0",
       "byteSize": 1043687,
       "definitionCount": 1,
-      "covenantCandidateCount": 100,
+      "covenantCandidateCount": 135,
       "crossReferenceCount": 466,
       "conditionExceptionCount": 377,
       "definitionTerms": [
@@ -318,15 +329,15 @@
       "covenantFamilies": [
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "EVENTS_OF_DEFAULT",
         "INVESTMENTS",
         "GUARANTEES",
         "INDEBTEDNESS",
         "LIENS",
         "FUNDAMENTAL_CHANGES",
-        "ASSET_SALES",
         "SHARED_CAPACITY_PROVISIONS",
-        "UNKNOWN",
+        "ASSET_SALES",
         "MANDATORY_PREPAYMENTS",
         "RESTRICTED_PAYMENTS",
         "RATIO_BASED_PERMISSIONS",
@@ -346,7 +357,7 @@
       "originalBytesHash": "3e09cfe9c941d07e6f8f3be77e404905cf8fe2ddb4c69281b9a7ea53d8c2e61f",
       "byteSize": 801856,
       "definitionCount": 20,
-      "covenantCandidateCount": 41,
+      "covenantCandidateCount": 87,
       "crossReferenceCount": 359,
       "conditionExceptionCount": 275,
       "definitionTerms": [
@@ -373,16 +384,17 @@
       ],
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "LIENS",
         "EVENTS_OF_DEFAULT",
         "INVESTMENTS",
         "INDEBTEDNESS",
-        "LIENS",
         "ASSET_SALES",
         "FUNDAMENTAL_CHANGES",
-        "MANDATORY_PREPAYMENTS",
         "GUARANTEES",
-        "JUNIOR_DEBT_PREPAYMENTS",
         "SHARED_CAPACITY_PROVISIONS",
+        "MANDATORY_PREPAYMENTS",
+        "UNKNOWN",
+        "JUNIOR_DEBT_PREPAYMENTS",
         "RESTRICTED_PAYMENTS",
         "RATIO_BASED_PERMISSIONS",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
@@ -401,7 +413,7 @@
       "originalBytesHash": "8f53a2b63344bb4e28c56f3a51eb38bb065fa69495349a1a9d001c2b972cd85a",
       "byteSize": 947060,
       "definitionCount": 1,
-      "covenantCandidateCount": 26,
+      "covenantCandidateCount": 54,
       "crossReferenceCount": 199,
       "conditionExceptionCount": 195,
       "definitionTerms": [
@@ -413,6 +425,8 @@
         "LIENS",
         "FUNDAMENTAL_CHANGES",
         "UNKNOWN",
+        "DESIGNATIONS",
+        "EVENTS_OF_DEFAULT",
         "RATIO_BASED_PERMISSIONS",
         "SHARED_CAPACITY_PROVISIONS",
         "INDEBTEDNESS"
@@ -450,18 +464,20 @@
       "originalBytesHash": "56f6af0a9ee3d612cd996be7eaa7b1133289ac70fd12bdaee43ad3183d391468",
       "byteSize": 915328,
       "definitionCount": 1,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 14,
       "crossReferenceCount": 356,
       "conditionExceptionCount": 220,
       "definitionTerms": [
         "Transferees"
       ],
       "covenantFamilies": [
-        "LIENS",
-        "INVESTMENTS",
-        "ASSET_SALES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "EVENTS_OF_DEFAULT"
+        "JUNIOR_DEBT_PREPAYMENTS",
+        "UNKNOWN",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GUARANTEES",
+        "INVESTMENTS",
+        "INDEBTEDNESS"
       ],
       "discoveryScore": 22.5
     },
@@ -506,11 +522,7 @@
       "conditionExceptionCount": 60,
       "definitionTerms": [],
       "covenantFamilies": [
-        "LIENS",
-        "INVESTMENTS",
-        "ASSET_SALES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "EVENTS_OF_DEFAULT"
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
       ],
       "discoveryScore": 16
     },
@@ -531,11 +543,7 @@
       "conditionExceptionCount": 60,
       "definitionTerms": [],
       "covenantFamilies": [
-        "LIENS",
-        "INVESTMENTS",
-        "ASSET_SALES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "EVENTS_OF_DEFAULT"
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
       ],
       "discoveryScore": 16
     },
@@ -546,16 +554,18 @@
       "documentClass": "UNKNOWN",
       "formType": "8-K",
       "filingDate": "2026-10-08",
-      "representationLevel": "STRUCTURALLY_INDEXED",
+      "representationLevel": "DISCOVERED_CANDIDATE",
       "extractionStatus": "CANDIDATES_DISCOVERED",
       "originalBytesHash": "7c13844e818e175f4fe790801f5c733d42106bf8392e18bb6b654e2f207a3aeb",
       "byteSize": 57736,
       "definitionCount": 0,
-      "covenantCandidateCount": 0,
+      "covenantCandidateCount": 1,
       "crossReferenceCount": 0,
       "conditionExceptionCount": 3,
       "definitionTerms": [],
-      "covenantFamilies": [],
+      "covenantFamilies": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
       "discoveryScore": 0
     },
     {
@@ -565,16 +575,18 @@
       "documentClass": "UNKNOWN",
       "formType": "8-K",
       "filingDate": "2026-10-08",
-      "representationLevel": "STRUCTURALLY_INDEXED",
+      "representationLevel": "DISCOVERED_CANDIDATE",
       "extractionStatus": "CANDIDATES_DISCOVERED",
       "originalBytesHash": "fb833882f13bf09065b443a82d9af1cec0cca0065dc6c2ddbe3785d8e8301b49",
       "byteSize": 56161,
       "definitionCount": 0,
-      "covenantCandidateCount": 0,
+      "covenantCandidateCount": 1,
       "crossReferenceCount": 0,
       "conditionExceptionCount": 3,
       "definitionTerms": [],
-      "covenantFamilies": [],
+      "covenantFamilies": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
       "discoveryScore": 0
     },
     {
@@ -589,24 +601,23 @@
       "originalBytesHash": "a327d92fbaf14b4f89700a3e9e17817ded99a0a8a1090b15d93d6384e7ea6dae",
       "byteSize": 443195,
       "definitionCount": 1,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 12,
       "crossReferenceCount": 75,
       "conditionExceptionCount": 187,
       "definitionTerms": [
         "Business Day"
       ],
       "covenantFamilies": [
-        "FINANCIAL_MAINTENANCE_COVENANTS",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "LIENS",
-        "RESTRICTED_PAYMENTS",
         "INVESTMENTS",
-        "ASSET_SALES",
-        "GUARANTEES",
-        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
-        "RATIO_BASED_PERMISSIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "INDEBTEDNESS",
+        "LIENS",
+        "FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "EVENTS_OF_DEFAULT",
         "SHARED_CAPACITY_PROVISIONS",
-        "EVENTS_OF_DEFAULT"
+        "GUARANTEES",
+        "RATIO_BASED_PERMISSIONS"
       ],
       "discoveryScore": 40.5
     },
@@ -622,7 +633,7 @@
       "originalBytesHash": "37def79f9d415bdfcacda273a2fe2e9b1a9ecc6db1c8face4d5e0f49f6ceb8c9",
       "byteSize": 45172,
       "definitionCount": 0,
-      "covenantCandidateCount": 6,
+      "covenantCandidateCount": 8,
       "crossReferenceCount": 11,
       "conditionExceptionCount": 11,
       "definitionTerms": [],
@@ -630,6 +641,7 @@
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "RATIO_BASED_PERMISSIONS",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "SHARED_CAPACITY_PROVISIONS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "RESTRICTED_PAYMENTS"
       ],
@@ -647,7 +659,7 @@
       "originalBytesHash": "78b745e934c49f08bf54ed1371f37ebcd9c9432a22c2f1cbd8ef8e5eba485ae3",
       "byteSize": 28524,
       "definitionCount": 1,
-      "covenantCandidateCount": 2,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 10,
       "conditionExceptionCount": 7,
       "definitionTerms": [
@@ -671,7 +683,7 @@
       "originalBytesHash": "4e3651ac5c85b5f0bed1614767298784da08a484b6cb70b165012f2df5a1e2f7",
       "byteSize": 76675,
       "definitionCount": 1,
-      "covenantCandidateCount": 2,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 9,
       "conditionExceptionCount": 7,
       "definitionTerms": [
@@ -695,7 +707,7 @@
       "originalBytesHash": "5c3a2a338dadfbf05a3f47d0f4b909b8fc67c2f4287d689b19fe301142001c30",
       "byteSize": 519040,
       "definitionCount": 2,
-      "covenantCandidateCount": 84,
+      "covenantCandidateCount": 111,
       "crossReferenceCount": 259,
       "conditionExceptionCount": 142,
       "definitionTerms": [
@@ -705,14 +717,15 @@
       "covenantFamilies": [
         "INDEBTEDNESS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "INVESTMENTS",
         "LIENS",
         "FUNDAMENTAL_CHANGES",
         "EVENTS_OF_DEFAULT",
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "DESIGNATIONS",
-        "RATIO_BASED_PERMISSIONS",
-        "SHARED_CAPACITY_PROVISIONS"
+        "SHARED_CAPACITY_PROVISIONS",
+        "RATIO_BASED_PERMISSIONS"
       ],
       "discoveryScore": 26.5
     },
@@ -728,7 +741,7 @@
       "originalBytesHash": "f239ea659985010b412412fa207776b7ca757d086af31e19c9f44f27abfc77cc",
       "byteSize": 826766,
       "definitionCount": 2,
-      "covenantCandidateCount": 92,
+      "covenantCandidateCount": 125,
       "crossReferenceCount": 307,
       "conditionExceptionCount": 249,
       "definitionTerms": [
@@ -737,18 +750,18 @@
       ],
       "covenantFamilies": [
         "INVESTMENTS",
-        "FUNDAMENTAL_CHANGES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "FUNDAMENTAL_CHANGES",
         "GUARANTEES",
         "EVENTS_OF_DEFAULT",
         "INCREMENTAL_DEBT_AND_FACILITIES",
+        "DESIGNATIONS",
         "SHARED_CAPACITY_PROVISIONS",
         "INDEBTEDNESS",
-        "DESIGNATIONS",
         "UNKNOWN",
+        "LIENS",
         "RESTRICTED_SUBSIDIARIES",
-        "RATIO_BASED_PERMISSIONS",
-        "LIENS"
+        "RATIO_BASED_PERMISSIONS"
       ],
       "discoveryScore": 29
     },
@@ -764,7 +777,7 @@
       "originalBytesHash": "4dccc488b1d66969c156baaa7f42f6e7e2522aa21df5ce50fa90d2bc10d2955c",
       "byteSize": 953569,
       "definitionCount": 2,
-      "covenantCandidateCount": 91,
+      "covenantCandidateCount": 122,
       "crossReferenceCount": 276,
       "conditionExceptionCount": 248,
       "definitionTerms": [
@@ -778,12 +791,13 @@
         "FUNDAMENTAL_CHANGES",
         "GUARANTEES",
         "INCREMENTAL_DEBT_AND_FACILITIES",
+        "DESIGNATIONS",
+        "UNKNOWN",
         "SHARED_CAPACITY_PROVISIONS",
         "INDEBTEDNESS",
-        "DESIGNATIONS",
+        "LIENS",
         "RESTRICTED_SUBSIDIARIES",
-        "RATIO_BASED_PERMISSIONS",
-        "UNKNOWN"
+        "RATIO_BASED_PERMISSIONS"
       ],
       "discoveryScore": 29
     },
@@ -799,7 +813,7 @@
       "originalBytesHash": "02913ab97244f6cab15b9a7bf84e3e2527b5219309152304e69657b25731127c",
       "byteSize": 930362,
       "definitionCount": 4,
-      "covenantCandidateCount": 103,
+      "covenantCandidateCount": 142,
       "crossReferenceCount": 344,
       "conditionExceptionCount": 279,
       "definitionTerms": [
@@ -815,12 +829,13 @@
         "FUNDAMENTAL_CHANGES",
         "GUARANTEES",
         "INCREMENTAL_DEBT_AND_FACILITIES",
-        "SHARED_CAPACITY_PROVISIONS",
-        "DESIGNATIONS",
+        "LIENS",
         "RESTRICTED_SUBSIDIARIES",
+        "SHARED_CAPACITY_PROVISIONS",
+        "UNKNOWN",
+        "DESIGNATIONS",
         "INDEBTEDNESS",
         "RATIO_BASED_PERMISSIONS",
-        "UNKNOWN",
         "AFFILIATE_TRANSACTIONS"
       ],
       "discoveryScore": 29
@@ -837,7 +852,7 @@
       "originalBytesHash": "de19cd501c19bc0df970ae7fb1e9b4202732a790a4cdf257d7593b61ae2f343a",
       "byteSize": 142937,
       "definitionCount": 0,
-      "covenantCandidateCount": 7,
+      "covenantCandidateCount": 8,
       "crossReferenceCount": 21,
       "conditionExceptionCount": 12,
       "definitionTerms": [],
@@ -859,7 +874,7 @@
       "originalBytesHash": "a3994d5b73d3215ed41ca8977f93bf4bd2108d8d3d5eb9aed7082c97da333efd",
       "byteSize": 140910,
       "definitionCount": 0,
-      "covenantCandidateCount": 7,
+      "covenantCandidateCount": 8,
       "crossReferenceCount": 21,
       "conditionExceptionCount": 12,
       "definitionTerms": [],
@@ -881,7 +896,7 @@
       "originalBytesHash": "86bd5e949d6e9bf1b20ceb2b65d85d78c1288aef8c44502b1ad8c2e8f4713622",
       "byteSize": 72083,
       "definitionCount": 18,
-      "covenantCandidateCount": 2,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 32,
       "conditionExceptionCount": 28,
       "definitionTerms": [
@@ -922,7 +937,7 @@
       "originalBytesHash": "49486496e66faa19da0f5d784fcd4fe69de5c1681378d382ec39ca04549f64c1",
       "byteSize": 367037,
       "definitionCount": 0,
-      "covenantCandidateCount": 24,
+      "covenantCandidateCount": 27,
       "crossReferenceCount": 106,
       "conditionExceptionCount": 56,
       "definitionTerms": [],
@@ -934,9 +949,9 @@
         "LIENS",
         "GUARANTEES",
         "INDEBTEDNESS",
+        "UNKNOWN",
         "EVENTS_OF_DEFAULT",
         "FINANCIAL_MAINTENANCE_COVENANTS",
-        "UNKNOWN",
         "INVESTMENTS",
         "SHARED_CAPACITY_PROVISIONS"
       ],
@@ -954,18 +969,19 @@
       "originalBytesHash": "9157fb797672f41dcc6a2f90be635d53e8752ae5ce39ff2a9754b522dc0013ac",
       "byteSize": 896519,
       "definitionCount": 0,
-      "covenantCandidateCount": 115,
+      "covenantCandidateCount": 159,
       "crossReferenceCount": 488,
       "conditionExceptionCount": 201,
       "definitionTerms": [],
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "LIENS",
         "INVESTMENTS",
-        "EVENTS_OF_DEFAULT",
-        "DESIGNATIONS",
-        "FUNDAMENTAL_CHANGES",
         "ASSET_SALES",
+        "EVENTS_OF_DEFAULT",
+        "FUNDAMENTAL_CHANGES",
+        "DESIGNATIONS",
         "SHARED_CAPACITY_PROVISIONS",
         "GUARANTEES",
         "RATIO_BASED_PERMISSIONS",
@@ -986,7 +1002,7 @@
       "originalBytesHash": "174dbeb6e23816a6a452ff854b6afbb05475b0adbcbd3affccc0d6715e0f3e6a",
       "byteSize": 243976,
       "definitionCount": 0,
-      "covenantCandidateCount": 38,
+      "covenantCandidateCount": 54,
       "crossReferenceCount": 134,
       "conditionExceptionCount": 58,
       "definitionTerms": [],
@@ -995,7 +1011,12 @@
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "GUARANTEES",
         "LIENS",
+        "INDEBTEDNESS",
+        "UNKNOWN",
         "RATIO_BASED_PERMISSIONS",
+        "ASSET_SALES",
+        "INVESTMENTS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "JUNIOR_DEBT_PREPAYMENTS"
       ],
       "discoveryScore": 25.5
@@ -1012,7 +1033,7 @@
       "originalBytesHash": "699991719e998fe3295912e15ca64d5a5b948db766dc2eebfac6adaccf5ba246",
       "byteSize": 470538,
       "definitionCount": 0,
-      "covenantCandidateCount": 37,
+      "covenantCandidateCount": 55,
       "crossReferenceCount": 134,
       "conditionExceptionCount": 58,
       "definitionTerms": [],
@@ -1020,8 +1041,13 @@
         "EVENTS_OF_DEFAULT",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "GUARANTEES",
+        "UNKNOWN",
         "LIENS",
+        "INDEBTEDNESS",
         "RATIO_BASED_PERMISSIONS",
+        "ASSET_SALES",
+        "INVESTMENTS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "JUNIOR_DEBT_PREPAYMENTS"
       ],
       "discoveryScore": 25.5
@@ -1038,17 +1064,20 @@
       "originalBytesHash": "21548f0502f92f563d6fb6e143724c172f1c934db385756fe3d29304e558acd2",
       "byteSize": 914567,
       "definitionCount": 0,
-      "covenantCandidateCount": 45,
+      "covenantCandidateCount": 129,
       "crossReferenceCount": 435,
       "conditionExceptionCount": 285,
       "definitionTerms": [],
       "covenantFamilies": [
-        "GUARANTEES",
+        "ASSET_SALES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INDEBTEDNESS",
         "LIENS",
+        "FUNDAMENTAL_CHANGES",
         "EVENTS_OF_DEFAULT",
-        "ASSET_SALES",
+        "UNKNOWN",
+        "GUARANTEES",
+        "INVESTMENTS",
         "JUNIOR_DEBT_PREPAYMENTS"
       ],
       "discoveryScore": 22.5
@@ -1065,20 +1094,21 @@
       "originalBytesHash": "069e9897489ddb646a0c17927bfe971aaf516d657db6f2624a64f51cc9b87bfe",
       "byteSize": 974761,
       "definitionCount": 1,
-      "covenantCandidateCount": 99,
+      "covenantCandidateCount": 159,
       "crossReferenceCount": 476,
       "conditionExceptionCount": 314,
       "definitionTerms": [
         "Board of Directors"
       ],
       "covenantFamilies": [
-        "GUARANTEES",
+        "ASSET_SALES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INDEBTEDNESS",
         "LIENS",
-        "EVENTS_OF_DEFAULT",
-        "ASSET_SALES",
         "FUNDAMENTAL_CHANGES",
+        "GUARANTEES",
+        "EVENTS_OF_DEFAULT",
+        "UNKNOWN",
         "INVESTMENTS",
         "SHARED_CAPACITY_PROVISIONS"
       ],
@@ -1098,7 +1128,7 @@
       "originalBytesHash": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
       "byteSize": 2266666,
       "definitionCount": 4,
-      "covenantCandidateCount": 203,
+      "covenantCandidateCount": 261,
       "crossReferenceCount": 1203,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1119,13 +1149,15 @@
         "FUNDAMENTAL_CHANGES",
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "EVENTS_OF_DEFAULT",
+        "UNKNOWN",
         "RESTRICTED_SUBSIDIARIES",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "AFFILIATE_TRANSACTIONS",
+        "SHARED_CAPACITY_PROVISIONS",
         "RATIO_BASED_PERMISSIONS",
         "UNRESTRICTED_SUBSIDIARIES",
-        "SHARED_CAPACITY_PROVISIONS",
         "MANDATORY_PREPAYMENTS",
+        "DESIGNATIONS",
         "JUNIOR_DEBT_PREPAYMENTS"
       ],
       "discoveryScore": 55.5
@@ -1142,7 +1174,7 @@
       "originalBytesHash": "aa6b07f37dbbf539f8b55504ced91760f6627d6734366744c6397312eecec2f8",
       "byteSize": 42898,
       "definitionCount": 0,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 2,
       "crossReferenceCount": 31,
       "conditionExceptionCount": 20,
       "definitionTerms": [],
@@ -1163,13 +1195,14 @@
       "originalBytesHash": "0be96c0d322b779050158beef72694c5e63bd26f7f2d07464f3cb29e1d23b3fc",
       "byteSize": 534022,
       "definitionCount": 0,
-      "covenantCandidateCount": 17,
+      "covenantCandidateCount": 82,
       "crossReferenceCount": 433,
       "conditionExceptionCount": 233,
       "definitionTerms": [],
       "covenantFamilies": [
         "INDEBTEDNESS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "LIENS",
         "FUNDAMENTAL_CHANGES",
         "JUNIOR_DEBT_PREPAYMENTS",
@@ -1192,7 +1225,7 @@
       "originalBytesHash": "cb30e5e37aa668d23073941a21fec57cda50409c4cd49d42c83fb5e22f2cc3ad",
       "byteSize": 17284,
       "definitionCount": 0,
-      "covenantCandidateCount": 5,
+      "covenantCandidateCount": 7,
       "crossReferenceCount": 16,
       "conditionExceptionCount": 3,
       "definitionTerms": [],
@@ -1216,13 +1249,17 @@
       "originalBytesHash": "df303775190a928c43a6f0eac9f01e840d1800395b6faca255228c37a558e262",
       "byteSize": 166956,
       "definitionCount": 0,
-      "covenantCandidateCount": 7,
+      "covenantCandidateCount": 13,
       "crossReferenceCount": 114,
       "conditionExceptionCount": 45,
       "definitionTerms": [],
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "SHARED_CAPACITY_PROVISIONS"
+        "RATIO_BASED_PERMISSIONS",
+        "SHARED_CAPACITY_PROVISIONS",
+        "UNKNOWN",
+        "ASSET_SALES",
+        "LIENS"
       ],
       "discoveryScore": 18
     },
@@ -1238,17 +1275,18 @@
       "originalBytesHash": "a9033596dc77f1366bf4c104e6a46202c29594ae006e729e4743713145e21172",
       "byteSize": 536972,
       "definitionCount": 0,
-      "covenantCandidateCount": 99,
+      "covenantCandidateCount": 139,
       "crossReferenceCount": 439,
       "conditionExceptionCount": 198,
       "definitionTerms": [],
       "covenantFamilies": [
-        "FUNDAMENTAL_CHANGES",
+        "UNKNOWN",
+        "LIENS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "FUNDAMENTAL_CHANGES",
         "EVENTS_OF_DEFAULT",
         "GUARANTEES",
         "INDEBTEDNESS",
-        "LIENS",
         "SHARED_CAPACITY_PROVISIONS",
         "ASSET_SALES",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
@@ -1267,20 +1305,21 @@
       "originalBytesHash": "061a5df77289957a317364b217381e5e4ba5889979652dc98f14d17cf3e6e387",
       "byteSize": 442178,
       "definitionCount": 0,
-      "covenantCandidateCount": 90,
+      "covenantCandidateCount": 126,
       "crossReferenceCount": 442,
       "conditionExceptionCount": 222,
       "definitionTerms": [],
       "covenantFamilies": [
         "FUNDAMENTAL_CHANGES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
         "EVENTS_OF_DEFAULT",
         "INDEBTEDNESS",
-        "DESIGNATIONS",
         "LIENS",
+        "GUARANTEES",
+        "DESIGNATIONS",
         "INVESTMENTS",
-        "JUNIOR_DEBT_PREPAYMENTS",
-        "UNKNOWN"
+        "JUNIOR_DEBT_PREPAYMENTS"
       ],
       "discoveryScore": 19.5
     },
@@ -1342,7 +1381,7 @@
       "originalBytesHash": "4bbd94bad4e5743d01dc88fbad011e0ec901438bb6313ea294f1ab25f3b0a7e9",
       "byteSize": 118113,
       "definitionCount": 0,
-      "covenantCandidateCount": 11,
+      "covenantCandidateCount": 16,
       "crossReferenceCount": 36,
       "conditionExceptionCount": 37,
       "definitionTerms": [],
@@ -1350,6 +1389,7 @@
         "FUNDAMENTAL_CHANGES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INVESTMENTS",
+        "UNKNOWN",
         "EVENTS_OF_DEFAULT"
       ],
       "discoveryScore": 12
@@ -1368,7 +1408,7 @@
       "originalBytesHash": "5fbd8c90046305871d3f93e78bf5726ae77a0004eef93183d43a887befa9c4af",
       "byteSize": 1306165,
       "definitionCount": 4,
-      "covenantCandidateCount": 158,
+      "covenantCandidateCount": 249,
       "crossReferenceCount": 928,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1380,6 +1420,8 @@
       "covenantFamilies": [
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
+        "DESIGNATIONS",
         "INVESTMENTS",
         "INDEBTEDNESS",
         "LIENS",
@@ -1391,13 +1433,12 @@
         "RESTRICTED_SUBSIDIARIES",
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "AFFILIATE_TRANSACTIONS",
-        "UNRESTRICTED_SUBSIDIARIES",
         "RATIO_BASED_PERMISSIONS",
-        "FINANCIAL_MAINTENANCE_COVENANTS",
-        "JUNIOR_DEBT_PREPAYMENTS",
+        "MANDATORY_PREPAYMENTS",
         "SHARED_CAPACITY_PROVISIONS",
-        "DESIGNATIONS",
-        "MANDATORY_PREPAYMENTS"
+        "UNRESTRICTED_SUBSIDIARIES",
+        "JUNIOR_DEBT_PREPAYMENTS",
+        "FINANCIAL_MAINTENANCE_COVENANTS"
       ],
       "discoveryScore": 55
     },
@@ -1427,16 +1468,18 @@
       "documentClass": "UNKNOWN",
       "formType": "8-K",
       "filingDate": "2026-10-08",
-      "representationLevel": "STRUCTURALLY_INDEXED",
+      "representationLevel": "DISCOVERED_CANDIDATE",
       "extractionStatus": "CANDIDATES_DISCOVERED",
       "originalBytesHash": "35c4140f0f3515b7e3f1c7ba2fc051067f881c929674d6c661d1b350ff8b0be1",
       "byteSize": 30848,
       "definitionCount": 0,
-      "covenantCandidateCount": 0,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 1,
       "conditionExceptionCount": 10,
       "definitionTerms": [],
-      "covenantFamilies": [],
+      "covenantFamilies": [
+        "GUARANTEES"
+      ],
       "discoveryScore": 3.5
     },
     {
@@ -1451,13 +1494,17 @@
       "originalBytesHash": "134421457df64e68bce4c78b2ca038671c1fa56c75a58eba6b85277affdeb528",
       "byteSize": 151821,
       "definitionCount": 0,
-      "covenantCandidateCount": 2,
+      "covenantCandidateCount": 12,
       "crossReferenceCount": 20,
       "conditionExceptionCount": 49,
       "definitionTerms": [],
       "covenantFamilies": [
         "FUNDAMENTAL_CHANGES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        "ASSET_SALES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
+        "INCREMENTAL_DEBT_AND_FACILITIES",
+        "LIENS"
       ],
       "discoveryScore": 10.5
     },
@@ -1473,7 +1520,7 @@
       "originalBytesHash": "96e0c37a40364e0a2bbd64dab1e646af0baca4589996a60039c2c24c82d6a15b",
       "byteSize": 96858,
       "definitionCount": 0,
-      "covenantCandidateCount": 2,
+      "covenantCandidateCount": 8,
       "crossReferenceCount": 14,
       "conditionExceptionCount": 19,
       "definitionTerms": [],
@@ -1497,13 +1544,17 @@
       "originalBytesHash": "f3f6285c9b6d6f450fce8b7cfee7a01dcbe254236dc17b4755c004b8f85bae70",
       "byteSize": 131114,
       "definitionCount": 0,
-      "covenantCandidateCount": 3,
+      "covenantCandidateCount": 12,
       "crossReferenceCount": 20,
       "conditionExceptionCount": 49,
       "definitionTerms": [],
       "covenantFamilies": [
         "FUNDAMENTAL_CHANGES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        "ASSET_SALES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "UNKNOWN",
+        "INCREMENTAL_DEBT_AND_FACILITIES",
+        "LIENS"
       ],
       "discoveryScore": 10.5
     },
@@ -1519,7 +1570,7 @@
       "originalBytesHash": "af32107049938bb190960331b2448957122012ce4298e9b3b609a41e3d6558c1",
       "byteSize": 313461,
       "definitionCount": 0,
-      "covenantCandidateCount": 22,
+      "covenantCandidateCount": 31,
       "crossReferenceCount": 131,
       "conditionExceptionCount": 80,
       "definitionTerms": [],
@@ -1531,6 +1582,7 @@
         "EVENTS_OF_DEFAULT",
         "INVESTMENTS",
         "SHARED_CAPACITY_PROVISIONS",
+        "ASSET_SALES",
         "INDEBTEDNESS",
         "GUARANTEES"
       ],
@@ -1548,7 +1600,7 @@
       "originalBytesHash": "0c899853547a62adf69efa4d3c82aead407fd9baed3ad045ce24ec24f10280c4",
       "byteSize": 1017871,
       "definitionCount": 0,
-      "covenantCandidateCount": 119,
+      "covenantCandidateCount": 146,
       "crossReferenceCount": 281,
       "conditionExceptionCount": 324,
       "definitionTerms": [],
@@ -1560,6 +1612,7 @@
         "ASSET_SALES",
         "FUNDAMENTAL_CHANGES",
         "EVENTS_OF_DEFAULT",
+        "UNKNOWN",
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "SHARED_CAPACITY_PROVISIONS",
         "DESIGNATIONS",
@@ -1643,7 +1696,7 @@
       "originalBytesHash": "e7ce886dd68d677190197ff28a8b1c449abc545625a8cef754793ea1b4682b29",
       "byteSize": 6519282,
       "definitionCount": 3,
-      "covenantCandidateCount": 248,
+      "covenantCandidateCount": 335,
       "crossReferenceCount": 1027,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1665,10 +1718,10 @@
         "EVENTS_OF_DEFAULT",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "RATIO_BASED_PERMISSIONS",
+        "UNKNOWN",
         "SHARED_CAPACITY_PROVISIONS",
         "JUNIOR_DEBT_PREPAYMENTS",
-        "RESTRICTED_SUBSIDIARIES",
-        "UNKNOWN"
+        "RESTRICTED_SUBSIDIARIES"
       ],
       "discoveryScore": 43
     },
@@ -1708,7 +1761,7 @@
       "originalBytesHash": "4d562d088f8e3fd32e01bfcdb62186fb939b40d8d9372e565718c017e29e5f19",
       "byteSize": 931093,
       "definitionCount": 0,
-      "covenantCandidateCount": 28,
+      "covenantCandidateCount": 29,
       "crossReferenceCount": 67,
       "conditionExceptionCount": 50,
       "definitionTerms": [],
@@ -1734,18 +1787,14 @@
       "originalBytesHash": "2326121cb37f6b0497adfc8723a1d52f6e74a4a0cf1af74f8299316957d028da",
       "byteSize": 525407,
       "definitionCount": 0,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 2,
       "crossReferenceCount": 36,
       "conditionExceptionCount": 22,
       "definitionTerms": [],
       "covenantFamilies": [
-        "LIENS",
-        "INVESTMENTS",
-        "GUARANTEES",
-        "RATIO_BASED_PERMISSIONS",
-        "SHARED_CAPACITY_PROVISIONS",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "GUARANTEES",
         "MANDATORY_PREPAYMENTS"
       ],
       "discoveryScore": 24.5
@@ -1762,14 +1811,14 @@
       "originalBytesHash": "115d9c3a26ef7921d79be805a10280ddf87c4d7521fdc3e848450ceffa36b622",
       "byteSize": 578810,
       "definitionCount": 0,
-      "covenantCandidateCount": 7,
+      "covenantCandidateCount": 8,
       "crossReferenceCount": 38,
       "conditionExceptionCount": 27,
       "definitionTerms": [],
       "covenantFamilies": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "EVENTS_OF_DEFAULT",
         "LIENS",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "GUARANTEES"
       ],
       "discoveryScore": 14.5
@@ -1786,7 +1835,7 @@
       "originalBytesHash": "e3d798a22d84757723fe077bd07aa434269380532169468b5a58998a0066b56b",
       "byteSize": 2286727,
       "definitionCount": 3,
-      "covenantCandidateCount": 161,
+      "covenantCandidateCount": 216,
       "crossReferenceCount": 723,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1797,20 +1846,21 @@
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "GUARANTEES",
+        "INVESTMENTS",
         "INDEBTEDNESS",
+        "MANDATORY_PREPAYMENTS",
         "LIENS",
         "FUNDAMENTAL_CHANGES",
         "RESTRICTED_PAYMENTS",
-        "INVESTMENTS",
         "ASSET_SALES",
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "EVENTS_OF_DEFAULT",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "RATIO_BASED_PERMISSIONS",
+        "UNKNOWN",
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "SHARED_CAPACITY_PROVISIONS",
         "JUNIOR_DEBT_PREPAYMENTS",
-        "MANDATORY_PREPAYMENTS",
         "RESTRICTED_SUBSIDIARIES"
       ],
       "discoveryScore": 50.5
@@ -1827,7 +1877,7 @@
       "originalBytesHash": "997e730b517351e4283dfce8ae88f41aad511a24b345045f0a2480590cb006de",
       "byteSize": 2653216,
       "definitionCount": 7,
-      "covenantCandidateCount": 55,
+      "covenantCandidateCount": 181,
       "crossReferenceCount": 783,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1841,16 +1891,23 @@
       ],
       "covenantFamilies": [
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "LIENS",
         "EVENTS_OF_DEFAULT",
         "GUARANTEES",
         "INDEBTEDNESS",
-        "ASSET_SALES",
-        "SHARED_CAPACITY_PROVISIONS",
         "MANDATORY_PREPAYMENTS",
+        "INVESTMENTS",
+        "FUNDAMENTAL_CHANGES",
+        "ASSET_SALES",
+        "RESTRICTED_PAYMENTS",
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "RATIO_BASED_PERMISSIONS",
         "INCREMENTAL_DEBT_AND_FACILITIES",
-        "LIENS",
-        "INVESTMENTS"
+        "SHARED_CAPACITY_PROVISIONS",
+        "UNKNOWN",
+        "JUNIOR_DEBT_PREPAYMENTS",
+        "RESTRICTED_SUBSIDIARIES"
       ],
       "discoveryScore": 50.5
     },
@@ -1888,7 +1945,7 @@
       "originalBytesHash": "0fe83ff902bc90b106d3d6dac26b8c6d15c84fcd72d4896c646b9b38694035fd",
       "byteSize": 122826,
       "definitionCount": 7,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 2,
       "crossReferenceCount": 77,
       "conditionExceptionCount": 48,
       "definitionTerms": [
@@ -1901,10 +1958,8 @@
         "Shares"
       ],
       "covenantFamilies": [
-        "INVESTMENTS",
-        "ASSET_SALES",
-        "GUARANTEES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "GUARANTEES"
       ],
       "discoveryScore": 13
     },
@@ -1920,7 +1975,7 @@
       "originalBytesHash": "67137daaf59ccd4ff83e3c21ee916478817c8ac64a380a2b9431d6bbd4fa96f3",
       "byteSize": 109549,
       "definitionCount": 7,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 77,
       "conditionExceptionCount": 51,
       "definitionTerms": [
@@ -1933,10 +1988,8 @@
         "Shares"
       ],
       "covenantFamilies": [
-        "INVESTMENTS",
-        "ASSET_SALES",
-        "GUARANTEES",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "GUARANTEES"
       ],
       "discoveryScore": 13
     },
@@ -1952,7 +2005,7 @@
       "originalBytesHash": "c6c2cd22a6510a1ea2a80f7557bed89455e8ac113b3847e2be55725a5e09b319",
       "byteSize": 2497626,
       "definitionCount": 19,
-      "covenantCandidateCount": 68,
+      "covenantCandidateCount": 141,
       "crossReferenceCount": 746,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -1988,6 +2041,7 @@
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "EVENTS_OF_DEFAULT",
         "DESIGNATIONS",
+        "UNKNOWN",
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "SHARED_CAPACITY_PROVISIONS",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
@@ -2011,7 +2065,7 @@
       "originalBytesHash": "f2fb2c8d171d86a7b5e3c9bf179bd7024ef02ff4b20e2676ecc1fb1f63733306",
       "byteSize": 122659,
       "definitionCount": 0,
-      "covenantCandidateCount": 1,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 19,
       "conditionExceptionCount": 3,
       "definitionTerms": [],
@@ -2033,7 +2087,7 @@
       "originalBytesHash": "dcf263c7d8abfeab86d2a5799602bd47877d05160af2073aec93c131ebe09e0e",
       "byteSize": 2446427,
       "definitionCount": 19,
-      "covenantCandidateCount": 99,
+      "covenantCandidateCount": 171,
       "crossReferenceCount": 715,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -2068,15 +2122,16 @@
         "FINANCIAL_MAINTENANCE_COVENANTS",
         "EVENTS_OF_DEFAULT",
         "DESIGNATIONS",
+        "UNKNOWN",
+        "RESTRICTED_PAYMENTS",
+        "RATIO_BASED_PERMISSIONS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "MANDATORY_PREPAYMENTS",
         "SHARED_CAPACITY_PROVISIONS",
         "JUNIOR_DEBT_PREPAYMENTS",
-        "RATIO_BASED_PERMISSIONS",
-        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
-        "UNRESTRICTED_SUBSIDIARIES",
-        "RESTRICTED_PAYMENTS",
-        "UNKNOWN"
+        "RESTRICTED_SUBSIDIARIES",
+        "UNRESTRICTED_SUBSIDIARIES"
       ],
       "discoveryScore": 49
     },
@@ -2092,7 +2147,7 @@
       "originalBytesHash": "d97329f53e5121916077a2cf415f2e258ae808df42a69cd53ab00feed6a10a08",
       "byteSize": 831120,
       "definitionCount": 0,
-      "covenantCandidateCount": 55,
+      "covenantCandidateCount": 101,
       "crossReferenceCount": 726,
       "conditionExceptionCount": 253,
       "definitionTerms": [],
@@ -2100,11 +2155,14 @@
         "DESIGNATIONS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "EVENTS_OF_DEFAULT",
+        "UNKNOWN",
         "FUNDAMENTAL_CHANGES",
         "SHARED_CAPACITY_PROVISIONS",
         "INDEBTEDNESS",
+        "LIENS",
         "INVESTMENTS",
-        "GUARANTEES"
+        "GUARANTEES",
+        "ASSET_SALES"
       ],
       "discoveryScore": 22.5
     },
@@ -2120,7 +2178,7 @@
       "originalBytesHash": "21401abf1ce7dc2bf71514daa68fa301c63a10055e79ff737b0eb1dd3fb466f7",
       "byteSize": 2737662,
       "definitionCount": 2,
-      "covenantCandidateCount": 255,
+      "covenantCandidateCount": 305,
       "crossReferenceCount": 1224,
       "conditionExceptionCount": 400,
       "definitionTerms": [
@@ -2130,24 +2188,25 @@
       "covenantFamilies": [
         "INCREMENTAL_DEBT_AND_FACILITIES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "INDEBTEDNESS",
         "EVENTS_OF_DEFAULT",
         "LIENS",
         "INVESTMENTS",
-        "INDEBTEDNESS",
+        "GUARANTEES",
         "RESTRICTED_PAYMENTS",
         "ASSET_SALES",
         "FUNDAMENTAL_CHANGES",
         "FINANCIAL_MAINTENANCE_COVENANTS",
-        "GUARANTEES",
+        "UNKNOWN",
+        "UNRESTRICTED_SUBSIDIARIES",
         "RESTRICTED_SUBSIDIARIES",
+        "AFFILIATE_TRANSACTIONS",
         "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
         "RATIO_BASED_PERMISSIONS",
-        "UNRESTRICTED_SUBSIDIARIES",
         "MANDATORY_PREPAYMENTS",
         "SHARED_CAPACITY_PROVISIONS",
         "JUNIOR_DEBT_PREPAYMENTS",
-        "DESIGNATIONS",
-        "AFFILIATE_TRANSACTIONS"
+        "DESIGNATIONS"
       ],
       "discoveryScore": 59.5
     },
@@ -2158,16 +2217,19 @@
       "documentClass": "UNKNOWN",
       "formType": "8-K",
       "filingDate": "2026-10-08",
-      "representationLevel": "STRUCTURALLY_INDEXED",
+      "representationLevel": "DISCOVERED_CANDIDATE",
       "extractionStatus": "CANDIDATES_DISCOVERED",
       "originalBytesHash": "f8ae96c7234efc4f9e90a0fef489a498d5f4cc2a93c0c7897750cbf0af2e6a42",
       "byteSize": 130360,
       "definitionCount": 0,
-      "covenantCandidateCount": 0,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 14,
       "conditionExceptionCount": 2,
       "definitionTerms": [],
-      "covenantFamilies": [],
+      "covenantFamilies": [
+        "GUARANTEES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
       "discoveryScore": 5.5
     },
     {
@@ -2177,16 +2239,19 @@
       "documentClass": "UNKNOWN",
       "formType": "8-K",
       "filingDate": "2026-10-08",
-      "representationLevel": "STRUCTURALLY_INDEXED",
+      "representationLevel": "DISCOVERED_CANDIDATE",
       "extractionStatus": "CANDIDATES_DISCOVERED",
       "originalBytesHash": "0661786833159d55e8da40140ae165608e3394c2e0873a6a75b727e2663daf66",
       "byteSize": 132614,
       "definitionCount": 0,
-      "covenantCandidateCount": 0,
+      "covenantCandidateCount": 3,
       "crossReferenceCount": 14,
       "conditionExceptionCount": 2,
       "definitionTerms": [],
-      "covenantFamilies": [],
+      "covenantFamilies": [
+        "GUARANTEES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
       "discoveryScore": 5.5
     },
     {
@@ -4290,25 +4355,25 @@
     }
   ],
   "familyHistogram": {
-    "LIENS": 78,
-    "GUARANTEES": 76,
-    "ASSET_SALES": 64,
-    "GENERAL_CONDITIONS_AND_EXCEPTIONS": 115,
-    "DESIGNATIONS": 38,
-    "FUNDAMENTAL_CHANGES": 62,
-    "UNKNOWN": 18,
-    "INDEBTEDNESS": 66,
-    "INVESTMENTS": 77,
-    "EVENTS_OF_DEFAULT": 90,
-    "SHARED_CAPACITY_PROVISIONS": 66,
-    "INCREMENTAL_DEBT_AND_FACILITIES": 37,
-    "MANDATORY_PREPAYMENTS": 41,
-    "RESTRICTED_PAYMENTS": 39,
-    "RATIO_BASED_PERMISSIONS": 58,
-    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS": 33,
-    "JUNIOR_DEBT_PREPAYMENTS": 37,
+    "LIENS": 80,
+    "GUARANTEES": 81,
+    "ASSET_SALES": 66,
+    "GENERAL_CONDITIONS_AND_EXCEPTIONS": 119,
+    "DESIGNATIONS": 40,
+    "UNKNOWN": 42,
+    "FUNDAMENTAL_CHANGES": 65,
+    "INDEBTEDNESS": 71,
+    "INVESTMENTS": 75,
+    "EVENTS_OF_DEFAULT": 88,
+    "SHARED_CAPACITY_PROVISIONS": 67,
+    "RATIO_BASED_PERMISSIONS": 61,
+    "RESTRICTED_PAYMENTS": 41,
+    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS": 37,
+    "INCREMENTAL_DEBT_AND_FACILITIES": 39,
+    "MANDATORY_PREPAYMENTS": 42,
+    "JUNIOR_DEBT_PREPAYMENTS": 39,
     "FINANCIAL_MAINTENANCE_COVENANTS": 41,
-    "RESTRICTED_SUBSIDIARIES": 22,
+    "RESTRICTED_SUBSIDIARIES": 24,
     "AFFILIATE_TRANSACTIONS": 20,
     "UNRESTRICTED_SUBSIDIARIES": 20
   },
@@ -4318,5 +4383,5 @@
     "CREDIT_AGREEMENT": 31,
     "RESTATEMENT": 4
   },
-  "digest": "92c8726255ae02a9a28c470f45e6a890468002686c4b6b5b4d01ceb74c1a64f6"
+  "digest": "b8155c587a9f76770d5cca6d498a40558351a64735afc348d4d8d82fc69b9ea4"
 }

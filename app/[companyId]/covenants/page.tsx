@@ -92,6 +92,54 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
+      {review.amendmentCompare.rows.length > 0 && (
+        <Card>
+          <div className="card-title">Amendment before / after (discovery)</div>
+          <div className="card-subtitle">{review.amendmentCompare.note}</div>
+          {review.amendmentCompare.rows.slice(0, 16).map((row, i) => (
+            <div
+              key={`${row.sectionRef}-${i}`}
+              style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}
+            >
+              <div className="row">
+                <div className="row-label">§{row.sectionRef}</div>
+                <div className="row-value">
+                  <Chip tone="navy">{row.changeKind}</Chip>
+                </div>
+              </div>
+              <div className="row-note">{row.note}</div>
+              {row.baseExcerpt && <div className="row-note">Base: “{row.baseExcerpt}”</div>}
+              {row.amendmentExcerpt && (
+                <div className="row-note">Amendment: “{row.amendmentExcerpt}”</div>
+              )}
+            </div>
+          ))}
+        </Card>
+      )}
+
+      {review.dependencyGraph.edgeCount > 0 && (
+        <Card>
+          <div className="card-title">Cross-covenant dependencies</div>
+          <div className="card-subtitle">
+            {review.dependencyGraph.edgeCount} source-backed relationship hint(s). Permission under one covenant is not
+            permission under every related covenant.
+          </div>
+          {review.dependencyGraph.edges.slice(0, 12).map((e, i) => (
+            <div key={i} className="row-note" style={{ marginTop: 8 }}>
+              <Chip tone="navy">{e.kind}</Chip> §{e.fromSectionRef} → §{e.toSectionRef}: {e.rationale}
+            </div>
+          ))}
+          {review.dependencyGraph.cycles.length > 0 && (
+            <div className="row-note" style={{ marginTop: 8 }}>
+              Possible circular refs: {review.dependencyGraph.cycles.join("; ")}
+            </div>
+          )}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            {review.dependencyGraph.note}
+          </div>
+        </Card>
+      )}
+
       {review.analyzedOkCount > 0 && (
         <Card>
           <div className="card-title">Executive summary</div>
