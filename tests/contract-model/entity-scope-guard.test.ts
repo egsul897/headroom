@@ -19,7 +19,15 @@ import { describe, expect, it } from "vitest";
 import { EntityClassTag } from "@prisma/client";
 import { SubmitCompilationSchema } from "@/lib/contract-model/compiler/semantic/wire-schema";
 import { normalizeSubmission } from "@/lib/contract-model/compiler/semantic/normalize";
-import { applyEntityScopeGuard, citedUnitLeadIn, classifyEntityTag, findEntityBindingSignals, replayEntityScopeGuard, TAG_DENOTATION } from "@/lib/contract-model/compiler/semantic/entity-scope-guard";
+import {
+  applyEntityScopeGuard,
+  citedUnitLeadIn,
+  classifyEntityMentionRole,
+  classifyEntityTag,
+  findEntityBindingSignals,
+  replayEntityScopeGuard,
+  TAG_DENOTATION,
+} from "@/lib/contract-model/compiler/semantic/entity-scope-guard";
 import type { IRRule } from "@/lib/contract-model/ir/types";
 import { testCompilerInput } from "./semantic-compiler/test-helpers";
 
@@ -165,6 +173,52 @@ describe("entity-scope guard - §10 do not over-guard (tests 3, 4)", () => {
     expect(r.entityScope).toEqual(["ANY_SUBSIDIARY"]);
     expect(r.sufficiency).toBe("COMPLETE");
     expect(r.entityScopeAudit!.status).toBe("SOURCE_MATCH_CONFIRMED");
+  });
+
+  it("v5: 'owed to the Borrower by any Subsidiary' treats Borrower as COUNTERPARTY, not OBLIGOR", () => {
+    const text = "(d) Indebtedness owed to the Borrower by any Subsidiary.";
+    expect(classifyEntityMentionRole(text, text.indexOf("Borrower"), "Borrower".length)).toBe("COUNTERPARTY");
+    expect(classifyEntityMentionRole(text, text.indexOf("Subsidiary"), "Subsidiary".length)).toBe("OBLIGOR");
+    const signals = findEntityBindingSignals(text);
+    expect(signals.find((s) => s.phrase === "Borrower")?.role).toBe("COUNTERPARTY");
+    expect(signals.find((s) => s.phrase === "Subsidiary")?.role).toBe("OBLIGOR");
+  });
+
+  it("v5: model BORROWER on Subsidiary-only 'owed to' basket is corrected to ANY_SUBSIDIARY (MODEL_DIFFERENT), not left PARTIAL underinclusive", () => {
+    // Production normalizeSubmission passes operativeSourceText so OWN_EXCERPT is verbatim-derivable.
+    const excerpt = "(d) Indebtedness owed to the Borrower by any Subsidiary.";
+    const r = rule({ entityScope: ["BORROWER"], excerpt, posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION" });
+    const g = applyEntityScopeGuard(
+      r,
+      { ownExcerpt: excerpt, citedUnitLeadIn: null, operativeText: excerpt },
+      noTags,
+    );
+    expect(g.entityScope).toEqual(["ANY_SUBSIDIARY"]);
+    expect(g.sufficiency).toBe("COMPLETE");
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(g.entityScopeAudit!.safeToRely).toBe(true);
+    expect(g.entityScopeAudit!.modelDiscrepancy?.relation).toBe("MODEL_DIFFERENT");
+    // Same path via normalizeSubmission (operativeSourceText = excerpt).
+    const { rule: nr } = normalizeOne({
+      entityScope: ["BORROWER"],
+      excerpt,
+      posture: "PERMISSION",
+      ruleType: "QUANTITATIVE_PERMISSION",
+      action: "INCUR_DEBT",
+    }, "7.01(d)");
+    expect(nr.entityScope).toEqual(["ANY_SUBSIDIARY"]);
+    expect(nr.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(nr.entityScopeAudit!.modelDiscrepancy?.relation).toBe("MODEL_DIFFERENT");
+    // Still refuse classic under-inclusion (Borrower+Restricted Subsidiary lead-in with BORROWER-only model).
+    const under = guard(
+      rule({
+        entityScope: ["BORROWER"],
+        excerpt: "The Borrower shall not, and shall not permit any Restricted Subsidiary to, create any Lien.",
+      }),
+    );
+    expect(under.entityScope).toEqual([]);
+    expect(under.sufficiency).toBe("PARTIAL");
+    expect(under.entityScopeAudit!.status).toBe("UNDERINCLUSIVE_VS_SOURCE");
   });
 
   it("source = Restricted Subsidiaries only, scope = a recognized restricted-subsidiary class -> unchanged", () => {
