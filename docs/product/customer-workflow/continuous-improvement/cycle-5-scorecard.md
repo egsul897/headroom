@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 5 |
 | Starting SHA | `fc81cb57d1ee078ac34a2e4a34b280db48f17999` (Cycle 4 code tip) |
-| Ending SHA | *(set at commit)* |
+| Ending SHA |  |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
