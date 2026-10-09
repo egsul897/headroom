@@ -42,8 +42,9 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "INVESTMENTS",
     label: "Investments",
     aliases: ["permitted investments"],
-    headingPatterns: [/\bInvestments?\b/i],
-    bodyPatterns: [/\bPermitted\s+Investments?\b/i],
+    // Do not match "Investment Company Act" (Reg U / representation sections).
+    headingPatterns: [/\bInvestments?\b(?!\s+Company\b)/i],
+    bodyPatterns: [/\bPermitted\s+Investments?\b/i, /\bMake or hold any Investments?\b/i],
   },
   {
     family: "ASSET_SALES",
@@ -164,12 +165,14 @@ export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeT
   const bodyHits: KnowledgeTaxonomyFamily[] = [];
   const hay = `${heading}\n${text}`;
   for (const def of TAXONOMY_FAMILIES) {
+    // Heading patterns apply ONLY to the structural heading — not the body lead.
+    // Matching /\bInvestments?\b/ against body text falsely tagged Confidentiality /
+    // Indemnification sections that mention the Investment Company Act.
     const headingHit = heading.length > 0 && def.headingPatterns.some((re) => re.test(heading));
-    const leadHit = def.headingPatterns.some((re) => re.test(text.slice(0, 400)));
     const bodyHit = def.bodyPatterns.some((re) => re.test(hay));
     if (headingHit) {
       headingHits.push(def.family);
-    } else if (leadHit || bodyHit) {
+    } else if (bodyHit) {
       bodyHits.push(def.family);
     }
   }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T18:05:27.624Z",
+  "generatedAt": "2026-10-09T18:02:00.239Z",
   "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
   "results": [
     {
@@ -14,8 +14,9 @@
         "DEBT_INCURRENCE",
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
-        "EVENTS_OF_DEFAULT",
+        "ASSET_SALES",
         "AFFILIATE_TRANSACTIONS",
+        "MERGERS_FUNDAMENTAL_CHANGES",
         "BASKETS_EXCEPTIONS_CONDITIONS",
         "OTHER"
       ],
@@ -102,19 +103,20 @@
       "bytes": 1029323,
       "structuralNodes": 2073,
       "definitions": 413,
-      "candidates": 272,
+      "candidates": 286,
       "summaryItems": 120,
       "categories": [
         "DEBT_INCURRENCE",
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
-        "FINANCIAL_MAINTENANCE",
-        "EVENTS_OF_DEFAULT",
+        "AFFILIATE_TRANSACTIONS",
         "GUARANTEES",
-        "MERGERS_FUNDAMENTAL_CHANGES"
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE",
+        "EVENTS_OF_DEFAULT"
       ],
-      "basketSurfaces": 8,
+      "basketSurfaces": 10,
       "answers": [
         {
           "question": "What restrictions govern additional indebtedness?",
@@ -170,18 +172,19 @@
       "bytes": 864362,
       "structuralNodes": 1618,
       "definitions": 374,
-      "candidates": 252,
+      "candidates": 262,
       "summaryItems": 120,
       "categories": [
         "DEBT_INCURRENCE",
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
-        "EVENTS_OF_DEFAULT",
+        "GUARANTEES",
         "MERGERS_FUNDAMENTAL_CHANGES",
-        "BASKETS_EXCEPTIONS_CONDITIONS"
+        "FINANCIAL_MAINTENANCE",
+        "EVENTS_OF_DEFAULT"
       ],
-      "basketSurfaces": 14,
+      "basketSurfaces": 12,
       "answers": [
         {
           "question": "What restrictions govern additional indebtedness?",
@@ -223,7 +226,7 @@
           "question": "Which baskets share capacity?",
           "kind": "answered",
           "citationCount": 5,
-          "detailPreview": "Matching analyzed provisions say:\n(1) §2.06 — Termination and Reduction of Revolving Commitments [UNRESOLVED]\nSection 2.06 (“Termination and Reduction of Revolving Commitments”) relates to relevant baskets, exceptions, conditions and defined terms, but its prohibition/permission ",
+          "detailPreview": "Matching analyzed provisions say:\n(1) §2.19(a) — 2.19(a) [CONDITIONAL_PERMISSION]\nSection 2.19(a) (“2.19(a)”) operates as a conditional permission within the debt incurrence regime for entities not clearly identified in the excerpt. Permission substance: (a) At any time after the",
           "hasUnresolved": true,
           "hasPermissions": true,
           "hasRestrictions": true

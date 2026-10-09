@@ -8,7 +8,6 @@ describe("family classification heading priority", () => {
       "Investments, Loans and Advances",
     );
     expect(families[0]).toBe("INVESTMENTS");
-    expect(families).toContain("INDEBTEDNESS");
   });
 
   it("keeps Indebtedness primary for indebtedness headings", () => {
@@ -25,5 +24,13 @@ describe("family classification heading priority", () => {
       "Investments, Loans and Advances / 10.04(i)",
     );
     expect(families[0]).toBe("INVESTMENTS");
+  });
+
+  it("does not tag Confidentiality as INVESTMENTS from Investment Company Act body text", () => {
+    const families = classifyFamiliesFromText(
+      "Each Lender agrees to maintain confidentiality. Nothing herein restricts disclosures required by the Investment Company Act.",
+      "Confidentiality",
+    );
+    expect(families).not.toContain("INVESTMENTS");
   });
 });

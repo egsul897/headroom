@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T18:05:24.847Z",
+  "generatedAt": "2026-10-09T18:01:57.301Z",
   "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
   "paidInferenceCalls": 0,
   "promotedToLegalTruth": 0,
@@ -11,7 +11,7 @@
       "textLen": 782479,
       "structuralNodes": 1392,
       "definitions": 359,
-      "candidates": 333,
+      "candidates": 347,
       "conditionsExceptions": 400,
       "crossReferences": 885,
       "summaryItems": 120,
@@ -20,17 +20,18 @@
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
+        "GUARANTEES",
+        "MERGERS_FUNDAMENTAL_CHANGES",
         "FINANCIAL_MAINTENANCE",
-        "EVENTS_OF_DEFAULT",
-        "MERGERS_FUNDAMENTAL_CHANGES"
+        "EVENTS_OF_DEFAULT"
       ],
       "linkage": {
-        "itemsWithResolvedDefs": 108,
+        "itemsWithResolvedDefs": 110,
         "itemsWithUnresolvedDefs": 0,
-        "itemsWithExceptions": 36,
-        "itemsWithConditions": 47,
-        "itemsWithXrefs": 64,
-        "itemsWithBaskets": 16
+        "itemsWithExceptions": 38,
+        "itemsWithConditions": 39,
+        "itemsWithXrefs": 66,
+        "itemsWithBaskets": 15
       },
       "expectedDefHits": [
         {
@@ -73,14 +74,14 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": true,
-          "defLanguageHits": 72,
+          "defLanguageHits": 66,
           "citedSections": [
             "Definition: Consolidated EBITDA",
             "6.10",
             "6.10(a)",
+            "1.06",
             "6.13",
-            "6.13(b)",
-            "2.20(j)"
+            "6.13(b)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -98,13 +99,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 69,
+          "defLanguageHits": 49,
           "citedSections": [
             "6.10",
             "6.10(a)",
-            "6.01",
-            "6.01",
-            "6.10"
+            "1.01(q)",
+            "1.04(b)",
+            "2.20(d)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -122,12 +123,12 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 69,
+          "defLanguageHits": 54,
           "citedSections": [
             "6.10(a)",
             "6.10",
-            "6.01",
-            "6.10",
+            "1.01(q)",
+            "1.04(b)",
             "6.01"
           ],
           "limitations": [
@@ -150,9 +151,9 @@
           "citedSections": [
             "6.08",
             "6.08",
+            "2.25",
             "6.08(q)",
-            "6.05",
-            "6.08(b)"
+            "2.25(a)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -170,13 +171,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 50,
+          "defLanguageHits": 23,
           "citedSections": [
             "6.02",
             "3.12",
+            "3.17(i)",
             "6.01",
-            "6.10",
-            "6.10(a)"
+            "7(h)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -194,13 +195,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 69,
+          "defLanguageHits": 60,
           "citedSections": [
             "6.01",
+            "1.01(q)",
             "6.10",
             "6.10(a)",
-            "6.01",
-            "6.10"
+            "1.04(b)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -213,7 +214,7 @@
       "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
       "promotedToLegalTruth": 0,
       "_definitionCount": 359,
-      "_candidateCount": 333,
+      "_candidateCount": 347,
       "_xrefCount": 885,
       "_conditionCount": 400,
       "_structuralNodeCount": 1392
@@ -225,7 +226,7 @@
       "textLen": 821855,
       "structuralNodes": 1402,
       "definitions": 379,
-      "candidates": 284,
+      "candidates": 312,
       "conditionsExceptions": 400,
       "crossReferences": 806,
       "summaryItems": 120,
@@ -234,18 +235,17 @@
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
-        "EVENTS_OF_DEFAULT",
         "GUARANTEES",
         "MERGERS_FUNDAMENTAL_CHANGES",
-        "BASKETS_EXCEPTIONS_CONDITIONS"
+        "EVENTS_OF_DEFAULT"
       ],
       "linkage": {
         "itemsWithResolvedDefs": 117,
         "itemsWithUnresolvedDefs": 0,
-        "itemsWithExceptions": 54,
-        "itemsWithConditions": 58,
-        "itemsWithXrefs": 83,
-        "itemsWithBaskets": 9
+        "itemsWithExceptions": 47,
+        "itemsWithConditions": 46,
+        "itemsWithXrefs": 78,
+        "itemsWithBaskets": 10
       },
       "expectedDefHits": [
         {
@@ -291,14 +291,14 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": true,
-          "defLanguageHits": 65,
+          "defLanguageHits": 59,
           "citedSections": [
             "Definition: Adjusted Consolidated EBITDA",
+            "5.01",
             "10.04",
             "10.04(i)",
             "10.07",
-            "10.10",
-            "10.01"
+            "VI"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -316,14 +316,14 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": true,
-          "defLanguageHits": 65,
+          "defLanguageHits": 59,
           "citedSections": [
             "Definition: Adjusted Consolidated EBITDA",
+            "5.01",
             "10.04",
             "10.04(i)",
             "10.07",
-            "10.10",
-            "10.01"
+            "VI"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -341,13 +341,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 36,
+          "defLanguageHits": 32,
           "citedSections": [
             "10.01",
             "6.01",
-            "10.02",
-            "10.08(B)",
-            "10.08"
+            "6.09(g)",
+            "7.13",
+            "7.13(a)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -365,13 +365,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 53,
+          "defLanguageHits": 51,
           "citedSections": [
             "10.04",
             "10.04(i)",
             "10.09(l)",
             "10.01",
-            "10.02"
+            "X"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -413,13 +413,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 18,
+          "defLanguageHits": 15,
           "citedSections": [
             "10.02",
             "10.08",
-            "10.08(B)",
             "7.16(a)",
-            "7.16"
+            "13.02(c)",
+            "13.17"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -432,7 +432,7 @@
       "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
       "promotedToLegalTruth": 0,
       "_definitionCount": 379,
-      "_candidateCount": 284,
+      "_candidateCount": 312,
       "_xrefCount": 806,
       "_conditionCount": 400,
       "_structuralNodeCount": 1402
@@ -444,7 +444,7 @@
       "textLen": 736899,
       "structuralNodes": 1308,
       "definitions": 328,
-      "candidates": 311,
+      "candidates": 336,
       "conditionsExceptions": 400,
       "crossReferences": 785,
       "summaryItems": 120,
@@ -453,18 +453,15 @@
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
-        "FINANCIAL_MAINTENANCE",
-        "EVENTS_OF_DEFAULT",
-        "GUARANTEES",
-        "MERGERS_FUNDAMENTAL_CHANGES"
+        "GUARANTEES"
       ],
       "linkage": {
-        "itemsWithResolvedDefs": 118,
+        "itemsWithResolvedDefs": 117,
         "itemsWithUnresolvedDefs": 0,
-        "itemsWithExceptions": 36,
-        "itemsWithConditions": 45,
-        "itemsWithXrefs": 52,
-        "itemsWithBaskets": 18
+        "itemsWithExceptions": 24,
+        "itemsWithConditions": 40,
+        "itemsWithXrefs": 36,
+        "itemsWithBaskets": 17
       },
       "expectedDefHits": [
         {
@@ -510,14 +507,14 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": true,
-          "defLanguageHits": 46,
+          "defLanguageHits": 61,
           "citedSections": [
             "Definition: Acquired EBITDA",
-            "6.12",
-            "6.12(a)",
-            "6.12(b)",
             "6.08",
-            "6.01"
+            "6.01",
+            "6.08(a)",
+            "6.01(b)",
+            "6.01(c)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -559,13 +556,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 62,
+          "defLanguageHits": 58,
           "citedSections": [
             "6.01",
             "6.08",
             "6.01(b)",
             "6.01(c)",
-            "6.01(i)"
+            "1.04(ii)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -583,13 +580,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 11,
+          "defLanguageHits": 16,
           "citedSections": [
             "6.05",
-            "2.11(c)",
             "1.06",
+            "2.11(c)",
             "2.13(g)",
-            "2.11"
+            "1.05"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -602,17 +599,17 @@
           "question": "What conditions apply to acquisitions?",
           "kind": "answered",
           "citationCount": 5,
-          "detailPreview": "Matching analyzed provisions say:\n(1) §6.08 — Restricted Payments; Certain Payments of Indebtedness [GENERAL_PROHIBITION]\nSection 6.08 (“Restricted Payments; Certain Payments of Indebtedness”) is a general debt incurrence prohibition covering Loan Parties, Restricted Subsidiaries, Subsidiaries. General prohibition on debt incurrence activity (heading “Restricted Payments; Certain Payments of Indebtedness”), subject to enumerated exceptions if any appear in the text. It is subject to enumerated e",
+          "detailPreview": "Matching analyzed provisions say:\n(1) §6.01 — Indebtedness [GENERAL_PROHIBITION]\nSection 6.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower, Loan Parties, Restricted Subsidiaries, Subsidiaries. shall not at any time exceed an amount equal to 15% of Applicable EBITDA; 113 (c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any o It is subject to enumerated exceptions/permissio",
           "hasUnresolved": true,
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
           "defLanguageHits": 47,
           "citedSections": [
-            "6.08",
             "6.01",
-            "9.02",
+            "6.08",
             "6.08(a)",
+            "9.02",
             "6.02"
           ],
           "limitations": [
@@ -631,13 +628,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 49,
+          "defLanguageHits": 41,
           "citedSections": [
             "9.02",
-            "6.08",
+            "3",
             "6.01",
-            "6.02(p)",
-            "3"
+            "6.08",
+            "6.11"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -650,7 +647,7 @@
       "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
       "promotedToLegalTruth": 0,
       "_definitionCount": 328,
-      "_candidateCount": 311,
+      "_candidateCount": 336,
       "_xrefCount": 785,
       "_conditionCount": 400,
       "_structuralNodeCount": 1308
@@ -662,7 +659,7 @@
       "textLen": 955134,
       "structuralNodes": 1399,
       "definitions": 472,
-      "candidates": 176,
+      "candidates": 184,
       "conditionsExceptions": 400,
       "crossReferences": 843,
       "summaryItems": 120,
@@ -671,18 +668,19 @@
         "LIENS_SECURED_DEBT",
         "RESTRICTED_PAYMENTS_INVESTMENTS",
         "ASSET_SALES",
-        "EVENTS_OF_DEFAULT",
         "GUARANTEES",
         "MERGERS_FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE",
+        "EVENTS_OF_DEFAULT",
         "BASKETS_EXCEPTIONS_CONDITIONS"
       ],
       "linkage": {
-        "itemsWithResolvedDefs": 116,
+        "itemsWithResolvedDefs": 117,
         "itemsWithUnresolvedDefs": 0,
-        "itemsWithExceptions": 55,
-        "itemsWithConditions": 70,
-        "itemsWithXrefs": 61,
-        "itemsWithBaskets": 11
+        "itemsWithExceptions": 51,
+        "itemsWithConditions": 58,
+        "itemsWithXrefs": 60,
+        "itemsWithBaskets": 10
       },
       "expectedDefHits": [
         {
@@ -723,13 +721,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 48,
+          "defLanguageHits": 43,
           "citedSections": [
             "10.1",
             "10.1",
             "9.12",
             "9.12",
-            "1.11"
+            "1.10(f)"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -747,14 +745,14 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": true,
-          "defLanguageHits": 51,
+          "defLanguageHits": 31,
           "citedSections": [
             "Definition: Acquisition Agreement",
-            "1.10(e)",
+            "11.14",
+            "1.10",
             "10.1",
             "5.2",
-            "14.1",
-            "10.4"
+            "9.6"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -772,13 +770,13 @@
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 48,
+          "defLanguageHits": 39,
           "citedSections": [
             "10.1",
             "10.1",
             "9.12",
-            "1.11",
-            "9.12"
+            "1.10(f)",
+            "1.11"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -791,18 +789,18 @@
           "question": "How do amendment changes affect debt capacity?",
           "kind": "answered",
           "citationCount": 5,
-          "detailPreview": "Amendment effects are reported only from analyzed package documents. Precedence may be unresolved. Matching analyzed provisions say:\n(1) §9.12 — 9.12 Pledge of Additional Stock and Evidence of Indebtedness . Subject to any applicable limitations set forth in the Security Documents and other than (x) when [GENERAL_PROHIBITION]\nSection 9.12 (“9.12 Pledge of Additional Stock and Evidence of Indebtedness . Subject to any applicable limitations…”) is a general debt incurrence prohibition covering Gua",
+          "detailPreview": "Amendment effects are reported only from analyzed package documents. Precedence may be unresolved. Matching analyzed provisions say:\n(1) §8.7 — 8.7 Investment Company Act . No Credit Party is an “investment company” within the meaning of the Investment Company Act of 1940, as amended. [UNRESOLVED]\nSection 8.7 (“8.7 Investment Company Act . No Credit Party is an “investment company” within the meaning of the In…”) relates to restricted payments and investments, but its prohibition/permission post",
           "hasUnresolved": true,
           "hasPermissions": true,
           "hasRestrictions": true,
           "leadsWithDefinition": false,
-          "defLanguageHits": 57,
+          "defLanguageHits": 42,
           "citedSections": [
+            "8.7",
+            "5(f)",
             "9.12",
             "1.10(e)",
-            "10.7",
-            "10.2",
-            "1.11"
+            "10.2"
           ],
           "limitations": [
             "Composed from persisted provision analyses — not a second legal engine",
@@ -815,7 +813,7 @@
       "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
       "promotedToLegalTruth": 0,
       "_definitionCount": 472,
-      "_candidateCount": 176,
+      "_candidateCount": 184,
       "_xrefCount": 843,
       "_conditionCount": 400,
       "_structuralNodeCount": 1399

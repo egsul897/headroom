@@ -107,13 +107,39 @@ function clip(s: string, n: number): string {
 }
 
 function detectPosture(excerpt: string, heading: string, families: string[]): ProvisionPosture {
-  const hay = `${heading}\n${excerpt}`;
+  // TOC lines often append a page number ("Section 7.06 Restricted Payments 125").
+  const cleanHeading = heading.replace(/\s+\d{1,4}\s*$/g, "").trim();
+  const hay = `${cleanHeading}\n${excerpt}`;
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
   if (
     /\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
     /\bMake any Restricted Payment\b/i.test(hay) ||
     /\bEnter into or suffer to exist\b/i.test(hay) ||
-    (/\bLimitation on\b/i.test(heading) && /\bexcept\s*:/i.test(hay))
+    (/\bLimitation on\b/i.test(cleanHeading) && /\bexcept\s*:/i.test(hay))
+  ) {
+    return "GENERAL_PROHIBITION";
+  }
+  // Named negative-covenant sections are general prohibitions even when the
+  // retrieved span is TOC-contaminated or the chapeau "shall not" is truncated.
+  if (
+    families.includes("RESTRICTED_PAYMENTS") &&
+    /\bRestricted\s+Payments?\b/i.test(cleanHeading) &&
+    !/^\s*\([a-z0-9]+\)/i.test(cleanHeading)
+  ) {
+    return "GENERAL_PROHIBITION";
+  }
+  if (
+    families.includes("INDEBTEDNESS") &&
+    /\b(?:Limitation on\s+)?Indebtedness\b/i.test(cleanHeading) &&
+    !/\bIncremental|Refinancing Indebtedness|Convertible Notes\b/i.test(cleanHeading) &&
+    !/^\s*\([a-z0-9]+\)/i.test(cleanHeading)
+  ) {
+    return "GENERAL_PROHIBITION";
+  }
+  if (
+    families.includes("LIENS") &&
+    /\b(?:Limitation on\s+)?Liens?\b/i.test(cleanHeading) &&
+    !/^\s*\([a-z0-9]+\)/i.test(cleanHeading)
   ) {
     return "GENERAL_PROHIBITION";
   }
@@ -131,7 +157,7 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   if (
     families.includes("FINANCIAL_MAINTENANCE_COVENANTS") ||
     /\bPermit the Consolidated\b/i.test(hay) ||
-    (/\bFinancial Condition Covenants?\b/i.test(heading) &&
+    (/\bFinancial Condition Covenants?\b/i.test(cleanHeading) &&
       /\bto exceed\b|\bto be less than\b/i.test(hay))
   ) {
     return "MAINTENANCE_TEST";
@@ -187,6 +213,21 @@ function extractBaskets(excerpt: string): string[] {
   ];
   for (const m of greaterOf.slice(0, 4)) {
     out.push(`Greater-of basket: $${m[1]} and ${m[2]}% of ${normalizeWs(m[3] ?? "")}`);
+  }
+  // Looser greater-of capture for drafting that omits (x)/(y) labels or uses "or".
+  if (greaterOf.length === 0) {
+    const loose = [
+      ...excerpt.matchAll(
+        /greater\s+of\s*\(?\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(?:million|billion)?\s*(?:and|or|,)\s*(?:\(y\)\s*)?([\d.]+)\s*%\s*(?:of\s+)?([A-Za-z][A-Za-z0-9\s%]{2,60}?)(?:\)|,|;|\.|$)/gi,
+      ),
+    ];
+    for (const m of loose.slice(0, 4)) {
+      out.push(`Greater-of basket: $${m[1]} and ${m[2]}% of ${normalizeWs(m[3] ?? "")}`);
+    }
+  }
+  if (out.length === 0 && /\bgreater\s+of\b/i.test(excerpt)) {
+    const clipGo = excerpt.match(/greater\s+of\b[\s\S]{0,160}/i);
+    if (clipGo) out.push(`Greater-of construct: ${normalizeWs(clipGo[0]).slice(0, 140)}`);
   }
   const dollars = excerpt.match(/\$\s?[\d,]+(?:\.\d+)?/g) ?? [];
   for (const d of dollars.slice(0, 6)) {

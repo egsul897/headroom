@@ -24,6 +24,11 @@ const FINANCING_CLASSES = new Set([
   "INDENTURE",
   "ABL_AGREEMENT",
   "AMENDED_AND_RESTATED_AGREEMENT",
+  // Amendments/restatements often carry restated definition schedules; prior
+  // thin-def refresh skipped these classes and left Neon at single-digit defs.
+  "AMENDMENT",
+  "RESTATEMENT",
+  "SUPPLEMENTAL_INDENTURE",
 ]);
 
 function argInt(name: string, fallback: number): number {

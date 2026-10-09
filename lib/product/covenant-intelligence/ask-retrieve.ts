@@ -82,20 +82,45 @@ function classifyIntent(q: string): QuestionIntent {
   return "GENERAL";
 }
 
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Match a defined-term query to the definition bank.
+ * Prefer exact / shortest whole-phrase hits so "Consolidated EBITDA" does not
+ * resolve to "Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio".
+ */
 function matchDefinedTerm(
   query: string,
   terms: Array<{ term: string; excerpt: string }>,
 ): { term: string; excerpt: string } | null {
   const q = query.toLowerCase().replace(/\s+/g, " ").trim();
   if (!q) return null;
-  let best: { term: string; excerpt: string } | null = null;
-  for (const t of terms) {
-    const term = t.term.toLowerCase().replace(/\s+/g, " ").trim();
-    if (term === q || term.includes(q) || q.includes(term)) {
-      if (!best || t.term.length > best.term.length) best = t;
-    }
+  const normalized = terms.map((t) => ({
+    ...t,
+    key: t.term.toLowerCase().replace(/\s+/g, " ").trim(),
+  }));
+  const exact = normalized.find((t) => t.key === q);
+  if (exact) return { term: exact.term, excerpt: exact.excerpt };
+
+  const phrase = new RegExp(`(?:^|[^a-z0-9])${escapeRegExp(q)}(?:[^a-z0-9]|$)`, "i");
+  const termContainsQuery = normalized.filter((t) => phrase.test(t.key));
+  if (termContainsQuery.length > 0) {
+    termContainsQuery.sort((a, b) => a.key.length - b.key.length);
+    return { term: termContainsQuery[0]!.term, excerpt: termContainsQuery[0]!.excerpt };
   }
-  return best;
+
+  const queryContainsTerm = normalized.filter((t) => {
+    if (t.key.length < 4) return false;
+    const re = new RegExp(`(?:^|[^a-z0-9])${escapeRegExp(t.key)}(?:[^a-z0-9]|$)`, "i");
+    return re.test(q);
+  });
+  if (queryContainsTerm.length > 0) {
+    queryContainsTerm.sort((a, b) => b.key.length - a.key.length);
+    return { term: queryContainsTerm[0]!.term, excerpt: queryContainsTerm[0]!.excerpt };
+  }
+  return null;
 }
 
 function intentCategories(intent: QuestionIntent): string[] {
@@ -176,8 +201,13 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
     if (item.category === "LIENS_SECURED_DEBT") score += 3;
     if (item.posture === "GENERAL_PROHIBITION" && item.category === "DEBT_INCURRENCE") score += 2;
   }
-  if (intent === "RESTRICTED_PAYMENTS" && item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") {
-    score += 5;
+  if (intent === "RESTRICTED_PAYMENTS") {
+    if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") {
+      score += 5;
+      if (item.posture === "GENERAL_PROHIBITION") score += 5;
+      if (/\brestricted\s+payments?\b/i.test(item.heading)) score += 6;
+    }
+    if (item.category === "DEBT_INCURRENCE") score -= 4;
   }
   if (intent === "ASSET_SALES" && item.category === "ASSET_SALES") score += 6;
   if (intent === "NON_GUARANTOR_DEBT") {

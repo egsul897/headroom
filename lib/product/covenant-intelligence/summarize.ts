@@ -182,9 +182,69 @@ export function buildDocumentCovenantSummary(params: {
     promotedToLegalTruth: 0,
     note: "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
-    items: items.slice(0, 120),
+    items: selectBalancedSummaryItems(items, 120),
     definedTermsSample: pickDefinedTermsSample(params.definitions, 80),
   };
+}
+
+/**
+ * Cap summary items without letting DEBT/LIEN volume extinguish RP, asset-sale,
+ * or financial-maintenance families (a real failure mode on large A&R CAs).
+ */
+function categoryPriorityScore(item: CovenantSummaryItem): number {
+  let s = 0;
+  if (item.posture === "GENERAL_PROHIBITION") s += 12;
+  if (item.posture === "MAINTENANCE_TEST") s += 6;
+  if (/\brestricted\s+payments?\b/i.test(item.heading)) s += 14;
+  if (/^(?:limitation on\s+)?indebtedness\b/i.test(item.heading)) s += 12;
+  if (/^(?:limitation on\s+)?liens?\b/i.test(item.heading)) s += 12;
+  if (/^investments?\b/i.test(item.heading)) s += 8;
+  // Prefer parent sections over lettered baskets when filling the per-category budget.
+  if (/^\d+(?:\.\d+)?\([a-z0-9]+\)$/i.test(item.sectionRef)) s -= 4;
+  if ((item.materialBasketsThresholds?.length ?? 0) > 0) s += 2;
+  return s;
+}
+
+function selectBalancedSummaryItems(
+  items: CovenantSummaryItem[],
+  limit: number,
+): CovenantSummaryItem[] {
+  const material: CovenantCategoryKey[] = [
+    "DEBT_INCURRENCE",
+    "LIENS_SECURED_DEBT",
+    "RESTRICTED_PAYMENTS_INVESTMENTS",
+    "ASSET_SALES",
+    "FINANCIAL_MAINTENANCE",
+    "EVENTS_OF_DEFAULT",
+    "GUARANTEES",
+    "MERGERS_FUNDAMENTAL_CHANGES",
+  ];
+  const perCat = Math.max(8, Math.floor(limit / (material.length + 2)));
+  const picked: CovenantSummaryItem[] = [];
+  const seen = new Set<string>();
+  const keyOf = (i: CovenantSummaryItem) => `${i.category}|${i.sectionRef}|${i.heading}`;
+
+  for (const cat of material) {
+    const ranked = items
+      .filter((i) => i.category === cat)
+      .slice()
+      .sort((a, b) => categoryPriorityScore(b) - categoryPriorityScore(a));
+    for (const item of ranked.slice(0, perCat)) {
+      const k = keyOf(item);
+      if (seen.has(k)) continue;
+      seen.add(k);
+      picked.push(item);
+      if (picked.length >= limit) return picked;
+    }
+  }
+  for (const item of items) {
+    const k = keyOf(item);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    picked.push(item);
+    if (picked.length >= limit) break;
+  }
+  return picked;
 }
 
 /** Prefer material financing terms in the persisted sample used by Ask. */

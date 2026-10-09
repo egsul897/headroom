@@ -56,6 +56,38 @@ describe("definition-first Ask retrieval", () => {
     );
   });
 
+  it("prefers bare Consolidated EBITDA over longer ratio terms containing that phrase", () => {
+    const ebitdaExcerpt =
+      "“ Consolidated EBITDA ” means, with reference to any period, Consolidated Net Income for such period plus add-backs.";
+    const answer = answerFromSummaryItems({
+      question: "What constitutes Consolidated EBITDA?",
+      definedTerms: [
+        {
+          term: "Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio",
+          excerpt: "“Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio” means the ratio of …",
+        },
+        { term: "Consolidated EBITDA", excerpt: ebitdaExcerpt },
+      ],
+      items: [
+        stubItem({
+          sectionRef: "9.6",
+          heading: "Financial Covenants",
+          category: "FINANCIAL_MAINTENANCE",
+          posture: "MAINTENANCE_TEST",
+          plainEnglish: "Leverage test uses Consolidated EBITDA.",
+          applicableDefinitions: [
+            { term: "Consolidated EBITDA", excerpt: ebitdaExcerpt, resolved: true },
+          ],
+        }),
+      ],
+      researchOnly: true,
+      limit: 3,
+    });
+    expect(answer.citations[0]?.sectionRef).toBe("Definition: Consolidated EBITDA");
+    expect(answer.detail).toMatch(/Consolidated Net Income/);
+    expect(answer.citations[0]?.sectionRef).not.toMatch(/First Lien/i);
+  });
+
   it("leads with definition text for 'what constitutes Consolidated EBITDA'", () => {
     const ebitdaExcerpt =
       "“ Consolidated EBITDA ” means, with reference to any period, Consolidated Net Income for such period plus add-backs.";
