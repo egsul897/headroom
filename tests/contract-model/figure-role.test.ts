@@ -8,7 +8,7 @@ import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/seman
 import type { VerificationInput } from "../../lib/contract-model/compiler/semantic-verification/types";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
 import type { IRExpression, IRRule } from "../../lib/contract-model/ir/types";
-import { testCompilerInput } from "./semantic-compiler/test-helpers";
+import { emptyContextBundle, testCompilerInput } from "./semantic-compiler/test-helpers";
 import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import type { ZodType } from "zod";
 
@@ -208,5 +208,47 @@ describe("figure roles", () => {
     const result = await verify(text, money(5_000_000));
     expect(result.findings.filter((finding) => finding.findingType === "WRONG_AMOUNT" || finding.findingType === "WRONG_LOGIC")).toEqual([]);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+  });
+
+  it("clause-only operative text stays a capacity when PARENT_SCOPE carries the except lead-in", async () => {
+    const clause = "(b) other Indebtedness in an aggregate principal amount not to exceed $40,000,000 at any time outstanding; provided that no Default has occurred and is continuing at the time of incurrence.";
+    expect(classifyFigures(clause)[0]?.capacity).toBe(false);
+    const compiled: SemanticCompilationResult = {
+      status: "COMPLETED", failureReasons: [], errorDetail: null,
+      rules: [{
+        ruleId: "rule-1", irSchemaVersion: "v1", companyId: "c", instrumentKey: "i", sourceDocumentId: "d", sourceSectionRef: "7.01(b)",
+        covenantFamily: "INDEBTEDNESS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "INCUR_DEBT",
+        entityScope: [], entityScopeExcluded: [], transactionScope: null, capacityExpression: money(40_000_000), conditions: [], exceptions: [],
+        dependsOn: [], operativeLineage: null, sufficiency: "COMPLETE", sufficiencyReasons: [], provenance: null, compilerVersion: "v1", sourceContentVersion: null,
+      } as IRRule],
+      definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {},
+      provider: "test", model: "test", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(),
+    };
+    const input: VerificationInput = {
+      compilerInput: testCompilerInput({
+        operativeSourceText: clause,
+        sourceSectionRef: "7.01(b)",
+        contextBundle: emptyContextBundle({
+          items: [{
+            itemId: "parent",
+            type: "PARENT_SCOPE",
+            documentId: "d",
+            structuralNodeKey: null,
+            structuralNodeId: null,
+            normalizedRef: "7.01",
+            sourceCitation: "Section 7.01",
+            excerptText: "SECTION 7.01 Indebtedness. The Borrower shall not create, incur or assume any Indebtedness, except:",
+            reason: "parent lead-in",
+            retrievalDepth: 1,
+            retrievalPath: [],
+            retrievalMethod: "STRUCTURAL_PARENT",
+            confidence: null,
+          }],
+        }),
+      }),
+      compilationResult: compiled,
+    };
+    const result = await verifyCompiledCandidate(input, { reviewCaller: caller(), conditionSuspicionCaller: caller() });
+    expect(result.findings.filter((finding) => finding.findingType === "WRONG_AMOUNT")).toEqual([]);
   });
 });

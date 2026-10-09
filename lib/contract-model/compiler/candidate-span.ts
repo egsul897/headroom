@@ -122,14 +122,21 @@ function spliceDescendantAmendments(anchorNodeId: string, start: string, index: 
       const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
       const at = oldText ? start.indexOf(oldText) : -1;
       if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
-      splices.push({ at, oldText, replacement: "" });
+      // Keep the structural separator after a deleted clause (same trailing-ws rule as a replacement).
+      const trailing = oldText.match(/\s*$/)?.[0] ?? "";
+      splices.push({ at, oldText, replacement: trailing });
       continue;
     }
     if (!hasCurrentText(item.provision)) return { text: "", amended: false, withheld: true, withheldReasons };
     const oldText = index.getNodeText(item.nodeId, "DESCENDANTS");
     const at = oldText ? start.indexOf(oldText) : -1;
     if (!oldText || at < 0 || start.indexOf(oldText, at + oldText.length) >= 0) return { text: "", amended: false, withheld: true, withheldReasons };
-    splices.push({ at, oldText, replacement: item.provision.currentText });
+    // DESCENDANTS spans often include the blank line / spaces that separate this clause from
+    // the next sibling. Amendment currentText does not. Preserve that trailing whitespace so
+    // the next enumerator stays a boundary (`incurrence;(c)` must never become one run-on unit).
+    const trailing = oldText.match(/\s*$/)?.[0] ?? "";
+    const replacement = `${item.provision.currentText.replace(/\s*$/, "")}${trailing}`;
+    splices.push({ at, oldText, replacement });
   }
   const ordered = [...splices].sort((a, b) => a.at - b.at);
   for (let i = 1; i < ordered.length; i++) {

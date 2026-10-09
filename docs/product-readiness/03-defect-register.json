@@ -110,7 +110,7 @@
     },
     {
       "id": "IPV-04",
-      "status": "OPEN",
+      "status": "CLOSED",
       "severity": "NONMATERIAL_OMISSION",
       "outcomeClass": "CORRECT_FAIL_CLOSED",
       "deterministic": true,
@@ -134,12 +134,13 @@
       ],
       "failingInput": "Amendment No. 1 restates 7.01(b) ($25m \u2192 $40m + no-Default proviso); Amendment No. 2 deletes 7.01(e). Operative state resolves both (RESOLVED). Candidate anchored at SECTION 7.01, as of 2026-06-30.",
       "expected": "The operative text handed to composition excludes the superseded $25,000,000 text and the deleted $15,000,000 clause, or the candidate carries lineage/evidence status that forbids treating them as current.",
-      "actual": "Section splice works for credit-agreement::7.01 and indenture::4.09 operative text (stale $25m/$15m/$50m excluded). Context definition scan now uses amendment-aware OPERATIVE_SOURCE text (pipeline fix); synthetic regression covers Default retrieval. Remaining until acceptance re-run: context:C-7.01(b)-amended:definitions and certification:credit-agreement::7.01.",
+      "actual": "CLOSED at acceptance-runs/a3c6816922a7: context:C-7.01(b)-amended:definitions retrieved (Default); certification:credit-agreement::7.01 and 7.01(b)@clause CERTIFIED; operative-text CA+indenture exclude stale amounts. CFP 0/741.",
       "repro": "buildCandidateCompilerInput(candidate 7.01, operativeState@2026-06-30).operativeSourceText; faithful submission for credit-agreement::7.01",
       "impact": "Any section-level unit over an amended agreement is verified against the wrong text; a deleted basket can be certified as live.",
       "hypothesis": "Supersession is attached per physical node; the parent section's operative text is the base DESCENDANTS span and the per-node supersession index is not consulted when assembling it; the clause-level path binds provenance against the amendment text but context retrieval scans the base node.",
       "acceptance": "A candidate whose descendants are superseded/deleted at the as-of date must have its operative text spliced from the operative provisions (or be refused with an explicit lineage status); context retrieval and provenance binding must use the operative text.",
-      "fixNote": "operativeSourceTextFor + descendant splice + multi-instrument package operative state merge. Remaining signatures: context:C-7.01(b)-amended:definitions, certification:credit-agreement::7.01. Pipeline fix (post-A2): context-retrieval definition scan now uses OPERATIVE_SOURCE excerptText (amendment-aware) instead of base DESCENDANTS; regression in section-operative-splice.test.ts. Leave OPEN until acceptance signatures context:C-7.01(b)-amended:definitions and certification:credit-agreement::7.01 pass on a fresh run-all. Post-A2 Phase 3: context-retrieval/pipeline.ts scans operativeItem.excerptText (not base DESCENDANTS) for definitions \u2014 section-operative-splice IPV-04 regression."
+      "fixNote": "CLOSED: (1) operativeSourceTextFor descendant splice preserves trailing whitespace so clause boundaries survive restatement; (2) context-retrieval scans OPERATIVE_SOURCE excerptText for definitions; (3) figure-role uses PARENT_SCOPE lead-in before clause text so exception baskets are not UNCLASSIFIED; (4) entity-scope ENUM_MARKER recognizes markers after ;/: . Evidence: acceptance-runs/a3c6816922a7; pkg-c 50/51 pass 0 fail.",
+      "resolution": "CLOSED 2026-10-09 — residual acceptance signatures pass on run-all; section + clause CERTIFIED on package C with CFP 0."
     },
     {
       "id": "IPV-05",
@@ -544,7 +545,6 @@
         "pkg-i-secured-debt-lien",
         "pkg-k-three-way-builder",
         "pkg-b-multi-document",
-        "pkg-c-amendment-supersession",
         "pkg-f-capacity-ledger-honesty",
         "pkg-h-unseen-composition"
       ],
@@ -580,11 +580,6 @@
           "severity": "NONMATERIAL_OMISSION"
         },
         {
-          "packageId": "pkg-c-amendment-supersession",
-          "expectationRef": "certification:credit-agreement::7.01(b)@clause",
-          "severity": "NONMATERIAL_OMISSION"
-        },
-        {
           "packageId": "pkg-f-capacity-ledger-honesty",
           "expectationRef": "certification:credit-agreement::7.06",
           "severity": "NONMATERIAL_OMISSION"
@@ -607,7 +602,7 @@
       ],
       "failingInput": "D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).",
       "expected": "CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).",
-      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents).",
+      "actual": "D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the \"Notwithstanding anything to the contrary in Article VII\" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed).",
       "repro": "faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2",
       "impact": "None (fail-closed); listed so the register accounts for every finding in the report.",
       "hypothesis": "Mock incompleteness (D) and correct behaviour (G).",

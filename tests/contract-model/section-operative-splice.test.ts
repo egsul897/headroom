@@ -110,6 +110,10 @@ describe("section operative text follows clause amendments", () => {
     expect(section.text).not.toContain("$15,000,000");
     expect(section.text).toContain("$5,000,000");
     expect(section.text).toContain("Loan Documents");
+    // Trailing whitespace from the replaced base clause must survive so the next
+    // enumerator stays a boundary (never `...incurrence;(c)...`).
+    expect(section.text).not.toMatch(/continuing;\(c\)/);
+    expect(section.text).toMatch(/continuing;\s+\(c\)/);
 
     const clause = source(index, state, "7.01(b)");
     expect(clause.text).toContain("$40,000,000");
