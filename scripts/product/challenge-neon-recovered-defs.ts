@@ -148,6 +148,54 @@ const TARGETS: Target[] = [
       "Can debt be refinanced or replaced?",
     ],
   },
+  {
+    sourceId: "research:cbcfl:mrvi-unknown-newcreditagreement",
+    label: "Maravai LifeSciences Credit Agreement",
+    expectedDefTerms: ["Consolidated EBITDA", "Administrative Agent", "Lien", "Restricted Payment"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What restricted-payment / dividend baskets are available?",
+      "What incremental facility capacity paths are available?",
+      "Which baskets share capacity or use an Available Amount builder?",
+      "How do debt and lien permissions interact?",
+    ],
+  },
+  {
+    sourceId: "research:cbcfl:chwy_alt-unknown-d43042dex101",
+    label: "Chewy alternate credit agreement exhibit",
+    expectedDefTerms: ["Consolidated EBITDA", "Available Amount", "Not Otherwise Applied"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What incremental facility capacity paths are available?",
+      "Which baskets share capacity or use an Available Amount builder?",
+      "What investments or acquisitions are permitted?",
+    ],
+  },
+  {
+    sourceId: "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+    label: "Suja Life A&R Credit Agreement",
+    expectedDefTerms: ["Administrative Agent", "Lien"],
+    questions: [
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What investments or acquisitions are permitted?",
+      "Can debt be refinanced or replaced?",
+    ],
+  },
+  {
+    sourceId: "edgar:0000018230-22-000199:ex104-thirdamendmendandres.htm",
+    label: "Caterpillar Third A&R Credit Agreement (3Y)",
+    expectedDefTerms: ["Consolidated EBITDA", "Administrative Agent", "Lien"],
+    questions: [
+      "What constitutes Consolidated EBITDA?",
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "Can debt be refinanced or replaced?",
+      "How do debt and lien permissions interact?",
+    ],
+  },
 ];
 
 function termPresent(defs: Array<{ term: string }>, want: string): boolean {

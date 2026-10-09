@@ -70,6 +70,53 @@ const CASES: Case[] = [
       "Which baskets share capacity?",
     ],
   },
+  {
+    id: "riot-2026-sar-credit-agreement",
+    path: "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-c-2026-04-21-second-amended-restated-credit-agreement.txt",
+    title: "Riot Platforms Second A&R Credit Agreement (2026)",
+    issuer: "Riot Platforms, Inc.",
+    cik: "0001167419",
+    documentClass: "CREDIT_AGREEMENT",
+    questions: [
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What restricted-payment / dividend baskets are available?",
+      "What incremental facility capacity paths are available?",
+      "Which baskets share capacity or use an Available Amount builder?",
+      "What constitutes Consolidated EBITDA?",
+      "What investments or acquisitions are permitted?",
+    ],
+  },
+  {
+    id: "lsb-2023-abl-article-vi",
+    path: "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+    title: "LSB Industries ABL Credit Agreement (Article VI curated)",
+    issuer: "LSB Industries, Inc.",
+    cik: "0000060714",
+    documentClass: "CREDIT_AGREEMENT",
+    questions: [
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What asset-sale restrictions apply?",
+      "What investments or acquisitions are permitted?",
+      "How do debt and lien permissions interact?",
+    ],
+  },
+  {
+    id: "fwrg-2021-article-vi",
+    path: "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/article-6-negative-covenants.txt",
+    title: "First Watch Restaurant Group Credit Agreement (Article VI curated)",
+    issuer: "First Watch Restaurant Group, Inc.",
+    cik: "0001789940",
+    documentClass: "CREDIT_AGREEMENT",
+    questions: [
+      "What restrictions apply to additional secured debt?",
+      "What restrictions govern additional indebtedness?",
+      "What restricted-payment / dividend baskets are available?",
+      "What investments or acquisitions are permitted?",
+      "How do debt and lien permissions interact?",
+    ],
+  },
 ];
 
 function analyze(c: Case) {
