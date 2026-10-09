@@ -2,7 +2,7 @@
   "schema": "product.certified-vs-legacy-demo.v1",
   "label": "SYNTHETIC",
   "irLabel": "FIXTURE_IR",
-  "generatedAt": "2026-10-09T14:20:14.796Z",
+  "generatedAt": "2026-10-09T14:25:13.950Z",
   "companyId": "synthetic-conmed-form-co",
   "instrumentKey": "synthetic-term-loan-a",
   "note": "SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.",
@@ -134,16 +134,16 @@
         "capacities": [
           {
             "ruleId": "rule:synth-7.06(a)",
-            "status": "AVAILABLE",
-            "grossUsd": 25000000,
-            "remainingUsd": 20000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": 5000000
           },
           {
-            "ruleId": "rule:synth-7.06(b)",
-            "status": "AVAILABLE",
-            "grossUsd": 40000000,
-            "remainingUsd": 40000000,
+            "ruleId": "rule:synth-7.08(c)",
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           }
         ],
@@ -155,16 +155,8 @@
           "pathOrRule": "7.06(a):FIXED_RP",
           "field": "remainingCapacity",
           "legacyValue": 25,
-          "certifiedValue": 20000000,
-          "note": "Legacy capacityMillions×1e6=25000000 vs FIXTURE_IR remainingUsd=20000000 (scale/formula/ledger divergence)"
-        },
-        {
-          "exerciseId": "restricted-payment-75m",
-          "pathOrRule": "rule:synth-7.06(a)",
-          "field": "ledgerAwareRemaining",
-          "legacyValue": 25,
-          "certifiedValue": 20000000,
-          "note": "Ledger usage $5000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
         },
         {
           "exerciseId": "restricted-payment-75m",
@@ -616,16 +608,8 @@
       "pathOrRule": "7.06(a):FIXED_RP",
       "field": "remainingCapacity",
       "legacyValue": 25,
-      "certifiedValue": 20000000,
-      "note": "Legacy capacityMillions×1e6=25000000 vs FIXTURE_IR remainingUsd=20000000 (scale/formula/ledger divergence)"
-    },
-    {
-      "exerciseId": "restricted-payment-75m",
-      "pathOrRule": "rule:synth-7.06(a)",
-      "field": "ledgerAwareRemaining",
-      "legacyValue": 25,
-      "certifiedValue": 20000000,
-      "note": "Ledger usage $5000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
     },
     {
       "exerciseId": "restricted-payment-75m",
@@ -742,7 +726,7 @@
   ],
   "summary": {
     "exerciseCount": 7,
-    "discrepancyCount": 19,
+    "discrepancyCount": 18,
     "verifiedExecutionRan": 6,
     "verifiedExecutionBlocked": 1,
     "legacyAlwaysNotCertified4E": true

@@ -1007,38 +1007,22 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     modelingStatus: p.modelingStatus,
   }));
 
-  const multiPath: MultiPathAnalysis[] = [
+  // Demo multipath scenarios live in demo-transaction-fixtures — not customer facts.
+  const { listDemoTransactionFixtures } = await import(
+    "@/lib/product/north-star-workflow/demo-transaction-fixtures"
+  );
+  const multiPath: MultiPathAnalysis[] = listDemoTransactionFixtures().map((fx) =>
     analyzeMultiPathTransaction({
-      amountMillions: 100,
-      kind: "SECURED_DEBT",
-      secured: true,
-      label: "$100M secured debt incurrence",
+      amountMillions: fx.amountMillions,
+      kind: fx.kind === "ACQUISITION" ? "ACQUISITION" : fx.kind === "RESTRICTED_PAYMENT" ? "RESTRICTED_PAYMENT" : fx.kind === "INVESTMENT" ? "INVESTMENT" : "SECURED_DEBT",
+      secured: fx.secured,
+      label: `${fx.label} [SYNTHETIC DEMO]`,
       items: allItems,
       approvals,
       permissions: compiledForPaths,
       financials: finForEval,
     }),
-    analyzeMultiPathTransaction({
-      amountMillions: 75,
-      kind: "RESTRICTED_PAYMENT",
-      secured: false,
-      label: "$75M restricted payment",
-      items: allItems,
-      approvals,
-      permissions: compiledForPaths,
-      financials: finForEval,
-    }),
-    analyzeMultiPathTransaction({
-      amountMillions: 150,
-      kind: "ACQUISITION",
-      secured: true,
-      label: "$150M acquisition (debt + investment + lien)",
-      items: allItems,
-      approvals,
-      permissions: compiledForPaths,
-      financials: finForEval,
-    }),
-  ];
+  );
 
   return {
     companyId,

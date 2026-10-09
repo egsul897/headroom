@@ -107,12 +107,19 @@ export interface DemoExercise {
       ruleId: string;
       sectionRef: string;
       family: "INDEBTEDNESS" | "LIENS" | "RESTRICTED_PAYMENTS" | "INVESTMENTS";
-      action: "INCUR_DEBT" | "GRANT_LIEN" | "PAY_DIVIDEND" | "MAKE_INVESTMENT";
+      action: "INCUR_DEBT" | "CREATE_LIEN" | "PAY_DIVIDEND" | "MAKE_INVESTMENT";
       /** Flat USD capacity when set; mutually exclusive with ebitdaPct for these demos. */
       flatUsd: number | null;
       /** When set, capacity = ebitdaPct × Consolidated EBITDA from APPROVED snapshot. */
       ebitdaPct: number | null;
     }>;
+    /** Optional expressly shared pool (e.g. RP + Investments) — FIXTURE_IR only. */
+    sharedCapacity?: {
+      sharedCapId: string;
+      description: string;
+      flatUsd: number;
+      memberRuleIds: string[];
+    };
     ledgerUsages: Array<{
       usageId: string;
       ruleId: string;
@@ -126,6 +133,51 @@ export interface DemoExercise {
      */
     blockVerifiedPackage?: boolean;
     blockReason?: string;
+    /** Optional CONSUME simulation amount (USD string) against the first flat debt/RP rule. */
+    simulateConsumeUsd?: string | null;
+  };
+}
+
+/** Required structured fields each demo exercise exposes for reports / Ask surfaces. */
+export interface DemoExerciseStructuredFields {
+  cutoff: DemoExercise["applicableCutoff"];
+  provisions: DemoExercise["governingProvisions"];
+  paths: string[];
+  conditions: string[];
+  gross: number | null;
+  remaining: number | null;
+  usage: DemoExercise["historicalUsage"];
+  proForma: DemoExercise["proForma"];
+  beforeAfter: DemoExercise["beforeAfter"];
+  citations: string[];
+  limitations: string[];
+  authority: {
+    legacy: typeof DEMO_LEGACY_AUTHORITY;
+    notCertified: typeof DEMO_NOT_CERTIFIED;
+    irLabel: typeof DEMO_IR_LABEL;
+    label: typeof DEMO_LABEL;
+  };
+}
+
+export function structuredExerciseFields(ex: DemoExercise): DemoExerciseStructuredFields {
+  return {
+    cutoff: ex.applicableCutoff,
+    provisions: ex.governingProvisions,
+    paths: ex.availablePaths,
+    conditions: ex.conditions,
+    gross: ex.capacity.grossMillions,
+    remaining: ex.capacity.remainingMillions,
+    usage: ex.historicalUsage,
+    proForma: ex.proForma,
+    beforeAfter: ex.beforeAfter,
+    citations: ex.citations,
+    limitations: ex.limitations,
+    authority: {
+      legacy: DEMO_LEGACY_AUTHORITY,
+      notCertified: DEMO_NOT_CERTIFIED,
+      irLabel: DEMO_IR_LABEL,
+      label: DEMO_LABEL,
+    },
   };
 }
 
@@ -163,12 +215,33 @@ function synthItem(
     interpretationNote: "SYNTHETIC demo item — not authentic customer interpretation",
     unresolvedQuestions: [],
     analysis: {
+      sectionRef: partial.sectionRef,
+      heading: partial.heading,
+      category: partial.category,
+      categoryLabel: partial.category,
+      families: [],
+      posture: "GENERAL_PROHIBITION",
       plainEnglish: partial.plainEnglish,
-      conditions: partial.conditions ?? [],
+      restriction: null,
+      permissions: [],
+      coveredEntities: [],
+      entityScopeNotes: [],
       exceptions: [],
-      definedTerms: [],
-      openQuestions: [],
-    } as CovenantSummaryItem["analysis"],
+      conditions: partial.conditions ?? [],
+      basketsAndThresholds: [],
+      draftingPatterns: [],
+      applicableDefinitions: [],
+      crossReferences: [],
+      dependencies: [],
+      operativeLanguageExcerpt: "",
+      sourceCitation: `§${partial.sectionRef}`,
+      unresolved: [],
+      alternativeInterpretations: [],
+      assumptions: [],
+      judgmentCalls: [],
+      epistemicStatus: "DISCOVERED_CANDIDATE",
+      interpretationNote: "SYNTHETIC demo",
+    },
     ...partial,
   } as CovenantSummaryItem;
 }
@@ -351,12 +424,13 @@ export const DEMO_EXERCISES: DemoExercise[] = [
           ruleId: "rule:synth-7.02(a)",
           sectionRef: "7.02(a)",
           family: "LIENS",
-          action: "GRANT_LIEN",
+          action: "CREATE_LIEN",
           flatUsd: 50_000_000,
           ebitdaPct: null,
         },
       ],
       ledgerUsages: [],
+      simulateConsumeUsd: "40000000",
     },
   },
   {
@@ -454,14 +528,21 @@ export const DEMO_EXERCISES: DemoExercise[] = [
           ebitdaPct: null,
         },
         {
-          ruleId: "rule:synth-7.06(b)",
-          sectionRef: "7.06(b)",
-          family: "RESTRICTED_PAYMENTS",
-          action: "PAY_DIVIDEND",
-          flatUsd: 40_000_000,
+          ruleId: "rule:synth-7.08(c)",
+          sectionRef: "7.08(c)",
+          family: "INVESTMENTS",
+          action: "MAKE_INVESTMENT",
+          flatUsd: 25_000_000,
           ebitdaPct: null,
         },
       ],
+      sharedCapacity: {
+        sharedCapId: "shared:synth-7.06a-7.08c",
+        description:
+          "SYNTHETIC expressly shared RP/Investment aggregate $25,000,000 (FIXTURE_IR)",
+        flatUsd: 25_000_000,
+        memberRuleIds: ["rule:synth-7.06(a)", "rule:synth-7.08(c)"],
+      },
       ledgerUsages: [
         {
           usageId: "usage-synth-rp-1",
@@ -470,6 +551,7 @@ export const DEMO_EXERCISES: DemoExercise[] = [
           effectiveAsOf: "2026-03-01",
         },
       ],
+      simulateConsumeUsd: "10000000",
     },
   },
   {

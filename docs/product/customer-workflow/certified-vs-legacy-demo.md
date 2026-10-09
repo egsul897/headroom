@@ -4,11 +4,11 @@
 
 SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.
 
-- Generated: 2026-10-09T14:20:14.796Z
+- Generated: 2026-10-09T14:25:13.950Z
 - Company (synthetic): `synthetic-conmed-form-co`
 - Instrument (synthetic): `synthetic-term-loan-a`
 - Exercises: 7
-- Discrepancies recorded: 19
+- Discrepancies recorded: 18
 - Verified-execution ran: 6
 - Verified-execution blocked: 1
 - Legacy authority: always `NOT_CERTIFIED_4E` / `LEGACY_ENGINE_MULTIPATH`
@@ -30,9 +30,8 @@ SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Leg
 - Cutoff: FY2026-Q2 as-of 2026-06-30; eval 2026-08-01
 - Legacy: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E · 2 path(s)
 - Certified/FIXTURE: ran (EXECUTED)
-- Discrepancies (3):
-  - 7.06(a):FIXED_RP / remainingCapacity: legacy=25 vs certified=20000000 — Legacy capacityMillions×1e6=25000000 vs FIXTURE_IR remainingUsd=20000000 (scale/formula/ledger divergence)
-  - rule:synth-7.06(a) / ledgerAwareRemaining: legacy=25 vs certified=20000000 — Ledger usage $5000000 reflected on FIXTURE_IR but not on legacy Permission capacity
+- Discrepancies (2):
+  - 7.06(a):FIXED_RP / remainingCapacity: legacy=25 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - (authority) / authority: legacy="LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E" vs certified="FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)" — Authority surfaces differ by design — legacy must not be presented as certified Phase 4E
 
 ### $150M acquisition financing (`acquisition-financing-150m`)

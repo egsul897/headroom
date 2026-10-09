@@ -6,6 +6,7 @@ import type { PerDocumentRemainingCapacity } from "@/lib/covenant-engine";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
+import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow";
 
 export const metadata = { title: "Headroom — Capacity" };
 
@@ -99,14 +100,68 @@ function ReadinessBanner({
  */
 export default async function CapacityPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [readiness, rulebook] = await Promise.all([
+  const [readiness, rulebook, authoritative] = await Promise.all([
     loadCapacityReadiness(companyId),
     loadRulebookReadiness(companyId),
+    loadAuthoritativeCapacity({ companyId }),
   ]);
+
+  const northStarCard = (
+    <Card>
+      <div className="card-title">North-Star authoritative capacity</div>
+      <div className="card-subtitle">
+        Certified path uses APPROVED NS-4 snapshots + attributed 4C ledger + verified-execution REQUIRE. Legacy engine
+        figures below stay labeled separately.
+      </div>
+      <div className="row" style={{ marginTop: 8 }}>
+        <div className="row-label">Status</div>
+        <div className="row-value">
+          <Chip tone={authoritative.status === "CERTIFIED_EXECUTED" ? "pass" : "tight"}>{authoritative.status}</Chip>
+        </div>
+      </div>
+      <div className="row">
+        <div className="row-label">Authority</div>
+        <div className="row-value">{authoritative.authority}</div>
+      </div>
+      <div className="row-note" style={{ marginTop: 8 }}>
+        Cutoff: {authoritative.cutoff.state}
+        {authoritative.cutoff.reportingPeriodKey ? ` · ${authoritative.cutoff.reportingPeriodKey}` : ""}
+        {authoritative.cutoff.approvedSnapshotId ? ` · snapshot ${authoritative.cutoff.approvedSnapshotId}` : ""} ·
+        APPROVED snapshots: {authoritative.approvedSnapshotCount} · Active 4C usages:{" "}
+        {authoritative.activeLedgerUsageCount}
+      </div>
+      {authoritative.missingInputs.map((m, i) => (
+        <div key={i} className="row-note">
+          • Missing: {m}
+        </div>
+      ))}
+      {authoritative.evidence.map((e, i) => (
+        <div key={`e-${i}`} className="row-note">
+          • {e}
+        </div>
+      ))}
+      <div className="row-note" style={{ marginTop: 8 }}>
+        {authoritative.certified.authorityNote}
+      </div>
+      <div className="row-note">{authoritative.legacy.note}</div>
+      <div className="button-row" style={{ marginTop: 12 }}>
+        <Link className="button" href={`/${companyId}/certificates`}>
+          Certificates
+        </Link>
+        <Link className="button" href={`/${companyId}/ledger`}>
+          Ledger
+        </Link>
+        <Link className="button" href={`/${companyId}/ask`}>
+          Ask transaction
+        </Link>
+      </div>
+    </Card>
+  );
 
   if (!readiness.canEvaluateExecutableCapacity) {
     return (
       <div className="stack">
+        {northStarCard}
         <ReadinessBanner companyId={companyId} readiness={readiness} />
         <Card>
           <div className="card-title">Legal rulebook stage</div>
@@ -179,7 +234,15 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
 
   return (
     <div className="stack">
+      {northStarCard}
       <ReadinessBanner companyId={companyId} readiness={readiness} />
+      <Card>
+        <div className="card-title">Legacy engine capacity (LEGACY_ENGINE · NOT_CERTIFIED_4E)</div>
+        <div className="card-subtitle">
+          Figures below use counsel-compiled Permissions + covenant-engine against dated FinancialState — not Phase 4B
+          APPROVED snapshots or certified 4A–4E.
+        </div>
+      </Card>
 
       <Card>
         <div className="card-title">Secured debt capacity</div>

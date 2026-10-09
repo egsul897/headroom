@@ -3,7 +3,13 @@ import { Disclosure } from "@/components/Disclosure";
 import { LEDGER_BASKET_LABELS, getLedgerEntries, getPosition, getSupersededLedgerEntries } from "@/lib/coherent";
 import { fmtM, fmtX, fmtDate } from "@/lib/format";
 import { documentsWithRpWaterfall, simulateRestrictedPayment } from "@/lib/covenant-engine";
-import { addLedgerEntry, supersedeLedgerEntry } from "./actions";
+import { listContractLedgerForCompany } from "@/lib/product/north-star-workflow";
+import {
+  addLedgerEntry,
+  supersedeLedgerEntry,
+  addContractLedgerUsageAction,
+  supersedeContractLedgerUsageAction,
+} from "./actions";
 
 type LedgerRow = Awaited<ReturnType<typeof getLedgerEntries>>[number];
 
@@ -74,20 +80,90 @@ export const metadata = { title: "Headroom — Ledger" };
  * `simulateRestrictedPayment`, unmodified) and real DB-backed ledger,
  * companyId-scoped.
  */
+function ContractLedgerSection({
+  companyId,
+  usages,
+}: {
+  companyId: string;
+  usages: Awaited<ReturnType<typeof listContractLedgerForCompany>>;
+}) {
+  const active = usages.filter((u) => u.status !== "SUPERSEDED");
+  const superseded = usages.filter((u) => u.status === "SUPERSEDED");
+  return (
+    <Card>
+      <div className="card-title">North-Star contract ledger (Phase 4C)</div>
+      <div className="card-subtitle">
+        Attributed basket usage for certified remaining-capacity. Distinct from the legacy public-record ledger below.
+        Corrections supersede — this page does not delete usages. Remaining capacity is never inferred from gross basket
+        size alone.
+      </div>
+      {active.length === 0 ? (
+        <div className="muted">No attributed contract-ledger usages yet. Approve a certificate basket schedule or add usage below.</div>
+      ) : (
+        active.map((u) => (
+          <div key={u.usageId} className="ledger-entry">
+            <div>
+              <div className="row-label">
+                {u.capacityPath.kind === "RULE" ? u.capacityPath.ruleId : u.capacityPath.kind} · {u.amount.currency}{" "}
+                {u.amount.amount}
+              </div>
+              <div className="row-note">
+                <span className="mono">{u.effectiveAsOf}</span> · {u.status}
+                {u.provenance.approvalRef ? ` · ${u.provenance.approvalRef}` : ""} · {u.usageId}
+              </div>
+            </div>
+            <form action={supersedeContractLedgerUsageAction.bind(null, companyId)} style={{ display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+              <input type="hidden" name="predecessorUsageId" value={u.usageId} />
+              <input type="hidden" name="ruleId" value={u.capacityPath.kind === "RULE" ? u.capacityPath.ruleId : "UNRESOLVED"} />
+              <input type="hidden" name="currency" value={u.amount.currency} />
+              <input name="successorAmount" placeholder="Corrected amount" defaultValue={u.amount.amount} className="input" style={{ width: 120 }} />
+              <input name="effectiveAsOf" placeholder="YYYY-MM-DD" defaultValue={u.effectiveAsOf} className="input" style={{ width: 120 }} />
+              <button type="submit" className="button">
+                Supersede
+              </button>
+            </form>
+          </div>
+        ))
+      )}
+      {superseded.length > 0 && (
+        <div className="row-note" style={{ marginTop: 12 }}>
+          Superseded history: {superseded.length} row(s) preserved.
+        </div>
+      )}
+      <form action={addContractLedgerUsageAction.bind(null, companyId)} style={{ marginTop: 16, display: "grid", gap: 8 }}>
+        <div className="card-subtitle" style={{ margin: 0 }}>
+          Add attributed usage
+        </div>
+        <input name="usageId" placeholder="usage id (optional)" className="input" />
+        <input name="ruleId" placeholder="permission / basket rule id" className="input" required />
+        <input name="amount" placeholder="amount (decimal string)" className="input" required />
+        <input name="currency" placeholder="USD" defaultValue="USD" className="input" />
+        <input name="effectiveAsOf" placeholder="effective as-of YYYY-MM-DD" className="input" required />
+        <input name="instrumentKey" placeholder="instrument key" defaultValue="company" className="input" />
+        <button type="submit" className="button">
+          Append contract usage
+        </button>
+      </form>
+    </Card>
+  );
+}
+
 export default async function LedgerPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [positionResult, entries, superseded] = await Promise.all([
+  const [positionResult, entries, superseded, contractUsages] = await Promise.all([
     getPosition(companyId).catch(() => null),
     getLedgerEntries(companyId),
     getSupersededLedgerEntries(companyId),
+    listContractLedgerForCompany(companyId).catch(() => []),
   ]);
 
   if (!positionResult) {
     return (
       <div className="stack">
-        <Banner tone="red">No covenant financial snapshot on record for this company yet - the ledger and restricted-payment pool summary need one to evaluate against.</Banner>
+        <Banner tone="red">No covenant financial snapshot on record for this company yet - the legacy ledger and restricted-payment pool summary need one to evaluate against. North-Star contract ledger below is independent.</Banner>
+        <ContractLedgerSection companyId={companyId} usages={contractUsages} />
         <Card>
-          <div className="card-title">Public-record ledger</div>
+          <div className="card-title">Legacy public-record ledger</div>
           <div className="card-subtitle">Supersede keeps the row and stops it from counting. This page does not delete ledger entries.</div>
           <LiveLedgerList companyId={companyId} entries={entries} supersededCount={superseded.length} />
         </Card>
@@ -121,13 +197,14 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
 
   return (
     <div className="stack">
+      <ContractLedgerSection companyId={companyId} usages={contractUsages} />
       {rpDocs.length === 0 ? (
         <Banner tone="red">Not tested here: no document for this company has a restricted-payment basket configuration entered.</Banner>
       ) : rpNotModeled ? (
         <Banner tone="red">Restricted-payment pool usage could not be fully evaluated - see Simulate for details.</Banner>
       ) : (
         <div className="summary-band">
-          <div className="summary-band-title">Restricted payment pool — shared by dividends, buybacks, and Investments</div>
+          <div className="summary-band-title">Restricted payment pool — shared by dividends, buybacks, and Investments (LEGACY)</div>
           <div className="summary-band-stats">
             {rpStats.map((s) => (
               <div key={s.label}>
@@ -144,7 +221,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
       )}
 
       <Card>
-        <div className="card-title">Public-record ledger</div>
+        <div className="card-title">Legacy public-record ledger</div>
         <div className="card-subtitle">Logs what&apos;s stated in filings: equity raises, debt incurrence/repayment, and asset-sale proceeds, plus any dividend/Investment amounts committed from the Simulate tab. Supersede keeps the row and stops it from counting. This page does not delete ledger entries.</div>
         <div>
           <LiveLedgerList companyId={companyId} entries={entries} supersededCount={superseded.length} />
