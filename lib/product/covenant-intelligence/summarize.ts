@@ -9,7 +9,12 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import { analyzeProvision, type ProvisionAnalysis, type ProvisionPosture } from "./analyze-provision";
+import {
+  analyzeProvision,
+  extractBaskets,
+  type ProvisionAnalysis,
+  type ProvisionPosture,
+} from "./analyze-provision";
 
 export type CovenantCategoryKey =
   | "DEBT_INCURRENCE"
@@ -210,12 +215,13 @@ export function buildDocumentCovenantSummary(params: {
     }
   }
 
-  // Attach builder / Available Amount / NOA / Incremental definition pointers.
+  // Attach builder / Available Amount / NOA / Incremental definition pointers
+  // and merge quantitative/relationship mechanics extracted from those defs.
   for (const d of params.definitions) {
     const isBuilder = /Available Amount|Builder Basket/i.test(d.term);
     const isNoa = /Not Otherwise Applied/i.test(d.term);
     const isIncremental =
-      /Incremental (?:Amount|Cap)|Fixed Incremental|Ratio Incremental|Voluntary Prepayment Incremental|Cash-Capped Incremental|Ratio-Based Incremental|Prepayment-Based Incremental/i.test(
+      /Incremental (?:Amount|Cap)|Fixed Incremental|Ratio Incremental|Voluntary Prepayment Incremental|Cash-Capped Incremental|Ratio-Based Incremental|Prepayment-Based Incremental|Prepayment Incremental|Incremental Prepayment/i.test(
         d.term,
       );
     if (!isBuilder && !isNoa && !isIncremental) continue;
@@ -225,6 +231,8 @@ export function buildDocumentCovenantSummary(params: {
     const meaningSpecified = d.excerpt.match(
       /(?:has the )?meaning specified in Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i,
     )?.[1];
+    const meaningAssignedToCap =
+      /meaning assigned to such term in the definition of\s*[“"]?Incremental Cap/i.test(d.excerpt);
 
     const label = isNoa
       ? `Not Otherwise Applied / builder netting referenced (via definition “${d.term}”).`
@@ -232,24 +240,39 @@ export function buildDocumentCovenantSummary(params: {
         ? `Incremental path construct referenced (via definition “${d.term}”).`
         : `Builder / Available Amount construct referenced (via definition “${d.term}”).`;
 
+    // Full mechanics from operative definitions (e.g. Maravai Incremental Cap)
+    // plus pointer labels for builder aliases ("meaning specified in Section …").
+    const defMechanics = extractBaskets(`${d.term}. ${d.excerpt}`).filter((b) =>
+      /Incremental|Available Amount|Builder|NOA |Anti-stack|reclassif|Shared \/|Greater-of|Ratio threshold|limb:|election/i.test(
+        b,
+      ),
+    );
+
     for (const item of items) {
       const sectionHit =
         meaningSpecified != null &&
         (item.sectionRef === meaningSpecified ||
           item.sectionRef.startsWith(meaningSpecified) ||
-          meaningSpecified.startsWith(item.sectionRef));
+          meaningSpecified.startsWith(item.sectionRef) ||
+          // 7.05(a)(y) should attach to parent §7.05 / §7.05(a) items
+          (meaningSpecified.includes("(") &&
+            (item.sectionRef === meaningSpecified.split("(")[0] ||
+              meaningSpecified.startsWith(`${item.sectionRef}(`))));
       const topicalHit =
         meaningSpecified == null &&
         ((isBuilder &&
-          /Available Amount|Restricted Payment|Investment/i.test(
+          (/Available Amount|Restricted Payment|Investment/i.test(
             `${item.heading} ${item.plainEnglish} ${(item.materialBasketsThresholds ?? []).join(" ")}`,
-          )) ||
+          ) ||
+            item.posture === "GENERAL_PROHIBITION")) ||
           (isNoa &&
             /Available Amount|Not Otherwise Applied/i.test(
               `${item.heading} ${item.plainEnglish} ${(item.materialBasketsThresholds ?? []).join(" ")}`,
             )) ||
           (isIncremental &&
             (/incremental/i.test(item.heading) ||
+              item.category === "DEBT_INCURRENCE" ||
+              meaningAssignedToCap ||
               /Incremental path|Incremental Amount|Incremental Cap/i.test(
                 (item.materialBasketsThresholds ?? []).join(" "),
               ))));
@@ -257,7 +280,12 @@ export function buildDocumentCovenantSummary(params: {
       if (!sectionHit && !topicalHit) continue;
 
       if (!item.materialBasketsThresholds.includes(label)) {
-        item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 18);
+        item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 20);
+      }
+      for (const mech of defMechanics.slice(0, 8)) {
+        if (!item.materialBasketsThresholds.includes(mech)) {
+          item.materialBasketsThresholds = [...item.materialBasketsThresholds, mech].slice(0, 22);
+        }
       }
       const dep = `Meaning controlled by definition of “${d.term}”`;
       if (!item.dependencies.includes(dep)) {
@@ -269,12 +297,16 @@ export function buildDocumentCovenantSummary(params: {
         if (sections.length) {
           const noaLabel = `NOA deductions / prior applications: ${sections.slice(0, 4).join("; ")}`;
           if (!item.materialBasketsThresholds.includes(noaLabel)) {
-            item.materialBasketsThresholds = [...item.materialBasketsThresholds, noaLabel].slice(0, 18);
+            item.materialBasketsThresholds = [...item.materialBasketsThresholds, noaLabel].slice(0, 22);
           }
         }
       }
     }
   }
+
+  // Propagate relationship clips to sibling sectionRefs so a budgeted-out
+  // lettered basket does not erase Anti-stacking scope / AA limbs from Ask.
+  propagateRelationshipClips(items);
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
   items.sort((a, b) => {
@@ -304,6 +336,35 @@ export function buildDocumentCovenantSummary(params: {
  * Cap summary items without letting DEBT/LIEN volume extinguish RP, asset-sale,
  * or financial-maintenance families (a real failure mode on large A&R CAs).
  */
+function propagateRelationshipClips(items: CovenantSummaryItem[]): void {
+  const clipRe =
+    /^(?:Anti-stacking scope:|Anti-stacking paired clauses:|Available Amount limb:|Available Amount builder defined at Section|Reclassification election:|Incremental limb:|Incremental election order:|NOA deductions)/i;
+  const byParent = new Map<string, CovenantSummaryItem[]>();
+  for (const item of items) {
+    const parent = item.sectionRef.replace(/\([a-z0-9]+\).*$/i, "").replace(/\.$/, "");
+    const list = byParent.get(parent) ?? [];
+    list.push(item);
+    byParent.set(parent, list);
+  }
+  for (const group of byParent.values()) {
+    if (group.length < 2) continue;
+    const clips = new Set<string>();
+    for (const item of group) {
+      for (const b of item.materialBasketsThresholds ?? []) {
+        if (clipRe.test(b)) clips.add(b);
+      }
+    }
+    if (!clips.size) continue;
+    for (const item of group) {
+      for (const clip of clips) {
+        if (!item.materialBasketsThresholds.includes(clip)) {
+          item.materialBasketsThresholds = [...item.materialBasketsThresholds, clip].slice(0, 22);
+        }
+      }
+    }
+  }
+}
+
 function categoryPriorityScore(item: CovenantSummaryItem): number {
   let s = 0;
   if (item.posture === "GENERAL_PROHIBITION") s += 12;
@@ -315,6 +376,13 @@ function categoryPriorityScore(item: CovenantSummaryItem): number {
   // Prefer parent sections over lettered baskets when filling the per-category budget.
   if (/^\d+(?:\.\d+)?\([a-z0-9]+\)$/i.test(item.sectionRef)) s -= 4;
   if ((item.materialBasketsThresholds?.length ?? 0) > 0) s += 2;
+  // Keep relationship-rich excerpts in the capped summary (training defect:
+  // Gibraltar anti-stack scope clips were extracted then dropped by the budget).
+  const baskets = (item.materialBasketsThresholds ?? []).join("\n");
+  if (/Anti-stacking scope:/i.test(baskets)) s += 14;
+  if (/Reclassification election:|Divide-and-classify/i.test(baskets)) s += 10;
+  if (/Available Amount limb:|builder defined at Section/i.test(baskets)) s += 8;
+  if (/Incremental limb:|Incremental election order:|Incremental path:/i.test(baskets)) s += 8;
   return s;
 }
 

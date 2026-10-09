@@ -123,9 +123,10 @@ function analyze(c: Case) {
   const text = readFileSync(resolve(c.path), "utf8");
   const sourceId = `fixture:${c.id}`;
   const structural = extractStructure(sourceId, text);
-  const definitions = discoverDefinitions(sourceId, text, structural.nodes);
-  const xrefs = discoverCrossReferences(sourceId, text);
-  const candidates = discoverCovenantCandidates(sourceId, text, structural.nodes);
+  const scan = structural.normalizedText;
+  const definitions = discoverDefinitions(sourceId, scan, structural.nodes);
+  const xrefs = discoverCrossReferences(sourceId, scan);
+  const candidates = discoverCovenantCandidates(sourceId, scan, structural.nodes);
   const summary = buildDocumentCovenantSummary({
     sourceId,
     documentTitle: c.title,

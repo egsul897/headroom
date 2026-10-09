@@ -110,12 +110,19 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   // TOC lines often append a page number ("Section 7.06 Restricted Payments 125").
   const cleanHeading = heading.replace(/\s+\d{1,4}\s*$/g, "").trim();
   const hay = `${cleanHeading}\n${excerpt}`;
+  // Prepayment / ECF / application mechanics are not negative-covenant GPs even
+  // when they contain "shall not" / "will not be required" language (Chewy §2.09).
+  const prepaymentMechanics =
+    /\b(?:Mandatory\s+Prepayments?|Excess\s+Cash\s+Flow|Net\s+(?:Cash\s+)?Proceeds|repatriation|prepay(?:ment)?\s+of\s+Loans|applied to repay)\b/i.test(
+      hay,
+    ) && !/\bLimitation on\s+(?:Incurrence of\s+)?Indebtedness\b/i.test(cleanHeading);
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
   if (
-    /\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
-    /\bMake any Restricted Payment\b/i.test(hay) ||
-    /\bEnter into or suffer to exist\b/i.test(hay) ||
-    (/\bLimitation on\b/i.test(cleanHeading) && /\bexcept\s*:/i.test(hay))
+    !prepaymentMechanics &&
+    (/\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
+      /\bMake any Restricted Payment\b/i.test(hay) ||
+      /\bEnter into or suffer to exist\b/i.test(hay) ||
+      (/\bLimitation on\b/i.test(cleanHeading) && /\bexcept\s*:/i.test(hay)))
   ) {
     return "GENERAL_PROHIBITION";
   }
@@ -130,9 +137,11 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   }
   if (
     families.includes("INDEBTEDNESS") &&
-    /\b(?:Limitation on\s+)?Indebtedness\b/i.test(cleanHeading) &&
+    /\b(?:Limitation on\s+(?:Incurrence of\s+)?)?Indebtedness\b/i.test(cleanHeading) &&
     !/\bIncremental|Refinancing Indebtedness|Convertible Notes\b/i.test(cleanHeading) &&
-    !/^\s*\([a-z0-9]+\)/i.test(cleanHeading)
+    !/^\s*\([a-z0-9]+\)/i.test(cleanHeading) &&
+    !/^Section\s+\d+\.\d+\([a-z0-9]+\)/i.test(cleanHeading) &&
+    !prepaymentMechanics
   ) {
     return "GENERAL_PROHIBITION";
   }
@@ -144,13 +153,15 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
     return "GENERAL_PROHIBITION";
   }
   if (
+    !prepaymentMechanics &&
     /\bshall\s+not\b/i.test(hay) &&
     /\bexcept\b/i.test(hay) &&
     (/\bcreate,\s*incur\b/i.test(hay) ||
       /\bpermit\b/i.test(hay) ||
       /\bmake\s+any\s+Restricted\s+Payment/i.test(hay) ||
       /\bDisposition\b/i.test(hay) ||
-      /\bLien\b/i.test(hay))
+      /\bLien\b/i.test(hay) ||
+      /\bDisqualified Stock\b/i.test(hay))
   ) {
     return "GENERAL_PROHIBITION";
   }
@@ -161,6 +172,9 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
       /\bto exceed\b|\bto be less than\b/i.test(hay))
   ) {
     return "MAINTENANCE_TEST";
+  }
+  if (prepaymentMechanics) {
+    return /\bshall\b/i.test(hay) && !/\bshall\s+not\b/i.test(hay) ? "OBLIGATION" : "UNRESOLVED";
   }
   if (/\bshall\s+not\b|\bwill\s+not\b|\bmay\s+not\b/i.test(hay) && !/\bexcept\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
@@ -217,11 +231,29 @@ function moneyToken(raw: string): string {
   return raw.replace(/\s/g, "").startsWith("$") ? raw.replace(/\s/g, "") : `$${raw.replace(/\s/g, "")}`;
 }
 
-function extractBaskets(excerpt: string): string[] {
-  const out: string[] = [];
-  const pushUnique = (s: string) => {
-    if (!out.some((x) => x === s)) out.push(s);
+/** Exported for definition-attachment merges in summarize. */
+export function extractBaskets(excerpt: string): string[] {
+  const quantitative: string[] = [];
+  const relationships: string[] = [];
+  const pushQ = (s: string) => {
+    if (!quantitative.some((x) => x === s) && !relationships.some((x) => x === s)) quantitative.push(s);
   };
+  const pushR = (s: string) => {
+    if (!quantitative.some((x) => x === s) && !relationships.some((x) => x === s)) relationships.push(s);
+  };
+  // Prefer relationship mechanics over raw dollar clutter when budgeting.
+  const pushUnique = (s: string) => {
+    if (
+      /Anti-stacking|reclassif|Divide-and-classify|Available Amount|Builder|NOA |Incremental|Shared \/|Reallocation|election order|limb:/i.test(
+        s,
+      )
+    ) {
+      pushR(s);
+    } else {
+      pushQ(s);
+    }
+  };
+  const finalize = () => [...relationships, ...quantitative].slice(0, 22);
 
   // Grower: greater of (x)/(y), (i)/(ii), (A)/(B), or unlabeled — including
   // "$108.0 million" and spelled percents like "fifteen percent (15%)".
@@ -236,11 +268,15 @@ function extractBaskets(excerpt: string): string[] {
       pushUnique(
         `Greater-of / grower basket: ${dollars} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`,
       );
-      if (out.length >= 8) break;
+      if (quantitative.filter((x) => /Greater-of/i.test(x)).length >= 4) break;
     }
-    if (out.length >= 4) break;
+    if (quantitative.some((x) => /Greater-of/i.test(x))) break;
   }
-  if (!out.some((x) => /Greater-of/i.test(x)) && /\bgreater\s+of\b/i.test(excerpt)) {
+  if (
+    !quantitative.some((x) => /Greater-of/i.test(x)) &&
+    !relationships.some((x) => /Greater-of/i.test(x)) &&
+    /\bgreater\s+of\b/i.test(excerpt)
+  ) {
     const clipGo = excerpt.match(/greater\s+of\b[\s\S]{0,180}/i);
     if (clipGo) pushUnique(`Greater-of construct: ${normalizeWs(clipGo[0]).slice(0, 160)}`);
   }
@@ -249,9 +285,11 @@ function extractBaskets(excerpt: string): string[] {
   const dollars = [
     ...(excerpt.match(/\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/gi) ?? []),
   ];
-  for (const d of dollars.slice(0, 8)) {
+  for (const d of dollars.slice(0, 6)) {
     const norm = /million|billion/i.test(d) ? moneyToken(d) : d.replace(/\s/g, "");
-    if (!out.some((x) => x.includes(norm))) pushUnique(`Amount/threshold: ${norm}`);
+    if (![...quantitative, ...relationships].some((x) => x.includes(norm))) {
+      pushUnique(`Amount/threshold: ${norm}`);
+    }
   }
 
   // Ratio permissions / maintenance thresholds (incl. X.XX to 1 and X.XX:1.00)
@@ -302,7 +340,7 @@ function extractBaskets(excerpt: string): string[] {
   ) {
     pushUnique("Anti-stacking / without-duplication across clauses referenced.");
     const forPurposes = excerpt.match(
-      /without duplication\s+for purposes of\s+Section\s+[\dA-Za-z.()-]+(?:\s+of\s+any\s+amounts\s+applied\s+pursuant\s+to\s+[^.…]{0,80})?/gi,
+      /without duplication\s+for purposes of\s+Section\s+[\dA-Za-z.()-]+(?:\s+of\s+any\s+amounts\s+applied\s+pursuant\s+to[\s\S]{0,100}?)?/gi,
     );
     for (const hit of (forPurposes ?? []).slice(0, 2)) {
       pushUnique(`Anti-stacking scope: ${normalizeWs(hit).slice(0, 180)}`);
@@ -320,14 +358,14 @@ function extractBaskets(excerpt: string): string[] {
   ) {
     pushUnique("Classification / reclassification election present (basket designation may change).");
     const election = excerpt.match(
-      /(?:may|shall|will)(?:\s*,\s*in\s+(?:its|their)\s+sole\s+discretion,?)?\s*(?:from\s+time\s+to\s+time\s+)?(?:divide,?\s*)?(?:classify|reclassify)[^.…]{0,160}/gi,
+      /(?:may|shall|will)(?:\s*,\s*in\s+(?:its|their)\s+sole\s+discretion,?)?\s*(?:from\s+time\s+to\s+time\s+)?(?:later\s+)?(?:divide,?\s*)?(?:classify|reclassify)(?:\s+or\s+(?:later\s+)?(?:divide,?\s*)?(?:classify|reclassify))?[^.…]{0,160}/gi,
     );
     for (const hit of (election ?? []).slice(0, 2)) {
       pushUnique(`Reclassification election: ${normalizeWs(hit).slice(0, 180)}`);
     }
   }
   if (
-    /\bdivide(?:\s+and)?,?\s*classify\b|\bdivide and classify or reclassify\b|\bdivide,\s*classify\b/i.test(
+    /\bdivide(?:\s+and)?,?\s*classify\b|\bdivide and classify or reclassify\b|\bdivide,\s*classify\b|\blater divide,\s*classify or reclassify\b/i.test(
       excerpt,
     )
   ) {
@@ -364,7 +402,7 @@ function extractBaskets(excerpt: string): string[] {
     if (ratioCond) pushUnique(`Ratio incremental condition: ${normalizeWs(ratioCond[0]).slice(0, 180)}`);
   }
   if (
-    /\bVoluntary Prepayment Incremental Amount\b|\bPrepayment-Based Incremental Facility\b/i.test(
+    /\bVoluntary Prepayment Incremental Amount\b|\bPrepayment-Based Incremental Facility\b|\bIncremental Prepayment Amount\b|\bPrepayment Incremental Amount\b/i.test(
       excerpt,
     )
   ) {
@@ -372,13 +410,17 @@ function extractBaskets(excerpt: string): string[] {
   }
   if (
     (/\bIncremental (?:Amount|Cap)\b/i.test(excerpt) && /\b(?:plus|minus|sum of)\b/i.test(excerpt)) ||
+    (/\bFixed Incremental Amount\b/i.test(excerpt) &&
+      /\b(?:Incremental Prepayment|Prepayment Incremental|Voluntary Prepayment|Ratio Incremental|Ratio-Based Incremental)\b/i.test(
+        excerpt,
+      )) ||
     (/\bCash-Capped Incremental\b/i.test(excerpt) &&
       /\bRatio-Based Incremental\b/i.test(excerpt) &&
       /\bPrepayment-Based Incremental\b/i.test(excerpt))
   ) {
     pushUnique("Incremental Amount is a multi-component sum (fixed / ratio / voluntary / reallocations).");
     const limbs = excerpt.match(
-      /(?:plus|minus)\s+(?:\([^)]{1,12}\)\s+)?(?:the\s+)?(?:Fixed|Ratio|Voluntary Prepayment|Cash-Capped|Prepayment-Based|Extension)[A-Za-z \-]{0,40}/gi,
+      /(?:plus|minus|sum of)\s+(?:\([^)]{1,12}\)\s+)?(?:the\s+)?(?:Fixed|Ratio|Voluntary Prepayment|Cash-Capped|Prepayment-Based|Incremental Prepayment|Prepayment Incremental|Extension)[A-Za-z \-]{0,40}/gi,
     );
     for (const hit of (limbs ?? []).slice(0, 4)) {
       pushUnique(`Incremental limb: ${normalizeWs(hit).slice(0, 120)}`);
@@ -402,7 +444,7 @@ function extractBaskets(excerpt: string): string[] {
   ) {
     pushUnique("Incremental redesignation into ratio path when ratio test later satisfied.");
   }
-  if (/\bAvailable Amount\b/i.test(excerpt)) {
+  if (/\bAvailable Amount(?:\s+Builder Basket)?\b/i.test(excerpt)) {
     if (/\b(?:minus|reduced|reduction|deduct|Not Otherwise Applied)\b/i.test(excerpt)) {
       pushUnique("Available Amount subject to deductions / reductions.");
     }
@@ -411,15 +453,24 @@ function extractBaskets(excerpt: string): string[] {
     }
     // Builder limb clips near Available Amount — stop before Incremental Cap/Amount defs.
     const aaWindow = (
-      excerpt.match(/Available Amount[\s\S]{0,700}?(?=\bIncremental (?:Cap|Amount)\b|$)/i)?.[0] ??
-      excerpt.match(/Available Amount[\s\S]{0,500}/i)?.[0] ??
+      excerpt.match(
+        /Available Amount(?:\s+Builder Basket)?[\s\S]{0,900}?(?=\bIncremental (?:Cap|Amount)\b|$)/i,
+      )?.[0] ??
+      excerpt.match(/Available Amount(?:\s+Builder Basket)?[\s\S]{0,600}/i)?.[0] ??
       ""
     );
     const aaLimbs = aaWindow.match(
-      /(?:plus|minus)\s+(?:\([^)]{1,12}\)\s*)?(?:the\s+)?(?:\d|\$|fifty|Restricted|Investment|amount|aggregate|Cumulative|Consolidated)[^.…;]{5,120}/gi,
+      /(?:plus|minus)\s+(?:\([^)]{1,12}\)\s*)?(?:the\s+)?(?:\d|\$|fifty|Restricted|Investment|amount|aggregate|Cumulative|Consolidated|portion|sum)[^.…;]{5,120}/gi,
     );
     for (const hit of (aaLimbs ?? []).slice(0, 4)) {
       pushUnique(`Available Amount limb: ${normalizeWs(hit).slice(0, 160)}`);
+    }
+    // Cross-ref style builder: "has the meaning specified in Section 7.05(a)(y)"
+    const aaPointer = excerpt.match(
+      /Available Amount(?:\s+Builder Basket)?[^.…]{0,40}meaning specified in Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i,
+    );
+    if (aaPointer) {
+      pushUnique(`Available Amount builder defined at Section ${aaPointer[1]}`);
     }
   }
   if (/\bat any (?:one )?time outstanding\b|\bthen outstanding\b/i.test(excerpt)) {
@@ -431,7 +482,7 @@ function extractBaskets(excerpt: string): string[] {
   if (/\bpro forma\b/i.test(excerpt) && /\b(?:Leverage|Coverage)\s+Ratio\b/i.test(excerpt)) {
     pushUnique("Pro forma leverage/coverage test gates capacity.");
   }
-  return out.slice(0, 22);
+  return finalize();
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {

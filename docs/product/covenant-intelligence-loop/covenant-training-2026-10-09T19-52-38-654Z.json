@@ -1,0 +1,1946 @@
+{
+  "generatedAt": "2026-10-09T19:52:38.653Z",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+  "challenge": "covenant-training-repetition",
+  "totals": {
+    "L1": {
+      "pass": 41,
+      "fail": 0
+    },
+    "L2": {
+      "pass": 29,
+      "fail": 0
+    },
+    "L3": {
+      "pass": 17,
+      "fail": 1
+    }
+  },
+  "failFrequency": {
+    "L3-anti-stack": 1
+  },
+  "results": [
+    {
+      "id": "gibraltar",
+      "title": "Gibraltar Industries Credit Agreement",
+      "sourceId": "fixture:train:gibraltar",
+      "nodes": 2073,
+      "defs": 564,
+      "cands": 272,
+      "items": 120,
+      "byDifficulty": {
+        "L1": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "L2": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 1
+        },
+        "L3": {
+          "pass": 3,
+          "fail": 1,
+          "skip": 1
+        }
+      },
+      "failures": [
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "FAIL",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "anti-stack signal"
+            },
+            {
+              "ok": false,
+              "detail": "anti-stack without scope clip"
+            }
+          ]
+        }
+      ],
+      "passes": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-rp-baskets",
+        "L3-shared-capacity",
+        "L3-reclassification",
+        "L3-incremental-paths"
+      ],
+      "skipped": [
+        "L2-ebitda-definition-lead",
+        "L3-noa"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "debt GP @ 7.01"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION restriction=true"
+            },
+            {
+              "ok": true,
+              "detail": "restriction/heading cites debt-incurrence substance"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "lien GP @ 7.02"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "AA builder referenced"
+            },
+            {
+              "ok": true,
+              "detail": "AA limb/deduction/pointer signal present"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 7.05"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "shared capacity signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "FAIL",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "anti-stack signal"
+            },
+            {
+              "ok": false,
+              "detail": "anti-stack without scope clip"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "reclass signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "incremental path extracted"
+            },
+            {
+              "ok": true,
+              "detail": "incremental limb/order detail"
+            },
+            {
+              "ok": true,
+              "detail": "incremental Ask lead OK"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "chewy",
+      "title": "Chewy Credit Agreement",
+      "sourceId": "fixture:train:chewy",
+      "nodes": 1618,
+      "defs": 488,
+      "cands": 252,
+      "items": 120,
+      "byDifficulty": {
+        "L1": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "L2": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        },
+        "L3": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 1
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L2-rp-baskets",
+        "L3-shared-capacity",
+        "L3-reclassification",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "skipped": [
+        "L3-anti-stack"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "debt GP @ 6.01"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION restriction=true"
+            },
+            {
+              "ok": true,
+              "detail": "restriction/heading cites debt-incurrence substance"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "lien GP @ 1.14"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "AA builder referenced"
+            },
+            {
+              "ok": true,
+              "detail": "AA limb/deduction/pointer signal present"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "definition-first EBITDA answer"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 6.08"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "shared capacity signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "reclass signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "incremental path extracted"
+            },
+            {
+              "ok": true,
+              "detail": "incremental limb/order detail"
+            },
+            {
+              "ok": true,
+              "detail": "incremental Ask lead OK"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "NOA extracted"
+            }
+          ]
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "conmed-vii",
+      "title": "CONMED Article VII",
+      "sourceId": "fixture:train:conmed-vii",
+      "nodes": 18,
+      "defs": 0,
+      "cands": 15,
+      "items": 15,
+      "byDifficulty": {
+        "L1": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 2
+        },
+        "L2": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 2
+        },
+        "L3": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 4
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-rp-baskets",
+        "L3-reclassification"
+      ],
+      "skipped": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L3-shared-capacity",
+        "L3-anti-stack",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 7.6"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "reclass signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "riot-sar",
+      "title": "Riot Platforms Second A&R",
+      "sourceId": "fixture:train:riot-sar",
+      "nodes": 446,
+      "defs": 126,
+      "cands": 99,
+      "items": 99,
+      "byDifficulty": {
+        "L1": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 2
+        },
+        "L2": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 5
+        },
+        "L3": {
+          "pass": 0,
+          "fail": 0,
+          "skip": 5
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity"
+      ],
+      "skipped": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L2-rp-baskets",
+        "L3-shared-capacity",
+        "L3-anti-stack",
+        "L3-reclassification",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "single-regime package (honest)"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "lsb-vi",
+      "title": "LSB ABL Article VI",
+      "sourceId": "fixture:train:lsb-vi",
+      "nodes": 75,
+      "defs": 0,
+      "cands": 42,
+      "items": 42,
+      "byDifficulty": {
+        "L1": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 2
+        },
+        "L2": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 2
+        },
+        "L3": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 4
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-rp-baskets",
+        "L3-reclassification"
+      ],
+      "skipped": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L3-shared-capacity",
+        "L3-anti-stack",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 6.11"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "reclass signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "fwrg-vi",
+      "title": "FWRG Article VI",
+      "sourceId": "fixture:train:fwrg-vi",
+      "nodes": 212,
+      "defs": 0,
+      "cands": 13,
+      "items": 13,
+      "byDifficulty": {
+        "L1": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 1
+        },
+        "L2": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 1
+        },
+        "L3": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 2
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-liens-gp-posture",
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-rp-baskets",
+        "L3-shared-capacity",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "skipped": [
+        "L1-debt-gp-posture",
+        "L2-ebitda-definition-lead",
+        "L3-anti-stack",
+        "L3-reclassification"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "lien GP @ 6.02"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "AA builder referenced"
+            },
+            {
+              "ok": true,
+              "detail": "AA limb/deduction/pointer signal present"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 6.04"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "shared capacity signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "incremental path extracted"
+            },
+            {
+              "ok": true,
+              "detail": "incremental limb/order detail"
+            },
+            {
+              "ok": true,
+              "detail": "incremental Ask lead OK"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "NOA extracted"
+            }
+          ]
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "suja",
+      "title": "Suja Life",
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "nodes": 780,
+      "defs": 422,
+      "cands": 82,
+      "items": 82,
+      "byDifficulty": {
+        "L1": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "L2": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        },
+        "L3": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 4
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L2-rp-baskets",
+        "L3-shared-capacity"
+      ],
+      "skipped": [
+        "L3-anti-stack",
+        "L3-reclassification",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "debt GP @ 6.1"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION restriction=true"
+            },
+            {
+              "ok": true,
+              "detail": "restriction/heading cites debt-incurrence substance"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "lien GP @ 6.2"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "AA builder referenced"
+            },
+            {
+              "ok": true,
+              "detail": "AA limb/deduction/pointer signal present"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "definition-first EBITDA answer"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 6.6"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "shared capacity signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        }
+      ],
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "maravai",
+      "title": "Maravai LifeSciences",
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "nodes": 1275,
+      "defs": 449,
+      "cands": 215,
+      "items": 120,
+      "byDifficulty": {
+        "L1": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "L2": {
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        },
+        "L3": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 1
+        }
+      },
+      "failures": [],
+      "passes": [
+        "L1-debt-gp-posture",
+        "L1-liens-gp-posture",
+        "L1-fixed-dollar-basket",
+        "L1-no-default-condition",
+        "L1-ask-secured-dual-regime",
+        "L1-ask-no-invented-capacity",
+        "L2-greater-of-grower",
+        "L2-ratio-threshold",
+        "L2-available-amount",
+        "L2-ebitda-definition-lead",
+        "L2-rp-baskets",
+        "L3-shared-capacity",
+        "L3-reclassification",
+        "L3-incremental-paths",
+        "L3-noa"
+      ],
+      "skipped": [
+        "L3-anti-stack"
+      ],
+      "results": [
+        {
+          "probeId": "L1-debt-gp-posture",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "debt GP @ 6.01"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION restriction=true"
+            },
+            {
+              "ok": true,
+              "detail": "restriction/heading cites debt-incurrence substance"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-liens-gp-posture",
+          "difficulty": "L1",
+          "family": "LIENS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "lien GP @ 6.02"
+            },
+            {
+              "ok": true,
+              "detail": "posture=GENERAL_PROHIBITION"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-fixed-dollar-basket",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "fixed-dollar threshold surfaced"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-no-default-condition",
+          "difficulty": "L1",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no-default condition captured"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-secured-dual-regime",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "dual regime present"
+            }
+          ]
+        },
+        {
+          "probeId": "L1-ask-no-invented-capacity",
+          "difficulty": "L1",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "no invented capacity figure"
+            },
+            {
+              "ok": true,
+              "detail": "epistemic limitation language present or unanswered"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-greater-of-grower",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "grower extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ratio-threshold",
+          "difficulty": "L2",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "ratio threshold extracted"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-available-amount",
+          "difficulty": "L2",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "AA builder referenced"
+            },
+            {
+              "ok": true,
+              "detail": "AA limb/deduction/pointer signal present"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-ebitda-definition-lead",
+          "difficulty": "L2",
+          "family": "ASK",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "definition-first EBITDA answer"
+            }
+          ]
+        },
+        {
+          "probeId": "L2-rp-baskets",
+          "difficulty": "L2",
+          "family": "RP",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "RP item @ 6.04"
+            },
+            {
+              "ok": true,
+              "detail": "RP Ask citations=5"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-shared-capacity",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "shared capacity signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-anti-stack",
+          "difficulty": "L3",
+          "family": "INVESTMENTS",
+          "status": "SKIPPED_SOURCE_ABSENT",
+          "checks": []
+        },
+        {
+          "probeId": "L3-reclassification",
+          "difficulty": "L3",
+          "family": "DEBT",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "reclass signal"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-incremental-paths",
+          "difficulty": "L3",
+          "family": "INCREMENTAL",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "incremental path extracted"
+            },
+            {
+              "ok": true,
+              "detail": "incremental limb/order detail"
+            },
+            {
+              "ok": true,
+              "detail": "incremental Ask lead OK"
+            }
+          ]
+        },
+        {
+          "probeId": "L3-noa",
+          "difficulty": "L3",
+          "family": "AA",
+          "status": "PASS",
+          "checks": [
+            {
+              "ok": true,
+              "detail": "NOA extracted"
+            }
+          ]
+        }
+      ],
+      "promotedToLegalTruth": 0
+    }
+  ]
+}
