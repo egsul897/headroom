@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { analyzeAmendmentPackage } from "../../lib/product/customer-intelligence/amendment-package";
+import { renderCovenantReviewMarkdown } from "../../lib/product/customer-intelligence/export-review";
+import type { CovenantReviewWorkspace } from "../../lib/product/customer-intelligence/covenant-review";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
 import type {
   CovenantCandidateRecord,
@@ -133,6 +135,32 @@ describe("covenant summary substance", () => {
     expect(item.applicableDefinitions.some((d) => d.term === "Consolidated EBITDA")).toBe(true);
     expect(item.sourceCitation).toContain("7.01");
     expect(item.unresolvedQuestions.length).toBeGreaterThan(0);
+  });
+});
+
+describe("covenant review markdown export", () => {
+  it("renders executive fields from the shared review object", () => {
+    const review: CovenantReviewWorkspace = {
+      companyId: "co-export",
+      documentCount: 1,
+      analyzedOkCount: 1,
+      failedCount: 0,
+      totalSummaries: 1,
+      executive: {
+        headline: "1 document(s) analyzed with 1 source-backed covenant summaries.",
+        materialRestrictions: ["§7.01: No Indebtedness except enumerated baskets."],
+        materialPermissions: ["§7.01: general basket $50,000,000"],
+        unresolved: ["§7.01: operative amendment status unresolved"],
+      },
+      categories: [],
+      documents: [],
+      amendmentPackage: null,
+    };
+    const md = renderCovenantReviewMarkdown(review);
+    expect(md).toContain("# Covenant review — co-export");
+    expect(md).toContain("DISCOVERED ≠ VERIFIED");
+    expect(md).toContain("§7.01: No Indebtedness");
+    expect(md).toContain("not capacity");
   });
 });
 

@@ -16,3 +16,4 @@ export {
   type CapacityReadiness,
   type CapacityReadinessStatus,
 } from "./capacity-readiness";
+export { renderCovenantReviewMarkdown } from "./export-review";
