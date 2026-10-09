@@ -225,6 +225,35 @@ export interface ResolveGoverningScopeInput {
   index: StructuralIndex;
 }
 
+/**
+ * When a lettered/child unit (e.g. 7.02(b)) is compiled under a section-level candidate
+ * (anchor = 7.02), the candidate-level governing chain often has no entity-binding ancestor —
+ * the section chapeau is the candidate's own text, not an ancestor. Re-resolve from the child's
+ * structural node so PARENT_SCOPE is the section lead-in (source-witnessed). Falls back to the
+ * candidate governing scope when the child cannot be uniquely located or has no lettered path.
+ */
+export function resolveGoverningScopeForCitedUnit(input: {
+  candidateRef: string;
+  documentId: string;
+  ruleSourceSectionRef: string | null | undefined;
+  candidateGoverningScope: GoverningSemanticContext | null;
+  index: StructuralIndex | null;
+}): GoverningSemanticContext | null {
+  const ref = input.ruleSourceSectionRef?.trim() ?? "";
+  if (!ref || !input.index) return input.candidateGoverningScope;
+  // Lettered / nested path: 7.02(b), 9.2(a)(i), etc.
+  if (!/\([^)]+\)/.test(ref)) return input.candidateGoverningScope;
+  const nodes = input.index.findNodesByRef(input.documentId, ref);
+  if (nodes.length !== 1) return input.candidateGoverningScope;
+  const resolved = resolveGoverningScope({
+    candidateRef: `${input.candidateRef}#${ref}`,
+    documentId: input.documentId,
+    anchorNodeId: nodes[0]!.nodeId,
+    index: input.index,
+  });
+  return resolved ?? input.candidateGoverningScope;
+}
+
 /** Walks the candidate's real ancestor chain and derives the typed governing context. Null when the anchor is unknown to the index. */
 export function resolveGoverningScope(input: ResolveGoverningScopeInput): GoverningSemanticContext | null {
   const anchor = input.index.getNodeById(input.anchorNodeId);

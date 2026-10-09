@@ -117,7 +117,7 @@ describe("GS5 + §9-§12 entity-scope precedence: own actor language > governing
     const r = normalize(idxA, "9.2(a)", [rule({})]).rules[0]!;
     expect(r.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
     expect(r.entityScopeAudit).toMatchObject({ guardVersion: ENTITY_SCOPE_GUARD_VERSION, status: "SOURCE_SCOPE_DERIVED", precedence: "GOVERNING_SCOPE_SOURCE", safeToRely: true });
-    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v5");
+    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v6");
     expect(r.entityScopeAudit!.modelDiscrepancy).toMatchObject({ modelScope: ["BORROWER"], governingScope: ["BORROWER", "ANY_SUBSIDIARY"], relation: "MODEL_NARROWER" });
     expect(r.sufficiency).toBe("COMPLETE");
   });
@@ -132,7 +132,17 @@ describe("GS5 + §9-§12 entity-scope precedence: own actor language > governing
     expect(unknown.sufficiencyReasons.some((x) => x.startsWith("ENTITY_SCOPE_UNRECOGNIZED_TAG"))).toBe(false);
   });
   it("§12 fail-closed: without an authenticated governing source the v2 behaviour stands - an unrecognized tag resets the scope and limits the rule; nothing is inferred from drafting patterns", () => {
-    const r = normalize(idxA, "9.2(a)", [rule({ entityScope: ["Company", "Restricted Subsidiary"] })], { governingScope: null }).rules[0]!;
+    // No governingScope, no structural index (so lettered-child re-resolution cannot recover PARENT_SCOPE),
+    // and operative text is only the lettered fragment (no section chapeau) — refuse, never invent scope.
+    const r = normalizeSubmission(
+      submission([rule({ entityScope: ["Company", "Restricted Subsidiary"] })]),
+      testCompilerInput({
+        sourceSectionRef: "9.2(a)",
+        operativeSourceText: S92A,
+        governingScope: null,
+        toolAccess: { structuralIndex: null, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: testCompilerInput().contextBundle },
+      }),
+    ).rules[0]!;
     expect([r.entityScope, r.entityScopeAudit!.status, r.sufficiency]).toEqual([[], "UNRECOGNIZED_TAG", "PARTIAL"]);
   });
   it("§11 own operative actor language outranks the governing chain: a child that binds 'any Subsidiary' itself keeps that narrower scope", () => {

@@ -21,7 +21,7 @@ const ARTIFACTS = "docs/product/customer-workflow/stage-d-pkgi-entity-scope";
 
 describe("Stage D pkg-i entity-scope COUNTERPARTY → dual-path 4E", () => {
   it("CERTIFIES §7.01 offline with §7.01(d) SOURCE_SCOPE_DERIVED ANY_SUBSIDIARY (COUNTERPARTY)", async () => {
-    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v5");
+    expect(ENTITY_SCOPE_GUARD_VERSION).toBe("entity-scope-consistency-guard.v6");
     const pkg = loadPackage(PACKAGE_ID);
     const stages = await runDeterministicStages(pkg);
     const sem = await runSemanticStage(pkg, stages);

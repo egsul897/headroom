@@ -25,6 +25,7 @@ import {
   classifyEntityMentionRole,
   classifyEntityTag,
   findEntityBindingSignals,
+  parentSectionLeadIn,
   replayEntityScopeGuard,
   TAG_DENOTATION,
 } from "@/lib/contract-model/compiler/semantic/entity-scope-guard";
@@ -262,6 +263,89 @@ describe("entity-scope guard - §10 do not over-guard (tests 3, 4)", () => {
   it("lowercase prose words are not binding classes (case-sensitive defined-term vocabulary)", () => {
     expect(findEntityBindingSignals("any subsidiary of the company or any guarantor thereof")).toEqual([]);
     expect(findEntityBindingSignals("Loan Documents and Loan Party").map((s) => s.phrase)).toEqual(["Loan Party"]);
+  });
+});
+
+describe("entity-scope guard v6 - source-witnessed parent-scope inheritance for lettered children", () => {
+  const parentChapeau = "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:";
+  const childExcerpt = "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and";
+
+  it("parent scope inherited correctly when child fragment has no obligor words", () => {
+    const r = rule({
+      sourceSectionRef: "7.02(b)",
+      entityScope: ["BORROWER"],
+      excerpt: childExcerpt,
+      posture: "PERMISSION",
+      ruleType: "QUANTITATIVE_PERMISSION",
+      action: "CREATE_LIEN",
+    });
+    const g = applyEntityScopeGuard(
+      r,
+      { ownExcerpt: childExcerpt, citedUnitLeadIn: childExcerpt, parentScopeLeadIn: parentChapeau, operativeText: `${parentChapeau}\n\n${childExcerpt}` },
+      noTags,
+    );
+    expect(g.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(g.entityScopeAudit!.safeToRely).toBe(true);
+    expect(g.entityScopeAudit!.witness.decidedBy).toBe("PARENT_SCOPE");
+    expect(g.entityScopeAudit!.modelDiscrepancy?.relation).toBe("MODEL_NARROWER");
+  });
+
+  it("child scope narrower than parent: own actor language outranks parent chapeau", () => {
+    const child = "(b) Liens of the Borrower securing Indebtedness permitted under Section 7.01(b) not to exceed $20,000,000;";
+    const r = rule({ sourceSectionRef: "7.02(b)", entityScope: ["BORROWER", "ANY_SUBSIDIARY"], excerpt: child, posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION" });
+    const g = applyEntityScopeGuard(
+      r,
+      { ownExcerpt: child, citedUnitLeadIn: child, parentScopeLeadIn: parentChapeau, operativeText: `${parentChapeau}\n\n${child}` },
+      noTags,
+    );
+    expect(g.entityScope).toEqual(["BORROWER"]);
+    expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(g.entityScopeAudit!.precedence).toBe("OWN_OPERATIVE_LANGUAGE");
+    expect(g.entityScopeAudit!.safeToRely).toBe(true);
+  });
+
+  it("child scope explicitly different from parent is derived from own text, not parent", () => {
+    // Unrestricted Subsidiary is exactly nameable and disjoint from the parent Borrower+Subsidiary chapeau.
+    const child = "(c) Liens securing Indebtedness of any Unrestricted Subsidiary;";
+    const r = rule({ sourceSectionRef: "7.02(c)", entityScope: ["BORROWER"], excerpt: child, posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION" });
+    const g = applyEntityScopeGuard(
+      r,
+      { ownExcerpt: child, citedUnitLeadIn: child, parentScopeLeadIn: parentChapeau, operativeText: `${parentChapeau}\n\n${child}` },
+      noTags,
+    );
+    expect(g.entityScope).toEqual(["UNRESTRICTED_SUB"]);
+    expect(g.entityScopeAudit!.precedence).toBe("OWN_OPERATIVE_LANGUAGE");
+    expect(g.entityScopeAudit!.safeToRely).toBe(true);
+  });
+
+  it("parent scope missing: refuse (UNWITNESSED), never invent BORROWER/ALL_SUBSIDIARIES", () => {
+    const r = rule({ sourceSectionRef: "7.02(b)", entityScope: ["BORROWER"], excerpt: childExcerpt });
+    const g = applyEntityScopeGuard(r, { ownExcerpt: childExcerpt, citedUnitLeadIn: childExcerpt, parentScopeLeadIn: null }, noTags);
+    expect(g.entityScope).toEqual(["BORROWER"]);
+    expect(g.entityScopeAudit!.status).toBe("UNWITNESSED");
+    expect(g.entityScopeAudit!.safeToRely).toBe(false);
+  });
+
+  it("counterparty mistaken for obligor is not inherited from parent; COUNTERPARTY stays non-binding", () => {
+    const owed = "(d) Indebtedness owed to the Borrower by any Subsidiary.";
+    const parent = "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:";
+    const r = rule({ sourceSectionRef: "7.01(d)", entityScope: ["BORROWER"], excerpt: owed, posture: "PERMISSION", ruleType: "QUANTITATIVE_PERMISSION" });
+    const g = applyEntityScopeGuard(
+      r,
+      { ownExcerpt: owed, citedUnitLeadIn: owed, parentScopeLeadIn: parent, operativeText: `${parent}\n\n${owed}` },
+      noTags,
+    );
+    expect(g.entityScope).toEqual(["ANY_SUBSIDIARY"]);
+    expect(g.entityScopeAudit!.witness.signals.find((s) => s.phrase === "Borrower" && s.tier === "OWN_EXCERPT")?.role).toBe("COUNTERPARTY");
+    expect(g.entityScopeAudit!.precedence).toBe("OWN_OPERATIVE_LANGUAGE");
+  });
+
+  it("parentSectionLeadIn extracts the section chapeau before the first lettered enumerator", () => {
+    const region = `${parentChapeau}\n\n(a) Liens securing the Obligations;\n\n${childExcerpt}\n\n(c) Liens for taxes not yet due.`;
+    expect(parentSectionLeadIn(region, "7.02", "7.02(b)")).toBe(parentChapeau);
+    expect(parentSectionLeadIn(region, "7.02", "7.02")).toBeNull();
+    expect(parentSectionLeadIn(childExcerpt, "7.02(b)", "7.02(b)")).toBeNull();
   });
 });
 
