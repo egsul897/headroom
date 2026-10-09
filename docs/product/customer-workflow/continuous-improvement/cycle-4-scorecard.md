@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 4 |
 | Starting SHA | `bae24ced33fdd6963d0615265a1e67cb181233e8` (`origin/main`) |
-| Ending SHA | `0314eb058fb4f5e58ff7553776d82e7c777c52aa` |
+| Ending SHA | `2e206a72c12bb316d5522e1e0902b5b347156493` |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 
