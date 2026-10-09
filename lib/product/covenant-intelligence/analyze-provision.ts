@@ -261,10 +261,21 @@ function relatedDefinitions(
   excerpt: string,
   defs: DefinitionRecord[],
 ): Array<{ term: string; excerpt: string; resolved: boolean }> {
+  const hay = excerpt.toLowerCase();
+  // Prefer longer terms first so "Consolidated EBITDA" wins over "EBITDA",
+  // and scan the full definition set (not only the first 300 discovery hits).
+  const ranked = [...defs]
+    .filter((d) => d.term.length >= 3)
+    .sort((a, b) => b.term.length - a.term.length);
   const hits: Array<{ term: string; excerpt: string; resolved: boolean }> = [];
-  for (const d of defs.slice(0, 300)) {
-    if (d.term.length < 3) continue;
-    if (!excerpt.toLowerCase().includes(d.term.toLowerCase())) continue;
+  const seen = new Set<string>();
+  for (const d of ranked) {
+    const term = d.term.toLowerCase();
+    // Word-boundary-ish match avoids "lien" inside unrelated tokens when possible.
+    const re = new RegExp(`(?:^|[^a-z0-9])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:[^a-z0-9]|$)`, "i");
+    if (!re.test(hay) && !hay.includes(term)) continue;
+    if (seen.has(term)) continue;
+    seen.add(term);
     hits.push({
       term: d.term,
       excerpt: clip(d.excerpt ?? "", 220),

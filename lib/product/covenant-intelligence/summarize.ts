@@ -183,11 +183,33 @@ export function buildDocumentCovenantSummary(params: {
     note: "DISCOVERED ≠ VERIFIED. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
     items: items.slice(0, 120),
-    definedTermsSample: params.definitions.slice(0, 40).map((d) => ({
-      term: d.term,
-      excerpt: (d.excerpt ?? "").slice(0, 240),
-    })),
+    definedTermsSample: pickDefinedTermsSample(params.definitions, 80),
   };
+}
+
+/** Prefer material financing terms in the persisted sample used by Ask. */
+function pickDefinedTermsSample(
+  definitions: DefinitionRecord[],
+  limit: number,
+): Array<{ term: string; excerpt: string }> {
+  const material =
+    /ebitda|indebtedness|leverage|coverage|restricted\s+payment|permitted\s+(?:lien|investment|acquisition)|administrative\s+agent|total\s+net|consolidated\s+net\s+income/i;
+  const ranked = [...definitions].sort((a, b) => {
+    const am = material.test(a.term) ? 0 : 1;
+    const bm = material.test(b.term) ? 0 : 1;
+    if (am !== bm) return am - bm;
+    return b.term.length - a.term.length;
+  });
+  const out: Array<{ term: string; excerpt: string }> = [];
+  const seen = new Set<string>();
+  for (const d of ranked) {
+    const key = d.term.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ term: d.term, excerpt: (d.excerpt ?? "").slice(0, 280) });
+    if (out.length >= limit) break;
+  }
+  return out;
 }
 
 export function summarizeFromStoredMetadata(metadata: unknown): DocumentCovenantSummary | null {

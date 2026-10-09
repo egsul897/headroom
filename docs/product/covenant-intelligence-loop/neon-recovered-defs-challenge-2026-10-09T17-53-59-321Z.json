@@ -1,0 +1,823 @@
+{
+  "generatedAt": "2026-10-09T17:53:59.321Z",
+  "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "results": [
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "label": "Alkermes Amendment No. 1 to Credit Agreement",
+      "issuer": "Alkermes plc",
+      "textLen": 782479,
+      "structuralNodes": 1392,
+      "definitions": 359,
+      "candidates": 297,
+      "conditionsExceptions": 400,
+      "crossReferences": 885,
+      "summaryItems": 120,
+      "categories": [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE",
+        "EVENTS_OF_DEFAULT"
+      ],
+      "linkage": {
+        "itemsWithResolvedDefs": 116,
+        "itemsWithUnresolvedDefs": 0,
+        "itemsWithExceptions": 41,
+        "itemsWithConditions": 47,
+        "itemsWithXrefs": 76,
+        "itemsWithBaskets": 16
+      },
+      "expectedDefHits": [
+        {
+          "term": "Consolidated EBITDA",
+          "present": true
+        },
+        {
+          "term": "Administrative Agent",
+          "present": true
+        },
+        {
+          "term": "Restricted Payment",
+          "present": true
+        },
+        {
+          "term": "Lien",
+          "present": true
+        },
+        {
+          "term": "Permitted Refinancing Indebtedness",
+          "present": true
+        }
+      ],
+      "expectedDefHitRate": 1,
+      "definitionSpots": {
+        "ebitda": {
+          "term": "Consolidated EBITDA",
+          "excerpt": "“ Consolidated EBITDA ” means, with reference to any period, Consolidated Net Income for such period plus ,\n(a) without duplication and to the extent (other than with respect to clauses &#x200e;(iv) and (xv) below) deducted from revenues in determining Consolidated Net Income for"
+        },
+        "indebtedness": null,
+        "acquiredEbitda": null
+      },
+      "answers": [
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "citationCount": 6,
+          "detailPreview": "The agreement defines “Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow:\nDefinition — Consolidated EBITDA:\n“ Consolidated EBITDA ” means, with reference to any period, Consolidated Net Income for such period plus ,\n(a) without duplication and to the extent (other than with respect to clauses &#x200e;(iv) and (xv) below) deducted from revenues in determining Consolidated Net Income for such period,\n\n(i) consolidated interest charges, and",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": true,
+          "defLanguageHits": 72,
+          "citedSections": [
+            "Definition: Consolidated EBITDA",
+            "6.10",
+            "6.10(a)",
+            "1.06",
+            "6.13",
+            "2.20(j)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What restrictions govern additional indebtedness?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §1.01(h) — 1.01(h) [CONDITIONAL_PERMISSION]\nSection 1.01(h) (“1.01(h)”) operates as a conditional permission within the debt incurrence regime for Borrower. Permission substance: (h) any amendments to the laws and regulations in (a)-(g) Conditions/provisos signaled: so_long_as: so long as, in the case of this clause (c), on a pro forma basis after giving effect to the incurrence o",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 59,
+          "citedSections": [
+            "1.01(h)",
+            "2.20(j)",
+            "6.10",
+            "6.10(a)",
+            "6.10(b)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What debt baskets are available?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §6.10(a) — 6.10(a) [GENERAL_PROHIBITION]\nSection 6.10(a) (“6.10(a)”) is a general debt incurrence prohibition covering Borrower, Restricted Subsidiaries, Subsidiaries. will not and will not permit any Restricted Subsidiary to, directly or indirectly voluntarily prepay, defease or in substance defease, purchase, redeem, retire or otherwise acquire, any Junior Indebtedness or any In",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 64,
+          "citedSections": [
+            "6.10(a)",
+            "2.20(j)",
+            "6.10",
+            "6.13(b)",
+            "7.01(g)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What restricted payments are permitted?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:\n(1) §6.08 — Restricted Payments [OBLIGATION]\nSection 6.08 (“Restricted Payments”) imposes an affirmative or ongoing obligation related to restricted payments and investments for Borrower, Loan Parties, Restricted Subsidiaries, Subsidiaries. Controlling defined terms (excerpt-matched): Wholly-Owned Subsidiary, Restricted Subsidiary, Disqualified Equity, Restricted Payment, Equity Interest",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 15,
+          "citedSections": [
+            "6.08",
+            "2.25",
+            "6.08(q)",
+            "2.25(a)",
+            "6.08(a)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is:\n(1) §5.09(d) — 5.09(d) [ENUMERATED_PERMISSION]\nSection 5.09(d) (“5.09(d)”) operates as a enumerated permission within the liens and secured debt regime for Borrower, Loan Parties. Permission substance: (d) If any material assets are acquired by a Loan Party after the Closing Date (other than (i) Excluded Assets or (ii) assets of the type constituting Collat",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 10,
+          "citedSections": [
+            "5.09(d)",
+            "6.02",
+            "3.17(i)",
+            "7.01(o)",
+            "5.09(b)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What conditions or exceptions apply to refinancing indebtedness?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §2.20(j) — 2.20(j) [MAINTENANCE_TEST]\nSection 2.20(j) (“2.20(j)”) is a financial maintenance covenant applying to Borrower, Loan Parties, Restricted Subsidiaries, Subsidiaries. shall not exceed (a) in the case of Incremental Equivalent Debt incurred by a Loan Party, the Incremental Cap and (b) in the case of Incremental Equivalent Debt incurred by a Restricted Subsidiary that is n",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 49,
+          "citedSections": [
+            "2.20(j)",
+            "7.01(g)",
+            "1.01(q)",
+            "2.11(f)",
+            "6.01"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        }
+      ],
+      "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+      "promotedToLegalTruth": 0,
+      "_definitionCount": 359,
+      "_candidateCount": 297,
+      "_xrefCount": 885,
+      "_conditionCount": 400,
+      "_structuralNodeCount": 1392
+    },
+    {
+      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+      "label": "American Eagle Outfitters credit agreement exhibit",
+      "issuer": "American Eagle Outfitters",
+      "textLen": 821855,
+      "structuralNodes": 1402,
+      "definitions": 379,
+      "candidates": 263,
+      "conditionsExceptions": 400,
+      "crossReferences": 806,
+      "summaryItems": 120,
+      "categories": [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "EVENTS_OF_DEFAULT"
+      ],
+      "linkage": {
+        "itemsWithResolvedDefs": 118,
+        "itemsWithUnresolvedDefs": 0,
+        "itemsWithExceptions": 46,
+        "itemsWithConditions": 48,
+        "itemsWithXrefs": 87,
+        "itemsWithBaskets": 10
+      },
+      "expectedDefHits": [
+        {
+          "term": "Adjusted Consolidated EBITDA",
+          "present": true
+        },
+        {
+          "term": "Administrative Agent",
+          "present": true
+        },
+        {
+          "term": "Restricted Payment",
+          "present": false
+        },
+        {
+          "term": "Permitted Investment",
+          "present": false
+        },
+        {
+          "term": "Acquired EBITDA",
+          "present": true
+        }
+      ],
+      "expectedDefHitRate": 0.6,
+      "definitionSpots": {
+        "ebitda": {
+          "term": "Adjusted Consolidated EBITDA",
+          "excerpt": "“ Adjusted Consolidated EBITDA ” means, for any period, the Consolidated Net Income for such period, plus :\n(a) without duplication and to the extent already deducted (and not added back) in arriving at such Consolidated Net Income, the sum of the following amounts for such perio"
+        },
+        "indebtedness": null,
+        "acquiredEbitda": {
+          "term": "Acquired EBITDA",
+          "excerpt": "“ Acquired EBITDA ” means, with respect to any Pro Forma Entity for any period, the amount for such period of Adjusted Consolidated EBITDA of such Pro Forma Entity (determined as if references to the U.S. Borrower and the Subsidiaries in the definition of the term “Adjusted Conso"
+        }
+      },
+      "answers": [
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "citationCount": 6,
+          "detailPreview": "The agreement defines “Adjusted Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow:\nDefinition — Adjusted Consolidated EBITDA:\n“ Adjusted Consolidated EBITDA ” means, for any period, the Consolidated Net Income for such period, plus :\n(a) without duplication and to the extent already deducted (and not added back) in arriving at such Consolidated Net Income, the sum of the following amounts for such period:\n(i) total interest expense and, ",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": true,
+          "defLanguageHits": 58,
+          "citedSections": [
+            "Definition: Adjusted Consolidated EBITDA",
+            "10.04",
+            "10.04(i)",
+            "5.01",
+            "10.07",
+            "5.09(b)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What is Adjusted Consolidated EBITDA?",
+          "kind": "answered",
+          "citationCount": 6,
+          "detailPreview": "The agreement defines “Adjusted Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow:\nDefinition — Adjusted Consolidated EBITDA:\n“ Adjusted Consolidated EBITDA ” means, for any period, the Consolidated Net Income for such period, plus :\n(a) without duplication and to the extent already deducted (and not added back) in arriving at such Consolidated Net Income, the sum of the following amounts for such period:\n(i) total interest expense and, ",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": true,
+          "defLanguageHits": 58,
+          "citedSections": [
+            "Definition: Adjusted Consolidated EBITDA",
+            "10.04",
+            "10.04(i)",
+            "5.01",
+            "10.07",
+            "5.09(b)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What restrictions govern additional indebtedness?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §10.04 — Investments, Loans and Advances [CONDITIONAL_PERMISSION]\nSection 10.04 (“Investments, Loans and Advances”) operates as a conditional permission within the debt incurrence regime for Borrower, Loan Parties, Guarantor(s), Subsidiaries. Permission substance: (i) Purchase or acquire (including pursuant to any merger with a person that is not a Wholly Owned Subsidiary immediat",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 44,
+          "citedSections": [
+            "10.04",
+            "10.04(i)",
+            "10.08(B)",
+            "X",
+            "10.01"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What investments are permitted?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Matching analyzed provisions say:\n(1) §10.04 — Investments, Loans and Advances [CONDITIONAL_PERMISSION]\nSection 10.04 (“Investments, Loans and Advances”) operates as a conditional permission within the debt incurrence regime for Borrower, Loan Parties, Guarantor(s), Subsidiaries. Permission substance: (i) Purchase or acquire (including pursuant to any merger with a person that is not a Wholly Owned Subsidiary immediately prior to such merger) any Equity Interests, evidences of Indebtedness or ot",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 41,
+          "citedSections": [
+            "10.04",
+            "10.04(i)",
+            "10.09(l)",
+            "X",
+            "10.02"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What restricted-payment baskets are available?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:\n(1) §10.06(i) — 10.06(i) [ENUMERATED_PERMISSION]\nSection 10.06(i) (“10.06(i)”) operates as a enumerated permission within the restricted payments and investments regime for entities not clearly identified in the excerpt. Permission substance: (i) Declare or pay any dividend or make any other distribution (by reduction of capital or otherwise), whether in cash, property, securities or a c",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 23,
+          "citedSections": [
+            "10.06(i)",
+            "10.07",
+            "10.09",
+            "10.09(l)",
+            "10.06"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is:\n(1) §10.02 — Section 10.02 Liens . [GENERAL_PROHIBITION]\nSection 10.02 (“Section 10.02 Liens .”) is a general liens and secured debt prohibition covering Borrower, Subsidiaries. shall not subsequently apply to any other property or assets of the U. It is subject to enumerated exceptions/permissions, including: (a) Liens on property or assets of the U; (i) s",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 15,
+          "citedSections": [
+            "10.02",
+            "10.08",
+            "7.16(a)",
+            "13.02(c)",
+            "13.17"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        }
+      ],
+      "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+      "promotedToLegalTruth": 0,
+      "_definitionCount": 379,
+      "_candidateCount": 263,
+      "_xrefCount": 806,
+      "_conditionCount": 400,
+      "_structuralNodeCount": 1402
+    },
+    {
+      "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+      "label": "DSGR Third Amendment to A&R Credit Agreement",
+      "issuer": null,
+      "textLen": 736899,
+      "structuralNodes": 1308,
+      "definitions": 328,
+      "candidates": 310,
+      "conditionsExceptions": 400,
+      "crossReferences": 785,
+      "summaryItems": 120,
+      "categories": [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "AFFILIATE_TRANSACTIONS",
+        "GUARANTEES"
+      ],
+      "linkage": {
+        "itemsWithResolvedDefs": 117,
+        "itemsWithUnresolvedDefs": 0,
+        "itemsWithExceptions": 26,
+        "itemsWithConditions": 39,
+        "itemsWithXrefs": 39,
+        "itemsWithBaskets": 18
+      },
+      "expectedDefHits": [
+        {
+          "term": "Account Debtor",
+          "present": true
+        },
+        {
+          "term": "Acquired EBITDA",
+          "present": true
+        },
+        {
+          "term": "Acquisition",
+          "present": true
+        },
+        {
+          "term": "Administrative Agent",
+          "present": true
+        },
+        {
+          "term": "EBITDA",
+          "present": true
+        }
+      ],
+      "expectedDefHitRate": 1,
+      "definitionSpots": {
+        "ebitda": {
+          "term": "EBITDA",
+          "excerpt": "“ EBITDA ” means, for any period, Net Income for such period plus\n\n(a) without duplication and to the extent deducted (and not added back or excluded) in determining Net Income for such period,\nthe sum of:\n\n(i)\nInterest Expense for such period,\n\n(ii)\nincome tax expense for such p"
+        },
+        "indebtedness": null,
+        "acquiredEbitda": {
+          "term": "Acquired EBITDA",
+          "excerpt": "“ Acquired EBITDA ” means, with respect to any Acquired Entity or Business for any period, the amount for such period of EBITDA\nof such Acquired Entity or Business, all as determined on a consolidated basis for such Acquired Entity or Business and as if references to the Company "
+        }
+      },
+      "answers": [
+        {
+          "question": "What is Acquired EBITDA?",
+          "kind": "answered",
+          "citationCount": 6,
+          "detailPreview": "The agreement defines “Acquired EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow:\nDefinition — Acquired EBITDA:\n“ Acquired EBITDA ” means, with respect to any Acquired Entity or Business for any period, the amount for such period of EBITDA\nof such Acquired Entity or Business, all as determined on a consolidated basis for such Acquired Entity or Business and as if references to the Company and its Restricted Subsidiaries in the definition of “EBITDA”",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": true,
+          "defLanguageHits": 61,
+          "citedSections": [
+            "Definition: Acquired EBITDA",
+            "6.01",
+            "6.08",
+            "6.12(a)",
+            "6.01(b)",
+            "6.01(c)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What restrictions govern additional indebtedness?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §6.01 — Indebtedness [GENERAL_PROHIBITION]\nSection 6.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower, Loan Parties, Restricted Subsidiaries, Subsidiaries. shall not at any time exceed an amount equal to 15% of Applicable EBITDA; 113 (c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebte",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 62,
+          "citedSections": [
+            "6.01",
+            "6.08",
+            "6.01(b)",
+            "6.01(c)",
+            "6.01(g)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What debt baskets are available?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §6.08 — Restricted Payments; Certain Payments of Indebtedness [MAINTENANCE_TEST]\nSection 6.08 (“Restricted Payments; Certain Payments of Indebtedness”) is a financial maintenance covenant applying to Loan Parties, Restricted Subsidiaries, Subsidiaries. Pass/fail and remaining headroom are unresolved without approved financial inputs. Material baskets/thresholds identified: Ratio t",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 71,
+          "citedSections": [
+            "6.08",
+            "6.01",
+            "6.01(b)",
+            "6.01(c)",
+            "6.01(q)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say:\n(1) §1.06 — Pro Forma Adjustments for Acquisitions and Dispositions [MAINTENANCE_TEST]\nSection 1.06 (“Pro Forma Adjustments for Acquisitions and Dispositions”) is a financial maintenance covenant applying to Borrower, Restricted Subsidiaries, Subsidiaries. Pass/fail and remaining headroom are unresolved without approved financial inputs. Controlling defined terms (excerpt-matched):",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 23,
+          "citedSections": [
+            "1.06",
+            "2.11(c)",
+            "2.13(g)",
+            "6.12",
+            "1.05"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What conditions apply to acquisitions?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Matching analyzed provisions say:\n(1) §6.01 — Indebtedness [GENERAL_PROHIBITION]\nSection 6.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower, Loan Parties, Restricted Subsidiaries, Subsidiaries. shall not at any time exceed an amount equal to 15% of Applicable EBITDA; 113 (c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any o It is subject to enumerated exceptions/permissio",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 40,
+          "citedSections": [
+            "6.01",
+            "6.08",
+            "9.02",
+            "6.02",
+            "6.04"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "How do amendment changes affect debt capacity?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Amendment effects are reported only from analyzed package documents. Precedence may be unresolved. Matching analyzed provisions say:\n(1) §9.02 — SECTION 9.02. Waivers; Amendments . [MAINTENANCE_TEST]\nSection 9.02 (“SECTION 9.02. Waivers; Amendments .”) is a financial maintenance covenant applying to Loan Parties. shall not be construed as a waiver of any Default, regardless of whether the Administrative Agent, any Lender or the Issuing Bank may have had notice or knowledge of such Default at the",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 44,
+          "citedSections": [
+            "9.02",
+            "3",
+            "6.01",
+            "6.11",
+            "6.02(p)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        }
+      ],
+      "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+      "promotedToLegalTruth": 0,
+      "_definitionCount": 328,
+      "_candidateCount": 310,
+      "_xrefCount": 785,
+      "_conditionCount": 400,
+      "_structuralNodeCount": 1308
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "label": "GoDaddy Joinder and Thirteenth Amendment",
+      "issuer": "GoDaddy selection",
+      "textLen": 955134,
+      "structuralNodes": 1399,
+      "definitions": 472,
+      "candidates": 174,
+      "conditionsExceptions": 400,
+      "crossReferences": 843,
+      "summaryItems": 120,
+      "categories": [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE",
+        "EVENTS_OF_DEFAULT",
+        "BASKETS_EXCEPTIONS_CONDITIONS"
+      ],
+      "linkage": {
+        "itemsWithResolvedDefs": 117,
+        "itemsWithUnresolvedDefs": 0,
+        "itemsWithExceptions": 55,
+        "itemsWithConditions": 61,
+        "itemsWithXrefs": 66,
+        "itemsWithBaskets": 11
+      },
+      "expectedDefHits": [
+        {
+          "term": "Administrative Agent",
+          "present": true
+        },
+        {
+          "term": "Acquisition Agreement",
+          "present": true
+        },
+        {
+          "term": "2029 Senior Notes",
+          "present": false
+        }
+      ],
+      "expectedDefHitRate": 0.6666666666666666,
+      "definitionSpots": {
+        "ebitda": {
+          "term": "Consolidated EBITDA",
+          "excerpt": "“ Consolidated EBITDA ” shall mean, with respect to any Person and its Restricted Subsidiaries for any period, the Consolidated Net Income of such Person for such period:\n(i)    increased (without duplication) by:\n(a)    provision for taxes based on income, profits, revenue or ca"
+        },
+        "indebtedness": {
+          "term": "Indebtedness",
+          "excerpt": "“ Indebtedness ” shall mean, with respect to any Person, (i) any indebtedness (including principal and premium) of such Person, whether or not contingent (a) in respect of borrowed money, (b) evidenced by bonds, notes, debentures, or similar instruments or letters of credit or ba"
+        },
+        "acquiredEbitda": {
+          "term": "Acquired EBITDA",
+          "excerpt": "“ Acquired EBITDA ” shall mean, with respect to any Acquired Entity or Business or any Converted Restricted Subsidiary (any of the foregoing, a “ Pro Forma Entity ”) for any period, the amount for such period of Consolidated EBITDA of such Pro Forma Entity (determined using such "
+        }
+      },
+      "answers": [
+        {
+          "question": "What restrictions govern additional indebtedness?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §5(f) — 5(f) [ENUMERATED_PERMISSION]\nSection 5(f) (“5(f)”) operates as a enumerated permission within the debt incurrence regime for entities not clearly identified in the excerpt. Permission substance: (f) Rejection Right Controlling defined terms (excerpt-matched): Debt Incurrence Prepayment Event, Permitted Other Indebtedness, Administrative Agent, Prepayment Event, Term Loan L",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 41,
+          "citedSections": [
+            "5(f)",
+            "9.12",
+            "1.10(f)",
+            "10.1",
+            "10.2"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What is Acquisition Agreement?",
+          "kind": "answered",
+          "citationCount": 6,
+          "detailPreview": "The agreement defines “Acquisition Agreement” as follows (source-backed definition text). Supporting covenant uses of the term follow:\nDefinition — Acquisition Agreement:\n“ Acquisition Agreement ” means the agreement dated December 5, 2016 among Fifth Cinven Fund Entities, the other sellers thereto, the Existing Borrower, Holdings and the other parties thereto.\n“ Additional Borrower ” has the meaning assigned to such term in Section 1.14(a) .\n“ Additional Borrower Agreement ” has the meaning ass",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": true,
+          "defLanguageHits": 31,
+          "citedSections": [
+            "Definition: Acquisition Agreement",
+            "11.14",
+            "1.10",
+            "10.1",
+            "5.2",
+            "9.6"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "What debt baskets are available?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n(1) §5(f) — 5(f) [ENUMERATED_PERMISSION]\nSection 5(f) (“5(f)”) operates as a enumerated permission within the debt incurrence regime for entities not clearly identified in the excerpt. Permission substance: (f) Rejection Right Controlling defined terms (excerpt-matched): Debt Incurrence Prepayment Event, Permitted Other Indebtedness, Administrative Agent, Prepayment Event, Term Loan L",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 42,
+          "citedSections": [
+            "5(f)",
+            "1.10(f)",
+            "10.1",
+            "10.2",
+            "5.2"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        },
+        {
+          "question": "How do amendment changes affect debt capacity?",
+          "kind": "answered",
+          "citationCount": 5,
+          "detailPreview": "Amendment effects are reported only from analyzed package documents. Precedence may be unresolved. Matching analyzed provisions say:\n(1) §9.8(b) — 9.8(b) [CONDITIONAL_PERMISSION]\nSection 9.8(b) (“9.8(b)”) operates as a conditional permission within the liens and secured debt regime for Borrower, Restricted Subsidiaries, Subsidiaries. Permission substance: (b) Any Lien created for the benefit of the Secured Parties pursuant to the preceding paragraph shall provide by its terms that such Lien shal",
+          "hasUnresolved": true,
+          "hasPermissions": true,
+          "hasRestrictions": true,
+          "leadsWithDefinition": false,
+          "defLanguageHits": 40,
+          "citedSections": [
+            "9.8(b)",
+            "8.7",
+            "10.2",
+            "5(f)",
+            "1.10(e)"
+          ],
+          "limitations": [
+            "Composed from persisted provision analyses — not a second legal engine",
+            "Permissions listed are textual exceptions/baskets, not confirmed available capacity",
+            "Precedents are not governing authority for any customer agreement",
+            "promotedToLegalTruth remains 0"
+          ]
+        }
+      ],
+      "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+      "promotedToLegalTruth": 0,
+      "_definitionCount": 472,
+      "_candidateCount": 174,
+      "_xrefCount": 843,
+      "_conditionCount": 400,
+      "_structuralNodeCount": 1399
+    }
+  ]
+}

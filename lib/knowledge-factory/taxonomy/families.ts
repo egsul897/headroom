@@ -160,13 +160,27 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
 ];
 
 export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeTaxonomyFamily[] {
-  const families: KnowledgeTaxonomyFamily[] = [];
+  const headingHits: KnowledgeTaxonomyFamily[] = [];
+  const bodyHits: KnowledgeTaxonomyFamily[] = [];
   const hay = `${heading}\n${text}`;
   for (const def of TAXONOMY_FAMILIES) {
-    const hit =
-      def.headingPatterns.some((re) => re.test(heading) || re.test(text.slice(0, 400))) ||
-      def.bodyPatterns.some((re) => re.test(hay));
-    if (hit) families.push(def.family);
+    const headingHit = heading.length > 0 && def.headingPatterns.some((re) => re.test(heading));
+    const leadHit = def.headingPatterns.some((re) => re.test(text.slice(0, 400)));
+    const bodyHit = def.bodyPatterns.some((re) => re.test(hay));
+    if (headingHit) {
+      headingHits.push(def.family);
+    } else if (leadHit || bodyHit) {
+      bodyHits.push(def.family);
+    }
+  }
+  // Heading-aligned families win primary slot so "Investments, Loans and Advances"
+  // is not classified as INDEBTEDNESS merely because the body mentions debt.
+  const seen = new Set<KnowledgeTaxonomyFamily>();
+  const families: KnowledgeTaxonomyFamily[] = [];
+  for (const f of [...headingHits, ...bodyHits]) {
+    if (seen.has(f)) continue;
+    seen.add(f);
+    families.push(f);
   }
   if (families.length === 0) return ["UNKNOWN"];
   return families;

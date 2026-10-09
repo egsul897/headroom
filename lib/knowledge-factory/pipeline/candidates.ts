@@ -48,10 +48,16 @@ export function discoverCovenantCandidates(
     )
     .sort((a, b) => a.charStart - b.charStart);
 
+  const byId = new Map(nodes.map((n) => [n.nodeId, n]));
+
   for (const node of sectionNodes) {
     const span = operativeSpan(node, sectionNodes, text.length);
     const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
-    const families = classifyFamiliesFromText(excerpt, node.heading);
+    // Inherit parent section/article heading so 10.04(i) under "Investments" is not
+    // primarily classified as INDEBTEDNESS from body mentions alone.
+    const parentHeading = ancestralHeadings(node, byId);
+    const headingForFamily = [parentHeading, node.heading].filter(Boolean).join(" / ");
+    const families = classifyFamiliesFromText(excerpt, headingForFamily);
     if (families.length === 1 && families[0] === "UNKNOWN") {
       // Keep UNKNOWN only when heading still looks covenant-relevant.
       if (!/\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Subsidiary|Prepayment|Incremental|Available Amount|Sale|Fundamental)\b/i.test(node.heading + excerpt.slice(0, 400))) {
@@ -90,6 +96,22 @@ export function discoverCovenantCandidates(
   }
 
   return out;
+}
+
+function ancestralHeadings(
+  node: StructuralNodeRecord,
+  byId: Map<string, StructuralNodeRecord>,
+): string {
+  const parts: string[] = [];
+  let cur: StructuralNodeRecord | undefined = node.parentNodeId
+    ? byId.get(node.parentNodeId)
+    : undefined;
+  let guard = 0;
+  while (cur && guard++ < 6) {
+    if (cur.heading) parts.push(cur.heading);
+    cur = cur.parentNodeId ? byId.get(cur.parentNodeId) : undefined;
+  }
+  return parts.join(" / ");
 }
 
 function uniqueFamilies(families: KnowledgeTaxonomyFamily[]): KnowledgeTaxonomyFamily[] {

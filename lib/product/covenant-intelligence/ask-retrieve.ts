@@ -41,10 +41,37 @@ type QuestionIntent =
   | "DEBT_INCURRENCE"
   | "GENERAL";
 
+/** Extract a defined-term query ("What constitutes Consolidated EBITDA?" → term). */
+export function extractDefinedTermQuery(q: string): string | null {
+  const s = q.trim().replace(/\?+$/, "");
+  const patterns = [
+    /^what\s+constitutes\s+(.+)$/i,
+    /^what\s+is\s+(?:the\s+)?(?:definition\s+of\s+)?(.+)$/i,
+    /^definition\s+of\s+(.+)$/i,
+    /^how\s+is\s+(.+?)\s+(?:defined|calculated|computed)$/i,
+    /^how\s+do(?:es)?\s+(.+?)\s+(?:get\s+)?(?:defined|calculated|computed)$/i,
+  ];
+  for (const re of patterns) {
+    const m = s.match(re);
+    if (m?.[1]) {
+      const term = m[1].replace(/\s+/g, " ").trim();
+      if (term.length >= 3 && term.length <= 80) return term;
+    }
+  }
+  return null;
+}
+
 function classifyIntent(q: string): QuestionIntent {
   const s = q.toLowerCase();
   if (/amend|changed|latest amendment|what changed/.test(s)) return "AMENDMENT_CHANGES";
-  if (/leverage|coverage ratio|definition.*(ratio|leverage)|(ratio|leverage).*definition/.test(s)) {
+  // Definitional / ratio-construction questions — including "what constitutes EBITDA"
+  // which previously fell through to GENERAL and retrieved unrelated baskets.
+  if (
+    extractDefinedTermQuery(q) ||
+    /leverage|coverage ratio|ebitda|definition.*(ratio|leverage|ebitda|indebtedness)|(ratio|leverage|ebitda).*definition/.test(
+      s,
+    )
+  ) {
     return "LEVERAGE_DEFINITIONS";
   }
   if (/secured debt|additional secured|lien|collateral/.test(s)) return "SECURED_DEBT";
@@ -53,6 +80,22 @@ function classifyIntent(q: string): QuestionIntent {
   if (/asset.?sale|disposition/.test(s)) return "ASSET_SALES";
   if (/debt|indebtedness|incur/.test(s)) return "DEBT_INCURRENCE";
   return "GENERAL";
+}
+
+function matchDefinedTerm(
+  query: string,
+  terms: Array<{ term: string; excerpt: string }>,
+): { term: string; excerpt: string } | null {
+  const q = query.toLowerCase().replace(/\s+/g, " ").trim();
+  if (!q) return null;
+  let best: { term: string; excerpt: string } | null = null;
+  for (const t of terms) {
+    const term = t.term.toLowerCase().replace(/\s+/g, " ").trim();
+    if (term === q || term.includes(q) || q.includes(term)) {
+      if (!best || t.term.length > best.term.length) best = t;
+    }
+  }
+  return best;
 }
 
 function intentCategories(intent: QuestionIntent): string[] {
@@ -141,13 +184,35 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
     if (/foreign subsidiar|not a loan party|non-guarantor/i.test(hay)) score += 5;
   }
   if (intent === "LEVERAGE_DEFINITIONS") {
-    if (/leverage|coverage|consolidated ebitda/i.test(hay)) score += 4;
+    if (/leverage|coverage|consolidated ebitda|\bebitda\b/i.test(hay)) score += 4;
     if ((item.applicableDefinitions ?? []).some((d) => /leverage|ebitda|coverage/i.test(d.term))) {
-      score += 4;
+      score += 6;
+    }
+    // Demote incremental-facility / pricing noise that merely mentions EBITDA.
+    if (/incremental|facility|pricing|commitment fee|applicable margin/i.test(hay) && item.category !== "FINANCIAL_MAINTENANCE") {
+      score -= 5;
+    }
+    if (item.category === "FINANCIAL_MAINTENANCE") score += 3;
+    // Prefer provisions that attach the asked defined term when tokens include it.
+    if (
+      tokens.some((t) => t.length > 4) &&
+      (item.applicableDefinitions ?? []).some((d) =>
+        tokens.some((t) => d.term.toLowerCase().includes(t) || t.includes(d.term.toLowerCase().split(/\s+/)[0] ?? "")),
+      )
+    ) {
+      score += 5;
     }
   }
   if (intent === "AMENDMENT_CHANGES") {
     if (/amend|restat/i.test(item.governingAgreement + item.heading)) score += 3;
+  }
+  if (intent === "DEBT_INCURRENCE") {
+    if (item.category === "DEBT_INCURRENCE" && item.posture === "GENERAL_PROHIBITION") score += 5;
+    if (/^indebtedness\b/i.test(item.heading) || /\blimitation on indebtedness\b/i.test(item.heading)) {
+      score += 6;
+    }
+    // Investment/RP sections often mention Indebtedness; do not let them outrank debt covenants.
+    if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") score -= 4;
   }
 
   // Demote EOD noise for non-default questions
@@ -175,9 +240,10 @@ function composeAnswer(params: {
   items: Array<CovenantSummaryItem & { sourceId: string; score: number }>;
   researchOnly: boolean;
   amendmentNote?: string;
+  matchedDefinition?: { term: string; excerpt: string; sourceId?: string; governingAgreement?: string } | null;
 }): AskRetrieveAnswer {
   const top = params.items.slice(0, 6);
-  if (top.length === 0) {
+  if (top.length === 0 && !params.matchedDefinition) {
     return {
       kind: "insufficient_evidence",
       headline: "Insufficient analyzed provisions",
@@ -198,6 +264,18 @@ function composeAnswer(params: {
   const permissions: string[] = [];
   const unresolved: string[] = [];
   const citations: AskCitation[] = [];
+
+  if (params.matchedDefinition) {
+    citations.push({
+      sourceId: params.matchedDefinition.sourceId ?? top[0]?.sourceId ?? "unknown",
+      governingAgreement:
+        params.matchedDefinition.governingAgreement ?? top[0]?.governingAgreement ?? "source agreement",
+      sectionRef: `Definition: ${params.matchedDefinition.term}`,
+      excerpt: params.matchedDefinition.excerpt.slice(0, 400),
+      epistemicStatus: "DISCOVERED_CANDIDATE",
+      posture: "DEFINITION",
+    });
+  }
 
   for (const item of top) {
     if (item.restriction) {
@@ -241,17 +319,36 @@ function composeAnswer(params: {
     AMENDMENT_CHANGES:
       "Amendment effects are reported only from analyzed package documents. Precedence may be unresolved. Matching analyzed provisions say:",
     LEVERAGE_DEFINITIONS:
-      "Leverage and related ratios are controlled by the cited maintenance covenants and any matched definitions. Matching analyzed provisions say:",
+      params.matchedDefinition
+        ? `The agreement defines “${params.matchedDefinition.term}” as follows (source-backed definition text). Supporting covenant uses of the term follow:`
+        : "Leverage and related ratios are controlled by the cited maintenance covenants and any matched definitions. Matching analyzed provisions say:",
     DEBT_INCURRENCE:
       "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:",
     GENERAL: "Matching analyzed provisions say:",
   };
+
+  const definitionBlock = params.matchedDefinition
+    ? [
+        `Definition — ${params.matchedDefinition.term}:`,
+        params.matchedDefinition.excerpt.slice(0, 600),
+        "",
+      ].join("\n")
+    : "";
 
   const explanationBlocks = top.map((item, i) => {
     const bits = [
       `(${i + 1}) §${item.sectionRef} — ${item.heading} [${item.posture}]`,
       item.plainEnglish,
     ];
+    const matchedDefs = (item.applicableDefinitions ?? []).filter((d) =>
+      params.matchedDefinition
+        ? d.term.toLowerCase().includes(params.matchedDefinition.term.toLowerCase().slice(0, 12)) ||
+          params.matchedDefinition.term.toLowerCase().includes(d.term.toLowerCase())
+        : /ebitda|leverage|coverage/i.test(d.term),
+    );
+    if (matchedDefs[0]) {
+      bits.push(`Applicable definition (${matchedDefs[0].term}): ${matchedDefs[0].excerpt.slice(0, 220)}`);
+    }
     if (item.coveredEntities?.length) {
       bits.push(`Covered entities: ${item.coveredEntities.join(", ")}.`);
     }
@@ -265,6 +362,7 @@ function composeAnswer(params: {
   const detail = [
     intentLead[params.intent],
     "",
+    definitionBlock,
     explanationBlocks.join("\n\n"),
     "",
     "Contractual restrictions identified:",
@@ -279,7 +377,7 @@ function composeAnswer(params: {
     params.amendmentNote ? params.amendmentNote : "",
     "These statements are DISCOVERED_CANDIDATE analyses shared with the covenant-summary store. They do not establish that a transaction is permitted, that capacity exists, or that language is currently operative after amendments.",
   ]
-    .filter((line) => line !== undefined)
+    .filter((line) => line !== undefined && line !== "")
     .join("\n");
 
   return {
@@ -307,6 +405,8 @@ function composeAnswer(params: {
 export function answerFromSummaryItems(params: {
   question: string;
   items: Array<CovenantSummaryItem & { sourceId: string }>;
+  /** Optional defined-term bank from the same summary (enables definition-first answers). */
+  definedTerms?: Array<{ term: string; excerpt: string }>;
   researchOnly?: boolean;
   amendmentNote?: string;
   limit?: number;
@@ -324,8 +424,30 @@ export function answerFromSummaryItems(params: {
   }
   const intent = classifyIntent(q);
   const tokens = intentTokens(intent, q);
+  const termQuery = extractDefinedTermQuery(q);
+  const definedTerms =
+    params.definedTerms ??
+    Array.from(
+      new Map(
+        params.items
+          .flatMap((i) => i.applicableDefinitions ?? [])
+          .map((d) => [d.term.toLowerCase(), { term: d.term, excerpt: d.excerpt }]),
+      ).values(),
+    );
+  const matchedDefinition =
+    termQuery && definedTerms.length > 0 ? matchDefinedTerm(termQuery, definedTerms) : null;
+
   const scored = params.items
-    .map((item) => ({ ...item, score: scoreItem(item, intent, tokens) }))
+    .map((item) => {
+      let score = scoreItem(item, intent, tokens);
+      if (matchedDefinition) {
+        const hit = (item.applicableDefinitions ?? []).some(
+          (d) => d.term.toLowerCase() === matchedDefinition.term.toLowerCase(),
+        );
+        if (hit) score += 8;
+      }
+      return { ...item, score };
+    })
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
   return composeAnswer({
@@ -334,6 +456,13 @@ export function answerFromSummaryItems(params: {
     items: scored.slice(0, params.limit ?? 6),
     researchOnly: params.researchOnly ?? true,
     amendmentNote: params.amendmentNote,
+    matchedDefinition: matchedDefinition
+      ? {
+          ...matchedDefinition,
+          sourceId: params.items[0]?.sourceId,
+          governingAgreement: params.items[0]?.governingAgreement,
+        }
+      : null,
   });
 }
 
@@ -389,17 +518,22 @@ export async function answerFromCorpus(params: {
   }
 
   const items: Array<CovenantSummaryItem & { sourceId: string }> = [];
+  const definedTerms: Array<{ term: string; excerpt: string }> = [];
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
     for (const item of summary.items) {
       items.push({ ...item, sourceId: summary.sourceId });
     }
+    for (const d of summary.definedTermsSample ?? []) {
+      definedTerms.push({ term: d.term, excerpt: d.excerpt });
+    }
   }
 
   return answerFromSummaryItems({
     question: q,
     items,
+    definedTerms,
     researchOnly,
     amendmentNote,
     limit: params.limit ?? 6,
