@@ -67,13 +67,23 @@ export function discoverCovenantCandidates(
     const rank = scoreDiscoveryPotential(excerpt, node.heading);
     if (rank.score < 2 && families[0] === "UNKNOWN") continue;
     const mergedFamilies = uniqueFamilies([...families, ...rank.families]);
+    // Negative-covenant / capacity sections often bury growers, Available Amount
+    // builders, and shared caps deep in lettered exceptions — keep a longer span.
+    const capacitySection =
+      /\b(?:Indebtedness|Liens?|Restricted\s+Payments?|Investments?|Dispositions?|Asset\s+Sales?|Available\s+Amount)\b/i.test(
+        headingForFamily,
+      ) ||
+      mergedFamilies.some((f) =>
+        ["INDEBTEDNESS", "LIENS", "RESTRICTED_PAYMENTS", "INVESTMENTS", "ASSET_SALES"].includes(f),
+      );
+    const excerptCap = capacitySection ? 3600 : 1600;
     out.push({
       candidateId: candidateId(sourceId, node.nodeId),
       sourceId,
       nodeId: node.nodeId,
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
-      excerpt: excerpt.slice(0, 1600),
+      excerpt: excerpt.slice(0, excerptCap),
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });

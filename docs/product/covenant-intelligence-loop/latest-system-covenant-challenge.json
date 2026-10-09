@@ -1,0 +1,997 @@
+{
+  "generatedAt": "2026-10-09T18:28:29.311Z",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "verificationStatus": "AGENT_REVIEWED_PROVISIONAL",
+  "results": [
+    {
+      "id": "gibraltar",
+      "title": "Gibraltar Industries Credit Agreement",
+      "sourceId": "fixture:gibraltar",
+      "defs": 564,
+      "candidates": 272,
+      "conditions": 400,
+      "xrefs": 1203,
+      "summaryItems": 120,
+      "families": [
+        "OTHER",
+        "DEBT_INCURRENCE",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "EVENTS_OF_DEFAULT",
+        "ASSET_SALES",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "LIENS_SECURED_DEBT",
+        "GUARANTEES",
+        "FINANCIAL_MAINTENANCE"
+      ],
+      "mechanics": {
+        "growerBaskets": 15,
+        "sharedCapacitySignals": 5,
+        "builderSignals": 3,
+        "ratioThresholds": 15,
+        "reallocationSignals": 2,
+        "itemsWithDependencies": 119,
+        "itemsWithConditions": 64,
+        "itemsWithExceptions": 54,
+        "generalProhibitions": 35,
+        "conditionalPermissions": 13
+      },
+      "textSignals": {
+        "greaterOf": 40,
+        "availableAmount": 2,
+        "takenTogether": 11,
+        "borrowerOption": 0
+      },
+      "coverageGaps": {
+        "growerUnderExtracted": false,
+        "missingBuilderWhileTextHasAA": false,
+        "missingSharedWhileTextHasTT": false
+      },
+      "answers": [
+        {
+          "question": "Can the borrower incur additional unsecured indebtedness?",
+          "kind": "answered",
+          "sections": [
+            "7.01",
+            "2.05(b)",
+            "2.14(f)",
+            "2.15(b)",
+            "7.01(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 7,
+          "hasRestrictions": true,
+          "preview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say: (1) §7.01 — Indebtedness [GENERAL_PROHIBITION] Section 7.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower, Loan Parties, Restricted Subsi"
+        },
+        {
+          "question": "What restrictions apply to additional secured debt?",
+          "kind": "answered",
+          "sections": [
+            "5.08",
+            "2.05(b)",
+            "7.02",
+            "7.02",
+            "2.14"
+          ],
+          "defLead": false,
+          "basketMentions": 6,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §5.08 — Ownership of Property; Liens [GENERAL_PROHIBITION] Section 5.08 (“Ownership of Property; Liens”) is a general liens and secured"
+        },
+        {
+          "question": "What restricted-payment / dividend baskets are available?",
+          "kind": "answered",
+          "sections": [
+            "7.05",
+            "7.05",
+            "6.18",
+            "7.05(a)",
+            "7.05(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 20,
+          "hasRestrictions": true,
+          "preview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say: (1) §7.05 — Restricted Payments [GENERAL_PROHIBITION] Section 7.05 (“Restricted Payments”) is a general restricted payments and investments prohibition covering Borrower,"
+        },
+        {
+          "question": "What investments or acquisitions are permitted?",
+          "kind": "answered",
+          "sections": [
+            "7.05",
+            "7.05(a)",
+            "6.18",
+            "7.05",
+            "7.01(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 25,
+          "hasRestrictions": true,
+          "preview": "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say: (1) §7.05 — Restricted Payments [GENERAL_PROHIBITION] Section 7.05 (“Restricted Payments”) is a general "
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "sections": [
+            "7.04",
+            "7.04(a)",
+            "7.04",
+            "6.18",
+            "5.08"
+          ],
+          "defLead": false,
+          "basketMentions": 49,
+          "hasRestrictions": true,
+          "preview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say: (1) §7.04 — Asset Dispositions [CONDITIONAL_PERMISSION] Section 7.04 (“Asset Dispositions”) operates as a conditional permission within the asset sales regime for B"
+        },
+        {
+          "question": "Can debt be refinanced or replaced?",
+          "kind": "answered",
+          "sections": [
+            "2.15(b)",
+            "7.01",
+            "7.01(b)",
+            "7.01(a)",
+            "2.15"
+          ],
+          "defLead": false,
+          "basketMentions": 10,
+          "hasRestrictions": true,
+          "preview": "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say: (1) §2.15(b) — 2.15(b) [GENERAL_PROHIBITION] Section 2.15(b) (“2.15(b)”) is a general debt incurrence"
+        },
+        {
+          "question": "What guarantee capacity exists for subsidiaries?",
+          "kind": "answered",
+          "sections": [
+            "6.12",
+            "6.12(b)",
+            "6.12(a)",
+            "6.12",
+            "9.11"
+          ],
+          "defLead": false,
+          "basketMentions": 1,
+          "hasRestrictions": true,
+          "preview": "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say: (1) §6.12 — Covenant to Guarantee Obligations and Give Security [GENERAL_PROHIBITION] Section 6.12 (“Covenant to Guarantee Obligations and Give Secu"
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "sections": [
+            "5.08",
+            "2.05(b)",
+            "7.02",
+            "7.02",
+            "2.14(f)"
+          ],
+          "defLead": false,
+          "basketMentions": 7,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §5.08 — Ownership of Property; Liens [GENERAL_PROHIBITION] Section 5.08 (“Ownership of Property; Liens”) is a general liens and secured"
+        },
+        {
+          "question": "Which baskets share capacity or use an Available Amount builder?",
+          "kind": "answered",
+          "sections": [
+            "2.14",
+            "2.14(a)",
+            "5.08",
+            "7.05",
+            "7.05(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 12,
+          "hasRestrictions": true,
+          "preview": "Matching analyzed provisions say: (1) §2.14 — Incremental Facilities [MAINTENANCE_TEST] Section 2.14 (“Incremental Facilities”) is a financial maintenance covenant applying to Borrower. Pass/fail and remaining headroom are unresolved without approved financial inputs. Material ba"
+        },
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "sections": [
+            "Definition: Consolidated EBITDA",
+            "1.10(c)",
+            "7.08(b)",
+            "7.08",
+            "7.08(a)"
+          ],
+          "defLead": true,
+          "basketMentions": 16,
+          "hasRestrictions": true,
+          "preview": "The agreement defines “Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow: Definition — Consolidated EBITDA: “ Consolidated EBITDA ” means, with respect to any Person for any period, the Consolidated Net Income of such P"
+        }
+      ],
+      "persisted": false,
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "chewy",
+      "title": "Chewy Credit Agreement",
+      "sourceId": "fixture:chewy",
+      "defs": 488,
+      "candidates": 252,
+      "conditions": 400,
+      "xrefs": 928,
+      "summaryItems": 120,
+      "families": [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "OTHER",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+        "EVENTS_OF_DEFAULT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "MERGERS_FUNDAMENTAL_CHANGES"
+      ],
+      "mechanics": {
+        "growerBaskets": 16,
+        "sharedCapacitySignals": 8,
+        "builderSignals": 12,
+        "ratioThresholds": 26,
+        "reallocationSignals": 0,
+        "itemsWithDependencies": 119,
+        "itemsWithConditions": 75,
+        "itemsWithExceptions": 59,
+        "generalProhibitions": 53,
+        "conditionalPermissions": 23
+      },
+      "textSignals": {
+        "greaterOf": 54,
+        "availableAmount": 9,
+        "takenTogether": 10,
+        "borrowerOption": 0
+      },
+      "coverageGaps": {
+        "growerUnderExtracted": false,
+        "missingBuilderWhileTextHasAA": false,
+        "missingSharedWhileTextHasTT": false
+      },
+      "answers": [
+        {
+          "question": "Can the borrower incur additional unsecured indebtedness?",
+          "kind": "answered",
+          "sections": [
+            "6.01",
+            "6.01(b)",
+            "6.01",
+            "6.08",
+            "6.01(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 41,
+          "hasRestrictions": true,
+          "preview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say: (1) §6.01 — Section 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred u"
+        },
+        {
+          "question": "What restrictions apply to additional secured debt?",
+          "kind": "answered",
+          "sections": [
+            "6.02",
+            "6.02",
+            "6.01",
+            "6.01",
+            "6.01(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §6.02 — Section 6.02) shall not be deemed to be restricted by virtue of such Liens), in each case, regardless of whether or not cash or"
+        },
+        {
+          "question": "What restricted-payment / dividend baskets are available?",
+          "kind": "answered",
+          "sections": [
+            "6.08",
+            "6.08",
+            "6.08(a)",
+            "5.16",
+            "6.08(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 17,
+          "hasRestrictions": true,
+          "preview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say: (1) §6.08 — Limitation on Restricted Payments [GENERAL_PROHIBITION] Section 6.08 (“Limitation on Restricted Payments”) is a general restricted payments and investments pr"
+        },
+        {
+          "question": "What investments or acquisitions are permitted?",
+          "kind": "answered",
+          "sections": [
+            "6.08",
+            "5.16",
+            "6.08(a)",
+            "6.08",
+            "6.08"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say: (1) §6.08 — Limitation on Restricted Payments [GENERAL_PROHIBITION] Section 6.08 (“Limitation on Restric"
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "sections": [
+            "2.09",
+            "6.05",
+            "6.05(a)",
+            "2.09",
+            "6.05(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 32,
+          "hasRestrictions": true,
+          "preview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say: (1) §2.09 — Section 2.09(b) as a result of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii), 100.0%; provided that the Disposition Perc"
+        },
+        {
+          "question": "Can debt be refinanced or replaced?",
+          "kind": "answered",
+          "sections": [
+            "9.22",
+            "6.01",
+            "6.01",
+            "6.01",
+            "6.01(b)"
+          ],
+          "defLead": false,
+          "basketMentions": 22,
+          "hasRestrictions": true,
+          "preview": "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say: (1) §9.22 — Section 9.22. “ Credit Agreement Refinancing Indebtedness ” means Indebtedness issued, in"
+        },
+        {
+          "question": "What guarantee capacity exists for subsidiaries?",
+          "kind": "answered",
+          "sections": [
+            "6.01",
+            "6.01",
+            "6.01",
+            "6.01(a)",
+            "6.01"
+          ],
+          "defLead": false,
+          "basketMentions": 33,
+          "hasRestrictions": true,
+          "preview": "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say: (1) §6.01 — Section 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness i"
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "sections": [
+            "6.02",
+            "6.02",
+            "6.01",
+            "6.01",
+            "6.01"
+          ],
+          "defLead": false,
+          "basketMentions": 15,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §6.02 — Section 6.02) shall not be deemed to be restricted by virtue of such Liens), in each case, regardless of whether or not cash or"
+        },
+        {
+          "question": "Which baskets share capacity or use an Available Amount builder?",
+          "kind": "answered",
+          "sections": [
+            "1.08(l)",
+            "6.08",
+            "6.08(a)",
+            "1.09",
+            "2.18"
+          ],
+          "defLead": false,
+          "basketMentions": 22,
+          "hasRestrictions": true,
+          "preview": "Matching analyzed provisions say: (1) §1.08(l) — 1.08(l) [CONDITIONAL_PERMISSION] Section 1.08(l) (“1.08(l)”) operates as a conditional permission within the relevant baskets, exceptions, conditions and defined terms regime for Borrower. Permission substance: (l) With respect to "
+        },
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "sections": [
+            "Definition: Consolidated EBITDA",
+            "6.08",
+            "1.08",
+            "1.08(a)",
+            "1.08(c)"
+          ],
+          "defLead": true,
+          "basketMentions": 15,
+          "hasRestrictions": true,
+          "preview": "The agreement defines “Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow: Definition — Consolidated EBITDA: “ Consolidated EBITDA ” means, for any Test Period, with respect to any Person for any period, the Consolidated N"
+        }
+      ],
+      "persisted": false,
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "conmed-vii",
+      "title": "CONMED Article VII (curated)",
+      "sourceId": "fixture:conmed-vii",
+      "defs": 0,
+      "candidates": 15,
+      "conditions": 57,
+      "xrefs": 63,
+      "summaryItems": 15,
+      "families": [
+        "DEBT_INCURRENCE",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+        "AFFILIATE_TRANSACTIONS",
+        "LIENS_SECURED_DEBT",
+        "EVENTS_OF_DEFAULT",
+        "OTHER"
+      ],
+      "mechanics": {
+        "growerBaskets": 4,
+        "sharedCapacitySignals": 1,
+        "builderSignals": 0,
+        "ratioThresholds": 5,
+        "reallocationSignals": 0,
+        "itemsWithDependencies": 10,
+        "itemsWithConditions": 8,
+        "itemsWithExceptions": 9,
+        "generalProhibitions": 9,
+        "conditionalPermissions": 0
+      },
+      "textSignals": {
+        "greaterOf": 11,
+        "availableAmount": 0,
+        "takenTogether": 0,
+        "borrowerOption": 0
+      },
+      "coverageGaps": {
+        "growerUnderExtracted": false,
+        "missingBuilderWhileTextHasAA": false,
+        "missingSharedWhileTextHasTT": false
+      },
+      "answers": [
+        {
+          "question": "Can the borrower incur additional unsecured indebtedness?",
+          "kind": "answered",
+          "sections": [
+            "7.2",
+            "7.9",
+            "7.10",
+            "7.5",
+            "7.8"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say: (1) §7.2 — SECTION 7.2 Limitation on Indebtedness. [GENERAL_PROHIBITION] Section 7.2 (“SECTION 7.2 Limitation on Indebtedness.”) is a general debt incurrence prohibiti"
+        },
+        {
+          "question": "What restrictions apply to additional secured debt?",
+          "kind": "answered",
+          "sections": [
+            "7.3",
+            "7.2",
+            "7.9",
+            "7.6",
+            "7.8"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §7.3 — SECTION 7.3 Limitation on Liens . [GENERAL_PROHIBITION] Section 7.3 (“SECTION 7.3 Limitation on Liens .”) is a general liens and"
+        },
+        {
+          "question": "What restricted-payment / dividend baskets are available?",
+          "kind": "answered",
+          "sections": [
+            "7.6",
+            "7.8",
+            "7.5",
+            "7.1",
+            "7.17"
+          ],
+          "defLead": false,
+          "basketMentions": 24,
+          "hasRestrictions": true,
+          "preview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say: (1) §7.6 — SECTION 7.6 Limitation on Restricted [GENERAL_PROHIBITION] Section 7.6 (“SECTION 7.6 Limitation on Restricted”) is a general restricted payments and investment"
+        },
+        {
+          "question": "What investments or acquisitions are permitted?",
+          "kind": "answered",
+          "sections": [
+            "7.8",
+            "7.6",
+            "7.2",
+            "7.5",
+            "7.17"
+          ],
+          "defLead": false,
+          "basketMentions": 28,
+          "hasRestrictions": true,
+          "preview": "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say: (1) §7.8 — SECTION 7.8 Limitation on Investments, [GENERAL_PROHIBITION] Section 7.8 (“SECTION 7.8 Limita"
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "sections": [
+            "7.10",
+            "7.5",
+            "7.6",
+            "7.11",
+            "7.2"
+          ],
+          "defLead": false,
+          "basketMentions": 25,
+          "hasRestrictions": true,
+          "preview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say: (1) §7.10 — SECTION 7.10 Limitation on Transactions [GENERAL_PROHIBITION] Section 7.10 (“SECTION 7.10 Limitation on Transactions”) is a general affiliate transactio"
+        },
+        {
+          "question": "Can debt be refinanced or replaced?",
+          "kind": "answered",
+          "sections": [
+            "7.2",
+            "7.3",
+            "7.9",
+            "7.5",
+            "7.1"
+          ],
+          "defLead": false,
+          "basketMentions": 17,
+          "hasRestrictions": true,
+          "preview": "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say: (1) §7.2 — SECTION 7.2 Limitation on Indebtedness. [GENERAL_PROHIBITION] Section 7.2 (“SECTION 7.2 Li"
+        },
+        {
+          "question": "What guarantee capacity exists for subsidiaries?",
+          "kind": "answered",
+          "sections": [
+            "7.2",
+            "7.8",
+            "7.9",
+            "7.6",
+            "7.10"
+          ],
+          "defLead": false,
+          "basketMentions": 24,
+          "hasRestrictions": true,
+          "preview": "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say: (1) §7.2 — SECTION 7.2 Limitation on Indebtedness. [GENERAL_PROHIBITION] Section 7.2 (“SECTION 7.2 Limitation on Indebtedness.”) is a general debt i"
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "sections": [
+            "7.3",
+            "7.2",
+            "7.9",
+            "7.6",
+            "7.8"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §7.3 — SECTION 7.3 Limitation on Liens . [GENERAL_PROHIBITION] Section 7.3 (“SECTION 7.3 Limitation on Liens .”) is a general liens and"
+        },
+        {
+          "question": "Which baskets share capacity or use an Available Amount builder?",
+          "kind": "answered",
+          "sections": [
+            "7.5",
+            "7.6",
+            "7.2",
+            "7.10",
+            "7.3"
+          ],
+          "defLead": false,
+          "basketMentions": 23,
+          "hasRestrictions": true,
+          "preview": "Matching analyzed provisions say: (1) §7.5 — SECTION 7.5 Limitation on Sale [GENERAL_PROHIBITION] Section 7.5 (“SECTION 7.5 Limitation on Sale”) is a general relevant baskets, exceptions, conditions and defined terms prohibition covering Parent Borrower, Borrower, Loan Parties, G"
+        },
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "sections": [
+            "7.1",
+            "7.5",
+            "7.2",
+            "7.8",
+            "7.6"
+          ],
+          "defLead": false,
+          "basketMentions": 28,
+          "hasRestrictions": true,
+          "preview": "Leverage and related ratios are controlled by the cited maintenance covenants and any matched definitions. Matching analyzed provisions say: (1) §7.1 — SECTION 7.1 Financial Condition [MAINTENANCE_TEST] Section 7.1 (“SECTION 7.1 Financial Condition”) is a financial maintenance co"
+        }
+      ],
+      "persisted": false,
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "brightview",
+      "title": "BrightView Holdings, Inc.",
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "defs": 349,
+      "candidates": 172,
+      "conditions": 400,
+      "xrefs": 774,
+      "summaryItems": 120,
+      "families": [
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "EVENTS_OF_DEFAULT",
+        "DEBT_INCURRENCE",
+        "OTHER",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "GUARANTEES",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+        "LIENS_SECURED_DEBT",
+        "ASSET_SALES"
+      ],
+      "mechanics": {
+        "growerBaskets": 14,
+        "sharedCapacitySignals": 4,
+        "builderSignals": 2,
+        "ratioThresholds": 8,
+        "reallocationSignals": 0,
+        "itemsWithDependencies": 116,
+        "itemsWithConditions": 70,
+        "itemsWithExceptions": 56,
+        "generalProhibitions": 35,
+        "conditionalPermissions": 16
+      },
+      "textSignals": {
+        "greaterOf": 37,
+        "availableAmount": 4,
+        "takenTogether": 6,
+        "borrowerOption": 0
+      },
+      "coverageGaps": {
+        "growerUnderExtracted": false,
+        "missingBuilderWhileTextHasAA": false,
+        "missingSharedWhileTextHasTT": false
+      },
+      "answers": [
+        {
+          "question": "Can the borrower incur additional unsecured indebtedness?",
+          "kind": "answered",
+          "sections": [
+            "10.1",
+            "9.12",
+            "1.7(f)",
+            "10.1",
+            "10.1(d)"
+          ],
+          "defLead": false,
+          "basketMentions": 31,
+          "hasRestrictions": true,
+          "preview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say: (1) §10.1 — Limitation on Indebtedness . Holdings will not, and will not permit any Restricted Subsidiary to create, incur, issue, assume, guarantee or otherwise becom"
+        },
+        {
+          "question": "What restrictions apply to additional secured debt?",
+          "kind": "answered",
+          "sections": [
+            "10.7",
+            "10.2",
+            "9.12",
+            "11.13",
+            "1.7(f)"
+          ],
+          "defLead": false,
+          "basketMentions": 13,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §10.7 — 10.7 Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio . Solely with respect to the Revolving Credit Facility, "
+        },
+        {
+          "question": "What restricted-payment / dividend baskets are available?",
+          "kind": "answered",
+          "sections": [
+            "10.5",
+            "10.5",
+            "12.7",
+            "11.2(b)",
+            "12.7(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 11,
+          "hasRestrictions": true,
+          "preview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say: (1) §10.5 — 10.5 Limitation on Restricted Payments . [GENERAL_PROHIBITION] Section 10.5 (“10.5 Limitation on Restricted Payments .”) is a general restricted payments and "
+        },
+        {
+          "question": "What investments or acquisitions are permitted?",
+          "kind": "answered",
+          "sections": [
+            "10.5",
+            "10.1(l)",
+            "10.3(i)",
+            "10.1(n)",
+            "10.3(h)"
+          ],
+          "defLead": false,
+          "basketMentions": 45,
+          "hasRestrictions": true,
+          "preview": "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say: (1) §10.5 — 10.5 Limitation on Restricted Payments . [GENERAL_PROHIBITION] Section 10.5 (“10.5 Limitatio"
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "sections": [
+            "10.4",
+            "11.2(b)",
+            "10.3(h)",
+            "10.1(d)",
+            "10.3"
+          ],
+          "defLead": false,
+          "basketMentions": 26,
+          "hasRestrictions": true,
+          "preview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say: (1) §10.4 — 10.4 Limitation on Sale of Assets . Holdings will not, and will not permit any Restricted Subsidiary to, consummate an Asset Sale, unless: [CONDITIONAL_"
+        },
+        {
+          "question": "Can debt be refinanced or replaced?",
+          "kind": "answered",
+          "sections": [
+            "10.1(m)",
+            "10.1(y)",
+            "10.1(d)",
+            "10.1(l)",
+            "10.1(w)"
+          ],
+          "defLead": false,
+          "basketMentions": 21,
+          "hasRestrictions": true,
+          "preview": "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say: (1) §10.1(m) — 10.1(m) [GENERAL_PROHIBITION] Section 10.1(m) (“10.1(m)”) is a general debt incurrence"
+        },
+        {
+          "question": "What guarantee capacity exists for subsidiaries?",
+          "kind": "answered",
+          "sections": [
+            "12.11",
+            "12.12",
+            "12.12",
+            "13.24",
+            "11.7"
+          ],
+          "defLead": false,
+          "basketMentions": 1,
+          "hasRestrictions": true,
+          "preview": "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say: (1) §12.11 — 12.11 Agents Under Security Documents and Guarantee . Each Secured Party hereby further authorizes the Administrative Agent or the Coll"
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "sections": [
+            "10.7",
+            "10.2",
+            "9.12",
+            "1.7(f)",
+            "11.13"
+          ],
+          "defLead": false,
+          "basketMentions": 13,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §10.7 — 10.7 Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio . Solely with respect to the Revolving Credit Facility, "
+        },
+        {
+          "question": "Which baskets share capacity or use an Available Amount builder?",
+          "kind": "answered",
+          "sections": [
+            "1.7(f)",
+            "10.5",
+            "2.14",
+            "10.1(r)",
+            "10.3(i)"
+          ],
+          "defLead": false,
+          "basketMentions": 19,
+          "hasRestrictions": true,
+          "preview": "Matching analyzed provisions say: (1) §1.7(f) — 1.7(f) [GENERAL_PROHIBITION] Section 1.7(f) (“1.7(f)”) is a general debt incurrence prohibition covering Borrower, Restricted Subsidiaries, Subsidiaries. shall not exceed for any such Lender the Initial Term Loan Commitment of such "
+        },
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "sections": [
+            "Definition: Consolidated EBITDA",
+            "10.1",
+            "10.1(n)",
+            "5.2",
+            "9.12"
+          ],
+          "defLead": true,
+          "basketMentions": 43,
+          "hasRestrictions": true,
+          "preview": "The agreement defines “Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow: Definition — Consolidated EBITDA: “ Consolidated EBITDA ” shall mean, with respect to any Person and its Restricted Subsidiaries on a consolidated "
+        }
+      ],
+      "persisted": true,
+      "promotedToLegalTruth": 0
+    },
+    {
+      "id": "livenation",
+      "title": "lyv-20251231xex1019amended.htm",
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "defs": 616,
+      "candidates": 309,
+      "conditions": 400,
+      "xrefs": 1224,
+      "summaryItems": 120,
+      "families": [
+        "LIENS_SECURED_DEBT",
+        "OTHER",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "EVENTS_OF_DEFAULT",
+        "DEBT_INCURRENCE",
+        "MERGERS_FUNDAMENTAL_CHANGES",
+        "FINANCIAL_MAINTENANCE",
+        "BASKETS_EXCEPTIONS_CONDITIONS"
+      ],
+      "mechanics": {
+        "growerBaskets": 12,
+        "sharedCapacitySignals": 11,
+        "builderSignals": 5,
+        "ratioThresholds": 9,
+        "reallocationSignals": 0,
+        "itemsWithDependencies": 119,
+        "itemsWithConditions": 58,
+        "itemsWithExceptions": 46,
+        "generalProhibitions": 38,
+        "conditionalPermissions": 13
+      },
+      "textSignals": {
+        "greaterOf": 40,
+        "availableAmount": 9,
+        "takenTogether": 7,
+        "borrowerOption": 0
+      },
+      "coverageGaps": {
+        "growerUnderExtracted": false,
+        "missingBuilderWhileTextHasAA": false,
+        "missingSharedWhileTextHasTT": false
+      },
+      "answers": [
+        {
+          "question": "Can the borrower incur additional unsecured indebtedness?",
+          "kind": "answered",
+          "sections": [
+            "7.01",
+            "2.15",
+            "2.15(a)",
+            "2.14(f)",
+            "7.01(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 46,
+          "hasRestrictions": true,
+          "preview": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say: (1) §7.01 — Indebtedness [GENERAL_PROHIBITION] Section 7.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower, Loan Parties, Restricted Subsi"
+        },
+        {
+          "question": "What restrictions apply to additional secured debt?",
+          "kind": "answered",
+          "sections": [
+            "5.08",
+            "7.02",
+            "1.02",
+            "6.12",
+            "V"
+          ],
+          "defLead": false,
+          "basketMentions": 5,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §5.08 — Ownership of Property; Liens [GENERAL_PROHIBITION] Section 5.08 (“Ownership of Property; Liens”) is a general liens and secured"
+        },
+        {
+          "question": "What restricted-payment / dividend baskets are available?",
+          "kind": "answered",
+          "sections": [
+            "7.05",
+            "7.05",
+            "7.05(b)",
+            "6.18",
+            "7.05(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 45,
+          "hasRestrictions": true,
+          "preview": "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say: (1) §7.05 — Restricted Payments [GENERAL_PROHIBITION] Section 7.05 (“Restricted Payments”) is a general restricted payments and investments prohibition covering Borrower,"
+        },
+        {
+          "question": "What investments or acquisitions are permitted?",
+          "kind": "answered",
+          "sections": [
+            "7.05(a)",
+            "7.05(b)",
+            "7.05",
+            "6.18",
+            "7.05"
+          ],
+          "defLead": false,
+          "basketMentions": 47,
+          "hasRestrictions": true,
+          "preview": "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say: (1) §7.05(a) — 7.05(a) [CONDITIONAL_PERMISSION] Section 7.05(a) (“7.05(a)”) operates as a conditional pe"
+        },
+        {
+          "question": "What asset-sale restrictions apply?",
+          "kind": "answered",
+          "sections": [
+            "7.04",
+            "VII",
+            "7.04(b)",
+            "7.04(a)",
+            "7.04(d)"
+          ],
+          "defLead": false,
+          "basketMentions": 40,
+          "hasRestrictions": true,
+          "preview": "Asset sales / dispositions are typically prohibited except enumerated exceptions. Matching analyzed provisions say: (1) §7.04 — Asset Sales [CONDITIONAL_PERMISSION] Section 7.04 (“Asset Sales”) operates as a conditional permission within the asset sales regime for Borrower, Restr"
+        },
+        {
+          "question": "Can debt be refinanced or replaced?",
+          "kind": "answered",
+          "sections": [
+            "7.01",
+            "7.01(a)",
+            "7.01(e)",
+            "2.15",
+            "2.15(a)"
+          ],
+          "defLead": false,
+          "basketMentions": 41,
+          "hasRestrictions": true,
+          "preview": "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say: (1) §7.01 — Indebtedness [GENERAL_PROHIBITION] Section 7.01 (“Indebtedness”) is a general debt incurr"
+        },
+        {
+          "question": "What guarantee capacity exists for subsidiaries?",
+          "kind": "answered",
+          "sections": [
+            "9.11",
+            "9.11(a)",
+            "9.11(c)",
+            "9.11(d)",
+            "6.12"
+          ],
+          "defLead": false,
+          "basketMentions": 1,
+          "hasRestrictions": true,
+          "preview": "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say: (1) §9.11 — Collateral and Guaranty Matters [OBLIGATION] Section 9.11 (“Collateral and Guaranty Matters”) imposes an affirmative or ongoing obligati"
+        },
+        {
+          "question": "How do debt and lien permissions interact?",
+          "kind": "answered",
+          "sections": [
+            "5.08",
+            "7.02",
+            "1.02",
+            "6.12",
+            "V"
+          ],
+          "defLead": false,
+          "basketMentions": 5,
+          "hasRestrictions": true,
+          "preview": "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. The source-backed analysis of matching provisions is: (1) §5.08 — Ownership of Property; Liens [GENERAL_PROHIBITION] Section 5.08 (“Ownership of Property; Liens”) is a general liens and secured"
+        },
+        {
+          "question": "Which baskets share capacity or use an Available Amount builder?",
+          "kind": "answered",
+          "sections": [
+            "7.05(a)",
+            "7.05",
+            "7.04",
+            "7.04(a)",
+            "7.01"
+          ],
+          "defLead": false,
+          "basketMentions": 48,
+          "hasRestrictions": true,
+          "preview": "Matching analyzed provisions say: (1) §7.05(a) — 7.05(a) [CONDITIONAL_PERMISSION] Section 7.05(a) (“7.05(a)”) operates as a conditional permission within the restricted payments and investments regime for Borrower, Loan Parties, Guarantor(s), Restricted Subsidiaries, Subsidiaries"
+        },
+        {
+          "question": "What constitutes Consolidated EBITDA?",
+          "kind": "answered",
+          "sections": [
+            "Definition: Consolidated EBITDA",
+            "1.10",
+            "7.08",
+            "7.08(B)",
+            "7.08(A)"
+          ],
+          "defLead": true,
+          "basketMentions": 10,
+          "hasRestrictions": true,
+          "preview": "The agreement defines “Consolidated EBITDA” as follows (source-backed definition text). Supporting covenant uses of the term follow: Definition — Consolidated EBITDA: “ Consolidated EBITDA ” means, for any period, Consolidated Net Income in such period plus , without duplication,"
+        }
+      ],
+      "persisted": true,
+      "promotedToLegalTruth": 0
+    }
+  ]
+}

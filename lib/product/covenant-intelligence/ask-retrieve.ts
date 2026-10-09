@@ -39,6 +39,9 @@ type QuestionIntent =
   | "AMENDMENT_CHANGES"
   | "LEVERAGE_DEFINITIONS"
   | "DEBT_INCURRENCE"
+  | "INVESTMENTS_ACQUISITIONS"
+  | "REFINANCING"
+  | "GUARANTEES"
   | "GENERAL";
 
 /** Extract a defined-term query ("What constitutes Consolidated EBITDA?" → term). */
@@ -78,6 +81,9 @@ function classifyIntent(q: string): QuestionIntent {
   if (/restricted.?payment|dividend|rp basket|distribution/.test(s)) return "RESTRICTED_PAYMENTS";
   if (/non.?guarantor|unguaranteed|foreign subsidiar/.test(s)) return "NON_GUARANTOR_DEBT";
   if (/asset.?sale|disposition/.test(s)) return "ASSET_SALES";
+  if (/refinanc|refund|extend|replace.*debt|permitted refinancing/.test(s)) return "REFINANCING";
+  if (/guarant(?:y|ee)|guarantee obligation/.test(s)) return "GUARANTEES";
+  if (/investment|acquisition|acquire|permitted acquisition/.test(s)) return "INVESTMENTS_ACQUISITIONS";
   if (/debt|indebtedness|incur/.test(s)) return "DEBT_INCURRENCE";
   return "GENERAL";
 }
@@ -137,6 +143,12 @@ function intentCategories(intent: QuestionIntent): string[] {
       return ["FINANCIAL_MAINTENANCE", "BASKETS_EXCEPTIONS_CONDITIONS", "DEBT_INCURRENCE"];
     case "DEBT_INCURRENCE":
       return ["DEBT_INCURRENCE"];
+    case "INVESTMENTS_ACQUISITIONS":
+      return ["RESTRICTED_PAYMENTS_INVESTMENTS", "MERGERS_FUNDAMENTAL_CHANGES", "DEBT_INCURRENCE"];
+    case "REFINANCING":
+      return ["DEBT_INCURRENCE", "LIENS_SECURED_DEBT", "BASKETS_EXCEPTIONS_CONDITIONS"];
+    case "GUARANTEES":
+      return ["GUARANTEES", "DEBT_INCURRENCE"];
     case "AMENDMENT_CHANGES":
       return Object.keys({
         DEBT_INCURRENCE: 1,
@@ -175,6 +187,15 @@ function intentTokens(intent: QuestionIntent, question: string): string[] {
     case "DEBT_INCURRENCE":
       extra.push("indebtedness", "debt", "incur", "basket");
       break;
+    case "INVESTMENTS_ACQUISITIONS":
+      extra.push("investment", "acquisition", "acquire", "equity", "subsidiary");
+      break;
+    case "REFINANCING":
+      extra.push("refinance", "refinancing", "refund", "extend", "replace", "permitted");
+      break;
+    case "GUARANTEES":
+      extra.push("guarantee", "guaranty", "guarantor", "obligation");
+      break;
     case "AMENDMENT_CHANGES":
       extra.push("amendment", "amended", "restated");
       break;
@@ -199,7 +220,13 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   if (intent === "SECURED_DEBT") {
     if (/lien|secured|collateral/i.test(hay)) score += 4;
     if (item.category === "LIENS_SECURED_DEBT") score += 3;
+    if (item.posture === "GENERAL_PROHIBITION" && item.category === "LIENS_SECURED_DEBT") score += 6;
+    if (/^(?:limitation on\s+)?liens?\b/i.test(item.heading)) score += 8;
     if (item.posture === "GENERAL_PROHIBITION" && item.category === "DEBT_INCURRENCE") score += 2;
+    // Representations / affirmative covenants that merely mention liens are weak hits.
+    if (/representation|affirmative|insurance|properties\b/i.test(item.heading) && item.category !== "LIENS_SECURED_DEBT") {
+      score -= 5;
+    }
   }
   if (intent === "RESTRICTED_PAYMENTS") {
     if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") {
@@ -212,6 +239,43 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   if (intent === "ASSET_SALES" && item.category === "ASSET_SALES") score += 6;
   if (intent === "NON_GUARANTOR_DEBT") {
     if (/foreign subsidiar|not a loan party|non-guarantor/i.test(hay)) score += 5;
+  }
+  if (intent === "INVESTMENTS_ACQUISITIONS") {
+    if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") score += 5;
+    if (/^investments?\b|permitted acquisition|limitation on investment/i.test(item.heading)) score += 8;
+    if (/acquisition|investments?\b/i.test(hay)) score += 3;
+    if ((item.materialBasketsThresholds ?? []).some((b) => /shared|grower|greater-of|available amount/i.test(b))) {
+      score += 3;
+    }
+  }
+  if (intent === "REFINANCING") {
+    if (/refinanc|refund|extend|replace/i.test(hay)) score += 6;
+    if (item.category === "DEBT_INCURRENCE") score += 3;
+  }
+  if (intent === "GUARANTEES") {
+    if (item.category === "GUARANTEES") score += 7;
+    if (/guarant/i.test(hay)) score += 4;
+  }
+  // Prefer provisions that surface quantitative mechanics for capacity questions
+  if (
+    (intent === "DEBT_INCURRENCE" ||
+      intent === "RESTRICTED_PAYMENTS" ||
+      intent === "INVESTMENTS_ACQUISITIONS" ||
+      intent === "SECURED_DEBT") &&
+    (item.materialBasketsThresholds?.length ?? 0) > 0
+  ) {
+    score += 2;
+    if ((item.materialBasketsThresholds ?? []).some((b) => /grower|greater-of|shared|builder|available amount|ratio/i.test(b))) {
+      score += 3;
+    }
+  }
+  if (
+    (tokens.includes("available") && tokens.includes("amount")) ||
+    tokens.includes("builder") ||
+    (tokens.includes("share") && tokens.includes("capacity"))
+  ) {
+    if ((item.materialBasketsThresholds ?? []).some((b) => /Available Amount|Builder|Shared/i.test(b))) score += 6;
+    if (/\bAvailable Amount\b/i.test(hay)) score += 4;
   }
   if (intent === "LEVERAGE_DEFINITIONS") {
     if (/leverage|coverage|consolidated ebitda|\bebitda\b/i.test(hay)) score += 4;
@@ -354,6 +418,12 @@ function composeAnswer(params: {
         : "Leverage and related ratios are controlled by the cited maintenance covenants and any matched definitions. Matching analyzed provisions say:",
     DEBT_INCURRENCE:
       "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:",
+    INVESTMENTS_ACQUISITIONS:
+      "Investments and acquisitions are typically restricted except enumerated baskets (including growers, builders, and shared caps where drafted). Matching analyzed provisions say:",
+    REFINANCING:
+      "Refinancing capacity depends on permitted refinancing / replacement debt exceptions and any conditions (no default, principal/ maturity limits). Matching analyzed provisions say:",
+    GUARANTEES:
+      "Guarantee capacity is controlled by guarantee covenants and related indebtedness/lien exceptions. Matching analyzed provisions say:",
     GENERAL: "Matching analyzed provisions say:",
   };
 

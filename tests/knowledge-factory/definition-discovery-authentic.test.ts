@@ -54,4 +54,11 @@ describe("authentic definition discovery", () => {
     const defs = discoverDefinitions("fixture:cp1252", text, []);
     expect(defs.map((d) => d.term)).toEqual(["Account Debtor"]);
   });
+
+  it("recovers cross-reference definitions ('has the meaning specified')", () => {
+    const text =
+      "“ Available Amount Builder Basket ” has the meaning specified in Section 7.05(a)(y).";
+    const defs = discoverDefinitions("fixture:has-meaning", text, []);
+    expect(defs.map((d) => d.term)).toContain("Available Amount Builder Basket");
+  });
 });

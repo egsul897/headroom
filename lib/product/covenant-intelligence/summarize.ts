@@ -163,6 +163,31 @@ export function buildDocumentCovenantSummary(params: {
     items.push(itemFromAnalysis(analysis, params.documentTitle));
   }
 
+  // Attach builder / Available Amount definition pointers onto matching sections.
+  for (const d of params.definitions) {
+    if (!/Available Amount|Builder Basket/i.test(d.term)) continue;
+    const pointed =
+      d.excerpt.match(/Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i)?.[1] ??
+      d.excerpt.match(/meaning specified in Section\s+([\d.]+(?:\([a-z0-9]+\))?)/i)?.[1];
+    if (!pointed) continue;
+    for (const item of items) {
+      if (
+        item.sectionRef === pointed ||
+        item.sectionRef.startsWith(pointed) ||
+        pointed.startsWith(item.sectionRef)
+      ) {
+        const label = `Builder / Available Amount construct referenced (via definition “${d.term}”).`;
+        if (!item.materialBasketsThresholds.includes(label)) {
+          item.materialBasketsThresholds = [...item.materialBasketsThresholds, label].slice(0, 14);
+        }
+        const dep = `Meaning controlled by definition of “${d.term}”`;
+        if (!item.dependencies.includes(dep)) {
+          item.dependencies = [...item.dependencies, dep].slice(0, 12);
+        }
+      }
+    }
+  }
+
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
   items.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);

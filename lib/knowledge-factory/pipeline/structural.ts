@@ -75,7 +75,7 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
  * Unicode curly quotes before scanning so definition discovery is not format-dependent.
  */
 const DEFINITION_RE =
-  /[“"]\s*([A-Z][^“”"]{0,80}?)\s*[”"]\s*(?:means|shall\s+mean)\b/gi;
+  /[“"]\s*([A-Z][^“”"]{0,80}?)\s*[”"]\s*(?:means|shall\s+mean|has\s+the\s+meaning)\b/gi;
 
 /** Map HTML entities / CP1252 smart quotes onto Unicode “ ” for definition scanning. */
 export function normalizeDefinitionScanText(text: string): string {

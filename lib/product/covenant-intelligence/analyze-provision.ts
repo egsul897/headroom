@@ -204,49 +204,93 @@ function extractEntities(excerpt: string, heading: string): {
   return { coveredEntities: covered, entityScopeNotes: notes };
 }
 
+function moneyToken(raw: string): string {
+  const s = raw.replace(/\s+/g, "").replace(/,/g, "");
+  if (/million/i.test(raw)) {
+    const n = Number(s.replace(/[^\d.]/g, ""));
+    if (Number.isFinite(n)) return `$${(n * 1_000_000).toLocaleString("en-US")}`;
+  }
+  if (/billion/i.test(raw)) {
+    const n = Number(s.replace(/[^\d.]/g, ""));
+    if (Number.isFinite(n)) return `$${(n * 1_000_000_000).toLocaleString("en-US")}`;
+  }
+  return raw.replace(/\s/g, "").startsWith("$") ? raw.replace(/\s/g, "") : `$${raw.replace(/\s/g, "")}`;
+}
+
 function extractBaskets(excerpt: string): string[] {
   const out: string[] = [];
-  const greaterOf = [
-    ...excerpt.matchAll(
-      /greater of\s*\((?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(?:and|,)\s*(?:\(y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
-    ),
+  const pushUnique = (s: string) => {
+    if (!out.some((x) => x === s)) out.push(s);
+  };
+
+  // Grower: greater of (x)/(y) OR (i)/(ii) OR unlabeled, including "$108.0 million" drafting.
+  const greaterOfPatterns = [
+    /greater\s+of\s*\(\s*(?:x|i)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*\(\s*(?:y|ii)\s*\)\s*([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s*(?:\(|,|;|\.|\)| at | for | calculated))/gi,
+    /greater\s+of\s*\(\s*(?:i)\s*\)\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*and\s*\(\s*(?:ii)\s*\)\s*([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\s|$|,|;|\))/gi,
+    /greater\s+of\s*\(?\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?\s*(?:and|or|,)\s*(?:\(\s*(?:y|ii)\s*\)\s*)?([\d.]+)\s*%\s*(?:of\s+)?([A-Za-z][A-Za-z0-9\s.%]{1,80}?)(?:\)|,|;|\.|$)/gi,
   ];
-  for (const m of greaterOf.slice(0, 4)) {
-    out.push(`Greater-of basket: $${m[1]} and ${m[2]}% of ${normalizeWs(m[3] ?? "")}`);
-  }
-  // Looser greater-of capture for drafting that omits (x)/(y) labels or uses "or".
-  if (greaterOf.length === 0) {
-    const loose = [
-      ...excerpt.matchAll(
-        /greater\s+of\s*\(?\s*\$?\s*([\d,]+(?:\.\d+)?)\s*(?:million|billion)?\s*(?:and|or|,)\s*(?:\(y\)\s*)?([\d.]+)\s*%\s*(?:of\s+)?([A-Za-z][A-Za-z0-9\s%]{2,60}?)(?:\)|,|;|\.|$)/gi,
-      ),
-    ];
-    for (const m of loose.slice(0, 4)) {
-      out.push(`Greater-of basket: $${m[1]} and ${m[2]}% of ${normalizeWs(m[3] ?? "")}`);
+  for (const re of greaterOfPatterns) {
+    for (const m of excerpt.matchAll(re)) {
+      const dollars = moneyToken(`${m[1]}${m[2] ? ` ${m[2]}` : ""}`);
+      pushUnique(
+        `Greater-of / grower basket: ${dollars} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`,
+      );
+      if (out.length >= 8) break;
     }
+    if (out.length >= 4) break;
   }
-  if (out.length === 0 && /\bgreater\s+of\b/i.test(excerpt)) {
-    const clipGo = excerpt.match(/greater\s+of\b[\s\S]{0,160}/i);
-    if (clipGo) out.push(`Greater-of construct: ${normalizeWs(clipGo[0]).slice(0, 140)}`);
+  if (!out.some((x) => /Greater-of/i.test(x)) && /\bgreater\s+of\b/i.test(excerpt)) {
+    const clipGo = excerpt.match(/greater\s+of\b[\s\S]{0,180}/i);
+    if (clipGo) pushUnique(`Greater-of construct: ${normalizeWs(clipGo[0]).slice(0, 160)}`);
   }
-  const dollars = excerpt.match(/\$\s?[\d,]+(?:\.\d+)?/g) ?? [];
-  for (const d of dollars.slice(0, 6)) {
-    if (!out.some((x) => x.includes(d.replace(/\s/g, "")))) {
-      out.push(`Amount/threshold: ${d.replace(/\s/g, "")}`);
-    }
+
+  // Fixed dollar ceilings (incl. millions)
+  const dollars = [
+    ...(excerpt.match(/\$\s?[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/gi) ?? []),
+  ];
+  for (const d of dollars.slice(0, 8)) {
+    const norm = /million|billion/i.test(d) ? moneyToken(d) : d.replace(/\s/g, "");
+    if (!out.some((x) => x.includes(norm))) pushUnique(`Amount/threshold: ${norm}`);
   }
-  const ratios = excerpt.match(/\d+(?:\.\d+)?\s+to\s+1\.00/gi) ?? [];
-  for (const r of ratios.slice(0, 4)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
-  if (/\bAvailable Amount\b|\bCumulative Credit\b|\bbuilder\b/i.test(excerpt)) {
-    out.push("Builder / Available Amount construct referenced.");
+
+  // Ratio permissions / maintenance thresholds (incl. X.XX to 1 and X.XX:1.00)
+  const ratios = [
+    ...(excerpt.match(/\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.00)?/gi) ?? []),
+  ];
+  for (const r of ratios.slice(0, 5)) pushUnique(`Ratio threshold: ${normalizeWs(r)}`);
+
+  if (
+    /\bat the Borrowers?['’`]?\s+option\b/i.test(excerpt) ||
+    /\bat the (?:Initial )?Borrower['’`]s option\b/i.test(excerpt)
+  ) {
+    pushUnique("Borrower election / optional ratio path present.");
   }
-  if (/\bat any (?:one )?time outstanding\b/i.test(excerpt)) {
-    out.push("Cap measured on outstanding amount at any time.");
+  if (/\bAvailable Amount\b|\bAvailable Amount Builder Basket\b|\bCumulative Credit\b|\bbuilder basket\b/i.test(excerpt)) {
+    pushUnique("Builder / Available Amount construct referenced.");
+  }
+  if (/\bNot Otherwise Applied\b/i.test(excerpt)) {
+    pushUnique("Not Otherwise Applied / builder netting referenced.");
+  }
+  if (
+    /\btaken together with\b|\bin reliance on this (?:clause|Section)\b|\bin the aggregate(?:\s+outstanding)?\b|\bshared\s+(?:basket|capacity)\b|\bGeneral (?:Debt|Investment|RP) Basket\b/i.test(
+      excerpt,
+    )
+  ) {
+    pushUnique("Shared / aggregated capacity or cross-clause stacking language present.");
+  }
+  if (/\breallocated amount\b|\bGeneral Debt Basket Reallocated Amount\b/i.test(excerpt)) {
+    pushUnique("Basket reallocation / reclassification right referenced.");
+  }
+  if (/\bat any (?:one )?time outstanding\b|\bthen outstanding\b/i.test(excerpt)) {
+    pushUnique("Cap measured on outstanding amount at any time.");
   }
   if (/\bper fiscal year\b|\bin any fiscal year\b/i.test(excerpt)) {
-    out.push("Cap measured on a per-fiscal-year basis.");
+    pushUnique("Cap measured on a per-fiscal-year basis.");
   }
-  return out.slice(0, 10);
+  if (/\bpro forma\b/i.test(excerpt) && /\b(?:Leverage|Coverage)\s+Ratio\b/i.test(excerpt)) {
+    pushUnique("Pro forma leverage/coverage test gates capacity.");
+  }
+  return out.slice(0, 14);
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {
@@ -479,6 +523,20 @@ export function analyzeProvision(params: {
         ? `Meaning controlled by definition of “${d.term}”`
         : `References “${d.term}” but definition text was not resolved in-package`,
     );
+  }
+  // Cross-covenant / capacity relationships beyond bare section cites.
+  if (/\btaken together with\b|\bin reliance on this (?:clause|Section)\b/i.test(excerpt)) {
+    dependencies.push("Capacity aggregates with another clause (taken-together / reliance language).");
+  }
+  if (/\bsubject to Section\b|\bin accordance with Section\b|\bas permitted by Section\b/i.test(excerpt)) {
+    const m = excerpt.match(/\b(?:subject to|in accordance with|as permitted by)\s+Section\s+[\dA-Za-z.()-]+/gi) ?? [];
+    for (const hit of m.slice(0, 3)) dependencies.push(`Cross-covenant gate: ${normalizeWs(hit)}`);
+  }
+  if (/\bAvailable Amount\b/i.test(excerpt) && !/definition of “Available Amount”/i.test(dependencies.join(" "))) {
+    dependencies.push("Uses Available Amount / builder capacity (see definition and RP/Investment gates).");
+  }
+  if (/\bNo Default\b|\bno Event of Default\b/i.test(excerpt)) {
+    dependencies.push("Conditioned on absence of Default / Event of Default.");
   }
   if (/\bsubject to\b|\bin accordance with\b|\bas defined in\b/i.test(excerpt) && dependencies.length === 0) {
     dependencies.push("Operative effect appears contingent on another provision or definition.");
