@@ -93,12 +93,16 @@ describe("consolidation inventory + Gibraltar fixture", () => {
     );
   });
 
-  it("builds asset inventory marking empty local corpus UNAVAILABLE", () => {
+  it("builds asset inventory for local corpus (gitignored; may be populated by mass-precedent runs)", () => {
     const inv = buildAssetInventory();
     expect(inv.schemaVersion).toBe("knowledge-factory.asset-inventory.v1");
     expect(inv.originalByteSummary.gibraltarOk).toBe(true);
     const local = inv.families.find((f) => f.family.includes("Local KF corpus"));
-    expect(local?.availability).toBe("UNAVAILABLE");
+    expect(local).toBeDefined();
+    expect(["UNAVAILABLE", "READY"]).toContain(local!.availability);
+    if (local!.availability === "READY") {
+      expect(local!.originalBytesPresent).toBe(true);
+    }
   });
 });
 
