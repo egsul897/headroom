@@ -13,7 +13,7 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
   if (!sourceId || !sectionRef || !["ACCEPTED", "EDITED", "REJECTED"].includes(decision)) {
     throw new Error("Invalid review decision payload");
   }
-  await recordReviewerDecision({
+  const result = await recordReviewerDecision({
     companyId,
     sourceId,
     sectionRef,
@@ -23,8 +23,13 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
     note,
     reviewerLabel: "workspace-counsel",
   });
+  if (!result.ok) {
+    throw new Error(result.error ?? "Review failed");
+  }
   revalidatePath(`/${companyId}/rulebook`);
   revalidatePath(`/${companyId}/intelligence`);
   revalidatePath(`/${companyId}/covenants`);
   revalidatePath(`/${companyId}/alerts`);
+  revalidatePath(`/${companyId}/capacity`);
+  revalidatePath(`/${companyId}/simulate`);
 }

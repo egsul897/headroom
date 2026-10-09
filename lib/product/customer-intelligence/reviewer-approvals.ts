@@ -2,7 +2,8 @@
  * AI-first lawyer review: customer counsel can accept / edit / reject AI interpretations.
  * Approvals live in KnowledgeSource.metadata.reviewerApprovals — workspace-scoped.
  * History is preserved in reviewerDecisionHistory.
- * Does NOT mint executable Permission rows; EXECUTABLE still requires compiler promotion.
+ * ACCEPT/EDIT triggers compileAcceptedInterpretation → executable Permission rows when
+ * formula/threshold can be parsed without inventing values (fail-closed otherwise).
  */
 
 import { prisma } from "@/lib/prisma";
@@ -137,7 +138,12 @@ export async function recordReviewerDecision(params: {
   editedPlainEnglish?: string;
   note?: string;
   reviewerLabel?: string;
-}): Promise<{ ok: boolean; error?: string; approvalCount: number }> {
+}): Promise<{
+  ok: boolean;
+  error?: string;
+  approvalCount: number;
+  compileResults?: import("./compile-accepted").CompileAcceptedResult[];
+}> {
   const row = await prisma.knowledgeSource.findFirst({
     where: { companyId: params.companyId, sourceId: params.sourceId },
   });
@@ -218,5 +224,28 @@ export async function recordReviewerDecision(params: {
     data: { metadata: JSON.parse(JSON.stringify(meta)) },
   });
 
-  return { ok: true, approvalCount: filtered.filter((a) => a.decision !== "REJECTED").length };
+  // Compile / supersede executable Permissions from counsel decision (fail-closed).
+  const { compileAcceptedInterpretation } = await import("./compile-accepted");
+  const compileResults = await compileAcceptedInterpretation({
+    companyId: params.companyId,
+    sourceId: params.sourceId,
+    sectionRef: params.sectionRef,
+    category: params.category,
+    decision: params.decision,
+    approvalNote: params.note,
+  });
+  meta.counselCompileResults = [
+    ...(Array.isArray(meta.counselCompileResults) ? (meta.counselCompileResults as unknown[]) : []),
+    { at: next.reviewedAt, sectionRef: params.sectionRef, decision: params.decision, results: compileResults },
+  ].slice(-100);
+  await prisma.knowledgeSource.update({
+    where: { sourceId: params.sourceId },
+    data: { metadata: JSON.parse(JSON.stringify(meta)) },
+  });
+
+  return {
+    ok: true,
+    approvalCount: filtered.filter((a) => a.decision !== "REJECTED").length,
+    compileResults,
+  };
 }

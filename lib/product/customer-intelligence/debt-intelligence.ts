@@ -13,6 +13,12 @@ import { loadMonitoringFeed } from "./monitoring";
 import { listReviewerApprovals, type ReviewerApproval } from "./reviewer-approvals";
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import { loadDashboardOverlay } from "../covenant-intelligence-loop/store";
+import {
+  computeLeverageMetrics,
+  evaluateProvision,
+  type FormulaParams,
+  type FormulaType,
+} from "@/lib/covenant-engine";
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -528,6 +534,30 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     });
   }
 
+  // Counsel-compiled executable Permissions (section-keyed) for remaining capacity.
+  const executablePermissions = await prisma.permission.findMany({
+    where: { companyId, modelingStatus: "MODELED", OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }] },
+    take: 80,
+  });
+  const permissionBySection = new Map<string, (typeof executablePermissions)[number]>();
+  for (const p of executablePermissions) {
+    if (!permissionBySection.has(p.sectionRef)) permissionBySection.set(p.sectionRef, p);
+  }
+  const finForEval =
+    snapshot && totalDebt != null && ebitda != null
+      ? {
+          ebitda,
+          cash: cash ?? 0,
+          interestExpense: interestExpense ?? 0,
+          cumulativeNetIncome: num(snapshot.cumulativeNetIncome) ?? 0,
+          equityProceedsSinceIssue: num(snapshot.equityProceedsSinceIssue) ?? 0,
+          assumedNewDebtRatePct: num(snapshot.assumedNewDebtRatePct) ?? 0,
+          totalDebt,
+          securedDebt: securedDebt ?? 0,
+        }
+      : null;
+  const leverageMetrics = finForEval ? computeLeverageMetrics(finForEval) : null;
+
   // --- Baskets ---
   const baskets: DebtIntelligenceDashboard["baskets"] = [];
   for (const cat of review.categories) {
@@ -549,6 +579,48 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         ledger.length > 0
           ? `${fmtM(utilTotal)} recorded ledger usage (basket mapping may be approximate)`
           : null;
+      const matchedPerm = permissionBySection.get(item.sectionRef);
+      let remaining: string | null = null;
+      let basketStatus: MetricNumericStatus = approval
+        ? "AI_SURFACED"
+        : capacity.canEvaluateExecutableCapacity
+          ? "CONDITIONAL"
+          : "MISSING_RULEBOOK";
+      const calcExtra: string[] = [];
+      if (matchedPerm && finForEval && leverageMetrics && approval) {
+        const evaluated = evaluateProvision(
+          {
+            id: matchedPerm.id,
+            documentId: matchedPerm.documentId,
+            code: matchedPerm.code ?? matchedPerm.id,
+            basketName: matchedPerm.action,
+            sectionRef: matchedPerm.sectionRef,
+            formulaType: matchedPerm.formulaType as FormulaType,
+            thresholdValue: num(matchedPerm.thresholdValue) ?? 0,
+            params: (matchedPerm.params ?? {}) as FormulaParams,
+          },
+          finForEval,
+          leverageMetrics,
+        );
+        if (evaluated.status === "modeled" && evaluated.capacity != null) {
+          const used = utilTotal;
+          const rem = Math.max(0, evaluated.capacity - used);
+          remaining = fmtM(rem);
+          basketStatus = "COMPUTED";
+          calcExtra.push(
+            `Executable Permission ${matchedPerm.code ?? matchedPerm.id}: capacity ${fmtM(evaluated.capacity)} − ledger ${fmtM(used)} = ${fmtM(rem)}`,
+          );
+        } else {
+          basketStatus = "CONDITIONAL";
+          calcExtra.push(evaluated.reason ?? "Permission present but evaluation conditional");
+        }
+      } else if (matchedPerm && approval) {
+        basketStatus = "MISSING_FINANCIALS";
+        calcExtra.push("Counsel-compiled Permission present — financial snapshot required for remaining capacity");
+      } else if (approval) {
+        basketStatus = "AI_SURFACED";
+        calcExtra.push("Counsel accepted interpretation — awaiting executable compile or financials");
+      }
       baskets.push({
         metricId,
         category: family,
@@ -556,8 +628,8 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         heading: item.heading,
         contractualCapacity: basketLines[0] ?? null,
         utilization,
-        remaining: null, // never invent
-        status: approval ? "AI_SURFACED" : capacity.canEvaluateExecutableCapacity ? "CONDITIONAL" : "MISSING_RULEBOOK",
+        remaining,
+        status: basketStatus,
         reviewDecision: approval?.decision ?? null,
         drilldown: buildDrilldown({
           metricId,
@@ -566,17 +638,20 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
           companyId,
           item,
           approvals,
-          formula: basketLines.join("; ") || null,
+          formula: matchedPerm
+            ? `${matchedPerm.formulaType} @ ${num(matchedPerm.thresholdValue)}; ${basketLines.join("; ")}`
+            : basketLines.join("; ") || null,
           utilization: utilizationRows,
-          missing: capacity.canEvaluateExecutableCapacity
-            ? utilization
-              ? []
-              : ["Ledger utilization for this basket"]
-            : ["Counsel-reviewed executable Permission", "Financial inputs for growers/ratios"],
+          missing: [
+            ...(matchedPerm ? [] : ["Counsel-reviewed executable Permission"]),
+            ...(finForEval ? [] : ["Financial inputs for growers/ratios"]),
+            ...(utilization || matchedPerm ? [] : ["Ledger utilization for this basket"]),
+          ],
           calcHistory: [
             approval
               ? `Counsel ${approval.decision} ${approval.reviewedAt}`
               : "AI draft — awaiting counsel review",
+            ...calcExtra,
             utilization ?? "No ledger utilization attributed",
           ],
         }),

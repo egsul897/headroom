@@ -1,0 +1,385 @@
+/**
+ * Compile counsel-accepted / edited AI interpretations into executable Permission rows.
+ * Fail-closed: only MODELED when formula + threshold can be parsed without inventing values.
+ * Idempotent on (companyId, code) where code = counsel:{sourceId}:{sectionRef}:{grantType}.
+ */
+
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import {
+  summarizeFromStoredMetadata,
+  type CovenantSummaryItem,
+} from "../covenant-intelligence/summarize";
+
+export type CompileStatus =
+  | "COMPILED"
+  | "UPDATED"
+  | "SUPERSEDED"
+  | "INCOMPLETE"
+  | "SKIPPED"
+  | "FAILED";
+
+export interface CompileAcceptedResult {
+  status: CompileStatus;
+  permissionId?: string;
+  code?: string;
+  grantType?: "DEBT_INCURRENCE" | "LIEN";
+  formulaType?: string;
+  thresholdValue?: number;
+  modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
+  missingFields: string[];
+  message: string;
+}
+
+function parseMoneyMillions(text: string): number | null {
+  const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i);
+  if (!m) return null;
+  let n = Number(m[1]!.replace(/,/g, ""));
+  if (!Number.isFinite(n)) return null;
+  if (/billion/i.test(m[2] ?? "")) n *= 1000;
+  else if (!m[2] && n >= 1_000_000) n = n / 1_000_000; // raw dollars → $M
+  else if (!m[2] && n > 10_000) n = n / 1_000_000;
+  return n;
+}
+
+function parsePct(text: string): number | null {
+  const m = text.match(/(\d+(?:\.\d+)?)\s*%/);
+  if (!m) return null;
+  const n = Number(m[1]) / 100;
+  return Number.isFinite(n) ? n : null;
+}
+
+function parseRatio(text: string): number | null {
+  const m = text.match(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/i) || text.match(/(\d+(?:\.\d+)?)\s*x\b/i);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) ? n : null;
+}
+
+function grantTypesForItem(item: CovenantSummaryItem, category: string): Array<"DEBT_INCURRENCE" | "LIEN"> {
+  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")}`.toUpperCase();
+  const out: Array<"DEBT_INCURRENCE" | "LIEN"> = [];
+  if (/LIEN|SECURED|COLLATERAL/.test(hay)) out.push("LIEN");
+  if (/DEBT|INDEBTEDNESS|INCURRENCE|INCREMENTAL|BORROW/.test(hay) || !out.length) out.push("DEBT_INCURRENCE");
+  // Secured debt scenarios need both regimes when both families are present.
+  if (/LIEN|SECURED/.test(hay) && /DEBT|INDEBTEDNESS/.test(hay)) {
+    return ["DEBT_INCURRENCE", "LIEN"];
+  }
+  return [...new Set(out)];
+}
+
+function entityScopeTags(item: CovenantSummaryItem): string[] {
+  const tags: string[] = [];
+  if (item.entityScope?.borrower) tags.push("BORROWER");
+  if (item.entityScope?.guarantor) tags.push("GUARANTOR_RS");
+  if (item.entityScope?.restrictedSubsidiary) tags.push("NON_GUARANTOR_RS");
+  if (item.entityScope?.unrestrictedSubsidiary) tags.push("UNRESTRICTED_SUB");
+  return tags;
+}
+
+interface ParsedFormula {
+  formulaType:
+    | "FLAT_AMOUNT"
+    | "GREATER_OF_FLAT_OR_PCT_EBITDA"
+    | "LEVERAGE_RATIO_ROOM"
+    | "RATIO_GATE"
+    | "BUILDER_BASKET";
+  thresholdValue: number;
+  params?: Record<string, unknown>;
+  amountKind: "FIXED" | "INCURRENCE_BASED";
+  measurementBasis: "CUMULATIVE_INCURRED" | "CURRENTLY_OUTSTANDING";
+  notes: string[];
+  modelingStatus: "MODELED" | "KNOWN_NOT_MODELED";
+  missingFields: string[];
+}
+
+function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
+  const basketText = [
+    ...(item.materialBasketsThresholds ?? []),
+    ...(item.permissions ?? []),
+    item.plainEnglish,
+    item.operativeLanguageExcerpt ?? "",
+  ].join("\n");
+
+  const notes: string[] = [];
+  const missingFields: string[] = [];
+  const money = parseMoneyMillions(basketText);
+  const pct = parsePct(basketText);
+  const ratio = parseRatio(basketText);
+  const greaterOf = /greater of/i.test(basketText);
+  const ebitdaBase = /EBITDA/i.test(basketText);
+  const assetsBase = /Total Assets|Consolidated Total Assets/i.test(basketText);
+  const builder = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
+  const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
+
+  if (builder && money != null) {
+    return {
+      formulaType: "BUILDER_BASKET",
+      thresholdValue: money,
+      params: {
+        pctEbitda: ebitdaBase && pct != null ? pct : 0,
+        cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
+        includeEquityProceeds: /equity/i.test(basketText),
+      },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: ebitdaBase && pct == null ? ["builder pct of EBITDA"] : [],
+    };
+  }
+
+  if (greaterOf && money != null && ebitdaBase && pct != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      thresholdValue: money,
+      params: { pctEbitda: pct },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % EBITDA basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && assetsBase) {
+    // Engine has no Total-Assets grower formula — compile fixed floor only, fail-closed on grower.
+    notes.push(
+      "Grower component (% of Consolidated Total Assets) not auto-compiled into solver formula; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_total_assets_formula"],
+    };
+  }
+
+  if (ratio != null && /leverage|incurrence|ratio debt|pro forma/i.test(basketText)) {
+    return {
+      formulaType: /unlimited|so long as/i.test(basketText) ? "RATIO_GATE" : "LEVERAGE_RATIO_ROOM",
+      thresholdValue: ratio,
+      params: { debtBasis: /secured|first.?lien/i.test(basketText) ? "secured" : "total" },
+      amountKind: "INCURRENCE_BASED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Compiled ratio permission/gate from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (money != null) {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled fixed-dollar basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  missingFields.push("thresholdValue", "formulaType");
+  return {
+    formulaType: "FLAT_AMOUNT",
+    thresholdValue: 0,
+    amountKind: "FIXED",
+    measurementBasis: "CUMULATIVE_INCURRED",
+    notes: ["Could not parse a numeric basket/threshold — not minting MODELED Permission"],
+    modelingStatus: "KNOWN_NOT_MODELED",
+    missingFields,
+  };
+}
+
+function permissionCode(sourceId: string, sectionRef: string, grantType: string): string {
+  const safe = `${sourceId}:${sectionRef}:${grantType}`.replace(/[^a-zA-Z0-9:_.-]/g, "_").slice(0, 180);
+  return `counsel:${safe}`;
+}
+
+/**
+ * After counsel ACCEPT/EDIT, attempt to compile executable Permission(s).
+ * REJECT supersedes prior counsel-compiled permissions for that section.
+ */
+export async function compileAcceptedInterpretation(params: {
+  companyId: string;
+  sourceId: string;
+  sectionRef: string;
+  category: string;
+  decision: "ACCEPTED" | "EDITED" | "REJECTED";
+  approvalNote?: string;
+}): Promise<CompileAcceptedResult[]> {
+  const row = await prisma.knowledgeSource.findFirst({
+    where: { companyId: params.companyId, sourceId: params.sourceId },
+  });
+  if (!row) {
+    return [{ status: "FAILED", missingFields: ["source"], message: "KnowledgeSource not found in workspace" }];
+  }
+
+  const documentId = row.documentId;
+  if (!documentId) {
+    return [
+      {
+        status: "INCOMPLETE",
+        missingFields: ["documentId"],
+        message: "KnowledgeSource has no linked Document — cannot bind Permission.documentId",
+      },
+    ];
+  }
+
+  const doc = await prisma.document.findFirst({
+    where: { id: documentId, companyId: params.companyId },
+    select: { id: true },
+  });
+  if (!doc) {
+    return [
+      {
+        status: "INCOMPLETE",
+        missingFields: ["documentId"],
+        message: "Linked Document missing or not in this company workspace",
+      },
+    ];
+  }
+
+  if (params.decision === "REJECTED") {
+    const prefix = `counsel:${params.sourceId}:${params.sectionRef}:`;
+    const existing = await prisma.permission.findMany({
+      where: { companyId: params.companyId, code: { startsWith: prefix } },
+    });
+    const results: CompileAcceptedResult[] = [];
+    for (const p of existing) {
+      await prisma.permission.update({
+        where: { id: p.id },
+        data: {
+          modelingStatus: "KNOWN_NOT_MODELED",
+          effectiveTo: new Date(),
+          notes: `${p.notes ?? ""}\n[Superseded — counsel REJECTED ${new Date().toISOString()}]`.trim(),
+        },
+      });
+      results.push({
+        status: "SUPERSEDED",
+        permissionId: p.id,
+        code: p.code ?? undefined,
+        message: "Prior counsel-compiled Permission superseded on rejection",
+        missingFields: [],
+      });
+    }
+    if (!results.length) {
+      results.push({ status: "SKIPPED", missingFields: [], message: "No prior counsel Permissions to supersede" });
+    }
+    return results;
+  }
+
+  const summary = summarizeFromStoredMetadata(row.metadata);
+  const item = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  if (!item) {
+    return [{ status: "FAILED", missingFields: ["summaryItem"], message: "Summary item not found for section" }];
+  }
+
+  const parsed = parseFormulaFromItem(item);
+  if (parsed.modelingStatus === "KNOWN_NOT_MODELED") {
+    return [
+      {
+        status: "INCOMPLETE",
+        missingFields: parsed.missingFields,
+        formulaType: parsed.formulaType,
+        thresholdValue: parsed.thresholdValue,
+        modelingStatus: "KNOWN_NOT_MODELED",
+        message: parsed.notes.join(" ") || "Insufficient structured fields for MODELED Permission",
+      },
+    ];
+  }
+
+  const grants = grantTypesForItem(item, params.category);
+  const results: CompileAcceptedResult[] = [];
+  const action =
+    item.plainEnglish?.slice(0, 500) ||
+    item.permissions?.[0] ||
+    `${item.heading} — counsel-accepted permission`;
+  const definedTermRefs = [
+    ...(item.relatedDefinedTerms ?? []),
+    ...(item.applicableDefinitions ?? []).map((d) => d.term),
+  ].filter(Boolean).slice(0, 24);
+  const entityScope = entityScopeTags(item);
+  const conditions = (item.conditions ?? []).slice(0, 12).map((c) => ({ text: c }));
+
+  for (const grantType of grants) {
+    const code = permissionCode(params.sourceId, params.sectionRef, grantType);
+    const notes = [
+      ...parsed.notes,
+      `Counsel ${params.decision} ${new Date().toISOString()}`,
+      params.approvalNote ? `Note: ${params.approvalNote}` : null,
+      `Source ${params.sourceId}`,
+      item.sourceCitation,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const existing = await prisma.permission.findFirst({
+      where: { companyId: params.companyId, code },
+    });
+
+    const data = {
+      companyId: params.companyId,
+      documentId,
+      code,
+      grantType,
+      amountKind: parsed.amountKind,
+      action,
+      entityScope: entityScope as never[],
+      formulaType: parsed.formulaType,
+      thresholdValue: new Prisma.Decimal(parsed.thresholdValue),
+      params: (parsed.params as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+      eligibilityConditions: (conditions.length ? conditions : null) as Prisma.InputJsonValue,
+      termConditions: Prisma.JsonNull,
+      measurementBasis: parsed.measurementBasis,
+      sectionRef: params.sectionRef,
+      definedTermRefs,
+      modelingStatus: "MODELED" as const,
+      reviewStatus: "UNVERIFIED" as const,
+      notes,
+      effectiveTo: null as Date | null,
+    };
+
+    if (existing) {
+      const updated = await prisma.permission.update({
+        where: { id: existing.id },
+        data,
+      });
+      results.push({
+        status: "UPDATED",
+        permissionId: updated.id,
+        code,
+        grantType,
+        formulaType: parsed.formulaType,
+        thresholdValue: parsed.thresholdValue,
+        modelingStatus: "MODELED",
+        missingFields: parsed.missingFields,
+        message: `Updated executable Permission ${code}`,
+      });
+    } else {
+      const created = await prisma.permission.create({ data });
+      results.push({
+        status: "COMPILED",
+        permissionId: created.id,
+        code,
+        grantType,
+        formulaType: parsed.formulaType,
+        thresholdValue: parsed.thresholdValue,
+        modelingStatus: "MODELED",
+        missingFields: parsed.missingFields,
+        message: `Compiled executable Permission ${code}`,
+      });
+    }
+  }
+
+  return results;
+}
+
+/** Pure helper for tests — parse without DB. */
+export function parseCounselFormulaForTest(item: CovenantSummaryItem) {
+  return parseFormulaFromItem(item);
+}

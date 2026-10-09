@@ -407,6 +407,34 @@ export async function runCovenantIntelligenceLoop(
     verticalSliceOnly: opts.verticalSlice,
   }).slice(0, opts.exerciseLimit ?? (opts.verticalSlice ? 1 : EXERCISE_LIBRARY.length));
 
+  const financialSnapshot = opts.companyId
+    ? await prisma.financialSnapshot.findFirst({
+        where: { companyId: opts.companyId },
+        orderBy: { asOfDate: "desc" },
+      })
+    : null;
+  const financialState = !financialSnapshot && opts.companyId
+    ? await prisma.financialState.findFirst({
+        where: { companyId: opts.companyId },
+        orderBy: { asOfDate: "desc" },
+      })
+    : null;
+  const hasFinancialSnapshot = Boolean(financialSnapshot || financialState);
+  const financialInputsPresent = financialSnapshot
+    ? (["totalDebt", "securedDebt", "ebitda", "cash", "interestExpense"] as string[]).filter((k) => {
+        const map: Record<string, unknown> = {
+          totalDebt: financialSnapshot.totalDebt,
+          securedDebt: financialSnapshot.securedDebt,
+          ebitda: financialSnapshot.ebitda,
+          cash: financialSnapshot.cash,
+          interestExpense: financialSnapshot.interestExpense,
+        };
+        return map[k] != null;
+      })
+    : hasFinancialSnapshot
+      ? ["totalDebt", "securedDebt", "ebitda", "cash", "interestExpense"]
+      : [];
+
   if (!(resume && stageDone(run, "EXERCISE"))) {
     const results: ExerciseExecutionResult[] = [];
     for (const row of sourceRows) {
@@ -414,12 +442,14 @@ export async function runCovenantIntelligenceLoop(
         ? buildContextFromSummary({
             sourceId: row.sourceId,
             summary: row.summary,
-            hasFinancialSnapshot: false,
+            hasFinancialSnapshot,
+            financialInputsPresent,
           })
         : buildContextFromMetadata({
             sourceId: row.sourceId,
             metadata: row.metadata,
-            hasFinancialSnapshot: false,
+            hasFinancialSnapshot,
+            financialInputsPresent,
           });
       if (!ctx) continue;
       for (const exercise of exercises) {
@@ -522,12 +552,14 @@ export async function runCovenantIntelligenceLoop(
           ? buildContextFromSummary({
               sourceId: row.sourceId,
               summary: row.summary,
-              hasFinancialSnapshot: false,
+              hasFinancialSnapshot,
+              financialInputsPresent,
             })
           : buildContextFromMetadata({
               sourceId: row.sourceId,
               metadata: row.metadata,
-              hasFinancialSnapshot: false,
+              hasFinancialSnapshot,
+              financialInputsPresent,
             });
         if (!ctx) continue;
         for (const exercise of toRun) {

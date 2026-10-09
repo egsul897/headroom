@@ -29,10 +29,15 @@ export async function submitFinancialsAction(companyId: string, formData: FormDa
     assumedNewDebtRatePct: num(formData, "assumedNewDebtRatePct"),
     fixedCharges: optionalNum(formData, "fixedCharges"),
     totalAssets: optionalNum(formData, "totalAssets"),
+    firstLienDebtPrincipal: optionalNum(formData, "firstLienDebtPrincipal"),
+    restrictedGroupEbitda: optionalNum(formData, "restrictedGroupEbitda"),
+    ebitdaAdjustmentsAmount: optionalNum(formData, "ebitdaAdjustmentsAmount"),
+    contractualEbitdaTerm: String(formData.get("contractualEbitdaTerm") ?? "").trim() || undefined,
     testingPeriod: String(formData.get("testingPeriod") ?? "").trim() || undefined,
     proFormaAdjustments: String(formData.get("proFormaAdjustments") ?? "").trim() || undefined,
   });
   revalidatePath(`/${companyId}/onboarding/financials`);
   revalidatePath(`/${companyId}/intelligence`);
   revalidatePath(`/${companyId}/capacity`);
+  revalidatePath(`/${companyId}/simulate`);
 }

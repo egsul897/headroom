@@ -1,0 +1,185 @@
+{
+  "companyId": "demo-customer-workflow",
+  "sourceId": "customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8",
+  "documentId": "demo-customer-workflow-ca",
+  "summaryItems": 15,
+  "counsel": {
+    "debt": {
+      "sectionRef": "7.2",
+      "compile": [
+        {
+          "status": "COMPILED",
+          "permissionId": "cmv0i7s470003b2akhbg0fg4z",
+          "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
+          "grantType": "DEBT_INCURRENCE",
+          "formulaType": "FLAT_AMOUNT",
+          "thresholdValue": 50,
+          "modelingStatus": "MODELED",
+          "missingFields": [
+            "grower_%_total_assets_formula"
+          ],
+          "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE"
+        },
+        {
+          "status": "COMPILED",
+          "permissionId": "cmv0i7s9l0005b2akmfmppg0r",
+          "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
+          "grantType": "LIEN",
+          "formulaType": "FLAT_AMOUNT",
+          "thresholdValue": 50,
+          "modelingStatus": "MODELED",
+          "missingFields": [
+            "grower_%_total_assets_formula"
+          ],
+          "message": "Compiled executable Permission counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN"
+        }
+      ]
+    },
+    "lien": {
+      "sectionRef": "7.13",
+      "compile": [
+        {
+          "status": "INCOMPLETE",
+          "missingFields": [
+            "thresholdValue",
+            "formulaType"
+          ],
+          "formulaType": "FLAT_AMOUNT",
+          "thresholdValue": 0,
+          "modelingStatus": "KNOWN_NOT_MODELED",
+          "message": "Could not parse a numeric basket/threshold — not minting MODELED Permission"
+        }
+      ]
+    }
+  },
+  "permissions": [
+    {
+      "id": "cmv0i7s470003b2akhbg0fg4z",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
+      "grantType": "DEBT_INCURRENCE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": "50",
+      "modelingStatus": "MODELED",
+      "sectionRef": "7.2"
+    },
+    {
+      "id": "cmv0i7s9l0005b2akmfmppg0r",
+      "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
+      "grantType": "LIEN",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": "50",
+      "modelingStatus": "MODELED",
+      "sectionRef": "7.2"
+    }
+  ],
+  "capacity": {
+    "companyId": "demo-customer-workflow",
+    "status": "EXECUTABLE_PATH_AVAILABLE",
+    "canEvaluateExecutableCapacity": true,
+    "analyzedDocumentCount": 1,
+    "summaryCount": 15,
+    "permissionCount": 2,
+    "provisionCount": 0,
+    "hasFinancialSnapshot": true,
+    "headline": "Executable capacity path available — figures below come from the covenant engine, not discovery summaries alone.",
+    "blockers": [],
+    "guidance": "AI-first: Headroom generates substantive interpretations for customer counsel review without waiting for external legal verification. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. Missing inputs produce conditional analysis — never fabricated remaining capacity. Use Covenants / Rulebook / Ask for AI analysis; use Simulate when the engine has governing configuration."
+  },
+  "rulebookStage": "EXECUTABLE",
+  "rulebookExecutable": 2,
+  "exercise": {
+    "exerciseId": "debt.secured.100",
+    "outcome": "CONDITIONAL",
+    "citations": 6,
+    "missingInputs": [],
+    "conditionalFormula": "Supported amount for $100 million is CONDITIONAL: apply cited baskets [7.2 basket/threshold: Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets; 7.2 basket/threshold: Cap measured on outstanding amount at any time.] after confirming operative language, counsel-selected interpretati",
+    "gaps": [
+      "CONFLICTING_INTERPRETATIONS"
+    ]
+  },
+  "loopPublish": {
+    "documentsProcessed": 1,
+    "exerciseTypes": 1,
+    "executions": 1,
+    "substantive": 0,
+    "conditional": 1,
+    "unsupported": 0,
+    "failed": 0,
+    "gapHistogram": {
+      "CONFLICTING_INTERPRETATIONS": 1
+    }
+  },
+  "dashboard": {
+    "headline": "AI-populated debt intelligence · 1/1 docs · rulebook EXECUTABLE · capacity EXECUTABLE_PATH_AVAILABLE",
+    "documentCount": 1,
+    "acceptedCount": 2,
+    "capacityStatus": "EXECUTABLE_PATH_AVAILABLE",
+    "basketsWithRemaining": 1,
+    "sampleBaskets": [
+      {
+        "sectionRef": "7.2",
+        "status": "COMPUTED",
+        "remaining": "$50M",
+        "reviewDecision": "ACCEPTED",
+        "capacity": "Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets"
+      },
+      {
+        "sectionRef": "7.3",
+        "status": "CONDITIONAL",
+        "remaining": null,
+        "reviewDecision": null,
+        "capacity": null
+      },
+      {
+        "sectionRef": "7.6",
+        "status": "CONDITIONAL",
+        "remaining": null,
+        "reviewDecision": null,
+        "capacity": "Amount/threshold: $25,000,000"
+      },
+      {
+        "sectionRef": "7.8",
+        "status": "CONDITIONAL",
+        "remaining": null,
+        "reviewDecision": null,
+        "capacity": "Amount/threshold: $5,000,000"
+      },
+      {
+        "sectionRef": "7.5",
+        "status": "CONDITIONAL",
+        "remaining": null,
+        "reviewDecision": null,
+        "capacity": "Cap measured on a per-fiscal-year basis."
+      },
+      {
+        "sectionRef": "7.10",
+        "status": "CONDITIONAL",
+        "remaining": null,
+        "reviewDecision": null,
+        "capacity": "Amount/threshold: $2,500,000"
+      }
+    ],
+    "transactions": [
+      {
+        "scenario": "Proposed $100M secured debt",
+        "status": "CONDITIONAL",
+        "summary": "Source-backed covenant analysis (includes counsel-approved interpretations) — conditional capacity.  Matched 6 provision(s)."
+      },
+      {
+        "scenario": "Proposed $50M restricted payment",
+        "status": "CONDITIONAL",
+        "summary": "AI matched §7.17 (SECTION 7.17 Outbound Investment). 3 related provisions. Pro forma ratios/capacity remain conditional without executable rules."
+      },
+      {
+        "scenario": "Proposed $75M investment / acquisition",
+        "status": "CONDITIONAL",
+        "summary": "AI matched §7.17 (SECTION 7.17 Outbound Investment). 3 related provisions. Pro forma ratios/capacity remain conditional without executable rules."
+      },
+      {
+        "scenario": "Refinance secured indebtedness",
+        "status": "CONDITIONAL",
+        "summary": "AI matched §7.14 (SECTION 7.14 Limitation on Restrictions). 3 related provisions. Pro forma ratios/capacity remain conditional without executable rules."
+      }
+    ]
+  }
+}

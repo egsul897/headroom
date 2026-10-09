@@ -70,6 +70,14 @@ export interface ManualFinancialStateInput {
   fixedCharges?: number;
   /** Relevant assets for grower baskets ($M). */
   totalAssets?: number;
+  /** First-lien / senior secured debt principal ($M) — not assumed equal to all secured debt. */
+  firstLienDebtPrincipal?: number;
+  /** Restricted-group / contractual Consolidated EBITDA when distinct from headline EBITDA ($M). */
+  restrictedGroupEbitda?: number;
+  /** Numeric sum of contractual EBITDA addbacks applied ($M). */
+  ebitdaAdjustmentsAmount?: number;
+  /** Label of the contractual EBITDA defined term (e.g. Consolidated EBITDA). */
+  contractualEbitdaTerm?: string;
   /** Free-text pro forma adjustments / addbacks description. */
   proFormaAdjustments?: string;
   /** Testing period label (e.g. TTM, LTM, fiscal Q2). */
@@ -221,6 +229,15 @@ function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: 
     cash: factCarryingPrior(input.cash, asOfDate, balancePrior?.cash),
     totalDebtPrincipal: factCarryingPrior(input.totalDebtPrincipal, asOfDate, balancePrior?.totalDebtPrincipal),
     securedDebtPrincipal: factCarryingPrior(input.securedDebtPrincipal, asOfDate, balancePrior?.securedDebtPrincipal),
+    ...(input.firstLienDebtPrincipal !== undefined
+      ? {
+          firstLienDebtPrincipal: factCarryingPrior(
+            input.firstLienDebtPrincipal,
+            asOfDate,
+            balancePrior?.firstLienDebtPrincipal,
+          ),
+        }
+      : {}),
     ...(input.totalAssets !== undefined
       ? { totalAssets: factCarryingPrior(input.totalAssets, asOfDate, balancePrior?.totalAssets) }
       : {}),
@@ -241,7 +258,40 @@ function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: 
 
   const covenantMetricFacts = withUntouchedPriorFacts({
     assumedNewDebtRatePct: factCarryingPrior(input.assumedNewDebtRatePct, asOfDate, covenantPrior?.assumedNewDebtRatePct),
-    covenantEbitda: covenantEbitdaFromInput(input.ebitda, asOfDate, prior?.covenantMetricFacts),
+    covenantEbitda: covenantEbitdaFromInput(
+      input.restrictedGroupEbitda ?? input.ebitda,
+      asOfDate,
+      prior?.covenantMetricFacts,
+    ),
+    ...(input.restrictedGroupEbitda !== undefined
+      ? {
+          restrictedGroupEbitda: factCarryingPrior(
+            input.restrictedGroupEbitda,
+            asOfDate,
+            covenantPrior?.restrictedGroupEbitda,
+          ),
+        }
+      : {}),
+    ...(input.ebitdaAdjustmentsAmount !== undefined
+      ? {
+          ebitdaAdjustmentsAmount: factCarryingPrior(
+            input.ebitdaAdjustmentsAmount,
+            asOfDate,
+            covenantPrior?.ebitdaAdjustmentsAmount,
+          ),
+        }
+      : {}),
+    ...(input.contractualEbitdaTerm
+      ? {
+          contractualEbitdaTerm: {
+            value: input.contractualEbitdaTerm,
+            sourceType: "REPORTED",
+            reviewStatus: "UNVERIFIED",
+            asOfDate,
+            notes: "Mapped to agreement-defined EBITDA term — not assumed identical to GAAP",
+          },
+        }
+      : {}),
     ...(input.testingPeriod
       ? { testingPeriod: { value: input.testingPeriod, sourceType: "REPORTED", reviewStatus: "UNVERIFIED", asOfDate } }
       : {}),
@@ -267,6 +317,16 @@ function composeFinancialNotes(input: ManualFinancialStateInput): string | undef
   if (input.proFormaAdjustments?.trim()) parts.push(`Pro forma adjustments: ${input.proFormaAdjustments.trim()}`);
   if (input.fixedCharges !== undefined) parts.push(`Fixed charges ($M): ${input.fixedCharges}`);
   if (input.totalAssets !== undefined) parts.push(`Total assets ($M): ${input.totalAssets}`);
+  if (input.firstLienDebtPrincipal !== undefined) parts.push(`First-lien debt ($M): ${input.firstLienDebtPrincipal}`);
+  if (input.restrictedGroupEbitda !== undefined) {
+    parts.push(`Restricted-group / contractual EBITDA ($M): ${input.restrictedGroupEbitda}`);
+  }
+  if (input.ebitdaAdjustmentsAmount !== undefined) {
+    parts.push(`EBITDA adjustments ($M): ${input.ebitdaAdjustmentsAmount}`);
+  }
+  if (input.contractualEbitdaTerm?.trim()) {
+    parts.push(`Contractual EBITDA term: ${input.contractualEbitdaTerm.trim()}`);
+  }
   return parts.length ? parts.join(" | ") : undefined;
 }
 

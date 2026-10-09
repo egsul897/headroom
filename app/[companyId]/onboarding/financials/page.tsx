@@ -8,16 +8,19 @@ export const metadata = { title: "Headroom — Onboarding financials" };
 export const dynamic = "force-dynamic";
 
 const FIELDS: { name: string; label: string; step?: string; required?: boolean }[] = [
-  { name: "ebitda", label: "EBITDA / Consolidated EBITDA ($M)", required: true },
-  { name: "cash", label: "Unrestricted cash ($M)", required: true },
+  { name: "ebitda", label: "Headline EBITDA ($M) — confirm against contractual definition", required: true },
+  { name: "restrictedGroupEbitda", label: "Restricted-group / Consolidated EBITDA ($M, optional if same as headline)", required: false },
+  { name: "ebitdaAdjustmentsAmount", label: "Contractual EBITDA addbacks / adjustments ($M, optional)", required: false },
+  { name: "cash", label: "Unrestricted cash & cash equivalents ($M)", required: true },
   { name: "totalDebtPrincipal", label: "Total debt principal ($M)", required: true },
   { name: "securedDebtPrincipal", label: "Secured debt principal ($M)", required: true },
+  { name: "firstLienDebtPrincipal", label: "First-lien debt principal ($M, optional)", required: false },
   { name: "cumulativeNetIncomeSinceIssue", label: "Cumulative net income since issue ($M)", required: true },
   { name: "equityProceedsSinceIssue", label: "Equity proceeds since issue ($M)", required: true },
   { name: "interestExpense", label: "Interest expense ($M)", required: true },
   { name: "assumedNewDebtRatePct", label: "Assumed new-debt coupon (%)", step: "0.01", required: true },
   { name: "fixedCharges", label: "Fixed charges ($M, optional)", required: false },
-  { name: "totalAssets", label: "Total / relevant assets ($M, optional)", required: false },
+  { name: "totalAssets", label: "Consolidated total assets ($M, optional — growers)", required: false },
 ];
 
 export default async function OnboardingFinancialsPage({ params }: { params: Promise<{ companyId: string }> }) {
@@ -57,18 +60,29 @@ export default async function OnboardingFinancialsPage({ params }: { params: Pro
             </div>
           ))}
           <div className="field">
+            <div className="field-label">Contractual EBITDA defined term (optional)</div>
+            <div className="field-control">
+              <input
+                type="text"
+                name="contractualEbitdaTerm"
+                placeholder="e.g. Consolidated EBITDA (Credit Agreement §1.01)"
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
+          <div className="field">
             <div className="field-label">Testing period / date label (optional)</div>
             <div className="field-control">
               <input type="text" name="testingPeriod" placeholder="e.g. LTM ended 2026-06-30" style={{ width: "100%" }} />
             </div>
           </div>
           <div className="field">
-            <div className="field-label">Pro forma / EBITDA adjustments (optional)</div>
+            <div className="field-label">Pro forma transaction / EBITDA adjustments narrative (optional)</div>
             <div className="field-control">
               <textarea
                 name="proFormaAdjustments"
                 rows={3}
-                placeholder="Describe contractual addbacks and pro forma adjustments applied"
+                placeholder="Describe contractual addbacks, restricted-subsidiary scope, and pro forma transaction adjustments. GAAP ≠ contract metrics."
                 style={{ width: "100%" }}
               />
             </div>
