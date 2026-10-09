@@ -62,6 +62,16 @@ describe("authentic §7.2(d) Finance Lease Obligations execution", () => {
     expect(enumeration.paths).toHaveLength(1);
     expect(enumeration.paths[0]!.status).toBe("CANDIDATE");
 
+    // Stage D: debt-only CERTIFIED VEP must not claim a SECURED_DEBT CANDIDATE path.
+    const securedEnum = enumerateCertifiedPaths({
+      verifiedPackage: pkg,
+      transactionKind: "SECURED_DEBT",
+      secured: true,
+    });
+    expect(securedEnum.incompleteReasons).toContain("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT");
+    expect(securedEnum.authority).toBe("INCOMPLETE_PACKAGE");
+    expect(securedEnum.paths.every((p) => p.status !== "CANDIDATE")).toBe(true);
+
     const graph = buildCapacityGraph({
       rules: pkg.rules,
       definitions: pkg.definitions ?? [],

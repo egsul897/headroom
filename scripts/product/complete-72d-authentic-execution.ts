@@ -164,7 +164,9 @@ function main(): void {
       },
     ],
     criticalFalsePermissions: 0,
-    note: "§7.2(d) Finance Lease Obligations basket — no cross-rule gate; path status CANDIDATE.",
+    note:
+      "UNSECURED_DEBT: §7.2(d) CANDIDATE (no cross-rule gate). " +
+      "SECURED_DEBT: debt-only VEP correctly incomplete — NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT (Stage D fail-closed).",
   });
 
   const { snapshot, label } = syntheticCtaSnapshot(pkg);
@@ -311,7 +313,8 @@ function main(): void {
     "| Transaction | Incur Finance Lease Obligations (INCUR_DEBT) |",
     "| Contractual path | §7.2(d) greater-of basket |",
     "| Certification | CERTIFIED (`7.2d-recompute-phase2-certified`) |",
-    `| Phase 4E | ${enumDebt.authority} / ${enumDebt.paths[0]?.status ?? "n/a"} |`,
+    `| Phase 4E (unsecured) | ${enumDebt.authority} / ${enumDebt.paths[0]?.status ?? "n/a"} |`,
+    `| Phase 4E (secured) | ${enumSecured.authority} / incomplete=${enumSecured.incompleteReasons.join(",") || "none"} |`,
     `| Capacity (REQUIRE) | ${capacity.outcome}${capOk ? ` / ${capOk.status}` : ""} remaining=${rem ?? "n/a"} |`,
     "| Simulation (4D) | see 05-phase4d-simulation.json |",
     "| Financial inputs | **SYNTHETIC_LABELED_TECHNICAL_DEMO** (not customer-certified) |",
@@ -323,6 +326,10 @@ function main(): void {
     `- Synthetic CTA $${Number(SYNTHETIC_CTA_USD).toLocaleString("en-US")} → 3% = $60,000,000 → greater-of = **$60,000,000**.`,
     `- Probe consume $${Number(SYNTHETIC_TXN_USD).toLocaleString("en-US")} under empty ledger.`,
     "",
+    "## Stage D — secured path (correct refusal)",
+    "",
+    "This VEP certifies only §7.2(d) (debt). Finance Lease Obligations typically create a Lien on the leased property, so secured analysis also needs a certified §7.3 companion. With no CREATE_LIEN/GRANT_COLLATERAL rule in the package, SECURED_DEBT enumeration is **INCOMPLETE_PACKAGE** (`NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT`) — not a CANDIDATE grant.",
+    "",
     "## Why not §7.2(c)",
     "",
     "§7.2(c) remains CERTIFIED but blocked by `CROSS_RULE_GATE_NOT_EXECUTABLE` (§7.1 / §7.3(g) — no cross-rule evaluator; companions FAILED). Preserved fail-closed.",
@@ -330,6 +337,7 @@ function main(): void {
     "## Safety",
     "",
     "- Gates not weakened; CFP target 0; synthetic inputs labeled; no paid inference.",
+    "- Secured debt without certified lien companion is refused (Stage D fail-closed).",
     "",
   ].join("\n");
   write("00-execution-report.md", report);
@@ -340,7 +348,14 @@ function main(): void {
     process.exit(2);
   }
   if (enumDebt.paths[0]?.status !== "CANDIDATE" || enumDebt.unsupportedReasons.length > 0) {
-    console.error("Unexpected 4E result");
+    console.error("Unexpected 4E unsecured result");
+    process.exit(2);
+  }
+  if (
+    enumSecured.authority !== "INCOMPLETE_PACKAGE" ||
+    !enumSecured.incompleteReasons.includes("NO_CERTIFIED_LIEN_COMPANION_FOR_SECURED_DEBT")
+  ) {
+    console.error("Unexpected 4E secured result — expected Stage D lien-companion refusal");
     process.exit(2);
   }
 }
