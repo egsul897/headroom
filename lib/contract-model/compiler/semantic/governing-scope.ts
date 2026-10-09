@@ -70,7 +70,7 @@ export interface SourceSemanticEvidence {
 
 export interface SourceEntityScopeEvidence extends SourceSemanticEvidence {
   kind: "ENTITY_SCOPE";
-  mentionRole: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT";
+  mentionRole: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT" | "COUNTERPARTY";
   excludedContext: boolean;
   /** The exact EntityClassTag value(s) the phrase denotes under the fixed enum, or null when the enum cannot name the class exactly. */
   mappedTags: EntityClassTag[] | null;
@@ -264,8 +264,31 @@ export function resolveGoverningScope(input: ResolveGoverningScopeInput): Govern
     if (!governingProhibition && new RegExp(PROHIBITION_PHRASE.source).test(r.text)) governingProhibition = { regionId: r.regionId, sectionRef: r.sectionRef, role: r.role, evidence: r.text.slice(0, 240) };
 
     const signals = findEntityBindingSignals(r.text);
-    const obligors = signals.filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT");
-    for (const s of signals) entityScopeEvidence.push({ regionId: r.regionId, sectionRef: r.sectionRef, role: r.role, kind: "ENTITY_SCOPE", phrase: s.phrase, index: s.index, mentionRole: s.role ?? "OBLIGOR", excludedContext: s.excludedContext, mappedTags: mapPhrase(s.phrase), detail: s.excludedContext ? "carve-out mention" : s.role === "MEASUREMENT_CONTEXT" ? "measurement-group mention" : s.role === "CONDITION_SUBJECT" ? "condition-subject mention" : "obligor binding" });
+    const obligors = signals.filter(
+      (s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT" && s.role !== "COUNTERPARTY",
+    );
+    for (const s of signals) {
+      entityScopeEvidence.push({
+        regionId: r.regionId,
+        sectionRef: r.sectionRef,
+        role: r.role,
+        kind: "ENTITY_SCOPE",
+        phrase: s.phrase,
+        index: s.index,
+        mentionRole: s.role ?? "OBLIGOR",
+        excludedContext: s.excludedContext,
+        mappedTags: mapPhrase(s.phrase),
+        detail: s.excludedContext
+          ? "carve-out mention"
+          : s.role === "MEASUREMENT_CONTEXT"
+            ? "measurement-group mention"
+            : s.role === "CONDITION_SUBJECT"
+              ? "condition-subject mention"
+              : s.role === "COUNTERPARTY"
+                ? "counterparty (payee) mention"
+                : "obligor binding",
+      });
+    }
     if (inheritedEntityScope === null && inheritedEntityScopeBasis === null && obligors.length > 0) {
       const mapped = obligors.map((s) => mapPhrase(s.phrase));
       if (mapped.every((t) => t !== null)) {
