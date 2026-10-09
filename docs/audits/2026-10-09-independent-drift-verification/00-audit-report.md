@@ -123,7 +123,7 @@ CI results are recorded on the PR, not asserted here. Vercel deployment success 
 
 ## Part XII — Delivery
 
-Branch `claude/audit-drift-remediation-2026-10-09`, pushed; PR opened for review; not merged; no force-push; no history
+Branch `claude/audit-drift-remediation-2026-10-09`, pushed; PR https://github.com/egsul897/headroom/pull/183 opened for review (CI 6/6 green on `70b0aaeb`); not merged; no force-push; no history
 rewritten. Verdict: **REMEDIATION_PARTIAL** — the four application-layer corrections are implemented and locally verified;
-F2's authorization cannot be established from the repository and Neon persistence could not be checked; CI on the exact
-branch head is pending at the time of writing.
+F2's authorization cannot be established from the repository and Neon persistence could not be checked; the Postgres-backed
+suites outside the p3-r0 workflow ran nowhere.

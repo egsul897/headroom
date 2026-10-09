@@ -50,9 +50,9 @@
       "result": "P3-R0 carry-forward and supersession (soft gate): FAILURE on tests/ledger/supersede-ledger-entry.test.ts:96 \u2014 the branch's bound query replaced the explicit 'does not belong to this company' refusal (regression introduced by this branch, reverted in the following commit); home overview, feeds invent-absence, Vercel: success; canonical-compiler and stratified-cert not path-triggered (lib/contract-model untouched)"
     },
     {
-      "command": "GitHub Actions on the corrected head",
-      "exitCode": null,
-      "result": "recorded in the PR checks and in the final return"
+      "command": "GitHub Actions on 70b0aaeb (corrected head, CI)",
+      "exitCode": 0,
+      "result": "6/6 checks success: P3-R0 carry-forward and supersession (soft gate) x2 (push + pull_request; ephemeral Postgres; 52 tests incl. tests/ledger/supersede-ledger-entry.test.ts and tests/feeds/snapshot-update-no-carry-forward.test.ts), home overview (soft gate), feeds invent-absence (soft gate) x2, Vercel preview. canonical-compiler.yml and stratified-cert.yml were not path-triggered (no lib/contract-model or stratified-cert path changed). PR #183 mergeable_state clean. The evidence commit that follows is docs-only; its own CI run was pending when this artifact was written and is not claimed here."
     }
   ],
   "failingCasesRemovedOrWeakened": "none",
