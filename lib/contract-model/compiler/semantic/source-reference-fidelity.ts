@@ -106,14 +106,35 @@ export interface ClassifyReferencesInput {
    * only (recorded in the audit); never a stated reference on its own (SA-1).
    */
   lineageRefs?: readonly string[] | null;
+  /**
+   * IPV-15: authenticated texts of retrieved DEFINITION / DEFINITION_DEPENDENCY
+   * items this unit depends on. Section references named inside those definitions
+   * (e.g. Available Amount naming Section 7.06(c) and 7.08(d)) are admissible
+   * stated references for the citing unit — still source text, never model inventory.
+   */
+  retrievedDefinitionTexts?: readonly string[] | null;
   baseSectionRef?: string | null;
   index?: StructuralIndex | null;
   documentId?: string | null;
 }
 
-/** The authenticated stated-reference set for a node: the deterministic scan of the operative text, nothing else. */
+/** The authenticated stated-reference set for a node: operative text plus retrieved definition bodies (IPV-15). */
 export function statedReferencesFor(input: Omit<ClassifyReferencesInput, "emitted">): StatedSourceReference[] {
-  return statedSectionReferencesInText(input.operativeText, { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId });
+  const opts = { baseSectionRef: input.baseSectionRef, index: input.index, documentId: input.documentId };
+  const fromOperative = statedSectionReferencesInText(input.operativeText, opts);
+  const seen = new Set(fromOperative.map((r) => r.normalized ?? r.raw.toLowerCase()));
+  const fromDefs: StatedSourceReference[] = [];
+  for (const text of input.retrievedDefinitionTexts ?? []) {
+    if (!text || text.trim().length === 0) continue;
+    for (const ref of statedSectionReferencesInText(text, opts)) {
+      const key = ref.normalized ?? ref.raw.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      // Authenticated source text (definition body), same origin vocabulary as operative.
+      fromDefs.push(ref);
+    }
+  }
+  return [...fromOperative, ...fromDefs];
 }
 
 export function classifyEmittedReferences(input: ClassifyReferencesInput): ReferenceFidelityOutcome {

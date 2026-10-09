@@ -118,6 +118,8 @@ interface NormCtx {
   population: readonly OwnershipIndexCandidate[] | null;
   /** The candidate's operative text - the only text whose figures a dependency description may restate. */
   operativeText: string;
+  /** IPV-15: retrieved DEFINITION / DEFINITION_DEPENDENCY bodies (authenticated source) for stated-reference fidelity. */
+  retrievedDefinitionTexts: readonly string[];
   /** Model prose stripped out of dependency descriptions, kept as non-authoritative diagnostics on the compilation (never on the unit). */
   dependencyProse: DependencyProseDiagnostic[];
   /** ENTITY-SCOPE GUARD §4: every entity tag emitted anywhere under this rule (rule fields or ENTITY_SCOPE_REFERENCE nodes) with its RECOGNIZED/UNRECOGNIZED outcome - shared by reference across child contexts, fresh per rule. */
@@ -195,7 +197,15 @@ function limitRule(ctx: NormCtx, message: string): void { warn(ctx, message, "SU
 /** SOURCE-REFERENCE FIDELITY: the drafted references a field may target, and the audit of what the model emitted for it. */
 function fidelityFor(ctx: NormCtx, path: string, emitted: string[], lineageIds: string[] | undefined): { refs: string[]; selectorOf: (ref: string) => IRSourceTargetSelector | undefined } {
   const lineageRefs = (lineageIds ?? []).flatMap((id) => ctx.inventoryRefs.get(id) ?? []);
-  const outcome = classifyEmittedReferences({ emitted, operativeText: ctx.operativeText, lineageRefs, baseSectionRef: ctx.baseSectionRef, index: ctx.referenceIndex, documentId: ctx.documentId });
+  const outcome = classifyEmittedReferences({
+    emitted,
+    operativeText: ctx.operativeText,
+    lineageRefs,
+    retrievedDefinitionTexts: ctx.retrievedDefinitionTexts,
+    baseSectionRef: ctx.baseSectionRef,
+    index: ctx.referenceIndex,
+    documentId: ctx.documentId,
+  });
   for (const c of outcome.classifications) {
     const excluded = outcome.excluded.find((e) => e.emitted === c.emitted);
     ctx.referenceAudit.push({ path, emitted: c.emitted, classification: c.classification, authoritative: !excluded, restoredTo: excluded?.restoredTo ?? null, statedRefs: c.statedRefs, detail: c.detail });
@@ -782,10 +792,14 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
   const referenceIndex: StructuralIndex | null = input.toolAccess?.structuralIndex ?? null;
   const population = input.candidatePopulation ?? null;
   const admissibleSources = admissibleSourcesFor(input);
+  const retrievedDefinitionTexts = (input.contextBundle?.items ?? [])
+    .filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY")
+    .map((i) => i.excerptText)
+    .filter((t) => t.trim().length > 0);
   const governingScope: GoverningSemanticContext | null = input.governingScope ?? null;
   const inventoryRefs = new Map<string, string[]>();
   for (const it of input.frozenInventory?.items ?? []) inventoryRefs.set(it.inventoryItemId, [...(it.referencedSections ?? [])]);
-  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [], admissibleSources });
+  const baseCtx = (scopePath: string): NormCtx => ({ companyId, instrumentKey, documentId, inheritedCitation: input.sourceSectionRef ? `§${input.sourceSectionRef}` : null, warnings, scopePath, resolveRuleRef, resolveSharedCapRef, referenceIndex, population, operativeText: input.operativeSourceText, retrievedDefinitionTexts, dependencyProse, entityTagAudit: [], governingScope, inventoryRefs, baseSectionRef: input.sourceSectionRef ?? null, referenceAudit: [], limits: [], admissibleSources });
   const ownershipScope: OwnershipScope = {
     documentId, candidateSectionRef: input.sourceSectionRef, anchorNodeId: input.contextBundle?.originatingStructuralNodeIds?.[0] ?? null,
     operativeRegionRefs: (input.sourceContext?.regions ?? []).filter((r) => r.kind === "OPERATIVE" && r.sectionRef).map((r) => r.sectionRef!),
@@ -877,7 +891,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const sourceReferenceAudit: IRSourceReferenceAudit | undefined = ctx.referenceAudit.length > 0 ? {
       version: SOURCE_REFERENCE_FIDELITY_VERSION,
       note: "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
-      statedReferences: statedReferencesFor({ operativeText: input.operativeSourceText, lineageRefs: [...new Set((wireRule.inventoryItemIds ?? []).flatMap((id) => inventoryRefs.get(id) ?? []))], baseSectionRef: input.sourceSectionRef ?? null, index: referenceIndex, documentId }).map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })),
+      statedReferences: statedReferencesFor({ operativeText: input.operativeSourceText, retrievedDefinitionTexts, lineageRefs: [...new Set((wireRule.inventoryItemIds ?? []).flatMap((id) => inventoryRefs.get(id) ?? []))], baseSectionRef: input.sourceSectionRef ?? null, index: referenceIndex, documentId }).map((r) => ({ raw: r.raw, normalized: r.normalized, origin: r.origin })),
       entries: [...ctx.referenceAudit],
     } : undefined;
 
