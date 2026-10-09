@@ -19,6 +19,7 @@ North Star / Phase 2–4E contracts preserved. Phase 3 certification gate unchan
 | I Counsel feedback | `counsel-feedback.ts` hooked from `recordReviewerDecision` (WORKSPACE scope only) |
 | J Corpus | Stats over Neon + retrieval index (no raw count chase) |
 | K North Star integrate | Ask transaction path attaches dependency scaffold note; authority labels unchanged |
+| Phase 2 wire (follow-up) | KF `extractStructure` uses `detectStructuralDefinitions` + `detectStructuralReferences` with target resolution; upload path runs Phase 2C `buildPackageGraph`; product dependency graph adds SHARED_CAPACITY edges; `runPackageLegalPath` challenges any workspace summaries |
 
 ## Measured corpus (Neon)
 
