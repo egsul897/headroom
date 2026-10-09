@@ -1,0 +1,750 @@
+{
+  "schema": "product.certified-vs-legacy-demo.v1",
+  "label": "SYNTHETIC",
+  "irLabel": "FIXTURE_IR",
+  "generatedAt": "2026-10-09T14:20:14.796Z",
+  "companyId": "synthetic-conmed-form-co",
+  "instrumentKey": "synthetic-term-loan-a",
+  "note": "SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.",
+  "exercises": [
+    {
+      "exerciseId": "secured-borrowing-100m",
+      "title": "$100M secured borrowing",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 3,
+        "sufficientSingle": [],
+        "partial": [
+          {
+            "sectionRef": "7.01(b)",
+            "family": "GENERAL_DEBT",
+            "capacityMillions": 84
+          },
+          {
+            "sectionRef": "7.02(a)",
+            "family": "GENERAL_LIEN",
+            "capacityMillions": 84
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC $100M secured borrowing: examined 3 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $100M. Partial capacity identified on: §7.01(b) $84M; §7.02(a) $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 2; lien pathways: 1. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-7.01(b)",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 50000000,
+            "usageUsd": null
+          },
+          {
+            "ruleId": "rule:synth-7.01(c)",
+            "status": "NEEDS_INPUT",
+            "grossUsd": null,
+            "remainingUsd": null,
+            "usageUsd": null
+          },
+          {
+            "ruleId": "rule:synth-7.02(a)",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 50000000,
+            "usageUsd": null
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "secured-borrowing-100m",
+          "pathOrRule": "7.01(b):GENERAL_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": 50000000,
+          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+        },
+        {
+          "exerciseId": "secured-borrowing-100m",
+          "pathOrRule": "7.02(a):GENERAL_LIEN",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": 50000000,
+          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+        },
+        {
+          "exerciseId": "secured-borrowing-100m",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Stacking of general + ratio debt baskets is NOT assumed"
+      ]
+    },
+    {
+      "exerciseId": "restricted-payment-75m",
+      "title": "$75M restricted payment",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 2,
+        "sufficientSingle": [],
+        "partial": [
+          {
+            "sectionRef": "7.06(a)",
+            "family": "FIXED_RP",
+            "capacityMillions": 25
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC $75M restricted payment: examined 2 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $75M. Partial capacity identified on: §7.06(a) $25M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-7.06(a)",
+            "status": "AVAILABLE",
+            "grossUsd": 25000000,
+            "remainingUsd": 20000000,
+            "usageUsd": 5000000
+          },
+          {
+            "ruleId": "rule:synth-7.06(b)",
+            "status": "AVAILABLE",
+            "grossUsd": 40000000,
+            "remainingUsd": 40000000,
+            "usageUsd": null
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "restricted-payment-75m",
+          "pathOrRule": "7.06(a):FIXED_RP",
+          "field": "remainingCapacity",
+          "legacyValue": 25,
+          "certifiedValue": 20000000,
+          "note": "Legacy capacityMillions×1e6=25000000 vs FIXTURE_IR remainingUsd=20000000 (scale/formula/ledger divergence)"
+        },
+        {
+          "exerciseId": "restricted-payment-75m",
+          "pathOrRule": "rule:synth-7.06(a)",
+          "field": "ledgerAwareRemaining",
+          "legacyValue": 25,
+          "certifiedValue": 20000000,
+          "note": "Ledger usage $5000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+        },
+        {
+          "exerciseId": "restricted-payment-75m",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Builder Available Amount on FIXTURE_IR is a flat stand-in, not a full builder formula"
+      ]
+    },
+    {
+      "exerciseId": "acquisition-financing-150m",
+      "title": "$150M acquisition financing",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 4,
+        "sufficientSingle": [],
+        "partial": [
+          {
+            "sectionRef": "7.01(d)",
+            "family": "ACQUISITION_DEBT",
+            "capacityMillions": 100
+          },
+          {
+            "sectionRef": "7.08(a)",
+            "family": "FIXED_INVESTMENT",
+            "capacityMillions": 50
+          },
+          {
+            "sectionRef": "7.02(a)",
+            "family": "GENERAL_LIEN",
+            "capacityMillions": 84
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC $150M acquisition financing: examined 4 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $150M. Partial capacity identified on: §7.01(d) $100M; §7.08(a) $50M; §7.02(a) $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 2; lien pathways: 1. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-7.01(b)-acq",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 50000000,
+            "usageUsd": null
+          },
+          {
+            "ruleId": "rule:synth-7.01(d)",
+            "status": "AVAILABLE",
+            "grossUsd": 100000000,
+            "remainingUsd": 100000000,
+            "usageUsd": null
+          },
+          {
+            "ruleId": "rule:synth-7.08(a)",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 50000000,
+            "usageUsd": null
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "acquisition-financing-150m",
+          "pathOrRule": "7.02(a):GENERAL_LIEN",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "acquisition-financing-150m",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification"
+      ]
+    },
+    {
+      "exerciseId": "ebitda-decline",
+      "title": "EBITDA decline",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 3,
+        "sufficientSingle": [],
+        "partial": [
+          {
+            "sectionRef": "7.01(b)",
+            "family": "GENERAL_DEBT",
+            "capacityMillions": 84
+          },
+          {
+            "sectionRef": "7.01(c)",
+            "family": "GENERAL_DEBT",
+            "capacityMillions": 20
+          },
+          {
+            "sectionRef": "7.02(a)",
+            "family": "GENERAL_LIEN",
+            "capacityMillions": 84
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC EBITDA −20% stress on $100M secured: examined 3 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $100M. Partial capacity identified on: §7.01(b) $84M; §7.01(c) $20M; §7.02(a) $84M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 2; lien pathways: 1. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-stress-7.01(b)",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 50000000,
+            "usageUsd": null
+          },
+          {
+            "ruleId": "rule:synth-stress-7.01(c)",
+            "status": "NEEDS_INPUT",
+            "grossUsd": null,
+            "remainingUsd": null,
+            "usageUsd": null
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "ebitda-decline",
+          "pathOrRule": "7.01(b):GENERAL_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": 50000000,
+          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+        },
+        {
+          "exerciseId": "ebitda-decline",
+          "pathOrRule": "7.01(c):GENERAL_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 20,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "ebitda-decline",
+          "pathOrRule": "7.02(a):GENERAL_LIEN",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "ebitda-decline",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Legacy stress mutates FinancialForPaths; certified path does not invent a DRAFT override"
+      ]
+    },
+    {
+      "exerciseId": "amendment-basket-capacity",
+      "title": "Amendment changing basket capacity",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 2,
+        "sufficientSingle": [
+          {
+            "sectionRef": "7.01(b)",
+            "family": "GENERAL_DEBT",
+            "capacityMillions": 120
+          }
+        ],
+        "partial": [
+          {
+            "sectionRef": "7.02(a)",
+            "family": "GENERAL_LIEN",
+            "capacityMillions": 84
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC amendment: general basket $50M → $120M: examined 2 contractual pathway(s) across debt/lien/RP/investment regimes. 1 single pathway(s) appear sufficient on a standalone executable basis: §7.01(b) (GENERAL_DEBT). Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 1; lien pathways: 1. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-amended-7.01(b)",
+            "status": "AVAILABLE",
+            "grossUsd": 120000000,
+            "remainingUsd": 120000000,
+            "usageUsd": null
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "amendment-basket-capacity",
+          "pathOrRule": "7.02(a):GENERAL_LIEN",
+          "field": "remainingCapacity",
+          "legacyValue": 84,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "amendment-basket-capacity",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Amendment text itself is not ingested — capacity is re-stated"
+      ]
+    },
+    {
+      "exerciseId": "historical-basket-consumption",
+      "title": "Historical basket consumption",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 2,
+        "sufficientSingle": [
+          {
+            "sectionRef": "7.01(b)",
+            "family": "GENERAL_DEBT",
+            "capacityMillions": 50
+          },
+          {
+            "sectionRef": "7.02(a)",
+            "family": "GENERAL_LIEN",
+            "capacityMillions": 50
+          }
+        ],
+        "partial": [],
+        "narrative": "Proposed SYNTHETIC $40M secured after historical consumption: examined 2 contractual pathway(s) across debt/lien/RP/investment regimes. 2 single pathway(s) appear sufficient on a standalone executable basis: §7.01(b) (GENERAL_DEBT); §7.02(a) (GENERAL_LIEN). Secured incurrence requires both an indebtedness permission and a lien permission (debt ∩ lien). Debt pathways: 1; lien pathways: 1. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": true,
+        "irLabel": "FIXTURE_IR",
+        "blocker": null,
+        "outcome": "EXECUTED",
+        "capacities": [
+          {
+            "ruleId": "rule:synth-hist-7.01(b)",
+            "status": "AVAILABLE",
+            "grossUsd": 50000000,
+            "remainingUsd": 32000000,
+            "usageUsd": 18000000
+          }
+        ],
+        "coverageComplete": true
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "historical-basket-consumption",
+          "pathOrRule": "7.01(b):GENERAL_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 50,
+          "certifiedValue": 32000000,
+          "note": "Legacy capacityMillions×1e6=50000000 vs FIXTURE_IR remainingUsd=32000000 (scale/formula/ledger divergence)"
+        },
+        {
+          "exerciseId": "historical-basket-consumption",
+          "pathOrRule": "7.02(a):GENERAL_LIEN",
+          "field": "remainingCapacity",
+          "legacyValue": 50,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "historical-basket-consumption",
+          "pathOrRule": "rule:synth-hist-7.01(b)",
+          "field": "ledgerAwareRemaining",
+          "legacyValue": 50,
+          "certifiedValue": 32000000,
+          "note": "Ledger usage $18000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+        },
+        {
+          "exerciseId": "historical-basket-consumption",
+          "pathOrRule": "(authority)",
+          "field": "authority",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+          "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+          "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Legacy covenant-engine Permissions are not ledger-aware — expected discrepancy vs 4C"
+      ]
+    },
+    {
+      "exerciseId": "reclassification",
+      "title": "Reclassification",
+      "label": "SYNTHETIC",
+      "applicableCutoff": {
+        "evaluationDate": "2026-08-01",
+        "reportingPeriodKey": "FY2026-Q2",
+        "snapshotAsOf": "2026-06-30",
+        "selector": "MOST_RECENTLY_ENDED_FISCAL_QUARTER"
+      },
+      "legacyAuthority": "LEGACY_ENGINE_MULTIPATH",
+      "legacyNotCertifiedLabel": "NOT_CERTIFIED_4E",
+      "legacy": {
+        "pathCount": 2,
+        "sufficientSingle": [],
+        "partial": [
+          {
+            "sectionRef": "7.06(a)",
+            "family": "FIXED_RP",
+            "capacityMillions": 25
+          }
+        ],
+        "narrative": "Proposed SYNTHETIC reclassification of historical usage (express only): examined 2 contractual pathway(s) across debt/lien/RP/investment regimes. No single executable pathway covers the full $50M. Partial capacity identified on: §7.06(a) $25M. Do not assume free stacking of general, ratio, and incremental debt baskets unless the operative agreement expressly permits concurrent use without double-counting. Authority: counsel/AI multipath over legacy covenant-engine Permissions — NOT_CERTIFIED_4E.",
+        "stackingAssumed": false
+      },
+      "certified": {
+        "ran": false,
+        "irLabel": "FIXTURE_IR",
+        "blocker": "NO_VERIFIED_EXECUTION_PACKAGE: reclassification election semantics are not honestly packaged as a simple verified capacity unit in this SYNTHETIC demo — incomplete verification rather than a faked PASS",
+        "outcome": null,
+        "capacities": [],
+        "coverageComplete": null
+      },
+      "discrepancies": [
+        {
+          "exerciseId": "reclassification",
+          "pathOrRule": "(package)",
+          "field": "verifiedExecution",
+          "legacyValue": "LEGACY_ENGINE_MULTIPATH",
+          "certifiedValue": "NO_VERIFIED_EXECUTION_PACKAGE: reclassification election semantics are not honestly packaged as a simple verified capacity unit in this SYNTHETIC demo — incomplete verification rather than a faked PASS",
+          "note": "Certified/FIXTURE path blocked (NO_VERIFIED_EXECUTION_PACKAGE: reclassification election semantics are not honestly packaged as a simple verified capacity unit in this SYNTHETIC demo — incomplete verification rather than a faked PASS). Legacy remains NOT_CERTIFIED_4E."
+        }
+      ],
+      "limitations": [
+        "SYNTHETIC exercise — invented company, sections, and numbers",
+        "FIXTURE_IR is hand-built for demo comparison — not Phase 3 certified customer IR",
+        "Legacy multipath authority is LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E",
+        "Do not present this harness as customer Phase 3 IR certification",
+        "Reclassification requires express contractual election + Phase 4D APPLY_RECLASSIFICATION — not faked here"
+      ]
+    }
+  ],
+  "discrepancies": [
+    {
+      "exerciseId": "secured-borrowing-100m",
+      "pathOrRule": "7.01(b):GENERAL_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": 50000000,
+      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+    },
+    {
+      "exerciseId": "secured-borrowing-100m",
+      "pathOrRule": "7.02(a):GENERAL_LIEN",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": 50000000,
+      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+    },
+    {
+      "exerciseId": "secured-borrowing-100m",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "restricted-payment-75m",
+      "pathOrRule": "7.06(a):FIXED_RP",
+      "field": "remainingCapacity",
+      "legacyValue": 25,
+      "certifiedValue": 20000000,
+      "note": "Legacy capacityMillions×1e6=25000000 vs FIXTURE_IR remainingUsd=20000000 (scale/formula/ledger divergence)"
+    },
+    {
+      "exerciseId": "restricted-payment-75m",
+      "pathOrRule": "rule:synth-7.06(a)",
+      "field": "ledgerAwareRemaining",
+      "legacyValue": 25,
+      "certifiedValue": 20000000,
+      "note": "Ledger usage $5000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+    },
+    {
+      "exerciseId": "restricted-payment-75m",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "acquisition-financing-150m",
+      "pathOrRule": "7.02(a):GENERAL_LIEN",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "acquisition-financing-150m",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "ebitda-decline",
+      "pathOrRule": "7.01(b):GENERAL_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": 50000000,
+      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+    },
+    {
+      "exerciseId": "ebitda-decline",
+      "pathOrRule": "7.01(c):GENERAL_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 20,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "ebitda-decline",
+      "pathOrRule": "7.02(a):GENERAL_LIEN",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "ebitda-decline",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "amendment-basket-capacity",
+      "pathOrRule": "7.02(a):GENERAL_LIEN",
+      "field": "remainingCapacity",
+      "legacyValue": 84,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "amendment-basket-capacity",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "historical-basket-consumption",
+      "pathOrRule": "7.01(b):GENERAL_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 50,
+      "certifiedValue": 32000000,
+      "note": "Legacy capacityMillions×1e6=50000000 vs FIXTURE_IR remainingUsd=32000000 (scale/formula/ledger divergence)"
+    },
+    {
+      "exerciseId": "historical-basket-consumption",
+      "pathOrRule": "7.02(a):GENERAL_LIEN",
+      "field": "remainingCapacity",
+      "legacyValue": 50,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "historical-basket-consumption",
+      "pathOrRule": "rule:synth-hist-7.01(b)",
+      "field": "ledgerAwareRemaining",
+      "legacyValue": 50,
+      "certifiedValue": 32000000,
+      "note": "Ledger usage $18000000 reflected on FIXTURE_IR but not on legacy Permission capacity"
+    },
+    {
+      "exerciseId": "historical-basket-consumption",
+      "pathOrRule": "(authority)",
+      "field": "authority",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
+      "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
+      "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "reclassification",
+      "pathOrRule": "(package)",
+      "field": "verifiedExecution",
+      "legacyValue": "LEGACY_ENGINE_MULTIPATH",
+      "certifiedValue": "NO_VERIFIED_EXECUTION_PACKAGE: reclassification election semantics are not honestly packaged as a simple verified capacity unit in this SYNTHETIC demo — incomplete verification rather than a faked PASS",
+      "note": "Certified/FIXTURE path blocked (NO_VERIFIED_EXECUTION_PACKAGE: reclassification election semantics are not honestly packaged as a simple verified capacity unit in this SYNTHETIC demo — incomplete verification rather than a faked PASS). Legacy remains NOT_CERTIFIED_4E."
+    }
+  ],
+  "summary": {
+    "exerciseCount": 7,
+    "discrepancyCount": 19,
+    "verifiedExecutionRan": 6,
+    "verifiedExecutionBlocked": 1,
+    "legacyAlwaysNotCertified4E": true
+  }
+}
