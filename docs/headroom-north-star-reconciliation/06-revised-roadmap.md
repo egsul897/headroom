@@ -3,6 +3,9 @@
 Controlling architecture: `docs/headroom-north-star-v2.md`. This replaces the phase sequence of `docs/HEADROOM-ROADMAP.md` §2
 for product direction; that document's audit sections stay as history.
 
+Human-readable phase map (Phases 1–8), AI-first counsel posture, and corrected implementation priorities:
+`docs/HEADROOM-PHASE-ROADMAP.md`. That file elaborates this gate sequence; it does not reorder steps 1–16.
+
 ## Foundation already built
 
 | layer | state | evidence |

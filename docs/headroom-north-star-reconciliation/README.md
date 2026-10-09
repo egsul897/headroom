@@ -16,3 +16,4 @@ fact-level source-locator join, and updates Phase 3 current-state wording. NS-4 
 | `05-ask-headroom-boundary.md` | layer responsibilities and the Ask Headroom loop |
 | `06-revised-roadmap.md` | foundation built, shortest path R0 + 1–16, deviations |
 | `07-next-implementation-gate.json` | NS-4 certificate-to-snapshot adapter V1 |
+| `../HEADROOM-PHASE-ROADMAP.md` | Founder phase map (Phases 1–8) + corrected priorities; elaborates this folder; does not replace gate order in `06` |
