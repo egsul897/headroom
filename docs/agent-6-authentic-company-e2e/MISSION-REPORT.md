@@ -4,7 +4,7 @@
 
 **Branch:** `cursor/agent6-authentic-company-e2e-aebc`  
 **PR:** https://github.com/egsul897/headroom/pull/226  
-**Branch tip:** see `git rev-parse origin/cursor/agent6-authentic-company-e2e-aebc`  
+**SHA:** `9e306886f58d8733b8540ff9854863d6e391bdb1`  
 **Cost:** `$0.00` (no provider calls; credential gate `BLOCKED_BY_MISSING_CREDENTIAL`)
 
 ## Exact stopping stage per company
@@ -38,8 +38,8 @@ Artifacts: `06-execution-baseline/`, `07-product-benchmark/`.
 | Package | Mode | Must-discover expected | Pass A section hits | Recall | LLM Pass B–D |
 |---|---|---:|---:|---:|---|
 | Knife River | DETERMINISTIC_PASS_A_ONLY | 5 | 5 | 1.0 | NOT_RUN |
-| Insulet | DETERMINISTIC_PASS_A_ONLY | (see benchmark) | = expected | 1.0 | NOT_RUN |
-| Benchmark | DETERMINISTIC_PASS_A_ONLY | (see benchmark) | = expected | 1.0 | NOT_RUN |
+| Insulet | DETERMINISTIC_PASS_A_ONLY | 9 | 9 | 1.0 | NOT_RUN |
+| Benchmark | DETERMINISTIC_PASS_A_ONLY | 6 | 6 | 1.0 | NOT_RUN |
 
 Pass A hits are **candidates**, not sealed family discoveries. Coordination note: `06-execution-baseline/discovery-coordination.json`.
 

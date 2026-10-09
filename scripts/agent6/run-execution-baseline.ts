@@ -352,7 +352,13 @@ function runCompanyBaseline(companyKey: string): {
         provisionalDocumentIds: facility?.provisionalDocumentIds ?? [],
         provisionalFamilyOk,
         missingDocuments: expected.operativePackage.missingDocuments ?? [],
-        reviewStatusPreserved: facility?.reviewStatus === "REVIEW_REQUIRED" || expectedAmendments.length === 0,
+        // PROVISIONAL_FAMILY must stay REVIEW_REQUIRED; CONFIRMED may be RESOLVED.
+        reviewStatusHonest:
+          facility == null
+            ? false
+            : facility.associationKind === "PROVISIONAL_FAMILY"
+              ? facility.reviewStatus === "REVIEW_REQUIRED"
+              : facility.reviewStatus === "RESOLVED" || facility.reviewStatus === "REVIEW_REQUIRED",
       },
       transactionExecution: {
         evaluated: expected.proposedTransactions.length,
