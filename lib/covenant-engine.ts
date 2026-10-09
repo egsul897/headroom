@@ -1814,10 +1814,25 @@ export interface LoadCompanySolverStaticOptions {
   /**
    * Optional permission-attributed basket usage. When omitted or empty,
    * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 with status
-   * ZERO_NO_ATTRIBUTED_USAGE and currentUsageAuthoritative=false.
-   * Callers must not treat that zero as proven empty utilization.
+   * ZERO_NO_ATTRIBUTED_USAGE and supportsRemainingClaim=false.
+   * Approved attributed records alone do NOT enable remaining claims (#234).
    */
   basketUsage?: BasketUsageRecord[];
+  /**
+   * Optional completeness certificates keyed by shared-constraint id (#234).
+   * Required for any remaining-capacity claim on that constraint.
+   */
+  completenessCertificates?: Record<
+    string,
+    {
+      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+      approvalState: "APPROVED";
+      asOf: string;
+      sourceLabel: string;
+      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+    }
+  >;
+  asOf?: string;
 }
 
 /**
@@ -1915,6 +1930,7 @@ export async function loadCompanySolverStaticData(
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
     ...(() => {
+      const cert = options?.completenessCertificates?.[c.id];
       const computed = computeSharedConstraintCurrentUsage({
         aggregationRule: c.aggregationRule,
         measurementBasis: c.measurementBasis,
@@ -1925,11 +1941,19 @@ export async function loadCompanySolverStaticData(
           externalInstrumentRef: m.externalInstrumentRef ?? undefined,
         })),
         basketUsage: options?.basketUsage ?? [],
+        constraintId: c.id,
+        asOf: options?.asOf,
+        completenessCertificate: cert
+          ? { ...cert, constraintId: c.id }
+          : null,
       });
       return {
         currentUsage: computed.usage,
         currentUsageStatus: computed.status,
-        currentUsageAuthoritative: computed.authoritative,
+        currentUsageAuthoritative: computed.supportsRemainingClaim,
+        currentUsageSupportsRemainingClaim: computed.supportsRemainingClaim,
+        currentUsageAttributedKnown: computed.attributedKnown,
+        currentUsageCompletenessCertified: computed.completenessCertified,
       };
     })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },

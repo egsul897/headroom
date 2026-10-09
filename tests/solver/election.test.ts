@@ -260,6 +260,7 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         currentUsage: 0,
         currentUsageStatus: "ZERO_NO_ATTRIBUTED_USAGE",
         currentUsageAuthoritative: false,
+        currentUsageSupportsRemainingClaim: false,
         sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
       };
       const evalResult = evaluateElection({
@@ -280,6 +281,40 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(evalResult.requirements.some((r) => r.status === "UNKNOWN")).toBe(true);
     });
 
+    it("Case: attributed usage without completeness certificate cannot publish remaining", () => {
+      const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
+      const graph = buildPermissionGraph([p], []);
+      const constraint: SharedConstraint = {
+        id: "sc-attributed-incomplete",
+        companyId: "co-1",
+        name: "Attributed but incomplete",
+        cap: { amount: 100 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "a" }],
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        currentUsage: 20,
+        currentUsageStatus: "COMPUTED",
+        currentUsageAuthoritative: false,
+        currentUsageSupportsRemainingClaim: false,
+        currentUsageAttributedKnown: true,
+        currentUsageCompletenessCertified: false,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+      };
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
+        permissionsById: new Map([["a", p]]),
+        graph,
+        financials: FIN,
+        requestedAmount: 50,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [constraint],
+        collateralScopes: [],
+      });
+      expect(evalResult.requirements.find((r) => r.class === "SHARED_CAP")?.status).toBe("UNKNOWN");
+      expect(evalResult.legs[0]!.amountAllocated).toBe(0);
+    });
+
     it("Case: shared capacity cap - a permission's allocation is capped at the constraint's remaining headroom", () => {
       const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
       const graph = buildPermissionGraph([p], []);
@@ -295,6 +330,8 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         currentUsage: 60,
         currentUsageStatus: "COMPUTED",
         currentUsageAuthoritative: true,
+        currentUsageSupportsRemainingClaim: true,
+        currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
       };
       const evalResult = evaluateElection({

@@ -38,7 +38,7 @@ This integration merges #229’s Agent8 adversarial suite into #232 without chan
 | #227 files missing from #232 | **None** |
 | Regressions present | `synthetic-formula.test.ts`, `shared-usage.test.ts`, `rock-2.01-incremental-refusal.test.ts`, A8 gate regression |
 
-**Disposition:** Close #225 and #227 as **superseded by #232**. Close #229 as **incorporated into #232** once #232 tip CI is green (capacity contract already identical; Agent8 suite now included).
+**Disposition (corrected):** Close #225 and #227 as **superseded by #232** after tip CI green. **#229 is MERGED on main (`b99f934b`) — do not close or supersede; preserve historical provenance.**
 
 ## 4. Utilization-consumer audit
 

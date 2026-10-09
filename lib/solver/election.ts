@@ -352,10 +352,11 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
     );
   /**
-   * Shared-constraint headroom. Utilization integrity (Neon activation P0):
-   * when `currentUsageAuthoritative` is not true, do NOT treat numeric zero as
-   * proven-empty usage / full remaining — that would be a false-favorable
-   * remaining-capacity conclusion. Fail closed with utilizationUnknown.
+   * Shared-constraint headroom (#234 completeness alignment):
+   * Remaining = cap − usage only when `currentUsageSupportsRemainingClaim` is true
+   * (completeness certificate required). Attributed/approved records alone, partial,
+   * missing, synthetic-without-cert, stale, or mismatched evidence must NOT yield
+   * favorable remaining. Fail closed with utilizationUnknown.
    */
   const headroomAndConsume = (
     permissionId: string,
@@ -363,7 +364,14 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   ): { cappedAlloc: number; constraintId?: string; utilizationUnknown?: boolean } => {
     const constraint = constraintFor(permissionId);
     if (!constraint) return { cappedAlloc: desiredAlloc };
-    if (constraint.currentUsageAuthoritative !== true) {
+    const mayClaimRemaining =
+      constraint.currentUsageSupportsRemainingClaim === true ||
+      // Backward-compat: only honor authoritative when supportsRemainingClaim unset
+      // AND authoritative was explicitly set under the completeness-aware loader.
+      (constraint.currentUsageSupportsRemainingClaim === undefined &&
+        constraint.currentUsageAuthoritative === true &&
+        constraint.currentUsageCompletenessCertified === true);
+    if (!mayClaimRemaining) {
       return {
         cappedAlloc: 0,
         constraintId: constraint.id,
@@ -395,8 +403,8 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         scope: { permissionId, constraintId },
         status: "UNKNOWN",
         detail:
-          `Shared constraint ${constraintId} utilization is not authoritative (${status}); ` +
-          `non-authoritative usage must not produce favorable remaining capacity.`,
+          `Shared constraint ${constraintId} utilization does not support a remaining claim (${status}); ` +
+          `attributed/approved records without a completeness certificate, and partial/missing/stale/mismatched evidence, must not produce favorable remaining capacity.`,
         reasonCategory: "EXTERNAL_INPUT",
       });
       return;

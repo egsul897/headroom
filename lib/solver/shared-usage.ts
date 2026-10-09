@@ -1,15 +1,14 @@
 /**
  * Shared-constraint pre-transaction usage helpers.
  *
- * Utilization integrity contract (Neon activation P0):
- * - VERIFIED_ZERO: attributed records establish zero outstanding (authoritative empty).
- * - ZERO_NO_ATTRIBUTED_USAGE: no attributed records — NOT an authoritative zero-usage claim.
- * - COMPUTED: known attributed usage summed for named members (authoritative).
- * - EXTERNAL_INPUT_REQUIRED / ENTITY_CLASS_USAGE_UNAVAILABLE: unknown external usage.
- * - PARTIAL_ATTRIBUTED_USAGE: some named members attributed, others not (not fully established).
- *
- * EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER deliberately return usage 0 with a
- * non-authoritative status — those require external balances that must not be invented.
+ * Aligned with PR #234 utilization completeness contract:
+ * - Approved / attributed basketUsage records establish *known attributed usage only*.
+ * - They do NOT establish completeness of historical usage.
+ * - Remaining = cap − usage requires an affirmative completeness certificate
+ *   (VERIFIED_EMPTY or VERIFIED_COMPLETE). Approved records alone never suffice.
+ * - Missing attribution is ZERO_NO_ATTRIBUTED_USAGE / UNKNOWN — never invent zero.
+ * - Partial attribution, external, entity-class, synthetic-without-cert, and
+ *   mismatched certificates never support a remaining claim.
  */
 
 import type {
@@ -25,16 +24,25 @@ export type SharedUsageComputationStatus =
   | "ZERO_NO_ATTRIBUTED_USAGE"
   | "PARTIAL_ATTRIBUTED_USAGE"
   | "EXTERNAL_INPUT_REQUIRED"
-  | "ENTITY_CLASS_USAGE_UNAVAILABLE";
+  | "ENTITY_CLASS_USAGE_UNAVAILABLE"
+  | "COMPLETENESS_CERTIFICATE_INVALID";
 
-/** Statuses under which `usage` may be treated as an established utilization fact. */
-export const AUTHORITATIVE_USAGE_STATUSES: readonly SharedUsageComputationStatus[] = [
-  "COMPUTED",
-  "VERIFIED_ZERO",
-];
+/** Completeness certificate — required for any remaining-capacity claim (#234). */
+export type UtilizationCompletenessKind = "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
 
-export function isAuthoritativeUsageStatus(status: SharedUsageComputationStatus): boolean {
-  return AUTHORITATIVE_USAGE_STATUSES.includes(status);
+export interface UtilizationCompletenessCertificate {
+  kind: UtilizationCompletenessKind;
+  approvalState: "APPROVED";
+  /** ISO date; must be >= evaluation asOf when provided. */
+  asOf: string;
+  sourceLabel: string;
+  /**
+   * When set, certificate applies only to this constraint id.
+   * Mismatched ids invalidate the certificate for the current constraint.
+   */
+  constraintId?: string;
+  /** AUTHENTIC historical cert vs SYNTHETIC labeled fixture. */
+  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
 }
 
 export function measureBasketUsageAmount(
@@ -84,17 +92,69 @@ export function basketUsageFromAttributedEvents(
   return out.sort((a, b) => (a.permissionId ?? "").localeCompare(b.permissionId ?? ""));
 }
 
+function asOfDay(iso: string): string {
+  return iso.slice(0, 10);
+}
+
+function certificateApplies(
+  cert: UtilizationCompletenessCertificate | null | undefined,
+  constraintId: string | undefined,
+  asOf: string | undefined,
+): boolean {
+  if (!cert) return false;
+  if (cert.approvalState !== "APPROVED") return false;
+  if (cert.constraintId && constraintId && cert.constraintId !== constraintId) return false;
+  if (asOf && asOfDay(cert.asOf) < asOfDay(asOf)) return false;
+  return true;
+}
+
+export interface SharedUsageComputationResult {
+  usage: number;
+  status: SharedUsageComputationStatus;
+  /** True when attributed records for all named members are present (amount may be known). */
+  attributedKnown: boolean;
+  /**
+   * True only when remaining = cap − usage may be claimed.
+   * Requires a valid completeness certificate. Attributed/approved records alone never set this.
+   * Aligns with #234 `supportsRemainingClaim`.
+   */
+  supportsRemainingClaim: boolean;
+  /**
+   * @deprecated Prefer `supportsRemainingClaim`. Kept for call-site migration;
+   * equal to supportsRemainingClaim (NOT merely attributedKnown).
+   */
+  authoritative: boolean;
+  completenessCertified: boolean;
+}
+
 export function computeSharedConstraintCurrentUsage(params: {
   aggregationRule: AggregationRule;
   measurementBasis: MeasurementBasis;
   members: SharedConstraintMember[];
   basketUsage: BasketUsageRecord[];
-}): { usage: number; status: SharedUsageComputationStatus; authoritative: boolean } {
+  /** Affirmative completeness certificate (#234). Required for remaining claims. */
+  completenessCertificate?: UtilizationCompletenessCertificate | null;
+  constraintId?: string;
+  asOf?: string;
+}): SharedUsageComputationResult {
+  const fail = (
+    status: SharedUsageComputationStatus,
+    usage = 0,
+    attributedKnown = false,
+  ): SharedUsageComputationResult => ({
+    usage,
+    status,
+    attributedKnown,
+    supportsRemainingClaim: false,
+    authoritative: false,
+    completenessCertified: false,
+  });
+
   if (params.aggregationRule === "EXTERNAL_INSTRUMENT_BALANCE") {
-    return { usage: 0, status: "EXTERNAL_INPUT_REQUIRED", authoritative: false };
+    return fail("EXTERNAL_INPUT_REQUIRED");
   }
   if (params.aggregationRule === "ENTITY_CLASS_FILTER") {
-    return { usage: 0, status: "ENTITY_CLASS_USAGE_UNAVAILABLE", authoritative: false };
+    return fail("ENTITY_CLASS_USAGE_UNAVAILABLE");
   }
 
   const byPermission = new Map<string, BasketUsageRecord>();
@@ -104,7 +164,7 @@ export function computeSharedConstraintCurrentUsage(params: {
 
   const namedMembers = params.members.filter((m) => m.permissionId);
   if (namedMembers.length === 0) {
-    return { usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false };
+    return fail("ZERO_NO_ATTRIBUTED_USAGE");
   }
 
   let usage = 0;
@@ -116,17 +176,101 @@ export function computeSharedConstraintCurrentUsage(params: {
       usage += measureBasketUsageAmount(record, params.measurementBasis);
     }
   }
+  usage = Math.max(0, usage);
 
   if (attributedMembers === 0) {
-    return { usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false };
+    // Completeness VERIFIED_EMPTY may certify remaining with zero usage and no rows.
+    const certOk = certificateApplies(
+      params.completenessCertificate,
+      params.constraintId,
+      params.asOf,
+    );
+    if (certOk && params.completenessCertificate!.kind === "VERIFIED_EMPTY") {
+      return {
+        usage: 0,
+        status: "VERIFIED_ZERO",
+        attributedKnown: false,
+        supportsRemainingClaim: true,
+        authoritative: true,
+        completenessCertified: true,
+      };
+    }
+    return fail("ZERO_NO_ATTRIBUTED_USAGE");
   }
+
   if (attributedMembers < namedMembers.length) {
+    return fail("PARTIAL_ATTRIBUTED_USAGE", usage, true);
+  }
+
+  // All named members attributed — amount known, but NOT complete without certificate.
+  const attributedStatus: SharedUsageComputationStatus = usage === 0 ? "COMPUTED" : "COMPUTED";
+  const cert = params.completenessCertificate ?? null;
+  const certOk = certificateApplies(cert, params.constraintId, params.asOf);
+
+  if (!certOk) {
+    // Stale / mismatched / missing / unapproved cert → no remaining claim.
+    if (cert && !certOk) {
+      return {
+        usage,
+        status: "COMPLETENESS_CERTIFICATE_INVALID",
+        attributedKnown: true,
+        supportsRemainingClaim: false,
+        authoritative: false,
+        completenessCertified: false,
+      };
+    }
     return {
-      usage: Math.max(0, usage),
-      status: "PARTIAL_ATTRIBUTED_USAGE",
+      usage,
+      status: attributedStatus,
+      attributedKnown: true,
+      supportsRemainingClaim: false,
       authoritative: false,
+      completenessCertified: false,
     };
   }
-  const status: SharedUsageComputationStatus = usage === 0 ? "VERIFIED_ZERO" : "COMPUTED";
-  return { usage: Math.max(0, usage), status, authoritative: true };
+
+  if (cert!.kind === "VERIFIED_EMPTY") {
+    if (usage !== 0) {
+      // Certificate claims empty but attributed usage is non-zero — refuse remaining.
+      return {
+        usage,
+        status: "COMPLETENESS_CERTIFICATE_INVALID",
+        attributedKnown: true,
+        supportsRemainingClaim: false,
+        authoritative: false,
+        completenessCertified: false,
+      };
+    }
+    return {
+      usage: 0,
+      status: "VERIFIED_ZERO",
+      attributedKnown: true,
+      supportsRemainingClaim: true,
+      authoritative: true,
+      completenessCertified: true,
+    };
+  }
+
+  // VERIFIED_COMPLETE — attributed set is the full usage; remaining may be claimed.
+  return {
+    usage,
+    status: "COMPUTED",
+    attributedKnown: true,
+    supportsRemainingClaim: true,
+    authoritative: true,
+    completenessCertified: true,
+  };
+}
+
+/** @deprecated Use supportsRemainingClaim on the computation result. */
+export function isAuthoritativeUsageStatus(status: SharedUsageComputationStatus): boolean {
+  return status === "VERIFIED_ZERO" || status === "COMPUTED";
+}
+
+/**
+ * Remaining-capacity publication gate (#234 alignment).
+ * Attributed-known COMPUTED without completeness must NOT pass.
+ */
+export function canPublishRemainingFromUsage(result: SharedUsageComputationResult): boolean {
+  return result.supportsRemainingClaim === true;
 }

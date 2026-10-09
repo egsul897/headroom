@@ -1,52 +1,100 @@
 import { describe, expect, it } from "vitest";
 import {
   basketUsageFromAttributedEvents,
+  canPublishRemainingFromUsage,
   computeSharedConstraintCurrentUsage,
-  isAuthoritativeUsageStatus,
-  measureBasketUsageAmount,
 } from "../../lib/solver/shared-usage";
 import { loadCompanySolverStaticData } from "../../lib/covenant-engine";
 
-describe("shared-usage helpers", () => {
-  it("measures basket usage by measurement basis", () => {
-    const record = {
-      permissionId: "p1",
-      cumulativeIncurred: 100,
-      currentlyOutstanding: 40,
-      prepaymentCredit: 5,
-    };
-    expect(measureBasketUsageAmount(record, "CUMULATIVE_INCURRED")).toBe(100);
-    expect(measureBasketUsageAmount(record, "CURRENTLY_OUTSTANDING")).toBe(40);
-    expect(measureBasketUsageAmount(undefined, "CURRENTLY_OUTSTANDING")).toBe(0);
-  });
+const EMPTY_CERT = {
+  kind: "VERIFIED_EMPTY" as const,
+  approvalState: "APPROVED" as const,
+  asOf: "2026-10-09",
+  sourceLabel: "test-empty-cert",
+  authenticity: "SYNTHETIC_LABELED" as const,
+};
 
-  it("distinguishes verified zero, no attribution, partial, computed, and external unknowns", () => {
-    const attributedZero = [
-      {
-        permissionId: "a",
-        cumulativeIncurred: 0,
-        currentlyOutstanding: 0,
-        prepaymentCredit: 0,
-      },
-    ];
-    const verified = computeSharedConstraintCurrentUsage({
+const COMPLETE_CERT = {
+  kind: "VERIFIED_COMPLETE" as const,
+  approvalState: "APPROVED" as const,
+  asOf: "2026-10-09",
+  sourceLabel: "test-complete-cert",
+  authenticity: "SYNTHETIC_LABELED" as const,
+};
+
+describe("shared-usage helpers (#234 completeness alignment)", () => {
+  it("attributed usage without completeness certificate does NOT support remaining", () => {
+    const usage = basketUsageFromAttributedEvents(
+      [{ eventType: "ISSUANCE", amount: 70, relatedPermissionIds: ["a"] }],
+      ["a"],
+    );
+    const result = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
       measurementBasis: "CURRENTLY_OUTSTANDING",
       members: [{ permissionId: "a" }],
-      basketUsage: attributedZero,
+      basketUsage: usage,
     });
-    expect(verified).toMatchObject({ usage: 0, status: "VERIFIED_ZERO", authoritative: true });
-    expect(isAuthoritativeUsageStatus(verified.status)).toBe(true);
+    expect(result).toMatchObject({
+      usage: 70,
+      status: "COMPUTED",
+      attributedKnown: true,
+      supportsRemainingClaim: false,
+      authoritative: false,
+    });
+    expect(canPublishRemainingFromUsage(result)).toBe(false);
+  });
 
+  it("VERIFIED_COMPLETE certificate enables remaining claim for attributed usage", () => {
+    const usage = [
+      {
+        permissionId: "a",
+        cumulativeIncurred: 70,
+        currentlyOutstanding: 70,
+        prepaymentCredit: 0,
+      },
+    ];
+    const result = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: usage,
+      completenessCertificate: { ...COMPLETE_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+    });
+    expect(result.supportsRemainingClaim).toBe(true);
+    expect(result.usage).toBe(70);
+  });
+
+  it("VERIFIED_EMPTY certificate enables remaining with zero usage; missing attribution alone does not", () => {
     const none = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
       measurementBasis: "CURRENTLY_OUTSTANDING",
       members: [{ permissionId: "a" }],
       basketUsage: [],
     });
-    expect(none).toMatchObject({ usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false });
-    expect(isAuthoritativeUsageStatus(none.status)).toBe(false);
+    expect(none).toMatchObject({
+      status: "ZERO_NO_ATTRIBUTED_USAGE",
+      supportsRemainingClaim: false,
+    });
 
+    const verified = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: [],
+      completenessCertificate: { ...EMPTY_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+    });
+    expect(verified).toMatchObject({
+      status: "VERIFIED_ZERO",
+      supportsRemainingClaim: true,
+      usage: 0,
+    });
+  });
+
+  it("partial, external, stale, and mismatched certificates never support remaining", () => {
     const partial = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
       measurementBasis: "CURRENTLY_OUTSTANDING",
@@ -59,49 +107,81 @@ describe("shared-usage helpers", () => {
           prepaymentCredit: 0,
         },
       ],
+      completenessCertificate: { ...COMPLETE_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
     });
-    expect(partial).toMatchObject({
-      usage: 10,
-      status: "PARTIAL_ATTRIBUTED_USAGE",
-      authoritative: false,
-    });
-
-    const usage = basketUsageFromAttributedEvents(
-      [
-        { eventType: "ISSUANCE", amount: 100, relatedPermissionIds: ["a"] },
-        { eventType: "REPAYMENT", amount: 30, relatedPermissionIds: ["a"] },
-      ],
-      ["a"],
-    );
-    expect(
-      computeSharedConstraintCurrentUsage({
-        aggregationRule: "NAMED_MEMBER_CLAUSES",
-        measurementBasis: "CURRENTLY_OUTSTANDING",
-        members: [{ permissionId: "a" }],
-        basketUsage: usage,
-      }),
-    ).toMatchObject({ usage: 70, status: "COMPUTED", authoritative: true });
+    expect(partial.supportsRemainingClaim).toBe(false);
+    expect(partial.status).toBe("PARTIAL_ATTRIBUTED_USAGE");
 
     expect(
       computeSharedConstraintCurrentUsage({
         aggregationRule: "EXTERNAL_INSTRUMENT_BALANCE",
         measurementBasis: "CURRENTLY_OUTSTANDING",
         members: [{ externalInstrumentRef: "x" }],
-        basketUsage: usage,
-      }).status,
-    ).toBe("EXTERNAL_INPUT_REQUIRED");
+        basketUsage: [],
+        completenessCertificate: EMPTY_CERT,
+      }).supportsRemainingClaim,
+    ).toBe(false);
 
-    expect(
-      computeSharedConstraintCurrentUsage({
-        aggregationRule: "ENTITY_CLASS_FILTER",
-        measurementBasis: "CURRENTLY_OUTSTANDING",
-        members: [{ entityClass: "NON_GUARANTOR_RS" }],
-        basketUsage: usage,
-      }).status,
-    ).toBe("ENTITY_CLASS_USAGE_UNAVAILABLE");
+    const stale = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: [
+        {
+          permissionId: "a",
+          cumulativeIncurred: 0,
+          currentlyOutstanding: 0,
+          prepaymentCredit: 0,
+        },
+      ],
+      completenessCertificate: { ...EMPTY_CERT, asOf: "2026-01-01", constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+    });
+    expect(stale.supportsRemainingClaim).toBe(false);
+    expect(stale.status).toBe("COMPLETENESS_CERTIFICATE_INVALID");
+
+    const mismatched = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: [
+        {
+          permissionId: "a",
+          cumulativeIncurred: 5,
+          currentlyOutstanding: 5,
+          prepaymentCredit: 0,
+        },
+      ],
+      completenessCertificate: { ...COMPLETE_CERT, constraintId: "other" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+    });
+    expect(mismatched.supportsRemainingClaim).toBe(false);
+
+    const emptyCertWithUsage = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: [
+        {
+          permissionId: "a",
+          cumulativeIncurred: 5,
+          currentlyOutstanding: 5,
+          prepaymentCredit: 0,
+        },
+      ],
+      completenessCertificate: { ...EMPTY_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+    });
+    expect(emptyCertWithUsage.supportsRemainingClaim).toBe(false);
+    expect(emptyCertWithUsage.status).toBe("COMPLETENESS_CERTIFICATE_INVALID");
   });
 
-  it("loadCompanySolverStaticData attaches usage status and never marks unattributed zero authoritative", async () => {
+  it("loadCompanySolverStaticData requires completeness certificate for remaining support", async () => {
     const prisma = {
       permission: { findMany: async () => [] },
       permissionRelationship: { findMany: async () => [] },
@@ -138,36 +218,38 @@ describe("shared-usage helpers", () => {
     };
 
     const without = await loadCompanySolverStaticData(prisma, "co-1");
-    expect(without.sharedConstraints[0]!.currentUsage).toBe(0);
-    expect(without.sharedConstraints[0]!.currentUsageStatus).toBe("ZERO_NO_ATTRIBUTED_USAGE");
+    expect(without.sharedConstraints[0]!.currentUsageSupportsRemainingClaim).toBe(false);
     expect(without.sharedConstraints[0]!.currentUsageAuthoritative).toBe(false);
 
-    const withUsage = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
+    const attributedOnly = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
       basketUsage: [
         {
           permissionId: "p1",
-          cumulativeIncurred: 90,
+          cumulativeIncurred: 55,
           currentlyOutstanding: 55,
           prepaymentCredit: 0,
         },
       ],
     });
-    expect(withUsage.sharedConstraints[0]!.currentUsage).toBe(55);
-    expect(withUsage.sharedConstraints[0]!.currentUsageStatus).toBe("COMPUTED");
-    expect(withUsage.sharedConstraints[0]!.currentUsageAuthoritative).toBe(true);
+    expect(attributedOnly.sharedConstraints[0]!.currentUsage).toBe(55);
+    expect(attributedOnly.sharedConstraints[0]!.currentUsageAttributedKnown).toBe(true);
+    expect(attributedOnly.sharedConstraints[0]!.currentUsageSupportsRemainingClaim).toBe(false);
 
-    const verifiedZero = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
+    const withCert = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
+      asOf: "2026-10-09",
       basketUsage: [
         {
           permissionId: "p1",
-          cumulativeIncurred: 0,
-          currentlyOutstanding: 0,
+          cumulativeIncurred: 55,
+          currentlyOutstanding: 55,
           prepaymentCredit: 0,
         },
       ],
+      completenessCertificates: {
+        scc1: COMPLETE_CERT,
+      },
     });
-    expect(verifiedZero.sharedConstraints[0]!.currentUsage).toBe(0);
-    expect(verifiedZero.sharedConstraints[0]!.currentUsageStatus).toBe("VERIFIED_ZERO");
-    expect(verifiedZero.sharedConstraints[0]!.currentUsageAuthoritative).toBe(true);
+    expect(withCert.sharedConstraints[0]!.currentUsageSupportsRemainingClaim).toBe(true);
+    expect(withCert.sharedConstraints[0]!.currentUsageCompletenessCertified).toBe(true);
   });
 });

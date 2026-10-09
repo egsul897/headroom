@@ -31,8 +31,9 @@
 
 | Topic | Disposition |
 |---|---|
-| Capacity `state.ts` / `types.ts` | **#229 is canonical.** #232 adopted #229’s `NOT_SATISFIED` contract (removed competing `REVIEW_REQUIRED` floor). |
-| Merge conflict risk | High if both land independently — coordinate: land #229 first **or** keep #232’s copy identical to #229 for those files. |
+| Status | **MERGED** to main (`b99f934b`). Do **not** close or supersede. |
+| Capacity `state.ts` / `types.ts` | Live on main; #232 rebased onto main and keeps files byte-identical. |
+| Provenance | Preserve #229 merge commit history. |
 
 ## Coordination — #230 (Agent 3 authentic capacity matrix)
 

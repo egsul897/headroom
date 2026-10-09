@@ -1,38 +1,32 @@
 # Utilization integrity audit
 
-## Distinctions
+## Distinctions (#234 completeness alignment)
 
-| Status | Meaning | Authoritative? |
+| Status / flag | Meaning | Supports remaining claim? |
 |---|---|---|
-| `VERIFIED_ZERO` | Attributed basketUsage records establish zero outstanding for all named members | **Yes** |
-| `ZERO_NO_ATTRIBUTED_USAGE` | No attributed usage records for named members | **No** — must not become a zero-usage claim |
-| `COMPUTED` | Known attributed usage summed | **Yes** |
-| `EXTERNAL_INPUT_REQUIRED` | EXTERNAL_INSTRUMENT_BALANCE — balances not supplied | **No** |
-| `ENTITY_CLASS_USAGE_UNAVAILABLE` | ENTITY_CLASS_FILTER — class outstanding unknown | **No** |
-| `PARTIAL_ATTRIBUTED_USAGE` | Some named members attributed, others not | **No** |
+| Attributed `COMPUTED` without certificate | Known attributed sum only | **No** |
+| `VERIFIED_ZERO` + `VERIFIED_EMPTY` cert | Completeness-certified empty path | **Yes** |
+| `COMPUTED` + `VERIFIED_COMPLETE` cert | Completeness-certified attributed set | **Yes** |
+| `ZERO_NO_ATTRIBUTED_USAGE` | No attributed records | **No** |
+| `PARTIAL_ATTRIBUTED_USAGE` | Some members attributed | **No** |
+| `EXTERNAL_INPUT_REQUIRED` / `ENTITY_CLASS_USAGE_UNAVAILABLE` | External/class unknown | **No** |
+| `COMPLETENESS_CERTIFICATE_INVALID` | Stale / mismatched / contradictory cert | **No** |
 
-Shared-pool utilization uses the same helper; pool remaining claims require authoritative member/pool usage.
+**Approved attributed records do not establish historical completeness.**
 
 ## Loader contract
 
-`loadCompanySolverStaticData` now attaches:
+`loadCompanySolverStaticData` attaches:
 
-- `currentUsage`
-- `currentUsageStatus`
-- `currentUsageAuthoritative`
+- `currentUsage` / `currentUsageStatus`
+- `currentUsageAttributedKnown`
+- `currentUsageSupportsRemainingClaim` (and deprecated alias `currentUsageAuthoritative` = same)
+- `currentUsageCompletenessCertified`
 
-Numeric `currentUsage === 0` with `ZERO_NO_ATTRIBUTED_USAGE` is **not** proven empty.
-
-## Product rule
-
-Do not claim company-level **remaining** capacity unless utilization status is authoritative (`COMPUTED` or `VERIFIED_ZERO`). Gross contractual capacity may still be reported with that caveat.
+Optional `completenessCertificates[constraintId]` required for remaining support.
 
 ## Solver consumer enforcement
 
-`lib/solver/election.ts` `headroomAndConsume` requires `currentUsageAuthoritative === true` before computing `cap − currentUsage`. Otherwise:
+`headroomAndConsume` requires `currentUsageSupportsRemainingClaim` (completeness-certified). Otherwise SHARED_CAP → `UNKNOWN`, alloc 0.
 
-- SHARED_CAP requirement → `UNKNOWN` / `EXTERNAL_INPUT`
-- Allocation from shared headroom → `0`
-- Path cannot CLEAR on assumed-empty utilization
-
-Legacy Position/Simulate paths that report gross provision capacity must not be relabeled as utilization-adjusted remaining without attribution.
+Legacy Position/Simulate gross paths must not be labeled utilization-adjusted remaining without the #234 verified-remaining / product-view path.

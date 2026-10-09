@@ -249,8 +249,9 @@ export interface SharedConstraint {
   measurementBasis: MeasurementBasis;
   followsRefinancing: boolean;
   /**
-   * Pre-transaction usage amount. Numeric zero is NOT authoritative unless
-   * `currentUsageStatus` is VERIFIED_ZERO or COMPUTED. See lib/solver/shared-usage.ts.
+   * Pre-transaction usage amount (known attributed sum when available).
+   * Numeric zero is NOT a remaining-capacity claim unless
+   * `currentUsageSupportsRemainingClaim` is true (requires completeness certificate — #234).
    * For EXTERNAL_INSTRUMENT_BALANCE this is itself an external input - see ExternalInputs.instrumentBalances.
    */
   currentUsage: number;
@@ -264,9 +265,21 @@ export interface SharedConstraint {
     | "ZERO_NO_ATTRIBUTED_USAGE"
     | "PARTIAL_ATTRIBUTED_USAGE"
     | "EXTERNAL_INPUT_REQUIRED"
-    | "ENTITY_CLASS_USAGE_UNAVAILABLE";
-  /** True only when currentUsage may be used as an established utilization fact. */
+    | "ENTITY_CLASS_USAGE_UNAVAILABLE"
+    | "COMPLETENESS_CERTIFICATE_INVALID";
+  /**
+   * @deprecated Prefer `currentUsageSupportsRemainingClaim`.
+   * Previously true for attributed COMPUTED without completeness — that was too weak vs #234.
+   * Now equal to supportsRemainingClaim only.
+   */
   currentUsageAuthoritative?: boolean;
+  /**
+   * True only when remaining = cap − usage may be published (#234 supportsRemainingClaim).
+   * Requires completeness certificate; approved/attributed records alone never suffice.
+   */
+  currentUsageSupportsRemainingClaim?: boolean;
+  currentUsageAttributedKnown?: boolean;
+  currentUsageCompletenessCertified?: boolean;
   sourceProvision: SourceProvisionRef;
 }
 
