@@ -82,6 +82,9 @@ const NON_OPERATIVE_SECTION =
 /** Definitional / admin / incremental section refs that must not become executable from coincidental dollars. */
 const NON_BASKET_SECTION_REF = /^(?:1\.0[01]|1\.1|2\.1[14]|2\.20|Article\s*I\b)/i;
 
+/** Families that are never capacity baskets (EOD / judgment triggers ≠ Permitted Indebtedness). */
+const NON_BASKET_FAMILIES = /^(?:EVENTS_OF_DEFAULT|JUDGMENTS?)$/i;
+
 const SHARED_CAPACITY_RE =
   /\b(?:combined with|shared (?:capacity|basket)|together with\b[\s\S]{0,120}?\b(?:pursuant to|under)\s+(?:Section|clause)|without duplication|pursuant to clauses?\s*\()/i;
 
@@ -143,22 +146,26 @@ function evaluateEligibilityGates(params: {
   const definitionalSection =
     NON_BASKET_SECTION_REF.test(item.sectionRef.trim()) ||
     (/\bmeans\b/i.test(excerpt) && /\bDefinitions?\b/i.test(item.heading));
+  const nonBasketFamily = (item.families ?? []).some((f) => NON_BASKET_FAMILIES.test(f));
   const sourceOk =
     excerpt.replace(/\s+/g, " ").trim().length >= 80 &&
     operativeVerb &&
     !NON_OPERATIVE_SECTION.test(item.heading) &&
     !NON_OPERATIVE_SECTION.test(item.sectionRef) &&
-    !definitionalSection;
+    !definitionalSection &&
+    !nonBasketFamily;
   gates.push({
     gate: "source_text_sufficient",
     ok: sourceOk,
     detail: sourceOk
       ? "excerpt length + operative verbs; heading not a non-covenant article"
-      : definitionalSection
-        ? "definitional / Article I section — not an executable basket"
-        : "excerpt too thin, non-operative heading, or missing operative verbs",
+      : nonBasketFamily
+        ? "EVENTS_OF_DEFAULT / JUDGMENT family — threshold is not a capacity basket"
+        : definitionalSection
+          ? "definitional / Article I section — not an executable basket"
+          : "excerpt too thin, non-operative heading, or missing operative verbs",
   });
-  if (!sourceOk) unresolved.push("source_text_incomplete");
+  if (!sourceOk) unresolved.push(nonBasketFamily ? "non_basket_family" : "source_text_incomplete");
 
   const docOk = Boolean(item.governingAgreement?.trim()) && Boolean(item.sourceCitation?.trim());
   gates.push({

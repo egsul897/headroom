@@ -1,25 +1,32 @@
 {
   "schemaVersion": "intelligence-factory.cycle-5-ownership.v1",
+  "note": "Recover builder/leverage via source-backed modeling — do NOT relax eligibility gates.",
   "agent2": [
-    "definitions resolution",
-    "financial inputs for growers",
-    "Available Amount definition"
+    "Available Amount / Cumulative Credit definition resolution (vs LC Available Amount)",
+    "CNI / equity / builder component financial inputs",
+    "Leverage and coverage ratio definitional inputs",
+    "Grower bases (Consolidated EBITDA / Total Assets) resolution"
   ],
   "agent3": [
-    "builder formula correctness",
-    "leverage ratio formula",
-    "grower proximity"
+    "Builder formula correctness once definitions resolve",
+    "Leverage / ratio-room mathematical evaluation with fail-closed refusals",
+    "Disambiguate LC Available Amount cash-collateral language from builder capacity",
+    "Grower proximity / multi-basket window contamination in independent parse"
   ],
   "agent5": [
-    "conditions[] structuring",
-    "shared-capacity resolution"
+    "Structure conditions[] from full operative text (not summary excerpt alone)",
+    "Shared-capacity edges before any executable promotion",
+    "EOD / judgment thresholds must never enter capacity compile path"
   ],
   "neonActivation": [
-    "durable reviewed-rule lifecycle via #232",
-    "utilization ledger status"
+    "Durable reviewed-rule lifecycle via PR #232",
+    "Counsel ACCEPT → UNVERIFIED Permission only",
+    "Utilization ledger status (ZERO_NO_ATTRIBUTED_USAGE fail-closed)"
   ],
   "coordinator": [
     "PR #217 integration",
-    "no competing pipelines"
-  ]
+    "No competing activation pipelines",
+    "Preserve frozen-61 and holdout as blind evaluation artifacts"
+  ],
+  "blockedMechanicsUntilRecovery": ["BUILDER_BASKET", "LEVERAGE_RATIO_ROOM", "RATIO_GATE"]
 }

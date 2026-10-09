@@ -1,0 +1,29 @@
+{
+  "sourceId": "ehb:d6850bb1094c5499596f775e",
+  "documentTitle": "03-05-2019 FIVE YEAR REVOLVING CREDIT AGREEMENT",
+  "documentClass": "REVOLVING_CREDIT_AGREEMENT",
+  "sectionRef": "6.01(g)",
+  "heading": "6.01(g)",
+  "posture": "ENUMERATED_PERMISSION",
+  "families": [
+    "EVENTS_OF_DEFAULT",
+    "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+  ],
+  "activation": {
+    "readiness": "DISCOVERED_FORMULA",
+    "executableEligible": false,
+    "formulaType": "FLAT_AMOUNT",
+    "thresholdValue": 250
+  },
+  "independent": {
+    "formulaType": "BUILDER_BASKET",
+    "thresholdMillions": 250,
+    "pct": null,
+    "comparator": "BUILDER"
+  },
+  "windowChars": 2880,
+  "builderContext": "gnated in such demand, for deposit in the Cash Collateral Account, an amount equal to the aggregate Available Amount of all Letters of Credit then outstanding; provided , how",
+  "thresholdContext": " or 64 (g) The Borrower or any of its ERISA Affiliates shall both (i) incur liability in excess of $250,000,000 in the aggregate as a result of one or more of the following: (A) the occurrence of any ERISA Event; (B) the partial or complete withdrawal of the Borrower or ",
+  "looksLikeEventOfDefault": true,
+  "productionPathway": "Could enter counsel-compile as FLAT UNVERIFIED if counsel ACCEPTed; not auto-written; not CERTIFIED. Should be blocked as EOD threshold / non-basket."
+}

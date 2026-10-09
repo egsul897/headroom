@@ -226,4 +226,24 @@ describe("Cycle 5 eligibility gates — formula discovery ≠ legal permission",
     expect(activated.executableEligible).toBe(false);
     expect(activated.readiness).not.toBe("EXECUTABLE_FORMULA_CANDIDATE");
   });
+
+  it("blocks EVENTS_OF_DEFAULT family dollar thresholds from executable capacity", () => {
+    // Synthetic EOD/ERISA liability trigger — not a Permitted Indebtedness basket.
+    // Generalizable family gate; not tuned on a named holdout accession.
+    const activated = activateSummaryItem({
+      sourceId: "test-eod-threshold",
+      item: item({
+        sectionRef: "8.01(g)",
+        heading: "Events of Default",
+        families: ["EVENTS_OF_DEFAULT", "GENERAL_CONDITIONS_AND_EXCEPTIONS"],
+        posture: "ENUMERATED_PERMISSION",
+        operativeLanguageExcerpt:
+          "The Borrower or any of its ERISA Affiliates shall incur liability in excess of $250,000,000 in the aggregate as a result of an ERISA Event.",
+        materialBasketsThresholds: ["$250,000,000 ERISA liability"],
+      }),
+    });
+    expect(activated.executableEligible).toBe(false);
+    expect(activated.readiness).not.toBe("EXECUTABLE_FORMULA_CANDIDATE");
+    expect(activated.unresolvedDependencies).toContain("non_basket_family");
+  });
 });
