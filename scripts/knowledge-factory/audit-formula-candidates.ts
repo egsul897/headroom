@@ -126,7 +126,7 @@ async function main() {
     if (!summary?.items?.length) continue;
     for (const item of summary.items) {
       const activated = activateSummaryItem({ sourceId: row.sourceId, item });
-      if (!activated.allChecksPassed || activated.readiness !== "EXECUTABLE_FORMULA_CANDIDATE") continue;
+      if (!activated.executableEligible || activated.readiness !== "EXECUTABLE_FORMULA_CANDIDATE") continue;
       const ft = activated.formulaType as FormulaMechanic;
       if (!byMechanic.has(ft)) continue;
       const cand: CandidateForAudit = {

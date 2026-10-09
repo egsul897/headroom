@@ -76,12 +76,13 @@ describe("provision activation candidates", () => {
       sourceId: "test-source",
       item: item({
         operativeLanguageExcerpt:
-          "Indebtedness not exceeding the greater of (A) $50,000,000 and (B) 10% of Consolidated EBITDA.",
+          "The Borrower shall not create Indebtedness except Indebtedness not exceeding the greater of (A) $50,000,000 and (B) 10% of Consolidated EBITDA.",
         materialBasketsThresholds: ["Greater-of basket: $50,000,000 and 10% of Consolidated EBITDA"],
       }),
     });
     expect(activated.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_EBITDA");
     expect(activated.allChecksPassed).toBe(true);
+    expect(activated.executableEligible).toBe(true);
     expect(activated.readiness).toBe("EXECUTABLE_FORMULA_CANDIDATE");
     expect(activated.certificationStatus).toBe("NOT_CERTIFIED");
   });

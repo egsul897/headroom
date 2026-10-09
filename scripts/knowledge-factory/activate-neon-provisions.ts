@@ -72,7 +72,9 @@ async function main() {
     }
   }
 
-  const executable = candidates.filter((c) => c.readiness === "EXECUTABLE_FORMULA_CANDIDATE" && c.allChecksPassed);
+  const executable = candidates.filter(
+    (c) => c.readiness === "EXECUTABLE_FORMULA_CANDIDATE" && c.executableEligible,
+  );
   const byFormula: Record<string, number> = {};
   for (const c of executable) {
     byFormula[c.formulaType ?? "null"] = (byFormula[c.formulaType ?? "null"] ?? 0) + 1;

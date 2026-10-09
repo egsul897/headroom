@@ -1,0 +1,978 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-5-holdout-review-ready.v1",
+  "certification": "NOT_CERTIFIED / REVIEW_READY_UNVERIFIED only — not counsel-accepted",
+  "activationPath": "counsel-compile-accepted-interpretation",
+  "peers": [
+    "#225",
+    "#227",
+    "#232"
+  ],
+  "counselCompileEligible": 13,
+  "records": [
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:89001ae98391326522ad9cc9",
+      "sectionRef": "1.09(f)",
+      "heading": "1.09(f)",
+      "governingAgreement": "EX-10.7 THIRD AMENDED AND RESTATED CREDIT AGREEMENT (5Y)",
+      "documentClass": "RESTATEMENT",
+      "issuerTicker": "CAT",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 100,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 100
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(f) Any judgment or order for the payment of money in excess of (i) $100,000,000 in the case of Caterpillar, or (ii) $50,000,000 in the case of each of CFSC, CIF and CFKK, shall be rendered against such Borrower or any of its Subsidiaries (other than CFSC and its Subsidiaries in the case of Caterpillar) and either (i) enforcement proceedings shall have been commenced by any creditor upon such judgment or order or (ii) there shall be any period of 30 consecutive days during which a stay of enforcement of such judgment or order, by reason of a pending appeal or otherwise, shall not be in effect;",
+        "operativeWindowPreview": "value remaining in effect for such Insignificant Subsidiary once determined) or (f) Any judgment or order for the payment of money in excess of (i) $100,000,000 in the case of Caterpillar, or (ii) $50,000,000 in the case of each of CFSC, CIF and CFKK, shall be rendered against such Borrower or any of its Subsidiaries (",
+        "sourceCitation": "ehb:89001ae98391326522ad9cc9 · 1.09(f)",
+        "families": [
+          "EVENTS_OF_DEFAULT"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [],
+        "exceptions": [
+          "other_than: other than CFSC and its Subsidiaries in the case of Caterpillar) and either (i) enforcement proceedings shall have been commenced by any creditor upon such judg…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Borrower",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.02(a)",
+      "heading": "6.02(a)",
+      "governingAgreement": "Peloton Interactive",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "PTON",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 5,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 5
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(a)            Liens\non property or assets of the Borrower and the Subsidiaries existing on the Closing Date and, to the extent securing Indebtedness for\nborrowed money in an aggregate principal amount in excess of $5,000,000, set forth on Schedule 6.02(a) and any modifications,\nreplacements, renewals or extensions thereof; provided , that such Liens shall secure only those obligations that they secure on\nthe Closing Date (and any Permitted Refinancing Indebtedness in respect of such obligations permitted by Section 6.01 ) and\nshall not subsequently apply to any other property or assets of the",
+        "operativeWindowPreview": " thereof, except the following (collectively, &ldquo; Permitted Liens &rdquo;): (a) Liens on property or assets of the Borrower and the Subsidiaries existing on the Closing Date and, to the extent securing Indebtedness for borrowed money in an aggregate principal amount in excess of $5,000,000, set forth on Schedule 6.",
+        "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.02(a)",
+        "families": [
+          "LIENS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided , that such Liens shall secure only those obligations that they secure on the Closing Date (and any Permitted Refinancing Indebtedness in respect of su…"
+        ],
+        "exceptions": [
+          "other_than: other than (A) after-acquired property that is affixed or incorporated into the property covered by such Lien and (B) proceeds and products thereof;"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Permitted Refinancing Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Closing Date",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:64875932ad6fc03b0aae4bd4",
+      "sectionRef": "6.01(f)",
+      "heading": "6.01(f)",
+      "governingAgreement": "FIVE-YEAR CREDIT AGREEMENT, DATED AS OF MAY 18, 2012",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "BDX",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 25,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 25
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(f) Any judgment or order for the payment of money in excess of $25,000,000 shall be rendered against the Borrower or any of\nits Subsidiaries and either (i) enforcement proceedings shall have been commenced by any creditor upon such judgment or order and such proceedings shall not have been stayed or (ii) there shall be any period of 10 consecutive days during\nwhich a stay of enforcement of such judgment or order, by reason of a pending appeal or otherwise, shall not be in effect; or\n\n",
+        "operativeWindowPreview": "tion to authorize any of the actions set forth above in this subsection (e); or (f) Any judgment or order for the payment of money in excess of $25,000,000 shall be rendered against the Borrower or any of its Subsidiaries and either (i) enforcement proceedings shall have been commenced by any creditor upon such judgmen",
+        "sourceCitation": "ehb:64875932ad6fc03b0aae4bd4 · 6.01(f)",
+        "families": [
+          "EVENTS_OF_DEFAULT"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": []
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:e2b1bd1816696ac50bd77e0e",
+      "sectionRef": "8.01(f)",
+      "heading": "8.01(f)",
+      "governingAgreement": "TERM LOAN AGREEMENT",
+      "documentClass": "TERM_LOAN_AGREEMENT",
+      "issuerTicker": "MKC",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 150,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 150
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(f)\nJudgments . Any unpaid judgment or order\nfor the payment of money in excess of $150,000,000 (net of amounts covered by insurance as to which a financially responsible\ninsurance company has confirmed coverage to an extent reasonably satisfactory to the Administrative Agent) shall be rendered against\nthe Borrower or any of its Subsidiaries and either\n\n(i)\nenforcement proceedings shall have been commenced\nby any creditor upon such judgment or order; or\n\n(ii)\nthere shall be any period of thirty (30) consecutive\ndays during which a stay of enforcement of such judgment or order, by reason of a p",
+        "operativeWindowPreview": "se such Indebtedness to become due and payable prior to its expressed maturity. (f) Judgments . Any unpaid judgment or order for the payment of money in excess of $150,000,000 (net of amounts covered by insurance as to which a financially responsible insurance company has confirmed coverage to an extent reasonably sati",
+        "sourceCitation": "ehb:e2b1bd1816696ac50bd77e0e · 8.01(f)",
+        "families": [
+          "EVENTS_OF_DEFAULT"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Administrative Agent",
+            "resolved": true
+          },
+          {
+            "term": "Borrower",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:ad79fb05cad7bb5bf08c193c",
+      "sectionRef": "5.3",
+      "heading": "SECTION 5.3. OTHER",
+      "governingAgreement": "CREDIT AGREEMENT",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "FLXS",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 10,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 10
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "SECTION 5.3. OTHER\nINDEBTEDNESS. Create, incur, assume or permit to exist any indebtedness or liabilities resulting from borrowings, loans or advances,\nwhether secured or unsecured, matured or unmatured, liquidated or unliquidated, joint or several, except (a) the liabilities of\nBorrower to Bank, and (b) any other liabilities of Borrower existing as of, and disclosed to Bank prior to, the date hereof\nand (c) any obligations to American Trust and Savings Bank not to exceed $10,000,000.00.\n\n",
+        "operativeWindowPreview": "in fixed assets in any fiscal year in excess of an aggregate of $40,000,000.00. SECTION 5.3. OTHER INDEBTEDNESS. Create, incur, assume or permit to exist any indebtedness or liabilities resulting from borrowings, loans or advances, whether secured or unsecured, matured or unmatured, liquidated or unliquidated, joint or",
+        "sourceCitation": "ehb:ad79fb05cad7bb5bf08c193c · 5.3",
+        "families": [
+          "INDEBTEDNESS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "ENUMERATED_PERMISSION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": []
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:039ac65454a75f95b0fb2da1",
+      "sectionRef": "5.14(c)",
+      "heading": "5.14(c)",
+      "governingAgreement": "EXHIBIT 4A - SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentClass": "RESTATEMENT",
+      "issuerTicker": "BSET",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 15,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 15
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(c) any Lien on any\nasset (other than Collateral) securing Debt incurred or assumed for the purpose of financing no more than 80% of the cost of acquiring or constructing such asset and permitted under Section 5.32(c), provided that: (i) the aggregate\noutstanding principal amount of the Debt of the Loan Parties and their respective Subsidiaries secured by a Lien permitted under this Section 5.14(c) shall not, at any time, exceed $15,000,000; and (ii) such Lien attaches to such asset (and no asset\nother than the asset so acquired or constructed) concurrently with or within 18 months after the a",
+        "operativeWindowPreview": "comes a Consolidated Subsidiary and not created in contemplation of such event; (c) any Lien on any asset (other than Collateral) securing Debt incurred or assumed for the purpose of financing no more than 80% of the cost of acquiring or constructing such asset and permitted under Section 5.32(c), provided that: (i) th",
+        "sourceCitation": "ehb:039ac65454a75f95b0fb2da1 · 5.14(c)",
+        "families": [
+          "LIENS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that: (i) the aggregate outstanding principal amount of the Debt of the Loan Parties and their respective Subsidiaries secured by a Lien permitted unde…"
+        ],
+        "exceptions": [
+          "other_than: other than Collateral) securing Debt incurred or assumed for the purpose of financing no more than 80% of the cost of acquiring or constructing such asset and p…",
+          "other_than: other than the asset so acquired or constructed) concurrently with or within 18 months after the acquisition or completion of construction thereof;"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Loan Parties",
+            "resolved": true
+          },
+          {
+            "term": "Acquisition",
+            "resolved": true
+          },
+          {
+            "term": "Financing",
+            "resolved": true
+          },
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "Loan",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:42df24dd7a846c8edd179a80",
+      "sectionRef": "7.02(f)",
+      "heading": "7.02(f)",
+      "governingAgreement": "THREE-YEAR CREDIT AGREEMENT, DATED AS OF MARCH 19, 2010",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "GE",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 1500,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 1500
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(f) Other Indebtedness of Restricted Subsidiaries that are not Guarantors, so long as the aggregate principal amount thereof does not exceed\nat any time an amount equal to (x) $1,500,000,000 less (y) the amount, if any, of Indebtedness secured by Liens pursuant to Section 7.01(q).\n7.03 Fundamental Changes . (a) The Borrower shall not (A) merge or consolidate with or into any Person or (B) liquidate, wind-up or dissolve itself or (C) sell, transfer or\ndispose of all or substantially all of its assets, provided that nothing in this Section 7.03 shall be construed to prohibit (1) the Transactions",
+        "operativeWindowPreview": "he account of any Restricted Subsidiary in the ordinary course of business; and (f) Other Indebtedness of Restricted Subsidiaries that are not Guarantors, so long as the aggregate principal amount thereof does not exceed at any time an amount equal to (x) $1,500,000,000 less (y) the amount, if any, of Indebtedness secu",
+        "sourceCitation": "ehb:42df24dd7a846c8edd179a80 · 7.02(f)",
+        "families": [
+          "INDEBTEDNESS",
+          "RESTRICTED_SUBSIDIARIES",
+          "FUNDAMENTAL_CHANGES",
+          "EVENTS_OF_DEFAULT",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "LIENS"
+        ],
+        "posture": "CONDITIONAL_PERMISSION",
+        "conditions": [
+          "no_default: no Default or Event of Default shall have occurred and be continuing. 55 (b) The Borrower and its Restricted Subsidiaries shall not enter into any other busines…",
+          "so_long_as: so long as the aggregate principal amount thereof does not exceed at any time an amount equal to (x) $1,500,000,000 less (y) the amount, if any, of Indebtedness…",
+          "so_long_as: so long as: (i) either (x) the Borrower shall be the surviving entity with substantially the same assets immediately following the reincorporation or reorganiza…",
+          "provided_that: provided that nothing in this Section 7.03 shall be construed to prohibit (1) the Transactions or (2) the Borrower from reincorporating in another jurisdiction,…"
+        ],
+        "exceptions": [
+          "except_as: except for those businesses in which the Borrower, its Restricted Subsidiaries and the Contributed Comcast Businesses are engaged in on the date of this Agreeme…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Contributed Comcast Businesses",
+            "resolved": true
+          },
+          {
+            "term": "the Administrative Agent",
+            "resolved": true
+          },
+          {
+            "term": "Successor Corporation",
+            "resolved": true
+          },
+          {
+            "term": "Administrative Agent",
+            "resolved": true
+          },
+          {
+            "term": "Event of Default",
+            "resolved": true
+          },
+          {
+            "term": "Required Lenders",
+            "resolved": true
+          },
+          {
+            "term": "Loan Documents",
+            "resolved": true
+          },
+          {
+            "term": "Reorganization",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Transactions",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "6.04(n)",
+      "heading": "6.04(n)",
+      "governingAgreement": "Alkermes plc",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "ALKS",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 84.2,
+        "params": {
+          "pctEbitda": 0.2
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 84.2
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(n) Dispositions by the TopCo Borrower or any of its Restricted Subsidiaries of Receivable Purchase Assets with an aggregate fair market value not to exceed the greater of $84,200,000 and 20% of Consolidated EBITDA for the most recently ended Test Period pursuant to any Receivables Purchase Transaction;\n\n",
+        "operativeWindowPreview": "Hedge Transaction or any related Permitted Warrant Transaction; (m) [reserved]; (n) Dispositions by the TopCo Borrower or any of its Restricted Subsidiaries of Receivable Purchase Assets with an aggregate fair market value not to exceed the greater of $84,200,000 and 20% of Consolidated EBITDA for the most recently end",
+        "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.04(n)",
+        "families": [
+          "ASSET_SALES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
+        ],
+        "posture": "ENUMERATED_PERMISSION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Receivables Purchase Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "TopCo Borrower",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.01(k)",
+      "heading": "6.01(k)",
+      "governingAgreement": "Peloton Interactive",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "PTON",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 17.5,
+        "params": {
+          "pctEbitda": 0.25
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 17.5
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(k)            (x) other\nIndebtedness of the Borrower or any Subsidiary, in an aggregate principal amount that, immediately after giving effect to the incurrence\nof such Indebtedness and the use of proceeds thereof, together with the aggregate principal amount of any other Indebtedness outstanding\npursuant to this Section 6.01(k) , would not exceed the greater of $17,500,000 and 25% of Adjusted Consolidated EBITDA for\nthe most recently ended Test Period as of such time when incurred, created or assumed and (y) any Permitted Refinancing Indebtedness\nin respect thereof;\n\n",
+        "operativeWindowPreview": "Transaction, and (y) any Permitted Refinancing Indebtedness in respect thereof; (k) (x) other Indebtedness of the Borrower or any Subsidiary, in an aggregate principal amount that, immediately after giving effect to the incurrence of such Indebtedness and the use of proceeds thereof, together with the aggregate princip",
+        "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.01(k)",
+        "families": [
+          "INDEBTEDNESS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "ENUMERATED_PERMISSION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Permitted Refinancing Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Adjusted Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.05(m)",
+      "heading": "6.05(m)",
+      "governingAgreement": "Maravai LifeSciences",
+      "documentClass": "UNKNOWN",
+      "issuerTicker": "MRVI",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 2.75,
+        "params": {
+          "pctEbitda": 0.075
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 2.75
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(m) Dispositions of any assets not constituting Collateral hereunder; provided that the aggregate fair market value (as determined in good faith by the Borrower) of all such Dispositions, in the aggregate, shall not be in excess of the greater of (A) $2,750,000 and (B) 7.5% of Consolidated EBITDA for the Test Period then last ended at the time of such Disposition;\n",
+        "operativeWindowPreview": "arties set forth in joint venture arrangements and similar binding arrangements (m) Dispositions of any assets not constituting Collateral hereunder provided that the aggregate fair market value (as determined in good faith by the Borrower) of all such Dispositions, in the aggregate, shall not be in excess of the great",
+        "sourceCitation": "research:cbcfl:mrvi-unknown-newcreditagreement · 6.05(m)",
+        "families": [
+          "ASSET_SALES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that the aggregate fair market value (as determined in good faith by the Borrower) of all such Dispositions, in the aggregate, shall not be in excess o…"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "Collateral",
+            "resolved": true
+          },
+          {
+            "term": "Borrower",
+            "resolved": true
+          },
+          {
+            "term": "ISP",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.01(q)",
+      "heading": "6.01(q)",
+      "governingAgreement": "Peloton Interactive",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "PTON",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 15,
+        "params": {
+          "pctEbitda": 0.2
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 15
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(q)            (x) Indebtedness\nof Subsidiaries that are not Loan Parties in an aggregate principal amount outstanding that, immediately after giving effect to the incurrence\nof such Indebtedness and the use of proceeds thereof, together with the aggregate principal amount of any other Indebtedness outstanding\npursuant to this Section 6.01(q) and the aggregate principal amount of any Guarantees by Subsidiaries that are not Guarantors\nof Indebtedness of the Borrower or any Guarantor outstanding pursuant to Section 6.01(m) above, would not exceed the\ngreater of $15,000,000 and 20% of Adjusted Co",
+        "operativeWindowPreview": "uch time and (y) any Permitted Refinancing Indebtedness in respect thereof; 168 (q) (x) Indebtedness of Subsidiaries that are not Loan Parties in an aggregate principal amount outstanding that, immediately after giving effect to the incurrence of such Indebtedness and the use of proceeds thereof, together with the aggr",
+        "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.01(q)",
+        "families": [
+          "INDEBTEDNESS",
+          "GUARANTEES",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "ENUMERATED_PERMISSION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Permitted Refinancing Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Adjusted Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "Loan Parties",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "Guarantors",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.02(kk)",
+      "heading": "6.02(kk)",
+      "governingAgreement": "Peloton Interactive",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "PTON",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 17.5,
+        "params": {
+          "pctEbitda": 0.25
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 17.5
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(kk)             other\nLiens with respect to property or assets of the Borrower or any Subsidiary securing (x) obligations in an aggregate outstanding\nprincipal amount that, together with the aggregate principal amount of other obligations that are secured pursuant to this clause (kk) ,\nimmediately after giving effect to the incurrence of such Liens, would not exceed the greater of $17,500,000 and 25% of Adjusted Consolidated\nEBITDA for the most recently ended Test Period as of such time when incurred, created or assumed; provided , that if any such Liens\nare on Collateral, such Liens shall be",
+        "operativeWindowPreview": "ply to any other property or assets of the Borrower or any of its Subsidiaries; (kk) other Liens with respect to property or assets of the Borrower or any Subsidiary securing (x) obligations in an aggregate outstanding principal amount that, together with the aggregate principal amount of other obligations that are sec",
+        "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.02(kk)",
+        "families": [
+          "LIENS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
+        ],
+        "posture": "ENUMERATED_PERMISSION",
+        "conditions": [
+          "subject_to: subject to a Permitted Junior Intercreditor Agreement and (y) Permitted Refinancing Indebtedness incurred to Refinance obligations secured pursuant to the foreg…",
+          "provided_that: provided , that if any such Liens are on Collateral, such Liens shall be junior to the Liens on the Collateral securing the Obligations and shall be subject to …"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Permitted Refinancing Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "Collateral",
+            "resolved": true
+          },
+          {
+            "term": "subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "6.04(k)",
+      "heading": "6.04(k)",
+      "governingAgreement": "Alkermes plc",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "ALKS",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 63.15,
+        "params": {
+          "pctEbitda": 0
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 63.15
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(k) Dispositions by the TopCo Borrower and its Restricted Subsidiaries not otherwise permitted under this Section; provided that the aggregate book value of all property Disposed of pursuant to this clause &#x200e;(k) shall not exceed the greater of $63,150,000 and 15 .0% of Consolidated EBITDA for the most recently ended Test Period;\n\n",
+        "operativeWindowPreview": "he most recently ended Test Period, determined at the time of such Disposition; (k) Dispositions by the TopCo Borrower and its Restricted Subsidiaries not otherwise permitted under this Section; provided that the aggregate book value of all property Disposed of pursuant to this clause &#x200e;(k) shall not exceed the g",
+        "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.04(k)",
+        "families": [
+          "ASSET_SALES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that the aggregate book value of all property Disposed of pursuant to this clause &#x200e;(k) shall not exceed the greater of $63,150,000 and 15 .0% of…"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "TopCo Borrower",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "Dispose",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "note": "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
+    }
+  ]
+}

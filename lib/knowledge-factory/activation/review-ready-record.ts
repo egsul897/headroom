@@ -28,7 +28,8 @@ export interface ReviewReadyActivationRecord {
   peerCoordination: {
     lifecyclePr: "https://github.com/egsul897/headroom/pull/227";
     extractionPr: "https://github.com/egsul897/headroom/pull/225";
-    note: "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline.";
+    durableLifecyclePr: "https://github.com/egsul897/headroom/pull/232";
+    note: "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232.";
   };
   parsedFormula: {
     modelingStatus: string;
@@ -102,7 +103,8 @@ export function buildReviewReadyRecord(params: {
     peerCoordination: {
       lifecyclePr: "https://github.com/egsul897/headroom/pull/227",
       extractionPr: "https://github.com/egsul897/headroom/pull/225",
-      note: "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline.",
+      durableLifecyclePr: "https://github.com/egsul897/headroom/pull/232",
+      note: "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232.",
     },
     parsedFormula: {
       modelingStatus: parsed.modelingStatus,
