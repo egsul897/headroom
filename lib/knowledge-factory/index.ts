@@ -55,6 +55,23 @@ export {
 } from "./corpus/financing-filter";
 
 export { probeDurability } from "./preservation/durability";
+export {
+  requireDurableCredentials,
+  persistDurableKnowledgeSource,
+  retrieveDurableKnowledgeSource,
+  loadDurableSourceBytes,
+  hashBytesSha256,
+  DurableCredentialsError,
+  DurableContentConflictError,
+  DurableRetrieveError,
+  DURABILITY_BLOCKED_CREDENTIALS,
+  KF_CORPUS_STORAGE_NAMESPACE,
+} from "./preservation/durable-store";
+export type {
+  DurableCredentialGate,
+  DurableSourcePersistResult,
+  DurableSourceRetrieveResult,
+} from "./preservation/durable-store";
 export { buildSourceInventory, SOURCE_INVENTORY_SCHEMA_VERSION } from "./preservation/inventory";
 export {
   buildAcquisitionManifest,
