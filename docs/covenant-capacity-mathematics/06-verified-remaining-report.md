@@ -50,6 +50,7 @@ Gross capacity · Known utilization · Unknown utilization · Supported remainin
 |---|---|
 | Continues | PR #230 (`bf10361d`) |
 | Branch | `cursor/verified-remaining-capacity-b580` |
+| SHA | `673ac8e8d5019be3d4bd1f8039351ab28dbbb57d` |
 | Capacity suite | **236/236** |
 | New utilization tests | **12** |
 | Cost | **$0** |
