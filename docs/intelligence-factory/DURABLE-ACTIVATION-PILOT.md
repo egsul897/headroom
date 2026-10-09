@@ -1,35 +1,52 @@
-# Durable activation lifecycle — readiness and pilot
+# Durable activation pilot — authorization-gated
 
-## Trace (exists vs missing)
+## Purpose
 
-| Transition | Status | Blocker |
-|---|---|---|
-| Authentic source → extracted candidate | **Exists** | Summary quality / cap |
-| Extracted candidate → independently reviewed interpretation | **Path exists; not at scale** | Counsel ACCEPT/EDIT not run on bulk Neon |
-| Reviewed interpretation → modeled rule | **Exists** | `compileAcceptedInterpretation` → MODELED UNVERIFIED Permission |
-| Modeled rule → approved verification | **Missing at scale** | Human `reviewStatus: VERIFIED` gate |
-| Approved verification → durable executable representation | **Partial** | Durable Permission rows exist; Phase-3 CERTIFIED / SemanticTruth empty |
-| Durable → customer-ready certified | **Blocked** | Epistemic wall; no bulk cert |
+Exercise authentic source → counsel ACCEPT → MODELED Permission → independent calculation check → human VERIFIED review on a **bounded** set, using existing Neon schema and approval infrastructure.
 
-## Transition that currently prevents persistence
+**Not** corpus-scale promotion. **Not** CERTIFIED seal. **Not** automatic Neon writes.
 
-For public Neon registry rows, **missing `companyId` / `documentId` binding** plus **absence of counsel ACCEPT** prevents durable Permission persistence against a real customer company. Ephemeral compiles prove the path, then clean up.
+## Hard gates (must all be true)
 
-Secondary: even after MODELED mint, **VERIFIED review** and **CERTIFIED package seal** are separate gates — activation must not auto-promote DISCOVERED → CERTIFIED.
+| Gate | Requirement |
+|---|---|
+| Human authorization | Named operator approval recorded before any Neon write |
+| Legal acceptance | Per-item counsel `ACCEPT` / `EDIT` (no bulk ACCEPT) |
+| Source binding | Pilot `companyId` + `documentId` on EVALUATION tenant only |
+| Formula check | Independent expected formula passes before Position exposure |
+| Utilization honesty | Remaining capacity claimed only if `currentUsageAuthoritative` |
+| Financial label | Approved snapshot **or** unmistakable `SYNTHETIC` / `AUTHENTIC_SOURCE_BACKED` label |
+| Certification wall | Stop before SemanticTruth / KF CERTIFIED |
 
-## Bounded review-gated pilot (proposal — no writes without auth)
+## Scope
 
-**Scope:** ≤ 5 pre-selected Neon provisions (already in activation matrix), one EVALUATION tenant company, counsel operator.
+- **≤ 5** provisions from the activation matrix (recommend: CONMED §7.2, ROCK §7.01, ROCK §6.18, CONMED §7.3(m), one refusal control).
+- One `tenantKind: EVALUATION` company.
+- Ephemeral or clearly named pilot company id (e.g. `neon-activation-pilot-<date>`).
 
-1. Bind copies of selected KnowledgeSource metadata to a pilot `companyId` + `documentId` (authorization required).
-2. Counsel ACCEPT each item in UI (or scripted ACCEPT with approval note) — no bulk ACCEPT.
-3. Compile → MODELED UNVERIFIED Permission (existing interface).
-4. Independent expected formula check (matrix) before any Position exposure.
-5. Human sets `reviewStatus: VERIFIED` only after formula+refusal checks pass.
-6. Attach **approved** financial snapshot (or keep SYNTHETIC label if none).
-7. Attach attributed basketUsage or leave `ZERO_NO_ATTRIBUTED_USAGE` visible — never claim remaining.
-8. **Stop before CERTIFIED / SemanticTruth.** Pilot ends at VERIFIED MODELED LEGACY_ENGINE.
+## Procedure
 
-**Out of scope:** automatic merge, paid inference, corpus-wide promotion, Phase-3 CERTIFIED seal.
+1. Obtain written authorization for Neon writes (ticket / approval note).
+2. Create EVALUATION company + documents (authorized write).
+3. Copy selected KnowledgeSource metadata onto bound `sourceId`s (authorized write).
+4. Counsel ACCEPT each item with approval note citing authorization.
+5. `compileAcceptedInterpretation` → MODELED UNVERIFIED Permission.
+6. Run independent expected formula check (matrix / holdout).
+7. Human sets `reviewStatus: VERIFIED` only after checks pass.
+8. Attach financial inputs (approved or labeled).
+9. Attach attributed `basketUsage` or leave non-authoritative status visible.
+10. **Stop.** Do not CERTIFY. Do not expose as customer-ready certified permission.
 
-**Success metric:** N durable Permissions with provenance to authentic source hashes + independent calculation pass + utilization status honest — still `NOT_CERTIFIED`.
+## Success criteria
+
+- N durable Permissions with provenance to authentic source hashes.
+- Independent calculation pass; 0 false favorables.
+- Utilization status honest on any remaining-capacity surface.
+- Still `NOT_CERTIFIED`.
+
+## Explicitly out of scope
+
+- Automatic merge of PRs
+- Paid inference
+- Bulk ACCEPT / bulk VERIFIED
+- Production customer tenant writes without separate authorization

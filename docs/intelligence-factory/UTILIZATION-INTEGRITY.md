@@ -26,3 +26,13 @@ Numeric `currentUsage === 0` with `ZERO_NO_ATTRIBUTED_USAGE` is **not** proven e
 ## Product rule
 
 Do not claim company-level **remaining** capacity unless utilization status is authoritative (`COMPUTED` or `VERIFIED_ZERO`). Gross contractual capacity may still be reported with that caveat.
+
+## Solver consumer enforcement
+
+`lib/solver/election.ts` `headroomAndConsume` requires `currentUsageAuthoritative === true` before computing `cap − currentUsage`. Otherwise:
+
+- SHARED_CAP requirement → `UNKNOWN` / `EXTERNAL_INPUT`
+- Allocation from shared headroom → `0`
+- Path cannot CLEAR on assumed-empty utilization
+
+Legacy Position/Simulate paths that report gross provision capacity must not be relabeled as utilization-adjusted remaining without attribution.
