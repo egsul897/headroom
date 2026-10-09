@@ -226,7 +226,7 @@ const FICTIONAL_PERSON = /^john\s+davis$/i;
  * Mockup person/company names are rejected back to the no-name greeting.
  */
 export function overviewGreeting(identityName: string | null | undefined): { heading: string; subheading: string | null } {
-  const name = identityName?.trim() ?? "";
+  const name = (identityName?.trim() ?? "").replace(/\.+$/, "");
   if (!name || FICTIONAL_PERSON.test(name) || /apex/i.test(name)) {
     return { heading: HOME_GREETING_NO_NAME, subheading: null };
   }
