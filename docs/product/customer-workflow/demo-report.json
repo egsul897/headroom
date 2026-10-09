@@ -9,7 +9,7 @@
       "compile": [
         {
           "status": "COMPILED",
-          "permissionId": "cmv0ik9m20003nq0bclndnesc",
+          "permissionId": "cmv0io5tz00035xz74jkc256s",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
           "grantType": "DEBT_INCURRENCE",
           "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -20,7 +20,7 @@
         },
         {
           "status": "COMPILED",
-          "permissionId": "cmv0ik9xf0007nq0b6q0ug5ok",
+          "permissionId": "cmv0io65c00075xz7xjogjoq8",
           "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
           "grantType": "LIEN",
           "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -50,7 +50,7 @@
   },
   "permissions": [
     {
-      "id": "cmv0ik9m20003nq0bclndnesc",
+      "id": "cmv0io5tz00035xz74jkc256s",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:DEBT_INCURRENCE",
       "grantType": "DEBT_INCURRENCE",
       "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -59,7 +59,7 @@
       "sectionRef": "7.2"
     },
     {
-      "id": "cmv0ik9xf0007nq0b6q0ug5ok",
+      "id": "cmv0io65c00075xz7xjogjoq8",
       "code": "counsel:customer:demo-customer-workflow:demo-customer-workflow-ca:be76b638c6ff85b8:7.2:LIEN",
       "grantType": "LIEN",
       "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
@@ -170,7 +170,7 @@
         "notes": [
           "Pro forma total leverage 2.86x; secured 2.02x",
           "Counsel-compiled basket remaining before txn $84M → after $0M",
-          "Engine secured remaining: $84M (status unavailable)",
+          "Engine secured remaining: $84M (LEGACY_DECLARED_MINUS_TESTED_AMOUNT)",
           "$100M exceeds counsel-compiled remaining basket capacity"
         ],
         "drilldown": {
@@ -219,7 +219,7 @@
           "calculationHistory": [
             "PF total leverage = (1100+100)/420",
             "PF secured leverage = (750+100)/420",
-            "Engine secured remaining: $84M (status unavailable)"
+            "Engine secured remaining: $84M (LEGACY_DECLARED_MINUS_TESTED_AMOUNT)"
           ],
           "missingInputs": [],
           "hrefs": [

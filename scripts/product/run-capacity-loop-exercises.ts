@@ -86,9 +86,9 @@ async function main() {
         ? engineDash
         : {
             securedRemaining: engineDash.capacity.secured.remainingCapacity,
-            securedStatus: engineDash.capacity.secured.status,
+            securedBindingMethod: engineDash.capacity.secured.binding?.method ?? null,
             unsecuredRemaining: engineDash.capacity.unsecured.remainingCapacity,
-            unsecuredStatus: engineDash.capacity.unsecured.status,
+            unsecuredBindingMethod: engineDash.capacity.unsecured.binding?.method ?? null,
             permissionsTotal: engineDash.legalReview.permissionsTotal,
           },
   };

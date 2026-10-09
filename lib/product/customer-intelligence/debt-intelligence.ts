@@ -918,12 +918,9 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         const dash = await getCompanyDashboard(companyId);
         const rem = dash.capacity.secured.remainingCapacity;
         engineRemaining = rem != null && Number.isFinite(rem) ? fmtM(rem) : null;
-        const securedStatus =
-          typeof dash.capacity.secured.status === "string" && dash.capacity.secured.status
-            ? dash.capacity.secured.status
-            : "status unavailable";
+        const bindingMethod = dash.capacity.secured.binding?.method ?? "NOT_DETERMINABLE";
         engineNotes.push(
-          `Engine secured remaining: ${engineRemaining ?? "not determinable"} (${securedStatus})`,
+          `Engine secured remaining: ${engineRemaining ?? "not determinable"} (${bindingMethod})`,
         );
       } catch (err) {
         engineNotes.push(
