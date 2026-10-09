@@ -2,7 +2,7 @@
 
 **PR:** https://github.com/egsul897/headroom/pull/218  
 **Branch:** `cursor/cross-document-covenant-reasoning-5d11`  
-**SHA:** `4102e1fc9a5983bdbd0761d0864fa77dfef4de22`  
+**SHA:** `400f2abef7ea8a0fc386db577fdd1037fd007616`  
 **Cost:** $0  
 
 ## Required return
