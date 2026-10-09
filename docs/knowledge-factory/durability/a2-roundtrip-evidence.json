@@ -1,0 +1,45 @@
+{
+  "verdict": "DURABILITY_NOT_YET_PROVEN",
+  "status": "DURABILITY_BLOCKED_CREDENTIALS",
+  "startingSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
+  "endingSha": "2a8b70cd7683c6522087f4535f7ee996a6012c3c",
+  "missingDependencies": [
+    "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
+    "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
+  ],
+  "probe": {
+    "mode": "LOCAL_ONLY_NOT_CROSS_VM_DURABLE",
+    "durable": false,
+    "databaseUrlPresent": false,
+    "objectStorageTokenPresent": false,
+    "missingPrerequisites": [
+      "DATABASE_URL pointing at an approved shared Postgres instance with KnowledgeSource* migrations applied",
+      "BLOB_READ_WRITE_TOKEN or VERCEL_BLOB_READ_WRITE_TOKEN for durable object storage of source bytes"
+    ],
+    "notes": [
+      "Local .local-knowledge-corpus/ is session-scoped and gitignored; Cursor Cloud Agent VMs do not share those bytes.",
+      "Git-committed acquisition manifests + content hashes enable deterministic recovery, not durability.",
+      "Do not claim read-after-write durability or independent-session retrieval until both Postgres and object storage are available and verified."
+    ]
+  },
+  "existingInfrastructureReuse": {
+    "objectStorage": "lib/document-storage/vercel-blob-provider.ts (requires BLOB_READ_WRITE_TOKEN)",
+    "registry": "prisma KnowledgeSource (requires DATABASE_URL + migration 20261008220000_knowledge_factory_foundation)",
+    "localFallbackRejected": [
+      "lib/document-storage/local-fs-provider.ts",
+      ".local-knowledge-corpus/",
+      "committed docs/knowledge-factory manifests alone"
+    ]
+  },
+  "intendedProofSource": {
+    "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "fixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/raw-html/ef20064499_ex10-1.htm",
+    "note": "Authentic Gibraltar EX-10.1 ready; not persisted because credentials are absent."
+  },
+  "refusedSubstitutes": [
+    "local disk write under .local-knowledge-corpus",
+    "claiming durability from committed metadata/hashes",
+    "mocked DocumentStorageProvider"
+  ],
+  "nextAction": "Configure shared DATABASE_URL (with KnowledgeSource migrations applied) and BLOB_READ_WRITE_TOKEN on this environment, then re-run: npx tsx scripts/knowledge-factory/durable-roundtrip-proof.ts"
+}
