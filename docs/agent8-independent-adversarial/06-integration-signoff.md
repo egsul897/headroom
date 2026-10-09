@@ -7,7 +7,16 @@
 
 ## 1. CI on exact head SHA
 
-Recorded after GitHub Actions completes on the PR tip. Required: certified-path (provider-free) success on that SHA. No automatic merge.
+| Field | Value |
+|---|---|
+| Tip SHA | `e606942fbb3b2ea07f00a99d132711198dc60be3` |
+| Run | https://github.com/egsul897/headroom/actions/runs/38000824414 |
+| certified path (provider-free) | **SUCCESS** |
+| Vercel | **pass** |
+| Vercel Preview Comments | **SUCCESS** |
+| Aggregate | **all required checks green on tip** |
+
+No automatic merge.
 
 ## 2. `CapacityStatus.NOT_SATISFIED` compatibility
 
@@ -79,5 +88,5 @@ Against the **integration candidate** (PR #229 into `main`), not only the isolat
 
 ## 8. Remaining blockers
 
-- GitHub CI must be green on the exact tip SHA before coordinator marks CLOSED in the defect register.
-- Post-merge: re-verify tip of `main` contains `statusForAmount` (integration branch verification).
+- **None for authorized merge of PR #229.** CI green on tip; regressions green; exclusive ownership held.
+- Post-merge only: re-verify tip of `main` contains `statusForAmount`, then mark A8-01 / A8-02 **CLOSED** in the defect register.
