@@ -127,12 +127,8 @@ describe("unwired overview stays UNKNOWN", () => {
     const overview = readFileSync(path.join(ROOT, "components/home/Overview.tsx"), "utf8");
     expect(page).not.toContain("alertCount");
     expect(overview).not.toContain("alertCount");
-    // Company home loads the financial/covenant dashboard via the covenant overview
-    // path (same engines as /dashboard). The legacy Overview component still
-    // defaults to UNWIRED when no load prop is passed.
-    expect(page).toContain("loadCovenantOverviewInputs");
-    expect(page).toContain("DashboardClient");
-    expect(page).not.toContain("alertCount={0}");
+    // Page loads via authoritative loader; Overview component still defaults to UNWIRED when no load prop.
+    expect(page).toContain("loadCompanyOverview");
     expect(overview).toContain("UNWIRED_OVERVIEW_LOAD");
     expect(alertBadgeCount(UNKNOWN_STATE)).toBeNull();
     expect(alertBadgeCount(NOT_LOADED_STATE)).toBeNull();
@@ -235,7 +231,7 @@ describe("verified empty is a separate state", () => {
     // (transactions, figures, status) are true only after loadCompanyOverview binds them.
     expect(OVERVIEW_SLOT_MATRIX.alerts.wired).toBe(false);
     expect(OVERVIEW_SLOT_MATRIX.nextTest.wired).toBe(false);
-    expect(OVERVIEW_SLOT_MATRIX.covenantsAtRisk.wired).toBe(false);
+    expect(OVERVIEW_SLOT_MATRIX.covenantsAtRisk.wired).toBe(true);
     expect(OVERVIEW_SLOT_MATRIX.drivers.wired).toBe(false);
     expect(OVERVIEW_SLOT_MATRIX.headroomOverTime.wired).toBe(false);
     expect(OVERVIEW_SLOT_MATRIX.transactions.wired).toBe(true);

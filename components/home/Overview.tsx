@@ -50,7 +50,7 @@ export function CompanyOverview({
           <h1 className="home-greeting">{greeting.heading}</h1>
           {greeting.subheading ? <p className="home-greeting-sub">{greeting.subheading}</p> : null}
           {readinessHeadline ? (
-            <p className="home-readiness" data-readiness-headline>
+            <p className="home-readiness" data-readiness-headline hidden>
               {readinessHeadline}
             </p>
           ) : null}

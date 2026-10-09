@@ -205,10 +205,152 @@ main:has(.app-shell) {
   letter-spacing: -0.01em;
 }
 
+.home-kpi-value-hero {
+  font-size: 34px;
+  font-weight: 580;
+}
+
 .home-kpi-caption {
   margin: 0;
   font-size: 12px;
   color: var(--shell-muted);
+}
+
+.home-kpi-spark {
+  margin-top: 10px;
+  color: #2f7a4b;
+  height: 28px;
+}
+
+.home-kpi-spark svg {
+  width: 100%;
+  height: 28px;
+  display: block;
+}
+
+.home-util {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  min-height: 96px;
+  align-content: center;
+}
+
+.home-util-ring {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.home-util-ring-hole {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--shell-card);
+  display: grid;
+  place-items: center;
+}
+
+.home-util-pct {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.home-capacity {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  padding-top: 4px;
+}
+
+.home-capacity-donut {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.home-capacity-donut-hole {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--shell-card);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 2px;
+}
+
+.home-capacity-total {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.home-capacity-total-label {
+  font-size: 11px;
+  color: var(--shell-muted);
+}
+
+.home-capacity-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.home-capacity-legend li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.home-capacity-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.home-capacity-name {
+  color: var(--shell-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-capacity-amt {
+  color: var(--shell-muted);
+  white-space: nowrap;
+}
+
+.home-risk-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+}
+
+.home-risk-list li {
+  font-size: 11px;
+  color: var(--shell-muted);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .home-status-pill {
@@ -230,6 +372,20 @@ main:has(.app-shell) {
 .home-status-warn {
   background: #f7ead7;
   color: #8a4b12;
+}
+
+.home-status-risk {
+  background: #f3dfdc;
+  color: #8a2f28;
+}
+
+.home-trend-cell {
+  color: #8a8578;
+}
+
+.home-trend-flat {
+  display: inline-flex;
+  color: #c47a3a;
 }
 
 .home-top-actions {

@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   getCompanySummary: vi.fn(),
   getCompanyDashboard: vi.fn(),
+  getCovenantOverview: vi.fn(),
   loadCapacityReadiness: vi.fn(),
   ledgerFindMany: vi.fn(),
   facilityFindMany: vi.fn(),
@@ -15,6 +16,10 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/lib/dashboard-service", () => ({
   getCompanySummary: mocks.getCompanySummary,
   getCompanyDashboard: mocks.getCompanyDashboard,
+}));
+
+vi.mock("@/lib/covenant-overview-service", () => ({
+  getCovenantOverview: mocks.getCovenantOverview,
 }));
 
 vi.mock("@/lib/product/customer-intelligence/capacity-readiness", () => ({
@@ -37,6 +42,7 @@ describe("loadCompanyOverview", () => {
     mocks.getCompanySummary.mockResolvedValue({ name: "Apex Demo Co" });
     mocks.ledgerFindMany.mockResolvedValue([]);
     mocks.facilityFindMany.mockResolvedValue([]);
+    mocks.getCovenantOverview.mockRejectedValue(new Error("no overview in unit fixture"));
     mocks.loadCapacityReadiness.mockResolvedValue({
       canEvaluateExecutableCapacity: false,
       headline: "Discovery only — no figures.",
@@ -97,8 +103,7 @@ describe("loadCompanyOverview", () => {
     const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
     expect(headroom.kind).toBe("VERIFIED_POPULATED");
     if (headroom.kind === "VERIFIED_POPULATED") {
-      expect(headroom.display).toContain("$84M");
-      expect(headroom.display).toContain("secured");
+      expect(headroom.display).toBe("$84M");
     }
     const util = presentFigure(bundle.load.utilization, "utilization");
     expect(util.kind).toBe("VERIFIED_POPULATED");

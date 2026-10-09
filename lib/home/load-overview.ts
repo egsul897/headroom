@@ -4,10 +4,10 @@
  * Wired now:
  * - identity (company name)
  * - transactions (ACTIVE LedgerEntry)
- * - totalHeadroom / utilization / capacitySummary / statusTable when capacity readiness
- *   says the legacy covenant engine can evaluate without inventing inputs
+ * - totalHeadroom / utilization / capacitySummary / statusTable / covenantsAtRisk
+ *   from covenant overview + capacity engines when readiness allows
  *
- * Unwired (stay UNKNOWN): alerts, covenantsAtRisk, nextTest, drivers, headroomOverTime, export
+ * Unwired (stay UNKNOWN): alerts, nextTest, drivers, headroomOverTime, export
  *
  * Figure authority: LEGACY_ENGINE / NOT_CERTIFIED_4E until North-Star 4A–4E product paths replace it.
  * IMPLEMENTED ≠ CERTIFIED.
@@ -15,11 +15,13 @@
 
 import { prisma } from "@/lib/prisma";
 import { getCompanyDashboard, getCompanySummary } from "@/lib/dashboard-service";
+import { getCovenantOverview, type OverviewRow } from "@/lib/covenant-overview-service";
 import { fmtM, fmtX } from "@/lib/format";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import {
   UNWIRED_OVERVIEW_LOAD,
   capacitySummaryStateFromQuery,
+  covenantsAtRiskStateFromQuery,
   statusTableStateFromQuery,
   totalHeadroomStateFromQuery,
   transactionsStateFromLedger,
@@ -48,16 +50,15 @@ function formatLedgerRow(entry: {
   return `${entry.description} (${fmtM(amount)} · ${entry.direction} · ${entry.basket} · ${date})`;
 }
 
-function headroomDisplay(secured?: number, unsecured?: number): string | null {
-  const parts: string[] = [];
+/** Primary headroom figure for the mockup KPI — secured remaining when modeled. */
+function primaryHeadroomDisplay(secured?: number, unsecured?: number): string | null {
   if (secured !== undefined && Number.isFinite(secured) && secured > 0) {
-    parts.push(`${fmtM(secured)} secured`);
+    return fmtM(secured);
   }
   if (unsecured !== undefined && Number.isFinite(unsecured) && unsecured > 0) {
-    parts.push(`${fmtM(unsecured)} unsecured`);
+    return fmtM(unsecured);
   }
-  if (parts.length === 0) return null;
-  return parts.join(" · ");
+  return null;
 }
 
 function utilizationDisplay(used: number, capacity: number): string | null {
@@ -66,7 +67,81 @@ function utilizationDisplay(used: number, capacity: number): string | null {
   }
   const pct = (used / capacity) * 100;
   if (!(pct > 0)) return null;
-  return `${pct.toFixed(1)}% — ${fmtM(used)} used of ${fmtM(capacity)} capacity`;
+  return `${pct.toFixed(1)}% · ${fmtM(used)} used of ${fmtM(capacity)} capacity`;
+}
+
+type RatioHealth = "Healthy" | "Moderate" | "At Risk";
+
+function ratioHealth(row: Extract<OverviewRow, { kind: "RATIO" }>): RatioHealth | null {
+  if (row.status !== "MODELED" || row.currentRatio === null || row.ratioHeadroom === null) return null;
+  if (!Number.isFinite(row.ratioLimit) || row.ratioLimit <= 0) return null;
+  if (row.ratioHeadroom <= 0) return "At Risk";
+  const cushion = row.ratioHeadroom / row.ratioLimit;
+  if (cushion < 0.15) return "Moderate";
+  return "Healthy";
+}
+
+function collectRatioRows(overview: Awaited<ReturnType<typeof getCovenantOverview>>): Extract<OverviewRow, { kind: "RATIO" }>[] {
+  const preferred = overview.covenantFamilies.find((f) => f.family === "FINANCIAL_COVENANTS")?.rows ?? [];
+  const fromFinancial = preferred.filter((r): r is Extract<OverviewRow, { kind: "RATIO" }> => r.kind === "RATIO" && r.status === "MODELED");
+  if (fromFinancial.length > 0) return fromFinancial;
+
+  const all: Extract<OverviewRow, { kind: "RATIO" }>[] = [];
+  for (const fam of overview.covenantFamilies) {
+    for (const row of fam.rows) {
+      if (row.kind === "RATIO" && row.status === "MODELED") all.push(row);
+    }
+  }
+  return all;
+}
+
+function statusRowsFromOverview(overview: Awaited<ReturnType<typeof getCovenantOverview>>): StatusRow[] {
+  const asOf = overview.asOfDate.toISOString().slice(0, 10);
+  const rows: StatusRow[] = [];
+  const seen = new Set<string>();
+
+  for (const row of collectRatioRows(overview)) {
+    const health = ratioHealth(row);
+    if (!health) continue;
+    const metric = row.name.split(" — ")[0]?.trim() || row.name;
+    if (seen.has(metric)) continue;
+    seen.add(metric);
+    const headroom =
+      row.ratioHeadroom !== null && Number.isFinite(row.ratioHeadroom)
+        ? `${fmtX(row.currentRatio ?? 0)} / ${fmtX(row.ratioLimit)} · ${fmtX(row.ratioHeadroom)} headroom`
+        : fmtX(row.currentRatio ?? 0);
+    rows.push({
+      covenant: metric,
+      facility: row.documentName,
+      status: health,
+      headroom,
+      trend: "—",
+      nextTest: asOf,
+    });
+  }
+
+  // Basket capacity rows that are binding or locked (dollar headroom).
+  for (const fam of overview.covenantFamilies) {
+    if (fam.family !== "INDEBTEDNESS" && fam.family !== "RESTRICTED_PAYMENTS") continue;
+    for (const row of fam.rows) {
+      if (row.kind !== "CAPACITY" || row.status !== "MODELED") continue;
+      if (row.bindingState !== "BINDING" && !(row.currentCapacity !== null && row.currentCapacity <= 0)) continue;
+      const key = `${row.name}:${row.sectionRef}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const rem = row.currentCapacity;
+      rows.push({
+        covenant: row.name,
+        facility: row.documentName,
+        status: rem !== null && rem <= 0 ? "At Risk" : "Healthy",
+        headroom: rem !== null && Number.isFinite(rem) && rem > 0 ? fmtM(rem) : "—",
+        trend: "—",
+        nextTest: "—",
+      });
+    }
+  }
+
+  return rows;
 }
 
 export async function loadCompanyOverview(companyId: string): Promise<CompanyOverviewBundle> {
@@ -106,10 +181,14 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
   }
 
   try {
-    const dashboard = await getCompanyDashboard(companyId);
-    const securedRem = dashboard.capacity.secured.remainingCapacity;
-    const unsecuredRem = dashboard.capacity.unsecured.remainingCapacity;
-    const headroom = headroomDisplay(securedRem, unsecuredRem);
+    const [dashboard, covenantOverview] = await Promise.all([
+      getCompanyDashboard(companyId),
+      getCovenantOverview(companyId).catch(() => null),
+    ]);
+
+    const securedRem = covenantOverview?.securedCapacity.remainingCapacity ?? dashboard.capacity.secured.remainingCapacity;
+    const unsecuredRem = covenantOverview?.unsecuredCapacity.remainingCapacity ?? dashboard.capacity.unsecured.remainingCapacity;
+    const headroom = primaryHeadroomDisplay(securedRem, unsecuredRem);
     load.totalHeadroom = headroom
       ? totalHeadroomStateFromQuery({ outcome: "populated", display: headroom })
       : totalHeadroomStateFromQuery({ outcome: "failed" });
@@ -140,47 +219,50 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
       facilityParts.length > 0 && commitmentTotal > 0
         ? capacitySummaryStateFromQuery({
             outcome: "populated",
-            display: `${fmtM(commitmentTotal)} total — ${facilityParts.join(" · ")}`,
+            display: `${fmtM(commitmentTotal)} total · ${facilityParts.join(" · ")}`,
           })
         : capacitySummaryStateFromQuery({ outcome: "failed" });
 
-    const rows: StatusRow[] = [];
-    const metrics = dashboard.financialPosition.metrics;
-    if (metrics.genericNetLeverage.value != null && Number.isFinite(metrics.genericNetLeverage.value)) {
-      rows.push({
-        covenant: "Generic net leverage (not covenant-defined)",
-        facility: "Financial position",
-        status: "Informational",
-        headroom: fmtX(metrics.genericNetLeverage.value),
-        trend: "—",
-        nextTest: dashboard.asOfDate.toISOString().slice(0, 10),
-      });
-    }
-
-    for (const doc of dashboard.capacity.secured.perDocument) {
-      const rem = doc.remainingCapacity;
-      let status: string;
-      if (rem === undefined) {
-        status = doc.method === "NOT_DETERMINABLE" ? "Not determinable" : "Needs review";
-      } else if (rem > 0) {
-        status = "Within capacity";
-      } else {
-        status = "At capacity";
+    const rows: StatusRow[] = covenantOverview ? statusRowsFromOverview(covenantOverview) : [];
+    if (rows.length === 0) {
+      // Fallback: per-document secured capacity (prior wiring).
+      for (const doc of dashboard.capacity.secured.perDocument) {
+        const rem = doc.remainingCapacity;
+        let status: string;
+        if (rem === undefined) {
+          status = doc.method === "NOT_DETERMINABLE" ? "Not determinable" : "Needs review";
+        } else if (rem > 0) {
+          status = "Healthy";
+        } else {
+          status = "At Risk";
+        }
+        rows.push({
+          covenant: `${doc.documentName} (secured debt capacity)`,
+          facility: doc.documentName,
+          status,
+          headroom: rem !== undefined && rem > 0 ? fmtM(rem) : "—",
+          trend: "—",
+          nextTest: "—",
+        });
       }
-      rows.push({
-        covenant: `${doc.documentName} (secured debt capacity)`,
-        facility: doc.documentName,
-        status,
-        headroom: rem !== undefined && rem > 0 ? fmtM(rem) : "—",
-        trend: "—",
-        nextTest: "—",
-      });
     }
 
     load.statusTable =
       rows.length > 0
         ? statusTableStateFromQuery({ outcome: "populated", rows })
         : statusTableStateFromQuery({ outcome: "empty" });
+
+    const atRisk = rows.filter((r) => r.status === "At Risk" || r.status === "Moderate");
+    load.covenantsAtRisk =
+      atRisk.length === 0
+        ? covenantsAtRiskStateFromQuery({ outcome: "empty" })
+        : covenantsAtRiskStateFromQuery({
+            outcome: "list",
+            items: [
+              `${atRisk.length}`,
+              ...atRisk.map((r) => `${r.covenant} — ${r.status} (${r.headroom})`),
+            ],
+          });
   } catch {
     load.totalHeadroom = totalHeadroomStateFromQuery({ outcome: "failed" });
     load.utilization = utilizationStateFromQuery({ outcome: "failed" });

@@ -168,18 +168,18 @@ export const OVERVIEW_SLOT_MATRIX = {
     verifiedPopulated: "Next test fields",
   },
   covenantsAtRisk: {
-    authoritativeSource: "Covenant-risk / REVIEW assessment",
-    wired: false,
+    authoritativeSource: "Covenant overview ratio headroom (Moderate / At Risk)",
+    wired: true,
     unknown: HOME_SLOTS.covenantsAtRisk,
     verifiedEmpty: HOME_VERIFIED_EMPTY.covenantsAtRisk,
     verifiedPopulated: "Risk list / Needs review",
   },
   statusTable: {
-    authoritativeSource: "Covenant engine capacity rows + informational metrics",
+    authoritativeSource: "Covenant overview FINANCIAL_COVENANTS ratios + binding baskets",
     wired: true,
     unknown: HOME_SLOTS.statusTable,
     verifiedEmpty: HOME_VERIFIED_EMPTY.statusTable,
-    verifiedPopulated: "Real rows; never default Healthy",
+    verifiedPopulated: "Real rows; status from computed headroom only",
   },
   drivers: {
     authoritativeSource: "Explained capacity-change feed",

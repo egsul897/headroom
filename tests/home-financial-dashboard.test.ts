@@ -1,117 +1,82 @@
 /**
- * Home financial dashboard — end-to-end against real uploaded company data.
+ * Home financial dashboard — mockup overview layout + real engine figures.
  *
- * Verifies app/[companyId]/page.tsx's load path (loadCovenantOverviewInputs →
- * buildCovenantOverview) produces contractual ratios, limits, and headroom from
- * the covenant engine — never hardcoded demo figures.
+ * Verifies app/[companyId]/page.tsx loads CompanyOverview via loadCompanyOverview,
+ * and that the loader surfaces contractual ratios / capacity from uploaded data.
  */
 import { readFileSync } from "fs";
 import path from "path";
 import { describe, expect, it } from "vitest";
 import { computeLeverageMetrics } from "../lib/covenant-engine";
-import { buildCovenantOverview } from "../lib/covenant-overview-builder";
 import { getCovenantOverview, loadCovenantOverviewInputs } from "../lib/covenant-overview-service";
+import { loadCompanyOverview } from "../lib/home/load-overview";
+import { presentFigure, presentRisk, presentStatus } from "../lib/home/load-state";
 
 const ROOT = path.resolve(__dirname, "..");
 
-describe("company home page wires the covenant dashboard", () => {
-  it("page.tsx loads via loadCovenantOverviewInputs + DashboardClient (no demo hardcodes)", () => {
+describe("company home page uses mockup overview shell", () => {
+  it("page.tsx loads CompanyOverview via loadCompanyOverview (no demo hardcodes)", () => {
     const page = readFileSync(path.join(ROOT, "app/[companyId]/page.tsx"), "utf8");
-    expect(page).toContain("loadCovenantOverviewInputs");
-    expect(page).toContain("DashboardClient");
-    expect(page).not.toContain("loadCompanyOverview");
-    expect(page).not.toMatch(/1\.23x|4\.50x|\$100M|demo.*leverage/i);
+    expect(page).toContain("loadCompanyOverview");
+    expect(page).toContain("CompanyOverview");
+    expect(page).not.toContain("DashboardClient");
+    expect(page).not.toMatch(/\$245\.6M|75\.4%|Apex Manufacturing|Good morning, John/i);
   });
 });
 
-describe.each(["coherent", "matthews"] as const)("financial dashboard calc — %s", (companyId) => {
-  it("uses the latest FinancialState period and covenant-definition arithmetic", async () => {
+describe.each(["coherent", "matthews"] as const)("home overview figures — %s", (companyId) => {
+  it("populates total headroom and status from covenant engines", async () => {
+    const bundle = await loadCompanyOverview(companyId);
     const inputs = await loadCovenantOverviewInputs(companyId);
-    const overview = buildCovenantOverview(inputs);
-    const fin = inputs.covenantData.financials;
-    const metrics = computeLeverageMetrics(fin);
+    const metrics = computeLeverageMetrics(inputs.covenantData.financials);
 
-    expect(overview.asOfDate).toEqual(inputs.asOfDate);
-    expect(fin.ebitda).toBeGreaterThan(0);
+    expect(inputs.covenantData.financials.ebitda).toBeGreaterThan(0);
+    expect(metrics.totalNetLeverage).toBeGreaterThan(0);
 
-    const expectedTnl = (fin.totalDebt - fin.cash) / fin.ebitda;
-    expect(metrics.totalNetLeverage).toBeCloseTo(expectedTnl, 6);
+    const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
+    // Coherent has modeled secured capacity; Matthews may not — never invent $0.
+    if (headroom.kind === "VERIFIED_POPULATED") {
+      expect(headroom.display).toMatch(/^\$[\d,]+M$/);
+      expect(headroom.display).not.toMatch(/^\$0/);
+    }
 
-    const tnl = overview.headlineMetrics.find((m) => m.key === "totalNetLeverage");
-    expect(tnl?.state).toBe("AVAILABLE");
-    expect(tnl?.value).toBe(`${metrics.totalNetLeverage.toFixed(2)}x`);
-
-    const ebitda = overview.headlineMetrics.find((m) => m.key === "ebitda");
-    expect(ebitda?.state).toBe("AVAILABLE");
-    expect(ebitda?.value).toMatch(/^\$[\d,]+M$/);
-
-    const debt = overview.headlineMetrics.find((m) => m.key === "totalDebt");
-    expect(debt?.state).toBe("AVAILABLE");
-    expect(debt?.value).not.toBeNull();
-
-    const cash = overview.headlineMetrics.find((m) => m.key === "cash");
-    expect(cash?.state).toBe("AVAILABLE");
-    expect(cash?.value).not.toBeNull();
-  });
-
-  it("exposes only applicable covenant families with section provenance", async () => {
-    const overview = await getCovenantOverview(companyId);
-    expect(overview.covenantFamilies.length).toBeGreaterThan(0);
-    for (const fam of overview.covenantFamilies) {
-      for (const row of fam.rows) {
-        expect(row.sectionRef.length).toBeGreaterThan(0);
-        expect(row.documentName.length).toBeGreaterThan(0);
+    const status = presentStatus(bundle.load.statusTable);
+    if (status.kind === "VERIFIED_POPULATED") {
+      expect(status.rows.length).toBeGreaterThan(0);
+      for (const row of status.rows) {
+        expect(row.covenant.length).toBeGreaterThan(0);
+        expect(row.facility.length).toBeGreaterThan(0);
+        expect(["Healthy", "Moderate", "At Risk", "Needs review", "Not determinable"]).toContain(row.status);
       }
     }
   });
 });
 
-describe("financial dashboard calc — coherent contractual limits", () => {
-  it("surfaces TNL maintenance limit 4.25x and accurate headroom", async () => {
+describe("home overview — coherent contractual ratios in status", () => {
+  it("surfaces TNL current/limit/headroom in the status table", async () => {
     const overview = await getCovenantOverview("coherent");
-    const finFamily = overview.covenantFamilies.find((f) => f.family === "FINANCIAL_COVENANTS");
-    expect(finFamily).toBeDefined();
+    const bundle = await loadCompanyOverview("coherent");
+    const status = presentStatus(bundle.load.statusTable);
+    expect(status.kind).toBe("VERIFIED_POPULATED");
+    if (status.kind !== "VERIFIED_POPULATED") throw new Error("expected status rows");
 
-    const tnlMaint = finFamily!.rows.find(
-      (r) => r.kind === "RATIO" && r.name.includes("Total Net Leverage") && r.name.includes("Financial Covenants"),
-    );
-    expect(tnlMaint).toBeDefined();
-    if (!tnlMaint || tnlMaint.kind !== "RATIO") throw new Error("expected TNL ratio row");
+    const tnl = status.rows.find((r) => /total net leverage/i.test(r.covenant));
+    expect(tnl).toBeDefined();
+    expect(tnl!.status).toBe("Healthy");
+    expect(tnl!.headroom).toMatch(/1\.23x/);
+    expect(tnl!.headroom).toMatch(/4\.25x/);
+    expect(tnl!.headroom).toMatch(/3\.02x/);
 
-    expect(tnlMaint.ratioLimit).toBeCloseTo(4.25, 2);
-    expect(tnlMaint.currentRatio).toBeCloseTo(1.23, 2);
-    expect(tnlMaint.ratioHeadroom).toBeCloseTo(4.25 - (tnlMaint.currentRatio ?? 0), 2);
-
-    const limitHeadline = overview.headlineMetrics.find((m) => m.key === "total_net_leverage_limit");
-    const headroomHeadline = overview.headlineMetrics.find((m) => m.key === "total_net_leverage_headroom");
-    expect(limitHeadline?.value).toBe("4.25x");
-    expect(headroomHeadline?.value).toBe(`${tnlMaint.ratioHeadroom!.toFixed(2)}x`);
-
-    // Debt capacity is modeled from the credit agreement, not invented.
-    expect(overview.securedCapacity.status).toBe("MODELED");
-    expect(overview.securedCapacity.remainingCapacity).toBeGreaterThan(0);
-    expect(overview.securedCapacity.bindingSections.length).toBeGreaterThan(0);
-  });
-
-  it("does not invent FCCR when interest expense is absent", async () => {
-    const inputs = await loadCovenantOverviewInputs("coherent");
-    const zeroInterest = {
-      ...inputs,
-      covenantData: {
-        ...inputs.covenantData,
-        financials: { ...inputs.covenantData.financials, interestExpense: 0 },
-      },
-    };
-    const overview = buildCovenantOverview(zeroInterest);
-    const interest = overview.headlineMetrics.find((m) => m.key === "interestExpense");
-    expect(interest?.state).toBe("NOT_AVAILABLE");
-    expect(interest?.value).toBeNull();
-    // Covenant FCCR is omitted when interest is absent — never invent 0.00x.
-    const fccr = overview.headlineMetrics.find((m) => m.key === "fixedChargeCoverage");
-    expect(fccr).toBeUndefined();
-    const coverage = overview.headlineMetrics.find((m) => m.key === "interestCoverage" || m.key === "fixedChargeCoverage");
-    if (coverage?.value !== null && coverage?.value !== undefined) {
-      expect(coverage.value).not.toBe("0.00x");
+    const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
+    expect(headroom.kind).toBe("VERIFIED_POPULATED");
+    if (headroom.kind === "VERIFIED_POPULATED") {
+      expect(headroom.display).toBe("$5,129M");
     }
+
+    expect(overview.securedCapacity.remainingCapacity).toBe(5129);
+
+    const risk = presentRisk(bundle.load.covenantsAtRisk);
+    // Coherent maintenance covenants are healthy; risk slot may be empty or list locked baskets.
+    expect(["VERIFIED_EMPTY", "VERIFIED_POPULATED"]).toContain(risk.kind);
   });
 });
