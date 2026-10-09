@@ -50,26 +50,17 @@
     {
       "instrumentKey": "instrument:doc-a",
       "documentIds": [
-        "doc-a"
-      ],
-      "baseDocumentId": "doc-a",
-      "reviewStatus": "RESOLVED"
-    },
-    {
-      "instrumentKey": "instrument:doc-b",
-      "documentIds": [
-        "doc-b"
-      ],
-      "baseDocumentId": "doc-b",
-      "reviewStatus": "RESOLVED"
-    },
-    {
-      "instrumentKey": "instrument:doc-c",
-      "documentIds": [
+        "doc-a",
+        "doc-b",
         "doc-c"
       ],
-      "baseDocumentId": "doc-c",
-      "reviewStatus": "RESOLVED"
+      "baseDocumentId": "doc-a",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "associationKind": "PROVISIONAL_FAMILY",
+      "provisionalDocumentIds": [
+        "doc-b",
+        "doc-c"
+      ]
     }
   ],
   "performance": {
@@ -80,7 +71,7 @@
     "relationshipsUnresolved": 0,
     "modificationCandidatesGenerated": 5,
     "crossDocumentReferenceLeadsGenerated": 192,
-    "wallClockMs": 44,
+    "wallClockMs": 45,
     "semanticCallsUsed": 0
   }
 }

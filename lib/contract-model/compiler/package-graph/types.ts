@@ -166,6 +166,18 @@ export interface CrossDocumentReferenceLead {
 // §7 - instrument grouping
 // ---------------------------------------------------------------------------
 
+/**
+ * How instrument family membership was established.
+ * - CONFIRMED: every membership edge used was RESOLVED + STRONG_TARGET_EVIDENCE
+ *   (or pre-taxonomy RESOLVED). Safe to treat family membership as confirmed;
+ *   operative authority still depends on amendment/operative-state separately.
+ * - PROVISIONAL_FAMILY: at least one REVIEW_REQUIRED (SUPPORTING/STRONG) edge
+ *   associated an amendment/supplement into the family. Membership is useful for
+ *   discovery scope and cross-document completeness, but must NOT be treated as
+ *   confirmed operative supersession (Agent 6 A6-D4).
+ */
+export type InstrumentAssociationKind = "CONFIRMED" | "PROVISIONAL_FAMILY";
+
 export interface InstrumentGroupingResult {
   /** Stable, content-derived key for this instrument within the package - not a DB id (assigned at persistence time). */
   instrumentKey: string;
@@ -174,6 +186,14 @@ export interface InstrumentGroupingResult {
   baseDocumentId: string | null;
   confidence: number;
   reviewStatus: "RESOLVED" | "REVIEW_REQUIRED";
+  /** Agent 6 A6-D4 — see InstrumentAssociationKind. Absent on historical callers that predate the field; treat missing as CONFIRMED when reviewStatus is RESOLVED. */
+  associationKind?: InstrumentAssociationKind;
+  /**
+   * Document ids that joined this family only via REVIEW_REQUIRED associative
+   * edges (not via a RESOLVED+STRONG path to the base). Never treat these as
+   * operatively confirmed solely because they appear here.
+   */
+  provisionalDocumentIds?: string[];
 }
 
 // ---------------------------------------------------------------------------

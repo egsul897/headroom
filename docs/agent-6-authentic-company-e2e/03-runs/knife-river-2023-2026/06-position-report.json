@@ -2,7 +2,7 @@
   "reportType": "COMPANY_POSITION",
   "companyKey": "knife-river-2023-2026",
   "issuer": "Knife River Corporation",
-  "generatedAt": "2026-10-09T22:31:20.706Z",
+  "generatedAt": "2026-10-09T22:54:58.888Z",
   "capacityConclusion": "MISSING_EVIDENCE",
   "favorableCapacityClaimed": false,
   "missingEvidence": [
@@ -100,26 +100,17 @@
       {
         "instrumentKey": "instrument:doc-a",
         "documentIds": [
-          "doc-a"
-        ],
-        "baseDocumentId": "doc-a",
-        "reviewStatus": "RESOLVED"
-      },
-      {
-        "instrumentKey": "instrument:doc-b",
-        "documentIds": [
-          "doc-b"
-        ],
-        "baseDocumentId": "doc-b",
-        "reviewStatus": "RESOLVED"
-      },
-      {
-        "instrumentKey": "instrument:doc-c",
-        "documentIds": [
+          "doc-a",
+          "doc-b",
           "doc-c"
         ],
-        "baseDocumentId": "doc-c",
-        "reviewStatus": "RESOLVED"
+        "baseDocumentId": "doc-a",
+        "reviewStatus": "REVIEW_REQUIRED",
+        "associationKind": "PROVISIONAL_FAMILY",
+        "provisionalDocumentIds": [
+          "doc-b",
+          "doc-c"
+        ]
       }
     ],
     "roleComparisons": [
@@ -151,20 +142,6 @@
       "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
       "provisionCount": 1,
       "unattachedEffects": 2
-    },
-    {
-      "instrumentKey": "instrument:doc-b",
-      "baseDocumentId": "doc-b",
-      "status": "OPERATIVE_STATE_RESOLVED",
-      "provisionCount": 0,
-      "unattachedEffects": 0
-    },
-    {
-      "instrumentKey": "instrument:doc-c",
-      "baseDocumentId": "doc-c",
-      "status": "OPERATIVE_STATE_RESOLVED",
-      "provisionCount": 0,
-      "unattachedEffects": 0
     }
   ],
   "transactions": [

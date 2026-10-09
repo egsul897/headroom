@@ -61,7 +61,9 @@
         "doc-a"
       ],
       "baseDocumentId": "doc-a",
-      "reviewStatus": "RESOLVED"
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
     },
     {
       "instrumentKey": "instrument:doc-b",
@@ -69,7 +71,9 @@
         "doc-b"
       ],
       "baseDocumentId": "doc-b",
-      "reviewStatus": "RESOLVED"
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
     },
     {
       "instrumentKey": "instrument:doc-c",
@@ -77,7 +81,9 @@
         "doc-c"
       ],
       "baseDocumentId": "doc-c",
-      "reviewStatus": "RESOLVED"
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
     }
   ],
   "performance": {
@@ -88,7 +94,7 @@
     "relationshipsUnresolved": 3,
     "modificationCandidatesGenerated": 0,
     "crossDocumentReferenceLeadsGenerated": 169,
-    "wallClockMs": 34,
+    "wallClockMs": 46,
     "semanticCallsUsed": 0
   }
 }

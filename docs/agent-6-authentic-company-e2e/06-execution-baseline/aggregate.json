@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-10-09T22:54:52.450Z",
+  "costUsd": 0,
+  "credentialGate": "BLOCKED_BY_MISSING_CREDENTIAL",
+  "pipelineLegend": [
+    "DOCUMENT → STRUCTURAL_GRAPH → PACKAGE_GRAPH → COVENANT_CANDIDATE → LEGAL_INTERPRETATION → VERIFIED_RULE → FINANCIAL_INPUTS → CAPACITY → TRANSACTION"
+  ],
+  "companies": [
+    {
+      "companyKey": "benchmark-2025",
+      "issuer": "Benchmark Electronics, Inc.",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+      "passACandidates": 1250,
+      "passARecall": 1,
+      "falseFavorableOutcomes": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "correctRefusalsCountedAsCapacity": false
+    },
+    {
+      "companyKey": "insulet-2021-2026",
+      "issuer": "Insulet Corporation",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+      "passACandidates": 1452,
+      "passARecall": 1,
+      "falseFavorableOutcomes": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "correctRefusalsCountedAsCapacity": false
+    },
+    {
+      "companyKey": "knife-river-2023-2026",
+      "issuer": "Knife River Corporation",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+      "passACandidates": 1909,
+      "passARecall": 1,
+      "falseFavorableOutcomes": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "correctRefusalsCountedAsCapacity": false
+    }
+  ],
+  "authenticCapacityAttempt": {
+    "adapterOutcome": "DERIVED",
+    "capacityOutcome": "REFUSED",
+    "grossCapacity": null,
+    "remainingCapacity": null,
+    "stoppingStage": "CAPACITY",
+    "stoppingReason": "CROSS_RULE_GATE_NOT_EXECUTABLE"
+  },
+  "productBenchmarkIndex": [
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/benchmark-2025.json",
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/insulet-2021-2026.json",
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/knife-river-2023-2026.json"
+  ],
+  "a6d4": "PROVISIONAL_FAMILY association for REVIEW_REQUIRED AMENDS — see tests/agent6/a6-d4-provisional-instrument-family.test.ts"
+}

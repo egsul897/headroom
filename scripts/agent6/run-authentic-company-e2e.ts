@@ -18,6 +18,7 @@ import { detectStructuralReferences } from "../../lib/contract-model/compiler/st
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
+import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
 import { runAmendmentPipeline } from "../../lib/contract-model/compiler/amendment/pipeline";
 import { computeOperativeContractState } from "../../lib/contract-model/compiler/amendment/operative-state";
 import { getStageCaller } from "../../lib/contract-model/compiler/llm-caller";
@@ -204,10 +205,37 @@ async function runCompany(companyKey: string): Promise<{ scorecard: Scorecard; c
       documentIds: i.documentIds,
       baseDocumentId: i.baseDocumentId,
       reviewStatus: i.reviewStatus,
+      associationKind: i.associationKind ?? null,
+      provisionalDocumentIds: i.provisionalDocumentIds ?? [],
     })),
     performance: graph.performance,
   };
   writeFileSync(join(outDir, "02-package-graph.json"), JSON.stringify(graphSummary, null, 2) + "\n");
+
+  // Deterministic Discovery Pass A (credential-independent). Pass B–D remain LLM-gated.
+  const passAByDocument = docs.map((d) => {
+    const candidates = runPassADeterministicSignals(d.documentId, index);
+    return {
+      documentId: d.documentId,
+      candidateCount: candidates.length,
+      sectionRefs: [...new Set(candidates.map((c) => c.sectionRef).filter(Boolean))],
+    };
+  });
+  const passATotal = passAByDocument.reduce((n, d) => n + d.candidateCount, 0);
+  writeFileSync(
+    join(outDir, "02b-pass-a-deterministic.json"),
+    JSON.stringify(
+      {
+        mode: "DETERMINISTIC_PASS_A_ONLY",
+        llmAssistedDiscovery: "NOT_RUN",
+        totalCandidates: passATotal,
+        byDocument: passAByDocument,
+        note: "Pass A candidates are structural signal hits, not sealed covenant discoveries or verified rules.",
+      },
+      null,
+      2,
+    ) + "\n",
+  );
 
   const caller = getStageCaller();
   const llmBlocker = caller.isSynthetic ? "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC" : null;
@@ -364,6 +392,7 @@ async function runCompany(companyKey: string): Promise<{ scorecard: Scorecard; c
   const scorecard: Scorecard = {
     companyKey,
     documentsIngested: docs.length,
+    // LLM sealed discoveries remain 0 without credentials; Pass A candidates are reported separately.
     covenantsDiscovered: 0,
     rulesVerified: 0,
     ratiosCalculated: 0,
@@ -378,11 +407,13 @@ async function runCompany(companyKey: string): Promise<{ scorecard: Scorecard; c
     notes: [
       llmBlocker ?? "LLM stages available",
       `definitionNodesDetected(structural)=${allDefinitions.length}`,
+      `passADeterministicCandidates=${passATotal}`,
       `roleMatches=${roleComparisons.filter((r) => r.match).length}/${roleComparisons.length}`,
       `operativeBaseOk=${operativeBaseOk}`,
       `relationships=${graph.relationshipCandidates.length}`,
       `amendmentEffects=${amendmentResult.effects.length}`,
       "Position report correctly refused favorable capacity",
+      "correctRefusal≠executableCapacity",
     ],
   };
 

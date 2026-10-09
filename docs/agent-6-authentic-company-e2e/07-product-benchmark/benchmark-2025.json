@@ -1,0 +1,74 @@
+{
+  "companyKey": "benchmark-2025",
+  "issuer": "Benchmark Electronics, Inc.",
+  "measures": {
+    "structuralExtractionAccuracy": {
+      "roleClassificationMatchRate": 1,
+      "documentsWithNodes": 3,
+      "documentsTotal": 3,
+      "definitionNodesDetected": 1009,
+      "notes": "Structural parse + role classification vs independent expectations. Not covenant discovery."
+    },
+    "covenantDiscoveryRecall": {
+      "mode": "DETERMINISTIC_PASS_A_ONLY",
+      "llmAssistedDiscovery": "NOT_RUN",
+      "expectedMustDiscover": 6,
+      "passASectionHits": 6,
+      "recall": 1,
+      "note": "Pass A signal hits on expected section refs are candidates, not sealed family discoveries. Do not equate with LLM discovery recall."
+    },
+    "legalRuleCorrectness": {
+      "status": "NOT_REACHED",
+      "verifiedRules": 0,
+      "reason": "No legal interpretation / verification artifacts for this package."
+    },
+    "financialMetricAvailability": {
+      "approvedSnapshot": false,
+      "status": "UNAVAILABLE"
+    },
+    "utilizationAvailability": {
+      "established": false,
+      "policy": "DO_NOT_INVENT",
+      "officerCertificate": "ABSENT"
+    },
+    "numericalCapacityCorrectness": {
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "status": "NOT_COMPUTED",
+      "note": "A correct refusal must not count as an executable capacity result."
+    },
+    "crossDocumentCompleteness": {
+      "expectedBaseDocumentId": "doc-c",
+      "facilityAssociationKind": "CONFIRMED",
+      "facilityDocumentIds": [
+        "doc-c"
+      ],
+      "provisionalDocumentIds": [],
+      "provisionalFamilyOk": true,
+      "missingDocuments": [
+        "prior Amended and Restated Credit Agreement",
+        "Amendment No. 2"
+      ],
+      "reviewStatusPreserved": true
+    },
+    "transactionExecution": {
+      "evaluated": 3,
+      "executableCapacityResults": 0,
+      "status": "REFUSED_MISSING_EVIDENCE"
+    },
+    "correctRefusals": {
+      "count": 2,
+      "reviewRequiredPreserved": 1,
+      "countedAsCapacity": false
+    },
+    "falseFavorableOutcomes": {
+      "count": 0
+    }
+  },
+  "stoppingStage": "LEGAL_INTERPRETATION",
+  "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+  "firstHardStop": {
+    "stage": "LEGAL_INTERPRETATION",
+    "reason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output."
+  }
+}

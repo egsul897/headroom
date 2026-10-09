@@ -37,12 +37,12 @@
       "id": "A6-D4",
       "severity": "REVIEW_REQUIRED_AMENDS_NOT_GROUPED_INTO_INSTRUMENT",
       "severity": "MATERIAL_GENERALIZABLE",
-      "status": "OPEN_DOCUMENTED",
-      "summary": "Knife River First/Second Amendments correctly classify as AMENDMENT and surface AMENDS→doc-a at REVIEW_REQUIRED, but instrument grouping keeps each amendment as its own instrument instead of one credit-facility instrument (contrast Insulet ninth amendment RESOLVED AMENDS, which groups).",
+      "status": "FIXED",
+      "summary": "Knife River First/Second Amendments correctly classify as AMENDMENT and surface AMENDS→doc-a at REVIEW_REQUIRED. Instrument grouping now associates REVIEW_REQUIRED SUPPORTING/STRONG edges into a PROVISIONAL_FAMILY without upgrading relationship status or treating amendments as operatively confirmed.",
       "evidencePackage": "knife-river-2023-2026",
-      "fix": null,
-      "regression": null,
-      "notes": "Fail-closed REVIEW_REQUIRED is correct for weak WHEREAS evidence; product still needs a path to attach REVIEW_REQUIRED amendments to the base instrument without force-resolving."
+      "fix": "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+      "regression": "tests/agent6/a6-d4-provisional-instrument-family.test.ts",
+      "notes": "associationKind=PROVISIONAL_FAMILY; provisionalDocumentIds lists members reachable only via associative edges; RESOLVED+SUPPORTING still rejected (defense-in-depth); missing-base UNRESOLVED amends do not attach to later A&R; dual instruments remain separate."
     },
     {
       "id": "A6-D5",

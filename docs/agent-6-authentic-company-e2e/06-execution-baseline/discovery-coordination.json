@@ -1,0 +1,44 @@
+{
+  "schema": "agent6-discovery-credential-coordination.v1",
+  "status": "PENDING_AUTHORIZED_INFERENCE",
+  "blocker": "AI_GATEWAY_API_KEY / ANTHROPIC_API_KEY absent in this environment",
+  "distinction": {
+    "deterministicExtraction": "Structure, package graph, Discovery Pass A signals — runnable at $0, reported here.",
+    "llmAssistedDiscovery": "Pass B–D semantic classification, inventory, composition, verify — require authorized credentials and budget; NOT faked."
+  },
+  "coordinateWith": [
+    {
+      "owner": "Agent 1",
+      "topic": "covenant discovery and extraction (Pass B–D)"
+    },
+    {
+      "owner": "Agent 2",
+      "topic": "financial / certificate inputs (APPROVED snapshots)"
+    },
+    {
+      "owner": "Agent 3",
+      "topic": "authentic capacity execution (evaluateVerifiedCapacity REQUIRE)"
+    },
+    {
+      "owner": "Agent 5",
+      "topic": "cross-document reasoning / operative state"
+    },
+    {
+      "owner": "Coordinator",
+      "topic": "integration and PR dependencies"
+    }
+  ],
+  "reuseNotRebuild": [
+    "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+    "lib/contract-model/compiler/package-graph/*",
+    "scripts/product/attempt-authenticated-vep.ts",
+    "lib/contract-model/verified-execution.ts",
+    "scripts/product-acceptance/stages.ts (runDeterministicStages pattern)"
+  ],
+  "policy": [
+    "Do not expose credentials.",
+    "Do not spend paid inference without authorization.",
+    "Do not fake discovery results.",
+    "Missing credentials are an environmental blocker, not proof discovery cannot work."
+  ]
+}
