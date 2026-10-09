@@ -236,6 +236,15 @@ describe("dependency graph and amendment compare", () => {
   });
 });
 
+describe("HTML definition discovery", () => {
+  it("extracts quoted terms from HTML exhibits with entities and tags", async () => {
+    const { discoverDefinitions } = await import("../../lib/knowledge-factory/pipeline/structural");
+    const html = `<p><b>&ldquo;Consolidated EBITDA&rdquo;</b> means Consolidated Net Income.</p><p>"Available Amount" shall mean the sum of builder components.</p>`;
+    const defs = discoverDefinitions("html-test", html, []);
+    expect(defs.map((d) => d.term)).toEqual(expect.arrayContaining(["Consolidated EBITDA", "Available Amount"]));
+  });
+});
+
 describe("export formats", () => {
   it("renders HTML and DOCX from the shared review object", async () => {
     const { renderCovenantReviewHtml, renderCovenantReviewDocx } = await import(

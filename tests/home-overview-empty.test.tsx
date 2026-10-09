@@ -115,6 +115,7 @@ describe("routes", () => {
       "Overview",
       "Documents",
       "Covenants",
+      "Intelligence",
       "Position",
       "Ledger",
       "Simulate",

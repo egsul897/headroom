@@ -7,15 +7,17 @@ import { submitFinancialsAction } from "./actions";
 export const metadata = { title: "Headroom — Onboarding financials" };
 export const dynamic = "force-dynamic";
 
-const FIELDS: { name: string; label: string; step?: string }[] = [
-  { name: "ebitda", label: "EBITDA ($M)" },
-  { name: "cash", label: "Unrestricted cash ($M)" },
-  { name: "totalDebtPrincipal", label: "Total debt principal ($M)" },
-  { name: "securedDebtPrincipal", label: "Secured debt principal ($M)" },
-  { name: "cumulativeNetIncomeSinceIssue", label: "Cumulative net income since issue ($M)" },
-  { name: "equityProceedsSinceIssue", label: "Equity proceeds since issue ($M)" },
-  { name: "interestExpense", label: "Interest expense ($M)" },
-  { name: "assumedNewDebtRatePct", label: "Assumed new-debt coupon (%)", step: "0.01" },
+const FIELDS: { name: string; label: string; step?: string; required?: boolean }[] = [
+  { name: "ebitda", label: "EBITDA / Consolidated EBITDA ($M)", required: true },
+  { name: "cash", label: "Unrestricted cash ($M)", required: true },
+  { name: "totalDebtPrincipal", label: "Total debt principal ($M)", required: true },
+  { name: "securedDebtPrincipal", label: "Secured debt principal ($M)", required: true },
+  { name: "cumulativeNetIncomeSinceIssue", label: "Cumulative net income since issue ($M)", required: true },
+  { name: "equityProceedsSinceIssue", label: "Equity proceeds since issue ($M)", required: true },
+  { name: "interestExpense", label: "Interest expense ($M)", required: true },
+  { name: "assumedNewDebtRatePct", label: "Assumed new-debt coupon (%)", step: "0.01", required: true },
+  { name: "fixedCharges", label: "Fixed charges ($M, optional)", required: false },
+  { name: "totalAssets", label: "Total / relevant assets ($M, optional)", required: false },
 ];
 
 export default async function OnboardingFinancialsPage({ params }: { params: Promise<{ companyId: string }> }) {
@@ -45,10 +47,32 @@ export default async function OnboardingFinancialsPage({ params }: { params: Pro
             <div className="field" key={f.name}>
               <div className="field-label">{f.label}</div>
               <div className="field-control">
-                <input type="number" name={f.name} step={f.step ?? "0.01"} required />
+                <input
+                  type="number"
+                  name={f.name}
+                  step={f.step ?? "0.01"}
+                  required={f.required !== false}
+                />
               </div>
             </div>
           ))}
+          <div className="field">
+            <div className="field-label">Testing period / date label (optional)</div>
+            <div className="field-control">
+              <input type="text" name="testingPeriod" placeholder="e.g. LTM ended 2026-06-30" style={{ width: "100%" }} />
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">Pro forma / EBITDA adjustments (optional)</div>
+            <div className="field-control">
+              <textarea
+                name="proFormaAdjustments"
+                rows={3}
+                placeholder="Describe contractual addbacks and pro forma adjustments applied"
+                style={{ width: "100%" }}
+              />
+            </div>
+          </div>
           <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
             Save financial state
           </button>

@@ -63,8 +63,14 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
           <Link className="button" href={`/${companyId}/covenants/export/docx`}>
             Export DOCX
           </Link>
+          <Link className="button" href={`/${companyId}/covenants/export/pdf`}>
+            Export PDF
+          </Link>
           <Link className="button" href={`/${companyId}/rulebook`}>
-            Rulebook review
+            Lawyer review
+          </Link>
+          <Link className="button" href={`/${companyId}/intelligence`}>
+            Debt intelligence
           </Link>
           <Link className="button" href="/research/compare">
             Compare precedents

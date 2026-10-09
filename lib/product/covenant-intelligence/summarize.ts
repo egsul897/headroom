@@ -149,7 +149,17 @@ export function buildDocumentCovenantSummary(params: {
   const items: CovenantSummaryItem[] = [];
   const countsByCategory: Record<string, number> = {};
 
-  const ranked = [...params.candidates].sort((a, b) => b.discoveryScore - a.discoveryScore);
+  const peripheralHeading =
+    /\b(?:notice|notices|miscellaneous|governing law|counterpart|severability|waivers? of jury|expenses|indemnif|assignments?|successors|effectiveness|conditions?\s+precedent|representations|schedules?|exhibits?)\b/i;
+
+  const ranked = [...params.candidates].sort((a, b) => {
+    const ah = `${a.excerpt ?? ""} ${(a.signals ?? []).join(" ")}`;
+    const bh = `${b.excerpt ?? ""} ${(b.signals ?? []).join(" ")}`;
+    const ap = peripheralHeading.test(ah) ? 1 : 0;
+    const bp = peripheralHeading.test(bh) ? 1 : 0;
+    if (ap !== bp) return ap - bp; // primary covenants before peripheral
+    return b.discoveryScore - a.discoveryScore;
+  });
   for (const c of ranked) {
     const analysis = analyzeProvision({
       sourceId: params.sourceId,

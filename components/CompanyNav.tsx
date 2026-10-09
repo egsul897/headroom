@@ -15,6 +15,7 @@ import {
   OnboardingIcon,
   PositionIcon,
   SimulateIcon,
+  ToolsIcon,
 } from "@/components/home/icons";
 import { companyNavItems, isCompanyNavItemActive, type CompanyNavKey } from "@/lib/home/nav";
 
@@ -22,6 +23,7 @@ const ICONS: Record<CompanyNavKey, () => ReactNode> = {
   home: HomeIcon,
   documents: DocumentsIcon,
   covenants: CovenantsIcon,
+  intelligence: ToolsIcon,
   position: PositionIcon,
   ledger: LedgerIcon,
   simulate: SimulateIcon,

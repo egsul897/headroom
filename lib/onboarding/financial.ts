@@ -66,6 +66,14 @@ export interface ManualFinancialStateInput {
   revenue?: number;
   gaapNetIncome?: number;
   capex?: number;
+  /** Contractual fixed charges when the agreement defines them ($M). */
+  fixedCharges?: number;
+  /** Relevant assets for grower baskets ($M). */
+  totalAssets?: number;
+  /** Free-text pro forma adjustments / addbacks description. */
+  proFormaAdjustments?: string;
+  /** Testing period label (e.g. TTM, LTM, fiscal Q2). */
+  testingPeriod?: string;
   notes?: string;
 }
 
@@ -213,6 +221,9 @@ function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: 
     cash: factCarryingPrior(input.cash, asOfDate, balancePrior?.cash),
     totalDebtPrincipal: factCarryingPrior(input.totalDebtPrincipal, asOfDate, balancePrior?.totalDebtPrincipal),
     securedDebtPrincipal: factCarryingPrior(input.securedDebtPrincipal, asOfDate, balancePrior?.securedDebtPrincipal),
+    ...(input.totalAssets !== undefined
+      ? { totalAssets: factCarryingPrior(input.totalAssets, asOfDate, balancePrior?.totalAssets) }
+      : {}),
   }, prior?.balanceSheetFacts);
 
   const incomeStatementFacts = withUntouchedPriorFacts({
@@ -223,14 +234,40 @@ function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: 
     equityProceedsSinceIssue: factCarryingPrior(input.equityProceedsSinceIssue, asOfDate, incomePrior?.equityProceedsSinceIssue),
     interestExpense: factCarryingPrior(input.interestExpense, asOfDate, incomePrior?.interestExpense),
     ...(input.capex !== undefined ? { capex: factCarryingPrior(input.capex, asOfDate, incomePrior?.capex) } : {}),
+    ...(input.fixedCharges !== undefined
+      ? { fixedCharges: factCarryingPrior(input.fixedCharges, asOfDate, incomePrior?.fixedCharges) }
+      : {}),
   }, prior?.incomeStatementFacts);
 
   const covenantMetricFacts = withUntouchedPriorFacts({
     assumedNewDebtRatePct: factCarryingPrior(input.assumedNewDebtRatePct, asOfDate, covenantPrior?.assumedNewDebtRatePct),
     covenantEbitda: covenantEbitdaFromInput(input.ebitda, asOfDate, prior?.covenantMetricFacts),
+    ...(input.testingPeriod
+      ? { testingPeriod: { value: input.testingPeriod, sourceType: "REPORTED", reviewStatus: "UNVERIFIED", asOfDate } }
+      : {}),
+    ...(input.proFormaAdjustments
+      ? {
+          proFormaAdjustments: {
+            value: input.proFormaAdjustments,
+            sourceType: "REPORTED",
+            reviewStatus: "UNVERIFIED",
+            asOfDate,
+          },
+        }
+      : {}),
   }, prior?.covenantMetricFacts);
 
   return { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts };
+}
+
+function composeFinancialNotes(input: ManualFinancialStateInput): string | undefined {
+  const parts: string[] = [];
+  if (input.notes?.trim()) parts.push(input.notes.trim());
+  if (input.testingPeriod?.trim()) parts.push(`Testing period: ${input.testingPeriod.trim()}`);
+  if (input.proFormaAdjustments?.trim()) parts.push(`Pro forma adjustments: ${input.proFormaAdjustments.trim()}`);
+  if (input.fixedCharges !== undefined) parts.push(`Fixed charges ($M): ${input.fixedCharges}`);
+  if (input.totalAssets !== undefined) parts.push(`Total assets ($M): ${input.totalAssets}`);
+  return parts.length ? parts.join(" | ") : undefined;
 }
 
 function financialStateJson(input: ManualFinancialStateInput, prior?: PriorFinancialStateFactGroups) {
@@ -258,9 +295,10 @@ function priorFactGroupsFromState(state: { balanceSheetFacts: unknown; incomeSta
  */
 export async function createManualFinancialState(input: ManualFinancialStateInput) {
   const { companyId, asOfDate } = input;
+  const notes = composeFinancialNotes(input);
 
   await prisma.financialSnapshot.create({
-    data: { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes: input.notes },
+    data: { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes },
   });
   // First insert. No prior same-date state is read, so every wrapper is a
   // fresh fact() — a different row's provenance is not copied onto this one.
@@ -271,7 +309,7 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
       periodType: "ACTUAL",
       scope: "CONSOLIDATED",
       ...financialStateJson(input),
-      notes: input.notes,
+      notes,
     },
   });
 }
