@@ -39,31 +39,74 @@ function argInt(name: string, fallback: number): number {
 
 interface QueueDoc {
   sourceId?: string;
+  queueId?: string;
   cik?: string;
   ticker?: string;
   issuerName?: string;
   accessionNumber?: string;
   exhibitFilename?: string;
+  filename?: string;
   sourceUrl?: string;
+  sourceUri?: string;
   filingDate?: string;
   formType?: string;
   documentTitle?: string;
+  description?: string;
+  documentClass?: string;
+  documentKind?: string;
   fetchStatus?: string;
+  resolutionStatus?: string;
+  filing?: {
+    accessionNumber?: string;
+    formType?: string;
+    filingDate?: string;
+    issuer?: { cik?: string; ticker?: string; name?: string };
+  };
+  exhibit?: {
+    filename?: string;
+    description?: string;
+    sourceUrl?: string;
+  };
+}
+
+function coerceDoc(raw: Record<string, unknown>): QueueDoc {
+  const d = raw as QueueDoc;
+  return {
+    ...d,
+    sourceId: d.sourceId ?? (d.queueId ? `ehb:${d.queueId}` : undefined),
+    cik: d.cik ?? d.filing?.issuer?.cik,
+    ticker: d.ticker ?? d.filing?.issuer?.ticker,
+    issuerName: d.issuerName ?? d.filing?.issuer?.name,
+    accessionNumber: d.accessionNumber ?? d.filing?.accessionNumber,
+    formType: d.formType ?? d.filing?.formType,
+    filingDate: d.filingDate ?? d.filing?.filingDate,
+    exhibitFilename: d.exhibitFilename ?? d.filename ?? d.exhibit?.filename,
+    documentTitle: d.documentTitle ?? d.description ?? d.exhibit?.description,
+    sourceUrl: d.sourceUrl ?? d.sourceUri ?? d.exhibit?.sourceUrl,
+    documentClass: d.documentClass ?? d.documentKind,
+  };
 }
 
 function normalizeQueue(raw: unknown): QueueDoc[] {
-  if (Array.isArray(raw)) return raw as QueueDoc[];
-  if (raw && typeof raw === "object") {
+  let arr: unknown[] = [];
+  if (Array.isArray(raw)) arr = raw;
+  else if (raw && typeof raw === "object") {
     const o = raw as Record<string, unknown>;
-    for (const key of ["documents", "queue", "items", "locators", "fetchable"]) {
-      if (Array.isArray(o[key])) return o[key] as QueueDoc[];
+    for (const key of ["documents", "queue", "items", "locators", "fetchable", "acquisitionQueue"]) {
+      if (Array.isArray(o[key])) {
+        arr = o[key] as unknown[];
+        break;
+      }
     }
   }
-  return [];
+  return arr
+    .filter((x): x is Record<string, unknown> => Boolean(x) && typeof x === "object")
+    .map(coerceDoc);
 }
 
 function sourceIdOf(d: QueueDoc): string {
   if (d.sourceId) return d.sourceId;
+  if (d.queueId) return `ehb:${d.queueId}`;
   if (d.accessionNumber && d.exhibitFilename) return `edgar:${d.accessionNumber}:${d.exhibitFilename}`;
   const url = d.sourceUrl ?? "";
   const m = url.match(/\/(\d+)\/(\d{18})\/([^/?#]+)$/);
@@ -80,7 +123,8 @@ async function main() {
     console.error("Provide --queue=/path/to/acquisition-queue.json");
     process.exit(1);
   }
-  const limit = argInt("--limit", 50);
+  const limitRaw = arg("--limit");
+  const limit = limitRaw ? Number(limitRaw) : Number.POSITIVE_INFINITY;
   const dryRun = flag("--dry-run");
   const persistNeon = flag("--persist-neon");
   if (persistNeon && process.env[LIVE_ENV] !== LIVE_TOKEN) {
@@ -89,7 +133,9 @@ async function main() {
   }
 
   const raw = JSON.parse(readFileSync(queuePath, "utf8"));
-  const docs = normalizeQueue(raw).slice(0, limit);
+  const allDocs = normalizeQueue(raw);
+  const docs =
+    Number.isFinite(limit) && limit > 0 ? allDocs.slice(0, limit) : allDocs;
   const local = new CorpusStore(defaultCorpusPaths());
   const mass = openMassPrecedentCorpus();
   const client = new EdgarKnowledgeClient({
@@ -150,10 +196,17 @@ async function main() {
       stats.fetched += 1;
       const hash = createHash("sha256").update(bytes).digest("hex");
       const title = d.documentTitle || d.exhibitFilename || sourceId;
+      const rawClass = (d.documentClass || "UNKNOWN").toUpperCase();
+      const declaredClass =
+        rawClass === "OTHER_DEBT_AGREEMENT"
+          ? "OTHER_DEBT_RELATED"
+          : rawClass === "REVOLVER" || rawClass === "REVOLVING_CREDIT"
+            ? "REVOLVING_CREDIT_AGREEMENT"
+            : rawClass;
       const substantive = isSubstantiveFinancingPrecedent({
         sourceId,
         documentTitle: title,
-        documentClass: "UNKNOWN",
+        documentClass: declaredClass,
         exhibitFilename: d.exhibitFilename ?? "exhibit.htm",
         provenance: "ehb-queue-consume",
         byteSize: bytes.length,
@@ -176,7 +229,7 @@ async function main() {
         filingDate: (d.filingDate ?? "1970-01-01").slice(0, 10),
         formType: d.formType ?? "8-K",
         documentTitle: title,
-        documentClass: "UNKNOWN",
+        documentClass: (declaredClass as KnowledgeSourceRecord["documentClass"]) || "UNKNOWN",
         originalBytesHash: hash,
         acquisitionTimestamp: new Date().toISOString(),
         parserVersion: "ehb-consume-v1",
