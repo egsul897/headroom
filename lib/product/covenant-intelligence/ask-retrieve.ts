@@ -34,6 +34,10 @@ export interface AskRetrieveAnswer {
 type QuestionIntent =
   | "SECURED_DEBT"
   | "RESTRICTED_PAYMENTS"
+  | "INVESTMENTS_UNRESTRICTED"
+  | "INCREMENTAL_FACILITY"
+  | "DEBT_LIEN_CROSS"
+  | "FINANCIAL_INPUTS_CAPACITY"
   | "NON_GUARANTOR_DEBT"
   | "ASSET_SALES"
   | "AMENDMENT_CHANGES"
@@ -44,6 +48,28 @@ type QuestionIntent =
 function classifyIntent(q: string): QuestionIntent {
   const s = q.toLowerCase();
   if (/amend|changed|latest amendment|what changed/.test(s)) return "AMENDMENT_CHANGES";
+  if (
+    /financial inputs?|calculate capacity|required.*(ebitda|financial)|what.*(needed|required).*capacity|capacity.*(require|need|input)/.test(
+      s,
+    )
+  ) {
+    return "FINANCIAL_INPUTS_CAPACITY";
+  }
+  if (
+    /secured under|lien.*(basket|exception|permission)|debt incurred under.*secur|can.*be secured|cross.?default.*lien/.test(
+      s,
+    )
+  ) {
+    return "DEBT_LIEN_CROSS";
+  }
+  if (/incremental|accordion|additional (term|revolving|facility)|incremental facility/.test(s)) {
+    return "INCREMENTAL_FACILITY";
+  }
+  if (
+    /unrestricted subsidiar|invest(ment|s)? in (an )?unrestricted|designate.*unrestricted|investment basket/.test(s)
+  ) {
+    return "INVESTMENTS_UNRESTRICTED";
+  }
   if (/leverage|coverage ratio|definition.*(ratio|leverage)|(ratio|leverage).*definition/.test(s)) {
     return "LEVERAGE_DEFINITIONS";
   }
@@ -58,9 +84,22 @@ function classifyIntent(q: string): QuestionIntent {
 function intentCategories(intent: QuestionIntent): string[] {
   switch (intent) {
     case "SECURED_DEBT":
+    case "DEBT_LIEN_CROSS":
       return ["DEBT_INCURRENCE", "LIENS_SECURED_DEBT"];
     case "RESTRICTED_PAYMENTS":
       return ["RESTRICTED_PAYMENTS_INVESTMENTS", "BASKETS_EXCEPTIONS_CONDITIONS"];
+    case "INVESTMENTS_UNRESTRICTED":
+      return ["RESTRICTED_PAYMENTS_INVESTMENTS", "BASKETS_EXCEPTIONS_CONDITIONS", "OTHER", "GUARANTEES"];
+    case "INCREMENTAL_FACILITY":
+      return ["DEBT_INCURRENCE", "FINANCIAL_MAINTENANCE", "BASKETS_EXCEPTIONS_CONDITIONS", "OTHER"];
+    case "FINANCIAL_INPUTS_CAPACITY":
+      return [
+        "DEBT_INCURRENCE",
+        "LIENS_SECURED_DEBT",
+        "RESTRICTED_PAYMENTS_INVESTMENTS",
+        "FINANCIAL_MAINTENANCE",
+        "BASKETS_EXCEPTIONS_CONDITIONS",
+      ];
     case "NON_GUARANTOR_DEBT":
       return ["DEBT_INCURRENCE", "GUARANTEES", "OTHER"];
     case "ASSET_SALES":
@@ -92,8 +131,20 @@ function intentTokens(intent: QuestionIntent, question: string): string[] {
     case "SECURED_DEBT":
       extra.push("lien", "secured", "collateral", "indebtedness", "security");
       break;
+    case "DEBT_LIEN_CROSS":
+      extra.push("lien", "secured", "collateral", "indebtedness", "permitted", "exception", "basket");
+      break;
     case "RESTRICTED_PAYMENTS":
       extra.push("restricted", "payment", "dividend", "distribution", "repurchase");
+      break;
+    case "INVESTMENTS_UNRESTRICTED":
+      extra.push("investment", "unrestricted", "subsidiary", "designate", "restricted", "subsidiary");
+      break;
+    case "INCREMENTAL_FACILITY":
+      extra.push("incremental", "accordion", "facility", "term", "revolving", "leverage", "pro", "forma");
+      break;
+    case "FINANCIAL_INPUTS_CAPACITY":
+      extra.push("ebitda", "leverage", "ratio", "debt", "cash", "interest", "assets", "pro", "forma");
       break;
     case "NON_GUARANTOR_DEBT":
       extra.push("foreign", "subsidiary", "guarantor", "loan", "party", "indebtedness");
@@ -128,13 +179,31 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
   }
 
   // Intent-specific boosts from structured fields
-  if (intent === "SECURED_DEBT") {
+  if (intent === "SECURED_DEBT" || intent === "DEBT_LIEN_CROSS") {
     if (/lien|secured|collateral/i.test(hay)) score += 4;
     if (item.category === "LIENS_SECURED_DEBT") score += 3;
     if (item.posture === "GENERAL_PROHIBITION" && item.category === "DEBT_INCURRENCE") score += 2;
   }
+  if (intent === "DEBT_LIEN_CROSS") {
+    if (item.category === "DEBT_INCURRENCE") score += 2;
+    if (item.category === "LIENS_SECURED_DEBT") score += 3;
+    if (/permitted lien|secures?|secured by/i.test(hay)) score += 3;
+  }
   if (intent === "RESTRICTED_PAYMENTS" && item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") {
     score += 5;
+  }
+  if (intent === "INVESTMENTS_UNRESTRICTED") {
+    if (/unrestricted subsidiar|investment/i.test(hay)) score += 6;
+    if (item.category === "RESTRICTED_PAYMENTS_INVESTMENTS") score += 3;
+    if (/designate|unrestricted/i.test(hay)) score += 3;
+  }
+  if (intent === "INCREMENTAL_FACILITY") {
+    if (/incremental|accordion|additional (term|revolving|commitment)/i.test(hay)) score += 7;
+    if (/pro forma|leverage/i.test(hay) && item.category === "DEBT_INCURRENCE") score += 2;
+  }
+  if (intent === "FINANCIAL_INPUTS_CAPACITY") {
+    if (/ebitda|leverage|ratio|greater of|grower|builder|available amount/i.test(hay)) score += 4;
+    if ((item.materialBasketsThresholds ?? []).length > 0) score += 2;
   }
   if (intent === "ASSET_SALES" && item.category === "ASSET_SALES") score += 6;
   if (intent === "NON_GUARANTOR_DEBT") {
@@ -252,8 +321,16 @@ function composeAnswer(params: {
     SECURED_DEBT:
       amountLead +
       "Additional secured debt is governed by the agreement’s indebtedness and liens regimes. Both regimes typically apply — permission under a debt basket does not alone authorize a Lien. The source-backed analysis of matching provisions is:",
+    DEBT_LIEN_CROSS:
+      "Whether debt incurred under one indebtedness exception may be secured under a separate liens exception is a cross-covenant question. Permission under Indebtedness does not automatically create a Permitted Lien, and vice versa. Matching debt and lien analyses say:",
     RESTRICTED_PAYMENTS:
       "Restricted payments are generally prohibited except for enumerated baskets. Matching analyzed provisions say:",
+    INVESTMENTS_UNRESTRICTED:
+      "Investments in unrestricted subsidiaries (and designations of unrestricted subsidiaries) are typically controlled by the Investments / Restricted Payments regime and related designation conditions. Matching analyzed provisions say:",
+    INCREMENTAL_FACILITY:
+      "Incremental / accordion facilities are typically gated by indebtedness baskets, leverage or pro forma tests, and lien capacity if secured. Matching analyzed provisions say:",
+    FINANCIAL_INPUTS_CAPACITY:
+      "Contractual capacity is not determinable from discovery summaries alone. Financial inputs that are commonly required (only when the operative rulebook uses them) include: Consolidated EBITDA / Adjusted EBITDA, total and secured debt, cash for netting where the definition allows, interest expense / fixed charges, total assets for grower baskets, pro forma adjustments, and the testing date. Matching provisions that imply those inputs say:",
     NON_GUARANTOR_DEBT:
       "Debt at non-guarantor / non-Loan-Party subsidiaries depends on specific indebtedness baskets and entity-scope language. Matching analyzed provisions say:",
     ASSET_SALES:
@@ -310,6 +387,12 @@ function composeAnswer(params: {
     proposedAmount
       ? `Capacity conclusion for ${proposedAmount}: NOT DETERMINABLE from discovery summaries alone. Required for a supported yes/no: (1) operative amendment resolution, (2) executable legal rulebook for the selected baskets, (3) approved financial snapshot for any ratio/grower tests, (4) ledger utilization for shared/fixed baskets.`
       : "",
+    params.intent === "FINANCIAL_INPUTS_CAPACITY"
+      ? "Capacity conclusion: NOT DETERMINABLE until (1) operative amendment resolution, (2) an approved executable rulebook, (3) user-confirmed financial snapshot values that match contractual definitions (GAAP ≠ contract metrics), and (4) ledger utilization where baskets are usage-tracked."
+      : "",
+    params.intent === "DEBT_LIEN_CROSS"
+      ? "Cross-covenant conclusion: do not treat an Indebtedness basket as a Lien permission. Both regimes must independently support the structure, subject to shared caps and conditions."
+      : "",
     params.amendmentNote ? params.amendmentNote : "",
     "These statements are DISCOVERED_CANDIDATE analyses shared with the covenant-summary store. They do not establish that a transaction is permitted, that capacity exists, or that language is currently operative after amendments.",
   ]
@@ -358,10 +441,28 @@ export function answerFromSummaryItems(params: {
   }
   const intent = classifyIntent(q);
   const tokens = intentTokens(intent, q);
-  const scored = params.items
+  let scored = params.items
     .map((item) => ({ ...item, score: scoreItem(item, intent, tokens) }))
     .filter((i) => i.score >= 3)
     .sort((a, b) => b.score - a.score);
+
+  // Prefer at least one debt + one lien hit for cross-regime questions.
+  if (intent === "SECURED_DEBT" || intent === "DEBT_LIEN_CROSS") {
+    const debt = scored.find((i) => i.category === "DEBT_INCURRENCE");
+    const lien = scored.find((i) => i.category === "LIENS_SECURED_DEBT");
+    const rest = scored.filter((i) => i !== debt && i !== lien);
+    const preferred = [debt, lien, ...rest].filter(Boolean) as typeof scored;
+    if (preferred.length > 0) scored = preferred;
+  }
+
+  // Financial-inputs questions remain answerable even without strong matches.
+  if (intent === "FINANCIAL_INPUTS_CAPACITY" && scored.length === 0) {
+    scored = params.items
+      .map((item) => ({ ...item, score: scoreItem(item, intent, tokens) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, Math.min(3, params.limit ?? 6));
+  }
+
   return composeAnswer({
     question: q,
     intent,
