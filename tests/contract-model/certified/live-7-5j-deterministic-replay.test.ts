@@ -131,15 +131,17 @@ describe("the replay does not overclaim: genuine frozen-output limitations remai
   it("support asymmetry is not manufactured away", () => {
     expect(r.residual.supportAsymmetry).toMatchObject({ supportReviewRequired: true, materialSingleRun: 2, accountabilitySupportReviewRequired: true });
   });
-  it("the (j)/(x)/(y) enumeration signal still fires and keeps its current disposition (NON_MATERIAL once the independent review does not confirm it)", () => {
-    expect(r.residual.enumerationSignal).toEqual([{ severity: "NON_MATERIAL", verificationMethod: "DETERMINISTIC_ONLY", signals: expect.arrayContaining([expect.stringContaining("(j), (x), (y)")]) }]);
-    expect(r.verification.after.status).toBe("VERIFIED_WITH_NON_MATERIAL_FINDINGS");
-    expect(r.verification.after.findings).toEqual([["NON_MATERIAL", "MISSING_RULE", "DETERMINISTIC_ONLY"]]);
+  it("the false (j)/(x)/(y) enumeration residual is cleared — greater-of legs are not independent units", () => {
+    // BEFORE the greater-of span fix, MISSING_RULE fired on (j)/(x)/(y) as if three sibling baskets.
+    // AFTER: those legs are excluded from enumeration markers; no NON_MATERIAL MISSING_RULE remains.
+    expect(r.residual.enumerationSignal).toEqual([]);
+    expect(r.verification.after.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+    expect(r.verification.after.findings).toEqual([]);
   });
-  it("candidate certification stays REVIEW_REQUIRED; the false UNIT_SUFFICIENCY_INCOMPLETE blocker is gone, the genuine ones remain", () => {
+  it("candidate certification stays REVIEW_REQUIRED; false UNIT_SUFFICIENCY_INCOMPLETE and UNACCOUNTED_MATERIAL_SOURCE are gone", () => {
     expect(r.certification.before.blockers.map((b) => b[0])).toEqual(["COMPILATION_NOT_COMPLETED", "UNACCOUNTED_MATERIAL_SOURCE", "UNIT_SUFFICIENCY_INCOMPLETE"]);
     expect(r.certification.after.status).toBe("REVIEW_REQUIRED");
-    expect(r.certification.after.blockers.map((b) => b[0])).toEqual(["COMPILATION_NOT_COMPLETED", "UNACCOUNTED_MATERIAL_SOURCE"]);
+    expect(r.certification.after.blockers.map((b) => b[0])).toEqual(["COMPILATION_NOT_COMPLETED"]);
     expect(r.certification.after.blockers.find((b) => b[0] === "COMPILATION_NOT_COMPLETED")![1]).not.toContain("SEMANTIC_INVENTORY_COVERAGE_GAP");
   });
   it("projection identity: the replayed projection hash equals the one recorded on the replayed verification and differs from the frozen one (the IR changed: AS_OF)", () => {
