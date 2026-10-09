@@ -161,7 +161,7 @@ describe("SA-2 §16-§18 the target selector is read from the source text around
     expect(r.sourceDependencies![0]!.selector).toEqual(target.selector);
     const outcome = classifyEmittedReferences({ emitted: ["Section 9.1"], operativeText: opText(idx2, "9.2(a)") });
     expect(outcome.selectors["9.1"]).toMatchObject({ kind: "QUALIFIED_RULE_SET" });
-    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v2");
+    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v3");
   });
 });
 

@@ -9,8 +9,15 @@
  */
 import type { IRCondition, IRRule, IRSharedCapacity } from "@/lib/contract-model/ir/types";
 import type { VerifiedExecutionPackage, VerifiedUnitArtifact } from "@/lib/contract-model/verified-execution";
-import { interpretVerificationStatus } from "@/lib/contract-model/runtime/verification-gate";
 import type { ContractAction } from "@/lib/contract-model/types";
+
+/** Statuses that completed verification (mirror verification-gate; product must not import runtime/*). */
+const COMPLETED_VERIFICATION_STATUSES = new Set([
+  "VERIFIED_NO_MATERIAL_GAP_FOUND",
+  "VERIFIED_WITH_NON_MATERIAL_FINDINGS",
+  "REVIEW_REQUIRED",
+  "MATERIAL_DISCREPANCY",
+]);
 
 export type CertifiedPathAuthority = "CERTIFIED_4E" | "NOT_CERTIFIED_4E" | "INCOMPLETE_PACKAGE";
 
@@ -112,8 +119,7 @@ function verificationFor(pkg: VerifiedExecutionPackage, unitId: string): Verifie
 function unitVerificationStatus(pkg: VerifiedExecutionPackage, unitId: string): EnumeratedPathStatus {
   const art = verificationFor(pkg, unitId);
   if (!art) return "INCOMPLETE_VERIFICATION";
-  const cov = interpretVerificationStatus(art.result.status);
-  if (cov !== "COMPLETED") return "INCOMPLETE_VERIFICATION";
+  if (!COMPLETED_VERIFICATION_STATUSES.has(art.result.status)) return "INCOMPLETE_VERIFICATION";
   if (
     art.result.status === "REVIEW_REQUIRED" ||
     art.result.status === "MATERIAL_DISCREPANCY" ||

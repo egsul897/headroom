@@ -217,7 +217,7 @@ describe("§35-§42 the frozen live submission re-normalized with the governing 
     expect(c.targetCombination).toBe("ALL_SATISFIED");
     expect(c.evaluationBasis).toMatchObject({ proForma: true, transactionEffect: "after giving effect to the incurrence of such Indebtedness", asOfSelector: "last day of the most recently ended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available", deemedEffectiveAt: "first day of each relevant period for testing such compliance", testingPeriod: null });
     const audit = r.sourceReferenceAudit!;
-    expect(audit.version).toBe("source-reference-fidelity.v2");
+    expect(audit.version).toBe("source-reference-fidelity.v3");
     expect(audit.statedReferences.map((s) => [s.raw, s.normalized, s.origin])).toEqual([["Section 7.3(g)", "7.3(g)", "OPERATIVE_TEXT"], ["Section 7.1", "7.1", "OPERATIVE_TEXT"]]);
     expect(audit.entries.filter((e) => e.path.includes("referencesRuleTargets")).map((e) => [e.emitted, e.classification, e.authoritative, e.restoredTo])).toEqual([["Section 7.1(a)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(b)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(c)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"], ["Section 7.1(d)", "MODEL_NARROWED_REFERENCE", false, "Section 7.1"]]);
     expect(audit.entries.filter((e) => e.path.includes("dependsOn")).map((e) => [e.emitted, e.classification, e.authoritative])).toEqual([["Section 7.3(g)", "EXACT_SOURCE_REFERENCE", true], ["Section 7.1", "EXACT_SOURCE_REFERENCE", true]]);

@@ -230,7 +230,7 @@ describe("REF1-REF5 source references are source identity", () => {
     expect(eq.authoritativeRefs).toEqual(["§9.1", "Section 9.3(b)"]);
     const list = classifyEmittedReferences({ emitted: ["Section 9.1(a)", "Section 9.1(c)", "Section 9.1(d)"], operativeText: "subject to Sections 9.1(a), 9.1(c) and 9.1(d) hereof" });
     expect(list.classifications.every((c) => c.classification === "EXACT_SOURCE_REFERENCE")).toBe(true);
-    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v2");
+    expect(SOURCE_REFERENCE_FIDELITY_VERSION).toBe("source-reference-fidelity.v3");
   });
   it("REF4 model descendant expansion is excluded and restored to the drafted whole reference; broadening is restored to the drafted sub-clause; an invented reference is excluded and limits the rule", () => {
     const n = normalize(idxA, "9.2(a)", [rule({ conditions: [condition92a(["Section 9.1(a)", "Section 9.1(b)"])], dependsOn: [{ relationshipType: "REQUIRES", targetRef: "Section 9.3", description: "" }] })]);

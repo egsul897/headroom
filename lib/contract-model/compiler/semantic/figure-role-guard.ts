@@ -68,14 +68,28 @@ function roleAround(text: string, index: number, len: number): SourceFigureRole 
   return "AMBIGUOUS";
 }
 
-/** Map source ratio comparator phrasing near a ratio figure to a COMPARE operator. */
+/**
+ * Map source ratio comparator phrasing near a ratio figure to the IR COMPARE
+ * operator that represents the *satisfied* covenant test (not the surface
+ * violation wording).
+ *
+ * Financial-covenant drafting often prohibits a state ("shall not permit the
+ * Interest Coverage Ratio to be less than 2.50"); the IR condition that must
+ * hold is the opposite (GTE). Bare "less than" / "greater than" without that
+ * permit/allow framing stay LT/GT for conditional gates.
+ */
 export function sourceRatioOperatorNear(text: string, ratioValue: number): "LTE" | "GTE" | "LT" | "GT" | null {
   const re = ratioFigureRe(ratioValue);
   const m = re.exec(text);
   if (!m) return null;
-  const window = text.slice(Math.max(0, m.index - 100), Math.min(text.length, m.index + m[0].length + 20));
+  const window = text.slice(Math.max(0, m.index - 120), Math.min(text.length, m.index + m[0].length + 20));
+  // Explicit satisfied-direction phrases (permission gates / maintenance floors).
   if (/\b(?:does\s+not\s+exceed|not\s+to\s+exceed|shall\s+not\s+exceed|no\s+more\s+than|at\s+most)\b/i.test(window)) return "LTE";
   if (/\b(?:at\s+least|not\s+less\s+than|equal\s+to\s+or\s+greater\s+than|no\s+less\s+than)\b/i.test(window)) return "GTE";
+  // "shall not … permit/allow … to exceed|be greater than" → maintain ≤
+  if (/\b(?:permit|allow)\b[\s\S]{0,100}?\b(?:to\s+)?(?:exceed|be\s+greater\s+than)\b/i.test(window)) return "LTE";
+  // "shall not … permit/allow … to be less than|below" → maintain ≥
+  if (/\b(?:permit|allow)\b[\s\S]{0,100}?\b(?:to\s+be\s+)?(?:less\s+than|below)\b/i.test(window)) return "GTE";
   if (/\bless\s+than\b/i.test(window) && !/\bnot\s+less\s+than\b/i.test(window)) return "LT";
   if (/\bgreater\s+than\b/i.test(window)) return "GT";
   return null;
