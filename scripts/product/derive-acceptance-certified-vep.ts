@@ -43,8 +43,8 @@ async function deriveForPackage(packageId: string) {
   const adapter = certifiedMapToVerifiedExecutionPackage(artifacts);
   const phase4e =
     adapter.outcome === "DERIVED"
-      ? enumerateCertifiedPaths({ verifiedPackage: adapter.package, transactionKind: "INCUR_DEBT", secured: false })
-      : enumerateCertifiedPaths({ verifiedPackage: null, transactionKind: "INCUR_DEBT", secured: false });
+      ? enumerateCertifiedPaths({ verifiedPackage: adapter.package, transactionKind: "UNSECURED_DEBT", secured: false })
+      : enumerateCertifiedPaths({ verifiedPackage: null, transactionKind: "UNSECURED_DEBT", secured: false });
   return {
     packageId,
     certified: artifacts.length,

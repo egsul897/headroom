@@ -58,15 +58,15 @@ const COVENANT_FAMILY_ALIASES: Record<string, string> = {
   RESTRICTED_DEBT_PAYMENTS: "RESTRICTED_DEBT_PAYMENTS",
 };
 
-function resolveCovenantFamily(raw: string | null | undefined): { family: string | null; aliasedFrom: string | null } {
+function resolveCovenantFamily(raw: string | null | undefined): { family: CovenantFamily | null; aliasedFrom: string | null } {
   if (!raw) return { family: null, aliasedFrom: null };
   const upper = raw.trim().toUpperCase().replace(/[\s-]+/g, "_");
   const aliased = COVENANT_FAMILY_ALIASES[upper];
   if (aliased) {
-    const family = matchEnum(aliased, Object.values(CovenantFamily));
+    const family = matchEnum(aliased, Object.values(CovenantFamily) as CovenantFamily[]);
     return { family, aliasedFrom: upper === aliased ? null : upper };
   }
-  return { family: matchEnum(raw, Object.values(CovenantFamily)), aliasedFrom: null };
+  return { family: matchEnum(raw, Object.values(CovenantFamily) as CovenantFamily[]), aliasedFrom: null };
 }
 
 export interface NormalizationWarning {
