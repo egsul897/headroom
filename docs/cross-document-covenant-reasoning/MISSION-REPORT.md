@@ -33,14 +33,13 @@ Make Headroom evaluate a proposed transaction against **all independently applic
 3. **Irrelevant documents need not authorize** — e.g. CA Indebtedness definition excluding Capital Leases → `NOT_APPLICABLE`.
 4. **Missing restrictions / absent docs are unknowns** — never inferred satisfied.
 
-## Authentic fixtures used
+## Scenario corpus (corrected)
 
-- `pkg-b-multi-document` — Northfield Credit Agreement + Senior Notes Indenture + First Supplemental Indenture
-- `pkg-i-secured-debt-lien` — Granite Peak debt / lien / §9.15 secured cap
-- `pkg-h-unseen-composition` — Copperline ABL + Intercreditor (investments, Payment Conditions)
-- `pkg-c-amendment-supersession` — amendment restatement pattern (cross-checked)
+**Baseline eight (PR #218):** **SYNTHETIC** product-acceptance fixtures (`pkg-b` / `pkg-i` / `pkg-h` / `pkg-c`) — see [`01-authenticity-audit.md`](./01-authenticity-audit.md). Do not call these authentic EDGAR packages.
 
-## Eight scenarios (independently verified)
+**Next mission authentic packages:** CONMED + DSGR EDGAR fixtures — see [`02-authentic-package-reasoning-report.md`](./02-authentic-package-reasoning-report.md).
+
+## Eight synthetic scenarios (independently verified)
 
 | ID | Focus | Overall | Key citations |
 |---|---|---|---|
