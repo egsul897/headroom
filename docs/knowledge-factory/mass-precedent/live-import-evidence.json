@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "knowledge-factory.mass-precedent-live-import.v1",
+  "generatedAt": "2026-10-09T01:39:00.000Z",
+  "authorization": "Owner approved migrate + first LIVE WRITE",
+  "migrationsApplied": [
+    "20261009013000_document_byte_objects",
+    "20261009020000_knowledge_import_batches"
+  ],
+  "migrationsTotal": 35,
+  "import": {
+    "mode": "live",
+    "processed": 29,
+    "inserted": 29,
+    "reusedOnSecondRun": 29,
+    "conflicts": 0,
+    "errors": 0
+  },
+  "neonAfter": {
+    "documentByteObjects": 29,
+    "totalBytes": 37306833,
+    "knowledgeSources": 29,
+    "withStorageRef": 29,
+    "distinctIssuers": 4,
+    "companies": 6,
+    "financialSnapshots": 3,
+    "documents": 11
+  },
+  "gibraltarIndependentRetrieve": {
+    "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+    "byteSize": 2266666,
+    "sha256": "6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a",
+    "hashMatch": true,
+    "storageRef": "pgbytea:v1:6dc23ab0e008b95b8bca4547cb485cef7f6269f698befbfbe02856098445f27a"
+  },
+  "verdict": "DURABLE_CORPUS_PROVEN_BATCH_29"
+}
