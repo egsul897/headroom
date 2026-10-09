@@ -15,8 +15,8 @@ parallel architecture.
 | IPV-02 | CRITICAL_FALSE_PERMISSION | Source inventory v4: `together with` shared-cap drafting detected as SHARED_CAP_MARKER |
 | IPV-03 | MATERIAL_CONDITION_OMISSION | Accountability: CONDITION/EXCEPTION/SHARED_CAP cannot be lineage-laundered onto bare rule nodes |
 | IPV-09 | MATERIAL_CONDITION_OMISSION | Definition mention finder: deterministic plural surface forms |
-| IPV-10 | UNSUPPORTED_AS_COMPLETE | Nested undefined terms inside retrieved definitions → MEDIUM unresolved; not SUFFICIENT |
-| IPV-12 / IPV-21 | false DEFINITION_CYCLE | Already-retrieved diamond/cross-mentions dedupe without blocking cycle |
+| IPV-10 | UNSUPPORTED_AS_COMPLETE | Nested undefined terms scanned in definition bodies; high-confidence financial morphology → MEDIUM (not SUFFICIENT); weaker phrases → LOW disclosure |
+| IPV-12 / IPV-21 | false DEFINITION_CYCLE | Already-retrieved diamond/cross-mentions dedupe without blocking cycle; `getDefinitionFullText` bounds at next SECTION/ARTICLE |
 
 Register statuses → `FIXED_UNVERIFIED` pending full product-acceptance re-run.
 
@@ -61,5 +61,8 @@ expert-adjudicated expectations only.
 ## Tests / CI
 
 - `tests/product/legal-excellence.test.ts` — IPV-01/02/03 unit gates, CONMED unseen legal excellence, counsel corrections, ten-metric report.
-- Existing `tests/product/substantive-covenant-intelligence.test.ts` remains green.
-- `npm run test:product` includes the new suite.
+- `tests/contract-model/definition-cycle-graph.test.ts` — diamond vs cycle + IPV-10 tiered severity.
+- `npm run test:phase3-certification` — 481 passed (certified golden path restored).
+- `npm run test:legal-excellence` — 46 passed.
+- PR: https://github.com/egsul897/headroom/pull/194
+- Tip SHA: `6771a1cca96f021462b78cd8c81be8440b3b4515`
