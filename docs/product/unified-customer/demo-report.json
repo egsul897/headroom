@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-10-09T22:26:29.752Z",
+  "companyId": "coherent",
+  "engineIntegration": {
+    "sharedStateFingerprint": "5387d65b23a798e7febd33cc",
+    "asOfDateIso": "2026-06-30",
+    "authority": {
+      "capacityAuthority": "LEGACY_ENGINE",
+      "note": "Figures from the shared legacy covenant engine against dated FinancialState — NOT_CERTIFIED_4E until Phase 4A–4E + APPROVED snapshots replace this path."
+    },
+    "positionUsesSameFingerprint": true,
+    "askHandoffFingerprintMatchesDatedState": true,
+    "datedStateFingerprint": "ec395938981090b57ee06cbd"
+  },
+  "position": {
+    "outcome": {
+      "kind": "CONDITIONAL_OR_REVIEW_REQUIRED",
+      "label": "Conditional / review required",
+      "rationale": "Position shows modeled capacity and thresholds from the shared engine. Affirmative permission requires a Simulate/Ask transaction with every applicable constraint clearing — not capacity figures alone.",
+      "isAffirmativePermission": false
+    },
+    "ratios": [
+      {
+        "key": "tnl",
+        "label": "Total net leverage",
+        "value": "1.23x",
+        "threshold": null,
+        "documentName": null,
+        "sectionRef": null,
+        "status": "AVAILABLE"
+      },
+      {
+        "key": "ssnl",
+        "label": "Senior secured net leverage",
+        "value": "0.62x",
+        "threshold": null,
+        "documentName": null,
+        "sectionRef": null,
+        "status": "AVAILABLE"
+      },
+      {
+        "key": "fccr",
+        "label": "Fixed charge coverage",
+        "value": "8.95x",
+        "threshold": null,
+        "documentName": null,
+        "sectionRef": null,
+        "status": "AVAILABLE"
+      }
+    ],
+    "remainingCapacity": {
+      "secured": 5129,
+      "unsecured": 5129
+    },
+    "sharedConstraints": [],
+    "evidenceCount": 25,
+    "basketCount": 9,
+    "thresholdCount": 6
+  },
+  "askToSimulate": {
+    "simulateHref": "/coherent/simulate?kind=SECURED_DEBT&amount=100&secured=1&date=2026-08-01&currency=USD&handoff=handoff_mv1jbp2j_ml76732f&stateFp=ec395938981090b57ee06cbd&q=Can+we+incur+%24100+million+of+secured+debt+on+2026-08-01%3F",
+    "structuredTransaction": {
+      "kind": "SECURED_DEBT",
+      "amountMillions": 100,
+      "secured": true,
+      "evaluationDate": "2026-08-01",
+      "currency": "USD",
+      "entityLabel": null,
+      "rawQuestion": "Can we incur $100 million of secured debt on 2026-08-01?",
+      "handoffId": "handoff_mv1jbp2j_ml76732f",
+      "stateFingerprint": "ec395938981090b57ee06cbd"
+    },
+    "answerKind": "insufficient_evidence",
+    "answerHeadline": "Transaction inputs incomplete — capacity withheld"
+  },
+  "simulate": {
+    "amount100": {
+      "requestFingerprint": "e87289e1484094c6f9505af7",
+      "outcome": {
+        "kind": "SUPPORTED_PERMISSION",
+        "label": "Supported permission",
+        "rationale": "All 8 tested governing constraint(s) clear for this scenario.",
+        "isAffirmativePermission": true
+      },
+      "engineStatus": "clear",
+      "bindingConstraints": [],
+      "prePostRatios": [
+        {
+          "label": "Financial Covenants — Total Net Leverage",
+          "pre": 1.2329411764705882,
+          "post": 1.291764705882353,
+          "threshold": 4.25,
+          "sectionRef": "§6.11 — TNL ≤ 4.25x",
+          "documentName": "Credit Agreement (2022, as amended)",
+          "status": "clear"
+        },
+        {
+          "label": "Financial Covenants — Interest Coverage",
+          "pre": 8.947368421052632,
+          "post": 8.651399491094148,
+          "threshold": 2.5,
+          "sectionRef": "§6.11 — IC ≥ 2.50x",
+          "documentName": "Credit Agreement (2022, as amended)",
+          "status": "clear"
+        },
+        {
+          "label": "Ratio Debt",
+          "pre": 8.947368421052632,
+          "post": 8.651399491094148,
+          "threshold": 2,
+          "sectionRef": "§3.3(a) — FCCR ≥ 2.00x",
+          "documentName": "2029 Senior Notes Indenture",
+          "status": "clear"
+        },
+        {
+          "label": "MILA — secured prong",
+          "pre": 0.6229411764705882,
+          "post": 0.6817647058823529,
+          "threshold": 3,
+          "sectionRef": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+          "documentName": "2029 Senior Notes Indenture",
+          "status": "clear"
+        }
+      ]
+    },
+    "amount250": {
+      "requestFingerprint": "f3e12cf6dec68ae91cdab019",
+      "outcome": {
+        "kind": "SUPPORTED_PERMISSION",
+        "label": "Supported permission",
+        "rationale": "All 8 tested governing constraint(s) clear for this scenario.",
+        "isAffirmativePermission": true
+      },
+      "engineStatus": "clear",
+      "fingerprintsDiffer": true
+    },
+    "staleRejected": {
+      "stale": true,
+      "staleReason": "STATE_FINGERPRINT_MISMATCH",
+      "outcomeKind": "MISSING_EVIDENCE"
+    }
+  },
+  "freshnessProof": {
+    "amountChangeChangesFingerprint": true
+  },
+  "costUsd": 0
+}
