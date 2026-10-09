@@ -122,11 +122,33 @@ function sourceIdOf(d: QueueDoc): string {
   return `ehb:${createHash("sha256").update(url || JSON.stringify(d)).digest("hex").slice(0, 24)}`;
 }
 
+const NEON_DOCUMENT_CLASSES = new Set([
+  "CREDIT_AGREEMENT",
+  "REVOLVING_CREDIT_AGREEMENT",
+  "TERM_LOAN_AGREEMENT",
+  "ABL_AGREEMENT",
+  "INDENTURE",
+  "SUPPLEMENTAL_INDENTURE",
+  "AMENDMENT",
+  "RESTATEMENT",
+  "WAIVER",
+  "CONSENT",
+  "SIDE_LETTER",
+  "INTERCREDITOR_AGREEMENT",
+  "SECURITY_AGREEMENT",
+  "GUARANTEE_AGREEMENT",
+  "OTHER_DEBT_RELATED",
+  "UNKNOWN",
+]);
+
 function mapDeclaredClass(rawClass: string): string {
-  const c = rawClass.toUpperCase();
+  const c = rawClass.toUpperCase().replace(/\s+/g, "_");
   if (c === "OTHER_DEBT_AGREEMENT") return "OTHER_DEBT_RELATED";
   if (c === "REVOLVER" || c === "REVOLVING_CREDIT") return "REVOLVING_CREDIT_AGREEMENT";
-  return c;
+  if (c === "INTERCREDITOR") return "INTERCREDITOR_AGREEMENT";
+  if (c === "GUARANTEE" || c === "GUARANTY") return "GUARANTEE_AGREEMENT";
+  if (NEON_DOCUMENT_CLASSES.has(c)) return c;
+  return "UNKNOWN";
 }
 
 async function loadBytesForReprocess(
