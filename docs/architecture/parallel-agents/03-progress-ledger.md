@@ -212,3 +212,12 @@
 - **C1 BLOCKED:** depends on A2.
 - Verdict: **END_TO_END_NOT_YET_PROVEN**. Board: `15-e2e-product-proof-execution-board.json`. Probe: `scripts/parallel-agents/e2e-product-proof-status.ts`.
 
+
+## 2026-10-09T23:18:00Z — PR #229 merge authorization follow-up (A8 close)
+
+- **Founder authorized** merge of PR #229 at tip `b33f86554e398af4eb3204120b5f5046e21ffe7d` (3/3 CI green).
+- At check time PR was **already MERGED**; merge commit / main tip: `b99f934b1d94b2631fb40ba3ca131a914bef2370`. Tip is ancestor of `main`. No unrelated PRs merged.
+- Post-merge verify: `statusForAmount` + `CapacityStatus.NOT_SATISFIED` present; probe `NOT_SATISFIED`; Agent 8 **32/32**; integrated suite **413 passed**.
+- **DEFECT-A8-01 / A8-02 marked CLOSED** in `docs/agent8-independent-adversarial/02-critical-defects.json` + `07-post-merge-close.md`.
+- Dependency refresh: `27-post-229-integration-batch.md` / `28-post-229-dependency-snapshot.json`.
+- **Next safe batch (not auto-merged):** silent-zero utilization → rebase/reconcile **#232** → reconcile utilization with **#234**.
