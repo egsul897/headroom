@@ -2,20 +2,41 @@ import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { loadDebtIntelligenceDashboard } from "@/lib/product/customer-intelligence/debt-intelligence";
 import { fmtM } from "@/lib/format";
+import { MetricRow } from "@/components/debt-intelligence/MetricRow";
 
 export const metadata = { title: "Headroom — Debt intelligence" };
 export const dynamic = "force-dynamic";
 
-export default async function DebtIntelligencePage({ params }: { params: Promise<{ companyId: string }> }) {
+function toneFor(status: string): "pass" | "tight" | "navy" | "idle" {
+  if (status === "COMPUTED") return "pass";
+  if (status === "MISSING_FINANCIALS" || status === "MISSING_RULEBOOK") return "tight";
+  if (status === "AI_SURFACED" || status === "CONDITIONAL") return "navy";
+  return "idle";
+}
+
+export default async function DebtIntelligencePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams: Promise<{ metric?: string }>;
+}) {
   const { companyId } = await params;
+  const sp = await searchParams;
+  const openMetric = sp.metric?.trim() || null;
   const d = await loadDebtIntelligenceDashboard(companyId);
   const cs = d.capitalStructure;
+  const agg = cs.aggregates;
 
   return (
     <div className="stack">
       <Card>
-        <div className="card-title">Debt intelligence</div>
+        <div className="card-title">Debt intelligence dashboard</div>
         <div className="card-subtitle">{d.headline}</div>
+        <div className="row-note" style={{ marginTop: 8 }}>
+          AI-populated from your financing package, financial snapshots, ledger and counsel review. External legal
+          verification is not required before metrics appear. Remaining capacity is never invented.
+        </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Rulebook</div>
           <div className="row-value">
@@ -23,7 +44,7 @@ export default async function DebtIntelligencePage({ params }: { params: Promise
           </div>
         </div>
         <div className="row">
-          <div className="row-label">Capacity</div>
+          <div className="row-label">Capacity path</div>
           <div className="row-value">
             <Chip tone="idle">{d.capacityStatus}</Chip>
           </div>
@@ -33,11 +54,12 @@ export default async function DebtIntelligencePage({ params }: { params: Promise
           <div className="row-value">{d.amendmentResolution}</div>
         </div>
         <div className="row-note">
-          Docs {d.documentCount} · Interpreted {d.interpretedCount} · Counsel accepted/edited {d.acceptedCount}
+          Docs {d.documentCount} · Interpreted {d.interpretedCount} · Counsel accepted/edited {d.acceptedCount} ·
+          Generated {d.generatedAt.slice(0, 19)}Z
         </div>
-        <div className="button-row" style={{ marginTop: 10 }}>
-          <Link className="button button-primary" href={`/${companyId}`}>
-            Overview dashboard
+        <div className="button-row" style={{ marginTop: 10, flexWrap: "wrap", gap: 8 }}>
+          <Link className="button" href={`/${companyId}`}>
+            Overview
           </Link>
           <Link className="button" href={`/${companyId}/covenants`}>
             Covenant review
@@ -45,121 +67,200 @@ export default async function DebtIntelligencePage({ params }: { params: Promise
           <Link className="button" href={`/${companyId}/rulebook`}>
             Lawyer review
           </Link>
-          <Link className="button" href={`/${companyId}/ask`}>
+          <Link className="button button-primary" href={`/${companyId}/ask`}>
             Ask Headroom
           </Link>
           <Link className="button" href={`/${companyId}/onboarding/financials`}>
             Financial inputs
           </Link>
+          <Link className="button" href={`/${companyId}/simulate`}>
+            Simulate
+          </Link>
+          <Link className="button" href={`/${companyId}/capacity`}>
+            Capacity
+          </Link>
+          <Link className="button" href={`/${companyId}/ledger`}>
+            Ledger
+          </Link>
         </div>
       </Card>
 
+      {/* 1. Capital structure */}
       <Card>
-        <div className="card-title">Capital structure (financial snapshot)</div>
+        <div className="card-title">1. Debt capital structure</div>
         <div className="card-subtitle">
-          {cs.numericStatus === "SUPPORTED"
-            ? `As of ${cs.asOfDate}`
-            : "No financial snapshot — enter figures under Onboarding → Financials."}
+          {cs.asOfDate
+            ? `Aggregates as of ${cs.asOfDate} · ${cs.numericStatus}`
+            : "No financial snapshot — facility/instrument rows may still appear from the package."}
         </div>
-        {cs.numericStatus === "SUPPORTED" ? (
-          <>
-            <div className="row">
-              <div className="row-label">Total debt</div>
-              <div className="row-value">{fmtM(cs.totalDebt ?? 0)}</div>
-            </div>
-            <div className="row">
-              <div className="row-label">Secured debt</div>
-              <div className="row-value">{fmtM(cs.securedDebt ?? 0)}</div>
-            </div>
-            <div className="row">
-              <div className="row-label">Cash</div>
-              <div className="row-value">{fmtM(cs.cash ?? 0)}</div>
-            </div>
-            <div className="row">
-              <div className="row-label">EBITDA</div>
-              <div className="row-value">{fmtM(cs.ebitda ?? 0)}</div>
-            </div>
-            <div className="row">
-              <div className="row-label">Interest expense</div>
-              <div className="row-value">{fmtM(cs.interestExpense ?? 0)}</div>
-            </div>
-            {cs.notes && <div className="row-note">{cs.notes}</div>}
-          </>
-        ) : (
-          <div className="row-note">Numeric capital-structure panel unavailable until financial inputs are saved.</div>
-        )}
-      </Card>
-
-      <Card>
-        <div className="card-title">Financial covenant ratios (AI-surfaced)</div>
-        <div className="card-subtitle">
-          Threshold language from analyzed provisions. Current ratio values stay NOT DETERMINABLE until executable formulas
-          exist.
+        <div className="row">
+          <div className="row-label">Total debt</div>
+          <div className="row-value">{agg.totalDebt != null ? fmtM(agg.totalDebt) : "—"}</div>
         </div>
-        {d.ratios.map((r, i) => (
-          <div key={i} style={{ marginTop: 10 }}>
-            <div className="row">
-              <div className="row-label">{r.name}</div>
-              <div className="row-value">
-                <Chip tone={r.status === "INPUTS_PRESENT" ? "navy" : "tight"}>{r.status}</Chip>
-              </div>
-            </div>
-            <div className="row-note">{r.contractualSignal}</div>
-            <div className="row-note">{r.currentValue}</div>
+        <div className="row">
+          <div className="row-label">Secured / unsecured</div>
+          <div className="row-value">
+            {agg.securedDebt != null ? fmtM(agg.securedDebt) : "—"} /{" "}
+            {agg.unsecuredDebt != null ? fmtM(agg.unsecuredDebt) : "—"}
           </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Cash / net debt</div>
+          <div className="row-value">
+            {agg.cash != null ? fmtM(agg.cash) : "—"} / {agg.netDebt != null ? fmtM(agg.netDebt) : "—"}
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">EBITDA / interest</div>
+          <div className="row-value">
+            {agg.ebitda != null ? fmtM(agg.ebitda) : "—"} /{" "}
+            {agg.interestExpense != null ? fmtM(agg.interestExpense) : "—"}
+          </div>
+        </div>
+        {cs.notes ? <div className="row-note">{cs.notes}</div> : null}
+        {cs.instruments.length === 0 ? (
+          <div className="row-note" style={{ marginTop: 8 }}>
+            No facilities or debt tranches yet. Add financials or facility records to populate instruments, rates and
+            maturities.
+          </div>
+        ) : (
+          cs.instruments.map((inst) => (
+            <MetricRow
+              key={inst.metricId}
+              label={`${inst.name} (${inst.kind})`}
+              value={
+                inst.outstanding != null
+                  ? `${fmtM(inst.outstanding)}${inst.available != null ? ` · avail ${fmtM(inst.available)}` : ""}`
+                  : inst.commitment != null
+                    ? `Commitment ${fmtM(inst.commitment)}`
+                    : "Amounts not bound"
+              }
+              status={inst.secured == null ? null : inst.secured ? "SECURED" : "UNSECURED"}
+              statusTone={inst.secured ? "navy" : "idle"}
+              secondary={[inst.coupon, inst.maturity ? `Matures ${inst.maturity}` : null, inst.guarantors]
+                .filter(Boolean)
+                .join(" · ")}
+              drilldown={inst.drilldown}
+              defaultOpen={openMetric === inst.metricId}
+            />
+          ))
+        )}
+        {agg.totalDebt == null ? (
+          <div className="button-row" style={{ marginTop: 12 }}>
+            <Link className="button button-primary" href={`/${companyId}/onboarding/financials`}>
+              Supply financial inputs
+            </Link>
+          </div>
+        ) : null}
+      </Card>
+
+      {/* 2. Ratios */}
+      <Card>
+        <div className="card-title">2. Financial covenant ratios</div>
+        <div className="card-subtitle">
+          Generic ratios compute from snapshot inputs when present; contractual thresholds come from AI-surfaced
+          provisions. Map GAAP inputs to contract definitions before treating figures as covenant tests.
+        </div>
+        {d.ratios.map((r) => (
+          <MetricRow
+            key={r.metricId}
+            label={r.name}
+            value={r.currentValue ?? "NOT DETERMINABLE"}
+            status={r.status}
+            statusTone={toneFor(r.status)}
+            secondary={[
+              r.threshold ? `Threshold: ${r.threshold}` : null,
+              r.cushion ? `Cushion: ${r.cushion}` : null,
+              r.testingDate ? `As of ${r.testingDate}` : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+            drilldown={r.drilldown}
+            defaultOpen={openMetric === r.metricId}
+          />
         ))}
       </Card>
 
+      {/* 3. Baskets */}
       <Card>
-        <div className="card-title">Covenant basket capacity (discovery)</div>
+        <div className="card-title">3. Covenant basket capacity</div>
         <div className="card-subtitle">
-          Baskets and conditions extracted from the package. Remaining availability is not invented here.
+          Debt, lien, RP, investment, incremental, asset-sale and builder language from the package. Remaining
+          availability is shown only when supported — never invented.
         </div>
         {d.baskets.length === 0 ? (
           <div className="row-note">No basket/threshold language surfaced yet.</div>
         ) : (
-          d.baskets.map((b, i) => (
-            <div
-              key={`${b.sectionRef}-${i}`}
-              style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}
-            >
-              <div className="row">
-                <div className="row-label">
-                  §{b.sectionRef} — {b.heading}
-                </div>
-                <div className="row-value">
-                  {b.reviewDecision ? <Chip tone="pass">{b.reviewDecision}</Chip> : <Chip tone="idle">AI</Chip>}
-                </div>
-              </div>
-              <div className="row-note">{b.category}</div>
-              {b.baskets.slice(0, 4).map((x, j) => (
-                <div key={j} className="row-note">
-                  · {x}
-                </div>
-              ))}
-              {b.conditions.slice(0, 2).map((x, j) => (
-                <div key={`c${j}`} className="row-note">
-                  Condition: {x}
-                </div>
-              ))}
-              <div className="row-note">{b.citation}</div>
-            </div>
+          d.baskets.map((b) => (
+            <MetricRow
+              key={b.metricId}
+              label={`§${b.sectionRef} — ${b.heading}`}
+              value={b.contractualCapacity}
+              status={b.reviewDecision ?? b.status}
+              statusTone={b.reviewDecision ? "pass" : toneFor(b.status)}
+              secondary={[b.category, b.utilization ? `Utilization: ${b.utilization}` : "Utilization: not attributed", b.remaining ? `Remaining: ${b.remaining}` : "Remaining: NOT DETERMINABLE"]
+                .filter(Boolean)
+                .join(" · ")}
+              drilldown={b.drilldown}
+              defaultOpen={openMetric === b.metricId}
+            />
           ))
         )}
       </Card>
 
+      {/* 4. Monitoring */}
       <Card>
-        <div className="card-title">Compliance monitoring</div>
+        <div className="card-title">4. Compliance monitoring</div>
+        <div className="card-subtitle">
+          Maintenance readiness, financials, amendments, maturities and analysis gaps — only when backed by persisted
+          workspace state.
+        </div>
         {d.monitoring.length === 0 ? (
           <div className="row-note">No monitoring alerts from current workspace state.</div>
         ) : (
-          d.monitoring.map((a, i) => (
-            <div key={i} style={{ marginTop: 8 }}>
-              <Chip tone={a.severity === "HIGH" ? "tight" : "idle"}>{a.severity}</Chip> {a.title}
-              <div className="row-note">{a.detail}</div>
-            </div>
+          d.monitoring.map((a) => (
+            <MetricRow
+              key={a.metricId}
+              label={a.title}
+              value={a.kind}
+              status={a.severity}
+              statusTone={a.severity === "HIGH" ? "tight" : "idle"}
+              secondary={a.detail}
+              drilldown={a.drilldown}
+              defaultOpen={openMetric === a.metricId}
+            />
           ))
         )}
+      </Card>
+
+      {/* 5. Transactions */}
+      <Card>
+        <div className="card-title">5. Transaction intelligence</div>
+        <div className="card-subtitle">
+          Proposed exercises mapped to AI-matched provisions. Run Ask for reasoned analysis; Simulate when the engine
+          path is ready. Pro forma ratios stay conditional without executable rules and inputs.
+        </div>
+        {d.transactions.map((t) => (
+          <div key={t.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+            <MetricRow
+              label={t.scenario}
+              value={t.status}
+              status={t.status}
+              statusTone={toneFor(t.status)}
+              secondary={t.summary}
+              drilldown={t.drilldown}
+              defaultOpen={openMetric === t.metricId}
+            />
+            <div className="button-row" style={{ marginTop: 8, gap: 8 }}>
+              <Link className="button button-primary" href={t.askHref}>
+                Ask this scenario
+              </Link>
+              <Link className="button" href={t.simulateHref}>
+                Open simulate
+              </Link>
+            </div>
+          </div>
+        ))}
       </Card>
 
       <div className="row-note">{d.note}</div>

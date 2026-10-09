@@ -1,43 +1,118 @@
 /**
- * AI-populated debt intelligence dashboard model — source-backed, fail-closed on numbers.
+ * AI-populated debt intelligence dashboard — real persisted sources only.
+ * Fail-closed on invented capacity; AI interpretations shown for counsel review.
  */
 
 import { prisma } from "@/lib/prisma";
+import { fmtM } from "@/lib/format";
+import { LEDGER_BASKET_LABELS } from "@/prisma/seed-data";
 import { loadCovenantReviewWorkspace } from "./covenant-review";
 import { loadCapacityReadiness } from "./capacity-readiness";
 import { loadRulebookReadiness } from "./rulebook-readiness";
 import { loadMonitoringFeed } from "./monitoring";
-import { listReviewerApprovals } from "./reviewer-approvals";
+import { listReviewerApprovals, type ReviewerApproval } from "./reviewer-approvals";
+import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
+
+export type MetricNumericStatus =
+  | "COMPUTED"
+  | "CONDITIONAL"
+  | "MISSING_FINANCIALS"
+  | "MISSING_RULEBOOK"
+  | "AI_SURFACED";
+
+export interface DashboardDrilldown {
+  metricId: string;
+  title: string;
+  module: "CAPITAL" | "RATIOS" | "BASKETS" | "MONITORING" | "TRANSACTIONS";
+  governingAgreement: string | null;
+  sectionCitation: string | null;
+  definitions: Array<{ term: string; excerpt: string }>;
+  contractualFormula: string | null;
+  financialInputs: Array<{ label: string; value: string | null; required: boolean }>;
+  historicalUtilization: Array<{ date: string; description: string; amount: string; basket: string }>;
+  conditions: string[];
+  exceptions: string[];
+  relatedCovenants: string[];
+  aiInterpretation: string | null;
+  alternatives: string[];
+  assumptions: string[];
+  reviewerCorrections: Array<{ decision: string; note?: string; at: string; plainEnglish?: string }>;
+  calculationHistory: string[];
+  missingInputs: string[];
+  hrefs: Array<{ label: string; href: string }>;
+}
 
 export interface DebtIntelligenceDashboard {
   companyId: string;
   headline: string;
+  generatedAt: string;
   capitalStructure: {
-    totalDebt: number | null;
-    securedDebt: number | null;
-    cash: number | null;
-    ebitda: number | null;
-    interestExpense: number | null;
+    numericStatus: MetricNumericStatus;
     asOfDate: string | null;
+    aggregates: {
+      totalDebt: number | null;
+      securedDebt: number | null;
+      unsecuredDebt: number | null;
+      cash: number | null;
+      netDebt: number | null;
+      ebitda: number | null;
+      interestExpense: number | null;
+    };
+    instruments: Array<{
+      metricId: string;
+      name: string;
+      kind: string;
+      outstanding: number | null;
+      commitment: number | null;
+      available: number | null;
+      secured: boolean | null;
+      coupon: string | null;
+      maturity: string | null;
+      guarantors: string | null;
+      drilldown: DashboardDrilldown;
+    }>;
     notes: string | null;
-    numericStatus: "SUPPORTED" | "MISSING_FINANCIALS";
   };
   ratios: Array<{
+    metricId: string;
     name: string;
-    contractualSignal: string;
-    currentValue: string;
-    status: "NOT_DETERMINABLE" | "INPUTS_PRESENT";
+    family: string;
+    currentValue: string | null;
+    threshold: string | null;
+    cushion: string | null;
+    status: MetricNumericStatus;
+    testingDate: string | null;
+    drilldown: DashboardDrilldown;
   }>;
   baskets: Array<{
+    metricId: string;
     category: string;
     sectionRef: string;
     heading: string;
-    baskets: string[];
-    conditions: string[];
-    citation: string;
+    contractualCapacity: string | null;
+    utilization: string | null;
+    remaining: string | null;
+    status: MetricNumericStatus;
     reviewDecision: string | null;
+    drilldown: DashboardDrilldown;
   }>;
-  monitoring: Array<{ severity: string; title: string; detail: string }>;
+  monitoring: Array<{
+    metricId: string;
+    severity: string;
+    title: string;
+    detail: string;
+    kind: string;
+    drilldown: DashboardDrilldown;
+  }>;
+  transactions: Array<{
+    metricId: string;
+    scenario: string;
+    summary: string;
+    status: MetricNumericStatus;
+    askHref: string;
+    simulateHref: string;
+    drilldown: DashboardDrilldown;
+  }>;
   rulebookStage: string;
   capacityStatus: string;
   amendmentResolution: string;
@@ -47,57 +122,598 @@ export interface DebtIntelligenceDashboard {
   note: string;
 }
 
+function num(v: unknown): number | null {
+  if (v == null) return null;
+  if (typeof v === "number" && Number.isFinite(v)) return v;
+  if (typeof v === "object" && v !== null && "toNumber" in v) {
+    try {
+      const n = (v as { toNumber: () => number }).toNumber();
+      return Number.isFinite(n) ? n : null;
+    } catch {
+      return null;
+    }
+  }
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function ratioStr(numerator: number | null, denominator: number | null): string | null {
+  if (numerator == null || denominator == null) return null;
+  if (denominator === 0) return null;
+  return `${(numerator / denominator).toFixed(2)}x`;
+}
+
+function classifyBasketFamily(category: string, heading: string, text: string): string {
+  const hay = `${category} ${heading} ${text}`.toLowerCase();
+  if (/incremental|accordion/.test(hay)) return "Incremental facilities";
+  if (/restricted payment|dividend|rp\b/.test(hay)) return "Restricted payments";
+  if (/investment|acquisition/.test(hay)) return "Investments";
+  if (/lien|collateral|secured/.test(hay)) return "Lien baskets";
+  if (/asset sale|disposition/.test(hay)) return "Asset sales";
+  if (/available amount|builder|cumulative/.test(hay)) return "Available amount / builder";
+  if (/shared|aggregate cap/.test(hay)) return "Shared capacity";
+  if (/indebtedness|debt|ratio debt/.test(hay)) return "Debt baskets";
+  return category || "Other";
+}
+
+function buildDrilldown(params: {
+  metricId: string;
+  title: string;
+  module: DashboardDrilldown["module"];
+  companyId: string;
+  item?: CovenantSummaryItem & { sourceId?: string; documentTitle?: string };
+  approvals?: ReviewerApproval[];
+  formula?: string | null;
+  inputs?: DashboardDrilldown["financialInputs"];
+  utilization?: DashboardDrilldown["historicalUtilization"];
+  calcHistory?: string[];
+  missing?: string[];
+}): DashboardDrilldown {
+  const item = params.item;
+  const approvals = (params.approvals ?? []).filter(
+    (a) => a.sectionRef === item?.sectionRef && (!item.sourceId || a.sourceId === item.sourceId),
+  );
+  return {
+    metricId: params.metricId,
+    title: params.title,
+    module: params.module,
+    governingAgreement: item?.governingAgreement ?? item?.documentTitle ?? null,
+    sectionCitation: item ? `${item.sourceCitation}` : null,
+    definitions: (item?.applicableDefinitions ?? []).slice(0, 8).map((d) => ({
+      term: d.term,
+      excerpt: (d.excerpt ?? "").slice(0, 220),
+    })),
+    contractualFormula: params.formula ?? (item?.materialBasketsThresholds ?? [])[0] ?? null,
+    financialInputs: params.inputs ?? [],
+    historicalUtilization: params.utilization ?? [],
+    conditions: item?.conditions?.slice(0, 6) ?? [],
+    exceptions: item?.exceptions?.slice(0, 6) ?? [],
+    relatedCovenants: [
+      ...(item?.crossReferences ?? []).slice(0, 4),
+      ...(item?.dependencies ?? []).slice(0, 4),
+    ],
+    aiInterpretation: item?.plainEnglish ?? null,
+    alternatives: item?.alternativeInterpretations ?? item?.analysis?.alternativeInterpretations ?? [],
+    assumptions: item?.assumptions ?? item?.analysis?.assumptions ?? [],
+    reviewerCorrections: approvals.map((a) => ({
+      decision: a.decision,
+      note: a.note,
+      at: a.reviewedAt,
+      plainEnglish: a.editedPlainEnglish,
+    })),
+    calculationHistory: params.calcHistory ?? [],
+    missingInputs: params.missing ?? [],
+    hrefs: [
+      { label: "Covenant review", href: `/${params.companyId}/covenants` },
+      { label: "Lawyer review", href: `/${params.companyId}/rulebook` },
+      { label: "Ask Headroom", href: `/${params.companyId}/ask` },
+      { label: "Financial inputs", href: `/${params.companyId}/onboarding/financials` },
+      { label: "Simulate", href: `/${params.companyId}/simulate` },
+      { label: "Capacity", href: `/${params.companyId}/capacity` },
+    ],
+  };
+}
+
 export async function loadDebtIntelligenceDashboard(companyId: string): Promise<DebtIntelligenceDashboard> {
-  const [review, capacity, rulebook, feed, approvals, snapshot] = await Promise.all([
-    loadCovenantReviewWorkspace(companyId),
-    loadCapacityReadiness(companyId),
-    loadRulebookReadiness(companyId),
-    loadMonitoringFeed(companyId),
-    listReviewerApprovals(companyId),
-    prisma.financialSnapshot.findFirst({
-      where: { companyId },
-      orderBy: { asOfDate: "desc" },
-    }),
-  ]);
+  const [review, capacity, rulebook, feed, approvals, snapshot, facilities, ledger, instruments] =
+    await Promise.all([
+      loadCovenantReviewWorkspace(companyId),
+      loadCapacityReadiness(companyId),
+      loadRulebookReadiness(companyId),
+      loadMonitoringFeed(companyId),
+      listReviewerApprovals(companyId),
+      prisma.financialSnapshot.findFirst({
+        where: { companyId },
+        orderBy: { asOfDate: "desc" },
+        include: { debtTranches: true },
+      }),
+      prisma.facility.findMany({ where: { companyId }, orderBy: { name: "asc" }, take: 24 }),
+      prisma.ledgerEntry.findMany({
+        where: { companyId, status: "ACTIVE" },
+        orderBy: { date: "desc" },
+        take: 40,
+      }),
+      prisma.debtInstrument.findMany({ where: { companyId }, take: 20 }),
+    ]);
 
   const approvalByKey = new Map(
-    approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a.decision]),
+    approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]),
   );
 
-  const baskets: DebtIntelligenceDashboard["baskets"] = [];
-  for (const cat of review.categories) {
-    for (const item of cat.items.slice(0, 6)) {
-      if ((item.materialBasketsThresholds ?? []).length === 0 && (item.conditions ?? []).length === 0) {
-        continue;
-      }
-      baskets.push({
-        category: cat.categoryLabel,
-        sectionRef: item.sectionRef,
-        heading: item.heading,
-        baskets: item.materialBasketsThresholds ?? [],
-        conditions: item.conditions ?? [],
-        citation: item.sourceCitation,
-        reviewDecision: approvalByKey.get(`${item.sourceId}|${item.sectionRef}`) ?? null,
+  const totalDebt = snapshot ? num(snapshot.totalDebt) : null;
+  const securedDebt = snapshot ? num(snapshot.securedDebt) : null;
+  const cash = snapshot ? num(snapshot.cash) : null;
+  const ebitda = snapshot ? num(snapshot.ebitda) : null;
+  const interestExpense = snapshot ? num(snapshot.interestExpense) : null;
+  const unsecuredDebt =
+    totalDebt != null && securedDebt != null ? Math.max(0, totalDebt - securedDebt) : null;
+  const netDebt = totalDebt != null && cash != null ? totalDebt - cash : null;
+  const asOfDate = snapshot?.asOfDate?.toISOString().slice(0, 10) ?? null;
+
+  const capitalInstruments: DebtIntelligenceDashboard["capitalStructure"]["instruments"] = [];
+
+  if (snapshot?.debtTranches?.length) {
+    for (const t of snapshot.debtTranches) {
+      const amount = num(t.amount);
+      const metricId = `capital:tranche:${t.id}`;
+      capitalInstruments.push({
+        metricId,
+        name: t.name,
+        kind: t.secured ? "Secured tranche" : "Unsecured tranche",
+        outstanding: amount,
+        commitment: null,
+        available: null,
+        secured: t.secured,
+        coupon: null,
+        maturity: null,
+        guarantors: null,
+        drilldown: buildDrilldown({
+          metricId,
+          title: t.name,
+          module: "CAPITAL",
+          companyId,
+          formula: "Outstanding principal from financial snapshot debt tranche",
+          inputs: [
+            { label: "Tranche amount", value: amount != null ? fmtM(amount) : null, required: true },
+            { label: "Secured", value: t.secured ? "Yes" : "No", required: false },
+            { label: "Document", value: t.documentName ?? null, required: false },
+          ],
+          calcHistory: asOfDate ? [`Snapshot as of ${asOfDate}`] : [],
+        }),
       });
     }
   }
 
-  const ratioSignals = review.categories
-    .flatMap((c) => c.items)
-    .filter((i) =>
-      /ratio|leverage|coverage|liquidity/i.test(
+  for (const f of facilities) {
+    const outstanding = num(f.originalPrincipal);
+    const commitment = num(f.commitmentAmount);
+    const available =
+      commitment != null && outstanding != null ? Math.max(0, commitment - outstanding) : commitment;
+    const coupon =
+      f.couponType === "FIXED" && f.couponPct != null
+        ? `${Number(f.couponPct)}% fixed`
+        : f.couponType === "FLOATING" && f.marginBps != null
+          ? `${f.referenceRate ?? "ref"} + ${f.marginBps} bps`
+          : null;
+    const metricId = `capital:facility:${f.id}`;
+    capitalInstruments.push({
+      metricId,
+      name: f.name,
+      kind: f.facilityType,
+      outstanding,
+      commitment,
+      available: f.facilityType === "REVOLVER" || f.facilityType === "ABL" ? available : null,
+      secured: f.secured,
+      coupon,
+      maturity: f.maturityDate?.toISOString().slice(0, 10) ?? null,
+      guarantors: f.guarantorEntityClasses?.length
+        ? f.guarantorEntityClasses.join(", ")
+        : null,
+      drilldown: buildDrilldown({
+        metricId,
+        title: f.name,
+        module: "CAPITAL",
+        companyId,
+        formula: `${f.facilityType} facility — commitment / principal from Facility record`,
+        inputs: [
+          { label: "Outstanding / original principal", value: outstanding != null ? fmtM(outstanding) : null, required: true },
+          { label: "Commitment", value: commitment != null ? fmtM(commitment) : null, required: f.facilityType === "REVOLVER" },
+          { label: "Available (commitment − drawn)", value: available != null ? fmtM(available) : null, required: false },
+          { label: "Maturity", value: f.maturityDate?.toISOString().slice(0, 10) ?? null, required: false },
+        ],
+        missing: outstanding == null ? ["Facility principal"] : [],
+      }),
+    });
+  }
+
+  for (const di of instruments) {
+    if (capitalInstruments.some((x) => x.name === di.name)) continue;
+    const metricId = `capital:instrument:${di.id}`;
+    capitalInstruments.push({
+      metricId,
+      name: di.name,
+      kind: di.instrumentType ?? "OTHER",
+      outstanding: null,
+      commitment: null,
+      available: null,
+      secured: null,
+      coupon: null,
+      maturity: null,
+      guarantors: null,
+      drilldown: buildDrilldown({
+        metricId,
+        title: di.name,
+        module: "CAPITAL",
+        companyId,
+        formula: "Debt instrument extracted from package — amounts not yet bound to snapshot",
+        missing: ["Outstanding principal", "Interest rate", "Maturity"],
+        inputs: [{ label: "Notes", value: di.notes ?? null, required: false }],
+      }),
+    });
+  }
+
+  const ledgerByBasket = new Map<string, number>();
+  for (const e of ledger) {
+    const amt = Math.abs(num(e.amount) ?? 0);
+    const key = String(e.basket);
+    ledgerByBasket.set(key, (ledgerByBasket.get(key) ?? 0) + amt);
+  }
+
+  const utilizationRows = ledger.slice(0, 12).map((e) => ({
+    date: e.date.toISOString().slice(0, 10),
+    description: e.description,
+    amount: fmtM(num(e.amount) ?? 0),
+    basket: LEDGER_BASKET_LABELS[e.basket as keyof typeof LEDGER_BASKET_LABELS] ?? String(e.basket),
+  }));
+
+  // --- Ratios ---
+  const ratioDefs: Array<{
+    name: string;
+    family: string;
+    compute: () => string | null;
+    formula: string;
+    thresholdHint: RegExp;
+    missing: string[];
+  }> = [
+    {
+      name: "Total leverage",
+      family: "LEVERAGE",
+      compute: () => ratioStr(totalDebt, ebitda),
+      formula: "Total Debt / Consolidated EBITDA (generic; map to contractual definitions)",
+      thresholdHint: /total\s+leverage|consolidated\s+leverage|maximum\s+leverage/i,
+      missing: [
+        ...(totalDebt == null ? ["Total Debt"] : []),
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+      ],
+    },
+    {
+      name: "Net leverage",
+      family: "LEVERAGE",
+      compute: () => ratioStr(netDebt, ebitda),
+      formula: "Net Debt (Total Debt − Cash) / Consolidated EBITDA",
+      thresholdHint: /net\s+leverage|net\s+debt/i,
+      missing: [
+        ...(netDebt == null ? ["Net Debt (Total Debt and Cash)"] : []),
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+      ],
+    },
+    {
+      name: "Secured leverage",
+      family: "LEVERAGE",
+      compute: () => ratioStr(securedDebt, ebitda),
+      formula: "Secured Debt / Consolidated EBITDA",
+      thresholdHint: /secured\s+leverage|first\s+lien|senior\s+secured\s+leverage/i,
+      missing: [
+        ...(securedDebt == null ? ["Secured Debt"] : []),
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+      ],
+    },
+    {
+      name: "Interest coverage",
+      family: "COVERAGE",
+      compute: () => ratioStr(ebitda, interestExpense),
+      formula: "Consolidated EBITDA / Interest Expense",
+      thresholdHint: /interest\s+coverage|coverage\s+ratio/i,
+      missing: [
+        ...(ebitda == null ? ["Contractual EBITDA"] : []),
+        ...(interestExpense == null ? ["Interest Expense"] : []),
+      ],
+    },
+    {
+      name: "Fixed-charge coverage",
+      family: "COVERAGE",
+      compute: () => null,
+      formula: "Consolidated EBITDA / Fixed Charges (contract-defined)",
+      thresholdHint: /fixed.?charge\s+coverage|fccr/i,
+      missing: ["Contractual EBITDA", "Fixed Charges (not on snapshot)"],
+    },
+    {
+      name: "Minimum liquidity",
+      family: "LIQUIDITY",
+      compute: () => (cash != null ? fmtM(cash) : null),
+      formula: "Cash & cash equivalents (and undrawn revolving availability when modeled)",
+      thresholdHint: /liquidity|minimum\s+cash/i,
+      missing: cash == null ? ["Cash"] : [],
+    },
+  ];
+
+  const allItems = review.categories.flatMap((c) =>
+    c.items.map((item) => ({ ...item, categoryLabel: c.categoryLabel })),
+  );
+
+  const ratios: DebtIntelligenceDashboard["ratios"] = ratioDefs.map((rd, idx) => {
+    const match = allItems.find((i) =>
+      rd.thresholdHint.test(
         `${i.heading} ${i.plainEnglish} ${(i.materialBasketsThresholds ?? []).join(" ")}`,
       ),
-    )
-    .slice(0, 8)
-    .map((i) => ({
-      name: i.heading || `§${i.sectionRef}`,
-      contractualSignal: (i.materialBasketsThresholds ?? []).slice(0, 2).join("; ") || i.plainEnglish.slice(0, 160),
-      currentValue: snapshot
-        ? "Financial inputs present — executable ratio evaluation requires reviewed rulebook formulas"
-        : "Missing financial inputs",
-      status: snapshot ? ("INPUTS_PRESENT" as const) : ("NOT_DETERMINABLE" as const),
-    }));
+    );
+    const computed = rd.compute();
+    const threshold =
+      (match?.materialBasketsThresholds ?? []).find((b) => rd.thresholdHint.test(b) || /ratio|x\b|%/i.test(b)) ??
+      (match ? (match.materialBasketsThresholds ?? [])[0] ?? null : null);
+    const metricId = `ratio:${idx}:${rd.name.toLowerCase().replace(/\s+/g, "-")}`;
+    let status: MetricNumericStatus = "CONDITIONAL";
+    if (computed != null) status = "COMPUTED";
+    else if (!snapshot) status = "MISSING_FINANCIALS";
+    else if (!capacity.canEvaluateExecutableCapacity) status = "MISSING_RULEBOOK";
+    else if (match) status = "AI_SURFACED";
+
+    let cushion: string | null = null;
+    if (computed && threshold) {
+      const thr = threshold.match(/(\d+(?:\.\d+)?)\s*x/i);
+      const cur = computed.match(/(\d+(?:\.\d+)?)/);
+      if (thr && cur && rd.family === "LEVERAGE") {
+        const headroom = Number(thr[1]) - Number(cur[1]);
+        cushion = Number.isFinite(headroom) ? `${headroom.toFixed(2)}x to threshold` : null;
+      }
+    }
+
+    return {
+      metricId,
+      name: rd.name,
+      family: rd.family,
+      currentValue: computed,
+      threshold,
+      cushion,
+      status,
+      testingDate: asOfDate,
+      drilldown: buildDrilldown({
+        metricId,
+        title: rd.name,
+        module: "RATIOS",
+        companyId,
+        item: match,
+        approvals,
+        formula: rd.formula,
+        inputs: [
+          { label: "Total Debt", value: totalDebt != null ? fmtM(totalDebt) : null, required: true },
+          { label: "Secured Debt", value: securedDebt != null ? fmtM(securedDebt) : null, required: false },
+          { label: "Cash", value: cash != null ? fmtM(cash) : null, required: false },
+          { label: "EBITDA", value: ebitda != null ? fmtM(ebitda) : null, required: true },
+          { label: "Interest Expense", value: interestExpense != null ? fmtM(interestExpense) : null, required: false },
+        ],
+        missing: rd.missing,
+        calcHistory: [
+          computed ? `Computed ${computed} from snapshot ${asOfDate}` : "No supported numerical result yet",
+          threshold ? `Contractual threshold signal: ${threshold}` : "No threshold extracted",
+        ],
+      }),
+    };
+  });
+
+  // Agreement-specific extras from AI
+  for (const item of allItems.filter((i) => i.category === "FINANCIAL_MAINTENANCE").slice(0, 4)) {
+    if (ratios.some((r) => r.drilldown.sectionCitation === item.sourceCitation)) continue;
+    const metricId = `ratio:ai:${item.sectionRef}`;
+    ratios.push({
+      metricId,
+      name: item.heading || `§${item.sectionRef}`,
+      family: "AGREEMENT_SPECIFIC",
+      currentValue: null,
+      threshold: (item.materialBasketsThresholds ?? [])[0] ?? null,
+      cushion: null,
+      status: "AI_SURFACED",
+      testingDate: asOfDate,
+      drilldown: buildDrilldown({
+        metricId,
+        title: item.heading,
+        module: "RATIOS",
+        companyId,
+        item,
+        approvals,
+        formula: (item.materialBasketsThresholds ?? [])[0] ?? item.plainEnglish.slice(0, 200),
+        missing: snapshot ? ["Executable formula mapping"] : ["Financial snapshot", "Executable formula mapping"],
+      }),
+    });
+  }
+
+  // --- Baskets ---
+  const baskets: DebtIntelligenceDashboard["baskets"] = [];
+  for (const cat of review.categories) {
+    for (const item of cat.items) {
+      const basketLines = item.materialBasketsThresholds ?? [];
+      if (basketLines.length === 0 && (item.conditions ?? []).length === 0) continue;
+      if (
+        !/basket|except|greater of|incremental|available amount|builder|lien|indebtedness|investment|restricted payment|ratio/i.test(
+          `${item.heading} ${item.plainEnglish} ${basketLines.join(" ")}`,
+        )
+      ) {
+        continue;
+      }
+      const family = classifyBasketFamily(cat.categoryLabel, item.heading, item.plainEnglish);
+      const metricId = `basket:${item.sourceId}:${item.sectionRef}`;
+      const approval = approvalByKey.get(`${item.sourceId}|${item.sectionRef}`);
+      const utilTotal = [...ledgerByBasket.values()].reduce((a, b) => a + b, 0);
+      const utilization =
+        ledger.length > 0
+          ? `${fmtM(utilTotal)} recorded ledger usage (basket mapping may be approximate)`
+          : null;
+      baskets.push({
+        metricId,
+        category: family,
+        sectionRef: item.sectionRef,
+        heading: item.heading,
+        contractualCapacity: basketLines[0] ?? null,
+        utilization,
+        remaining: null, // never invent
+        status: approval ? "AI_SURFACED" : capacity.canEvaluateExecutableCapacity ? "CONDITIONAL" : "MISSING_RULEBOOK",
+        reviewDecision: approval?.decision ?? null,
+        drilldown: buildDrilldown({
+          metricId,
+          title: `§${item.sectionRef} — ${item.heading}`,
+          module: "BASKETS",
+          companyId,
+          item,
+          approvals,
+          formula: basketLines.join("; ") || null,
+          utilization: utilizationRows,
+          missing: capacity.canEvaluateExecutableCapacity
+            ? utilization
+              ? []
+              : ["Ledger utilization for this basket"]
+            : ["Counsel-reviewed executable Permission", "Financial inputs for growers/ratios"],
+          calcHistory: [
+            approval
+              ? `Counsel ${approval.decision} ${approval.reviewedAt}`
+              : "AI draft — awaiting counsel review",
+            utilization ?? "No ledger utilization attributed",
+          ],
+        }),
+      });
+    }
+  }
+
+  // --- Monitoring ---
+  const monitoring: DebtIntelligenceDashboard["monitoring"] = feed.alerts.slice(0, 16).map((a, i) => {
+    const metricId = `monitor:${i}:${a.kind}`;
+    return {
+      metricId,
+      severity: a.severity === "blocking" ? "HIGH" : a.severity === "attention" ? "MEDIUM" : "INFO",
+      title: a.title,
+      detail: a.detail,
+      kind: a.kind,
+      drilldown: buildDrilldown({
+        metricId,
+        title: a.title,
+        module: "MONITORING",
+        companyId,
+        formula: a.kind,
+        calcHistory: [a.detail],
+        missing: a.kind === "MISSING_FINANCIALS" ? ["Financial snapshot"] : [],
+      }),
+    };
+  });
+
+  // Maturities from facilities
+  for (const f of facilities.filter((x) => x.maturityDate)) {
+    const metricId = `monitor:maturity:${f.id}`;
+    monitoring.push({
+      metricId,
+      severity: "INFO",
+      title: `Maturity: ${f.name}`,
+      detail: `Scheduled maturity ${f.maturityDate!.toISOString().slice(0, 10)}`,
+      kind: "MATURITY",
+      drilldown: buildDrilldown({
+        metricId,
+        title: `Maturity — ${f.name}`,
+        module: "MONITORING",
+        companyId,
+        inputs: [
+          { label: "Maturity date", value: f.maturityDate!.toISOString().slice(0, 10), required: true },
+          { label: "Facility type", value: f.facilityType, required: false },
+        ],
+      }),
+    });
+  }
+
+  if (review.amendmentCompare.operativeResolution !== "RESOLVED") {
+    monitoring.push({
+      metricId: "monitor:amendment",
+      severity: "MEDIUM",
+      title: "Amendment package status",
+      detail: `Operative resolution: ${review.amendmentCompare.operativeResolution}`,
+      kind: "AMENDMENT",
+      drilldown: buildDrilldown({
+        metricId: "monitor:amendment",
+        title: "Amendment changes",
+        module: "MONITORING",
+        companyId,
+        calcHistory: [review.amendmentCompare.operativeResolution],
+        missing:
+          review.amendmentCompare.operativeResolution === "UNRESOLVED_PRECEDENCE"
+            ? ["Counsel amendment precedence judgment"]
+            : [],
+      }),
+    });
+  }
+
+  // --- Transaction intelligence ---
+  const transactionScenarios = [
+    {
+      scenario: "Proposed $100M secured debt",
+      ask: "Can we incur $100 million of additional secured debt?",
+      cats: /debt|lien|incremental/i,
+    },
+    {
+      scenario: "Proposed $50M restricted payment",
+      ask: "What restricted payment capacity exists for a $50 million dividend?",
+      cats: /restricted payment|rp\b/i,
+    },
+    {
+      scenario: "Proposed $75M investment / acquisition",
+      ask: "Can we make a $75 million investment or acquisition?",
+      cats: /investment|acquisition/i,
+    },
+    {
+      scenario: "Refinance secured indebtedness",
+      ask: "What refinancing permissions apply to existing secured debt?",
+      cats: /refinance|refinancing|indebtedness/i,
+    },
+    {
+      scenario: "Asset sale",
+      ask: "What asset sale permissions and proceeds application rules apply?",
+      cats: /asset sale|disposition/i,
+    },
+  ];
+
+  const transactions: DebtIntelligenceDashboard["transactions"] = transactionScenarios.map((sc, idx) => {
+    const hits = allItems.filter((i) =>
+      sc.cats.test(`${i.category} ${i.heading} ${i.plainEnglish}`),
+    );
+    const top = hits[0];
+    const metricId = `txn:${idx}`;
+    const status: MetricNumericStatus = top
+      ? snapshot
+        ? "CONDITIONAL"
+        : "MISSING_FINANCIALS"
+      : "AI_SURFACED";
+    return {
+      metricId,
+      scenario: sc.scenario,
+      summary: top
+        ? `AI matched §${top.sectionRef} (${top.heading}). ${hits.length} related provisions. Pro forma ratios/capacity remain conditional without executable rules.`
+        : "No matching AI provisions yet — upload/analyze the financing package or Ask Headroom.",
+      status,
+      askHref: `/${companyId}/ask?q=${encodeURIComponent(sc.ask)}`,
+      simulateHref: `/${companyId}/simulate`,
+      drilldown: buildDrilldown({
+        metricId,
+        title: sc.scenario,
+        module: "TRANSACTIONS",
+        companyId,
+        item: top,
+        approvals,
+        formula: top ? (top.materialBasketsThresholds ?? []).join("; ") : null,
+        missing: [
+          ...(snapshot ? [] : ["Financial snapshot for pro forma ratios"]),
+          ...(!capacity.canEvaluateExecutableCapacity
+            ? ["Counsel-reviewed executable permissions"]
+            : []),
+        ],
+        calcHistory: hits.slice(0, 5).map((h) => `§${h.sectionRef} — ${h.heading}`),
+      }),
+    };
+  });
 
   const acceptedCount = approvals.filter((a) => a.decision === "ACCEPTED" || a.decision === "EDITED").length;
 
@@ -106,39 +722,56 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     headline:
       review.documentCount === 0
         ? "Upload a financing package to populate debt intelligence."
-        : `AI-interpreted package: ${review.analyzedOkCount}/${review.documentCount} documents · rulebook ${rulebook.stage}`,
+        : `AI-populated debt intelligence · ${review.analyzedOkCount}/${review.documentCount} docs · rulebook ${rulebook.stage} · capacity ${capacity.status}`,
+    generatedAt: new Date().toISOString(),
     capitalStructure: {
-      totalDebt: snapshot ? Number(snapshot.totalDebt) : null,
-      securedDebt: snapshot ? Number(snapshot.securedDebt) : null,
-      cash: snapshot ? Number(snapshot.cash) : null,
-      ebitda: snapshot ? Number(snapshot.ebitda) : null,
-      interestExpense: snapshot ? Number(snapshot.interestExpense) : null,
-      asOfDate: snapshot?.asOfDate?.toISOString().slice(0, 10) ?? null,
+      numericStatus: snapshot ? "COMPUTED" : facilities.length ? "AI_SURFACED" : "MISSING_FINANCIALS",
+      asOfDate,
+      aggregates: {
+        totalDebt,
+        securedDebt,
+        unsecuredDebt,
+        cash,
+        netDebt,
+        ebitda,
+        interestExpense,
+      },
+      instruments: capitalInstruments,
       notes: snapshot?.notes ?? null,
-      numericStatus: snapshot ? "SUPPORTED" : "MISSING_FINANCIALS",
     },
-    ratios: ratioSignals.length
-      ? ratioSignals
-      : [
-          {
-            name: "Financial maintenance / leverage tests",
-            contractualSignal: "No ratio language surfaced in current summaries",
-            currentValue: "NOT DETERMINABLE",
-            status: "NOT_DETERMINABLE",
-          },
-        ],
-    baskets: baskets.slice(0, 40),
-    monitoring: feed.alerts.slice(0, 12).map((a) => ({
-      severity: a.severity === "blocking" ? "HIGH" : a.severity === "attention" ? "MEDIUM" : "INFO",
-      title: a.title,
-      detail: a.detail,
-    })),
+    ratios,
+    baskets: baskets.slice(0, 60),
+    monitoring,
+    transactions,
     rulebookStage: rulebook.stage,
     capacityStatus: capacity.status,
     amendmentResolution: review.amendmentCompare.operativeResolution,
     documentCount: review.documentCount,
     interpretedCount: rulebook.interpretedProvisions,
     acceptedCount,
-    note: "Dashboard values are AI-populated from workspace documents and financial snapshots. Numerical capacity remains fail-closed until an executable rulebook exists. Customer counsel can accept/edit interpretations on /rulebook.",
+    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses.",
   };
+}
+
+/** Lookup a single metric drilldown from a loaded dashboard. */
+export function findDashboardMetric(
+  dash: DebtIntelligenceDashboard,
+  metricId: string,
+): DashboardDrilldown | null {
+  for (const i of dash.capitalStructure.instruments) {
+    if (i.metricId === metricId) return i.drilldown;
+  }
+  for (const r of dash.ratios) {
+    if (r.metricId === metricId) return r.drilldown;
+  }
+  for (const b of dash.baskets) {
+    if (b.metricId === metricId) return b.drilldown;
+  }
+  for (const m of dash.monitoring) {
+    if (m.metricId === metricId) return m.drilldown;
+  }
+  for (const t of dash.transactions) {
+    if (t.metricId === metricId) return t.drilldown;
+  }
+  return null;
 }
