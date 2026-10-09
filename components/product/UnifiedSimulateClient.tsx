@@ -68,6 +68,11 @@ export function UnifiedSimulateClient({
     setError(null);
     setPending(true);
     try {
+      // Only send evaluationDate when the user/handoff changed it from the page-loaded as-of.
+      // Re-sending asOfDateIso as an override recreates the Date at noon UTC and can false-stale
+      // the page's stateFingerprint (which used the FinancialState's native asOfDate).
+      const dateOverride =
+        evaluationDate && evaluationDate !== asOfDateIso ? evaluationDate : null;
       const res = await fetch("/api/product/simulate", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -76,9 +81,10 @@ export function UnifiedSimulateClient({
           kind,
           amountMillions: amount,
           secured: kind === "UNSECURED_DEBT" ? false : kind === "SECURED_DEBT" || kind === "SECURED_NOTE" ? true : secured,
-          evaluationDate,
+          evaluationDate: dateOverride,
           currency,
-          expectedStateFingerprint: stateFingerprint,
+          // When the evaluation date is overridden, skip fingerprint match — state was loaded for a different as-of.
+          expectedStateFingerprint: dateOverride ? null : stateFingerprint,
           priorRequestFingerprint: priorRequestFp.current,
         }),
       });
