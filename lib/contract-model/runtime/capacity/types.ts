@@ -179,7 +179,12 @@ export type CapacityLimitationCode =
   /** Verification refused a node this capacity depends on, or the whole unit (message names the condition). */
   | "PHASE3_VERIFICATION_MATERIAL_FINDING"
   /** Verification of the unit (or one it depends on) did not complete. Reviewable, not defective; never conflated with the above. */
-  | "PHASE3_VERIFICATION_INCOMPLETE";
+  | "PHASE3_VERIFICATION_INCOMPLETE"
+  /**
+   * A8-01: capacity evaluated to GATE_NOT_SATISFIED (e.g. ratio gate failed).
+   * Distinct from a zero amount and from missing input; must not surface as AVAILABLE.
+   */
+  | "CAPACITY_GATE_NOT_SATISFIED";
 
 export interface CapacityLimitation {
   code: CapacityLimitationCode;

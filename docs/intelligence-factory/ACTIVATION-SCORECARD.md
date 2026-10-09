@@ -1,52 +1,72 @@
-# Neon Activation — Scorecard
+# Neon Activation — Scorecard (Repeatable Execution)
 
 **As of:** 2026-10-09  
-**SHAs:** see PRs below  
+**Branch:** `cursor/neon-activation-repeatable-2229`  
 **Paid inference:** $0  
-**Neon corpus writes:** 0 (ephemeral E2E company cleaned up)
+**Neon corpus writes:** 0 (ephemeral E2E/matrix companies cleaned up)  
+**Production Neon writes:** authorization-gated — none performed for promotion
 
-## Before → after (this activation mission)
+## Required return
 
-| Metric | Before | After | Notes |
-|---|---:|---:|---|
-| Authentic agreements (distinct hashes) | 708 | 708 | No corpus growth this session |
-| Structured provisions (summary items) | 30,051 | 30,051 | Unchanged |
-| Verified rules (SemanticTruth VERIFIED) | 0 | 0 | Gate preserved |
-| Executable Permissions (Neon) | 39 | 39 | + ephemeral proof only |
-| Correct executable calculations (proven) | baseline golden only | **+1** CONMED §7.2 → $84M | E2E proof |
-| Correct refusals | engine fail-closed | **+1** missing totalAssets | E2E proof |
-| Incorrect permissions introduced | — | **0** | |
-| Utilization-backed calculations | loader hardcoded 0 | **status-aware** named-member wire | `ZERO_NO_ATTRIBUTED_USAGE` ≠ proven empty |
-| Cold-start extract threshold/formula/grant | 0/3 / 0/3 / 2/3 | **3/3 / 3/3 / 3/3** | PR #225 |
-| Maintenance gap flagged | no | **yes** | KNOWN_NOT_MODELED |
-| Source-integrity defects fixed | — | documented; no bulk reclassify | Owner gate for UNKNOWN |
-| Independent holdout (Gibraltar/LSB formulas) | fail | **pass** | PR #225 |
+| # | Metric | Value |
+|---:|---|---:|
+| 1 | Authentic provisions tested | **11** |
+| 2 | Correct formulas | **10** |
+| 3 | Independently reviewed interpretations | **11** (pre-engine expecteds; **not** counsel certification) |
+| 4 | Durable executable rules created | **0** production; **3** ephemeral MODELED/UNVERIFIED (cleaned up) |
+| 5 | Actual vs synthetic financial examples | **0** actual / **11** synthetic (`SYNTHETIC_NUMERIC_INPUTS`) |
+| 6 | Utilization-backed calculations | **1** (attributed); unattributed → `ZERO_NO_ATTRIBUTED_USAGE` |
+| 7 | Correct executable outcomes | **9** |
+| 8 | Correct refusals | **2** |
+| 9 | False favorable outcomes | **0** |
+| 10 | Current certification status | **NOT_CERTIFIED** — DISCOVERED/MODELED/UNVERIFIED only; VERIFIED ≠ CERTIFIED |
+| 11 | CI, PRs, SHAs, cost | See below |
 
-## Populations (do not interchange)
+### Outcome breakdown (separate)
 
-| Population | Count | Maturity |
+| Class | Count | Cases |
 |---|---:|---|
-| KnowledgeSource rows | 730 | Observed/Extracted |
-| Distinct hashes | 708 | Authentic agreements |
-| Covenant summary items | 30,051 | Extracted (DISCOVERED) |
-| Candidate metadata sum | 40,518 | Observed counts |
-| Relationship edges | 8,193 | DISCOVERED |
-| Permissions | 39 | Executable (29 VERIFIED review) |
-| GoldenTests | 48 | VERIFIED regression |
-| SemanticTruthRecords | 0 | — |
-| KF CERTIFIED | 0 | — |
+| SUCCESS | 9 | fixed, EBITDA grower, asset grower, ratio debt, RP, investments, lien companion, shared util, amendment |
+| CORRECT_REFUSAL | 2 | missing totalAssets; unsupported incremental |
+| UNSUPPORTED_MECHANIC | 0 | — |
+| ERROR | 0 | — |
+| FALSE_FAVORABLE | 0 | — |
 
-## PRs
+## PRs / SHAs / cost
 
-| PR | Focus |
+| Item | Value |
 |---|---|
-| https://github.com/egsul897/headroom/pull/225 | Real-prose extraction (threshold/formula/grant/maintenance gap) |
-| This branch | Lifecycle blockers + shared-usage + Neon→capacity E2E proof |
+| PR #225 | Synthetic extraction prose fix (merged into this branch) |
+| PR #227 | Neon E2E activation proof (merged into this branch) |
+| This PR | Repeatable activation: A8-01 + matrix + lifecycle/funnel |
+| Paid inference | **$0** |
+| Artifacts | `neon-activation-e2e-proof.json`, `neon-activation-matrix.json` |
 
-## Next
+## Before → after
 
-1. Product callers pass attributed `basketUsage` into loader
-2. Bind more customer uploads to companyId/documentId for counsel compile
-3. Owner-gated UNKNOWN reclassify (13/180 dry-run)
-4. Gibraltar Pass A count rebaseline
-5. Challenge matrix (Workstream C) over STRUCTURALLY_INDEXED holdouts
+| Metric | Before | After |
+|---|---:|---:|
+| Authentic agreements (hashes) | 708 | unchanged (inventory) |
+| Structured provisions (summaries) | ~30,051 | unchanged — **≠ usable rules** |
+| Cold-start extract threshold/formula/grant | 0/3 | **3/3** (#225) |
+| CONMED E2E capacity proof | — | **$84M** (#227) |
+| Diverse mechanic classes validated | 1 | **9 classes** (matrix) |
+| A8-01 GATE_NOT_SATISFIED → AVAILABLE | defect | **FIXED → REVIEW_REQUIRED** |
+| Silent-zero utilization | hardcoded 0 | **status-aware** |
+| KF / SemanticTruth CERTIFIED | 0 | **0** (gate preserved) |
+
+## Safety
+
+- No silent promotion DISCOVERED → CERTIFIED
+- Newly activated rules not exposed as authoritative customer permissions
+- Legacy favorable output ≠ certified permission
+- Numerical basket ≠ overall legal permission
+- Phase 4D chaining/restoration: caller-stated / encoded-edge only (documented)
+
+## Commands
+
+```bash
+npm run if:neon-activation-e2e
+npm run if:neon-activation-matrix
+npx vitest run tests/contract-model/runtime/capacity/capacity-state.test.ts tests/solver/shared-usage.test.ts tests/extraction/synthetic-formula.test.ts
+```

@@ -81,6 +81,12 @@ describe("unlimited is its own state, never a very large number", () => {
     const c = one(state);
     expect(c.grossCapacity).toEqual({ kind: "GATE_NOT_SATISFIED" });
     expect(c.remaining).toEqual({ kind: "GATE_NOT_SATISFIED" });
+    // A8-01 / RT-08b: failed gate must never surface as AVAILABLE headroom.
+    expect(c.status).toBe("REVIEW_REQUIRED");
+    expect(c.status).not.toBe("AVAILABLE");
+    expect(c.limitations.some((l) => l.code === "CAPACITY_GATE_NOT_SATISFIED")).toBe(true);
+    // Published amount stays GATE_NOT_SATISFIED (not rewritten to NOT_DETERMINED).
+    expect(c.provisional).toBeNull();
   });
 
   it("unlimited minus recorded usage is still unlimited", () => {

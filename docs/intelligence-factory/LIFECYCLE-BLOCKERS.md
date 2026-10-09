@@ -41,3 +41,9 @@ KnowledgeSource.metadata.covenantSummary (DISCOVERED)
 Neon CONMED §7.2 greater-of $50M / 3% CTA summary → counsel formula parse → capacity **$84M** (synthetic assets) → simulate $50M clear / $200M blocked → refuse without totalAssets → ephemeral counsel compile mints MODELED Permission (UNVERIFIED).
 
 See `neon-activation-e2e-proof.json`.
+
+## Repeatable expansion
+
+Diverse matrix across ROCK + CONMED (fixed, EBITDA/asset growers, ratio debt, RP, investments, lien companion, shared capacity, amendment, refusals): see `ACTIVATION-LIFECYCLE.md`, `neon-activation-matrix.json`, `ACTIVATION-SCORECARD.md`.
+
+P0 reconciliation: `P0-BLOCKERS-RECONCILIATION.md` (A8-01 fixed; utilization status-aware; Phase 4D chaining/restoration coordinated).

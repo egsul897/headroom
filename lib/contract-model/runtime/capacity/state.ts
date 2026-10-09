@@ -115,6 +115,8 @@ export const LIMITATION_STATUS_FLOOR: Record<CapacityLimitationCode, CapacitySta
   // The weaker of the two verification floors; a NODE hit adds its UNSUPPORTED floor through VERIFICATION_DOMINANCE.
   PHASE3_VERIFICATION_MATERIAL_FINDING: "REVIEW_REQUIRED",
   PHASE3_VERIFICATION_INCOMPLETE: "REVIEW_REQUIRED",
+  // A8-01: failed contractual gate is reviewable conditional capacity, never AVAILABLE headroom.
+  CAPACITY_GATE_NOT_SATISFIED: "REVIEW_REQUIRED",
 };
 
 /** Statuses under which published amounts are withheld and the arithmetic goes to `provisional`. */
@@ -142,9 +144,26 @@ const currencyOf = (a: CapacityAmount): string | null => (a.kind === "AMOUNT" &&
 const worst = (statuses: CapacityStatus[]): CapacityStatus =>
   statuses.length === 0 ? "UNSUPPORTED" : statuses.reduce((a, b) => (CAPACITY_STATUS_PRECEDENCE[b] > CAPACITY_STATUS_PRECEDENCE[a] ? b : a));
 
-/** Map a Phase-4A evaluation status onto a capacity status. Legal state is applied separately. */
-const statusFromEvaluation = (e: EvaluationResult | null): CapacityStatus =>
-  !e ? "UNSUPPORTED" : e.status === "EXECUTABLE" ? "AVAILABLE" : e.status === "NEEDS_INPUT" ? "NEEDS_INPUT" : e.status === "AMBIGUOUS" ? "AMBIGUOUS" : e.status === "UNSUPPORTED" ? "UNSUPPORTED" : "ERROR";
+/**
+ * Map a Phase-4A evaluation status onto a capacity status. Legal state is applied separately.
+ *
+ * A8-01: EXECUTABLE + GATE_NOT_SATISFIED must not become AVAILABLE. The evaluator correctly marks
+ * a failed gate as an executable CAPACITY value of kind GATE_NOT_SATISFIED; the capacity layer
+ * must floor that to REVIEW_REQUIRED so callers never treat conditional capacity as open headroom.
+ */
+const statusFromEvaluation = (e: EvaluationResult | null): CapacityStatus => {
+  if (!e) return "UNSUPPORTED";
+  if (e.status === "EXECUTABLE") {
+    if (e.value?.type === "CAPACITY" && e.value.capacity.kind === "GATE_NOT_SATISFIED") {
+      return "REVIEW_REQUIRED";
+    }
+    return "AVAILABLE";
+  }
+  if (e.status === "NEEDS_INPUT") return "NEEDS_INPUT";
+  if (e.status === "AMBIGUOUS") return "AMBIGUOUS";
+  if (e.status === "UNSUPPORTED") return "UNSUPPORTED";
+  return "ERROR";
+};
 
 const sortLimitations = (ls: CapacityLimitation[]) => ls.sort((a, b) => (`${a.code}|${a.message}` < `${b.code}|${b.message}` ? -1 : 1));
 
@@ -346,6 +365,13 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
 
     const { remaining, over } = computeRemaining(gross, usage, blocked !== null);
     if (over) limitations.push({ code: "OVER_CONSUMPTION", message: `recorded usage exceeds the shared capacity`, refs: [node.capacityNodeId, ...contributingIds] });
+    if (gross.kind === "GATE_NOT_SATISFIED") {
+      limitations.push({
+        code: "CAPACITY_GATE_NOT_SATISFIED",
+        message: "the contractual gate for this shared capacity is not satisfied; capacity is conditional, not available headroom",
+        refs: [node.capacityNodeId],
+      });
+    }
     const status = worst([statusFromEvaluation(evaluation), ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code])]);
     sharedConstraints.push({ sharedCapacityId: cap.sharedCapId, capacityNodeId: node.capacityNodeId, status, grossCapacity: gross, usage, remaining, memberRuleIds, memberUsage, directUsageIds: direct.applied.map((u) => u.usageId).sort(), limitations: sortLimitations(limitations), evaluation });
   }
@@ -417,6 +443,14 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     const { remaining, over } = computeRemaining(gross, usage, usageResult.blocked !== null);
     const overConsumption: OverConsumption | null = over ? { gross, usage, deficit: over.deficit, usageIds: usageResult.applied.map((u) => u.usageId) } : null;
     if (over) limitations.push({ code: "OVER_CONSUMPTION", message: "recorded usage exceeds the contractual capacity; the remaining figure is negative and is not clamped", refs: [node.capacityNodeId] });
+    // A8-01: publish GATE_NOT_SATISFIED with an explicit limitation; do not masquerade as AVAILABLE.
+    if (gross.kind === "GATE_NOT_SATISFIED") {
+      limitations.push({
+        code: "CAPACITY_GATE_NOT_SATISFIED",
+        message: "the contractual gate for this capacity is not satisfied; capacity is conditional, not available headroom",
+        refs: [node.capacityNodeId],
+      });
+    }
 
     // Shared constraints bound the member. This reports what the pool leaves, not an allocation.
     // Only this member's own pool edges are consulted, from the index built once above.
@@ -435,7 +469,10 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
 
     // A capacity whose legal state is not safe to rely on keeps its arithmetic, but separately, so
     // it can never be read as authoritative headroom. Arithmetic never upgrades the legal state.
-    const withheld = legalUnsafe || NON_AUTHORITATIVE.includes(status);
+    // A8-01 exception: GATE_NOT_SATISFIED is itself the honest published amount (conditional capacity).
+    // Do not rewrite it to NOT_DETERMINED — callers must see the failed gate, under REVIEW_REQUIRED.
+    const gateFailed = gross.kind === "GATE_NOT_SATISFIED";
+    const withheld = !gateFailed && (legalUnsafe || NON_AUTHORITATIVE.includes(status));
     const provisional = withheld ? { grossCapacity: gross, remaining, effectiveRemaining: localEffective } : null;
     const withheldReason = sharedUnknown && !NON_AUTHORITATIVE.includes(worst([statusFromEvaluation(evaluation), dominance.status ?? "AVAILABLE", scopeUnsafe ? "REVIEW_REQUIRED" : "AVAILABLE"]))
       ? "an unquantified shared-capacity relationship could bind this capacity; the local arithmetic is reported under `provisional`"
