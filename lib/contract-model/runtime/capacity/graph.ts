@@ -27,9 +27,12 @@ const componentNodeId = (ownerNodeId: string, exprId: string) => `${ownerNodeId}
 
 function entityScopeOf(rule: IRRule): CapacityEntityScope {
   const audit = rule.entityScopeAudit;
+  // SOURCE_SCOPE_DERIVED is safeToRely in the Phase-3 guard (source established applicability
+  // exactly — including parent-scope inheritance for lettered children). Map it like
+  // SOURCE_MATCH_CONFIRMED so capacity does not REVIEW_REQUIRED a source-derived scope.
   const applicability: CapacityEntityScope["applicability"] = !audit
     ? "SCOPE_UNAUDITED"
-    : audit.status === "SOURCE_MATCH_CONFIRMED"
+    : audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED"
       ? "SCOPE_CONFIRMED_BY_SOURCE"
       : audit.status === "UNSPECIFIED"
         ? "SCOPE_UNSPECIFIED"

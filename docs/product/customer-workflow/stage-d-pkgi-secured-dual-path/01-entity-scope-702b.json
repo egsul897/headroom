@@ -1,0 +1,31 @@
+{
+  "schema": "stage-d-pkgi-secured-entity-scope.v1",
+  "paidProvidersCalled": false,
+  "guardVersion": "entity-scope-consistency-guard.v6",
+  "sourceSectionRef": "7.02(b)",
+  "entityScope": [
+    "BORROWER",
+    "ANY_SUBSIDIARY"
+  ],
+  "status": "SOURCE_SCOPE_DERIVED",
+  "safeToRely": true,
+  "decidedBy": "PARENT_SCOPE",
+  "parentScopeLeadIn": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+  "governingDerived": [
+    "BORROWER",
+    "ANY_SUBSIDIARY"
+  ],
+  "modelDiscrepancy": {
+    "governingScope": [
+      "BORROWER",
+      "ANY_SUBSIDIARY"
+    ],
+    "modelScope": [
+      "BORROWER"
+    ],
+    "rawEmitted": [
+      "BORROWER"
+    ],
+    "relation": "MODEL_NARROWER"
+  }
+}

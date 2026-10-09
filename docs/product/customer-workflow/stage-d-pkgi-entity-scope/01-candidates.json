@@ -16,7 +16,7 @@
             "GUARANTOR_RS"
           ],
           "auditStatus": "SOURCE_MATCH_CONFIRMED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": null,
           "hasCounterparty": false
         },
@@ -29,7 +29,7 @@
             "ANY_SUBSIDIARY"
           ],
           "auditStatus": "SOURCE_MATCH_CONFIRMED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": null,
           "hasCounterparty": false
         },
@@ -41,7 +41,7 @@
             "ANY_SUBSIDIARY"
           ],
           "auditStatus": "SOURCE_SCOPE_DERIVED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": "MODEL_DIFFERENT",
           "hasCounterparty": true
         },
@@ -53,7 +53,7 @@
             "FOREIGN_RS"
           ],
           "auditStatus": "AMBIGUOUS_VS_SOURCE",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": null,
           "hasCounterparty": false
         },
@@ -62,11 +62,12 @@
           "action": "INCUR_DEBT",
           "sufficiency": "COMPLETE",
           "entityScope": [
-            "BORROWER"
+            "BORROWER",
+            "ANY_SUBSIDIARY"
           ],
-          "auditStatus": "UNWITNESSED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
-          "relation": null,
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
           "hasCounterparty": false
         }
       ]
@@ -84,7 +85,7 @@
             "ANY_SUBSIDIARY"
           ],
           "auditStatus": "SOURCE_MATCH_CONFIRMED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": null,
           "hasCounterparty": false
         },
@@ -93,11 +94,12 @@
           "action": "CREATE_LIEN",
           "sufficiency": "COMPLETE",
           "entityScope": [
-            "BORROWER"
+            "BORROWER",
+            "ANY_SUBSIDIARY"
           ],
-          "auditStatus": "UNWITNESSED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
-          "relation": null,
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
           "hasCounterparty": false
         },
         {
@@ -105,11 +107,12 @@
           "action": "CREATE_LIEN",
           "sufficiency": "COMPLETE",
           "entityScope": [
-            "BORROWER"
+            "BORROWER",
+            "ANY_SUBSIDIARY"
           ],
-          "auditStatus": "UNWITNESSED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
-          "relation": null,
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
           "hasCounterparty": false
         },
         {
@@ -117,11 +120,12 @@
           "action": "CREATE_LIEN",
           "sufficiency": "COMPLETE",
           "entityScope": [
-            "BORROWER"
+            "BORROWER",
+            "ANY_SUBSIDIARY"
           ],
-          "auditStatus": "UNWITNESSED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
-          "relation": null,
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
           "hasCounterparty": false
         }
       ]
@@ -139,7 +143,7 @@
             "ANY_SUBSIDIARY"
           ],
           "auditStatus": "SOURCE_SCOPE_DERIVED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": "MODEL_DIFFERENT",
           "hasCounterparty": false
         }
@@ -162,7 +166,7 @@
             "ANY_SUBSIDIARY"
           ],
           "auditStatus": "SOURCE_MATCH_CONFIRMED",
-          "guardVersion": "entity-scope-consistency-guard.v5",
+          "guardVersion": "entity-scope-consistency-guard.v6",
           "relation": null,
           "hasCounterparty": false
         }

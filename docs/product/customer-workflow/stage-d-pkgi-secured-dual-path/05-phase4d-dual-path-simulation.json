@@ -1,0 +1,81 @@
+{
+  "schema": "stage-d-pkgi-secured-phase4d.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "financialInputs": "none (fixed-dollar baskets; empty ledger)",
+  "dualPath": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "capacityEffects": [
+      {
+        "effectId": "e-debt",
+        "capacityNodeId": "capacity:rule:ir-rule:1ea3d67e55e82ccbde4edeec",
+        "ruleId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+        "sharedCapacityId": null,
+        "attemptedAmount": {
+          "type": "MONEY",
+          "amount": "15000000",
+          "currency": "USD"
+        },
+        "sharedConstraintIds": [],
+        "availableAmount": {
+          "kind": "AMOUNT",
+          "value": {
+            "type": "MONEY",
+            "amount": "50000000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": "ir-expr:09691fbb468a1a7770f867f4",
+              "inputKeys": [],
+              "rawSource": 50000000
+            }
+          }
+        },
+        "shortfallAmount": null,
+        "outcome": "SATISFIED",
+        "capacityStatus": "AVAILABLE",
+        "provisional": null,
+        "limitations": []
+      },
+      {
+        "effectId": "e-lien",
+        "capacityNodeId": "capacity:rule:ir-rule:81aa6243b5eb1655b8642df0",
+        "ruleId": "ir-rule:81aa6243b5eb1655b8642df0",
+        "sharedCapacityId": null,
+        "attemptedAmount": {
+          "type": "MONEY",
+          "amount": "15000000",
+          "currency": "USD"
+        },
+        "sharedConstraintIds": [],
+        "availableAmount": {
+          "kind": "AMOUNT",
+          "value": {
+            "type": "MONEY",
+            "amount": "20000000",
+            "currency": "USD",
+            "lineage": {
+              "exprId": "ir-expr:478cb4c61c859ba8182c4e02",
+              "inputKeys": [],
+              "rawSource": 20000000
+            }
+          }
+        },
+        "shortfallAmount": null,
+        "outcome": "SATISFIED",
+        "capacityStatus": "AVAILABLE",
+        "provisional": null,
+        "limitations": []
+      }
+    ],
+    "selectedCapacityNodeIds": [
+      "capacity:rule:ir-rule:1ea3d67e55e82ccbde4edeec",
+      "capacity:rule:ir-rule:81aa6243b5eb1655b8642df0"
+    ]
+  },
+  "debtOnlyNotSecuredAnswer": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "note": "Debt-only SATISFIED is an unsecured/debt-side result; it is not a favorable secured-debt answer."
+  }
+}

@@ -150,11 +150,11 @@ function main(): void {
   const report = [
     "# Stage D — companion-REQUIRES discharge + debt-side execution (Cycle 5)",
     "",
-    "**Verdict:** REQUIRE capacity **EXECUTED** after companion-REQUIRES discharge. §7.01(b) **AVAILABLE $50M**; synthetic $15M debt sim **SATISFIED**. §7.02(b) lien **REVIEW_REQUIRED** (`ENTITY_SCOPE_NOT_SAFE_TO_RELY_ON`) — dual-path secured sim not claimed.",
+    `**Verdict:** REQUIRE capacity **EXECUTED** after companion-REQUIRES discharge. §7.01(b) **AVAILABLE $50M**; synthetic $15M debt sim **SATISFIED**. §7.02(b) lien **${lienCap.status}** (Cycle 6 parent-scope inheritance; dual-path secured sim is Cycle 6).`,
     "",
     "| Field | Value |",
     "|---|---|",
-    `| Package | \`pkg-i-secured-debt-lien\` VEP from Cycle 4 |`,
+    `| Package | \`pkg-i-secured-debt-lien\` VEP (Cycle 4/6 re-derive) |`,
     `| Companion discharge (§7.02(b)) | **${isCompanionRequiresDischargeable(lienRule, pkg.rules)}** |`,
     `| SECURED_DEBT 4E | **${enumeration.authority}** |`,
     `| §7.01(b) capacity | **${debtCap.status}** $50M |`,
@@ -165,9 +165,9 @@ function main(): void {
     "",
     "Finite MONEY permissions whose only cross-rule gates are `SOURCE_REFERENCE_RESOLVED` `REQUIRES` dependencies with a COMPLETE target permission in-package no longer refuse the whole VEP. UNLIMITED capacity and `referencesRuleTargets` compliance gates stay fail-closed (xref §40/§54).",
     "",
-    "## Remaining Stage D blocker",
+    "## Cycle 6 follow-on",
     "",
-    "§7.02(b) clause fragment has no obligor words; governing/parent scope is not attached in this offline package → `ENTITY_SCOPE_UNWITNESSED` → not safe to rely. Wire PARENT_SCOPE / governing entity scope for lettered children before claiming secured dual-path capacity/sim.",
+    "Parent-scope inheritance for lettered children (entity-scope guard v6) makes §7.02(b) safe to rely on. Secured dual-path capacity/sim is demonstrated in `stage-d-pkgi-secured-dual-path/`.",
     "",
     "## Safety",
     "",
@@ -180,7 +180,7 @@ function main(): void {
 
   if (capacity.outcome !== "EXECUTED" || debtCap.status !== "AVAILABLE") process.exit(2);
   if (sim.outcome !== "EXECUTED" || sim.simulation.selectedPathResult !== "SATISFIED") process.exit(2);
-  if (lienCap.status !== "REVIEW_REQUIRED") process.exit(2);
+  if (lienCap.status !== "AVAILABLE") process.exit(2);
 }
 
 main();

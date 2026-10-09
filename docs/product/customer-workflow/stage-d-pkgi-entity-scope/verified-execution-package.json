@@ -54,7 +54,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": null,
         "precedence": "MODEL_EMITTED",
         "rawEmitted": {
@@ -90,15 +90,21 @@
           "citedUnitLeadIn": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
           "decidedBy": "BOTH",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.01",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
-          "parentScopeLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
           "signals": [
             {
               "excludedContext": false,
@@ -161,12 +167,76 @@
                 "GUARANTOR_RS"
               ],
               "tier": "CITED_UNIT_LEAD_IN"
+            },
+            {
+              "excludedContext": false,
+              "index": 32,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 77,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "GUARANTOR_RS"
+              ],
+              "tier": "PARENT_SCOPE"
             }
           ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "INCUR_DEBT",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create, incur or assume any Indebtedness",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:83a4dd35e047d1d463cea60f"
@@ -226,7 +296,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": null,
         "precedence": "OWN_OPERATIVE_LANGUAGE",
         "rawEmitted": {
@@ -537,7 +607,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": {
           "governingScope": [
             "ANY_SUBSIDIARY"
@@ -577,15 +647,21 @@
           "citedUnitLeadIn": "(d) Indebtedness owed to the Borrower by any Subsidiary.",
           "decidedBy": "BOTH",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.01",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(d) Indebtedness owed to the Borrower by any Subsidiary.",
-          "parentScopeLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
           "signals": [
             {
               "excludedContext": false,
@@ -646,6 +722,36 @@
               "satisfied": false,
               "satisfiedBy": [],
               "tier": "CITED_UNIT_LEAD_IN"
+            },
+            {
+              "excludedContext": false,
+              "index": 32,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 77,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
             }
           ]
         }
@@ -653,6 +759,36 @@
       "entityScopeExcluded": [],
       "exceptions": [],
       "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "INCUR_DEBT",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create, incur or assume any Indebtedness",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
         {
           "attribute": "entityScope",
           "canonicalValue": "ANY_SUBSIDIARY",
@@ -752,7 +888,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": null,
         "precedence": "MODEL_EMITTED",
         "rawEmitted": {
@@ -780,15 +916,21 @@
           "citedUnitLeadIn": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
           "decidedBy": "BOTH",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.01",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
-          "parentScopeLeadIn": null,
+          "parentScopeLeadIn": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
           "signals": [
             {
               "excludedContext": false,
@@ -823,12 +965,74 @@
                 "FOREIGN_RS"
               ],
               "tier": "CITED_UNIT_LEAD_IN"
+            },
+            {
+              "excludedContext": false,
+              "index": 32,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 77,
+              "partialOnly": true,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "FOREIGN_RS"
+              ],
+              "tier": "PARENT_SCOPE"
             }
           ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "INCUR_DEBT",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create, incur or assume any Indebtedness",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:7d3d6452ca896ef3f415a41d"
@@ -878,7 +1082,8 @@
       "covenantFamily": "INDEBTEDNESS",
       "dependsOn": [],
       "entityScope": [
-        "BORROWER"
+        "BORROWER",
+        "ANY_SUBSIDIARY"
       ],
       "entityScopeAudit": {
         "before": {
@@ -888,9 +1093,21 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
-        "modelDiscrepancy": null,
-        "precedence": "MODEL_EMITTED",
+        "guardVersion": "entity-scope-consistency-guard.v6",
+        "modelDiscrepancy": {
+          "governingScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "modelScope": [
+            "BORROWER"
+          ],
+          "rawEmitted": [
+            "BORROWER"
+          ],
+          "relation": "MODEL_NARROWER"
+        },
+        "precedence": "GOVERNING_SCOPE_SOURCE",
         "rawEmitted": {
           "entityScope": [
             "BORROWER"
@@ -899,10 +1116,11 @@
           "source": "RULE_FIELD"
         },
         "reasonCodes": [
-          "ENTITY_SCOPE_UNWITNESSED"
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
         ],
-        "safeToRely": false,
-        "status": "UNWITNESSED",
+        "safeToRely": true,
+        "status": "SOURCE_SCOPE_DERIVED",
         "tagNormalization": [
           {
             "field": "entityScope",
@@ -914,22 +1132,107 @@
         ],
         "witness": {
           "citedUnitLeadIn": "(a) Indebtedness under the Loan Documents;",
-          "decidedBy": "NONE",
+          "decidedBy": "PARENT_SCOPE",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.01",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(a) Indebtedness under the Loan Documents;",
-          "parentScopeLeadIn": null,
-          "signals": []
+          "parentScopeLeadIn": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "signals": [
+            {
+              "excludedContext": false,
+              "index": 32,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 77,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
+            }
+          ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "INCUR_DEBT",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create, incur or assume any Indebtedness",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "entityScope",
+          "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+          "compatibility": "INCOMPATIBLE",
+          "evidence": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.01",
+          "sourceSpan": {
+            "charEnd": 1195,
+            "charStart": 1054,
+            "documentId": "credit-agreement",
+            "sha256": "a0d5a812dfc77e52f38643ea39366d61b4b110d48581ba2ef7578020fc732938",
+            "structuralNodeId": "structural-node:3fa66f54aab4925c4e534e4f"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:ed15b7bb48e84e49fba71b63"
@@ -965,7 +1268,9 @@
       "sourceDocumentId": "credit-agreement",
       "sourceSectionRef": "7.01(a)",
       "sufficiency": "COMPLETE",
-      "sufficiencyReasons": [],
+      "sufficiencyReasons": [
+        "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing parent provision 7.01 (\"Borrower\", \"Subsidiary\") establishes the applicability exactly; the model's scope [\"BORROWER\"] (MODEL_NARROWER) is recorded as a discrepancy and did not control the result"
+      ],
       "transactionScope": null
     },
     {
@@ -989,7 +1294,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": null,
         "precedence": "OWN_OPERATIVE_LANGUAGE",
         "rawEmitted": {
@@ -1258,7 +1563,8 @@
       "covenantFamily": "LIENS",
       "dependsOn": [],
       "entityScope": [
-        "BORROWER"
+        "BORROWER",
+        "ANY_SUBSIDIARY"
       ],
       "entityScopeAudit": {
         "before": {
@@ -1268,9 +1574,21 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
-        "modelDiscrepancy": null,
-        "precedence": "MODEL_EMITTED",
+        "guardVersion": "entity-scope-consistency-guard.v6",
+        "modelDiscrepancy": {
+          "governingScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "modelScope": [
+            "BORROWER"
+          ],
+          "rawEmitted": [
+            "BORROWER"
+          ],
+          "relation": "MODEL_NARROWER"
+        },
+        "precedence": "GOVERNING_SCOPE_SOURCE",
         "rawEmitted": {
           "entityScope": [
             "BORROWER"
@@ -1279,10 +1597,11 @@
           "source": "RULE_FIELD"
         },
         "reasonCodes": [
-          "ENTITY_SCOPE_UNWITNESSED"
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
         ],
-        "safeToRely": false,
-        "status": "UNWITNESSED",
+        "safeToRely": true,
+        "status": "SOURCE_SCOPE_DERIVED",
         "tagNormalization": [
           {
             "field": "entityScope",
@@ -1294,22 +1613,107 @@
         ],
         "witness": {
           "citedUnitLeadIn": "(a) Liens securing the Obligations;",
-          "decidedBy": "NONE",
+          "decidedBy": "PARENT_SCOPE",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.02",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(a) Liens securing the Obligations;",
-          "parentScopeLeadIn": null,
-          "signals": []
+          "parentScopeLeadIn": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "signals": [
+            {
+              "excludedContext": false,
+              "index": 25,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 70,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
+            }
+          ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "CREATE_LIEN",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create any Lien",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "entityScope",
+          "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+          "compatibility": "INCOMPATIBLE",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:afb6e75a76fe3c96c2330879"
@@ -1345,7 +1749,9 @@
       "sourceDocumentId": "credit-agreement",
       "sourceSectionRef": "7.02(a)",
       "sufficiency": "COMPLETE",
-      "sufficiencyReasons": [],
+      "sufficiencyReasons": [
+        "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing parent provision 7.02 (\"Borrower\", \"Subsidiary\") establishes the applicability exactly; the model's scope [\"BORROWER\"] (MODEL_NARROWER) is recorded as a discrepancy and did not control the result"
+      ],
       "transactionScope": null
     },
     {
@@ -1388,7 +1794,8 @@
       "covenantFamily": "LIENS",
       "dependsOn": [],
       "entityScope": [
-        "BORROWER"
+        "BORROWER",
+        "ANY_SUBSIDIARY"
       ],
       "entityScopeAudit": {
         "before": {
@@ -1398,9 +1805,21 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
-        "modelDiscrepancy": null,
-        "precedence": "MODEL_EMITTED",
+        "guardVersion": "entity-scope-consistency-guard.v6",
+        "modelDiscrepancy": {
+          "governingScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "modelScope": [
+            "BORROWER"
+          ],
+          "rawEmitted": [
+            "BORROWER"
+          ],
+          "relation": "MODEL_NARROWER"
+        },
+        "precedence": "GOVERNING_SCOPE_SOURCE",
         "rawEmitted": {
           "entityScope": [
             "BORROWER"
@@ -1409,10 +1828,11 @@
           "source": "RULE_FIELD"
         },
         "reasonCodes": [
-          "ENTITY_SCOPE_UNWITNESSED"
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
         ],
-        "safeToRely": false,
-        "status": "UNWITNESSED",
+        "safeToRely": true,
+        "status": "SOURCE_SCOPE_DERIVED",
         "tagNormalization": [
           {
             "field": "entityScope",
@@ -1424,22 +1844,107 @@
         ],
         "witness": {
           "citedUnitLeadIn": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-          "decidedBy": "NONE",
+          "decidedBy": "PARENT_SCOPE",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.02",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-          "parentScopeLeadIn": null,
-          "signals": []
+          "parentScopeLeadIn": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "signals": [
+            {
+              "excludedContext": false,
+              "index": 25,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 70,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
+            }
+          ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "CREATE_LIEN",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create any Lien",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "entityScope",
+          "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+          "compatibility": "INCOMPATIBLE",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:470f1474dfef219a37facbd6"
@@ -1531,7 +2036,9 @@
       },
       "sourceSectionRef": "7.02(b)",
       "sufficiency": "COMPLETE",
-      "sufficiencyReasons": [],
+      "sufficiencyReasons": [
+        "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing parent provision 7.02 (\"Borrower\", \"Subsidiary\") establishes the applicability exactly; the model's scope [\"BORROWER\"] (MODEL_NARROWER) is recorded as a discrepancy and did not control the result"
+      ],
       "transactionScope": null
     },
     {
@@ -1543,7 +2050,8 @@
       "covenantFamily": "LIENS",
       "dependsOn": [],
       "entityScope": [
-        "BORROWER"
+        "BORROWER",
+        "ANY_SUBSIDIARY"
       ],
       "entityScopeAudit": {
         "before": {
@@ -1553,9 +2061,21 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
-        "modelDiscrepancy": null,
-        "precedence": "MODEL_EMITTED",
+        "guardVersion": "entity-scope-consistency-guard.v6",
+        "modelDiscrepancy": {
+          "governingScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "modelScope": [
+            "BORROWER"
+          ],
+          "rawEmitted": [
+            "BORROWER"
+          ],
+          "relation": "MODEL_NARROWER"
+        },
+        "precedence": "GOVERNING_SCOPE_SOURCE",
         "rawEmitted": {
           "entityScope": [
             "BORROWER"
@@ -1564,10 +2084,11 @@
           "source": "RULE_FIELD"
         },
         "reasonCodes": [
-          "ENTITY_SCOPE_UNWITNESSED"
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED"
         ],
-        "safeToRely": false,
-        "status": "UNWITNESSED",
+        "safeToRely": true,
+        "status": "SOURCE_SCOPE_DERIVED",
         "tagNormalization": [
           {
             "field": "entityScope",
@@ -1579,22 +2100,107 @@
         ],
         "witness": {
           "citedUnitLeadIn": "(c) Liens for taxes not yet due.",
-          "decidedBy": "NONE",
+          "decidedBy": "PARENT_SCOPE",
           "governingScope": {
-            "ancestorDistance": null,
-            "basisRole": null,
-            "basisSectionRef": null,
-            "derivedScope": null,
-            "evidence": null,
-            "phrases": []
+            "ancestorDistance": 1,
+            "basisRole": "PARENT_SCOPE",
+            "basisSectionRef": "7.02",
+            "derivedScope": [
+              "BORROWER",
+              "ANY_SUBSIDIARY"
+            ],
+            "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+            "phrases": [
+              "Borrower",
+              "Subsidiary"
+            ]
           },
           "ownExcerpt": "(c) Liens for taxes not yet due.",
-          "parentScopeLeadIn": null,
-          "signals": []
+          "parentScopeLeadIn": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "signals": [
+            {
+              "excludedContext": false,
+              "index": 25,
+              "partialOnly": false,
+              "phrase": "Borrower",
+              "requiresAnyOf": [
+                "BORROWER"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": true,
+              "satisfiedBy": [
+                "BORROWER"
+              ],
+              "tier": "PARENT_SCOPE"
+            },
+            {
+              "excludedContext": false,
+              "index": 70,
+              "partialOnly": false,
+              "phrase": "Subsidiary",
+              "requiresAnyOf": [
+                "GUARANTOR_RS",
+                "NON_GUARANTOR_RS",
+                "UNRESTRICTED_SUB"
+              ],
+              "role": "OBLIGOR",
+              "satisfied": false,
+              "satisfiedBy": [],
+              "tier": "PARENT_SCOPE"
+            }
+          ]
         }
       },
       "entityScopeExcluded": [],
       "exceptions": [],
+      "inheritedAttributes": [
+        {
+          "ancestorDistance": 1,
+          "attribute": "governingProhibition",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "action",
+          "canonicalValue": "CREATE_LIEN",
+          "compatibility": "COMPATIBLE",
+          "evidence": "create any Lien",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        },
+        {
+          "ancestorDistance": 1,
+          "attribute": "entityScope",
+          "canonicalValue": "BORROWER+ANY_SUBSIDIARY",
+          "compatibility": "INCOMPATIBLE",
+          "evidence": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+          "sourceAuthority": "PARENT_SCOPE",
+          "sourceSectionRef": "7.02",
+          "sourceSpan": {
+            "charEnd": 1697,
+            "charStart": 1572,
+            "documentId": "credit-agreement",
+            "sha256": "e8a646c8963f2b138a6029e0ce7f82822b6750db25029a9e8ba59a2bb17073a4",
+            "structuralNodeId": "structural-node:f0610fbb76a2d044a1d17aee"
+          }
+        }
+      ],
       "instrumentKey": "instrument:credit-agreement",
       "inventoryItemIds": [
         "inv-item:f906ca39da4e4618e622586d"
@@ -1630,7 +2236,9 @@
       "sourceDocumentId": "credit-agreement",
       "sourceSectionRef": "7.02(c)",
       "sufficiency": "COMPLETE",
-      "sufficiencyReasons": [],
+      "sufficiencyReasons": [
+        "ENTITY_SCOPE_SOURCE_DERIVED: entityScope [\"BORROWER\",\"ANY_SUBSIDIARY\"] - the rule's own text binds no obligor class; the authenticated governing parent provision 7.02 (\"Borrower\", \"Subsidiary\") establishes the applicability exactly; the model's scope [\"BORROWER\"] (MODEL_NARROWER) is recorded as a discrepancy and did not control the result"
+      ],
       "transactionScope": null
     },
     {
@@ -1653,7 +2261,7 @@
           "entityScopeExcluded": [],
           "sufficiency": "COMPLETE"
         },
-        "guardVersion": "entity-scope-consistency-guard.v5",
+        "guardVersion": "entity-scope-consistency-guard.v6",
         "modelDiscrepancy": {
           "governingScope": [
             "BORROWER",
@@ -2051,14 +2659,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "d6e6cf13c6ea51d735483122875a5238dd11637e401da6c2ba8322529f768e44",
+              "itemId": "c4d8e63f1e9a672f5dfcfd8df4d6bdeb4d0c377bf5d5342bf10a1a82e73ed161",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
               "sourceCitation": "7.01(a)",
               "sourceExcerpt": "(a) Indebtedness under the Loan Documents;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b86671a33bda7c430d05e19f308aa98108017c54115e1538635c5a44f0d350bf",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d353709e465ae92c56fc4c2355699a45163a6bd5cfca8668a7479139eda765e5",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d4c16821dec744a656d0818406ad9f04b4cf77c6bf7088465cf43ba2a56fadbc",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.01"
             },
             {
               "currency": null,
@@ -2098,6 +2745,32 @@
               "sourceCitation": "7.01(b)",
               "sourceExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
               "textValue": "{\"include\":[\"BORROWER\",\"GUARANTOR_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "83313d4af204af77a5bede5455fb08c2126f78405a9f7bee8925f64bc3a38553",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "066ba8d1835b2ba417f990105c9b02772fcbd814c29ed68bc5b45f4ad4cb148d",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -2150,6 +2823,32 @@
               "sourceCitation": "7.01(c)",
               "sourceExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
               "textValue": "{\"include\":[\"FOREIGN_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1daab669f05b834193ba273c12fb64357b8bfed05874a936f43fc1829dd1ee86",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "272d38508e9ef755905062749a6b3b7bbdfa632c8ef6bfda798faf04c2b539ba",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -2207,7 +2906,33 @@
               "currency": null,
               "irPath": "rules[4].inheritedAttributes[0]",
               "isAlternativeWithinSelection": false,
-              "itemId": "5b73a7bae7f7e221240066bd8fb8749ee4ecec8ad2410c178d4c4f690f95769e",
+              "itemId": "14f0c1acf6f6b0769aa4a587d4850e9c0689aef52997647e6817e473e0dd4076",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8d7f391067d9cda0b39fefd24fc7d3ca5d04a60d56e31412af368734ff404f30",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5bb934f1ca7f62f625b469fa63ed6d5d118303c6e4c3a52d9bbb8f4b74cd939a",
               "kind": "INHERITED_ATTRIBUTE",
               "numericValue": null,
               "ownerTermName": null,
@@ -3242,11 +3967,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "3f09cdcd7936ed99113db8924513cb1164e97e4d926e9b34d06e4ea42cc2db30",
+          "hash": "5a399c09b54ebe5442ec47369058d4092e1150eb84530c9fb3b42cf821c440b8",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.852Z",
+        "verifiedAt": "2026-10-09T22:49:19.868Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -3416,14 +4141,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "d6e6cf13c6ea51d735483122875a5238dd11637e401da6c2ba8322529f768e44",
+              "itemId": "c4d8e63f1e9a672f5dfcfd8df4d6bdeb4d0c377bf5d5342bf10a1a82e73ed161",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
               "sourceCitation": "7.01(a)",
               "sourceExcerpt": "(a) Indebtedness under the Loan Documents;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b86671a33bda7c430d05e19f308aa98108017c54115e1538635c5a44f0d350bf",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d353709e465ae92c56fc4c2355699a45163a6bd5cfca8668a7479139eda765e5",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d4c16821dec744a656d0818406ad9f04b4cf77c6bf7088465cf43ba2a56fadbc",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.01"
             },
             {
               "currency": null,
@@ -3463,6 +4227,32 @@
               "sourceCitation": "7.01(b)",
               "sourceExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
               "textValue": "{\"include\":[\"BORROWER\",\"GUARANTOR_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "83313d4af204af77a5bede5455fb08c2126f78405a9f7bee8925f64bc3a38553",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "066ba8d1835b2ba417f990105c9b02772fcbd814c29ed68bc5b45f4ad4cb148d",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -3515,6 +4305,32 @@
               "sourceCitation": "7.01(c)",
               "sourceExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
               "textValue": "{\"include\":[\"FOREIGN_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1daab669f05b834193ba273c12fb64357b8bfed05874a936f43fc1829dd1ee86",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "272d38508e9ef755905062749a6b3b7bbdfa632c8ef6bfda798faf04c2b539ba",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -3572,7 +4388,33 @@
               "currency": null,
               "irPath": "rules[4].inheritedAttributes[0]",
               "isAlternativeWithinSelection": false,
-              "itemId": "5b73a7bae7f7e221240066bd8fb8749ee4ecec8ad2410c178d4c4f690f95769e",
+              "itemId": "14f0c1acf6f6b0769aa4a587d4850e9c0689aef52997647e6817e473e0dd4076",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8d7f391067d9cda0b39fefd24fc7d3ca5d04a60d56e31412af368734ff404f30",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5bb934f1ca7f62f625b469fa63ed6d5d118303c6e4c3a52d9bbb8f4b74cd939a",
               "kind": "INHERITED_ATTRIBUTE",
               "numericValue": null,
               "ownerTermName": null,
@@ -4607,11 +5449,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "3f09cdcd7936ed99113db8924513cb1164e97e4d926e9b34d06e4ea42cc2db30",
+          "hash": "5a399c09b54ebe5442ec47369058d4092e1150eb84530c9fb3b42cf821c440b8",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.852Z",
+        "verifiedAt": "2026-10-09T22:49:19.868Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -4781,14 +5623,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "d6e6cf13c6ea51d735483122875a5238dd11637e401da6c2ba8322529f768e44",
+              "itemId": "c4d8e63f1e9a672f5dfcfd8df4d6bdeb4d0c377bf5d5342bf10a1a82e73ed161",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
               "sourceCitation": "7.01(a)",
               "sourceExcerpt": "(a) Indebtedness under the Loan Documents;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b86671a33bda7c430d05e19f308aa98108017c54115e1538635c5a44f0d350bf",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d353709e465ae92c56fc4c2355699a45163a6bd5cfca8668a7479139eda765e5",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d4c16821dec744a656d0818406ad9f04b4cf77c6bf7088465cf43ba2a56fadbc",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.01"
             },
             {
               "currency": null,
@@ -4828,6 +5709,32 @@
               "sourceCitation": "7.01(b)",
               "sourceExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
               "textValue": "{\"include\":[\"BORROWER\",\"GUARANTOR_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "83313d4af204af77a5bede5455fb08c2126f78405a9f7bee8925f64bc3a38553",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "066ba8d1835b2ba417f990105c9b02772fcbd814c29ed68bc5b45f4ad4cb148d",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -4880,6 +5787,32 @@
               "sourceCitation": "7.01(c)",
               "sourceExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
               "textValue": "{\"include\":[\"FOREIGN_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1daab669f05b834193ba273c12fb64357b8bfed05874a936f43fc1829dd1ee86",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "272d38508e9ef755905062749a6b3b7bbdfa632c8ef6bfda798faf04c2b539ba",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -4937,7 +5870,33 @@
               "currency": null,
               "irPath": "rules[4].inheritedAttributes[0]",
               "isAlternativeWithinSelection": false,
-              "itemId": "5b73a7bae7f7e221240066bd8fb8749ee4ecec8ad2410c178d4c4f690f95769e",
+              "itemId": "14f0c1acf6f6b0769aa4a587d4850e9c0689aef52997647e6817e473e0dd4076",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8d7f391067d9cda0b39fefd24fc7d3ca5d04a60d56e31412af368734ff404f30",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5bb934f1ca7f62f625b469fa63ed6d5d118303c6e4c3a52d9bbb8f4b74cd939a",
               "kind": "INHERITED_ATTRIBUTE",
               "numericValue": null,
               "ownerTermName": null,
@@ -5972,11 +6931,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "3f09cdcd7936ed99113db8924513cb1164e97e4d926e9b34d06e4ea42cc2db30",
+          "hash": "5a399c09b54ebe5442ec47369058d4092e1150eb84530c9fb3b42cf821c440b8",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.852Z",
+        "verifiedAt": "2026-10-09T22:49:19.868Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -6146,14 +7105,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "d6e6cf13c6ea51d735483122875a5238dd11637e401da6c2ba8322529f768e44",
+              "itemId": "c4d8e63f1e9a672f5dfcfd8df4d6bdeb4d0c377bf5d5342bf10a1a82e73ed161",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
               "sourceCitation": "7.01(a)",
               "sourceExcerpt": "(a) Indebtedness under the Loan Documents;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b86671a33bda7c430d05e19f308aa98108017c54115e1538635c5a44f0d350bf",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d353709e465ae92c56fc4c2355699a45163a6bd5cfca8668a7479139eda765e5",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d4c16821dec744a656d0818406ad9f04b4cf77c6bf7088465cf43ba2a56fadbc",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.01"
             },
             {
               "currency": null,
@@ -6193,6 +7191,32 @@
               "sourceCitation": "7.01(b)",
               "sourceExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
               "textValue": "{\"include\":[\"BORROWER\",\"GUARANTOR_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "83313d4af204af77a5bede5455fb08c2126f78405a9f7bee8925f64bc3a38553",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "066ba8d1835b2ba417f990105c9b02772fcbd814c29ed68bc5b45f4ad4cb148d",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -6245,6 +7269,32 @@
               "sourceCitation": "7.01(c)",
               "sourceExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
               "textValue": "{\"include\":[\"FOREIGN_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1daab669f05b834193ba273c12fb64357b8bfed05874a936f43fc1829dd1ee86",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "272d38508e9ef755905062749a6b3b7bbdfa632c8ef6bfda798faf04c2b539ba",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -6302,7 +7352,33 @@
               "currency": null,
               "irPath": "rules[4].inheritedAttributes[0]",
               "isAlternativeWithinSelection": false,
-              "itemId": "5b73a7bae7f7e221240066bd8fb8749ee4ecec8ad2410c178d4c4f690f95769e",
+              "itemId": "14f0c1acf6f6b0769aa4a587d4850e9c0689aef52997647e6817e473e0dd4076",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8d7f391067d9cda0b39fefd24fc7d3ca5d04a60d56e31412af368734ff404f30",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5bb934f1ca7f62f625b469fa63ed6d5d118303c6e4c3a52d9bbb8f4b74cd939a",
               "kind": "INHERITED_ATTRIBUTE",
               "numericValue": null,
               "ownerTermName": null,
@@ -7337,11 +8413,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "3f09cdcd7936ed99113db8924513cb1164e97e4d926e9b34d06e4ea42cc2db30",
+          "hash": "5a399c09b54ebe5442ec47369058d4092e1150eb84530c9fb3b42cf821c440b8",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.852Z",
+        "verifiedAt": "2026-10-09T22:49:19.868Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -7511,14 +8587,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "d6e6cf13c6ea51d735483122875a5238dd11637e401da6c2ba8322529f768e44",
+              "itemId": "c4d8e63f1e9a672f5dfcfd8df4d6bdeb4d0c377bf5d5342bf10a1a82e73ed161",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
               "sourceCitation": "7.01(a)",
               "sourceExcerpt": "(a) Indebtedness under the Loan Documents;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "b86671a33bda7c430d05e19f308aa98108017c54115e1538635c5a44f0d350bf",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d353709e465ae92c56fc4c2355699a45163a6bd5cfca8668a7479139eda765e5",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "d4c16821dec744a656d0818406ad9f04b4cf77c6bf7088465cf43ba2a56fadbc",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:faeaf9ec96070abfed580d5f",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.01"
             },
             {
               "currency": null,
@@ -7558,6 +8673,32 @@
               "sourceCitation": "7.01(b)",
               "sourceExcerpt": "(b) other Indebtedness of the Borrower and the Guarantors in an aggregate principal amount not to exceed $50,000,000 at any time outstanding;",
               "textValue": "{\"include\":[\"BORROWER\",\"GUARANTOR_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "83313d4af204af77a5bede5455fb08c2126f78405a9f7bee8925f64bc3a38553",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "066ba8d1835b2ba417f990105c9b02772fcbd814c29ed68bc5b45f4ad4cb148d",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:1ea3d67e55e82ccbde4edeec",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -7610,6 +8751,32 @@
               "sourceCitation": "7.01(c)",
               "sourceExcerpt": "(c) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $15,000,000 at any time outstanding; and",
               "textValue": "{\"include\":[\"FOREIGN_RS\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "1daab669f05b834193ba273c12fb64357b8bfed05874a936f43fc1829dd1ee86",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "272d38508e9ef755905062749a6b3b7bbdfa632c8ef6bfda798faf04c2b539ba",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:d0026495335a3c191280d108",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
             },
             {
               "currency": "USD",
@@ -7667,7 +8834,33 @@
               "currency": null,
               "irPath": "rules[4].inheritedAttributes[0]",
               "isAlternativeWithinSelection": false,
-              "itemId": "5b73a7bae7f7e221240066bd8fb8749ee4ecec8ad2410c178d4c4f690f95769e",
+              "itemId": "14f0c1acf6f6b0769aa4a587d4850e9c0689aef52997647e6817e473e0dd4076",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "SECTION 7.01 Indebtedness . The Borrower shall not, and shall not permit any Subsidiary to, create, incur or assume any Indebtedness, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8d7f391067d9cda0b39fefd24fc7d3ca5d04a60d56e31412af368734ff404f30",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:cb4929708d9b90d8bdfd2d28",
+              "sourceCitation": "7.01",
+              "sourceExcerpt": "create, incur or assume any Indebtedness",
+              "textValue": "action:INCUR_DEBT@PARENT_SCOPE:7.01"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[4].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5bb934f1ca7f62f625b469fa63ed6d5d118303c6e4c3a52d9bbb8f4b74cd939a",
               "kind": "INHERITED_ATTRIBUTE",
               "numericValue": null,
               "ownerTermName": null,
@@ -8702,11 +9895,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "3f09cdcd7936ed99113db8924513cb1164e97e4d926e9b34d06e4ea42cc2db30",
+          "hash": "5a399c09b54ebe5442ec47369058d4092e1150eb84530c9fb3b42cf821c440b8",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.852Z",
+        "verifiedAt": "2026-10-09T22:49:19.868Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -8938,14 +10131,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "9bae8fe1c2aab4ef60075ffefbcb73f617f58087520915d8cd31dc2d3df0e4e2",
+              "itemId": "5a4bd16283bd5342015631144a54cb2eff5896ab75d69bd140dfa9ba2b9e407f",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
               "sourceCitation": "7.02(a)",
               "sourceExcerpt": "(a) Liens securing the Obligations;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "ba02f4e82e6f2b8f9059e43f15e0bccc99fd205e2f3c8dd8f942cc5357a7c107",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "05648524485167a3d8a43b6f81121e367f51ce6e29646f56f541c5e56905c2a0",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "3b2aa79ea573488e37b149bda8662694c4f03ca3d8625387924a0c457215ef21",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": null,
@@ -8977,14 +10209,14 @@
               "currency": null,
               "irPath": "rules[2].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f865f81f25c497a699d9c572f157b3f017cb982347d88fa456b8031105863e83",
+              "itemId": "9de47dd4e71a80116c8f1c0653e63342596c585a5fb2a638f4d9da626ec6ed0d",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
               "sourceCitation": "7.02(b)",
               "sourceExcerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
             },
             {
               "currency": null,
@@ -8998,6 +10230,45 @@
               "sourceCitation": "§7.02",
               "sourceExcerpt": null,
               "textValue": "REQUIRES:7.01(b)|SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a285d557729584cb4edc48f2148406323d68e7fe46172b5bf886e18c418d5726",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fad68ddff5b0eb4a966e62ef4a0521a80256081036181dd56b87c39a875b4616",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5f2fbaaefc149139c9378215a95b9a5c4d5e1a2669b2e35c490cf3b77a53ef91",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": "USD",
@@ -9042,14 +10313,53 @@
               "currency": null,
               "irPath": "rules[3].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f5575786fde370400ef1605e3011bc611514ce9282b74a8a0742de4b2fa4743c",
+              "itemId": "9e77a5ab896a26ebab2bd0758466609c81fa74cd78a6e6fd71603ec17e65e39c",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
               "sourceCitation": "7.02(c)",
               "sourceExcerpt": "(c) Liens for taxes not yet due.",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e817427c758321cdb349ce6d5399a2dda6d7ec85b10633af30e2c4fa072ddd29",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "625c743fb3cca3b15a0be3683bd59c2d8c1604b70205b097a3f50a348482318b",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8dcb07939e2ee048eac13bae44ba47d6ef0d58345e30cad1adfafb10b1de5a9e",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             }
           ],
           "ruleCount": 4
@@ -9650,11 +10960,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "d681fad68ff1d87654e577b72ab7a6ae974366f0456d5c35e0b78dd1d0c82c87",
+          "hash": "d18cd4c7fb5c9a67a9f2b4d7526965ea2e1484c4503c2f78bbcefc4a7044833f",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.892Z",
+        "verifiedAt": "2026-10-09T22:49:19.907Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -9886,14 +11196,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "9bae8fe1c2aab4ef60075ffefbcb73f617f58087520915d8cd31dc2d3df0e4e2",
+              "itemId": "5a4bd16283bd5342015631144a54cb2eff5896ab75d69bd140dfa9ba2b9e407f",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
               "sourceCitation": "7.02(a)",
               "sourceExcerpt": "(a) Liens securing the Obligations;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "ba02f4e82e6f2b8f9059e43f15e0bccc99fd205e2f3c8dd8f942cc5357a7c107",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "05648524485167a3d8a43b6f81121e367f51ce6e29646f56f541c5e56905c2a0",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "3b2aa79ea573488e37b149bda8662694c4f03ca3d8625387924a0c457215ef21",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": null,
@@ -9925,14 +11274,14 @@
               "currency": null,
               "irPath": "rules[2].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f865f81f25c497a699d9c572f157b3f017cb982347d88fa456b8031105863e83",
+              "itemId": "9de47dd4e71a80116c8f1c0653e63342596c585a5fb2a638f4d9da626ec6ed0d",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
               "sourceCitation": "7.02(b)",
               "sourceExcerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
             },
             {
               "currency": null,
@@ -9946,6 +11295,45 @@
               "sourceCitation": "§7.02",
               "sourceExcerpt": null,
               "textValue": "REQUIRES:7.01(b)|SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a285d557729584cb4edc48f2148406323d68e7fe46172b5bf886e18c418d5726",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fad68ddff5b0eb4a966e62ef4a0521a80256081036181dd56b87c39a875b4616",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5f2fbaaefc149139c9378215a95b9a5c4d5e1a2669b2e35c490cf3b77a53ef91",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": "USD",
@@ -9990,14 +11378,53 @@
               "currency": null,
               "irPath": "rules[3].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f5575786fde370400ef1605e3011bc611514ce9282b74a8a0742de4b2fa4743c",
+              "itemId": "9e77a5ab896a26ebab2bd0758466609c81fa74cd78a6e6fd71603ec17e65e39c",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
               "sourceCitation": "7.02(c)",
               "sourceExcerpt": "(c) Liens for taxes not yet due.",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e817427c758321cdb349ce6d5399a2dda6d7ec85b10633af30e2c4fa072ddd29",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "625c743fb3cca3b15a0be3683bd59c2d8c1604b70205b097a3f50a348482318b",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8dcb07939e2ee048eac13bae44ba47d6ef0d58345e30cad1adfafb10b1de5a9e",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             }
           ],
           "ruleCount": 4
@@ -10598,11 +12025,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "d681fad68ff1d87654e577b72ab7a6ae974366f0456d5c35e0b78dd1d0c82c87",
+          "hash": "d18cd4c7fb5c9a67a9f2b4d7526965ea2e1484c4503c2f78bbcefc4a7044833f",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.892Z",
+        "verifiedAt": "2026-10-09T22:49:19.907Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -10834,14 +12261,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "9bae8fe1c2aab4ef60075ffefbcb73f617f58087520915d8cd31dc2d3df0e4e2",
+              "itemId": "5a4bd16283bd5342015631144a54cb2eff5896ab75d69bd140dfa9ba2b9e407f",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
               "sourceCitation": "7.02(a)",
               "sourceExcerpt": "(a) Liens securing the Obligations;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "ba02f4e82e6f2b8f9059e43f15e0bccc99fd205e2f3c8dd8f942cc5357a7c107",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "05648524485167a3d8a43b6f81121e367f51ce6e29646f56f541c5e56905c2a0",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "3b2aa79ea573488e37b149bda8662694c4f03ca3d8625387924a0c457215ef21",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": null,
@@ -10873,14 +12339,14 @@
               "currency": null,
               "irPath": "rules[2].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f865f81f25c497a699d9c572f157b3f017cb982347d88fa456b8031105863e83",
+              "itemId": "9de47dd4e71a80116c8f1c0653e63342596c585a5fb2a638f4d9da626ec6ed0d",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
               "sourceCitation": "7.02(b)",
               "sourceExcerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
             },
             {
               "currency": null,
@@ -10894,6 +12360,45 @@
               "sourceCitation": "§7.02",
               "sourceExcerpt": null,
               "textValue": "REQUIRES:7.01(b)|SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a285d557729584cb4edc48f2148406323d68e7fe46172b5bf886e18c418d5726",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fad68ddff5b0eb4a966e62ef4a0521a80256081036181dd56b87c39a875b4616",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5f2fbaaefc149139c9378215a95b9a5c4d5e1a2669b2e35c490cf3b77a53ef91",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": "USD",
@@ -10938,14 +12443,53 @@
               "currency": null,
               "irPath": "rules[3].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f5575786fde370400ef1605e3011bc611514ce9282b74a8a0742de4b2fa4743c",
+              "itemId": "9e77a5ab896a26ebab2bd0758466609c81fa74cd78a6e6fd71603ec17e65e39c",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
               "sourceCitation": "7.02(c)",
               "sourceExcerpt": "(c) Liens for taxes not yet due.",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e817427c758321cdb349ce6d5399a2dda6d7ec85b10633af30e2c4fa072ddd29",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "625c743fb3cca3b15a0be3683bd59c2d8c1604b70205b097a3f50a348482318b",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8dcb07939e2ee048eac13bae44ba47d6ef0d58345e30cad1adfafb10b1de5a9e",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             }
           ],
           "ruleCount": 4
@@ -11546,11 +13090,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "d681fad68ff1d87654e577b72ab7a6ae974366f0456d5c35e0b78dd1d0c82c87",
+          "hash": "d18cd4c7fb5c9a67a9f2b4d7526965ea2e1484c4503c2f78bbcefc4a7044833f",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.892Z",
+        "verifiedAt": "2026-10-09T22:49:19.907Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -11782,14 +13326,53 @@
               "currency": null,
               "irPath": "rules[1].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "9bae8fe1c2aab4ef60075ffefbcb73f617f58087520915d8cd31dc2d3df0e4e2",
+              "itemId": "5a4bd16283bd5342015631144a54cb2eff5896ab75d69bd140dfa9ba2b9e407f",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
               "sourceCitation": "7.02(a)",
               "sourceExcerpt": "(a) Liens securing the Obligations;",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "ba02f4e82e6f2b8f9059e43f15e0bccc99fd205e2f3c8dd8f942cc5357a7c107",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "05648524485167a3d8a43b6f81121e367f51ce6e29646f56f541c5e56905c2a0",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[1].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "3b2aa79ea573488e37b149bda8662694c4f03ca3d8625387924a0c457215ef21",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:70ae38c6bfb54b40169b5794",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": null,
@@ -11821,14 +13404,14 @@
               "currency": null,
               "irPath": "rules[2].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f865f81f25c497a699d9c572f157b3f017cb982347d88fa456b8031105863e83",
+              "itemId": "9de47dd4e71a80116c8f1c0653e63342596c585a5fb2a638f4d9da626ec6ed0d",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
               "sourceCitation": "7.02(b)",
               "sourceExcerpt": "(b) Liens securing Indebtedness permitted under Section 7.01(b) in an aggregate principal amount not to exceed $20,000,000 at any time outstanding; and",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
             },
             {
               "currency": null,
@@ -11842,6 +13425,45 @@
               "sourceCitation": "§7.02",
               "sourceExcerpt": null,
               "textValue": "REQUIRES:7.01(b)|SOURCE_REFERENCE_RESOLVED"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "a285d557729584cb4edc48f2148406323d68e7fe46172b5bf886e18c418d5726",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "fad68ddff5b0eb4a966e62ef4a0521a80256081036181dd56b87c39a875b4616",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[2].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "5f2fbaaefc149139c9378215a95b9a5c4d5e1a2669b2e35c490cf3b77a53ef91",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:81aa6243b5eb1655b8642df0",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             },
             {
               "currency": "USD",
@@ -11886,14 +13508,53 @@
               "currency": null,
               "irPath": "rules[3].entityScope",
               "isAlternativeWithinSelection": false,
-              "itemId": "f5575786fde370400ef1605e3011bc611514ce9282b74a8a0742de4b2fa4743c",
+              "itemId": "9e77a5ab896a26ebab2bd0758466609c81fa74cd78a6e6fd71603ec17e65e39c",
               "kind": "ENTITY_SCOPE",
               "numericValue": null,
               "ownerTermName": null,
               "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
               "sourceCitation": "7.02(c)",
               "sourceExcerpt": "(c) Liens for taxes not yet due.",
-              "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}"
+              "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[0]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "e817427c758321cdb349ce6d5399a2dda6d7ec85b10633af30e2c4fa072ddd29",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "governingProhibition:@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[1]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "625c743fb3cca3b15a0be3683bd59c2d8c1604b70205b097a3f50a348482318b",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "create any Lien",
+              "textValue": "action:CREATE_LIEN@PARENT_SCOPE:7.02"
+            },
+            {
+              "currency": null,
+              "irPath": "rules[3].inheritedAttributes[2]",
+              "isAlternativeWithinSelection": false,
+              "itemId": "8dcb07939e2ee048eac13bae44ba47d6ef0d58345e30cad1adfafb10b1de5a9e",
+              "kind": "INHERITED_ATTRIBUTE",
+              "numericValue": null,
+              "ownerTermName": null,
+              "ruleOrDefinitionId": "ir-rule:b0f054bcbe8e4d213989cd1a",
+              "sourceCitation": "7.02",
+              "sourceExcerpt": "SECTION 7.02 Liens . The Borrower shall not, and shall not permit any Subsidiary to, create any Lien on any property, except:",
+              "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.02"
             }
           ],
           "ruleCount": 4
@@ -12494,11 +14155,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "d681fad68ff1d87654e577b72ab7a6ae974366f0456d5c35e0b78dd1d0c82c87",
+          "hash": "d18cd4c7fb5c9a67a9f2b4d7526965ea2e1484c4503c2f78bbcefc4a7044833f",
           "shownToReviewer": true,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.892Z",
+        "verifiedAt": "2026-10-09T22:49:19.907Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     },
@@ -12552,7 +14213,7 @@
             "retryCount": 0,
             "schemaVersion": "mock",
             "stage": "mock",
-            "timestamp": "2026-10-09T22:27:46.910Z"
+            "timestamp": "2026-10-09T22:49:19.924Z"
           }
         },
         "evidenceSetHash": "03bec860994b3753c81bedebc8f44bb766f06bd9435ad6efdbca6fb8a73ce08c",
@@ -12748,11 +14409,11 @@
         },
         "status": "VERIFIED_NO_MATERIAL_GAP_FOUND",
         "verificationProjection": {
-          "hash": "b1be2c16ea4330e260cce7f7fa6e7b399bd8d3cff0bcba98ad55c2dd66c7fbc5",
+          "hash": "0cf241fb626395685479efd1ade583a2a5df7559d8bccf0b9623f716040b2063",
           "shownToReviewer": false,
           "version": "phase-3c-verification-projection.v4"
         },
-        "verifiedAt": "2026-10-09T22:27:46.910Z",
+        "verifiedAt": "2026-10-09T22:49:19.924Z",
         "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5"
       }
     }

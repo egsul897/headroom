@@ -178,12 +178,12 @@ async function main(): Promise<void> {
   const report = [
     "# Stage D probe — pkg-i entity-scope COUNTERPARTY (Cycle 4)",
     "",
-    "**Verdict:** debt ∩ lien **enumeration unblocked** (`SECURED_DEBT` `CERTIFIED_4E`). Capacity/sim **correctly refused** (`CROSS_RULE_GATE_NOT_EXECUTABLE`).",
+    `**Verdict:** debt ∩ lien **enumeration unblocked** (\`SECURED_DEBT\` \`CERTIFIED_4E\`). REQUIRE capacity **${capacity.outcome}** (Cycle 5+ companion discharge may EXECUTE; Cycle 4 historically REFUSED cross-rule).`,
     "",
     "| Field | Value |",
     "|---|---|",
     `| Package | \`${PACKAGE_ID}\` (synthetic acceptance; offline) |`,
-    `| Guard | \`entity-scope-consistency-guard.v5\` |`,
+    `| Guard | \`entity-scope-consistency-guard.v6\` |`,
     `| CERTIFIED candidates | ${artifacts.length} |`,
     `| §7.01(b) debt CERTIFIED | ${debt701b ? "**yes**" : "no"} |`,
     `| §7.01(d) scope | \`${JSON.stringify(d701d?.entityScope)}\` status=\`${d701d?.auditStatus}\` relation=\`${d701d?.relation}\` counterparty=${d701d?.hasCounterparty} |`,
@@ -196,7 +196,7 @@ async function main(): Promise<void> {
     "",
     "§7.01(d) \"Indebtedness owed to the Borrower by any Subsidiary\" previously treated Borrower as OBLIGOR → model BORROWER vs Subsidiary-only source → `ENTITY_SCOPE_UNDERINCLUSIVE` PARTIAL sibling → §7.01 candidate `UNIT_SUFFICIENCY_INCOMPLETE` / `COMPILATION_NOT_COMPLETED`.",
     "",
-    "v5: Borrower is COUNTERPARTY (payee); obligor scope derives to `ANY_SUBSIDIARY`; MODEL_DIFFERENT → `SOURCE_SCOPE_DERIVED` (COMPLETE, safeToRely). Classic Borrower+RS under-inclusion still PARTIAL.",
+    "v5/v6: Borrower is COUNTERPARTY (payee); obligor scope derives to `ANY_SUBSIDIARY`; MODEL_DIFFERENT → `SOURCE_SCOPE_DERIVED` (COMPLETE, safeToRely). Classic Borrower+RS under-inclusion still PARTIAL. Lettered children inherit parent chapeau scope (v6).",
     "",
     "## What executed vs refused",
     "",
@@ -204,13 +204,13 @@ async function main(): Promise<void> {
     "|---|---|",
     "| Offline CERTIFY §7.01 + §7.02 | **Pass** |",
     "| Phase 4E SECURED_DEBT dual-path | **CERTIFIED_4E** |",
-    "| evaluateVerifiedCapacity(REQUIRE) | **REFUSED** cross-rule gate on §7.02(b)→§7.01(b) |",
+    `| evaluateVerifiedCapacity(REQUIRE) | **${capacity.outcome}** |`,
     "| Customer-grade secured execution | **Not claimed** |",
     "",
     "## Safety",
     "",
     "- No paid inference; no FIXTURE_IR; CFP 0; certification gates not weakened.",
-    "- Cross-rule gate remains fail-closed (no invented satisfaction).",
+    "- Cross-rule gate remains fail-closed except finite companion-REQUIRES discharge (Cycle 5).",
     "",
   ].join("\n");
 
@@ -229,8 +229,15 @@ async function main(): Promise<void> {
     console.error("expected SECURED_DEBT CERTIFIED_4E with debt and lien paths");
     process.exit(2);
   }
-  if (capacity.outcome !== "REFUSED" || !capacity.refusals.some((r) => r.code === "CROSS_RULE_GATE_NOT_EXECUTABLE")) {
-    console.error("expected REQUIRE capacity REFUSED with CROSS_RULE_GATE_NOT_EXECUTABLE");
+  // Cycle 5+ companion-REQUIRES discharge may EXECUTE capacity; Cycle 4 historically expected REFUSED.
+  // Accept either fail-closed cross-rule refusal or EXECUTED (discharge) — never invent availability.
+  if (capacity.outcome === "REFUSED") {
+    if (!capacity.refusals.some((r) => r.code === "CROSS_RULE_GATE_NOT_EXECUTABLE")) {
+      console.error("expected REQUIRE capacity REFUSED with CROSS_RULE_GATE_NOT_EXECUTABLE");
+      process.exit(2);
+    }
+  } else if (capacity.outcome !== "EXECUTED") {
+    console.error(`unexpected capacity outcome ${capacity.outcome}`);
     process.exit(2);
   }
 }
