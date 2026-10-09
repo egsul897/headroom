@@ -12,6 +12,7 @@ import { CorpusStore, defaultCorpusPaths } from "../../knowledge-factory/store/c
 import { processAcquiredDocument } from "../../knowledge-factory/pipeline/run";
 import { discoverDocumentRelationships } from "../../knowledge-factory/relationships/discover";
 import { PostgresDocumentStorageProvider } from "../../document-storage/postgres-bytea-provider";
+import type { DebtDocumentClass } from "../../knowledge-factory/types";
 import { buildDocumentCovenantSummary } from "../covenant-intelligence/summarize";
 import { analyzeAmendmentPackage } from "./amendment-package";
 
@@ -21,6 +22,26 @@ function sha256(buf: Buffer): string {
 
 function customerSourceId(companyId: string, documentId: string, contentHash: string): string {
   return `customer:${companyId}:${documentId}:${contentHash.slice(0, 16)}`;
+}
+
+/** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */
+function documentClassFromDeclared(
+  declaredType: string | undefined,
+  classified: DebtDocumentClass,
+): DebtDocumentClass {
+  if (classified !== "UNKNOWN" && classified !== "OTHER_DEBT_RELATED") return classified;
+  switch (declaredType) {
+    case "CREDIT_AGREEMENT":
+      return "CREDIT_AGREEMENT";
+    case "INDENTURE":
+      return "INDENTURE";
+    case "AMENDMENT":
+      return "AMENDMENT";
+    case "INTERCREDITOR_AGREEMENT":
+      return "INTERCREDITOR_AGREEMENT";
+    default:
+      return classified;
+  }
 }
 
 export interface CustomerAnalyzeResult {
@@ -160,12 +181,19 @@ export async function analyzeCustomerDocument(params: {
       };
     }
 
+    const documentClass = documentClassFromDeclared(
+      params.declaredType,
+      processed.source.documentClass,
+    );
+    processed.source.documentClass = documentClass;
+    store.upsertSource({ ...processed.source, documentClass });
+
     const summary = buildDocumentCovenantSummary({
       sourceId,
       documentTitle: processed.source.documentTitle || params.filename,
       issuerName: company.name,
       issuerCik: "0000000000",
-      documentClass: processed.source.documentClass,
+      documentClass,
       candidates: store.loadCandidates(sourceId),
       definitions: store.loadDefinitions(sourceId),
       structuralNodes: store.loadStructuralNodes(sourceId),
@@ -187,8 +215,9 @@ export async function analyzeCustomerDocument(params: {
     // Merge in-memory current source + durable siblings for amendment graph
     const byId = new Map<string, ReturnType<typeof store.listSources>[number]>();
     for (const s of store.listSources()) byId.set(s.sourceId, s);
+    byId.set(sourceId, { ...processed.source, documentClass });
     for (const s of siblingSources) {
-      if (byId.has(s.sourceId)) continue;
+      if (s.sourceId === sourceId) continue;
       byId.set(s.sourceId, {
         sourceId: s.sourceId,
         issuerCik: s.issuerCik,
@@ -253,7 +282,7 @@ export async function analyzeCustomerDocument(params: {
         filingDate: new Date(),
         formType: "UPLOAD",
         documentTitle: params.filename,
-        documentClass: processed.source.documentClass as never,
+        documentClass: documentClass as never,
         originalBytesHash: contentHash,
         normalizedTextHash: processed.source.normalizedTextHash,
         acquisitionTimestamp: new Date(),
@@ -269,7 +298,7 @@ export async function analyzeCustomerDocument(params: {
       update: {
         companyId: params.companyId,
         documentId: params.documentId,
-        documentClass: processed.source.documentClass as never,
+        documentClass: documentClass as never,
         extractionStatus: processed.source.extractionStatus as never,
         representationLevel: processed.source.representationLevel as never,
         issuerName: company.name,

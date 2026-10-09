@@ -42,9 +42,26 @@ function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
   return ap as AmendmentPackageView;
 }
 
-function scoreItem(hay: string, tokens: string[]): number {
+function scoreItem(hay: string, tokens: string[], categoryLabel: string): number {
   if (tokens.length === 0) return 1;
-  return tokens.reduce((s, t) => (hay.includes(t) ? s + 1 : s), 0);
+  let score = tokens.reduce((s, t) => (hay.includes(t) ? s + 1 : s), 0);
+  const cat = categoryLabel.toLowerCase();
+  // Prefer category alignment over long unrelated excerpts.
+  if (/secured|lien|collateral/.test(tokens.join(" ")) && /lien|secured/.test(cat)) score += 3;
+  if (/restricted|payment|dividend|basket/.test(tokens.join(" ")) && /restricted|basket/.test(cat)) {
+    score += 3;
+  }
+  if (/asset|sale|disposition/.test(tokens.join(" ")) && /asset/.test(cat)) score += 3;
+  if (/debt|incur|indebtedness/.test(tokens.join(" ")) && /debt/.test(cat)) score += 3;
+  if (/leverage|ratio|definition/.test(tokens.join(" ")) && /financial|basket|other/.test(cat)) {
+    score += 2;
+  }
+  if (/amend|changed|latest/.test(tokens.join(" "))) score += 1;
+  // Penalize events-of-default noise for non-default questions.
+  if (/event of default|events of default/.test(hay) && !/default/.test(tokens.join(" "))) {
+    score -= 2;
+  }
+  return score;
 }
 
 /** Boost tokens for common product questions. */
@@ -125,27 +142,28 @@ export async function answerFromCorpus(params: {
     }
   }
 
-  const citations: AskCitation[] = [];
+  const scored: Array<AskCitation & { score: number }> = [];
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
     for (const item of summary.items) {
       const hay =
         `${item.heading} ${item.plainEnglish} ${item.operativeLanguageExcerpt} ${item.categoryLabel} ${(item.relatedDefinedTerms ?? []).join(" ")}`.toLowerCase();
-      const score = scoreItem(hay, tokens);
-      if (score === 0) continue;
-      citations.push({
+      const score = scoreItem(hay, tokens, item.categoryLabel);
+      if (score <= 0) continue;
+      scored.push({
         sourceId: summary.sourceId,
         governingAgreement: summary.governingAgreement,
         sectionRef: item.sectionRef,
         excerpt: item.operativeLanguageExcerpt.slice(0, 400),
         epistemicStatus: item.epistemicStatus,
+        score,
       });
     }
   }
 
-  citations.sort((a, b) => b.excerpt.length - a.excerpt.length);
-  const top = citations.slice(0, params.limit ?? 8);
+  scored.sort((a, b) => (b.score !== a.score ? b.score - a.score : b.excerpt.length - a.excerpt.length));
+  const top: AskCitation[] = scored.slice(0, params.limit ?? 8).map(({ score: _s, ...c }) => c);
 
   if (top.length === 0) {
     return {
