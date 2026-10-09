@@ -12,6 +12,7 @@ import { loadRulebookReadiness } from "./rulebook-readiness";
 import { loadMonitoringFeed } from "./monitoring";
 import { listReviewerApprovals, type ReviewerApproval } from "./reviewer-approvals";
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
+import { loadDashboardOverlay } from "../covenant-intelligence-loop/store";
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -676,25 +677,41 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     },
   ];
 
+  const exerciseOverlay = loadDashboardOverlay(companyId);
+  const overlayByScenario = new Map(
+    (exerciseOverlay?.transactions ?? []).map((t) => [t.scenario.toLowerCase(), t]),
+  );
+  const overlayByExercise = new Map(
+    (exerciseOverlay?.transactions ?? []).map((t) => [t.exerciseId, t]),
+  );
+
   const transactions: DebtIntelligenceDashboard["transactions"] = transactionScenarios.map((sc, idx) => {
     const hits = allItems.filter((i) =>
       sc.cats.test(`${i.category} ${i.heading} ${i.plainEnglish}`),
     );
     const top = hits[0];
-    const metricId = `txn:${idx}`;
-    const status: MetricNumericStatus = top
-      ? snapshot
-        ? "CONDITIONAL"
-        : "MISSING_FINANCIALS"
-      : "AI_SURFACED";
+    const overlay =
+      overlayByScenario.get(sc.scenario.toLowerCase()) ??
+      (idx === 0 ? overlayByExercise.get("debt.secured.100") : undefined) ??
+      (idx === 1 ? overlayByExercise.get("rp.dividend.50") : undefined);
+    const metricId = overlay?.metricId ?? `txn:${idx}`;
+    const status: MetricNumericStatus = overlay
+      ? (overlay.status as MetricNumericStatus)
+      : top
+        ? snapshot
+          ? "CONDITIONAL"
+          : "MISSING_FINANCIALS"
+        : "AI_SURFACED";
     return {
       metricId,
       scenario: sc.scenario,
-      summary: top
-        ? `AI matched §${top.sectionRef} (${top.heading}). ${hits.length} related provisions. Pro forma ratios/capacity remain conditional without executable rules.`
-        : "No matching AI provisions yet — upload/analyze the financing package or Ask Headroom.",
+      summary: overlay
+        ? overlay.summary
+        : top
+          ? `AI matched §${top.sectionRef} (${top.heading}). ${hits.length} related provisions. Pro forma ratios/capacity remain conditional without executable rules.`
+          : "No matching AI provisions yet — upload/analyze the financing package or Ask Headroom.",
       status,
-      askHref: `/${companyId}/ask?q=${encodeURIComponent(sc.ask)}`,
+      askHref: overlay?.askHref ?? `/${companyId}/ask?q=${encodeURIComponent(sc.ask)}`,
       simulateHref: `/${companyId}/simulate`,
       drilldown: buildDrilldown({
         metricId,
@@ -705,15 +722,54 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         approvals,
         formula: top ? (top.materialBasketsThresholds ?? []).join("; ") : null,
         missing: [
+          ...(overlay?.missingInputs ?? []).map((m) => `Exercise input: ${m}`),
           ...(snapshot ? [] : ["Financial snapshot for pro forma ratios"]),
           ...(!capacity.canEvaluateExecutableCapacity
             ? ["Counsel-reviewed executable permissions"]
             : []),
         ],
-        calcHistory: hits.slice(0, 5).map((h) => `§${h.sectionRef} — ${h.heading}`),
+        calcHistory: [
+          ...(overlay
+            ? [
+                `Intelligence loop ${exerciseOverlay?.runId ?? ""} · ${overlay.outcome}`,
+                ...overlay.citations.slice(0, 4).map((c) => `§${c.sectionRef} — ${c.excerpt.slice(0, 120)}`),
+                ...(overlay.gaps.length ? [`Gaps: ${overlay.gaps.join(", ")}`] : []),
+              ]
+            : []),
+          ...hits.slice(0, 5).map((h) => `§${h.sectionRef} — ${h.heading}`),
+        ],
       }),
     };
   });
+
+  // Append additional exercise-library results not covered by the five default scenarios.
+  if (exerciseOverlay?.transactions?.length) {
+    const covered = new Set(transactions.map((t) => t.metricId));
+    for (const t of exerciseOverlay.transactions) {
+      if (covered.has(t.metricId)) continue;
+      if (transactions.length >= 16) break;
+      transactions.push({
+        metricId: t.metricId,
+        scenario: t.scenario,
+        summary: t.summary,
+        status: t.status as MetricNumericStatus,
+        askHref: t.askHref,
+        simulateHref: `/${companyId}/simulate`,
+        drilldown: buildDrilldown({
+          metricId: t.metricId,
+          title: t.scenario,
+          module: "TRANSACTIONS",
+          companyId,
+          formula: t.analysis.slice(0, 400) || null,
+          missing: t.missingInputs.map((m) => `Exercise input: ${m}`),
+          calcHistory: [
+            `Intelligence loop ${exerciseOverlay.runId} · ${t.outcome}`,
+            ...t.citations.slice(0, 5).map((c) => `§${c.sectionRef}`),
+          ],
+        }),
+      });
+    }
+  }
 
   const acceptedCount = approvals.filter((a) => a.decision === "ACCEPTED" || a.decision === "EDITED").length;
 
