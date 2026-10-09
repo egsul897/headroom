@@ -165,11 +165,11 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-11 — Table-of-contents lines are parsed as duplicate ARTICLE/SECTION nodes on the certified path; every covenant becomes ambiguous
 
-**Status** OPEN · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** CAPABILITY_NOT_IMPLEMENTED · **Stage** STRUCTURE · **Deterministic** true
+**Status** CLOSED · **Severity** UNSUPPORTED_AS_COMPLETE · **Outcome** CAPABILITY_NOT_IMPLEMENTED · **Stage** STRUCTURE · **Deterministic** true
 
 - **failingInput**: A TABLE OF CONTENTS block ("SECTION 7.01 Indebtedness ..... 62") preceding the operative text.
 - **expected**: The operative 7.01/7.02/7.06 resolve uniquely; TOC lines are not provisions.
-- **actual**: parseDocumentStructure mints a node per TOC line; resolveUniqueNodeByRef → AMBIGUOUS for every section; context bundles INCOMPLETE (AMBIGUOUS_RELATIVE_REFERENCE HIGH); 0 of 7 candidates certifiable; the cross-reference "Section 7.01(b)(ii)(A)" (a unique subclause) resolves to no node. parseDocumentStructureWithTriage correctly flags the six TOC lines as AMBIGUOUS candidates, but the certified pipeline (scripts/p3-conmed-pilot) uses the plain parser.
+- **actual**: CLOSED: `isContentsListingMatch` filters TOC dot-leader page rows in `decideAcceptedStructuralMatches` (plain `parseDocumentStructure`). acceptance-runs/3441691989e2: `structure:credit-agreement#7.01` PASS UNIQUE. Residual E certification REVIEW rows are IPV-14-class CORRECT_FAIL_CLOSED, not TOC ambiguity.
 - **repro**: resolveUniqueNodeByRef('credit-agreement','7.01'); parseDocumentStructureWithTriage(doc).ambiguousCandidates
 - **impact**: Fail-closed (nothing wrong is certified) but any agreement with a TOC is uncertifiable on the certified path.
 - **hypothesis**: Wiring gap: the triage/ambiguity-resolution structure stage is not on the certified path.
@@ -191,11 +191,11 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 ## IPV-13 — Action-ontology guard misreads "make any Disposition" (gap) and "purchase money Indebtedness" (PREPAY_DEBT)
 
-**Status** OPEN · **Severity** NONMATERIAL_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
+**Status** CLOSED · **Severity** NONMATERIAL_OMISSION · **Outcome** INCORRECT_RESULT · **Stage** SEMANTIC_COMPOSITION · **Deterministic** true
 
 - **failingInput**: 7.05 "shall not … make any Disposition" submitted as SELL_ASSET; 7.01(b)(ii)(A) "purchase money Indebtedness may be secured by the property so acquired" submitted as INCUR_DEBT.
 - **expected**: Consistent (ASSET_SALES/SELL_ASSET) or an explicit ontology gap that does not force review; purchase-money debt is INCUR_DEBT/CREATE_LIEN, never PREPAY_DEBT.
-- **actual**: ACTION_INCONSISTENT_WITH_SOURCE_ACT: "make any Disposition" ONTOLOGY_GAP (uncovered) vs SELL_ASSET; "purchase money Indebtedness" read as PREPAY_DEBT. Both force REVIEW on a correct submission.
+- **actual**: CLOSED: canonical-action-ontology.v3 maps MAKE+Disposition→SELL_ASSET; PREPAY `purchase` uses `(?!\s+money)`. acceptance-runs/3441691989e2: zero action-ontology INCORRECT_RESULT findings.
 - **repro**: faithful submission for credit-agreement::7.05 / credit-agreement::7.01#2 → compilation.unresolvedIssues
 - **impact**: False reviews on correct units; a wrong canonical act recorded.
 - **hypothesis**: "Disposition" is not in the SELL_ASSET verb set; a "purchase" token inside "purchase money" matches PREPAY/purchase heuristics.
@@ -208,7 +208,7 @@ Evidence: docs/product-readiness/acceptance-runs/<sha>/report.json (offline, moc
 
 - **failingInput**: D 2.05 (mandatory prepayment with a time period); G second SECTION 7.01 occurrence (a genuine duplicate label).
 - **expected**: CERTIFIED for a faithful submission (D); AMBIGUOUS/REVIEW for a genuinely duplicated section (G).
-- **actual**: D 2.05 REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the mock did not represent the 'five Business Days' period as a unit); G 7.01#2 NOT_CERTIFIED with AMBIGUOUS_RELATIVE_REFERENCE - the correct outcome for a conflicting duplicate. Package I 9.15: REVIEW_REQUIRED (1 Layer-1 source item unaccounted - the "Notwithstanding anything to the contrary in Article VII" override phrase is not a unit the mock represents). Package C 7.01(b)@clause CERTIFIED after IPV-04 figure-role PARENT_SCOPE fix (signature removed). Package B indenture 4.09: section/clause operative text still carries superseded $50,000,000 (WRONG_OPERATIVE_SOURCE); B-IND-4.09(c) provenance excerpt null. UPDATED: B indenture 4.09 operative-text / B-IND-4.09(c) provenance signatures cleared by multi-instrument operative-state merge.
+- **actual**: Still OPEN as recorded residual fail-closed (not a product defect). acceptance-runs/3441691989e2: 16 CORRECT_FAIL_CLOSED + 1 CAPABILITY_NOT_IMPLEMENTED; CFP 0; INCORRECT_RESULT 0. Includes D 2.05, E 7.01/7.02 certification REVIEW, G 7.01#2, F/I/K/L/M residual certification/operative rows. IPV-11/13 structure/ontology signatures cleared.
 - **repro**: faithful submission for credit-agreement::2.05 / credit-agreement::7.01#2
 - **impact**: None (fail-closed); listed so the register accounts for every finding in the report.
 - **hypothesis**: Mock incompleteness (D) and correct behaviour (G).
