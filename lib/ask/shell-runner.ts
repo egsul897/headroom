@@ -1,6 +1,12 @@
 import { ASK_CASES, type AskCaseId } from "./copy";
 import { answerFromCorpus, type AskRetrieveAnswer } from "../product/covenant-intelligence/ask-retrieve";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow";
+import { prisma } from "@/lib/prisma";
+import { summarizeFromStoredMetadata } from "../product/covenant-intelligence/summarize";
+import {
+  buildTransactionAnalysisScaffold,
+  inferTransactionKind,
+} from "../product/legal-reasoning";
 
 /** Chunk A′ shell result, extended with retrieval-grounded answers. */
 export interface AskShellResult {
@@ -110,12 +116,13 @@ export async function answerAsk(input: {
       limit: 8,
     });
     const cutoffLine = `Applicable cutoff ${workflow.cutoff?.reportingPeriodKey ?? "—"} asOf ${workflow.cutoff?.asOf ?? "—"} → snapshot ${workflow.cutoff?.snapshotId ?? "—"}.`;
+    const dependencyNote = await buildTransactionDependencyNote(companyId, input.question);
     if (result.kind === "answered") {
       return {
         kind: "answered",
         caseId: "TRANSACTION_READINESS",
         headline: result.headline,
-        detail: `${cutoffLine} ${result.detail} Review neutral paths on Intelligence (LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E).`,
+        detail: `${cutoffLine} ${result.detail} Review neutral paths on Intelligence (LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E).${dependencyNote ? ` ${dependencyNote}` : ""}`,
         citations: result.citations,
         limitations: [...(result.limitations ?? []), workflow.authorityNote],
         restrictions: result.restrictions,
@@ -172,4 +179,43 @@ export function refuseAsk(input: { companyId: string | null | undefined; questio
   void input.question;
   if (!input.companyId?.trim()) return askEmpty("NO_COMPANY");
   return askEmpty("REFUSE_NOT_INVENT");
+}
+
+/**
+ * Attach dependency-traversal summary for transaction Ask answers.
+ * Structural hypotheses only — never executable capacity.
+ */
+async function buildTransactionDependencyNote(companyId: string, question: string): Promise<string | null> {
+  if (!inferTransactionKind(question)) return null;
+  try {
+    const rows = await prisma.knowledgeSource.findMany({
+      where: { companyId },
+      select: { sourceId: true, documentTitle: true, metadata: true },
+      take: 40,
+    });
+    const items = [];
+    for (const row of rows) {
+      const meta =
+        row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+          ? (row.metadata as Record<string, unknown>)
+          : {};
+      const summary = summarizeFromStoredMetadata(meta);
+      if (!summary?.items?.length) continue;
+      for (const item of summary.items) {
+        items.push({
+          ...item,
+          sourceId: row.sourceId,
+          documentTitle: row.documentTitle || summary.governingAgreement,
+        });
+      }
+    }
+    if (!items.length) return null;
+    const scaffold = buildTransactionAnalysisScaffold({ question, items });
+    if (!scaffold) return null;
+    const addressed = scaffold.steps.filter((s) => s.status === "ADDRESSED").length;
+    const missing = scaffold.steps.filter((s) => s.status === "MISSING").length;
+    return `Dependency scaffold (${scaffold.transactionKind}): ${addressed}/10 steps addressed, ${missing} missing; ${scaffold.dependencyBundle.provisions.length} provisions / ${scaffold.dependencyBundle.traversedEdges.length} edges (DISCOVERED ≠ certified).`;
+  } catch {
+    return null;
+  }
 }

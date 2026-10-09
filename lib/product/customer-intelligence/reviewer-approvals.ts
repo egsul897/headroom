@@ -243,6 +243,18 @@ export async function recordReviewerDecision(params: {
     data: { metadata: JSON.parse(JSON.stringify(meta)) },
   });
 
+  // Workspace-scoped reusable feedback (never cross-customer auto-transfer).
+  try {
+    const { captureCounselFeedback } = await import("../legal-reasoning/counsel-feedback");
+    await captureCounselFeedback({
+      companyId: params.companyId,
+      approval: next,
+      sourceExcerpt: currentItem?.operativeLanguageExcerpt ?? currentItem?.plainEnglish ?? null,
+    });
+  } catch {
+    // Feedback capture must not block counsel Persist / compile.
+  }
+
   return {
     ok: true,
     approvalCount: filtered.filter((a) => a.decision !== "REJECTED").length,

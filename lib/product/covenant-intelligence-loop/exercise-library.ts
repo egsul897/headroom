@@ -488,6 +488,36 @@ export const EXERCISE_LIBRARY: ExerciseDefinition[] = [
     requiredCategories: ["DEBT_INCURRENCE", "BASKETS_EXCEPTIONS_CONDITIONS"],
     requiredFinancialInputs: [],
   }),
+  ex({
+    exerciseId: "lme.debt_exchange",
+    family: "MULTI_STEP",
+    title: "Debt exchange / liability management",
+    question:
+      "Analyze an exchange offer or open-market repurchase of existing notes/loans. Identify refinancing, RP, investment, and lien interactions. Do not assume stacking.",
+    tags: ["lme", "exchange", "refinance"],
+    requiredCategories: ["DEBT_INCURRENCE", "LIENS_SECURED_DEBT", "RESTRICTED_PAYMENTS_INVESTMENTS"],
+    requiredFinancialInputs: [],
+  }),
+  ex({
+    exerciseId: "entity.designate_unrestricted",
+    family: "MULTI_STEP",
+    title: "Designate an Unrestricted Subsidiary",
+    question:
+      "What investment capacity and conditions apply to designating a Restricted Subsidiary as Unrestricted? Identify definitions and any ratio/RP gates.",
+    tags: ["designation", "entity-scope", "investment"],
+    requiredCategories: ["RESTRICTED_PAYMENTS_INVESTMENTS", "BASKETS_EXCEPTIONS_CONDITIONS"],
+    requiredFinancialInputs: [],
+  }),
+  ex({
+    exerciseId: "fc.equity_cure",
+    family: "FINANCIAL_RATIOS",
+    title: "Equity cure of a financial covenant",
+    question:
+      "If a financial maintenance covenant is breached, does an equity cure exist? What limits apply (amount, timing, number of cures)?",
+    tags: ["cure", "financial-covenant"],
+    requiredCategories: ["FINANCIAL_MAINTENANCE"],
+    requiredFinancialInputs: ["ebitda", "totalDebt"],
+  }),
 ];
 
 export function listExercises(filter?: {

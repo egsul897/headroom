@@ -34,6 +34,11 @@ const ASSOCIATED_EXERCISES: Record<string, string[]> = {
   "pro-forma-compliance": ["debt.ratio_basket", "ratio.covenant_cushion"],
   "reclassification": ["multi.reclass"],
   "acquisition-debt": ["inv.acquisition_debt", "multi.secured_acq"],
+  "ratio-lien": ["lien.secure_new_debt", "debt.secured.100", "lien.shared_debt_lien"],
+  "available-amount-definition": ["rp.available_amount", "rp.builder"],
+  "subsidiary-designation": ["entity.designate_unrestricted", "inv.unrestricted_sub"],
+  "financial-covenant-cure": ["fc.equity_cure", "ratio.covenant_cushion"],
+  "liability-management": ["lme.debt_exchange", "amd.refinance", "multi.refinance_release"],
 };
 
 /** Seed the loop knowledge library from KF patterns (idempotent shape). */
