@@ -100,6 +100,27 @@ export function bridgeToCertificationPipeline(params: {
     };
   }
 
+  // Incomplete retrieval or rejected interpretation must never surface as executable capacity.
+  if (blockReasons.length > 0 || params.verification.verdict !== "CONFIRMED") {
+    const gate = [
+      "",
+      "Independent verification gate:",
+      `• verdict=${params.verification.verdict}`,
+      ...blockReasons.map((r) => `• blocked: ${r}`),
+      "No certified executable capacity may be taken from this answer while the gate is open.",
+    ].join("\n");
+    ask = {
+      ...ask,
+      detail: `${ask.detail}${gate}`,
+      limitations: [
+        ...ask.limitations,
+        ...blockReasons,
+        `Adversarial verifier: ${params.verification.verdict}`,
+      ],
+      promotedToLegalTruth: 0,
+    };
+  }
+
   return {
     version: CERTIFICATION_BRIDGE_VERSION,
     ask,
