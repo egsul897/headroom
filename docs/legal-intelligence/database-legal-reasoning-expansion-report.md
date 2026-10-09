@@ -27,8 +27,10 @@ North Star / Phase 2–4E contracts preserved. Phase 3 certification gate unchan
 - Provision intelligence rows: **28,076**
 - Unknown/ambiguous (`OTHER` / unresolved posture): **7,657**
 - Definition sample resolution rate (excerpt-present heuristic): **1.0** on 28,538 sampled terms — *not* deep definition-graph accuracy
-- Amendment documents: **256**; linked packages in metadata: **0**; unresolved operative flags: **2**
-- `KnowledgeRelationshipEdge` count: **0** (amendment graph still sparse in Prisma edges)
+- Amendment documents: **256**; metadata linked after backfill: **224**; unresolved operative flags: **2**
+- `KnowledgeRelationshipEdge` count: **8,193** (was 0 — discovery existed but never persisted to Neon)
+  - Agreement: 24 AMENDMENT · 94 RESTATEMENT · 75 SUPPLEMENTAL = **193**
+  - Provision (capped write of 65,940 discovered): DEFINITION 1052 · XREF 4017 · EXCEPTION 1248 · CONDITION 1633 · SHARED_CAPACITY 50
 
 ### Category coverage (provision rows)
 
@@ -46,7 +48,8 @@ fixed-dollar 2180 · no-default 1585 · general-debt 953 · shared-capacity 523 
 
 - Pattern library size: **22**
 - Exercises: **53**
-- Benchmark cases: **12** (2 independently policy-adjudicated)
+- Benchmark cases: **12** (all bound to CONMED demo package key; 2 independently policy-adjudicated)
+- Exercise factory: `generateExercisesFromSource` emits SYNTHETIC-assumption variants (not ground truth)
 - Adjudicated policy scores (refuse invent / no-valid-path): **PASS** (unsupported_conclusion_rate 0, incorrect_permission_rate 0)
 - Authentic-document exercise pass (CONMED Eighth A&R CA, 15 provision items):
   - `debt.secured.100`, `rp.available_amount`, `multi.reclass`, `lme.debt_exchange`, `entity.designate_unrestricted`, `fc.equity_cure` → all **CONDITIONAL** (fail-closed on missing financials / incomplete compile)
@@ -62,12 +65,12 @@ fixed-dollar 2180 · no-default 1585 · general-debt 953 · shared-capacity 523 
 
 ## Remaining high-priority deficiencies
 
-1. Amendment family completeness: Prisma relationship edges ≈ 0; metadata linked packages ≈ 0 despite 256 amendment docs.
-2. Definition resolution metric is sample/excerpt-based — need graph-level accuracy against adjudicated defs.
-3. Only 2 benchmark cases independently adjudicated; bind authentic package keys + counsel adjudication for the rest.
+1. Provision-edge persist capped at 8k of 65.9k discovered — raise/stream remaining edges.
+2. Definition resolution still sample/excerpt-based — need adjudicated graph-level accuracy.
+3. Only 2/12 benchmark cases independently adjudicated (package keys now bound).
 4. Phase 4E certified path enumeration still not product-wired (`phase4eStarted: false`).
-5. UNKNOWN/OTHER provision queue (7.6k) needs systematic counsel classification, not force-mapping.
-6. Precedent clause search is index-level (title/family/defs), not full operative clause text export.
+5. UNKNOWN/OTHER provision queue (7.6k) — soft suggestions exist; counsel queue not productized.
+6. Precedent clause search is index-level (title/family/defs), not full operative clause text.
 7. Table/schedule structured extraction remains thin.
 
 ## Tests
