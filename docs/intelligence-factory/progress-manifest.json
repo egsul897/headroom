@@ -1,6 +1,6 @@
 {
   "schemaVersion": "intelligence-factory.progress-manifest.v1",
-  "updatedAt": "2026-10-09T22:16:00.000Z",
+  "updatedAt": "2026-10-09T22:21:00.000Z",
   "northStar": "Accept unfamiliar financing package → source-backed rulebook → capacity → transaction answers with citations",
   "guardrails": {
     "neonWrites": "owner-gated only",
@@ -16,13 +16,14 @@
         "docs/intelligence-factory/neon-intelligence-baseline.raw.json",
         "scripts/knowledge-factory/neon-intelligence-baseline.ts"
       ],
+      "pr": "https://github.com/egsul897/headroom/pull/210",
       "next": [
         "Re-run baseline after any Neon corpus mutation",
         "Track STRUCTURALLY_INDEXED growth vs DISCOVERED_CANDIDATE"
       ]
     },
     "B_precedent_expansion": {
-      "status": "IN_PROGRESS",
+      "status": "CYCLE_1_PARTIAL",
       "artifacts": [
         "lib/product/legal-reasoning/precedent-clause-search.ts"
       ],
@@ -42,17 +43,26 @@
       ]
     },
     "D_capacity_mathematics": {
-      "status": "QUEUED",
+      "status": "CYCLE_2_COMPLETE",
+      "artifacts": [
+        "scripts/intelligence-factory/capacity-math-eval-matrix.ts",
+        "docs/intelligence-factory/capacity-math-eval-matrix.json",
+        "tests/intelligence-factory/capacity-math-eval-matrix.test.ts"
+      ],
       "next": [
-        "GoldenTest + synthetic input evaluation matrix",
-        "Shared-constraint currentUsage wiring behind tests"
+        "Shared-constraint currentUsage wiring behind tests",
+        "Add sequential-transaction / FX skipped rows when independent expected exists"
       ]
     },
     "E_customer_cold_start": {
-      "status": "QUEUED",
+      "status": "CYCLE_2_COMPLETE",
+      "artifacts": [
+        "docs/intelligence-factory/CUSTOMER-COLD-START-READINESS.md"
+      ],
       "next": [
-        "Run synthetic onboarding acceptance + unseen fixture readiness report",
-        "Map gaps to existing CapacityReadinessStatus / WorkflowStepStatus"
+        "Customer-facing readiness assessment using existing enums only",
+        "Extraction scale + grower + maintenance recognition",
+        "Rebaseline Gibraltar Pass A counts or fix discovery drift"
       ]
     }
   },
@@ -61,14 +71,28 @@
       "id": "cycle-1",
       "name": "Neon intelligence baseline + retrieval honesty",
       "startingSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
-      "endingSha": "edac945f312d64e4bb765d1fc2cb9fd65579f73e",
+      "endingSha": "d884f6ea67de00c2d883a1feaf38787728600653",
       "paidInferenceCostUsd": 0,
       "neonMutations": 0,
+      "pr": "https://github.com/egsul897/headroom/pull/210",
       "outcomes": [
         "Live Neon inventory quantified",
         "Relationship edge sourceId semantics documented and coverage loader fixed",
         "Mechanic-based precedent queries expanded"
       ]
+    },
+    {
+      "id": "cycle-2",
+      "name": "Capacity math matrix + customer cold-start readiness",
+      "startingSha": "f7fc1e51a2e6e027854dbe79d2f4fef152ecd51d",
+      "paidInferenceCostUsd": 0,
+      "neonMutations": 0,
+      "outcomes": [
+        "18/18 offline capacity matrix rows passed with attempted/skipped separation",
+        "Synthetic cold-start E2E green; real-prose extract defects quantified",
+        "Readiness buckets mapped to existing status enums"
+      ],
+      "endingSha": "d884f6ea67de00c2d883a1feaf38787728600653"
     }
   ]
 }
