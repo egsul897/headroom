@@ -1,7 +1,7 @@
 {
   "schemaVersion": "intelligence-factory.neon-activation-matrix.v1",
-  "generatedAt": "2026-10-09T22:42:30.293Z",
-  "finishedAt": "2026-10-09T22:42:34.026Z",
+  "generatedAt": "2026-10-09T22:50:29.511Z",
+  "finishedAt": "2026-10-09T22:50:33.280Z",
   "paidInferenceCostUsd": 0,
   "neonCorpusMutations": 0,
   "ephemeralCompanyWrites": true,
@@ -25,7 +25,13 @@
   },
   "requiredReturn": {
     "authenticProvisionsTested": 11,
+    "formulaApplicableProvisions": 10,
+    "justifiedFormulaExclusions": [
+      "rock-2.01-unsupported-incremental"
+    ],
     "correctFormulas": 10,
+    "formulaAccuracyAmongApplicable": 1,
+    "matrixFullyCorrectFormulas": true,
     "independentlyReviewedInterpretations": 11,
     "independentReviewCaveat": "Independent expected formulas established before engine run — NOT counsel legal certification; maturity = INDEPENDENT_EXPECTED_PRE_ENGINE",
     "durableExecutableRulesCreated": {
@@ -46,7 +52,8 @@
     "falseFavorableOutcomes": 0,
     "unsupportedMechanics": 0,
     "errors": 0,
-    "certificationStatus": "NOT_CERTIFIED — DISCOVERED/MODELED/UNVERIFIED only; VERIFIED ≠ CERTIFIED; newly activated rules must not be exposed as authoritative customer permissions until safety gates pass"
+    "certificationStatus": "NOT_CERTIFIED — DISCOVERED/MODELED/UNVERIFIED only; VERIFIED ≠ CERTIFIED; newly activated rules must not be exposed as authoritative customer permissions until safety gates pass",
+    "formulaDiscrepancy": "rock-2.01 voluntary-prepayment incremental — justified KNOWN_NOT_MODELED exclusion (not a false favorable); see FORMULA-DISCREPANCY-ROCK-2.01.md"
   },
   "outcomeBreakdown": {
     "SUCCESS": [
@@ -284,8 +291,13 @@
         "expected": {
           "formulaType": "BUILDER_BASKET",
           "thresholdValue": 172,
-          "expectedCapacity": null,
-          "notes": "Independent: RP/builder family present. Expected formula class BUILDER or greater-of; capacity checked against parse+engine consistency, not a single dollar claim without CNI schedule."
+          "params": {
+            "pctEbitda": 0.5,
+            "cniSharePct": 0.5,
+            "includeEquityProceeds": false
+          },
+          "expectedCapacity": 290,
+          "notes": "Independent: BUILDER starter max(172, 50% EBITDA)=200 + 50% CNI(180)=90 → 290. SYNTHETIC financials."
         },
         "parsed": {
           "formulaType": "BUILDER_BASKET",
@@ -580,11 +592,11 @@
         "notCounselCertified": true,
         "notSilentPromotion": true,
         "expected": {
-          "formulaType": "FLAT_AMOUNT",
+          "formulaType": "KNOWN_NOT_MODELED",
           "thresholdValue": 0,
           "expectedCapacity": null,
           "expectRefusal": true,
-          "notes": "Independent: voluntary prepayment incremental path — expect KNOWN_NOT_MODELED / non-executable."
+          "notes": "JUSTIFIED_EXCLUSION: Voluntary Prepayment / Prepayment-Based Incremental Amount — no executable dollar formula in summary; must refuse, never invent FLAT_AMOUNT 0 as capacity."
         },
         "parsed": {
           "formulaType": "FLAT_AMOUNT",
@@ -598,6 +610,8 @@
         }
       },
       "financialInputsLabel": "SYNTHETIC_NUMERIC_INPUTS",
+      "formulaApplicable": false,
+      "justifiedExclusion": true,
       "outcome": "CORRECT_REFUSAL",
       "pass": true,
       "parsed": {
@@ -641,8 +655,8 @@
     }
   ],
   "funnel": {
-    "authenticSourceDocuments": 737,
-    "authenticSourcesWithMetadata": 737,
+    "authenticSourceDocuments": 743,
+    "authenticSourcesWithMetadata": 743,
     "distinctHashesInSample": 247,
     "sampleSourcesScanned": 250,
     "structuredProvisionsInSample": 11701,
@@ -660,8 +674,8 @@
     "note": "30k summaries ≠ usable rules. Sample-based extraction rates; production counsel ACCEPT/CERTIFIED remain empty/gated."
   },
   "safetyGates": {
-    "a8_01": "FIXED in this PR — GATE_NOT_SATISFIED → REVIEW_REQUIRED, never AVAILABLE",
-    "unknownUtilization": "ZERO_NO_ATTRIBUTED_USAGE status preserved; silent zero not trusted",
+    "a8_01": "Aligned with PR #229 — GATE_NOT_SATISFIED → CapacityStatus.NOT_SATISFIED, never AVAILABLE",
+    "unknownUtilization": "ZERO_NO_ATTRIBUTED_USAGE / PARTIAL / EXTERNAL are non-authoritative; VERIFIED_ZERO and COMPUTED are authoritative",
     "phase4dFinancialChaining": "Phase 4D chaining remains caller-stated multi-transaction; activation does not invent overlays",
     "restorationAuthority": "Reclassification/restoration requires encoded Phase-3 edge; no inferred authority from summaries",
     "noAuthoritativeExposure": true

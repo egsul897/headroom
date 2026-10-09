@@ -1,76 +1,53 @@
-# Neon Activation — Scorecard (Repeatable Execution)
+# Neon Activation — Scorecard (Correctness & Durability Gate)
 
 **As of:** 2026-10-09  
-**Branch:** `cursor/neon-activation-repeatable-2229`  
-**PR:** https://github.com/egsul897/headroom/pull/232 (head SHA on branch)  
-**Depends on / includes:** #225, #227  
+**PR:** https://github.com/egsul897/headroom/pull/232  
+**Depends on / includes:** #225, #227 (fully incorporated); capacity status aligned with #229  
 **Paid inference:** $0  
-**Neon corpus writes:** 0 (ephemeral E2E/matrix companies cleaned up)  
-**Production Neon writes:** authorization-gated — none performed for promotion
+**Neon corpus writes:** 0 (ephemeral only, cleaned up)  
+**Production Neon writes:** authorization-gated — none for promotion
 
-## Required return
+## Required return (correctness gate)
 
 | # | Metric | Value |
-|---:|---|---:|
-| 1 | Authentic provisions tested | **11** |
-| 2 | Correct formulas | **10** |
-| 3 | Independently reviewed interpretations | **11** (pre-engine expecteds; **not** counsel certification) |
-| 4 | Durable executable rules created | **0** production; **3** ephemeral MODELED/UNVERIFIED (cleaned up) |
-| 5 | Actual vs synthetic financial examples | **0** actual / **11** synthetic (`SYNTHETIC_NUMERIC_INPUTS`) |
-| 6 | Utilization-backed calculations | **1** (attributed); unattributed → `ZERO_NO_ATTRIBUTED_USAGE` |
-| 7 | Correct executable outcomes | **9** |
-| 8 | Correct refusals | **2** |
-| 9 | False favorable outcomes | **0** |
-| 10 | Current certification status | **NOT_CERTIFIED** — DISCOVERED/MODELED/UNVERIFIED only; VERIFIED ≠ CERTIFIED |
-| 11 | CI, PRs, SHAs, cost | See below |
+|---:|---|---|
+| 1 | Root cause of incorrect formula | **ROCK §2.01** prepayment incremental — not an incorrect parse; prior 10/11 was metric + mislabeled expected `FLAT_AMOUNT 0`. Actual = `KNOWN_NOT_MODELED` (justified exclusion). |
+| 2 | Corrected formula accuracy | **10/10** among formula-applicable provisions (`matrixFullyCorrectFormulas: true`); 1 justified exclusion |
+| 3 | Status-contract compatibility with #229 | **Aligned** — `GATE_NOT_SATISFIED` → `NOT_SATISFIED` (canonical); competing `REVIEW_REQUIRED` floor removed |
+| 4 | Utilization integrity | Statuses: `VERIFIED_ZERO` / `COMPUTED` (authoritative); `ZERO_NO_ATTRIBUTED_USAGE` / `PARTIAL` / `EXTERNAL` / `ENTITY_CLASS` (non-authoritative). Loader attaches `currentUsageStatus` + `currentUsageAuthoritative`. |
+| 5 | Durable activation readiness | Path exists; **blocked** by company/document binding + counsel ACCEPT + VERIFIED review. Pilot proposed in `DURABLE-ACTIVATION-PILOT.md` — no unauthorized writes. |
+| 6 | Authentic vs synthetic financial coverage | Matrix: **0** actual / **11** synthetic. Separated authentic Matthews Q1 FY2025 test: **2** gross calcs + utilization non-claim. |
+| 7 | False favorable outcomes | **0** |
+| 8 | PR supersession analysis | #232 incorporates #225+#227; defers capacity files to #229; coordinates with #230/#220 — see `PR-SUPERSESSION.md` |
+| 9 | Tests, CI, SHA, cost | See below; paid inference **$0** |
 
-### Outcome breakdown (separate)
+## Matrix outcomes
 
-| Class | Count | Cases |
-|---|---:|---|
-| SUCCESS | 9 | fixed, EBITDA grower, asset grower, ratio debt, RP, investments, lien companion, shared util, amendment |
-| CORRECT_REFUSAL | 2 | missing totalAssets; unsupported incremental |
-| UNSUPPORTED_MECHANIC | 0 | — |
-| ERROR | 0 | — |
-| FALSE_FAVORABLE | 0 | — |
+| Class | Count |
+|---|---:|
+| SUCCESS | 9 |
+| CORRECT_REFUSAL | 2 |
+| FALSE_FAVORABLE | 0 |
+| ERROR | 0 |
+| Justified formula exclusion | 1 (`rock-2.01`) |
 
-## PRs / SHAs / cost
-
-| Item | Value |
-|---|---|
-| PR #225 | Synthetic extraction prose fix (included) |
-| PR #227 | Neon E2E activation proof (included) |
-| PR #232 | Repeatable activation: A8-01 + matrix + lifecycle/funnel |
-| Head SHA | `d1058a88b388e9b7d52dfb2b048fadf6e45abe6e` |
-| Base (`main`) | `bae24ced33fdd6963d0615265a1e67cb181233e8` |
-| Paid inference | **$0** |
-| Artifacts | `neon-activation-e2e-proof.json`, `neon-activation-matrix.json` |
-
-## Before → after
-
-| Metric | Before | After |
-|---|---:|---:|
-| Authentic agreements (hashes) | 708 | unchanged (inventory) |
-| Structured provisions (summaries) | ~30,051 | unchanged — **≠ usable rules** |
-| Cold-start extract threshold/formula/grant | 0/3 | **3/3** (#225) |
-| CONMED E2E capacity proof | — | **$84M** (#227) |
-| Diverse mechanic classes validated | 1 | **9 classes** (matrix) |
-| A8-01 GATE_NOT_SATISFIED → AVAILABLE | defect | **FIXED → REVIEW_REQUIRED** |
-| Silent-zero utilization | hardcoded 0 | **status-aware** |
-| KF / SemanticTruth CERTIFIED | 0 | **0** (gate preserved) |
-
-## Safety
-
-- No silent promotion DISCOVERED → CERTIFIED
-- Newly activated rules not exposed as authoritative customer permissions
-- Legacy favorable output ≠ certified permission
-- Numerical basket ≠ overall legal permission
-- Phase 4D chaining/restoration: caller-stated / encoded-edge only (documented)
-
-## Commands
+## Tests
 
 ```bash
-npm run if:neon-activation-e2e
+npx vitest run \
+  tests/contract-model/runtime/capacity/a8-gate-status-regression.test.ts \
+  tests/contract-model/runtime/capacity/capacity-state.test.ts \
+  tests/solver/shared-usage.test.ts \
+  tests/intelligence-factory/rock-2.01-incremental-refusal.test.ts \
+  tests/intelligence-factory/authentic-financial-capacity.test.ts
 npm run if:neon-activation-matrix
-npx vitest run tests/contract-model/runtime/capacity/capacity-state.test.ts tests/solver/shared-usage.test.ts tests/extraction/synthetic-formula.test.ts
 ```
+
+## Artifacts
+
+- `FORMULA-DISCREPANCY-ROCK-2.01.md`
+- `STATUS-CONTRACT-229.md`
+- `UTILIZATION-INTEGRITY.md`
+- `DURABLE-ACTIVATION-PILOT.md`
+- `PR-SUPERSESSION.md`
+- `neon-activation-matrix.json`

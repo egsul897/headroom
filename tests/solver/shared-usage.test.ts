@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   basketUsageFromAttributedEvents,
   computeSharedConstraintCurrentUsage,
+  isAuthoritativeUsageStatus,
   measureBasketUsageAmount,
 } from "../../lib/solver/shared-usage";
 import { loadCompanySolverStaticData } from "../../lib/covenant-engine";
@@ -19,7 +20,52 @@ describe("shared-usage helpers", () => {
     expect(measureBasketUsageAmount(undefined, "CURRENTLY_OUTSTANDING")).toBe(0);
   });
 
-  it("builds attributed basket usage and refuses inventing non-named aggregation usage", () => {
+  it("distinguishes verified zero, no attribution, partial, computed, and external unknowns", () => {
+    const attributedZero = [
+      {
+        permissionId: "a",
+        cumulativeIncurred: 0,
+        currentlyOutstanding: 0,
+        prepaymentCredit: 0,
+      },
+    ];
+    const verified = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: attributedZero,
+    });
+    expect(verified).toMatchObject({ usage: 0, status: "VERIFIED_ZERO", authoritative: true });
+    expect(isAuthoritativeUsageStatus(verified.status)).toBe(true);
+
+    const none = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: [],
+    });
+    expect(none).toMatchObject({ usage: 0, status: "ZERO_NO_ATTRIBUTED_USAGE", authoritative: false });
+    expect(isAuthoritativeUsageStatus(none.status)).toBe(false);
+
+    const partial = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }, { permissionId: "b" }],
+      basketUsage: [
+        {
+          permissionId: "a",
+          cumulativeIncurred: 10,
+          currentlyOutstanding: 10,
+          prepaymentCredit: 0,
+        },
+      ],
+    });
+    expect(partial).toMatchObject({
+      usage: 10,
+      status: "PARTIAL_ATTRIBUTED_USAGE",
+      authoritative: false,
+    });
+
     const usage = basketUsageFromAttributedEvents(
       [
         { eventType: "ISSUANCE", amount: 100, relatedPermissionIds: ["a"] },
@@ -27,8 +73,6 @@ describe("shared-usage helpers", () => {
       ],
       ["a"],
     );
-    expect(usage[0]!.currentlyOutstanding).toBe(70);
-
     expect(
       computeSharedConstraintCurrentUsage({
         aggregationRule: "NAMED_MEMBER_CLAUSES",
@@ -36,7 +80,7 @@ describe("shared-usage helpers", () => {
         members: [{ permissionId: "a" }],
         basketUsage: usage,
       }),
-    ).toEqual({ usage: 70, status: "COMPUTED" });
+    ).toMatchObject({ usage: 70, status: "COMPUTED", authoritative: true });
 
     expect(
       computeSharedConstraintCurrentUsage({
@@ -49,15 +93,15 @@ describe("shared-usage helpers", () => {
 
     expect(
       computeSharedConstraintCurrentUsage({
-        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        aggregationRule: "ENTITY_CLASS_FILTER",
         measurementBasis: "CURRENTLY_OUTSTANDING",
-        members: [{ permissionId: "a" }],
-        basketUsage: [],
+        members: [{ entityClass: "NON_GUARANTOR_RS" }],
+        basketUsage: usage,
       }).status,
-    ).toBe("ZERO_NO_ATTRIBUTED_USAGE");
+    ).toBe("ENTITY_CLASS_USAGE_UNAVAILABLE");
   });
 
-  it("loadCompanySolverStaticData uses basketUsage when supplied", async () => {
+  it("loadCompanySolverStaticData attaches usage status and never marks unattributed zero authoritative", async () => {
     const prisma = {
       permission: { findMany: async () => [] },
       permissionRelationship: { findMany: async () => [] },
@@ -95,6 +139,8 @@ describe("shared-usage helpers", () => {
 
     const without = await loadCompanySolverStaticData(prisma, "co-1");
     expect(without.sharedConstraints[0]!.currentUsage).toBe(0);
+    expect(without.sharedConstraints[0]!.currentUsageStatus).toBe("ZERO_NO_ATTRIBUTED_USAGE");
+    expect(without.sharedConstraints[0]!.currentUsageAuthoritative).toBe(false);
 
     const withUsage = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
       basketUsage: [
@@ -107,5 +153,21 @@ describe("shared-usage helpers", () => {
       ],
     });
     expect(withUsage.sharedConstraints[0]!.currentUsage).toBe(55);
+    expect(withUsage.sharedConstraints[0]!.currentUsageStatus).toBe("COMPUTED");
+    expect(withUsage.sharedConstraints[0]!.currentUsageAuthoritative).toBe(true);
+
+    const verifiedZero = await loadCompanySolverStaticData(prisma, "co-1", new Date(), {
+      basketUsage: [
+        {
+          permissionId: "p1",
+          cumulativeIncurred: 0,
+          currentlyOutstanding: 0,
+          prepaymentCredit: 0,
+        },
+      ],
+    });
+    expect(verifiedZero.sharedConstraints[0]!.currentUsage).toBe(0);
+    expect(verifiedZero.sharedConstraints[0]!.currentUsageStatus).toBe("VERIFIED_ZERO");
+    expect(verifiedZero.sharedConstraints[0]!.currentUsageAuthoritative).toBe(true);
   });
 });

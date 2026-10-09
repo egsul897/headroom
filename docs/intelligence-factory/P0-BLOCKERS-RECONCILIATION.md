@@ -8,9 +8,9 @@
 |---|---|
 | **Defect** | Phase-4A returns `EXECUTABLE` + `CAPACITY{GATE_NOT_SATISFIED}`; `statusFromEvaluation` mapped that to `AVAILABLE`. |
 | **Risk** | Conditional capacity read as open headroom. |
-| **Fix** | `statusFromEvaluation` floors to `REVIEW_REQUIRED`; limitation `CAPACITY_GATE_NOT_SATISFIED`; published amount stays `GATE_NOT_SATISFIED` (not rewritten to `NOT_DETERMINED`). |
-| **Test** | `capacity-state.test.ts` — RT-08b assertions. |
-| **Owner note** | Aligns with Agent8 probe expectation; do not re-introduce AVAILABLE for failed gates. |
+| **Fix (canonical = PR #229)** | Domain status `NOT_SATISFIED` via `statusForAmount`; published amount stays `GATE_NOT_SATISFIED`. #232 previously used competing `REVIEW_REQUIRED` — **removed**; capacity files adopted from #229. |
+| **Test** | `a8-gate-status-regression.test.ts` + `capacity-state.test.ts`. |
+| **Owner note** | Do not re-introduce AVAILABLE or REVIEW_REQUIRED as the failed-gate floor. |
 
 ## 2. Unknown-utilization handling
 

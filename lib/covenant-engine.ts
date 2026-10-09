@@ -1813,10 +1813,9 @@ export interface SolverNativePrismaClient {
 export interface LoadCompanySolverStaticOptions {
   /**
    * Optional permission-attributed basket usage. When omitted or empty,
-   * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 (prior
-   * behavior) with status ZERO_NO_ATTRIBUTED_USAGE when inspected via
-   * computeSharedConstraintCurrentUsage. Callers must not treat that zero
-   * as proven empty utilization without attribution.
+   * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 with status
+   * ZERO_NO_ATTRIBUTED_USAGE and currentUsageAuthoritative=false.
+   * Callers must not treat that zero as proven empty utilization.
    */
   basketUsage?: BasketUsageRecord[];
 }
@@ -1831,8 +1830,9 @@ export interface LoadCompanySolverStaticOptions {
  * company resolve LEGACY/NOT_TESTED in `resolveDocumentSideCoverage`.
  *
  * SharedConstraint.currentUsage is computed for NAMED_MEMBER_CLAUSES from
- * optional `options.basketUsage` only. EXTERNAL_INSTRUMENT_BALANCE and
- * ENTITY_CLASS_FILTER remain 0 (fail-closed — do not invent balances).
+ * optional `options.basketUsage` only. Status/authoritative flags are always
+ * attached. EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER remain 0 with
+ * non-authoritative status (fail-closed — do not invent balances).
  */
 export async function loadCompanySolverStaticData(
   prisma: SolverNativePrismaClient,
@@ -1914,17 +1914,24 @@ export async function loadCompanySolverStaticData(
     })),
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
-    currentUsage: computeSharedConstraintCurrentUsage({
-      aggregationRule: c.aggregationRule,
-      measurementBasis: c.measurementBasis,
-      members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
-        permissionId: m.permissionId ?? undefined,
-        namedInstrument: m.namedInstrument ?? undefined,
-        entityClass: m.entityClass ?? undefined,
-        externalInstrumentRef: m.externalInstrumentRef ?? undefined,
-      })),
-      basketUsage: options?.basketUsage ?? [],
-    }).usage,
+    ...(() => {
+      const computed = computeSharedConstraintCurrentUsage({
+        aggregationRule: c.aggregationRule,
+        measurementBasis: c.measurementBasis,
+        members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
+          permissionId: m.permissionId ?? undefined,
+          namedInstrument: m.namedInstrument ?? undefined,
+          entityClass: m.entityClass ?? undefined,
+          externalInstrumentRef: m.externalInstrumentRef ?? undefined,
+        })),
+        basketUsage: options?.basketUsage ?? [],
+      });
+      return {
+        currentUsage: computed.usage,
+        currentUsageStatus: computed.status,
+        currentUsageAuthoritative: computed.authoritative,
+      };
+    })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },
   }));
 

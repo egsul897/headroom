@@ -149,9 +149,11 @@ const CASES: MatrixCase[] = [
     independentExpected: {
       formulaType: "BUILDER_BASKET",
       thresholdValue: 172,
-      expectedCapacity: null,
+      params: { pctEbitda: 0.5, cniSharePct: 0.5, includeEquityProceeds: false },
+      // Independent: max(172, 0.5×400) + 0.5×180 + 0 = 200 + 90 = 290 (SYNTHETIC).
+      expectedCapacity: Math.max(172, 0.5 * 400) + 0.5 * 180,
       notes:
-        "Independent: RP/builder family present. Expected formula class BUILDER or greater-of; capacity checked against parse+engine consistency, not a single dollar claim without CNI schedule.",
+        "Independent: BUILDER starter max(172, 50% EBITDA)=200 + 50% CNI(180)=90 → 290. SYNTHETIC financials.",
     },
   },
   {
@@ -227,12 +229,19 @@ const CASES: MatrixCase[] = [
     mechanic: "UNSUPPORTED_REFUSAL",
     sourceId: "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
     sectionRef: "2.01",
+    /**
+     * Formula-applicable exclusion: voluntary prepayment / prepayment-based
+     * incremental amount has no numeric basket in the Neon summary. Correct
+     * outcome is KNOWN_NOT_MODELED refusal — not counted as a "correct formula".
+     * See docs/intelligence-factory/FORMULA-DISCREPANCY-ROCK-2.01.md.
+     */
     independentExpected: {
-      formulaType: "FLAT_AMOUNT",
+      formulaType: "KNOWN_NOT_MODELED",
       thresholdValue: 0,
       expectedCapacity: null,
       expectRefusal: true,
-      notes: "Independent: voluntary prepayment incremental path — expect KNOWN_NOT_MODELED / non-executable.",
+      notes:
+        "JUSTIFIED_EXCLUSION: Voluntary Prepayment / Prepayment-Based Incremental Amount — no executable dollar formula in summary; must refuse, never invent FLAT_AMOUNT 0 as capacity.",
     },
   },
 ];
@@ -307,7 +316,13 @@ async function runCase(c: MatrixCase) {
       };
     }
 
-    const ok = parsed.modelingStatus === "KNOWN_NOT_MODELED" || parsed.thresholdValue === 0;
+    // Justified exclusion / unsupported mechanic: must be KNOWN_NOT_MODELED.
+    // A MODELED Permission with inventable zero capacity would be a false favorable.
+    const ok = parsed.modelingStatus === "KNOWN_NOT_MODELED";
+    const falseFavorable =
+      parsed.modelingStatus === "MODELED" &&
+      typeof parsed.thresholdValue === "number" &&
+      parsed.thresholdValue === 0;
     return {
       id: c.id,
       mechanic: c.mechanic,
@@ -315,7 +330,13 @@ async function runCase(c: MatrixCase) {
       sectionRef: c.sectionRef,
       independentReview,
       financialInputsLabel: SYNTHETIC_FINANCIALS._label,
-      outcome: (ok ? "CORRECT_REFUSAL" : parsed.modelingStatus === "MODELED" ? "FALSE_FAVORABLE" : "UNSUPPORTED_MECHANIC") as OutcomeClass,
+      formulaApplicable: false,
+      justifiedExclusion: ok,
+      outcome: (ok
+        ? "CORRECT_REFUSAL"
+        : falseFavorable
+          ? "FALSE_FAVORABLE"
+          : "UNSUPPORTED_MECHANIC") as OutcomeClass,
       pass: ok,
       parsed,
     };
@@ -617,6 +638,13 @@ async function main() {
   const unsupported = results.filter((r) => r.outcome === "UNSUPPORTED_MECHANIC");
   const errors = results.filter((r) => r.outcome === "ERROR");
   const falseFavorable = results.filter((r) => r.outcome === "FALSE_FAVORABLE");
+  const formulaApplicable = results.filter((r) => r.formulaApplicable !== false);
+  const justifiedExclusions = results.filter((r) => r.justifiedExclusion === true);
+  const correctFormulasAmongApplicable = formulaApplicable.filter(
+    (r) =>
+      r.outcome === "SUCCESS" ||
+      (r.outcome === "CORRECT_REFUSAL" && r.id.includes("missing")),
+  ).length;
 
   const utilizationBacked = results.filter(
     (r) => r.distinctions?.utilizationStatus === "COMPUTED",
@@ -638,7 +666,17 @@ async function main() {
     },
     requiredReturn: {
       authenticProvisionsTested: CASES.length,
-      correctFormulas: successes.length + refusals.filter((r) => r.id.includes("missing")).length,
+      formulaApplicableProvisions: formulaApplicable.length,
+      justifiedFormulaExclusions: justifiedExclusions.map((r) => r.id),
+      correctFormulas: correctFormulasAmongApplicable,
+      formulaAccuracyAmongApplicable:
+        formulaApplicable.length > 0
+          ? correctFormulasAmongApplicable / formulaApplicable.length
+          : null,
+      matrixFullyCorrectFormulas:
+        falseFavorable.length === 0 &&
+        errors.length === 0 &&
+        correctFormulasAmongApplicable === formulaApplicable.length,
       independentlyReviewedInterpretations: CASES.length,
       independentReviewCaveat:
         "Independent expected formulas established before engine run — NOT counsel legal certification; maturity = INDEPENDENT_EXPECTED_PRE_ENGINE",
@@ -659,6 +697,8 @@ async function main() {
       errors: errors.length,
       certificationStatus:
         "NOT_CERTIFIED — DISCOVERED/MODELED/UNVERIFIED only; VERIFIED ≠ CERTIFIED; newly activated rules must not be exposed as authoritative customer permissions until safety gates pass",
+      formulaDiscrepancy:
+        "rock-2.01 voluntary-prepayment incremental — justified KNOWN_NOT_MODELED exclusion (not a false favorable); see FORMULA-DISCREPANCY-ROCK-2.01.md",
     },
     outcomeBreakdown: {
       SUCCESS: successes.map((r) => r.id),
@@ -671,8 +711,10 @@ async function main() {
     ephemeralCompiles,
     funnel,
     safetyGates: {
-      a8_01: "FIXED in this PR — GATE_NOT_SATISFIED → REVIEW_REQUIRED, never AVAILABLE",
-      unknownUtilization: "ZERO_NO_ATTRIBUTED_USAGE status preserved; silent zero not trusted",
+      a8_01:
+        "Aligned with PR #229 — GATE_NOT_SATISFIED → CapacityStatus.NOT_SATISFIED, never AVAILABLE",
+      unknownUtilization:
+        "ZERO_NO_ATTRIBUTED_USAGE / PARTIAL / EXTERNAL are non-authoritative; VERIFIED_ZERO and COMPUTED are authoritative",
       phase4dFinancialChaining:
         "Phase 4D chaining remains caller-stated multi-transaction; activation does not invent overlays",
       restorationAuthority:
