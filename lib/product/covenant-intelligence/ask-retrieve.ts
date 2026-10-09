@@ -279,6 +279,16 @@ function composeAnswer(params: {
     if (item.dependencies?.length) {
       bits.push(`Dependencies: ${item.dependencies.slice(0, 2).join("; ")}.`);
     }
+    const defs = (item.applicableDefinitions ?? []).slice(0, 3);
+    if (defs.length > 0) {
+      bits.push(
+        `Material definitions: ${defs
+          .map((d) => `${d.term}${d.definitionExcerpt ? ` — “${d.definitionExcerpt.slice(0, 160)}”` : ""}`)
+          .join("; ")}.`,
+      );
+    } else if ((item.relatedDefinedTerms ?? []).length > 0) {
+      bits.push(`Related defined terms: ${(item.relatedDefinedTerms ?? []).slice(0, 5).join(", ")}.`);
+    }
     bits.push(`Citation: ${item.sourceCitation}`);
     return bits.join("\n");
   });
