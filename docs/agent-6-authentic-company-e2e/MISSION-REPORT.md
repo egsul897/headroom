@@ -3,6 +3,7 @@
 **Verdict candidate:** `AGENT6_CI_AND_DISCOVERY_GATE_PASSED` pending green GitHub Actions at ending SHA (local `tsc --noEmit -p .` clean; agent6 31/31). **Not** autonomous E2E. **Not** customer production readiness.
 
 **Starting SHA:** `f4237e7b8a2ecd1c3d2353c21b9bf986d6dd0c14`  
+**Ending SHA (pre-final pin):** see tip after docs sync  
 **PR:** https://github.com/egsul897/headroom/pull/226  
 **Canonical #253 audit tip:** `85d52b93e23b3a813890651d27358d5826a91ede`  
 **Cost:** `$0.00`  
