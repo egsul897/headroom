@@ -1,8 +1,12 @@
 # HEADROOM-3 — Package Graph and Amendment Authority
 
-**Verdict:** see final boxed report in the PR / agent closeout  
+**Verdict:** `PACKAGE_GRAPH_AUTHORITY_VERIFIED`  
 **Branch:** `cursor/package-graph-authority-610f`  
-**Base:** `main` @ starting SHA recorded in closeout  
+**PR:** https://github.com/egsul897/headroom/pull/274  
+**Starting SHA:** `342a6b059e3385fb14d605b8d1593e878a221578`  
+**Ending SHA:** `5372da4926ee066238b251409b8ed3e9464f22a4`  
+**Exact-tip CI:** all checks green  
+
 
 ## What landed on main before this PR
 
