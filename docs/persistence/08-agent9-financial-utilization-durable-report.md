@@ -3,8 +3,8 @@
 ```
 MAIN_SHA: 4f1a0b81207364373d9a4cb9fe515d4a1a002e56
 PR_293_SHA: 8a4beb52712a6e31e5458fe2a005026fadedd4f1 (OPEN, unmerged)
-PR_294_SHA: cde9cd3e481b88f7bd50c183c60deb2caa205279 (OPEN — this tip)
-EXECUTION_SHA: cde9cd3e481b88f7bd50c183c60deb2caa205279
+PR_294_SHA: 1aa81306fa08cff9584696145b985572a9784cbe (OPEN — tip with evidence docs)
+POSTGRESQL_EXECUTION_SHA: cde9cd3e481b88f7bd50c183c60deb2caa205279 (code under test; evidence commit is docs-only)
 
 AGENT_9_HANDOFF_RECONCILIATION:
   Handoff docs/persistence/06-agent9-financial-utilization-handoff.md retained.
