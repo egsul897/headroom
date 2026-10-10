@@ -153,6 +153,11 @@ model Company {
   // (issuer-level EDGAR acquisition). Never writes Permission/capacity rules.
   knowledgeSources KnowledgeSource[]
 
+  // --- NS-4 financial sync outbox (promotion → approved-snapshot reliability) ---
+  // Additive only. Records PENDING/FAILED NS-4 writes after legacy financial
+  // promotion so recoverable failures cannot strand NS-4 behind legacy state.
+  ns4FinancialSyncs Ns4FinancialSync[]
+
   @@map("companies")
 }
 
@@ -3980,6 +3985,34 @@ model ContractInputSnapshotEvent {
   @@index([companyId, at])
   @@index([snapshotId])
   @@map("contract_input_snapshot_events")
+}
+
+// Durable outbox for legacy FINANCIAL_FACT promotion → NS-4 approved snapshots.
+// Written in the same transaction that sets promotedAt so a crash between
+// legacy commit and NS-4 write remains discoverable and retryable.
+// Status: PENDING | SUCCEEDED | FAILED. Retries are idempotent via
+// persistPromotedFinancialFactsToNs4 (already-APPROVED snapshot short-circuits).
+model Ns4FinancialSync {
+  id           String   @id @default(cuid())
+  companyId    String
+  // Deterministic cohort key: asOf ISO date + sorted candidate ids hash.
+  cohortKey    String
+  asOfDate     DateTime
+  status       String // PENDING | SUCCEEDED | FAILED
+  candidateIds String[]
+  factsJson    Json
+  snapshotId   String?
+  lastError    String?
+  attemptCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, cohortKey])
+  @@index([companyId, status])
+  @@index([status, updatedAt])
+  @@map("ns4_financial_syncs")
 }
 
 

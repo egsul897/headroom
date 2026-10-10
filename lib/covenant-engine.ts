@@ -43,6 +43,7 @@ import { runSolver } from "./solver/service";
 import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import type {
   ActivationState,
+  BasketUsageRecord,
   CollateralPoolRef,
   CoverageDeclaration,
   CoverageResult,
@@ -60,6 +61,7 @@ import type {
   SourceCitation,
   Transaction,
 } from "./solver/types";
+import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -123,6 +125,32 @@ export interface FormulaParams {
   cniSectionRef?: string;
   /** BUILDER_BASKET: section ref for the equity proceeds contribution, if distinct from the provision's own sectionRef. */
   equitySectionRef?: string;
+}
+
+/**
+ * Legal / modeling condition flags sometimes stored in the same JSON column as
+ * FormulaParams. These are NOT numerical formula inputs: they describe whether
+ * a permission has an independent capacity path at all (e.g. automatic-link
+ * liens that only travel with another permission). Callers must read them via
+ * {@link readProvisionLegalConditionFlags}, never fold them into FormulaParams.
+ */
+export interface ProvisionLegalConditionFlags {
+  /** Lien (or similar) exists only as an automatic link — no independent ceiling. */
+  automaticLinkOnly: boolean;
+  /** Automatic-link capacity further restricted to a named asset scope. */
+  assetScopeRestricted: boolean;
+}
+
+/** Extract legal-condition flags from raw provision/permission params JSON. */
+export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalConditionFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { automaticLinkOnly: false, assetScopeRestricted: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    automaticLinkOnly: o.automaticLinkOnly === true,
+    assetScopeRestricted: o.assetScopeRestricted === true,
+  };
 }
 
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
@@ -1808,6 +1836,32 @@ export interface SolverNativePrismaClient {
   solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
 }
 
+export interface LoadCompanySolverStaticOptions {
+  /**
+   * Optional permission-attributed basket usage. When omitted or empty,
+   * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 with status
+   * ZERO_NO_ATTRIBUTED_USAGE and currentUsageAuthoritative=false.
+   * Callers must not treat that zero as proven empty utilization.
+   */
+  basketUsage?: BasketUsageRecord[];
+  /**
+   * Optional completeness certificates keyed by SharedCapacityConstraint id.
+   * Required for currentUsageAuthoritative=true (remaining = cap − usage).
+   * See lib/capacity/utilization-authority.ts.
+   */
+  completenessCertificatesByConstraintId?: Record<
+    string,
+    {
+      capacityRuleId: string;
+      asOf: string;
+      approvalState: "APPROVED";
+      sourceLabel: string;
+      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+    }
+  >;
+}
+
 /**
  * Loads a company's solver-native graph rows (Permission/PermissionRelationship/
  * SharedCapacityConstraint/PermissionCollateralScope/RuleActivationCondition/
@@ -1816,11 +1870,17 @@ export interface SolverNativePrismaClient {
  * to legacy rows. Zero rows for a company (true for Coherent today) yields
  * empty arrays, which is exactly what makes every document/side for that
  * company resolve LEGACY/NOT_TESTED in `resolveDocumentSideCoverage`.
+ *
+ * SharedConstraint.currentUsage is computed for NAMED_MEMBER_CLAUSES from
+ * optional `options.basketUsage` only. Status/authoritative flags are always
+ * attached. EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER remain 0 with
+ * non-authoritative status (fail-closed — do not invent balances).
  */
 export async function loadCompanySolverStaticData(
   prisma: SolverNativePrismaClient,
   companyId: string,
-  asOfDate: Date = new Date()
+  asOfDate: Date = new Date(),
+  options?: LoadCompanySolverStaticOptions,
 ): Promise<SolverNativeStaticData> {
   const dateFilter = effectiveDateFilter(asOfDate);
   const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
@@ -1896,7 +1956,25 @@ export async function loadCompanySolverStaticData(
     })),
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
-    currentUsage: 0, // computed from ledger/historicalState by the caller when that's wired up; see report §O/M for this scoped follow-up
+    ...(() => {
+      const computed = computeSharedConstraintCurrentUsage({
+        aggregationRule: c.aggregationRule,
+        measurementBasis: c.measurementBasis,
+        members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
+          permissionId: m.permissionId ?? undefined,
+          namedInstrument: m.namedInstrument ?? undefined,
+          entityClass: m.entityClass ?? undefined,
+          externalInstrumentRef: m.externalInstrumentRef ?? undefined,
+        })),
+        basketUsage: options?.basketUsage ?? [],
+        completenessCertificate: options?.completenessCertificatesByConstraintId?.[c.id] ?? null,
+      });
+      return {
+        currentUsage: computed.usage,
+        currentUsageStatus: computed.status,
+        currentUsageAuthoritative: computed.authoritative,
+      };
+    })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },
   }));
 

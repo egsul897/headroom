@@ -1,0 +1,84 @@
+{
+  "artifact": "AGENT 3 — covenant capacity mathematics matrix results",
+  "engine": {
+    "entryPoints": ["evaluateCapacityState", "applyCapacityStateTransition", "simulateTransaction"],
+    "capacityGraphVersion": "capacity-graph.v1",
+    "runtimeVersion": "contract-runtime.v1",
+    "inputContractVersion": "financial-input-contract.v1",
+    "parallelCalculator": false
+  },
+  "taxonomy": {
+    "CORRECT": "engine result matches independently derived expectation",
+    "DEFECT": "engine disagrees with independent expectation for a supported mechanic",
+    "UNSUPPORTED_AS_DESIGNED": "engine correctly refuses or withholds; not interchangeable with zero/unlimited/unknown",
+    "UNKNOWN_NOT_CLAIMED": "product does not claim to compute this figure"
+  },
+  "mechanicsCoverage": [
+    { "mechanic": "fixed_baskets", "cases": ["FIX-BELOW", "FIX-AT", "FIX-ABOVE", "FIX-ZERO-USAGE"], "status": "COVERED" },
+    { "mechanic": "greater_of_baskets", "cases": ["GO-BELOW-GROWER", "GO-AT-CROSSOVER", "GO-ABOVE-GROWER"], "status": "COVERED" },
+    { "mechanic": "lesser_of_baskets", "cases": ["LO-BELOW", "LO-AT", "LO-ABOVE"], "status": "COVERED" },
+    { "mechanic": "asset_based_growers", "cases": ["ASSET-GROWER", "GROWER-MISSING"], "status": "COVERED" },
+    { "mechanic": "ebitda_based_growers", "cases": ["EBITDA-GROWER", "GROWER-MISSING"], "status": "COVERED" },
+    { "mechanic": "ratio_debt", "cases": ["RATIO-BELOW", "RATIO-AT", "RATIO-ABOVE", "RATIO-GATE", "RATIO-GATE-SATISFIED"], "status": "COVERED" },
+    { "mechanic": "incremental_facilities", "cases": ["INC-SUM", "INC-MISSING-BUCKET"], "status": "COVERED" },
+    { "mechanic": "available_amount_builders", "cases": ["AA-BUILDER", "AA-PARTIAL-MAX-BOUND"], "status": "COVERED" },
+    { "mechanic": "restricted_payments", "cases": ["RP-FIXED", "AA-BUILDER"], "status": "COVERED" },
+    { "mechanic": "investments", "cases": ["INV-FIXED", "INV-GROWER"], "status": "COVERED" },
+    { "mechanic": "debt_and_lien_capacity", "cases": ["DEBT-FIXED", "LIEN-FIXED", "ASSET-GROWER"], "status": "COVERED" },
+    { "mechanic": "shared_baskets", "cases": ["SHARED-POOL", "COMPOSE"], "status": "COVERED" },
+    { "mechanic": "anti_stacking", "cases": ["ANTI-STACK-UNQUANTIFIED", "ANTI-STACK-AMBIGUOUS-USAGE"], "status": "COVERED" },
+    { "mechanic": "historical_utilization", "cases": ["HIST-SUM", "HIST-SUPERSEDED", "HIST-FUTURE-ASOF", "HIST-MISSING-ATTRIBUTION"], "status": "COVERED" },
+    { "mechanic": "reclassification", "cases": ["RECLASS-BELOW", "RECLASS-AT", "RECLASS-ABOVE"], "status": "COVERED" },
+    { "mechanic": "currency_treatment", "cases": ["FX-MISMATCH", "FX-GROSS-MIX", "FX-SAME"], "status": "COVERED" },
+    { "mechanic": "financial_period_selection", "cases": ["PERIOD-EXACT", "PERIOD-MISSING"], "status": "COVERED" },
+    { "mechanic": "pro_forma_adjustments", "cases": ["PF-DELTA", "PF-MISSING-BASE"], "status": "COVERED" },
+    { "mechanic": "conditions_unsatisfied_with_numerical_capacity", "cases": ["COND-FAIL", "COND-IF-ELSE", "COND-UNLIMITED-UNSAT"], "status": "COVERED" },
+    { "mechanic": "missing_unsupported_unlimited_taxonomy", "cases": ["TAX-MISSING", "TAX-UNSUPPORTED", "TAX-UNLIMITED", "TAX-AND-SHORTCIRCUIT"], "status": "COVERED" }
+  ],
+  "boundaryPolicy": {
+    "belowAtAbove": "tested for fixed, greater-of, lesser-of, ratio room, reclassification elections",
+    "conditionsUnsatisfied": "numerical remaining may exist while simulation returns NOT_SATISFIED / GATE_NOT_SATISFIED",
+    "missingInputs": "NEEDS_INPUT + NOT_DETERMINED; never coerced to zero"
+  },
+  "testFile": "tests/contract-model/runtime/capacity/capacity-mathematics-matrix.test.ts",
+  "results": {
+    "matrixCases": 53,
+    "passed": 53,
+    "failed": 0,
+    "defectsFound": 0,
+    "productionFixes": 0,
+    "classifications": {
+      "CORRECT": 53,
+      "DEFECT": 0,
+      "UNSUPPORTED_AS_DESIGNED": "embedded in CORRECT cases that assert NEEDS_INPUT / GATE_NOT_SATISFIED / UNSUPPORTED / REVIEW_REQUIRED withholding",
+      "UNKNOWN_NOT_CLAIMED": 0
+    }
+  },
+  "priorSuiteRegression": {
+    "tests/contract-model/runtime/capacity/**": { "passed": 234, "failed": 0 },
+    "expression + transaction synthetic + legacy capacity semantics": { "passed": 334, "failed": 0, "note": "combined with capacity suite" }
+  },
+  "criticalDefects": [],
+  "observations": [
+    {
+      "id": "OBS-OVERCONSUMPTION-PROVISIONAL",
+      "note": "Ledger over-consumption floors status to REVIEW_REQUIRED; signed remaining is published under provisional, not as AVAILABLE headroom. Independently verified; not a defect."
+    },
+    {
+      "id": "OBS-RATIO-NEGATIVE-ROOM",
+      "note": "Ratio-room formulas that evaluate to a negative MONEY amount remain status AVAILABLE with a signed AMOUNT (OVER_CONSUMPTION is ledger-driven only). Consumers must not treat negative remaining as usable capacity."
+    },
+    {
+      "id": "OBS-RATIO-SCALAR",
+      "note": "Incurrence room uses NUMBER×MONEY (or PERCENT×MONEY). RATIO×MONEY is a unit mismatch by design — leverage thresholds as gates use COMPARE against RATIO, not multiplication."
+    },
+    {
+      "id": "OBS-NO-FX",
+      "note": "Cross-currency ADD/usage fails closed with CURRENCY_MISMATCH_NO_CONVERSION_MODELED; unlimited/missing/unsupported remain distinct kinds."
+    }
+  ],
+  "costUsd": 0,
+  "matrixCommitSha": "0790a0191167ac0ef78aef115304481bac86579f",
+  "branchTipSha": "450d160eb02495c3b0b31362c8f355efa51bcfdc",
+  "pr": "https://github.com/egsul897/headroom/pull/214"
+}

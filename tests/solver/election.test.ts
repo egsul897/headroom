@@ -245,6 +245,41 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(priorityReq?.status).toBe("FAILED");
     });
 
+    it("Case: non-authoritative shared usage must not yield favorable remaining capacity", () => {
+      const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
+      const graph = buildPermissionGraph([p], []);
+      const constraint: SharedConstraint = {
+        id: "sc-unattrib",
+        companyId: "co-1",
+        name: "Unattributed shared cap",
+        cap: { amount: 100 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "a" }],
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        currentUsage: 0,
+        currentUsageStatus: "ZERO_NO_ATTRIBUTED_USAGE",
+        currentUsageAuthoritative: false,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+      };
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
+        permissionsById: new Map([["a", p]]),
+        graph,
+        financials: FIN,
+        requestedAmount: 50,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [constraint],
+        collateralScopes: [],
+      });
+      const sharedReq = evalResult.requirements.find((r) => r.class === "SHARED_CAP");
+      expect(sharedReq?.status).toBe("UNKNOWN");
+      expect(sharedReq?.reasonCategory).toBe("EXTERNAL_INPUT");
+      // Must not allocate as if remaining = cap − 0.
+      expect(evalResult.legs[0]!.amountAllocated).toBe(0);
+      expect(evalResult.requirements.some((r) => r.status === "UNKNOWN")).toBe(true);
+    });
+
     it("Case: shared capacity cap - a permission's allocation is capped at the constraint's remaining headroom", () => {
       const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
       const graph = buildPermissionGraph([p], []);
@@ -258,6 +293,8 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         measurementBasis: "CURRENTLY_OUTSTANDING",
         followsRefinancing: false,
         currentUsage: 60,
+        currentUsageStatus: "COMPUTED",
+        currentUsageAuthoritative: true,
         sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
       };
       const evalResult = evaluateElection({

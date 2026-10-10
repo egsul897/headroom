@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "intelligence-factory.neon-activation-e2e-proof.v1",
+  "generatedAt": "2026-10-09T22:32:35.545Z",
+  "finishedAt": "2026-10-09T22:32:35.874Z",
+  "paidInferenceCostUsd": 0,
+  "neonCorpusMutations": 0,
+  "ephemeralCompanyWrites": true,
+  "ephemeralCleanedUp": true,
+  "source": {
+    "neonSourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+    "sectionRef": "7.2",
+    "baskets": [
+      "Greater-of basket: $50,000,000 and 3.0% of Consolidated Total Assets",
+      "Cap measured on outstanding amount at any time."
+    ],
+    "category": "DEBT_INCURRENCE",
+    "representationLevel": "DISCOVERED_CANDIDATE",
+    "note": "Authentic Neon metadata; companyId was null on source registry row"
+  },
+  "parsed": {
+    "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+    "thresholdValue": 50,
+    "params": {
+      "pctTotalAssets": 0.03
+    },
+    "amountKind": "FIXED",
+    "measurementBasis": "CURRENTLY_OUTSTANDING",
+    "notes": [
+      "Compiled greater-of flat / % Consolidated Total Assets basket from counsel-accepted analysis"
+    ],
+    "modelingStatus": "MODELED",
+    "missingFields": []
+  },
+  "capacity": {
+    "inputsLabel": "SYNTHETIC_NUMERIC_INPUTS (totalAssets=2800, ebitda=420, …)",
+    "expectedCapacity": 84,
+    "withAssets": {
+      "status": "modeled",
+      "capacity": 84,
+      "pass": true
+    },
+    "missingAssetsRefusal": {
+      "status": "review_required",
+      "reason": "\"Limitation on Indebtedness\" (7.2) is a greater-of flat / % Consolidated Total Assets basket — enter Consolidated Total Assets on the financial snapshot to evaluate the grower leg (fixed floor $50M is not presented alone as remaining capaci",
+      "pass": true
+    }
+  },
+  "simulation": {
+    "remainingCapacity": 84,
+    "proposed50m": {
+      "status": "clear",
+      "amount": 50,
+      "pass": true
+    },
+    "proposed200m": {
+      "status": "blocked",
+      "amount": 200,
+      "pass": true
+    }
+  },
+  "utilization": {
+    "attributed": {
+      "usage": 20,
+      "status": "COMPUTED"
+    },
+    "unattributedZeroIsNotProvenEmpty": {
+      "usage": 0,
+      "status": "ZERO_NO_ATTRIBUTED_USAGE"
+    },
+    "note": "ZERO_NO_ATTRIBUTED_USAGE must not be treated as verified empty utilization"
+  },
+  "counselCompile": {
+    "compileResults": [
+      {
+        "status": "COMPILED",
+        "permissionId": "cmv1jjljd0005nblgbl6o4mk3",
+        "code": "counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:DEBT_INCURRENCE",
+        "grantType": "DEBT_INCURRENCE",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdValue": 50,
+        "modelingStatus": "MODELED",
+        "missingFields": [],
+        "message": "Compiled executable Permission counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:DEBT_INCURRENCE"
+      },
+      {
+        "status": "COMPILED",
+        "permissionId": "cmv1jjlk10009nblge8metj0d",
+        "code": "counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:LIEN",
+        "grantType": "LIEN",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdValue": 50,
+        "modelingStatus": "MODELED",
+        "missingFields": [],
+        "message": "Compiled executable Permission counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:LIEN"
+      }
+    ],
+    "permissionsMinted": 2,
+    "provisionsMinted": 2,
+    "permissionCodes": [
+      "counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:DEBT_INCURRENCE",
+      "counsel:e2e:fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm:7.2:LIEN"
+    ],
+    "modelingStatuses": [
+      "MODELED",
+      "MODELED"
+    ],
+    "reviewStatuses": [
+      "UNVERIFIED",
+      "UNVERIFIED"
+    ],
+    "note": "Permissions remain UNVERIFIED — VERIFIED ≠ CERTIFIED; no bulk cert"
+  },
+  "verdict": {
+    "neonEvidenceToExecutableCalculation": true,
+    "correctRefusalInsufficientFinancials": true,
+    "transactionSimulation": true,
+    "utilizationNotSilentlyTrustedWhenUnattributed": true,
+    "counselCompileMintedModeledPermission": true
+  }
+}
