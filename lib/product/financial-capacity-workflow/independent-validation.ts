@@ -102,27 +102,6 @@ export interface CapacityBreakdown {
     rootCauseTrace: string[];
     note: string;
   };
-  borrowingProceedsTreatment: {
-    engineConvention: "IMMEDIATELY_SPENT_CASH_UNCHANGED";
-    cashRetained: {
-      description: string;
-      netDebtDelta: number;
-      tnlRoom: number;
-      ssnlRoom: number;
-    };
-    immediatelySpent: {
-      description: string;
-      netDebtDelta: number;
-      tnlRoom: number;
-      ssnlRoom: number;
-    };
-    label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
-  };
-  coordination: {
-    issue220FinancialApproval: string;
-    issue234UtilizationCompleteness: string;
-    issue218CrossDocumentRestrictions: string;
-  };
 }
 
 export interface TransactionEconomicsRow {
@@ -208,6 +187,27 @@ export interface IndependentValidationReport {
     headline: number;
     equityLegalAuthority: string;
     includeEquityProceedsParam: true;
+  };
+  borrowingProceedsTreatment: {
+    engineConvention: "IMMEDIATELY_SPENT_CASH_UNCHANGED";
+    cashRetained: {
+      description: string;
+      netDebtDelta: number;
+      tnlRoom: number;
+      ssnlRoom: number;
+    };
+    immediatelySpent: {
+      description: string;
+      netDebtDelta: number;
+      tnlRoom: number;
+      ssnlRoom: number;
+    };
+    label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
+  };
+  coordination: {
+    issue220FinancialApproval: string;
+    issue234UtilizationCompleteness: string;
+    issue218CrossDocumentRestrictions: string;
   };
   sequentialTransactions: TransactionEconomicsRow[];
   sequentialIntegrity: {
