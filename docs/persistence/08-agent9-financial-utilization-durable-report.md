@@ -3,7 +3,7 @@
 ```
 MAIN_SHA: 4f1a0b81207364373d9a4cb9fe515d4a1a002e56
 PR_293_SHA: 8a4beb52712a6e31e5458fe2a005026fadedd4f1 (OPEN, unmerged)
-PR_294_SHA: 1aa81306fa08cff9584696145b985572a9784cbe (OPEN — tip with evidence docs)
+PR_294_SHA: 2d098703e7a617a04a4a79255e55ddfbb074a9cb (OPEN — tip; north-star-bridge import fix)
 POSTGRESQL_EXECUTION_SHA: cde9cd3e481b88f7bd50c183c60deb2caa205279 (code under test; evidence commit is docs-only)
 
 AGENT_9_HANDOFF_RECONCILIATION:
@@ -66,7 +66,7 @@ HYPOTHETICAL_LEDGER_ISOLATION: PASS (durablyRememberSimulation; ContractLedgerUs
 
 TYPECHECK_AND_BUILD: tsc --noEmit PASS; next build PASS
 
-CI_STATUS: pending after push (subscribe on #294 head)
+CI_STATUS: subscribed on cursor/neon-first-persistence-e925 (awaiting terminal checks)
 
 REMAINING_GAPS:
   - Position/Ask/Simulate SSR route loaders not yet swapped to
