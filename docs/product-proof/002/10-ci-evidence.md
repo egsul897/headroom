@@ -29,13 +29,19 @@ Tip drift explanation: `2011da01` docs-pinned the first fixed-dollar ending SHA;
 
 All checks completed without failures on tip `b4d45628054a8d532f1a0c12583cd1e731deff1c`.
 
-## Greater-of tip CI
+## Greater-of tip CI (exact tip `2673aaeb`)
 
 | Item | Value |
 |---|---|
-| Tip SHA | *(recorded after green)* |
-| certified path (provider-free) | pending / see PR checks |
-| Notes | Tip `f7db31df` failed typecheck on greater-of tests (nullability / VerifiedCapacityResult narrowing); fix commit follows. |
+| Tip SHA | `2673aaeb2daf9f97921ad2cb830a807fef72e744` |
+| Feature commit (greater-of) | `f7db31dfb7c872772db053a2de9dfc495c1ca16c` |
+| Typecheck fix | `2673aaeb2daf9f97921ad2cb830a807fef72e744` |
+| certified path (provider-free) push | **pass** — https://github.com/egsul897/headroom/actions/runs/38054813761 |
+| certified path (provider-free) pull_request | **pass** — https://github.com/egsul897/headroom/actions/runs/38054816724 |
+| Vercel | **pass** — https://vercel.com/debt-compass/headroom/9yb21TrPwdXyVeEd7cYx3wuhfnB1 |
+| Vercel Preview Comments | **pass** |
+
+All checks green on exact tip `2673aaeb2daf9f97921ad2cb830a807fef72e744`. Intermediate tip `f7db31df` failed typecheck (nullability / `VerifiedCapacityResult` narrowing); fixed in `2673aaeb`.
 
 ## Constraints
 
