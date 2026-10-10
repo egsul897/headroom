@@ -1,8 +1,8 @@
 # Wrong-document production promotion guard
 
-**Code tip (fix):** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
-**Agent #11 retest SHA:** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
-**Branch HEAD after docs pin:** see git rev-parse origin/cursor/canonical-product-integration-5a28  
+**Code tip (wrong-document fix):** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
+**Agent #11 retest SHA (P0 authority + adversarial closure):** 60dbdeeeb1e067e1823972f2ea79ea5f3ba19f72  
+**Branch HEAD:** origin/cursor/canonical-product-integration-5a28  
 **Verdict target:** OPERATIVE_INTEGRATION_SAFETY_VERIFIED
 
 ## Binding status
