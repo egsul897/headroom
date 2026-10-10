@@ -352,11 +352,19 @@ describe("journey navigation", () => {
   it("renders the CFO workflow without inventing numbers", () => {
     const html = renderToStaticMarkup(<WorkflowJourney companyId="adv-co" current="position" />);
     expect(html).toMatch(/Documents/);
+    expect(html).toMatch(/Verified rulebook|Rulebook/);
     expect(html).toMatch(/Position/);
     expect(html).toMatch(/Ask/);
     expect(html).toMatch(/Simulate/);
     expect(html).toMatch(/Evidence/);
     expect(html).not.toMatch(/\$\d/);
+  });
+
+  it("primary nav includes Rulebook between Covenants and Position", async () => {
+    const { companyNavItems } = await import("@/lib/home/nav");
+    const labels = companyNavItems("adv-co", "ACTIVE").map((i) => i.label);
+    expect(labels.indexOf("Rulebook")).toBeGreaterThan(labels.indexOf("Covenants"));
+    expect(labels.indexOf("Rulebook")).toBeLessThan(labels.indexOf("Position"));
   });
 });
 

@@ -16,6 +16,7 @@ export type CompanyNavKey =
   | "home"
   | "documents"
   | "covenants"
+  | "rulebook"
   | "intelligence"
   | "position"
   | "ledger"
@@ -38,14 +39,17 @@ export function companyOpenHref(company: { id: string; onboardingStatus: Onboard
 }
 
 /**
- * Institutional product navigation — Documents / Covenants / Position / Ledger / Simulate / Evidence.
- * Ask remains available; onboarding only while setup is incomplete.
+ * Institutional product navigation — Documents / Covenants / Rulebook / Position /
+ * Ledger / Simulate / Evidence. Ask remains available; onboarding only while setup
+ * is incomplete. Rulebook sits between discovery and Position so counsel review
+ * is not a dead-end off-nav surface.
  */
 export function companyNavItems(companyId: string, onboardingStatus: OnboardingStatus): CompanyNavItem[] {
   const items: CompanyNavItem[] = [
     { key: "home", href: `/${companyId}`, label: "Overview" },
     { key: "documents", href: `/${companyId}/documents`, label: "Documents" },
     { key: "covenants", href: `/${companyId}/covenants`, label: "Covenants" },
+    { key: "rulebook", href: `/${companyId}/rulebook`, label: "Rulebook" },
     { key: "intelligence", href: `/${companyId}/intelligence`, label: "Intelligence" },
     { key: "position", href: `/${companyId}/position`, label: "Position" },
     { key: "ledger", href: `/${companyId}/ledger`, label: "Ledger" },

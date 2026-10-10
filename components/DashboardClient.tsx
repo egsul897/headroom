@@ -98,8 +98,9 @@ function restrictedPaymentsHeadline(families: ReturnType<typeof buildCovenantOve
   if (capacityRows.length === 0) return { display: "Not tested" };
   const finiteRows = capacityRows.filter((r) => r.status === "MODELED" && r.currentCapacity !== null);
   if (finiteRows.length === 0) return { display: "Not tested" };
-  const sum = finiteRows.reduce((s, r) => s + (r.currentCapacity ?? 0), 0);
-  return { display: fmtM(sum) };
+  // Sum only known modeled capacities — never coalesce unknown/null to zero.
+  const sum = finiteRows.reduce((s, r) => s + (r.currentCapacity as number), 0);
+  return { display: `${fmtM(sum)} (modeled)`, note: "gross/modeled basket sum — not verified available remaining" };
 }
 
 function DueWindows({ dueWithin12, dueWithin24, dueWithin36 }: { dueWithin12: number; dueWithin24: number; dueWithin36: number }) {

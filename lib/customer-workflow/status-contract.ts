@@ -166,19 +166,13 @@ export function mapEngineLabelToCustomerStatus(raw: string | null | undefined): 
   if (!raw) return "UNKNOWN";
   const key = raw.trim().toUpperCase().replace(/\s+/g, "_");
 
-  if (
-    key === "VERIFIED_EXECUTABLE" ||
-    key === "EXECUTABLE" ||
-    key === "CERTIFIED_EXECUTED" ||
-    key === "SUPPORTED_REMAINING" ||
-    key === "AVAILABLE"
-  ) {
-    // AVAILABLE from legacy publication labels is not production-authoritative on main
-    // until authenticity + trusted-issuer gates land (PR #268 open / unmerged).
-    if (key === "AVAILABLE" || key === "SUPPORTED_REMAINING") {
-      return "NOT_PRODUCTION_AUTHORITATIVE";
-    }
+  if (key === "VERIFIED_EXECUTABLE" || key === "CERTIFIED_EXECUTED") {
     return "VERIFIED_EXECUTABLE";
+  }
+  if (key === "AVAILABLE" || key === "SUPPORTED_REMAINING" || key === "EXECUTABLE") {
+    // AVAILABLE / SUPPORTED_REMAINING / rulebook EXECUTABLE are not production-
+    // authoritative on main until authenticity + trusted-issuer gates land (PR #268).
+    return "NOT_PRODUCTION_AUTHORITATIVE";
   }
   if (key === "GROSS_CONTRACTUAL" || key === "GROSS_ONLY" || key === "KNOWN_ATTRIBUTED_ONLY") {
     return "GROSS_CONTRACTUAL";
@@ -225,9 +219,14 @@ export function mapEngineLabelToCustomerStatus(raw: string | null | undefined): 
     key === "NOT_PRODUCTION_AUTHORITATIVE" ||
     key === "MODELED" ||
     key === "NOT_CERTIFIED_4E" ||
-    key === "MODELED_CROSS_DOCUMENT"
+    key === "MODELED_CROSS_DOCUMENT" ||
+    key === "EXECUTABLE" ||
+    key === "REVIEWED" ||
+    key === "INTERPRETED" ||
+    key === "DISCOVERED"
   ) {
-    return "NOT_PRODUCTION_AUTHORITATIVE";
+    // RulebookStage EXECUTABLE is legacy Permission readiness — not production AVAILABLE.
+    return key === "DISCOVERED" || key === "INTERPRETED" ? "PARTIAL" : "NOT_PRODUCTION_AUTHORITATIVE";
   }
   if (key === "VERIFIED_UTILIZATION_COMPLETE" || key === "VERIFIED_COMPLETE" || key === "VERIFIED_EMPTY") {
     return "VERIFIED_UTILIZATION_COMPLETE";
