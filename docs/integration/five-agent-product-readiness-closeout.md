@@ -10,10 +10,10 @@
 | Marker | SHA |
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
-| Final `origin/main` at closeout | `c6fbd2a7626244f2bca86c980f966b36b9c8f92d` |
+| Final `origin/main` at closeout | `fa26d602f4b0551ad4fabf481a50355fcef61322` |
 | Integration branch tip | branch HEAD after this closeout pin commit (see PR #278) |
 
-Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273` (via #279) landed on `main` before integration closeout.
+Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273` (via #279), `#275` (via #280) landed on `main`.
 
 ## PR-by-PR disposition
 
@@ -23,7 +23,7 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273`
 | #268 authenticity + trusted-issuer | `d7cb0c6b` | **SUPERSEDED** (merged upstream) | `89802b23` | Capacity overlaps reconciled with #273 on integration tip |
 | #274 package graph + handoff | `48950c80` | **SUPERSEDED** (merged upstream) | `b23e312a` | Absorbed into integration + main |
 | #273 financial evidence | `61c037dc` | **SUPERSEDED** (merged via #279) | `c9d62321` / PR merge `c6fbd2a7` | Reconciled onto post-#268 main as #279; integration tip prefers main refusal wording |
-| #275 customer workflow | `deaa977e` | **TARGETED_RECONCILIATION** | _(unmerged)_ | Draft; **CONFLICTING** vs current main; content on #278 |
+| #275 customer workflow | `deaa977e` | **SUPERSEDED** (merged via #280) | `fa26d602` (content `eb789359`) | Reconciled onto post-#268 main as #280; integration tip prefers main Position authority wire |
 | #266 fixed-dollar / greater-of | `628eefa4` | **SUPERSEDED** (merged upstream) | `93857be5` | Landed on main during closeout; integration tip retains contract A wire atop it |
 | #246 graph expansion | — | **BLOCKED / DO NOT MERGE** | — | Explicitly excluded; not reactivated |
 | #278 integration | tip of branch | **MERGE_READY for human review** | _(unmerged)_ | Draft; carries reconciled #266/#273/#275 + contract A wire |
@@ -36,14 +36,14 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273`
 4. `#274` → `b23e312afedb53ea6771c2ead1afbcdd758edd86`
 5. `#266` → `93857be59214c7410de9f005ff87870a47bf10ce`
 6. `#273` (via #279) → `c6fbd2a7626244f2bca86c980f966b36b9c8f92d` (content tip `c9d62321`)
+7. `#275` (via #280) → `fa26d602f4b0551ad4fabf481a50355fcef61322` (content tip `eb789359`)
 
 ### Human actions required to land remaining work
 
-1. Review draft PR **#278** (integration tip).
+1. Review draft PR **#278** (integration tip — contract A + capacity cleanup atop merged workstreams).
 2. Mark **#278** ready for review; obtain required approving review(s) under branch protection.
-3. Merge **#278** (do **not** force-merge conflicting #273/#275 tips; prefer #278).
-4. Close superseded/conflicting #266/#273/#275 after #278 lands (or leave as historical).
-5. Do **not** merge #246.
+3. Merge **#278**.
+4. Do **not** merge #246.
 
 ## Cross-workstream contracts
 
@@ -122,8 +122,7 @@ Authentic debt package → confirmed operative document → complete clause/cont
 
 ## Unmerged PR queue
 
-- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review; carries #275 reconcile + contract A + capacity marker cleanup atop post-#273 main
-- **#275** — draft, CONFLICTING vs main; content reconciled in #278
+- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review; carries contract A wire + capacity marker cleanup atop fully absorbed workstream PRs
 - **#246** — OPEN; **do not merge**
 
 ## Next bounded development tasks
@@ -133,3 +132,9 @@ See `docs/integration/handoffs/` — five separate handoffs; **not implemented**
 ## Uncommitted / unpushed work
 
 Reported at final push of this closeout commit on `cursor/five-agent-integration-e920`. Regenerated WOR eval JSON under `docs/headroom-5-independent-holdout/10*` was discarded after reproduction (seal/legal refs untouched).
+
+
+## Exact-tip CI
+
+- Tip `9d90daa5` (pre-#280 absorb): **all 5 checks SUCCESS** (certified path, dashboard invent-absence, home overview, Vercel, Vercel Preview Comments).
+- Tip after #280 absorb: re-run CI on push; report terminal status on PR #278.
