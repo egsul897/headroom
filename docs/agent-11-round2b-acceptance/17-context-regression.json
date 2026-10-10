@@ -1,0 +1,59 @@
+{
+  "artifact": "AGENT11_ROUND2B_CONTEXT_REGRESSION",
+  "clauseId": "AN-B-RESTATE",
+  "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+  "budgetsUnchanged": true,
+  "thresholdsUnchanged": true,
+  "rounds": {
+    "ROUND_1_MAIN": {
+      "sufficiencyState": "SUFFICIENT",
+      "unresolvedCount": 0
+    },
+    "ROUND_2_MAIN": {
+      "sufficiencyState": "BUDGET_EXCEEDED",
+      "unresolvedCount": 22,
+      "itemCounts": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "DEFINITION": 4,
+        "DEFINITION_DEPENDENCY": 2,
+        "CROSS_DOCUMENT_REFERENCE": 1
+      },
+      "stopReasons": [
+        "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+      ]
+    },
+    "ROUND_2B_CANONICAL_293": {
+      "sufficiencyState": "BUDGET_EXCEEDED",
+      "unresolvedCount": 23,
+      "itemCounts": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "DEFINITION": 3,
+        "DEFINITION_DEPENDENCY": 1
+      },
+      "stopReasons": [
+        "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+      ],
+      "contextManifest": null
+    }
+  },
+  "analysis": {
+    "regressionFixed": false,
+    "stillBudgetExceeded": true,
+    "rootCauseHypothesis": "Recursive definition/child-rule expansion on #293 tip still exhausts maxTextBudgetChars / depth / items before closure for preamble restatement probes; #287 integration does not restore Round-1 SUFFICIENT for AN-B-RESTATE under frozen budgets. Do not raise budgets to force SUFFICIENT."
+  },
+  "rootCause": {
+    "kind": "INFERENCE_BUDGET_LIMITATION",
+    "primaryStopReason": "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached",
+    "bodyAnchorResolution": "Exercised via #293 context-retrieval pipeline (body-anchor.ts present); AN-B-RESTATE still exceeds text budget before closure",
+    "definitionExpansion": "DEFINITION + DEFINITION_DEPENDENCY items still inflate unresolvedCount (23 vs Round1 0)",
+    "childRuleExpansion": "CHILD_RULE count=4 on preamble probe contributes to budget pressure",
+    "dependencyDeduplication": "Insufficient to keep unresolvedCount at Round-1 zero under frozen budgets",
+    "budgetAccounting": "Frozen budgets unchanged; do not raise thresholds",
+    "closureManifests": "contextManifest null on AN-B-RESTATE in this probe path",
+    "unresolvedReferences": 23,
+    "fixesRegressionFromRound2Main": false,
+    "note": "#287 recursive-context integration on #293 does not restore Round-1 SUFFICIENT for AN-B-RESTATE"
+  }
+}

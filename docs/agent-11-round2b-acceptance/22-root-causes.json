@@ -1,0 +1,47 @@
+{
+  "artifact": "AGENT11_ROUND2B_ROOT_CAUSES",
+  "rootCauses": [
+    {
+      "id": "RC-OPERATIVE",
+      "stage": "3_RESOLVE_OPERATIVE",
+      "kind": "CODE_OR_AUTHORITY_GAP",
+      "casesAffected": 10,
+      "detail": "doc-b authority=REVIEW_REQUIRED; cp=NOT_STATED; unconditional=false; amendment pipeline still REVIEW_REQUIRED"
+    },
+    {
+      "id": "RC-CONTEXT-BUDGET",
+      "stage": "5_RETRIEVE_CONTEXT",
+      "kind": "INFERENCE_BUDGET_LIMITATION",
+      "casesAffected": 10,
+      "detail": "SUFFICIENT 0/10; AN-B-RESTATE=BUDGET_EXCEEDED; budgets not raised"
+    },
+    {
+      "id": "RC-VERIFIED-IR",
+      "stage": "6_COMPILE_VERIFIED_IR",
+      "kind": "INFERENCE_BUDGET_LIMITATION",
+      "casesAffected": 10,
+      "detail": "No paid inference; DETERMINISTIC_ONLY remains UNVERIFIED"
+    },
+    {
+      "id": "RC-FINANCIAL-EVIDENCE",
+      "stage": "7_ATTACH_FINANCIAL_EVIDENCE",
+      "kind": "MISSING_SOURCE_EVIDENCE",
+      "casesAffected": 1,
+      "detail": "No authenticated AN financial statements in sealed package"
+    },
+    {
+      "id": "RC-UTILIZATION-HISTORY",
+      "stage": "8_RECONSTRUCT_UTILIZATION",
+      "kind": "MISSING_SOURCE_EVIDENCE",
+      "casesAffected": 1,
+      "detail": "No historical utilization ledger for AN; correct refusal of incomplete"
+    },
+    {
+      "id": "RC-HOST-IDP",
+      "stage": "11_PRODUCTION_AUTHORITY",
+      "kind": "DELIBERATE_AUTHORITY_BLOCK",
+      "casesAffected": 1,
+      "detail": "Trusted issuer host activation BLOCKED; mayUseAsProductionCapacityInput=false"
+    }
+  ]
+}

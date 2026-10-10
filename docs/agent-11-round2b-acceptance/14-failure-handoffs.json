@@ -1,0 +1,43 @@
+{
+  "artifact": "AGENT11_ROUND2B_FAILURE_HANDOFFS",
+  "policy": "Do not fix in Agent #11. Do not self-merge #293.",
+  "failures": [
+    {
+      "id": "A11-R2B-F01",
+      "owner": "HEADROOM-7 / operative-authority (#283 via #293)",
+      "severity": "CRITICAL",
+      "summary": "Operative document not resolved to doc-b (Fifth A&R) as of 2026-09-15",
+      "evidence": "10d-agent7-operative-authority.json",
+      "observed": {
+        "operativeDocumentId": null,
+        "agent7Status": "REVIEW_REQUIRED",
+        "cp": "NOT_STATED",
+        "verdict": "OPERATIVE_RESTATEMENT_AUTHORITY_PARTIAL"
+      },
+      "expected": "doc-b"
+    },
+    {
+      "id": "A11-R2B-F02",
+      "owner": "HEADROOM-6 / recursive context (#287 via #293)",
+      "severity": "HIGH",
+      "summary": "Context retrieval SUFFICIENT rate below 80% on GT-anchored probes",
+      "evidence": "10-clause-coverage.json + 17-context-regression.json",
+      "observed": "SUFFICIENT 0/10; AN-B-RESTATE=BUDGET_EXCEEDED"
+    },
+    {
+      "id": "A11-R2B-F03",
+      "owner": "HEADROOM-1 verified IR / paid inference policy",
+      "severity": "HIGH",
+      "summary": "No independently verified executable IR under offline no-paid-inference policy",
+      "evidence": "10-clause-coverage.json"
+    },
+    {
+      "id": "A11-R2B-F04",
+      "owner": "Financial evidence package attachment",
+      "severity": "HIGH",
+      "summary": "No authenticated AN financial package — completeness 0/1 (module present)",
+      "evidence": "10-capacity-tracks.json",
+      "kind": "MISSING_SOURCE_EVIDENCE"
+    }
+  ]
+}
