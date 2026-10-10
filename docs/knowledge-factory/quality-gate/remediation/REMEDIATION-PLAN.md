@@ -4,7 +4,7 @@
 **Neon mutations:** none authorized (dedupe migration is design-only).  
 **Paid inference:** $0.  
 **PR:** https://github.com/egsul897/headroom/pull/246  
-**Tip SHA (rebased onto main):** `881022f89e61cc3cef19e8af3679baabd789d53c` (docs pin may land one commit later)
+**Tip SHA (rebased onto main):** `8d13b70548f1dc2e5f5e31c8bf726973a9f0d58b`
 
 ## 1. Duplicate reconciliation
 
