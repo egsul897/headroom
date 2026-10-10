@@ -1,9 +1,9 @@
 /** Phase 4C test helpers. Every rule id, metric name and shared-cap id here is arbitrary test data. */
-import type { IRDefinition, IRExpression, IRCapacityExpression, IRRule, IRSharedCapacity } from "@/lib/contract-model/ir/types";
+import type { CompareOperator, IRDefinition, IRExpression, IRCapacityExpression, IRRule, IRSharedCapacity, IRValueType } from "@/lib/contract-model/ir/types";
 import { rationalFromString } from "@/lib/contract-model/runtime/decimal";
 import type { RuntimeValue } from "@/lib/contract-model/runtime/types";
 import { snapshotInputResolver } from "@/lib/contract-model/runtime/input";
-import type { FinancialInput, FinancialInputIdentity, FinancialSnapshot } from "@/lib/contract-model/runtime/input/types";
+import type { FinancialInput, FinancialInputIdentity, FinancialSnapshot, PeriodSelector } from "@/lib/contract-model/runtime/input/types";
 import type { LedgerUsageRecord, CapacityPathRef, UsageStatus } from "@/lib/contract-model/runtime/capacity/types";
 
 export const CO = "capacity-company";
@@ -17,19 +17,36 @@ export const resetIds = () => { n = 0; };
 export const id = () => `x${++n}`;
 
 export const MONEY = (amount: number, currency = "USD"): IRExpression => ({ kind: "MONEY", type: "MONEY", amount, currency, exprId: id() });
+export const NUM = (value: number): IRExpression => ({ kind: "NUMBER", type: "NUMBER", value, exprId: id() });
 export const PCT = (value: number): IRExpression => ({ kind: "PERCENT", type: "PERCENT", value, exprId: id() });
 export const RATIO = (value: number): IRExpression => ({ kind: "RATIO", type: "RATIO", value, exprId: id() });
+export const BOOL = (value: boolean): IRExpression => ({ kind: "BOOLEAN_LITERAL", type: "BOOLEAN", value, exprId: id() });
 export const METRIC = (metricName: string, type: "MONEY" | "RATIO" | "NUMBER" = "MONEY", companyId = CO, instrumentKey = INST): IRExpression =>
   ({ kind: "METRIC_REFERENCE", type, metricName, companyId, instrumentKey, resolvedDefinitionId: null, exprId: id() });
+export const TERM = (termName: string, type: IRValueType = "MONEY", resolvedDefinitionId: string | null = null): IRExpression =>
+  ({ kind: "DEFINED_TERM_REFERENCE", type, termName, companyId: CO, instrumentKey: INST, resolvedDefinitionId, exprId: id() });
 export const MUL = (...operands: IRExpression[]): IRExpression => ({ kind: "MULTIPLY", type: "MONEY", operands, exprId: id() });
 export const ADD = (...operands: IRExpression[]): IRExpression => ({ kind: "ADD", type: "MONEY", operands, exprId: id() });
+export const SUM = (...operands: IRExpression[]): IRExpression => ({ kind: "SUM", type: "MONEY", operands, exprId: id() });
+export const SUB = (left: IRExpression, right: IRExpression): IRExpression => ({ kind: "SUBTRACT", type: "MONEY", left, right, exprId: id() });
 export const MAX = (...operands: IRExpression[]): IRExpression => ({ kind: "MAX", type: "MONEY", operands, exprId: id() });
 export const MIN = (...operands: IRExpression[]): IRExpression => ({ kind: "MIN", type: "MONEY", operands, exprId: id() });
-export const CMP = (left: IRExpression, right: IRExpression): IRExpression => ({ kind: "COMPARE", type: "BOOLEAN", left, operator: "LTE", right, exprId: id() });
+/** Two-arg form keeps LTE (existing callers); three-arg form selects the operator. */
+export const CMP = (left: IRExpression, rightOrOp: IRExpression | CompareOperator, right?: IRExpression): IRExpression =>
+  typeof rightOrOp === "string"
+    ? { kind: "COMPARE", type: "BOOLEAN", left, operator: rightOrOp, right: right!, exprId: id() }
+    : { kind: "COMPARE", type: "BOOLEAN", left, operator: "LTE", right: rightOrOp, exprId: id() };
+export const AND = (...operands: IRExpression[]): IRExpression => ({ kind: "AND", type: "BOOLEAN", operands, exprId: id() });
+export const OR = (...operands: IRExpression[]): IRExpression => ({ kind: "OR", type: "BOOLEAN", operands, exprId: id() });
+export const IF = (condition: IRExpression, then: IRExpression, els: IRExpression | null): IRExpression =>
+  ({ kind: "IF", type: "MONEY", condition, then, else: els, exprId: id() });
+export const DURING = (value: IRExpression, periodDescription: string): IRExpression =>
+  ({ kind: "DURING_PERIOD", type: "MONEY", value, periodDescription, exprId: id() });
 export const UNSUPPORTED = (reason: string): IRExpression => ({ kind: "UNSUPPORTED", type: null, sourceEvidence: "test evidence", semanticDescription: reason, reason, requiredReview: true, exprId: id() });
 /** A rule's own capacity used as an operand: the one Phase-3 construct that is an evaluation dependency between capacities. */
 export const RULE_REF = (ruleId: string, companyId = CO, instrumentKey = INST): IRExpression => ({ kind: "RULE_REFERENCE", type: "CAPACITY", ruleId, companyId, instrumentKey, exprId: id() });
 export const UNLIMITED = (gatedBy: IRExpression | null = null): IRCapacityExpression => ({ kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy });
+export const verbatimPeriod = (key: string): PeriodSelector => ({ kind: "VERBATIM_CONTRACT_PERIOD_KEY", key });
 
 export function rule(ruleId: string, capacityExpression: IRCapacityExpression | null, over: Partial<IRRule> = {}): IRRule {
   return {

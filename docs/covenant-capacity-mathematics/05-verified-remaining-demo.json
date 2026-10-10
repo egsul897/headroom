@@ -1,0 +1,122 @@
+{
+  "syntheticAttributedRemaining": {
+    "authenticity": "SYNTHETIC_LABELED",
+    "asOf": "2026-06-30",
+    "formula": "FLAT_AMOUNT",
+    "grossContractualCapacity": 100,
+    "knownAttributedUtilization": 35,
+    "demoEngineRemaining": 65,
+    "independentExpectedRemaining": 65,
+    "demoMatch": true,
+    "productionAuthoritative": false,
+    "productSurfacesAuthoritativeRemaining": {
+      "POSITION": null,
+      "SIMULATE": null,
+      "ASK": null,
+      "VERIFIED_EXECUTION": null
+    },
+    "productConsistency": {
+      "ok": true
+    },
+    "refuseAuthoritativeRemaining": {
+      "remaining": null,
+      "mayPublishAvailable": false,
+      "publicationLabel": "GROSS_CONTRACTUAL",
+      "blockers": [
+        "authoritative remaining refused — completeness not production-authoritative (synthetic/demo certificates are not accepted on Position/Simulate/Ask/verified-execution)"
+      ]
+    },
+    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED)."
+  },
+  "attributedWithoutCompleteness": {
+    "knowledge": "KNOWN_ATTRIBUTED",
+    "attributedAmount": 10,
+    "supportsRemainingClaim": false,
+    "productionAuthoritative": false,
+    "supportedRemaining": null,
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "note": "Known attributed utilization 10 USD (KNOWN_ATTRIBUTED) — remaining requires validated completeness certificate."
+  },
+  "authenticUtilizationBlocker": {
+    "authenticity": "AUTHENTIC_BLOCKER",
+    "grossKnown": 100,
+    "utilizationKnowledge": "UNATTRIBUTED_LEGACY_BASKET",
+    "supportsRemainingClaim": false,
+    "supportedRemaining": null,
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "mayPublishAvailable": false,
+    "note": "Legacy basket-family usage exists without rule attribution — gross capacity may be known; remaining after utilization cannot be claimed."
+  },
+  "utilizationAuthority": {
+    "issuers": [
+      "COUNSEL_REVIEWER",
+      "LEDGER_CUSTODIAN"
+    ],
+    "neverProductionAuthoritative": [
+      "SYSTEM_FIXTURE",
+      "SYNTHETIC_LABELED"
+    ],
+    "insufficientMethod": "REVIEWED_RECORDED_TRANSACTIONS_ONLY",
+    "requiredEvidence": [
+      "companyId",
+      "operativeAgreementId",
+      "provisionOrBasketId",
+      "entityScopeKeys",
+      "currency",
+      "effectiveAsOf",
+      "coveragePeriodStart/End",
+      "binding fingerprints (document/ledger/financial/amendments/shared-capacity)",
+      "openingBalancePolicy / reclassificationPolicy / supersessionPolicy ≠ UNKNOWN"
+    ],
+    "principle": "Remaining publishable only when capacity calculation AND validated completeness evidence are independently defensible. Synthetic certificates never authorize Position/Simulate/Ask/verified-execution remaining.",
+    "mergeBlocker": "Authentic Neon completeness authority (counsel/custodian certificates bound to live document/ledger/financial epochs) is not yet populated — PR remains blocked for merge on that basis."
+  },
+  "phase4cAdapterCoverage": [
+    {
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "RATIO_GATE",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "BUILDER_BASKET",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "adapted": false,
+      "refusalReason": "FormulaType COVERAGE_RATIO_ROOM requires a positive coverage threshold; provision \"code-4\" has thresholdValue 0 — refusing rather than dividing by zero",
+      "sufficiency": null,
+      "compilerVersion": null,
+      "classification": "2: missing verified inputs / invalid threshold — correct refusal"
+    }
+  ],
+  "falseFavorableGuard": {
+    "emptyLedgerPublishesAvailable": false,
+    "syntheticCertPublishesAuthoritativeRemaining": false,
+    "debtIntelligenceUsesResolver": true
+  },
+  "costUsd": 0
+}
