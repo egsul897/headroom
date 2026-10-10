@@ -9,10 +9,13 @@
 | Field | Value |
 |---|---|
 | Starting SHA | `342a6b059e3385fb14d605b8d1593e878a221578` |
+| Ending SHA | `3fa5a2623e148fee452a668600feb2f0c7784f70` (+ follow-up tip commit if report re-pinned) |
+| PR | https://github.com/egsul897/headroom/pull/276 |
 | Holdout | WOR Fourth→Fifth AR credit facility (`wor-2023-2026-credit-facility`) |
 | Issuer | Worthington Enterprises, Inc. (WOR / CIK 0000108516) |
 | Paid inference | $0 |
 | Production code changes | None (`lib/`, `app/`, `prisma/` untouched) |
+| Handoff path | `docs/headroom-5-independent-holdout/14-handoff-to-headroom-1.json` |
 
 ### Holdout hashes
 
