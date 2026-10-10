@@ -1,0 +1,77 @@
+{
+  "schema": "agent6-legal-interpretation-pilot-readiness.v1",
+  "preferredPackage": "knife-river-2023-2026",
+  "autonomousE2EReadinessClaimed": false,
+  "paidInferenceAuthorized": false,
+  "structuralBlockers": {
+    "A6-D6_article_vii_underparse": "FIXED",
+    "operativeBaseSections703_705_708": "PRESENT_AS_SECTION_NODES",
+    "note": "Amendment Pass A hits are not treated as curing operative-base structure."
+  },
+  "amendmentChainAuthority": {
+    "associationKind": "PROVISIONAL_FAMILY",
+    "reviewStatus": "REVIEW_REQUIRED",
+    "legallyConfirmedAmendmentChain": false,
+    "mayConsolidateOperativeAgreement": false,
+    "implication": "Pilot may interpret operative-base CA provisions whose authority does not require consolidating provisional amendments. Full package operative state across First/Second Amendments remains REVIEW_REQUIRED until confirmed chain authority."
+  },
+  "pilotBlockedByMissingLegalAuthority": false,
+  "pilotBlockedByCriticalStructuralCoverage": false,
+  "boundedCandidateSet": [
+    {
+      "id": "kr-pilot-01",
+      "sectionRef": "7.01",
+      "family": "INDEBTEDNESS",
+      "operativeDocumentId": "doc-a",
+      "sourceFile": "tests/fixtures/authentic-packages/knife-river-2023-2026/extracted-text/doc-a-2023-05-31-credit-agreement.txt",
+      "gtRef": "kr-gt items / must-discover pin",
+      "amendmentProvenance": "Base CA text; provisional amendments not consolidated into operative wording for this candidate",
+      "independentExpectedInterpretation": "Negative covenant restricting Indebtedness subject to enumerated exceptions/baskets; requires defined-term Indebtedness and basket arithmetic before any capacity claim."
+    },
+    {
+      "id": "kr-pilot-02",
+      "sectionRef": "7.05",
+      "family": "RESTRICTED_PAYMENTS",
+      "operativeDocumentId": "doc-a",
+      "sourceFile": "tests/fixtures/authentic-packages/knife-river-2023-2026/extracted-text/doc-a-2023-05-31-credit-agreement.txt",
+      "gtRef": "must-discover + independent GT",
+      "amendmentProvenance": "Base CA; Available Amount Builder Basket defined-term dependency",
+      "independentExpectedInterpretation": "Restricted Payments prohibition with builder/basket exceptions; not executable without verification + financial inputs."
+    },
+    {
+      "id": "kr-pilot-03",
+      "sectionRef": "7.08",
+      "family": "FINANCIAL",
+      "operativeDocumentId": "doc-a",
+      "sourceFile": "tests/fixtures/authentic-packages/knife-river-2023-2026/extracted-text/doc-a-2023-05-31-credit-agreement.txt",
+      "gtRef": "must-discover + independent GT",
+      "amendmentProvenance": "Base CA financial covenant",
+      "independentExpectedInterpretation": "Consolidated Total Net Leverage Ratio maintenance test; requires APPROVED financial metrics before numerical evaluation."
+    }
+  ],
+  "authorizedExecutionMode": {
+    "mode": "NOT_YET_AUTHORIZED",
+    "options": [
+      {
+        "id": 1,
+        "name": "APPROVED_OFFLINE_REPLAY",
+        "available": false,
+        "reason": "No sealed offline replay corpus exists for Knife River / Insulet / Benchmark."
+      },
+      {
+        "id": 2,
+        "name": "AUTHORIZED_LIVE_INFERENCE",
+        "available": false,
+        "requires": ["AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY", "explicit budget ceiling from Coordinator"],
+        "status": "PENDING_AUTHORIZATION"
+      }
+    ],
+    "note": "Missing credential is OPERATIONAL_CREDENTIAL blocker — not evidence that legal interpretation would succeed or fail."
+  },
+  "prohibited": [
+    "Run paid inference without authorization",
+    "Create synthetic interpretations presented as authentic model outputs",
+    "Consolidate PROVISIONAL_FAMILY amendments into operative text",
+    "Treat Pass A hits as verified rules or capacity"
+  ]
+}

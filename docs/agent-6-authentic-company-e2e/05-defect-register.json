@@ -58,12 +58,12 @@
       "id": "A6-D6",
       "severity": "KNIFE_RIVER_ARTICLE_VII_SECTION_UNDERPARSE",
       "severity": "MATERIAL_GENERALIZABLE",
-      "status": "OPEN_DOCUMENTED",
-      "summary": "Knife River operative CA structural parse yields SECTION nodes for 7.01 and 7.02 only; later negative-covenant sections (7.03 Fundamental Changes, 7.05 Restricted Payments, 7.08 Financial Covenant, etc.) are referenced in body text and appear in amendment conformed copies but are absent as SECTION headings on doc-a. Completeness audit flags STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE; Pass A may still hit via amendment docs — not a sealed discovery and not an excuse to retune pins.",
+      "status": "FIXED",
+      "summary": "EDGAR HTML→text wraps SECTION titles across a blank line (e.g. Section 7.03 Fundamental\\n\\nChanges .). SECTION_PATTERNS title capture now allows at most one blank-line wrap mid-title before the terminating period. Knife River operative base now exposes 7.01–7.08 as SECTION nodes. Root cause: heading recognition (title character class forbade newlines), not extraction or segmentation.",
       "evidencePackage": "knife-river-2023-2026",
-      "fix": null,
-      "regression": "docs/agent-6-authentic-company-e2e/08-discovery-completeness-audit/knife-river-2023-2026.json",
-      "notes": "Do not treat amendment Pass A hits as operative-base structural completeness."
+      "fix": "lib/contract-model/compiler/stage-structure.ts",
+      "regression": "tests/agent6/knife-river-article-vii-structure.test.ts",
+      "notes": "Amendment Pass A hits still must not be treated as curing operative-base structure. PROVISIONAL_FAMILY / REVIEW_REQUIRED amendment authority unchanged."
     }
   ]
 }

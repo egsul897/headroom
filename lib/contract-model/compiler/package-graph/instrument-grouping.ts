@@ -31,6 +31,8 @@ const NON_INSTRUMENT_TYPES = new Set([
   "SECURITY_AGREEMENT",
   "GUARANTEE_AND_SECURITY_AGREEMENT",
   "COMPLIANCE_CERTIFICATE",
+  // Canonical #253 — financial statements associate via CERTIFIES edges, never as instruments.
+  "FINANCIAL_STATEMENT",
   "SIDE_LETTER",
   "FEE_LETTER",
 ]);

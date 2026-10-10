@@ -1,19 +1,19 @@
 {
   "companyKey": "insulet-2021-2026",
   "issuer": "Insulet Corporation",
-  "generatedAt": "2026-10-10T00:06:50.942Z",
+  "generatedAt": "2026-10-10T01:04:46.616Z",
   "expectationPinPreserved": true,
   "expectationSha256": "837414264c6ef8ff67c5546d9d1b1a3490d55babfb00b37a0388beaee4a62192",
   "frozenPinSha256": "837414264c6ef8ff67c5546d9d1b1a3490d55babfb00b37a0388beaee4a62192",
   "operativeBaseDocumentId": "doc-a",
   "sourceProvenancePolicy": "STRUCTURAL_SECTION_HEADING across package documents — no LLM, no retuned expectations. Missed = inventory row with no Pass A hit.",
   "inventory": {
-    "restrictionSectionsPackage": 44,
+    "restrictionSectionsPackage": 46,
     "restrictionSectionsOnBase": 16,
     "mustDiscoverPins": 9,
     "expectedAndPassAHit": 16,
-    "passAHitOutsideMustDiscoverPins": 28,
-    "uniqueOutsideMustDiscoverSectionRefs": 19,
+    "passAHitOutsideMustDiscoverPins": 30,
+    "uniqueOutsideMustDiscoverSectionRefs": 20,
     "missedRestrictionsPassA": 0,
     "structuralBaseGaps": 0
   },
@@ -210,6 +210,24 @@
         "documentId": "doc-b",
         "sectionRef": "3.04",
         "nodeKey": "doc-b::3.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "3.05",
+      "heading": "Limitation on Sales of Assets and Subsidiary Stock",
+      "nodeId": "structural-node:9e790d84a04e7a693b4b0df0",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "3.05",
+        "nodeKey": "doc-b::3.05"
       },
       "inMustDiscoverExpectations": false,
       "expectedFamilies": [],
@@ -677,7 +695,7 @@
     }
   ],
   "agent1Eligibility": {
-    "passACandidatesPackage": 1452,
+    "passACandidatesPackage": 1473,
     "executableCount": 0,
     "policy": "PASS_A_NEVER_EXECUTABLE_WITHOUT_DOWNSTREAM_GATES",
     "note": "Pass A hits never become executable solely from this audit."
@@ -1043,6 +1061,24 @@
     },
     {
       "documentId": "doc-b",
+      "sectionRef": "3.05",
+      "heading": "Limitation on Sales of Assets and Subsidiary Stock",
+      "nodeId": "structural-node:9e790d84a04e7a693b4b0df0",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "3.05",
+        "nodeKey": "doc-b::3.05"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
       "sectionRef": "3.06",
       "heading": "Limitation on Liens",
       "nodeId": "structural-node:c9630c034a87731ff884ff54",
@@ -1333,6 +1369,24 @@
         "documentId": "doc-c",
         "sectionRef": "6.10",
         "nodeKey": "doc-c::6.10"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "6.13",
+      "heading": "Designation of Subsidiaries",
+      "nodeId": "structural-node:cfc3d9a57b60f2b6a15c4126",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "6.13",
+        "nodeKey": "doc-c::6.13"
       },
       "inMustDiscoverExpectations": false,
       "expectedFamilies": [],

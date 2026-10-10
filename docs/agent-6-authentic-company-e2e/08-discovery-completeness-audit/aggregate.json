@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-10T00:06:51.151Z",
+  "generatedAt": "2026-10-10T01:04:46.859Z",
   "costUsd": 0,
   "expectationPinsPreserved": true,
   "totalMustDiscoverPins": 20,
-  "totalRestrictionSectionsInventoried": 141,
+  "totalRestrictionSectionsInventoried": 150,
   "totalMissedRestrictionsPassA": 0,
-  "totalUniqueOutsideMustDiscoverPins": 49,
-  "totalStructuralBaseGaps": 4,
+  "totalUniqueOutsideMustDiscoverPins": 50,
+  "totalStructuralBaseGaps": 1,
   "companies": [
     {
       "companyKey": "benchmark-2025",
@@ -53,12 +53,12 @@
       "companyKey": "insulet-2021-2026",
       "pinPreserved": true,
       "inventory": {
-        "restrictionSectionsPackage": 44,
+        "restrictionSectionsPackage": 46,
         "restrictionSectionsOnBase": 16,
         "mustDiscoverPins": 9,
         "expectedAndPassAHit": 16,
-        "passAHitOutsideMustDiscoverPins": 28,
-        "uniqueOutsideMustDiscoverSectionRefs": 19,
+        "passAHitOutsideMustDiscoverPins": 30,
+        "uniqueOutsideMustDiscoverSectionRefs": 20,
         "missedRestrictionsPassA": 0,
         "structuralBaseGaps": 0
       },
@@ -75,6 +75,7 @@
         "8.06",
         "9.11",
         "3.04",
+        "3.05",
         "3.07",
         "3.08",
         "3.19",
@@ -90,48 +91,32 @@
       "companyKey": "knife-river-2023-2026",
       "pinPreserved": true,
       "inventory": {
-        "restrictionSectionsPackage": 38,
-        "restrictionSectionsOnBase": 2,
+        "restrictionSectionsPackage": 45,
+        "restrictionSectionsOnBase": 9,
         "mustDiscoverPins": 5,
         "expectedAndPassAHit": 12,
-        "passAHitOutsideMustDiscoverPins": 26,
+        "passAHitOutsideMustDiscoverPins": 33,
         "uniqueOutsideMustDiscoverSectionRefs": 13,
         "missedRestrictionsPassA": 0,
-        "structuralBaseGaps": 3
+        "structuralBaseGaps": 0
       },
       "missedRestrictionSectionRefs": [],
       "outsidePinSectionRefs": [
-        "2.11",
         "2.15",
         "2.18",
         "2.20",
-        "5.08",
         "5.12",
         "5.13",
-        "6.12",
         "6.17",
-        "6.18",
         "7.04",
+        "2.11",
+        "5.08",
+        "6.12",
+        "6.18",
         "7.06",
         "9.11"
       ],
-      "structuralBaseGapRefs": [
-        {
-          "sectionRef": "7.03",
-          "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE",
-          "passAHitAnywhereInPackage": true
-        },
-        {
-          "sectionRef": "7.05",
-          "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE",
-          "passAHitAnywhereInPackage": true
-        },
-        {
-          "sectionRef": "7.08",
-          "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE",
-          "passAHitAnywhereInPackage": true
-        }
-      ]
+      "structuralBaseGapRefs": []
     }
   ],
   "notes": [

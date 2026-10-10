@@ -183,6 +183,20 @@ const ARTICLE_PATTERNS = [
  * remediation.json) and is fixed generally, with no per-pattern priority
  * change to the shapes below and no package-specific logic.
  */
+/**
+ * Agent 6 A6-D6 — EDGAR HTML→text extraction routinely wraps SECTION titles
+ * across a blank line with indentation on the continuation, e.g.
+ *   `Section 7.03····Fundamental\n\n        Changes  . Merge…`
+ * The number and first title word remain on the same line (BOUNDED_GAP still
+ * forbids blank lines between number and title *start*). The title capture
+ * itself may span at most one blank-line wrap (1–2 newlines + indent) before
+ * the terminating period. Without this, Knife River operative CA silently
+ * dropped §§7.03/7.05/7.08 as SECTION nodes while amendment conformed copies
+ * still matched — a general drafting/extraction shape, not a fixture patch.
+ */
+const SECTION_TITLE_CAPTURE =
+  "(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?(?:(?:[^\\S\\n]*\\n){1,2}[^\\S\\n]*[A-Z][A-Za-z ,&';[\\]-]{0,60}?)?)";
+
 const SECTION_PATTERNS = [
   // Title characters allow "[" / "]" (a "[Reserved]" section) and ";" (a
   // real, common compound heading like "Payments of Indebtedness;
@@ -192,7 +206,10 @@ const SECTION_PATTERNS = [
   // requirement (`[A-Z]` starting the title) stays genuinely case-sensitive.
   // Number capture allows a trailing OCR-confused letter ("7.0l") so recovery
   // can restore "7.01" instead of silently minting a truncated "7.0" label (IPV-23).
-  new RegExp(`(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.[\\dA-Za-z]+)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
+  new RegExp(
+    `(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.[\\dA-Za-z]+)\\.?${BOUNDED_GAP}${SECTION_TITLE_CAPTURE}\\s*\\.(?!\\d)`,
+    "g",
+  ),
   /^Section\s+(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   /^§\s?(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   // Bare decimal: require a real digit-only major.minor so "7.0l Title" is not

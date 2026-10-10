@@ -16,8 +16,8 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { runStructureStage } from "../../lib/contract-model/compiler/stage-structure";
-import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
-import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
+import { detectStructuralDefinitions, type DetectedDefinition } from "../../lib/contract-model/compiler/structural-definitions";
+import { detectStructuralReferences, type DetectedReference } from "../../lib/contract-model/compiler/structural-references";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { isCovenantHeadlineHeading, runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
 import { assessPassAPopulation } from "../../lib/contract-model/compiler/discovery/eligibility";
@@ -77,8 +77,8 @@ function auditCompany(companyKey: string) {
   const structureResult = runStructureStage(docs);
   const allNodes = structureResult.output;
   const nodesByDocument = new Map<string, { text: string; nodes: typeof allNodes }>();
-  const allDefinitions = [];
-  const allReferences = [];
+  const allDefinitions: DetectedDefinition[] = [];
+  const allReferences: DetectedReference[] = [];
   for (const doc of docs) {
     const nodes = allNodes.filter((n) => n.documentId === doc.documentId);
     nodesByDocument.set(doc.documentId, { text: doc.text, nodes });

@@ -1,24 +1,150 @@
 {
   "companyKey": "knife-river-2023-2026",
   "issuer": "Knife River Corporation",
-  "generatedAt": "2026-10-10T00:06:51.150Z",
+  "generatedAt": "2026-10-10T01:04:46.859Z",
   "expectationPinPreserved": true,
   "expectationSha256": "088d30679c8546c9b9c5add73c82901d614c0319dc9cf57eb5cfd8cb3c65ca75",
   "frozenPinSha256": "088d30679c8546c9b9c5add73c82901d614c0319dc9cf57eb5cfd8cb3c65ca75",
   "operativeBaseDocumentId": "doc-a",
   "sourceProvenancePolicy": "STRUCTURAL_SECTION_HEADING across package documents — no LLM, no retuned expectations. Missed = inventory row with no Pass A hit.",
   "inventory": {
-    "restrictionSectionsPackage": 38,
-    "restrictionSectionsOnBase": 2,
+    "restrictionSectionsPackage": 45,
+    "restrictionSectionsOnBase": 9,
     "mustDiscoverPins": 5,
     "expectedAndPassAHit": 12,
-    "passAHitOutsideMustDiscoverPins": 26,
+    "passAHitOutsideMustDiscoverPins": 33,
     "uniqueOutsideMustDiscoverSectionRefs": 13,
     "missedRestrictionsPassA": 0,
-    "structuralBaseGaps": 3
+    "structuralBaseGaps": 0
   },
   "missedRestrictions": [],
   "passAHitsOutsideMustDiscoverPins": [
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.15",
+      "heading": "Incremental Equivalent Debt",
+      "nodeId": "structural-node:51e8d60d19c13688e0ba292d",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.15",
+        "nodeKey": "doc-a::2.15"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.18",
+      "heading": "Specified Refinancing Debt",
+      "nodeId": "structural-node:5f689d0cb83a1fa85b3aed05",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.18",
+        "nodeKey": "doc-a::2.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.20",
+      "heading": "Permitted Debt Exchanges",
+      "nodeId": "structural-node:8d6ce1bcef7f14c2776e8637",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.20",
+        "nodeKey": "doc-a::2.20"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "5.12",
+      "heading": "Subsidiaries; Capital Stock",
+      "nodeId": "structural-node:5e0220954261a19f73e60cf0",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "5.12",
+        "nodeKey": "doc-a::5.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "5.13",
+      "heading": "Margin Regulations; Investment Company Act",
+      "nodeId": "structural-node:4d5a27f701b6e4edc366ccf0",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "5.13",
+        "nodeKey": "doc-a::5.13"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "6.17",
+      "heading": "No Change in Line of Business",
+      "nodeId": "structural-node:8c2e21ced24155e178f1aa18",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "6.17",
+        "nodeKey": "doc-a::6.17"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "7.04",
+      "heading": "Asset Dispositions",
+      "nodeId": "structural-node:f527d5e1f49d27fdc8a4b907",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.04",
+        "nodeKey": "doc-a::7.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
     {
       "documentId": "doc-b",
       "sectionRef": "2.11",
@@ -30,60 +156,6 @@
         "documentId": "doc-b",
         "sectionRef": "2.11",
         "nodeKey": "doc-b::2.11"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
-      "sectionRef": "2.15",
-      "heading": "Incremental Equivalent Debt",
-      "nodeId": "structural-node:3fa56f494a23f2ced914f4ea",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "2.15",
-        "nodeKey": "doc-b::2.15"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
-      "sectionRef": "2.18",
-      "heading": "Specified Refinancing Debt",
-      "nodeId": "structural-node:e465a8ab8616e235dc258f18",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "2.18",
-        "nodeKey": "doc-b::2.18"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
-      "sectionRef": "2.20",
-      "heading": "Permitted Debt Exchanges",
-      "nodeId": "structural-node:3c0e49a0d9359b5d3035257d",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "2.20",
-        "nodeKey": "doc-b::2.20"
       },
       "inMustDiscoverExpectations": false,
       "expectedFamilies": [],
@@ -111,42 +183,6 @@
     },
     {
       "documentId": "doc-b",
-      "sectionRef": "5.12",
-      "heading": "Subsidiaries; Capital Stock",
-      "nodeId": "structural-node:7e1adbdb0eb5d25650c52b11",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "5.12",
-        "nodeKey": "doc-b::5.12"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
-      "sectionRef": "5.13",
-      "heading": "Margin Regulations; Investment Company Act",
-      "nodeId": "structural-node:1c065c74a2dcc7bdeea87308",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "5.13",
-        "nodeKey": "doc-b::5.13"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
       "sectionRef": "6.12",
       "heading": "Covenant to Guarantee Obligations and Give Security",
       "nodeId": "structural-node:edbd7923f4406c9f31897e98",
@@ -165,24 +201,6 @@
     },
     {
       "documentId": "doc-b",
-      "sectionRef": "6.17",
-      "heading": "No Change in Line of Business",
-      "nodeId": "structural-node:81423d3f80fc4fb3590b0b64",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "6.17",
-        "nodeKey": "doc-b::6.17"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
       "sectionRef": "6.18",
       "heading": "Transactions with Affiliates",
       "nodeId": "structural-node:558f3a07904bb77fc93bba28",
@@ -192,24 +210,6 @@
         "documentId": "doc-b",
         "sectionRef": "6.18",
         "nodeKey": "doc-b::6.18"
-      },
-      "inMustDiscoverExpectations": false,
-      "expectedFamilies": [],
-      "passAHit": true,
-      "passAExecutable": false,
-      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
-    },
-    {
-      "documentId": "doc-b",
-      "sectionRef": "7.04",
-      "heading": "Asset Dispositions",
-      "nodeId": "structural-node:a39dc6250ee36581eb42e93d",
-      "onOperativeBase": false,
-      "sourceProvenance": {
-        "kind": "STRUCTURAL_SECTION_HEADING",
-        "documentId": "doc-b",
-        "sectionRef": "7.04",
-        "nodeKey": "doc-b::7.04"
       },
       "inMustDiscoverExpectations": false,
       "expectedFamilies": [],
@@ -446,38 +446,146 @@
     {
       "family": "ASSET_SALES",
       "sectionRef": "7.03",
-      "sectionNodeOnOperativeBase": false,
+      "sectionNodeOnOperativeBase": true,
       "restrictionHeadingOnOperativeBase": false,
-      "passAHitOnOperativeBase": false,
+      "passAHitOnOperativeBase": true,
       "passAHitAnywhereInPackage": true,
-      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+      "gap": "COVERED_ON_OPERATIVE_BASE"
     },
     {
       "family": "RESTRICTED_PAYMENTS",
       "sectionRef": "7.05",
-      "sectionNodeOnOperativeBase": false,
+      "sectionNodeOnOperativeBase": true,
       "restrictionHeadingOnOperativeBase": false,
-      "passAHitOnOperativeBase": false,
+      "passAHitOnOperativeBase": true,
       "passAHitAnywhereInPackage": true,
-      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+      "gap": "COVERED_ON_OPERATIVE_BASE"
     },
     {
       "family": "FINANCIAL",
       "sectionRef": "7.08",
-      "sectionNodeOnOperativeBase": false,
+      "sectionNodeOnOperativeBase": true,
       "restrictionHeadingOnOperativeBase": false,
-      "passAHitOnOperativeBase": false,
+      "passAHitOnOperativeBase": true,
       "passAHitAnywhereInPackage": true,
-      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+      "gap": "COVERED_ON_OPERATIVE_BASE"
     }
   ],
   "agent1Eligibility": {
-    "passACandidatesPackage": 1909,
+    "passACandidatesPackage": 1945,
     "executableCount": 0,
     "policy": "PASS_A_NEVER_EXECUTABLE_WITHOUT_DOWNSTREAM_GATES",
     "note": "Pass A hits never become executable solely from this audit."
   },
   "allRows": [
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.15",
+      "heading": "Incremental Equivalent Debt",
+      "nodeId": "structural-node:51e8d60d19c13688e0ba292d",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.15",
+        "nodeKey": "doc-a::2.15"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.18",
+      "heading": "Specified Refinancing Debt",
+      "nodeId": "structural-node:5f689d0cb83a1fa85b3aed05",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.18",
+        "nodeKey": "doc-a::2.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "2.20",
+      "heading": "Permitted Debt Exchanges",
+      "nodeId": "structural-node:8d6ce1bcef7f14c2776e8637",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "2.20",
+        "nodeKey": "doc-a::2.20"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "5.12",
+      "heading": "Subsidiaries; Capital Stock",
+      "nodeId": "structural-node:5e0220954261a19f73e60cf0",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "5.12",
+        "nodeKey": "doc-a::5.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "5.13",
+      "heading": "Margin Regulations; Investment Company Act",
+      "nodeId": "structural-node:4d5a27f701b6e4edc366ccf0",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "5.13",
+        "nodeKey": "doc-a::5.13"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "6.17",
+      "heading": "No Change in Line of Business",
+      "nodeId": "structural-node:8c2e21ced24155e178f1aa18",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "6.17",
+        "nodeKey": "doc-a::6.17"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
     {
       "documentId": "doc-a",
       "sectionRef": "7.01",
@@ -517,6 +625,24 @@
       "passAHit": true,
       "passAExecutable": false,
       "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "7.04",
+      "heading": "Asset Dispositions",
+      "nodeId": "structural-node:f527d5e1f49d27fdc8a4b907",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.04",
+        "nodeKey": "doc-a::7.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
     },
     {
       "documentId": "doc-b",

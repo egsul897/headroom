@@ -11,9 +11,10 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { runStructureStage } from "../../lib/contract-model/compiler/stage-structure";
-import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
-import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
+import { detectStructuralDefinitions, type DetectedDefinition } from "../../lib/contract-model/compiler/structural-definitions";
+import { detectStructuralReferences, type DetectedReference } from "../../lib/contract-model/compiler/structural-references";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
+import type { CapacityAmount, CapacityStateEntry } from "../../lib/contract-model/runtime/capacity/types";
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
 import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
@@ -123,8 +124,8 @@ function runCompanyBaseline(companyKey: string): {
   const structureResult = runStructureStage(structureDocs);
   const allNodes = structureResult.output;
   const nodesByDocument = new Map<string, { text: string; nodes: typeof allNodes }>();
-  const allDefinitions = [];
-  const allReferences = [];
+  const allDefinitions: DetectedDefinition[] = [];
+  const allReferences: DetectedReference[] = [];
   for (const doc of docs) {
     const nodes = allNodes.filter((n) => n.documentId === doc.documentId);
     nodesByDocument.set(doc.documentId, { text: doc.text, nodes });
@@ -501,13 +502,22 @@ function runAuthenticCapacityAttempt(): Record<string, unknown> {
         "Authentic CONMED §7.2(c) CERTIFIED candidate derives a VEP but evaluateVerifiedCapacity REFUSES (e.g. cross-rule gate). Refusal preserved; not counted as executable capacity.",
     };
   }
-  const capacities = capacity.state.capacities.map((c) => ({
-    id: c.id,
-    available: c.available ?? null,
-    used: c.used ?? null,
-    remaining: c.remaining ?? null,
+  const summarizeAmount = (amount: CapacityAmount): Record<string, unknown> => {
+    if (amount.kind === "AMOUNT") return { kind: "AMOUNT", value: amount.value };
+    if (amount.kind === "UNLIMITED") return { kind: "UNLIMITED", gate: amount.gate };
+    if (amount.kind === "GATE_NOT_SATISFIED") return { kind: "GATE_NOT_SATISFIED" };
+    return { kind: "NOT_DETERMINED", reason: amount.reason };
+  };
+  const capacities = capacity.state.capacities.map((c: CapacityStateEntry) => ({
+    capacityNodeId: c.capacityNodeId,
+    ruleId: c.ruleId,
+    status: c.status,
+    grossCapacity: summarizeAmount(c.grossCapacity),
+    usage: summarizeAmount(c.usage),
+    remaining: summarizeAmount(c.remaining),
+    effectiveRemaining: summarizeAmount(c.effectiveRemaining),
   }));
-  const hasNumeric = capacities.some((c) => typeof c.available === "number" || typeof c.remaining === "number");
+  const hasNumericGross = capacities.some((c) => c.grossCapacity.kind === "AMOUNT");
   return {
     ...base,
     companyId: pkg.companyId,
@@ -515,14 +525,14 @@ function runAuthenticCapacityAttempt(): Record<string, unknown> {
     verifiedRules: pkg.rules.length,
     ruleSummaries,
     capacityOutcome: "EXECUTED",
-    grossCapacity: hasNumeric ? capacities : null,
+    grossCapacity: hasNumericGross ? capacities : null,
     remainingCapacity: null,
     remainingCapacityWithheldReason: "No historical utilization / APPROVED certificate — remaining capacity withheld per DO_NOT_INVENT.",
     capacities,
-    stoppingStage: hasNumeric ? "CAPACITY" : "CAPACITY",
-    stoppingReason: hasNumeric
+    stoppingStage: "CAPACITY",
+    stoppingReason: hasNumericGross
       ? "Gross capacity arithmetic executed over authentic VEP with empty APPROVED snapshots; remaining withheld."
-      : "Capacity EXECUTED but no numerical remaining/gross figures (e.g. UNLIMITED); not claimed as numerical product capacity.",
+      : "Capacity EXECUTED but no numerical AMOUNT gross figures (e.g. UNLIMITED / NOT_DETERMINED); not claimed as numerical product capacity.",
   };
 }
 

@@ -1,77 +1,51 @@
-# Agent 6 — Unseen-Package Execution Readiness (Next Gate)
+# Agent 6 — CI Recovery, Discovery Validation, Canonical Reconciliation
 
-**Verdict:** Structural + deterministic discovery results accepted **provisionally**. This is **not** autonomous end-to-end execution readiness. Frozen expectation pins preserved. Discovery completeness audit reports restrictions **beyond** the 20 must-discover pins (and Knife River Article VII structural base gaps as A6-D6). A6-D4 provisional family cannot be mistaken for a confirmed operative chain. Credential failures classified separately from substantive legal failures. Agent 1 eligibility: Pass A executableCount=0. Bounded legal-interpretation activation plan recorded; no paid inference. Branch reconciled with current `main`. **$0.00**.
+**Verdict candidate:** `AGENT6_CI_AND_DISCOVERY_GATE_PASSED` pending green GitHub Actions at ending SHA (local `tsc --noEmit -p .` clean; agent6 31/31). **Not** autonomous E2E. **Not** customer production readiness.
 
-**Branch:** `cursor/agent6-authentic-company-e2e-aebc`  
+**Starting SHA:** `f4237e7b8a2ecd1c3d2353c21b9bf986d6dd0c14`  
 **PR:** https://github.com/egsul897/headroom/pull/226  
-**Evidence SHA:** `23ab909724adfb5a618100ef1bfabd45e9a4840c`  
-**Branch tip:** `git rev-parse origin/cursor/agent6-authentic-company-e2e-aebc`  
-**Base reconciled:** `origin/main` @ `7f1dd3a2`  
+**Canonical #253 audit tip:** `85d52b93e23b3a813890651d27358d5826a91ede`  
 **Cost:** `$0.00`  
 **autonomousE2EReadinessClaimed:** `false`
 
-## Stage-by-stage progress (unseen packages)
+## Gate 1 — CI
 
-| Stage | KR / IN / BE | Failure class |
-|---|---|---|
-| DOCUMENT | PASSED | NONE |
-| STRUCTURAL_GRAPH | PASSED | NONE |
-| PACKAGE_GRAPH | PASSED (A6-D4 provisional family on KR) | NONE |
-| COVENANT_CANDIDATE | PARTIAL (Pass A only; executable=0) | OPERATIONAL_CREDENTIAL (Pass B–D) |
-| LEGAL_INTERPRETATION | STOPPED | **OPERATIONAL_CREDENTIAL** (not substantive legal) |
-| VERIFIED_RULE | NOT_REACHED | CASCADE_FROM_UPSTREAM |
-| FINANCIAL_INPUTS | STOPPED | MISSING_EVIDENCE |
-| CAPACITY | NOT_REACHED | CASCADE_FROM_UPSTREAM |
-| TRANSACTION | REFUSED | MISSING_EVIDENCE |
+Fixed Agent 6 TypeScript defects:
+- Explicit `DetectedDefinition[]` / `DetectedReference[]` in harnesses
+- `CapacityStateEntry` mapped via canonical `capacityNodeId` / `grossCapacity` / `usage` / `remaining` / `effectiveRemaining` (no unsafe casts)
 
-Selected first package for interpretation when authorized: **Knife River** (`09-legal-interpretation-activation-plan.json`). Offline replay: **NONE** for unseen packages.
+`npx tsc --noEmit -p .` clean locally after `prisma generate`.
 
-## Discovery completeness (beyond 20 must-discover)
+## Gate 2 — Independent discovery
 
-| Package | Restriction SECTIONs (pkg) | Outside must-discover (unique) | Pass A misses | Structural base gaps |
-|---|---:|---:|---:|---:|
-| Knife River | 38 | 13 | 0 | 3 (`7.03`,`7.05`,`7.08` absent as SECTION on doc-a) — **A6-D6** |
-| Insulet | (see audit) | (see audit) | 0 | 0 |
-| Benchmark | (see audit) | (see audit) | 0 | (see audit) |
+`11-independent-discovery-ground-truth/` — human-read GT (not Pass A / not structural-heading inventory).
 
-Pins frozen — not retuned. Artifacts: `08-discovery-completeness-audit/`.
+| Metric | Value |
+|---|---:|
+| GT items | 20 |
+| Document-local recall | **0.85** (17 TP / 3 FN) |
+| Package-level recall | **0.95** |
+| FP_bounded | 28 |
+| Frozen pins preserved | yes |
 
-## A6-D4 operative confirmation gate
+FN illustrate package≠document coverage (`kr-gt-10`, `bm-gt-04`) and amendment integer section miss (`kr-gt-11`).
 
-- `isLegallyConfirmedAmendmentChain(PROVISIONAL_FAMILY)` → **false**
-- `mayConsolidateOperativeAgreement(PROVISIONAL_FAMILY)` → **false**
-- Knife River edges remain `REVIEW_REQUIRED`
+## Gate 3 — A6-D6 structural
 
-## Agent 1 eligibility
+**FIXED.** Root cause: SECTION title character class forbade blank-line wraps common in EDGAR HTML→text. Generalized `SECTION_TITLE_CAPTURE`. Knife River base now has SECTION 7.01–7.08. Regression: `tests/agent6/knife-river-article-vii-structure.test.ts`.
 
-`lib/contract-model/compiler/discovery/eligibility.ts` — Pass A always `SIGNAL_ONLY_NOT_EXECUTABLE`.
+## Gate 4 — #253 reconciliation
 
-## Remaining capacity
+Matrix: `10-pr253-reconciliation-matrix.md`. Sole conflict: `instrument-grouping.ts` — A6 provisional-family + #253 `FINANCIAL_STATEMENT` (FINANCIAL_STATEMENT already added on A6). **Do not independently merge A6 → main.**
 
-**Withheld** until APPROVED financials + complete utilization (`WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION`).
+## Gate 5 — Pilot readiness
 
-## Regressions after main merge
+Knife River preferred; structural blockers cleared; amendment chain still `PROVISIONAL_FAMILY` / not consolidatable. Authorization: offline replay unavailable; live inference pending. See `12-legal-interpretation-pilot-readiness.json`.
 
-| Suite | Result |
-|---|---|
-| `tests/agent6/` | **27 passed** |
-| `tests/capacity/utilization-and-remaining` + A8 gate | **26 passed** |
-| `tests/product/authenticated-vep-offline` | Updated for on-disk CERTIFIED §7.2(c) → DERIVE + capacity REFUSE |
-| `section8-package-relationship-independent` CONMED “REAL FINDING” | **Pre-existing** drift (`UNRESOLVED` vs expected `REVIEW_REQUIRED`) — documented, not weakened |
+## Gate 6 — Success criterion
 
-## Defects
+`13-next-substantive-success-criterion.json` — SOURCE→…→AUTHORIZED EVALUATION. Unseen verified-rule count: **0**.
 
-| ID | Status |
-|---|---|
-| A6-D1–D4 | FIXED |
-| A6-D5 | HONEST_BLOCKER (OPERATIONAL_CREDENTIAL) |
-| A6-D6 | OPEN_DOCUMENTED (KR Article VII under-parse) |
+## Remaining disclosed failures
 
-## How to re-run
-
-```bash
-npx vitest run tests/agent6/
-npm run agent6:discovery-audit
-npm run agent6:execution-baseline
-npm run agent6:authentic-e2e
-```
+- CONMED section8 REAL FINDING: expects `REVIEW_REQUIRED`, receives `UNRESOLVED` (pre-existing drift; not weakened).
