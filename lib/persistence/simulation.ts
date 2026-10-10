@@ -2,7 +2,7 @@
  * Hypothetical transaction simulation persistence.
  * Never mutates actual ledger / capacity consumption.
  */
-import type { IntelligenceLifecycleStatus, PrismaClient } from "@prisma/client";
+import { Prisma, type IntelligenceLifecycleStatus, type PrismaClient } from "@prisma/client";
 import { contentHashOf } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
 import { assertSameTenant, requireCompanyId } from "./tenant";
@@ -58,24 +58,41 @@ export async function persistTransactionSimulation(
     return { id: existing.id, contentHash: existing.contentHash, created: false, status: existing.status };
   }
 
-  const row = await prisma.transactionSimulationRecord.create({
-    data: {
-      companyId,
-      simulationId: input.simulationId,
-      simulationHash: input.simulationHash,
-      transactionId: input.transactionId,
-      transactionHash: input.transactionHash,
-      contentHash,
-      simulationStatus: input.simulationStatus,
-      authorityClass: "HYPOTHETICAL",
-      mutatesActualLedger: false,
-      capacityCalculationRecordId: input.capacityCalculationRecordId ?? null,
-      payload: input.result as object,
-      proposedEffects: (input.proposedEffects ?? undefined) as object | undefined,
-      postStateIdentity: (input.postStateIdentity ?? undefined) as object | undefined,
-      status: "ACTIVE",
-    },
-  });
+  let row;
+  try {
+    row = await prisma.transactionSimulationRecord.create({
+      data: {
+        companyId,
+        simulationId: input.simulationId,
+        simulationHash: input.simulationHash,
+        transactionId: input.transactionId,
+        transactionHash: input.transactionHash,
+        contentHash,
+        simulationStatus: input.simulationStatus,
+        authorityClass: "HYPOTHETICAL",
+        mutatesActualLedger: false,
+        capacityCalculationRecordId: input.capacityCalculationRecordId ?? null,
+        payload: input.result as object,
+        proposedEffects: (input.proposedEffects ?? undefined) as object | undefined,
+        postStateIdentity: (input.postStateIdentity ?? undefined) as object | undefined,
+        status: "ACTIVE",
+      },
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const raced = await prisma.transactionSimulationRecord.findUnique({
+        where: {
+          companyId_simulationId_simulationHash: {
+            companyId,
+            simulationId: input.simulationId,
+            simulationHash: input.simulationHash,
+          },
+        },
+      });
+      if (raced) return { id: raced.id, contentHash: raced.contentHash, created: false, status: raced.status };
+    }
+    throw err;
+  }
 
   await appendInstitutionalAuditEvent(prisma, {
     companyId,

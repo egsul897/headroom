@@ -56,3 +56,13 @@ export {
   evaluateUtilizationAuthorityGate,
   type UtilizationAuthorityGate,
 } from "./adapters/utilization";
+
+export {
+  PRODUCT_EXECUTION_PERSISTENCE_VERSION,
+  persistUnifiedTransactionExecution,
+  executeAndPersistUnifiedVerifiedTransaction,
+  loadPersistedUnifiedExecution,
+  type PersistUnifiedExecutionInput,
+  type UnifiedExecutionPersistenceRecord,
+  type ExecuteAndPersistOptions,
+} from "./persist-execution";
