@@ -1,10 +1,10 @@
 # Finish the product — completion report
 
 **Verdict:** `CANONICAL_PRODUCT_WORKING_WITH_DOCUMENTED_LIMITATIONS`  
-**Canonical branch:** `cursor/finish-product-canonical-a9e4` (from PR #250 tip `4aee5a48`)  
+**Canonical branch:** `cursor/finish-product-canonical-a9e4` (from PR #250 tip  (lien-semantics refresh)`4aee5a48`)  
 **Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a`  
 **Tip:** `72991f256b6ef78facb815b469a981ef53769ffb`  
-**CI:** **6/6 SUCCESS** · MERGEABLE  
+**CI:** pending on refreshed tip (prior content tip 72991f25 was 6/6)
 **Auto-merge:** **no**
 
 ## A. Canonical integration
@@ -12,7 +12,7 @@
 | Item | Decision |
 |---|---|
 | Baseline | **PR #250** Stages 2–5 + P0 merge-hold (#253/#254 ports) |
-| Integrated | Typecheck fix for secured-capacity matrix; authentic VEP offline tests aligned to current CERTIFIED packet; finish-product demo + report |
+| Integrated | Typecheck fix; #250/#256 lien-semantics reconcile (); authentic VEP offline tests aligned to current CERTIFIED packet; finish-product demo + report |
 | Deliberately not integrated | **#241** full completeness-certificate issuer/fingerprint gate (additive harden; #237 authority already on main/#250 — defer to avoid mid-finish churn) |
 | | **#255** structural flywheel / **#246** KF graph — keep separate per directive until their CI gates pass independently |
 | | **#252** FCE collapse — already largely on #250 Stage 3; no second copy |
