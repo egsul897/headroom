@@ -1,9 +1,10 @@
 # Agent 2 — Financial Engine Final Integration Gate
 
 **PR:** https://github.com/egsul897/headroom/pull/220  
-**Integration tip SHA:** `ab186ebb70f58d27b8a4e31d056ec94137cb156b`  
-**Suite evidence SHA:** `9c3932987b35643f9c119420ae3c7b83fb015e50` (docs-only delta to tip)  
+**Integration candidate SHA (code + suites):** `9c3932987b35643f9c119420ae3c7b83fb015e50`  
 **Cost:** $0 (no paid inference; no production Neon writes)
+
+Docs-only commits after the candidate may advance branch HEAD; they do not change engine code or suite evidence.
 
 ---
 
@@ -11,8 +12,7 @@
 
 | Role | SHA |
 |---|---|
-| **Integration tip (this gate)** | `ab186ebb70f58d27b8a4e31d056ec94137cb156b` |
-| Suite evidence (feature commit) | `9c3932987b35643f9c119420ae3c7b83fb015e50` |
+| **Integration candidate (this gate)** | `9c3932987b35643f9c119420ae3c7b83fb015e50` |
 | #237 utilization authority (main merge) | `7f1dd3a202b026b9a862ef727480a1a9f284523a` |
 | #223 TE-D3 tip (ancestor) | `c28f8b6b61af1523c9ee4a8794eed269b3c668ee` |
 | #243 sequential verified boundary tip | `55f28272` (merged into tip via `fa477291`) |
@@ -99,7 +99,7 @@ Sequential verified path: txn2 ledger includes txn1 proposed usages; TE-D3 overl
 
 ---
 
-## 8. Regressions on suite evidence SHA `9c393298` (tip `ab186ebb` = docs-only)
+## 8. Regressions on integration candidate `9c393298`
 
 | Suite | Result |
 |---|---|
