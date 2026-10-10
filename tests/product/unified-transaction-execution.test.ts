@@ -1112,3 +1112,161 @@ describe("Scope F — unified transaction execution", () => {
     }
   });
 });
+
+const PROMOTION_INCOMPLETE_SUMMARY =
+  "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY";
+
+describe("authority summary — productionPromotion.productionAuthorityActive ternary", () => {
+  it("inactive promotion: human-readable summary discloses incomplete promotion; surfaces agree", async () => {
+    const r = ruleOf("p-sum-inactive", MONEY(25_000_000) as IRCapacityExpression);
+    const pkg = pkgOf([r]);
+    const result = await executeUnifiedVerifiedTransaction(
+      baseRequest(pkg, "p-sum-inactive", {
+        mode: "PRODUCTION_AUTHORITY",
+        operativeSourceAuthority: operative({
+          // #283 caveated class — promotion inactive; unproven CP disclosed
+          governingAuthorityClassification: "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+          conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN",
+          operativeCaveats: [
+            "CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN",
+          ],
+          // Keep #274 handoff CONFIRMED so the summary loop is reached via
+          // promotion inactivity (not only operative.ok refusal).
+          authorityClassification: "CONFIRMED_OPERATIVE",
+        }),
+        reviewerAuthorization: {
+          required: true,
+          actorId: "counsel-1",
+          role: "COUNSEL_REVIEWER",
+          trustedIssuerAuth: productionTrustedIssuerAuth([
+            sessionCounselPrincipal("counsel-1"),
+          ]),
+        },
+      }),
+    );
+
+    expect(result.operativeAuthority.productionPromotion.productionAuthorityActive).toBe(
+      false,
+    );
+    expect(result.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
+    expect(result.productionAuthority).not.toBe("PRODUCTION_AUTHORITY_ACTIVE");
+    // Human-readable incomplete-authority summary must match inactive state.
+    expect(result.blockers).toContain(PROMOTION_INCOMPLETE_SUMMARY);
+    expect(
+      result.blockers.some((b) =>
+        /CONDITIONS_PRECEDENT|NOT_INDEPENDENTLY_PROVEN|WITH_CAVEATS|caveats\/CP/i.test(
+          b,
+        ),
+      ),
+    ).toBe(true);
+    expect(result.note).not.toMatch(/production-authoritative verified transaction/i);
+
+    const handoffs = toAllProductExecutionHandoffs(result);
+    expect(handoffs.POSITION.traceId).toBe(handoffs.ASK.traceId);
+    expect(handoffs.ASK.traceId).toBe(handoffs.SIMULATE.traceId);
+    for (const surface of ["POSITION", "ASK", "SIMULATE"] as const) {
+      expect(handoffs[surface].productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
+      expect(handoffs[surface].blockers).toContain(PROMOTION_INCOMPLETE_SUMMARY);
+      expect(handoffs[surface].authorityNote).toMatch(/BLOCKED|Hypothetical/i);
+      expect(handoffs[surface].authorityNote).not.toMatch(
+        /^Production-authoritative verified transaction result\./,
+      );
+    }
+  });
+
+  it("active promotion: summary omits incomplete-promotion text when other gates fail", async () => {
+    const r = ruleOf("p-sum-active", MONEY(25_000_000) as IRCapacityExpression);
+    const pkg = pkgOf([r]);
+    const result = await executeUnifiedVerifiedTransaction(
+      baseRequest(pkg, "p-sum-active", {
+        mode: "PRODUCTION_AUTHORITY",
+        operativeSourceAuthority: operative({
+          authorityClassification: "CONFIRMED_OPERATIVE",
+          governingAuthorityClassification: "CONFIRMED_OPERATIVE",
+          conditionsPrecedentSatisfaction: null,
+          operativeCaveats: [],
+        }),
+        // Incomplete utilization forces the incomplete-authority summary loop
+        // while operative promotion remains active.
+        utilization: {
+          capacityRuleId: "p-sum-active",
+          records: [],
+          completenessCertificate: null,
+        },
+        reviewerAuthorization: {
+          required: true,
+          actorId: "counsel-1",
+          role: "COUNSEL_REVIEWER",
+          trustedIssuerAuth: productionTrustedIssuerAuth([
+            sessionCounselPrincipal("counsel-1"),
+          ]),
+        },
+      }),
+    );
+
+    expect(result.operativeAuthority.ok).toBe(true);
+    expect(result.operativeAuthority.productionPromotion.productionAuthorityActive).toBe(
+      true,
+    );
+    expect(result.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
+    expect(result.blockers).toContain(
+      "incomplete utilization authority — no favorable PRODUCTION_AUTHORITY result",
+    );
+    // Must NOT describe promotion as incomplete when it is actually active.
+    expect(result.blockers).not.toContain(PROMOTION_INCOMPLETE_SUMMARY);
+
+    const handoffs = toAllProductExecutionHandoffs(result);
+    expect(handoffs.POSITION.traceId).toBe(handoffs.SIMULATE.traceId);
+    expect(handoffs.ASK.blockers).not.toContain(PROMOTION_INCOMPLETE_SUMMARY);
+    expect(handoffs.SIMULATE.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
+  });
+
+  it("hypothetical SATISFIED never becomes production-authoritative in handoff prose", async () => {
+    const r = ruleOf("p-sum-hypo", MONEY(25_000_000) as IRCapacityExpression);
+    const pkg = pkgOf([r]);
+    const result = await executeUnifiedVerifiedTransaction(
+      baseRequest(pkg, "p-sum-hypo", {
+        mode: "HYPOTHETICAL",
+        allowHypotheticalFinancials: true,
+        operativeSourceAuthority: operative({
+          authorityClassification: "CONFIRMED_OPERATIVE",
+          governingAuthorityClassification: "CONFIRMED_OPERATIVE",
+          conditionsPrecedentSatisfaction: null,
+          operativeCaveats: [],
+        }),
+        financialEvidence: {
+          metrics: [
+            metric({
+              metricKey: "CONSOLIDATED_EBITDA",
+              value: 1,
+              authenticity: "SYNTHETIC_LABELED",
+            }),
+          ],
+          requiredMetricKeys: [],
+        },
+        reviewerAuthorization: { required: false, actorId: null, role: null },
+        utilization: {
+          capacityRuleId: "p-sum-hypo",
+          records: [],
+          completenessCertificate: {
+            ...emptyUtilCert("p-sum-hypo"),
+            authenticity: "SYNTHETIC_LABELED",
+            issuer: { role: "SYSTEM_FIXTURE", actorId: "demo-fixture" },
+          },
+          allowSyntheticRemaining: true,
+        },
+      }),
+    );
+    expect(result.executionStatus).toBe("EXECUTED_HYPOTHETICAL");
+    expect(result.productionAuthority).toBe("HYPOTHETICAL_ONLY");
+    expect(result.blockers).not.toContain(PROMOTION_INCOMPLETE_SUMMARY);
+    const handoffs = toAllProductExecutionHandoffs(result);
+    for (const surface of ["POSITION", "ASK", "SIMULATE"] as const) {
+      expect(handoffs[surface].productionAuthority).toBe("HYPOTHETICAL_ONLY");
+      expect(handoffs[surface].authorityNote).toMatch(/Hypothetical/i);
+      expect(handoffs[surface].authorityNote).not.toMatch(
+        /^Production-authoritative verified transaction result\./,
+      );
+    }
+  });
+});

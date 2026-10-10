@@ -704,9 +704,11 @@ export async function executeUnifiedVerifiedTransaction(
         ? "incomplete utilization authority — no favorable PRODUCTION_AUTHORITY result"
         : null,
       !operative.ok ? "incomplete operative authority — no favorable PRODUCTION_AUTHORITY result" : null,
+      // Must match sibling fields: inactive promotion → disclose incomplete summary;
+      // active promotion → omit (never describe blocked authority as complete).
       !operative.productionPromotion.productionAuthorityActive
-        ? null
-        : "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY",
+        ? "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY"
+        : null,
       !reviewerOk ? "incomplete reviewer authorization — no favorable PRODUCTION_AUTHORITY result" : null,
       !identityOk ? "incomplete identity authorization — no favorable PRODUCTION_AUTHORITY result" : null,
     ]) {
