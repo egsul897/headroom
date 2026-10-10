@@ -2,9 +2,9 @@
 
 **Branch:** `cursor/unified-stage5-position-ask-f673` (#250)  
 **Starting tip:** `ac0ff92547d4b3154255a4dd9afae4a52d96f5a4`
-**Ending tip:** `f334606864198765493f89f63d4345c609561adc`
+**Ending tip:** `24e7911f` (docs); functional code `14e5730b`
 
-Remote tip advanced with #213 adversarial reconcile () before this remediation landed.
+Remote tip advanced with #213 adversarial reconcile (`68d93706`) before this remediation landed.
 
 ## Priority 1 — Coherent secured-debt solver defect
 
