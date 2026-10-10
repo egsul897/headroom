@@ -66,3 +66,11 @@ export {
   type UnifiedExecutionPersistenceRecord,
   type ExecuteAndPersistOptions,
 } from "./persist-execution";
+
+/** Shared durable capacity identity refs for Position / Ask / Simulate (Agent #9 pathway). */
+export {
+  loadSharedDurableCapacityIdentities,
+  buildSharedVerifiedCapacityInputFromDurable,
+  REMAINING_PRODUCT_DURABLE_WIRING_CALL_SITES,
+  type DurableCapacityIdentityRefs,
+} from "@/lib/product/durable-capacity-identities";
