@@ -2,7 +2,8 @@
 
 **Branch:** `cursor/covenant-intelligence-factory-f761`  
 **PR:** https://github.com/egsul897/headroom/pull/217  
-**Proposed integration tip:** `4e992e32db2eac1a7b7b2b81f52c57e089959ed9`  
+**Feature tip (code + measure artifacts):** `061324884e15d8d44d501930ab6e309d821cf0da`  
+**CI / PR head:** see PR #217 (mutable; not re-embedded here)  
 **Peers:** #225 extraction (merged) · #227 Neon→capacity (merged) · #232 durable lifecycle (closed; utilization authority on main via #237)  
 **Paid inference:** $0 · **Neon mutations:** 0 · **CERTIFIED / PRODUCTION_AUTHORITATIVE writes:** 0
 
