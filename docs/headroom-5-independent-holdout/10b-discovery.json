@@ -1,0 +1,40 @@
+{
+  "discoveryPipelineVersion": "phase-2b-discovery-pipeline.v4",
+  "note": "Full Pass B uses synthetic caller (empty semantic rules). Pass A deterministic recall is the offline discovery signal.",
+  "passACounts": {
+    "doc-a": 271,
+    "doc-b": 284
+  },
+  "discoverySummaries": {
+    "doc-a": {
+      "documentId": "doc-a",
+      "nodesInspected": 575,
+      "deterministicCandidatesGenerated": 271,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 100,
+      "wallClockMs": 11.828329999999937,
+      "modelCalls": 100,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "sectionsAttempted": 100,
+      "sectionFailures": [],
+      "documentDiscoveryHealth": "DISCOVERY_HEALTHY"
+    },
+    "doc-b": {
+      "documentId": "doc-b",
+      "nodesInspected": 593,
+      "deterministicCandidatesGenerated": 284,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 105,
+      "wallClockMs": 12.975623000000041,
+      "modelCalls": 105,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "sectionsAttempted": 105,
+      "sectionFailures": [],
+      "documentDiscoveryHealth": "DISCOVERY_HEALTHY"
+    }
+  }
+}

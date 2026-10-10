@@ -1,0 +1,129 @@
+{
+  "packageGraphPipelineVersion": "phase-2c-package-graph-pipeline.v1",
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "relationships": [
+    {
+      "sourceDocumentId": "doc-a",
+      "targetDocumentId": null,
+      "targetHint": "that certain Third Amended and Restated Credit Agreement, dated as of August 20, 2021",
+      "relationshipType": "RESTATES",
+      "sourceCitation": "that certain Third Amended and Restated Credit Agreement, dated as of August 20, 2021",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"August 20, 2021\" is not in this package",
+      "resolutionMethod": "DETERMINISTIC_TYPE_ONLY_CHRONOLOGICALLY_IMPOSSIBLE",
+      "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": "doc-a",
+      "targetHint": "that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023",
+      "relationshipType": "RESTATES",
+      "sourceCitation": "that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023",
+      "confidence": 0.6,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target",
+      "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+      "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "name": "FOURTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "name": "FIFTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "doc-a",
+      "title": "FOURTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "FOURTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": "September 27, 2023",
+      "effectiveDate": "September 27, 2023",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "PNC BANK, NATIONAL ASSOCIATION",
+      "facilityOrInstrumentName": "FOURTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nFOURTH AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 110
+        },
+        "executionDate": {
+          "text": "dated as of\nSeptember 27, 2023",
+          "charStart": 157
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "PNC BANK, NATIONAL ASSOCIATION\nas Administrative Agent",
+          "charStart": 298
+        }
+      }
+    },
+    {
+      "documentId": "doc-b",
+      "title": "FIFTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "FIFTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": "August 31, 2026",
+      "effectiveDate": "August 31, 2026",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "PNC BANK, NATIONAL ASSOCIATION",
+      "facilityOrInstrumentName": "FIFTH AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nFIFTH AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 110
+        },
+        "executionDate": {
+          "text": "dated as of\nAugust 31, 2026",
+          "charStart": 156
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "PNC BANK, NATIONAL ASSOCIATION\nas Administrative Agent",
+          "charStart": 295
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "artifact": "HEADROOM-5_LEGAL_REFERENCE_CHRONOLOGY",
+  "purpose": "Preserve creation chronology proving legal references were sealed before compiler output.",
+  "events": [
+    {
+      "seq": 1,
+      "atUtc": "2026-10-10T13:01:00Z",
+      "event": "Fetched origin/main; recorded starting SHA 342a6b059e3385fb14d605b8d1593e878a221578 and compiler/structural versions."
+    },
+    {
+      "seq": 2,
+      "atUtc": "2026-10-10T13:03:00Z",
+      "event": "Classified existing MTN/CONMED/Chewy/DSGR/RIOT/Gibraltar/FWRG/LSB/SUP fixtures as DEVELOPMENT or REGRESSION; noted MHK absent from main tip."
+    },
+    {
+      "seq": 3,
+      "atUtc": "2026-10-10T13:05:00Z",
+      "event": "EDGAR structural search + title-block-only fit confirmation selected WOR Fourth/Fifth AR package."
+    },
+    {
+      "seq": 4,
+      "atUtc": "2026-10-10T13:06:52Z",
+      "event": "Acquired and hashed raw HTML + extracted text (extraction-manifest.json). Sources frozen."
+    },
+    {
+      "seq": 5,
+      "atUtc": "2026-10-10T13:08:00Z",
+      "event": "Sealed holdout identity (03-holdout-seal.json)."
+    },
+    {
+      "seq": 6,
+      "atUtc": "2026-10-10T13:09:00Z",
+      "event": "Defined evaluation questions (04-evaluation-questions.json) from source reading."
+    },
+    {
+      "seq": 7,
+      "atUtc": "2026-10-10T13:10:30Z",
+      "event": "Froze independent legal-reference answers (05-legal-reference-answers.json) from source reading only."
+    },
+    {
+      "seq": 8,
+      "atUtc": "2026-10-10T13:11:10Z",
+      "event": "Seal commit f17601ba7e64919b150993fdb1ae504c5afc01f7 — sources + legal references frozen on branch."
+    },
+    {
+      "seq": 9,
+      "atUtc": "2026-10-10T13:20:00Z",
+      "event": "First offline compiler/pipeline evaluation run (synthetic StageCaller, DETERMINISTIC_ONLY local compile, $0 paid inference). Legal-reference file not modified."
+    },
+    {
+      "seq": 10,
+      "atUtc": "2026-10-10T13:30:00Z",
+      "event": "Scorecard/handoff artifacts written. 05-legal-reference-answers.json byte-identical to seal commit."
+    }
+  ],
+  "integrityRule": "If any clause in 05-legal-reference-answers.json changes after seq 8 begins, the holdout is INVALIDATED.",
+  "postRunIntegrity": {
+    "legalReferenceFileUnchangedAfterSeal": true,
+    "verification": "git show f17601ba:docs/headroom-5-independent-holdout/05-legal-reference-answers.json | sha256sum compared to working tree"
+  }
+}

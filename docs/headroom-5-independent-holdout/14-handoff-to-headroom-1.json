@@ -1,0 +1,58 @@
+{
+  "artifact": "HEADROOM-5_HANDOFF_TO_HEADROOM-1",
+  "verdict": "INDEPENDENT_HOLDOUT_EVALUATION_COMPLETE",
+  "holdoutId": "WOR-2023-2026-FIFTH-AR-CREDIT-FACILITY",
+  "highestValueFailures": [
+    {
+      "rank": 1,
+      "title": "TOC stub vs body duplicate sectionRef selection",
+      "authenticSourceCitation": {
+        "documentId": "doc-b",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/108516/000119312526376705/wor-ex4_1.htm",
+        "extractedSha256": "e5ce81017e3635960bcd519af513b480ca48a297cf97ba72e485ecb023399d3b",
+        "sectionRef": "6.01",
+        "evidence": "Two SECTION nodes both labeled 6.01: TOC stub at charStart≈3681 (ownLen≈74, page furniture only) and operative body at charStart≈322839 (descLen≈1253 containing $30,000,000 and 10% CNTA baskets)."
+      },
+      "expectedLegalBehavior": "Downstream discovery/context/compilation must bind to the operative body occurrence of §6.01 (and similarly §6.02/§6.03/§6.13), never the table-of-contents page stub.",
+      "actualCompilerBehavior": "Structural index emits both. Naive emission-order first-match yields 0/10 complete operative spans on the sealed GT set; longest-body selection yields 10/10. tocCollisionCount=10/10.",
+      "rootCauseLayer": "A. Structural indexing / identity (duplicate section references under unusual EDGAR formatting)",
+      "reproductionCommand": "npx tsx scripts/headroom-5/run-offline-evaluation.ts  # see 10-clause-coverage.json fields tocCollision, naiveFirstMatchCompleteOperativeSpan vs completeOperativeSpan",
+      "minimalGeneralizedRemediationDirection": "Generalized TOC/page-furniture classifier or occurrence ranking that prefers body occurrences (content length + covenant signals + article context) when multiple SECTION nodes share a sectionRef; never issuer-specific. Must invalidate caches on STRUCTURAL_INDEX_VERSION bump."
+    },
+    {
+      "rank": 2,
+      "title": "Fifth AR restatement does not resolve operative governing document",
+      "authenticSourceCitation": {
+        "documentId": "doc-b",
+        "sourceUrl": "https://www.sec.gov/Archives/edgar/data/108516/000119312526376705/wor-ex4_1.htm",
+        "sectionRef": "11.01 / Preliminary Statement",
+        "evidence": "WHEREAS names Fourth AR dated September 27, 2023 as Existing Credit Agreement; §11.01 states Existing Credit Agreement is amended, superseded and restated in entirety; not a novation."
+      },
+      "expectedLegalBehavior": "As of 2026-08-31, doc-b is the operative agreement; doc-a is historical/superseded for negative-covenant authority (including removal of the Fourth AR $550mm Permitted Spinoff §6.01 carveout).",
+      "actualCompilerBehavior": "Classifier correctly marks both docs AMENDED_AND_RESTATED_AGREEMENT. Relationship doc-b RESTATES doc-a is found but status=REVIEW_REQUIRED (SUPPORTING_TARGET_EVIDENCE / WHEREAS-only). OperativeContractState status=OPERATIVE_STATE_REVIEW_REQUIRED; operativeDocument.operativeDocumentId=null; 2 unattached effects, 0 provision views.",
+      "rootCauseLayer": "D. Cross-document and amendment resolution",
+      "reproductionCommand": "npx tsx scripts/headroom-5/run-offline-evaluation.ts  # inspect 10d-package-graph.json and 10d-operative-state.json",
+      "minimalGeneralizedRemediationDirection": "Strengthen restatement target resolution when caption+execution-date uniquely match an in-package prior ARCA and §11.01-style operative restatement language is present; allow operativeDocument to resolve without treating every WHEREAS recital as permanently non-confirming. Keep fail-closed on true ambiguity."
+    },
+    {
+      "rank": 3,
+      "title": "Context retrieval never reaches SUFFICIENT on authentic body anchors",
+      "authenticSourceCitation": {
+        "documentId": "doc-b",
+        "sectionRefs": ["6.01", "6.02", "6.03", "6.13", "1.01", "11.01"],
+        "evidence": "Even when probes are forced onto the longest body SECTION node (not TOC), sufficiencyState is BUDGET_EXCEEDED for 9/10 GT clauses and INCOMPLETE for 1/10; SUFFICIENT=0/10. Definition-section probes hit maxTextBudgetChars with 137 unresolved dependencies."
+      },
+      "expectedLegalBehavior": "For a basket compile of §6.01/§6.02/§6.13, retrieve the operative span plus material controlling definitions (e.g. Permitted Liens, Consolidated Net Tangible Assets, Interest Coverage Ratio, Consolidated EBITDA) with sufficiency that permits compilation rather than budget-collapse.",
+      "actualCompilerBehavior": "Required definition names often appear somewhere in the bundle text, but sufficiency never reaches SUFFICIENT; Art I definition probes are especially pathological (0 definition items typed, 137 unresolved, text budget exceeded).",
+      "rootCauseLayer": "C. Definition and context retrieval",
+      "reproductionCommand": "npx tsx scripts/headroom-5/run-offline-evaluation.ts  # 10-clause-coverage.json contextBundle.sufficiencyState; 11-scorecard.json layers.C",
+      "minimalGeneralizedRemediationDirection": "Budget/priority policy that prefers directly referenced defined terms from the operative span over exhaustive neighborhood expansion; special-case definition-article anchors so a single defined-term unit is not expanded as the entire §1.01 article. Generalized, not WOR-specific."
+    }
+  ],
+  "explicitNonGoalsForHeadroom1FromThisHandoff": [
+    "Do not alter the sealed WOR legal-reference answers.",
+    "Do not add WOR issuer-specific shortcuts.",
+    "Do not treat Pass A discovery alone as executable IR.",
+    "Paid semantic compile/verify was intentionally not run here (no paid inference)."
+  ]
+}

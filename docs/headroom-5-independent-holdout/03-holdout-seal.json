@@ -1,0 +1,48 @@
+{
+  "artifact": "HEADROOM-5_HOLDOUT_SEAL",
+  "holdoutId": "WOR-2023-2026-FIFTH-AR-CREDIT-FACILITY",
+  "sealedBeforeCompilerRun": true,
+  "sealedAtUtc": "2026-10-10T13:08:00Z",
+  "startingShaAtSeal": "342a6b059e3385fb14d605b8d1593e878a221578",
+  "issuer": {
+    "legalName": "Worthington Enterprises, Inc.",
+    "formerName": "Worthington Industries, Inc.",
+    "ticker": "WOR",
+    "cik": "0000108516",
+    "sic": "3310"
+  },
+  "packageKey": "wor-2023-2026-credit-facility",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "identity": "Fourth Amended and Restated Credit Agreement dated as of September 27, 2023",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/108516/000095017023050472/wor-ex4_1.htm",
+      "accession": "0000950170-23-050472",
+      "exhibit": "EX-4.1",
+      "rawSha256": "54477026996a1f39285955ae22812be5a5399dfaae2b9cd07f8466e2ec2ec679",
+      "extractedSha256": "29751da8c5ee22c84facccf0d643312b2fa8c485b612f92970bdbff05a4df5b2",
+      "rawBytes": 1232148,
+      "extractedChars": 436276,
+      "acquisitionTimestampUtc": "2026-10-10T13:06:52.646074+00:00"
+    },
+    {
+      "documentId": "doc-b",
+      "identity": "Fifth Amended and Restated Credit Agreement dated as of August 31, 2026",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/108516/000119312526376705/wor-ex4_1.htm",
+      "accession": "0001193125-26-376705",
+      "exhibit": "EX-4.1",
+      "rawSha256": "f573ea31756d2f0b1d4bd0e125b82900f3ab59c0ec48f14fb0d45d2956760a47",
+      "extractedSha256": "e5ce81017e3635960bcd519af513b480ca48a297cf97ba72e485ecb023399d3b",
+      "rawBytes": 1318468,
+      "extractedChars": 445964,
+      "acquisitionTimestampUtc": "2026-10-10T13:06:52.646074+00:00"
+    }
+  ],
+  "operativeDocumentAsOf": {
+    "asOfDate": "2026-08-31",
+    "expectedOperativeDocumentId": "doc-b",
+    "expectedRelationship": "doc-b RESTATES / supersedes doc-a (Existing Credit Agreement)"
+  },
+  "fixturePath": "tests/fixtures/unseen-packages/wor-2023-2026-credit-facility",
+  "postSealAlterationPolicy": "FORBIDDEN. Hashes and legal-reference answers must not be modified after compiler output is observed."
+}

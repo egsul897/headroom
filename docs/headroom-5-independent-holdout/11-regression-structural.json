@@ -1,0 +1,48 @@
+{
+  "packages": [
+    {
+      "packageKey": "fwrg-2021-credit-agreement",
+      "status": "STRUCTURAL_OK",
+      "documents": [
+        "article-6-negative-covenants.txt",
+        "definitions-excerpt.txt"
+      ],
+      "totalNodes": 284,
+      "role": "REGRESSION"
+    },
+    {
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "status": "STRUCTURAL_OK",
+      "documents": [
+        "article-6-negative-covenants.txt",
+        "definitions-excerpt.txt"
+      ],
+      "totalNodes": 70,
+      "role": "REGRESSION"
+    },
+    {
+      "packageKey": "conmed-2025-credit-facility",
+      "status": "NO_TEXT"
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "status": "STRUCTURAL_OK",
+      "documents": [
+        "doc-a-2026-06-23-credit-agreement.txt"
+      ],
+      "totalNodes": 1210,
+      "role": "DEVELOPMENT_AS_REGRESSION_SMOKE"
+    },
+    {
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "status": "STRUCTURAL_OK",
+      "documents": [
+        "doc-a-2022-amended-restated-credit-agreement.txt",
+        "doc-b-2024-third-amendment.txt"
+      ],
+      "totalNodes": 1944,
+      "role": "DEVELOPMENT_AS_REGRESSION_SMOKE"
+    }
+  ],
+  "note": "Not combined into sealed holdout headline scores."
+}
