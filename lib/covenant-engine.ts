@@ -1974,6 +1974,7 @@ export interface LoadCompanySolverStaticOptions {
    * Production identity-provider wiring is an activation requirement; omitting
    * this fails closed (APPROVED cert alone never authorizes remaining).
    */
+  /** Host must supply independently authenticated principals — never certificate blob roles. */
   trustedIssuerAuth?: import("./capacity/completeness-issuer-auth").TrustedIssuerAuthorizationContext | null;
 }
 
@@ -2122,3 +2123,4 @@ export async function loadCompanySolverStaticData(
 
   return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
 }
+
