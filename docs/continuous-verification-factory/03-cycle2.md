@@ -118,11 +118,12 @@ Registered detectors: incorrect favorable, incorrect refusal, missing evidence (
 
 | Field | Value |
 |-------|-------|
-| Tested SHA | `6a73c5822caa23d8f76d7be2dd7140065a5ecaeb` |
+| Tested SHA | `5797c03f4f02cff9bbd07d255554baa2ccd3c78b` |
 | Mutation detection | **6/6 detected, 6/6 restored** — see `04-mutation-challenge.json` |
 | Unique scenarios | **100** public / **99** executable |
 | Case provenance | reviewer + source sha256 + operative date + restrictions + ambiguities on grounded cases |
 | False favorables | **1 known standing**: `gnd-conmed-76-above-45m` (engine PERMITTED vs GT PROHIBITED on §7.6); **0 unexpected** |
+| CI status | **Green on tip** — CVF soft gate + invent-absence/home/P3-R0 soft gates pass. Canonical-compiler not path-triggered on this tip (unchanged hardness). |
 | Soft gates | unchanged hardness; fail only on unexpected incorrect favorables |
 | Hard gate | canonical-compiler preserved |
 | Unresolved blockers | (1) #238 depends on unmerged Agent 5 / #218; (2) standing §7.6 overflow false favorable; (3) truly blind holdout keys not yet externalized; (4) Ask/DB product tests skip without DATABASE_URL (soft-gate stays provider-free) |
