@@ -380,13 +380,20 @@ describe("product surfaces refuse non-production remaining", () => {
 
 describe("trusted issuer identity — not caller-supplied role alone", () => {
   it("forged COUNSEL_REVIEWER role without trusted principal is refused", () => {
-    const forged = baseAuthentic({
+    const forged = authenticCompletenessCertificate({
+      kind: "VERIFIED_EMPTY",
+      capacityRuleId: RULE,
+      companyId: CO,
+      actorId: "forged-attacker",
+      asOf: AS_OF,
+      bindings: LIVE,
       issuer: {
         role: "COUNSEL_REVIEWER",
         actorId: "forged-attacker",
         attestedAt: `${AS_OF}T12:00:00.000Z`,
       },
     });
+    expect(forged.issuer.actorId).toBe("forged-attacker");
     const v = validateCompletenessCertificate(forged, prodCtx());
     expect(v.supportsRemainingClaim).toBe(false);
     expect(v.productionAuthoritative).toBe(false);

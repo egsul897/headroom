@@ -75,12 +75,13 @@ export function authenticCompletenessCertificate(
     bindings: CompletenessBindingFingerprints;
   },
 ): UtilizationCompletenessCertificate {
+  const actorId = over.issuer?.actorId ?? over.actorId;
   const base = syntheticCompletenessCertificate({
     ...over,
     authenticity: "AUTHENTIC",
     issuer: {
       role: over.issuer?.role ?? "COUNSEL_REVIEWER",
-      actorId: over.actorId,
+      actorId,
       attestedAt: over.issuer?.attestedAt ?? `${over.asOf ?? "2026-06-30"}T12:00:00.000Z`,
     },
     sourceLabel: over.sourceLabel ?? "AUTHENTIC counsel completeness attestation",
