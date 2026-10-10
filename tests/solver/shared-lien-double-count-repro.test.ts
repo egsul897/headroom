@@ -264,6 +264,195 @@ describe("HIGH: shared-constraint double-count across two independent liens", ()
     expect(["UNKNOWN", "BLOCKED", "REVIEW_REQUIRED"]).toContain(pathStatus);
   });
 
+  it("partially overlapping constraints: Y-before-X must not ignore X (ref pool 100, not 130)", () => {
+    // Independent reservation walk (frozen):
+    //   lien-a ∈ X(100) only, threshold 80 → contrib 80; X left 20
+    //   lien-b ∈ Y(50) ∩ X(100), threshold 80 → min(80, Y=50, X=20) = 20
+    //   pool = 100  (NOT 80+50=130 if Y alone bound lien-b)
+    const refPool = 100;
+    const proposed = 120;
+    expect(proposed).toBeGreaterThan(refPool);
+
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const Y: SharedConstraint = {
+      id: "Y",
+      companyId: "co-1",
+      name: "Y sub-cap",
+      cap: { amount: 50 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§Y" },
+    };
+    const X: SharedConstraint = {
+      id: "X",
+      companyId: "co-1",
+      name: "X shared",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§X" },
+    };
+    // Y listed first — first-match-only binding historically ignored X for lien-b.
+    const constraints = [Y, X];
+    const run = (memberOrder: string[]) => {
+      const graph = buildPermissionGraph(
+        [debt, lienA, lienB],
+        [
+          rel({ fromPermissionId: "debt", toPermissionId: "lien-a", relationshipType: "CONCURRENT_DISREGARDED" }),
+          rel({ fromPermissionId: "debt", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+          rel({ fromPermissionId: "lien-a", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+        ],
+      );
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: memberOrder, rationale: "" },
+        permissionsById: new Map([
+          ["debt", debt],
+          ["lien-a", lienA],
+          ["lien-b", lienB],
+        ]),
+        graph,
+        financials: FIN,
+        requestedAmount: proposed,
+        eligibilityContext: {
+          transaction: { ...baseTransaction, amount: proposed, secured: true },
+          entityClasses: ["BORROWER"],
+          ruleActivationConditions: [],
+          activationState: emptyActivationState,
+          asOfDate: emptyActivationState.asOfDate,
+        },
+        sharedConstraints: constraints,
+        collateralScopes: [],
+      });
+      return {
+        status: buildPermissionPaths([evalResult])[0]!.status,
+        maxCapacity: evalResult.maxCapacity,
+      };
+    };
+
+    const ab = run(["debt", "lien-a", "lien-b"]);
+    const ba = run(["debt", "lien-b", "lien-a"]);
+    expect(ab.status).toBe("BLOCKED");
+    expect(ba.status).toBe("BLOCKED");
+    expect(ab.maxCapacity).toBe(refPool);
+    expect(ba.maxCapacity).toBe(refPool);
+
+    const clearAtPool = (() => {
+      const graph = buildPermissionGraph([debt, lienA, lienB], []);
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+        permissionsById: new Map([
+          ["debt", debt],
+          ["lien-a", lienA],
+          ["lien-b", lienB],
+        ]),
+        graph,
+        financials: FIN,
+        requestedAmount: refPool,
+        eligibilityContext: {
+          transaction: { ...baseTransaction, amount: refPool, secured: true },
+          entityClasses: ["BORROWER"],
+          ruleActivationConditions: [],
+          activationState: emptyActivationState,
+          asOfDate: emptyActivationState.asOfDate,
+        },
+        sharedConstraints: constraints,
+        collateralScopes: [],
+      });
+      return buildPermissionPaths([evalResult])[0]!.status;
+    })();
+    expect(clearAtPool).toBe("CLEAR");
+  });
+
+  it("genuinely additive independent baskets (no shared constraint) still stack to 160", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const graph = buildPermissionGraph([debt, lienA, lienB], []);
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, amount: 150, secured: true },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("CLEAR");
+    expect(evalResult.maxCapacity).toBe(160);
+  });
+
+  it("input-order independence on identical shared constraint", () => {
+    const shared: SharedConstraint = {
+      id: "sc-lien-pool",
+      companyId: "co-1",
+      name: "Single $100 shared lien pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const run = (order: string[]) => {
+      const ev = evaluateElection({
+        election: { id: "e", memberPermissionIds: order, rationale: "" },
+        permissionsById: new Map([
+          ["debt", debt],
+          ["lien-a", lienA],
+          ["lien-b", lienB],
+        ]),
+        graph: buildPermissionGraph([debt, lienA, lienB], []),
+        financials: FIN,
+        requestedAmount: 150,
+        eligibilityContext: {
+          transaction: { ...baseTransaction, amount: 150, secured: true },
+          entityClasses: ["BORROWER"],
+          ruleActivationConditions: [],
+          activationState: emptyActivationState,
+          asOfDate: emptyActivationState.asOfDate,
+        },
+        sharedConstraints: [shared],
+        collateralScopes: [],
+      });
+      return { status: buildPermissionPaths([ev])[0]!.status, max: ev.maxCapacity };
+    };
+    const a = run(["debt", "lien-a", "lien-b"]);
+    const b = run(["debt", "lien-b", "lien-a"]);
+    expect(a.status).toBe("BLOCKED");
+    expect(b.status).toBe("BLOCKED");
+    expect(a.max).toBe(100);
+    expect(b.max).toBe(a.max);
+  });
+
   it("runSolver EXACT maxCapacity also ≤ $100 shared constraint", () => {
     const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
     const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });

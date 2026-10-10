@@ -569,12 +569,18 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // this is Case F's "entity-specific sub-cap" mechanism: a permission with
   // NO per-permission member row can still be gated by a shared constraint
   // purely because of which entity is incurring.
+  const permissionMatchesConstraint = (c: SharedConstraint, permissionId: string): boolean =>
+    c.members.some((mem) => mem.permissionId === permissionId) ||
+    (c.aggregationRule === "ENTITY_CLASS_FILTER" &&
+      c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)));
+
+  /** First matching constraint — debt-side headroomAndConsume contract unchanged. */
   const constraintFor = (permissionId: string): SharedConstraint | undefined =>
-    sharedConstraints.find(
-      (c) =>
-        c.members.some((mem) => mem.permissionId === permissionId) ||
-        (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
-    );
+    sharedConstraints.find((c) => permissionMatchesConstraint(c, permissionId));
+
+  /** Every matching constraint — independent lien pooling must bind all of them. */
+  const constraintsFor = (permissionId: string): SharedConstraint[] =>
+    sharedConstraints.filter((c) => permissionMatchesConstraint(c, permissionId));
   /**
    * Shared-constraint headroom. Utilization integrity (Neon activation P0):
    * when `currentUsageAuthoritative` is not true, do NOT treat numeric zero as
@@ -896,6 +902,16 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     // this election. Without this, two LIEN members naming the same $100
     // SharedConstraint would each contribute min(lienCap, 100) and sum to
     // $200 — a false-favorable double-count (CLEAR at $150 / maxCapacity 200).
+    // Seeded only from debt-side sharedConsumption captured before this loop
+    // (lien draws append to sharedConsumption for traceability and must not
+    // re-enter the initializer as "debt" usage).
+    const debtSharedConsumedBeforeLiens = new Map<string, number>();
+    for (const consumed of sharedConsumption) {
+      debtSharedConsumedBeforeLiens.set(
+        consumed.constraintId,
+        (debtSharedConsumedBeforeLiens.get(consumed.constraintId) ?? 0) + consumed.amountConsumed,
+      );
+    }
     const lienSharedRemaining = new Map<string, number>();
 
     for (const lien of independentLienMembers) {
@@ -985,8 +1001,12 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         lienCurrency && lienCurrency !== txnCurrency && authorizedFx != null
           ? evaluated.capacity * authorizedFx
           : evaluated.capacity;
-      const constraint = constraintFor(lien.id);
-      if (constraint) {
+      // Bind EVERY shared constraint this lien participates in (not merely the
+      // first find). Partially overlapping baskets otherwise ignore secondary
+      // caps and re-inflate the independent coverage pool.
+      const matchedConstraints = constraintsFor(lien.id);
+      let skipLien = false;
+      for (const constraint of matchedConstraints) {
         if (constraint.currentUsageAuthoritative !== true) {
           independentCoverageUnknown = true;
           requirements.push({
@@ -998,51 +1018,78 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
               `remaining lien capacity cannot support a favorable secured conclusion.`,
             reasonCategory: "EXTERNAL_INPUT",
           });
-          continue;
+          skipLien = true;
+          break;
         }
-        const constraintCap =
-          "amount" in constraint.cap
-            ? constraint.cap.amount
-            : evaluateProvision(
-                {
-                  ...permissionAsProvision(lien),
-                  formulaType: constraint.cap.formulaType,
-                  thresholdValue: constraint.cap.thresholdValue,
-                  params: constraint.cap.params,
-                },
-                financials,
-                metricsForLien,
-              ).capacity ?? 0;
+        let constraintCap: number | null;
+        if ("amount" in constraint.cap) {
+          constraintCap =
+            typeof constraint.cap.amount === "number" && Number.isFinite(constraint.cap.amount)
+              ? constraint.cap.amount
+              : null;
+        } else {
+          const constraintEval = evaluateProvision(
+            {
+              ...permissionAsProvision(lien),
+              formulaType: constraint.cap.formulaType,
+              thresholdValue: constraint.cap.thresholdValue,
+              params: constraint.cap.params,
+            },
+            financials,
+            metricsForLien,
+          );
+          constraintCap =
+            constraintEval.status === "modeled" &&
+            constraintEval.capacity != null &&
+            Number.isFinite(constraintEval.capacity)
+              ? constraintEval.capacity
+              : null;
+        }
+        if (constraintCap == null) {
+          independentCoverageUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: lien.id },
+            status: "UNKNOWN",
+            detail:
+              `Independent lien ${lien.id} shares constraint ${constraint.id} whose cap is not determinable — ` +
+              `shared-capacity authority is ambiguous; fail closed.`,
+            reasonCategory: "EXTERNAL_INPUT",
+          });
+          skipLien = true;
+          break;
+        }
         const headroom = Math.max(0, constraintCap - constraint.currentUsage);
-        const alreadyFromDebt = sharedConsumption
-          .filter((c) => c.constraintId === constraint.id)
-          .reduce((s, c) => s + c.amountConsumed, 0);
         if (!lienSharedRemaining.has(constraint.id)) {
+          const alreadyFromDebt = debtSharedConsumedBeforeLiens.get(constraint.id) ?? 0;
           lienSharedRemaining.set(constraint.id, Math.max(0, headroom - alreadyFromDebt));
         }
         const sharedLeft = lienSharedRemaining.get(constraint.id)!;
-        const usableFromShared = Math.min(cap, sharedLeft);
-        lienSharedRemaining.set(constraint.id, sharedLeft - usableFromShared);
-        if (usableFromShared + 1e-9 < cap && usableFromShared + 1e-9 < headroom) {
-          // Record consumption so the election trace shows shared-pool drawdown.
-          sharedConsumption.push({
-            constraintId: constraint.id,
-            amountConsumed: usableFromShared,
-            headroomBefore: sharedLeft,
-            headroomAfter: sharedLeft - usableFromShared,
-          });
+        cap = Math.min(cap, sharedLeft);
+      }
+      if (skipLien) continue;
+
+      const contributed = Math.max(0, cap);
+      // Reserve contribution against every matched constraint identity so sibling
+      // liens cannot re-claim that underlying headroom. This is coverage-pool
+      // arithmetic only — do NOT append to sharedConsumption here (that ledger
+      // drives state deltas and must reflect transaction draws, not pool build).
+      if (contributed > EPS && matchedConstraints.length > 0) {
+        for (const constraint of matchedConstraints) {
+          const sharedLeft = lienSharedRemaining.get(constraint.id) ?? 0;
+          const after = Math.max(0, sharedLeft - contributed);
+          lienSharedRemaining.set(constraint.id, after);
           requirements.push({
             class: "SHARED_CAP",
             scope: { permissionId: lien.id, constraintId: constraint.id },
-            status: usableFromShared > 0 || cap === 0 ? "SATISFIED" : "FAILED",
+            status: "SATISFIED",
             detail:
-              `Independent lien ${lien.id} draws ${usableFromShared} from shared constraint ${constraint.id} ` +
-              `(election-wide conservation; not re-credited to sibling liens).`,
+              `Independent lien ${lien.id} binds ${contributed} against shared constraint ${constraint.id} ` +
+              `(election-wide conservation by constraint identity; not re-credited to sibling liens).`,
           });
         }
-        cap = usableFromShared;
       }
-      independentCoveragePool += Math.max(0, cap);
+      independentCoveragePool += contributed;
       independentClearedIds.push(lien.id);
     }
 
