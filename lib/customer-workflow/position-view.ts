@@ -184,7 +184,7 @@ export function buildPositionView(args: {
     missingInputs: [...new Set(missingInputs)],
     reviewBlockers: [...new Set(reviewBlockers)],
     authorityNote:
-      "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE. PR #268 authenticity + trusted-issuer gates are not merged on main. Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
+      "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless the engine marks utilizationRemainingAuthority=PRODUCTION_AUTHORITATIVE after authenticity + trusted-issuer gates. Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
     remainingAuthoritative: false,
   };
 }

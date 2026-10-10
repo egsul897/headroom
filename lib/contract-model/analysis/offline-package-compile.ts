@@ -60,6 +60,14 @@ import {
   type GreaterOfCapacityEval,
   type GreaterOfCompileResult,
 } from "../compiler/greater-of-assets-basket";
+import {
+  buildOperativeHandoffBundle,
+  type OperativeHandoffBundle,
+} from "../compiler/package-graph/operative-handoff";
+import {
+  isLegallyConfirmedAmendmentChain,
+  mayConsolidateOperativeAgreement,
+} from "../compiler/package-graph/instrument-grouping";
 
 export const OFFLINE_PACKAGE_COMPILE_VERSION = "offline-package-compile.v1";
 
@@ -172,6 +180,15 @@ export interface OfflinePackageCompileResult {
     context: { bundlesBuilt: number };
     coverageAudit: { findingCount: number; regionCount: number } | null;
     capacityHandoff: { attempted: boolean; outcome: string; detail: string };
+    operativeHandoff: {
+      instrumentKey: string;
+      identityConfirmed: boolean;
+      mayConsolidateOperative: boolean;
+      provisionCount: number;
+      confirmedOperativeCount: number;
+      provisionalBlockedCount: number;
+      authorityGate: "CONFIRMED_OPERATIVE_IDENTITY" | "PROVISIONAL_IDENTITY_BLOCKED" | "NO_OPERATIVE_STATE";
+    };
     fixedDollarVerticalSlice: {
       attempted: number;
       verifiedExecutable: number;
@@ -204,6 +221,8 @@ export interface OfflinePackageCompileResult {
     evidence: string[];
     sharedCapId: string | null;
   }[];
+  /** HEADROOM-3 → HEADROOM-1 operative identity handoff (confirmed vs provisional). */
+  operativeHandoff: OperativeHandoffBundle | null;
   humanInterventions: { kind: string; detail: string }[];
   summary: {
     supportedStructureUnits: number;
@@ -379,6 +398,43 @@ export async function compileFrozenDebtPackage(
   });
   const supersessionIndex: NodeSupersessionIndex =
     operativeState ? buildNodeSupersessionIndex([{ baseDocumentId, state: operativeState }]) : EMPTY_SUPERSESSION_INDEX;
+
+  // --- HEADROOM-3 operative handoff (confirmed vs provisional identity) ---
+  // Agent #1 compiler consumes confirmed operative document identity rather than
+  // provisional identity. Provisional associations fail closed for executable claims.
+  const operativeHandoff: OperativeHandoffBundle | null = operativeState
+    ? buildOperativeHandoffBundle({
+        packageGraph,
+        asOfDate,
+        operativeStates: [operativeState],
+      })
+    : null;
+  const instrumentGrouping = packageGraph.instruments.find((i) => i.instrumentKey === instrumentKey) ?? null;
+  const identityConfirmed =
+    instrumentGrouping != null &&
+    isLegallyConfirmedAmendmentChain(instrumentGrouping) &&
+    mayConsolidateOperativeAgreement(instrumentGrouping) &&
+    (instrumentGrouping.provisionalDocumentIds?.length ?? 0) === 0;
+  const provisionalBlockedCount =
+    operativeHandoff?.provisions.filter((p) => p.authorityClassification === "PROVISIONAL_IDENTITY_BLOCKED").length ?? 0;
+  const confirmedOperativeCount =
+    operativeHandoff?.provisions.filter((p) => p.authorityClassification === "CONFIRMED_OPERATIVE").length ?? 0;
+  // Fail closed only when the package graph marks the instrument provisional or the
+  // handoff explicitly blocks provisions. A missing instrument grouping (single-doc
+  // edge) does not by itself invent provisional identity.
+  const operativeAuthorityGate: OfflinePackageCompileResult["stages"]["operativeHandoff"]["authorityGate"] =
+    !operativeState
+      ? "NO_OPERATIVE_STATE"
+      : provisionalBlockedCount > 0 || (instrumentGrouping != null && !identityConfirmed)
+        ? "PROVISIONAL_IDENTITY_BLOCKED"
+        : "CONFIRMED_OPERATIVE_IDENTITY";
+  if (operativeAuthorityGate === "PROVISIONAL_IDENTITY_BLOCKED") {
+    humanInterventions.push({
+      kind: "OPERATIVE_IDENTITY_GATE",
+      detail:
+        "Canonical instrument identity is not confirmed (or provisions are PROVISIONAL_IDENTITY_BLOCKED); executable vertical-slice authority refused.",
+    });
+  }
 
   // --- discovery ---
   const discoveryCaller = options.discoveryCaller ?? getStageCaller();
@@ -613,13 +669,14 @@ export async function compileFrozenDebtPackage(
     }
 
     // Vertical slices: attempt only on catalog clause candidates.
+    // Provisional operative identity fails closed — never elevate to VERIFIED_EXECUTABLE.
     let executableAuthority: CompileUnitRepresentation["executableAuthority"] = "REFUSED";
     let fixedDollarSlice: CompileUnitRepresentation["fixedDollarSlice"] = null;
     let greaterOfSlice: CompileUnitRepresentation["greaterOfSlice"] = null;
     const isCatalogClause =
       /\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) &&
       (candidate.normalizedSourceRef.startsWith("def:") || /^\d+\.\d+\(/i.test(candidate.normalizedSourceRef));
-    if (isCatalogClause) {
+    if (isCatalogClause && operativeAuthorityGate !== "PROVISIONAL_IDENTITY_BLOCKED") {
       const fdCompile = compileFixedDollarBasket({
         companyId: options.companyId,
         instrumentKey,
@@ -675,10 +732,12 @@ export async function compileFrozenDebtPackage(
             families: candidate.families,
           });
           // No fabricated Total Assets in package compile — metric must be supplied by caller.
+          // Hypothetical metric stipulations are never treated as AUTHENTICATED_APPROVED production evidence.
           const hypo = evaluateGreaterOfCapacity({
             compile: goCompile,
             operativeSourceText: operativeText,
             authorityMode: "CALLER_STIPULATED_HYPOTHETICAL",
+            financialEvidenceMode: "CALLER_STIPULATED",
             totalAssetsUsd: null,
             asOf: asOfDate,
           });
@@ -686,6 +745,7 @@ export async function compileFrozenDebtPackage(
             compile: goCompile,
             operativeSourceText: operativeText,
             authorityMode: "PRODUCTION",
+            financialEvidenceMode: "STALE_OR_UNAUTHENTICATED",
             totalAssetsUsd: null,
             asOf: asOfDate,
           });
@@ -861,6 +921,15 @@ export async function compileFrozenDebtPackage(
       context: { bundlesBuilt: bundles.size },
       coverageAudit,
       capacityHandoff,
+      operativeHandoff: {
+        instrumentKey,
+        identityConfirmed,
+        mayConsolidateOperative: instrumentGrouping != null && mayConsolidateOperativeAgreement(instrumentGrouping),
+        provisionCount: operativeHandoff?.provisions.length ?? 0,
+        confirmedOperativeCount,
+        provisionalBlockedCount,
+        authorityGate: operativeAuthorityGate,
+      },
       fixedDollarVerticalSlice: {
         attempted: fixedDollarResults.length,
         verifiedExecutable: fixedDollarVerified,
@@ -879,6 +948,7 @@ export async function compileFrozenDebtPackage(
     fixedDollarResults,
     greaterOfResults,
     greaterOfSharedPairs,
+    operativeHandoff,
     humanInterventions,
     summary,
   };
