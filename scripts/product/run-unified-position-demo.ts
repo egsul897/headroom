@@ -111,8 +111,18 @@ async function main() {
         .filter((r) => r.kind === "CAPACITY" && r.usageState === "TRACKED");
       const sample = tracked[0];
       const hit = resolveRowAttribution(index, [joinCode]);
+      const applyCheck = applyAttributedUsageToCapacity({
+        currentCapacity: sample && sample.kind === "CAPACITY" ? sample.currentCapacity : 200,
+        capacityUnlimited: false,
+        attributed: hit,
+        supportsRemainingClaim: false,
+        authenticity: "SYNTHETIC_LABELED",
+        allowSyntheticRemaining: false,
+      });
       report.attributedUtilizationDemo = {
         persisted: false,
+        authenticity: "SYNTHETIC_LABELED",
+        label: "FIXTURE_ONLY — synthetic join; not a production completeness certificate",
         joinCode,
         trackedRowCount: tracked.length,
         sample:
@@ -124,22 +134,25 @@ async function main() {
                 used: sample.used,
                 remaining: sample.remaining,
                 utilizationPct: sample.utilizationPct,
+                publicationLabel: sample.publicationLabel ?? null,
               }
             : null,
-        applyCheck: applyAttributedUsageToCapacity({
-          currentCapacity: sample && sample.kind === "CAPACITY" ? sample.currentCapacity : 200,
-          capacityUnlimited: false,
-          attributed: hit,
-        }),
+        applyCheck,
+        note:
+          "Known attributed used may display; remaining withheld without APPROVED VERIFIED_COMPLETE/EMPTY cert (#237).",
       };
-      if (tracked.length > 0) {
-        (report.executableOutcomes as unknown[]).push({
-          kind: "ATTRIBUTED_BASKET_UTILIZATION",
+      // Never list uncertified remaining under executableOutcomes.
+      (report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations = [
+        ...(((report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations) ?? []),
+        {
+          kind: "SYNTHETIC_ATTRIBUTED_UTILIZATION",
           joinCode,
-          usedMillions: sample && sample.kind === "CAPACITY" ? sample.used : null,
-          remainingMillions: sample && sample.kind === "CAPACITY" ? sample.remaining : null,
-        });
-      }
+          usedMillions: applyCheck.used,
+          remainingMillions: applyCheck.remaining,
+          publicationLabel: applyCheck.publicationLabel,
+          notCustomerCertified: true,
+        },
+      ];
     } else {
       report.attributedUtilizationDemo = { persisted: false, joinCode: null, note: "No Permission.code to join" };
     }
@@ -168,6 +181,8 @@ async function main() {
     if (effects && !("refused" in effects)) {
       (report.executableOutcomes as unknown[]).push({
         kind: "LEGACY_PRE_POST_DEBT_INCURRENCE",
+        authority: "LEGACY_ENGINE",
+        notLegalVerification: true,
         amountMillions: 100,
         preTnl: effects.pre.totalNetLeverage,
         postTnl: effects.post.totalNetLeverage,
@@ -290,32 +305,48 @@ async function main() {
   }
   report.scenarios = results;
 
-  // FIXTURE verified executable path (synthetic — labeled; not customer CERTIFIED)
+  // FIXTURE verified path — SYNTHETIC company / IR only. Never a Coherent permission
+  // and never customer-certified execution for COMPANY_ID.
   const exercise = DEMO_EXERCISES.find((e) => !e.fixtureIr.blockVerifiedPackage) ?? DEMO_EXERCISES[0]!;
   const fixturePkg = buildFixtureVerifiedPackage(exercise);
   const fixtureRun = runFixtureCertifiedPath(exercise);
   report.fixtureVerifiedExecutable = {
     exerciseId: exercise.id,
+    authenticity: "SYNTHETIC_LABELED",
+    appliesToCustomerCompany: false,
+    customerCompanyId: COMPANY_ID,
+    fixtureCompanyId: "blocked" in fixturePkg ? null : (fixturePkg as { companyId?: string }).companyId ?? null,
     packageBlocked: "blocked" in fixturePkg && fixturePkg.blocked,
     runBlocked: fixtureRun.blocked,
     blocker: fixtureRun.blocker,
     capacityOutcome: fixtureRun.capacity?.outcome ?? null,
     simulationOutcome: fixtureRun.simulation?.outcome ?? null,
-    note: "FIXTURE_IR — SYNTHETIC VerifiedExecutionPackage; demonstrates verified pre/post when gates pass",
+    note:
+      "FIXTURE_IR — SYNTHETIC VerifiedExecutionPackage on a synthetic demo company. NOT a Coherent permission. NOT customer-certified. Demonstrates REQUIRE adapter pre/post when gates pass on fixture world only.",
   };
   if (!fixtureRun.blocked && fixtureRun.simulation?.outcome === "EXECUTED") {
-    (report.executableOutcomes as unknown[]).push({
-      kind: "FIXTURE_VERIFIED_SIMULATION",
-      exerciseId: exercise.id,
-      capacityOutcome: fixtureRun.capacity?.outcome,
-      simulationOutcome: fixtureRun.simulation.outcome,
-    });
+    (report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations = [
+      ...(((report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations) ?? []),
+      {
+        kind: "FIXTURE_VERIFIED_SIMULATION",
+        exerciseId: exercise.id,
+        capacityOutcome: fixtureRun.capacity?.outcome,
+        simulationOutcome: fixtureRun.simulation.outcome,
+        notCustomerCertified: true,
+        notCoherentPermission: true,
+      },
+    ];
   } else if (!fixtureRun.blocked && fixtureRun.capacity?.outcome === "EXECUTED") {
-    (report.executableOutcomes as unknown[]).push({
-      kind: "FIXTURE_VERIFIED_CAPACITY",
-      exerciseId: exercise.id,
-      capacityOutcome: fixtureRun.capacity.outcome,
-    });
+    (report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations = [
+      ...(((report as { fixtureOnlyDemonstrations?: unknown[] }).fixtureOnlyDemonstrations) ?? []),
+      {
+        kind: "FIXTURE_VERIFIED_CAPACITY",
+        exerciseId: exercise.id,
+        capacityOutcome: fixtureRun.capacity.outcome,
+        notCustomerCertified: true,
+        notCoherentPermission: true,
+      },
+    ];
   } else {
     (report.correctRefusals as unknown[]).push({
       label: "fixture_verified",

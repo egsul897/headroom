@@ -1,54 +1,34 @@
 # Unified Position · Simulate · Ask — status
 
 **Branch:** `cursor/unified-position-simulate-ask-05a7`  
-**Starting SHA:** `bae24ced33fdd6963d0615265a1e67cb181233e8`  
-**Ending SHA (this tip):** `ce0443f27ce049446d4c95f6655b9743fc676b73`  
+**Reconciled onto:** `origin/main` @ `7f1dd3a2` (includes #237 utilization authority)  
 **PR:** https://github.com/egsul897/headroom/pull/213  
-**Soft gates:** no paid inference; no invented CERTIFIED; hypothetical sims never post to ledger  
+**Soft gates:** no paid inference; no invented CERTIFIED; hypothetical sims never post to ledger; no remaining without completeness cert  
 
-## Deliverable summary (v2 — verified integration)
+## Authority model (post-#237)
 
-One company state, one shared calculation path, three interfaces — now with Phase 4C attribution and fail-closed verified simulation:
+| Claim | Required evidence |
+|---|---|
+| Known attributed used | Exact 4C ledger join (TRACKED) |
+| Remaining / AVAILABLE | APPROVED `VERIFIED_COMPLETE` or `VERIFIED_EMPTY` completeness cert |
+| Verified transaction | VEP + NS-4 cutoff + ledger + `evaluateVerifiedCapacity` / `simulateVerifiedTransaction` under **REQUIRE** |
+| LEGACY slider / Ask legacy | Explicitly labeled `LEGACY_ENGINE` — not legal verification |
 
-| Surface | Engine | Change |
+Attributed-without-cert → `KNOWN_ATTRIBUTED_ONLY` / remaining **null** (UI: “Not certified complete”).
+
+## Fixture labeling
+
+`secured-borrowing-100m` runs on `synthetic-conmed-form-co` only (`FIXTURE_IR`). Never presented as Coherent permission or customer-certified execution. Demo places it under `fixtureOnlyDemonstrations`, not customer `executableOutcomes`.
+
+## Related PRs
+
+| PR | Status | Role vs #213 |
 |---|---|---|
-| **Position** | `covenant-engine` + overview builder + **4C attribution** | TRACKED when Permission.code/action exact-matches ledger `ruleId`; else NOT_TRACKED (null, never 0) |
-| **Simulate** | same LEGACY sliders + **VerifiedSimulatePanel** | Shows precise verified blockers; LEGACY remains labeled |
-| **Ask** | North Star gates + `attemptVerifiedSimulate` + LEGACY bridge | Executable verified outcomes separated from correct refusals; `simulateHref` handoff |
-
-Certified 4A–4E remains separately gated (`VerifiedExecutionPackage`); never claimed from LEGACY figures. No NS-4 / 4C / VEP / REQUIRE bypass.
-
-## Shared engine map
-
-```
-Prisma FinancialSnapshot/State + Permissions + ContractLedgerUsage (4C)
-        │
-        ▼
-lib/covenant-engine + attributed-utilization + certified-simulate-bridge
-        │
-   ┌────┼────────────────────┐
-   ▼    ▼                    ▼
-Position SimulateClient   Ask (verified + legacy)
-   │         ▲                    │
-   │         └──── simulateHref ──┘
-   │
-NS-4 / 4C / VEP ──► attemptVerifiedSimulate (fail-closed when absent)
-```
-
-## Milestone checks
-
-- Financially supported ratio / pre-post TNL via `transaction-effects`
-- Basket with attributed utilization when 4C join hits
-- Slider amount changes re-run LEGACY engine (unchanged SimulateClient)
-- Verified pre/post when FIXTURE VEP + gates pass (demo); otherwise precise blockers
-- Binding restriction identified by source document/section
-- Ask ↔ Simulate consistency on identical draft fields
-- Correct refusal when evidence / VEP missing
+| #237 | **Merged** into main | Utilization remaining authority — #213 rebased onto it |
+| #243 | Open (other stack) | Sequential runtime → verified adapter; product unified-position already REQUIRE-only |
 
 ## Demo
 
 ```bash
 npx tsx scripts/product/run-unified-position-demo.ts coherent
 ```
-
-Artifact: `docs/product/unified-position/demo-report.json` (`executableOutcomes` vs `correctRefusals`)

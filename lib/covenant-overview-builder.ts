@@ -72,6 +72,11 @@ export interface CapacityRow {
   used: number | null;
   remaining: number | null;
   utilizationPct: number | null;
+  /**
+   * Utilization publication label (#237). Remaining is numeric only when
+   * SUPPORTED_REMAINING; attributed-without-cert is KNOWN_ATTRIBUTED_ONLY.
+   */
+  publicationLabel?: "GROSS_CONTRACTUAL" | "KNOWN_ATTRIBUTED_ONLY" | "SUPPORTED_REMAINING" | "NOT_TRACKED";
   bindingState: BindingState;
   status: RowStatus;
   reviewState: ReviewStateLabel;
@@ -280,6 +285,7 @@ function buildCapacityRowFromPermission(
       used: null,
       remaining: null,
       utilizationPct: null,
+      publicationLabel: "NOT_TRACKED",
       bindingState: "UNMODELED",
       status: "UNMODELED",
       reviewState: p.reviewStatus,
@@ -296,11 +302,13 @@ function buildCapacityRowFromPermission(
   const unlimited = capacity !== undefined && !isFinite(capacity);
   const currentCapacity = capacity !== undefined && isFinite(capacity) ? capacity : null;
   // Exact Permission.code / action → 4C ruleId join only. No fuzzy match; no invented zero.
+  // Remaining withheld without APPROVED completeness cert (#237) — production does not invent certs.
   const hit = resolveRowAttribution(attributed, [p.code, p.action]);
   const usage = applyAttributedUsageToCapacity({
     currentCapacity,
     capacityUnlimited: unlimited,
     attributed: hit,
+    supportsRemainingClaim: false,
   });
 
   return {
@@ -316,6 +324,7 @@ function buildCapacityRowFromPermission(
     used: usage.used,
     remaining: usage.remaining,
     utilizationPct: usage.utilizationPct,
+    publicationLabel: usage.publicationLabel,
     bindingState: bindingStateFor(bindingKeys, p.id, p.documentId, p.sectionRef, status),
     status,
     reviewState: p.reviewStatus,
@@ -343,6 +352,7 @@ function buildCapacityRowFromProvision(
     currentCapacity,
     capacityUnlimited: unlimited,
     attributed: hit,
+    supportsRemainingClaim: false,
   });
   return {
     kind: "CAPACITY",
@@ -357,6 +367,7 @@ function buildCapacityRowFromProvision(
     used: usage.used,
     remaining: usage.remaining,
     utilizationPct: usage.utilizationPct,
+    publicationLabel: usage.publicationLabel,
     bindingState: bindingStateFor(bindingKeys, undefined, provision.documentId, provision.sectionRef, status),
     status,
     reviewState: "NOT_TRACKED",

@@ -5,8 +5,9 @@ import {
   indexAttributedUsages,
   resolveRowAttribution,
   serializeAttributedUtilization,
+  type AttributedLedgerUsageInput,
 } from "@/lib/product/unified-position/attributed-utilization";
-import type { AttributedLedgerUsageInput } from "@/lib/product/unified-position/attributed-utilization";
+import { buildSharedProductCapacityViews, assertProductCapacityConsistency } from "@/lib/capacity";
 
 function usage(args: {
   usageId: string;
@@ -35,18 +36,21 @@ describe("attributed utilization", () => {
     expect(resolveRowAttribution(index, ["§7.02(b)"])?.used).toBe(35_000_000);
   });
 
-  it("converts ledger dollars to overview $M and keeps NOT_TRACKED honest", () => {
+  it("shows known attributed used but withholds remaining without completeness cert (#237)", () => {
     const index = indexAttributedUsages("co", [usage({ usageId: "u1", ruleId: "GEN", amountUsd: "50000000" })]);
     const hit = resolveRowAttribution(index, ["GEN"]);
     const tracked = applyAttributedUsageToCapacity({
       currentCapacity: 200,
       capacityUnlimited: false,
       attributed: hit,
+      supportsRemainingClaim: false,
     });
     expect(tracked.usageState).toBe("TRACKED");
     expect(tracked.used).toBe(50);
-    expect(tracked.remaining).toBe(150);
-    expect(tracked.utilizationPct).toBeCloseTo(25);
+    expect(tracked.remaining).toBeNull();
+    expect(tracked.utilizationPct).toBeNull();
+    expect(tracked.publicationLabel).toBe("KNOWN_ATTRIBUTED_ONLY");
+    expect(tracked.remainingStatus).toBe("GROSS_ONLY");
 
     const unknown = applyAttributedUsageToCapacity({
       currentCapacity: 200,
@@ -59,9 +63,78 @@ describe("attributed utilization", () => {
     expect(unknown.utilizationPct).toBeNull();
   });
 
+  it("publishes remaining only when supportsRemainingClaim is true (cert path)", () => {
+    const index = indexAttributedUsages("co", [usage({ usageId: "u1", ruleId: "GEN", amountUsd: "50000000" })]);
+    const hit = resolveRowAttribution(index, ["GEN"]);
+    const ok = applyAttributedUsageToCapacity({
+      currentCapacity: 200,
+      capacityUnlimited: false,
+      attributed: hit,
+      supportsRemainingClaim: true,
+    });
+    expect(ok.remaining).toBe(150);
+    expect(ok.utilizationPct).toBeCloseTo(25);
+    expect(ok.publicationLabel).toBe("SUPPORTED_REMAINING");
+  });
+
+  it("never publishes remaining for synthetic evidence without allowSyntheticRemaining", () => {
+    const index = indexAttributedUsages("co", [usage({ usageId: "u1", ruleId: "GEN", amountUsd: "75000000" })]);
+    const hit = resolveRowAttribution(index, ["GEN"]);
+    const blocked = applyAttributedUsageToCapacity({
+      currentCapacity: 10153.846153846154,
+      capacityUnlimited: false,
+      attributed: hit,
+      supportsRemainingClaim: true,
+      authenticity: "SYNTHETIC_LABELED",
+      allowSyntheticRemaining: false,
+    });
+    expect(blocked.used).toBe(75);
+    expect(blocked.remaining).toBeNull();
+    expect(blocked.publicationLabel).toBe("KNOWN_ATTRIBUTED_ONLY");
+  });
+
   it("round-trips serialization for client reflow", () => {
     const index = indexAttributedUsages("co", [usage({ usageId: "u1", ruleId: "X", amountUsd: "1000000" })]);
     const again = deserializeAttributedUtilization(serializeAttributedUtilization(index));
     expect(again?.byKey.get("X")?.used).toBe(1_000_000);
+  });
+
+  it("Position / Simulate / Ask share one capacity view for identical inputs", () => {
+    const views = buildSharedProductCapacityViews({
+      gross: {
+        amount: 200_000_000,
+        gateSatisfied: true,
+        modeled: true,
+        capacityRuleId: "GEN",
+      },
+      utilization: {
+        capacityRuleId: "GEN",
+        asOf: "2026-06-30",
+        records: [
+          {
+            usageId: "u1",
+            kind: "ATTRIBUTED_RULE",
+            amount: 50_000_000,
+            currency: "USD",
+            effectiveAsOf: "2026-06-30",
+            capacityRuleId: "GEN",
+            sharedCapacityId: null,
+            legacyBasketFamily: null,
+            entityKey: null,
+            status: "RECORDED",
+            approvalState: "APPROVED",
+            sourceLabel: "test",
+            authenticity: "AUTHENTIC",
+          },
+        ],
+        // no completeness cert → remaining withheld
+      },
+    });
+    expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
+    expect(views.POSITION.knownUtilization).toBe(50_000_000);
+    expect(views.POSITION.supportedRemainingCapacity).toBeNull();
+    expect(views.POSITION.mayPublishAvailable).toBe(false);
+    expect(views.SIMULATE.supportedRemainingCapacity).toBe(views.POSITION.supportedRemainingCapacity);
+    expect(views.ASK.publicationLabel).toBe(views.POSITION.publicationLabel);
   });
 });

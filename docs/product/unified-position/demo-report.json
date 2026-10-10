@@ -4,25 +4,15 @@
   "paidProvidersCalled": false,
   "postsToLedger": false,
   "authorityNote": "LEGACY_ENGINE · NOT_CERTIFIED_4E — demonstration; verified path fail-closed without VEP",
-  "startedAt": "2026-10-09T22:34:44.112Z",
+  "startedAt": "2026-10-10T00:10:05.206Z",
   "executableOutcomes": [
     {
-      "kind": "ATTRIBUTED_BASKET_UTILIZATION",
-      "joinCode": "ind_ratio_debt_fccr",
-      "usedMillions": 75,
-      "remainingMillions": 10078.846153846154
-    },
-    {
       "kind": "LEGACY_PRE_POST_DEBT_INCURRENCE",
+      "authority": "LEGACY_ENGINE",
+      "notLegalVerification": true,
       "amountMillions": 100,
       "preTnl": 1.2329411764705882,
       "postTnl": 1.291764705882353
-    },
-    {
-      "kind": "FIXTURE_VERIFIED_SIMULATION",
-      "exerciseId": "secured-borrowing-100m",
-      "capacityOutcome": "EXECUTED",
-      "simulationOutcome": "EXECUTED"
     }
   ],
   "correctRefusals": [
@@ -117,6 +107,8 @@
   },
   "attributedUtilizationDemo": {
     "persisted": false,
+    "authenticity": "SYNTHETIC_LABELED",
+    "label": "FIXTURE_ONLY — synthetic join; not a production completeness certificate",
     "joinCode": "ind_ratio_debt_fccr",
     "trackedRowCount": 1,
     "sample": {
@@ -124,16 +116,38 @@
       "sectionRef": "§3.3(a)",
       "currentCapacity": 10153.846153846154,
       "used": 75,
-      "remaining": 10078.846153846154,
-      "utilizationPct": 0.7386363636363636
+      "remaining": null,
+      "utilizationPct": null,
+      "publicationLabel": "KNOWN_ATTRIBUTED_ONLY"
     },
     "applyCheck": {
       "usageState": "TRACKED",
       "used": 75,
-      "remaining": 10078.846153846154,
-      "utilizationPct": 0.7386363636363636
-    }
+      "remaining": null,
+      "utilizationPct": null,
+      "publicationLabel": "KNOWN_ATTRIBUTED_ONLY",
+      "remainingStatus": "GROSS_ONLY"
+    },
+    "note": "Known attributed used may display; remaining withheld without APPROVED VERIFIED_COMPLETE/EMPTY cert (#237)."
   },
+  "fixtureOnlyDemonstrations": [
+    {
+      "kind": "SYNTHETIC_ATTRIBUTED_UTILIZATION",
+      "joinCode": "ind_ratio_debt_fccr",
+      "usedMillions": 75,
+      "remainingMillions": null,
+      "publicationLabel": "KNOWN_ATTRIBUTED_ONLY",
+      "notCustomerCertified": true
+    },
+    {
+      "kind": "FIXTURE_VERIFIED_SIMULATION",
+      "exerciseId": "secured-borrowing-100m",
+      "capacityOutcome": "EXECUTED",
+      "simulationOutcome": "EXECUTED",
+      "notCustomerCertified": true,
+      "notCoherentPermission": true
+    }
+  ],
   "ratioAndEffects": {
     "preTotalNetLeverage": 1.2329411764705882,
     "securedDebt": 2221,
@@ -1437,12 +1451,16 @@
   ],
   "fixtureVerifiedExecutable": {
     "exerciseId": "secured-borrowing-100m",
+    "authenticity": "SYNTHETIC_LABELED",
+    "appliesToCustomerCompany": false,
+    "customerCompanyId": "coherent",
+    "fixtureCompanyId": "synthetic-conmed-form-co",
     "packageBlocked": false,
     "runBlocked": false,
     "blocker": null,
     "capacityOutcome": "EXECUTED",
     "simulationOutcome": "EXECUTED",
-    "note": "FIXTURE_IR — SYNTHETIC VerifiedExecutionPackage; demonstrates verified pre/post when gates pass"
+    "note": "FIXTURE_IR — SYNTHETIC VerifiedExecutionPackage on a synthetic demo company. NOT a Coherent permission. NOT customer-certified. Demonstrates REQUIRE adapter pre/post when gates pass on fixture world only."
   },
   "crossDocumentPosition": {
     "documentCount": 2,
@@ -1486,5 +1504,5 @@
     },
     "note": "Permission under one agreement does not override a prohibition under another."
   },
-  "finishedAt": "2026-10-09T22:34:59.278Z"
+  "finishedAt": "2026-10-10T00:10:19.493Z"
 }

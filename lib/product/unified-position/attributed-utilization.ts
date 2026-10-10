@@ -167,26 +167,77 @@ export function deserializeAttributedUtilization(
 
 /**
  * Apply Phase 4C attributed usage onto an overview capacity row.
- * Ledger amounts are USD dollars; overview `currentCapacity` is $M — convert so
- * remaining / utilization stay in millions. Never invent zero for UNKNOWN.
+ *
+ * Aligns with lib/capacity utilization-authority (#237):
+ * - Attributed usage may be shown as known TRACKED used.
+ * - Remaining / utilization% require an APPROVED completeness certificate
+ *   (VERIFIED_COMPLETE or VERIFIED_EMPTY). Attributed alone never proves completeness.
+ * - Synthetic / fixture-only evidence never publishes customer remaining unless
+ *   `allowSyntheticRemaining` is explicitly set (tests/demos only).
+ *
+ * Ledger amounts are USD dollars; overview `currentCapacity` is $M.
+ * Never invent zero for UNKNOWN.
  */
 export function applyAttributedUsageToCapacity(args: {
   currentCapacity: number | null;
   capacityUnlimited: boolean;
   attributed: AttributedUsageBucket | null;
+  /**
+   * When true, attributed usage is complete for this path (APPROVED
+   * VERIFIED_COMPLETE / VERIFIED_EMPTY certificate present). Production loaders
+   * must not set this without a real cert.
+   */
+  supportsRemainingClaim?: boolean;
+  /** Test/demo only — never set by production overview loaders. */
+  allowSyntheticRemaining?: boolean;
+  /** Marks the attributed evidence as synthetic/fixture-labeled. */
+  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
 }): {
   usageState: "TRACKED" | "NOT_TRACKED";
   used: number | null;
   remaining: number | null;
   utilizationPct: number | null;
+  publicationLabel: "GROSS_CONTRACTUAL" | "KNOWN_ATTRIBUTED_ONLY" | "SUPPORTED_REMAINING" | "NOT_TRACKED";
+  remainingStatus: "GROSS_ONLY" | "REMAINING_SUPPORTED" | "NOT_TRACKED";
 } {
   if (!args.attributed) {
-    return { usageState: "NOT_TRACKED", used: null, remaining: null, utilizationPct: null };
+    return {
+      usageState: "NOT_TRACKED",
+      used: null,
+      remaining: null,
+      utilizationPct: null,
+      publicationLabel: "NOT_TRACKED",
+      remainingStatus: "NOT_TRACKED",
+    };
   }
   // Ledger MONEY → overview $M
   const used = args.attributed.used / 1_000_000;
+  const syntheticBlocked =
+    args.authenticity === "SYNTHETIC_LABELED" && args.allowSyntheticRemaining !== true;
+  const mayClaimRemaining =
+    args.supportsRemainingClaim === true && !syntheticBlocked;
+
+  if (!mayClaimRemaining) {
+    // Known attributed used is honest; remaining withheld without completeness cert.
+    return {
+      usageState: "TRACKED",
+      used,
+      remaining: null,
+      utilizationPct: null,
+      publicationLabel: "KNOWN_ATTRIBUTED_ONLY",
+      remainingStatus: "GROSS_ONLY",
+    };
+  }
+
   if (args.capacityUnlimited || args.currentCapacity == null || !Number.isFinite(args.currentCapacity)) {
-    return { usageState: "TRACKED", used, remaining: null, utilizationPct: null };
+    return {
+      usageState: "TRACKED",
+      used,
+      remaining: null,
+      utilizationPct: null,
+      publicationLabel: "SUPPORTED_REMAINING",
+      remainingStatus: "REMAINING_SUPPORTED",
+    };
   }
   const remaining = args.currentCapacity - used;
   const utilizationPct = args.currentCapacity > 0 ? (used / args.currentCapacity) * 100 : null;
@@ -195,5 +246,7 @@ export function applyAttributedUsageToCapacity(args: {
     used,
     remaining: Number.isFinite(remaining) ? remaining : null,
     utilizationPct: utilizationPct != null && Number.isFinite(utilizationPct) ? utilizationPct : null,
+    publicationLabel: "SUPPORTED_REMAINING",
+    remainingStatus: "REMAINING_SUPPORTED",
   };
 }

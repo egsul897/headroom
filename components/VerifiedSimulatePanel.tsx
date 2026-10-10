@@ -57,12 +57,16 @@ export function VerifiedSimulatePanel({
       )}
       {summary.executable && (
         <Banner tone="amber">
-          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"}. Hypothetical —
-          does not post to the ledger.
+          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"} under REQUIRE.
+          Hypothetical — does not post to the ledger. Not a legal approval.
         </Banner>
       )}
       <div className="row-note" style={{ marginTop: 8 }}>
         {summary.authorityNote}
+      </div>
+      <div className="row-note" style={{ marginTop: 4 }}>
+        LEGACY_ENGINE slider results below are a separate labeled analysis. Matching LEGACY status is not
+        legal verification and must not be read as CERTIFIED / Phase 4E.
       </div>
     </Card>
   );

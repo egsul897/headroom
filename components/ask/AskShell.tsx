@@ -132,8 +132,9 @@ export function AskShell({
         <section className="home-card" style={{ marginTop: 12 }}>
           <h2 className="home-headline">Transaction analysis (structured)</h2>
           <p className="home-detail" style={{ marginBottom: 8 }}>
-            LEGACY_ENGINE figures use the same covenant-engine as Simulate. Certified path remains separately gated.
-            Hypothetical results never post to the ledger.
+            LEGACY_ENGINE figures use the same covenant-engine as Simulate and are labeled separately from
+            verified REQUIRE outcomes. Matching LEGACY status is not legal verification. Certified / verified
+            path remains separately gated. Hypothetical results never post to the ledger.
           </p>
           <pre style={{ whiteSpace: "pre-wrap", fontSize: 12, overflow: "auto" }}>{txnJson}</pre>
         </section>

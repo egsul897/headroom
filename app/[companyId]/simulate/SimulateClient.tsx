@@ -158,6 +158,11 @@ export function SimulateClient({
           Sliders invoke the same LEGACY_ENGINE simulation — hypothetical results never post to the ledger.
         </Banner>
       )}
+      <Banner tone="amber">
+        LEGACY_ENGINE slider analysis — NOT CERTIFIED / NOT Phase 4E. Matching LEGACY status with Ask is
+        consistency of the shared engine, not legal verification. Verified execution requires VEP + NS-4 +
+        REQUIRE (see panel above).
+      </Banner>
       <Card>
         <div className="card-title">What are you testing?</div>
         <div className="card-subtitle">
