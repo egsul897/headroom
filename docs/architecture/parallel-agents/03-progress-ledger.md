@@ -364,3 +364,11 @@
 - Tip `887d701168cc` — all 8 CI checks SUCCESS · MERGEABLE/CLEAN
 - Human merge recommendation for Priority A stack stands: merge #251 only after re-fetch; then close #243/#223 as superseded
 - No auto-merge by coordinator
+
+---
+
+## 2026-10-10T00:42:00Z — CANONICAL INTEGRATED PRODUCT CANDIDATE
+
+- PR #253 tip `db5f1ef22f9f4def02253639167d62b7d28c6464` on `cursor/canonical-integrated-product-10ff`
+- Base #250 ac0ff925 + #231 debt/lien/packageAuthoritative; #237 util preserved; #251 superseded
+- Local: tsc · phase3 481 · core/cycle6 green; awaiting CI
