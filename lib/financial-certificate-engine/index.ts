@@ -61,9 +61,16 @@ export {
 export {
   labelAuthority,
   classifyApprovedSnapshotAuthority,
+  isTestOrNonProductionReviewerIdentity,
+  mintTrustedProductionApprovalChannel,
+  isMintedTrustedProductionApprovalChannel,
   FIXTURE_AUTHORITY,
 } from "./authority";
-export { publishRemainingCapacity } from "./utilization-honesty";
+export {
+  publishRemainingCapacity,
+  mintTrustedCompletenessCertificate,
+  isMintedTrustedCompleteness,
+} from "./utilization-honesty";
 export {
   evaluateVerifiedCapacityWithApprovedFinancials,
   runVerifiedSequentialTransactions,
@@ -116,9 +123,11 @@ export type {
 export type {
   FinancialInputAuthorityKind,
   FinancialInputAuthorityLabel,
+  TrustedProductionApprovalChannelToken,
 } from "./authority";
 export type {
   UtilizationCompletenessCertificate,
+  TrustedCompletenessCertificate,
   AttributedUtilizationRecord,
   RemainingPublication,
 } from "./utilization-honesty";
@@ -126,5 +135,7 @@ export type {
   VerifiedPathFinancialBase,
   VerifiedPathCapacityEval,
   VerifiedSequentialStepResult,
+  VerifiedSequentialRunResult,
+  VerifiedSequentialSimulationView,
 } from "./verified-path";
 export * from "./fixtures";

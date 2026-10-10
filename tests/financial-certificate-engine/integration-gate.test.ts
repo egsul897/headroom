@@ -21,6 +21,8 @@ import {
   SYNTHETIC_FIXTURE_AUTHORITY,
   classifyApprovedSnapshotAuthority,
   publishRemainingCapacity,
+  mintTrustedCompletenessCertificate,
+  mintTrustedProductionApprovalChannel,
   evaluateVerifiedCapacityWithApprovedFinancials,
   runVerifiedSequentialTransactions,
   VERIFIED_EXECUTION_POLICY,
@@ -88,6 +90,16 @@ describe("gate §2 — Matthews authentic contractual EBITDA + addbacks", () => 
 
     expect(run.certificate!.definitions.some((d) => /Consolidated EBITDA/i.test(d.term))).toBe(true);
     expect(run.reconciliation.findings.some((f) => f.code === "PRO_FORMA_ACQUISITION")).toBe(true);
+
+    // Missing pro forma synergy $ — documented, never inferred.
+    const synergyAdj = run.certificate!.adjustments.find(
+      (a) => a.kind === "PRO_FORMA" && /synerg/i.test(a.label),
+    );
+    expect(synergyAdj).toBeDefined();
+    expect(synergyAdj!.amountMissing).toBe(true);
+    expect(synergyAdj!.amountMillions == null).toBe(true);
+    // Contractual EBITDA must equal sourced build-up, not build-up + invented synergy.
+    expect(contractual?.value).toBeCloseTo(128.313, 3);
   });
 });
 
@@ -104,10 +116,40 @@ describe("gate §3 — authority classification", () => {
     expect(testApproval.kind).toBe("TEST_ATTRIBUTED_APPROVAL");
     expect(testApproval.realReviewerApproval).toBe(false);
 
+    // Caller-supplied productionContext alone never confers REAL approval.
+    const contextOnly = classifyApprovedSnapshotAuthority({
+      reviewedBy: "jane.counsel@acme.com",
+      approvalRef: "board-minutes-2026-06",
+      productionContext: true,
+    });
+    expect(contextOnly.kind).toBe("TEST_ATTRIBUTED_APPROVAL");
+
+    const channel = mintTrustedProductionApprovalChannel({ authorizedApplicationLoader: true });
+
+    // Test email + minted channel still cannot be REAL.
+    const testEmailWithChannel = classifyApprovedSnapshotAuthority({
+      reviewedBy: "fce-reviewer@example.com",
+      approvalRef: "fce-approval-bridge-1",
+      productionContext: true,
+      trustedProductionApprovalChannel: channel,
+    });
+    expect(testEmailWithChannel.kind).toBe("TEST_ATTRIBUTED_APPROVAL");
+
+    // Bare boolean channel from user JSON never confers REAL.
+    expect(
+      classifyApprovedSnapshotAuthority({
+        reviewedBy: "jane.counsel@acme.com",
+        approvalRef: "board-minutes-2026-06",
+        productionContext: true,
+        trustedProductionApprovalChannel: true,
+      }).kind,
+    ).toBe("TEST_ATTRIBUTED_APPROVAL");
+
     const real = classifyApprovedSnapshotAuthority({
       reviewedBy: "jane.counsel@acme.com",
       approvalRef: "board-minutes-2026-06",
       productionContext: true,
+      trustedProductionApprovalChannel: channel,
     });
     expect(real.kind).toBe("REAL_REVIEWER_APPROVED");
   });
@@ -306,22 +348,28 @@ describe("gate §5–§7 — verified-execution sequential post-state", () => {
     });
 
     expect(seq.steps).toHaveLength(2);
+    expect(seq.policy).toBe(VERIFIED_EXECUTION_POLICY);
     expect(seq.steps[0]!.simulation.outcome).toBe("EXECUTED");
     expect(seq.steps[1]!.simulation.outcome).toBe("EXECUTED");
     expect(seq.sequentialPostStateConsumed).toBe(true);
+    expect(seq.sequentialRun.abortedAtStepId).toBeNull();
     expect(seq.steps[1]!.postLedger.length).toBeGreaterThanOrEqual(seq.steps[0]!.postLedger.length);
     expect(seq.steps[1]!.ledgerConsumedFromPrior).toBe(true);
     expect(seq.steps[1]!.capacityConstraintsReevaluated).toBe(true);
     expect(seq.steps[1]!.postAppliedUsageIds.length).toBeGreaterThan(0);
+    // Independent post-check matched simulation post-state (#243).
+    expect(seq.steps[0]!.runnerStep.independentPostMatchesSimulation).toBe(true);
+    expect(seq.steps[1]!.runnerStep.independentPostMatchesSimulation).toBe(true);
   });
 });
 
-describe("gate §6 — remaining requires utilization completeness (#234)", () => {
+describe("gate §6 — remaining requires #237 utilization completeness", () => {
   it("refuses remaining from approved financials / attributed rows without completeness cert", () => {
     const grossOnly = publishRemainingCapacity({
       capacityRuleId: "general_debt",
       asOf: "2026-06-30",
       grossCapacityMillions: 680,
+      gateSatisfied: true,
       records: [
         {
           usageId: "u1",
@@ -329,6 +377,8 @@ describe("gate §6 — remaining requires utilization completeness (#234)", () =
           amountMillions: 25,
           effectiveAsOf: "2026-01-01",
           status: "ACTIVE",
+          authenticity: "AUTHENTIC",
+          approvalState: "APPROVED",
         },
       ],
       completenessCertificate: null,
@@ -336,11 +386,23 @@ describe("gate §6 — remaining requires utilization completeness (#234)", () =
     expect(grossOnly.status).toBe("GROSS_ONLY");
     expect(grossOnly.supportsRemainingClaim).toBe(false);
     expect(grossOnly.remainingCapacityMillions).toBeNull();
+    expect(grossOnly.verified.publicationLabel).toBe("GROSS_CONTRACTUAL");
 
+    const trustedCert = mintTrustedCompletenessCertificate(
+      {
+        capacityRuleId: "general_debt",
+        asOf: "2026-06-30",
+        kind: "VERIFIED_COMPLETE",
+        approvalState: "APPROVED",
+        sourceLabel: "counsel utilization schedule",
+      },
+      { authorizedApplicationLoader: true, provenanceLabel: "counsel schedule loader" },
+    );
     const supported = publishRemainingCapacity({
       capacityRuleId: "general_debt",
       asOf: "2026-06-30",
       grossCapacityMillions: 680,
+      gateSatisfied: true,
       records: [
         {
           usageId: "u1",
@@ -348,18 +410,58 @@ describe("gate §6 — remaining requires utilization completeness (#234)", () =
           amountMillions: 25,
           effectiveAsOf: "2026-01-01",
           status: "ACTIVE",
+          authenticity: "AUTHENTIC",
+          approvalState: "APPROVED",
         },
       ],
-      completenessCertificate: {
-        capacityRuleId: "general_debt",
-        asOf: "2026-06-30",
-        kind: "VERIFIED_COMPLETE",
-        approvalState: "APPROVED",
-        sourceLabel: "counsel utilization schedule",
-      },
+      completenessCertificate: trustedCert,
     });
     expect(supported.status).toBe("REMAINING_SUPPORTED");
     expect(supported.remainingCapacityMillions).toBe(655);
+    expect(supported.verified.mayPublishAvailable).toBe(true);
+
+    // Mixed currency attributed rows → remaining refused (#237).
+    const mixedFx = publishRemainingCapacity({
+      capacityRuleId: "general_debt",
+      asOf: "2026-06-30",
+      grossCapacityMillions: 680,
+      currency: "USD",
+      gateSatisfied: true,
+      records: [
+        {
+          usageId: "u-usd",
+          capacityRuleId: "general_debt",
+          amountMillions: 10,
+          effectiveAsOf: "2026-01-01",
+          status: "ACTIVE",
+          currency: "USD",
+          authenticity: "AUTHENTIC",
+          approvalState: "APPROVED",
+        },
+        {
+          usageId: "u-eur",
+          capacityRuleId: "general_debt",
+          amountMillions: 10,
+          effectiveAsOf: "2026-01-01",
+          status: "ACTIVE",
+          currency: "EUR",
+          authenticity: "AUTHENTIC",
+          approvalState: "APPROVED",
+        },
+      ],
+      completenessCertificate: mintTrustedCompletenessCertificate(
+        {
+          capacityRuleId: "general_debt",
+          asOf: "2026-06-30",
+          kind: "VERIFIED_COMPLETE",
+          approvalState: "APPROVED",
+          sourceLabel: "mixed fx schedule",
+        },
+        { authorizedApplicationLoader: true, provenanceLabel: "mixed-fx loader" },
+      ),
+    });
+    expect(mixedFx.supportsRemainingClaim).toBe(false);
+    expect(mixedFx.remainingCapacityMillions).toBeNull();
   });
 });
 

@@ -1,29 +1,54 @@
 /**
- * FCE remaining-capacity publication — thin adapter over canonical #237
- * `lib/capacity` utilization authority.
+ * Utilization honesty adapter — delegates to canonical #237 `lib/capacity`.
  *
- * Do not maintain a parallel completeness / remaining decision here.
- * Remaining = gross − usage requires approved attributed evidence AND an
- * APPROVED completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).
- * Empty / unattributed ledgers are UNKNOWN — never silent zero.
+ * Do not recreate #234 or maintain a parallel remaining decision.
+ * Approved financial metrics alone never establish authoritative remaining.
+ *
+ * Fail-closed metadata defaults:
+ * - Missing approvalState → evidence not applied as APPROVED
+ * - Missing authenticity → evidence not treated as AUTHENTIC
+ * - Missing gateSatisfied → gate not affirmatively satisfied
+ * - Completeness certificates require trusted provenance, not shape alone
  */
 
-import { resolveUtilization } from "@/lib/capacity/utilization-resolver";
-import type {
-  UtilizationCompletenessCertificate as CanonicalCompletenessCertificate,
-  UtilizationEvidenceRecord,
-} from "@/lib/capacity/utilization-types";
+import {
+  computeVerifiedRemaining,
+  evidenceFromAttributedLedger,
+  type GrossCapacityInput,
+  type VerifiedRemainingResult,
+  type UtilizationCompletenessCertificate,
+  type UtilizationEvidenceRecord,
+} from "@/lib/capacity";
+import {
+  isMintedTrustedCompleteness,
+  type TrustedCompletenessCertificate,
+} from "./trusted-provenance";
 
-/** Re-export canonical certificate shape for FCE callers. */
-export type UtilizationCompletenessCertificate = CanonicalCompletenessCertificate;
+export type { UtilizationCompletenessCertificate, VerifiedRemainingResult, GrossCapacityInput };
+export type { TrustedCompletenessCertificate } from "./trusted-provenance";
+export { mintTrustedCompletenessCertificate, isMintedTrustedCompleteness } from "./trusted-provenance";
 
+/** FCE-facing attributed usage row (millions). Metadata must be explicit. */
 export interface AttributedUtilizationRecord {
   usageId: string;
   capacityRuleId: string;
-  /** Amount in millions (FCE convention); converted to absolute units for #237. */
   amountMillions: number;
   effectiveAsOf: string;
   status: "ACTIVE" | "RECORDED" | "SUPERSEDED" | "REVERSED";
+  currency?: string;
+  /**
+   * Required for remaining support. Omitted → record excluded (not defaulted
+   * to AUTHENTIC).
+   */
+  authenticity?: UtilizationEvidenceRecord["authenticity"];
+  /**
+   * Required for remaining support. Omitted → record excluded (not defaulted
+   * to APPROVED).
+   */
+  approvalState?: UtilizationEvidenceRecord["approvalState"];
+  sourceLabel?: string;
+  sharedCapacityId?: string | null;
+  entityKey?: string | null;
 }
 
 export type RemainingPublication =
@@ -33,6 +58,7 @@ export type RemainingPublication =
       remainingCapacityMillions: null;
       supportsRemainingClaim: false;
       reason: string;
+      verified: VerifiedRemainingResult;
     }
   | {
       status: "REMAINING_SUPPORTED";
@@ -41,6 +67,7 @@ export type RemainingPublication =
       supportsRemainingClaim: true;
       knownUtilizationMillions: number;
       reason: string;
+      verified: VerifiedRemainingResult;
     }
   | {
       status: "REFUSED";
@@ -48,30 +75,53 @@ export type RemainingPublication =
       remainingCapacityMillions: null;
       supportsRemainingClaim: false;
       reason: string;
+      verified: VerifiedRemainingResult;
     };
 
-function toEvidence(records: readonly AttributedUtilizationRecord[]): UtilizationEvidenceRecord[] {
-  return records.map((r) => ({
-    usageId: r.usageId,
-    kind: "ATTRIBUTED_RULE" as const,
-    // Keep millions as the shared unit for FCE gross + utilization.
-    amount: r.amountMillions,
-    currency: "USD_MILLIONS",
-    effectiveAsOf: r.effectiveAsOf,
-    capacityRuleId: r.capacityRuleId,
-    sharedCapacityId: null,
-    legacyBasketFamily: null,
-    entityKey: null,
-    status: r.status === "REVERSED" ? "REVERSED" : r.status === "SUPERSEDED" ? "SUPERSEDED" : "ACTIVE",
-    approvalState: "APPROVED" as const,
-    sourceLabel: "fce-attributed-utilization",
-    authenticity: "AUTHENTIC" as const,
-  }));
+/**
+ * Map FCE rows to #237 evidence. Records missing authenticity or approvalState
+ * are omitted — never silently upgraded to AUTHENTIC / APPROVED.
+ */
+function toEvidence(records: readonly AttributedUtilizationRecord[]): {
+  evidence: UtilizationEvidenceRecord[];
+  excludedUntrusted: string[];
+} {
+  const evidence: UtilizationEvidenceRecord[] = [];
+  const excludedUntrusted: string[] = [];
+  for (const r of records) {
+    if (r.authenticity == null || r.approvalState == null) {
+      excludedUntrusted.push(r.usageId);
+      continue;
+    }
+    evidence.push(
+      evidenceFromAttributedLedger({
+        usageId: r.usageId,
+        amount: r.amountMillions,
+        currency: r.currency ?? "USD",
+        effectiveAsOf: r.effectiveAsOf,
+        capacityRuleId: r.capacityRuleId,
+        sharedCapacityId: r.sharedCapacityId ?? null,
+        status:
+          r.status === "ACTIVE" || r.status === "RECORDED"
+            ? r.status === "RECORDED"
+              ? "RECORDED"
+              : "ACTIVE"
+            : r.status === "SUPERSEDED"
+              ? "SUPERSEDED"
+              : "REVERSED",
+        approvalState: r.approvalState,
+        sourceLabel: r.sourceLabel ?? "fce-attributed-utilization",
+        authenticity: r.authenticity,
+        kind: r.sharedCapacityId ? "ATTRIBUTED_SHARED_POOL" : "ATTRIBUTED_RULE",
+      }),
+    );
+  }
+  return { evidence, excludedUntrusted };
 }
 
 /**
- * Publish remaining capacity via #237 `resolveUtilization`.
- * Never invents remaining without completeness; never labels AVAILABLE.
+ * Publish remaining only through #237 `computeVerifiedRemaining`.
+ * Units: FCE millions throughout (gross and utilization share the same unit).
  */
 export function publishRemainingCapacity(args: {
   capacityRuleId: string;
@@ -79,58 +129,118 @@ export function publishRemainingCapacity(args: {
   grossCapacityMillions: number | null;
   unlimited?: boolean;
   records: readonly AttributedUtilizationRecord[];
-  completenessCertificate?: UtilizationCompletenessCertificate | null;
-  /** Family-level ledger rows exist but none attribute to this rule. */
+  completenessCertificate?: UtilizationCompletenessCertificate | TrustedCompletenessCertificate | null;
   unattributedLegacyBasketPresent?: boolean;
+  currency?: string;
+  /**
+   * Must be explicitly true for AVAILABLE / remaining publication.
+   * Omitted or false → gate not affirmatively satisfied.
+   */
+  gateSatisfied?: boolean;
+  modeled?: boolean;
+  /** Test/demo only — never set by production loaders. */
+  allowSyntheticRemaining?: boolean;
 }): RemainingPublication {
-  if (args.grossCapacityMillions == null && !args.unlimited) {
+  const currency = args.currency ?? "USD";
+  const { evidence, excludedUntrusted } = toEvidence(args.records);
+  // Only Symbol-branded minted certs count — look-alike JSON flags are ignored.
+  const trustedCert = isMintedTrustedCompleteness(args.completenessCertificate)
+    ? {
+        capacityRuleId: args.completenessCertificate.capacityRuleId,
+        asOf: args.completenessCertificate.asOf,
+        kind: args.completenessCertificate.kind,
+        approvalState: args.completenessCertificate.approvalState,
+        sourceLabel: args.completenessCertificate.sourceLabel,
+      }
+    : null;
+
+  const untrustedCertPresent =
+    args.completenessCertificate != null && !isMintedTrustedCompleteness(args.completenessCertificate);
+
+  // Missing gateSatisfied is not an affirmative pass.
+  const gateSatisfied = args.gateSatisfied === true;
+
+  const gross: GrossCapacityInput = {
+    capacityRuleId: args.capacityRuleId,
+    amount: args.grossCapacityMillions,
+    unlimited: args.unlimited,
+    gateSatisfied,
+    modeled: args.modeled ?? (args.grossCapacityMillions != null || !!args.unlimited),
+    currency,
+  };
+
+  const verified = computeVerifiedRemaining({
+    gross,
+    utilization: {
+      capacityRuleId: args.capacityRuleId,
+      asOf: args.asOf,
+      currency,
+      records: evidence,
+      completenessCertificate: trustedCert,
+      unattributedLegacyBasketPresent: args.unattributedLegacyBasketPresent,
+    },
+    allowSyntheticRemaining: args.allowSyntheticRemaining,
+  });
+
+  const trustNotes: string[] = [];
+  if (excludedUntrusted.length > 0) {
+    trustNotes.push(
+      `Excluded ${excludedUntrusted.length} utilization row(s) lacking explicit authenticity/approvalState (never defaulted to AUTHENTIC/APPROVED).`,
+    );
+  }
+  if (untrustedCertPresent) {
+    trustNotes.push(
+      "Completeness certificate present without minted trusted provenance — ignored for remaining claims.",
+    );
+  }
+  if (args.gateSatisfied !== true) {
+    trustNotes.push("gateSatisfied not affirmatively true — cannot publish AVAILABLE.");
+  }
+
+  const noteWithTrust = trustNotes.length
+    ? `${verified.note} ${trustNotes.join(" ")}`
+    : verified.note;
+
+  if (verified.remainingStatus === "REFUSED" || verified.remainingStatus === "NOT_DETERMINED") {
     return {
       status: "REFUSED",
       grossCapacityMillions: null,
       remainingCapacityMillions: null,
       supportsRemainingClaim: false,
-      reason: "Gross capacity not determined — remaining not claimed.",
+      reason: noteWithTrust,
+      verified,
     };
   }
 
-  if (args.unlimited) {
+  // Remaining only when #237 supports it AND we have trusted completeness provenance
+  // (or verified empty with trusted cert) AND gate affirmatively satisfied for AVAILABLE.
+  if (
+    verified.remainingStatus === "REMAINING_SUPPORTED" &&
+    verified.supportedRemaining != null &&
+    verified.grossCapacity != null &&
+    trustedCert != null &&
+    gateSatisfied
+  ) {
     return {
-      status: "GROSS_ONLY",
-      grossCapacityMillions: null,
-      remainingCapacityMillions: null,
-      supportsRemainingClaim: false,
-      reason:
-        "Unlimited gross gate does not publish numeric remaining without utilization completeness (#237).",
+      status: "REMAINING_SUPPORTED",
+      grossCapacityMillions: verified.grossCapacity,
+      remainingCapacityMillions: verified.supportedRemaining,
+      supportsRemainingClaim: true,
+      knownUtilizationMillions: verified.knownUtilization ?? 0,
+      reason: noteWithTrust,
+      verified,
     };
   }
 
-  const resolution = resolveUtilization({
-    capacityRuleId: args.capacityRuleId,
-    asOf: args.asOf,
-    currency: "USD_MILLIONS",
-    records: toEvidence(args.records),
-    completenessCertificate: args.completenessCertificate ?? null,
-    unattributedLegacyBasketPresent: args.unattributedLegacyBasketPresent,
-  });
-
-  if (!resolution.supportsRemainingClaim || resolution.attributedAmount == null) {
-    return {
-      status: "GROSS_ONLY",
-      grossCapacityMillions: args.grossCapacityMillions,
-      remainingCapacityMillions: null,
-      supportsRemainingClaim: false,
-      reason: resolution.note || resolution.blockers.join("; ") || "Remaining not supported by #237 utilization authority.",
-    };
-  }
-
-  const known = resolution.attributedAmount;
-  const remaining = Math.max(0, args.grossCapacityMillions! - known);
   return {
-    status: "REMAINING_SUPPORTED",
-    grossCapacityMillions: args.grossCapacityMillions!,
-    remainingCapacityMillions: remaining,
-    supportsRemainingClaim: true,
-    knownUtilizationMillions: known,
-    reason: resolution.note,
+    status: "GROSS_ONLY",
+    grossCapacityMillions:
+      verified.grossCapacity == null ? args.grossCapacityMillions : verified.grossCapacity,
+    remainingCapacityMillions: null,
+    supportsRemainingClaim: false,
+    reason: args.unattributedLegacyBasketPresent
+      ? `${noteWithTrust} Unattributed legacy basket rows present — remaining refused (#237).`
+      : noteWithTrust,
+    verified,
   };
 }

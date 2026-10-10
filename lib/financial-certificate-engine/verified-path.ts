@@ -1,28 +1,35 @@
 /**
- * Canonical verified-execution path for FCE-approved financial inputs (gate §7).
+ * Canonical verified-execution path for FCE-approved financial inputs.
  *
- * Product capacity / sequential IR evaluation enters Phase 4 only through
- * `evaluateVerifiedCapacity` / `simulateVerifiedTransaction`.
- * This module does not import `contract-model/runtime/*` and does not
- * reimplement capacity arithmetic.
+ * Production financial-capacity execution enters Phase 4 only through the
+ * #243 certified sequential-execution boundary:
+ *   openVerifiedSequentialWorld → runSequentialTransactions
+ *     → evaluateVerifiedCapacity / simulateVerifiedTransaction (REQUIRE)
  *
- * Financial-core sequential chaining (cash/debt pro forma) remains in
- * `sequential-financial.ts` and coordinates with Agent 4 TE-D3 (#223) for
- * IR overlay composition. Here we demonstrate step-2 consumption of
- * step-1's complete post-state (capacity + proposed ledger usages + financial
- * inputs) via the verified boundary alone.
+ * TE-D3 financial overlay composition (#223) advances with ledger utilization
+ * and covenant capacity on each step. This module does not import
+ * `contract-model/runtime/*` and does not reimplement capacity arithmetic.
+ *
+ * Financial-core cash/debt pro forma chaining remains in `sequential-financial.ts`.
  */
 
 import { snapshotInputResolver } from "@/lib/contract-model/north-star-bridge";
 import {
+  openVerifiedSequentialWorld,
+  runSequentialTransactions,
+  type SequentialRunResult,
+  type SequentialStepResult,
+  type SequentialStepSpec,
+  type SequentialWorld,
+} from "@/lib/contract-model/sequential-execution";
+import {
   evaluateVerifiedCapacity,
-  simulateVerifiedTransaction,
   VERIFIED_EXECUTION_POLICY,
   type HypotheticalTransaction,
   type SelectedPath,
+  type TransactionSimulationResult,
   type VerifiedCapacityResult,
   type VerifiedExecutionPackage,
-  type VerifiedTransactionResult,
 } from "@/lib/contract-model/verified-execution";
 import { classifyApprovedSnapshotAuthority, type FinancialInputAuthorityLabel } from "./authority";
 import { publishRemainingCapacity } from "./utilization-honesty";
@@ -70,13 +77,16 @@ function assertSnapshotsApproved(snapshots: readonly SnapshotArg[]): FinancialIn
   return classifyApprovedSnapshotAuthority({
     reviewedBy: first.review.reviewedBy,
     approvalRef: first.review.approvalRef,
+    // Verified-path callers supply snapshots; production approval channel is
+    // never inferred from fixture reviewedBy strings.
     productionContext: false,
+    trustedProductionApprovalChannel: false,
   });
 }
 
 /**
  * Evaluate verified IR capacity using APPROVED FCE/NS-4 financial snapshots.
- * Remaining capacity is never claimed from financials alone.
+ * Remaining capacity is never claimed from financials alone (#237).
  */
 export function evaluateVerifiedCapacityWithApprovedFinancials(args: {
   package: VerifiedExecutionPackage;
@@ -103,7 +113,6 @@ export function evaluateVerifiedCapacityWithApprovedFinancials(args: {
       const ruleId = entry.ruleId ?? entry.capacityNodeId;
       let grossMillions: number | null = null;
       if (entry.grossCapacity.kind === "AMOUNT" && entry.grossCapacity.value.type === "MONEY") {
-        // CapacityAmount carries serialized MONEY (amount string in dollars).
         const dollars = Number(entry.grossCapacity.value.amount);
         if (Number.isFinite(dollars)) grossMillions = dollars / 1_000_000;
       }
@@ -112,6 +121,8 @@ export function evaluateVerifiedCapacityWithApprovedFinancials(args: {
         asOf: args.financial.asOf,
         grossCapacityMillions: grossMillions,
         unlimited: entry.grossCapacity.kind === "UNLIMITED",
+        // Verified EXECUTED capacity amounts imply formula/gate evaluation succeeded for gross.
+        gateSatisfied: grossMillions != null || entry.grossCapacity.kind === "UNLIMITED",
         records: [],
         completenessCertificate: null,
         unattributedLegacyBasketPresent: (args.financial.ledger?.length ?? 0) > 0,
@@ -128,25 +139,84 @@ export function evaluateVerifiedCapacityWithApprovedFinancials(args: {
   return { policy: VERIFIED_EXECUTION_POLICY, capacity, authority, remainingByRule };
 }
 
+/** Compact simulation outcome for FCE surfaces (full detail on sequentialRun). */
+export type VerifiedSequentialSimulationView =
+  | {
+      outcome: "EXECUTED";
+      policy: typeof VERIFIED_EXECUTION_POLICY;
+      simulation: TransactionSimulationResult;
+      selectedPathResult: TransactionSimulationResult["selectedPathResult"];
+      proposedUsageIds: string[];
+    }
+  | {
+      outcome: "REFUSED" | "ABORTED";
+      policy: typeof VERIFIED_EXECUTION_POLICY;
+      reason: string;
+    };
+
 export interface VerifiedSequentialStepResult {
   stepIndex: number;
   label: string;
-  simulation: VerifiedTransactionResult;
+  simulation: VerifiedSequentialSimulationView;
   /** Ledger after applying this step's proposed usages (hypothetical). */
   postLedger: LedgerUsageRecord[];
-  /** Capacity node ids present after independent re-evaluation on post-ledger. */
+  /** Capacity node ids from independent post-check views. */
   postCapacityNodeIds: string[];
-  /** Applied usage ids visible on post capacity state. */
+  /** Applied usage ids from independent post-check. */
   postAppliedUsageIds: string[];
   financialMetricsConsumedFromPrior: boolean;
   ledgerConsumedFromPrior: boolean;
   capacityConstraintsReevaluated: boolean;
+  /** TE-D3: prior CHANGE_METRIC overlays chained into this step's base. */
+  financialViewChained: boolean;
+  chainedMetricKeysAfter: string[];
+  runnerStep: SequentialStepResult;
+}
+
+export interface VerifiedSequentialRunResult {
+  authority: FinancialInputAuthorityLabel;
+  policy: typeof VERIFIED_EXECUTION_POLICY;
+  steps: VerifiedSequentialStepResult[];
+  /** True when step N>0 used prior ledger + re-evaluated capacity constraints. */
+  sequentialPostStateConsumed: boolean;
+  /** Canonical #243 runner result (REQUIRE, TE-D3 overlays). */
+  sequentialRun: SequentialRunResult;
+  world: SequentialWorld;
+}
+
+function viewFromRunnerStep(
+  step: SequentialStepResult | undefined,
+  label: string,
+): VerifiedSequentialSimulationView {
+  if (!step) {
+    return {
+      outcome: "ABORTED",
+      policy: VERIFIED_EXECUTION_POLICY,
+      reason: `Sequential step missing for ${label}`,
+    };
+  }
+  if (!step.simulation) {
+    return {
+      outcome: "REFUSED",
+      policy: VERIFIED_EXECUTION_POLICY,
+      reason: step.notes.join("; ") || `Sequential step ${step.stepId} produced no simulation`,
+    };
+  }
+  return {
+    outcome: "EXECUTED",
+    policy: VERIFIED_EXECUTION_POLICY,
+    simulation: step.simulation,
+    selectedPathResult: step.simulation.selectedPathResult,
+    proposedUsageIds: step.proposedLedgerUsageIds,
+  };
 }
 
 /**
- * Run verified transactions where each step's ledger is the prior step's
- * complete post-ledger (proposed usages appended). Optional per-step snapshot
- * replacements prove financial-metric chaining. Hypothetical only — no durable writes.
+ * Run verified transactions through the #243 canonical sequential adapter
+ * (`runSequentialTransactions` → `simulateVerifiedTransaction` under REQUIRE).
+ *
+ * Each step's post-state carries forward ledger utilization, TE-D3 financial
+ * overlays, and independently recomputed covenant capacity together.
  */
 export function runVerifiedSequentialTransactions(args: {
   package: VerifiedExecutionPackage;
@@ -157,63 +227,74 @@ export function runVerifiedSequentialTransactions(args: {
     selectedPath: SelectedPath;
     /** Optional replacement snapshots for this step (post-txn financial facts). */
     snapshots?: SnapshotArg[];
+    businessType?: string;
   }>;
-}): {
-  authority: FinancialInputAuthorityLabel;
-  steps: VerifiedSequentialStepResult[];
-  /** True when step N>0 used prior ledger + re-evaluated capacity constraints. */
-  sequentialPostStateConsumed: boolean;
-} {
+  mode?: "HYPOTHETICAL" | "COMPLETED";
+  utilizationAffirmedComplete?: boolean;
+}): VerifiedSequentialRunResult {
   const authority = assertSnapshotsApproved(args.financial.snapshots);
+  const snapshots = args.steps[0]?.snapshots ?? args.financial.snapshots;
+  assertSnapshotsApproved(snapshots);
+
+  const inputs = snapshotInputResolver({
+    snapshots,
+    definitions: [...(args.package.definitions ?? [])],
+    rules: [...args.package.rules],
+    companyId: args.financial.companyId,
+    instrumentKey: args.financial.instrumentKey,
+  });
+
+  const world = openVerifiedSequentialWorld({
+    package: args.package,
+    inputs,
+    ledger: args.financial.ledger ?? [],
+    asOf: args.financial.asOf,
+  });
+
+  const stepSpecs: SequentialStepSpec[] = args.steps.map((s, i) => ({
+    stepId: `fce-seq-${i}-${s.transaction.transactionId}`,
+    businessType: s.businessType ?? s.label,
+    transaction: s.transaction,
+    selectedPath: s.selectedPath,
+    recipeOk: true,
+    recipeNotes: s.snapshots
+      ? ["step supplies replacement APPROVED financial snapshots (FCE post-txn facts)"]
+      : [],
+  }));
+
+  const sequentialRun = runSequentialTransactions({
+    world,
+    steps: stepSpecs,
+    mode: args.mode ?? "HYPOTHETICAL",
+    utilizationAffirmedComplete: args.utilizationAffirmedComplete ?? false,
+  });
+
+  // Reconstruct cumulative hypothetical post-ledgers from runner proposed ids
+  // by replaying proposed records from each EXECUTED simulation.
   let ledger: LedgerUsageRecord[] = [...(args.financial.ledger ?? [])];
-  let snapshots = args.financial.snapshots;
   const out: VerifiedSequentialStepResult[] = [];
 
   for (let i = 0; i < args.steps.length; i++) {
     const spec = args.steps[i]!;
-    if (spec.snapshots) {
-      assertSnapshotsApproved(spec.snapshots);
-      snapshots = spec.snapshots;
-    }
-    const inputs = snapshotInputResolver({
-      snapshots,
-      definitions: [...(args.package.definitions ?? [])],
-      rules: [...args.package.rules],
-      companyId: args.financial.companyId,
-      instrumentKey: args.financial.instrumentKey,
-    });
-
+    const runnerStep = sequentialRun.steps[i];
+    const simulation = viewFromRunnerStep(runnerStep, spec.label);
     const priorLedgerIds = new Set(ledger.map((u) => u.usageId));
-    const simulation = simulateVerifiedTransaction({
-      package: args.package,
-      inputs,
-      ledger,
-      asOf: args.financial.asOf,
-      transaction: spec.transaction,
-      selectedPath: spec.selectedPath,
-    });
 
     let postLedger = ledger;
-    let postCapacityNodeIds: string[] = [];
-    let postAppliedUsageIds: string[] = [];
-
     if (simulation.outcome === "EXECUTED") {
       const proposed = simulation.simulation.ledgerEffects.proposed.map((p) => p.record);
       const superseded = new Map(
         simulation.simulation.ledgerEffects.superseded.map((s) => [s.originalUsageId, s.proposed]),
       );
       postLedger = [...ledger.map((u) => superseded.get(u.usageId) ?? u), ...proposed];
-      const reeval = evaluateVerifiedCapacity({
-        package: args.package,
-        inputs,
-        ledger: postLedger,
-        asOf: args.financial.asOf,
-      });
-      if (reeval.outcome === "EXECUTED") {
-        postCapacityNodeIds = reeval.state.capacities.map((c) => c.capacityNodeId).sort();
-        postAppliedUsageIds = reeval.state.capacities.flatMap((c) => [...c.appliedUsageIds]).sort();
-      }
     }
+
+    const postCapacityNodeIds = (runnerStep?.independentPostCheck ?? runnerStep?.postState ?? [])
+      .map((c) => c.capacityNodeId)
+      .sort();
+    const postAppliedUsageIds = (runnerStep?.independentPostCheck ?? runnerStep?.postState ?? [])
+      .flatMap((c) => c.appliedUsageIds)
+      .sort();
 
     out.push({
       stepIndex: i,
@@ -222,10 +303,17 @@ export function runVerifiedSequentialTransactions(args: {
       postLedger,
       postCapacityNodeIds,
       postAppliedUsageIds,
-      financialMetricsConsumedFromPrior: i === 0 || spec.snapshots != null,
+      financialMetricsConsumedFromPrior:
+        i === 0 || spec.snapshots != null || !!(runnerStep?.financialViewChained),
       ledgerConsumedFromPrior:
         i === 0 || [...priorLedgerIds].every((id) => postLedger.some((u) => u.usageId === id)),
-      capacityConstraintsReevaluated: simulation.outcome === "EXECUTED",
+      capacityConstraintsReevaluated:
+        simulation.outcome === "EXECUTED" &&
+        (runnerStep?.independentPostMatchesSimulation === true ||
+          runnerStep?.independentPostCheck != null),
+      financialViewChained: runnerStep?.financialViewChained ?? false,
+      chainedMetricKeysAfter: runnerStep?.chainedMetricKeysAfter ?? [],
+      runnerStep: runnerStep!,
     });
 
     ledger = postLedger;
@@ -233,6 +321,7 @@ export function runVerifiedSequentialTransactions(args: {
 
   const sequentialPostStateConsumed =
     out.length >= 2 &&
+    sequentialRun.abortedAtStepId == null &&
     out.slice(1).every(
       (s) =>
         s.ledgerConsumedFromPrior &&
@@ -240,5 +329,12 @@ export function runVerifiedSequentialTransactions(args: {
         s.simulation.outcome === "EXECUTED",
     );
 
-  return { authority, steps: out, sequentialPostStateConsumed };
+  return {
+    authority,
+    policy: VERIFIED_EXECUTION_POLICY,
+    steps: out,
+    sequentialPostStateConsumed,
+    sequentialRun,
+    world,
+  };
 }
