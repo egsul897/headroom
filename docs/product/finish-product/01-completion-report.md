@@ -3,6 +3,8 @@
 **Verdict:** `CANONICAL_PRODUCT_WORKING_WITH_DOCUMENTED_LIMITATIONS`  
 **Canonical branch:** `cursor/finish-product-canonical-a9e4` (from PR #250 tip `4aee5a48`)  
 **Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a`  
+**Tip:** `72991f256b6ef78facb815b469a981ef53769ffb`  
+**CI:** **6/6 SUCCESS** · MERGEABLE  
 **Auto-merge:** **no**
 
 ## A. Canonical integration
@@ -67,4 +69,5 @@
   - `npx tsc --noEmit -p .`
   - `npx vitest run tests/product/certified-simulate-executable-safety.test.ts tests/product/stage-d-pkgi-secured-dual-path.test.ts tests/product/authenticated-vep-offline.test.ts tests/solver/secured-capacity-adversarial-matrix.test.ts`
   - `npx tsx scripts/product/run-finish-product-demo.ts`
-- CI: see PR after push
+- GitHub CI on `72991f25`: certified path · dashboard invent-absence · home overview · P3-R0 · Vercel · Preview Comments — **all SUCCESS**
+- PR: https://github.com/egsul897/headroom/pull/258
