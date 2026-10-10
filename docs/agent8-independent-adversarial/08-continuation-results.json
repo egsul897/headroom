@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "agent8-adversarial-continuation.v1",
+  "generatedAt": "2026-10-10T00:09:40.612Z",
+  "shaTested": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
+  "pendingIntegrationTracked": [
+    {
+      "pr": 243,
+      "role": "certified sequential execution",
+      "risk": "A8-01 reintroduction if merged without rebase"
+    },
+    {
+      "pr": 213,
+      "role": "Position / Simulate / Ask unify",
+      "risk": "must consume main utilization + capacity status contracts"
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passed": 6,
+    "falseFavorable": 1,
+    "falseRefusal": 0,
+    "materialOmissions": 0,
+    "releaseBlockingCount": 1,
+    "uniqueGroundedScenarios": 6,
+    "outcomeBuckets": {
+      "CORRECT_REFUSAL": 3,
+      "CORRECT_PROHIBITION": 3,
+      "INCORRECT_FAVORABLE": 1
+    },
+    "mutationDetectionRate": 1
+  },
+  "cases": [
+    {
+      "id": "CONT-01-psa-empty-util-consistency",
+      "title": "Position/Simulate/Ask agree: empty ledger is GROSS_ONLY, never AVAILABLE remaining",
+      "source": "Independent utilization authority contract; product surface consistency",
+      "expected": "identical views; mayPublishAvailable=false; publicationLabel=GROSS_CONTRACTUAL",
+      "actual": "ok=true label=GROSS_CONTRACTUAL mayPublish=false rem=null",
+      "pass": true,
+      "outcomeClass": "CORRECT_REFUSAL",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": true,
+      "regressionRecommendation": "tests/capacity/utilization-and-remaining.test.ts Position/Simulate/Ask",
+      "fixRecommendation": "Keep buildSharedProductCapacityViews as sole calculator; never invent zero utilization"
+    },
+    {
+      "id": "CONT-02-psa-gate-failed-not-available",
+      "title": "Failed gate never publishes AVAILABLE even with completeness cert",
+      "source": "A8-01 + verified-remaining gateSatisfied guard",
+      "expected": "mayPublishAvailable=false; remainingStatus=GATE_FAILED",
+      "actual": "mayPublish=false status=GATE_FAILED label=REVIEW_REQUIRED",
+      "pass": true,
+      "outcomeClass": "CORRECT_PROHIBITION",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": true
+    },
+    {
+      "id": "CONT-03-attributed-without-completeness",
+      "title": "Known attributed usage without VERIFIED_COMPLETE cannot publish remaining",
+      "source": "Utilization authority contract (#237)",
+      "expected": "GROSS_ONLY; attributedAmount=25; mayPublishAvailable=false",
+      "actual": "status=GROSS_ONLY attributed=25 mayPublish=false",
+      "pass": true,
+      "outcomeClass": "CORRECT_REFUSAL",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": true
+    },
+    {
+      "id": "CONT-04-solver-attributed-zero-incomplete",
+      "title": "Solver attributed-zero without VERIFIED_EMPTY is not remaining-authoritative",
+      "source": "Reconciled #232/#234 authority",
+      "expected": "authoritative=false; assertMayPublishRemaining=false",
+      "actual": "status=ATTRIBUTED_INCOMPLETE authoritative=false decision=ATTRIBUTED_INCOMPLETE",
+      "pass": true,
+      "outcomeClass": "CORRECT_REFUSAL",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": true
+    },
+    {
+      "id": "CONT-05-main-a8-01-still-closed",
+      "title": "On integrated main, failed gate is NOT_SATISFIED; alternate path remains AVAILABLE",
+      "source": "PR #229 closed defect; main tip verification",
+      "expected": "ratio=NOT_SATISFIED; general=AVAILABLE",
+      "actual": "ratio=NOT_SATISFIED general=AVAILABLE gross=GATE_NOT_SATISFIED",
+      "pass": true,
+      "outcomeClass": "CORRECT_PROHIBITION",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": false
+    },
+    {
+      "id": "CONT-06-pending-pr243-reintroduces-a8-01",
+      "title": "Pending PR #243 tip (pre-rebase) reintroduces AVAILABLE + GATE_NOT_SATISFIED",
+      "source": "Independent worktree probe of origin/cursor/sequential-verified-boundary-8970 @ 8bc6112e",
+      "expected": "After rebase onto main: status=NOT_SATISFIED with statusForAmount present",
+      "actual": "hasStatusForAmount=false tipStatus=AVAILABLE tip=/tmp/a8-wt-243",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "releaseBlocking": true,
+      "uniqueGroundedScenario": true,
+      "rootCause": "PR #243 is ~25 commits behind main; capacity/types lack NOT_SATISFIED and statusForAmount floor — bare statusFromEvaluation maps EXECUTABLE→AVAILABLE",
+      "regressionRecommendation": "Block merge of #243 until rebased; a8-gate-status-regression + probe-gate-status must pass on tip",
+      "fixRecommendation": "Rebase #243 onto main ≥7f1dd3a2; keep lib/contract-model/runtime/capacity/{state,types}.ts identical to main for A8 semantics; re-apply only sequential verification pool identity edits atop the floor"
+    },
+    {
+      "id": "CONT-07-mutation-detects-a8-01-regression",
+      "title": "Isolated mutation removing statusForAmount floor is detected as AVAILABLE",
+      "source": "Agent 8 mutation challenge (temp tree only; production untouched)",
+      "expected": "detection.detected=true; exit 0",
+      "actual": "exit=0 detected=true stdoutHead={\n  \"mutationApplied\": true,\n  \"probeStatusAfterMutation\": \"AVAILABLE\",\n  \"detection\": {\n    \"expectedDefectSignal\": \"AVAILABLE\",\n    \"detected\": true,\n    \"mutationDetectionRate\": 1\n  },\n  \"note\": \"T",
+      "pass": true,
+      "outcomeClass": "CORRECT_PROHIBITION",
+      "severity": "NONE",
+      "releaseBlocking": false,
+      "uniqueGroundedScenario": true
+    }
+  ],
+  "releaseBlocking": [
+    {
+      "id": "CONT-06-pending-pr243-reintroduces-a8-01",
+      "title": "Pending PR #243 tip (pre-rebase) reintroduces AVAILABLE + GATE_NOT_SATISFIED",
+      "source": "Independent worktree probe of origin/cursor/sequential-verified-boundary-8970 @ 8bc6112e",
+      "expected": "After rebase onto main: status=NOT_SATISFIED with statusForAmount present",
+      "actual": "hasStatusForAmount=false tipStatus=AVAILABLE tip=/tmp/a8-wt-243",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "releaseBlocking": true,
+      "uniqueGroundedScenario": true,
+      "rootCause": "PR #243 is ~25 commits behind main; capacity/types lack NOT_SATISFIED and statusForAmount floor — bare statusFromEvaluation maps EXECUTABLE→AVAILABLE",
+      "regressionRecommendation": "Block merge of #243 until rebased; a8-gate-status-regression + probe-gate-status must pass on tip",
+      "fixRecommendation": "Rebase #243 onto main ≥7f1dd3a2; keep lib/contract-model/runtime/capacity/{state,types}.ts identical to main for A8 semantics; re-apply only sequential verification pool identity edits atop the floor"
+    }
+  ]
+}
