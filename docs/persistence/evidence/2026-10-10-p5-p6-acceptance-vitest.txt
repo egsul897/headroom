@@ -1,7 +1,7 @@
 P5/P6 product execution persistence acceptance
 
 Commands:
-  DATABASE_URL=postgresql://headroom:headroom@localhost:5432/headroom?schema=public npm run test:persistence
+  DATABASE_URL=<local disposable postgres> npm run test:persistence
   npx vitest run tests/product/unified-transaction-execution.test.ts tests/product/canonical-product-integration-adversarial.test.ts
 
 Results:

@@ -3,7 +3,7 @@
 ```
 MAIN_SHA: 4f1a0b81207364373d9a4cb9fe515d4a1a002e56
 PR_293_SHA_AND_STATUS: 2e8c9973ac05f729ec5096599c66dd7243d5dba8 — OPEN, MERGEABLE, unmerged
-PR_294_SHA_AND_STATUS: 9298e0d29b4839c1debee648164fdfee6cbcd6ca — OPEN, MERGEABLE
+PR_294_SHA_AND_STATUS: (tip after redact commit)
 
 INTERVENING_COMMIT_RECONCILIATION:
   30fd75b8 → 11ca5f3c = docs-only "record CI SUCCESS for PR #294"
@@ -31,7 +31,7 @@ PRODUCT_READ_PATHS:
   toProductExecutionHandoff surfaces remain pure projections
 
 POSTGRESQL_TEST_RESULTS:
-  Command: DATABASE_URL=postgresql://headroom:headroom@localhost:5432/headroom?schema=public npm run test:persistence
+  Command: DATABASE_URL=<local disposable postgres> npm run test:persistence
   Results: 26 passed / 0 failed / 0 skipped
   Also: unified-transaction-execution + canonical-product-integration-adversarial = 32 passed
   DB identity: disposable headroom_test_* via createEphemeralDatabase

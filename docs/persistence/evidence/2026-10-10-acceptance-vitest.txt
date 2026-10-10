@@ -1,6 +1,6 @@
 Neon-first persistence acceptance — disposable local PostgreSQL
 
-Command: DATABASE_URL=postgresql://headroom:headroom@localhost:5432/headroom?schema=public npm run test:persistence
+Command: DATABASE_URL=<local disposable postgres> npm run test:persistence
 
 Result:
   Test Files  1 passed (1)
