@@ -4,9 +4,10 @@
 
 | Label | Full SHA | Note |
 |-------|----------|------|
-| **Exact tested / proposed tip** | `a261d7073fbb7a3a5da76ba0011ab1dd6ba87a5f` | replaced at commit time |
+| **Exact proposed integration SHA (PR head)** | `55f28272f6063bb93b64f3977cdbc99470dc4ebd` | docs pin on top of suite tip |
+| **Exact code tip suites executed** | `a261d7073fbb7a3a5da76ba0011ab1dd6ba87a5f` | identical runtime code to head |
 | Prior report error | `8bc6112e4c580f30eae056b920ea93d3dd49c017` | **Incorrect** — confused tip short `8bc6112e` with parent full `8af9847e4c58…` |
-| Actual prior tip (pre-gate) | `8bc6112efdf499cd36ead440d37cf37de7145b9e` | GitHub PR #243 head before this gate commit |
+| Actual prior tip (pre-gate) | `8bc6112efdf499cd36ead440d37cf37de7145b9e` | GitHub PR #243 head before this gate |
 | Parent of that tip | `8af9847e4c580f30eae056b920ea93d3dd49c017` | `fix(arch): route sequential…` |
 
 ## 2. Architecture allowlist
