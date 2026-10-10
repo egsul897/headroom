@@ -2,9 +2,8 @@
  * Position presentation assembler — consumes dashboard / readiness / facilities
  * outputs. Performs no capacity arithmetic and never invents AVAILABLE.
  *
- * PR #268/#273 authenticity + trusted-issuer are integrated; surface still defaults non-authoritative unless engine marks PRODUCTION_AUTHORITATIVE: legacy
- * remainingCapacity must be labeled NOT_PRODUCTION_AUTHORITATIVE /
- * MODELED / NOT VERIFIED, not AVAILABLE.
+ * Legacy remainingCapacity is NOT_PRODUCTION_AUTHORITATIVE / MODELED unless
+ * `utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE"` (#268).
  */
 
 import type { CompanyDashboard } from "@/lib/dashboard-service";
@@ -55,8 +54,8 @@ export interface PositionViewModel {
   missingInputs: string[];
   reviewBlockers: string[];
   authorityNote: string;
-  /** Explicit: remaining on this surface is not production-authoritative. */
-  remainingAuthoritative: false;
+  /** True only when a side has #268 PRODUCTION_AUTHORITATIVE utilization remaining. */
+  remainingAuthoritative: boolean;
 }
 
 function facilityAmountMillions(amount: number | null | undefined): number | null {
@@ -66,7 +65,7 @@ function facilityAmountMillions(amount: number | null | undefined): number | nul
 
 /**
  * Assemble Position from already-loaded canonical services.
- * `remainingAuthoritative` defaults false; engine PRODUCTION_AUTHORITATIVE can elevate Position claims.
+ * `remainingAuthoritative` follows per-side utilizationRemainingAuthority (#268).
  */
 export function buildPositionView(args: {
   companyId: string;
@@ -120,12 +119,16 @@ export function buildPositionView(args: {
     const sim = dashboard?.capacity[side];
     const remainingAmount = sim?.remainingCapacity;
     const packageAuth = sim?.packageAuthoritative;
+    // #268: production-authoritative remaining requires completeness + trusted issuer.
+    // Live covenant-engine path currently stamps NOT_PRODUCTION_AUTHORITATIVE; honor the field.
+    const productionAuthoritative = sim?.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
     const remaining = presentCapacityClaim({
       claimKind: remainingAmount === undefined ? "UNAVAILABLE" : "REMAINING",
       amountMillions: remainingAmount ?? null,
-      // Legacy dashboard remaining is never production-authoritative on main.
-      remainingIsAuthoritative: false,
-      publicationLabel: packageAuth?.label ?? readiness.capacityAuthority,
+      remainingIsAuthoritative: productionAuthoritative,
+      publicationLabel: productionAuthoritative
+        ? "AVAILABLE"
+        : packageAuth?.label ?? readiness.capacityAuthority ?? "NOT_PRODUCTION_AUTHORITATIVE",
       unavailableReason:
         remainingAmount === undefined
           ? "Remaining capacity not determinable from the shared engine for this side."
@@ -184,7 +187,7 @@ export function buildPositionView(args: {
     missingInputs: [...new Set(missingInputs)],
     reviewBlockers: [...new Set(reviewBlockers)],
     authorityNote:
-      "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless the engine marks utilizationRemainingAuthority=PRODUCTION_AUTHORITATIVE after authenticity + trusted-issuer gates. Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
-    remainingAuthoritative: false,
+      "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE (#268 completeness + trusted issuer). Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
+    remainingAuthoritative: sides.some((s) => s.remaining.status === "VERIFIED_EXECUTABLE"),
   };
 }

@@ -310,8 +310,7 @@ export interface CapacityClaimView {
 /**
  * Build a capacity claim presentation from already-computed engine outputs.
  * Does not perform arithmetic. remainingIsAuthoritative must come from the
- * canonical authority path — on current main (PR #268 unmerged) pass false
- * for legacy dashboard remainingCapacity.
+ * canonical authority path (`utilizationRemainingAuthority === PRODUCTION_AUTHORITATIVE`).
  */
 export function presentCapacityClaim(args: {
   claimKind: CapacityClaimView["claimKind"];
