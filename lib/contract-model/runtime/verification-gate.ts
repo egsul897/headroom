@@ -141,8 +141,9 @@ function block(reason: VerificationBlockReason, scope: "UNIT" | "NODE", unitId: 
  * Assesses one unit against the envelope under the policy. This is the single place that decides
  * whether a unit is blocked as a whole; blocksUnit and blocksNode read it.
  *
- * `unitId` null means the expression belongs to no verifiable unit (a shared-capacity cap, or a bare
- * evaluateExpression call that supplied no unit identity). Under ALLOW_MISSING that is simply
+ * `unitId` null means the expression belongs to no verifiable unit (a bare evaluateExpression call
+ * that supplied no unit identity). Shared-capacity caps must pass their sharedCapId as unitId —
+ * they are first-class verified units under REQUIRE. Under ALLOW_MISSING a null unitId is simply
  * ungated; under REQUIRE it fails closed, because the caller asked that nothing unverified execute
  * and nothing can vouch for an expression with no identity.
  */

@@ -1212,7 +1212,11 @@ export function simulateDebtIncurrence(
 export interface PerDocumentRemainingCapacity {
   documentId: string;
   documentName: string;
-  method: "SOLVER_NATIVE_RECOMPUTED" | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT" | "NOT_DETERMINABLE";
+  method:
+    | "SOLVER_NATIVE_RECOMPUTED"
+    | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT"
+    | "CROSS_DOCUMENT_MODELED"
+    | "NOT_DETERMINABLE";
   /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
   remainingCapacity?: number;
   /** Present only for SOLVER_NATIVE_RECOMPUTED - the full post-transaction MaxCapacityResult `remainingCapacity` was read from (design doc §O). */
@@ -1324,9 +1328,49 @@ export function computeRemainingCapacityAfterDebtIncurrence(
 
   const anyNotDeterminable = perDocument.some((d) => d.method === "NOT_DETERMINABLE");
   const sorted = [...perDocument].filter((d) => d.remainingCapacity !== undefined).sort((a, b) => a.remainingCapacity! - b.remainingCapacity!);
-  const binding = anyNotDeterminable ? undefined : sorted[0];
+  let binding = anyNotDeterminable ? undefined : sorted[0];
+  let remainingCapacity = binding?.remainingCapacity;
 
-  return { amount, secured, perDocument, binding, remainingCapacity: binding?.remainingCapacity };
+  // Package-wide legal ceiling: cross-document modeled binding (min across governing
+  // documents' declared formulas). Solver-native per-document coverage can omit a
+  // binding instrument (Coherent secured: Indenture SSNL ≈ $4,041M vs CA TNL ≈ $5,129M
+  // reported as secured). Floor package remaining to the tighter cross-document figure
+  // so the generalized dashboard/simulate path cannot publish the false-favorable gap.
+  const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+  if (
+    cross.status === "modeled" &&
+    cross.capacity !== undefined &&
+    cross.bindingDocumentId &&
+    cross.bindingDocumentName
+  ) {
+    const crossRemaining = cross.capacity - amount;
+    const solverOverstates =
+      remainingCapacity !== undefined && crossRemaining + 1e-9 < remainingCapacity;
+    const solverMissing = remainingCapacity === undefined && !anyNotDeterminable;
+    if (solverOverstates || solverMissing) {
+      binding = {
+        documentId: cross.bindingDocumentId,
+        documentName: cross.bindingDocumentName,
+        method: "CROSS_DOCUMENT_MODELED",
+        remainingCapacity: crossRemaining,
+        bindingConstraint: cross.bindingProvision
+          ? [
+              {
+                documentId: cross.bindingProvision.documentId,
+                sectionRef: cross.bindingProvision.sectionRef,
+                permissionId: cross.bindingProvision.id,
+              },
+            ]
+          : undefined,
+        reason: solverOverstates
+          ? `Cross-document ${side} binding (${cross.bindingDocumentName}) is tighter than solver-native per-document remaining; package remaining uses the cross-document ceiling to avoid false-favorable overstatement.`
+          : `Package ${side} remaining taken from cross-document modeled binding (${cross.bindingDocumentName}).`,
+      };
+      remainingCapacity = crossRemaining;
+    }
+  }
+
+  return { amount, secured, perDocument, binding, remainingCapacity };
 }
 
 // ---------------------------------------------------------------------------

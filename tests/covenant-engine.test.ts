@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   computeCovenantPosition,
+  computeRemainingCapacityAfterDebtIncurrence,
   simulateAssetSale,
   simulateDebtIncurrence,
   simulateRestrictedPayment,
@@ -264,6 +265,16 @@ describe("covenant-engine reproduces the Coherent prototype's numbers", () => {
   it("matches cross-document (binding) capacity", () => {
     expect(position.crossDocumentSecured.capacity).toBeCloseTo(m.crossSec, 6);
     expect(position.crossDocumentUnsecured.capacity).toBeCloseTo(m.crossUnsec, 6);
+  });
+
+  it("floors package secured remaining to Indenture SSNL (not CA TNL false-favorable)", () => {
+    // Generalized headroom query used by dashboard/simulate — must not publish
+    // CA TNL (~$5,129M) as secured package remaining when Indenture SSNL (~$4,041M) binds.
+    const secured = computeRemainingCapacityAfterDebtIncurrence(COHERENT_DATA, position, 0, true);
+    const unsecured = computeRemainingCapacityAfterDebtIncurrence(COHERENT_DATA, position, 0, false);
+    expect(secured.remainingCapacity).toBeCloseTo(m.crossSec, 6);
+    expect(secured.binding?.documentId).toBe(COHERENT_INDENTURE_ID);
+    expect(unsecured.remainingCapacity).toBeCloseTo(m.crossUnsec, 6);
   });
 
   it("matches a simulated secured debt incurrence", () => {

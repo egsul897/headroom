@@ -52,10 +52,16 @@ export {
 } from "./runtime/capacity/store";
 
 export type { LedgerUsageRecord } from "./runtime/capacity/types";
+export type { LedgerWriteResult } from "./runtime/capacity/store/types";
 
 /** Phase 4B resolver over APPROVED snapshots — product must not import runtime/* for this. */
 export { snapshotInputResolver } from "./runtime/input/snapshot-resolver";
 export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/input/snapshot-resolver";
+
+/** Exact decimal constructor for APPROVED metric figures — product must not import runtime/decimal. */
+export { rationalFromString } from "./runtime/decimal";
+export type { InputResolver } from "./runtime/types";
+export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
 
 /** Synthetic certificate fixtures — engineering only; not authentic customer data. */
 export { CONMED_FORM_INSPIRED_CERT, CHEWY_FORM_INSPIRED_CERT, INVENTED_TABULAR_CERT } from "./runtime/input/store/certificate/fixtures";
