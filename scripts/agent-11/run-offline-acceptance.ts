@@ -621,9 +621,14 @@ async function main() {
     notes: `passAHits=${passAHits}/${LEGAL.clauses.length}`,
   };
   stageClassifications["5_RETRIEVE_CONTEXT"] = {
-    class: contextSufficient > 0 ? "VERIFIED" : "BLOCKED",
+    class:
+      contextSufficient >= Math.ceil(LEGAL.clauses.length * 0.8)
+        ? "VERIFIED"
+        : contextSufficient > 0
+          ? "BLOCKED"
+          : "BLOCKED",
     evidence: "10-clause-coverage.json",
-    notes: `SUFFICIENT=${contextSufficient}/${LEGAL.clauses.length}`,
+    notes: `SUFFICIENT=${contextSufficient}/${LEGAL.clauses.length} (threshold for VERIFIED: ≥80%)`,
   };
   stageClassifications["6_COMPILE_VERIFIED_IR"] = {
     class: executableClaimed === 0 ? "BLOCKED" : "VERIFIED",
@@ -1149,12 +1154,12 @@ async function main() {
       expected: "doc-b",
     });
   }
-  if (contextSufficient === 0) {
+  if (contextSufficient < Math.ceil(denom * 0.8)) {
     failures.push({
       id: "A11-F02",
       owner: "context-retrieval / HEADROOM-1",
       severity: "HIGH",
-      summary: "Context retrieval never reached SUFFICIENT on GT-anchored probes",
+      summary: "Context retrieval SUFFICIENT rate below 80% on GT-anchored probes",
       evidence: "10-clause-coverage.json",
       observed: `SUFFICIENT ${contextSufficient}/${denom}`,
     });

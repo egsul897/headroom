@@ -1,0 +1,50 @@
+{
+  "callerSynthetic": true,
+  "summary": {
+    "documentsProcessed": 2,
+    "deterministicEffectsFound": 2,
+    "semanticCallsMade": 0,
+    "semanticEffectsFound": 0,
+    "semanticEffectsRejectedByValidation": 0,
+    "conflictsDetected": 0,
+    "wallClockMs": 4.532504000000017,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "effectCount": 2,
+  "effectsSample": [
+    {
+      "effectId": "dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370",
+      "amendmentDocumentId": "doc-a",
+      "operation": "RESTATE_AGREEMENT",
+      "status": "UNRESOLVED",
+      "target": {
+        "kind": "DOCUMENT",
+        "targetDocumentId": null,
+        "targetInstrumentKey": null,
+        "targetStructuralNodeKey": null,
+        "targetSectionRef": null,
+        "targetDefinedTermRef": null,
+        "targetHint": "full agreement restatement, target document not resolved"
+      },
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text"
+    },
+    {
+      "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+      "amendmentDocumentId": "doc-b",
+      "operation": "RESTATE_AGREEMENT",
+      "status": "UNRESOLVED",
+      "target": {
+        "kind": "DOCUMENT",
+        "targetDocumentId": null,
+        "targetInstrumentKey": null,
+        "targetStructuralNodeKey": null,
+        "targetSectionRef": null,
+        "targetDefinedTermRef": null,
+        "targetHint": "full agreement restatement, target document not resolved"
+      },
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text"
+    }
+  ],
+  "unattachedCount": 2
+}

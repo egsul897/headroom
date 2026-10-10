@@ -1,0 +1,158 @@
+{
+  "artifact": "AGENT11_SCORECARD",
+  "packageKey": "an-2020-2026-credit-facility",
+  "mainShaEvaluated": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
+  "sealCommit": "ca667446df228984bb5d6b50b44c3c98b45f0730",
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "paidInferenceUsd": 0,
+  "productionNeonWrites": false,
+  "denominators": {
+    "gtClauses": 10,
+    "adversarialCases": 12,
+    "customerWorkflowStages": 12
+  },
+  "metrics": {
+    "structuralRecall": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1
+    },
+    "operativeDocumentAccuracy": {
+      "numerator": 0,
+      "denominator": 1,
+      "expected": "doc-b",
+      "observed": null,
+      "operativeDocStatus": "REVIEW_REQUIRED",
+      "correct": false
+    },
+    "discoveryPassARecall": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1
+    },
+    "contextSufficiency": {
+      "numerator": 1,
+      "denominator": 10,
+      "rate": 0.1
+    },
+    "completeOperativeSpan": {
+      "numerator": 7,
+      "denominator": 10,
+      "rate": 0.7
+    },
+    "legalFidelityAnchors": {
+      "numerator": 7,
+      "denominator": 10
+    },
+    "verifiedExecutableCoverage": {
+      "numerator": 0,
+      "denominator": 10,
+      "rate": 0,
+      "note": "Zero expected under no-paid-inference DETERMINISTIC_ONLY policy"
+    },
+    "financialEvidenceCompleteness": {
+      "numerator": 0,
+      "denominator": 1,
+      "rate": 0,
+      "note": "HEADROOM-2 module absent on main"
+    },
+    "utilizationCompleteness": {
+      "numerator": 1,
+      "denominator": 1,
+      "correctRefusalOfIncomplete": true
+    },
+    "correctRefusal": {
+      "numerator": 5,
+      "denominator": 5,
+      "productionTrackRefusal": true,
+      "forgedIssuerRefusal": true
+    },
+    "falseFavorableOutcomes": {
+      "numerator": 0,
+      "denominator": 12
+    },
+    "customerSurfaceConsistency": {
+      "numerator": 1,
+      "denominator": 1,
+      "via": "buildSharedProductCapacityViews",
+      "liveUiStatusContract": "NOT_ON_MAIN_NOT_TESTED"
+    }
+  },
+  "stageClassifications": {
+    "1_UPLOAD": {
+      "class": "VERIFIED",
+      "evidence": "10-01-upload.json",
+      "notes": "Offline sealed load of authentic EDGAR exhibits; not a live SaaS upload path."
+    },
+    "2_IDENTIFY_DOCUMENTS": {
+      "class": "VERIFIED",
+      "evidence": "10d-package-graph.json",
+      "notes": "classifications=[{\"id\":\"doc-a\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"},{\"id\":\"doc-b\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"}]"
+    },
+    "3_RESOLVE_OPERATIVE": {
+      "class": "BLOCKED",
+      "evidence": "10d-operative-state.json",
+      "notes": "operativeDocumentId=null; operativeDocStatus=REVIEW_REQUIRED; stateStatus=OPERATIVE_STATE_REVIEW_REQUIRED; handoffBlocked=false"
+    },
+    "4_DISCOVER_COVENANTS": {
+      "class": "VERIFIED",
+      "evidence": "10b-discovery.json + 10-clause-coverage.json",
+      "notes": "passAHits=10/10"
+    },
+    "5_RETRIEVE_CONTEXT": {
+      "class": "BLOCKED",
+      "evidence": "10-clause-coverage.json",
+      "notes": "SUFFICIENT=1/10 (threshold for VERIFIED: ≥80%)"
+    },
+    "6_COMPILE_VERIFIED_IR": {
+      "class": "BLOCKED",
+      "evidence": "10-clause-coverage.json",
+      "notes": "verifiedExecutable=0/10; paid inference blocked; local DETERMINISTIC_ONLY is UNVERIFIED"
+    },
+    "7_ATTACH_FINANCIAL_EVIDENCE": {
+      "class": "UNSUPPORTED",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "HEADROOM-2 (#273) financial-evidence.ts NOT on main — PROPOSED_UNSUPPORTED"
+    },
+    "8_RECONSTRUCT_UTILIZATION": {
+      "class": "VERIFIED",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "Empty/partial history correctly yields knowledge=KNOWN_ATTRIBUTED; supportsRemainingClaim=false"
+    },
+    "9_EVIDENCE_REVIEWER_AUTHORITY": {
+      "class": "VERIFIED",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "Forged issuer actorId not-in-registry mayPublish=false"
+    },
+    "10_HYPOTHETICAL_TRANSACTION": {
+      "class": "HYPOTHETICAL_ONLY",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "Caller-stipulated leverage illustration labeled HYPOTHETICAL_ONLY"
+    },
+    "11_PRODUCTION_AUTHORITY": {
+      "class": "VERIFIED",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "Production remaining correctly refused without authenticated complete evidence"
+    },
+    "12_SURFACE_DISPLAY": {
+      "class": "VERIFIED",
+      "evidence": "10-capacity-tracks.json",
+      "notes": "HEADROOM-4 (#275) lib/customer-workflow absent — consistency verified via buildSharedProductCapacityViews (Position/Ask/Simulate shared view) only; live route UI status contract NOT_TESTED"
+    }
+  },
+  "provenance": {
+    "evaluationPackage": "an-2020-2026-credit-facility",
+    "packageRole": "AGENT11_AUTHENTIC_EVALUATION_PACKAGE",
+    "unseenClaim": "NOT_CLAIMED",
+    "worHoldout": "PREVIOUSLY_EXPOSED — not used as primary package",
+    "integrationTip278": "NOT_ASSUMED"
+  },
+  "untestedAreas": [
+    "Live Position/Ask/Simulate/Evidence UI status chips (HEADROOM-4 #275)",
+    "Authenticated financial-evidence contract module (HEADROOM-2 #273)",
+    "Paid Pass B semantic discovery / independent fidelity verification",
+    "Production Neon-backed company upload + reviewer approval workflow",
+    "Fourth A&R (2023-07-18) full-agreement exhibit (missing from package by design)",
+    "Integration branch #278 combined tip"
+  ]
+}
