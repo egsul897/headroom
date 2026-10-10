@@ -173,8 +173,8 @@ These changed on #253 since merge-base and are relevant context for adaptation; 
 | path | relevance |
 |---|---|
 | `app/[companyId]/capacity/page.tsx` | canonical product / runtime |
-| `app/[companyId]/simulate/SimulateClient.tsx` | #231 debt/lien / solver authority |
-| `components/DashboardClient.tsx` | #231 debt/lien / solver authority |
+| `app/[companyId]/simulate/SimulateClient.tsx` | unified Position/Simulate/Ask (Stage 5) |
+| `components/DashboardClient.tsx` | unified Position/Simulate/Ask (Stage 5) |
 | `docs/product/customer-workflow/stage-d-pkgi-entity-scope/verified-execution-package.json` | Phase 3/4 verified + sequential composition |
 | `docs/product/primary-engine/01-financial-certificate-engine-mission-report.md` | FCE (#220 lineage) on canonical tip |
 | `lib/contract-model/compiler/package-graph/instrument-grouping.ts` | CONFLICT site with Agent 6 |
