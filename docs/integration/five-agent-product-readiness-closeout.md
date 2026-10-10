@@ -1,7 +1,7 @@
 # Five-agent integration — product readiness closeout
 
 **Integration PR:** https://github.com/egsul897/headroom/pull/278  
-**Integration tip (at closeout authoring):** see git tip of `cursor/five-agent-integration-e920`  
+**Integration tip:** `5ac4d59d4d4af5316e3b2b185ab3de1924349092` (`cursor/five-agent-integration-e920`)  
 **Verdict:** `INTEGRATED_PRODUCT_READY_FOR_HUMAN_REVIEW`  
 **Not claimed:** production-certified capacity
 
@@ -11,7 +11,7 @@
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
 | Final `origin/main` at closeout | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
-| Integration branch tip (pre-push of this doc) | see commit after this file |
+| Integration branch tip | `5ac4d59d4d4af5316e3b2b185ab3de1924349092` |
 
 Main advanced during the mission: `#268`, `#276`, `#277`, `#274` landed on `main` before integration closeout.
 
