@@ -1,6 +1,10 @@
 /**
  * PHASE 4C - gross capacity, usage, remaining, bounds, unlimited, review-required and entity scope.
  * One engine over compositional expressions. No formula branching anywhere.
+ *
+ * Remaining-capacity authority (supportsRemainingClaim / productionAuthoritative /
+ * currentUsageAuthoritative alias) is owned by lib/capacity + lib/solver/shared-usage
+ * (#234×#232 integration). This suite covers A8-01 gate status honesty only.
  */
 import { beforeEach, describe, expect, it } from "vitest";
 import { buildCapacityGraph, evaluateCapacityState } from "@/lib/contract-model/runtime/capacity";
