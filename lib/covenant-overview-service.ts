@@ -18,6 +18,11 @@ import { getFinancialPosition } from "./financial-core/position-service";
 import { loadCompanyFinancialCoreData } from "./financial-core-db/adapter";
 import { buildSolverContext, getCompanySummary, type CompanySummary } from "./dashboard-service";
 import { buildCovenantOverview, type CovenantOverviewCore, type PermissionRowInput, type CoverageDeclarationInput } from "./covenant-overview-builder";
+import {
+  serializeAttributedUtilization,
+  type AttributedUtilizationSerialized,
+} from "./product/unified-position/attributed-utilization";
+import { loadAttributedUtilization } from "./product/unified-position/attributed-utilization-server";
 
 export type {
   AttentionItem,
@@ -87,24 +92,26 @@ async function resolveDefaultAsOfDate(companyId: string): Promise<Date> {
 export async function loadCovenantOverviewInputs(companyId: string, asOfDateParam?: Date) {
   const asOfDate = asOfDateParam ?? (await resolveDefaultAsOfDate(companyId));
 
-  const [company, fcData, covenantData, permissionRowsRaw, coverageDeclarationsRaw, documents, solverContext] = await Promise.all([
-    getCompanySummary(companyId),
-    loadCompanyFinancialCoreData(prisma, companyId, asOfDate),
-    // `loadCompanyCovenantData` throws when a company has no legacy
-    // `FinancialSnapshot` row at all - real for any customer onboarded
-    // through the current wizard, which writes the newer `FinancialState`
-    // model instead (lib/onboarding/financial.ts). That is a genuinely
-    // empty legacy-covenant-data state, not an error this view should
-    // crash on - Permission-based (solver-native) families still render
-    // correctly from an empty legacy dataset, and this view already treats
-    // "no CovenantProvision rows" as a normal, real state (§G of
-    // docs/full-covenant-overview-restoration.md).
-    loadCovenantDataOrEmpty(companyId, asOfDate),
-    prisma.permission.findMany({ where: { companyId } }),
-    prisma.solverCoverageDeclaration.findMany({ where: { companyId } }),
-    prisma.document.findMany({ where: { companyId } }),
-    buildSolverContext(companyId, asOfDate),
-  ]);
+  const [company, fcData, covenantData, permissionRowsRaw, coverageDeclarationsRaw, documents, solverContext, attributedIndex] =
+    await Promise.all([
+      getCompanySummary(companyId),
+      loadCompanyFinancialCoreData(prisma, companyId, asOfDate),
+      // `loadCompanyCovenantData` throws when a company has no legacy
+      // `FinancialSnapshot` row at all - real for any customer onboarded
+      // through the current wizard, which writes the newer `FinancialState`
+      // model instead (lib/onboarding/financial.ts). That is a genuinely
+      // empty legacy-covenant-data state, not an error this view should
+      // crash on - Permission-based (solver-native) families still render
+      // correctly from an empty legacy dataset, and this view already treats
+      // "no CovenantProvision rows" as a normal, real state (§G of
+      // docs/full-covenant-overview-restoration.md).
+      loadCovenantDataOrEmpty(companyId, asOfDate),
+      prisma.permission.findMany({ where: { companyId } }),
+      prisma.solverCoverageDeclaration.findMany({ where: { companyId } }),
+      prisma.document.findMany({ where: { companyId } }),
+      buildSolverContext(companyId, asOfDate),
+      loadAttributedUtilization(companyId).catch(() => null),
+    ]);
 
   const documentNameById = new Map(documents.map((d) => [d.id, d.name] as const));
   const financialPosition = getFinancialPosition(fcData.state, fcData.facilities, fcData.events, asOfDate, []);
@@ -125,13 +132,31 @@ export async function loadCovenantOverviewInputs(companyId: string, asOfDatePara
     notes: p.notes,
   }));
   const coverageDeclarations: CoverageDeclarationInput[] = coverageDeclarationsRaw.map((d) => ({ grantType: d.grantType, notes: d.notes }));
+  const attributedUtilization = attributedIndex;
+  const attributedUtilizationSerialized: AttributedUtilizationSerialized | null = attributedIndex
+    ? serializeAttributedUtilization(attributedIndex)
+    : null;
 
-  return { company, asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById };
+  return {
+    company,
+    asOfDate,
+    covenantData,
+    financialPosition,
+    solverContext,
+    permissionRows,
+    coverageDeclarations,
+    documentNameById,
+    attributedUtilization,
+    attributedUtilizationSerialized,
+  };
 }
 
 export async function getCovenantOverview(companyId: string, asOfDateParam?: Date): Promise<CovenantOverview> {
   const inputs = await loadCovenantOverviewInputs(companyId, asOfDateParam);
-  const core = buildCovenantOverview(inputs);
+  const core = buildCovenantOverview({
+    ...inputs,
+    attributedUtilization: inputs.attributedUtilization,
+  });
   return { company: inputs.company, ...core };
 }
 

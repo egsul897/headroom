@@ -144,7 +144,12 @@ function capacityText(row: Extract<OverviewRow, { kind: "CAPACITY" }>): string {
 function remainingText(row: Extract<OverviewRow, { kind: "CAPACITY" }>): string {
   if (row.status !== "MODELED") return "—";
   if (row.capacityUnlimited) return "Unlimited";
-  if (row.remaining === null) return "Not evaluable";
+  // #237: attributed usage without completeness cert must not publish remaining.
+  if (row.publicationLabel === "KNOWN_ATTRIBUTED_ONLY" || row.remaining === null) {
+    return row.publicationLabel === "KNOWN_ATTRIBUTED_ONLY"
+      ? "Not certified complete"
+      : "Not evaluable";
+  }
   return fmtM(row.remaining);
 }
 

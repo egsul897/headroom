@@ -4,7 +4,7 @@
 
 SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.
 
-- Generated: 2026-10-09T22:38:49.794Z
+- Generated: 2026-10-10T00:10:05.502Z
 - Company (synthetic): `synthetic-conmed-form-co`
 - Instrument (synthetic): `synthetic-term-loan-a`
 - Exercises: 7
