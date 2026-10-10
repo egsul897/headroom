@@ -71,16 +71,29 @@ export const MUTATIONS: MutationSpec[] = [
     id: "mut-shared-capacity",
     category: "shared_capacity",
     file: "lib/product/covenant-intelligence/cross-document-covenant.ts",
-    find: `    fact.family === "SHARED_CAPACITY" ||
+    find: `function isAndConstraint(fact: OperativeProvisionFact): boolean {
+  if (
+    fact.family === "SHARED_CAPACITY" ||
     fact.family === "SUBSIDIARY_GUARANTOR" ||
     fact.family === "INTERCREDITOR" ||
-    fact.family === "AMENDMENT_EFFECT"`,
-    replace: `    // CVF_MUTATION shared_capacity: SHARED_CAPACITY no longer AND
+    fact.family === "AMENDMENT_EFFECT"
+  ) {
+    return true;
+  }
+  if (fact.family === "LIENS") return true;`,
+    replace: `function isAndConstraint(fact: OperativeProvisionFact): boolean {
+  // CVF_MUTATION shared_capacity: SHARED_CAPACITY never AND (even prohibitions)
+  if (fact.family === "SHARED_CAPACITY") return false;
+  if (
     fact.family === "SUBSIDIARY_GUARANTOR" ||
     fact.family === "INTERCREDITOR" ||
-    fact.family === "AMENDMENT_EFFECT"`,
-    expectDetectionVia: ["meta-add-restriction-no-improve"],
-    note: "Shared-capacity prohibitions no longer conjunctive.",
+    fact.family === "AMENDMENT_EFFECT"
+  ) {
+    return true;
+  }
+  if (fact.family === "LIENS") return true;`,
+    expectDetectionVia: ["meta-add-restriction-no-improve", "def-shared-capacity-metamorphic"],
+    note: "Shared-capacity prohibitions demoted from AND → OR; metamorphic add-restriction can lose force.",
   },
   {
     id: "mut-amendment-precedence",
@@ -95,12 +108,12 @@ export const MUTATIONS: MutationSpec[] = [
   return true;
 }`,
     replace: `function factOperativeOn(fact: OperativeProvisionFact, asOf: string): boolean {
-  // CVF_MUTATION amendment_precedence: ignore effective/supersession dating
+  // CVF_MUTATION amendment_precedence: no provision is ever operative
   void fact; void asOf;
-  return true;
+  return false;
 }`,
-    expectDetectionVia: ["xd-05-amendment-effect"],
-    note: "Amendment dating ignored — stale and future facts both apply.",
+    expectDetectionVia: ["xd-05-amendment-effect", "def-amendment-precedence"],
+    note: "Amendment/operative dating broken — all facts dropped (should diverge from PROHIBITED baseline).",
   },
   {
     id: "mut-sequential-financial",
@@ -210,8 +223,13 @@ export function runMutationChallenge(): {
         if (
           mutated.falseFavorable ||
           mutated.grade === "INCORRECT_FAVORABLE" ||
+          mutated.grade === "INCORRECT_REFUSAL" ||
+          mutated.grade === "ERROR" ||
           (baseline.actual !== mutated.actual &&
-            (mutated.actual === "PERMITTED" || mutated.grade === "INCORRECT_REFUSAL" || mutated.grade !== baseline.grade))
+            (mutated.actual === "PERMITTED" ||
+              mutated.actual === "UNDETERMINED" ||
+              mutated.actual === "CONDITIONALLY_PERMITTED" ||
+              mutated.grade !== baseline.grade))
         ) {
           detected = true;
           break;

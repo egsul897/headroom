@@ -4,37 +4,45 @@
   "metrics": {
     "version": "cvf-metrics.v1",
     "factoryVersion": "verification-factory.v1",
-    "totalExecutions": 35,
-    "uniqueAuthenticScenarios": 13,
-    "uniqueFinancingPackages": 6,
-    "independentGroundTruthCases": 35,
-    "correctFavorable": 7,
-    "correctRefusals": 25,
-    "incorrectFavorable": 0,
+    "totalExecutions": 99,
+    "uniqueAuthenticScenarios": 55,
+    "uniqueFinancingPackages": 20,
+    "independentGroundTruthCases": 99,
+    "correctFavorable": 23,
+    "correctRefusals": 56,
+    "incorrectFavorable": 1,
     "incorrectRefusals": 0,
     "materialRestrictionOmissions": 0,
     "incorrectFinancialCalculations": 0,
     "unsupportedSemanticClaims": 0,
     "unresolvedCases": 0,
     "denominators": {
-      "casesWithIndependentGt": 35,
-      "structureFamilies": 43,
+      "casesWithIndependentGt": 99,
+      "structureFamilies": 177,
       "fixtureClasses": {
-        "PUBLIC_DEVELOPMENT": 13,
-        "FROZEN_REGRESSION": 22,
+        "PUBLIC_DEVELOPMENT": 55,
+        "FROZEN_REGRESSION": 44,
         "BLIND_AUTHENTIC_HOLDOUT": 0,
         "NEWLY_ACQUIRED_UNSEEN": 0
       },
       "lanes": {
-        "CROSS_DOCUMENT": 20,
+        "CROSS_DOCUMENT": 38,
         "ADVERSARIAL_METAMORPHIC": 13,
         "CAPACITY_GATE_STATUS": 1,
-        "SEQUENTIAL_TRANSACTION": 1
+        "SEQUENTIAL_TRANSACTION": 2,
+        "DEBT_BASKET": 20,
+        "LIEN_BASKET": 6,
+        "RESTRICTED_PAYMENT": 9,
+        "INVESTMENT": 3,
+        "INTERCREDITOR": 2,
+        "OPERATIVE_AMENDMENT_SELECTION": 1,
+        "SHARED_CAPACITY": 3,
+        "BUILDER_BASKET": 1
       }
     },
     "byMechanic": {
       "CROSS_DOCUMENT": {
-        "executions": 20,
+        "executions": 38,
         "incorrectFavorable": 0
       },
       "ADVERSARIAL_METAMORPHIC": {
@@ -46,13 +54,110 @@
         "incorrectFavorable": 0
       },
       "SEQUENTIAL_TRANSACTION": {
+        "executions": 2,
+        "incorrectFavorable": 0
+      },
+      "DEBT_BASKET": {
+        "executions": 20,
+        "incorrectFavorable": 0
+      },
+      "LIEN_BASKET": {
+        "executions": 6,
+        "incorrectFavorable": 0
+      },
+      "RESTRICTED_PAYMENT": {
+        "executions": 9,
+        "incorrectFavorable": 1
+      },
+      "INVESTMENT": {
+        "executions": 3,
+        "incorrectFavorable": 0
+      },
+      "INTERCREDITOR": {
+        "executions": 2,
+        "incorrectFavorable": 0
+      },
+      "OPERATIVE_AMENDMENT_SELECTION": {
+        "executions": 1,
+        "incorrectFavorable": 0
+      },
+      "SHARED_CAPACITY": {
+        "executions": 3,
+        "incorrectFavorable": 0
+      },
+      "BUILDER_BASKET": {
         "executions": 1,
         "incorrectFavorable": 0
       }
     },
     "note": "Zero incorrectFavorable is only meaningful with denominators (casesWithIndependentGt, structureFamilies, fixtureClasses). Do not optimize for pass counts."
   },
-  "incorrectFavorable": [],
+  "incorrectFavorable": [
+    {
+      "caseId": "gnd-conmed-76-above-45m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "INCORRECT_FAVORABLE",
+      "expected": "PROHIBITED",
+      "actual": "PERMITTED",
+      "falseFavorable": true,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:above",
+        "section:7.6",
+        "outcome:PROHIBITED",
+        "unique:gnd-conmed-76-above-45m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=45000000",
+        "threshold=40000000",
+        "position=above",
+        "expected=PROHIBITED",
+        "matches=false"
+      ]
+    }
+  ],
+  "unexpectedIncorrectFavorable": [],
+  "knownStandingIncorrectFavorable": [
+    {
+      "caseId": "gnd-conmed-76-above-45m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "INCORRECT_FAVORABLE",
+      "expected": "PROHIBITED",
+      "actual": "PERMITTED",
+      "falseFavorable": true,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:above",
+        "section:7.6",
+        "outcome:PROHIBITED",
+        "unique:gnd-conmed-76-above-45m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=45000000",
+        "threshold=40000000",
+        "position=above",
+        "expected=PROHIBITED",
+        "matches=false"
+      ]
+    }
+  ],
+  "knownStandingAllowlist": [
+    {
+      "caseId": "gnd-conmed-76-above-45m",
+      "note": "CONMED §7.6 $45M RP exceeds $40M fiscal-year basket from source text; engine returns PERMITTED (likely intra-doc Investment OR-path). Independent GT: PROHIBITED on §7.6.",
+      "trackedSince": "2026-10-10"
+    }
+  ],
   "results": [
     {
       "caseId": "auth-conmed-unsecured-general-basket",
@@ -223,7 +328,7 @@
         "kind:SECURED_DEBT",
         "outcome:UNDETERMINED"
       ],
-      "durationMs": 1,
+      "durationMs": 0,
       "notes": [
         "expected=UNDETERMINED",
         "matches=true",
@@ -267,7 +372,7 @@
         "kind:RESTRICTED_PAYMENT",
         "outcome:CONDITIONALLY_PERMITTED"
       ],
-      "durationMs": 0,
+      "durationMs": 1,
       "notes": [
         "expected=CONDITIONALLY_PERMITTED",
         "matches=true",
@@ -369,7 +474,7 @@
         "synthetic:xd-03-debt-and-lien",
         "outcome:PROHIBITED"
       ],
-      "durationMs": 1,
+      "durationMs": 0,
       "notes": [
         "expected=PROHIBITED",
         "matches=true"
@@ -426,7 +531,7 @@
         "synthetic:xd-06-absent-document",
         "outcome:UNDETERMINED"
       ],
-      "durationMs": 0,
+      "durationMs": 1,
       "notes": [
         "expected=UNDETERMINED",
         "matches=true"
@@ -635,7 +740,7 @@
         "adversarial:UNVERIFIED_PATHWAY",
         "outcome:CONDITIONALLY_PERMITTED"
       ],
-      "durationMs": 1,
+      "durationMs": 0,
       "notes": [
         "attack=UNVERIFIED_PATHWAY",
         "expected=CONDITIONALLY_PERMITTED"
@@ -673,7 +778,7 @@
         "defect:A8-01",
         "package:capacity-runtime"
       ],
-      "durationMs": 0,
+      "durationMs": 1,
       "notes": [
         "statusForAmount=true",
         "NOT_SATISFIED_precedence=true",
@@ -729,7 +834,7 @@
       "fixtureClass": "FROZEN_REGRESSION",
       "grade": "PASS_NEUTRAL",
       "expected": "MATCH_BASELINE",
-      "actual": "PROHIBITED",
+      "actual": "MATCH_BASELINE",
       "falseFavorable": false,
       "materialOmissions": [],
       "structureFamilies": [
@@ -740,7 +845,9 @@
       "notes": [
         "baseline=PERMITTED",
         "withExtraProhibition=PROHIBITED",
-        "Invariant: adding a restrictive shared-capacity prohibition must not improve favorability."
+        "improved=false",
+        "noEffectWhilePermitted=false",
+        "Invariant: adding a restrictive shared-capacity prohibition must constrain (not improve, not no-op on PERMITTED)."
       ]
     },
     {
@@ -760,6 +867,1560 @@
       "notes": [
         "deterministic=true",
         "outcome=PERMITTED"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-72o-below-50m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:7.2(o)",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-72o-below-50m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-unsecured-general-basket",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-72o-at-60m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:at",
+        "section:7.2(o)",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-72o-at-60m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=60000000",
+        "threshold=60000000",
+        "position=at",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-72o-above-70m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:above",
+        "section:7.2(o)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-conmed-72o-above-70m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=70000000",
+        "threshold=60000000",
+        "position=above",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-72o-mid-30m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:7.2(o)",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-72o-mid-30m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=30000000",
+        "threshold=60000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-secured-lien-conditional",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:SECURED_DEBT",
+        "threshold:below",
+        "section:7.3",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-conmed-secured-lien-conditional"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-secured-without-lien-path",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-nonguarantor-prohibited",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:SECURED_DEBT",
+        "threshold:entity_scope",
+        "section:7.2(l)",
+        "outcome:PROHIBITED",
+        "unique:gnd-conmed-nonguarantor-prohibited"
+      ],
+      "durationMs": 1,
+      "notes": [
+        "remapped:auth-conmed-nonguarantor-guarantee",
+        "expected=PROHIBITED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-76-below-25m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:below",
+        "section:7.6",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-76-below-25m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-rp-basket",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-76-at-40m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:at",
+        "section:7.6",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-76-at-40m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=40000000",
+        "threshold=40000000",
+        "position=at",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-76-above-45m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "INCORRECT_FAVORABLE",
+      "expected": "PROHIBITED",
+      "actual": "PERMITTED",
+      "falseFavorable": true,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:above",
+        "section:7.6",
+        "outcome:PROHIBITED",
+        "unique:gnd-conmed-76-above-45m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=45000000",
+        "threshold=40000000",
+        "position=above",
+        "expected=PROHIBITED",
+        "matches=false"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-76-mid-10m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:below",
+        "section:7.6",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-76-mid-10m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=10000000",
+        "threshold=40000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fwrg-601j-below-25m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:6.01(j)",
+        "outcome:PERMITTED",
+        "unique:gnd-fwrg-601j-below-25m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-fwrg-nonloanparty-debt",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fwrg-601j-at-30m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:at",
+        "section:6.01(j)",
+        "outcome:PERMITTED",
+        "unique:gnd-fwrg-601j-at-30m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=30000000",
+        "threshold=30000000",
+        "position=at",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fwrg-601j-above-35m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:above",
+        "section:6.01(j)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fwrg-601j-above-35m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=35000000",
+        "threshold=30000000",
+        "position=above",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fwrg-601j-mid-15m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:6.01(j)",
+        "outcome:PERMITTED",
+        "unique:gnd-fwrg-601j-mid-15m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=15000000",
+        "threshold=30000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-701b14-below-200m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:7.01(b)(14)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-gib-701b14-below-200m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-general-debt-basket",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-701b14-at-344m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:at",
+        "section:7.01(b)(14)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-gib-701b14-at-344m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=344000000",
+        "threshold=344000000",
+        "position=at",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-701b14-above-400m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:above",
+        "section:7.01(b)(14)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-gib-701b14-above-400m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=400000000",
+        "threshold=344000000",
+        "position=above",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-secured-ica-absent",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "UNDETERMINED",
+      "actual": "UNDETERMINED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:SECURED_DEBT",
+        "threshold:missing_evidence",
+        "section:9.15",
+        "outcome:UNDETERMINED",
+        "unique:gnd-gib-secured-ica-absent"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-secured-missing-ica",
+        "expected=UNDETERMINED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-rp-builder-unevidenced",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:missing_evidence",
+        "section:7.05",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-gib-rp-builder-unevidenced"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-rp-builder-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-dsgr-incremental-unevidenced",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:dsgr-2022-2025-credit-facility",
+        "authentic:dsgr-2022-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:missing_evidence",
+        "section:2.09",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-dsgr-incremental-unevidenced"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-dsgr-incremental-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-dsgr-investment-bundle",
+      "lane": "INVESTMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:dsgr-2022-2025-credit-facility",
+        "authentic:dsgr-2022-2025-credit-facility",
+        "kind:INVESTMENT",
+        "threshold:missing_evidence",
+        "section:6.04",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-dsgr-investment-bundle"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-dsgr-investment-lien-debt-bundle",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-chewy-shared-rp-investment",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:chwy-2026-credit-agreement",
+        "authentic:chwy-2026-credit-agreement",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:missing_evidence",
+        "section:6.08",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-chewy-shared-rp-investment"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-chewy-shared-rp-investment",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-chewy-incremental-unevidenced",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:chwy-2026-credit-agreement",
+        "authentic:chwy-2026-credit-agreement",
+        "kind:SECURED_DEBT",
+        "threshold:missing_evidence",
+        "section:2.18",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-chewy-incremental-unevidenced"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-chewy-incremental-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-chewy-rp-small-still-conditional",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:chwy-2026-credit-agreement",
+        "authentic:chwy-2026-credit-agreement",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:missing_evidence",
+        "section:6.08",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-chewy-rp-small-still-conditional"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=5000000",
+        "threshold=0",
+        "position=missing_evidence",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-72o-just-under-59m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:7.2(o)",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-72o-just-under-59m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=59000000",
+        "threshold=60000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-76-just-under-39m",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "threshold:below",
+        "section:7.6",
+        "outcome:PERMITTED",
+        "unique:gnd-conmed-76-just-under-39m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=39000000",
+        "threshold=40000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fwrg-601j-just-under-29m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:6.01(j)",
+        "outcome:PERMITTED",
+        "unique:gnd-fwrg-601j-just-under-29m"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=29000000",
+        "threshold=30000000",
+        "position=below",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-gib-701b14-mid-100m",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "threshold:below",
+        "section:7.01(b)(14)",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-gib-701b14-mid-100m"
+      ],
+      "durationMs": 1,
+      "notes": [
+        "native-boundary amount=100000000",
+        "threshold=344000000",
+        "position=below",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-dsgr-investment-small",
+      "lane": "INVESTMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:dsgr-2022-2025-credit-facility",
+        "authentic:dsgr-2022-2025-credit-facility",
+        "kind:INVESTMENT",
+        "threshold:missing_evidence",
+        "section:6.04",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-dsgr-investment-small"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=5000000",
+        "threshold=0",
+        "position=missing_evidence",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-conmed-secured-above-basket",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:SECURED_DEBT",
+        "threshold:above",
+        "section:7.3",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-conmed-secured-above-basket"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "native-boundary amount=70000000",
+        "threshold=60000000",
+        "position=above",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-a-basic-credit-agreement",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-a-basic-credit-agreement",
+        "pa:pkg-a-basic-credit-agreement",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-a-basic-credit-agreement"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-b-multi-document",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-b-multi-document",
+        "pa:pkg-b-multi-document",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-b-multi-document"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-c-amendment-supersession",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-c-amendment-supersession",
+        "pa:pkg-c-amendment-supersession",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-c-amendment-supersession"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-d-qualitative-restrictions",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-d-qualitative-restrictions",
+        "pa:pkg-d-qualitative-restrictions",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-d-qualitative-restrictions"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-e-structural-ambiguity",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-e-structural-ambiguity",
+        "pa:pkg-e-structural-ambiguity",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-e-structural-ambiguity"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-f-capacity-ledger-honesty",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-f-capacity-ledger-honesty",
+        "pa:pkg-f-capacity-ledger-honesty",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-f-capacity-ledger-honesty"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-g-adversarial-evidence",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-g-adversarial-evidence",
+        "pa:pkg-g-adversarial-evidence",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-g-adversarial-evidence"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-h-unseen-composition",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-h-unseen-composition",
+        "pa:pkg-h-unseen-composition",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-h-unseen-composition"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-i-secured-debt-lien",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-i-secured-debt-lien",
+        "pa:pkg-i-secured-debt-lien",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-i-secured-debt-lien"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-j-restricted-payments-builder",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-j-restricted-payments-builder",
+        "pa:pkg-j-restricted-payments-builder",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-j-restricted-payments-builder"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-k-three-way-builder",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-k-three-way-builder",
+        "pa:pkg-k-three-way-builder",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-k-three-way-builder"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-l-affiliate-transactions",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-l-affiliate-transactions",
+        "pa:pkg-l-affiliate-transactions",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-l-affiliate-transactions"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-m-composed-p0",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-m-composed-p0",
+        "pa:pkg-m-composed-p0",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-m-composed-p0"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "gnd-pa-pkg-n-clean-ratio",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:pkg-n-clean-ratio",
+        "pa:pkg-n-clean-ratio",
+        "outcome:MATCH_BASELINE",
+        "unique:gnd-pa-pkg-n-clean-ratio"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "def-incorrect-favorable-guard",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:incorrect_favorable",
+        "unique:def-incorrect-favorable-guard",
+        "defectClass:incorrect_favorable"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-nonguarantor-guarantee",
+        "expected=PROHIBITED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "def-incorrect-refusal-guard",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:incorrect_refusal",
+        "unique:def-incorrect-refusal-guard",
+        "defectClass:incorrect_refusal"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-unsecured-general-basket",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "def-missing-evidence-ica",
+      "lane": "INTERCREDITOR",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "UNDETERMINED",
+      "actual": "UNDETERMINED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:missing_evidence",
+        "unique:def-missing-evidence-ica",
+        "defectClass:missing_evidence"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-secured-missing-ica",
+        "expected=UNDETERMINED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "def-stale-financial-sequential",
+      "lane": "SEQUENTIAL_TRANSACTION",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:stale_financial_state",
+        "unique:def-stale-financial-sequential",
+        "defectClass:stale_financial_state"
+      ],
+      "durationMs": 1,
+      "notes": [
+        "t1=PERMITTED",
+        "t3=CONDITIONALLY_PERMITTED",
+        "postsToLedger=false",
+        "utilizationUnknown=true",
+        "ok=true"
+      ]
+    },
+    {
+      "caseId": "def-missed-restriction-completeness",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:missed_restriction",
+        "unique:def-missed-restriction-completeness",
+        "defectClass:missed_restriction"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "suite-pointer: expectations/source present",
+        "hashes_ok_or_unset",
+        "full suite execution deferred to product-acceptance run-all"
+      ]
+    },
+    {
+      "caseId": "def-amendment-precedence",
+      "lane": "OPERATIVE_AMENDMENT_SELECTION",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:amendment_precedence",
+        "unique:def-amendment-precedence",
+        "defectClass:amendment_precedence"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:xd-05-amendment-effect",
+        "expected=PROHIBITED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "def-cross-doc-conjunction",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:cross_document_binding",
+        "unique:def-cross-doc-conjunction",
+        "defectClass:cross_document_binding"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:xd-01-permit-vs-prohibit",
+        "expected=PROHIBITED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "def-shared-capacity-metamorphic",
+      "lane": "SHARED_CAPACITY",
+      "fixtureClass": "FROZEN_REGRESSION",
+      "grade": "PASS_NEUTRAL",
+      "expected": "MATCH_BASELINE",
+      "actual": "MATCH_BASELINE",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "defect:shared_capacity",
+        "unique:def-shared-capacity-metamorphic",
+        "defectClass:shared_capacity"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "baseline=PERMITTED",
+        "withExtraProhibition=PROHIBITED",
+        "improved=false",
+        "noEffectWhilePermitted=false",
+        "Invariant: adding a restrictive shared-capacity prohibition must constrain (not improve, not no-op on PERMITTED)."
+      ]
+    },
+    {
+      "caseId": "gnd-fam-conmed-debt-basket",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "mechanic-family:DEBT_BASKET",
+        "outcome:PERMITTED",
+        "unique:gnd-fam-conmed-debt-basket"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-unsecured-general-basket",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-conmed-lien",
+      "lane": "LIEN_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:SECURED_DEBT",
+        "mechanic-family:LIEN_BASKET",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-conmed-lien"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-secured-without-lien-path",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-conmed-rp",
+      "lane": "RESTRICTED_PAYMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:RESTRICTED_PAYMENT",
+        "mechanic-family:RESTRICTED_PAYMENT",
+        "outcome:PERMITTED",
+        "unique:gnd-fam-conmed-rp"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-rp-basket",
+        "expected=PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-conmed-entity",
+      "lane": "CROSS_DOCUMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "PROHIBITED",
+      "actual": "PROHIBITED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:conmed-2025-credit-facility",
+        "authentic:conmed-2025-credit-facility",
+        "kind:SECURED_DEBT",
+        "mechanic-family:CROSS_DOCUMENT",
+        "outcome:PROHIBITED",
+        "unique:gnd-fam-conmed-entity"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-conmed-nonguarantor-guarantee",
+        "expected=PROHIBITED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-dsgr-incremental",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:dsgr-2022-2025-credit-facility",
+        "authentic:dsgr-2022-2025-credit-facility",
+        "kind:UNSECURED_DEBT",
+        "mechanic-family:DEBT_BASKET",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-dsgr-incremental"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-dsgr-incremental-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-dsgr-investment",
+      "lane": "INVESTMENT",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:dsgr-2022-2025-credit-facility",
+        "authentic:dsgr-2022-2025-credit-facility",
+        "kind:INVESTMENT",
+        "mechanic-family:INVESTMENT",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-dsgr-investment"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-dsgr-investment-lien-debt-bundle",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-gib-debt",
+      "lane": "SHARED_CAPACITY",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "mechanic-family:SHARED_CAPACITY",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-gib-debt"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-general-debt-basket",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-gib-ica",
+      "lane": "INTERCREDITOR",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "UNDETERMINED",
+      "actual": "UNDETERMINED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:SECURED_DEBT",
+        "mechanic-family:INTERCREDITOR",
+        "outcome:UNDETERMINED",
+        "unique:gnd-fam-gib-ica"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-secured-missing-ica",
+        "expected=UNDETERMINED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-gib-builder",
+      "lane": "BUILDER_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:gibraltar-2026-credit-agreement",
+        "authentic:gibraltar-2026-credit-agreement",
+        "kind:RESTRICTED_PAYMENT",
+        "mechanic-family:BUILDER_BASKET",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-gib-builder"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-gibraltar-rp-builder-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-chewy-shared",
+      "lane": "SHARED_CAPACITY",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:chwy-2026-credit-agreement",
+        "authentic:chwy-2026-credit-agreement",
+        "kind:RESTRICTED_PAYMENT",
+        "mechanic-family:SHARED_CAPACITY",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-chewy-shared"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-chewy-shared-rp-investment",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-chewy-incremental",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_REFUSAL",
+      "expected": "CONDITIONALLY_PERMITTED",
+      "actual": "CONDITIONALLY_PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:chwy-2026-credit-agreement",
+        "authentic:chwy-2026-credit-agreement",
+        "kind:SECURED_DEBT",
+        "mechanic-family:DEBT_BASKET",
+        "outcome:CONDITIONALLY_PERMITTED",
+        "unique:gnd-fam-chewy-incremental"
+      ],
+      "durationMs": 1,
+      "notes": [
+        "remapped:auth-chewy-incremental-unevidenced",
+        "expected=CONDITIONALLY_PERMITTED",
+        "matches=true"
+      ]
+    },
+    {
+      "caseId": "gnd-fam-fwrg-entity-debt",
+      "lane": "DEBT_BASKET",
+      "fixtureClass": "PUBLIC_DEVELOPMENT",
+      "grade": "CORRECT_FAVORABLE",
+      "expected": "PERMITTED",
+      "actual": "PERMITTED",
+      "falseFavorable": false,
+      "materialOmissions": [],
+      "structureFamilies": [
+        "package:fwrg-2021-credit-agreement",
+        "authentic:fwrg-2021-credit-agreement",
+        "kind:UNSECURED_DEBT",
+        "mechanic-family:DEBT_BASKET",
+        "outcome:PERMITTED",
+        "unique:gnd-fam-fwrg-entity-debt"
+      ],
+      "durationMs": 0,
+      "notes": [
+        "remapped:auth-fwrg-nonloanparty-debt",
+        "expected=PERMITTED",
+        "matches=true"
       ]
     }
   ],

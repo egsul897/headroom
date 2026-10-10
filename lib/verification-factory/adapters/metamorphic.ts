@@ -88,16 +88,26 @@ export function invariantAddingRestrictionDoesNotImprove(): AdapterExecutionResu
   };
   const mutated = evalTxn(scenario.transaction, [...scenario.provisions, extra]);
   const improved = rank(mutated.overallResult) > rank(baseline.overallResult);
+  // Absolute SHARED_CAPACITY prohibition must have force: if baseline was PERMITTED,
+  // outcome must worsen. No-effect after adding the prohibition is a defect.
+  const noEffectWhilePermitted =
+    baseline.overallResult === "PERMITTED" && mutated.overallResult === "PERMITTED";
+  const defect = improved || noEffectWhilePermitted;
   return {
     adapter: "metamorphic-cross-document",
-    actualLegalOutcome: mutated.overallResult,
-    falseFavorable: improved,
-    materialOmissions: [],
+    actualLegalOutcome: defect ? mutated.overallResult : "MATCH_BASELINE",
+    falseFavorable: defect,
+    materialOmissions: defect
+      ? ["Shared-capacity prohibition failed to constrain or improved favorability"]
+      : [],
     notes: [
       `baseline=${baseline.overallResult}`,
       `withExtraProhibition=${mutated.overallResult}`,
-      "Invariant: adding a restrictive shared-capacity prohibition must not improve favorability.",
+      `improved=${improved}`,
+      `noEffectWhilePermitted=${noEffectWhilePermitted}`,
+      "Invariant: adding a restrictive shared-capacity prohibition must constrain (not improve, not no-op on PERMITTED).",
     ],
+    details: { matchesExpected: !defect, deterministic: true },
   };
 }
 

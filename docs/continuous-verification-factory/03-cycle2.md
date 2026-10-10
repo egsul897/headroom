@@ -114,6 +114,16 @@ Registered detectors: incorrect favorable, incorrect refusal, missing evidence (
 
 ---
 
-## 10. Required return fields
+## 10. Required return fields (tested tip)
 
-Filled in the boxed Cycle 2 deliverable after mutation challenge + CI on the tested tip SHA.
+| Field | Value |
+|-------|-------|
+| Tested SHA | see git tip after Cycle 2 commits (mutation + harness artifacts) |
+| Mutation detection | **6/6 detected, 6/6 restored** — see `04-mutation-challenge.json` |
+| Unique scenarios | **100** public / **99** executable |
+| Case provenance | reviewer + source sha256 + operative date + restrictions + ambiguities on grounded cases |
+| False favorables | **1 known standing**: `gnd-conmed-76-above-45m` (engine PERMITTED vs GT PROHIBITED on §7.6); **0 unexpected** |
+| Soft gates | unchanged hardness; fail only on unexpected incorrect favorables |
+| Hard gate | canonical-compiler preserved |
+| Unresolved blockers | (1) #238 depends on unmerged Agent 5 / #218; (2) standing §7.6 overflow false favorable; (3) truly blind holdout keys not yet externalized |
+| Cost / safety | $0 inference; no Neon writes; no auto-merge |
