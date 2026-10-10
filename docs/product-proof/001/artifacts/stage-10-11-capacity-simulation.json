@@ -1,0 +1,52 @@
+{
+  "capacityAttempts": [
+    {
+      "case": "empty-vep",
+      "result": {
+        "outcome": "REFUSED",
+        "policy": "REQUIRE",
+        "packageHash": "2f05622b7947dd845c6499993c9b762c801cf32f3dff9e8f382e42d0e2578fc6",
+        "refusals": [
+          {
+            "code": "VERIFICATION_ARTIFACT_INCOMPLETE",
+            "message": "no verification artifact was supplied; unverified IR does not execute at the product boundary",
+            "refs": []
+          }
+        ]
+      }
+    }
+  ],
+  "simAttempts": [
+    {
+      "amount": 50000000,
+      "result": {
+        "outcome": "REFUSED",
+        "policy": "REQUIRE",
+        "packageHash": "2f05622b7947dd845c6499993c9b762c801cf32f3dff9e8f382e42d0e2578fc6",
+        "refusals": [
+          {
+            "code": "VERIFICATION_ARTIFACT_INCOMPLETE",
+            "message": "no verification artifact was supplied; unverified IR does not execute at the product boundary",
+            "refs": []
+          }
+        ]
+      }
+    },
+    {
+      "amount": 100000000,
+      "result": {
+        "outcome": "REFUSED",
+        "policy": "REQUIRE",
+        "packageHash": "2f05622b7947dd845c6499993c9b762c801cf32f3dff9e8f382e42d0e2578fc6",
+        "refusals": [
+          {
+            "code": "VERIFICATION_ARTIFACT_INCOMPLETE",
+            "message": "no verification artifact was supplied; unverified IR does not execute at the product boundary",
+            "refs": []
+          }
+        ]
+      }
+    }
+  ],
+  "note": "No authentic VerifiedExecutionPackage / capacityFormulas / Permissions for MTN. Fail-closed expected."
+}

@@ -1,0 +1,106 @@
+{
+  "resolveUtilization": {
+    "knowledge": "UNKNOWN",
+    "attributedAmount": null,
+    "currency": "USD",
+    "asOf": "2026-10-10",
+    "capacityRuleId": "mtn-permitted-debt-clause-l-secured",
+    "recordsConsidered": [],
+    "recordsApplied": [],
+    "recordsExcluded": [],
+    "blockers": [
+      "no attributed utilization evidence; empty ledger table is not verified zero"
+    ],
+    "note": "Utilization UNKNOWN — missing historical usage is never defaulted to zero. An empty database table does not prove zero usage.",
+    "supportsRemainingClaim": false,
+    "completenessCertified": false
+  },
+  "decideSolverUtilizationAuthority": {
+    "kind": "UNKNOWN",
+    "attributedAmount": null,
+    "supportsRemainingClaim": false,
+    "completenessCertified": false,
+    "authoritativeForRemaining": false,
+    "blockers": [
+      "no attributed utilization evidence; empty ledger is not verified zero"
+    ],
+    "note": "Utilization UNKNOWN — missing history is never defaulted to zero.",
+    "solverStatus": "ZERO_NO_ATTRIBUTED_USAGE"
+  },
+  "computeVerifiedRemaining_hypotheticalGrossLabeled": {
+    "capacityRuleId": "mtn-permitted-debt-clause-l-secured",
+    "asOf": "2026-10-10",
+    "grossCapacity": 50000000,
+    "grossUnlimited": false,
+    "utilization": {
+      "knowledge": "UNKNOWN",
+      "attributedAmount": null,
+      "currency": "USD",
+      "asOf": "2026-10-10",
+      "capacityRuleId": "mtn-permitted-debt-clause-l-secured",
+      "recordsConsidered": [],
+      "recordsApplied": [],
+      "recordsExcluded": [],
+      "blockers": [
+        "no attributed utilization evidence; empty ledger table is not verified zero"
+      ],
+      "note": "Utilization UNKNOWN — missing historical usage is never defaulted to zero. An empty database table does not prove zero usage.",
+      "supportsRemainingClaim": false,
+      "completenessCertified": false
+    },
+    "knownUtilization": null,
+    "unknownUtilization": true,
+    "supportedRemaining": null,
+    "remainingStatus": "GROSS_ONLY",
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "governingConditions": [],
+    "crossDocumentConstraints": [],
+    "sourceCitations": [
+      "PRODUCT_PROOF_001: hypothetical gross — not engine-extracted"
+    ],
+    "certificationStatus": "NOT_CERTIFIED",
+    "blockers": [
+      "no attributed utilization evidence; empty ledger table is not verified zero"
+    ],
+    "note": "Gross contractual capacity known; utilization UNKNOWN — remaining not supported. Utilization UNKNOWN — missing historical usage is never defaulted to zero. An empty database table does not prove zero usage.",
+    "mayPublishAvailable": false
+  },
+  "computeVerifiedRemaining_unmodeledGross": {
+    "capacityRuleId": "mtn-permitted-debt-clause-l-secured",
+    "asOf": "2026-10-10",
+    "grossCapacity": null,
+    "grossUnlimited": false,
+    "utilization": {
+      "knowledge": "UNKNOWN",
+      "attributedAmount": null,
+      "currency": "USD",
+      "asOf": "2026-10-10",
+      "capacityRuleId": "mtn-permitted-debt-clause-l-secured",
+      "recordsConsidered": [],
+      "recordsApplied": [],
+      "recordsExcluded": [],
+      "blockers": [
+        "no attributed utilization evidence; empty ledger table is not verified zero"
+      ],
+      "note": "Utilization UNKNOWN — missing historical usage is never defaulted to zero. An empty database table does not prove zero usage.",
+      "supportsRemainingClaim": false,
+      "completenessCertified": false
+    },
+    "knownUtilization": null,
+    "unknownUtilization": true,
+    "supportedRemaining": null,
+    "remainingStatus": "REFUSED",
+    "publicationLabel": "REFUSED",
+    "governingConditions": [],
+    "crossDocumentConstraints": [],
+    "sourceCitations": [],
+    "certificationStatus": "NOT_CERTIFIED",
+    "blockers": [
+      "no attributed utilization evidence; empty ledger table is not verified zero",
+      "gross capacity not extracted/compiled from authentic MTN package on main"
+    ],
+    "note": "gross capacity not extracted/compiled from authentic MTN package on main",
+    "mayPublishAvailable": false
+  },
+  "integrityRule": "Empty ledger ≠ zero usage; remaining capacity NOT DETERMINED without completeness/authority."
+}
