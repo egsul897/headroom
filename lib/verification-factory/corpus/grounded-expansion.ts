@@ -46,12 +46,16 @@ type Boundary = {
   kind: string;
   amountUsd: number;
   thresholdUsd: number;
-  position: "below" | "at" | "above" | "missing_evidence" | "entity_scope";
+  position: "below" | "at" | "above" | "missing_evidence" | "entity_scope" | "selected_basket";
   expected: ExpectedLegalOutcome;
   reviewer: string;
   ambiguities?: string[];
   adapterCaseId?: string;
   operativeAsOf?: string;
+  /** When set, native runner merges into transaction.knownFacts. */
+  knownFacts?: Record<string, string | number | boolean | null>;
+  /** When set, native runner drops matching sectionRefs from base provisions. */
+  excludeSectionRefs?: string[];
 };
 
 /**
@@ -174,19 +178,71 @@ const BOUNDARIES: Boundary[] = [
   },
   {
     caseId: "gnd-conmed-76-above-45m",
-    title: "CONMED §7.6 $45M RP above $40M → PROHIBITED on §7.6 basket",
+    title:
+      "CONMED $45M dividend: §7.6(d) $40M basket insufficient; §7.6(e) leverage path unevidenced → CONDITIONALLY_PERMITTED",
     packageId: "conmed-2025-credit-facility",
     fixturePath: CONMED_VII,
-    sectionRef: "7.6",
+    sectionRef: "7.6(d)",
     kind: "RESTRICTED_PAYMENT",
     amountUsd: 45_000_000,
     thresholdUsd: 40_000_000,
     position: "above",
-    expected: "PROHIBITED",
-    reviewer: "cvf-cycle2-source-reader",
+    expected: "CONDITIONALLY_PERMITTED",
+    reviewer: "cvf-conmed-76-correction",
     ambiguities: [
-      "Independent GT: §7.6 basket exceeded for an RP. If the engine clears via Investment OR-path, that is an incorrect favorable.",
+      "Selected-basket insufficiency (§7.6(d) exceeded) is not whole-transaction PROHIBITED: §7.6(e) separately permits unlimited RPs subject to 3.50x senior secured leverage and no Event of Default. Those conditions are unevidenced here → conditional overall, never free PERMITTED via §7.8 Investment.",
     ],
+  },
+  {
+    caseId: "gnd-conmed-76d-only-45m",
+    title: "CONMED $45M dividend under §7.6(d) only (no §7.6(e) fact) → PROHIBITED",
+    packageId: "conmed-2025-credit-facility",
+    fixturePath: CONMED_VII,
+    sectionRef: "7.6(d)",
+    kind: "RESTRICTED_PAYMENT",
+    amountUsd: 45_000_000,
+    thresholdUsd: 40_000_000,
+    position: "selected_basket",
+    expected: "PROHIBITED",
+    reviewer: "cvf-conmed-76-correction",
+    excludeSectionRefs: ["7.6(e)"],
+    ambiguities: [
+      "Isolates selected-basket insufficiency: with only §7.6(d) present and exceeded, and Investment permissions inapplicable to RP, overall is PROHIBITED.",
+    ],
+  },
+  {
+    caseId: "gnd-conmed-76e-unknown-45m",
+    title: "CONMED $45M dividend with §7.6(e) conditions unknown → CONDITIONALLY_PERMITTED",
+    packageId: "conmed-2025-credit-facility",
+    fixturePath: CONMED_VII,
+    sectionRef: "7.6(e)",
+    kind: "RESTRICTED_PAYMENT",
+    amountUsd: 45_000_000,
+    thresholdUsd: 40_000_000,
+    position: "missing_evidence",
+    expected: "CONDITIONALLY_PERMITTED",
+    reviewer: "cvf-conmed-76-correction",
+    ambiguities: [
+      "§7.6(d) exceeded; §7.6(e) unlimited path exists but 3.50x CSSLR and no-Event-of-Default are not evidenced.",
+    ],
+  },
+  {
+    caseId: "gnd-conmed-76e-satisfied-45m",
+    title: "CONMED $45M dividend with §7.6(e) CSSLR≤3.50 and no EOD affirmed → PERMITTED",
+    packageId: "conmed-2025-credit-facility",
+    fixturePath: CONMED_VII,
+    sectionRef: "7.6(e)",
+    kind: "RESTRICTED_PAYMENT",
+    amountUsd: 45_000_000,
+    thresholdUsd: 40_000_000,
+    position: "above",
+    expected: "PERMITTED",
+    reviewer: "cvf-conmed-76-correction",
+    knownFacts: {
+      seniorSecuredLeverage: 3.0,
+      noEventOfDefault: true,
+      noDefault: true,
+    },
   },
   {
     caseId: "gnd-conmed-76-mid-10m",

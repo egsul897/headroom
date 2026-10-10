@@ -122,7 +122,7 @@ Registered detectors: incorrect favorable, incorrect refusal, missing evidence (
 | Mutation detection | **6/6 detected, 6/6 restored** — see `04-mutation-challenge.json` |
 | Unique scenarios | **100** public / **99** executable |
 | Case provenance | reviewer + source sha256 + operative date + restrictions + ambiguities on grounded cases |
-| False favorables | **1 known standing**: `gnd-conmed-76-above-45m` (engine PERMITTED vs GT PROHIBITED on §7.6); **0 unexpected** |
+| False favorables | **0** after CONMED §7.6 correction (`gnd-conmed-76-above-45m` GT revised; Investment cross-family OR fixed; standing allowlist cleared) |
 | CI status | **Green on tip** — CVF soft gate + invent-absence/home/P3-R0 soft gates pass. Canonical-compiler not path-triggered on this tip (unchanged hardness). |
 | Soft gates | unchanged hardness; fail only on unexpected incorrect favorables |
 | Hard gate | canonical-compiler preserved |

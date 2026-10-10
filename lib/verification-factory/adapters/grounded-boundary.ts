@@ -116,16 +116,26 @@ export function runGroundedBoundaryAdapter(caseId: string): AdapterExecutionResu
     };
   }
 
+  const exclude = new Set(spec.excludeSectionRefs ?? []);
+  const provisions =
+    exclude.size === 0
+      ? base.provisions
+      : base.provisions.filter((p) => !exclude.has(p.sectionRef));
+
   const transaction = {
     ...base.transaction,
     amountUsd: spec.amountUsd,
     kind: spec.kind as typeof base.transaction.kind,
     description: spec.title,
+    knownFacts: {
+      ...(base.transaction.knownFacts ?? {}),
+      ...(spec.knownFacts ?? {}),
+    },
   };
 
   const verdict = evaluateCrossDocumentTransaction({
     transaction,
-    provisions: base.provisions,
+    provisions,
     requiredAbsentDocumentIds: base.requiredAbsentDocumentIds,
     verifiedPackage: null,
     verifiedRulebookHasTrustedUnits: false,
@@ -147,10 +157,19 @@ export function runGroundedBoundaryAdapter(caseId: string): AdapterExecutionResu
       `position=${spec.position}`,
       `expected=${spec.expected}`,
       `matches=${matchesExpected}`,
+      exclude.size ? `excludeSections=${[...exclude].join(",")}` : "excludeSections=none",
+      spec.knownFacts ? `knownFacts=${JSON.stringify(spec.knownFacts)}` : "knownFacts=none",
     ],
     details: {
       expectedOverall: spec.expected,
       matchesExpected,
+      evaluated: verdict.documentVerdicts.flatMap((d) =>
+        d.evaluatedRestrictions.map((e) => ({
+          sectionRef: e.sectionRef,
+          family: e.family,
+          stance: e.stance,
+        })),
+      ),
     },
   };
 }

@@ -330,6 +330,25 @@ function evaluateFactAgainstTxn(
     };
   }
 
+  // Cross-family: a declared Restricted Payment (dividend / Capital Stock distribution)
+  // is not authorized by Investment-basket permissions. §7.8 remains enumerated for
+  // reclass awareness but must not OR-clear an RP pathway.
+  if (
+    txn.kind === "RESTRICTED_PAYMENT" &&
+    fact.family === "INVESTMENTS" &&
+    fact.posture === "PERMISSION"
+  ) {
+    return {
+      stance: "INAPPLICABLE",
+      permissions,
+      prohibitions,
+      conditions,
+      unknowns: [
+        `${fact.documentLabel} §${fact.sectionRef}: Investment permission is not an applicable Restricted Payment pathway (cross-family OR blocked).`,
+      ],
+    };
+  }
+
   if (fact.posture === "PROHIBITION" && fact.capacityUsd == null && fact.conditions.length === 0) {
     // Absolute prohibition (e.g. RP unless no Default) — condition-gated prohibition.
     if (fact.conditions.length === 0 && /shall not|will not|may not/i.test(fact.statement)) {
@@ -421,13 +440,34 @@ function evaluateFactAgainstTxn(
         ) {
           satisfied = true;
         }
+        // Event of Default gate (CONMED §7.6(e)(ii) and similar).
+        if (
+          /no Event of Default/i.test(c) &&
+          (known.noEventOfDefault === true || known.noDefault === true)
+        ) {
+          satisfied = true;
+        }
         if (/made in cash|in cash/i.test(c) && /cash/i.test(txn.description)) satisfied = true;
         if (typeof known.fccr === "number" && /Fixed Charge Coverage Ratio|FCCR/i.test(c)) {
           const m = c.match(/(\d+(?:\.\d+)?)/);
           if (m && known.fccr >= Number(m[1])) satisfied = true;
         }
+        // Senior secured leverage incurrence gate (CONMED §7.6(e)(i) — "no greater than 3.50").
+        if (
+          typeof known.seniorSecuredLeverage === "number" &&
+          /Senior Secured Leverage|Consolidated Senior Secured Leverage/i.test(c)
+        ) {
+          const m = c.match(/(\d+(?:\.\d+)?)\s*to\s*1|(\d+(?:\.\d+)?)\s*x/i);
+          const ceiling = m ? Number(m[1] ?? m[2]) : null;
+          if (ceiling != null && known.seniorSecuredLeverage <= ceiling) satisfied = true;
+        }
         for (const [k, v] of Object.entries(known)) {
-          if (v === true && k !== "noDefault" && new RegExp(k.replace(/_/g, " "), "i").test(c)) {
+          if (
+            v === true &&
+            k !== "noDefault" &&
+            k !== "noEventOfDefault" &&
+            new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, " "), "i").test(c)
+          ) {
             satisfied = true;
           }
         }
@@ -463,18 +503,62 @@ function evaluateFactAgainstTxn(
       return { stance: "INAPPLICABLE", permissions, prohibitions, conditions, unknowns };
     }
     permissions.push(`${fact.documentLabel} §${fact.sectionRef}: qualitative/ratio permission exists.`);
-    for (const c of fact.conditions) {
-      unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: condition not evidenced — ${c}`);
+    if (fact.conditions.length > 0) {
+      const known = txn.knownFacts ?? {};
+      for (const c of fact.conditions) {
+        let satisfied = false;
+        if (
+          /no Default/i.test(c) &&
+          known.noDefault === true &&
+          !/Payment Conditions|Availability|Borrowing Base|Available Amount/i.test(c)
+        ) {
+          satisfied = true;
+        }
+        if (
+          /no Event of Default/i.test(c) &&
+          (known.noEventOfDefault === true || known.noDefault === true)
+        ) {
+          satisfied = true;
+        }
+        if (
+          typeof known.seniorSecuredLeverage === "number" &&
+          /Senior Secured Leverage|Consolidated Senior Secured Leverage/i.test(c)
+        ) {
+          const m = c.match(/(\d+(?:\.\d+)?)\s*to\s*1|(\d+(?:\.\d+)?)\s*x/i);
+          const ceiling = m ? Number(m[1] ?? m[2]) : null;
+          if (ceiling != null && known.seniorSecuredLeverage <= ceiling) satisfied = true;
+        }
+        for (const [k, v] of Object.entries(known)) {
+          if (
+            v === true &&
+            k !== "noDefault" &&
+            k !== "noEventOfDefault" &&
+            new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, " "), "i").test(c)
+          ) {
+            satisfied = true;
+          }
+        }
+        if (!satisfied) {
+          unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: condition not evidenced — ${c}`);
+        }
+      }
+      const unresolved = unknowns.some((u) => u.includes(`§${fact.sectionRef}:`));
+      return {
+        stance: unresolved ? "CONDITIONAL" : "PERMITS",
+        permissions,
+        prohibitions,
+        conditions,
+        unknowns,
+      };
     }
     return {
-      stance: fact.conditions.length ? "CONDITIONAL" : "UNKNOWN",
+      stance: "UNKNOWN",
       permissions,
       prohibitions,
       conditions,
-      unknowns:
-        unknowns.length > 0
-          ? unknowns
-          : [`${fact.documentLabel} §${fact.sectionRef}: permission lacks quantified capacity or evidenced condition satisfaction.`],
+      unknowns: [
+        `${fact.documentLabel} §${fact.sectionRef}: permission lacks quantified capacity or evidenced condition satisfaction.`,
+      ],
     };
   }
 

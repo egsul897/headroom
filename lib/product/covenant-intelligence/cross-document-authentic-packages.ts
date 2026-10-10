@@ -127,10 +127,32 @@ function conmedProvisions(): OperativeProvisionFact[] {
       sectionRef: "7.6",
       family: "RESTRICTED_PAYMENTS",
       posture: "PERMISSION",
-      statement: "Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000.",
+      statement:
+        "§7.6(d): Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000.",
       excerpt: excerpt(CONMED_VII, "the Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000"),
       capacityUsd: 40_000_000,
       conditions: [],
+      definitionRefs: [],
+      crossDocumentTargets: [],
+    },
+    {
+      documentId: "conmed-ca",
+      documentLabel: "CONMED Eighth A&R Credit Agreement",
+      documentRole: "CREDIT_AGREEMENT",
+      sectionRef: "7.6(e)",
+      family: "RESTRICTED_PAYMENTS",
+      posture: "PERMISSION",
+      statement:
+        "§7.6(e): Parent Borrower may make Restricted Payments in an unlimited amount so long as Consolidated Senior Secured Leverage Ratio ≤ 3.50x pro forma and no Event of Default has occurred and is continuing or would result therefrom.",
+      excerpt: excerpt(
+        CONMED_VII,
+        "the Parent Borrower may make Restricted Payments in an unlimited amount",
+      ),
+      capacityUsd: null,
+      conditions: [
+        "Consolidated Senior Secured Leverage Ratio on a pro forma basis is no greater than 3.50 to 1.00",
+        "no Event of Default has occurred and is continuing or would result therefrom",
+      ],
       definitionRefs: [],
       crossDocumentTargets: [],
     },
