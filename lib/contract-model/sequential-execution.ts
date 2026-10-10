@@ -156,10 +156,9 @@ export interface SequentialWorld {
 export type RunnerMode = "HYPOTHETICAL" | "COMPLETED";
 
 export interface LedgerAppendSurface {
-  appendUsage(request: { usage: LedgerUsageRecord }): {
-    ok: boolean;
-    issues: { code: string }[];
-  };
+  appendUsage(request: { usage: LedgerUsageRecord }):
+    | { ok: true; usage?: LedgerUsageRecord; events?: unknown[] }
+    | { ok: false; issues: { code: string }[] };
 }
 
 export interface SequentialStepSpec {
