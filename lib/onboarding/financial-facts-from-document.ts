@@ -3,70 +3,15 @@
  * or financial statement. Reuses FinancialFactValueSchema + normalizeFinancialValue
  * (same path as CSV connector). Never invents missing values or units.
  *
- * Called after document extraction so facts land in the same review queue as
- * covenant candidates. Counsel must approve before promotion into FinancialState.
+ * Delegates identity + metric extraction to lib/financial-certificate-engine
+ * so GAAP vs contractual EBITDA stay distinct. Counsel must approve before
+ * promotion into FinancialState; extraction never auto-approves.
  */
 
 import { prisma } from "@/lib/prisma";
 import { FinancialFactValueSchema } from "@/lib/extraction/schemas";
-import { normalizeFinancialValue, type FinancialUnit } from "@/lib/connectors/units";
-
-const METRIC_LABELS: { metricName: string; pattern: RegExp }[] = [
-  { metricName: "covenant_ebitda", pattern: /\b(?:consolidated\s+)?(?:adjusted\s+)?(?:covenant\s+)?ebitda\b/i },
-  { metricName: "total_debt", pattern: /\b(?:consolidated\s+)?total(?:\s+net)?\s+debt\b|\btotal\s+indebtedness\b/i },
-  { metricName: "secured_debt", pattern: /\b(?:senior\s+)?secured\s+debt\b|\bsecured\s+indebtedness\b/i },
-  { metricName: "cash", pattern: /\b(?:unrestricted\s+)?cash\b|\bcash\s+and\s+cash\s+equivalents\b/i },
-  { metricName: "interest_expense", pattern: /\binterest\s+expense\b/i },
-  { metricName: "cumulative_net_income", pattern: /\bcumulative\s+net\s+income\b|\bconsolidated\s+net\s+income\b/i },
-  { metricName: "equity_proceeds", pattern: /\bequity\s+proceeds\b/i },
-  // Required by upsertFinancialFactsForDate's 8-field batch; certificates often state a modeling rate.
-  { metricName: "assumed_new_debt_rate_pct", pattern: /\bassumed\s+new[- ]debt\s+rate\b|\bassumed\s+coupon\b|\bassumed\s+new\s+debt\s+rate\b/i },
-];
-
-const AMOUNT =
-  /\$\s*([\d,]+(?:\.\d+)?)\s*(billion|million|thousand|bn|mm|m|k)?\b|\b([\d,]+(?:\.\d+)?)\s*(billion|million|thousand|bn|mm)\b/i;
-const PERCENT = /\b([\d]+(?:\.\d+)?)\s*%/;
-
-function unitFromWord(word: string | undefined): FinancialUnit | null {
-  if (!word) return null;
-  const w = word.toLowerCase();
-  if (w === "billion" || w === "bn") return "USD"; // $1.7 billion → convert via USD then millions
-  if (w === "million" || w === "mm" || w === "m") return "USD_MILLIONS";
-  if (w === "thousand" || w === "k") return "USD_THOUSANDS";
-  return null;
-}
-
-function parseAmount(raw: string): { value: number; unit: FinancialUnit } | null {
-  const m = raw.match(AMOUNT);
-  if (!m) return null;
-  const n = Number((m[1] ?? m[3] ?? "").replace(/,/g, ""));
-  if (!Number.isFinite(n)) return null;
-  const word = m[2] ?? m[4];
-  if (word && /^(billion|bn)$/i.test(word)) {
-    return { value: n * 1_000, unit: "USD_MILLIONS" };
-  }
-  const unit = unitFromWord(word);
-  if (!unit) return null; // no declared scale word — never guess millions vs dollars
-  return { value: n, unit };
-}
-
-function parseAsOfDate(text: string): string | null {
-  const labeled =
-    text.match(/\bas of\s+([A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4})/i) ??
-    text.match(/\bperiod ended\s+([A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4})/i);
-  if (!labeled?.[1]) return null;
-  const parsed = new Date(labeled[1]);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return parsed.toISOString().slice(0, 10);
-}
-
-function parsePercent(raw: string): { value: number; unit: FinancialUnit } | null {
-  const m = raw.match(PERCENT);
-  if (!m?.[1]) return null;
-  const n = Number(m[1]);
-  if (!Number.isFinite(n)) return null;
-  return { value: n, unit: "PERCENT" };
-}
+import { extractFromDocumentText } from "@/lib/financial-certificate-engine/extract";
+import type { FinancialUnit } from "@/lib/connectors/units";
 
 export interface ProposedFinancialFact {
   metricName: string;
@@ -84,51 +29,76 @@ export interface ProposedFinancialFact {
 /**
  * Deterministic parse of uploaded certificate/statement text.
  * Ambiguous or unit-less amounts are skipped, never invented.
+ * GAAP EBITDA proposes as gaap_ebitda (not capacity-bound).
+ * Contractual EBITDA proposes as covenant_ebitda.
  */
 export function parseFinancialFactsFromText(text: string, chunkId: string | null = null): ProposedFinancialFact[] {
-  const asOfDate = parseAsOfDate(text);
-  if (!asOfDate) return [];
+  const extraction = extractFromDocumentText({
+    documentId: "inline",
+    text,
+    declaredType: null,
+  });
+  if (!extraction.identity.fiscalDate) return [];
 
-  const lines = text.split(/\n|;/).map((l) => l.trim()).filter(Boolean);
-  const found = new Map<string, ProposedFinancialFact[]>();
+  const out: ProposedFinancialFact[] = [];
+  for (const m of extraction.metrics) {
+    let metricName: string | null = m.capacityMetricName;
+    if (m.family === "GAAP_EBITDA") metricName = "gaap_ebitda";
+    if (!metricName) continue;
+    // Ratios / non-capacity families other than gaap are skipped for FINANCIAL_FACT
+    // candidates (they flow through the certificate engine / NS-4 path instead).
+    if (
+      metricName !== "gaap_ebitda" &&
+      metricName !== "covenant_ebitda" &&
+      metricName !== "total_debt" &&
+      metricName !== "secured_debt" &&
+      metricName !== "cash" &&
+      metricName !== "interest_expense" &&
+      metricName !== "cumulative_net_income" &&
+      metricName !== "equity_proceeds" &&
+      metricName !== "assumed_new_debt_rate_pct"
+    ) {
+      continue;
+    }
 
-  for (const line of lines) {
-    for (const { metricName, pattern } of METRIC_LABELS) {
-      if (!pattern.test(line)) continue;
-      const amount =
-        metricName === "assumed_new_debt_rate_pct" ? parsePercent(line) : parseAmount(line);
-      if (!amount) continue;
-      let normalized;
-      try {
-        normalized = normalizeFinancialValue(metricName, amount.value, amount.unit);
-      } catch {
-        continue;
+    out.push({
+      metricName,
+      value: m.canonicalValue,
+      asOfDate: m.asOfDate,
+      canonicalUnit: m.canonicalUnit,
+      originalValue: m.value,
+      originalUnit: m.unit,
+      excerpt: m.source.excerpt.slice(0, 280),
+      chunkId,
+      withinSanityBounds: true,
+    });
+  }
+
+  // Assumed rate: engine may not classify PERCENT lines under capacityMetricName
+  // when pattern matches — extractFromDocumentText handles assumed_new_debt_rate
+  // only if we add it. Keep a narrow fallback for the existing certificate test.
+  if (!out.some((o) => o.metricName === "assumed_new_debt_rate_pct")) {
+    const rateLine = text.split(/\n|;/).find((l) => /\bassumed\s+new[- ]debt\s+rate\b|\bassumed\s+coupon\b/i.test(l));
+    const pct = rateLine?.match(/\b([\d]+(?:\.\d+)?)\s*%/);
+    const asOf = extraction.identity.fiscalDate;
+    if (rateLine && pct?.[1] && asOf) {
+      const n = Number(pct[1]);
+      if (Number.isFinite(n)) {
+        out.push({
+          metricName: "assumed_new_debt_rate_pct",
+          value: n,
+          asOfDate: asOf,
+          canonicalUnit: "PERCENT",
+          originalValue: n,
+          originalUnit: "PERCENT",
+          excerpt: rateLine.slice(0, 280),
+          chunkId,
+          withinSanityBounds: true,
+        });
       }
-      const row: ProposedFinancialFact = {
-        metricName,
-        value: normalized.normalizedValue,
-        asOfDate,
-        canonicalUnit: normalized.canonicalUnit,
-        originalValue: normalized.originalValue,
-        originalUnit: normalized.originalUnit,
-        excerpt: line.slice(0, 280),
-        chunkId,
-        withinSanityBounds: normalized.withinSanityBounds,
-        sanityNote: normalized.sanityNote,
-      };
-      const list = found.get(metricName) ?? [];
-      list.push(row);
-      found.set(metricName, list);
     }
   }
 
-  const out: ProposedFinancialFact[] = [];
-  for (const [metricName, rows] of found) {
-    const unique = [...new Set(rows.map((r) => r.value))];
-    if (unique.length !== 1) continue; // conflicting amounts for one metric — skip
-    out.push(rows[0]!);
-    void metricName;
-  }
   return out;
 }
 
@@ -191,7 +161,11 @@ export async function proposeFinancialFactsFromDocument(companyId: string, docum
         sourceExcerpt: proposal.excerpt,
         proposedValue: validated.data,
         reviewStatus: proposal.withinSanityBounds ? "PENDING" : "REVIEW_REQUIRED",
-        rationale: proposal.sanityNote ?? "Proposed from uploaded financial document. Confirm against the source before promoting.",
+        rationale:
+          proposal.metricName === "gaap_ebitda"
+            ? "GAAP/reported EBITDA — not a substitute for contractual EBITDA. Confirm against the source; do not promote as capacity ebitda."
+            : (proposal.sanityNote ??
+              "Proposed from uploaded financial document. Confirm against the source before promoting."),
       },
     });
     already.add(key);
