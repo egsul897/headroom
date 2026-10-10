@@ -27,9 +27,11 @@ Clean auto-merge (`covenant-engine.ts`, `prisma/schema.prisma`). No edits requir
 - Gross-only publication without utilization completeness
 - Completeness-certificate requirement for remaining claims (`utilization-honesty.ts`)
 
-## Remaining safety note (non-blocking for Stage 3)
+## Remaining safety note — resolved on follow-on branch
 
-`lib/financial-certificate-engine/utilization-honesty.ts` is a **mirror** of the #234/#237 completeness contract (written before #237 landed on main). It does not replace `lib/capacity/utilization-authority.ts`. Stage 5 product wiring must call **#237** for customer remaining claims; FCE honesty stays for engine-local publication until a thin adapter collapse (next smallest batch after Stage 4 if needed).
+`lib/financial-certificate-engine/utilization-honesty.ts` was a **mirror** of the #234/#237 completeness contract at Stage 3 tip `dd727d2b`.
+
+**Collapse:** branch `cursor/fce-canonical-onto-unified-8d31` (onto #250) replaces that mirror with a thin `#237` adapter (`computeVerifiedRemaining` / `evidenceFromAttributedLedger`). See `07-fce-canonical-onto-stack.md`. Product remaining claims continue to use `lib/capacity/*` directly (e.g. `debt-intelligence.ts`).
 
 ## Local gates
 
