@@ -8,14 +8,16 @@
  * requires an APPROVED completeness certificate matching the evidence shape.
  */
 
-import { decideSolverUtilizationAuthority } from "../capacity/utilization-authority";
+import {
+  decideSolverUtilizationAuthority,
+  type SolverCompletenessCertInput,
+} from "../capacity/utilization-authority";
 import type {
   AggregationRule,
   BasketUsageRecord,
   MeasurementBasis,
   SharedConstraintMember,
 } from "./types";
-import type { UtilizationCompletenessCertificate } from "../capacity/utilization-types";
 
 export type SharedUsageComputationStatus =
   | "COMPUTED"
@@ -98,10 +100,9 @@ export function computeSharedConstraintCurrentUsage(params: {
   /**
    * Completeness certificate required for authoritative remaining.
    * VERIFIED_EMPTY when usage is zero; VERIFIED_COMPLETE when attributed set is full.
+   * SYNTHETIC_LABELED refused unless allowSyntheticRemaining (tests only).
    */
-  completenessCertificate?: (UtilizationCompletenessCertificate & {
-    authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
-  }) | null;
+  completenessCertificate?: SolverCompletenessCertInput | null;
   /** Test-only — never set in production loaders. */
   allowSyntheticRemaining?: boolean;
 }): {

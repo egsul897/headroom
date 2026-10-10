@@ -1,20 +1,24 @@
 /**
  * Authoritative utilization contract — single source of truth for remaining-capacity claims.
  *
- * Reconciles:
- * - Solver shared-usage statuses (#232)
- * - Completeness-certificate model (#234 `resolveUtilization` / `computeVerifiedRemaining`)
+ * Reconciles post-#237 main with the #234 completeness authority gate:
+ * - Solver shared-usage statuses via `decideSolverUtilizationAuthority`
+ * - Capacity resolver + full completeness certificates via `resolveUtilization`
  *
  * Rules (non-negotiable):
  * 1. Empty ledger / missing history is UNKNOWN — never silent zero.
  * 2. Approved attributed records alone never prove completeness.
  * 3. Remaining = gross − usage requires an APPROVED completeness certificate
  *    (VERIFIED_EMPTY for zero, VERIFIED_COMPLETE when attributed records are the full set).
- * 4. Synthetic evidence may not publish customer AVAILABLE / remaining unless
- *    explicitly labeled and never as AUTHENTIC completeness.
+ * 4. SYNTHETIC_LABELED never publishes authoritative remaining unless the test-only
+ *    `allowSyntheticRemaining` escape hatch is set (never in production loaders).
  * 5. Failed gates never publish AVAILABLE (A8-01).
  */
 
+import {
+  resolveUtilization,
+  type ResolveUtilizationArgs,
+} from "./utilization-resolver";
 import type {
   UtilizationCompletenessCertificate,
   UtilizationKnowledgeKind,
@@ -55,6 +59,19 @@ export type UtilizationAuthorityDecision = {
     | "ENTITY_CLASS_USAGE_UNAVAILABLE";
 };
 
+/**
+ * Thin completeness input for the solver observation path.
+ * Full issuer/fingerprint certificates live on the capacity resolver path.
+ */
+export type SolverCompletenessCertInput = {
+  kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+  approvalState: "APPROVED";
+  sourceLabel: string;
+  authenticity: "AUTHENTIC" | "SYNTHETIC_LABELED";
+  capacityRuleId?: string;
+  asOf?: string;
+};
+
 export type SolverUsageObservation = {
   /** Number of named members on the constraint. */
   namedMemberCount: number;
@@ -69,23 +86,36 @@ export type SolverUsageObservation = {
     | string;
   /**
    * Completeness certificate for this constraint/path. Required for remaining.
-   * Synthetic certificates must set authenticity SYNTHETIC_LABELED and are refused
-   * for authoritative remaining unless allowSyntheticRemaining is true (tests only).
+   * Synthetic certificates are refused for authoritative remaining unless
+   * allowSyntheticRemaining is true (tests / labeled demos only).
    */
-  completenessCertificate?: (UtilizationCompletenessCertificate & {
-    authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
-  }) | null;
+  completenessCertificate?: SolverCompletenessCertInput | null;
   /** Test-only escape hatch — never set in production loaders. */
   allowSyntheticRemaining?: boolean;
 };
 
 function certOk(
-  cert: SolverUsageObservation["completenessCertificate"],
+  cert: SolverCompletenessCertInput | null | undefined,
   allowSynthetic: boolean | undefined,
-): cert is UtilizationCompletenessCertificate & { authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED" } {
+): cert is SolverCompletenessCertInput {
   if (!cert || cert.approvalState !== "APPROVED") return false;
-  if (cert.authenticity === "SYNTHETIC_LABELED" && !allowSynthetic) return false;
+  if (cert.authenticity !== "AUTHENTIC" && !(allowSynthetic && cert.authenticity === "SYNTHETIC_LABELED")) {
+    return false;
+  }
   return true;
+}
+
+function refuseUnknown(blockers: string[], note: string): UtilizationAuthorityDecision {
+  return {
+    kind: "UNKNOWN",
+    attributedAmount: null,
+    supportsRemainingClaim: false,
+    completenessCertified: false,
+    authoritativeForRemaining: false,
+    blockers,
+    note,
+    solverStatus: "ZERO_NO_ATTRIBUTED_USAGE",
+  };
 }
 
 /**
@@ -118,17 +148,27 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
     };
   }
 
+  const cert = obs.completenessCertificate ?? null;
+  const certified = certOk(cert, obs.allowSyntheticRemaining);
+
+  // No attributed rows: only VERIFIED_EMPTY may authorize remaining (never invent zero).
   if (obs.namedMemberCount === 0 || obs.attributedMemberCount === 0) {
-    return {
-      kind: "UNKNOWN",
-      attributedAmount: null,
-      supportsRemainingClaim: false,
-      completenessCertified: false,
-      authoritativeForRemaining: false,
-      blockers: ["no attributed utilization evidence; empty ledger is not verified zero"],
-      note: "Utilization UNKNOWN — missing history is never defaulted to zero.",
-      solverStatus: "ZERO_NO_ATTRIBUTED_USAGE",
-    };
+    if (certified && cert!.kind === "VERIFIED_EMPTY") {
+      return {
+        kind: "VERIFIED_ZERO",
+        attributedAmount: 0,
+        supportsRemainingClaim: true,
+        completenessCertified: true,
+        authoritativeForRemaining: true,
+        blockers: [],
+        note: `Verified zero utilization per APPROVED VERIFIED_EMPTY certificate (${cert!.sourceLabel}).`,
+        solverStatus: "VERIFIED_ZERO",
+      };
+    }
+    return refuseUnknown(
+      ["no attributed utilization evidence; empty ledger is not verified zero"],
+      "Utilization UNKNOWN — missing history is never defaulted to zero.",
+    );
   }
 
   if (obs.attributedMemberCount < obs.namedMemberCount) {
@@ -145,8 +185,6 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
   }
 
   const usage = Math.max(0, obs.measuredUsage);
-  const cert = obs.completenessCertificate ?? null;
-  const certified = certOk(cert, obs.allowSyntheticRemaining);
 
   if (usage === 0) {
     if (certified && cert!.kind === "VERIFIED_EMPTY") {
@@ -168,7 +206,9 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
         supportsRemainingClaim: false,
         completenessCertified: false,
         authoritativeForRemaining: false,
-        blockers: ["VERIFIED_COMPLETE requires attributed records with non-empty evidence set — use VERIFIED_EMPTY for zero"],
+        blockers: [
+          "VERIFIED_COMPLETE requires attributed records with non-empty evidence set — use VERIFIED_EMPTY for zero",
+        ],
         note: "Completeness certificate kind mismatch for zero usage.",
         solverStatus: "ATTRIBUTED_INCOMPLETE",
       };
@@ -188,19 +228,20 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
   }
 
   // usage > 0, all members attributed
+  if (cert && cert.authenticity === "SYNTHETIC_LABELED" && !obs.allowSyntheticRemaining) {
+    return {
+      kind: "SYNTHETIC_ONLY",
+      attributedAmount: usage,
+      supportsRemainingClaim: false,
+      completenessCertified: false,
+      authoritativeForRemaining: false,
+      blockers: ["synthetic completeness evidence cannot publish authoritative remaining"],
+      note: "Synthetic utilization evidence — remaining not published as AUTHENTIC AVAILABLE.",
+      solverStatus: "ATTRIBUTED_INCOMPLETE",
+    };
+  }
+
   if (certified && cert!.kind === "VERIFIED_COMPLETE") {
-    if (cert!.authenticity === "SYNTHETIC_LABELED" && !obs.allowSyntheticRemaining) {
-      return {
-        kind: "SYNTHETIC_ONLY",
-        attributedAmount: usage,
-        supportsRemainingClaim: false,
-        completenessCertified: false,
-        authoritativeForRemaining: false,
-        blockers: ["synthetic completeness evidence cannot publish authoritative remaining"],
-        note: "Synthetic utilization evidence — remaining not published as AUTHENTIC AVAILABLE.",
-        solverStatus: "ATTRIBUTED_INCOMPLETE",
-      };
-    }
     return {
       kind: "KNOWN_ATTRIBUTED",
       attributedAmount: usage,
@@ -238,31 +279,36 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
   };
 }
 
-/** Map a #234 UtilizationResolution onto the authority decision (product path). */
+/** Map a UtilizationResolution onto the authority decision (product path). */
 export function authorityFromUtilizationResolution(r: UtilizationResolution): UtilizationAuthorityDecision {
-  const syntheticOnly = r.recordsApplied.some((x) => x.authenticity === "SYNTHETIC_LABELED")
-    && r.recordsApplied.every((x) => x.authenticity === "SYNTHETIC_LABELED");
-  if (syntheticOnly && r.supportsRemainingClaim) {
-    // Defensive: product should never mark synthetic as remaining-supporting without allow flag.
-    return {
-      kind: "SYNTHETIC_ONLY",
-      attributedAmount: r.attributedAmount,
-      supportsRemainingClaim: false,
-      completenessCertified: false,
-      authoritativeForRemaining: false,
-      blockers: [...r.blockers, "synthetic-only evidence cannot publish authoritative remaining"],
-      note: "Synthetic utilization evidence — remaining withheld.",
-      solverStatus: "ATTRIBUTED_INCOMPLETE",
-    };
+  const syntheticOnly =
+    r.recordsApplied.length > 0 &&
+    r.recordsApplied.every((x) => x.authenticity === "SYNTHETIC_LABELED");
+  if ((syntheticOnly || !r.productionAuthoritative) && r.supportsRemainingClaim && !r.productionAuthoritative) {
+    // DEMO_SYNTHETIC may set supportsRemainingClaim; product publication still strips non-production.
+    if (syntheticOnly) {
+      return {
+        kind: "SYNTHETIC_ONLY",
+        attributedAmount: r.attributedAmount,
+        supportsRemainingClaim: false,
+        completenessCertified: false,
+        authoritativeForRemaining: false,
+        blockers: [...r.blockers, "synthetic-only evidence cannot publish authoritative remaining"],
+        note: "Synthetic utilization evidence — remaining withheld.",
+        solverStatus: "ATTRIBUTED_INCOMPLETE",
+      };
+    }
   }
 
   let kind: UtilizationAuthorityKind;
   const k = r.knowledge as UtilizationKnowledgeKind;
   if (k === "VERIFIED_ZERO") kind = "VERIFIED_ZERO";
   else if (k === "UNKNOWN") kind = "UNKNOWN";
-  else if (k === "PARTIALLY_KNOWN" || k === "SUPERSEDED_EXCLUDED" || k === "UNATTRIBUTED_LEGACY_BASKET") kind = "PARTIALLY_KNOWN";
-  else if (k === "KNOWN_ATTRIBUTED" || k === "SHARED_POOL" || k === "RECLASSIFIED") kind = "KNOWN_ATTRIBUTED";
-  else kind = "UNKNOWN";
+  else if (k === "PARTIALLY_KNOWN" || k === "SUPERSEDED_EXCLUDED" || k === "UNATTRIBUTED_LEGACY_BASKET") {
+    kind = "PARTIALLY_KNOWN";
+  } else if (k === "KNOWN_ATTRIBUTED" || k === "SHARED_POOL" || k === "RECLASSIFIED") {
+    kind = "KNOWN_ATTRIBUTED";
+  } else kind = "UNKNOWN";
 
   let solverStatus: UtilizationAuthorityDecision["solverStatus"] = "ZERO_NO_ATTRIBUTED_USAGE";
   if (r.supportsRemainingClaim && kind === "VERIFIED_ZERO") solverStatus = "VERIFIED_ZERO";
@@ -276,7 +322,7 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
     attributedAmount: r.attributedAmount,
     supportsRemainingClaim: r.supportsRemainingClaim,
     completenessCertified: r.completenessCertified,
-    authoritativeForRemaining: r.supportsRemainingClaim,
+    authoritativeForRemaining: r.supportsRemainingClaim && r.productionAuthoritative,
     blockers: r.blockers,
     note: r.note,
     solverStatus,
@@ -286,4 +332,84 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
 /** Hard guard for any consumer about to publish AVAILABLE / numeric remaining. */
 export function assertMayPublishRemaining(decision: UtilizationAuthorityDecision): boolean {
   return decision.authoritativeForRemaining === true && decision.supportsRemainingClaim === true;
+}
+
+/** Solver-facing snapshot projected from a capacity resolution. */
+export type SolverUtilizationAuthority = {
+  currentUsage: number;
+  currentUsageStatus: UtilizationAuthorityDecision["solverStatus"];
+  currentUsageAuthoritative: boolean;
+  currentUsageSupportsRemainingClaim: boolean;
+};
+
+export function toSolverUtilizationAuthority(
+  resolution: UtilizationResolution,
+): SolverUtilizationAuthority {
+  const decision = authorityFromUtilizationResolution(resolution);
+  return {
+    currentUsage: decision.attributedAmount ?? 0,
+    currentUsageStatus: decision.solverStatus,
+    currentUsageAuthoritative: decision.authoritativeForRemaining,
+    currentUsageSupportsRemainingClaim: decision.supportsRemainingClaim && decision.authoritativeForRemaining,
+  };
+}
+
+export function resolveCanonicalUtilizationAuthority(args: ResolveUtilizationArgs): {
+  resolution: UtilizationResolution;
+  solver: SolverUtilizationAuthority;
+  decision: UtilizationAuthorityDecision;
+} {
+  const resolution = resolveUtilization(args);
+  const decision = authorityFromUtilizationResolution(resolution);
+  return { resolution, solver: toSolverUtilizationAuthority(resolution), decision };
+}
+
+export function solverAuthoritySupportsRemaining(solver: {
+  currentUsageSupportsRemainingClaim?: boolean;
+  currentUsageAuthoritative?: boolean;
+}): boolean {
+  if (solver.currentUsageSupportsRemainingClaim === true) return true;
+  return solver.currentUsageAuthoritative === true;
+}
+
+export function isAuthoritativeCompletenessCertificate(
+  cert: UtilizationCompletenessCertificate | null | undefined,
+): boolean {
+  return (
+    cert != null &&
+    cert.approvalState === "APPROVED" &&
+    cert.authenticity === "AUTHENTIC" &&
+    (cert.issuer.role === "COUNSEL_REVIEWER" || cert.issuer.role === "LEDGER_CUSTODIAN")
+  );
+}
+
+export type CanonicalUtilizationContractCheck = {
+  ok: boolean;
+  violations: string[];
+};
+
+export function assertCanonicalUtilizationContract(input: {
+  emptyLedgerSupportsRemaining: boolean;
+  individualApprovedEntriesImplyComplete: boolean;
+  syntheticCertificateSupportsRemaining: boolean;
+  nonAuthoritativeSolverUsageProducesRemaining: boolean;
+  knowledgeWhenEmptyLedger: UtilizationKnowledgeKind | null;
+}): CanonicalUtilizationContractCheck {
+  const violations: string[] = [];
+  if (input.emptyLedgerSupportsRemaining) {
+    violations.push("empty ledger must not support remaining capacity");
+  }
+  if (input.individualApprovedEntriesImplyComplete) {
+    violations.push("approved individual ledger entries must not imply completeness");
+  }
+  if (input.syntheticCertificateSupportsRemaining) {
+    violations.push("synthetic completeness certificate must not authorize remaining");
+  }
+  if (input.nonAuthoritativeSolverUsageProducesRemaining) {
+    violations.push("non-authoritative solver usage must not produce remaining capacity");
+  }
+  if (input.knowledgeWhenEmptyLedger != null && input.knowledgeWhenEmptyLedger === "VERIFIED_ZERO") {
+    violations.push("empty ledger must resolve UNKNOWN, not VERIFIED_ZERO");
+  }
+  return { ok: violations.length === 0, violations };
 }

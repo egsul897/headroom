@@ -1,0 +1,45 @@
+{
+  "artifact": "utilization-neon-canonical-integration",
+  "version": 2,
+  "updatedAt": "2026-10-10T00:15:00Z",
+  "mainSha": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
+  "priorMainSha": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
+  "landedOnMain": [
+    { "pr": 229, "role": "A8 capacity status floor" },
+    { "pr": 237, "role": "first #232+#234 utilization reconcile" }
+  ],
+  "integrationBranch": "cursor/utilization-neon-canonical-a9e4",
+  "combinedPr": 241,
+  "a8CloseOut": {
+    "canonicalPr": 236,
+    "duplicateDocsPr": 235,
+    "duplicateDisposition": "SUPERSEDED_DO_NOT_LAND_SEPARATELY",
+    "defectsClosed": ["DEFECT-A8-01", "DEFECT-A8-02"]
+  },
+  "sourceTipsHardenedFrom": {
+    "pr232": "5b208705d3dc64e489dc092f36e1b03be62ff1c7",
+    "pr234": "91996d1b79a039f61c6494b78e874d59797f7d62"
+  },
+  "preserved": {
+    "pr229CapacityStateTypes": "byte-identical-to-main",
+    "statusForAmount": true,
+    "notSatisfied": true
+  },
+  "canonicalContract": {
+    "emptyLedgerSupportsRemaining": false,
+    "individualApprovedImpliesComplete": false,
+    "syntheticCompletenessSupportsRemaining": false,
+    "verifiedEmptyOnEmptyAttribution": true,
+    "fullCompletenessAuthorityGate": true,
+    "authorityOwner": "lib/capacity/utilization-authority.ts"
+  },
+  "blockers": [
+    "authentic Neon completeness certificates not populated",
+    "human merge authorization required",
+    "do not merge #232 or #234 independently (superseded by #237+#241)"
+  ],
+  "autoMerge": false,
+  "neonWrites": false,
+  "certificationBypass": false,
+  "detailDoc": "29-utilization-neon-canonical-integration.md"
+}
