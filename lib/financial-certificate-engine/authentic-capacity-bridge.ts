@@ -1,11 +1,11 @@
 /**
  * Bridge APPROVED FCE financial inputs → authentic covenant capacity (Agent 3).
  *
- * Coordinates with PR #230 authentic Neon execution:
+ * Coordinates with PR #230 authentic Neon execution and #237 utilization authority:
  * - Uses approved contractual metrics as FinancialSnapshotInput
  * - Evaluates authentic CovenantProvision rows via evaluateProvision
  * - Reports gross capacity separately from remaining capacity
- * - Never claims remaining capacity without attributed historical utilization
+ * - Remaining only via `publishRemainingCapacity` → #237 `computeVerifiedRemaining`
  */
 
 import {
@@ -138,6 +138,7 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
     reviewedBy: financial.reviewedBy,
     approvalRef: financial.approvalRef,
     productionContext: false,
+    trustedProductionApprovalChannel: false,
   });
 
   if (!financial.capacitySnapshot) {
