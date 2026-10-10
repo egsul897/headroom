@@ -221,14 +221,15 @@ describe("wrong-document production promotion guard", () => {
 
   it("undated REVIEW_REQUIRED competitor (null effectiveDateIso) also refuses base CONFIRMED_OPERATIVE", () => {
     // Absorbed from #296 fail-closed: uncertain dating must not leave doc-a confirmed.
-    const authorities = [
+    const undatedB = reviewRequiredAuthority("doc-b", "2026-09-14");
+    const authorities: RestatementAuthorityResolution[] = [
       reviewRequiredAuthority("doc-a", "2020-03-26"),
       {
-        ...reviewRequiredAuthority("doc-b", "2026-09-14"),
+        ...undatedB,
         effectiveDateIso: null,
         evidence: {
-          ...reviewRequiredAuthority("doc-b", "2026-09-14").evidence,
-          executionDate: null,
+          ...undatedB.evidence,
+          executionDate: { value: null, isoDate: null, excerpt: null },
         },
       },
     ];
