@@ -1,6 +1,6 @@
 {
   "schema": "agent6-knife-river-701-verified-rule-attempt.v1",
-  "generatedAt": "2026-10-10T01:25:22.774Z",
+  "generatedAt": "2026-10-10T01:27:31.776Z",
   "companyKey": "knife-river-2023-2026",
   "target": {
     "sectionRef": "7.01",
@@ -48,9 +48,12 @@
   },
   "blocker": {
     "class": "OPERATIONAL_CREDENTIAL",
-    "reason": "Dry-run default. Pass --live only with credentials AND KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1 and budget ceiling.",
+    "reason": "No AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY in environment. Cannot run certified compile/inventory/verify without inventing IR.",
     "missingInputs": [
       "AI_GATEWAY_API_KEY_OR_ANTHROPIC_API_KEY",
+      "KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1",
+      "EXPLICIT_BUDGET_CEILING_USD",
+      "CERTIFIED_MODEL_IDS_VIA_certifiedConfig",
       "APPROVED_OFFLINE_REPLAY_CORPUS_FOR_KR_701"
     ],
     "exactProductionPathWhenAuthorized": [
@@ -64,5 +67,6 @@
   },
   "callerSynthetic": true,
   "costUsd": 0,
-  "successCriterion": "One genuinely verified unseen-package rule with reproducible execution or justified refusal — NOT met: interpretation not run; verifiedRule.count=0."
+  "missionOutcome": "JUSTIFIED_REFUSAL",
+  "successCriterion": "JUSTIFIED_REFUSAL (OPERATIONAL_CREDENTIAL): verifiedRule.count=0; interpretation not fabricated. Exact inputs listed in blocker.missingInputs."
 }
