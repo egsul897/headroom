@@ -46,3 +46,9 @@ export {
   type TrustedIssuerAuthorizationContext,
   type IssuerAuthorizationResult,
 } from "./completeness-issuer-auth";
+/** Thin joint marker — does not invent a parallel authority path. */
+export {
+  REMAINING_AUTHORITY_CONTRACT_VERSION,
+  mayPublishRemainingCapacity,
+  type RemainingRefusalReason,
+} from "./remaining-authority";
