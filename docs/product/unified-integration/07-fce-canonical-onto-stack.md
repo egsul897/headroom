@@ -1,5 +1,6 @@
 # FCE canonical collapse onto unified stack (#220 → #250)
 
+**PR:** https://github.com/egsul897/headroom/pull/252  
 **Branch:** `cursor/fce-canonical-onto-unified-8d31`  
 **Base:** Stage 5 tip `ac0ff925` (#250)  
 **Source retained from #220:** `9c393298` / HEAD `60ab2cb9` (final integration)
