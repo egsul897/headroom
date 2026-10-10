@@ -1010,10 +1010,13 @@ describe("P0 secured-capacity adversarial matrix", () => {
       transaction: { ...baseTransaction, amount: 0, secured: true },
     });
     const maxNoLien = zeroProbeNoLien.overall.maximumCapacity;
+    // Amount-independent secured probe without lien must not publish positive EXACT capacity.
     if (maxNoLien?.kind === "EXACT") {
       expect(maxNoLien.amount).toBeLessThanOrEqual(1e-9);
     } else {
-      expect(maxNoLien?.kind === "EXACT").toBe(false);
+      expect(["REVIEW_REQUIRED", "ASSUMPTION_REQUIRED", "BOUNDED_RANGE", "SCENARIO_DEPENDENT", undefined]).toContain(
+        maxNoLien?.kind,
+      );
     }
 
     // Independent lien capacity 100 < debt 500 — EXACT must not exceed lien authority.
