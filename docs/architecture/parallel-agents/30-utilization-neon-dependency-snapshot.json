@@ -51,7 +51,7 @@
   "neonWrites": false,
   "certificationBypass": false,
   "detailDoc": "29-utilization-neon-canonical-integration.md",
-  "integrationTip": "272c6f066096ab12f83aaa388da1e67f5d1eea45",
+  "integrationTip": "da8cb7b544adf6c3612a4d5e7477ad25e58047dc",
   "verification": {
     "capacityStateTypesIdenticalToMain": true,
     "probeStatus": "NOT_SATISFIED",
@@ -66,5 +66,24 @@
       "passed": 515,
       "failed": 0
     }
+  },
+  "ci": {
+    "head": "da8cb7b544adf6c3612a4d5e7477ad25e58047dc",
+    "aggregate": "SUCCESS",
+    "mergeable": "MERGEABLE",
+    "checks": [
+      {
+        "name": "P3-R0 carry-forward and supersession (soft gate)",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Vercel",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "conclusion": "SUCCESS"
+      }
+    ]
   }
 }
