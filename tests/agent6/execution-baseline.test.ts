@@ -15,18 +15,39 @@ describe("Agent 6 — execution readiness baseline pins", () => {
     const agg = JSON.parse(readFileSync(join(BASELINE, "aggregate.json"), "utf8")) as {
       costUsd: number;
       credentialGate: string;
-      companies: Array<{ companyKey: string; stoppingStage: string; correctRefusalsCountedAsCapacity: boolean }>;
+      autonomousE2EReadinessClaimed: boolean;
+      companies: Array<{
+        companyKey: string;
+        stoppingStage: string;
+        stoppingFailureClass: string;
+        passAExecutableCount: number;
+        correctRefusalsCountedAsCapacity: boolean;
+        remainingCapacity: null;
+      }>;
     };
     expect(agg.costUsd).toBe(0);
     expect(agg.credentialGate).toBe("BLOCKED_BY_MISSING_CREDENTIAL");
+    expect(agg.autonomousE2EReadinessClaimed).toBe(false);
     expect(agg.companies).toHaveLength(3);
     expect(agg.companies.every((c) => c.stoppingStage === "LEGAL_INTERPRETATION")).toBe(true);
+    expect(agg.companies.every((c) => c.stoppingFailureClass === "OPERATIONAL_CREDENTIAL")).toBe(true);
+    expect(agg.companies.every((c) => c.passAExecutableCount === 0)).toBe(true);
     expect(agg.companies.every((c) => c.correctRefusalsCountedAsCapacity === false)).toBe(true);
+    expect(agg.companies.every((c) => c.remainingCapacity === null)).toBe(true);
   });
 
   it("Knife River provisional family associates amendments without operative upgrade", () => {
     const kr = JSON.parse(readFileSync(join(BASELINE, "knife-river-2023-2026", "baseline.json"), "utf8")) as {
-      stages: Array<{ stage: string; detail?: { instruments?: Array<Record<string, unknown>>; a6d4?: { knifeRiverFamilyAssociation: boolean } } }>;
+      stages: Array<{
+        stage: string;
+        failureClass?: string;
+        detail?: {
+          instruments?: Array<Record<string, unknown>>;
+          legallyConfirmedAmendmentChain?: boolean;
+          mayConsolidateOperativeAgreement?: boolean;
+          a6d4?: { knifeRiverFamilyAssociation: boolean; provisionalIsNotConfirmedOperative?: boolean };
+        };
+      }>;
     };
     const graph = kr.stages.find((s) => s.stage === "PACKAGE_GRAPH")!;
     expect(graph.detail?.a6d4?.knifeRiverFamilyAssociation).toBe(true);
@@ -34,6 +55,9 @@ describe("Agent 6 — execution readiness baseline pins", () => {
     expect(facility.associationKind).toBe("PROVISIONAL_FAMILY");
     expect(facility.reviewStatus).toBe("REVIEW_REQUIRED");
     expect((facility.documentIds as string[]).sort()).toEqual(["doc-a", "doc-b", "doc-c"]);
+    expect(graph.detail?.legallyConfirmedAmendmentChain).toBe(false);
+    expect(graph.detail?.mayConsolidateOperativeAgreement).toBe(false);
+    expect(graph.detail?.a6d4?.provisionalIsNotConfirmedOperative).toBe(true);
   });
 
   it("product benchmark separates Pass A recall from verified rules and capacity", () => {

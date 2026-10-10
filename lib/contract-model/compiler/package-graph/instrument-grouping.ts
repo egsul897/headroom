@@ -103,6 +103,41 @@ function trustedReachableFrom(baseDocumentId: string, members: string[], relatio
   return new Set(members.filter((id) => uf.find(id) === baseRoot));
 }
 
+/**
+ * A6-D4 safety gate — provisional family membership is NOT a legally confirmed
+ * amendment chain and must never be treated as a consolidated operative agreement.
+ *
+ * Returns true only when associationKind is CONFIRMED (or legacy absent+RESOLVED)
+ * AND reviewStatus is RESOLVED. PROVISIONAL_FAMILY always returns false.
+ */
+export function isLegallyConfirmedAmendmentChain(
+  instrument: Pick<InstrumentGroupingResult, "associationKind" | "reviewStatus">,
+): boolean {
+  if (instrument.associationKind === "PROVISIONAL_FAMILY") return false;
+  if (instrument.reviewStatus !== "RESOLVED") return false;
+  // Absent associationKind on historical RESOLVED rows is treated as CONFIRMED.
+  return instrument.associationKind === undefined || instrument.associationKind === "CONFIRMED";
+}
+
+/** True only when associationKind is explicitly PROVISIONAL_FAMILY. */
+export function isProvisionalInstrumentFamily(
+  instrument: Pick<InstrumentGroupingResult, "associationKind">,
+): boolean {
+  return instrument.associationKind === "PROVISIONAL_FAMILY";
+}
+
+/**
+ * Operative consolidation (treating amendment text as governing over base) requires
+ * a legally confirmed chain. Provisional family association alone is insufficient.
+ */
+export function mayConsolidateOperativeAgreement(
+  instrument: Pick<InstrumentGroupingResult, "associationKind" | "reviewStatus" | "provisionalDocumentIds">,
+): boolean {
+  if (!isLegallyConfirmedAmendmentChain(instrument)) return false;
+  if ((instrument.provisionalDocumentIds?.length ?? 0) > 0) return false;
+  return true;
+}
+
 export function groupPackageIntoInstruments(
   documentIds: string[],
   classifications: DocumentClassification[],

@@ -17,6 +17,11 @@ import { buildStructuralIndex } from "../../lib/contract-model/compiler/structur
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
 import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
+import { assessPassAPopulation, classifyStageFailure } from "../../lib/contract-model/compiler/discovery/eligibility";
+import {
+  isLegallyConfirmedAmendmentChain,
+  mayConsolidateOperativeAgreement,
+} from "../../lib/contract-model/compiler/package-graph/instrument-grouping";
 import { getStageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import {
   attemptAuthenticatedVep,
@@ -35,6 +40,7 @@ interface PipelineStage {
   stage: string;
   status: StageStatus;
   reason: string | null;
+  failureClass?: string;
   detail?: Record<string, unknown>;
 }
 
@@ -194,11 +200,17 @@ function runCompanyBaseline(companyKey: string): {
         unresolvedReason: r.unresolvedReason,
       })),
       provisionalFamilyOk,
+      legallyConfirmedAmendmentChain: facility ? isLegallyConfirmedAmendmentChain(facility) : false,
+      mayConsolidateOperativeAgreement: facility ? mayConsolidateOperativeAgreement(facility) : false,
       a6d4: {
         knifeRiverFamilyAssociation:
           companyKey === "knife-river-2023-2026"
             ? facility?.associationKind === "PROVISIONAL_FAMILY" &&
               facility.documentIds.sort().join(",") === "doc-a,doc-b,doc-c"
+            : null,
+        provisionalIsNotConfirmedOperative:
+          facility?.associationKind === "PROVISIONAL_FAMILY"
+            ? !isLegallyConfirmedAmendmentChain(facility) && !mayConsolidateOperativeAgreement(facility)
             : null,
       },
     },
@@ -211,19 +223,16 @@ function runCompanyBaseline(companyKey: string): {
       documentId: d.documentId,
       candidateCount: candidates.length,
       sectionRefs: [...new Set(candidates.map((c) => c.sectionRef).filter(Boolean))],
-      topCandidates: candidates
+      // Compact: do not dump full candidate bodies into baseline artifacts.
+      topSectionRefsByScore: candidates
         .slice()
         .sort((a, b) => b.signalScore - a.signalScore)
-        .slice(0, 25)
-        .map((c) => ({
-          sectionRef: c.sectionRef,
-          signalScore: c.signalScore,
-          signals: c.signals,
-          supersessionStatus: c.supersessionStatus,
-        })),
+        .slice(0, 15)
+        .map((c) => ({ sectionRef: c.sectionRef, signalScore: c.signalScore })),
     };
   });
   const allPassA = docs.flatMap((d) => runPassADeterministicSignals(d.documentId, index));
+  const eligibility = assessPassAPopulation(allPassA);
   const mustDiscover = expected.covenantsExpected.filter((c) => c.mustDiscover !== false);
   const discoveryHits = mustDiscover.map((c) => {
     const hit = allPassA.find((cand) => sectionMatches(cand.sectionRef, c.sectionRef ?? null));
@@ -233,61 +242,87 @@ function runCompanyBaseline(companyKey: string): {
       passAHit: !!hit,
       hitSignals: hit?.signals ?? [],
       hitDocumentId: hit?.documentId ?? null,
+      executable: false as const,
     };
   });
   const passARecall = discoveryHits.filter((h) => h.passAHit).length / Math.max(mustDiscover.length, 1);
 
+  const caller = getStageCaller();
+  const llmBlocked = caller.isSynthetic;
+  const credentialBlocked = llmBlocked;
+
   stages.push({
     stage: "COVENANT_CANDIDATE",
     status: "PARTIAL",
+    failureClass: credentialBlocked ? "OPERATIONAL_CREDENTIAL" : "OPERATIONAL_AUTHORIZATION",
     reason:
-      "Deterministic Discovery Pass A only. Pass B–D (LLM semantic classification / neighborhood / reconcile) NOT_RUN — credential/environment blocker, not proof discovery cannot work.",
+      "Deterministic Discovery Pass A only. Pass B–D (LLM semantic classification / neighborhood / reconcile) NOT_RUN — operational credential/authorization blocker, not a substantive legal-interpretation failure and not proof discovery cannot work.",
     detail: {
       mode: "DETERMINISTIC_PASS_A_ONLY",
       llmAssistedDiscovery: "NOT_RUN",
-      credentialGate: getStageCaller().isSynthetic ? "BLOCKED_BY_MISSING_CREDENTIAL" : "CREDENTIAL_PRESENT",
+      credentialGate: credentialBlocked ? "BLOCKED_BY_MISSING_CREDENTIAL" : "CREDENTIAL_PRESENT_SPEND_NOT_AUTHORIZED",
       totalCandidates: allPassA.length,
+      passAExecutableCount: eligibility.executableCount,
+      agent1EligibilityPolicy: eligibility.policy,
       mustDiscoverExpected: mustDiscover.length,
       mustDiscoverPassAHits: discoveryHits.filter((h) => h.passAHit).length,
       passARecallAgainstIndependentExpectations: passARecall,
       discoveryHits,
       byDocument: passAByDoc,
+      note: "Pass A candidates are NOT executable (Agent 1 conservative eligibility).",
     },
   });
 
   // Legal interpretation / verified rule / financials / capacity / transaction — stop honestly.
-  const caller = getStageCaller();
-  const llmBlocked = caller.isSynthetic;
+  const legalReason = credentialBlocked
+    ? "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal."
+    : "Credentials present but this baseline deliberately does not spend paid inference without explicit authorization (OPERATIONAL_AUTHORIZATION).";
   stages.push({
     stage: "LEGAL_INTERPRETATION",
     status: "STOPPED",
-    reason: llmBlocked
-      ? "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output."
-      : "Credentials present but this baseline deliberately does not spend paid inference without explicit authorization.",
+    failureClass: classifyStageFailure({
+      stage: "LEGAL_INTERPRETATION",
+      reason: legalReason,
+      upstreamCredentialBlocked: credentialBlocked,
+    }),
+    reason: legalReason,
   });
+  const verifiedReason =
+    "NOT_REACHED — cascade from upstream operational credential/authorization block. No substantive legal-interpretation finding was produced for this package. No VerifiedExecutionPackage invented.";
   stages.push({
     stage: "VERIFIED_RULE",
     status: "NOT_REACHED",
-    reason: "No VerifiedExecutionPackage / CERTIFIED rule artifacts exist for this unseen package. Independent expectations are not rewritten to invent verification.",
+    failureClass: classifyStageFailure({
+      stage: "VERIFIED_RULE",
+      reason: verifiedReason,
+      upstreamCredentialBlocked: credentialBlocked,
+    }),
+    reason: verifiedReason,
   });
+  const financialReason = "No APPROVED NorthStar financial snapshot. DO_NOT_INVENT. Remaining capacity unavailable until authoritative financial inputs and complete utilization evidence exist.";
   stages.push({
     stage: "FINANCIAL_INPUTS",
     status: "STOPPED",
-    reason: "No APPROVED NorthStar financial snapshot. DO_NOT_INVENT.",
+    failureClass: "MISSING_EVIDENCE",
+    reason: financialReason,
     detail: {
       officerCertificateWithUtilization: expected.financials.officerCertificateWithUtilization,
       notes: expected.financials.notes ?? null,
+      remainingCapacityPolicy: "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
     },
   });
   stages.push({
     stage: "CAPACITY",
     status: "NOT_REACHED",
-    reason: "evaluateVerifiedCapacity REQUIRE path not invoked for this package — missing CERTIFIED VEP and APPROVED inputs. Correct refusal ≠ numerical capacity result.",
+    failureClass: "CASCADE_FROM_UPSTREAM",
+    reason:
+      "evaluateVerifiedCapacity REQUIRE path not invoked for this package — missing CERTIFIED VEP and APPROVED inputs. Gross capacity deferred until interpretation+verification; remaining capacity withheld. Correct refusal ≠ numerical capacity result.",
   });
   stages.push({
     stage: "TRANSACTION",
     status: "REFUSED",
-    reason: "MISSING_EVIDENCE — fail-closed Position report; no favorable capacity claim.",
+    failureClass: "MISSING_EVIDENCE",
+    reason: "MISSING_EVIDENCE — fail-closed Position report; no favorable capacity claim. Not represented as autonomous E2E execution readiness.",
     detail: {
       proposedTransactions: expected.proposedTransactions.map((t) => ({
         id: t.id,
@@ -295,6 +330,7 @@ function runCompanyBaseline(companyKey: string): {
         actual: t.expectedEngineOutcome === "REVIEW_REQUIRED" ? "REVIEW_REQUIRED" : "MISSING_EVIDENCE",
         countedAsExecutableCapacity: false,
       })),
+      autonomousE2EReadinessClaimed: false,
     },
   });
 
@@ -548,18 +584,26 @@ function main() {
     pipelineLegend: [
       "DOCUMENT → STRUCTURAL_GRAPH → PACKAGE_GRAPH → COVENANT_CANDIDATE → LEGAL_INTERPRETATION → VERIFIED_RULE → FINANCIAL_INPUTS → CAPACITY → TRANSACTION",
     ],
-    companies: results.map((r) => ({
-      companyKey: r.companyKey,
-      issuer: r.issuer,
-      stoppingStage: r.stoppingStage,
-      stoppingReason: r.stoppingReason,
-      passACandidates: (r.passA as { totalCandidates: number }).totalCandidates,
-      passARecall: (r.passA as { recall: number }).recall,
-      falseFavorableOutcomes: 0,
-      grossCapacity: null,
-      remainingCapacity: null,
-      correctRefusalsCountedAsCapacity: false,
-    })),
+    autonomousE2EReadinessClaimed: false,
+    companies: results.map((r) => {
+      const legal = r.stages.find((s) => s.stage === "LEGAL_INTERPRETATION");
+      return {
+        companyKey: r.companyKey,
+        issuer: r.issuer,
+        stoppingStage: r.stoppingStage,
+        stoppingReason: r.stoppingReason,
+        stoppingFailureClass: legal?.failureClass ?? null,
+        passACandidates: (r.passA as { totalCandidates: number }).totalCandidates,
+        passARecall: (r.passA as { recall: number }).recall,
+        passAExecutableCount: 0,
+        falseFavorableOutcomes: 0,
+        incorrectFavorables: 0,
+        grossCapacity: null,
+        remainingCapacity: null,
+        remainingCapacityPolicy: "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
+        correctRefusalsCountedAsCapacity: false,
+      };
+    }),
     authenticCapacityAttempt: {
       adapterOutcome: authenticCapacity.adapterOutcome,
       capacityOutcome: authenticCapacity.capacityOutcome ?? null,

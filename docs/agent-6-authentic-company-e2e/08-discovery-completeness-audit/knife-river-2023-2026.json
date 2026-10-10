@@ -1,0 +1,1190 @@
+{
+  "companyKey": "knife-river-2023-2026",
+  "issuer": "Knife River Corporation",
+  "generatedAt": "2026-10-10T00:06:51.150Z",
+  "expectationPinPreserved": true,
+  "expectationSha256": "088d30679c8546c9b9c5add73c82901d614c0319dc9cf57eb5cfd8cb3c65ca75",
+  "frozenPinSha256": "088d30679c8546c9b9c5add73c82901d614c0319dc9cf57eb5cfd8cb3c65ca75",
+  "operativeBaseDocumentId": "doc-a",
+  "sourceProvenancePolicy": "STRUCTURAL_SECTION_HEADING across package documents — no LLM, no retuned expectations. Missed = inventory row with no Pass A hit.",
+  "inventory": {
+    "restrictionSectionsPackage": 38,
+    "restrictionSectionsOnBase": 2,
+    "mustDiscoverPins": 5,
+    "expectedAndPassAHit": 12,
+    "passAHitOutsideMustDiscoverPins": 26,
+    "uniqueOutsideMustDiscoverSectionRefs": 13,
+    "missedRestrictionsPassA": 0,
+    "structuralBaseGaps": 3
+  },
+  "missedRestrictions": [],
+  "passAHitsOutsideMustDiscoverPins": [
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.11",
+      "heading": "Evidence of Indebtedness",
+      "nodeId": "structural-node:534e2e19d4d3a957e1c995e7",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.11",
+        "nodeKey": "doc-b::2.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.15",
+      "heading": "Incremental Equivalent Debt",
+      "nodeId": "structural-node:3fa56f494a23f2ced914f4ea",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.15",
+        "nodeKey": "doc-b::2.15"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.18",
+      "heading": "Specified Refinancing Debt",
+      "nodeId": "structural-node:e465a8ab8616e235dc258f18",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.18",
+        "nodeKey": "doc-b::2.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.20",
+      "heading": "Permitted Debt Exchanges",
+      "nodeId": "structural-node:3c0e49a0d9359b5d3035257d",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.20",
+        "nodeKey": "doc-b::2.20"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.08",
+      "heading": "Ownership of Property; Liens",
+      "nodeId": "structural-node:59c4773f1d0bd33b9d802e2e",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.08",
+        "nodeKey": "doc-b::5.08"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.12",
+      "heading": "Subsidiaries; Capital Stock",
+      "nodeId": "structural-node:7e1adbdb0eb5d25650c52b11",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.12",
+        "nodeKey": "doc-b::5.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.13",
+      "heading": "Margin Regulations; Investment Company Act",
+      "nodeId": "structural-node:1c065c74a2dcc7bdeea87308",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.13",
+        "nodeKey": "doc-b::5.13"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.12",
+      "heading": "Covenant to Guarantee Obligations and Give Security",
+      "nodeId": "structural-node:edbd7923f4406c9f31897e98",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.12",
+        "nodeKey": "doc-b::6.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.17",
+      "heading": "No Change in Line of Business",
+      "nodeId": "structural-node:81423d3f80fc4fb3590b0b64",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.17",
+        "nodeKey": "doc-b::6.17"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.18",
+      "heading": "Transactions with Affiliates",
+      "nodeId": "structural-node:558f3a07904bb77fc93bba28",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.18",
+        "nodeKey": "doc-b::6.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.04",
+      "heading": "Asset Dispositions",
+      "nodeId": "structural-node:a39dc6250ee36581eb42e93d",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.04",
+        "nodeKey": "doc-b::7.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.06",
+      "heading": "Burdensome Agreements",
+      "nodeId": "structural-node:361d6b46d2b3ff0335820645",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.06",
+        "nodeKey": "doc-b::7.06"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "9.11",
+      "heading": "Collateral and Guaranty Matters",
+      "nodeId": "structural-node:0b08dd8295f9b5edb02264f0",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "9.11",
+        "nodeKey": "doc-b::9.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    }
+  ],
+  "expectedAndPassAHit": [
+    {
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "documentId": "doc-a",
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-a::7.01"
+      }
+    },
+    {
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "documentId": "doc-a",
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-a::7.02"
+      }
+    },
+    {
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "documentId": "doc-b",
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-b::7.01"
+      }
+    },
+    {
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "documentId": "doc-b",
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-b::7.02"
+      }
+    },
+    {
+      "sectionRef": "7.03",
+      "heading": "Fundamental Changes",
+      "documentId": "doc-b",
+      "expectedFamilies": [
+        "ASSET_SALES"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.03",
+        "nodeKey": "doc-b::7.03"
+      }
+    },
+    {
+      "sectionRef": "7.05",
+      "heading": "Restricted Payments",
+      "documentId": "doc-b",
+      "expectedFamilies": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.05",
+        "nodeKey": "doc-b::7.05"
+      }
+    },
+    {
+      "sectionRef": "7.08",
+      "heading": "Financial Covenant s",
+      "documentId": "doc-b",
+      "expectedFamilies": [
+        "FINANCIAL"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.08",
+        "nodeKey": "doc-b::7.08"
+      }
+    },
+    {
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "documentId": "doc-c",
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-c::7.01"
+      }
+    },
+    {
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "documentId": "doc-c",
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-c::7.02"
+      }
+    },
+    {
+      "sectionRef": "7.03",
+      "heading": "Fundamental Changes",
+      "documentId": "doc-c",
+      "expectedFamilies": [
+        "ASSET_SALES"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.03",
+        "nodeKey": "doc-c::7.03"
+      }
+    },
+    {
+      "sectionRef": "7.05",
+      "heading": "Restricted Payments",
+      "documentId": "doc-c",
+      "expectedFamilies": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.05",
+        "nodeKey": "doc-c::7.05"
+      }
+    },
+    {
+      "sectionRef": "7.08",
+      "heading": "Financial Covenant",
+      "documentId": "doc-c",
+      "expectedFamilies": [
+        "FINANCIAL"
+      ],
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.08",
+        "nodeKey": "doc-c::7.08"
+      }
+    }
+  ],
+  "structuralBaseGaps": [
+    {
+      "family": "INDEBTEDNESS",
+      "sectionRef": "7.01",
+      "sectionNodeOnOperativeBase": true,
+      "restrictionHeadingOnOperativeBase": true,
+      "passAHitOnOperativeBase": true,
+      "passAHitAnywhereInPackage": true,
+      "gap": "COVERED_ON_OPERATIVE_BASE"
+    },
+    {
+      "family": "LIENS",
+      "sectionRef": "7.02",
+      "sectionNodeOnOperativeBase": true,
+      "restrictionHeadingOnOperativeBase": true,
+      "passAHitOnOperativeBase": true,
+      "passAHitAnywhereInPackage": true,
+      "gap": "COVERED_ON_OPERATIVE_BASE"
+    },
+    {
+      "family": "ASSET_SALES",
+      "sectionRef": "7.03",
+      "sectionNodeOnOperativeBase": false,
+      "restrictionHeadingOnOperativeBase": false,
+      "passAHitOnOperativeBase": false,
+      "passAHitAnywhereInPackage": true,
+      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+    },
+    {
+      "family": "RESTRICTED_PAYMENTS",
+      "sectionRef": "7.05",
+      "sectionNodeOnOperativeBase": false,
+      "restrictionHeadingOnOperativeBase": false,
+      "passAHitOnOperativeBase": false,
+      "passAHitAnywhereInPackage": true,
+      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+    },
+    {
+      "family": "FINANCIAL",
+      "sectionRef": "7.08",
+      "sectionNodeOnOperativeBase": false,
+      "restrictionHeadingOnOperativeBase": false,
+      "passAHitOnOperativeBase": false,
+      "passAHitAnywhereInPackage": true,
+      "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE"
+    }
+  ],
+  "agent1Eligibility": {
+    "passACandidatesPackage": 1909,
+    "executableCount": 0,
+    "policy": "PASS_A_NEVER_EXECUTABLE_WITHOUT_DOWNSTREAM_GATES",
+    "note": "Pass A hits never become executable solely from this audit."
+  },
+  "allRows": [
+    {
+      "documentId": "doc-a",
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "nodeId": "structural-node:fbd177540a920503c9bcf553",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-a::7.01"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-a",
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "nodeId": "structural-node:55bded539d30d095f9334627",
+      "onOperativeBase": true,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-a",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-a::7.02"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.11",
+      "heading": "Evidence of Indebtedness",
+      "nodeId": "structural-node:534e2e19d4d3a957e1c995e7",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.11",
+        "nodeKey": "doc-b::2.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.15",
+      "heading": "Incremental Equivalent Debt",
+      "nodeId": "structural-node:3fa56f494a23f2ced914f4ea",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.15",
+        "nodeKey": "doc-b::2.15"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.18",
+      "heading": "Specified Refinancing Debt",
+      "nodeId": "structural-node:e465a8ab8616e235dc258f18",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.18",
+        "nodeKey": "doc-b::2.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "2.20",
+      "heading": "Permitted Debt Exchanges",
+      "nodeId": "structural-node:3c0e49a0d9359b5d3035257d",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "2.20",
+        "nodeKey": "doc-b::2.20"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.08",
+      "heading": "Ownership of Property; Liens",
+      "nodeId": "structural-node:59c4773f1d0bd33b9d802e2e",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.08",
+        "nodeKey": "doc-b::5.08"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.12",
+      "heading": "Subsidiaries; Capital Stock",
+      "nodeId": "structural-node:7e1adbdb0eb5d25650c52b11",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.12",
+        "nodeKey": "doc-b::5.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "5.13",
+      "heading": "Margin Regulations; Investment Company Act",
+      "nodeId": "structural-node:1c065c74a2dcc7bdeea87308",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "5.13",
+        "nodeKey": "doc-b::5.13"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.12",
+      "heading": "Covenant to Guarantee Obligations and Give Security",
+      "nodeId": "structural-node:edbd7923f4406c9f31897e98",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.12",
+        "nodeKey": "doc-b::6.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.17",
+      "heading": "No Change in Line of Business",
+      "nodeId": "structural-node:81423d3f80fc4fb3590b0b64",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.17",
+        "nodeKey": "doc-b::6.17"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "6.18",
+      "heading": "Transactions with Affiliates",
+      "nodeId": "structural-node:558f3a07904bb77fc93bba28",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "6.18",
+        "nodeKey": "doc-b::6.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "nodeId": "structural-node:79e8913c1405f473734a2112",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-b::7.01"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "nodeId": "structural-node:f785279d54ade778a7efb165",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-b::7.02"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.03",
+      "heading": "Fundamental Changes",
+      "nodeId": "structural-node:a19953eaa593172a26be96e0",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.03",
+        "nodeKey": "doc-b::7.03"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "ASSET_SALES"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.04",
+      "heading": "Asset Dispositions",
+      "nodeId": "structural-node:a39dc6250ee36581eb42e93d",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.04",
+        "nodeKey": "doc-b::7.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.05",
+      "heading": "Restricted Payments",
+      "nodeId": "structural-node:87047ef9386b6fc3521508c6",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.05",
+        "nodeKey": "doc-b::7.05"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.06",
+      "heading": "Burdensome Agreements",
+      "nodeId": "structural-node:361d6b46d2b3ff0335820645",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.06",
+        "nodeKey": "doc-b::7.06"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "7.08",
+      "heading": "Financial Covenant s",
+      "nodeId": "structural-node:a8cbc1abfac2fd65c92d48e9",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "7.08",
+        "nodeKey": "doc-b::7.08"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "FINANCIAL"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-b",
+      "sectionRef": "9.11",
+      "heading": "Collateral and Guaranty Matters",
+      "nodeId": "structural-node:0b08dd8295f9b5edb02264f0",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-b",
+        "sectionRef": "9.11",
+        "nodeKey": "doc-b::9.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "2.11",
+      "heading": "Evidence of Indebtedness",
+      "nodeId": "structural-node:843d82a6a69713c606a5c75c",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "2.11",
+        "nodeKey": "doc-c::2.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "2.15",
+      "heading": "Incremental Equivalent Debt",
+      "nodeId": "structural-node:8a78e7491b8f37b52052a26b",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "2.15",
+        "nodeKey": "doc-c::2.15"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "2.18",
+      "heading": "Specified Refinancing Debt",
+      "nodeId": "structural-node:55929bd3f455d2d7b90c1e95",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "2.18",
+        "nodeKey": "doc-c::2.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "2.20",
+      "heading": "Permitted Debt Exchanges",
+      "nodeId": "structural-node:89a1d154c6eca79da8816d18",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "2.20",
+        "nodeKey": "doc-c::2.20"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "5.08",
+      "heading": "Ownership of Property; Liens",
+      "nodeId": "structural-node:7e641e2797c0581a09b12d13",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "5.08",
+        "nodeKey": "doc-c::5.08"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "5.12",
+      "heading": "Subsidiaries; Capital Stock",
+      "nodeId": "structural-node:e7519cd5fb36d62766289517",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "5.12",
+        "nodeKey": "doc-c::5.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "5.13",
+      "heading": "Margin Regulations; Investment Company Act",
+      "nodeId": "structural-node:b0a2c5028b1cc85943d4acd8",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "5.13",
+        "nodeKey": "doc-c::5.13"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "6.12",
+      "heading": "Covenant to Guarantee Obligations and Give Security",
+      "nodeId": "structural-node:02d7a424ee1bfaf03b7efd1e",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "6.12",
+        "nodeKey": "doc-c::6.12"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "6.17",
+      "heading": "No Change in Line of Business",
+      "nodeId": "structural-node:13b303d352be44a1d5c14b78",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "6.17",
+        "nodeKey": "doc-c::6.17"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "6.18",
+      "heading": "Transactions with Affiliates",
+      "nodeId": "structural-node:d25d0d93e2290077af2d7fc3",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "6.18",
+        "nodeKey": "doc-c::6.18"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.01",
+      "heading": "Indebtedness",
+      "nodeId": "structural-node:265e7668d7825ed5ae39b698",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.01",
+        "nodeKey": "doc-c::7.01"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "INDEBTEDNESS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.02",
+      "heading": "Limitations on Liens",
+      "nodeId": "structural-node:9e4d94ce3247216e5943860a",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.02",
+        "nodeKey": "doc-c::7.02"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "LIENS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.03",
+      "heading": "Fundamental Changes",
+      "nodeId": "structural-node:8f0cfe672b8cd075499f9857",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.03",
+        "nodeKey": "doc-c::7.03"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "ASSET_SALES"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.04",
+      "heading": "Asset Dispositions",
+      "nodeId": "structural-node:147f56f90b363d1bd53dccd5",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.04",
+        "nodeKey": "doc-c::7.04"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.05",
+      "heading": "Restricted Payments",
+      "nodeId": "structural-node:c9c60080f43251c1c0a0c0fa",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.05",
+        "nodeKey": "doc-c::7.05"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.06",
+      "heading": "Burdensome Agreements",
+      "nodeId": "structural-node:d1e7c060c96807303ac5e13d",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.06",
+        "nodeKey": "doc-c::7.06"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "7.08",
+      "heading": "Financial Covenant",
+      "nodeId": "structural-node:26d5187a0cec0ee45d087e07",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "7.08",
+        "nodeKey": "doc-c::7.08"
+      },
+      "inMustDiscoverExpectations": true,
+      "expectedFamilies": [
+        "FINANCIAL"
+      ],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "EXPECTED_AND_PASS_A_HIT"
+    },
+    {
+      "documentId": "doc-c",
+      "sectionRef": "9.11",
+      "heading": "Collateral and Guaranty Matters",
+      "nodeId": "structural-node:b89bbb52fc2e65a9c00aece8",
+      "onOperativeBase": false,
+      "sourceProvenance": {
+        "kind": "STRUCTURAL_SECTION_HEADING",
+        "documentId": "doc-c",
+        "sectionRef": "9.11",
+        "nodeKey": "doc-c::9.11"
+      },
+      "inMustDiscoverExpectations": false,
+      "expectedFamilies": [],
+      "passAHit": true,
+      "passAExecutable": false,
+      "classification": "PASS_A_HIT_OUTSIDE_MUST_DISCOVER_PINS"
+    }
+  ]
+}

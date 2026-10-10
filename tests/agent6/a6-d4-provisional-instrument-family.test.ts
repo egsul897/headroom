@@ -9,7 +9,9 @@ import { buildPackageGraph } from "@/lib/contract-model/compiler/package-graph/p
 import {
   groupPackageIntoInstruments,
   isAssociativeGroupingEdge,
+  isLegallyConfirmedAmendmentChain,
   isTrustedGroupingEdge,
+  mayConsolidateOperativeAgreement,
 } from "@/lib/contract-model/compiler/package-graph/instrument-grouping";
 import type { DocumentClassification, RelationshipCandidate } from "@/lib/contract-model/compiler/package-graph/types";
 
@@ -203,6 +205,27 @@ describe("A6-D4 provisional instrument family association", () => {
     expect(facility!.provisionalDocumentIds?.sort()).toEqual(["doc-b", "doc-c"]);
     // Relationship status itself is unchanged — not force-resolved.
     expect(amends.every((r) => r.status === "REVIEW_REQUIRED")).toBe(true);
+    // Provisional family must never be mistaken for a confirmed amendment chain
+    // or consolidated operative agreement.
+    expect(isLegallyConfirmedAmendmentChain(facility!)).toBe(false);
+    expect(mayConsolidateOperativeAgreement(facility!)).toBe(false);
+  });
+
+  it("CONFIRMED RESOLVED dual-doc facility may consolidate; PROVISIONAL_FAMILY may not", () => {
+    const confirmed = {
+      associationKind: "CONFIRMED" as const,
+      reviewStatus: "RESOLVED" as const,
+      provisionalDocumentIds: [] as string[],
+    };
+    const provisional = {
+      associationKind: "PROVISIONAL_FAMILY" as const,
+      reviewStatus: "REVIEW_REQUIRED" as const,
+      provisionalDocumentIds: ["am"],
+    };
+    expect(isLegallyConfirmedAmendmentChain(confirmed)).toBe(true);
+    expect(mayConsolidateOperativeAgreement(confirmed)).toBe(true);
+    expect(isLegallyConfirmedAmendmentChain(provisional)).toBe(false);
+    expect(mayConsolidateOperativeAgreement(provisional)).toBe(false);
   });
 
   it("Insulet authentic package: credit+ninth amendment confirmed; indenture separate", () => {

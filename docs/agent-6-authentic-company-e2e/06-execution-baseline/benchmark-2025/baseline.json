@@ -1,7 +1,7 @@
 {
   "companyKey": "benchmark-2025",
   "issuer": "Benchmark Electronics, Inc.",
-  "generatedAt": "2026-10-09T22:56:13.515Z",
+  "generatedAt": "2026-10-10T00:06:51.963Z",
   "costUsd": 0,
   "stages": [
     {
@@ -163,20 +163,26 @@
           }
         ],
         "provisionalFamilyOk": true,
+        "legallyConfirmedAmendmentChain": true,
+        "mayConsolidateOperativeAgreement": true,
         "a6d4": {
-          "knifeRiverFamilyAssociation": null
+          "knifeRiverFamilyAssociation": null,
+          "provisionalIsNotConfirmedOperative": null
         }
       }
     },
     {
       "stage": "COVENANT_CANDIDATE",
       "status": "PARTIAL",
-      "reason": "Deterministic Discovery Pass A only. Pass B–D (LLM semantic classification / neighborhood / reconcile) NOT_RUN — credential/environment blocker, not proof discovery cannot work.",
+      "failureClass": "OPERATIONAL_CREDENTIAL",
+      "reason": "Deterministic Discovery Pass A only. Pass B–D (LLM semantic classification / neighborhood / reconcile) NOT_RUN — operational credential/authorization blocker, not a substantive legal-interpretation failure and not proof discovery cannot work.",
       "detail": {
         "mode": "DETERMINISTIC_PASS_A_ONLY",
         "llmAssistedDiscovery": "NOT_RUN",
         "credentialGate": "BLOCKED_BY_MISSING_CREDENTIAL",
         "totalCandidates": 1250,
+        "passAExecutableCount": 0,
+        "agent1EligibilityPolicy": "PASS_A_NEVER_EXECUTABLE_WITHOUT_DOWNSTREAM_GATES",
         "mustDiscoverExpected": 6,
         "mustDiscoverPassAHits": 6,
         "passARecallAgainstIndependentExpectations": 1,
@@ -190,7 +196,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           },
           {
             "family": "INDEBTEDNESS",
@@ -201,7 +208,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           },
           {
             "family": "INVESTMENTS",
@@ -212,7 +220,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           },
           {
             "family": "ASSET_SALES",
@@ -223,7 +232,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           },
           {
             "family": "RESTRICTED_PAYMENTS",
@@ -234,7 +244,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           },
           {
             "family": "FINANCIAL",
@@ -245,7 +256,8 @@
               "covenant_verb",
               "headline_heading"
             ],
-            "hitDocumentId": "doc-a"
+            "hitDocumentId": "doc-a",
+            "executable": false
           }
         ],
         "byDocument": [
@@ -657,322 +669,66 @@
               "10.24(a)",
               "10.24(b)"
             ],
-            "topCandidates": [
+            "topSectionRefsByScore": [
               {
                 "sectionRef": "1.01(d)(b)(c)",
-                "signalScore": 10,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 10
               },
               {
                 "sectionRef": "1.01(d)(d)(d)(i)(i)",
-                "signalScore": 9,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 9
               },
               {
                 "sectionRef": "1.01(d)(b)(a)(c)",
-                "signalScore": 8,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 8
               },
               {
                 "sectionRef": "1.01(d)(d)(d)",
-                "signalScore": 8,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 8
               },
               {
                 "sectionRef": "1.01(d)(b)(b)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "2.17(a)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "7.03(f)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "1.01(b)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "ratio_expression",
-                  "permission_construction",
-                  "exception_marker",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(d)(g)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "2.18(a)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "3.01(f)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "refinancing"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "6.14(a)(ii)(A)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "7.03(p)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "7.05(d)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.05(g)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.06(a)(iv)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.03",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "cure_or_trigger",
-                  "builder_language"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(a)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "cure_or_trigger"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(b)(vi)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "5",
-                "signalScore": 4,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "cure_or_trigger"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "12",
-                "signalScore": 4,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "covenant_verb",
-                  "builder_language"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01",
-                "signalScore": 4,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01(d)(b)(b)",
-                "signalScore": 4,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01(d)(b)",
-                "signalScore": 4,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               }
             ]
           },
@@ -1394,321 +1150,66 @@
               "10.23(a)",
               "10.23(b)"
             ],
-            "topCandidates": [
+            "topSectionRefsByScore": [
               {
                 "sectionRef": "12(g)(b)(c)",
-                "signalScore": 10,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 10
               },
               {
                 "sectionRef": "12(g)(d)(d)",
-                "signalScore": 8,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 8
               },
               {
                 "sectionRef": "12(g)(d)(d)(i)(i)",
-                "signalScore": 8,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 8
               },
               {
                 "sectionRef": "12",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "builder_language"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "2.17(a)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "7.03(f)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "12(d)(b)",
-                "signalScore": 6,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 6
               },
               {
                 "sectionRef": "12(b)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "ratio_expression",
-                  "permission_construction",
-                  "exception_marker",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "12(d)(a)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "12(g)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "12(g)(d)(g)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "2.17(g)(a)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "2.19(c)(f)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "refinancing"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "6.13",
-                "signalScore": 5,
-                "signals": [
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "headline_heading"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "6.13(a)(ii)(A)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.03(p)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.05(d)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.06(a)(iv)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.09",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb",
-                  "refinancing"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.03",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "cure_or_trigger",
-                  "builder_language"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(a)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "cure_or_trigger"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(b)(vi)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "6(a)(iii)",
-                "signalScore": 4,
-                "signals": [
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "12(d)",
-                "signalScore": 4,
-                "signals": [
-                  "percentage",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "12(d)(a)(c)",
-                "signalScore": 4,
-                "signals": [
-                  "permission_construction",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               }
             ]
           },
@@ -2114,353 +1615,107 @@
               "10.24(b)",
               "10.24(c)"
             ],
-            "topCandidates": [
+            "topSectionRefsByScore": [
               {
                 "sectionRef": "1.01(d)(g)(f)(c)(b)(c)",
-                "signalScore": 10,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 10
               },
               {
                 "sectionRef": "1.01(d)(g)(f)(i)(c)",
-                "signalScore": 8,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 8
               },
               {
                 "sectionRef": "1.01(d)(b)(b)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "1.01(d)(g)(f)(i)(d)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "2.17(a)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "7.03(f)",
-                "signalScore": 7,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "permitted_construct",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 7
               },
               {
                 "sectionRef": "1.01(b)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "ratio_expression",
-                  "permission_construction",
-                  "exception_marker",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(a)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(g)(f)(c)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "permission_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "greater_lesser_of",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(g)(f)(i)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "1.01(d)(g)(f)(i)(c)(i)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "permitted_construct",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "2.18(a)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "ratio_expression",
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "3.01(f)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "refinancing"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "6.14(a)(ii)(A)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               },
               {
                 "sectionRef": "7.03(p)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.04(d)(d)",
-                "signalScore": 5,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "greater_lesser_of",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.04(d)(g)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "percentage",
-                  "prohibitive_construction",
-                  "permitted_construct",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.04(d)(a)(iv)",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "covenant_verb",
-                  "financial_metric",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "7.07",
-                "signalScore": 5,
-                "signals": [
-                  "dollar_value",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "permitted_construct",
-                  "headline_heading"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.03",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "cure_or_trigger",
-                  "builder_language"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(a)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "cure_or_trigger"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "10.06(b)(vi)",
-                "signalScore": 5,
-                "signals": [
-                  "prohibitive_construction",
-                  "permission_construction",
-                  "exception_marker",
-                  "covenant_verb",
-                  "shared_cap"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01",
-                "signalScore": 4,
-                "signals": [
-                  "dollar_value",
-                  "permission_construction",
-                  "exception_marker",
-                  "greater_lesser_of"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01(d)(a)(c)",
-                "signalScore": 4,
-                "signals": [
-                  "permission_construction",
-                  "covenant_verb",
-                  "cure_or_trigger",
-                  "financial_metric"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-              },
-              {
-                "sectionRef": "1.01(d)(b)(b)(iii)(b)",
-                "signalScore": 4,
-                "signals": [
-                  "percentage",
-                  "prohibitive_construction",
-                  "exception_marker",
-                  "covenant_verb"
-                ],
-                "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+                "signalScore": 5
               }
             ]
           }
-        ]
+        ],
+        "note": "Pass A candidates are NOT executable (Agent 1 conservative eligibility)."
       }
     },
     {
       "stage": "LEGAL_INTERPRETATION",
       "status": "STOPPED",
-      "reason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output."
+      "failureClass": "OPERATIONAL_CREDENTIAL",
+      "reason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal."
     },
     {
       "stage": "VERIFIED_RULE",
       "status": "NOT_REACHED",
-      "reason": "No VerifiedExecutionPackage / CERTIFIED rule artifacts exist for this unseen package. Independent expectations are not rewritten to invent verification."
+      "failureClass": "OPERATIONAL_AUTHORIZATION",
+      "reason": "NOT_REACHED — cascade from upstream operational credential/authorization block. No substantive legal-interpretation finding was produced for this package. No VerifiedExecutionPackage invented."
     },
     {
       "stage": "FINANCIAL_INPUTS",
       "status": "STOPPED",
-      "reason": "No APPROVED NorthStar financial snapshot. DO_NOT_INVENT.",
+      "failureClass": "MISSING_EVIDENCE",
+      "reason": "No APPROVED NorthStar financial snapshot. DO_NOT_INVENT. Remaining capacity unavailable until authoritative financial inputs and complete utilization evidence exist.",
       "detail": {
         "officerCertificateWithUtilization": "ABSENT",
-        "notes": "No completed officer certificate with utilization in package."
+        "notes": "No completed officer certificate with utilization in package.",
+        "remainingCapacityPolicy": "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION"
       }
     },
     {
       "stage": "CAPACITY",
       "status": "NOT_REACHED",
-      "reason": "evaluateVerifiedCapacity REQUIRE path not invoked for this package — missing CERTIFIED VEP and APPROVED inputs. Correct refusal ≠ numerical capacity result."
+      "failureClass": "CASCADE_FROM_UPSTREAM",
+      "reason": "evaluateVerifiedCapacity REQUIRE path not invoked for this package — missing CERTIFIED VEP and APPROVED inputs. Gross capacity deferred until interpretation+verification; remaining capacity withheld. Correct refusal ≠ numerical capacity result."
     },
     {
       "stage": "TRANSACTION",
       "status": "REFUSED",
-      "reason": "MISSING_EVIDENCE — fail-closed Position report; no favorable capacity claim.",
+      "failureClass": "MISSING_EVIDENCE",
+      "reason": "MISSING_EVIDENCE — fail-closed Position report; no favorable capacity claim. Not represented as autonomous E2E execution readiness.",
       "detail": {
         "proposedTransactions": [
           {
@@ -2481,12 +1736,13 @@
             "actual": "REVIEW_REQUIRED",
             "countedAsExecutableCapacity": false
           }
-        ]
+        ],
+        "autonomousE2EReadinessClaimed": false
       }
     }
   ],
   "stoppingStage": "LEGAL_INTERPRETATION",
-  "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+  "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal.",
   "structural": {
     "documents": [
       {
@@ -2544,7 +1800,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       },
       {
         "family": "INDEBTEDNESS",
@@ -2555,7 +1812,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       },
       {
         "family": "INVESTMENTS",
@@ -2566,7 +1824,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       },
       {
         "family": "ASSET_SALES",
@@ -2577,7 +1836,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       },
       {
         "family": "RESTRICTED_PAYMENTS",
@@ -2588,7 +1848,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       },
       {
         "family": "FINANCIAL",
@@ -2599,7 +1860,8 @@
           "covenant_verb",
           "headline_heading"
         ],
-        "hitDocumentId": "doc-a"
+        "hitDocumentId": "doc-a",
+        "executable": false
       }
     ],
     "byDocument": [
@@ -3011,322 +2273,66 @@
           "10.24(a)",
           "10.24(b)"
         ],
-        "topCandidates": [
+        "topSectionRefsByScore": [
           {
             "sectionRef": "1.01(d)(b)(c)",
-            "signalScore": 10,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 10
           },
           {
             "sectionRef": "1.01(d)(d)(d)(i)(i)",
-            "signalScore": 9,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 9
           },
           {
             "sectionRef": "1.01(d)(b)(a)(c)",
-            "signalScore": 8,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 8
           },
           {
             "sectionRef": "1.01(d)(d)(d)",
-            "signalScore": 8,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 8
           },
           {
             "sectionRef": "1.01(d)(b)(b)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "2.17(a)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "7.03(f)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "1.01(b)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "ratio_expression",
-              "permission_construction",
-              "exception_marker",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(d)",
-            "signalScore": 5,
-            "signals": [
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(d)(g)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "2.18(a)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "3.01(f)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "refinancing"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "6.14(a)(ii)(A)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "7.03(p)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "7.05(d)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.05(g)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.06(a)(iv)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.03",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "cure_or_trigger",
-              "builder_language"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(a)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "cure_or_trigger"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(b)(vi)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "5",
-            "signalScore": 4,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "cure_or_trigger"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "12",
-            "signalScore": 4,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "covenant_verb",
-              "builder_language"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01",
-            "signalScore": 4,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01(d)(b)(b)",
-            "signalScore": 4,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01(d)(b)",
-            "signalScore": 4,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           }
         ]
       },
@@ -3748,321 +2754,66 @@
           "10.23(a)",
           "10.23(b)"
         ],
-        "topCandidates": [
+        "topSectionRefsByScore": [
           {
             "sectionRef": "12(g)(b)(c)",
-            "signalScore": 10,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 10
           },
           {
             "sectionRef": "12(g)(d)(d)",
-            "signalScore": 8,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 8
           },
           {
             "sectionRef": "12(g)(d)(d)(i)(i)",
-            "signalScore": 8,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 8
           },
           {
             "sectionRef": "12",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "covenant_verb",
-              "builder_language"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "2.17(a)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "7.03(f)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "12(d)(b)",
-            "signalScore": 6,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 6
           },
           {
             "sectionRef": "12(b)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "ratio_expression",
-              "permission_construction",
-              "exception_marker",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "12(d)(a)(d)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "12(g)(d)",
-            "signalScore": 5,
-            "signals": [
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "12(g)(d)(g)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "2.17(g)(a)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "2.19(c)(f)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "refinancing"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "6.13",
-            "signalScore": 5,
-            "signals": [
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "cure_or_trigger",
-              "headline_heading"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "6.13(a)(ii)(A)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.03(p)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.05(d)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.06(a)(iv)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.09",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb",
-              "refinancing"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.03",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "cure_or_trigger",
-              "builder_language"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(a)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "cure_or_trigger"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(b)(vi)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "6(a)(iii)",
-            "signalScore": 4,
-            "signals": [
-              "prohibitive_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "12(d)",
-            "signalScore": 4,
-            "signals": [
-              "percentage",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "12(d)(a)(c)",
-            "signalScore": 4,
-            "signals": [
-              "permission_construction",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           }
         ]
       },
@@ -4468,319 +3219,66 @@
           "10.24(b)",
           "10.24(c)"
         ],
-        "topCandidates": [
+        "topSectionRefsByScore": [
           {
             "sectionRef": "1.01(d)(g)(f)(c)(b)(c)",
-            "signalScore": 10,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 10
           },
           {
             "sectionRef": "1.01(d)(g)(f)(i)(c)",
-            "signalScore": 8,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 8
           },
           {
             "sectionRef": "1.01(d)(b)(b)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "1.01(d)(g)(f)(i)(d)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "2.17(a)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "7.03(f)",
-            "signalScore": 7,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "permitted_construct",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 7
           },
           {
             "sectionRef": "1.01(b)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "ratio_expression",
-              "permission_construction",
-              "exception_marker",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(a)(d)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(g)(f)(c)(d)",
-            "signalScore": 5,
-            "signals": [
-              "permission_construction",
-              "exception_marker",
-              "permitted_construct",
-              "greater_lesser_of",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(g)(f)(i)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "1.01(d)(g)(f)(i)(c)(i)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "permitted_construct",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "2.18(a)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "ratio_expression",
-              "prohibitive_construction",
-              "permission_construction",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "3.01(f)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "refinancing"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "6.14(a)(ii)(A)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           },
           {
             "sectionRef": "7.03(p)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.04(d)(d)",
-            "signalScore": 5,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "greater_lesser_of",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.04(d)(g)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "percentage",
-              "prohibitive_construction",
-              "permitted_construct",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.04(d)(a)(iv)",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "covenant_verb",
-              "financial_metric",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "7.07",
-            "signalScore": 5,
-            "signals": [
-              "dollar_value",
-              "prohibitive_construction",
-              "exception_marker",
-              "permitted_construct",
-              "headline_heading"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.03",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "cure_or_trigger",
-              "builder_language"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(a)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "cure_or_trigger"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "10.06(b)(vi)",
-            "signalScore": 5,
-            "signals": [
-              "prohibitive_construction",
-              "permission_construction",
-              "exception_marker",
-              "covenant_verb",
-              "shared_cap"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01",
-            "signalScore": 4,
-            "signals": [
-              "dollar_value",
-              "permission_construction",
-              "exception_marker",
-              "greater_lesser_of"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01(d)(a)(c)",
-            "signalScore": 4,
-            "signals": [
-              "permission_construction",
-              "covenant_verb",
-              "cure_or_trigger",
-              "financial_metric"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
-          },
-          {
-            "sectionRef": "1.01(d)(b)(b)(iii)(b)",
-            "signalScore": 4,
-            "signals": [
-              "percentage",
-              "prohibitive_construction",
-              "exception_marker",
-              "covenant_verb"
-            ],
-            "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS"
+            "signalScore": 5
           }
         ]
       }
@@ -4854,10 +3352,10 @@
       }
     },
     "stoppingStage": "LEGAL_INTERPRETATION",
-    "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output.",
+    "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal.",
     "firstHardStop": {
       "stage": "LEGAL_INTERPRETATION",
-      "reason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output."
+      "reason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal."
     }
   },
   "independentExpectationSha256": "8dc0580e581d9ca4597f4be84596a8c754af21469f8a7ecc48092b3c7e14212c",

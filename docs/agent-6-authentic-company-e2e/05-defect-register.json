@@ -49,10 +49,21 @@
       "severity": "LLM_STAGES_BLOCKED_WITHOUT_CREDENTIAL",
       "severity": "ENVIRONMENT",
       "status": "HONEST_BLOCKER",
-      "summary": "No AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY in environment. Discovery/compile/verify not run; covenant/rule/ratio/basket scorecard cells remain 0. Position reports correctly refuse favorable capacity.",
+      "summary": "No AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY in environment. Discovery/compile/verify not run; covenant/rule/ratio/basket scorecard cells remain 0. Position reports correctly refuse favorable capacity. Classified as OPERATIONAL_CREDENTIAL (not substantive legal-interpretation failure).",
       "evidencePackage": "all",
       "fix": null,
       "regression": "scripts/agent6/run-authentic-company-e2e.ts credentialGate"
+    },
+    {
+      "id": "A6-D6",
+      "severity": "KNIFE_RIVER_ARTICLE_VII_SECTION_UNDERPARSE",
+      "severity": "MATERIAL_GENERALIZABLE",
+      "status": "OPEN_DOCUMENTED",
+      "summary": "Knife River operative CA structural parse yields SECTION nodes for 7.01 and 7.02 only; later negative-covenant sections (7.03 Fundamental Changes, 7.05 Restricted Payments, 7.08 Financial Covenant, etc.) are referenced in body text and appear in amendment conformed copies but are absent as SECTION headings on doc-a. Completeness audit flags STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE; Pass A may still hit via amendment docs — not a sealed discovery and not an excuse to retune pins.",
+      "evidencePackage": "knife-river-2023-2026",
+      "fix": null,
+      "regression": "docs/agent-6-authentic-company-e2e/08-discovery-completeness-audit/knife-river-2023-2026.json",
+      "notes": "Do not treat amendment Pass A hits as operative-base structural completeness."
     }
   ]
 }
