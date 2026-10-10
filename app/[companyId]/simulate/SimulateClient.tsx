@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { fmtCapacity, fmtM, fmtX } from "@/lib/format";
 import type { DefinedTermLite } from "@/lib/coherent";
 import {
@@ -21,6 +22,7 @@ import {
   type SolverNativeCompanyContext,
   type TransactionStatus,
 } from "@/lib/covenant-engine";
+import { mapSimulateStatusToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { commitRestrictedPayment } from "../ledger/actions";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
@@ -39,8 +41,9 @@ const RESULT_TONE: Record<TransactionStatus, "ok" | "blocked" | "review"> = {
   not_tested: "review",
 };
 
+/** Customer titles — CLEAR is Hypothetical, never verified production AVAILABLE. */
 const STATUS_TITLE: Record<TransactionStatus, string> = {
-  clear: "Permitted",
+  clear: "Hypothetical clear (LEGACY_ENGINE)",
   blocked: "Blocked",
   review_required: "Review required",
   not_tested: "Not tested",
@@ -274,13 +277,18 @@ function DebtPanel({
   const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, simAmt, simSecured, solverContext);
   const tone = RESULT_TONE[sim.status];
   const blockedRatioTests = sim.ratioTests.filter((r) => r.applies && r.status === "blocked");
+  const customerStatus = mapSimulateStatusToCustomerStatus(sim.status, {
+    verifiedExecutable: false,
+    authoritative: false,
+  });
 
   return (
     <>
       <Card>
         <div className="card-title">Test an incurrence</div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
-          Tested pro forma against every governing document and every applicable ratio test.
+          Tested pro forma against every governing document and every applicable ratio test. Results are{" "}
+          <StatusChip code="HYPOTHETICAL" compact /> — not production-authoritative capacity.
         </div>
         <div style={{ marginTop: 14 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
@@ -313,13 +321,14 @@ function DebtPanel({
         </div>
       </Card>
 
-      <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined}>
+      <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined} data-simulate-status={customerStatus}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div className={`result-title ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { color: "var(--amber)" } : undefined}>
-            {STATUS_TITLE[sim.status]}
+            {STATUS_TITLE[sim.status]}{" "}
+            <StatusChip code={customerStatus} compact />
           </div>
           {sim.overallCapacity !== undefined && (
-            <Chip tone={tone === "ok" ? "pass" : "trip"}>max capacity {fmtM(sim.overallCapacity)}</Chip>
+            <Chip tone="navy">max capacity {fmtM(sim.overallCapacity)} (MODELED / NOT VERIFIED)</Chip>
           )}
         </div>
         <div style={{ fontSize: 13.5, marginTop: 8, color: tone === "blocked" ? "var(--red)" : "var(--ink)" }}>
@@ -327,13 +336,16 @@ function DebtPanel({
             <>
               Binding constraint: <b>{sim.binding.documentName}</b>
               {sim.binding.bindingProvision ? ` — ${sim.binding.bindingProvision.basketName} (${sim.binding.bindingProvision.sectionRef})` : ""}.
-              Headroom after this incurrence: {fmtM((sim.overallCapacity ?? 0) - simAmt)}.
+              Engine overallCapacity (legacy binding capacity field):{" "}
+              {sim.overallCapacity !== undefined ? fmtM(sim.overallCapacity) : "—"}. Post-transaction remaining is not
+              recomputed in the UI (no capacity − amount). Hypothetical — does not post to the ledger.
             </>
           )}
-          {sim.status === "clear" && !sim.binding && <>No document imposes a finite capacity limit on this incurrence.</>}
+          {sim.status === "clear" && !sim.binding && <>No document imposes a finite capacity limit on this incurrence. Status remains HYPOTHETICAL.</>}
           {sim.status === "blocked" && sim.binding?.status === "blocked" && (
             <>
-              <b>{sim.binding.documentName}</b> stops you at {fmtM(sim.binding.capacity ?? 0)}
+              <b>{sim.binding.documentName}</b> stops you at{" "}
+              {sim.binding.capacity !== undefined ? fmtM(sim.binding.capacity) : "— (capacity not published)"}
               {sim.binding.bindingProvision ? ` — ${sim.binding.bindingProvision.basketName} (${sim.binding.bindingProvision.sectionRef})` : ""}.
             </>
           )}

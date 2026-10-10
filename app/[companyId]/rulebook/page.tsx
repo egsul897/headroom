@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
+import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { reviewProvisionAction } from "./actions";
 
 export const metadata = { title: "Headroom — Rulebook" };
@@ -48,15 +51,26 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
     <div className="stack">
       <Card>
         <div className="card-title">AI interpretations — lawyer review</div>
-        <div className="card-subtitle">{rulebook.headline}</div>
+        <WorkflowJourney companyId={companyId} current="rulebook" />
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
+          {rulebook.headline}
+        </div>
         <div className="row-note" style={{ marginTop: 8 }}>
           Headroom is AI-first: substantive interpretations are generated from your financing documents for your
           counsel to accept, edit, or reject. External legal verification is not required before analysis appears.
           Counsel-approved text becomes the controlling workspace reading (subject to later document changes).
+          Stage EXECUTABLE here means legacy Permission path readiness — not Phase 4E / production-authoritative capacity.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Stage</div>
           <div className="row-value">
+            <StatusChip
+              code={
+                rulebook.stage === "EXECUTABLE"
+                  ? "NOT_PRODUCTION_AUTHORITATIVE"
+                  : mapEngineLabelToCustomerStatus(rulebook.stage)
+              }
+            />{" "}
             <Chip tone={rulebook.stage === "EXECUTABLE" ? "pass" : "tight"}>{rulebook.stage}</Chip>
           </div>
         </div>
