@@ -56,3 +56,9 @@ export {
   listInvalidationsForDependent,
   type InvalidatableEntityType,
 } from "./invalidation";
+export {
+  durablyRememberOperativeHandoff,
+  durablyRememberContextManifest,
+  durablyRememberSimulation,
+  durablyRememberCapacityCalculation,
+} from "./product-bridge";

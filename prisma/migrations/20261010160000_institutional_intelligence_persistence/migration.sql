@@ -281,14 +281,3 @@ ALTER TABLE "institutional_audit_events" ADD CONSTRAINT "institutional_audit_eve
 
 -- AddForeignKey
 ALTER TABLE "dependency_invalidation_records" ADD CONSTRAINT "dependency_invalidation_records_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-┌─────────────────────────────────────────────────────────┐
-│  Update available 5.22.0 -> 8.0.0-rc.22                 │
-│                                                         │
-│  This is a major update - please follow the guide at    │
-│  https://pris.ly/d/major-version-upgrade                │
-│                                                         │
-│  Run the following to update                            │
-│    npm i --save-dev prisma@latest                       │
-│    npm i @prisma/client@latest                          │
-└─────────────────────────────────────────────────────────┘

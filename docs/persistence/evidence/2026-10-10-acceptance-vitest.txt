@@ -1,0 +1,34 @@
+Neon-first persistence acceptance — disposable local PostgreSQL
+
+Command: DATABASE_URL=postgresql://headroom:headroom@localhost:5432/headroom?schema=public npm run test:persistence
+
+Result:
+  Test Files  1 passed (1)
+  Tests       16 passed (16)
+  Duration    ~2.9s
+
+PRODUCTION_DB_TOUCHED: NO
+Neon host (ep-shiny-rice...) was NOT used for migrate deploy or acceptance writes.
+Disposable databases created via lib/testing/ephemeral-db.ts (headroom_test_[a-f0-9]{8,}).
+
+Coverage mapped to acceptance matrix §14:
+  1  Document/operative survives restart          PASS (fresh PrismaClient)
+  2  Amendment/history survives via supersession  PASS (operative history)
+  3  Provisional identity remains provisional     PASS
+  4  Operative caveats intact                     PASS
+  5  Context manifests reproducible               PASS
+  6  Verified IR provenance (SemanticTruth)       PASS
+  7  Unverified cannot become verified            PASS
+  8  Financial source identity                    PASS
+  9  Unknown utilization remains unknown          PASS
+  10 Ledger replay deterministic                  PASS
+  11 Reclassification preserves history           PASS
+  12 Simulation does not mutate capacity          PASS
+  13 Failed/refused calc no ledger mutation       PASS
+  14 Revoked evidence cannot authorize            PASS
+  15 Cross-tenant rejected                        PASS
+  16 Duplicate ingestion idempotent               PASS
+  17 Source changes invalidate dependents         PASS
+  18 Historical as-of reconstruction              PASS
+  19 Approvals/audit survive restart              PASS
+  20 Production activation BLOCKED                PASS
