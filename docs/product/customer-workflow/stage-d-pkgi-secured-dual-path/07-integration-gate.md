@@ -1,6 +1,6 @@
 # Stage D Cycle 6 — Final Integration Gate
 
-**Candidate tip:** `_(filled on commit)_`  
+**Candidate tip:** ``7fa7f6e7773ac15d946ed1eac27a27608c7f0545``  
 **PR:** https://github.com/egsul897/headroom/pull/233  
 **Verdict:** **PASS** (provisional acceptance confirmed; no merge performed)
 
