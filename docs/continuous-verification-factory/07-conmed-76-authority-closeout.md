@@ -4,7 +4,7 @@
 **Workstream:** FROZEN after this handoff  
 **PR:** #238 (`cursor/continuous-verification-factory-5d11`)  
 **Base:** `cursor/cross-document-covenant-reasoning-5d11` (Agent 5 / #218)  
-**Exact SHA (closeout tip):** (filled at commit)  
+**Exact SHA (closeout tip):** e40492d80f1b5db1004481d492056e723c43c78b  
 **Typecheck-clean authority tip:** `fc7ec44f6d7610c7568b75c677282a478be58ee1`
 
 ## Acceptance

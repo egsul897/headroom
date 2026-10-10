@@ -3,7 +3,7 @@
 **Status:** OPEN — explicit downstream dependency of CONMED §7.6 authority closeout  
 **Upstream freeze:** CONMED §7.6 authority correction on PR #238 (human-review candidate; not production certification)  
 **Pinned authority tip:** `fc7ec44f6d7610c7568b75c677282a478be58ee1`  
-**Closeout tip:** (filled at commit)
+**Closeout tip:** e40492d80f1b5db1004481d492056e723c43c78b
 
 ## Gap
 
