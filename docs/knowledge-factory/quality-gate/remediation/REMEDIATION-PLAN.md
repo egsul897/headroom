@@ -4,7 +4,7 @@
 **Neon mutations:** none authorized (dedupe migration is design-only).  
 **Paid inference:** $0.  
 **PR:** https://github.com/egsul897/headroom/pull/246  
-**Tip SHA (rebased onto main):** see latest commit on `cursor/kf-graph-remediation-8a8b`
+**Tip SHA (rebased onto main):** `881022f89e61cc3cef19e8af3679baabd789d53c` (docs pin may land one commit later)
 
 ## 1. Duplicate reconciliation
 
