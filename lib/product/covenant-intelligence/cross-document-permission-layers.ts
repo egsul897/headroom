@@ -4,7 +4,12 @@
  * package-wide permission.
  */
 
-import type { CrossDocumentCovenantVerdict, CrossDocumentOverallResult } from "./cross-document-covenant";
+import type {
+  ConditionEvidenceAuthority,
+  CrossDocumentCovenantVerdict,
+  CrossDocumentOverallResult,
+  LegalOutcomeAuthority,
+} from "./cross-document-covenant";
 import type { CrossDocumentNumericalLayer } from "./cross-document-capacity";
 import type { CertifiedPathEnumeration } from "../north-star-workflow/verified-path-enumeration";
 
@@ -31,6 +36,10 @@ export interface CrossDocumentPermissionLayers {
   conditionsSatisfied: string[];
   conditionsUnresolved: string[];
   overallPermission: CrossDocumentOverallResult;
+  conditionEvidenceAuthority: ConditionEvidenceAuthority;
+  legalOutcomeAuthority: LegalOutcomeAuthority;
+  /** Never true solely because the caller supplied favorable knownFacts. */
+  isVerifiedProductionCapacity: false | true;
   certificationStatus: {
     pathEnumerationAuthority: CertifiedPathEnumeration["authority"] | "NOT_RUN";
     verified4dOutcome: string | null;
@@ -41,6 +50,7 @@ export interface CrossDocumentPermissionLayers {
     legacySeparatedFromVerdict: true;
     favorableRequiresAllApplicableDocuments: true;
     missingRestrictionIsUnknown: true;
+    stipulatedFactsAreNotVerifiedCapacity: true;
   };
 }
 
@@ -79,17 +89,21 @@ export function projectPermissionLayers(args: {
     conditionsSatisfied,
     conditionsUnresolved: [...new Set(conditionsUnresolved)],
     overallPermission: args.verdict.overallResult,
+    conditionEvidenceAuthority: args.verdict.conditionEvidenceAuthority,
+    legalOutcomeAuthority: args.verdict.legalOutcomeAuthority,
+    isVerifiedProductionCapacity: args.verdict.isVerifiedProductionCapacity,
     certificationStatus: {
       pathEnumerationAuthority: args.pathEnumeration?.authority ?? "NOT_RUN",
       verified4dOutcome: args.numerical.verifiedSimulation?.outcome ?? null,
       legacyIsCertifiedPackagePermission: false,
       note:
-        "crossDocumentVerdict and legacySimulation remain separate fields. Certification requires verified-execution EXECUTED / CERTIFIED_4E — not a basket number.",
+        "crossDocumentVerdict and legacySimulation remain separate fields. Certification requires verified-execution EXECUTED / CERTIFIED_4E — not a basket number. Caller-stipulated knownFacts are hypothetical only.",
     },
     honestyGuards: {
       legacySeparatedFromVerdict: true,
       favorableRequiresAllApplicableDocuments: true,
       missingRestrictionIsUnknown: true,
+      stipulatedFactsAreNotVerifiedCapacity: true,
     },
   };
 }

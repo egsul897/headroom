@@ -1,0 +1,30 @@
+{
+  "inventoryVersion": "cvf-inventory.v1",
+  "asOf": "2026-10-09",
+  "approximate": {
+    "vitestFiles": 574,
+    "itTestCalls": 6240,
+    "contractModelFiles": 272,
+    "contractModelTests": 3526,
+    "productFiles": 28,
+    "productTests": 172,
+    "unseenPackageDirs": 40,
+    "productAcceptancePackages": 14,
+    "workflows": 8,
+    "scripts": 512
+  },
+  "hardCiGate": ".github/workflows/canonical-compiler.yml",
+  "cvfSoftGate": ".github/workflows/cvf-pr-safety.yml",
+  "agent5Corpus": {
+    "synthetic": 8,
+    "authenticEdgar": 12,
+    "adversarial": 10
+  },
+  "gaps": [
+    "Most local suites ungated on push/PR",
+    "Product cross-doc/sequential previously ungated",
+    "Few true two-party blind human GT packages",
+    "Holdout labels readable in-repo without access control (procedural seal)",
+    "Combinatorial GT not yet authored for first-1000 families"
+  ]
+}

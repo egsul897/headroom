@@ -1,0 +1,131 @@
+{
+  "testedShaHint": "post-cycle2",
+  "results": [
+    {
+      "mutationId": "mut-entity-scope",
+      "category": "entity_scope",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "CORRECT_REFUSAL",
+        "falseFavorable": false,
+        "actual": "PROHIBITED",
+        "expected": "PROHIBITED"
+      },
+      "mutated": {
+        "grade": "UNRESOLVED",
+        "falseFavorable": false,
+        "actual": "CONDITIONALLY_PERMITTED",
+        "expected": "PROHIBITED"
+      },
+      "note": "Non-Loan Party guarantee prohibition silently becomes PERMITS."
+    },
+    {
+      "mutationId": "mut-cross-document-binding",
+      "category": "cross_document_binding",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "CORRECT_REFUSAL",
+        "falseFavorable": false,
+        "actual": "PROHIBITED",
+        "expected": "PROHIBITED"
+      },
+      "mutated": {
+        "grade": "UNRESOLVED",
+        "falseFavorable": false,
+        "actual": "UNDETERMINED",
+        "expected": "PROHIBITED"
+      },
+      "note": "Cross-document conjunction broken: one permit masks another prohibit."
+    },
+    {
+      "mutationId": "mut-utilization-completeness",
+      "category": "utilization_completeness",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "CORRECT_REFUSAL",
+        "falseFavorable": false,
+        "actual": "PROHIBITED",
+        "expected": "PROHIBITED"
+      },
+      "mutated": {
+        "grade": "INCORRECT_FAVORABLE",
+        "actual": "utilization=CONFIRMED_EMPTY",
+        "falseFavorable": true
+      },
+      "note": "Missing utilization affirmation invents CONFIRMED_EMPTY."
+    },
+    {
+      "mutationId": "mut-shared-capacity",
+      "category": "shared_capacity",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "PASS_NEUTRAL",
+        "falseFavorable": false,
+        "actual": "MATCH_BASELINE",
+        "expected": "MATCH_BASELINE"
+      },
+      "mutated": {
+        "grade": "INCORRECT_FAVORABLE",
+        "falseFavorable": true,
+        "actual": "PERMITTED",
+        "expected": "MATCH_BASELINE"
+      },
+      "note": "Shared-capacity prohibitions demoted from AND → OR; metamorphic add-restriction can lose force."
+    },
+    {
+      "mutationId": "mut-amendment-precedence",
+      "category": "amendment_precedence",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "CORRECT_REFUSAL",
+        "falseFavorable": false,
+        "actual": "PROHIBITED",
+        "expected": "PROHIBITED"
+      },
+      "mutated": {
+        "grade": "UNRESOLVED",
+        "falseFavorable": false,
+        "actual": "UNDETERMINED",
+        "expected": "PROHIBITED"
+      },
+      "note": "Amendment/operative dating broken — all facts dropped (should diverge from PROHIBITED baseline)."
+    },
+    {
+      "mutationId": "mut-sequential-financial",
+      "category": "sequential_financial_state",
+      "applied": true,
+      "restored": true,
+      "detected": true,
+      "baseline": {
+        "grade": "CORRECT_REFUSAL",
+        "falseFavorable": false,
+        "actual": "PROHIBITED",
+        "expected": "PROHIBITED"
+      },
+      "mutated": {
+        "grade": "INCORRECT_FAVORABLE",
+        "falseFavorable": true,
+        "actual": "PERMITTED",
+        "expected": "PROHIBITED"
+      },
+      "note": "Sequential basket headroom not reduced — overflow step may falsely permit."
+    }
+  ],
+  "allDetected": true,
+  "allRestored": true,
+  "fileHashesAfter": {
+    "lib/product/covenant-intelligence/cross-document-covenant.ts": "e573c50f9688799c",
+    "lib/contract-model/sequential-execution.ts": "9dd7eae7c9fb6ba5",
+    "lib/product/covenant-intelligence/cross-document-sequential-state.ts": "e84cb743e1b6ee1c"
+  }
+}

@@ -1,0 +1,76 @@
+# Continuous Verification Factory — PR fast safety (soft gate).
+# IMPLEMENTED ≠ CERTIFIED. Does not replace or weaken canonical-compiler.
+# Provider-free. Optimizes for detecting incorrect favorable outcomes.
+
+name: cvf-pr-safety
+
+on:
+  push:
+    paths:
+      - "lib/verification-factory/**"
+      - "lib/product/covenant-intelligence/cross-document-*.ts"
+      - "lib/contract-model/runtime/capacity/**"
+      - "lib/contract-model/sequential-execution.ts"
+      - "tests/verification-factory/**"
+      - "tests/product/cross-document-*.test.ts"
+      - "tests/product/sequential-*.test.ts"
+      - "tests/contract-model/runtime/capacity/a8-gate-status-regression.test.ts"
+      - "scripts/verification-factory/**"
+      - ".github/workflows/cvf-pr-safety.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "vitest.config.*"
+  pull_request:
+    paths:
+      - "lib/verification-factory/**"
+      - "lib/product/covenant-intelligence/cross-document-*.ts"
+      - "lib/contract-model/runtime/capacity/**"
+      - "lib/contract-model/sequential-execution.ts"
+      - "tests/verification-factory/**"
+      - "tests/product/cross-document-*.test.ts"
+      - "tests/product/sequential-*.test.ts"
+      - "tests/contract-model/runtime/capacity/a8-gate-status-regression.test.ts"
+      - "scripts/verification-factory/**"
+      - ".github/workflows/cvf-pr-safety.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "vitest.config.*"
+
+concurrency:
+  group: cvf-pr-safety-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cvf-pr-fast:
+    name: CVF PR fast (soft gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      HOLDOUT_UNLOCK: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: CVF harness + isolation tests
+        run: npx vitest run tests/verification-factory
+      - name: A8-01 capacity gate regression
+        run: npx vitest run tests/contract-model/runtime/capacity/a8-gate-status-regression.test.ts
+      # Provider-free offline product safety. Ask/DB tests skip when DATABASE_URL
+      # is unset (see it.skipIf in authentic-next / generalize). No Neon writes.
+      - name: cross-document + sequential product safety
+        run: >-
+          npx vitest run
+          tests/product/cross-document-covenant.test.ts
+          tests/product/cross-document-authentic-next.test.ts
+          tests/product/cross-document-generalize.test.ts
+          tests/product/sequential-state-correctness.test.ts
+          tests/product/sequential-transaction-effects.test.ts
+      - name: CVF tier metrics (fail on unexpected incorrect favorable)
+        run: npm run cvf:pr-fast

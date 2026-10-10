@@ -13,6 +13,7 @@ import {
   runAllCrossDocumentScenarios,
   runCrossDocumentScenario,
 } from "@/lib/product/covenant-intelligence/cross-document-scenarios";
+import { AUTHENTIC_PACKAGE_SCENARIOS } from "@/lib/product/covenant-intelligence/cross-document-authentic-packages";
 import { enumerateCertifiedPaths } from "@/lib/product/north-star-workflow/verified-path-enumeration";
 import { analyzeCrossCovenant } from "@/lib/product/covenant-intelligence/cross-covenant";
 import { extractAmendedSectionRefs } from "@/lib/product/customer-intelligence/operative-resolution";
@@ -216,5 +217,81 @@ describe("cross-document invariants", () => {
     expect(run.verdict.supportedPermissions.join(" ")).toMatch(/50/);
     expect(run.verdict.prohibitions.join(" ")).toMatch(/20|25/);
     expect(run.verdict.antiStackingNotes.length).toBeGreaterThan(0);
+  });
+});
+
+describe("CONMED §7.6(e) authority boundary — stipulated ≠ verified capacity", () => {
+  const base = () => AUTHENTIC_PACKAGE_SCENARIOS.find((s) => s.scenarioId === "auth-conmed-rp-basket")!;
+
+  function evalRp(knownFacts: Record<string, string | number | boolean | null>, amountUsd = 45_000_000) {
+    return evaluateCrossDocumentTransaction({
+      transaction: {
+        ...base().transaction,
+        amountUsd,
+        description: "Authority-boundary RP probe",
+        knownFacts,
+      },
+      provisions: base().provisions,
+      verifiedPackage: null,
+      verifiedRulebookHasTrustedUnits: false,
+    });
+  }
+
+  it("pro forma CSSLR + no EOD yields PERMITTED but never verified production capacity", () => {
+    const v = evalRp({
+      seniorSecuredLeverage: 3.0,
+      seniorSecuredLeverageIsProFormaForContemplatedTransaction: true,
+      noEventOfDefault: true,
+    });
+    expect(v.overallResult).toBe("PERMITTED");
+    expect(v.legalOutcomeAuthority).toBe("HYPOTHETICAL_UNDER_STIPULATED_FACTS");
+    expect(v.conditionEvidenceAuthority).toBe("CALLER_STIPULATED_HYPOTHETICAL");
+    expect(v.isVerifiedProductionCapacity).toBe(false);
+    expect(v.falsePermissionRisks.join(" ")).toMatch(/HYPOTHETICAL_UNDER_STIPULATED_FACTS/);
+  });
+
+  it("historical CSSLR without pro forma attestation does not clear §7.6(e)", () => {
+    const v = evalRp({ seniorSecuredLeverage: 2.0, noEventOfDefault: true });
+    expect(v.overallResult).toBe("CONDITIONALLY_PERMITTED");
+    expect(v.isVerifiedProductionCapacity).toBe(false);
+    expect(v.unknowns.join(" ")).toMatch(/pro forma attestation/i);
+  });
+
+  it("CSSLR 3.51x above ceiling does not clear; 3.50x at ceiling clears hypothetically", () => {
+    const over = evalRp({
+      seniorSecuredLeverage: 3.51,
+      seniorSecuredLeverageIsProFormaForContemplatedTransaction: true,
+      noEventOfDefault: true,
+    });
+    expect(over.overallResult).toBe("CONDITIONALLY_PERMITTED");
+    const at = evalRp({
+      seniorSecuredLeverage: 3.5,
+      seniorSecuredLeverageIsProFormaForContemplatedTransaction: true,
+      noEventOfDefault: true,
+    });
+    expect(at.overallResult).toBe("PERMITTED");
+    expect(at.isVerifiedProductionCapacity).toBe(false);
+  });
+
+  it("affirmative Event of Default blocks §7.6(e); bare noDefault does not clear EOD", () => {
+    const eod = evalRp({
+      seniorSecuredLeverage: 3.0,
+      seniorSecuredLeverageIsProFormaForContemplatedTransaction: true,
+      eventOfDefault: true,
+    });
+    expect(eod.overallResult).toBe("CONDITIONALLY_PERMITTED");
+    const bareDefault = evalRp({
+      seniorSecuredLeverage: 3.0,
+      seniorSecuredLeverageIsProFormaForContemplatedTransaction: true,
+      noDefault: true,
+    });
+    expect(bareDefault.overallResult).toBe("CONDITIONALLY_PERMITTED");
+  });
+
+  it("Investment permission remains inapplicable for Restricted Payment", () => {
+    const v = evalRp({});
+    const inv = v.evaluatedRestrictions.find((r) => r.sectionRef === "7.8");
+    expect(inv?.stance).toBe("INAPPLICABLE");
+    expect(v.overallResult).not.toBe("PERMITTED");
   });
 });
