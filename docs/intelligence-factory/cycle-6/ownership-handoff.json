@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-ownership.v1",
+  "agent1": {
+    "owns": [
+      "FLAT_AMOUNT / GREATER_OF EBITDA / GREATER_OF TOTAL_ASSETS formula-executable path",
+      "operative completeness + non-permission threshold gates",
+      "promotion ladder (never PRODUCTION_AUTHORITATIVE)"
+    ],
+    "doesNotOwn": ["builder recovery", "leverage recovery", "conditions[] structuring", "Neon Permission writes"]
+  },
+  "agent2": {
+    "owns": [
+      "applicable definition resolution for grower bases (EBITDA, Total Assets)",
+      "Available Amount / builder definition inputs",
+      "financial snapshot labeling for evaluation-time inputs"
+    ],
+    "blockedUntil": "definitions resolved before Agent3 builder/leverage promotion"
+  },
+  "agent3": {
+    "owns": [
+      "BUILDER_BASKET formula modeling after Agent2 defs",
+      "LEVERAGE_RATIO_ROOM / RATIO_GATE after defs",
+      "grower proximity when operative excerpt incomplete"
+    ],
+    "stillBlocked": true,
+    "note": "Cycle 6 does not relax BLOCKED_MECHANIC_GATE for builder/leverage"
+  },
+  "agent5": {
+    "owns": [
+      "structure conditions[] from proviso language",
+      "shared-capacity / cross-clause stacking resolution",
+      "cross-document restrictions before counsel-compile"
+    ],
+    "note": "WITH_GAPS and incomplete excerpts remain REVIEW_REQUIRED / not compile-eligible"
+  },
+  "peers": {
+    "extraction": "https://github.com/egsul897/headroom/pull/225",
+    "neonCapacity": "https://github.com/egsul897/headroom/pull/227",
+    "durableLifecycle": "https://github.com/egsul897/headroom/pull/232",
+    "utilizationAuthorityMain": "https://github.com/egsul897/headroom/pull/237"
+  }
+}

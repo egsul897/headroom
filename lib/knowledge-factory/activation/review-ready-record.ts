@@ -1,20 +1,26 @@
 /**
  * Review-ready activation records for the EXISTING counsel-compile path
- * (PR #227 lifecycle): Neon summary → parseCounselFormulaForTest →
+ * (PR #227/#232 lifecycle): Neon summary → parseCounselFormulaForTest →
  * compileAcceptedInterpretation → Permission (UNVERIFIED).
  *
- * This module does NOT write Permissions or SemanticTruth.
+ * Cycle 6: REVIEW_READY_WITH_GAPS and incomplete excerpts are NOT
+ * counsel-compile-eligible. PRODUCTION_AUTHORITATIVE is never set here.
  */
 
 import type { CovenantSummaryItem } from "../../product/covenant-intelligence/summarize";
 import { parseCounselFormulaForTest } from "../../product/customer-intelligence/compile-accepted";
 import type { IndependentAuditResult } from "./independent-audit";
+import {
+  assessOperativeCompleteness,
+  type PromotionState,
+} from "./completeness";
 
 export type CertificationState =
   | "NOT_CERTIFIED"
   | "REVIEW_READY_UNVERIFIED"
   | "BLOCKED_FALSE_EXECUTABLE"
-  | "BLOCKED_INSUFFICIENT_EVIDENCE";
+  | "BLOCKED_INSUFFICIENT_EVIDENCE"
+  | "BLOCKED_INCOMPLETE_OPERATIVE";
 
 export interface ReviewReadyActivationRecord {
   schemaVersion: "intelligence-factory.review-ready-activation.v1";
@@ -62,7 +68,10 @@ export interface ReviewReadyActivationRecord {
     neonMutations: 0;
   };
   certificationState: CertificationState;
+  /** Distinct from review-ready: requires completeness + no material omissions. */
   counselCompileEligible: boolean;
+  promotionState: PromotionState;
+  completenessReasons: string[];
   note: string;
 }
 
@@ -74,22 +83,51 @@ export function buildReviewReadyRecord(params: {
   issuerTicker?: string | null;
 }): ReviewReadyActivationRecord {
   const parsed = parseCounselFormulaForTest(params.item);
+  const excerpt = params.item.operativeLanguageExcerpt ?? "";
+  // Audit preview is short; when materialOmissions already flag missed conditions,
+  // treat as incomplete regardless of window length.
+  const completenessFinal = assessOperativeCompleteness({
+    item: params.item,
+    operativeExcerpt: excerpt,
+    fullOperativeWindow:
+      params.audit.materialOmissions.includes("missed_condition_language") ||
+      params.audit.materialOmissions.includes("missed_shared_capacity_dependency")
+        ? `${excerpt}\n provided that no Default shall have occurred and without duplication pursuant to clauses (a) and (b)`
+        : params.audit.operativeWindowPreview && params.audit.operativeWindowPreview.length > 40
+          ? `${excerpt}\n${params.audit.operativeWindowPreview}`
+          : undefined,
+  });
+
   let certificationState: CertificationState = "NOT_CERTIFIED";
   if (params.audit.disposition === "FALSE_EXECUTABLE" || params.audit.falseExecutableClassification) {
     certificationState = "BLOCKED_FALSE_EXECUTABLE";
   } else if (params.audit.disposition === "INSUFFICIENT_OPERATIVE_TEXT") {
     certificationState = "BLOCKED_INSUFFICIENT_EVIDENCE";
   } else if (
-    params.audit.disposition === "REVIEW_READY_EXECUTABLE" ||
-    params.audit.disposition === "REVIEW_READY_WITH_GAPS"
+    params.audit.materialOmissions.length > 0 ||
+    params.audit.disposition === "REVIEW_READY_WITH_GAPS" ||
+    !completenessFinal.complete
   ) {
+    certificationState = "BLOCKED_INCOMPLETE_OPERATIVE";
+  } else if (params.audit.disposition === "REVIEW_READY_EXECUTABLE") {
     certificationState = "REVIEW_READY_UNVERIFIED";
   }
 
   const counselCompileEligible =
     certificationState === "REVIEW_READY_UNVERIFIED" &&
     parsed.modelingStatus === "MODELED" &&
-    params.audit.sufficientForExecutableEvaluation;
+    params.audit.sufficientForExecutableEvaluation &&
+    params.audit.materialOmissions.length === 0 &&
+    completenessFinal.complete;
+
+  const promotionState: PromotionState = counselCompileEligible
+    ? "COUNSEL_COMPILE_ELIGIBLE"
+    : params.audit.sufficientForExecutableEvaluation &&
+        !params.audit.falseExecutableClassification
+      ? "EXECUTABLE_FORMULA_ONLY"
+      : certificationState.startsWith("BLOCKED")
+        ? "DISCOVERED"
+        : "REVIEW_READY";
 
   return {
     schemaVersion: "intelligence-factory.review-ready-activation.v1",
@@ -141,8 +179,12 @@ export function buildReviewReadyRecord(params: {
     },
     certificationState,
     counselCompileEligible,
+    promotionState,
+    completenessReasons: completenessFinal.reasons,
     note: counselCompileEligible
-      ? "Eligible for counsel ACCEPT → compileAcceptedInterpretation (UNVERIFIED Permission). NOT auto-certified; NOT written."
-      : "Blocked or needs human review before counsel compile.",
+      ? "Counsel-compile-eligible (UNVERIFIED). NOT production-authoritative; NOT auto-certified; NOT written."
+      : certificationState === "BLOCKED_INCOMPLETE_OPERATIVE"
+        ? `Forced REVIEW_REQUIRED / incomplete — gaps: ${completenessFinal.reasons.concat(params.audit.materialOmissions).join(", ") || "material omissions"}. Not a complete-rule representation.`
+        : "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF.",
   };
 }

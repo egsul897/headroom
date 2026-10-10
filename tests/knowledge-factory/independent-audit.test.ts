@@ -140,9 +140,13 @@ describe("independent operative-text audit", () => {
     });
     expect(rec.activationPath).toBe("counsel-compile-accepted-interpretation");
     expect(rec.peerCoordination.lifecyclePr).toContain("227");
-    expect(["REVIEW_READY_UNVERIFIED", "BLOCKED_FALSE_EXECUTABLE", "BLOCKED_INSUFFICIENT_EVIDENCE", "NOT_CERTIFIED"]).toContain(
-      rec.certificationState,
-    );
+    expect([
+      "REVIEW_READY_UNVERIFIED",
+      "BLOCKED_FALSE_EXECUTABLE",
+      "BLOCKED_INSUFFICIENT_EVIDENCE",
+      "BLOCKED_INCOMPLETE_OPERATIVE",
+      "NOT_CERTIFIED",
+    ]).toContain(rec.certificationState);
     expect(rec.provenance.neonMutations).toBe(0);
     expect(rec.provenance.promotedToLegalTruth).toBe(0);
   });

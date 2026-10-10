@@ -197,7 +197,8 @@ describe("Cycle 5 eligibility gates — formula discovery ≠ legal permission",
     expect(activated.executableEligible).toBe(false);
   });
 
-  it("hard-fails executable when condition language present but conditions[] empty", () => {
+  it("keeps formula-executable but blocks counsel-compile when conditions[] empty", () => {
+    // Cycle 6: recover recall for FLAT/growers; do not treat incomplete rules as compile-eligible.
     const activated = activateSummaryItem({
       sourceId: "test-cond",
       item: item({
@@ -207,8 +208,8 @@ describe("Cycle 5 eligibility gates — formula discovery ≠ legal permission",
         conditions: [],
       }),
     });
-    expect(activated.executableEligible).toBe(false);
-    expect(activated.readiness).toBe("REVIEW_REQUIRED");
+    expect(activated.executableEligible).toBe(true);
+    expect(activated.counselCompileEligible).toBe(false);
     expect(activated.unresolvedDependencies).toContain("conditions_not_structured");
   });
 
@@ -243,7 +244,116 @@ describe("Cycle 5 eligibility gates — formula discovery ≠ legal permission",
       }),
     });
     expect(activated.executableEligible).toBe(false);
-    expect(activated.readiness).not.toBe("EXECUTABLE_FORMULA_CANDIDATE");
-    expect(activated.unresolvedDependencies).toContain("non_basket_family");
+    expect(activated.readiness).toBe("BLOCKED_NON_PERMISSION_THRESHOLD");
+    expect(activated.unresolvedDependencies).toContain("non_permission_threshold");
+    expect(activated.counselCompileEligible).toBe(false);
+    expect(activated.promotionState).not.toBe("PRODUCTION_AUTHORITATIVE");
+  });
+
+  it("recovers FLAT executable when conditions retained in excerpt but not structured", () => {
+    const activated = activateSummaryItem({
+      sourceId: "test-flat-recall",
+      item: item({
+        operativeLanguageExcerpt:
+          "The Borrower shall not create Indebtedness except in an aggregate principal amount not to exceed $40,000,000; provided that no Event of Default shall have occurred and be continuing.",
+        materialBasketsThresholds: ["$40,000,000"],
+        conditions: [],
+      }),
+    });
+    expect(activated.executableEligible).toBe(true);
+    expect(activated.counselCompileEligible).toBe(false); // incomplete without conditions[]
+    expect(activated.promotionState).toBe("EXECUTABLE_FORMULA_ONLY");
+    expect(activated.completeness?.conditionsStructured).toBe(false);
+  });
+
+  it("blocks article-level Negative Covenants heading from executable", () => {
+    const activated = activateSummaryItem({
+      sourceId: "test-article",
+      item: item({
+        sectionRef: "5.02",
+        heading: "Negative Covenants",
+        families: ["LIENS", "ASSET_SALES"],
+        operativeLanguageExcerpt:
+          "SECTION 5.02. Negative Covenants. So long as any Advance shall remain unpaid, the Company will not: (a) Liens. Create or suffer to exist any Lien except Liens securing Indebtedness not exceeding the greater of (a) $450,000,000 or (b) 10% of the Consolidated total assets of the Company.",
+        materialBasketsThresholds: [
+          "Greater-of construct: greater of: (a) $450,000,000 or (b) 10% of the Consolidated total assets",
+        ],
+      }),
+    });
+    expect(activated.executableEligible).toBe(false);
+    expect(activated.unresolvedDependencies).toContain("article_level_heading");
+  });
+
+  it("blocks baskets-only greater-of (formula not in operative excerpt)", () => {
+    const activated = activateSummaryItem({
+      sourceId: "test-basket-only-grower",
+      item: item({
+        sectionRef: "8.1",
+        heading: "8.1 Indebtedness; Certain Equity Securities.",
+        families: ["INDEBTEDNESS"],
+        operativeLanguageExcerpt:
+          "8.1 Indebtedness. The Credit Parties will not create, incur, assume or permit to exist any Indebtedness, except Indebtedness incurred and outstanding under the Loan Documents and other enumerated exceptions.",
+        materialBasketsThresholds: [
+          "Greater-of construct: greater of (1) $435,000,000 and (2) 3% of Consolidated Total Assets",
+          "Shared / aggregated capacity or cross-clause stacking language present.",
+        ],
+      }),
+    });
+    expect(activated.executableEligible).toBe(false);
+    expect(activated.unresolvedDependencies).toContain("grower_not_in_operative_excerpt");
+  });
+
+  it("recovers Obligor / Restricted Subsidiaries entity scope for growers", () => {
+    const activated = activateSummaryItem({
+      sourceId: "test-obligor",
+      item: item({
+        sectionRef: "5.14",
+        heading: "5.14 Transactions with Affiliates.",
+        families: ["INVESTMENTS", "RESTRICTED_PAYMENTS"],
+        operativeLanguageExcerpt:
+          "5.14 Transactions with Affiliates. No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, sell assets to Affiliates if the value of such transaction is in excess of the greater of $12,000,000 and 15% of Consolidated EBITDA; provided that no Event of Default exists.",
+        materialBasketsThresholds: [
+          "Greater-of / grower basket: $12,000,000 and 15% of Consolidated EBITDA",
+        ],
+        conditions: [],
+      }),
+    });
+    expect(activated.executableEligible).toBe(true);
+    expect(activated.counselCompileEligible).toBe(false);
+  });
+
+  it("blocks judgment / mandatory prepayment / indemnity headings as non-permission thresholds", () => {
+    for (const spec of [
+      {
+        heading: "Judgments",
+        families: ["EVENTS_OF_DEFAULT"],
+        excerpt:
+          "Any unpaid judgment or order for the payment of money in excess of $150,000,000 against the Borrower.",
+      },
+      {
+        heading: "Mandatory Prepayments",
+        families: ["MANDATORY_PREPAYMENTS"],
+        excerpt:
+          "The Borrower shall prepay the Loans in an amount equal to $25,000,000 upon receipt of Net Cash Proceeds.",
+      },
+      {
+        heading: "Indemnity",
+        families: ["INDEBTEDNESS"],
+        excerpt:
+          "The Borrower shall indemnify the Administrative Agent for losses not exceeding $10,000,000 in the aggregate.",
+      },
+    ] as const) {
+      const activated = activateSummaryItem({
+        sourceId: "test-non-perm",
+        item: item({
+          heading: spec.heading,
+          families: [...spec.families],
+          operativeLanguageExcerpt: spec.excerpt,
+          materialBasketsThresholds: ["threshold"],
+        }),
+      });
+      expect(activated.executableEligible).toBe(false);
+      expect(activated.counselCompileEligible).toBe(false);
+    }
   });
 });

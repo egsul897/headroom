@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-recall.v1",
+  "generatedAt": "2026-10-10T00:09:59.323Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "safetyPreserved": {
+    "priorFalseExecutableDemoted": "32/32",
+    "nonPermissionGates": [
+      "EVENTS_OF_DEFAULT",
+      "JUDGMENT",
+      "MANDATORY_PREPAYMENTS",
+      "INDEMNITY",
+      "REPORTING"
+    ],
+    "builderLeverageStillBlocked": true,
+    "note": "No gate relaxation for builder/leverage; Agents 2/3/5 own recovery."
+  },
+  "population": {
+    "sourcesScanned": 404,
+    "formulaDiscoveries": 22804,
+    "executableFormulaOnly": 307,
+    "counselCompileEligible": 281,
+    "productionAuthoritative": 0,
+    "blockedReasonsTop": [
+      [
+        "NEEDS_CROSS_REF_RESOLUTION",
+        11526
+      ],
+      [
+        "NOT_ACTIVATABLE",
+        5328
+      ],
+      [
+        "NEEDS_HUMAN_REVIEW",
+        3106
+      ],
+      [
+        "DISCOVERED_FORMULA",
+        758
+      ],
+      [
+        "BLOCKED_SHARED_CAPACITY",
+        719
+      ],
+      [
+        "BLOCKED_NON_PERMISSION_THRESHOLD",
+        560
+      ],
+      [
+        "BLOCKED_MECHANIC_GATE",
+        375
+      ],
+      [
+        "REVIEW_REQUIRED",
+        125
+      ]
+    ]
+  },
+  "frozen61Recall": {
+    "status": "HISTORICAL_EXPOSED",
+    "goldPositives": 27,
+    "goldNegatives": 32,
+    "truePositives": 5,
+    "falseNegatives": 22,
+    "trueNegatives": 32,
+    "falsePositives": 0,
+    "precision": {
+      "successes": 5,
+      "n": 5,
+      "rate": 1,
+      "wilson95": {
+        "low": 0.565508505247919,
+        "high": 1
+      }
+    },
+    "recall": {
+      "successes": 5,
+      "n": 27,
+      "rate": 0.18518518518518517,
+      "wilson95": {
+        "low": 0.08180586574285321,
+        "high": 0.36699056505191746
+      }
+    },
+    "falseNegativeReasons": {
+      "DISCOVERED_FORMULA": 4,
+      "BLOCKED_NON_PERMISSION_THRESHOLD": 3,
+      "BLOCKED_SHARED_CAPACITY": 9,
+      "REVIEW_REQUIRED": 6
+    },
+    "falseNegativeDetail": [
+      {
+        "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+        "sectionRef": "5.1",
+        "readiness": "DISCOVERED_FORMULA",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+        "sectionRef": "7.07(d)",
+        "readiness": "DISCOVERED_FORMULA",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+        "sectionRef": "6.01(j)",
+        "readiness": "BLOCKED_NON_PERMISSION_THRESHOLD",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+        "sectionRef": "5.9(c)",
+        "readiness": "BLOCKED_NON_PERMISSION_THRESHOLD",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:c91227d9b9432c787e8641ea",
+        "sectionRef": "7.06(d)",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+        "sectionRef": "3.25",
+        "readiness": "DISCOVERED_FORMULA",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:d42507f956621a8cb28805b7",
+        "sectionRef": "7.9",
+        "readiness": "DISCOVERED_FORMULA",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "ehb:61dbd6bc587f2b79844c0e09",
+        "sectionRef": "6.01",
+        "readiness": "BLOCKED_NON_PERMISSION_THRESHOLD",
+        "formulaType": "FLAT_AMOUNT"
+      },
+      {
+        "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+        "sectionRef": "2.20(j)",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "ehb:0a41b36af3e4c39fa695edd1",
+        "sectionRef": "4.06",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+        "sectionRef": "2.14",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+        "sectionRef": "7.01(j)",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "ehb:e16cad81e52d87aede4dcb27",
+        "sectionRef": "6.01",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "sectionRef": "10.1(r)",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+        "sectionRef": "6.01(b)",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "sectionRef": "10.3(h)",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "ehb:bbc42b58a4dd0077d4f3dce2",
+        "sectionRef": "7.05(k)",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+        "sectionRef": "7.2(m)",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "ehb:8deb135bf498cdaedfb97cef",
+        "sectionRef": "7.2",
+        "readiness": "BLOCKED_SHARED_CAPACITY",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+        "sectionRef": "8.2(i)",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "ehb:9cc9fb36b694a18d721deb93",
+        "sectionRef": "10.05(e)",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      },
+      {
+        "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+        "sectionRef": "8.2",
+        "readiness": "REVIEW_REQUIRED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+      }
+    ]
+  },
+  "cycle5GapsRecheck": {
+    "n": 6,
+    "allForcedIncompleteForCompile": true,
+    "counselCompileEligibleCount": 0,
+    "records": [
+      {
+        "sourceId": "ehb:e9d54ab444c88a78b0c14a65",
+        "sectionRef": "8.5",
+        "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+        "executableEligible": true,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "COUNSEL_COMPILE_ELIGIBLE",
+        "completenessReasons": [
+          "abbreviated_operative_excerpt",
+          "conditions_only_in_full_operative_window",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      },
+      {
+        "sourceId": "ehb:e2b1bd1816696ac50bd77e0e",
+        "sectionRef": "8.01(f)",
+        "readiness": "BLOCKED_NON_PERMISSION_THRESHOLD",
+        "executableEligible": false,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "DISCOVERED",
+        "completenessReasons": [
+          "non_permission_monetary_threshold",
+          "conditions_only_in_full_operative_window",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      },
+      {
+        "sourceId": "ehb:ad79fb05cad7bb5bf08c193c",
+        "sectionRef": "5.3",
+        "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+        "executableEligible": true,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "COUNSEL_COMPILE_ELIGIBLE",
+        "completenessReasons": [
+          "conditions_only_in_full_operative_window",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      },
+      {
+        "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+        "sectionRef": "6.01(k)",
+        "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+        "executableEligible": true,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "EXECUTABLE_FORMULA_ONLY",
+        "completenessReasons": [
+          "missing_chapeau_or_operative_verb",
+          "conditions_only_in_full_operative_window",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      },
+      {
+        "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+        "sectionRef": "6.01(q)",
+        "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+        "executableEligible": true,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "EXECUTABLE_FORMULA_ONLY",
+        "completenessReasons": [
+          "missing_chapeau_or_operative_verb",
+          "conditions_only_in_full_operative_window",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      },
+      {
+        "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+        "sectionRef": "6.02(kk)",
+        "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+        "executableEligible": true,
+        "counselCompileEligible": false,
+        "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+        "promotionState": "EXECUTABLE_FORMULA_ONLY",
+        "completenessReasons": [
+          "missing_chapeau_or_operative_verb",
+          "shared_capacity_only_in_full_window"
+        ],
+        "forcedIncomplete": true
+      }
+    ]
+  },
+  "newBlindHoldout": {
+    "status": "BLIND_UNEVALUATED_FOR_TUNING",
+    "salt": "0xc6c6",
+    "n": 14,
+    "quotas": {
+      "FLAT_AMOUNT": 12,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 8,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 6
+    },
+    "excludedExposedKeys": 77,
+    "excludedBlindDocs": [
+      "gibraltar",
+      "knife-river"
+    ],
+    "formulaPrecision": {
+      "successes": 8,
+      "n": 14,
+      "rate": 0.5714285714285714,
+      "wilson95": {
+        "low": 0.3259026690286936,
+        "high": 0.7861949006959947
+      }
+    },
+    "thresholdPrecision": {
+      "successes": 11,
+      "n": 14,
+      "rate": 0.7857142857142857,
+      "wilson95": {
+        "low": 0.5241027622679172,
+        "high": 0.9242875166308363
+      }
+    },
+    "falseExecutableRate": {
+      "successes": 6,
+      "n": 14,
+      "rate": 0.42857142857142855,
+      "wilson95": {
+        "low": 0.21380509930400526,
+        "high": 0.6740973309713064
+      }
+    },
+    "materialOmissionRate": {
+      "successes": 12,
+      "n": 14,
+      "rate": 0.8571428571428571,
+      "wilson95": {
+        "low": 0.600580922361363,
+        "high": 0.9599069262620787
+      }
+    },
+    "falseFavorableRate": {
+      "successes": 0,
+      "n": 14,
+      "rate": 0,
+      "wilson95": {
+        "low": 0,
+        "high": 0.21531701192718142
+      }
+    },
+    "counselCompileEligible": 2,
+    "reviewReadyUnverified": 2,
+    "blockedIncomplete": 6
+  },
+  "ownership": {
+    "agent2": "definitions + financial inputs for growers",
+    "agent3": "builder/leverage formula after defs (still blocked)",
+    "agent5": "structure conditions[] before counsel-compile"
+  }
+}

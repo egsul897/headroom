@@ -12,6 +12,13 @@
 
 import type { CovenantSummaryItem } from "../../product/covenant-intelligence/summarize";
 import { parseCounselFormulaForTest } from "../../product/customer-intelligence/compile-accepted";
+import {
+  assessOperativeCompleteness,
+  isNonPermissionThreshold,
+  promotionStateFrom,
+  type CompletenessVerdict,
+  type PromotionState,
+} from "./completeness";
 
 export type ActivationReadiness =
   | "EXECUTABLE_FORMULA_CANDIDATE"
@@ -23,7 +30,8 @@ export type ActivationReadiness =
   | "NEEDS_HUMAN_REVIEW"
   | "NOT_ACTIVATABLE"
   | "BLOCKED_SHARED_CAPACITY"
-  | "BLOCKED_MECHANIC_GATE";
+  | "BLOCKED_MECHANIC_GATE"
+  | "BLOCKED_NON_PERMISSION_THRESHOLD";
 
 export type EligibilityGateId =
   | "source_text_sufficient"
@@ -36,7 +44,8 @@ export type EligibilityGateId =
   | "historical_utilization_status_established"
   | "legal_review_status_preserved"
   | "high_confidence_mechanic"
-  | "formula_threshold_evidenced";
+  | "formula_threshold_evidenced"
+  | "operative_completeness_for_compile";
 
 export interface EligibilityGateResult {
   gate: EligibilityGateId;
@@ -58,8 +67,16 @@ export interface ActivatedProvisionCandidate {
   independentChecks: Array<{ check: string; ok: boolean; detail: string }>;
   eligibilityGates: EligibilityGateResult[];
   allChecksPassed: boolean;
-  /** True only when readiness is EXECUTABLE_FORMULA_CANDIDATE. */
+  /** Numeric formula may be evaluated — NOT a legally complete permission. */
   executableEligible: boolean;
+  /**
+   * May enter existing counsel-compile path. Requires operative completeness
+   * (conditions structured, non-abbreviated excerpt, not a non-permission threshold).
+   */
+  counselCompileEligible: boolean;
+  /** Explicit promotion ladder — PRODUCTION_AUTHORITATIVE never set here. */
+  promotionState: PromotionState;
+  completeness: CompletenessVerdict | null;
   certificationStatus: "NOT_CERTIFIED";
   unresolvedDependencies: string[];
   ownershipHints: string[];
@@ -77,16 +94,21 @@ export const HIGH_CONFIDENCE_MECHANICS = new Set([
 export const STRICT_REVIEW_MECHANICS = new Set(["BUILDER_BASKET", "LEVERAGE_RATIO_ROOM", "RATIO_GATE"]);
 
 const NON_OPERATIVE_SECTION =
-  /\b(?:Notices?|Communications|Evidence of Indebtedness|Successor Trustee|Definitions?|Interpretation|Accounting Terms|Construction|Incremental\s+(?:Term\s+)?Facilit|Refinancing Amendment|Amend and Extend)\b/i;
+  /\b(?:Notices?|Communications|Evidence of Indebtedness|Successor Trustee|Definitions?|Interpretation|Accounting Terms|Construction|Incremental\s+(?:Term\s+)?Facilit|Refinancing Amendment|Amend and Extend|Consolidation,\s*Merger|Fundamental Changes)\b/i;
+
+/** Article-level headings that aggregate many baskets — not a single executable permission. */
+const ARTICLE_LEVEL_HEADING =
+  /^(?:Negative Covenants|Affirmative Covenants|Events of Default)\.?\s*$/i;
 
 /** Definitional / admin / incremental section refs that must not become executable from coincidental dollars. */
 const NON_BASKET_SECTION_REF = /^(?:1\.0[01]|1\.1|2\.1[14]|2\.20|Article\s*I\b)/i;
 
-/** Families that are never capacity baskets (EOD / judgment triggers ≠ Permitted Indebtedness). */
-const NON_BASKET_FAMILIES = /^(?:EVENTS_OF_DEFAULT|JUDGMENTS?)$/i;
-
 const SHARED_CAPACITY_RE =
   /\b(?:combined with|shared (?:capacity|basket)|together with\b[\s\S]{0,120}?\b(?:pursuant to|under)\s+(?:Section|clause)|without duplication|pursuant to clauses?\s*\()/i;
+
+/** Metadata note emitted by summarize when stacking language exists outside the short excerpt. */
+const SHARED_CAPACITY_NOTE_RE =
+  /\bShared\s*\/\s*aggregated capacity\b|\bcross-clause stacking language\b/i;
 
 function excerptHasMoney(excerpt: string, millions: number): boolean {
   const raw = millions >= 1 && millions < 10_000 ? millions * 1_000_000 : millions;
@@ -108,7 +130,10 @@ function excerptHasPct(excerpt: string, pct: number): boolean {
 function hasEntityScope(_item: CovenantSummaryItem, excerpt: string): boolean {
   // Lexical evidence in the operative excerpt is required — structured flags alone
   // over-fired on Cycle 4 false-executables when entityScope was inferred elsewhere.
-  return /\b(?:Borrower|Loan Part(?:y|ies)|Restricted Subsidiar|Guarantor|Parent)\b/i.test(excerpt);
+  // Cycle 6: include common capacity-scope nouns used in indentures / credit agreements.
+  return /\b(?:Borrower|Loan Part(?:y|ies)|Credit Part(?:y|ies)|Restricted Subsidiar(?:y|ies)?|Guarantor|Holdings|Parent|Company|Issuer|Obligor)\b/i.test(
+    excerpt,
+  );
 }
 
 /** Greater-of growers must show comparator + base in proximity (not distant co-mentions). */
@@ -134,38 +159,56 @@ function evaluateEligibilityGates(params: {
   moneyOk: boolean;
   pctOk: boolean | null;
   unresolvedDefs: Array<{ term: string }>;
-}): { gates: EligibilityGateResult[]; unresolved: string[]; ownership: string[] } {
+}): {
+  gates: EligibilityGateResult[];
+  unresolved: string[];
+  ownership: string[];
+  completeness: CompletenessVerdict;
+} {
   const { item, excerpt, formulaType, unresolvedDefs } = params;
   const gates: EligibilityGateResult[] = [];
   const unresolved: string[] = [];
   const ownership: string[] = [];
 
-  const operativeVerb = /\b(?:shall not|may not|not to exceed|greater of|lesser of|Incur|create|assume)\b/i.test(
-    excerpt,
-  );
+  const operativeVerb =
+    /\b(?:shall not|may not|will not|not to exceed|greater of|lesser of|Incur|create|assume)\b/i.test(
+      excerpt,
+    );
   const definitionalSection =
     NON_BASKET_SECTION_REF.test(item.sectionRef.trim()) ||
     (/\bmeans\b/i.test(excerpt) && /\bDefinitions?\b/i.test(item.heading));
-  const nonBasketFamily = (item.families ?? []).some((f) => NON_BASKET_FAMILIES.test(f));
+  const articleLevel = ARTICLE_LEVEL_HEADING.test((item.heading ?? "").trim());
+  const nonPermission = isNonPermissionThreshold(item);
   const sourceOk =
     excerpt.replace(/\s+/g, " ").trim().length >= 80 &&
     operativeVerb &&
     !NON_OPERATIVE_SECTION.test(item.heading) &&
     !NON_OPERATIVE_SECTION.test(item.sectionRef) &&
     !definitionalSection &&
-    !nonBasketFamily;
+    !articleLevel &&
+    !nonPermission;
   gates.push({
     gate: "source_text_sufficient",
     ok: sourceOk,
     detail: sourceOk
       ? "excerpt length + operative verbs; heading not a non-covenant article"
-      : nonBasketFamily
-        ? "EVENTS_OF_DEFAULT / JUDGMENT family — threshold is not a capacity basket"
-        : definitionalSection
-          ? "definitional / Article I section — not an executable basket"
-          : "excerpt too thin, non-operative heading, or missing operative verbs",
+      : nonPermission
+        ? "non-permission monetary threshold (EOD/judgment/indemnity/prepay/reporting) — not capacity"
+        : articleLevel
+          ? "article-level heading (Negative/Affirmative Covenants) — not a single basket"
+          : definitionalSection
+            ? "definitional / Article I section — not an executable basket"
+            : "excerpt too thin, non-operative heading, or missing operative verbs",
   });
-  if (!sourceOk) unresolved.push(nonBasketFamily ? "non_basket_family" : "source_text_incomplete");
+  if (!sourceOk) {
+    unresolved.push(
+      nonPermission
+        ? "non_permission_threshold"
+        : articleLevel
+          ? "article_level_heading"
+          : "source_text_incomplete",
+    );
+  }
 
   const docOk = Boolean(item.governingAgreement?.trim()) && Boolean(item.sourceCitation?.trim());
   gates.push({
@@ -197,36 +240,55 @@ function evaluateEligibilityGates(params: {
   const hasConditionLang = /\b(?:provided that|so long as|subject to|no Default|Event of Default|Payment Conditions)\b/i.test(
     excerpt,
   );
-  // Hard gate: condition language in excerpt requires structured conditions[] (Cycle 5 remediation).
-  const conditionGateOk = !hasConditionLang || (item.conditions ?? []).length > 0;
+  // Cycle 6: condition language retained in excerpt is enough for FORMULA executable recall;
+  // structured conditions[] required for counsel-compile completeness (separate gate).
+  const conditionsRetained = !hasConditionLang || hasConditionLang; // visible in gateExcerpt
+  const conditionsStructured = !hasConditionLang || (item.conditions ?? []).length > 0;
   gates.push({
     gate: "material_conditions_represented",
-    ok: conditionGateOk,
+    ok: conditionsRetained,
     detail: hasConditionLang
-      ? (item.conditions ?? []).length
+      ? conditionsStructured
         ? "conditions[] populated"
-        : "condition language present but conditions[] empty — REVIEW_REQUIRED (Agent5)"
+        : "condition language retained in excerpt — formula-executable only until Agent5 structures conditions[]"
       : "no material condition language detected in excerpt",
   });
-  if (!conditionGateOk) {
+  if (hasConditionLang && !conditionsStructured) {
     unresolved.push("conditions_not_structured");
     ownership.push("Agent5:cross-document-conditions");
   }
 
-  const sharedInExcerpt = SHARED_CAPACITY_RE.test(excerpt);
+  const basketsJoined = (item.materialBasketsThresholds ?? []).join("\n");
+  const operativeOnly = (item.operativeLanguageExcerpt ?? "").replace(/\s+/g, " ").trim();
+  const sharedInExcerpt = SHARED_CAPACITY_RE.test(excerpt) || SHARED_CAPACITY_RE.test(operativeOnly);
   const sharedInFamilies = (item.families ?? []).some((f) => /SHARED_CAPACITY/i.test(f));
-  const sharedBlocked = sharedInExcerpt || sharedInFamilies;
+  // Metadata "Shared / aggregated…" notes alone are too noisy for formula-executable recall;
+  // they still reinforce builder-over-greater-of contamination when the grower is baskets-only.
+  const sharedNote = SHARED_CAPACITY_NOTE_RE.test(basketsJoined) || SHARED_CAPACITY_NOTE_RE.test(excerpt);
+  const greaterOfInOperative = /greater of/i.test(operativeOnly);
+  const growerOnlyInBaskets =
+    formulaType.startsWith("GREATER_OF") && !greaterOfInOperative && /greater of/i.test(basketsJoined);
+  const builderFamilyContamination =
+    (item.families ?? []).some((f) => /AVAILABLE_AMOUNT_AND_BUILDER/i.test(f)) &&
+    formulaType.startsWith("GREATER_OF") &&
+    (growerOnlyInBaskets || sharedInExcerpt || sharedInFamilies || sharedNote);
+  const sharedBlocked = sharedInExcerpt || sharedInFamilies || builderFamilyContamination;
   // Shared capacity must be explicitly blocked from executable promotion (fail-closed).
   gates.push({
     gate: "shared_capacity_resolved_or_blocked",
     ok: !sharedBlocked,
     detail: sharedBlocked
-      ? "shared-capacity language/family present — blocked from executable (Agent5)"
+      ? builderFamilyContamination
+        ? "builder-family + baskets-only/stacked greater-of — blocked (Agent3/5; builder precedence)"
+        : "shared-capacity language/family present — blocked from executable (Agent5)"
       : "no shared-capacity dependency detected",
   });
   if (sharedBlocked) {
     unresolved.push("shared_capacity");
     ownership.push("Agent5:shared-capacity");
+    if (builderFamilyContamination) {
+      ownership.push("Agent3:builder-formula + Agent2:Available-Amount-definition");
+    }
   }
 
   const needsFin =
@@ -277,24 +339,49 @@ function evaluateEligibilityGates(params: {
     }
   }
 
+  // Cycle 6: growers must show "greater of" in the operative excerpt itself.
+  // Basket-only growers laundered false executables (Crown 8.1, MRVI 6.05(d)).
   const growerOk = growerProximityOk(excerpt, formulaType);
+  const growerOperativeOk = !formulaType.startsWith("GREATER_OF") || greaterOfInOperative;
   const evidenceOk =
-    params.moneyOk && (params.pctOk === null || params.pctOk === true) && growerOk;
+    params.moneyOk &&
+    (params.pctOk === null || params.pctOk === true) &&
+    growerOk &&
+    growerOperativeOk;
   gates.push({
     gate: "formula_threshold_evidenced",
     ok: evidenceOk,
-    detail: !growerOk
-      ? "greater-of / base not in proximity in excerpt (Agent3)"
-      : evidenceOk
-        ? "threshold/pct tokens evidenced in source excerpt"
-        : "formula/threshold not evidenced in excerpt",
+    detail: !growerOperativeOk
+      ? "greater-of formula only in materialBasketsThresholds — operative excerpt incomplete (not source-backed)"
+      : !growerOk
+        ? "greater-of / base not in proximity in excerpt (Agent3)"
+        : evidenceOk
+          ? "threshold/pct tokens evidenced in source excerpt"
+          : "formula/threshold not evidenced in excerpt",
   });
   if (!evidenceOk) {
-    unresolved.push("formula_threshold_evidence");
-    if (!growerOk) ownership.push("Agent3:formula-proximity");
+    unresolved.push(
+      !growerOperativeOk ? "grower_not_in_operative_excerpt" : "formula_threshold_evidence",
+    );
+    if (!growerOk || !growerOperativeOk) ownership.push("Agent3:formula-proximity");
   }
 
-  return { gates, unresolved: [...new Set(unresolved)], ownership: [...new Set(ownership)] };
+  const completeness = assessOperativeCompleteness({ item, operativeExcerpt: excerpt });
+  gates.push({
+    gate: "operative_completeness_for_compile",
+    ok: completeness.complete,
+    detail: completeness.complete
+      ? "operative excerpt complete for counsel-compile consideration"
+      : `incomplete for compile: ${completeness.reasons.join(", ")}`,
+  });
+  if (!completeness.complete) {
+    for (const r of completeness.reasons) unresolved.push(r);
+    if (completeness.reasons.some((r) => /condition|shared/i.test(r))) {
+      ownership.push("Agent5:cross-document-conditions");
+    }
+  }
+
+  return { gates, unresolved: [...new Set(unresolved)], ownership: [...new Set(ownership)], completeness };
 }
 
 function readinessFromGates(params: {
@@ -303,12 +390,16 @@ function readinessFromGates(params: {
   unresolvedDefs: number;
   crossRefs: number;
   hasDollar: boolean;
+  nonPermission: boolean;
 }): ActivationReadiness {
   const byId = Object.fromEntries(params.gates.map((g) => [g.gate, g.ok])) as Record<
     EligibilityGateId,
     boolean
   >;
 
+  if (params.nonPermission) {
+    return "BLOCKED_NON_PERMISSION_THRESHOLD";
+  }
   if (STRICT_REVIEW_MECHANICS.has(params.formulaType) || !byId.high_confidence_mechanic) {
     return "BLOCKED_MECHANIC_GATE";
   }
@@ -321,24 +412,20 @@ function readinessFromGates(params: {
   if (!byId.source_text_sufficient || !byId.operative_document_identified) {
     return "DISCOVERED_FORMULA";
   }
-  if (
-    !byId.entity_scope_established ||
-    !byId.formula_threshold_evidenced ||
-    !byId.material_conditions_represented
-  ) {
+  if (!byId.entity_scope_established || !byId.formula_threshold_evidenced) {
     return "REVIEW_REQUIRED";
   }
   if (!byId.legal_review_status_preserved) {
     return "REVIEW_REQUIRED";
   }
 
-  // Executable only when hard gates pass — formula alone never sufficient.
+  // Formula-executable: safety gates without requiring structured conditions[] (Cycle 6 recall).
+  // Legally complete / counsel-compile uses operative_completeness_for_compile separately.
   const hardOk =
     byId.source_text_sufficient &&
     byId.operative_document_identified &&
     byId.entity_scope_established &&
     byId.applicable_definitions_resolved &&
-    byId.material_conditions_represented &&
     byId.shared_capacity_resolved_or_blocked &&
     byId.high_confidence_mechanic &&
     byId.formula_threshold_evidenced &&
@@ -397,6 +484,9 @@ export function activateSummaryItem(params: {
       eligibilityGates: [],
       allChecksPassed: false,
       executableEligible: false,
+      counselCompileEligible: false,
+      promotionState: "DISCOVERED",
+      completeness: null,
       certificationStatus: "NOT_CERTIFIED",
       unresolvedDependencies: ["no_modeled_formula"],
       ownershipHints: [],
@@ -444,14 +534,22 @@ export function activateSummaryItem(params: {
     detail: unresolvedDefs.length ? `unresolved: ${unresolvedDefs.map((d) => d.term).join(", ")}` : "ok",
   });
 
-  // Eligibility gates use operative excerpt for scope/conditions/grower proximity
-  // so permissions[] cannot launder a formula into EXECUTABLE (Cycle 5 ALKS 2.20).
-  const gateExcerpt = (operativeOnly.trim().length >= 40 ? operativeOnly : excerpt).slice(0, 2500);
-  const gateMoneyOk = excerptHasMoney(gateExcerpt, parsed.thresholdValue);
+  // Gates use operative excerpt + materialBasketsThresholds (source-backed basket lines).
+  // permissions[] still excluded — they laundered formulas in Cycle 5 (ALKS 2.20).
+  const gateExcerpt = [
+    operativeOnly.trim().length >= 40 ? operativeOnly : "",
+    ...(item.materialBasketsThresholds ?? []),
+  ]
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, 2500);
+  const gateMoneyOk = excerptHasMoney(gateExcerpt.length >= 40 ? gateExcerpt : excerpt, parsed.thresholdValue);
   let gatePctOk: boolean | null = null;
-  if (pct != null) gatePctOk = excerptHasPct(gateExcerpt, pct);
+  if (pct != null) {
+    gatePctOk = excerptHasPct(gateExcerpt.length >= 40 ? gateExcerpt : excerpt, pct);
+  }
 
-  const { gates, unresolved, ownership } = evaluateEligibilityGates({
+  const { gates, unresolved, ownership, completeness } = evaluateEligibilityGates({
     item,
     excerpt: gateExcerpt,
     formulaType: parsed.formulaType,
@@ -470,6 +568,7 @@ export function activateSummaryItem(params: {
     unresolvedDefs: unresolvedDefs.length,
     crossRefs: (item.crossReferences ?? []).length,
     hasDollar,
+    nonPermission: isNonPermissionThreshold(item),
   });
 
   // Downgrade if token checks failed even when gates would pass.
@@ -479,8 +578,17 @@ export function activateSummaryItem(params: {
   }
 
   const executableEligible = finalReadiness === "EXECUTABLE_FORMULA_CANDIDATE";
-  // allChecksPassed means discovery+evidence checks — NOT permission to treat as executable.
-  // For backward compat with Cycle 3 scripts: allChecksPassed && EXECUTABLE for executable set.
+  // Counsel-compile requires operative completeness — WITH_GAPS / abbreviated never eligible.
+  const counselCompileEligible =
+    executableEligible &&
+    completeness.complete &&
+    parsed.modelingStatus === "MODELED" &&
+    HIGH_CONFIDENCE_MECHANICS.has(parsed.formulaType);
+  const promotionState = promotionStateFrom({
+    executableEligible,
+    counselCompileEligible,
+    readiness: finalReadiness,
+  });
   const allChecksPassed = tokenChecksOk;
 
   return {
@@ -498,11 +606,16 @@ export function activateSummaryItem(params: {
     eligibilityGates: gates,
     allChecksPassed,
     executableEligible,
+    counselCompileEligible,
+    promotionState,
+    completeness,
     certificationStatus: "NOT_CERTIFIED",
     unresolvedDependencies: unresolved,
     ownershipHints: ownership,
-    note: executableEligible
-      ? "EXECUTABLE formula candidate after eligibility gates — NOT certified; NOT counsel-accepted; NOT written to Permission."
-      : `Formula discovery retained as ${finalReadiness} — not an authoritative executable permission. Unresolved: ${unresolved.slice(0, 6).join(", ") || "n/a"}.`,
+    note: counselCompileEligible
+      ? "Counsel-compile-eligible (UNVERIFIED path only) — NOT certified; NOT written; completeness passed."
+      : executableEligible
+        ? "EXECUTABLE formula only — incomplete for counsel-compile (conditions/abbreviation/gaps). NOT a legally complete rule."
+        : `Formula discovery retained as ${finalReadiness} — not an authoritative permission. Unresolved: ${unresolved.slice(0, 6).join(", ") || "n/a"}.`,
   };
 }
