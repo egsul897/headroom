@@ -1,6 +1,7 @@
 {
   "mtn_regression": {
     "package": "mtn-2026-tenth-ar (PP001 freeze regression)",
+    "structural_nodes": 1998,
     "checks": {
       "section_10_4_prohibition_ref": true,
       "permitted_debt_definition": true,
@@ -13,9 +14,27 @@
       "lien_d_to_debt_l": true,
       "facility_deps_on_debt_l_unit": true,
       "false_executable": 0,
-      "capacity_outcome": "REFUSED_NO_VEP",
+      "verified_executable_units": 3,
+      "capacity_outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
       "paid_inference": false
-    }
+    },
+    "fixed_dollar_verified": [
+      {
+        "sourceRef": "def:Permitted Debt(n)",
+        "amountUsd": 100000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "def:Permitted Debt(o)",
+        "amountUsd": 50000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "def:Permitted Liens(p)",
+        "amountUsd": 250000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      }
+    ]
   },
   "mhk_holdout": {
     "package": "mhk-2026-credit-agreement (unseen holdout)",
@@ -46,8 +65,22 @@
       "cross_g_u": true
     },
     "false_executable": 0,
-    "capacity_outcome": "REFUSED_NO_VEP",
-    "structural_nodes": 0,
+    "verified_executable_units": 2,
+    "capacity_outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+    "structural_nodes": 910,
+    "structural_nodes_diagnosis": "Leading horizontal whitespace + EDGAR NNBSP between bare-decimal section number and title previously failed SECTION_PATTERNS; generalized regex now accepts [ \\t\\u00a0\\u202f]. Not a reporting bug \u2014 material structural representation was missing; now 910 nodes.",
+    "fixed_dollar_verified": [
+      {
+        "sourceRef": "7.01(i)",
+        "amountUsd": 100000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "7.03(f)",
+        "amountUsd": 700000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      }
+    ],
     "human_interventions": [
       {
         "kind": "DISCOVERY_MODE",
@@ -55,5 +88,29 @@
       }
     ],
     "unsupported_affirmative_permissions": 0
+  },
+  "metrics_separated": {
+    "A_clause_discovery_mhk": {
+      "tp": 35,
+      "fp": 0,
+      "fn": 0,
+      "note": "catalog markers only; sealed reference unchanged"
+    },
+    "B_legal_classification_fixed_dollar": {
+      "mtn_attempted": 3,
+      "mtn_verified_executable": 3,
+      "mhk_attempted": 2,
+      "mhk_verified_executable": 2,
+      "mhk_failed_fidelity": 0
+    },
+    "F_verified_executable_authority": {
+      "mtn": 3,
+      "mhk": 2
+    },
+    "G_production_authoritative_capacity": {
+      "mtn": "REFUSED",
+      "mhk": "REFUSED",
+      "note": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED"
+    }
   }
 }

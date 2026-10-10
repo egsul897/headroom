@@ -47,6 +47,12 @@ import {
   type VerifiedCapacityResult,
 } from "../verified-execution";
 import type { CovenantContextBundle } from "../compiler/context-retrieval/types";
+import {
+  compileFixedDollarBasket,
+  evaluateFixedDollarCapacity,
+  type FixedDollarCapacityEval,
+  type FixedDollarCompileResult,
+} from "../compiler/fixed-dollar-basket";
 
 export const OFFLINE_PACKAGE_COMPILE_VERSION = "offline-package-compile.v1";
 
@@ -104,7 +110,20 @@ export interface CompileUnitRepresentation {
   } | null;
   deterministicFactCount: number;
   localCompileStatus: string;
-  executableAuthority: "REFUSED";
+  /**
+   * Default REFUSED. Fixed-dollar vertical slice may set VERIFIED_EXECUTABLE
+   * only after independent fidelity + evaluator EXECUTED under stipulated gates.
+   * Production capacity remains separately refused.
+   */
+  executableAuthority: "REFUSED" | "VERIFIED_EXECUTABLE";
+  fixedDollarSlice: {
+    classification: string;
+    compileClass: string;
+    fidelityVerdict: string | null;
+    capacityOutcome: string | null;
+    availableAmountUsd: number | null;
+    productionRefusal: string | null;
+  } | null;
   provenance: {
     discoveryMethods: string[];
     evidenceSignals: string[];
@@ -134,10 +153,20 @@ export interface OfflinePackageCompileResult {
     context: { bundlesBuilt: number };
     coverageAudit: { findingCount: number; regionCount: number } | null;
     capacityHandoff: { attempted: boolean; outcome: string; detail: string };
+    fixedDollarVerticalSlice: {
+      attempted: number;
+      verifiedExecutable: number;
+      productionCapacityRefused: number;
+    };
   };
   exceptionCatalogs: ExceptionCatalogDiscovery[];
   candidates: DiscoveredCandidate[];
   units: CompileUnitRepresentation[];
+  fixedDollarResults: {
+    sourceRef: string;
+    compile: FixedDollarCompileResult;
+    evaluation: FixedDollarCapacityEval;
+  }[];
   humanInterventions: { kind: string; detail: string }[];
   summary: {
     supportedStructureUnits: number;
@@ -145,6 +174,7 @@ export interface OfflinePackageCompileResult {
     unsupportedUnits: number;
     unverifiedUnits: number;
     refusedExecutableUnits: number;
+    verifiedExecutableUnits: number;
     falseExecutableClassifications: number;
   };
 }
@@ -418,6 +448,7 @@ export async function compileFrozenDebtPackage(
 
   // --- per-candidate representation + local compile (deterministic) ---
   const units: CompileUnitRepresentation[] = [];
+  const fixedDollarResults: OfflinePackageCompileResult["fixedDollarResults"] = [];
   for (const candidate of candidates) {
     const bundle = bundles.get(candidate.discoveryId) ?? null;
     let operativeText = operativeSourceTextFor(candidate, index, operativeState);
@@ -478,7 +509,7 @@ export async function compileFrozenDebtPackage(
     });
 
     const depTexts = (bundle?.items ?? [])
-      .filter((i) => i.type === "DEFINITION" || i.type === "SECTION" || i.type === "DEFINITION_DEPENDENCY")
+      .filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY" || i.type === "CROSS_REFERENCE")
       .slice(0, 12)
       .map((i) => ({
         ref: i.normalizedRef,
@@ -536,6 +567,51 @@ export async function compileFrozenDebtPackage(
       }
     }
 
+    // Fixed-dollar vertical slice: attempt only on catalog clause candidates.
+    let executableAuthority: CompileUnitRepresentation["executableAuthority"] = "REFUSED";
+    let fixedDollarSlice: CompileUnitRepresentation["fixedDollarSlice"] = null;
+    const isCatalogClause =
+      /\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) &&
+      (candidate.normalizedSourceRef.startsWith("def:") || /^\d+\.\d+\(/i.test(candidate.normalizedSourceRef));
+    if (isCatalogClause) {
+      const fdCompile = compileFixedDollarBasket({
+        companyId: options.companyId,
+        instrumentKey,
+        sourceDocumentId: candidate.documentId,
+        candidateRef: candidate.discoveryId,
+        sourceSectionRef: candidate.normalizedSourceRef,
+        operativeSourceText: operativeText,
+        covenantFamily: candidate.families[0],
+        action: candidate.families.includes("LIENS") ? "CREATE_LIEN" : "INCUR_DEBT",
+      });
+      if (fdCompile.executableClass !== "UNSUPPORTED") {
+        const hypo = evaluateFixedDollarCapacity({
+          compile: fdCompile,
+          operativeSourceText: operativeText,
+          authorityMode: "CALLER_STIPULATED_HYPOTHETICAL",
+          asOf: asOfDate,
+        });
+        const prod = evaluateFixedDollarCapacity({
+          compile: fdCompile,
+          operativeSourceText: operativeText,
+          authorityMode: "PRODUCTION",
+          asOf: asOfDate,
+        });
+        fixedDollarResults.push({ sourceRef: candidate.normalizedSourceRef, compile: fdCompile, evaluation: hypo });
+        fixedDollarSlice = {
+          classification: fdCompile.classification.class,
+          compileClass: fdCompile.executableClass,
+          fidelityVerdict: hypo.fidelity.verdict,
+          capacityOutcome: hypo.capacity?.outcome ?? hypo.outcomeLabel,
+          availableAmountUsd: hypo.availableAmountUsd,
+          productionRefusal: prod.productionRefusal,
+        };
+        if (hypo.outcomeLabel === "VERIFIED_EXECUTABLE" && hypo.fidelity.verdict === "PASS") {
+          executableAuthority = "VERIFIED_EXECUTABLE";
+        }
+      }
+    }
+
     units.push({
       unitId: `unit:${candidate.discoveryId}`,
       discoveryId: candidate.discoveryId,
@@ -563,7 +639,8 @@ export async function compileFrozenDebtPackage(
         : null,
       deterministicFactCount: facts.facts.length,
       localCompileStatus: local.inference.status,
-      executableAuthority: "REFUSED",
+      executableAuthority,
+      fixedDollarSlice,
       provenance: {
         discoveryMethods: candidate.discoveryMethods,
         evidenceSignals: candidate.evidenceSignals,
@@ -572,40 +649,21 @@ export async function compileFrozenDebtPackage(
     });
   }
 
-  // --- capacity handoff: only verified supported units — none in deterministic mode ---
-  const verifiedExecutable = units.filter((u) => u.supportStatus === "SUPPORTED_STRUCTURE" && u.executableAuthority !== "REFUSED");
-  // All units refuse executable authority by design in this mode.
-  let capacityHandoff: OfflinePackageCompileResult["stages"]["capacityHandoff"] = {
-    attempted: false,
-    outcome: "SKIPPED_NO_VERIFIED_EXECUTABLE_UNITS",
-    detail: "Deterministic offline compile produces UNVERIFIED representations only; evaluateVerifiedCapacity not invoked with fabricated VEP",
-  };
+  const verifiedExecutableUnits = units.filter((u) => u.executableAuthority === "VERIFIED_EXECUTABLE");
+  const productionRefused = verifiedExecutableUnits.filter((u) => u.fixedDollarSlice?.productionRefusal).length;
 
-  if (verifiedExecutable.length > 0) {
-    // Defensive: should not happen in DETERMINISTIC_ONLY path.
-    const emptyAttempt: VerifiedCapacityResult = evaluateVerifiedCapacity({
-      package: {
-        companyId: options.companyId,
-        instrumentKey,
-        rules: [],
-        definitions: [],
-        sharedCapacities: [],
-        verifications: [],
-      },
-      inputs: { get: () => ({ status: "MISSING" }) } as never,
-      asOf: asOfDate,
-    });
-    capacityHandoff = {
-      attempted: true,
-      outcome: emptyAttempt.outcome,
-      detail: JSON.stringify(emptyAttempt.outcome === "REFUSED" ? emptyAttempt.refusals : { executed: true }),
-    };
-  } else {
-    // Explicit refuse path for missing financial/utilization — record probe.
+  let capacityHandoff: OfflinePackageCompileResult["stages"]["capacityHandoff"];
+  if (verifiedExecutableUnits.length === 0) {
     capacityHandoff = {
       attempted: true,
       outcome: "REFUSED_NO_VEP",
-      detail: "No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled.",
+      detail: "No verified IR units available; numerical capacity claims refused.",
+    };
+  } else {
+    capacityHandoff = {
+      attempted: true,
+      outcome: "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+      detail: `${verifiedExecutableUnits.length} fixed-dollar unit(s) verified executable under CALLER_STIPULATED_HYPOTHETICAL; production capacity refused for all (${productionRefused}) pending authenticated financial/utilization evidence.`,
     };
   }
 
@@ -615,7 +673,11 @@ export async function compileFrozenDebtPackage(
     unsupportedUnits: units.filter((u) => u.supportStatus === "UNSUPPORTED_SEMANTICS").length,
     unverifiedUnits: units.filter((u) => u.supportStatus === "UNVERIFIED").length,
     refusedExecutableUnits: units.filter((u) => u.executableAuthority === "REFUSED").length,
-    falseExecutableClassifications: units.filter((u) => u.executableAuthority !== "REFUSED").length,
+    verifiedExecutableUnits: verifiedExecutableUnits.length,
+    // False executable = claimed VERIFIED_EXECUTABLE without a passing fidelity slice.
+    falseExecutableClassifications: units.filter(
+      (u) => u.executableAuthority === "VERIFIED_EXECUTABLE" && u.fixedDollarSlice?.fidelityVerdict !== "PASS",
+    ).length,
   };
 
   return {
@@ -648,10 +710,16 @@ export async function compileFrozenDebtPackage(
       context: { bundlesBuilt: bundles.size },
       coverageAudit,
       capacityHandoff,
+      fixedDollarVerticalSlice: {
+        attempted: fixedDollarResults.length,
+        verifiedExecutable: verifiedExecutableUnits.length,
+        productionCapacityRefused: productionRefused,
+      },
     },
     exceptionCatalogs,
     candidates,
     units,
+    fixedDollarResults,
     humanInterventions,
     summary,
   };

@@ -58,8 +58,13 @@ describe("compileFrozenDebtPackage (issuer-agnostic entry point)", () => {
 
     expect(result.units.length).toBeGreaterThan(0);
     expect(result.summary.falseExecutableClassifications).toBe(0);
-    expect(result.units.every((u) => u.executableAuthority === "REFUSED")).toBe(true);
-    expect(result.stages.capacityHandoff.outcome).toMatch(/REFUSED|SKIPPED/);
+    // Fixed-dollar vertical slice may mark VERIFIED_EXECUTABLE for sole-cap baskets.
+    const verified = result.units.filter((u) => u.executableAuthority === "VERIFIED_EXECUTABLE");
+    for (const u of verified) {
+      expect(u.fixedDollarSlice?.fidelityVerdict).toBe("PASS");
+      expect(u.fixedDollarSlice?.productionRefusal).toMatch(/PRODUCTION_CAPACITY_REFUSED/);
+    }
+    expect(result.stages.capacityHandoff.outcome).toMatch(/REFUSED|VERTICAL_SLICE/);
 
     const blob = JSON.stringify(result.exceptionCatalogs);
     expect(blob).not.toMatch(/\b(MTN|Vail|CONMED|Mohawk|MHK|Chewy)\b/i);

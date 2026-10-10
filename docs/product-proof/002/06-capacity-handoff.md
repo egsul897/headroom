@@ -1,32 +1,28 @@
-# Phase 5 — Capacity handoff
+# Capacity handoff
 
-## Policy
+## Outcomes (post vertical slice)
 
-Only verified, supported units with non-refused executable authority may enter `evaluateVerifiedCapacity`.
-
-Deterministic offline compile sets every unit:
-
-```
-executableAuthority: "REFUSED"
-```
-
-## Observed outcomes
-
-| Package | Attempted | Outcome |
+| Package | Handoff outcome | Detail |
 |---|---|---|
-| MTN regression | yes | `REFUSED_NO_VEP` |
-| MHK holdout | yes | `REFUSED_NO_VEP` |
-| Synthetic Acme test | yes | refuse / skip path |
+| MTN | `VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED` | 3 fixed-dollar units verified under CALLER_STIPULATED_HYPOTHETICAL; production refused for all 3 |
+| MHK | `VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED` | 2 fixed-dollar units verified under CALLER_STIPULATED_HYPOTHETICAL; production refused for all 2 |
 
-Detail recorded in compile summaries:
+## Authority boundary
 
-> No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled.
+| Mode | Behavior |
+|---|---|
+| `CALLER_STIPULATED_HYPOTHETICAL` | Qualitative residuals stipulated; evaluator may EXECUTE; available amount = cap when gates true, else $0 |
+| `PRODUCTION` | Immediate refuse — no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate |
 
-## What was not done
+## Preserved gates
 
-- No fabricated VEP
-- No manufactured affirmative capacity number
-- No utilization binding from missing 10-K/period inputs for holdout
-- No Neon writes
+- No fabricated authenticated financial evidence
+- UNKNOWN utilization is not coerced to zero
+- Completeness certificate authenticity and trusted issuer requirements unchanged
+- Shared-capacity conservation unchanged
+- Exact selected-path identity unchanged
+- Prior `REFUSED_NO_VEP` path remains for packages with zero verified IR units
 
-This is a **safety success** for the handoff gate, not proof of numerical capacity.
+## Explicit non-claim
+
+Hypothetical / offline-pinned available amounts are **not** verified production capacity and must not be labeled as customer-facing capacity answers.

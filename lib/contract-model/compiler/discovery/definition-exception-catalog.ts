@@ -13,7 +13,7 @@
 import { createHash } from "node:crypto";
 import type { CovenantFamily } from "@prisma/client";
 import type { StructuralIndex } from "../structural-index";
-import type { DetectedDefinition } from "../types";
+import type { DetectedDefinition } from "../structural-definitions";
 import type { DiscoveredCandidate, DiscoveryRole } from "./types";
 import { DISCOVERY_PIPELINE_VERSION } from "./pipeline";
 

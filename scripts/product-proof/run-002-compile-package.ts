@@ -123,6 +123,7 @@ async function main() {
   });
   const wallMs = Date.now() - started;
 
+  const verifiedExecutableUnits = result.units.filter((u) => u.executableAuthority === "VERIFIED_EXECUTABLE");
   const summary = {
     wallMs,
     version: result.version,
@@ -144,6 +145,19 @@ async function main() {
       acc[u.supportStatus] = (acc[u.supportStatus] ?? 0) + 1;
       return acc;
     }, {}),
+    fixedDollarVerticalSlice: {
+      attempted: result.fixedDollarResults.length,
+      verifiedExecutable: verifiedExecutableUnits.length,
+      productionCapacityRefused: verifiedExecutableUnits.filter((u) => u.fixedDollarSlice?.productionRefusal).length,
+      units: verifiedExecutableUnits.map((u) => ({
+        sourceRef: u.sourceRef,
+        classification: u.fixedDollarSlice?.classification ?? null,
+        fidelityVerdict: u.fixedDollarSlice?.fidelityVerdict ?? null,
+        capacityOutcome: u.fixedDollarSlice?.capacityOutcome ?? null,
+        availableAmountUsd: u.fixedDollarSlice?.availableAmountUsd ?? null,
+        productionRefusal: u.fixedDollarSlice?.productionRefusal ?? null,
+      })),
+    },
   };
 
   fs.writeFileSync(path.join(outDir, "compile-summary.json"), JSON.stringify(summary, null, 2));
@@ -185,6 +199,27 @@ async function main() {
         normalizedSourceRef: c.normalizedSourceRef,
         description: c.description,
         evidenceSignals: c.evidenceSignals,
+      })),
+      null,
+      2,
+    ),
+  );
+  fs.writeFileSync(
+    path.join(outDir, "fixed-dollar-results.json"),
+    JSON.stringify(
+      result.fixedDollarResults.map((r) => ({
+        sourceRef: r.sourceRef,
+        executableClass: r.compile.executableClass,
+        classification: r.compile.classification.class,
+        amountUsd: r.compile.classification.amountUsd,
+        residuals: r.compile.classification.residuals,
+        fidelityVerdict: r.evaluation.fidelity.verdict,
+        outcomeLabel: r.evaluation.outcomeLabel,
+        availableAmountUsd: r.evaluation.availableAmountUsd,
+        productionRefusal: r.evaluation.productionRefusal,
+        capacityOutcome: r.evaluation.capacity?.outcome ?? null,
+        ruleId: r.compile.rule?.ruleId ?? null,
+        sufficiency: r.compile.rule?.sufficiency ?? null,
       })),
       null,
       2,

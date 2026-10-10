@@ -1,5 +1,5 @@
 {
-  "wallMs": 2242,
+  "wallMs": 5900,
   "version": "offline-package-compile.v1",
   "companyId": "product-proof-002-mtn",
   "packageKey": "mtn-2026-tenth-ar-credit-agreement",
@@ -7,7 +7,7 @@
   "paidInferenceUsed": false,
   "stages": {
     "structural": {
-      "nodeCount": 1595,
+      "nodeCount": 1998,
       "definitionCount": 252,
       "referenceCount": 1501
     },
@@ -37,33 +37,39 @@
       "effectCount": 0
     },
     "discovery": {
-      "passACount": 810,
-      "pipelineCandidateCount": 201,
+      "passACount": 958,
+      "pipelineCandidateCount": 360,
       "exceptionCatalogCount": 2,
       "exceptionClauseCount": 33,
       "prohibitionLinkCount": 5,
-      "totalCandidates": 212,
+      "totalCandidates": 351,
       "syntheticDiscovery": true
     },
     "context": {
-      "bundlesBuilt": 212
+      "bundlesBuilt": 351
     },
     "coverageAudit": {
-      "findingCount": 3173,
-      "regionCount": 884
+      "findingCount": 3280,
+      "regionCount": 1015
     },
     "capacityHandoff": {
       "attempted": true,
-      "outcome": "REFUSED_NO_VEP",
-      "detail": "No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled."
+      "outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+      "detail": "3 fixed-dollar unit(s) verified executable under CALLER_STIPULATED_HYPOTHETICAL; production capacity refused for all (3) pending authenticated financial/utilization evidence."
+    },
+    "fixedDollarVerticalSlice": {
+      "attempted": 3,
+      "verifiedExecutable": 3,
+      "productionCapacityRefused": 3
     }
   },
   "summary": {
     "supportedStructureUnits": 0,
-    "partialUnits": 212,
+    "partialUnits": 351,
     "unsupportedUnits": 0,
     "unverifiedUnits": 0,
-    "refusedExecutableUnits": 212,
+    "refusedExecutableUnits": 348,
+    "verifiedExecutableUnits": 3,
     "falseExecutableClassifications": 0
   },
   "humanInterventions": [
@@ -98,6 +104,37 @@
     }
   ],
   "unitSupportBreakdown": {
-    "PARTIAL": 212
+    "PARTIAL": 351
+  },
+  "fixedDollarVerticalSlice": {
+    "attempted": 3,
+    "verifiedExecutable": 3,
+    "productionCapacityRefused": 3,
+    "units": [
+      {
+        "sourceRef": "def:Permitted Debt(n)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 100000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      },
+      {
+        "sourceRef": "def:Permitted Debt(o)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 50000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      },
+      {
+        "sourceRef": "def:Permitted Liens(p)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 250000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      }
+    ]
   }
 }

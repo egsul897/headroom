@@ -1,5 +1,5 @@
 {
-  "wallMs": 155,
+  "wallMs": 6357,
   "version": "offline-package-compile.v1",
   "companyId": "product-proof-002-mhk-holdout",
   "packageKey": "mhk-2026-credit-agreement",
@@ -7,7 +7,7 @@
   "paidInferenceUsed": false,
   "stages": {
     "structural": {
-      "nodeCount": 0,
+      "nodeCount": 910,
       "definitionCount": 368,
       "referenceCount": 636
     },
@@ -25,33 +25,39 @@
       "effectCount": 0
     },
     "discovery": {
-      "passACount": 0,
-      "pipelineCandidateCount": 0,
+      "passACount": 392,
+      "pipelineCandidateCount": 118,
       "exceptionCatalogCount": 2,
       "exceptionClauseCount": 35,
       "prohibitionLinkCount": 0,
-      "totalCandidates": 37,
+      "totalCandidates": 142,
       "syntheticDiscovery": true
     },
     "context": {
-      "bundlesBuilt": 37
+      "bundlesBuilt": 142
     },
     "coverageAudit": {
-      "findingCount": 308,
-      "regionCount": 0
+      "findingCount": 3009,
+      "regionCount": 467
     },
     "capacityHandoff": {
       "attempted": true,
-      "outcome": "REFUSED_NO_VEP",
-      "detail": "No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled."
+      "outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+      "detail": "2 fixed-dollar unit(s) verified executable under CALLER_STIPULATED_HYPOTHETICAL; production capacity refused for all (2) pending authenticated financial/utilization evidence."
+    },
+    "fixedDollarVerticalSlice": {
+      "attempted": 2,
+      "verifiedExecutable": 2,
+      "productionCapacityRefused": 2
     }
   },
   "summary": {
     "supportedStructureUnits": 0,
-    "partialUnits": 37,
+    "partialUnits": 142,
     "unsupportedUnits": 0,
     "unverifiedUnits": 0,
-    "refusedExecutableUnits": 37,
+    "refusedExecutableUnits": 140,
+    "verifiedExecutableUnits": 2,
     "falseExecutableClassifications": 0
   },
   "humanInterventions": [
@@ -81,6 +87,29 @@
     }
   ],
   "unitSupportBreakdown": {
-    "PARTIAL": 37
+    "PARTIAL": 142
+  },
+  "fixedDollarVerticalSlice": {
+    "attempted": 2,
+    "verifiedExecutable": 2,
+    "productionCapacityRefused": 2,
+    "units": [
+      {
+        "sourceRef": "7.01(i)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 100000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      },
+      {
+        "sourceRef": "7.03(f)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 700000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      }
+    ]
   }
 }

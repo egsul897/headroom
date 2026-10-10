@@ -1,12 +1,22 @@
 # Remediation roadmap
 
-Ordered by leverage on closing GENERALIZED_COMPILATION_PROVEN:
+## Completed this continuation
 
-1. **Structural parser resilience for EDGAR unicode/heading styles** — unlock Pass A + coverage regions on MHK-like extracts (clears F003).
-2. **Authorized Pass B / definition resolution** — populate context bundles so catalog clauses can leave PARTIAL when dependencies resolve (F004).
-3. **Verified IR for difference-between / greater-of baskets** — only after definition graphs for Facility Amount / TCA are verified; keep refuse-closed until then (F001/F006).
-4. **Utilization + financial input binding** — required before any remaining-capacity claim (F002).
-5. **Candidate hygiene** — down-rank synthetic section-container Pass A noise; keep catalog clauses primary (F007).
-6. **Prohibition attribution** — harden nearest-heading selection further for multi-match windows (F005).
+1. Diagnose and fix MHK structural heading zero-out (generalized NNBSP/WS).
+2. Fixed-dollar basket vertical slice through existing IR architecture.
+3. Independent fidelity + adversarial refuse-closed tests.
+4. Wire slice into `compileFrozenDebtPackage` with production capacity refuse.
+5. Replay MTN + MHK; separate discovery vs executable metrics.
 
-Do not advance certification or claim PROVEN until verified executable units exist with independent VEP evidence and zero false affirmatives.
+## Recommended next bounded engineering task
+
+**Owner: primary engineering (PP002 follow-on, not a new product-proof cycle unless authorized)**
+
+Implement a second generalized family for **greater-of fixed-dollar vs % of Total Assets** (or facility-difference secured basket), with:
+
+1. Source-backed formula IR using existing expression kinds only
+2. Explicit refuse when Total Assets / Facility Amount inputs lack authenticated provenance
+3. Shared-capacity conservation tests for linked debt↔lien baskets (MHK 7.01(u)↔7.03(g); MTN Liens(d)↔Debt(l))
+4. No issuer hardcoding; replay MTN + MHK; keep production capacity refuse-closed
+
+Do **not** start an unrelated third product-proof cycle from this handoff.
