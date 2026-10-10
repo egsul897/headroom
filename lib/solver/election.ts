@@ -893,18 +893,28 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   const securedLienHeadroomByDebtId = new Map<string, LienHeadroom>();
 
   if (eligibilityContext.transaction.secured) {
-    const independentLienMembers = members.filter((m) => m.grantType === "LIEN");
+    // AUTOMATIC_LINKED_PERMISSION liens cover only their linked debt leg — they
+    // must not also inflate the independent coverage pool (that re-credits the
+    // same shared-constraint headroom to a sibling debt leg).
+    const autoLinkedLienIds = new Set<string>();
+    for (const d of debtMembers) {
+      for (const { permissionId } of automaticallyLinkedPermissions(graph, d.id)) {
+        autoLinkedLienIds.add(permissionId);
+      }
+    }
+    const independentLienMembers = members.filter((m) => m.grantType === "LIEN" && !autoLinkedLienIds.has(m.id));
     const metricsForLien = computeLeverageMetrics(financials);
     let independentCoveragePool = 0;
     let independentCoverageUnknown = false;
     const independentClearedIds: string[] = [];
-    // Remaining shared-constraint headroom available to independent liens in
-    // this election. Without this, two LIEN members naming the same $100
-    // SharedConstraint would each contribute min(lienCap, 100) and sum to
-    // $200 — a false-favorable double-count (CLEAR at $150 / maxCapacity 200).
-    // Seeded only from debt-side sharedConsumption captured before this loop
-    // (lien draws append to sharedConsumption for traceability and must not
-    // re-enter the initializer as "debt" usage).
+    // Remaining shared-constraint headroom available to lien coverage in this
+    // election (auto-lien draws + independent pool). Without election-wide
+    // conservation, two LIEN members naming the same $100 SharedConstraint
+    // would each contribute min(lienCap, 100) and sum to $200 — or an
+    // auto-lien would ignore the shared cap entirely (CLEAR at $150 /
+    // maxCapacity 200). Seeded only from debt-side sharedConsumption captured
+    // before this block (lien draws append to sharedConsumption for
+    // traceability and must not re-enter the initializer as "debt" usage).
     const debtSharedConsumedBeforeLiens = new Map<string, number>();
     for (const consumed of sharedConsumption) {
       debtSharedConsumedBeforeLiens.set(
@@ -913,6 +923,183 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
       );
     }
     const lienSharedRemaining = new Map<string, number>();
+
+    const resolveConstraintCap = (constraint: SharedConstraint, lien: Permission): number | null => {
+      if ("amount" in constraint.cap) {
+        return typeof constraint.cap.amount === "number" && Number.isFinite(constraint.cap.amount)
+          ? constraint.cap.amount
+          : null;
+      }
+      const constraintEval = evaluateProvision(
+        {
+          ...permissionAsProvision(lien),
+          formulaType: constraint.cap.formulaType,
+          thresholdValue: constraint.cap.thresholdValue,
+          params: constraint.cap.params,
+        },
+        financials,
+        metricsForLien,
+      );
+      return constraintEval.status === "modeled" &&
+        constraintEval.capacity != null &&
+        Number.isFinite(constraintEval.capacity)
+        ? constraintEval.capacity
+        : null;
+    };
+
+    const ensureLienSharedRemaining = (constraint: SharedConstraint, lien: Permission): number | null => {
+      const constraintCap = resolveConstraintCap(constraint, lien);
+      if (constraintCap == null) return null;
+      if (!lienSharedRemaining.has(constraint.id)) {
+        const headroom = Math.max(0, constraintCap - constraint.currentUsage);
+        const alreadyFromDebt = debtSharedConsumedBeforeLiens.get(constraint.id) ?? 0;
+        lienSharedRemaining.set(constraint.id, Math.max(0, headroom - alreadyFromDebt));
+      }
+      return lienSharedRemaining.get(constraint.id)!;
+    };
+
+    // Phase A — auto-lien shared-constraint consumption BEFORE independent pool
+    // build, so auto draws and independent liens jointly exhaust the same
+    // remaining headroom (no alternate double-count path).
+    const debtLegsForLien = legs.filter((l) => l.grantType === "DEBT_INCURRENCE");
+    for (const debtLeg of debtLegsForLien) {
+      const autoLienLegs = legs.filter(
+        (l) => l.grantType === "LIEN" && l.linkedFrom === debtLeg.permissionId,
+      );
+      if (autoLienLegs.length === 0) continue;
+
+      let autoFailed = false;
+      let autoUnknown = false;
+      let autoSharedHeadroom: number | undefined;
+
+      for (const al of autoLienLegs) {
+        const lienPerm = permissionsById.get(al.permissionId);
+        if (!lienPerm) {
+          autoUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: debtLeg.permissionId },
+            status: "UNKNOWN",
+            reasonCategory: "MISSING_ASSUMPTION",
+            detail: `Auto-linked lien ${al.permissionId} has no Permission row — coverage unproven.`,
+          });
+          continue;
+        }
+        const elig = evaluatePermissionEligibility(lienPerm, eligibilityContext);
+        for (const r of elig) {
+          if (!requirements.some((x) => x.class === r.class && x.scope.permissionId === r.scope.permissionId && x.detail === r.detail)) {
+            requirements.push(r);
+          }
+        }
+        if (elig.some((r) => r.status === "FAILED")) autoFailed = true;
+        if (elig.some((r) => r.status === "UNKNOWN")) autoUnknown = true;
+        if (autoFailed || autoUnknown) continue;
+
+        const matchedConstraints = constraintsFor(lienPerm.id);
+        for (const constraint of matchedConstraints) {
+          if (constraint.currentUsageAuthoritative !== true) {
+            autoUnknown = true;
+            requirements.push({
+              class: "LIEN_PERMISSION",
+              scope: { permissionId: debtLeg.permissionId },
+              status: "UNKNOWN",
+              reasonCategory: "EXTERNAL_INPUT",
+              detail:
+                `AUTOMATIC_LINKED_PERMISSION lien ${lienPerm.id} shares constraint ${constraint.id} with ` +
+                `non-authoritative utilization — cannot support a favorable secured conclusion.`,
+            });
+            break;
+          }
+          const sharedLeft = ensureLienSharedRemaining(constraint, lienPerm);
+          if (sharedLeft == null) {
+            autoUnknown = true;
+            requirements.push({
+              class: "LIEN_PERMISSION",
+              scope: { permissionId: debtLeg.permissionId },
+              status: "UNKNOWN",
+              reasonCategory: "EXTERNAL_INPUT",
+              detail:
+                `AUTOMATIC_LINKED_PERMISSION lien ${lienPerm.id} shares constraint ${constraint.id} whose cap ` +
+                `is not determinable — fail closed.`,
+            });
+            break;
+          }
+          autoSharedHeadroom =
+            autoSharedHeadroom === undefined ? sharedLeft : Math.min(autoSharedHeadroom, sharedLeft);
+          if (debtLeg.amountAllocated > EPS && sharedLeft + EPS < debtLeg.amountAllocated) {
+            autoFailed = true;
+            requirements.push({
+              class: "SHARED_CAP",
+              scope: { permissionId: lienPerm.id, constraintId: constraint.id },
+              status: "FAILED",
+              detail:
+                `AUTOMATIC_LINKED_PERMISSION lien ${lienPerm.id} allocates ${debtLeg.amountAllocated} against ` +
+                `shared constraint ${constraint.id} with only ${sharedLeft} remaining — shared-capacity conservation.`,
+            });
+            break;
+          }
+          if (debtLeg.amountAllocated > EPS) {
+            const before = sharedLeft;
+            const after = Math.max(0, before - debtLeg.amountAllocated);
+            lienSharedRemaining.set(constraint.id, after);
+            sharedConsumption.push({
+              constraintId: constraint.id,
+              amountConsumed: debtLeg.amountAllocated,
+              headroomBefore: before,
+              headroomAfter: after,
+            });
+            requirements.push({
+              class: "SHARED_CAP",
+              scope: { permissionId: lienPerm.id, constraintId: constraint.id },
+              status: "SATISFIED",
+              detail:
+                `AUTOMATIC_LINKED_PERMISSION lien ${lienPerm.id} consumes ${debtLeg.amountAllocated} against ` +
+                `shared constraint ${constraint.id} (election-wide conservation; remaining ${after}).`,
+            });
+          }
+        }
+      }
+
+      if (autoFailed) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: "FAILED",
+          detail:
+            `Secured debt leg ${debtLeg.permissionId} has an automatic linked lien that fails eligibility ` +
+            `or shared-capacity conservation — auto-lien presence is not coverage.`,
+        });
+        securedLienHeadroomByDebtId.set(debtLeg.permissionId, { kind: "none" });
+        continue;
+      }
+      if (autoUnknown) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: "UNKNOWN",
+          reasonCategory: "LEGAL_JUDGMENT",
+          detail:
+            `Secured debt leg ${debtLeg.permissionId}: AUTOMATIC_LINKED_PERMISSION lien has unresolved ` +
+            `eligibility or non-authoritative shared utilization — fail closed, not affirmative secured capacity.`,
+        });
+        securedLienHeadroomByDebtId.set(debtLeg.permissionId, { kind: "unknown" });
+        continue;
+      }
+      securedLienHeadroomByDebtId.set(
+        debtLeg.permissionId,
+        autoSharedHeadroom !== undefined ? { kind: "capped", amount: autoSharedHeadroom } : { kind: "unbounded" },
+      );
+      if (debtLeg.amountAllocated > EPS) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: "SATISFIED",
+          detail:
+            `Secured debt leg ${debtLeg.permissionId} covered by AUTOMATIC_LINKED_PERMISSION lien(s) ` +
+            `[${autoLienLegs.map((l) => l.permissionId).join(", ")}] for allocated ${debtLeg.amountAllocated}.`,
+        });
+      }
+    }
 
     for (const lien of independentLienMembers) {
       // Re-check eligibility even for election members (member pass already ran;
@@ -1021,31 +1208,8 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
           skipLien = true;
           break;
         }
-        let constraintCap: number | null;
-        if ("amount" in constraint.cap) {
-          constraintCap =
-            typeof constraint.cap.amount === "number" && Number.isFinite(constraint.cap.amount)
-              ? constraint.cap.amount
-              : null;
-        } else {
-          const constraintEval = evaluateProvision(
-            {
-              ...permissionAsProvision(lien),
-              formulaType: constraint.cap.formulaType,
-              thresholdValue: constraint.cap.thresholdValue,
-              params: constraint.cap.params,
-            },
-            financials,
-            metricsForLien,
-          );
-          constraintCap =
-            constraintEval.status === "modeled" &&
-            constraintEval.capacity != null &&
-            Number.isFinite(constraintEval.capacity)
-              ? constraintEval.capacity
-              : null;
-        }
-        if (constraintCap == null) {
+        const sharedLeft = ensureLienSharedRemaining(constraint, lien);
+        if (sharedLeft == null) {
           independentCoverageUnknown = true;
           requirements.push({
             class: "LIEN_PERMISSION",
@@ -1059,12 +1223,6 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
           skipLien = true;
           break;
         }
-        const headroom = Math.max(0, constraintCap - constraint.currentUsage);
-        if (!lienSharedRemaining.has(constraint.id)) {
-          const alreadyFromDebt = debtSharedConsumedBeforeLiens.get(constraint.id) ?? 0;
-          lienSharedRemaining.set(constraint.id, Math.max(0, headroom - alreadyFromDebt));
-        }
-        const sharedLeft = lienSharedRemaining.get(constraint.id)!;
         cap = Math.min(cap, sharedLeft);
       }
       if (skipLien) continue;
@@ -1096,76 +1254,10 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     // Election-wide independent pool also seeds amount-independent headroom.
     const independentPoolAtStart = independentCoveragePool;
 
-    for (const debtLeg of legs.filter((l) => l.grantType === "DEBT_INCURRENCE")) {
-      const autoLienLegs = legs.filter(
-        (l) => l.grantType === "LIEN" && l.linkedFrom === debtLeg.permissionId,
-      );
-
-      if (autoLienLegs.length > 0) {
-        let autoFailed = false;
-        let autoUnknown = false;
-        for (const al of autoLienLegs) {
-          const lienPerm = permissionsById.get(al.permissionId);
-          if (!lienPerm) {
-            autoUnknown = true;
-            requirements.push({
-              class: "LIEN_PERMISSION",
-              scope: { permissionId: debtLeg.permissionId },
-              status: "UNKNOWN",
-              reasonCategory: "MISSING_ASSUMPTION",
-              detail: `Auto-linked lien ${al.permissionId} has no Permission row — coverage unproven.`,
-            });
-            continue;
-          }
-          // Auto-liens are often not election members — evaluate eligibility now.
-          const elig = evaluatePermissionEligibility(lienPerm, eligibilityContext);
-          for (const r of elig) {
-            if (!requirements.some((x) => x.class === r.class && x.scope.permissionId === r.scope.permissionId && x.detail === r.detail)) {
-              requirements.push(r);
-            }
-          }
-          if (elig.some((r) => r.status === "FAILED")) autoFailed = true;
-          if (elig.some((r) => r.status === "UNKNOWN")) autoUnknown = true;
-        }
-        if (autoFailed) {
-          requirements.push({
-            class: "LIEN_PERMISSION",
-            scope: { permissionId: debtLeg.permissionId },
-            status: "FAILED",
-            detail:
-              `Secured debt leg ${debtLeg.permissionId} has an automatic linked lien that fails eligibility ` +
-              `(entity scope, security scope, or other condition) — auto-lien presence is not coverage.`,
-          });
-          securedLienHeadroomByDebtId.set(debtLeg.permissionId, { kind: "none" });
-          continue;
-        }
-        if (autoUnknown) {
-          requirements.push({
-            class: "LIEN_PERMISSION",
-            scope: { permissionId: debtLeg.permissionId },
-            status: "UNKNOWN",
-            reasonCategory: "LEGAL_JUDGMENT",
-            detail:
-              `Secured debt leg ${debtLeg.permissionId}: AUTOMATIC_LINKED_PERMISSION lien has unresolved ` +
-              `eligibility — fail closed, not affirmative secured capacity.`,
-          });
-          securedLienHeadroomByDebtId.set(debtLeg.permissionId, { kind: "unknown" });
-          continue;
-        }
-        // Eligible auto-lien: parasitic / unbounded for maxCapacity; SATISFIED only for positive allocation.
-        securedLienHeadroomByDebtId.set(debtLeg.permissionId, { kind: "unbounded" });
-        if (debtLeg.amountAllocated > EPS) {
-          requirements.push({
-            class: "LIEN_PERMISSION",
-            scope: { permissionId: debtLeg.permissionId },
-            status: "SATISFIED",
-            detail:
-              `Secured debt leg ${debtLeg.permissionId} covered by AUTOMATIC_LINKED_PERMISSION lien(s) ` +
-              `[${autoLienLegs.map((l) => l.permissionId).join(", ")}] for allocated ${debtLeg.amountAllocated}.`,
-          });
-        }
-        continue;
-      }
+    for (const debtLeg of debtLegsForLien) {
+      // Phase A already resolved AUTOMATIC_LINKED_PERMISSION legs (including
+      // shared-constraint conservation). Do not re-credit them via the pool.
+      if (securedLienHeadroomByDebtId.has(debtLeg.permissionId)) continue;
 
       // No auto-lien for this leg — independent LIEN pool must cover it.
       // Every secured debt leg needs a lien path, even at $0 allocation: a

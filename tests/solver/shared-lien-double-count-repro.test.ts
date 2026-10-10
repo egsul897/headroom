@@ -453,6 +453,192 @@ describe("HIGH: shared-constraint double-count across two independent liens", ()
     expect(b.max).toBe(a.max);
   });
 
+  it("AUTOMATIC_LINKED_PERMISSION lien on $100 shared cannot CLEAR $150", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const autoLien = permission("auto-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const shared: SharedConstraint = {
+      id: "sc-lien-pool",
+      companyId: "co-1",
+      name: "Single $100 shared lien pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "auto-lien" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["auto-lien", autoLien],
+      ]),
+      graph: buildPermissionGraph(
+        [debt, autoLien],
+        [rel({ fromPermissionId: "debt", toPermissionId: "auto-lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" })],
+      ),
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, amount: 150, secured: true },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+    expect(evalResult.maxCapacity === undefined || evalResult.maxCapacity <= 100 + 1e-6).toBe(true);
+  });
+
+  it("auto-lien + sibling independent lien cannot re-credit the same $100 shared pool", () => {
+    const debtA = permission("debt-a", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const debtB = permission("debt-b", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const autoLien = permission("auto-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const shared: SharedConstraint = {
+      id: "sc",
+      companyId: "co-1",
+      name: "pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "auto-lien" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt-a", "debt-b", "auto-lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt-a", debtA],
+        ["debt-b", debtB],
+        ["auto-lien", autoLien],
+      ]),
+      graph: buildPermissionGraph(
+        [debtA, debtB, autoLien],
+        [
+          rel({ fromPermissionId: "debt-a", toPermissionId: "auto-lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" }),
+          rel({ fromPermissionId: "debt-b", toPermissionId: "auto-lien", relationshipType: "CONCURRENT_DISREGARDED" }),
+        ],
+      ),
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, amount: 150, secured: true },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    // Independent: auto covers debt-a only; auto-lien must not also fill debt-b via independent pool.
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+  });
+
+  it("multi-leg: two $80 debts against $100 shared independent liens cannot CLEAR $160", () => {
+    const debtA = permission("debt-a", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const debtB = permission("debt-b", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const shared: SharedConstraint = {
+      id: "sc",
+      companyId: "co-1",
+      name: "pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt-a", "debt-b", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt-a", debtA],
+        ["debt-b", debtB],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph: buildPermissionGraph([debtA, debtB, lienA, lienB], []),
+      financials: FIN,
+      requestedAmount: 160,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, amount: 160, secured: true },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+    expect(evalResult.maxCapacity === undefined || evalResult.maxCapacity <= 100 + 1e-6).toBe(true);
+  });
+
+  it("wrong collateral on shared-lien path cannot CLEAR via alternate eligibility", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 50 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const shared: SharedConstraint = {
+      id: "sc",
+      companyId: "co-1",
+      name: "pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "VERIFIED_ZERO",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph: buildPermissionGraph([debt, lienA, lienB], []),
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: {
+          ...baseTransaction,
+          amount: 50,
+          secured: true,
+          collateralPools: [{ id: "pool-a", name: "Pool A" }],
+          requestedLienPriority: [{ poolId: "pool-a", priorityTier: "FIRST" }],
+        },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      // Both liens point at the wrong pool — must not CLEAR.
+      collateralScopes: [
+        { permissionId: "lien-a", collateralPoolId: "pool-other", priorityTier: "FIRST" },
+        { permissionId: "lien-b", collateralPoolId: "pool-other", priorityTier: "FIRST" },
+      ],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+  });
+
   it("runSolver EXACT maxCapacity also ≤ $100 shared constraint", () => {
     const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
     const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
