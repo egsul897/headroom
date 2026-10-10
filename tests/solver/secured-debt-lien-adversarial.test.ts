@@ -99,6 +99,7 @@ function syntheticPackage(): CompanyCovenantData {
 
 import { buildPermissionGraph } from "../../lib/solver/graph";
 import { evaluateElection, buildPermissionPaths } from "../../lib/solver/election";
+import { runSolver } from "../../lib/solver/service";
 import type {
   ActivationState,
   Permission,
@@ -462,5 +463,353 @@ describe("secured debt package binding (adversarial synthetic)", () => {
     expect(rem.packageAuthoritative?.label.startsWith("MODELED")).toBe(true);
     expect(rem.packageAuthoritative?.solverAuthority).toBe("NON_AUTHORITATIVE_DIAGNOSTIC");
     expect(rem.remainingCapacity).toBeCloseTo(3941, 5);
+  });
+});
+
+describe("P0 shared lien constraint conservation (reference-calculated)", () => {
+  /**
+   * Two distinct independent LIEN permissions naming the same SharedConstraint
+   * must not each contribute the full remaining headroom to the coverage pool.
+   * Reference arithmetic is authored here independently of engine output.
+   */
+  function sharedLienFixture(args: {
+    constraintCap: number;
+    currentUsage: number;
+    lienAThreshold: number;
+    lienBThreshold: number;
+    debtThreshold: number;
+    requestedAmount: number;
+    authoritative?: boolean;
+  }) {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: args.debtThreshold });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: args.lienAThreshold });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: args.lienBThreshold });
+    const shared: SharedConstraint = {
+      id: "shared-lien-constraint",
+      companyId: "co-1",
+      name: "Shared lien authorization pool",
+      cap: { amount: args.constraintCap },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: args.currentUsage,
+      currentUsageAuthoritative: args.authoritative !== false,
+      currentUsageStatus: args.authoritative === false ? "ATTRIBUTED_INCOMPLETE" : "COMPUTED",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const relationships = [
+      rel({ fromPermissionId: "debt", toPermissionId: "lien-a", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "lien-a", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+    ];
+    const graph = buildPermissionGraph([debt, lienA, lienB], relationships);
+    return { debt, lienA, lienB, shared, relationships, graph };
+  }
+
+  it("two liens on one $100m constraint cannot CLEAR a $150m secured request", () => {
+    // Independent reference: shared headroom = 100 − 0 = 100.
+    // Each lien's standalone formula capacity is 500, but both draw the SAME
+    // constraint — conserved pool = min(500,100) + min(500, remaining) = 100.
+    // Request 150 > 100 → BLOCKED. Amount-independent max ≤ 100 (and ≤ debt 500).
+    const constraintCap = 100;
+    const currentUsage = 0;
+    const refHeadroom = constraintCap - currentUsage;
+    expect(refHeadroom).toBe(100);
+    const conservedPool = Math.min(500, refHeadroom); // first lien takes all; second gets 0
+    expect(conservedPool).toBe(100);
+    expect(150).toBeGreaterThan(conservedPool);
+
+    const { debt, lienA, lienB, shared, graph } = sharedLienFixture({
+      constraintCap,
+      currentUsage,
+      lienAThreshold: 500,
+      lienBThreshold: 500,
+      debtThreshold: 500,
+      requestedAmount: 150,
+    });
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 150 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(evalResult.maxCapacity).toBeDefined();
+    expect(evalResult.maxCapacity!).toBeLessThanOrEqual(conservedPool + 1e-9);
+    expect(evalResult.maxCapacity!).toBeCloseTo(Math.min(500, conservedPool), 6);
+  });
+
+  it("solver EXACT maxCapacity respects conserved shared lien headroom (not 2×)", () => {
+    const constraintCap = 100;
+    const refHeadroom = constraintCap - 0;
+    const { debt, lienA, lienB, shared, relationships } = sharedLienFixture({
+      constraintCap,
+      currentUsage: 0,
+      lienAThreshold: 500,
+      lienBThreshold: 500,
+      debtThreshold: 500,
+      requestedAmount: 0,
+    });
+    const result = runSolver({
+      asOfDate: emptyActivationState.asOfDate,
+      financials: FIN,
+      eligiblePermissions: [debt, lienA, lienB],
+      relationships,
+      sharedConstraints: [shared],
+      collateralScopes: [],
+      entityClasses: ["BORROWER"],
+      ruleActivationConditions: [],
+      activationState: emptyActivationState,
+      transaction: { ...baseTransaction, amount: 0, secured: true },
+    });
+    expect(result.overall.maximumCapacity?.kind).toBe("EXACT");
+    if (result.overall.maximumCapacity?.kind === "EXACT") {
+      expect(result.overall.maximumCapacity.amount).toBeLessThanOrEqual(refHeadroom + 1e-9);
+      expect(result.overall.maximumCapacity.amount).toBeGreaterThan(1e-9);
+      // Must not invent 200 from double-counting the $100 pool.
+      expect(result.overall.maximumCapacity.amount).toBeLessThan(150);
+    }
+  });
+
+  it("genuinely independent liens (no shared constraint) remain additive", () => {
+    // Reference: lienA=80 + lienB=70 = 150; debt=200; request=150 → CLEAR; max ≤ min(200,150)=150.
+    const refPool = 80 + 70;
+    expect(refPool).toBe(150);
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 70 });
+    const relationships = [
+      rel({ fromPermissionId: "debt", toPermissionId: "lien-a", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "lien-a", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+    ];
+    const graph = buildPermissionGraph([debt, lienA, lienB], relationships);
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 150 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("CLEAR");
+    expect(evalResult.maxCapacity!).toBeCloseTo(Math.min(200, refPool), 6);
+  });
+
+  it("shared constraint with existing utilization conserves remaining only", () => {
+    // Reference: cap 100, usage 40 → headroom 60. Two liens cannot invent 120.
+    // Request 70 > 60 → BLOCKED; max ≤ 60.
+    const constraintCap = 100;
+    const currentUsage = 40;
+    const refHeadroom = constraintCap - currentUsage;
+    expect(refHeadroom).toBe(60);
+    expect(70).toBeGreaterThan(refHeadroom);
+
+    const { debt, lienA, lienB, shared, graph } = sharedLienFixture({
+      constraintCap,
+      currentUsage,
+      lienAThreshold: 200,
+      lienBThreshold: 200,
+      debtThreshold: 200,
+      requestedAmount: 70,
+    });
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 70,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 70 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(evalResult.maxCapacity!).toBeLessThanOrEqual(refHeadroom + 1e-9);
+  });
+
+  it("uneven lien standalones under one constraint: pool = min(sum standalones, headroom)", () => {
+    // Reference: lienA=30, lienB=200, shared headroom=100 → conserved = 30 + min(200,70) = 100.
+    // Request 90 → CLEAR; request 110 → BLOCKED; max ≤ 100.
+    const refConserved = 30 + Math.min(200, 100 - 30);
+    expect(refConserved).toBe(100);
+
+    const { debt, lienA, lienB, shared, graph } = sharedLienFixture({
+      constraintCap: 100,
+      currentUsage: 0,
+      lienAThreshold: 30,
+      lienBThreshold: 200,
+      debtThreshold: 300,
+      requestedAmount: 90,
+    });
+    const at90 = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 90,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 90 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([at90])[0]!.status).toBe("CLEAR");
+    expect(at90.maxCapacity!).toBeCloseTo(Math.min(300, refConserved), 6);
+
+    const at110 = evaluateElection({
+      election: { id: "e2", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 110,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 110 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([at110])[0]!.status).toBe("BLOCKED");
+  });
+
+  it("non-authoritative shared utilization fails closed (not double-count invent)", () => {
+    const { debt, lienA, lienB, shared, graph } = sharedLienFixture({
+      constraintCap: 100,
+      currentUsage: 0,
+      lienAThreshold: 500,
+      lienBThreshold: 500,
+      debtThreshold: 500,
+      requestedAmount: 50,
+      authoritative: false,
+    });
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 50 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+  });
+
+  it("multi-leg debt allocation cannot exceed conserved shared lien pool", () => {
+    // Two debt legs (FIXED 80 + FIXED 80) sharing election with two liens on one $100 pool.
+    // Reference conserved lien = 100; total debt request 150 → BLOCKED (lien shortfall).
+    const refLien = 100;
+    const debtA = permission("debt-a", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const debtB = permission("debt-b", { formulaType: "FLAT_AMOUNT", thresholdValue: 80 });
+    const lienA = permission("lien-a", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
+    const lienB = permission("lien-b", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
+    const shared: SharedConstraint = {
+      id: "shared-lien-multi",
+      companyId: "co-1",
+      name: "Shared",
+      cap: { amount: refLien },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien-a" }, { permissionId: "lien-b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "COMPUTED",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const relationships = [
+      rel({ fromPermissionId: "debt-a", toPermissionId: "debt-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt-a", toPermissionId: "lien-a", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt-a", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt-b", toPermissionId: "lien-a", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "debt-b", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+      rel({ fromPermissionId: "lien-a", toPermissionId: "lien-b", relationshipType: "CONCURRENT_DISREGARDED" }),
+    ];
+    const graph = buildPermissionGraph([debtA, debtB, lienA, lienB], relationships);
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt-a", "debt-b", "lien-a", "lien-b"], rationale: "" },
+      permissionsById: new Map([
+        ["debt-a", debtA],
+        ["debt-b", debtB],
+        ["lien-a", lienA],
+        ["lien-b", lienB],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 150,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 150 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(evalResult.maxCapacity!).toBeLessThanOrEqual(refLien + 1e-9);
   });
 });
