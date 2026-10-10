@@ -220,7 +220,7 @@
 - Started from #250 `ac0ff925` (Stages 2–5 on main `7f1dd3a2`)
 - Absorbed #231 solver debt+lien + packageAuthoritative; preserved #237 util UNKNOWN fail-closed
 - #251 sequential superseded (overlap with #247); LedgerWriteResult typing retained
-- PR #253 `cursor/canonical-integrated-product-10ff` tip `ecae807e01751b01f543fad1e60af4be42c82823`
+- PR #253 `cursor/canonical-integrated-product-10ff` tip `abe093659a893501112a8c2cd2d02ed27ae22b54`
 - Local: tsc PASS · phase3 481/481 · core 283+cycle6 17 · probe NOT_SATISFIED
 - Neon-dependent suites require CI (no unauthorized Neon writes locally)
 - Verdict pending CI green on tip → INTEGRATED_PRODUCT_READY_FOR_HUMAN_REVIEW
