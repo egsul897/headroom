@@ -54,7 +54,7 @@
 
 ## Operative authority
 
-- **Wrong-document production promotion diagnostic:** true — Agent #7 marks doc-a provisions  / bundle  while restatement authorities for doc-a/doc-b remain  and sealed expected operative is doc-b. Capacity-layer AVAILABLE still refused (false favorables 0/12). Independent doc-b promotion probe: .
+- **Wrong-document production promotion diagnostic:** true — Agent #7 marks doc-a provisions `CONFIRMED_OPERATIVE` / bundle `allProvisionsProductionActive=true` while restatement authorities for doc-a/doc-b remain `REVIEW_REQUIRED` and sealed expected operative is doc-b. Capacity-layer AVAILABLE still refused (false favorables 0/12). Independent doc-b promotion probe: `PRODUCTION_AUTHORITY_REFUSED`.
 
 
 - Selected operative document: `null`
