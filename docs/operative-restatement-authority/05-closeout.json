@@ -9,11 +9,12 @@
   "reconciledDocsTipSha": "dee2545ddb149983a39d961a2a862074dc2891b8",
   "agent6MergeCommitSha": "3ad64aa220ab489cfe0eb609a91b55fad442e8f1",
   "retrievalBindingCommitSha": "0dcb4a1766f83b7d83537d87c098b176096d4109",
+  "lastFullyGreenTipSha": "0da545027365db571c4e7c51352424a167f3c14f",
   "tests": {
     "command": "npx vitest run tests/operative-restatement-authority/ tests/contract-model/package-graph-pipeline.test.ts tests/contract-model/package-graph-real-evidence.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts tests/contract-model/offline-package-compile tests/contract-model/context-retrieval-body-anchor.test.ts tests/contract-model/context-retrieval-recursive-closure.test.ts",
     "passed": 91,
     "failed": 0,
-    "tipShaAtRun": "0dcb4a1766f83b7d83537d87c098b176096d4109"
+    "tipShaAtRun": "f87470b0853ec340d6a087cc291851c1e498712b"
   },
   "guardrails": [
     "NO_PACKAGE_GRAPH_EDGE_MUTATION",
@@ -24,9 +25,9 @@
     "NO_SILENT_PROVISIONAL_IDENTITY_CONSOLIDATION",
     "NO_PRODUCTION_AUTHORITY_FROM_CAVEATED_RESTATEMENT"
   ],
-  "endingTipSha": "201507de26b333e32f19fab4126ce5b73e055c99",
-  "exactTipCi": "PENDING_POST_PUSH",
-  "ciNote": "Local tip regressions 91/91 + tsc green on f87470b0 (code-equivalent tip; docs evidence at 201507de26b333e32f19fab4126ce5b73e055c99). Awaiting GitHub CI on 201507de26b333e32f19fab4126ce5b73e055c99.",
+  "endingTipSha": "0da545027365db571c4e7c51352424a167f3c14f",
+  "exactTipCi": "GREEN",
+  "ciNote": "All checks green on tip 0da54502 (certified path SUCCESS + Vercel SUCCESS). Local tip regressions 91/91 + tsc clean.",
   "integrationCommitSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
   "headroom6Pr": "https://github.com/egsul897/headroom/pull/287",
   "legalAuthorityVerdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
@@ -36,11 +37,10 @@
   "cpSatisfactionAsserted": false,
   "remainingBlockers": [
     "Human approval / branch-protection merge required (no self-merge)",
-    "Package-graph RESTATES remains REVIEW_REQUIRED \u2014 provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
-    "CP satisfaction NOT_INDEPENDENTLY_PROVEN \u2014 cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
+    "Package-graph RESTATES remains REVIEW_REQUIRED — provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
+    "CP satisfaction NOT_INDEPENDENTLY_PROVEN — cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
     "Production capacity activation remains refused (financial/utilization gates separate)"
   ],
-  "retrievalBindingTipSha": "1d868a39e8cd3c15fefbfd3ebfbad12fd9695a1b",
-  "note": "endingTipSha is branch tip before this metadata alignment commit when applicable; verify with git rev-parse origin/cursor/operative-restatement-authority-2670. Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId.",
+  "note": "lastFullyGreenTipSha is the CI-green tip before this metadata commit. Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId.",
   "localTipRegressionEvidence": "docs/operative-restatement-authority/07-tip-regression-evidence.txt"
 }
