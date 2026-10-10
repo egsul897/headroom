@@ -3,8 +3,8 @@
 ```
 PHASE_NAME: P0_INVENTORY_AND_P1_LEGAL_PLUS_FOUNDATION
 STARTING_MAIN_SHA: 4f1a0b81207364373d9a4cb9fe515d4a1a002e56
-ENDING_SHA: (see git after commit)
-PR_URL: (filled after PR open)
+ENDING_SHA: 14f7787cc6c5742644b58baffa06e3f838b58f6f
+PR_URL: https://github.com/egsul897/headroom/pull/294
 SCHEMA_MODELS_ADDED:
   - OperativeAuthoritySnapshot
   - ContextRetrievalManifest
@@ -32,24 +32,27 @@ WRITE_PATHS_IMPLEMENTED:
   - lib/persistence/simulation.ts
   - lib/persistence/audit.ts
   - lib/persistence/invalidation.ts
+  - lib/persistence/product-bridge.ts
 READ_PATHS_IMPLEMENTED:
   - matching getters in the same modules + lib/persistence/index.ts
-RESTART_DURABILITY_RESULTS: exercised via fresh PrismaClient in acceptance suite
-HISTORICAL_REPLAY_RESULTS: operative supersession history + ledger event replay covered
-TENANT_ISOLATION_RESULTS: cross-tenant read/write refused
-INVALIDATION_RESULTS: capacity calc marked STALE on source change
-TEST_COUNTS: (filled after vitest)
-CI_STATUS: (after PR)
+RESTART_DURABILITY_RESULTS: PASS — fresh PrismaClient reload of operative authority + audit events
+HISTORICAL_REPLAY_RESULTS: PASS — operative supersession history + ledger USAGE_APPENDED/SUPERSEDED replay
+TENANT_ISOLATION_RESULTS: PASS — cross-tenant read/write refused (TenantIsolationError)
+INVALIDATION_RESULTS: PASS — capacity calc marked STALE; latest authorized getter returns null
+TEST_COUNTS: 16 passed / 0 failed / 0 skipped (tests/persistence/)
+CI_STATUS: pending on PR #294
 DATA_LOSS_RISK: NONE (additive migration, zero backfill)
 PRODUCTION_DB_TOUCHED: NO
+DATABASE_IDENTITY: disposable local Postgres via createEphemeralDatabase (headroom_test_*); Neon production host not written
 REMAINING_PERSISTENCE_GAPS:
-  - Position/Ask/Simulate product wiring (P5)
+  - Position/Ask/Simulate deep product wiring (P5)
   - Shared-capacity IR in SemanticTruthRecord
   - Durable IdP membership (depends on #282)
   - Semantic precedent Neon store
   - Full PackageGraphResult single-row archive (optional)
 NEXT_PHASE_DEPENDENCIES:
-  - P5 application integration
+  - P5 application integration against product-bridge helpers
   - Absorb #293 product surfaces when merged
 MERGE_DISPOSITION: DO_NOT_SELF_MERGE — human review required
+VERDICT: NEON_FIRST_PERSISTENCE_ARCHITECTURE_VERIFIED (foundation scope; gaps listed)
 ```
