@@ -13,7 +13,7 @@ Structural remediations validated under Gates 1–4. Additive port onto canonica
 | Audited source HEAD (#255) | `ded25fdc943cca6d23bb934e14f2776ac684e607` |
 | Pre-remediation main base | `7f1dd3a202b026b9a862ef727480a1a9f284523a` |
 | Typecheck fix (CI green) | `a8dc036261c11228d218bdeef6bfb059e83bd97e` |
-| Acceptance-gate tip (#255) | `e7d311e8f98c108471e99b1a36534202ae5f4500` |
+| Acceptance-gate tip (#255) | `a3dd58954e78a88832cba0611ea72ad979c80acc` |
 | Canonical port tip (#259 onto #253) | `697111a81ec22a592178d7c0542eb646ee273d79` |
 | #253 tip at port time | `e46dd9ea762b52f085c26c6784245972c2bad750` |
 | #250 tip at reconcile time | `37fc3ee50412572d48823c613bfb18f3c1c654cd` (updated; still no structure-file overlap) |
