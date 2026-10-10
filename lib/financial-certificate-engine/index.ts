@@ -61,6 +61,7 @@ export {
 export {
   labelAuthority,
   classifyApprovedSnapshotAuthority,
+  isTestOrNonProductionReviewerIdentity,
   FIXTURE_AUTHORITY,
 } from "./authority";
 export { publishRemainingCapacity } from "./utilization-honesty";
@@ -126,5 +127,7 @@ export type {
   VerifiedPathFinancialBase,
   VerifiedPathCapacityEval,
   VerifiedSequentialStepResult,
+  VerifiedSequentialRunResult,
+  VerifiedSequentialSimulationView,
 } from "./verified-path";
 export * from "./fixtures";

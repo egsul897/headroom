@@ -63,7 +63,9 @@ describe("authentic capacity bridge (gross vs remaining)", () => {
     expect(row.grossCapacityMillions).toBe(Math.max(530, 680));
     expect(row.remainingCapacityMillions).toBeNull();
     expect(row.utilizationAttributed).toBe(false);
-    expect(row.utilizationNote).toMatch(/cannot establish remaining|remaining not claimed|completeness certificate/i);
+    expect(row.utilizationNote).toMatch(
+      /remaining not supported|completeness certificate|never defaulted to zero|UNKNOWN/i,
+    );
   });
 
   it("applies remaining only when utilization is attributed AND completeness-certified", () => {
