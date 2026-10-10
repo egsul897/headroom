@@ -2,7 +2,9 @@
 
 **Status:** Expansion and production graph promotion **paused**.  
 **Neon mutations:** none authorized (dedupe migration is design-only).  
-**Paid inference:** $0.
+**Paid inference:** $0.  
+**PR:** https://github.com/egsul897/headroom/pull/246  
+**Tip SHA (rebased onto main):** see latest commit on `cursor/kf-graph-remediation-8a8b`
 
 ## 1. Duplicate reconciliation
 
