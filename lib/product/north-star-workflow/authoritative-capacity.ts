@@ -131,7 +131,13 @@ export async function loadAuthoritativeCapacity(args: {
     void resolver;
   }
   if (active.length) {
-    evidence.push(`${active.length} active attributed 4C ledger usage(s) — remaining capacity requires certified rule evaluation, not gross basket size.`);
+    evidence.push(
+      `${active.length} active attributed 4C ledger usage(s) — known attributed usage only; remaining requires certified rule evaluation AND a validated UtilizationCompletenessCertificate (approved records alone do not prove completeness).`,
+    );
+  } else {
+    evidence.push(
+      "No active attributed ledger usages — empty ledger is UNKNOWN utilization, not verified zero, without a validated VERIFIED_EMPTY completeness certificate.",
+    );
   }
 
   return {

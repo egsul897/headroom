@@ -61,3 +61,7 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: present-check
         run: npx vitest run tests/feeds/invent-absence*.test.ts tests/feeds/invent-absence*.test.tsx
+
+# joint-232-234 tip re-check 20261010T000513Z
+
+# joint-239 reconcile CI 20261010T101146Z
