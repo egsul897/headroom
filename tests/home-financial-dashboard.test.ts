@@ -73,7 +73,8 @@ describe("home overview — coherent contractual ratios in status", () => {
       expect(headroom.display).toBe("$5,129M");
     }
 
-    expect(overview.securedCapacity.remainingCapacity).toBe(5129);
+    // Cross-document Indenture SSNL binds secured (~$4,041M), not CA TNL (~$5,129M).
+    expect(overview.securedCapacity.remainingCapacity).toBeCloseTo(4041, 0);
 
     const risk = presentRisk(bundle.load.covenantsAtRisk);
     // Coherent maintenance covenants are healthy; risk slot may be empty or list locked baskets.
