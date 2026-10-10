@@ -11,12 +11,13 @@ PR_293_SHA: 59af93201de9d5db20eccadbf990feaba176638b
   note: tip advanced during mission (force-updated past 66d00a97 → 74526ead rebase of binding,
         then 59c3c4b3 wrong-document production promotion guard, then docs pins through 59af9320)
 
-PR_294_SHA: 42b57312417a9018058207142ca14acc550570d3
+PR_294_SHA: 1ead3e75902c78a7fce699a904c3923cfcb6e9bf
   state: OPEN, MERGEABLE
   base: main @ 4f1a0b81
   contains origin/pr-293 tip: YES (git merge-base --is-ancestor; empty `git log origin/pr-293 --not HEAD`)
+  note: 42b57312 = absorb of #293 59af9320; 1ead3e75 = this report pin (docs only)
 
-INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..42b57312 on #294):
+INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..1ead3e75 on #294):
   703291d5 docs(acceptance): execute Round 2 on #293 tip; record merge gate
   8a4beb52 fix(product): correct inverted production-promotion authority summary
   beee23f5 docs(persistence): record CI SUCCESS for P5/P6 tip ba39ab11
@@ -33,10 +34,11 @@ INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..42b57312 on #294)
   b6ae195b docs(persistence): refresh P0 report after absorbing #293 tip 59c3c4b3
   b43503e9 merge(persistence): absorb #293 docs tip d2b4d8e9 (wrong-document guard pin)
   42b57312 merge(persistence): absorb #293 tip 59af9320 (readable wrong-document pin)
+  1ead3e75 docs(persistence): pin P0 reconciliation SHAs to tip 42b57312 / #293 59af9320
   (+ via merge) 74526ead rebased binding; 59c3c4b3 wrong-document guard; d2b4d8e9/59af9320 docs pins
 
 CANONICAL_FEATURE_PARITY:
-  #293 commits missing from #294 tip: NONE (after 42b57312 absorb)
+  #293 commits missing from #294 tip: NONE (after 42b57312/1ead3e75)
   8a4beb52 authority-summary correction: PRESENT
   operative→retrieval binding (66d00a97 / rebased 74526ead): PRESENT
   59c3c4b3 wrong-document production promotion refusal: PRESENT (absorbed; not reimplemented)
