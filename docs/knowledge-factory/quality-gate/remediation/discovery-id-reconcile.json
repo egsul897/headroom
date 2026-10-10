@@ -1,0 +1,279 @@
+{
+  "schema": "kf-discovery-id-duplicate-reconcile.v1",
+  "generatedAt": "2026-10-10T00:05:50.905Z",
+  "readOnly": true,
+  "population": {
+    "totalRows": 48226,
+    "withIdRows": 48226,
+    "withoutIdRows": 0,
+    "uniqueNonNullDiscoveryIds": 29242,
+    "excessDuplicateDiscoveryRows": 18984,
+    "byKind": {
+      "PROVISION_DEFINITION": {
+        "groups": 18183,
+        "rows": 34652,
+        "excess": 16469,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 4
+      },
+      "PROVISION_CROSS_REFERENCE": {
+        "groups": 6942,
+        "rows": 8529,
+        "excess": 1587,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 4
+      },
+      "PROVISION_EXCEPTION": {
+        "groups": 1646,
+        "rows": 1997,
+        "excess": 351,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 4
+      },
+      "PROVISION_SHARED_CAPACITY": {
+        "groups": 206,
+        "rows": 427,
+        "excess": 221,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 4
+      },
+      "PROVISION_CONDITION": {
+        "groups": 2039,
+        "rows": 2395,
+        "excess": 356,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 4
+      },
+      "AGREEMENT_RESTATEMENT": {
+        "groups": 116,
+        "rows": 116,
+        "excess": 0,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 1
+      },
+      "INDENTURE_SUPPLEMENTAL": {
+        "groups": 75,
+        "rows": 75,
+        "excess": 0,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 1
+      },
+      "AGREEMENT_AMENDMENT": {
+        "groups": 35,
+        "rows": 35,
+        "excess": 0,
+        "nullDiscoveryRows": 0,
+        "maxMultiplicity": 1
+      }
+    }
+  },
+  "coarseTripleNote": "Unique (sourceRecordId,targetSourceId,kind) undercounts provision diversity because PROVISION_* edges intentionally share same-document endpoints; discoveryId is the correct provision identity.",
+  "agreementSelfLoops": [
+    {
+      "kind": "AGREEMENT_RESTATEMENT",
+      "n": 93
+    }
+  ],
+  "topDiscoveryIdDuplicates": [
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "06c3af71cd05045ec45ec93e",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.243Z",
+      "lastAt": "2026-10-09T23:10:41.192Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "729ac8448a19cfb43afd61ad",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:25.448Z",
+      "lastAt": "2026-10-09T23:10:43.457Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "ecd3eb59626169095b85b9f8",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:28.282Z",
+      "lastAt": "2026-10-09T23:10:46.626Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "ea6cf9532c78090bb35bec58",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:25.448Z",
+      "lastAt": "2026-10-09T23:10:43.457Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "51308c27cdd67f90c46b0b45",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:24.502Z",
+      "lastAt": "2026-10-09T23:10:42.163Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "09df3263f2929f3b9d427bba",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.706Z",
+      "lastAt": "2026-10-09T23:10:44.759Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "c7f850a78c07da40b69ef267",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.558Z",
+      "lastAt": "2026-10-09T23:10:41.516Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "89774e8017cdbd9c8880c872",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.872Z",
+      "lastAt": "2026-10-09T23:10:41.841Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "51201f87e4fb078afe783a22",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.391Z",
+      "lastAt": "2026-10-09T23:10:44.107Z"
+    },
+    {
+      "kind": "PROVISION_CROSS_REFERENCE",
+      "discoveryId": "e6774b460793d6e773113558",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.243Z",
+      "lastAt": "2026-10-09T23:10:40.867Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "b695a3874d1d45a5dca7b9ec",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.872Z",
+      "lastAt": "2026-10-09T23:10:41.516Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "53ac8acf81ace8cbecc438d1",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.391Z",
+      "lastAt": "2026-10-09T23:10:44.107Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "252c92a605985f7164b37bc5",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:25.762Z",
+      "lastAt": "2026-10-09T23:10:43.782Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "816063098c918984c9ea70e8",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.872Z",
+      "lastAt": "2026-10-09T23:10:41.841Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "1d22fcd6d2fd9674f77246ae",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.391Z",
+      "lastAt": "2026-10-09T23:10:44.107Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "a1469a203fc105c25b1edf25",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:24.189Z",
+      "lastAt": "2026-10-09T23:10:41.841Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "1b60992056f1175240de7a4d",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:27.334Z",
+      "lastAt": "2026-10-09T23:10:45.412Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "0cc22fe1a151c92576224195",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:28.282Z",
+      "lastAt": "2026-10-09T23:10:46.059Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "86899039860f0d24fcaa651d",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.243Z",
+      "lastAt": "2026-10-09T23:10:40.867Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "92220f932d88fa90f6fc853a",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:28.282Z",
+      "lastAt": "2026-10-09T23:10:46.626Z"
+    },
+    {
+      "kind": "PROVISION_CONDITION",
+      "discoveryId": "e41e7a6c05720fa660f227e0",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.077Z",
+      "lastAt": "2026-10-09T23:10:44.107Z"
+    },
+    {
+      "kind": "PROVISION_SHARED_CAPACITY",
+      "discoveryId": "7b1cee6ab588fb1631e866ea",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:26.077Z",
+      "lastAt": "2026-10-09T23:10:44.107Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "5a966a1d151e7c7dee9e9084",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:23.558Z",
+      "lastAt": "2026-10-09T23:10:41.516Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "3a508480ecd65b0234309715",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:22.924Z",
+      "lastAt": "2026-10-09T23:10:40.867Z"
+    },
+    {
+      "kind": "PROVISION_DEFINITION",
+      "discoveryId": "53af8f772b3ffc289079af57",
+      "count": 4,
+      "excess": 3,
+      "firstAt": "2026-10-09T22:41:24.189Z",
+      "lastAt": "2026-10-09T23:10:41.841Z"
+    }
+  ]
+}

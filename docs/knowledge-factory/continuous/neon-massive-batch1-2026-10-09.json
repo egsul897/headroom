@@ -1,0 +1,41 @@
+{
+  "batchKey": "neon-massive-batch1-2026-10-09",
+  "live": true,
+  "startedAt": "2026-10-09T22:27:53.151Z",
+  "finishedAt": "2026-10-09T22:30:21.213Z",
+  "wallMs": 148062,
+  "discovered": 6,
+  "skippedExisting": 35,
+  "skippedNonFinancing": 4,
+  "fetched": 4,
+  "persisted": 0,
+  "reused": 0,
+  "analyzed": 0,
+  "failed": 1,
+  "relationshipEdgesPersisted": 8012,
+  "calculationExamples": 13,
+  "errors": [
+    {
+      "ticker": "SEE",
+      "error": "EdgarKnowledgeClient: ticker \"SEE\" not found"
+    }
+  ],
+  "persistedSourceIds": [],
+  "byClassDelta": {},
+  "neonAfter": {
+    "knowledgeSources": 734,
+    "documentByteObjects": 715,
+    "knowledgeRelationships": 16205,
+    "distinctIssuers": 200,
+    "covenantSummaryItems": 30057,
+    "databaseSizePretty": "236 MB"
+  },
+  "quality": {
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 62,
+      "DISCOVERED_CANDIDATE": 672
+    },
+    "certifiedPromotionCount": 0,
+    "note": "Automated pipeline stops at DISCOVERED_CANDIDATE / DETERMINISTICALLY_VALIDATED — never invents CERTIFIED"
+  }
+}

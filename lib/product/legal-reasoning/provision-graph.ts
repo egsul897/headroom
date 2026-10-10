@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { summarizeFromStoredMetadata, type CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import type { RelationshipKind } from "../../knowledge-factory/types";
 import { detectPatternsInText } from "../../knowledge-factory/patterns/library";
+import { assertCorpusGraphWriteAuthorized } from "../../knowledge-factory/continuous/graph-write-gate";
 
 export interface ProvisionGraphEdge {
   fromSourceId: string;
@@ -28,11 +29,35 @@ export interface ProvisionGraphEdge {
   confidence: number;
 }
 
-function edgeId(e: ProvisionGraphEdge): string {
+/** Stable provision-edge identity — also used as discoveryKey when uniqueness is authorized. */
+export function provisionEdgeDiscoveryId(e: ProvisionGraphEdge): string {
   return createHash("sha256")
     .update(`${e.kind}|${e.fromSourceId}|${e.fromSectionRef}|${e.toSourceId}|${e.toSectionRef ?? e.toTerm ?? ""}`)
     .digest("hex")
     .slice(0, 24);
+}
+
+/** @deprecated Prefer provisionEdgeDiscoveryId */
+function edgeId(e: ProvisionGraphEdge): string {
+  return provisionEdgeDiscoveryId(e);
+}
+
+/**
+ * Load every existing provision discoveryId without the prior take:20000 cap
+ * that silently re-inserted duplicates on batch rebuilds.
+ */
+export async function loadExistingProvisionDiscoveryIds(): Promise<Set<string>> {
+  const rows = await prisma.$queryRaw<Array<{ discovery_id: string | null }>>`
+    SELECT DISTINCT metadata->>'discoveryId' AS discovery_id
+    FROM knowledge_relationship_edges
+    WHERE kind::text LIKE 'PROVISION_%'
+      AND metadata->>'discoveryId' IS NOT NULL
+  `;
+  const existingIds = new Set<string>();
+  for (const row of rows) {
+    if (row.discovery_id) existingIds.add(row.discovery_id);
+  }
+  return existingIds;
 }
 
 function parseSectionRef(raw: string): string | null {
@@ -181,35 +206,19 @@ export async function persistProvisionGraph(params?: {
   let skippedExisting = 0;
 
   if (!params?.dryRun) {
-    const existing = await prisma.knowledgeRelationshipEdge.findMany({
-      where: {
-        kind: {
-          in: [
-            "PROVISION_DEFINITION",
-            "PROVISION_CROSS_REFERENCE",
-            "PROVISION_EXCEPTION",
-            "PROVISION_CONDITION",
-            "PROVISION_SHARED_CAPACITY",
-          ],
-        },
-      },
-      select: { metadata: true },
-      take: 20000,
-    });
-    const existingIds = new Set<string>();
-    for (const row of existing) {
-      const meta =
-        row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
-          ? (row.metadata as Record<string, unknown>)
-          : {};
-      if (typeof meta.discoveryId === "string") existingIds.add(meta.discoveryId);
+    // Global corpus rebuild (no companyId) requires dual operator resume tokens.
+    // Company-scoped paths are not used here today; gate any non-dryRun persist.
+    if (!params?.companyId) {
+      assertCorpusGraphWriteAuthorized("global-provision-graph-persist");
     }
+    // Full scan — never cap existing IDs (prior take:20000 caused duplicate amplification).
+    const existingIds = await loadExistingProvisionDiscoveryIds();
 
     const toCreate = [];
     for (const e of edges) {
       const sourceRecordId = idBySourceId.get(e.fromSourceId);
       if (!sourceRecordId) continue;
-      const discoveryId = edgeId(e);
+      const discoveryId = provisionEdgeDiscoveryId(e);
       if (existingIds.has(discoveryId)) {
         skippedExisting += 1;
         continue;
@@ -236,7 +245,12 @@ export async function persistProvisionGraph(params?: {
     const chunk = 200;
     for (let i = 0; i < toCreate.length; i += chunk) {
       const slice = toCreate.slice(i, i + chunk);
-      const res = await prisma.knowledgeRelationshipEdge.createMany({ data: slice as never });
+      // skipDuplicates is a belt-and-suspenders guard; uniqueness on discoveryKey
+      // requires an authorized schema migration before it is fully enforced.
+      const res = await prisma.knowledgeRelationshipEdge.createMany({
+        data: slice as never,
+        skipDuplicates: true,
+      });
       persisted += res.count;
     }
   }

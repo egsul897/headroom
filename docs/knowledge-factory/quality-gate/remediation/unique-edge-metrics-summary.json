@@ -1,0 +1,36 @@
+{
+  "schema": "kf-unique-edge-metrics-run.v1",
+  "generatedAt": "2026-10-10T00:12:01.813Z",
+  "neonMutations": false,
+  "run1Population": {
+    "totalRawRows": 48226,
+    "uniqueDiscoveryIds": 29242,
+    "excessDuplicateRows": 18984,
+    "agreementSelfLoops": 93,
+    "provisionSameDocumentEndpoints": 26026
+  },
+  "run2Population": {
+    "totalRawRows": 48226,
+    "uniqueDiscoveryIds": 29242,
+    "excessDuplicateRows": 18984,
+    "agreementSelfLoops": 93,
+    "provisionSameDocumentEndpoints": 26026
+  },
+  "idempotentRead": true,
+  "stratifiedOverall": 0.9693249435743109,
+  "stratifiedWilson95": {
+    "low": 0.9672860406441239,
+    "high": 0.971240549748132
+  },
+  "authoritySeparation": {
+    "note": "DISCOVERED / STRUCTURALLY_INDEXED edges are not CERTIFIED / REVIEWER_VERIFIED legal authority.",
+    "evidenceStatusOnUniqueEdges": {
+      "DISCOVERED": 29242
+    },
+    "neverTreatDiscoveredAsCertified": true
+  },
+  "diversityGapsStillVisible": {
+    "note": "ABL, intercreditor, and guarantee coverage remain incomplete — corpus must not be represented as complete.",
+    "ablIntercreditorGuarantee": "See diversity-dry-run.json — ABL / INTERCREDITOR / GUARANTEE families remain under-represented relative to credit agreements and amendments."
+  }
+}

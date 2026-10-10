@@ -1,0 +1,160 @@
+{
+  "schema": "kf-database-effects.v1",
+  "generatedAt": "2026-10-10T00:00:09.669Z",
+  "readOnly": true,
+  "liveCounts": {
+    "knowledgeSources": 769,
+    "publicSecEdgar": 716,
+    "documentByteObjects": 746,
+    "knowledgeRelationships": 48226,
+    "knowledgeImportBatches": 5,
+    "continuousExpand": 35,
+    "abl": 1,
+    "intercreditor": 3,
+    "guarantee": 3
+  },
+  "representationLevels": {
+    "STRUCTURALLY_INDEXED": 64,
+    "DETERMINISTICALLY_VALIDATED": 3,
+    "DISCOVERED_CANDIDATE": 702
+  },
+  "batchArtifacts": [
+    {
+      "batchKey": "neon-massive-batch1-2026-10-09",
+      "persisted": 0,
+      "reused": 0,
+      "skippedExisting": 35,
+      "skippedNonFinancing": 4,
+      "fetched": 4,
+      "analyzed": 0,
+      "failed": 1,
+      "relationshipEdgesPersisted": 8012,
+      "byClassDelta": {},
+      "neonAfter": {
+        "knowledgeSources": 734,
+        "documentByteObjects": 715,
+        "knowledgeRelationships": 16205,
+        "distinctIssuers": 200,
+        "covenantSummaryItems": 30057,
+        "databaseSizePretty": "236 MB"
+      }
+    },
+    {
+      "batchKey": "neon-massive-batch2-2026-10-09",
+      "persisted": 0,
+      "reused": 0,
+      "skippedExisting": 3,
+      "skippedNonFinancing": 0,
+      "fetched": 0,
+      "analyzed": 0,
+      "failed": 0,
+      "relationshipEdgesPersisted": 8005,
+      "byClassDelta": {},
+      "neonAfter": {
+        "knowledgeSources": 736,
+        "documentByteObjects": 715,
+        "knowledgeRelationships": 24210,
+        "distinctIssuers": 201,
+        "covenantSummaryItems": 30057,
+        "databaseSizePretty": "240 MB"
+      }
+    },
+    {
+      "batchKey": "neon-massive-batch3-2026-10-09",
+      "persisted": 12,
+      "reused": 0,
+      "skippedExisting": 2,
+      "skippedNonFinancing": 917,
+      "fetched": 929,
+      "analyzed": 12,
+      "failed": 0,
+      "relationshipEdgesPersisted": 8005,
+      "byClassDelta": {
+        "AMENDMENT": 4,
+        "RESTATEMENT": 5,
+        "CREDIT_AGREEMENT": 1,
+        "INDENTURE": 2
+      },
+      "neonAfter": {
+        "knowledgeSources": 749,
+        "documentByteObjects": 727,
+        "knowledgeRelationships": 32215,
+        "distinctIssuers": 207,
+        "covenantSummaryItems": 30448,
+        "databaseSizePretty": "246 MB"
+      }
+    },
+    {
+      "batchKey": "neon-massive-batch4-2026-10-09",
+      "persisted": 11,
+      "reused": 0,
+      "skippedExisting": 15,
+      "skippedNonFinancing": 1274,
+      "fetched": 11,
+      "analyzed": 11,
+      "failed": 0,
+      "relationshipEdgesPersisted": 8007,
+      "byClassDelta": {
+        "UNKNOWN": 1,
+        "RESTATEMENT": 5,
+        "INDENTURE": 1,
+        "AMENDMENT": 3,
+        "CREDIT_AGREEMENT": 1
+      },
+      "neonAfter": {
+        "knowledgeSources": 761,
+        "documentByteObjects": 738,
+        "knowledgeRelationships": 40222,
+        "distinctIssuers": 211,
+        "covenantSummaryItems": 31058,
+        "databaseSizePretty": "251 MB"
+      }
+    },
+    {
+      "batchKey": "neon-massive-batch5-abl-2026-10-09",
+      "persisted": 8,
+      "reused": 0,
+      "skippedExisting": 7,
+      "skippedNonFinancing": 888,
+      "fetched": 8,
+      "analyzed": 8,
+      "failed": 1,
+      "relationshipEdgesPersisted": 8004,
+      "byClassDelta": {
+        "TERM_LOAN_AGREEMENT": 1,
+        "RESTATEMENT": 3,
+        "SUPPLEMENTAL_INDENTURE": 1,
+        "CREDIT_AGREEMENT": 2,
+        "AMENDMENT": 1
+      },
+      "neonAfter": {
+        "knowledgeSources": 769,
+        "documentByteObjects": 746,
+        "knowledgeRelationships": 48226,
+        "distinctIssuers": 213,
+        "covenantSummaryItems": 31689,
+        "databaseSizePretty": "257 MB"
+      }
+    }
+  ],
+  "totalsFromBatches": {
+    "persisted": 31,
+    "reused": 0,
+    "skippedExisting": 62,
+    "skippedNonFinancing": 3083,
+    "fetched": 952,
+    "failed": 2,
+    "relationshipEdgesPersistedClaimed": 40033
+  },
+  "storage": {
+    "databaseSizePretty": "257 MB",
+    "documentByteObjects": 746,
+    "knowledgeSources": 769
+  },
+  "rollbackReplay": {
+    "idempotentOnSourceIdAndHash": true,
+    "knowledgeImportBatches": 5,
+    "note": "Replay reuses BYTEA by content hash; KnowledgeImportBatch checkpoints record completed sourceIds. No destructive rollback executed this gate."
+  },
+  "neonMutationsThisGate": false
+}

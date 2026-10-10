@@ -1,0 +1,126 @@
+{
+  "schema": "kf-quality-gate-summary.v1",
+  "generatedAt": "2026-10-10T00:00:10.538Z",
+  "neonMutations": false,
+  "paidInferenceUsd": 0,
+  "relationship": {
+    "totalEdges": 48226,
+    "sampled": 160,
+    "supportedOrWeakRate": 0.6721311475409836,
+    "unsupportedRate": 0.32786885245901637,
+    "exactTripleDuplicates": 46810,
+    "missingHints": 0,
+    "verdicts": {
+      "SUPPORTED": 41,
+      "WEAK_SUPPORT": 0,
+      "UNSUPPORTED": 0,
+      "DUPLICATE": 99,
+      "SELF_LOOP": 18,
+      "CROSS_ISSUER": 0,
+      "CHRONOLOGY_SUSPECT": 2,
+      "MISSING_ENDPOINT": 0
+    }
+  },
+  "operative": {
+    "passRate": 0.8,
+    "cases": [
+      {
+        "id": "gpk-multi-amendment-ambiguous",
+        "pass": true,
+        "engine": "UNRESOLVED_PRECEDENCE",
+        "expected": "UNRESOLVED_PRECEDENCE"
+      },
+      {
+        "id": "wynn-indenture-family",
+        "pass": true,
+        "engine": "UNRESOLVED_PRECEDENCE",
+        "expected": "UNRESOLVED_PRECEDENCE"
+      },
+      {
+        "id": "son-credit-restatement-candidate",
+        "pass": false,
+        "engine": "RESOLVED",
+        "expected": "UNRESOLVED_PRECEDENCE"
+      },
+      {
+        "id": "luv-revolving-amendment",
+        "pass": true,
+        "engine": "UNRESOLVED_PRECEDENCE",
+        "expected": "UNRESOLVED_PRECEDENCE"
+      },
+      {
+        "id": "hlt-supplemental-indentures",
+        "pass": true,
+        "engine": "UNRESOLVED_PRECEDENCE",
+        "expected": "UNRESOLVED_PRECEDENCE"
+      }
+    ]
+  },
+  "retrieval": {
+    "criticalQuestions": 6,
+    "criticalFoundRate": 1,
+    "correctCitationRate": 1,
+    "staleRetrievalRate": 0,
+    "falseConfidenceRate": 0,
+    "missingCriticalCount": 0
+  },
+  "diversity": {
+    "baselineSparse": {
+      "ABL_AGREEMENT": 1,
+      "INTERCREDITOR_AGREEMENT": 3,
+      "GUARANTEE_AGREEMENT": 3,
+      "SECURITY_AGREEMENT": 26,
+      "REVOLVING_CREDIT_AGREEMENT": 9
+    },
+    "promisingNotInNeon": 3,
+    "byPredictedClass": {
+      "AMENDMENT": 3
+    }
+  },
+  "database": {
+    "liveCounts": {
+      "knowledgeSources": 769,
+      "publicSecEdgar": 716,
+      "documentByteObjects": 746,
+      "knowledgeRelationships": 48226,
+      "knowledgeImportBatches": 5,
+      "continuousExpand": 35,
+      "abl": 1,
+      "intercreditor": 3,
+      "guarantee": 3
+    },
+    "storage": {
+      "databaseSizePretty": "257 MB",
+      "documentByteObjects": 746,
+      "knowledgeSources": 769
+    },
+    "batchTotals": {
+      "persisted": 31,
+      "reused": 0,
+      "skippedExisting": 62,
+      "skippedNonFinancing": 3083,
+      "fetched": 952,
+      "failed": 2,
+      "relationshipEdgesPersistedClaimed": 40033
+    },
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 64,
+      "DETERMINISTICALLY_VALIDATED": 3,
+      "DISCOVERED_CANDIDATE": 702
+    }
+  },
+  "legalAuthority": {
+    "certifiedCount": 0,
+    "reviewerVerifiedCount": 0,
+    "note": "All automated corpus rows remain non-certified until existing review gates."
+  },
+  "packageRegistryProposal": "docs/knowledge-factory/quality-gate/financing-package-registry-PROPOSAL.md",
+  "productionSafetyConcerns": [
+    "Operative audit uses stubbed AmendmentCompareView — section bindings are not certified.",
+    "Fail-closed expectations dominate: similarity/filing-order alone must not invent RESOLVED.",
+    "Relationship unsupported/weak rate elevated — do not treat edges as operative authority",
+    "ABL / intercreditor / guarantee coverage still sparse — diversity dry-run queued candidates only",
+    "Relationship graph regeneration during prior expand batches may have amplified provision edges — see duplicate metrics",
+    "No automatic merge; no Neon mutations in this quality-gate run"
+  ]
+}

@@ -27,7 +27,7 @@ const SUBSTANTIVE_CLASSES = new Set([
 ]);
 
 const IRRELEVANT_EXHIBIT =
-  /\b(?:ex-?23|consent of independent|independent registered public accounting|pwc consent|bylaws?|certificate of (?:incorporation|amendment)|employment agreement|offer letter|equity incentive|stock option|registration rights|underwriting|indenture trustee fee|legal opinion)\b/i;
+  /\b(?:ex-?23|consent of independent|independent registered public accounting|pwc consent|bylaws?|certificate of (?:incorporation|amendment)|employment agreement|offer letter|equity incentive|stock option|registration rights|underwriting|indenture trustee fee|legal opinion|executive\s+retirement|restoration\s+plan|deferred\s+compensation|severance\s+plan|pension\s+plan|401\s*\(\s*k\s*\)|employee\s+stock\s+purchase)\b/i;
 
 const FINANCING_TITLE =
   /\b(?:credit agreement|loan agreement|indenture|intercreditor|security agreement|guarantee(?: and collateral)? agreement|abl|term loan|revolving credit|supplemental indenture|amendment (?:no\.?|number)?\s*\d*|amended and restated)\b/i;

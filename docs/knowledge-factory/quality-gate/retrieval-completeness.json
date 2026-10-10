@@ -1,0 +1,1025 @@
+{
+  "schema": "kf-retrieval-completeness.v1",
+  "generatedAt": "2026-10-10T00:00:08.154Z",
+  "readOnly": true,
+  "corpusPublicSources": 716,
+  "results": [
+    {
+      "id": "rp-available-amount",
+      "question": "Which provisions govern restricted payments funded from an Available Amount / builder basket?",
+      "critical": true,
+      "hitsConsidered": 2452,
+      "topHits": [
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.14",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 5.14",
+          "category": "OTHER",
+          "heading": "5.14 Transactions with Affiliates.",
+          "score": 15.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+          "ticker": "CRD-A",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "7.5",
+          "sourceCitation": "ehb:2954d4fcffbf68d6009f557c · 7.5",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "Restricted Payments",
+          "score": 15.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.08",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 6.08",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 6.08(a) and clause (9) or (10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified ",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.10",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.10",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Junior Indebtedness and Amendments to Junior Indebtedness Documents and Organizational Documents .",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.08",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.08",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "Restricted Payments",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+          "ticker": "GDDY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.5",
+          "sourceCitation": "research:cbcfl:gddy-unknown-ex101-73126 · 10.5",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "10.5 Limitation on Restricted Payments .",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+          "ticker": "SNOW_SEL",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.01",
+          "sourceCitation": "research:cbcfl:snow_sel-unknown-d107933dex101 · 5.01",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "Section 5.01(a) as of the time of such Restricted Payment and (5) amounts that would otherwise be permitted to be paid p",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+          "ticker": "RBC",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.04(b)",
+          "sourceCitation": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa · 2.04(b)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "2.04(b)",
+          "score": 15.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "indebtedness-incurrence",
+      "question": "Where is the indebtedness negative covenant and its ratio / basket exceptions?",
+      "critical": true,
+      "hitsConsidered": 4979,
+      "topHits": [
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.12",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 5.12",
+          "category": "OTHER",
+          "heading": "Designation of Subsidiaries.",
+          "score": 12,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.12(ii)",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 5.12(ii)",
+          "category": "OTHER",
+          "heading": "5.12(ii)",
+          "score": 12,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:03455060f62f5a083ce2292c",
+          "ticker": "WEN",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "VII",
+          "sourceCitation": "ehb:03455060f62f5a083ce2292c · VII",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "NEGATIVE COVENANTS",
+          "score": 12,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.1(y)",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 10.1(y)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "10.1(y)",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.1(r)",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 10.1(r)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "10.1(r)",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.01",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.01",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 6.01 Indebtedness .",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.20(j)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 2.20(j)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "2.20(j)",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.10(b)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.10(b)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "6.10(b)",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "liens-permission",
+      "question": "What lien exceptions / permitted liens baskets appear in the package?",
+      "critical": true,
+      "hitsConsidered": 4651,
+      "topHits": [
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.08",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 6.08",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 6.08(a) and clause (9) or (10) of this Section 6.08(b)) that have been used to incur Indebtedness, Disqualified ",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
+          "ticker": null,
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.09",
+          "sourceCitation": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm · 6.09",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "Ownership of Property; Liens .",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+          "ticker": null,
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "7.18",
+          "sourceCitation": "edgar:0001219601-22-000011:exhibit4.htm · 7.18",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Facilities Rating . Crown Holdings shall use its commercially reasonable efforts to provide that the Indebtedness under ",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:4bf0eef653567fb0422c0455",
+          "ticker": "CTO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "8.24",
+          "sourceCitation": "ehb:4bf0eef653567fb0422c0455 · 8.24",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "Section 8.24. Pledge of Equity Interest in Material Subsidiaries; Springing Lien .",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:c4765463cba673da658ad15f",
+          "ticker": "DXYN",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "8.11",
+          "sourceCitation": "ehb:c4765463cba673da658ad15f · 8.11",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "8.11    If the Security Agreement or any other Loan Document that purports to create a Lien, shall, for any reason, fail",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:6f8e7385923dbd8ec3767f48",
+          "ticker": "DCO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.02",
+          "sourceCitation": "ehb:6f8e7385923dbd8ec3767f48 · 6.02",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "SECTION 6.02 Liens.",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:6f8e7385923dbd8ec3767f48",
+          "ticker": "DCO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "3.2",
+          "sourceCitation": "ehb:6f8e7385923dbd8ec3767f48 · 3.2",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "First Lien Status. Mortgagor shall preserve and protect the first lien and security interest status of this Mortgage and",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:c5890ab445544c1dc9013b56",
+          "ticker": "LPX",
+          "documentClass": "INDENTURE",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.1",
+          "sourceCitation": "ehb:c5890ab445544c1dc9013b56 · 1.1",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "Definitions",
+          "score": 11.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "investments-basket",
+      "question": "Identify investment covenant baskets and shared capacity with restricted payments.",
+      "critical": true,
+      "hitsConsidered": 4544,
+      "topHits": [
+        {
+          "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+          "ticker": "PTON",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.07",
+          "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.07",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 6.07             Junior",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+          "ticker": "PTON",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.03",
+          "sourceCitation": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1 · 6.03",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "[Reserved]",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.15",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 6.15",
+          "category": "DEBT_INCURRENCE",
+          "heading": "6.15 Prepayments of Indebtedness.",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.6",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 6.6",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "6.6 Restricted Payments.",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+          "ticker": "AEO2",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.06",
+          "sourceCitation": "research:cbcfl:aeo2-unknown-aeo-ex10_1 · 10.06",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "Restricted Payments",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+          "ticker": "AEO2",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.04",
+          "sourceCitation": "research:cbcfl:aeo2-unknown-aeo-ex10_1 · 10.04",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "Investments, Loans and Advances",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+          "ticker": "AEO2",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.04(i)",
+          "sourceCitation": "research:cbcfl:aeo2-unknown-aeo-ex10_1 · 10.04(i)",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "10.04(i)",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+          "ticker": "AEO2",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.06(ii)",
+          "sourceCitation": "research:cbcfl:aeo2-unknown-aeo-ex10_1 · 10.06(ii)",
+          "category": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "heading": "10.06(ii)",
+          "score": 15.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "incremental-facility",
+      "question": "Where are incremental facility / incremental equivalent debt mechanics described?",
+      "critical": true,
+      "hitsConsidered": 766,
+      "topHits": [
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.20",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 2.20",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Incremental Facilities",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.20(j)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 2.20(j)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "2.20(j)",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.01(h)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 1.01(h)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "1.01(h)",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.01(i)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 1.01(i)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "1.01(i)",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.20(i)",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 2.20(i)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "2.20(i)",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+          "ticker": "SNOW_SEL",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "14",
+          "sourceCitation": "research:cbcfl:snow_sel-unknown-d107933dex101 · 14",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 1471(b)(1) of the Code as of the date of this Agreement (or any amended or successor version described above) an",
+          "score": 8.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.02",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 6.02",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "Section 6.02) shall not be deemed to be restricted by virtue of such Liens), in each case, regardless of whether or not ",
+          "score": 8.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+          "ticker": "ALKS",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "6.01",
+          "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.01",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 6.01 Indebtedness .",
+          "score": 8.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "asset-sale-prepay",
+      "question": "How do asset sale proceeds interact with mandatory prepayment?",
+      "critical": true,
+      "hitsConsidered": 3610,
+      "topHits": [
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.09",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 2.09",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 2.09(b) or (c), as applicable, and (B) to the extent that the Initial Borrower has determined in good faith that",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "9.22",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 9.22",
+          "category": "DEBT_INCURRENCE",
+          "heading": "Section 9.22.\n“ Credit Agreement Refinancing Indebtedness ” means Indebtedness issued, incurred or otherwise obtained (i",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.09",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 2.09",
+          "category": "ASSET_SALES",
+          "heading": "Section 2.09(b) as a result of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii), 100.0%; pr",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.09",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 2.09",
+          "category": "ASSET_SALES",
+          "heading": "Section 2.09 Prepayment of Loans .",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.2",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 5.2",
+          "category": "DEBT_INCURRENCE",
+          "heading": "5.2 Mandatory Prepayments .",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+          "ticker": "GDDY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "5.2",
+          "sourceCitation": "research:cbcfl:gddy-unknown-ex101-73126 · 5.2",
+          "category": "DEBT_INCURRENCE",
+          "heading": "5.2 Mandatory Prepayments .",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+          "ticker": "SUJA",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.10",
+          "sourceCitation": "research:cbcfl:suja-unknown-suja-arcreditagreement20 · 2.10",
+          "category": "ASSET_SALES",
+          "heading": "2.10 Prepayment of Loans.",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+          "ticker": null,
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.12",
+          "sourceCitation": "edgar:0002077096-26-000190:ea029246401ex10-1.htm · 2.12",
+          "category": "DEBT_INCURRENCE",
+          "heading": "SECTION 2.12 Mandatory Prepayments and Commitment",
+          "score": 14.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "intercreditor",
+      "question": "Does the corpus retrieve intercreditor arrangements when asked about lien priority among facilities?",
+      "critical": false,
+      "hitsConsidered": 375,
+      "topHits": [
+        {
+          "sourceId": "edgar:0000723612-18-000015:exhibit10_1.htm",
+          "ticker": "CAR",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "9.12",
+          "sourceCitation": "edgar:0000723612-18-000015:exhibit10_1.htm · 9.12",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "9.12     Intercreditor Agreements . Without limiting the generality of the foregoing, the Administrative Agent is author",
+          "score": 14.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "13.8",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 13.8",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "13.8 Adjustments; Set-off .",
+          "score": 14,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+          "ticker": "SNOW_SEL",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.19(d)",
+          "sourceCitation": "research:cbcfl:snow_sel-unknown-d107933dex101 · 2.19(d)",
+          "category": "DEBT_INCURRENCE",
+          "heading": "2.19(d)",
+          "score": 14,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+          "ticker": "SNOW_SEL",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.21",
+          "sourceCitation": "research:cbcfl:snow_sel-unknown-d107933dex101 · 2.21",
+          "category": "DEBT_INCURRENCE",
+          "heading": "SECTION 2.21 Refinancing Amendments .",
+          "score": 14,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.2",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 10.2",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "10.2 Limitation on Liens .",
+          "score": 13.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "11.13",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 11.13",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "11.13 Application of Proceeds . Subject to the terms of the First Lien Intercreditor Agreement and the Second Lien Inter",
+          "score": 13.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+          "ticker": "BV",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "12.11",
+          "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 12.11",
+          "category": "GUARANTEES",
+          "heading": "12.11 Agents Under Security Documents and Guarantee . Each Secured Party hereby further authorizes the Administrative Ag",
+          "score": 13.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+          "ticker": "GDDY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "10.2",
+          "sourceCitation": "research:cbcfl:gddy-unknown-ex101-73126 · 10.2",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "10.2 Limitation on Liens .",
+          "score": 13.75,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    },
+    {
+      "id": "abl-borrowing-base",
+      "question": "Locate ABL / borrowing-base revolving facility covenant language.",
+      "critical": false,
+      "hitsConsidered": 14251,
+      "topHits": [
+        {
+          "sourceId": "ehb:4bf0eef653567fb0422c0455",
+          "ticker": "CTO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "8.24",
+          "sourceCitation": "ehb:4bf0eef653567fb0422c0455 · 8.24",
+          "category": "LIENS_SECURED_DEBT",
+          "heading": "Section 8.24. Pledge of Equity Interest in Material Subsidiaries; Springing Lien .",
+          "score": 11.25,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+          "ticker": "CHWY",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.11",
+          "sourceCitation": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm · 2.11",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "Section 2.11(c), (iii) postpone the maturity of any Loan (it being understood that a waiver of any condition precedent, ",
+          "score": 11,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:4bf0eef653567fb0422c0455",
+          "ticker": "CTO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.17",
+          "sourceCitation": "ehb:4bf0eef653567fb0422c0455 · 1.17",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "hereof.",
+          "score": 11,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:4bf0eef653567fb0422c0455",
+          "ticker": "CTO",
+          "documentClass": "CREDIT_AGREEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.17(a)",
+          "sourceCitation": "ehb:4bf0eef653567fb0422c0455 · 1.17(a)",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "1.17(a)",
+          "score": 11,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+          "ticker": "CHWY_ALT",
+          "documentClass": "UNKNOWN",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.11",
+          "sourceCitation": "research:cbcfl:chwy_alt-unknown-d43042dex101 · 2.11",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "Section 2.11(c), (iii) postpone the maturity of any Loan (it being understood that a waiver of any condition precedent, ",
+          "score": 9.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:dc6a3da7b2296fe6e1ee47bd",
+          "ticker": "SIF",
+          "documentClass": "RESTATEMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "2.01",
+          "sourceCitation": "ehb:dc6a3da7b2296fe6e1ee47bd · 2.01",
+          "category": "BASKETS_EXCEPTIONS_CONDITIONS",
+          "heading": "Commitment",
+          "score": 9.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:af11f58d5afbad804deca528",
+          "ticker": "SIF",
+          "documentClass": "AMENDMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.09(e)",
+          "sourceCitation": "ehb:af11f58d5afbad804deca528 · 1.09(e)",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "1.09(e)",
+          "score": 9.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        },
+        {
+          "sourceId": "ehb:af11f58d5afbad804deca528",
+          "ticker": "SIF",
+          "documentClass": "AMENDMENT",
+          "representationLevel": "DISCOVERED_CANDIDATE",
+          "sectionRef": "1.10",
+          "sourceCitation": "ehb:af11f58d5afbad804deca528 · 1.10",
+          "category": "EVENTS_OF_DEFAULT",
+          "heading": "Section 1.10. Prepayment of Loans .",
+          "score": 9.5,
+          "flags": [
+            "non_certified_ok"
+          ]
+        }
+      ],
+      "foundCriticalProvision": true,
+      "correctCitation": true,
+      "staleDocumentRetrieved": false,
+      "falseConfidence": false,
+      "missingCritical": false,
+      "notes": []
+    }
+  ],
+  "metrics": {
+    "criticalQuestions": 6,
+    "criticalFoundRate": 1,
+    "correctCitationRate": 1,
+    "staleRetrievalRate": 0,
+    "falseConfidenceRate": 0,
+    "missingCriticalCount": 0
+  },
+  "note": "Independent gold questions; retrieval over DISCOVERED summaries only. Citation presence ≠ legal correctness."
+}
