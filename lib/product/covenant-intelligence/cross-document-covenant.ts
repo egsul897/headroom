@@ -380,11 +380,11 @@ function evaluateConditionsAgainstKnownFacts(
     }
     // Event of Default requires an explicit noEventOfDefault stipulation — bare
     // noDefault must not silently clear an EOD gate (Default ≠ Event of Default).
+    // Affirmative EOD / noEventOfDefault===false already continued above.
     if (
       /no Event of Default/i.test(c) &&
       known.noEventOfDefault === true &&
-      known.eventOfDefault !== true &&
-      known.noEventOfDefault !== false
+      known.eventOfDefault !== true
     ) {
       satisfied = true;
       usedCallerStipulation = true;
