@@ -2,6 +2,7 @@
 
 **Status:** MERGE_HOLD (do not merge until human confirms independent CI green on this tip)  
 **Prior CI-green tip:** `f0e46aa9` (PR #250)  
+**Remediation tip:** `592d53c89595f77547b5de21d4e43cdc57c090b5` (`592d53c89`)  
 **Scope:** Fix false-favorable paths identified after #250 CI green; reconcile #253/#254 without regressing #237 utilization or REQUIRE.
 
 ## Reproduced failures (pre-fix / adversarial)
