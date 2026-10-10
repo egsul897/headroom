@@ -213,6 +213,33 @@ function isDefinitionsContext(enclosing: StructuralNode | undefined, sorted: Str
 
 const UNQUOTED_COLON_DEFINING_VERB = /^\s*(?:means|shall\s+mean|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b/i;
 
+/**
+ * Absolute char offsets of NON-NESTED definition declarations inside
+ * `[from, to)`. Used by the structure stage to scope clause-hierarchy parsing
+ * to each definition body so the last limb of one term (e.g. Available Amount
+ * `(viii)`) cannot swallow later terms' markers or owned spans.
+ *
+ * Text-only + `isNestedDeclaration` — no structural nodes required. Does not
+ * apply the unquoted-colon definitions-context filter (that filter needs an
+ * enclosing node); callers should only invoke this inside a definitions
+ * SECTION whose heading already established definitions context.
+ */
+export function findTopLevelDefinitionStarts(text: string, from: number, to: number): number[] {
+  const region = text.slice(from, to);
+  const meansMatches = scanPattern(DEFINITION_DECLARATION, region, 1, 100);
+  const quotedColonMatches = scanPattern(QUOTED_COLON_DEFINITION, region, 1, 100);
+  const unquotedColonMatches = scanPattern(UNQUOTED_COLON_DEFINITION, region, 4, 60);
+  const merged = dedupeByOverlap([...meansMatches, ...quotedColonMatches, ...unquotedColonMatches]);
+  const starts: number[] = [];
+  for (const m of merged) {
+    const abs = from + m.index;
+    if (abs < from || abs >= to) continue;
+    if (isNestedDeclaration(text, abs)) continue;
+    starts.push(abs);
+  }
+  return starts.sort((a, b) => a - b);
+}
+
 export function detectStructuralDefinitions(documentId: string, text: string, nodes: StructuralNode[]): DetectedDefinition[] {
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
 

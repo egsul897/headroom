@@ -1,0 +1,699 @@
+{
+  "schemaVersion": "neon-corpus-flywheel.batch1-analysis.v1",
+  "mode": "OFFLINE_AUTHENTIC_FIXTURES",
+  "generatedAt": "2026-10-10T00:53:24.916Z",
+  "localHead": "ad417a508ce0451c82f23fb56165cbfb2cc132a4",
+  "neonStatus": {
+    "attempted": true,
+    "result": "AUTH_FAILED",
+    "sqlstate": "28P01",
+    "hostFingerprintNote": "ep-shiny-rice-aw903tjv (pooler) TCP/TLS reachable; password rejected for neondb_owner",
+    "secretRefreshRequested": true
+  },
+  "paidInferenceUsd": 0,
+  "previouslyReportedNeonSnapshot": {
+    "source": "origin/cursor/kf-corpus-quality-gate-8a8b + neon-massive-corpus-expansion (NOT live this run)",
+    "disclaimer": "DISCOVERED historical counts only — not a substitute for Stage-1 live inventory",
+    "knowledgeSources": 769,
+    "distinctIssuers": 212,
+    "relationshipEdges": 48226,
+    "exactTripleDuplicates": 46810,
+    "documentByteObjects": 746,
+    "byClass": {
+      "CREDIT_AGREEMENT": 114,
+      "INDENTURE": 61,
+      "AMENDMENT": 65,
+      "RESTATEMENT": 106,
+      "SUPPLEMENTAL_INDENTURE": 98,
+      "SECURITY_AGREEMENT": 26,
+      "INTERCREDITOR_AGREEMENT": 3,
+      "GUARANTEE_AGREEMENT": 3,
+      "ABL_AGREEMENT": 1
+    }
+  },
+  "packages": [
+    {
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "priorityRole": "complete_credit_agreement_with_amendments_restatement",
+      "documentCount": 4,
+      "missingDocs": [],
+      "structural": [
+        {
+          "documentId": "doc-a-2022-amended-restated-credit-agreement",
+          "label": "doc-a-2022-amended-restated-credit-agreement",
+          "typeHint": "AMENDED_AND_RESTATED_AGREEMENT",
+          "textBytes": 739530,
+          "textSha256": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+          "nodeCount": 955,
+          "definitionCount": 361,
+          "nonNestedDefinitionCount": 344,
+          "passACandidateCount": 475,
+          "topSignals": {
+            "exception_marker": 261,
+            "permission_construction": 176,
+            "prohibitive_construction": 145,
+            "covenant_verb": 112,
+            "headline_heading": 38,
+            "financial_metric": 37,
+            "dollar_value": 34,
+            "percentage": 33,
+            "shared_cap": 31,
+            "permitted_construct": 25,
+            "cure_or_trigger": 15,
+            "builder_language": 11,
+            "greater_lesser_of": 9,
+            "ratio_expression": 5,
+            "refinancing": 1
+          },
+          "hasAvailableAmountTerm": true,
+          "dsgrAaViiiSpan": {
+            "charStart": 30696,
+            "charEnd": 31192,
+            "span": 496
+          },
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "doc-b-2024-third-amendment",
+          "label": "doc-b-2024-third-amendment",
+          "typeHint": "AMENDMENT",
+          "textBytes": 737387,
+          "textSha256": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+          "nodeCount": 989,
+          "definitionCount": 402,
+          "nonNestedDefinitionCount": 387,
+          "passACandidateCount": 497,
+          "topSignals": {
+            "exception_marker": 270,
+            "permission_construction": 184,
+            "prohibitive_construction": 156,
+            "covenant_verb": 116,
+            "headline_heading": 42,
+            "dollar_value": 36,
+            "financial_metric": 34,
+            "percentage": 30,
+            "shared_cap": 27,
+            "permitted_construct": 23,
+            "cure_or_trigger": 17,
+            "builder_language": 12,
+            "greater_lesser_of": 10,
+            "ratio_expression": 5,
+            "refinancing": 1
+          },
+          "hasAvailableAmountTerm": true,
+          "dsgrAaViiiSpan": {
+            "charStart": 60693,
+            "charEnd": 61189,
+            "span": 496
+          },
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "doc-c-2025-fourth-amendment",
+          "label": "doc-c-2025-fourth-amendment",
+          "typeHint": "AMENDMENT",
+          "textBytes": 13810,
+          "textSha256": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+          "nodeCount": 17,
+          "definitionCount": 0,
+          "nonNestedDefinitionCount": 0,
+          "passACandidateCount": 12,
+          "topSignals": {
+            "prohibitive_construction": 6,
+            "headline_heading": 4,
+            "exception_marker": 4,
+            "permission_construction": 3,
+            "dollar_value": 1,
+            "ratio_expression": 1,
+            "greater_lesser_of": 1,
+            "financial_metric": 1,
+            "shared_cap": 1,
+            "cure_or_trigger": 1
+          },
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "doc-d-2025-second-amended-restated-credit-agreement",
+          "label": "doc-d-2025-second-amended-restated-credit-agreement",
+          "typeHint": "AMENDED_AND_RESTATED_AGREEMENT",
+          "textBytes": 840654,
+          "textSha256": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+          "nodeCount": 978,
+          "definitionCount": 379,
+          "nonNestedDefinitionCount": 362,
+          "passACandidateCount": 488,
+          "topSignals": {
+            "exception_marker": 268,
+            "permission_construction": 186,
+            "prohibitive_construction": 159,
+            "covenant_verb": 113,
+            "financial_metric": 41,
+            "headline_heading": 38,
+            "dollar_value": 34,
+            "percentage": 32,
+            "shared_cap": 28,
+            "permitted_construct": 25,
+            "cure_or_trigger": 15,
+            "builder_language": 13,
+            "greater_lesser_of": 12,
+            "ratio_expression": 9,
+            "refinancing": 1
+          },
+          "hasAvailableAmountTerm": true,
+          "dsgrAaViiiSpan": {
+            "charStart": 32777,
+            "charEnd": 33273,
+            "span": 496
+          },
+          "chwyBuilderA": null
+        }
+      ],
+      "packageGraph": {
+        "instrumentCount": 2,
+        "relationshipCount": 4,
+        "performance": {
+          "documentCount": 4,
+          "totalCharsScanned": 2331381,
+          "relationshipCandidatesGenerated": 4,
+          "relationshipsResolved": 2,
+          "relationshipsUnresolved": 1,
+          "modificationCandidatesGenerated": 2,
+          "crossDocumentReferenceLeadsGenerated": 240,
+          "wallClockMs": 45,
+          "semanticCallsUsed": 0
+        },
+        "classifications": [
+          {
+            "documentId": "doc-a-2022-amended-restated-credit-agreement",
+            "documentType": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9,
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          },
+          {
+            "documentId": "doc-b-2024-third-amendment",
+            "documentType": "AMENDMENT",
+            "confidence": 0.97,
+            "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+          },
+          {
+            "documentId": "doc-c-2025-fourth-amendment",
+            "documentType": "AMENDMENT",
+            "confidence": 0.97,
+            "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+          },
+          {
+            "documentId": "doc-d-2025-second-amended-restated-credit-agreement",
+            "documentType": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9,
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "RESTATES",
+            "from": "doc-a-2022-amended-restated-credit-agreement",
+            "to": null,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "this reference (\"the Credit Agreement, dated as of October 11, 2019\") appears only as a contextual mention (recital/cross-default/background reference), not the document's own operative modification action - a coincidental type+execution-date match with another package document is never sufficient on its own to establish an RESTATES target",
+            "resolutionMethod": "DETERMINISTIC_CONTEXTUAL_MENTION_EXCLUDED",
+            "targetHint": "the Credit Agreement, dated as of October 11, 2019"
+          },
+          {
+            "type": "AMENDS",
+            "from": "doc-b-2024-third-amendment",
+            "to": "doc-a-2022-amended-restated-credit-agreement",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "that certain Amended and Restated Credit Agreement,\ndated as of April 1, 2022"
+          },
+          {
+            "type": "AMENDS",
+            "from": "doc-c-2025-fourth-amendment",
+            "to": "doc-a-2022-amended-restated-credit-agreement",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022"
+          },
+          {
+            "type": "RESTATES",
+            "from": "doc-d-2025-second-amended-restated-credit-agreement",
+            "to": "doc-a-2022-amended-restated-credit-agreement",
+            "status": "REVIEW_REQUIRED",
+            "unresolvedReason": "resolved by type+execution-date match, but this reference (\"the Amended and Restated Credit Agreement, dated as of April 1, 2022\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target",
+            "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+            "targetHint": "the Amended and Restated Credit Agreement, dated as of April 1, 2022"
+          }
+        ],
+        "instruments": [
+          {
+            "name": "AMENDED AND RESTATED CREDIT AGREEMENT",
+            "documentIds": [
+              "doc-a-2022-amended-restated-credit-agreement",
+              "doc-b-2024-third-amendment",
+              "doc-c-2025-fourth-amendment"
+            ],
+            "baseDocumentId": "doc-a-2022-amended-restated-credit-agreement",
+            "reviewStatus": "RESOLVED"
+          },
+          {
+            "name": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+            "documentIds": [
+              "doc-d-2025-second-amended-restated-credit-agreement"
+            ],
+            "baseDocumentId": "doc-d-2025-second-amended-restated-credit-agreement",
+            "reviewStatus": "RESOLVED"
+          }
+        ]
+      }
+    },
+    {
+      "packageKey": "conmed-2025-credit-facility",
+      "priorityRole": "secured_package_lien_guarantee_collateral",
+      "documentCount": 5,
+      "missingDocs": [],
+      "structural": [
+        {
+          "documentId": "base-credit-agreement-article-vii-negative-covenants",
+          "label": "base-credit-agreement-article-vii-negative-covenants",
+          "typeHint": "CREDIT_AGREEMENT",
+          "textBytes": 50080,
+          "textSha256": "be76b638c6ff85b89a99582038f29057ca92e7b0840ea40bf9e0e65d2462aade",
+          "nodeCount": 116,
+          "definitionCount": 0,
+          "nonNestedDefinitionCount": 0,
+          "passACandidateCount": 74,
+          "topSignals": {
+            "exception_marker": 31,
+            "covenant_verb": 27,
+            "permitted_construct": 18,
+            "financial_metric": 17,
+            "dollar_value": 17,
+            "percentage": 16,
+            "permission_construction": 15,
+            "prohibitive_construction": 15,
+            "greater_lesser_of": 11,
+            "shared_cap": 6,
+            "ratio_expression": 5,
+            "headline_heading": 4,
+            "refinancing": 1
+          },
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "base-credit-agreement-definitions-excerpt",
+          "label": "base-credit-agreement-definitions-excerpt",
+          "typeHint": "CREDIT_AGREEMENT",
+          "textBytes": 44176,
+          "textSha256": "9a2b1c4d1ba2c80b873769309c2ba735ce619b84e957b160784cb594491c4878",
+          "nodeCount": 0,
+          "definitionCount": 77,
+          "nonNestedDefinitionCount": 77,
+          "passACandidateCount": 0,
+          "topSignals": {},
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "first-omnibus-amendment-2026-curated",
+          "label": "first-omnibus-amendment-2026-curated",
+          "typeHint": "AMENDMENT",
+          "textBytes": 18111,
+          "textSha256": "e40b7099e4406b70c37c333e7f36f720062a34da97fd0fc90ec24e72a20b6401",
+          "nodeCount": 27,
+          "definitionCount": 1,
+          "nonNestedDefinitionCount": 1,
+          "passACandidateCount": 10,
+          "topSignals": {
+            "exception_marker": 7,
+            "covenant_verb": 3,
+            "permission_construction": 2,
+            "prohibitive_construction": 2,
+            "permitted_construct": 1
+          },
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "guarantee-and-collateral-agreement-full",
+          "label": "guarantee-and-collateral-agreement-full",
+          "typeHint": "GUARANTEE_AND_SECURITY_AGREEMENT",
+          "textBytes": 106821,
+          "textSha256": "e9d7a347023568be4707e19e089c6210334785948d1ff61ee363504a34f92c36",
+          "nodeCount": 227,
+          "definitionCount": 35,
+          "nonNestedDefinitionCount": 35,
+          "passACandidateCount": 102,
+          "topSignals": {
+            "permission_construction": 50,
+            "exception_marker": 45,
+            "covenant_verb": 40,
+            "prohibitive_construction": 28,
+            "headline_heading": 20,
+            "cure_or_trigger": 4,
+            "percentage": 4,
+            "builder_language": 3,
+            "dollar_value": 2,
+            "shared_cap": 1
+          },
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        },
+        {
+          "documentId": "second-amendment-2022-full",
+          "label": "second-amendment-2022-full",
+          "typeHint": "AMENDMENT",
+          "textBytes": 11701,
+          "textSha256": "953d9051b9a53adf610f1b2d4658ec830a5f633ae811957815ff318fb7d8cd82",
+          "nodeCount": 18,
+          "definitionCount": 0,
+          "nonNestedDefinitionCount": 0,
+          "passACandidateCount": 7,
+          "topSignals": {
+            "financial_metric": 3,
+            "exception_marker": 3,
+            "dollar_value": 2,
+            "permission_construction": 2,
+            "ratio_expression": 1,
+            "headline_heading": 1,
+            "prohibitive_construction": 1
+          },
+          "hasAvailableAmountTerm": false,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": null
+        }
+      ],
+      "packageGraph": {
+        "instrumentCount": 3,
+        "relationshipCount": 8,
+        "performance": {
+          "documentCount": 5,
+          "totalCharsScanned": 230889,
+          "relationshipCandidatesGenerated": 8,
+          "relationshipsResolved": 4,
+          "relationshipsUnresolved": 4,
+          "modificationCandidatesGenerated": 4,
+          "crossDocumentReferenceLeadsGenerated": 84,
+          "wallClockMs": 11,
+          "semanticCallsUsed": 0
+        },
+        "classifications": [
+          {
+            "documentId": "base-credit-agreement-article-vii-negative-covenants",
+            "documentType": "UNKNOWN",
+            "confidence": 0,
+            "resolutionMethod": "UNKNOWN_NO_SIGNAL"
+          },
+          {
+            "documentId": "base-credit-agreement-definitions-excerpt",
+            "documentType": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9,
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          },
+          {
+            "documentId": "first-omnibus-amendment-2026-curated",
+            "documentType": "AMENDMENT",
+            "confidence": 0.97,
+            "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+          },
+          {
+            "documentId": "guarantee-and-collateral-agreement-full",
+            "documentType": "GUARANTEE_AND_SECURITY_AGREEMENT",
+            "confidence": 0.9,
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          },
+          {
+            "documentId": "second-amendment-2022-full",
+            "documentType": "AMENDMENT",
+            "confidence": 0.97,
+            "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "RESTATES",
+            "from": "base-credit-agreement-definitions-excerpt",
+            "to": null,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+            "resolutionMethod": "DETERMINISTIC_NO_SIGNAL",
+            "targetHint": null
+          },
+          {
+            "type": "AMENDS",
+            "from": "first-omnibus-amendment-2026-curated",
+            "to": "base-credit-agreement-definitions-excerpt",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "the Eighth Amended and Restated Credit\nAgreement, dated as of June 10, 2025"
+          },
+          {
+            "type": "AMENDS",
+            "from": "first-omnibus-amendment-2026-curated",
+            "to": "guarantee-and-collateral-agreement-full",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "the Amended and Restated Guarantee and Collateral Agreement, dated as of the June 10, 2025"
+          },
+          {
+            "type": "GUARANTEES",
+            "from": "guarantee-and-collateral-agreement-full",
+            "to": "base-credit-agreement-definitions-excerpt",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025"
+          },
+          {
+            "type": "SECURES",
+            "from": "guarantee-and-collateral-agreement-full",
+            "to": "base-credit-agreement-definitions-excerpt",
+            "status": "RESOLVED",
+            "unresolvedReason": null,
+            "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+            "targetHint": "the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025"
+          },
+          {
+            "type": "GUARANTEES",
+            "from": "guarantee-and-collateral-agreement-full",
+            "to": null,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "no document in this package is classified as GUARANTEE_AND_SECURITY_AGREEMENT/GUARANTEE/SECURITY_AGREEMENT",
+            "resolutionMethod": "DETERMINISTIC_NO_CANDIDATE",
+            "targetHint": "the Guarantee\nand Collateral Agreement, dated as of August 28, 2002"
+          },
+          {
+            "type": "SECURES",
+            "from": "guarantee-and-collateral-agreement-full",
+            "to": null,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "no document in this package is classified as GUARANTEE_AND_SECURITY_AGREEMENT/GUARANTEE/SECURITY_AGREEMENT",
+            "resolutionMethod": "DETERMINISTIC_NO_CANDIDATE",
+            "targetHint": "the Guarantee\nand Collateral Agreement, dated as of August 28, 2002"
+          },
+          {
+            "type": "AMENDS",
+            "from": "second-amendment-2022-full",
+            "to": null,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"July 16, 2021\" is not in this package",
+            "resolutionMethod": "DETERMINISTIC_TYPE_ONLY_CHRONOLOGICALLY_IMPOSSIBLE",
+            "targetHint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+          }
+        ],
+        "instruments": [
+          {
+            "name": "UNKNOWN",
+            "documentIds": [
+              "base-credit-agreement-article-vii-negative-covenants"
+            ],
+            "baseDocumentId": "base-credit-agreement-article-vii-negative-covenants",
+            "reviewStatus": "RESOLVED"
+          },
+          {
+            "name": "AMENDED_AND_RESTATED_AGREEMENT",
+            "documentIds": [
+              "base-credit-agreement-definitions-excerpt",
+              "first-omnibus-amendment-2026-curated"
+            ],
+            "baseDocumentId": "base-credit-agreement-definitions-excerpt",
+            "reviewStatus": "RESOLVED"
+          },
+          {
+            "name": "AMENDMENT",
+            "documentIds": [
+              "second-amendment-2022-full"
+            ],
+            "baseDocumentId": "second-amendment-2022-full",
+            "reviewStatus": "RESOLVED"
+          }
+        ]
+      }
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "priorityRole": "restricted_payments_available_amount_builder",
+      "documentCount": 1,
+      "missingDocs": [],
+      "structural": [
+        {
+          "documentId": "doc-a-2026-06-23-credit-agreement",
+          "label": "doc-a-2026-06-23-credit-agreement",
+          "typeHint": "CREDIT_AGREEMENT",
+          "textBytes": 864362,
+          "textSha256": "f63b9dc6560e699cd5158ee0f254dba76da92612ad75fdc27756047ad8f49eeb",
+          "nodeCount": 1210,
+          "definitionCount": 486,
+          "nonNestedDefinitionCount": 476,
+          "passACandidateCount": 601,
+          "topSignals": {
+            "exception_marker": 330,
+            "permission_construction": 193,
+            "covenant_verb": 166,
+            "prohibitive_construction": 163,
+            "financial_metric": 85,
+            "permitted_construct": 66,
+            "percentage": 55,
+            "dollar_value": 43,
+            "greater_lesser_of": 43,
+            "shared_cap": 38,
+            "headline_heading": 28,
+            "cure_or_trigger": 15,
+            "builder_language": 12,
+            "ratio_expression": 11,
+            "refinancing": 3
+          },
+          "hasAvailableAmountTerm": true,
+          "dsgrAaViiiSpan": null,
+          "chwyBuilderA": {
+            "charStart": 662595,
+            "charEnd": 664123,
+            "span": 1528,
+            "endsAtB": true,
+            "ownsProviso": true
+          }
+        }
+      ],
+      "packageGraph": {
+        "instrumentCount": 1,
+        "relationshipCount": 0,
+        "performance": {
+          "documentCount": 1,
+          "totalCharsScanned": 864362,
+          "relationshipCandidatesGenerated": 0,
+          "relationshipsResolved": 0,
+          "relationshipsUnresolved": 0,
+          "modificationCandidatesGenerated": 0,
+          "crossDocumentReferenceLeadsGenerated": 22,
+          "wallClockMs": 13,
+          "semanticCallsUsed": 0
+        },
+        "classifications": [
+          {
+            "documentId": "doc-a-2026-06-23-credit-agreement",
+            "documentType": "CREDIT_AGREEMENT",
+            "confidence": 0.9,
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          }
+        ],
+        "relationships": [],
+        "instruments": [
+          {
+            "name": "CREDIT AGREEMENT",
+            "documentIds": [
+              "doc-a-2026-06-23-credit-agreement"
+            ],
+            "baseDocumentId": "doc-a-2026-06-23-credit-agreement",
+            "reviewStatus": "RESOLVED"
+          }
+        ]
+      }
+    }
+  ],
+  "compilerChallengeFindings": [
+    {
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "findingId": "DSGR-AA-DEF-SWALLOW",
+      "status": "REMEDIATED_THIS_BATCH",
+      "severity": "HIGH",
+      "independentEvidence": "Pre-fix: 1.01(viii) owned [32777,196272) (~163k chars). Post-fix: ends at Availability declaration (33273).",
+      "headroomBefore": "False hierarchy — later definitions nested under Available Amount last limb.",
+      "headroomAfter": "Limb clipped to definition body; zero post-term children under 1.01(viii).",
+      "rootCause": "Clause tree parsed across entire definitions SECTION; last enumerator closed only by next SECTION.",
+      "generalizedFix": "Per-definition-body clause parsing + soft charEnd clip; findTopLevelDefinitionStarts.",
+      "regressionTest": "tests/neon-corpus-flywheel/definition-body-clause-scope.test.ts"
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "findingId": "CHWY-AA-BUILDER-A-NESTRANK",
+      "status": "REMEDIATED_THIS_BATCH",
+      "severity": "HIGH",
+      "independentEvidence": "Pre-fix: 6.08(a)(3)(a) ended at (A); Specified Event of Default proviso excluded. Post-fix: charEnd(a)==charStart(b); proviso inside owned text.",
+      "headroomBefore": "Depth>3 SUBCLAUSE clamp made (A)/(B) siblings of (a).",
+      "headroomAfter": "(A)/(B) parentNodeId = builder (a); material proviso retained on owning limb.",
+      "rootCause": "Owned-span stack used clamped nodeType RANK for all depth>=3.",
+      "generalizedFix": "nestRank = 1 + clause depth for ownership/parentage.",
+      "regressionTest": "tests/neon-corpus-flywheel/definition-body-clause-scope.test.ts"
+    },
+    {
+      "packageKey": "conmed-2025-credit-facility",
+      "findingId": "CONMED-MISSING-BASE-UNRESOLVED",
+      "status": "DEMONSTRATED_CORRECT_REFUSAL",
+      "severity": "N_A",
+      "independentEvidence": "Package graph keeps amendment→missing Seventh A&R as UNRESOLVED rather than inventing a base document (fail-closed).",
+      "headroomBefore": "N/A — correct behavior retained",
+      "headroomAfter": "N/A",
+      "rootCause": "Not a defect",
+      "generalizedFix": null,
+      "regressionTest": "Existing package-graph / phase-2f suites (not weakened)"
+    }
+  ],
+  "covenantCoverageNotes": {
+    "dsgr": "Full multi-doc CA + amendments; Pass A signals across Art. VI families; AA builder limbs now correctly bounded.",
+    "conmed": "Curated Art. VII + Guarantee/Collateral + amendments; lien/guarantee topology present; missing Seventh A&R explicit.",
+    "chwy": "Full CA text; RP §6.08 / Available Amount builder now retains limb (a) proviso on owning node.",
+    "omittedAuthenticIndenture": "No on-disk HY indenture fixture — deferred to Neon INDENTURE class after auth restore."
+  },
+  "nextBatch": [
+    {
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "role": "abl_intercreditor_complexity",
+      "reason": "Intercreditor Joinder → out-of-package 2013 ICA must stay UNRESOLVED; Payment Conditions diversity."
+    },
+    {
+      "packageKey": "fwrg-2021-credit-agreement",
+      "role": "available_amount_shared_cap_ground_truth",
+      "reason": "Canonical AA / grower / shared-cap human ground truth."
+    },
+    {
+      "packageKey": "riot-2025-2026-credit-facility",
+      "role": "multi_restatement_operative_state",
+      "reason": "Three-document restatement chain; prior carve-out deletion evidence."
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "role": "builder_basket_marker_disagreement",
+      "reason": "Available Amount Builder Basket 7.05(a)(y) vs printed (vi)."
+    },
+    {
+      "packageKey": "neon-indenture-holdout",
+      "role": "high_yield_indenture",
+      "reason": "Select from Neon KnowledgeSource INDENTURE (~61 previously reported) once DATABASE_URL works.",
+      "blockedOn": "DATABASE_URL"
+    }
+  ],
+  "coordination": {
+    "pr246": "Graph-quality remediation — this batch performs no Neon edge writes and does not reintroduce duplicate amplification.",
+    "pr229_237": "Utilization/authority safeguards preserved; no gate weakening."
+  }
+}
