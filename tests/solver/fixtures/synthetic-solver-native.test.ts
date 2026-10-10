@@ -221,6 +221,7 @@ describe("Synthetic solver-native fixtures (Cases A-J)", () => {
         currentUsageStatus: "VERIFIED_ZERO",
         currentUsageAuthoritative: true,
         currentUsageSupportsRemainingClaim: true,
+        currentUsageProductionAuthoritative: true,
         currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "synth-doc-1", sectionRef: "§E.1" },
       };
@@ -268,6 +269,7 @@ describe("Synthetic solver-native fixtures (Cases A-J)", () => {
         currentUsageStatus: "VERIFIED_ZERO",
         currentUsageAuthoritative: true,
         currentUsageSupportsRemainingClaim: true,
+        currentUsageProductionAuthoritative: true,
         currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "synth-doc-1", sectionRef: "§E.1" },
       };
@@ -304,6 +306,7 @@ describe("Synthetic solver-native fixtures (Cases A-J)", () => {
         currentUsageStatus: "VERIFIED_ZERO",
         currentUsageAuthoritative: true,
         currentUsageSupportsRemainingClaim: true,
+        currentUsageProductionAuthoritative: true,
         currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "synth-doc-1", sectionRef: "§F.6" },
       };

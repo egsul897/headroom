@@ -15,6 +15,7 @@ import {
   validateCompletenessCertificate,
   type CompletenessValidationContext,
 } from "./completeness-certificate";
+import type { TrustedIssuerAuthorizationContext } from "./completeness-issuer-auth";
 import type {
   CompletenessBindingFingerprints,
   UtilizationCompletenessCertificate,
@@ -41,6 +42,11 @@ export interface ResolveUtilizationArgs {
    * presented — used for staleness / amendment / ledger / financial binding checks.
    */
   currentBindings?: CompletenessBindingFingerprints | null;
+  /**
+   * Trusted identity/authorization registry for the certificate issuer.
+   * Required whenever a certificate is presented — issuer.role alone is insufficient.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   /**
    * PRODUCTION refuses SYNTHETIC_LABELED / SYSTEM_FIXTURE certificates.
    * DEMO_SYNTHETIC allows labeled synthetic certificates for mechanics demos only.
@@ -205,6 +211,11 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
         "completeness certificate presented without currentBindings — cannot verify staleness",
       ];
       blockers.push(...certificateValidationBlockers);
+    } else if (args.trustedIssuerAuth == null) {
+      certificateValidationBlockers = [
+        "completeness certificate presented without trustedIssuerAuth — caller-supplied issuer.role alone cannot establish completeness authority",
+      ];
+      blockers.push(...certificateValidationBlockers);
     } else {
       const ctx: CompletenessValidationContext = {
         executionMode,
@@ -214,6 +225,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
         currency,
         currentBindings: args.currentBindings,
         attributedRecordCount: attributedToRule.length,
+        trustedIssuerAuth: args.trustedIssuerAuth,
       };
       const validated = validateCompletenessCertificate(cert, ctx);
       certificateValidationBlockers = validated.blockers;

@@ -297,8 +297,44 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         currentUsageStatus: "COMPUTED",
         currentUsageAuthoritative: false,
         currentUsageSupportsRemainingClaim: false,
+        currentUsageProductionAuthoritative: false,
         currentUsageAttributedKnown: true,
         currentUsageCompletenessCertified: false,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+      };
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
+        permissionsById: new Map([["a", p]]),
+        graph,
+        financials: FIN,
+        requestedAmount: 50,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [constraint],
+        collateralScopes: [],
+      });
+      expect(evalResult.requirements.find((r) => r.class === "SHARED_CAP")?.status).toBe("UNKNOWN");
+      expect(evalResult.legs[0]!.amountAllocated).toBe(0);
+    });
+
+    it("Case: demo supportsRemainingClaim without productionAuthoritative cannot publish remaining", () => {
+      const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
+      const graph = buildPermissionGraph([p], []);
+      const constraint: SharedConstraint = {
+        id: "sc-demo-only",
+        companyId: "co-1",
+        name: "Demo completeness only",
+        cap: { amount: 100 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "a" }],
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        currentUsage: 20,
+        currentUsageStatus: "COMPUTED",
+        currentUsageAuthoritative: true,
+        currentUsageSupportsRemainingClaim: true,
+        currentUsageProductionAuthoritative: false,
+        currentUsageAttributedKnown: true,
+        currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
       };
       const evalResult = evaluateElection({
@@ -331,6 +367,7 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         currentUsageStatus: "COMPUTED",
         currentUsageAuthoritative: true,
         currentUsageSupportsRemainingClaim: true,
+        currentUsageProductionAuthoritative: true,
         currentUsageCompletenessCertified: true,
         sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
       };

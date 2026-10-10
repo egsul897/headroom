@@ -61,7 +61,16 @@ import type {
   SourceCitation,
   Transaction,
 } from "./solver/types";
-import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
+import {
+  computeSharedConstraintCurrentUsage,
+  solverFlagsFromUsageResult,
+} from "./solver/shared-usage";
+import type {
+  CompletenessBindingFingerprints,
+  TrustedIssuerAuthorizationContext,
+  UtilizationCompletenessCertificate,
+  UtilizationExecutionMode,
+} from "./capacity";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -1845,20 +1854,24 @@ export interface LoadCompanySolverStaticOptions {
    */
   basketUsage?: BasketUsageRecord[];
   /**
-   * Optional completeness certificates keyed by shared-constraint id (#234).
+   * Optional completeness certificates keyed by shared-constraint id.
+   * Canonical #234 UtilizationCompletenessCertificate shape only — no thin stubs.
    * Required for any remaining-capacity claim on that constraint.
    */
-  completenessCertificates?: Record<
-    string,
-    {
-      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
-      approvalState: "APPROVED";
-      asOf: string;
-      sourceLabel: string;
-      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
-    }
-  >;
+  completenessCertificates?: Record<string, UtilizationCompletenessCertificate>;
+  /**
+   * Current operative world fingerprints — required whenever certificates are presented.
+   */
+  currentBindings?: CompletenessBindingFingerprints | null;
+  /**
+   * Trusted identity/authorization for certificate issuers — required with certificates.
+   * Caller-supplied issuer.role alone never authorizes remaining.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+  /** PRODUCTION (default) refuses synthetic/fixture certificates. */
+  executionMode?: UtilizationExecutionMode;
   asOf?: string;
+  currency?: string | null;
 }
 
 /**
@@ -1956,7 +1969,7 @@ export async function loadCompanySolverStaticData(
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
     ...(() => {
-      const cert = options?.completenessCertificates?.[c.id];
+      const cert = options?.completenessCertificates?.[c.id] ?? null;
       const computed = computeSharedConstraintCurrentUsage({
         aggregationRule: c.aggregationRule,
         measurementBasis: c.measurementBasis,
@@ -1968,18 +1981,19 @@ export async function loadCompanySolverStaticData(
         })),
         basketUsage: options?.basketUsage ?? [],
         constraintId: c.id,
+        companyId,
         asOf: options?.asOf,
-        completenessCertificate: cert
-          ? { ...cert, constraintId: c.id }
-          : null,
+        currency: options?.currency ?? null,
+        completenessCertificate: cert,
+        currentBindings: options?.currentBindings ?? null,
+        trustedIssuerAuth: options?.trustedIssuerAuth ?? null,
+        executionMode: options?.executionMode ?? "PRODUCTION",
       });
+      const flags = solverFlagsFromUsageResult(computed);
       return {
         currentUsage: computed.usage,
         currentUsageStatus: computed.status,
-        currentUsageAuthoritative: computed.supportsRemainingClaim,
-        currentUsageSupportsRemainingClaim: computed.supportsRemainingClaim,
-        currentUsageAttributedKnown: computed.attributedKnown,
-        currentUsageCompletenessCertified: computed.completenessCertified,
+        ...flags,
       };
     })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },

@@ -9,6 +9,7 @@ import {
   assertProductCapacityConsistency,
   buildSharedProductCapacityViews,
   computeVerifiedRemaining,
+  demoTrustedIssuerAuth,
   evidenceFromAttributedLedger,
   refuseAuthoritativeRemaining,
   resolveUtilization,
@@ -39,6 +40,7 @@ import {
 import type { IRExpression } from "@/lib/contract-model/ir/types";
 import { MAX, METRIC, MONEY, MUL, NUM, SUB } from "@/tests/contract-model/runtime/capacity/helpers";
 
+const DEMO_AUTH = demoTrustedIssuerAuth();
 const AS_OF_D = "2026-06-30";
 const CO_ID = "co-util-test";
 
@@ -65,6 +67,7 @@ describe("utilization resolver — never invent zero", () => {
       records: [],
       executionMode: "DEMO_SYNTHETIC",
       currentBindings: DEMO_BINDINGS,
+      trustedIssuerAuth: DEMO_AUTH,
       completenessCertificate: syntheticCompletenessCertificate({
         kind: "VERIFIED_EMPTY",
         capacityRuleId: "rule-flat",
@@ -125,6 +128,7 @@ describe("utilization resolver — never invent zero", () => {
       ],
       executionMode: "DEMO_SYNTHETIC",
       currentBindings: DEMO_BINDINGS,
+      trustedIssuerAuth: DEMO_AUTH,
       completenessCertificate: syntheticCompletenessCertificate({
         kind: "VERIFIED_COMPLETE",
         capacityRuleId: "rule-flat",
@@ -147,6 +151,7 @@ describe("utilization resolver — never invent zero", () => {
       records: [],
       executionMode: "PRODUCTION",
       currentBindings: DEMO_BINDINGS,
+      trustedIssuerAuth: DEMO_AUTH,
       completenessCertificate: syntheticCompletenessCertificate({
         kind: "VERIFIED_EMPTY",
         capacityRuleId: "rule-flat",
@@ -239,6 +244,7 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         records: [],
         executionMode: "DEMO_SYNTHETIC",
         currentBindings: DEMO_BINDINGS,
+        trustedIssuerAuth: DEMO_AUTH,
         completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_EMPTY",
           capacityRuleId: "gate-1",
@@ -313,6 +319,7 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
         ],
         executionMode: "DEMO_SYNTHETIC",
         currentBindings: DEMO_BINDINGS,
+        trustedIssuerAuth: DEMO_AUTH,
         completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
           capacityRuleId: "basket-a",
@@ -360,6 +367,7 @@ describe("Position / Simulate / Ask / verified-execution consistency", () => {
         ],
         executionMode: "DEMO_SYNTHETIC",
         currentBindings: DEMO_BINDINGS,
+        trustedIssuerAuth: DEMO_AUTH,
         completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
           capacityRuleId: "shared-rule",

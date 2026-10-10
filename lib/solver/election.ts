@@ -352,11 +352,13 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
     );
   /**
-   * Shared-constraint headroom (#234 completeness alignment):
-   * Remaining = cap − usage only when `currentUsageSupportsRemainingClaim` is true
-   * (completeness certificate required). Attributed/approved records alone, partial,
-   * missing, synthetic-without-cert, stale, or mismatched evidence must NOT yield
-   * favorable remaining. Fail closed with utilizationUnknown.
+   * Shared-constraint headroom (single remaining-authority contract):
+   * Remaining = cap − usage only when both:
+   *   - currentUsageSupportsRemainingClaim (validated completeness certificate)
+   *   - currentUsageProductionAuthoritative (trusted counsel/custodian identity)
+   * Attributed/approved records alone, partial, missing, synthetic, forged-role,
+   * stale, or mismatched evidence must NOT yield favorable remaining.
+   * Fail closed with utilizationUnknown.
    */
   const headroomAndConsume = (
     permissionId: string,
@@ -365,12 +367,8 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     const constraint = constraintFor(permissionId);
     if (!constraint) return { cappedAlloc: desiredAlloc };
     const mayClaimRemaining =
-      constraint.currentUsageSupportsRemainingClaim === true ||
-      // Backward-compat: only honor authoritative when supportsRemainingClaim unset
-      // AND authoritative was explicitly set under the completeness-aware loader.
-      (constraint.currentUsageSupportsRemainingClaim === undefined &&
-        constraint.currentUsageAuthoritative === true &&
-        constraint.currentUsageCompletenessCertified === true);
+      constraint.currentUsageSupportsRemainingClaim === true &&
+      constraint.currentUsageProductionAuthoritative === true;
     if (!mayClaimRemaining) {
       return {
         cappedAlloc: 0,

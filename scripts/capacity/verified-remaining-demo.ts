@@ -18,6 +18,7 @@ import {
   refuseAuthoritativeRemaining,
   resolveUtilization,
   syntheticCompletenessCertificate,
+  demoTrustedIssuerAuth,
 } from "@/lib/capacity";
 import { adaptLegacyCovenantProvision } from "@/lib/contract-model/ir/legacy-adapter";
 import type { CovenantProvisionInput } from "@/lib/covenant-engine";
@@ -51,6 +52,7 @@ function syntheticAttributedExample() {
     ],
     executionMode: "DEMO_SYNTHETIC",
     currentBindings: DEMO_BINDINGS,
+    trustedIssuerAuth: demoTrustedIssuerAuth(),
     completenessCertificate: syntheticCompletenessCertificate({
       kind: "VERIFIED_COMPLETE",
       capacityRuleId,

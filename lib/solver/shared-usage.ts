@@ -1,16 +1,26 @@
 /**
  * Shared-constraint pre-transaction usage helpers.
  *
- * Aligned with PR #234 utilization completeness contract:
+ * Canonical remaining-capacity authority lives in `lib/capacity/*`.
+ * This module is a consumer: it does NOT define a parallel certificate type.
+ *
  * - Approved / attributed basketUsage records establish *known attributed usage only*.
  * - They do NOT establish completeness of historical usage.
- * - Remaining = cap − usage requires an affirmative completeness certificate
- *   (VERIFIED_EMPTY or VERIFIED_COMPLETE). Approved records alone never suffice.
+ * - Remaining = cap − usage requires a validated UtilizationCompletenessCertificate
+ *   from `@/lib/capacity` (issuer + trusted identity + bindings + method).
  * - Missing attribution is ZERO_NO_ATTRIBUTED_USAGE / UNKNOWN — never invent zero.
- * - Partial attribution, external, entity-class, synthetic-without-cert, and
- *   mismatched certificates never support a remaining claim.
+ * - `supportsRemainingClaim` / deprecated `authoritative` / `currentUsageAuthoritative`
+ *   share identical semantics via `alignSolverUsageFlags`.
  */
 
+import {
+  alignSolverUsageFlags,
+  validateCompletenessCertificate,
+  type CompletenessBindingFingerprints,
+  type TrustedIssuerAuthorizationContext,
+  type UtilizationCompletenessCertificate,
+  type UtilizationExecutionMode,
+} from "@/lib/capacity";
 import type {
   AggregationRule,
   BasketUsageRecord,
@@ -27,23 +37,8 @@ export type SharedUsageComputationStatus =
   | "ENTITY_CLASS_USAGE_UNAVAILABLE"
   | "COMPLETENESS_CERTIFICATE_INVALID";
 
-/** Completeness certificate — required for any remaining-capacity claim (#234). */
-export type UtilizationCompletenessKind = "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
-
-export interface UtilizationCompletenessCertificate {
-  kind: UtilizationCompletenessKind;
-  approvalState: "APPROVED";
-  /** ISO date; must be >= evaluation asOf when provided. */
-  asOf: string;
-  sourceLabel: string;
-  /**
-   * When set, certificate applies only to this constraint id.
-   * Mismatched ids invalidate the certificate for the current constraint.
-   */
-  constraintId?: string;
-  /** AUTHENTIC historical cert vs SYNTHETIC labeled fixture. */
-  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
-}
+/** Re-export canonical certificate — do not redefine a thin duplicate. */
+export type { UtilizationCompletenessCertificate };
 
 export function measureBasketUsageAmount(
   record: BasketUsageRecord | undefined,
@@ -92,22 +87,6 @@ export function basketUsageFromAttributedEvents(
   return out.sort((a, b) => (a.permissionId ?? "").localeCompare(b.permissionId ?? ""));
 }
 
-function asOfDay(iso: string): string {
-  return iso.slice(0, 10);
-}
-
-function certificateApplies(
-  cert: UtilizationCompletenessCertificate | null | undefined,
-  constraintId: string | undefined,
-  asOf: string | undefined,
-): boolean {
-  if (!cert) return false;
-  if (cert.approvalState !== "APPROVED") return false;
-  if (cert.constraintId && constraintId && cert.constraintId !== constraintId) return false;
-  if (asOf && asOfDay(cert.asOf) < asOfDay(asOf)) return false;
-  return true;
-}
-
 export interface SharedUsageComputationResult {
   usage: number;
   status: SharedUsageComputationStatus;
@@ -116,15 +95,18 @@ export interface SharedUsageComputationResult {
   /**
    * True only when remaining = cap − usage may be claimed.
    * Requires a valid completeness certificate. Attributed/approved records alone never set this.
-   * Aligns with #234 `supportsRemainingClaim`.
+   * Identical to #234 `supportsRemainingClaim`.
    */
   supportsRemainingClaim: boolean;
   /**
-   * @deprecated Prefer `supportsRemainingClaim`. Kept for call-site migration;
-   * equal to supportsRemainingClaim (NOT merely attributedKnown).
+   * @deprecated Prefer `supportsRemainingClaim`. Equal to supportsRemainingClaim
+   * (NOT merely attributedKnown). Alias of currentUsageAuthoritative.
    */
   authoritative: boolean;
   completenessCertified: boolean;
+  /** True only for production-authoritative completeness (trusted counsel/custodian). */
+  productionAuthoritative: boolean;
+  certificateValidationBlockers: string[];
 }
 
 export function computeSharedConstraintCurrentUsage(params: {
@@ -132,15 +114,33 @@ export function computeSharedConstraintCurrentUsage(params: {
   measurementBasis: MeasurementBasis;
   members: SharedConstraintMember[];
   basketUsage: BasketUsageRecord[];
-  /** Affirmative completeness certificate (#234). Required for remaining claims. */
+  /** Canonical #234 completeness certificate. Required for remaining claims. */
   completenessCertificate?: UtilizationCompletenessCertificate | null;
+  /**
+   * Current operative world fingerprints — required whenever a certificate is presented.
+   */
+  currentBindings?: CompletenessBindingFingerprints | null;
+  /**
+   * Trusted identity/authorization for the certificate issuer — required with a certificate.
+   * Caller-supplied issuer.role alone never authorizes remaining.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+  /**
+   * PRODUCTION (default) refuses synthetic/fixture certificates.
+   * DEMO_SYNTHETIC allows labeled fixtures for mechanics demos only.
+   */
+  executionMode?: UtilizationExecutionMode;
+  companyId?: string;
   constraintId?: string;
   asOf?: string;
+  currency?: string | null;
 }): SharedUsageComputationResult {
+  const executionMode: UtilizationExecutionMode = params.executionMode ?? "PRODUCTION";
   const fail = (
     status: SharedUsageComputationStatus,
     usage = 0,
     attributedKnown = false,
+    blockers: string[] = [],
   ): SharedUsageComputationResult => ({
     usage,
     status,
@@ -148,6 +148,8 @@ export function computeSharedConstraintCurrentUsage(params: {
     supportsRemainingClaim: false,
     authoritative: false,
     completenessCertified: false,
+    productionAuthoritative: false,
+    certificateValidationBlockers: blockers,
   });
 
   if (params.aggregationRule === "EXTERNAL_INSTRUMENT_BALANCE") {
@@ -178,14 +180,70 @@ export function computeSharedConstraintCurrentUsage(params: {
   }
   usage = Math.max(0, usage);
 
+  const capacityRuleId = params.constraintId ?? "shared-constraint";
+  const companyId = params.companyId ?? "unknown-company";
+  const asOf = params.asOf ?? new Date().toISOString().slice(0, 10);
+  const currency = params.currency ?? null;
+
+  const validateCert = (attributedRecordCount: number) => {
+    const cert = params.completenessCertificate ?? null;
+    if (cert == null) {
+      return {
+        ok: false,
+        supportsRemainingClaim: false,
+        productionAuthoritative: false,
+        blockers: ["no completeness certificate presented"] as string[],
+      };
+    }
+    if (params.currentBindings == null) {
+      return {
+        ok: false,
+        supportsRemainingClaim: false,
+        productionAuthoritative: false,
+        blockers: [
+          "completeness certificate presented without currentBindings — cannot verify staleness",
+        ],
+      };
+    }
+    if (params.trustedIssuerAuth == null) {
+      return {
+        ok: false,
+        supportsRemainingClaim: false,
+        productionAuthoritative: false,
+        blockers: [
+          "completeness certificate presented without trustedIssuerAuth — caller-supplied issuer.role alone cannot establish completeness authority",
+        ],
+      };
+    }
+    // Scope provisionOrBasketId must match constraint under evaluation.
+    if (cert.scope.provisionOrBasketId !== capacityRuleId) {
+      return {
+        ok: false,
+        supportsRemainingClaim: false,
+        productionAuthoritative: false,
+        blockers: [
+          `certificate provisionOrBasketId "${cert.scope.provisionOrBasketId}" mismatched to constraintId "${capacityRuleId}"`,
+        ],
+      };
+    }
+    return validateCompletenessCertificate(cert, {
+      executionMode,
+      evaluationAsOf: asOf,
+      companyId,
+      capacityRuleId,
+      currency,
+      currentBindings: params.currentBindings,
+      attributedRecordCount,
+      trustedIssuerAuth: params.trustedIssuerAuth,
+    });
+  };
+
   if (attributedMembers === 0) {
-    // Completeness VERIFIED_EMPTY may certify remaining with zero usage and no rows.
-    const certOk = certificateApplies(
-      params.completenessCertificate,
-      params.constraintId,
-      params.asOf,
-    );
-    if (certOk && params.completenessCertificate!.kind === "VERIFIED_EMPTY") {
+    const validated = validateCert(0);
+    if (
+      validated.supportsRemainingClaim &&
+      params.completenessCertificate?.kind === "VERIFIED_EMPTY"
+    ) {
       return {
         usage: 0,
         status: "VERIFIED_ZERO",
@@ -193,7 +251,12 @@ export function computeSharedConstraintCurrentUsage(params: {
         supportsRemainingClaim: true,
         authoritative: true,
         completenessCertified: true,
+        productionAuthoritative: validated.productionAuthoritative,
+        certificateValidationBlockers: [],
       };
+    }
+    if (params.completenessCertificate != null && !validated.supportsRemainingClaim) {
+      return fail("COMPLETENESS_CERTIFICATE_INVALID", 0, false, validated.blockers);
     }
     return fail("ZERO_NO_ATTRIBUTED_USAGE");
   }
@@ -203,13 +266,9 @@ export function computeSharedConstraintCurrentUsage(params: {
   }
 
   // All named members attributed — amount known, but NOT complete without certificate.
-  const attributedStatus: SharedUsageComputationStatus = usage === 0 ? "COMPUTED" : "COMPUTED";
-  const cert = params.completenessCertificate ?? null;
-  const certOk = certificateApplies(cert, params.constraintId, params.asOf);
-
-  if (!certOk) {
-    // Stale / mismatched / missing / unapproved cert → no remaining claim.
-    if (cert && !certOk) {
+  const validated = validateCert(attributedMembers);
+  if (!validated.supportsRemainingClaim) {
+    if (params.completenessCertificate != null) {
       return {
         usage,
         status: "COMPLETENESS_CERTIFICATE_INVALID",
@@ -217,21 +276,24 @@ export function computeSharedConstraintCurrentUsage(params: {
         supportsRemainingClaim: false,
         authoritative: false,
         completenessCertified: false,
+        productionAuthoritative: false,
+        certificateValidationBlockers: validated.blockers,
       };
     }
     return {
       usage,
-      status: attributedStatus,
+      status: "COMPUTED",
       attributedKnown: true,
       supportsRemainingClaim: false,
       authoritative: false,
       completenessCertified: false,
+      productionAuthoritative: false,
+      certificateValidationBlockers: validated.blockers,
     };
   }
 
-  if (cert!.kind === "VERIFIED_EMPTY") {
+  if (params.completenessCertificate!.kind === "VERIFIED_EMPTY") {
     if (usage !== 0) {
-      // Certificate claims empty but attributed usage is non-zero — refuse remaining.
       return {
         usage,
         status: "COMPLETENESS_CERTIFICATE_INVALID",
@@ -239,6 +301,10 @@ export function computeSharedConstraintCurrentUsage(params: {
         supportsRemainingClaim: false,
         authoritative: false,
         completenessCertified: false,
+        productionAuthoritative: false,
+        certificateValidationBlockers: [
+          "VERIFIED_EMPTY conflicts with non-zero attributed usage",
+        ],
       };
     }
     return {
@@ -248,10 +314,11 @@ export function computeSharedConstraintCurrentUsage(params: {
       supportsRemainingClaim: true,
       authoritative: true,
       completenessCertified: true,
+      productionAuthoritative: validated.productionAuthoritative,
+      certificateValidationBlockers: [],
     };
   }
 
-  // VERIFIED_COMPLETE — attributed set is the full usage; remaining may be claimed.
   return {
     usage,
     status: "COMPUTED",
@@ -259,6 +326,8 @@ export function computeSharedConstraintCurrentUsage(params: {
     supportsRemainingClaim: true,
     authoritative: true,
     completenessCertified: true,
+    productionAuthoritative: validated.productionAuthoritative,
+    certificateValidationBlockers: [],
   };
 }
 
@@ -268,9 +337,27 @@ export function isAuthoritativeUsageStatus(status: SharedUsageComputationStatus)
 }
 
 /**
- * Remaining-capacity publication gate (#234 alignment).
+ * Remaining-capacity publication gate.
  * Attributed-known COMPUTED without completeness must NOT pass.
+ * For production authoritative publication, also require productionAuthoritative.
  */
-export function canPublishRemainingFromUsage(result: SharedUsageComputationResult): boolean {
-  return result.supportsRemainingClaim === true;
+export function canPublishRemainingFromUsage(
+  result: SharedUsageComputationResult,
+  opts?: { requireProductionAuthoritative?: boolean },
+): boolean {
+  if (result.supportsRemainingClaim !== true) return false;
+  if (opts?.requireProductionAuthoritative && !result.productionAuthoritative) return false;
+  return true;
+}
+
+/** Map computation result onto SharedConstraint flag bundle (single semantics). */
+export function solverFlagsFromUsageResult(
+  result: SharedUsageComputationResult,
+): ReturnType<typeof alignSolverUsageFlags> {
+  return alignSolverUsageFlags({
+    supportsRemainingClaim: result.supportsRemainingClaim,
+    productionAuthoritative: result.productionAuthoritative,
+    completenessCertified: result.completenessCertified,
+    attributedKnown: result.attributedKnown,
+  });
 }

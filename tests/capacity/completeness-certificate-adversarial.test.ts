@@ -11,13 +11,20 @@ import {
   bindingFingerprints,
   buildSharedProductCapacityViews,
   computeVerifiedRemaining,
+  demoTrustedIssuerAuth,
   evidenceFromAttributedLedger,
+  productionTrustedIssuerAuth,
   refuseAuthoritativeRemaining,
   resolveUtilization,
+  sessionCounselPrincipal,
   syntheticCompletenessCertificate,
   validateCompletenessCertificate,
 } from "@/lib/capacity";
-import type { CompletenessBindingFingerprints, UtilizationCompletenessCertificate } from "@/lib/capacity";
+import type {
+  CompletenessBindingFingerprints,
+  CompletenessValidationContext,
+  UtilizationCompletenessCertificate,
+} from "@/lib/capacity";
 
 const AS_OF = "2026-06-30";
 const CO = "co-adv";
@@ -31,6 +38,26 @@ const LIVE: CompletenessBindingFingerprints = bindingFingerprints({
   operativeAmendmentSetId: "amendments-set-2",
   sharedCapacityIdsInScope: [],
 });
+
+/** Trusted session counsel — independent of certificate issuer.role field. */
+const PROD_AUTH = productionTrustedIssuerAuth([sessionCounselPrincipal("counsel-alice")]);
+const DEMO_AUTH = demoTrustedIssuerAuth();
+
+function prodCtx(
+  over: Partial<CompletenessValidationContext> = {},
+): CompletenessValidationContext {
+  return {
+    executionMode: "PRODUCTION",
+    evaluationAsOf: AS_OF,
+    companyId: CO,
+    capacityRuleId: RULE,
+    currency: "USD",
+    currentBindings: LIVE,
+    attributedRecordCount: 0,
+    trustedIssuerAuth: PROD_AUTH,
+    ...over,
+  };
+}
 
 function baseAuthentic(
   over: Partial<UtilizationCompletenessCertificate> = {},
@@ -48,15 +75,7 @@ function baseAuthentic(
 
 describe("completeness certificate — issuer & method", () => {
   it("COUNSEL_REVIEWER / LEDGER_CUSTODIAN may issue; SYSTEM_FIXTURE cannot in PRODUCTION", () => {
-    const counsel = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: LIVE,
-      attributedRecordCount: 0,
-    });
+    const counsel = validateCompletenessCertificate(baseAuthentic(), prodCtx());
     expect(counsel.productionAuthoritative).toBe(true);
     expect(counsel.supportsRemainingClaim).toBe(true);
 
@@ -68,15 +87,7 @@ describe("completeness certificate — issuer & method", () => {
         asOf: AS_OF,
         bindings: LIVE,
       }),
-      {
-        executionMode: "PRODUCTION",
-        evaluationAsOf: AS_OF,
-        companyId: CO,
-        capacityRuleId: RULE,
-        currency: "USD",
-        currentBindings: LIVE,
-        attributedRecordCount: 0,
-      },
+      prodCtx(),
     );
     expect(fixture.productionAuthoritative).toBe(false);
     expect(fixture.supportsRemainingClaim).toBe(false);
@@ -96,6 +107,7 @@ describe("completeness certificate — issuer & method", () => {
         currency: "USD",
         currentBindings: LIVE,
         attributedRecordCount: 1,
+        trustedIssuerAuth: PROD_AUTH,
       },
     );
     expect(v.ok).toBe(false);
@@ -117,15 +129,10 @@ describe("completeness certificate — evidence scope required", () => {
         coveragePeriodEnd: "",
       },
     });
-    const v = validateCompletenessCertificate(incomplete, {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: LIVE,
-      attributedRecordCount: 0,
-    });
+    const v = validateCompletenessCertificate(
+      incomplete,
+      prodCtx(),
+    );
     expect(v.ok).toBe(false);
     expect(v.blockers.some((b) => /companyId/i.test(b))).toBe(true);
     expect(v.blockers.some((b) => /operativeAgreementId/i.test(b))).toBe(true);
@@ -136,78 +143,58 @@ describe("completeness certificate — evidence scope required", () => {
 
 describe("completeness certificate — adversarial invalidation", () => {
   it("forged / mismatched capacityRuleId refused", () => {
-    const v = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: "other-rule",
-      currency: "USD",
-      currentBindings: LIVE,
-      attributedRecordCount: 0,
-    });
+    const v = validateCompletenessCertificate(
+      baseAuthentic(),
+      prodCtx({
+        capacityRuleId: "other-rule",
+      }),
+    );
     expect(v.supportsRemainingClaim).toBe(false);
     expect(v.blockers.some((b) => /provisionOrBasketId|mismatched/i.test(b))).toBe(true);
   });
 
   it("stale certificate when governing document / ledger / financial / amendment bindings change", () => {
-    const staleDoc = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: { ...LIVE, governingDocumentContentVersion: "doc-v4-amended" },
-      attributedRecordCount: 0,
-    });
+    const staleDoc = validateCompletenessCertificate(
+      baseAuthentic(),
+      prodCtx({
+        currentBindings: { ...LIVE, governingDocumentContentVersion: "doc-v4-amended" },
+      }),
+    );
     expect(staleDoc.supportsRemainingClaim).toBe(false);
     expect(staleDoc.blockers.some((b) => /stale|governingDocumentContentVersion/i.test(b))).toBe(true);
 
-    const staleLedger = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: { ...LIVE, ledgerEpochId: "ledger-epoch-10-new-row" },
-      attributedRecordCount: 0,
-    });
+    const staleLedger = validateCompletenessCertificate(
+      baseAuthentic(),
+      prodCtx({
+        currentBindings: { ...LIVE, ledgerEpochId: "ledger-epoch-10-new-row" },
+      }),
+    );
     expect(staleLedger.supportsRemainingClaim).toBe(false);
 
-    const staleFin = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: { ...LIVE, financialSnapshotId: "snap-new" },
-      attributedRecordCount: 0,
-    });
+    const staleFin = validateCompletenessCertificate(
+      baseAuthentic(),
+      prodCtx({
+        currentBindings: { ...LIVE, financialSnapshotId: "snap-new" },
+      }),
+    );
     expect(staleFin.supportsRemainingClaim).toBe(false);
 
-    const staleAmend = validateCompletenessCertificate(baseAuthentic(), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: { ...LIVE, operativeAmendmentSetId: "amendments-set-3" },
-      attributedRecordCount: 0,
-    });
+    const staleAmend = validateCompletenessCertificate(
+      baseAuthentic(),
+      prodCtx({
+        currentBindings: { ...LIVE, operativeAmendmentSetId: "amendments-set-3" },
+      }),
+    );
     expect(staleAmend.supportsRemainingClaim).toBe(false);
   });
 
   it("UNKNOWN opening/reclass/supersession policies refuse (silent invalidation risk)", () => {
     for (const policy of ["openingBalancePolicy", "reclassificationPolicy", "supersessionPolicy"] as const) {
       const cert = baseAuthentic({ [policy]: "UNKNOWN" } as Partial<UtilizationCompletenessCertificate>);
-      const v = validateCompletenessCertificate(cert, {
-        executionMode: "PRODUCTION",
-        evaluationAsOf: AS_OF,
-        companyId: CO,
-        capacityRuleId: RULE,
-        currency: "USD",
-        currentBindings: LIVE,
-        attributedRecordCount: 0,
-      });
+      const v = validateCompletenessCertificate(
+      cert,
+      prodCtx(),
+    );
       expect(v.ok).toBe(false);
       expect(v.blockers.some((b) => b.includes(policy) || /UNKNOWN/i.test(b))).toBe(true);
     }
@@ -219,29 +206,24 @@ describe("completeness certificate — adversarial invalidation", () => {
       bindings,
       sharedCapacityCompletenessAttested: false,
     });
-    const v = validateCompletenessCertificate(cert, {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: bindings,
-      attributedRecordCount: 0,
-    });
+    const v = validateCompletenessCertificate(
+      cert,
+      prodCtx({
+        currentBindings: bindings,
+      }),
+    );
     expect(v.ok).toBe(false);
     expect(v.blockers.some((b) => /shared-capacity/i.test(b))).toBe(true);
   });
 
   it("partial / kind-mismatched certificates refused", () => {
-    const emptyWithRecords = validateCompletenessCertificate(baseAuthentic({ kind: "VERIFIED_EMPTY" }), {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: LIVE,
-      attributedRecordCount: 2,
-    });
+    const emptyWithRecords = validateCompletenessCertificate(
+      baseAuthentic({ kind: "VERIFIED_EMPTY" }),
+      prodCtx({
+        attributedRecordCount: 2,
+        trustedIssuerAuth: PROD_AUTH,
+      }),
+    );
     expect(emptyWithRecords.ok).toBe(false);
 
     const completeWithNone = validateCompletenessCertificate(
@@ -257,6 +239,7 @@ describe("completeness certificate — adversarial invalidation", () => {
         currency: "USD",
         currentBindings: LIVE,
         attributedRecordCount: 0,
+        trustedIssuerAuth: PROD_AUTH,
       },
     );
     expect(completeWithNone.ok).toBe(false);
@@ -275,15 +258,10 @@ describe("completeness certificate — adversarial invalidation", () => {
         coveragePeriodEnd: "2025-12-31",
       },
     });
-    const v = validateCompletenessCertificate(cert, {
-      executionMode: "PRODUCTION",
-      evaluationAsOf: AS_OF,
-      companyId: CO,
-      capacityRuleId: RULE,
-      currency: "USD",
-      currentBindings: LIVE,
-      attributedRecordCount: 0,
-    });
+    const v = validateCompletenessCertificate(
+      cert,
+      prodCtx(),
+    );
     expect(v.ok).toBe(false);
     expect(v.blockers.some((b) => /coverage period/i.test(b))).toBe(true);
   });
@@ -312,6 +290,7 @@ describe("product surfaces refuse non-production remaining", () => {
         ],
         executionMode: "DEMO_SYNTHETIC",
         currentBindings: DEMO_BINDINGS,
+        trustedIssuerAuth: DEMO_AUTH,
         completenessCertificate: syntheticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
           capacityRuleId: RULE,
@@ -350,6 +329,7 @@ describe("product surfaces refuse non-production remaining", () => {
         ],
         executionMode: "PRODUCTION",
         currentBindings: LIVE,
+        trustedIssuerAuth: PROD_AUTH,
         completenessCertificate: authenticCompletenessCertificate({
           kind: "VERIFIED_COMPLETE",
           capacityRuleId: RULE,
@@ -377,6 +357,7 @@ describe("product surfaces refuse non-production remaining", () => {
       records: [],
       executionMode: "DEMO_SYNTHETIC",
       currentBindings: DEMO_BINDINGS,
+      trustedIssuerAuth: DEMO_AUTH,
       completenessCertificate: syntheticCompletenessCertificate({
         kind: "VERIFIED_EMPTY",
         capacityRuleId: RULE,
@@ -394,5 +375,45 @@ describe("product surfaces refuse non-production remaining", () => {
     const gated = refuseAuthoritativeRemaining(verified);
     expect(gated.remaining).toBeNull();
     expect(gated.mayPublishAvailable).toBe(false);
+  });
+});
+
+describe("trusted issuer identity — not caller-supplied role alone", () => {
+  it("forged COUNSEL_REVIEWER role without trusted principal is refused", () => {
+    const forged = baseAuthentic({
+      issuer: {
+        role: "COUNSEL_REVIEWER",
+        actorId: "forged-attacker",
+        attestedAt: `${AS_OF}T12:00:00.000Z`,
+      },
+    });
+    const v = validateCompletenessCertificate(forged, prodCtx());
+    expect(v.supportsRemainingClaim).toBe(false);
+    expect(v.productionAuthoritative).toBe(false);
+    expect(v.blockers.some((b) => /not found in trusted identity|forged/i.test(b))).toBe(true);
+  });
+
+  it("actorId present but unauthorized for claimed role is refused", () => {
+    const auth = productionTrustedIssuerAuth([
+      {
+        actorId: "counsel-alice",
+        authorizedRoles: ["LEDGER_CUSTODIAN"],
+        identityAssurance: "SESSION_AUTHENTICATED",
+        status: "ACTIVE",
+      },
+    ]);
+    const v = validateCompletenessCertificate(baseAuthentic(), prodCtx({ trustedIssuerAuth: auth }));
+    expect(v.supportsRemainingClaim).toBe(false);
+    expect(v.blockers.some((b) => /not authorized for role COUNSEL_REVIEWER/i.test(b))).toBe(true);
+  });
+
+  it("missing trustedIssuerAuth context refuses even with perfect certificate shape", () => {
+    const v = validateCompletenessCertificate(baseAuthentic(), {
+      ...prodCtx(),
+      // @ts-expect-error intentional adversarial omission
+      trustedIssuerAuth: null,
+    });
+    expect(v.supportsRemainingClaim).toBe(false);
+    expect(v.blockers.some((b) => /trusted issuer authorization context missing/i.test(b))).toBe(true);
   });
 });

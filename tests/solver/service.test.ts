@@ -143,6 +143,7 @@ describe("Phase 7 - service layer (lib/solver/service.ts)", () => {
       currentUsageStatus: "VERIFIED_ZERO",
       currentUsageAuthoritative: true,
       currentUsageSupportsRemainingClaim: true,
+      currentUsageProductionAuthoritative: true,
       currentUsageCompletenessCertified: true,
       sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
     };
@@ -185,6 +186,7 @@ describe("Phase 7 - service layer (lib/solver/service.ts)", () => {
       currentUsageStatus: "VERIFIED_ZERO",
       currentUsageAuthoritative: true,
       currentUsageSupportsRemainingClaim: true,
+      currentUsageProductionAuthoritative: true,
       currentUsageCompletenessCertified: true,
       sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
     };

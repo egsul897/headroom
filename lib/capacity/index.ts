@@ -25,10 +25,27 @@ export {
   type CompletenessValidationResult,
 } from "./completeness-certificate";
 export {
+  authorizeCompletenessIssuer,
+  productionTrustedIssuerAuth,
+  demoTrustedIssuerAuth,
+  sessionCounselPrincipal,
+  sessionCustodianPrincipal,
+  type CompletenessIssuerPrincipal,
+  type CompletenessIdentityAssurance,
+  type TrustedIssuerAuthorizationContext,
+  type IssuerAuthorizationResult,
+} from "./completeness-issuer-auth";
+export {
   syntheticCompletenessCertificate,
   authenticCompletenessCertificate,
   DEMO_BINDINGS,
 } from "./completeness-fixtures";
+export {
+  REMAINING_AUTHORITY_SEMANTICS,
+  alignSolverUsageFlags,
+  type RemainingAuthorityFlags,
+  type SolverUsageAuthorityFlags,
+} from "./remaining-authority-semantics";
 export {
   computeVerifiedRemaining,
   type GrossCapacityInput,

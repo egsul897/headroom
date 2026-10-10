@@ -276,8 +276,15 @@ export interface SharedConstraint {
   /**
    * True only when remaining = cap − usage may be published (#234 supportsRemainingClaim).
    * Requires completeness certificate; approved/attributed records alone never suffice.
+   * Identical semantics to lib/capacity UtilizationResolution.supportsRemainingClaim.
    */
   currentUsageSupportsRemainingClaim?: boolean;
+  /**
+   * True only when completeness is production-authoritative (trusted counsel/custodian).
+   * Solver remaining publication requires this in addition to supportsRemainingClaim.
+   * Identical semantics to lib/capacity UtilizationResolution.productionAuthoritative.
+   */
+  currentUsageProductionAuthoritative?: boolean;
   currentUsageAttributedKnown?: boolean;
   currentUsageCompletenessCertified?: boolean;
   sourceProvision: SourceProvisionRef;

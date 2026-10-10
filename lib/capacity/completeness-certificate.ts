@@ -9,6 +9,10 @@
  * method, and binding fingerprints — and refuses synthetic / fixture /
  * stale / mismatched certificates under production execution.
  */
+import {
+  authorizeCompletenessIssuer,
+  type TrustedIssuerAuthorizationContext,
+} from "./completeness-issuer-auth";
 import type {
   CompletenessBindingFingerprints,
   UtilizationCompletenessCertificate,
@@ -24,6 +28,11 @@ export interface CompletenessValidationContext {
   /** Current operative world fingerprints — any mismatch stale-invalidates the certificate. */
   currentBindings: CompletenessBindingFingerprints;
   attributedRecordCount: number;
+  /**
+   * Trusted identity/authorization registry for the certificate's issuer.actorId.
+   * Required. The certificate's issuer.role field alone never establishes authority.
+   */
+  trustedIssuerAuth: TrustedIssuerAuthorizationContext;
 }
 
 export interface CompletenessValidationResult {
@@ -87,15 +96,35 @@ export function validateCompletenessCertificate(
     blockers.push("issuer actorId/attestedAt missing");
   }
 
-  // Issuer authority — only COUNSEL_REVIEWER / LEDGER_CUSTODIAN may be production-authoritative.
-  // SYSTEM_FIXTURE is allowed solely under DEMO_SYNTHETIC for mechanics demos.
+  // Issuer authority — role string on the certificate is never trusted alone.
+  // Authorize actorId against the host-supplied trusted identity/authorization registry.
+  if (ctx.executionMode === "PRODUCTION" && !ctx.trustedIssuerAuth?.requireNonFixtureIdentity) {
+    blockers.push(
+      "PRODUCTION execution requires trustedIssuerAuth.requireNonFixtureIdentity — fixture registries cannot authorize production remaining",
+    );
+  }
+  const issuerAuth = authorizeCompletenessIssuer(
+    { actorId: cert.issuer.actorId, role: cert.issuer.role },
+    ctx.trustedIssuerAuth,
+  );
+  if (!issuerAuth.ok) {
+    blockers.push(...issuerAuth.blockers);
+  }
   const issuerProductionOk =
-    cert.issuer.role === "COUNSEL_REVIEWER" || cert.issuer.role === "LEDGER_CUSTODIAN";
-  if (cert.issuer.role === "SYSTEM_FIXTURE") {
-    if (ctx.executionMode === "PRODUCTION") {
-      blockers.push("SYSTEM_FIXTURE issuer cannot establish production completeness authority");
-    }
-  } else if (!issuerProductionOk) {
+    issuerAuth.ok &&
+    (cert.issuer.role === "COUNSEL_REVIEWER" || cert.issuer.role === "LEDGER_CUSTODIAN") &&
+    ctx.trustedIssuerAuth?.requireNonFixtureIdentity === true &&
+    issuerAuth.matchedPrincipal != null &&
+    (issuerAuth.matchedPrincipal.identityAssurance === "SESSION_AUTHENTICATED" ||
+      issuerAuth.matchedPrincipal.identityAssurance === "SERVICE_ACCOUNT");
+  if (cert.issuer.role === "SYSTEM_FIXTURE" && ctx.executionMode === "PRODUCTION") {
+    blockers.push("SYSTEM_FIXTURE issuer cannot establish production completeness authority");
+  }
+  if (
+    cert.issuer.role !== "COUNSEL_REVIEWER" &&
+    cert.issuer.role !== "LEDGER_CUSTODIAN" &&
+    cert.issuer.role !== "SYSTEM_FIXTURE"
+  ) {
     blockers.push(
       `issuer role ${String((cert.issuer as { role: string }).role)} is not an allowed completeness issuer`,
     );
