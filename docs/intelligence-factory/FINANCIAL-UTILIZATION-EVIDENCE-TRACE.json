@@ -1,0 +1,62 @@
+{
+  "verdict": "FINANCIAL_AND_UTILIZATION_EVIDENCE_SLICE_VERIFIED",
+  "productionComplete": false,
+  "contractVersion": "verified-input-contract.v1",
+  "fixture": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+  "source": {
+    "label": "AUTHENTIC_SOURCE_BACKED",
+    "companyId": "matthews-international",
+    "edgarAccession": "0000063296-25-000006",
+    "provenanceDoc": "docs/matthews-international-onboarding.md",
+    "reportingPeriod": "FY2025-Q1",
+    "asOf": "2024-12-31"
+  },
+  "pathway": [
+    "RawFinancialStatementLine / HistoricalUtilizationEvent (authentic fixture)",
+    "normalizeFinancialStatementEvidence / reconstructUtilizationEvidence",
+    "AuthenticatedFinancialSnapshotEvidence + UtilizationEvidenceRecord",
+    "validateAuthenticatedFinancialSnapshot / resolveUtilization (Agent #2)",
+    "buildVerifiedCapacityInputHandoff → productionAuthority REFUSED"
+  ],
+  "normalized": {
+    "financialMetrics": [
+      "TOTAL_ASSETS",
+      "CASH_BALANCES",
+      "INTEREST_EXPENSE",
+      "TOTAL_DEBT",
+      "SECURED_DEBT",
+      "CONSOLIDATED_EBITDA"
+    ],
+    "definitionBasis": {
+      "TOTAL_ASSETS": "GAAP_STATEMENT",
+      "CONSOLIDATED_EBITDA": "CONTRACT_ADJUSTED"
+    },
+    "totalConsolidatedAssetsMapped": false,
+    "attributedUtilizationEvents": [
+      "matw-revolver-outstanding-2024-12-31",
+      "matw-2027-notes-outstanding-2024-12-31"
+    ],
+    "capacityRuleId": "ind_permitted_debt_1a_flat"
+  },
+  "verificationStatus": "UNVERIFIED_EXTRACTION / REVIEW_REQUIRED on slice path (extraction ≠ verification)",
+  "handoff": {
+    "financialTrustClass": "INCOMPLETE",
+    "utilizationSupportsRemainingClaim": false,
+    "unknownHistoricalActivity": true,
+    "reviewerConfirmedCompleteness": false,
+    "productionAuthority": "REFUSED",
+    "productionActivation": "BLOCKED",
+    "mayUseAsProductionCapacityInput": false
+  },
+  "completenessLimitations": [
+    "No reviewer-confirmed completeness certificate is included.",
+    "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+    "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+    "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+    "Production trusted-issuer activation remains BLOCKED."
+  ],
+  "tests": [
+    "tests/capacity/financial-utilization-evidence-slice.test.ts",
+    "tests/capacity/financial-evidence-adversarial.test.ts"
+  ]
+}
