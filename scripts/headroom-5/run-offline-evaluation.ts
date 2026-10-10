@@ -18,8 +18,14 @@ delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
 
 import { runStructureStage } from "../../lib/contract-model/compiler/stage-structure";
-import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
-import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
+import {
+  detectStructuralDefinitions,
+  type DetectedDefinition,
+} from "../../lib/contract-model/compiler/structural-definitions";
+import {
+  detectStructuralReferences,
+  type DetectedReference,
+} from "../../lib/contract-model/compiler/structural-references";
 import { buildStructuralIndex, type StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { STRUCTURAL_INDEX_VERSION, type StructuralNode } from "../../lib/contract-model/compiler/types";
 import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
@@ -188,15 +194,15 @@ async function main() {
   const structureResult = runStructureStage(documents);
   const allNodes: StructuralNode[] = structureResult.output;
   const nodesByDocument = new Map<string, { text: string; nodes: StructuralNode[] }>();
-  const allDefinitions = [];
-  const allReferences = [];
+  const allDefinitions: DetectedDefinition[] = [];
+  const allReferences: DetectedReference[] = [];
   for (const doc of documents) {
     const nodes = allNodes.filter((n) => n.documentId === doc.documentId);
     nodesByDocument.set(doc.documentId, { text: doc.text, nodes });
     allDefinitions.push(...detectStructuralDefinitions(doc.documentId, doc.text, nodes));
     allReferences.push(...detectStructuralReferences(doc.documentId, doc.text, nodes));
   }
-  const index = buildStructuralIndex(nodesByDocument, allDefinitions, allReferences);
+  const index: StructuralIndex = buildStructuralIndex(nodesByDocument, allDefinitions, allReferences);
   const structuralSummary = documents.map((d) => {
     const nodes = allNodes.filter((n) => n.documentId === d.documentId);
     const byType: Record<string, number> = {};
@@ -213,7 +219,8 @@ async function main() {
   preserve("10a-structural-summary", {
     structuralIndexVersion: STRUCTURAL_INDEX_VERSION,
     summary: structuralSummary,
-    health: index.health ?? null,
+    // StructuralIndex exposes diagnostics via method, not a `.health` field.
+    healthDiagnostics: index.healthDiagnostics(),
   });
 
   // ----- D-pre. Package graph -----
@@ -357,7 +364,12 @@ async function main() {
     let contextBundle = null;
     let contextCompleteness = null;
     if (primary) {
-      const candidate = probeCandidate(documentId, primary, family === "DEFINITION" ? "OTHER" : family, clauseId);
+      const candidate = probeCandidate(
+        documentId,
+        primary,
+        family === "DEFINITION" ? "DEFINITIONS_CALCULATION_RULES" : family,
+        clauseId,
+      );
       const exactTermsByDocument = new Map<string, Map<string, string>>();
       for (const d of documents) {
         const m = new Map<string, string>();
@@ -367,7 +379,12 @@ async function main() {
         exactTermsByDocument.set(d.documentId, m);
       }
       const bundle = buildCovenantContextBundle(
-        { candidate, companyId: "headroom-5-wor-holdout", instrumentKey: "wor-revolving-facility" },
+        {
+          candidate,
+          packageKey: "wor-2023-2026-credit-facility",
+          companyId: "headroom-5-wor-holdout",
+          instrumentKey: "wor-revolving-facility",
+        },
         {
           index,
           packageGraph,

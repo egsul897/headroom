@@ -162,7 +162,7 @@ describe("HEADROOM-6 canonical body anchors", () => {
           structuralNodeKeys: [section.nodeKey],
           structuralNodeIds: [section.nodeId],
           normalizedSourceRef: "1.01",
-          families: ["OTHER"],
+          families: ["DEFINITIONS_CALCULATION_RULES"],
           evidenceSignals: ["DEFINED_TERM:Permitted Liens"],
           description: "Definition of Permitted Liens",
         }),

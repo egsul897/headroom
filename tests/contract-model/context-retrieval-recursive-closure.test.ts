@@ -173,7 +173,7 @@ ${manyDefs}
 `,
       },
     ];
-    const bundle = build(docs, "1.01", { families: ["OTHER"] });
+    const bundle = build(docs, "1.01", { families: ["DEFINITIONS_CALCULATION_RULES"] });
     expect(bundle.sufficiencyState === "BUDGET_EXCEEDED" || bundle.sufficiencyState === "INCOMPLETE" || bundle.sufficiencyState === "REVIEW_REQUIRED").toBe(true);
     expect(bundle.sufficiencyState).not.toBe("SUFFICIENT");
     expect(bundle.stopReasons.some((r) => r.includes("maxTextBudgetChars")) || bundle.unresolvedDependencies.some((u) => u.dependencyType === "BUDGET_EXCEEDED_DEPENDENCY")).toBe(true);

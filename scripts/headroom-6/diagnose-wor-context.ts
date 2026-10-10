@@ -67,7 +67,7 @@ let review = 0;
 for (const c of legal.clauses) {
   const signals = ["gt_probe"];
   if (TERM_HINTS[c.clauseId]) signals.push(`DEFINED_TERM:${TERM_HINTS[c.clauseId]}`);
-  const fam = c.family === "DEFINITION" ? "OTHER" : c.family;
+  const fam = c.family === "DEFINITION" ? "DEFINITIONS_CALCULATION_RULES" : c.family;
   const b = probe(c.documentId, c.sectionRef, fam, signals);
   if (b.sufficiencyState === "SUFFICIENT") sufficient++;
   else if (b.sufficiencyState === "BUDGET_EXCEEDED") budget++;
