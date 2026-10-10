@@ -1,0 +1,83 @@
+{
+  "artifact": "PRODUCT_PROOF_002_MISSING_DEPENDENCIES_FROM_KENNAMETAL_PP001",
+  "version": 1,
+  "kennametalBaselineSha": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06",
+  "sourceFixture": "tests/fixtures/product-proof-001/kennametal-2026-term-loan-credit-agreement",
+  "frozenEvidence": "tests/fixtures/product-proof-001/kennametal-2026-term-loan-credit-agreement/frozen-evidence",
+  "deliveredToPp002Owner": {
+    "sourceHtml": "raw-html/d136977dex102.htm",
+    "extractedText": "extracted-text/credit-agreement.txt",
+    "provenance": "provenance.json",
+    "structuralIndexSummary": "frozen-evidence/structural-index-summary.json",
+    "structuralNodes": { "path": "frozen-evidence/structural-nodes.json", "count": 426 },
+    "definitions": { "path": "frozen-evidence/definitions.json", "count": 230 },
+    "references": { "path": "frozen-evidence/references.json", "count": 333 },
+    "passACandidates": { "path": "frozen-evidence/pass-a-candidates.json", "count": 236 }
+  },
+  "firstUnsupportedStage": {
+    "code": "PASS_B_SEMANTIC_UNSUPPORTED",
+    "isDemonstratedCompilerFailure": false,
+    "rationale": "Offline parse, structure, and Pass A succeeded. Pass B was not executed because no provider key was authorized for this baseline and synthetic Pass B is forbidden as authentic proof. Kennametal never reached compileCovenantToIR with sealed candidates."
+  },
+  "mtnCoordination": {
+    "mtnFirstHardFailure": "GENERALIZED_RULE_REPRESENTATION",
+    "mtnPrs": [263, 264],
+    "mtnEvidencePath": "docs/product-proof/001/",
+    "doNotDuplicate": "Do not spend Kennametal paid compile cycles solely to re-prove the MTN GENERALIZED_RULE_REPRESENTATION break. That compiler break is already owned by MTN PP001."
+  },
+  "missingDependenciesInOrder": [
+    {
+      "id": "DEP-PASS-B",
+      "name": "Pass B semantic discovery (real provider)",
+      "status": "MISSING",
+      "blocks": ["sealed discovery candidates", "roles/families for IR compile input"]
+    },
+    {
+      "id": "DEP-SEALED-DISCOVERY",
+      "name": "Sealed discovery candidate set for Kennametal",
+      "status": "MISSING",
+      "dependsOn": ["DEP-PASS-B"]
+    },
+    {
+      "id": "DEP-IR",
+      "name": "Generalized rule IR (compileCovenantToIR)",
+      "status": "NOT_REACHED_ON_KENNAMETAL",
+      "demonstratedBlockedOn": "MTN PP001 at GENERALIZED_RULE_REPRESENTATION",
+      "dependsOn": ["DEP-SEALED-DISCOVERY"]
+    },
+    {
+      "id": "DEP-VEP",
+      "name": "Verified Execution Package (OUT-VEP-01)",
+      "status": "MISSING",
+      "dependsOn": ["DEP-IR"]
+    },
+    {
+      "id": "DEP-PERMISSIONS",
+      "name": "Authentic Permission + SharedConstraint graph",
+      "status": "MISSING",
+      "forbiddenSubstitute": "hand-modeled Kennametal permissions"
+    },
+    {
+      "id": "DEP-NS4",
+      "name": "NS-4 APPROVED financials / completeness certificates (OUT-NS4-01)",
+      "status": "MISSING"
+    }
+  ],
+  "trackedLimitationsRemainOpen": [
+    "FA-P1-01",
+    "FA-P2-01",
+    "FA-P2-02",
+    "FA-CONC-01",
+    "FA-CONC-02",
+    "OUT-VEP-01",
+    "OUT-NS4-01"
+  ],
+  "forbidden": [
+    "hand-model Kennametal permissions",
+    "substitute synthetic Pass B as authentic discovery",
+    "auto-merge PR #253",
+    "certify",
+    "production Neon writes",
+    "equate PASS_B_SEMANTIC_UNSUPPORTED with demonstrated compiler failure"
+  ]
+}

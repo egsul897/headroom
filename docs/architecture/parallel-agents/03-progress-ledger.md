@@ -235,3 +235,14 @@
 - PRODUCT PROOF 001: Kennametal 2026 term-loan CA (genuinely unseen); freeze + first offline run; first unsupported stage **PASS_B_SEMANTIC**; customer-usable capacity answer **not** yet producible
 - FA-P1/P2 + concurrency proofs remain tracked; green CI ≠ resolution
 - Artifacts: `docs/product/unified-integration/16-shared-lien-scope-and-258-reconciliation.md`, `docs/product/product-proof-001/`
+
+---
+
+## 2026-10-10T12:06:00Z — PR #253 HANDOFF STOP + PP002 PACKET
+
+- Solver↔simulation shared-lien accepted as **candidate for human integration review** (not auto-merged)
+- CI on tip `6d87a6c6`: **SUCCESS** (certified-path + soft gates + Vercel)
+- Mergeability: **CONFLICTING / DIRTY** vs `main` — blocker files include `lib/solver/election.ts`, `lib/covenant-engine.ts`, capacity page, secured-debt-lien adversarial test
+- Kennametal evidence frozen under `frozen-evidence/` (426 nodes / 230 defs / 333 refs / **236** Pass A)
+- First stop classified **PASS_B_SEMANTIC_UNSUPPORTED** (≠ MTN `GENERALIZED_RULE_REPRESENTATION` compiler break — PRs #263/#264)
+- PP002 handoff: `docs/product/product-proof-002/` — workstream **stopped** unless narrowly scoped correction required

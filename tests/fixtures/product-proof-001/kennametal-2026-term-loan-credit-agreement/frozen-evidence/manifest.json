@@ -1,0 +1,36 @@
+{
+  "artifact": "KENNAMETAL_PP001_FROZEN_EVIDENCE",
+  "frozenAt": "2026-10-10T12:07:01.325Z",
+  "baselineSha": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06",
+  "packageId": "kennametal-2026-term-loan-credit-agreement",
+  "bodySha256": "4827a5cfc56740a5d1311677c4fc0cacb574272b20ba4c0a544ab9a44fdd4df7",
+  "extractedTextSha256": "4ac7dab7b8833d7986efea1299572c797e966ec4ca52f49dbc58ce4b92442455",
+  "provenanceDesignation": "PRODUCT_PROOF_BASELINE",
+  "firstUnsupportedStage": "PASS_B_SEMANTIC_UNSUPPORTED",
+  "firstUnsupportedIsNotCompilerFailure": true,
+  "compilerFailureNotDemonstratedOnThisPackage": true,
+  "mtnPp001CompilerBreak": {
+    "stage": "GENERALIZED_RULE_REPRESENTATION",
+    "prs": [
+      263,
+      264
+    ],
+    "path": "docs/product-proof/001/",
+    "note": "MTN reached further; Kennametal stopped earlier. Do not re-prove the same compiler break on Kennametal until Pass B/IR path exists."
+  },
+  "fileHashes": {
+    "structural-index-summary.json": "3ca04239f108de4c32bed4a51d9888352a09bb75a47d62e7ce200575326dfc72",
+    "structural-nodes.json": "195d61aea31597b530eedbfc1a3a03470b47a875cc6c2bde1c454e68a2611349",
+    "definitions.json": "070153b524abf7b56faa32e327e86882e47f3d43bc7f33f117ba6f71b7e980fa",
+    "references.json": "20875cfe085e676df4461df6f21e467482e00d397ed7f16cf61e78beccb2c965",
+    "pass-a-candidates.json": "eacef49e622c6f5b613b9f26cdc1421eac503a8d20c8f5b74192357fee444702"
+  },
+  "forbidden": [
+    "hand-model Kennametal permissions",
+    "treat synthetic Pass B as authentic discovery",
+    "paid inference without explicit authorization",
+    "production Neon writes",
+    "claim PASS_B_SEMANTIC_UNSUPPORTED equals compileCovenantToIR failure"
+  ],
+  "manifestSha256": "c622dd194a0bf458f63ae2035054dd32212b492ef2accf8bab4891d7969d8a1f"
+}

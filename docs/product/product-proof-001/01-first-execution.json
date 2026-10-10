@@ -36,7 +36,13 @@
       "detail": "No authentic Permission rows, SharedConstraints, or Verified Execution Package exist for Kennametal. Manual modeling forbidden by freeze."
     }
   ],
-  "firstUnsupportedStage": "PASS_B_SEMANTIC",
+  "firstUnsupportedStage": "PASS_B_SEMANTIC_UNSUPPORTED",
+  "firstUnsupportedStageClassification": {
+    "code": "PASS_B_SEMANTIC_UNSUPPORTED",
+    "isDemonstratedCompilerFailure": false,
+    "compilerFailureOwnedByMtnPp001": "GENERALIZED_RULE_REPRESENTATION",
+    "note": "Parse/structure/Pass A executed. Pass B not run (no paid key; synthetic refused). This is not a demonstrated compileCovenantToIR failure on Kennametal."
+  },
   "manualInterventions": [],
   "emptySolverAttempt": {
     "attempted": true,
