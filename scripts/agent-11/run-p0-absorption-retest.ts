@@ -53,7 +53,7 @@ const pkgDocs = docsMeta.map((d) => {
 const packageGraph = buildPackageGraph(
   "agent-11-p0-absorb",
   "an-2020-2026-credit-facility",
-  pkgDocs.map((d) => ({ documentId: d.documentId, text: d.text })),
+  pkgDocs.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text })),
 );
 
 const documentRoles = assignPackageDocumentRoles(
@@ -63,7 +63,7 @@ const documentRoles = assignPackageDocumentRoles(
 );
 
 const restatementAuthorities = resolvePackageRestatementAuthorities({
-  documents: pkgDocs.map((d) => ({ documentId: d.documentId, text: d.text })),
+  documents: pkgDocs.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text })),
   packageGraph,
 });
 
