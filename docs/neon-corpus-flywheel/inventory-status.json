@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "neon-corpus-flywheel.inventory-status.v1",
+  "generatedAt": "2026-10-10T00:52:00.000Z",
+  "mode": "READ_ONLY_ATTEMPTED",
+  "liveInventory": {
+    "status": "BLOCKED_AUTH",
+    "sqlstate": "28P01",
+    "detail": "DATABASE_URL reaches Neon host ep-shiny-rice-aw903tjv-pooler (neondb) over TCP/TLS on port 5432, but authentication fails for user neondb_owner across Prisma, node-pg, and @neondatabase/serverless.",
+    "hostFingerprintSha256Prefix": "computed-at-runtime-not-printed",
+    "defaultTransactionReadOnlyAttempted": true,
+    "mutations": 0,
+    "secretRefreshRequested": true,
+    "inventoryScript": "scripts/neon-corpus-flywheel/inventory.ts",
+    "note": "Stage-1 live denominators are NOT claimed. Do not treat previously reported counts below as this run's inventory."
+  },
+  "previouslyReportedNeonSnapshot": {
+    "status": "HISTORICAL_ONLY_NOT_LIVE",
+    "sources": [
+      "origin/cursor/neon-massive-corpus-expansion-8a8b:docs/knowledge-factory/continuous/neon-corpus-stats-final.json",
+      "origin/cursor/kf-corpus-quality-gate-8a8b:docs/knowledge-factory/quality-gate/summary.json",
+      "origin/cursor/neon-intelligence-baseline-2229:docs/intelligence-factory/neon-intelligence-baseline.raw.json"
+    ],
+    "asOfApprox": "2026-10-09/10",
+    "knowledgeSources": 769,
+    "publicSecEdgar": 716,
+    "distinctIssuers": 212,
+    "documentByteObjects": 746,
+    "covenantSummaryItems": 30469,
+    "relationshipEdges": 48226,
+    "exactTripleDuplicates": 46810,
+    "selfLoopSamples": 18,
+    "certifiedKnowledgeSources": 0,
+    "documentsByClass": {
+      "CREDIT_AGREEMENT": 114,
+      "INDENTURE": 61,
+      "AMENDMENT": 65,
+      "RESTATEMENT": 106,
+      "SUPPLEMENTAL_INDENTURE": 98,
+      "SECURITY_AGREEMENT": 26,
+      "REVOLVING_CREDIT_AGREEMENT": 9,
+      "INTERCREDITOR_AGREEMENT": 3,
+      "GUARANTEE_AGREEMENT": 3,
+      "ABL_AGREEMENT": 1,
+      "UNKNOWN": 181
+    },
+    "qualityGateNotes": {
+      "relationshipSupportedOrWeakRateExclDupes": 0.672,
+      "operativeGoldPassRate": 0.8,
+      "sonRestatementOverResolved": true,
+      "expansionPausedPendingDedupe": true
+    }
+  },
+  "queryProvenancePrepared": {
+    "script": "scripts/neon-corpus-flywheel/inventory.ts",
+    "enforcement": [
+      "SET default_transaction_read_only = on",
+      "SET statement_timeout = '120s'",
+      "aggregations only; document text not fully materialized (bounded sample <=500 docs)"
+    ],
+    "plannedDenominators": [
+      "companies",
+      "documents_by_type",
+      "financing_packages_compiler_runs",
+      "debt_instruments",
+      "contract_rules_by_family",
+      "defined_terms_and_refs",
+      "relationship_edges_deduped_by_discovery_identity",
+      "source_text_availability",
+      "citation_quality",
+      "financial_snapshots",
+      "ledger_utilization",
+      "verified_rules_and_reviews",
+      "orphans_and_gaps",
+      "knowledge_sources_by_class"
+    ]
+  }
+}

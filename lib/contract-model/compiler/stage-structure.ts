@@ -23,6 +23,7 @@
 import { hashParts } from "./hashing";
 import { computeStableKey } from "../stable-keys";
 import { buildClauseTree } from "./clause-hierarchy";
+import { findTopLevelDefinitionStarts } from "./structural-definitions";
 import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResult, type StructuralNode } from "./types";
 
 /**
@@ -1052,7 +1053,17 @@ function unionMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
   return accepted.sort((a, b) => a.index - b.index);
 }
 
-/** Containment rank used to compute owned text spans - a node's span is closed by the next node of equal or shallower rank; a deeper rank always nests inside its opener without closing it. */
+/**
+ * Containment rank used to compute owned text spans - a node's span is closed
+ * by the next node of equal or shallower rank; a deeper rank always nests
+ * inside its opener without closing it.
+ *
+ * ARTICLE/SECTION use fixed ranks. Clause-tree nodes use `1 + depth` from
+ * `buildClauseTree` so nesting deeper than SUBCLAUSE (schema clamps nodeType
+ * at SUBCLAUSE for depth >= 3) still participates in ownership/parentage —
+ * otherwise `(a)(A)` under an Available Amount builder limb collapses to a
+ * sibling of `(a)` and truncates the parent's owned span.
+ */
 const RANK: Record<StructuralNode["nodeType"], number> = { ARTICLE: 0, SECTION: 1, SUBSECTION: 2, CLAUSE: 3, SUBCLAUSE: 4 };
 
 interface RawNode {
@@ -1061,6 +1072,55 @@ interface RawNode {
   sectionRef: string;
   charStart: number;
   parentSectionRef: string | null;
+  /** Stack rank for ownership/parentage; see RANK comment above. */
+  nestRank: number;
+}
+
+function isDefinitionsSectionHeading(heading: string): boolean {
+  return /defin/i.test(heading);
+}
+
+/**
+ * Emit clause-tree raws for one text region. When the enclosing SECTION is a
+ * definitions article/section, parse each top-level definition body separately
+ * so one term's last enumerator cannot absorb later terms.
+ */
+function appendClauseRawsForSection(
+  doc: CompilerDocumentInput,
+  section: RawNode,
+  regionEnd: number,
+  raws: RawNode[],
+): void {
+  const regionStart = section.charStart;
+  const segments: Array<{ start: number; end: number }> = [];
+  if (isDefinitionsSectionHeading(section.heading)) {
+    const defStarts = findTopLevelDefinitionStarts(doc.text, regionStart, regionEnd);
+    if (defStarts.length > 0) {
+      if (defStarts[0]! > regionStart) segments.push({ start: regionStart, end: defStarts[0]! });
+      for (let i = 0; i < defStarts.length; i++) {
+        const start = defStarts[i]!;
+        const end = defStarts[i + 1] ?? regionEnd;
+        if (end > start) segments.push({ start, end });
+      }
+    }
+  }
+  if (segments.length === 0) segments.push({ start: regionStart, end: regionEnd });
+
+  for (const seg of segments) {
+    const regionText = doc.text.slice(seg.start, seg.end);
+    for (const c of buildClauseTree(regionText)) {
+      const parentSuffix = c.parentMarkerPath.join("");
+      const ownSuffix = [...c.parentMarkerPath, c.marker].join("");
+      raws.push({
+        nodeType: c.nodeType,
+        heading: "",
+        sectionRef: `${section.sectionRef}${ownSuffix}`,
+        charStart: seg.start + c.charStart,
+        parentSectionRef: `${section.sectionRef}${parentSuffix}`,
+        nestRank: 1 + c.depth,
+      });
+    }
+  }
 }
 
 /** True if `candidate`'s own matched span overlaps any span already claimed by `existing` - the dedup rule that lets decimal-style and integer-style SECTION patterns run as an ADDITIVE union (task §5) without ever double-counting the same real heading twice. */
@@ -1202,34 +1262,38 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
 function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, articleMatches: RegExpExecArray[], sectionMatches: RegExpExecArray[]): StructuralNode[] {
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
-    raws.push({ nodeType: "ARTICLE", heading: extractTitleLikeSpan(m[2] ?? ""), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
+    raws.push({
+      nodeType: "ARTICLE",
+      heading: extractTitleLikeSpan(m[2] ?? ""),
+      sectionRef: (m[1] ?? "").trim(),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.ARTICLE,
+    });
   }
   for (const m of sectionMatches) {
     const sectionRef = normalizeOcrSectionNumber((m[1] ?? "").trim());
     const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
-    raws.push({ nodeType: "SECTION", heading: (m[2] ?? "").trim(), sectionRef, charStart: m.index, parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null });
+    raws.push({
+      nodeType: "SECTION",
+      heading: (m[2] ?? "").trim(),
+      sectionRef,
+      charStart: m.index,
+      parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null,
+      nestRank: RANK.SECTION,
+    });
   }
   raws.sort((a, b) => a.charStart - b.charStart);
 
   // Parse nested SUBSECTION/CLAUSE/SUBCLAUSE markers within each SECTION's
   // own raw region (up to the next top-level node, or document end).
+  // Definitions sections are segmented by top-level defined-term declarations.
   const topLevel = raws.slice();
   for (let i = 0; i < topLevel.length; i++) {
     const node = topLevel[i]!;
     if (node.nodeType !== "SECTION") continue;
     const regionEnd = topLevel[i + 1]?.charStart ?? doc.text.length;
-    const regionText = doc.text.slice(node.charStart, regionEnd);
-    for (const c of buildClauseTree(regionText)) {
-      const parentSuffix = c.parentMarkerPath.join("");
-      const ownSuffix = [...c.parentMarkerPath, c.marker].join("");
-      raws.push({
-        nodeType: c.nodeType,
-        heading: "",
-        sectionRef: `${node.sectionRef}${ownSuffix}`,
-        charStart: node.charStart + c.charStart,
-        parentSectionRef: `${node.sectionRef}${parentSuffix}`,
-      });
-    }
+    appendClauseRawsForSection(doc, node, regionEnd, raws);
   }
   raws.sort((a, b) => a.charStart - b.charStart);
 
@@ -1256,19 +1320,14 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   const nodeIds = raws.map((r) => computeStableKey("structural-node", doc.documentId, r.nodeType, String(r.charStart)));
 
   // Owned text span (own text + every descendant) AND the true physical
-  // parent occurrence via one rank-based stack pass - O(n), no per-node
-  // rescanning. The stack top at push time (after popping every entry whose
-  // rank is >= this node's own rank) is, by construction, the nearest
-  // enclosing node of shallower rank - i.e. this node's real, physical
-  // parent occurrence, determined from actual nesting position, never by
-  // re-matching parentSectionRef against a label (which is exactly the
-  // mechanism that let two distinct physical occurrences merge children
-  // under the pre-3F.1.2 label-keyed scheme).
+  // parent occurrence via one nestRank-based stack pass - O(n), no per-node
+  // rescanning. nestRank (not clamped nodeType RANK) keeps depth > 3
+  // SUBCLAUSE nodes as children of their depth-3 parents for ownership.
   const charEndByIndex = new Map<number, number>();
   const parentIndexByIndex = new Map<number, number>();
   const stack: number[] = [];
   raws.forEach((r, i) => {
-    while (stack.length > 0 && RANK[raws[stack[stack.length - 1]!]!.nodeType] >= RANK[r.nodeType]) {
+    while (stack.length > 0 && raws[stack[stack.length - 1]!]!.nestRank >= r.nestRank) {
       charEndByIndex.set(stack.pop()!, r.charStart);
     }
     if (stack.length > 0) parentIndexByIndex.set(i, stack[stack.length - 1]!);
@@ -1276,20 +1335,58 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   });
   while (stack.length > 0) charEndByIndex.set(stack.pop()!, doc.text.length);
 
+  // Soft-clip clause nodes inside definitions sections to the next top-level
+  // definition declaration. Per-body clause parsing prevents false nesting;
+  // this clip closes the last limb of a term that has no later same-rank
+  // sibling before the next SECTION.
+  const definitionBodyEndByStart = new Map<number, number>();
+  for (let i = 0; i < topLevel.length; i++) {
+    const node = topLevel[i]!;
+    if (node.nodeType !== "SECTION" || !isDefinitionsSectionHeading(node.heading)) continue;
+    const regionEnd = topLevel[i + 1]?.charStart ?? doc.text.length;
+    const starts = findTopLevelDefinitionStarts(doc.text, node.charStart, regionEnd);
+    for (let j = 0; j < starts.length; j++) {
+      definitionBodyEndByStart.set(starts[j]!, starts[j + 1] ?? regionEnd);
+    }
+  }
+  const defStartsAsc = [...definitionBodyEndByStart.keys()].sort((a, b) => a - b);
+
   return raws
-    .map((r, i) => ({
-      documentId: doc.documentId,
-      nodeType: r.nodeType,
-      heading: r.heading,
-      sectionRef: r.sectionRef,
-      nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\s+/g, "")}`,
-      nodeId: nodeIds[i]!,
-      charStart: r.charStart,
-      charEnd: charEndByIndex.get(i) ?? doc.text.length,
-      ordinal: ordinals[i]!,
-      parentSectionRef: r.parentSectionRef,
-      parentNodeId: parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : null,
-    }))
+    .map((r, i) => {
+      let charEnd = charEndByIndex.get(i) ?? doc.text.length;
+      if (r.nestRank > RANK.SECTION && defStartsAsc.length > 0) {
+        let lo = 0;
+        let hi = defStartsAsc.length - 1;
+        let enclosing: number | null = null;
+        while (lo <= hi) {
+          const mid = (lo + hi) >> 1;
+          const s = defStartsAsc[mid]!;
+          if (s <= r.charStart) {
+            enclosing = s;
+            lo = mid + 1;
+          } else {
+            hi = mid - 1;
+          }
+        }
+        if (enclosing !== null) {
+          const bodyEnd = definitionBodyEndByStart.get(enclosing)!;
+          if (r.charStart < bodyEnd) charEnd = Math.min(charEnd, bodyEnd);
+        }
+      }
+      return {
+        documentId: doc.documentId,
+        nodeType: r.nodeType,
+        heading: r.heading,
+        sectionRef: r.sectionRef,
+        nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\s+/g, "")}`,
+        nodeId: nodeIds[i]!,
+        charStart: r.charStart,
+        charEnd,
+        ordinal: ordinals[i]!,
+        parentSectionRef: r.parentSectionRef,
+        parentNodeId: parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : null,
+      };
+    })
     .sort((a, b) => a.charStart - b.charStart);
 }
 
