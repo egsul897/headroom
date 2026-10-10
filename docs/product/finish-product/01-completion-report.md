@@ -3,7 +3,7 @@
 **Verdict:** `CANONICAL_PRODUCT_WORKING_WITH_DOCUMENTED_LIMITATIONS`  
 **Canonical branch:** `cursor/finish-product-canonical-a9e4` (from PR #250 tip `37fc3ee5`)  
 **Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a`  
-**Tip:** `1ebd44c08e20f7f61e55b02aae2378616084e267`  
+**Tip:** `2155fe5788ff107faf1b4b984d13a9ae9582b47e`  
 **CI on tip `b1d9da3d`:** 6/6 SUCCESS (canonical-compiler, home-overview, p3-r0-soft-gate, dashboard-invent-absence, Vercel, Vercel Preview Comments)  
 **Auto-merge:** **no**
 
