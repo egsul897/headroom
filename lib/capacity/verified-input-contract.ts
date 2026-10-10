@@ -24,6 +24,9 @@ import {
   type TrustedIssuerActivationStatus,
 } from "./trusted-issuer-host";
 import {
+  TRUSTED_IDENTITY_PRODUCTION_ACTIVATION,
+} from "./identity/activation";
+import {
   evaluateCompletenessForRemainingClaim,
   type SolverCompletenessCertInput,
 } from "./utilization-authority";
@@ -246,15 +249,21 @@ export function buildVerifiedCapacityInputHandoff(
     resolution.productionAuthoritative === true &&
     completenessEval.productionAuthoritative &&
     hostResolved.activation === "ACTIVE" &&
-    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE"
+    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE" &&
+    // Agent #8: WeakSet host mint alone is insufficient — IdP boundary must also be ACTIVE.
+    TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "ACTIVE"
       ? "ACTIVE"
       : "REFUSED";
 
   // Even when a caller injects productionTrustedIssuerAuth in tests, repository
   // activation stays BLOCKED until a real host provider is registered — unless
   // the host resolver itself returned ACTIVE (registered provider path).
+  // TRUSTED_IDENTITY_PRODUCTION_ACTIVATION remains an independent fail-closed gate
+  // (no production IdP in this repository).
   const productionActivation: TrustedIssuerActivationStatus =
-    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE" && hostResolved.activation === "ACTIVE"
+    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE" &&
+    hostResolved.activation === "ACTIVE" &&
+    TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "ACTIVE"
       ? "ACTIVE"
       : "BLOCKED";
 
@@ -266,6 +275,9 @@ export function buildVerifiedCapacityInputHandoff(
 
   if (finalProductionAuthority === "REFUSED" && productionActivation === "BLOCKED") {
     blockers.push(TRUSTED_ISSUER_ACTIVATION.blocker);
+    if (TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "BLOCKED") {
+      blockers.push(TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.reason);
+    }
   }
 
   const note =
@@ -310,6 +322,8 @@ export function mayUseAsProductionCapacityInput(
   return (
     handoff.productionAuthority === "ACTIVE" &&
     handoff.productionActivation === "ACTIVE" &&
+    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE" &&
+    TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "ACTIVE" &&
     handoff.financial.productionAuthoritative &&
     handoff.utilization.productionAuthoritative
   );

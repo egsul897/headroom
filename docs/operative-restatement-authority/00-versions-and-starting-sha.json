@@ -1,0 +1,53 @@
+{
+  "artifact": "AGENT7_VERSIONS_AND_STARTING_SHA",
+  "agent": 7,
+  "mission": "OPERATIVE_RESTATEMENT_AUTHORITY",
+  "startingMainSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+  "startingMainNote": "Fetched origin/main after #276 (WOR holdout) landed; local tip was stale at 342a6b05 before pull.",
+  "dependencies": {
+    "pr274_packageGraphAuthority": {
+      "url": "https://github.com/egsul897/headroom/pull/274",
+      "stateAtKickoff": "OPEN",
+      "headSha": "48950c804ff55001972ea7aa5a4812658becdd86",
+      "baseShaAtPrOpen": "342a6b059e3385fb14d605b8d1593e878a221578",
+      "consumedAs": "Optional ConfirmedInstrumentIdentityView + operative-handoff fail-closed contract. Agent #7 does not duplicate instrument-grouping or rewrite confirmed membership.",
+      "keyModules": [
+        "docs/package-graph-authority/01-operative-handoff-contract.md",
+        "lib/contract-model/compiler/package-graph/operative-handoff.ts",
+        "lib/contract-model/compiler/package-graph/document-roles.ts"
+      ]
+    },
+    "pr276_worHoldout": {
+      "url": "https://github.com/egsul897/headroom/pull/276",
+      "stateAtKickoff": "MERGED",
+      "mergeSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+      "sealCommit": "f17601ba7e64919b150993fdb1ae504c5afc01f7",
+      "fixture": "tests/fixtures/unseen-packages/wor-2023-2026-credit-facility",
+      "sourceHashes": {
+        "doc-a-extractedSha256": "29751da8c5ee22c84facccf0d643312b2fa8c485b612f92970bdbff05a4df5b2",
+        "doc-b-extractedSha256": "e5ce81017e3635960bcd519af513b480ca48a297cf97ba72e485ecb023399d3b"
+      },
+      "evaluatorFindingConsumed": "doc-b\u2192doc-a RESTATES=REVIEW_REQUIRED (SUPPORTING_TARGET_EVIDENCE); operativeDocumentId=null; 0 provision views"
+    }
+  },
+  "ownership": {
+    "inScope": [
+      "Restatement authority evidence extraction",
+      "Provision-level governing document as-of resolution",
+      "Conflict / refusal statuses (REVIEW_REQUIRED, AMBIGUOUS, UNSUPPORTED, PROVISIONAL_IDENTITY_BLOCKED)",
+      "Additive handoff for Agent #6 retrieval and Agent #10 execution"
+    ],
+    "outOfScope": [
+      "Package-graph edge rewriting / confirmed identity assignment (#274 / Agent #3)",
+      "Graph-wide backfill",
+      "Production DB migration",
+      "Compiler rewrite",
+      "UI work",
+      "Paid inference",
+      "Production Neon writes",
+      "Self-merge"
+    ]
+  },
+  "endingTipSha": "98b296af3bcff4cd6923ea6e8b4362571c588d84",
+  "pr": "https://github.com/egsul897/headroom/pull/283"
+}

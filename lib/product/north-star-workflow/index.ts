@@ -113,3 +113,10 @@ export {
   buildCanonicalSequentialSteps,
   buildSequentialDemoWorld,
 } from "./sequential-demo-scenario";
+/** Additive unified orchestration — see lib/product/verified-transaction-execution. */
+export {
+  executeUnifiedVerifiedTransaction,
+  toProductExecutionHandoff,
+  toAllProductExecutionHandoffs,
+  UNIFIED_TRANSACTION_EXECUTION_VERSION,
+} from "@/lib/product/verified-transaction-execution";
