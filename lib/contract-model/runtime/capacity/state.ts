@@ -146,6 +146,15 @@ const worst = (statuses: CapacityStatus[]): CapacityStatus =>
 const statusFromEvaluation = (e: EvaluationResult | null): CapacityStatus =>
   !e ? "UNSUPPORTED" : e.status === "EXECUTABLE" ? "AVAILABLE" : e.status === "NEEDS_INPUT" ? "NEEDS_INPUT" : e.status === "AMBIGUOUS" ? "AMBIGUOUS" : e.status === "UNSUPPORTED" ? "UNSUPPORTED" : "ERROR";
 
+/**
+ * A CapacityAmount kind of GATE_NOT_SATISFIED is a determined negative permission outcome.
+ * Evaluation may still report EXECUTABLE (the expression evaluated), but the capacity is not
+ * AVAILABLE. Floor status so customer-facing consumers of `status === "AVAILABLE"` cannot treat
+ * a failed gate as affirmative headroom (Agent 8 DEFECT-A8-01).
+ */
+const statusForAmount = (amount: CapacityAmount, base: CapacityStatus): CapacityStatus =>
+  amount.kind === "GATE_NOT_SATISFIED" ? worst([base, "NOT_SATISFIED"]) : base;
+
 const sortLimitations = (ls: CapacityLimitation[]) => ls.sort((a, b) => (`${a.code}|${a.message}` < `${b.code}|${b.message}` ? -1 : 1));
 
 /** A usage block from the ledger layer, as a capacity limitation. UNIT_FAILURE is a unit-algebra refusal. */
@@ -296,7 +305,7 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     const claimants = sharedById.get(node.sharedCapacityId!) ?? [];
     const limitations: CapacityLimitation[] = [];
     const undeterminedPool = (status: CapacityStatus, reason: string, limitation: CapacityLimitation): SharedConstraintState =>
-      ({ sharedCapacityId: node.sharedCapacityId!, capacityNodeId: node.capacityNodeId, status, grossCapacity: { kind: "NOT_DETERMINED", reason }, usage: { kind: "NOT_DETERMINED", reason: ZERO_REASON }, remaining: { kind: "NOT_DETERMINED", reason: ZERO_REASON }, memberRuleIds: [], memberUsage: [], directUsageIds: [], limitations: [limitation], evaluation: null });
+      ({ sharedCapacityId: node.sharedCapacityId!, capacityNodeId: node.capacityNodeId, status, grossCapacity: { kind: "NOT_DETERMINED", reason }, usage: { kind: "NOT_DETERMINED", reason: ZERO_REASON }, remaining: { kind: "NOT_DETERMINED", reason: ZERO_REASON }, memberRuleIds: [], memberUsage: [], directUsageIds: [], limitations: [limitation], evaluation: null, overConsumption: null, provisional: null });
     if (claimants.length === 0) {
       sharedConstraints.push(undeterminedPool("UNSUPPORTED", "no shared-capacity resource supplied for this node", { code: "SHARED_CAPACITY_NOT_QUANTIFIED", message: `shared capacity ${node.sharedCapacityId} has no resource definition`, refs: [node.capacityNodeId] }));
       continue;
@@ -306,15 +315,41 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
       continue;
     }
     const cap = claimants[0]!;
-    const evaluation = evaluate(cap.capExpression, { companyId, instrumentKey, asOf });
+    // PHASE-4 VERIFICATION GATE: shared capacities are first-class verified semantic units (same
+    // bind()/REQUIRE path as rules). Evaluate the pool cap under the pool's own unit identity so
+    // a clean SHARED_CAPACITY artifact can vouch for it — and so an unverified / stale / mismatched
+    // pool still fails closed. Preserves Agent 8 statusForAmount / NOT_SATISFIED / NOT_DETERMINED
+    // withholding below (#229).
+    const poolIdentity = {
+      ruleOrDefinitionId: cap.sharedCapId,
+      companyId: cap.companyId,
+      instrumentKey: cap.instrumentKey,
+      irSchemaVersion: cap.irSchemaVersion ?? "",
+      compilerVersion: cap.compilerVersion ?? null,
+      sourceContentVersion: cap.sourceContentVersion ?? null,
+    };
+    const poolOwn = gateActive ? assessUnit(cap.sharedCapId, args.verification, args.policy, poolIdentity) : null;
+    const evaluation = evaluate(cap.capExpression, {
+      companyId,
+      instrumentKey,
+      asOf,
+      unitId: cap.sharedCapId,
+      unitIdentity: poolIdentity,
+    });
+    const poolVerificationFloor = poolOwn ? capacityVerificationFloor(poolOwn, evaluation, node.capacityNodeId) : null;
+    if (poolVerificationFloor) limitations.push(...poolVerificationFloor.limitations);
     const gross = amountOf(evaluation.value, evaluation.status === "NEEDS_INPUT" ? "a financial fact the shared cap depends on is missing" : `shared cap not evaluable: ${evaluation.status}`);
-    // PHASE-4 VERIFICATION GATE: a pool is not a verifiable unit, but its cap may expand into one, and
-    // under REQUIRE the pool itself is unverified. A refusal is reported as what it is, not as an
-    // ambiguous financial fact.
     const poolBlocks = gateActive ? verificationBlocksIn(evaluation) : [];
-    if (poolBlocks.length > 0) limitations.push({ code: "PHASE3_VERIFICATION_MATERIAL_FINDING", message: `[${poolBlocks[0]!.reason}] ${poolBlocks[0]!.message}`, refs: [node.capacityNodeId, ...new Set(poolBlocks.flatMap((b) => b.findingIds))].sort() });
+    if (poolBlocks.length > 0 && !(poolVerificationFloor?.limitations.length)) {
+      limitations.push({ code: "PHASE3_VERIFICATION_MATERIAL_FINDING", message: `[${poolBlocks[0]!.reason}] ${poolBlocks[0]!.message}`, refs: [node.capacityNodeId, ...new Set(poolBlocks.flatMap((b) => b.findingIds))].sort() });
+    }
     if (gateActive && verificationIncompleteIn(evaluation)) limitations.push({ code: "PHASE3_VERIFICATION_INCOMPLETE", message: "a unit this shared cap depends on was not completely verified; the pool is reviewable, not defective", refs: [node.capacityNodeId] });
-    if (evaluation.status === "AMBIGUOUS" && !(poolBlocks.length > 0 && ambiguousKeysOf(evaluation).length === 0)) limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    const poolAmbiguousIsVerificationOnly =
+      (poolVerificationFloor?.conditions.some((c) => c !== "NONE" && c !== "ATTEMPTED_INCOMPLETE") ?? false) &&
+      ambiguousKeysOf(evaluation).length === 0;
+    if (evaluation.status === "AMBIGUOUS" && !poolAmbiguousIsVerificationOnly && !(poolBlocks.length > 0 && ambiguousKeysOf(evaluation).length === 0)) {
+      limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    }
     const currency = currencyOf(gross);
     const memberRuleIds = [...new Set(cap.memberRuleIds)].sort();
 
@@ -346,8 +381,44 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
 
     const { remaining, over } = computeRemaining(gross, usage, blocked !== null);
     if (over) limitations.push({ code: "OVER_CONSUMPTION", message: `recorded usage exceeds the shared capacity`, refs: [node.capacityNodeId, ...contributingIds] });
-    const status = worst([statusFromEvaluation(evaluation), ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code])]);
-    sharedConstraints.push({ sharedCapacityId: cap.sharedCapId, capacityNodeId: node.capacityNodeId, status, grossCapacity: gross, usage, remaining, memberRuleIds, memberUsage, directUsageIds: direct.applied.map((u) => u.usageId).sort(), limitations: sortLimitations(limitations), evaluation });
+    const overConsumption: OverConsumption | null = over
+      ? { gross, usage, deficit: over.deficit, usageIds: [...contributingIds].sort() }
+      : null;
+    const status = statusForAmount(
+      remaining,
+      worst([statusFromEvaluation(evaluation), ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code])]),
+    );
+    // Align with member-capacity withholding: OVER_CONSUMPTION / REVIEW_REQUIRED / AMBIGUOUS must
+    // not publish a negative (or otherwise non-authoritative) money remaining as usable headroom.
+    // Arithmetic stays under provisional + overConsumption (Agent 8 DEFECT-A8-02).
+    // GATE_NOT_SATISFIED remaining is published as that amount kind with status NOT_SATISFIED —
+    // it is not money headroom and must not be collapsed into NOT_DETERMINED.
+    const poolWithheld = over !== null || NON_AUTHORITATIVE.includes(status);
+    const withheldReason = over
+      ? "recorded usage exceeds the shared capacity; remaining is withheld and the deficit is reported under overConsumption/provisional"
+      : "the legal state of this shared capacity is not safe to rely on; the computed arithmetic is reported under provisional";
+    const publishedRemaining: CapacityAmount = poolWithheld
+      ? { kind: "NOT_DETERMINED", reason: withheldReason }
+      : remaining;
+    const publishedGross: CapacityAmount = poolWithheld && over !== null
+      ? { kind: "NOT_DETERMINED", reason: withheldReason }
+      : gross;
+    const provisional = poolWithheld ? { grossCapacity: gross, remaining } : null;
+    sharedConstraints.push({
+      sharedCapacityId: cap.sharedCapId,
+      capacityNodeId: node.capacityNodeId,
+      status,
+      grossCapacity: publishedGross,
+      usage,
+      remaining: publishedRemaining,
+      memberRuleIds,
+      memberUsage,
+      directUsageIds: direct.applied.map((u) => u.usageId).sort(),
+      limitations: sortLimitations(limitations),
+      evaluation,
+      overConsumption,
+      provisional,
+    });
   }
   sharedConstraints.sort((a, b) => (a.sharedCapacityId < b.sharedCapacityId ? -1 : 1));
   const poolByNodeId = new Map(sharedConstraints.map((s) => [s.capacityNodeId, s]));
@@ -420,6 +491,9 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
 
     // Shared constraints bound the member. This reports what the pool leaves, not an allocation.
     // Only this member's own pool edges are consulted, from the index built once above.
+    // Prefer each pool's provisional arithmetic (when remaining was withheld for over-consumption)
+    // so member effectiveRemaining still reflects the tighter pool bound without reading withheld
+    // NOT_DETERMINED as "no bound".
     const poolIds = poolsByMember.get(node.capacityNodeId) ?? [];
     complexity.indexLookups++;
     complexity.edgesVisited += poolIds.length;
@@ -427,11 +501,17 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     for (const p of poolIds) { complexity.sharedResourceLookups++; const s = poolByNodeId.get(p); if (s) myShared.push(s); }
     myShared.sort((a, b) => (a.sharedCapacityId < b.sharedCapacityId ? -1 : 1));
     let localEffective = remaining;
-    for (const s of myShared) localEffective = tighter(localEffective, s.remaining);
+    for (const s of myShared) {
+      const poolBound = s.provisional?.remaining ?? s.remaining;
+      localEffective = tighter(localEffective, poolBound);
+    }
     for (const s of myShared) for (const l of s.limitations) if (!limitations.some((x) => x.code === l.code && x.message === l.message)) limitations.push(l);
 
     const bounds: CapacityBounds | null = evaluation.bounds ?? null;
-    const status = worst([statusFromEvaluation(evaluation), ...legalFloor, ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code]), ...myShared.map((s) => s.status)]);
+    const status = statusForAmount(
+      localEffective.kind === "GATE_NOT_SATISFIED" ? localEffective : remaining.kind === "GATE_NOT_SATISFIED" ? remaining : gross,
+      worst([statusFromEvaluation(evaluation), ...legalFloor, ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code]), ...myShared.map((s) => s.status)]),
+    );
 
     // A capacity whose legal state is not safe to rely on keeps its arithmetic, but separately, so
     // it can never be read as authoritative headroom. Arithmetic never upgrades the legal state.

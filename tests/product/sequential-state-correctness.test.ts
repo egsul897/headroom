@@ -6,6 +6,7 @@ import {
   assertRestoreAuthority,
   buildRatioGatedSequentialWorld,
   buildSharedCapacitySequentialWorld,
+  buildVerifiedSequentialWorldForRules,
   chainFinancialViewWithScope,
   formatRestoreReason,
   RATIO_DEMO_INDEPENDENT_EXPECTATION,
@@ -141,20 +142,15 @@ describe("TE-D2: restore authority at shared boundary", () => {
     expect(assertRestoreAuthority(tx).ok).toBe(true);
   });
 
-  it("sequential runner blocks unauthorized restore before simulate", () => {
-    const w0 = world({
+  it("sequential runner blocks unauthorized restore via verified adapter", () => {
+    const sw = buildVerifiedSequentialWorldForRules({
       rules: [provision("p-a", MONEY(100))],
       ledger: [usage("u1", "40", onProvision("p-a"))],
+      companyId: "tx-org",
+      instrumentKey: "tx-facility",
     });
     const run = runSequentialTransactions({
-      world: {
-        graph: w0.graph,
-        state: w0.state,
-        inputs: w0.inputs,
-        context: w0.context,
-        companyId: "tx-org",
-        instrumentKey: "tx-facility",
-      },
+      world: sw,
       steps: [{
         stepId: "bad-restore",
         businessType: "DEBT_REPAYMENT",

@@ -173,7 +173,7 @@ describe("ordering, idempotency, replay, reversal, supersession, atomic failure"
 
   it("hypothetical simulation never mutates the actual ledger array", () => {
     const { world: w } = buildSequentialDemoWorld({ utilizationAffirmedComplete: true });
-    const ledgerRef = w.context.ledger!;
+    const ledgerRef = w.ledger;
     const before = JSON.stringify(ledgerRef);
     runSequentialTransactions({
       world: w,

@@ -26,16 +26,52 @@
  */
 import type { IRDefinition, IRRule, IRSharedCapacity } from "./ir/types";
 import type { SemanticVerificationResult } from "./compiler/semantic-verification/types";
-import type { InputResolver } from "./runtime/types";
+import type { InputResolver, SerializedRuntimeValue } from "./runtime/types";
 import { buildCapacityGraph } from "./runtime/capacity/graph";
 import { evaluateCapacityState } from "./runtime/capacity/state";
-import type { CapacityGraph, CapacityState, LedgerPolicy, LedgerUsageRecord } from "./runtime/capacity/types";
+import type {
+  CapacityAmount,
+  CapacityGraph,
+  CapacityState,
+  CapacityStateEntry,
+  LedgerPolicy,
+  LedgerUsageRecord,
+  ReclassificationElection,
+} from "./runtime/capacity/types";
 import { simulateTransaction } from "./runtime/transaction/simulate";
-import type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult } from "./runtime/transaction/types";
+import { buildOverlay } from "./runtime/transaction/overlay";
+import type {
+  ChangeMetricEffect,
+  EventStateEffect,
+  HypotheticalTransaction,
+  SelectedPath,
+  TransactionEffect,
+  TransactionQuantity,
+  TransactionSimulationResult,
+} from "./runtime/transaction/types";
 import { assertRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 
-/** Re-export 4D caller types so product never imports `runtime/transaction/*`. */
-export type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult };
+/**
+ * Re-export 4D caller types so product / sequential composition never imports
+ * `runtime/capacity/*` or `runtime/transaction/*` execution surfaces.
+ */
+export type {
+  HypotheticalTransaction,
+  SelectedPath,
+  TransactionSimulationResult,
+  TransactionQuantity,
+  TransactionEffect,
+  ChangeMetricEffect,
+  EventStateEffect,
+  CapacityGraph,
+  CapacityState,
+  CapacityStateEntry,
+  CapacityAmount,
+  LedgerUsageRecord,
+  LedgerPolicy,
+  ReclassificationElection,
+  InputResolver,
+};
 export { assertRestoreAuthority, formatRestoreReason, extractRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 import { hashOf } from "./runtime/input/identity";
 import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
@@ -332,4 +368,73 @@ export function simulateVerifiedTransaction(args: VerifiedTransactionArgs): Veri
     context: { rules: pkg.rules, sharedCapacities: pkg.sharedCapacities, definitions: pkg.definitions, ledger: args.ledger, ledgerPolicy: args.ledgerPolicy, asOf: args.asOf ?? null, verification: capacity.envelope, policy: VERIFIED_EXECUTION_POLICY },
   });
   return { outcome: "EXECUTED", policy: VERIFIED_EXECUTION_POLICY, packageHash: capacity.packageHash, envelope: capacity.envelope, coverage: capacity.coverage, capacity: capacity.state, simulation };
+}
+
+// ---------------------------------------------------------------------------
+// Sequential financial-view chaining (TE-D3) — lives on the verified boundary so
+// composition modules never import buildOverlay / raw simulate primitives.
+// ---------------------------------------------------------------------------
+
+function serializedToQuantity(v: SerializedRuntimeValue): TransactionQuantity | null {
+  switch (v.type) {
+    case "MONEY": return { type: "MONEY", amount: v.amount, currency: v.currency };
+    case "NUMBER": return { type: "NUMBER", value: v.value };
+    case "PERCENT": return { type: "PERCENT", fraction: v.fraction };
+    case "RATIO": return { type: "RATIO", value: v.value };
+    default: return null;
+  }
+}
+
+/**
+ * Chain prior APPLIED overlay results into the next step's base resolver.
+ * Used by sequential composition after each verified simulation step.
+ */
+export function chainFinancialViewWithScope(
+  base: InputResolver,
+  result: TransactionSimulationResult,
+  scope: { companyId: string; instrumentKey: string },
+): { resolver: InputResolver; chainedMetricKeys: string[]; chainedEvents: string[] } {
+  const metricEffects: ChangeMetricEffect[] = [];
+  const chainedMetricKeys: string[] = [];
+  for (const e of result.financialEffects) {
+    if (e.state !== "APPLIED" || !e.result) continue;
+    const q = serializedToQuantity(e.result);
+    if (!q) continue;
+    metricEffects.push({
+      effectId: `chain:${result.transactionIdentity.transactionId}:${e.effectId}`,
+      kind: "CHANGE_METRIC",
+      metricKey: e.metricKey,
+      period: e.period,
+      asOf: e.asOf,
+      adjustment: { kind: "SET", value: q },
+    });
+    chainedMetricKeys.push(e.metricKey);
+  }
+
+  const eventEffects: EventStateEffect[] = result.simulationInputView.eventAdjustments.map((e) => ({
+    effectId: `chain-evt:${e.effectId}`,
+    kind: e.active ? "ACTIVATE_EVENT" as const : "DEACTIVATE_EVENT" as const,
+    eventDescription: e.eventDescription,
+    asOf: e.asOf,
+  }));
+  const chainedEvents = eventEffects.map((e) => e.eventDescription);
+
+  if (metricEffects.length === 0 && eventEffects.length === 0) {
+    return { resolver: base, chainedMetricKeys: [], chainedEvents: [] };
+  }
+
+  const overlay = buildOverlay({
+    base,
+    transactionId: `chain-of:${result.transactionIdentity.transactionId}`,
+    companyId: scope.companyId,
+    instrumentKey: scope.instrumentKey,
+    metricEffects,
+    eventEffects,
+  });
+
+  return {
+    resolver: overlay.resolver,
+    chainedMetricKeys: [...new Set(chainedMetricKeys)].sort(),
+    chainedEvents: [...new Set(chainedEvents)].sort(),
+  };
 }
