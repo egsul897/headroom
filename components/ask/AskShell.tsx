@@ -3,11 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
+import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
+import {
+  presentAskAnswer,
+  type AskAnswerPresentation,
+} from "@/lib/customer-workflow/ask-view";
 
 type AskMode = "corpus" | "transaction";
 
 /**
  * Ask page — corpus retrieval (/api/ask) or structured transaction analysis (/api/ask/transaction).
+ * Fluent narrative never substitutes for legal verification.
  */
 export function AskShell({
   companyId,
@@ -21,6 +28,7 @@ export function AskShell({
   const [result, setResult] = useState<AskShellResult>(initial);
   const [txnJson, setTxnJson] = useState<string | null>(null);
   const [simulateHref, setSimulateHref] = useState<string | null>(null);
+  const [askPresentation, setAskPresentation] = useState<AskAnswerPresentation | null>(null);
   const [pending, setPending] = useState(false);
 
   return (
@@ -34,11 +42,103 @@ export function AskShell({
         </Link>
       </header>
 
+      <div style={{ marginBottom: 12 }}>
+        <WorkflowJourney companyId={companyId} current="ask" />
+      </div>
+
       <section className="home-card ask-card" data-ask-case={result.caseId}>
         <h2 className="home-headline">{result.headline}</h2>
         <p className="home-detail" style={{ whiteSpace: "pre-wrap" }}>
           {result.detail}
         </p>
+        {askPresentation && (
+          <div style={{ marginTop: 12 }} data-ask-status={askPresentation.answerStatus}>
+            <p className="home-eyebrow">Answer status</p>
+            <p className="home-detail">
+              <StatusChip code={askPresentation.answerStatus} /> {askPresentation.answerStatusLabel}
+            </p>
+            <p className="home-detail">{askPresentation.guidance}</p>
+            {askPresentation.permissionNotEstablished && (
+              <p className="home-detail">
+                Permission not established by the canonical engine — no favorable verified capacity claim.
+              </p>
+            )}
+            {askPresentation.selectedLegalPath && (
+              <>
+                <p className="home-eyebrow">Selected legal path</p>
+                <p className="home-detail">{askPresentation.selectedLegalPath}</p>
+              </>
+            )}
+            {askPresentation.debtLienPermissions.length > 0 && (
+              <>
+                <p className="home-eyebrow">Applicable debt / lien permissions</p>
+                <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+                  {askPresentation.debtLienPermissions.map((p, i) => (
+                    <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {askPresentation.requiredConditions.length > 0 && (
+              <>
+                <p className="home-eyebrow">Required conditions</p>
+                <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+                  {askPresentation.requiredConditions.map((c, i) => (
+                    <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {askPresentation.missingFinancialInputs.length > 0 && (
+              <>
+                <p className="home-eyebrow">Missing financial inputs</p>
+                <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+                  {askPresentation.missingFinancialInputs.map((m, i) => (
+                    <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                      {m}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <p className="home-eyebrow">Utilization completeness</p>
+            <p className="home-detail">{askPresentation.utilizationCompleteness}</p>
+            {askPresentation.sourceCitations.length > 0 ? (
+              <>
+                <p className="home-eyebrow">Source citations</p>
+                <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+                  {askPresentation.sourceCitations.map((c, i) => (
+                    <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                      <strong>{c.label || "Citation incomplete"}</strong>
+                      {c.excerpt ? <div>“{c.excerpt}”</div> : null}
+                      {c.epistemicStatus ? <div style={{ opacity: 0.8 }}>{c.epistemicStatus}</div> : null}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="home-detail">
+                <StatusChip code="REVIEW_REQUIRED" compact /> Source citation missing or not returned for this answer.
+              </p>
+            )}
+            {askPresentation.explicitLimitations.length > 0 && (
+              <>
+                <p className="home-eyebrow">Explicit limitations</p>
+                <ul style={{ paddingLeft: 18, margin: "4px 0" }}>
+                  {askPresentation.explicitLimitations.map((l, i) => (
+                    <li key={i} style={{ fontSize: 13, marginBottom: 4 }}>
+                      {l}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
         {result.restrictions && result.restrictions.length > 0 && (
           <div style={{ marginTop: 12 }}>
             <p className="home-eyebrow">Restrictions</p>
@@ -147,6 +247,7 @@ export function AskShell({
           setPending(true);
           setTxnJson(null);
           setSimulateHref(null);
+          setAskPresentation(null);
           try {
             if (mode === "transaction") {
               const res = await fetch("/api/ask/transaction", {
@@ -156,17 +257,23 @@ export function AskShell({
               });
               const data = (await res.json()) as {
                 answer?: { kind: string; headline: string; detail: string; limitations?: string[] };
-                draft?: { missingConfirmations?: string[] };
+                draft?: { missingConfirmations?: string[]; conditions?: string[]; permissions?: string[] };
                 authoritative?: { status: string; authority: string; missingInputs?: string[] };
-                pathEnumeration?: { authority: string; note: string };
+                pathEnumeration?: { authority: string; note: string; selectedPathId?: string | null };
                 simulateHref?: string | null;
-                verifiedSummary?: { executable?: boolean; blockers?: string[] };
+                verifiedSummary?: {
+                  executable?: boolean;
+                  blockers?: string[];
+                  selectedPathId?: string | null;
+                  simulationOutcome?: string | null;
+                };
                 executableOutcomes?: {
                   verifiedExecutable?: boolean;
                   verifiedBlockers?: string[];
                   legacyOverallStatus?: string | null;
                   completeness?: { verdict?: string; summary?: string } | null;
                 };
+                corpus?: AskShellResult;
                 error?: string;
               };
               if (data.error) {
@@ -176,6 +283,14 @@ export function AskShell({
                   headline: "Transaction analysis refused",
                   detail: data.error,
                 });
+                setAskPresentation(
+                  presentAskAnswer({
+                    answerKind: "refused",
+                    verifiedExecutable: false,
+                    limitations: [data.error],
+                    verifiedBlockers: [data.error],
+                  }),
+                );
               } else {
                 setTxnJson(JSON.stringify(data, null, 2));
                 setSimulateHref(data.simulateHref ?? null);
@@ -183,6 +298,24 @@ export function AskShell({
                 const completenessLine = data.executableOutcomes?.completeness
                   ? `Completeness: ${data.executableOutcomes.completeness.verdict ?? "—"} — ${data.executableOutcomes.completeness.summary ?? ""}`
                   : null;
+                const corpusCitations = data.corpus?.citations;
+                setAskPresentation(
+                  presentAskAnswer({
+                    answerKind: data.answer?.kind,
+                    verifiedExecutable: data.executableOutcomes?.verifiedExecutable === true,
+                    selectedPathId: data.verifiedSummary?.selectedPathId ?? data.pathEnumeration?.selectedPathId,
+                    selectedPathResult: data.verifiedSummary?.simulationOutcome ?? data.executableOutcomes?.legacyOverallStatus,
+                    permissions: data.draft?.permissions ?? data.corpus?.permissions,
+                    conditions: data.draft?.conditions,
+                    missingInputs: data.authoritative?.missingInputs,
+                    missingConfirmations: data.draft?.missingConfirmations,
+                    utilizationVerdict: data.executableOutcomes?.completeness?.verdict,
+                    utilizationSummary: data.executableOutcomes?.completeness?.summary,
+                    citations: corpusCitations,
+                    limitations: data.answer?.limitations,
+                    verifiedBlockers,
+                  }),
+                );
                 setResult({
                   kind:
                     data.answer?.kind === "certified"
@@ -209,6 +342,8 @@ export function AskShell({
                     ...(data.authoritative?.missingInputs ?? []),
                     ...(!data.executableOutcomes?.verifiedExecutable ? verifiedBlockers : []),
                   ],
+                  citations: corpusCitations,
+                  permissions: data.draft?.permissions ?? data.corpus?.permissions,
                 });
               }
             } else {
@@ -219,6 +354,21 @@ export function AskShell({
               });
               const data = (await res.json()) as AskShellResult;
               setResult(data);
+              setAskPresentation(
+                presentAskAnswer({
+                  answerKind:
+                    data.kind === "answered"
+                      ? "review_required"
+                      : data.kind === "insufficient_evidence"
+                        ? "insufficient_evidence"
+                        : "refused",
+                  verifiedExecutable: false,
+                  permissions: data.permissions,
+                  missingInputs: data.unresolved,
+                  citations: data.citations,
+                  limitations: data.limitations,
+                }),
+              );
             }
           } catch {
             setResult({
@@ -227,6 +377,13 @@ export function AskShell({
               headline: "Ask failed",
               detail: "The request failed. No invented answer was produced.",
             });
+            setAskPresentation(
+              presentAskAnswer({
+                answerKind: "refused",
+                verifiedExecutable: false,
+                limitations: ["Request failed — no invented answer."],
+              }),
+            );
           } finally {
             setPending(false);
           }
