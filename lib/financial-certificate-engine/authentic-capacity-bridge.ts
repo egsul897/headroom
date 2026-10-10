@@ -1,11 +1,11 @@
 /**
  * Bridge APPROVED FCE financial inputs → authentic covenant capacity (Agent 3).
  *
- * Coordinates with PR #230 authentic Neon execution:
+ * Coordinates with PR #230 authentic Neon execution and #237 utilization authority:
  * - Uses approved contractual metrics as FinancialSnapshotInput
  * - Evaluates authentic CovenantProvision rows via evaluateProvision
  * - Reports gross capacity separately from remaining capacity
- * - Never claims remaining capacity without attributed historical utilization
+ * - Remaining only via `publishRemainingCapacity` → #237 `computeVerifiedRemaining`
  */
 
 import {
@@ -95,6 +95,9 @@ function remainingForProvision(args: {
     asOf: args.asOf,
     grossCapacityMillions: args.gross,
     unlimited: args.unlimited,
+    // Modeled gross means the contractual formula gate passed for capacity amount;
+    // remaining still requires #237 completeness (not implied here).
+    gateSatisfied: args.gross != null || args.unlimited,
     records: [],
     completenessCertificate: null,
     unattributedLegacyBasketPresent,
@@ -138,6 +141,7 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
     reviewedBy: financial.reviewedBy,
     approvalRef: financial.approvalRef,
     productionContext: false,
+    trustedProductionApprovalChannel: false,
   });
 
   if (!financial.capacitySnapshot) {
@@ -254,7 +258,10 @@ export function toAuthenticCapacityRow(
   usedMillions: number | null,
   opts?: {
     asOf?: string;
-    completenessCertificate?: import("./utilization-honesty").UtilizationCompletenessCertificate | null;
+    completenessCertificate?: import("./utilization-honesty").TrustedCompletenessCertificate | null;
+    /** When true, attributed rows carry explicit AUTHENTIC + APPROVED metadata. */
+    trustedAttributedEvidence?: boolean;
+    gateSatisfied?: boolean;
   },
 ): AuthenticProvisionCapacityRow {
   const unlimited =
@@ -266,6 +273,7 @@ export function toAuthenticCapacityRow(
       ? evaluated.capacity
       : null;
   const asOf = opts?.asOf ?? "2026-06-30";
+  const trustedEvidence = opts?.trustedAttributedEvidence !== false;
   const records =
     utilizationAttributed && usedMillions != null
       ? [
@@ -275,6 +283,13 @@ export function toAuthenticCapacityRow(
             amountMillions: usedMillions,
             effectiveAsOf: asOf,
             status: "ACTIVE" as const,
+            ...(trustedEvidence
+              ? {
+                  authenticity: "AUTHENTIC" as const,
+                  approvalState: "APPROVED" as const,
+                  sourceLabel: "test-attributed-utilization",
+                }
+              : {}),
           },
         ]
       : [];
@@ -285,6 +300,10 @@ export function toAuthenticCapacityRow(
     unlimited,
     records,
     completenessCertificate: opts?.completenessCertificate ?? null,
+    // Explicit opts.gateSatisfied wins; otherwise modeled gross/unlimited implies formula gate.
+    gateSatisfied:
+      opts?.gateSatisfied === true ||
+      (opts?.gateSatisfied !== false && (gross != null || unlimited)),
   });
   return {
     provisionCode: p.code,

@@ -52,6 +52,7 @@ export {
 } from "./runtime/capacity/store";
 
 export type { LedgerUsageRecord } from "./runtime/capacity/types";
+export type { LedgerWriteResult } from "./runtime/capacity/store/types";
 
 /** Phase 4B resolver over APPROVED snapshots — product must not import runtime/* for this. */
 export { snapshotInputResolver } from "./runtime/input/snapshot-resolver";
