@@ -28,6 +28,7 @@ import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionT
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
 import { computeBundleId, computeContentIdentity } from "./identity";
+import { resolveOperativeSource } from "../candidate-span";
 import { extractDefinedTermHints, isDefinitionsSectionNode, narrowDefinitionsSectionOperativeText } from "./body-anchor";
 import { buildContextCompletenessManifest } from "./manifest";
 import { DEFAULT_RETRIEVAL_BUDGET, RETRIEVAL_ALGORITHM_VERSION, type BuildContextBundleInput, type CovenantContextBundle, type SufficiencyState } from "./types";
@@ -262,10 +263,22 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
     normalizedSourceRef: candidate.normalizedSourceRef,
   });
   const narrowed = narrowDefinitionsSectionOperativeText(access.index, documentId, primaryNodeId, termHints);
+  // IPV-04: length of the candidate's operative span must come from
+  // candidate-span.resolveOperativeSource — never a raw DESCENDANTS re-read
+  // in this file (architecture.test.ts enforces one operative-source builder).
+  const anchorOperative = resolveOperativeSource(
+    {
+      structuralNodeIds: candidate.structuralNodeIds,
+      documentId,
+      normalizedSourceRef: candidate.normalizedSourceRef,
+    },
+    access.index,
+    access.operativeState,
+  );
   const definitionsDump =
     !narrowed &&
     isDefinitionsSectionNode(access.index, primaryNodeId) &&
-    access.index.getNodeText(primaryNodeId, "DESCENDANTS").length > state.budget.maxTextBudgetChars;
+    anchorOperative.text.length > state.budget.maxTextBudgetChars;
 
   // Un-narrowed definitions dumps: keep only the section heading (OWN) so the
   // text budget is not silently exhausted before any dependency can be typed.
