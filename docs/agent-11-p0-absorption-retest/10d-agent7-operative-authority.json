@@ -1,0 +1,74 @@
+{
+  "tipSha": "bd9094e80d2d26c100b276ec67db4b31fc1ace49",
+  "asOfDate": "2026-09-15",
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "legalSealPreserved": true,
+  "sealMatches": {
+    "doc-a": true,
+    "doc-b": true
+  },
+  "restatementAuthorities": [
+    {
+      "successorDocumentId": "doc-a",
+      "predecessorDocumentId": null,
+      "status": "REVIEW_REQUIRED",
+      "effectiveDateIso": "2020-03-26"
+    },
+    {
+      "successorDocumentId": "doc-b",
+      "predecessorDocumentId": null,
+      "status": "REVIEW_REQUIRED",
+      "effectiveDateIso": "2026-09-14"
+    }
+  ],
+  "provisionClassCounts": {
+    "REVIEW_REQUIRED": 4
+  },
+  "provisions": [
+    {
+      "provisionKey": "SECTION::8.1",
+      "authorityClassification": "REVIEW_REQUIRED",
+      "governingDocumentId": null
+    },
+    {
+      "provisionKey": "SECTION::8.2",
+      "authorityClassification": "REVIEW_REQUIRED",
+      "governingDocumentId": null
+    },
+    {
+      "provisionKey": "SECTION::11.01",
+      "authorityClassification": "REVIEW_REQUIRED",
+      "governingDocumentId": null
+    },
+    {
+      "provisionKey": "SECTION::2.1",
+      "authorityClassification": "REVIEW_REQUIRED",
+      "governingDocumentId": null
+    }
+  ],
+  "allProvisionsProductionActive": false,
+  "anyProductionRefused": true,
+  "wrongDocumentProductionPromotion": false,
+  "confirmedOperativeOnDocA": 0,
+  "documentRoles": [
+    {
+      "documentId": "doc-a",
+      "role": "RESTATEMENT",
+      "confidence": "PROVISIONAL",
+      "effectiveDate": null,
+      "executionDate": null,
+      "evidenceCitations": [],
+      "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+    },
+    {
+      "documentId": "doc-b",
+      "role": "RESTATEMENT",
+      "confidence": "PROVISIONAL",
+      "effectiveDate": null,
+      "executionDate": null,
+      "evidenceCitations": [],
+      "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+    }
+  ],
+  "verdict": "CANONICAL_293_OPERATIVE_AUTHORITY_SAFETY_VERIFIED"
+}
