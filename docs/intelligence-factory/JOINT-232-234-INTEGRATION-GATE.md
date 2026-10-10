@@ -33,4 +33,10 @@ transient metadata.
 
 ## SHA
 
-Filled on tip after push.
+| Item | Value |
+|---|---|
+| Main | `3612fe76d4cb5f1d1af189e87d77e8aae11fc894` (#250) |
+| #239 tip (handoff) | `cf7fec674208bcf0c96856228915656a20179be0` |
+| GitHub mergeable | MERGEABLE (was CONFLICTING after #250 land) |
+| Canonical auth ≡ main | yes |
+| #229 capacity ≡ main | yes |
