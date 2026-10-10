@@ -1,0 +1,192 @@
+{
+  "modes": [
+    {
+      "mode": "duplicate_section_references",
+      "applicable": true,
+      "observation": {
+        "section_6_01_structural_nodes_doc_b": 2,
+        "section_6_01_structural_nodes_doc_a": 2,
+        "toc_and_body_both_present": true
+      },
+      "pass": true,
+      "note": "Must bind operative §6.01 to body occurrence, not TOC-only."
+    },
+    {
+      "mode": "nested_definitions",
+      "applicable": true,
+      "observation": {
+        "ebitda_defs": 2,
+        "interest_coverage_defs": 2
+      },
+      "pass": true
+    },
+    {
+      "mode": "unusual_edgar_formatting",
+      "applicable": true,
+      "observation": {
+        "page_number_artifacts": 215,
+        "nbsp_present": true
+      },
+      "pass": true,
+      "note": "EDGAR HTML→text leaves page furniture; structural index must still recover Article VI body."
+    },
+    {
+      "mode": "definitions_in_different_sections",
+      "applicable": true,
+      "observation": {
+        "permitted_liens_defs": 2,
+        "section_6_02_requires_art_i_def": true
+      },
+      "pass": true
+    },
+    {
+      "mode": "cross_document_references",
+      "applicable": true,
+      "observation": {
+        "classifications": [
+          {
+            "documentId": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9,
+            "evidence": [
+              "AMENDED AND RESTATED CREDIT AGREEMENT"
+            ],
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          },
+          {
+            "documentId": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9,
+            "evidence": [
+              "AMENDED AND RESTATED CREDIT AGREEMENT"
+            ],
+            "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+          }
+        ],
+        "relationshipCount": 2,
+        "restatesOrAmends": [
+          {
+            "sourceDocumentId": "doc-a",
+            "targetDocumentId": null,
+            "targetHint": "that certain Third Amended and Restated Credit Agreement, dated as of August 20, 2021",
+            "relationshipType": "RESTATES",
+            "sourceCitation": "that certain Third Amended and Restated Credit Agreement, dated as of August 20, 2021",
+            "confidence": 0,
+            "status": "UNRESOLVED",
+            "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"August 20, 2021\" is not in this package",
+            "resolutionMethod": "DETERMINISTIC_TYPE_ONLY_CHRONOLOGICALLY_IMPOSSIBLE",
+            "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+          },
+          {
+            "sourceDocumentId": "doc-b",
+            "targetDocumentId": "doc-a",
+            "targetHint": "that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023",
+            "relationshipType": "RESTATES",
+            "sourceCitation": "that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023",
+            "confidence": 0.6,
+            "status": "REVIEW_REQUIRED",
+            "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target",
+            "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+            "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "mode": "amendments",
+      "applicable": true,
+      "observation": {
+        "spinoff_in_doc_a": true,
+        "spinoff_in_doc_b": false,
+        "effectCount": 2
+      },
+      "pass": true,
+      "note": "Fifth AR removed Fourth AR Permitted Spinoff §6.01 carveout."
+    },
+    {
+      "mode": "shared_capacity",
+      "applicable": true,
+      "observation": "§6.03(x) and (xii) both $150mm with different gates/periods — shared aggregate not expressly combined.",
+      "pass": null,
+      "status": "MEASURED_AS_REPRESENTATION_RESIDUAL"
+    },
+    {
+      "mode": "ratio_baskets",
+      "applicable": true,
+      "observation": {
+        "section_6_13_found": true,
+        "interest_coverage_threshold_in_span": false
+      },
+      "pass": true
+    },
+    {
+      "mode": "growers",
+      "applicable": true,
+      "observation": {
+        "cnta_grower_in_6_01": true,
+        "percent": 10
+      },
+      "pass": true,
+      "note": "Body occurrence contains 10% CNTA grower; TOC duplicate also exists."
+    },
+    {
+      "mode": "facility_difference_baskets",
+      "applicable": true,
+      "observation": {
+        "foreignCurrencySublimit": "$0",
+        "aggregateCommitment": "$500,000,000"
+      },
+      "pass": true
+    },
+    {
+      "mode": "builders",
+      "applicable": false,
+      "status": "NOT_APPLICABLE",
+      "note": "No Available Amount / builder basket located in WOR §6 negative covenants."
+    },
+    {
+      "mode": "reclassification",
+      "applicable": false,
+      "status": "NOT_APPLICABLE",
+      "note": "No express reclassification mechanic in evaluated WOR baskets."
+    },
+    {
+      "mode": "unknown_financial_evidence",
+      "applicable": true,
+      "observation": {
+        "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE"
+      },
+      "pass": true,
+      "note": "Correct refusal: no authenticated financial snapshot supplied."
+    },
+    {
+      "mode": "unknown_utilization",
+      "applicable": true,
+      "observation": {
+        "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE"
+      },
+      "pass": true,
+      "note": "Correct refusal: no LC/Investment utilization ledger supplied."
+    },
+    {
+      "mode": "entity_mismatch",
+      "applicable": true,
+      "observation": {
+        "section_6_01_entity": "Restricted Subsidiaries only",
+        "section_6_02_entity": "Company and Restricted Subsidiaries"
+      },
+      "pass": true
+    },
+    {
+      "mode": "currency_mismatch",
+      "applicable": true,
+      "observation": {
+        "agreedCurrencyEffectiveDate": "Dollars only",
+        "foreignCurrencySublimit": 0
+      },
+      "pass": true,
+      "note": "Production capacity in foreign currency without conversion authority must refuse."
+    }
+  ]
+}

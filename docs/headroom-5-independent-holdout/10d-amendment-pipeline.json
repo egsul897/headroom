@@ -1,0 +1,50 @@
+{
+  "callerSynthetic": true,
+  "summary": {
+    "documentsProcessed": 2,
+    "deterministicEffectsFound": 2,
+    "semanticCallsMade": 0,
+    "semanticEffectsFound": 0,
+    "semanticEffectsRejectedByValidation": 0,
+    "conflictsDetected": 0,
+    "wallClockMs": 4.4258499999999685,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "effectCount": 2,
+  "effectsSample": [
+    {
+      "effectId": "dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370",
+      "amendmentDocumentId": "doc-a",
+      "operation": "RESTATE_AGREEMENT",
+      "status": "UNRESOLVED",
+      "target": {
+        "kind": "DOCUMENT",
+        "targetDocumentId": null,
+        "targetInstrumentKey": null,
+        "targetStructuralNodeKey": null,
+        "targetSectionRef": null,
+        "targetDefinedTermRef": null,
+        "targetHint": "full agreement restatement, target document not resolved"
+      },
+      "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"August 20, 2021\" is not in this package"
+    },
+    {
+      "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+      "amendmentDocumentId": "doc-b",
+      "operation": "RESTATE_AGREEMENT",
+      "status": "REVIEW_REQUIRED",
+      "target": {
+        "kind": "DOCUMENT",
+        "targetDocumentId": "doc-a",
+        "targetInstrumentKey": "instrument:doc-a",
+        "targetStructuralNodeKey": null,
+        "targetSectionRef": null,
+        "targetDefinedTermRef": null,
+        "targetHint": null
+      },
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Fourth Amended and Restated Credit Agreement, dated as of September 27, 2023\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target"
+    }
+  ],
+  "unattachedCount": 2
+}
