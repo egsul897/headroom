@@ -1,8 +1,9 @@
 # Canonical utilization + Neon pathway — post-#237 harden
 
-**Base main:** `2f608e1a6634007b95feb8c29cb3ad74b30dcf97` (PR #237 already landed #232+#234 reconcile)  
+**Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a` (PR #237 already landed #232+#234 reconcile)  
 **Integration branch:** `cursor/utilization-neon-canonical-a9e4`  
-**Integration tip:** `da8cb7b544adf6c3612a4d5e7477ad25e58047dc`  
+**CI-verified content tip:** `da8cb7b544adf6c3612a4d5e7477ad25e58047dc`  
+**Branch tip:** `d054b5eca37748ed8d1b84bb956b43bd4938bc4b` (docs-only CI pin)  
 **Combined PR:** https://github.com/egsul897/headroom/pull/241 (draft — no auto-merge)  
 **Auto-merge:** **no** · Neon writes: **none** · Certification bypass: **none**
 
@@ -40,8 +41,17 @@ Do **not** merge standalone #232 or #234 — superseded by #237 + this harden.
 **Full cert gate:** `lib/capacity/completeness-certificate.ts`  
 **Resolver:** `lib/capacity/utilization-resolver.ts`
 
+## CI on content tip `da8cb7b5`
+
+| Check | Result |
+|---|---|
+| P3-R0 carry-forward and supersession (soft gate) | **SUCCESS** |
+| Vercel | **SUCCESS** |
+| Vercel Preview Comments | **SUCCESS** |
+| Aggregate | **all checks green** · mergeable **MERGEABLE** |
+
 ## Remaining blockers
 
 1. Authentic Neon completeness certificates not populated (counsel/custodian + live bindings)
-2. Human merge authorization after CI green — **no auto-merge**
+2. Human merge authorization — **no auto-merge** (CI green on content tip)
 3. Close/supersede open #232 / #234 / #235 as docs/activation superseded by #237 + #241
