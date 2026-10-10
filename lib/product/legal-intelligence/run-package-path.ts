@@ -63,7 +63,27 @@ async function runConmedPath(): Promise<PackageLegalPathResult> {
   const snap = await prisma.financialSnapshot.count({
     where: { companyId: CONMED_DEMO_COMPANY_ID },
   });
-  const ledger = 0; // no utilization ledger model populated for CONMED demo
+  // Utilization completeness: an empty/missing ledger does NOT prove zero usage.
+  // Count active ContractLedgerUsage rows when the model exists; never hardcode 0 as "known empty".
+  let ledgerActiveCount = 0;
+  let ledgerModelAvailable = false;
+  try {
+    const ledgerDelegate = (prisma as { contractLedgerUsage?: { count: (args: unknown) => Promise<number> } }).contractLedgerUsage;
+    if (ledgerDelegate?.count) {
+      ledgerModelAvailable = true;
+      ledgerActiveCount = await ledgerDelegate.count({
+        where: {
+          companyId: CONMED_DEMO_COMPANY_ID,
+          status: { in: ["RECORDED", "PENDING"] },
+        },
+      });
+    }
+  } catch {
+    ledgerModelAvailable = false;
+    ledgerActiveCount = 0;
+  }
+  // Fail closed: only claim a utilization ledger when rows exist. Absence ⇒ unknown, not unused.
+  const hasUtilizationLedger = ledgerModelAvailable && ledgerActiveCount > 0;
 
   const unresolvedTerms = [
     ...new Set(rows.flatMap((r) => r.requiredDefinedTerms)),
@@ -74,7 +94,7 @@ async function runConmedPath(): Promise<PackageLegalPathResult> {
     conclusions,
     context: {
       hasApprovedFinancialSnapshot: snap > 0,
-      hasUtilizationLedger: ledger > 0,
+      hasUtilizationLedger,
       hasVerifiedIrPackage: false,
       outOfPackageAmendments: [
         "Doc C Second Amendment amends Seventh A&R (not in package)",

@@ -64,7 +64,7 @@ describe("authentic capacity bridge (gross vs remaining)", () => {
     expect(row.remainingCapacityMillions).toBeNull();
     expect(row.utilizationAttributed).toBe(false);
     expect(row.utilizationNote).toMatch(
-      /cannot establish remaining|remaining not claimed|completeness certificate|Utilization UNKNOWN|remaining capacity cannot be claimed|missing history/i,
+      /remaining not supported|completeness certificate|never defaulted to zero|UNKNOWN|utilization/i,
     );
   });
 
@@ -81,12 +81,14 @@ describe("authentic capacity bridge (gross vs remaining)", () => {
 
     const withCert = toAuthenticCapacityRow(p, evaluated, true, 25, {
       asOf: "2026-06-30",
+      gateSatisfied: true,
       completenessCertificate: {
         capacityRuleId: "flat_basket",
         asOf: "2026-06-30",
         kind: "VERIFIED_COMPLETE",
         approvalState: "APPROVED",
         sourceLabel: "test completeness",
+        trustedCompletenessProvenance: true,
       },
     });
     expect(withCert.remainingCapacityMillions).toBe(75);
