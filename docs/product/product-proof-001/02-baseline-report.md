@@ -33,3 +33,5 @@ Downstream product stages (modeled permissions, VEP, NS-4) are also unsupported;
 ## Customer-usable answer?
 
 **No.** Baseline establishes the honest stop point. See top blockers in `01-first-execution.json`.
+
+**Baseline SHA:** `42e47d6785e6d73b4fb28ee7a63af22d00ff3d06`

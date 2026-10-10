@@ -8,7 +8,7 @@
   "paidInference": false,
   "neonWrites": false,
   "manuallyModeledCovenants": false,
-  "gitHeadRef": "ref: refs/heads/cursor/canonical-integrated-product-10ff",
+  "gitHeadRef": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06",
   "stages": [
     {
       "stage": "PARSE_HTML",
@@ -41,7 +41,7 @@
   "emptySolverAttempt": {
     "attempted": true,
     "eligiblePermissions": 0,
-    "note": "runSolver not invoked with invented permissions; zero authentic permissions → no CLEAR path"
+    "note": "runSolver not invoked with invented permissions; zero authentic permissions \u2192 no CLEAR path"
   },
   "executableProbeFalse": true,
   "sourceFindings": [
@@ -80,7 +80,7 @@
   "topBlockers": [
     {
       "id": "PP001-B1",
-      "title": "Pass B semantic discovery requires paid provider — refused for baseline",
+      "title": "Pass B semantic discovery requires paid provider \u2014 refused for baseline",
       "blocks": "Sealed discovery candidates / roles for Kennametal"
     },
     {
@@ -101,8 +101,9 @@
     {
       "id": "PP001-B5",
       "title": "Foundation P1/P2 + concurrency proofs remain open on tracked register",
-      "blocks": "Production readiness claims; green CI ≠ resolution"
+      "blocks": "Production readiness claims; green CI \u2260 resolution"
     }
   ],
-  "verdict": "PRODUCT_PROOF_001_BASELINE_ESTABLISHED_CUSTOMER_ANSWER_NOT_YET_PRODUCIBLE"
+  "verdict": "PRODUCT_PROOF_001_BASELINE_ESTABLISHED_CUSTOMER_ANSWER_NOT_YET_PRODUCIBLE",
+  "baselineSha": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06"
 }

@@ -9,7 +9,6 @@
   "certificationPromotion": false,
   "autoMerge": false,
   "baselineBranch": "cursor/canonical-integrated-product-10ff",
-  "baselineShaPlaceholder": "WILL_BE_SET_TO_COMMIT_SHA_AFTER_FREEZE_COMMIT",
   "package": {
     "packageId": "kennametal-2026-term-loan-credit-agreement",
     "path": "tests/fixtures/product-proof-001/kennametal-2026-term-loan-credit-agreement",
@@ -104,5 +103,6 @@
     "Do not wait for unrelated PRs to merge before establishing this baseline",
     "Do not represent green CI as resolution of FA-P1/P2 or concurrency proof gaps",
     "No auto-merge, paid inference, certification promotion, or production Neon writes"
-  ]
+  ],
+  "baselineSha": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06"
 }
