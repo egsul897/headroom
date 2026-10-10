@@ -2,7 +2,7 @@
  * Durable utilization completeness certificates.
  * Revoked certificates must not authorize new production calculations.
  */
-import type { IntelligenceLifecycleStatus, PrismaClient } from "@prisma/client";
+import { Prisma, type IntelligenceLifecycleStatus, type PrismaClient } from "@prisma/client";
 import type { UtilizationCompletenessCertificate } from "@/lib/capacity/utilization-types";
 import { contentHashOf, fingerprintParts } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
@@ -47,36 +47,54 @@ export async function persistUtilizationCompletenessRecord(
     },
   });
 
-  const row = await prisma.$transaction(async (tx) => {
-    const created = await tx.utilizationCompletenessRecord.create({
-      data: {
-        companyId,
-        capacityRuleId: cert.capacityRuleId,
-        asOfDate: cert.asOf,
-        certificateKind: cert.kind,
-        authenticity: cert.authenticity ?? null,
-        contentHash,
-        payload: {
-          certificate: cert,
-          fingerprint: fingerprintParts({
+  let row;
+  try {
+    row = await prisma.$transaction(async (tx) => {
+      const created = await tx.utilizationCompletenessRecord.create({
+        data: {
+          companyId,
+          capacityRuleId: cert.capacityRuleId,
+          asOfDate: cert.asOf,
+          certificateKind: cert.kind,
+          authenticity: cert.authenticity ?? null,
+          contentHash,
+          payload: {
+            certificate: cert,
+            fingerprint: fingerprintParts({
+              companyId,
+              capacityRuleId: cert.capacityRuleId,
+              asOfDate: cert.asOf,
+              kind: cert.kind,
+              contentHash,
+            }),
+          } as object,
+          status: "ACTIVE",
+        },
+      });
+      for (const prior of priorActive) {
+        await tx.utilizationCompletenessRecord.update({
+          where: { id: prior.id },
+          data: { status: "SUPERSEDED", supersededById: created.id },
+        });
+      }
+      return created;
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const raced = await prisma.utilizationCompletenessRecord.findUnique({
+        where: {
+          companyId_capacityRuleId_asOfDate_contentHash: {
             companyId,
             capacityRuleId: cert.capacityRuleId,
             asOfDate: cert.asOf,
-            kind: cert.kind,
             contentHash,
-          }),
-        } as object,
-        status: "ACTIVE",
-      },
-    });
-    for (const prior of priorActive) {
-      await tx.utilizationCompletenessRecord.update({
-        where: { id: prior.id },
-        data: { status: "SUPERSEDED", supersededById: created.id },
+          },
+        },
       });
+      if (raced) return { id: raced.id, contentHash, created: false, status: raced.status };
     }
-    return created;
-  });
+    throw err;
+  }
 
   await appendInstitutionalAuditEvent(prisma, {
     companyId,

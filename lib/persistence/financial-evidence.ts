@@ -3,7 +3,7 @@
  * Never silently substitutes GAAP Total Assets for covenant Total Consolidated Assets —
  * accounting definitions live in the payload and are preserved verbatim.
  */
-import type { IntelligenceLifecycleStatus, PrismaClient } from "@prisma/client";
+import { Prisma, type IntelligenceLifecycleStatus, type PrismaClient } from "@prisma/client";
 import type { FinancialMetricEvidence } from "@/lib/capacity/financial-evidence";
 import { contentHashOf, fingerprintParts } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
@@ -85,30 +85,41 @@ export async function persistFinancialEvidenceBundle(
     where: { companyId, bundleKey: input.bundleKey, status: "ACTIVE", NOT: { contentHash } },
   });
 
-  const row = await prisma.$transaction(async (tx) => {
-    const created = await tx.financialEvidenceBundle.create({
-      data: {
-        companyId,
-        bundleKey: input.bundleKey,
-        asOfDate: input.asOfDate,
-        contentHash,
-        verificationStatus,
-        authenticity,
-        payload: { metrics: input.metrics } as object,
-        sourceFingerprint: sourceFingerprint as object,
-        claimedReviewerLabel: input.claimedReviewerLabel ?? null,
-        approvedAt: verificationStatus === "VERIFIED" ? new Date() : null,
-        status: "ACTIVE",
-      },
-    });
-    for (const prior of priorActive) {
-      await tx.financialEvidenceBundle.update({
-        where: { id: prior.id },
-        data: { status: "SUPERSEDED", supersededById: created.id },
+  let row;
+  try {
+    row = await prisma.$transaction(async (tx) => {
+      const created = await tx.financialEvidenceBundle.create({
+        data: {
+          companyId,
+          bundleKey: input.bundleKey,
+          asOfDate: input.asOfDate,
+          contentHash,
+          verificationStatus,
+          authenticity,
+          payload: { metrics: input.metrics } as object,
+          sourceFingerprint: sourceFingerprint as object,
+          claimedReviewerLabel: input.claimedReviewerLabel ?? null,
+          approvedAt: verificationStatus === "VERIFIED" ? new Date() : null,
+          status: "ACTIVE",
+        },
       });
+      for (const prior of priorActive) {
+        await tx.financialEvidenceBundle.update({
+          where: { id: prior.id },
+          data: { status: "SUPERSEDED", supersededById: created.id },
+        });
+      }
+      return created;
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const raced = await prisma.financialEvidenceBundle.findUnique({
+        where: { companyId_bundleKey_contentHash: { companyId, bundleKey: input.bundleKey, contentHash } },
+      });
+      if (raced) return { id: raced.id, contentHash, created: false, status: raced.status };
     }
-    return created;
-  });
+    throw err;
+  }
 
   await appendInstitutionalAuditEvent(prisma, {
     companyId,

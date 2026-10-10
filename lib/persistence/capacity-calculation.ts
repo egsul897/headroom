@@ -3,7 +3,12 @@
  * Distinguishes hypothetical / verified / refused / review-required / production-authoritative.
  * Never promotes a stale stored result to current authority merely because it exists.
  */
-import type { IntelligenceAuthorityClass, IntelligenceLifecycleStatus, PrismaClient } from "@prisma/client";
+import {
+  Prisma,
+  type IntelligenceAuthorityClass,
+  type IntelligenceLifecycleStatus,
+  type PrismaClient,
+} from "@prisma/client";
 import { contentHashOf, fingerprintParts } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
 import { assertSameTenant, requireCompanyId } from "./tenant";
@@ -78,42 +83,59 @@ export async function persistCapacityCalculation(
     where: { companyId, calculationId: input.calculationId, status: "ACTIVE", NOT: { contentHash } },
   });
 
-  const row = await prisma.$transaction(async (tx) => {
-    const created = await tx.capacityCalculationRecord.create({
-      data: {
-        companyId,
-        instrumentKey: input.instrumentKey ?? null,
-        asOfDate: input.asOfDate,
-        calculationId: input.calculationId,
-        contentHash,
-        inputHash,
-        engineVersion,
-        authorityClass: input.authorityClass,
-        calculationStatus: input.calculationStatus,
-        operativeAuthoritySnapshotId: input.operativeAuthoritySnapshotId ?? null,
-        verifiedIrIdentity: input.verifiedIrIdentity ?? null,
-        financialSnapshotIdentity: input.financialSnapshotIdentity ?? null,
-        utilizationSnapshotIdentity: input.utilizationSnapshotIdentity ?? null,
-        capacityOutput: (input.capacityOutput ?? undefined) as object | undefined,
-        missingInputs: (input.missingInputs ?? undefined) as object | undefined,
-        refusalReasons: (input.refusalReasons ?? undefined) as object | undefined,
-        reviewConditions: (input.reviewConditions ?? undefined) as object | undefined,
-        trace: (input.trace ?? undefined) as object | undefined,
-        payload: {
-          request: input.request,
-          fingerprint: fingerprintParts({ companyId, calculationId: input.calculationId, inputHash }),
-        } as object,
-        status: "ACTIVE",
-      },
-    });
-    for (const prior of priorActive) {
-      await tx.capacityCalculationRecord.update({
-        where: { id: prior.id },
-        data: { status: "SUPERSEDED", supersededById: created.id },
+  let row;
+  try {
+    row = await prisma.$transaction(async (tx) => {
+      const created = await tx.capacityCalculationRecord.create({
+        data: {
+          companyId,
+          instrumentKey: input.instrumentKey ?? null,
+          asOfDate: input.asOfDate,
+          calculationId: input.calculationId,
+          contentHash,
+          inputHash,
+          engineVersion,
+          authorityClass: input.authorityClass,
+          calculationStatus: input.calculationStatus,
+          operativeAuthoritySnapshotId: input.operativeAuthoritySnapshotId ?? null,
+          verifiedIrIdentity: input.verifiedIrIdentity ?? null,
+          financialSnapshotIdentity: input.financialSnapshotIdentity ?? null,
+          utilizationSnapshotIdentity: input.utilizationSnapshotIdentity ?? null,
+          capacityOutput: (input.capacityOutput ?? undefined) as object | undefined,
+          missingInputs: (input.missingInputs ?? undefined) as object | undefined,
+          refusalReasons: (input.refusalReasons ?? undefined) as object | undefined,
+          reviewConditions: (input.reviewConditions ?? undefined) as object | undefined,
+          trace: (input.trace ?? undefined) as object | undefined,
+          payload: {
+            request: input.request,
+            fingerprint: fingerprintParts({ companyId, calculationId: input.calculationId, inputHash }),
+          } as object,
+          status: "ACTIVE",
+        },
       });
+      for (const prior of priorActive) {
+        await tx.capacityCalculationRecord.update({
+          where: { id: prior.id },
+          data: { status: "SUPERSEDED", supersededById: created.id },
+        });
+      }
+      return created;
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const raced = await prisma.capacityCalculationRecord.findUnique({
+        where: {
+          companyId_calculationId_contentHash: {
+            companyId,
+            calculationId: input.calculationId,
+            contentHash,
+          },
+        },
+      });
+      if (raced) return { id: raced.id, contentHash, inputHash, created: false, status: raced.status };
     }
-    return created;
-  });
+    throw err;
+  }
 
   await appendInstitutionalAuditEvent(prisma, {
     companyId,
