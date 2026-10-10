@@ -121,7 +121,16 @@ async function main() {
     const found = modeled.find((c) => c.sourceSectionRef === gt.sectionRef);
     if (!found) {
       falseNegatives++;
-      console.log(`[MISS] ${gt.label} - section ${gt.sectionRef} - no MODELED candidate extracted at all (real: ${gt.expectedFormulaType === "RATIO (no FLAT dollar figure at all)" ? "expected - no dollar-anchored figure exists to extract; this provider (and its COVERAGE-gap detector) has no ratio-covenant recognition pattern, so this is silently invisible, not even flagged" : "extraction gap"}).`);
+      const gap = gaps.find((c) => c.sourceSectionRef === gt.sectionRef);
+      if (gt.expectedFormulaType.startsWith("RATIO")) {
+        console.log(
+          `[MISS-MODELED] ${gt.label} - section ${gt.sectionRef} - no MODELED dollar candidate (expected for pure ratio). Gap placeholder: ${
+            gap ? "YES (KNOWN_NOT_MODELED)" : "NO"
+          }.`,
+        );
+      } else {
+        console.log(`[MISS] ${gt.label} - section ${gt.sectionRef} - no MODELED candidate extracted.`);
+      }
       continue;
     }
     truePositives++;
@@ -134,9 +143,17 @@ async function main() {
     if (grantOk) correctGrantType++;
     console.log(`[FOUND] ${gt.label} (real Permission: ${gt.realPermissionCode})`);
     console.log(`        grantType: extracted=${pv.grantType} real=${gt.grantType} ${grantOk ? "OK" : "WRONG"}`);
-    console.log(`        thresholdValue: extracted=${pv.thresholdValue} real(millions)=${gt.expectedThresholdMillions} ${thresholdOk ? "OK" : "WRONG - " + (pv.thresholdValue / gt.expectedThresholdMillions).toFixed(0) + "x off (the synthetic provider's dollar regex has no '$X,000,000' full-precision parsing - it only scales '$X million'/'$X billion' shorthand, so real SEC-filed notation passes straight through unscaled)"}`);
-    console.log(`        formulaType: extracted=${pv.formulaType} real=${gt.expectedFormulaType} ${formulaOk ? "OK" : "WRONG - the synthetic provider always emits FLAT_AMOUNT; it has no pattern recognizing 'greater of $X and Y% of EBITDA' as GREATER_OF_FLAT_OR_PCT_EBITDA, so the percentage-of-EBITDA growth component is silently dropped"}`);
-    console.log(`        citation: sourceSectionRef="${found.sourceSectionRef}" (top-level SECTION number correct; the chunker has no lettered-subclause ((k)/(kk)) recognition, so sub-clause-level citation precision is lost)`);
+    console.log(
+      `        thresholdValue: extracted=${pv.thresholdValue} real(millions)=${gt.expectedThresholdMillions} ${
+        thresholdOk ? "OK" : "WRONG"
+      }`,
+    );
+    console.log(
+      `        formulaType: extracted=${pv.formulaType} real=${gt.expectedFormulaType} ${formulaOk ? "OK" : "WRONG"}`,
+    );
+    console.log(
+      `        citation: sourceSectionRef="${found.sourceSectionRef}" (top-level SECTION number; lettered sub-clause precision may be lost)`,
+    );
     console.log("");
   }
 
@@ -153,7 +170,9 @@ async function main() {
   console.log(`Of the ${truePositives} true positives: threshold value numerically correct = ${correctThreshold}/${truePositives}; formulaType correct = ${correctFormulaType}/${truePositives}; grantType correct = ${correctGrantType}/${truePositives}`);
   console.log(`\nKNOWN_NOT_MODELED gap placeholders generated: ${gaps.length}`);
   for (const g of gaps) console.log(`  - section ${g.sourceSectionRef}: "${(g.proposedValue as { action: string }).action}"`);
-  console.log(`\nNote: the two pure-ratio financial covenants (§6.11(a)/(b)) were NOT flagged as gaps either - the SyntheticExtractionProvider's COVERAGE stage also requires an "Indebtedness"/"Lien" keyword match, so a ratio covenant with neither word triggers no candidate AND no gap placeholder. This is a genuine, honestly-reported blind spot of the regex-only synthetic provider, not of the pipeline architecture itself (a real LLM-based provider, e.g. AnthropicExtractionProvider, would be expected to recognize a maintenance-covenant clause without requiring those literal keywords - unverified in this sandbox, no ANTHROPIC_API_KEY available).`);
+  console.log(
+    `\nNote: Pure-ratio maintenance covenants are not MODELED as dollar baskets (fail-closed). Coverage may emit KNOWN_NOT_MODELED gap placeholders when leverage/coverage ratio language is detected. MODELED ratio-room FormulaTypes still require a richer provider or human modeling.`,
+  );
 
   await prisma.company.deleteMany({ where: { id: COMPANY_ID } });
   console.log("\nTest company cleaned up. Real 'coherent' company was never written to.");

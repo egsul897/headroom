@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-09T22:35:26.171Z",
+  "knowledgeSourcesByRepresentation": {
+    "DISCOVERED_CANDIDATE/CANDIDATES_DISCOVERED": 672,
+    "STRUCTURALLY_INDEXED/CANDIDATES_DISCOVERED": 62
+  },
+  "permissionsTotal": 39,
+  "permissionsModeled": 39,
+  "covenantProvisions": 19,
+  "semanticTruthRecords": 0,
+  "contractLedgerUsages": 1,
+  "approvedContractInputSnapshots": 6,
+  "blockers": [
+    {
+      "category": "Extraction failures",
+      "finding": "672/734 KnowledgeSources are DISCOVERED_CANDIDATE only; 62 STRUCTURALLY_INDEXED. None reach executable Permission compilation from the KF path."
+    },
+    {
+      "category": "Definition-resolution failures",
+      "finding": "KF covenant summaries do not resolve defined-term graphs into IRDefinition calculationExpression trees bound to Permissions."
+    },
+    {
+      "category": "Unsupported representations",
+      "finding": "Legacy→Phase-4C adapter refuses LEVERAGE_RATIO_ROOM, COVERAGE_RATIO_ROOM, RATIO_GATE, BUILDER_BASKET (documented). Those still execute on the legacy leaf evaluator."
+    },
+    {
+      "category": "Missing financial inputs",
+      "finding": "Legacy FinancialSnapshot covers EBITDA/debt/cash/interest/CNI/equity/rate; Total Assets only via FinancialState.balanceSheetFacts (Matthews has it; Coherent provisions evaluated do not require it). North-Star APPROVED snapshots exist for fixture companies, not Coherent/Matthews production packages."
+    },
+    {
+      "category": "Missing utilization",
+      "finding": "Coherent has 6 ACTIVE LedgerEntry rows by basket family, none attributed to Permission/Provision ids. SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData. contract_ledger_usages has 1 synthetic row for an ns-e2e company."
+    },
+    {
+      "category": "Verification and certification blockers",
+      "finding": "semantic_truth_records = 0. KF representation never promotes to certified Phase-3 IR. Coherent/Matthews Permissions are manually populated VERIFIED MODELED rows, not corpus-compiled certificates."
+    },
+    {
+      "category": "Runtime execution failures",
+      "finding": "None demonstrated on authentic VERIFIED rows once financial snapshots exist — evaluateProvision matched independent arithmetic for all modeled gross-capacity cases in this run."
+    }
+  ],
+  "summary": {
+    "authenticProvisionsEvaluated": 51,
+    "successfullyRepresented": 51,
+    "independentlyCorrectExecutableResults": 45,
+    "correctlyRefused": 6,
+    "incorrectlyEvaluated": 0,
+    "blockedByMissingFinancials": 0,
+    "blockedByMissingUtilization": 45,
+    "blockedByCertification": 0,
+    "blockedByUnsupportedRepresentation": 0,
+    "mechanicsCovered": [
+      "available_amount_builder",
+      "fixed_basket",
+      "greater_of_grower",
+      "incremental_facility",
+      "investment",
+      "ratio_debt",
+      "restricted_payment",
+      "shared_capacity"
+    ],
+    "phase4cAdapted": 31,
+    "phase4cAdapterRefused": 20,
+    "neonCorpusContext": {
+      "note": "KnowledgeSource corpus is large but does not write Permission/CovenantProvision rows"
+    }
+  }
+}

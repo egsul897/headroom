@@ -1,0 +1,104 @@
+{
+  "syntheticAttributedRemaining": {
+    "authenticity": "SYNTHETIC_LABELED",
+    "asOf": "2026-06-30",
+    "formula": "FLAT_AMOUNT",
+    "grossContractualCapacity": 100,
+    "knownAttributedUtilization": 35,
+    "unknownUtilization": false,
+    "supportedRemaining": 65,
+    "independentExpectedRemaining": 65,
+    "match": true,
+    "sharedPoolEffects": "none",
+    "governingConditions": [
+      "No Payment Conditions on this flat basket (demo)"
+    ],
+    "publicationLabel": "AVAILABLE",
+    "productConsistency": {
+      "ok": true
+    },
+    "surfaces": {
+      "POSITION": 65,
+      "SIMULATE": 65,
+      "ASK": 65
+    },
+    "note": "Gross 100 − attributed 35 = supported remaining 65 (KNOWN_ATTRIBUTED).",
+    "completenessCertificate": "SYNTHETIC_LABELED VERIFIED_COMPLETE",
+    "withoutCompletenessWouldSupportRemaining": false
+  },
+  "attributedWithoutCompleteness": {
+    "knowledge": "KNOWN_ATTRIBUTED",
+    "attributedAmount": 10,
+    "supportsRemainingClaim": false,
+    "supportedRemaining": null,
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "mayPublishAvailable": false,
+    "note": "Known attributed utilization 10 USD (KNOWN_ATTRIBUTED), but completeness not certified — remaining capacity cannot be claimed."
+  },
+  "authenticUtilizationBlocker": {
+    "authenticity": "AUTHENTIC_BLOCKER",
+    "grossKnown": 100,
+    "utilizationKnowledge": "UNATTRIBUTED_LEGACY_BASKET",
+    "supportsRemainingClaim": false,
+    "supportedRemaining": null,
+    "publicationLabel": "GROSS_CONTRACTUAL",
+    "mayPublishAvailable": false,
+    "note": "Legacy basket-family usage exists without rule attribution — gross capacity may be known; remaining after utilization cannot be claimed."
+  },
+  "realDataBlocker": {
+    "status": "BLOCKED",
+    "detail": "Neon contract_ledger_usages attributed to Permission/Provision ids are not populated for Coherent/Matthews; only basket-family LedgerEntry rows exist. Remaining after authentic utilization cannot be claimed without inventing history. Separately: approved individual ledger records do not establish completeness of historical usage."
+  },
+  "utilizationAuthority": {
+    "principle": "Approved individual ledger records establish known attributed usage only. Remaining = gross − usage requires an affirmative completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).",
+    "mergeBlocker": "PR #234 remains blocked on authentic completeness authority even after typecheck remediation."
+  },
+  "phase4cAdapterCoverage": [
+    {
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "RATIO_GATE",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "BUILDER_BASKET",
+      "adapted": true,
+      "refusalReason": null,
+      "sufficiency": "PARTIAL",
+      "compilerVersion": null,
+      "classification": "1→fixed: was missing representation support; now IR METRIC tree (PARTIAL, not certified)"
+    },
+    {
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "adapted": false,
+      "refusalReason": "FormulaType COVERAGE_RATIO_ROOM requires a positive coverage threshold; provision \"code-4\" has thresholdValue 0 — refusing rather than dividing by zero",
+      "sufficiency": null,
+      "compilerVersion": null,
+      "classification": "2: missing verified inputs / invalid threshold — correct refusal"
+    }
+  ],
+  "falseFavorableGuard": {
+    "emptyLedgerPublishesAvailable": false,
+    "debtIntelligenceUsesResolver": true,
+    "note": "Empty/unattributed ledger → CONDITIONAL/GROSS_ONLY, never COMPUTED remaining = gross"
+  },
+  "costUsd": 0
+}
