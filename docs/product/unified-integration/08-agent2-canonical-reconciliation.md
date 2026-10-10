@@ -1,7 +1,9 @@
 # Agent 2 — Final Canonical Reconciliation (#252 → current #250 + #253 safety)
 
+**PR:** https://github.com/egsul897/headroom/pull/257  
 **Branch:** `cursor/fce-reconcile-onto-250-8d31`  
-**Base:** current #250 tip (not stale `ac0ff925`)  
+**Integrated code SHA:** `8c4e74b5b5a8cdcc557bb641f56ba2ac85739a14`  
+**Base:** current #250 tip `f0e46aa9` (not stale `ac0ff925`)  
 **Sources:** #252 FCE (`24ad7487`), #253 simulate safety (`e46dd9ea`), #250 secured-lien (`f0e46aa9`)
 
 ## Starting SHAs
@@ -45,3 +47,24 @@ Missing `approvalState` / `authenticity` → evidence excluded (never defaulted)
 Missing `gateSatisfied` → not affirmatively satisfied.  
 Completeness cert requires `trustedCompletenessProvenance: true`.  
 Reviewer booleans require both `productionContext === true` and `trustedProductionApprovalChannel === true`.
+
+## Local acceptance on `8c4e74b5`
+
+| Suite | Result |
+|-------|--------|
+| `prisma generate` + `tsc --noEmit` | **0 errors** |
+| `npm run build` | **pass** |
+| phase3-certification | **481 passed** |
+| FCE non-Neon + authority-defaults | **49 passed** (engine/reconcile/seq/authentic/gate/final/defaults) |
+| utilization (#237) | **13 passed** |
+| sequential + TE-D3 + architecture + verified-execution | **78 passed** |
+| certified-simulate-executable-safety (#253) | **25 passed** |
+| secured-debt-lien-adversarial (#250 P0) | **6 passed** |
+| unified adversarial + stage-d secured dual-path | **18 passed** |
+| **Combined non-Neon acceptance** | **189 passed** |
+| FCE Neon (ns4-propose, approval-bridge) | **env blocked** (Neon unreachable; no writes) |
+
+## Verdict
+
+**AGENT2_CANONICALLY_INTEGRATED_READY_FOR_HUMAN_REVIEW** of PR #257 onto #250.  
+Close/supersede conflicting #252. Do not auto-merge.

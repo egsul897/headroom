@@ -121,6 +121,8 @@ export function evaluateVerifiedCapacityWithApprovedFinancials(args: {
         asOf: args.financial.asOf,
         grossCapacityMillions: grossMillions,
         unlimited: entry.grossCapacity.kind === "UNLIMITED",
+        // Verified EXECUTED capacity amounts imply formula/gate evaluation succeeded for gross.
+        gateSatisfied: grossMillions != null || entry.grossCapacity.kind === "UNLIMITED",
         records: [],
         completenessCertificate: null,
         unattributedLegacyBasketPresent: (args.financial.ledger?.length ?? 0) > 0,
