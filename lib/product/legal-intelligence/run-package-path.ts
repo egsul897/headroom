@@ -125,24 +125,28 @@ async function runCoherentPath(): Promise<PackageLegalPathResult> {
   conclusions.push({
     id: "coherent-secured-capacity",
     kind: "CAPACITY_EXECUTED",
-    statement: `Secured remaining capacity evaluated by legacy covenant engine: ${secured.remainingCapacity}`,
+    statement: `Secured capacity figure from legacy covenant engine (gross/formula path): ${secured.remainingCapacity}`,
     executability: "LEGACY_ENGINE",
     evidenceCitations: ["coherent seed capacityFormulas", "financialSnapshot"],
     missingInputs: [],
     limitations: [
       "Legacy engine path — not Phase-4 verified-execution REQUIRE",
       "Seed formulas are evaluation fixtures, not authentic CONMED IR",
+      "Not utilization-completeness-certified remaining (joint #232/#234) — do not treat as authoritative remaining after historical usage",
     ],
     promotedToLegalTruth: 0,
   });
   conclusions.push({
     id: "coherent-unsecured-capacity",
     kind: "CAPACITY_EXECUTED",
-    statement: `Unsecured remaining capacity evaluated by legacy covenant engine: ${unsecured.remainingCapacity}`,
+    statement: `Unsecured capacity figure from legacy covenant engine (gross/formula path): ${unsecured.remainingCapacity}`,
     executability: "LEGACY_ENGINE",
     evidenceCitations: ["coherent seed capacityFormulas", "financialSnapshot"],
     missingInputs: [],
-    limitations: ["Legacy engine path — not Phase-4 verified-execution REQUIRE"],
+    limitations: [
+      "Legacy engine path — not Phase-4 verified-execution REQUIRE",
+      "Not utilization-completeness-certified remaining (joint #232/#234)",
+    ],
     promotedToLegalTruth: 0,
   });
 
