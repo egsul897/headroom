@@ -1,0 +1,108 @@
+{
+  "schema": "kf-financing-package-registry-proposal.v1",
+  "status": "PROPOSAL_ONLY_NO_MIGRATE",
+  "principles": [
+    "Additive Prisma models only — no destructive migrations",
+    "Ambiguous package membership remains UNRESOLVED (never invent links)",
+    "Customer packages stay tenant-isolated from public precedent packages",
+    "Operative document selection stays fail-closed until review/certification gates",
+    "KnowledgeSource / DocumentByteObject remain source of truth for bytes"
+  ],
+  "models": [
+    {
+      "name": "FinancingPackage",
+      "table": "financing_packages",
+      "fields": [
+        "id String @id",
+        "packageKey String @unique  // stable: issuerCik|instrumentFamily|optionalSeries",
+        "issuerCik String",
+        "issuerTicker String?",
+        "companyId String?  // null for public precedent; set for customer tenants",
+        "tenantKind CompanyTenantKind? // CUSTOMER vs EVALUATION isolation",
+        "instrumentFamily String  // CREDIT_FACILITY | INDENTURE_NOTES | ABL | HYBRID | UNKNOWN",
+        "displayName String",
+        "status PackageIdentityStatus  // PROPOSED | REVIEW_REQUIRED | REVIEWER_VERIFIED | SUPERSEDED",
+        "representationLevel KnowledgeRepresentationLevel @default(DISCOVERED_CANDIDATE)",
+        "metadata Json?",
+        "createdAt/updatedAt"
+      ],
+      "indexes": [
+        "issuerCik",
+        "companyId",
+        "status"
+      ]
+    },
+    {
+      "name": "FinancingPackageMember",
+      "table": "financing_package_members",
+      "fields": [
+        "id String @id",
+        "packageId String",
+        "knowledgeSourceId String?  // FK KnowledgeSource.id",
+        "sourceId String  // denormalized KnowledgeSource.sourceId",
+        "role PackageMemberRole  // BASE_AGREEMENT | AMENDMENT | RESTATEMENT | SUPPLEMENTAL | INTERCREDITOR | GUARANTEE | SECURITY | OTHER | UNRESOLVED",
+        "linkStatus PackageLinkStatus  // PROPOSED | EVIDENCED | UNRESOLVED | REJECTED",
+        "evidence Json?  // titles, accession, edge ids — not legal effectiveness",
+        "effectiveDateHint String?",
+        "asOfPriority Int?  // counsel-ordered; null until reviewed",
+        "unique([packageId, sourceId])"
+      ]
+    },
+    {
+      "name": "FinancingPackageInstrument",
+      "table": "financing_package_instruments",
+      "fields": [
+        "id String @id",
+        "packageId String",
+        "instrumentKey String",
+        "facilityType String?",
+        "lienPriority String?",
+        "notes String?",
+        "status PackageLinkStatus"
+      ]
+    }
+  ],
+  "enums": {
+    "PackageIdentityStatus": [
+      "PROPOSED",
+      "REVIEW_REQUIRED",
+      "REVIEWER_VERIFIED",
+      "SUPERSEDED"
+    ],
+    "PackageMemberRole": [
+      "BASE_AGREEMENT",
+      "AMENDMENT",
+      "RESTATEMENT",
+      "SUPPLEMENTAL",
+      "INTERCREDITOR",
+      "GUARANTEE",
+      "SECURITY",
+      "OTHER",
+      "UNRESOLVED"
+    ],
+    "PackageLinkStatus": [
+      "PROPOSED",
+      "EVIDENCED",
+      "UNRESOLVED",
+      "REJECTED"
+    ]
+  },
+  "linkingRules": [
+    "Same issuerCik required for public package membership proposals",
+    "Use existing KnowledgeRelationshipEdge as soft evidence only (DISCOVERED)",
+    "If multiple BASE_AGREEMENT candidates without restatement supersession → package.status=REVIEW_REQUIRED and operative unresolved",
+    "Never auto-set PackageIdentityStatus to REVIEWER_VERIFIED",
+    "Customer companyId packages must not absorb PUBLIC_SEC_EDGAR members unless counsel explicitly attaches"
+  ],
+  "migrationPlan": [
+    "1) Author additive migration (no drops/renames)",
+    "2) Owner approval checkpoint before prisma migrate deploy",
+    "3) Backfill PROPOSED members from issuer+class heuristics with linkStatus=UNRESOLVED when ambiguous",
+    "4) Optional UI browse; Ask Headroom continues fail-closed on unresolved packages"
+  ],
+  "outOfScope": [
+    "Rewriting Permission / ContractRule tables",
+    "Automatic operative version promotion",
+    "Merging customer and public corpora"
+  ]
+}
