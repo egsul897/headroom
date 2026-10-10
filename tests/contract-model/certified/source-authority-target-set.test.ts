@@ -379,15 +379,20 @@ describe("SA-3 §31-§34 shard parity: every normalization safety signal survive
       expect(c.sufficiency).toBe("COMPLETE");
       expect(c.sufficiencyReasons.some((x) => x.startsWith("ENTITY_SCOPE_UNRECOGNIZED_TAG"))).toBe(false); // the outranked tag is a diagnostic, never a sufficiency reason
     }
-    // when no authoritative scope can resolve it (no governing chain, no own actor language) the review signal survives final shard assembly
+    // Candidate-level governingScope: null no longer strips lettered-child PARENT_SCOPE: normalize
+    // re-resolves from the child's structural node (guard v6). Unrecognized tags stay diagnostic-only
+    // when authenticated parent/governing source establishes applicability.
     const c = corpus3();
-    const bare: SemanticCompilerInput = { ...c.input, governingScope: null }; // compile.ts honours an explicit null: no governing chain is resolved
+    const bare: SemanticCompilerInput = { ...c.input, governingScope: null };
     const sh = await compileCovenantToIR(bare, { caller: scriptedSemanticCaller(c.idOf, true), inventoryCaller: throwingInventory, inventoryMode: "SINGLE_PASS", certified: CERT, frozenInventory: c.frozenInventory, cache: new InMemorySemanticCompilationCache(), shardBudget: SMALL });
     expect(sh.execution?.mode).toBe("SHARDED");
     const rc = sh.rules.find((x) => x.sourceSectionRef === "6.04(c)")!;
-    expect(rc.entityScopeAudit?.status).toBe("UNRECOGNIZED_TAG");
-    expect(rc.sufficiency).not.toBe("COMPLETE");
-    expect(sh.status).not.toBe("COMPLETED");
+    expect(rc.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
+    expect(rc.entityScopeAudit?.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(rc.entityScopeAudit?.safeToRely).toBe(true);
+    expect(rc.entityScopeAudit!.rawEmitted.entityScope).toEqual(["BORROWER", "Restricted Subsidiary"]);
+    expect(rc.sufficiency).toBe("COMPLETE");
+    expect(sh.normalizationDiagnostics!.some((d) => d.code === "ENTITY_SCOPE_UNRECOGNIZED_TAG" && d.sourceUnit === "6.04(c)")).toBe(true);
   });
   it("§34 PARITY: rules, definitions, shared capacities, source dependencies, reference audits, governing scope, normalization diagnostics and certification-relevant signals are semantically identical; only execution metadata differs", async () => {
     const { mono, sharded } = await both;

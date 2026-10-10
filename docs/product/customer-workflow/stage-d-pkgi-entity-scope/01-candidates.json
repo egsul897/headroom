@@ -1,0 +1,188 @@
+{
+  "schema": "stage-d-pkgi-entity-scope-candidates.v1",
+  "paidProvidersCalled": false,
+  "packageId": "pkg-i-secured-debt-lien",
+  "candidateRows": [
+    {
+      "certification": "CERTIFIED",
+      "blockers": [],
+      "ruleUnits": [
+        {
+          "sourceSectionRef": "7.01(b)",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "GUARANTOR_RS"
+          ],
+          "auditStatus": "SOURCE_MATCH_CONFIRMED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": null,
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.01",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_MATCH_CONFIRMED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": null,
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.01(d)",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_DIFFERENT",
+          "hasCounterparty": true
+        },
+        {
+          "sourceSectionRef": "7.01(c)",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "FOREIGN_RS"
+          ],
+          "auditStatus": "AMBIGUOUS_VS_SOURCE",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": null,
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.01(a)",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
+          "hasCounterparty": false
+        }
+      ]
+    },
+    {
+      "certification": "CERTIFIED",
+      "blockers": [],
+      "ruleUnits": [
+        {
+          "sourceSectionRef": "7.02",
+          "action": "CREATE_LIEN",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_MATCH_CONFIRMED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": null,
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.02(a)",
+          "action": "CREATE_LIEN",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.02(b)",
+          "action": "CREATE_LIEN",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
+          "hasCounterparty": false
+        },
+        {
+          "sourceSectionRef": "7.02(c)",
+          "action": "CREATE_LIEN",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_NARROWER",
+          "hasCounterparty": false
+        }
+      ]
+    },
+    {
+      "certification": "CERTIFIED",
+      "blockers": [],
+      "ruleUnits": [
+        {
+          "sourceSectionRef": "7.04",
+          "action": null,
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_SCOPE_DERIVED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": "MODEL_DIFFERENT",
+          "hasCounterparty": false
+        }
+      ]
+    },
+    {
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "ruleUnits": [
+        {
+          "sourceSectionRef": "9.15",
+          "action": "INCUR_DEBT",
+          "sufficiency": "COMPLETE",
+          "entityScope": [
+            "BORROWER",
+            "ANY_SUBSIDIARY"
+          ],
+          "auditStatus": "SOURCE_MATCH_CONFIRMED",
+          "guardVersion": "entity-scope-consistency-guard.v6",
+          "relation": null,
+          "hasCounterparty": false
+        }
+      ]
+    },
+    {
+      "certification": "REVIEW_REQUIRED",
+      "blockers": [
+        "COMPILATION_NOT_COMPLETED",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "SUPPORT_UNACCEPTABLE",
+        "UNACCOUNTED_MATERIAL_SOURCE",
+        "VERIFICATION_NOT_CLEAN"
+      ],
+      "ruleUnits": []
+    }
+  ],
+  "certifiedCount": 3
+}

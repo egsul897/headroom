@@ -177,6 +177,38 @@ type BoundUnit = IRRule | IRDefinition | IRSharedCapacity;
 const anyUnitIdOf = (u: BoundUnit): string => ("ruleId" in u ? u.ruleId : "definitionId" in u ? u.definitionId : u.sharedCapId);
 const anyKindOf = (u: BoundUnit): "RULE" | "DEFINITION" | "SHARED_CAPACITY" => ("ruleId" in u ? "RULE" : "definitionId" in u ? "DEFINITION" : "SHARED_CAPACITY");
 
+/**
+ * Companion-REQUIRES discharge (v1): true only when every cross-rule gate on the rule is a
+ * SOURCE_REFERENCE_RESOLVED REQUIRES dependency, the rule itself has finite (non-UNLIMITED)
+ * capacity, and each target section has a COMPLETE PERMISSION rule in the package.
+ * Compliance conditions, LIMITED_BY, unknown deps, and UNLIMITED capacity stay non-dischargeable.
+ */
+export function isCompanionRequiresDischargeable(rule: IRRule, packageRules: readonly IRRule[]): boolean {
+  if (rule.conditions.some((c) => (c.referencesRuleTargets?.length ?? 0) > 0)) return false;
+  const unknown = (rule.unresolvedDependencies ?? []).filter(
+    (d) =>
+      (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") &&
+      !(rule.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef),
+  );
+  if (unknown.length > 0) return false;
+  const deps = (rule.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY");
+  if (deps.length === 0) return false;
+  if (deps.some((d) => d.relationshipType !== "REQUIRES" || d.resolutionStatus !== "SOURCE_REFERENCE_RESOLVED")) return false;
+  const capKind = rule.capacityExpression?.kind;
+  if (!capKind || capKind === "UNLIMITED_CAPACITY") return false;
+  if (rule.sufficiency !== "COMPLETE" || rule.posture !== "PERMISSION") return false;
+  return deps.every((d) =>
+    packageRules.some(
+      (t) =>
+        t.ruleId !== rule.ruleId &&
+        t.posture === "PERMISSION" &&
+        t.sufficiency === "COMPLETE" &&
+        t.sourceSectionRef != null &&
+        t.sourceSectionRef === d.normalizedTargetRef,
+    ),
+  );
+}
+
 interface Bound { refusals: BoundaryRefusal[]; envelope: RuntimeVerificationEnvelope | null; units: BoundUnit[] }
 
 /**
@@ -244,18 +276,47 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
   }
   if (sharedProblems.length > 0) refusals.push({ code: "VERIFICATION_ARTIFACT_INCOMPLETE", message: "shared capacity pool(s) are not cleanly verified; under REQUIRE an unverified pool never shapes capacity", refs: sharedProblems.sort() });
 
-  // SEMANTIC FIDELITY: cross-rule gates fail closed. A rule whose availability depends on another rule being satisfied
-  // (referencesRuleTargets on a condition, or a REQUIRES / LIMITED_BY source dependency) cannot be executed by this runtime
-  // as "satisfied" - whether or not the package has bound the target - because no certified cross-rule satisfaction
-  // evaluator exists yet. Refusing here is what keeps an UNLIMITED_CAPACITY behind such a gate from reading as available.
+  // SEMANTIC FIDELITY: cross-rule gates fail closed by default. UNLIMITED capacity, compliance
+  // conditions (referencesRuleTargets), LIMITED_BY, and unresolved REQUIRES still refuse the package —
+  // that is what keeps an UNLIMITED_CAPACITY behind a gate from reading as available (xref §40/§54).
+  //
+  // Companion-REQUIRES discharge (v1): a finite-capacity permission whose only cross-rule gates are
+  // SOURCE_REFERENCE_RESOLVED REQUIRES dependencies, and whose target section has a COMPLETE
+  // PERMISSION rule in this same package, is allowed through the boundary. The dependency remains on
+  // the IR; this does not invent satisfaction of compliance tests or named Payment Conditions.
   const gated: string[] = [];
   for (const r of pkg.rules) {
-    const conds = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0).map((c) => `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`);
-    const deps = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY").map((d) => `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`);
-    const unknown = (r.unresolvedDependencies ?? []).filter((d) => (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") && !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef)).map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`);
-    gated.push(...conds, ...deps, ...unknown);
+    const condGates = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0);
+    const depGates = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY");
+    const unknownGates = (r.unresolvedDependencies ?? []).filter(
+      (d) =>
+        (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") &&
+        !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef),
+    );
+    if (condGates.length === 0 && depGates.length === 0 && unknownGates.length === 0) continue;
+
+    if (isCompanionRequiresDischargeable(r, pkg.rules)) continue;
+
+    gated.push(
+      ...condGates.map(
+        (c) =>
+          `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`,
+      ),
+      ...depGates.map(
+        (d) =>
+          `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`,
+      ),
+      ...unknownGates.map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`),
+    );
   }
-  if (gated.length > 0) refusals.push({ code: "CROSS_RULE_GATE_NOT_EXECUTABLE", message: "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed", refs: gated.sort() });
+  if (gated.length > 0) {
+    refusals.push({
+      code: "CROSS_RULE_GATE_NOT_EXECUTABLE",
+      message:
+        "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+      refs: gated.sort(),
+    });
+  }
 
   if (refusals.length > 0) return { refusals, envelope: null, units };
 

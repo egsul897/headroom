@@ -113,7 +113,11 @@ describe("§45 the exact bad live submission through the repaired validators", (
     expect(normalized.warnings.some((w) => w.message.includes("AS_OF requires asOfDate"))).toBe(true);
   });
   it("entity scope: the measurement-context mention ('of the Parent Borrower and its Subsidiaries for which financial statements') no longer downgrades the obligor scope", () => {
-    expect(normalized.rules[0]!.entityScope).toEqual(["BORROWER"]);
+    // Measurement-context "Subsidiaries" does not bind; authenticated governing/parent chain
+    // (guard v6 lettered-child re-resolve) establishes BORROWER + ANY_SUBSIDIARY from the article preamble.
+    expect(normalized.rules[0]!.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
+    expect(normalized.rules[0]!.entityScopeAudit?.status).toBe("SOURCE_SCOPE_DERIVED");
+    expect(normalized.rules[0]!.entityScopeAudit?.safeToRely).toBe(true);
   });
 });
 
