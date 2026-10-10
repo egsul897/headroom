@@ -27,6 +27,16 @@
 - `operativeAuthorityHandoff` — Agent #7 governing-document + restatement authority
 - `productionAuthorityFromRestatement` — explicit ACTIVE/REFUSED/DISCLOSED_ONLY per provision
 - `stages.operativeRestatementAuthority` — summary including `productionAuthorityActive: false` when caveated
+- `stages.context.operativeSourceRemapped` — Agent #6 retrieval remapped onto `governingDocumentId`
+
+## Agent #6 recursive-context integration
+
+Merged HEADROOM-6 (#287) onto this branch and wired:
+
+- `bindCandidateToOperativeRetrievalSource` → remaps discovery candidates onto Agent #7 `governingDocumentId` before `buildCovenantContextBundle`
+- Body-anchor / definition-closure / context-manifest from #287 retrieve language from the correctly identified operative source
+- Caveated Fifth AR authority remains usable for retrieval/disclosure only; production gate still refuses `PRODUCTION_AUTHORITY_ACTIVE`
+- Provisional identity (`PROVISIONAL_IDENTITY_BLOCKED`, null `governingDocumentId`) preserves discovery document — no silent consolidation
 
 ## Merge disposition
 
