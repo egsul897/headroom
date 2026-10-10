@@ -216,16 +216,30 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
   }
 
   // Surface review-required / ambiguous authorities that would otherwise silently drop.
+  // IMPORTANT: predecessorDocumentId may be null when the named prior is out of package
+  // (AutoNation Fifth→Fourth). That unresolved competitor must still block promoting the
+  // base/predecessor document to CONFIRMED_OPERATIVE / production-active.
   for (const r of datedRestatements) {
     if (r.status === "AMBIGUOUS") {
       unresolvedConflicts.push(`Restatement authority AMBIGUOUS for ${r.successorDocumentId}: ${r.reasons.join(" ")}`);
     }
-    if (r.status === "REVIEW_REQUIRED" && r.predecessorDocumentId && familyIds.has(r.successorDocumentId)) {
-      // Only block when no confirmed governing restatement exists yet, or this review item is the sole candidate successor.
-      if (!governingRestatement) {
-        unresolvedConflicts.push(`Restatement authority REVIEW_REQUIRED for ${r.successorDocumentId}: ${r.reasons.join(" ")}`);
-      } else {
+    if (r.status === "REVIEW_REQUIRED" && familyIds.has(r.successorDocumentId)) {
+      if (governingRestatement) {
         caveats.push(`NON_BLOCKING_REVIEW_ITEM:${r.successorDocumentId}`);
+      } else if (
+        // Competing successor (not the local base) dated on/before as-of — package-wide
+        // succession is unresolved; do not invent that base unconditionally governs.
+        r.successorDocumentId !== input.baseDocumentId &&
+        r.effectiveDateIso != null &&
+        compareIsoDates(r.effectiveDateIso, asOf) <= 0
+      ) {
+        unresolvedConflicts.push(
+          `Restatement authority REVIEW_REQUIRED for ${r.successorDocumentId}: ${r.reasons.join(" ") || "prior agreement / RESTATES identity not independently established"}`,
+        );
+      } else {
+        // Base itself REVIEW_REQUIRED (e.g. its own prior out of package) without a
+        // competing in-family successor — disclose as non-blocking package caveat.
+        caveats.push(`BASE_RESTATEMENT_REVIEW_REQUIRED:${r.successorDocumentId}`);
       }
     }
     caveats.push(...r.caveats.map((c) => `${r.successorDocumentId}:${c}`));
@@ -368,6 +382,27 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
   if (unresolvedConflicts.some((c) => /Conflicting/.test(c))) {
     authorityClassification = "AMBIGUOUS";
     governingDocumentId = null;
+  }
+
+  // Package-wide vs local provision semantics: a local baseDocumentId candidate must
+  // not be exposed as CONFIRMED_OPERATIVE / production-active when a competing
+  // restatement successor remains REVIEW_REQUIRED (wrong-document promotion guard).
+  if (
+    !governingRestatement &&
+    unresolvedConflicts.some((c) => /Restatement authority REVIEW_REQUIRED/.test(c)) &&
+    (authorityClassification === "CONFIRMED_OPERATIVE" ||
+      authorityClassification === "CONFIRMED_OPERATIVE_WITH_CAVEATS")
+  ) {
+    const localBaseCandidate = governingDocumentId;
+    authorityClassification = "REVIEW_REQUIRED";
+    governingDocumentId = null;
+    reasons.push(
+      "Package-wide restatement succession is REVIEW_REQUIRED — refuse to promote local base/predecessor provisions to unconditional operative production authority.",
+    );
+    caveats.push("PACKAGE_RESTATEMENT_SUCCESSION_UNRESOLVED");
+    if (localBaseCandidate) {
+      caveats.push(`LOCAL_BASE_CANDIDATE_NOT_PACKAGE_OPERATIVE:${localBaseCandidate}`);
+    }
   }
 
   const instrumentLinks: GoverningInstrumentLink[] = [...familyIds].sort().map((documentId) => {
