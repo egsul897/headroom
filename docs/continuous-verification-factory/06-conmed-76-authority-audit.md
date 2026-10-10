@@ -1,7 +1,7 @@
 # CONMED §7.6 Final Authority-Boundary Audit
 
 **Starting SHA:** `368fc1d54e760b50bf0134f52f9cfbeca69da10e`  
-**Ending SHA:** (tip after this commit)  
+**Ending SHA:** (filled at tip commit)  
 **PR:** #238
 
 ## Verdict
@@ -56,9 +56,26 @@ Hypothetical PERMITTED under stipulated facts is labeled and cannot be treated a
 | Stale snapshot / unauthenticated historical ratio | CONDITIONALLY_PERMITTED | — |
 | §7.6(d) only exceeded | PROHIBITED | — |
 
-Conjunction: applicable prohibitions still collapse false PERMITTED (existing belt-and-suspenders).
+Probe: **11/11 OK** (`ADVERSARIAL_MATRIX_OK`). Conjunction: applicable prohibitions still collapse false PERMITTED.
 
 ## 9–10. Regressions / boundaries
 
+| Suite | Result |
+|-------|--------|
+| `test:cvf` | 15/15 pass |
+| `cvf:pr-fast` | 110 executions; incorrectFavorable **0**; unexpected **0** |
+| Cross-document + sequential (provider-free) | 96 pass / 2 skip (Ask/DB) |
+| Authority unit tests | 24/24 pass |
+| `test:phase3-certification` | 481/481 pass |
+| Phase-4 bypass (§17) | pass — CVF harness exempted as non-product surface; capacity-a8 keeps production-binding import |
+
 - Phase 3 certification, Phase 4 verified-capacity, utilization-authenticity unchanged.
 - Soft gates remain soft; no REQUIRE weakening; no Neon / paid inference / auto-merge.
+- Pre-existing unrelated product failures (nav label, authenticated-VEP offline expectations, product-acceptance defect register drift) are out of scope and unchanged by this tip.
+
+## Remaining limitations
+
+1. Hypothetical PERMITTED remains available to harness/tests under stipulated facts — by design, labeled, never verified capacity.
+2. No path yet upgrades stipulated CSSLR/EOD to authenticated approved financial evidence (`AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE` reserved).
+3. Ask/DB product tests skip without reachable DATABASE_URL (soft-gate stays provider-free).
+4. #238 still depends on unmerged Agent 5 / #218 base.

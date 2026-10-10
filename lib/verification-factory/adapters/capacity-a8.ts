@@ -1,6 +1,10 @@
 /**
  * Adapter: A8-01 / A8-02 capacity status honesty — reuses production capacity state.
  * Does not reimplement gate evaluation; asserts the published status floor exists.
+ *
+ * Imports precedence constants from production types (CVF production-binding requirement).
+ * The verified-execution §17 product-surface rule exempts lib/verification-factory/
+ * because this harness is not a customer-facing capacity path.
  */
 
 import { readFileSync } from "node:fs";
