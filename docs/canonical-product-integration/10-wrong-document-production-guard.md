@@ -2,7 +2,7 @@
 
 **Code tip (wrong-document fix):** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
 **Code tip (adversarial fixture):** 60dbdeeeb1e067e1823972f2ea79ea5f3ba19f72  
-**Agent #11 retest SHA:** tip of `cursor/canonical-product-integration-5a28` / `cursor/p0-adversarial-authority-closure-8ce3` after this pin (run `git rev-parse HEAD`)  
+**Agent #11 retest SHA:** a01160c72bc2092784ef67d590e8bfc23511db05
 **Verdict target:** OPERATIVE_INTEGRATION_SAFETY_VERIFIED
 
 ## Binding status
