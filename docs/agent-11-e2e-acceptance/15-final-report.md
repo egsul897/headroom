@@ -9,7 +9,7 @@
 |---|---|
 | Starting main SHA | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
 | Seal commit | `ca667446df228984bb5d6b50b44c3c98b45f0730` |
-| Evaluation tip | `e43d5c2061d45d11ac900a537d68dea6616a1da2` (final harness re-run tip) |
+| Evaluation tip | `c53afbf6c4ac360569cb25324d8bb405110fa91a` (exact harness tip) |
 | Package | AutoNation (AN) Third→Fifth A&R (`an-2020-2026-credit-facility`) |
 | Unseen claim | **NOT claimed** (authentic evaluation package distinct from tuning fixtures) |
 | Paid inference | $0 |
@@ -85,4 +85,4 @@ npx tsx scripts/agent-11/run-offline-acceptance.ts
 # Artifacts: docs/agent-11-e2e-acceptance/10-*.json … 15-final-report.md
 ```
 
-Elapsed: 598 ms.
+Elapsed: 569 ms.
