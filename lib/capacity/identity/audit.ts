@@ -23,6 +23,13 @@ export interface AuthorizationAuditRecord {
 }
 
 const auditLog: AuthorizationAuditRecord[] = [];
+/** Process-local sequence for audit ids — not a security token (unlike jti). */
+let auditSeq = 0;
+
+function nextAuditNonce(): string {
+  auditSeq += 1;
+  return auditSeq.toString(36);
+}
 
 export function recordAuthorizationAudit(
   input: Omit<AuthorizationAuditRecord, "auditId" | "atIso"> & {
@@ -31,7 +38,7 @@ export function recordAuthorizationAudit(
 ): AuthorizationAuditRecord {
   const atMs = input.atMs;
   const record: AuthorizationAuditRecord = {
-    auditId: input.auditId ?? `authz-audit:${atMs}:${Math.random().toString(36).slice(2, 10)}`,
+    auditId: input.auditId ?? `authz-audit:${atMs}:${nextAuditNonce()}`,
     atMs,
     atIso: new Date(atMs).toISOString(),
     principalId: input.principalId,

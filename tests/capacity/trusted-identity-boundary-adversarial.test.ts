@@ -602,4 +602,35 @@ describe("trusted identity boundary — bridge into TrustedIssuerAuthorizationCo
     expect(host.auth).toBeNull();
     expect(host.activation).toBe("BLOCKED");
   });
+
+  it("fails closed when secure randomness for jti is unavailable", async () => {
+    registerServerIdentityProvider(
+      createTestIdentityHarness({
+        allowTestHarness: true,
+        principalsByHandle: { "sess-rng": counselCapable() },
+      }),
+    );
+    const previous = globalThis.crypto;
+    Object.defineProperty(globalThis, "crypto", {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    });
+    try {
+      const minted = await verifyAndMintPrincipal({
+        kind: "SESSION",
+        sessionHandle: "sess-rng",
+      });
+      expect(minted.principal).toBeNull();
+      expect(
+        minted.blockers.some((b) => /secure randomness unavailable|jti mint refused/i.test(b)),
+      ).toBe(true);
+    } finally {
+      Object.defineProperty(globalThis, "crypto", {
+        value: previous,
+        configurable: true,
+        writable: true,
+      });
+    }
+  });
 });
