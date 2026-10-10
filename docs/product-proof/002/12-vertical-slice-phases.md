@@ -1,7 +1,8 @@
 # Product Proof 002 — Vertical Slice Continuation (Phases 1–7)
 
 Starting tip verified: `e6f82aa9c719ab8975bd9296bd17cba3a7b78666`  
-Ending tip: `64e39ab50af98dcb5884f21f169b785f171d0a37`  
+Feature slice: `64e39ab50af98dcb5884f21f169b785f171d0a37`  
+Ending tip (CI green): `b4d45628054a8d532f1a0c12583cd1e731deff1c`  
 Feature commit preserved: `334f2755f85bcb7351683b3672eb8bc0b7a7f689`  
 `origin/main` at start of continuation: `c2dde8f1dd28832eb77ab6c9f50d4609a9efd52e`  
 PR: https://github.com/egsul897/headroom/pull/266
