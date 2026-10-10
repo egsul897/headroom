@@ -57,4 +57,13 @@ to `origin/main` (`CAPACITY_EQ_MAIN=yes`). Do not close or supersede #229.
 
 ## SHA / CI
 
-Filled after push + CI on the combined tip (see gate report return).
+| Item | Value |
+|---|---|
+| Combined tip | `588826caabedf30f0d9d1f2c17ae38156dca88a8` |
+| Joint PR | #239 |
+| #232 tip CI | green on `5b208705` |
+| Local TypeScript | green after `prisma generate` |
+| Local capacity / solver / adversarial / certified-path | green (see gate report) |
+| Joint GitHub CI on combined tip | pending after typecheck fix push |
+
+**No auto-merge. Do not land #232 or #234 independently.**
