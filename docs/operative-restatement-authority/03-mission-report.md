@@ -4,7 +4,7 @@
 **Branch:** `cursor/operative-restatement-authority-2670`  
 **PR:** https://github.com/egsul897/headroom/pull/283  
 **Starting main SHA:** `6abe42bae6dfe69bb72467daa7f460b727200d1b` (post-#276)  
-**Ending tip SHA:** `dafab3b037ec28bdf34d3819dcd404bd85b7d661`
+**Ending tip SHA:** see `05-closeout.json` `endingTipSha` (recorded after push)
 
 ## Dependencies recorded
 

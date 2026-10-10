@@ -1,0 +1,22 @@
+{
+  "artifact": "AGENT7_CLOSEOUT",
+  "verdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
+  "pr": "https://github.com/egsul897/headroom/pull/283",
+  "branch": "cursor/operative-restatement-authority-2670",
+  "startingMainSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+  "featureCommitSha": "2dd7e6d785cc4bfc59ccd563b76a1cc40a29b4d2",
+  "tipShaBeforeCloseoutCommit": "b46048c6ddf6c13408a34bfa4a06f951aab4cdbc",
+  "tests": {
+    "command": "npx vitest run tests/operative-restatement-authority/",
+    "passed": 13,
+    "failed": 0
+  },
+  "guardrails": [
+    "NO_PACKAGE_GRAPH_EDGE_MUTATION",
+    "NO_MANUFACTURED_CP_SATISFACTION",
+    "NO_PAID_INFERENCE",
+    "NO_PRODUCTION_NEON_WRITES",
+    "NO_SELF_MERGE"
+  ],
+  "endingTipSha": "a0af3016139a76159cbee84b8c8e1b938dcd5530"
+}
