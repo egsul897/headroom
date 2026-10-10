@@ -18,7 +18,11 @@ export const metadata = { title: "Headroom — Simulate" };
  * Simulate — runs the shared covenant engine. A simulation is not a legal approval.
  * Without an executable rulebook and financial snapshot, expect NOT DETERMINABLE —
  * never a fabricated pass. Optional ?action=&amount=&secured=&asOf= seeds from Ask.
- * Verified path is attempted via existing gates (no VEP invented); blockers shown precisely.
+ *
+ * Verified path: `verifiedPackage` is intentionally `null` on this page until authentic
+ * VerifiedExecutionPackage retrieval is wired. Product never invents a package and never
+ * substitutes fixture IR. Expect NOT EXECUTABLE with NO_VERIFIED_EXECUTION_PACKAGE;
+ * LEGACY_ENGINE SimulateClient below remains a separate labeled analysis.
  */
 export default async function SimulatePage({
   params,
@@ -49,6 +53,7 @@ export default async function SimulatePage({
     getDocuments(companyId),
     getDefinedTermsByProvision(companyId),
     buildSolverContext(companyId, asOfDate),
+    // Authentic VEP retrieval is not connected here — pass null; do not invent/fixture-substitute.
     attemptVerifiedSimulate({
       companyId,
       evaluationDate,

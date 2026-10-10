@@ -6,7 +6,9 @@ type VerifiedSummary = ReturnType<typeof summarizeVerifiedSimulate>;
 /**
  * Read-only verified-path status for Simulate / Ask.
  * Does not rebuild SimulateClient — surfaces precise blockers when VEP/NS-4/4C gates fail,
- * and labels executable verified outcomes when they exist.
+ * and labels EXECUTABLE only for affirmative verified transaction permission
+ * (SIMULATED + selectedPathResult SATISFIED + all authority gates). Capacity
+ * evaluation EXECUTED alone never shows a positive EXECUTABLE badge.
  */
 export function VerifiedSimulatePanel({
   summary,
@@ -36,12 +38,27 @@ export function VerifiedSimulatePanel({
       </div>
       <div className="row">
         <div className="row-label">Simulation</div>
-        <div className="row-value">{summary.simulationOutcome ?? "—"}</div>
+        <div className="row-value">
+          {summary.simulationOutcome ?? "—"}
+          {summary.simulationStatus ? ` · ${summary.simulationStatus}` : ""}
+          {summary.selectedPathResult ? ` · path ${summary.selectedPathResult}` : ""}
+        </div>
       </div>
       <div className="row">
         <div className="row-label">Path candidates</div>
-        <div className="row-value">{summary.pathCandidateCount}</div>
+        <div className="row-value">
+          {summary.pathCandidateCount}
+          {summary.pathAutoSelected ? " (auto-selected unique eligible path)" : ""}
+        </div>
       </div>
+      {summary.capacityExecutedWithoutPermission && (
+        <Banner tone="amber">
+          Capacity evaluation completed under REQUIRE, but that is <strong>not</strong> affirmative
+          transaction permission. A verified transaction is EXECUTABLE only when a selected path
+          was constructed, simulation status is SIMULATED, and selectedPathResult is SATISFIED —
+          with no outstanding blockers. Capacity EXECUTED ≠ permitted transaction.
+        </Banner>
+      )}
       {!summary.executable && (
         <Banner tone="amber">
           Verified execution unavailable. Precise blockers:
@@ -57,8 +74,9 @@ export function VerifiedSimulatePanel({
       )}
       {summary.executable && (
         <Banner tone="amber">
-          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"} under REQUIRE.
-          Hypothetical — does not post to the ledger. Not a legal approval.
+          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"} under REQUIRE
+          (simulationStatus=SIMULATED, selectedPathResult=SATISFIED). Hypothetical — does not post to
+          the ledger. Not a legal approval.
         </Banner>
       )}
       <div className="row-note" style={{ marginTop: 8 }}>
