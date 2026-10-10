@@ -8,7 +8,7 @@
 |---|---|
 | MAIN_SHA (Round 2 baseline) | `4f1a0b81207364373d9a4cb9fe515d4a1a002e56` |
 | PR_293_EVALUATED_SHA | `8a4beb52712a6e31e5458fe2a005026fadedd4f1` |
-| ACCEPTANCE_HARNESS evidence HEAD | `1af835f3666b80240b2990b737d330e7d5ff499d` |
+| ACCEPTANCE_HARNESS evidence HEAD | `3f655d95f023327f4a37d5c1ee56525e28108986` |
 | SEALED_REFERENCE_HASH | `393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd` (unchanged: **true**) |
 | Package | AutoNation Third→Fifth A&R |
 | Paid inference | $0 |
@@ -54,7 +54,7 @@
 
 ## Operative authority
 
-- **Wrong-document production promotion diagnostic:** true — Agent #7 marks doc-a provisions \`CONFIRMED_OPERATIVE\` / bundle \`allProvisionsProductionActive=true\` while restatement authorities for doc-a/doc-b remain \`REVIEW_REQUIRED\` and sealed expected operative is doc-b. Capacity-layer AVAILABLE still refused (false favorables 0/12). Independent doc-b promotion probe: \`PRODUCTION_AUTHORITY_REFUSED\`.
+- **Wrong-document production promotion diagnostic:** true — Agent #7 marks doc-a provisions  / bundle  while restatement authorities for doc-a/doc-b remain  and sealed expected operative is doc-b. Capacity-layer AVAILABLE still refused (false favorables 0/12). Independent doc-b promotion probe: .
 
 
 - Selected operative document: `null`
@@ -108,4 +108,4 @@ npx tsx scripts/agent-11/run-round2b-acceptance.ts
 # Artifacts: docs/agent-11-round2b-acceptance/ (does not overwrite Round 1/2)
 ```
 
-Elapsed: 723 ms.
+Elapsed: 759 ms.
