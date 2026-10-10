@@ -40,6 +40,10 @@ export {
   runSequentialFinancialEffects,
   netDebtIncreasingBorrowActions,
   cashOutflowActions,
+  debtRepaymentActions,
+  equityContributionCashActions,
+  applyEquityProceedsBump,
+  expectedCashDebtDeltas,
   tagStateAsOf,
 } from "./sequential-financial";
 export { deriveContractualMetrics } from "./derived-metrics";
@@ -54,6 +58,17 @@ export {
   evaluateAuthenticCapacityWithApprovedFinancials,
   toAuthenticCapacityRow,
 } from "./authentic-capacity-bridge";
+export {
+  labelAuthority,
+  classifyApprovedSnapshotAuthority,
+  FIXTURE_AUTHORITY,
+} from "./authority";
+export { publishRemainingCapacity } from "./utilization-honesty";
+export {
+  evaluateVerifiedCapacityWithApprovedFinancials,
+  runVerifiedSequentialTransactions,
+  VERIFIED_EXECUTION_POLICY,
+} from "./verified-path";
 export type {
   DocumentRole,
   MetricFamily,
@@ -98,4 +113,18 @@ export type {
   AuthenticCapacityBridgeResult,
   AuthenticCapacityBlockReason,
 } from "./authentic-capacity-bridge";
+export type {
+  FinancialInputAuthorityKind,
+  FinancialInputAuthorityLabel,
+} from "./authority";
+export type {
+  UtilizationCompletenessCertificate,
+  AttributedUtilizationRecord,
+  RemainingPublication,
+} from "./utilization-honesty";
+export type {
+  VerifiedPathFinancialBase,
+  VerifiedPathCapacityEval,
+  VerifiedSequentialStepResult,
+} from "./verified-path";
 export * from "./fixtures";

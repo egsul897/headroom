@@ -1,10 +1,14 @@
 /**
  * SYNTHETIC calculation-test fixtures — explicitly labeled.
+ * Authority: SYNTHETIC_CALCULATION_TEST (see authority.ts FIXTURE_AUTHORITY).
  * Invented company and numbers for unit tests of reconciliation arithmetic,
  * stale-period detection, and missing-schedule findings.
- * Not authentic customer or public-filing data.
+ * Not authentic customer or public-filing data. Never APPROVED authority.
  */
 
+import { FIXTURE_AUTHORITY } from "../authority";
+
+export const SYNTHETIC_FIXTURE_AUTHORITY = FIXTURE_AUTHORITY.synthetic_calc_q2;
 export const SYNTHETIC_CALC_LABEL = "SYNTHETIC_CALCULATION_TEST";
 
 export const SYNTHETIC_STATEMENT_Q2 = `

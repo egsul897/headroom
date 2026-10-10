@@ -63,19 +63,31 @@ describe("authentic capacity bridge (gross vs remaining)", () => {
     expect(row.grossCapacityMillions).toBe(Math.max(530, 680));
     expect(row.remainingCapacityMillions).toBeNull();
     expect(row.utilizationAttributed).toBe(false);
-    expect(row.utilizationNote).toMatch(/remaining not claimed/i);
+    expect(row.utilizationNote).toMatch(/cannot establish remaining|remaining not claimed|completeness certificate/i);
   });
 
-  it("applies remaining only when utilization is attributed", () => {
+  it("applies remaining only when utilization is attributed AND completeness-certified", () => {
     const p = provision({
       code: "flat_basket",
       formulaType: "FLAT_AMOUNT",
       thresholdValue: 100,
     });
     const evaluated = evaluateProvision(p, fin, metrics);
-    const withUtil = toAuthenticCapacityRow(p, evaluated, true, 25);
-    expect(withUtil.grossCapacityMillions).toBe(100);
-    expect(withUtil.remainingCapacityMillions).toBe(75);
+    const withUtilNoCert = toAuthenticCapacityRow(p, evaluated, true, 25);
+    expect(withUtilNoCert.grossCapacityMillions).toBe(100);
+    expect(withUtilNoCert.remainingCapacityMillions).toBeNull();
+
+    const withCert = toAuthenticCapacityRow(p, evaluated, true, 25, {
+      asOf: "2026-06-30",
+      completenessCertificate: {
+        capacityRuleId: "flat_basket",
+        asOf: "2026-06-30",
+        kind: "VERIFIED_COMPLETE",
+        approvalState: "APPROVED",
+        sourceLabel: "test completeness",
+      },
+    });
+    expect(withCert.remainingCapacityMillions).toBe(75);
 
     const without = toAuthenticCapacityRow(p, evaluated, false, 25);
     expect(without.remainingCapacityMillions).toBeNull();

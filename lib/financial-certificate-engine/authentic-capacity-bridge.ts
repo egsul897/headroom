@@ -21,8 +21,10 @@ import {
   loadVerifiedFinancialCapacityInput,
   type VerifiedFinancialCapacityInput,
 } from "./approval-bridge";
+import { classifyApprovedSnapshotAuthority } from "./authority";
 import type { SharedFinancialCertificationView } from "./financial-view";
 import { buildSharedFinancialViewFromVerified } from "./financial-view";
+import { publishRemainingCapacity } from "./utilization-honesty";
 
 export type AuthenticCapacityBlockReason =
   | "NO_APPROVED_SNAPSHOT"
@@ -73,18 +75,35 @@ export type AuthenticCapacityBridgeResult =
       view?: SharedFinancialCertificationView;
     };
 
-function attributedUtilizationFor(
-  provision: CovenantProvisionInput,
-  ledger: Array<{ basket: string; amount: number; direction: string }>,
-): { attributed: boolean; note: string; usedMillions: number | null } {
-  // Agent 3 finding: ledger rows are family-level, not provision-id attributed.
-  // Without path-level attribution we refuse remaining-capacity claims.
-  void provision;
-  void ledger;
+function remainingForProvision(args: {
+  provision: CovenantProvisionInput;
+  asOf: string;
+  gross: number | null;
+  unlimited: boolean;
+  ledger: Array<{ basket: string; amount: number; direction: string }>;
+}): {
+  remaining: number | null;
+  attributed: boolean;
+  note: string;
+  supportsRemainingClaim: boolean;
+} {
+  // Agent 3 / #234: family-level ledger rows are not provision-attributed.
+  // Approved financials alone never establish remaining.
+  const unattributedLegacyBasketPresent = args.ledger.length > 0;
+  const pub = publishRemainingCapacity({
+    capacityRuleId: args.provision.code,
+    asOf: args.asOf,
+    grossCapacityMillions: args.gross,
+    unlimited: args.unlimited,
+    records: [],
+    completenessCertificate: null,
+    unattributedLegacyBasketPresent,
+  });
   return {
+    remaining: pub.remainingCapacityMillions,
     attributed: false,
-    note: "No attributed historical utilization bound to this provision id — remaining capacity not claimed (gross reported separately).",
-    usedMillions: null,
+    note: pub.reason,
+    supportsRemainingClaim: pub.supportsRemainingClaim,
   };
 }
 
@@ -114,6 +133,12 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
 
   const financial = loaded.input;
   const view = buildSharedFinancialViewFromVerified(financial);
+  // Test-attributed APPROVED must never be misread as real reviewer approval.
+  const approvalAuthority = classifyApprovedSnapshotAuthority({
+    reviewedBy: financial.reviewedBy,
+    approvalRef: financial.approvalRef,
+    productionContext: false,
+  });
 
   if (!financial.capacitySnapshot) {
     return {
@@ -149,9 +174,10 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
   let reviewRequired = 0;
   let incorrectFavorableClaims = 0;
 
+  const asOfIso = financial.asOfDate ?? asOf.toISOString().slice(0, 10);
+
   for (const p of provisions) {
     const evaluated = evaluateProvision(p, fin, metrics);
-    const util = attributedUtilizationFor(p, covenantData.ledger);
 
     let gross: number | null = null;
     let unlimited = false;
@@ -168,20 +194,22 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
       blockedMissingInputs += 1;
     }
 
-    // Incorrect favorable outcome guard: never set remaining = gross when unattributed.
-    let remaining: number | null = null;
-    if (util.attributed && util.usedMillions != null && gross != null) {
-      remaining = Math.max(0, gross - util.usedMillions);
-      remainingClaimable += 1;
-    } else if (!util.attributed && gross != null) {
-      // Explicitly refuse — counting a silent remaining=gross would be incorrect-favorable.
-      remaining = null;
-    }
-
-    // Tripwire: if any path equated remaining to gross without attribution, count defect.
-    if (remaining !== null && !util.attributed && remaining === gross) {
+    const util = remainingForProvision({
+      provision: p,
+      asOf: asOfIso,
+      gross,
+      unlimited,
+      ledger: covenantData.ledger,
+    });
+    if (util.supportsRemainingClaim) remainingClaimable += 1;
+    // Incorrect-favorable: remaining equals gross with no attribution/completeness.
+    if (
+      util.remaining !== null &&
+      !util.supportsRemainingClaim &&
+      gross != null &&
+      util.remaining === gross
+    ) {
       incorrectFavorableClaims += 1;
-      remaining = null;
     }
 
     rows.push({
@@ -192,9 +220,9 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
       evaluationStatus: evaluated.status,
       grossCapacityMillions: gross,
       unlimited,
-      remainingCapacityMillions: remaining,
+      remainingCapacityMillions: util.remaining,
       utilizationAttributed: util.attributed,
-      utilizationNote: util.note,
+      utilizationNote: `${util.note} [${approvalAuthority.kind}: ${approvalAuthority.disclosure}]`,
       reason: evaluated.reason ?? null,
     });
   }
@@ -224,6 +252,10 @@ export function toAuthenticCapacityRow(
   evaluated: EvaluatedProvision,
   utilizationAttributed: boolean,
   usedMillions: number | null,
+  opts?: {
+    asOf?: string;
+    completenessCertificate?: import("./utilization-honesty").UtilizationCompletenessCertificate | null;
+  },
 ): AuthenticProvisionCapacityRow {
   const unlimited =
     evaluated.status === "modeled" &&
@@ -233,10 +265,27 @@ export function toAuthenticCapacityRow(
     evaluated.status === "modeled" && evaluated.capacity !== undefined && Number.isFinite(evaluated.capacity)
       ? evaluated.capacity
       : null;
-  let remaining: number | null = null;
-  if (utilizationAttributed && usedMillions != null && gross != null) {
-    remaining = Math.max(0, gross - usedMillions);
-  }
+  const asOf = opts?.asOf ?? "2026-06-30";
+  const records =
+    utilizationAttributed && usedMillions != null
+      ? [
+          {
+            usageId: `u-${p.code}`,
+            capacityRuleId: p.code,
+            amountMillions: usedMillions,
+            effectiveAsOf: asOf,
+            status: "ACTIVE" as const,
+          },
+        ]
+      : [];
+  const pub = publishRemainingCapacity({
+    capacityRuleId: p.code,
+    asOf,
+    grossCapacityMillions: gross,
+    unlimited,
+    records,
+    completenessCertificate: opts?.completenessCertificate ?? null,
+  });
   return {
     provisionCode: p.code,
     sectionRef: p.sectionRef,
@@ -245,11 +294,9 @@ export function toAuthenticCapacityRow(
     evaluationStatus: evaluated.status,
     grossCapacityMillions: gross,
     unlimited,
-    remainingCapacityMillions: remaining,
-    utilizationAttributed,
-    utilizationNote: utilizationAttributed
-      ? "Attributed utilization applied."
-      : "No attributed historical utilization — remaining not claimed.",
+    remainingCapacityMillions: pub.remainingCapacityMillions,
+    utilizationAttributed: pub.supportsRemainingClaim,
+    utilizationNote: pub.reason,
     reason: evaluated.reason ?? null,
   };
 }

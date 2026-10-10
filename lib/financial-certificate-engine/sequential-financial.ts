@@ -265,6 +265,75 @@ export function cashOutflowActions(args: { amountMillions: number }): ScenarioAc
   return [{ kind: "DIVIDEND", amount: args.amountMillions }];
 }
 
+/** Debt repayment against a known facility id (cash down, debt down). */
+export function debtRepaymentActions(args: {
+  facilityId: string;
+  amountMillions: number;
+}): ScenarioAction[] {
+  return [{ kind: "DEBT_REPAYMENT", facilityId: args.facilityId, amount: args.amountMillions }];
+}
+
+/**
+ * Equity contribution: cash increases via WORKING_CAPITAL_CHANGE.
+ * Equity-proceeds fact is updated separately via `applyEquityProceedsBump`
+ * (financial-core has no EQUITY_ISSUANCE action).
+ */
+export function equityContributionCashActions(args: { amountMillions: number }): ScenarioAction[] {
+  return [{ kind: "WORKING_CAPITAL_CHANGE", cashDelta: args.amountMillions }];
+}
+
+/** Bump cumulative equity proceeds on a pro forma state (never invents a starting value). */
+export function applyEquityProceedsBump(
+  state: FinancialState,
+  amountMillions: number,
+  asOf: Date,
+): FinancialState {
+  const prior = state.incomeStatementFacts.equityProceedsSinceIssue.value;
+  return {
+    ...state,
+    incomeStatementFacts: {
+      ...state.incomeStatementFacts,
+      equityProceedsSinceIssue: fact(prior + amountMillions, "ASSUMED", asOf),
+    },
+  };
+}
+
+/**
+ * Independently expected cash/debt deltas for common actions — used by gate
+ * tests to verify scenario engine arithmetic without trusting prior test fixtures.
+ */
+export function expectedCashDebtDeltas(action: ScenarioAction): {
+  cashDelta: number | null;
+  debtDelta: number | null;
+  note: string;
+} {
+  switch (action.kind) {
+    case "DEBT_ISSUANCE":
+      return {
+        cashDelta: action.amount,
+        debtDelta: action.amount,
+        note: "Issuance credits cash and increases principal.",
+      };
+    case "DIVIDEND":
+    case "SHARE_REPURCHASE":
+      return { cashDelta: -action.amount, debtDelta: 0, note: "Cash distribution; debt unchanged." };
+    case "DEBT_REPAYMENT":
+      return {
+        cashDelta: -action.amount,
+        debtDelta: -action.amount,
+        note: "Repayment spends cash and reduces principal.",
+      };
+    case "WORKING_CAPITAL_CHANGE":
+      return {
+        cashDelta: action.cashDelta,
+        debtDelta: 0,
+        note: "Working-capital / equity-cash contribution; debt unchanged.",
+      };
+    default:
+      return { cashDelta: null, debtDelta: null, note: `No independent table for ${action.kind}.` };
+  }
+}
+
 /** Annotate a FinancialState as EXTERNAL_CERTIFICATE for sequential demos. */
 export function tagStateAsOf(state: FinancialState, asOf: Date): FinancialState {
   return {

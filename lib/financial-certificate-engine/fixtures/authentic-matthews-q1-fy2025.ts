@@ -1,6 +1,7 @@
 /**
  * AUTHENTIC public-company figures — Matthews International (NASDAQ: MATW).
  *
+ * Authority: AUTHENTIC_SOURCE_DERIVED (see authority.ts FIXTURE_AUTHORITY).
  * Numbers and methodology are taken from in-repo provenance already derived
  * from EDGAR filings (see scripts/populate-matthews-financial-provenance.ts
  * and docs/matthews-international-onboarding.md):
@@ -8,8 +9,31 @@
  * - Indenture §1.01 Consolidated EBITDA build-up (TTM)
  *
  * These texts are labeled reconstructions for deterministic extraction tests.
- * They are not fabricated capacity figures.
+ * They are not fabricated capacity figures and are NOT a reviewer APPROVED snapshot.
  */
+
+import { FIXTURE_AUTHORITY } from "../authority";
+
+export const MATTHEWS_FIXTURE_AUTHORITY = FIXTURE_AUTHORITY.matthews_q1_fy2025;
+
+/** Indenture Consolidated EBITDA TTM build-up components (authentic provenance). */
+export const MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP = {
+  asOf: "2024-12-31",
+  accession: "0000063296-25-000006",
+  /** Components that sum to contractual EBITDA (ex-CNI base handled in provenance script). */
+  addbacksMillions: {
+    depreciationAndAmortization: 93.751,
+    goodwillWriteDowns: 16.727,
+    assetWriteDowns: 16.847,
+    stockBasedCompensation: 18.806,
+  },
+  consolidatedEbitdaMillions: 128.313,
+  gaapEbitdaMillions: 77.675,
+  totalDebtMillions: 809.211,
+  securedDebtMillions: 778.882,
+  cashMillions: 33.513,
+  interestExpenseMillions: 54.64,
+} as const;
 
 export const MATTHEWS_ISSUER = "Matthews International Corporation";
 export const MATTHEWS_AS_OF_Q1 = "2024-12-31";

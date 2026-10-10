@@ -1,11 +1,17 @@
 /**
- * AUTHENTIC seed figures — Coherent Corp. (Headroom evaluation company).
+ * SEED-ALIGNED modeled figures — Coherent Corp. (Headroom evaluation company).
  *
+ * Authority: SEED_ALIGNED_MODELED (see authority.ts FIXTURE_AUTHORITY).
  * Figures match prisma/seed-data.ts COHERENT_DATA.financials and the
  * PUBLIC_FILING_RECONSTRUCTION ExternalInputRecord for covenant EBITDA.
  * GAAP EBITDA is deliberately omitted in coherent financial-core population
  * — this fixture preserves that honesty (no invented GAAP number).
+ * NOT a real reviewer APPROVED snapshot.
  */
+
+import { FIXTURE_AUTHORITY } from "../authority";
+
+export const COHERENT_FIXTURE_AUTHORITY = FIXTURE_AUTHORITY.coherent_fy2026;
 
 export const COHERENT_AS_OF = "2026-06-30";
 

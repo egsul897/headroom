@@ -212,8 +212,10 @@ function parseAdjustments(
   const out: ExtractedAdjustment[] = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!;
+    // Prefer "Plus add-back:" / "Add-back:" as a unit — bare "Plus" must not
+    // swallow the "add" in "add-back" (which previously labeled every row "add").
     const addback = line.match(
-      /\b(?:plus|add[- ]?back|addback)\s*[:\-]?\s*(.+?)(?:[:\-]\s*|\$|\s+)([\d,]+(?:\.\d+)?)?\s*(million|thousand|mm|m|k)?/i,
+      /^\s*(?:plus\s+)?add[- ]?backs?\b\s*[:\-]?\s*(.+?)(?=\s*\$|$)/i,
     );
     const exclusion = line.match(/\b(?:less|minus|exclude[ds]?|exclusion)\s*[:\-]?\s*(.+)/i);
     const footnote = line.match(/^\s*\(?\s*(?:note|fn|footnote)\s*[\d.]+\s*\)?\s*[:\-]?\s*(.+)/i);
