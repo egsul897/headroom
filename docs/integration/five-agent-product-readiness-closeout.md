@@ -11,7 +11,7 @@
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
 | Final `origin/main` at closeout | `93857be59214c7410de9f005ff87870a47bf10ce` |
-| Integration branch tip | _(pinned in following commit)_ |
+| Integration branch tip |  |
 
 Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266` landed on `main` before integration closeout.
 
