@@ -16,7 +16,8 @@ This run did **not** train any language model. Analyzing documents ≠ model tra
 |---|---|
 | Base | `main` @ `7f1dd3a2` (#229/#237 present) |
 | Branch | `cursor/neon-corpus-intelligence-flywheel-981a` |
-| Tip SHA | `ad417a508ce0451c82f23fb56165cbfb2cc132a4` |
+| Tip SHA | `c1bbf861c3cc2a56b1ccdefa6586ee3b42d3abc6` |
+| PR | https://github.com/egsul897/headroom/pull/255 |
 | Paid inference | **$0** |
 | Neon mutations | **0** |
 | Auto-merge | **none** |
