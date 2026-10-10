@@ -1,0 +1,94 @@
+{
+  "artifact": "AGENT11_ROUND2B_MODULE_INVENTORY",
+  "pr293EvaluatedSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1",
+  "evidenceBranchHead": "1af835f3666b80240b2990b737d330e7d5ff499d",
+  "note": "Each stage imports these #293 tip blobs — not origin/main.",
+  "modules": {
+    "structural": {
+      "path": "lib/contract-model/compiler/stage-structure.ts",
+      "present": true,
+      "blobShaAt293": "bba7d794095afd0b087a96adbd2855525d52224d",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "packageGraph": {
+      "path": "lib/contract-model/compiler/package-graph/pipeline.ts",
+      "present": true,
+      "blobShaAt293": "5cf7330673cacf9214a7c1643bf17996576411f6",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "amendmentOperativeState": {
+      "path": "lib/contract-model/compiler/amendment/operative-state.ts",
+      "present": true,
+      "blobShaAt293": "f1bdc11358453ad163eca31cff1bf792fee812a3",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "operativeAuthority": {
+      "path": "lib/contract-model/compiler/operative-authority/index.ts",
+      "present": true,
+      "blobShaAt293": "538dec0ecb16340af9ff3628cae6766ed80b2b1e",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "contextRetrieval": {
+      "path": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "present": true,
+      "blobShaAt293": "39465a0a6405530fa0becc53b3cf752c01724e0c",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "contextBodyAnchor": {
+      "path": "lib/contract-model/compiler/context-retrieval/body-anchor.ts",
+      "present": true,
+      "blobShaAt293": "539d72dbd2f93c7a4dfeda68d37621972849a4b0",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "contextManifest": {
+      "path": "lib/contract-model/compiler/context-retrieval/manifest.ts",
+      "present": true,
+      "blobShaAt293": "e0a8e94c701b4aec63a169f6dad22b9d8a6511ed",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "discovery": {
+      "path": "lib/contract-model/compiler/discovery/pipeline.ts",
+      "present": true,
+      "blobShaAt293": "e8741f2d8f5f3fd55f8a9c3781e73b7eac115661",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "localSemantic": {
+      "path": "lib/contract-model/compiler/local-semantic/index.ts",
+      "present": true,
+      "blobShaAt293": "29f9a64dfd1091d3496a5d7b8b258f9f18dc9c3e",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "financialEvidence": {
+      "path": "lib/capacity/financial-evidence.ts",
+      "present": true,
+      "blobShaAt293": "d0b25aa950214542b333a6074806c087fdfc92ae",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "verifiedInputContract": {
+      "path": "lib/capacity/verified-input-contract.ts",
+      "present": true,
+      "blobShaAt293": "5029d63387cf0a1e5bdf485fd3dbbbeae5f30a2a",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "customerWorkflow": {
+      "path": "lib/customer-workflow/status-contract.ts",
+      "present": true,
+      "blobShaAt293": "ccb4632484082d04d4148b4eabf7f9668a7f6bb1",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "unifiedTransaction": {
+      "path": "lib/product/verified-transaction-execution/execute.ts",
+      "present": true,
+      "blobShaAt293": "92349b138b8d052bd43249b5365ada1d0acef17f",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    },
+    "trustedIssuerHost": {
+      "path": "lib/capacity/trusted-issuer-host.ts",
+      "present": true,
+      "blobShaAt293": "ac6fa157debdbf1b39cb670cf3fefd2afe7fb97c",
+      "evaluatedCodeSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1"
+    }
+  },
+  "operativeAuthorityModuleVersion": "operative-restatement-authority.v1",
+  "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6"
+}

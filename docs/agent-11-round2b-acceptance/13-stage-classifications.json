@@ -1,0 +1,62 @@
+{
+  "1_UPLOAD": {
+    "class": "VERIFIED",
+    "evidence": "10-01-upload.json",
+    "notes": "Offline sealed load of authentic EDGAR exhibits; not a live SaaS upload path."
+  },
+  "2_IDENTIFY_DOCUMENTS": {
+    "class": "VERIFIED",
+    "evidence": "10d-package-graph.json",
+    "notes": "classifications=[{\"id\":\"doc-a\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"},{\"id\":\"doc-b\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"}]; module=package-graph@8a4beb52"
+  },
+  "3_RESOLVE_OPERATIVE": {
+    "class": "BLOCKED",
+    "evidence": "10d-agent7-operative-authority.json",
+    "notes": "operativeDocumentId=null; agent7=null; amendmentPipeline=null; docBAuthority=REVIEW_REQUIRED; cp=NOT_STATED; confirmedWithCaveats=false; unconditional=false; productionDisposition=PRODUCTION_AUTHORITY_REFUSED; verdict=OPERATIVE_RESTATEMENT_AUTHORITY_PARTIAL"
+  },
+  "4_DISCOVER_COVENANTS": {
+    "class": "VERIFIED",
+    "evidence": "10b-discovery.json + 10-clause-coverage.json",
+    "notes": "passAHits=10/10"
+  },
+  "5_RETRIEVE_CONTEXT": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json",
+    "notes": "SUFFICIENT=0/10 (threshold for VERIFIED: ≥80%)"
+  },
+  "6_COMPILE_VERIFIED_IR": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json",
+    "notes": "verifiedExecutable=0/10; paid inference blocked; local DETERMINISTIC_ONLY is UNVERIFIED"
+  },
+  "7_ATTACH_FINANCIAL_EVIDENCE": {
+    "class": "BLOCKED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "module=true; AN authenticated financial package attached=false; completeness=0/1; stipulatedProductionAuthoritative=false"
+  },
+  "8_RECONSTRUCT_UTILIZATION": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Empty/partial history correctly yields knowledge=KNOWN_ATTRIBUTED; supportsRemainingClaim=false; UNKNOWN≠0"
+  },
+  "9_EVIDENCE_REVIEWER_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Forged issuer actorId not-in-registry mayPublish=false"
+  },
+  "10_HYPOTHETICAL_TRANSACTION": {
+    "class": "HYPOTHETICAL_ONLY",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Caller-stipulated leverage HYPOTHETICAL_ONLY; unifiedTxn={\"attempted\":true,\"refusedOrErrored\":true,\"error\":\"Cannot read properties of undefined (reading 'length')\",\"classification\":\"BLOCKED_BY_EVIDENCE_OR_CONTRACT\"}"
+  },
+  "11_PRODUCTION_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json + 10d-agent7-operative-authority.json",
+    "notes": "capacityMayPublish=false; mayUseProductionInput=false; operativePromotion=PRODUCTION_AUTHORITY_REFUSED; unconditionalOperative=false"
+  },
+  "12_SURFACE_DISPLAY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "customerWorkflowHonest=true; sharedViewOk=true; live SaaS UI NOT browser-tested"
+  }
+}

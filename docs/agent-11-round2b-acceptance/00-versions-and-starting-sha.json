@@ -1,0 +1,24 @@
+{
+  "artifact": "AGENT11_ROUND2B_VERSIONS",
+  "round": "2B",
+  "mission": "Independent acceptance of canonical PR #293",
+  "mainShaRound2Baseline": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "pr293EvaluatedSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1",
+  "acceptancePr": 292,
+  "canonicalIntegrationPr": 293,
+  "commitsOn293AfterLastObserved": [],
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "sealCommit": "ca667446df228984bb5d6b50b44c3c98b45f0730",
+  "packageKey": "an-2020-2026-credit-facility",
+  "paidInferenceUsd": 0,
+  "productionNeonWrites": false,
+  "productionCodeEdits": false,
+  "harness": "scripts/agent-11/run-round2b-acceptance.ts",
+  "outputDir": "docs/agent-11-round2b-acceptance",
+  "doesNotOverwrite": [
+    "docs/agent-11-e2e-acceptance/",
+    "docs/agent-11-round2-acceptance/",
+    "docs/agent-11-e2e-acceptance-round1-frozen/",
+    "docs/agent-11-round-2-acceptance/"
+  ]
+}
