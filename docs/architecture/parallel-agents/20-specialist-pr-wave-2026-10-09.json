@@ -1,0 +1,89 @@
+{
+  "artifact": "specialist-pr-wave-inventory",
+  "version": 1,
+  "updatedAt": "2026-10-09T22:26:00Z",
+  "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "coverageAudit": {
+    "source": "explore subagent bc-e95160c1-251f-5024-b003-3ef2309ab9d3",
+    "independentCorrectness": {
+      "acceptanceRun": "docs/product-readiness/acceptance-runs/6f0e372daf48/",
+      "checks": "706/736 pass",
+      "cfp": 0
+    },
+    "phase4CapacityState": {
+      "path": "lib/contract-model/runtime/capacity/state.ts",
+      "posture": "empty usage → NOT_DETERMINED (not zero) — FAIL CLOSED on Phase-4C path",
+      "contrast": "solver SharedConstraint loader still hardcodes currentUsage:0 unless basketUsage supplied (#215 partial)"
+    },
+    "statusBoardSha": "STALE (cites 42bba2d3; tip bae24ced)"
+  },
+  "wave": [
+    {
+      "pr": 211,
+      "mapsTo": "WS-XDOC / knowledge-integration Stage D",
+      "mergeState": "CLEAN",
+      "filesOfInterest": [
+        "lib/product/north-star-workflow/verified-path-enumeration.ts"
+      ],
+      "collidesWith": [207],
+      "verdict": "FALSE_PERMISSION_PREVENTION — stack after #207 or rebase; do not duplicate lien-companion logic",
+      "recommend": "SEQUENCE after #205→#207"
+    },
+    {
+      "pr": 212,
+      "mapsTo": "WS-NEON cycle 2",
+      "mergeState": "CLEAN",
+      "exclusiveAligned": true,
+      "note": "Stacked on #210; capacity matrix explicitly skips loader currentUsage — honest",
+      "recommend": "Land after #210"
+    },
+    {
+      "pr": 213,
+      "mapsTo": "WS-UCP",
+      "mergeState": "UNSTABLE",
+      "pathDrift": "uses docs/product/unified-position/** (ok sibling of unified-customer)",
+      "positive": "NOT_TRACKED utilizationPct/remaining null — never painted as 0",
+      "recommend": "CI then review; LEGACY_labeled only — no CERTIFIED claims"
+    },
+    {
+      "pr": 214,
+      "mapsTo": "WS-CAP validation matrix",
+      "mergeState": "UNSTABLE",
+      "pathDrift": "docs/covenant-capacity-mathematics/** and tests/contract-model/runtime/capacity/** instead of docs/product/capacity-validation/**",
+      "note": "Non-promoting test matrix; no production engine change claimed",
+      "recommend": "Accept path drift as extendViaNewSiblingOnly tests; do not fork a second calculator"
+    },
+    {
+      "pr": 215,
+      "mapsTo": "BLK-USAGE-ZERO / WS-CAP+WS-NEON",
+      "mergeState": "CLEAN",
+      "touches": ["lib/covenant-engine.ts", "lib/solver/shared-usage.ts"],
+      "coordinatorAck": "DEMONSTRATED_DEFECT_FIX — authorized scope for usage load path",
+      "residualGap": "Omitting basketUsage preserves hardcoded-zero; EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER remain 0 — NOT full fail-closed for unknown usage",
+      "recommend": "Merge candidate after CI IF PR body documents residual gap; require follow-up that unknown named-member usage fails closed when basketUsage absent OR callers must pass explicit unknown marker — do not claim BLK-USAGE-ZERO CLOSED"
+    },
+    {
+      "pr": 217,
+      "mapsTo": "WS-MECH / Agent 1 KF patterns",
+      "mergeState": "UNSTABLE",
+      "collidesWith": [210, 212],
+      "overlap": [
+        "docs/intelligence-factory/progress-manifest.json",
+        "lib/product/legal-reasoning/precedent-clause-search.ts",
+        "package.json"
+      ],
+      "recommend": "REBASE onto #210/#212 tip; single owner of intelligence-factory/progress-manifest.json = WS-NEON; Agent 1 writes AGENT1-* reports only or merges via Neon"
+    },
+    {
+      "pr": 218,
+      "mapsTo": "WS-XDOC",
+      "mergeState": "UNSTABLE",
+      "pathDrift": "docs/cross-document-covenant-reasoning/** vs assigned docs/product/cross-document/**",
+      "note": "Composes existing package graph / 4E — no second amendment engine claimed",
+      "recommend": "CI then accept path drift; ensure conjunction/fail-closed invariants tested"
+    }
+  ],
+  "updatedMergeSequencePrefix": [208, 210, 212, 205, 207, 211, 215, 209, 214, 213, 218],
+  "holdPendingRebase": [217, 200, 190],
+  "doNotMerge": [136, 163, 135]
+}

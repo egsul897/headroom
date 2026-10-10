@@ -1,0 +1,52 @@
+{
+  "artifact": "emergency-reconciliation",
+  "version": 1,
+  "updatedAt": "2026-10-09T22:35:00Z",
+  "mainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "supersedes": [
+    "docs/architecture/parallel-agents/18-pr-integration-sequence.json#recommendedOrder",
+    "docs/architecture/parallel-agents/daily/2026-10-09-session-report.md merge sequence"
+  ],
+  "autoMerge": false,
+  "paidInferenceCostUsd": 0,
+  "narrative": "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md",
+  "usageZeroMatrix": "docs/architecture/parallel-agents/22-usage-zero-regression-matrix.md",
+  "integrationPlan": "docs/architecture/parallel-agents/23-integration-plan-v2.md",
+  "e2eBenchmark": "docs/architecture/parallel-agents/24-e2e-benchmark-plan.md",
+  "integrationOrder": [216, 208, 213, 215, 210, 212, 205, 207, 211, 218, 221, 209, 214, 223, 220, 190, 217, 219, 206],
+  "hold": [200, 136, 163, 135, 222],
+  "blkUsageZero": {
+    "closedBy213Alone": false,
+    "closedBy215Alone": false,
+    "closedBy213And215": false,
+    "positionOverviewSafeAfter213": true,
+    "phase4cSafeOnMain": true,
+    "solverDefaultStillZeros": true,
+    "runPackagePathStillZeros": true,
+    "requiredFollowUp": "215b fail-closed status propagation"
+  },
+  "falsePermissionConflict": {
+    "agent1": {
+      "claim": "50% false-permission incidence",
+      "denominator": "2 CKG synthetic micro-controls",
+      "path": "held-out generalization eval — not Position/Simulate",
+      "customerReachable": false
+    },
+    "agent5": {
+      "claim": "falsePermissionCount 0",
+      "denominator": "8 cross-document scenarios pkg-b/h/i/c",
+      "path": "lib/product/covenant-intelligence/cross-document-covenant.ts",
+      "customerReachable": "library path; wire via #221 later"
+    },
+    "contradiction": false,
+    "releaseBlockers": [
+      "Position overview unknown-as-zero on main (fixed in #213)",
+      "Solver SharedConstraint unknown-as-zero residual after #215"
+    ]
+  },
+  "dualUcp": {
+    "canonical": 221,
+    "honestyFix": 213,
+    "resolution": "Land #213 first or cherry-pick overview null fix into #221; #221 owns unified façade"
+  }
+}

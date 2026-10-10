@@ -1,0 +1,325 @@
+{
+  "artifact": "product-specialist-fleet-map",
+  "version": 1,
+  "status": "ACTIVE_CONTRACT",
+  "publishedAt": "2026-10-09T22:20:00Z",
+  "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "coordinator": {
+    "workstreamId": "WS-AEC",
+    "name": "Autonomous Engineering Coordinator",
+    "bcId": "bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
+    "branch": "cursor/engineering-coordinator-10ff",
+    "url": "https://cursor.com/agents/bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
+    "exclusiveOwn": [
+      "docs/architecture/parallel-agents/**",
+      "tests/architecture/parallel-agents/**",
+      "scripts/parallel-agents/**"
+    ],
+    "notes": [
+      "WS-AEC continues WS-PAR coordination authority for the product-specialist fleet.",
+      "Does not rewrite Phase 1–4E engines, sealed evidence, or Claude acceptance fixtures.",
+      "Never auto-merges. Zero unapproved paid inference."
+    ]
+  },
+  "northStarInterfaces": {
+    "position": "Position — verified company covenant position over approved financials + attributed ledger",
+    "simulate": "Simulate — proposed transaction against the same engines as Position",
+    "ask": "Ask — explicit transaction + inputs → deterministic answer with provenance",
+    "underlyingState": "One verified company state + calculation engine; no duplicate rulebook/ledger/financial truth/capacity/simulator"
+  },
+  "authorityLabels": [
+    "IMPLEMENTED ≠ CERTIFIED",
+    "DISCOVERED ≠ VERIFIED",
+    "PRECEDENT ≠ OPERATIVE AUTHORITY",
+    "DURABLE ≠ CERTIFIED",
+    "Unknown utilization must never silently become zero"
+  ],
+  "sharedHardExclusions": [
+    "lib/contract-model/ir/**",
+    "lib/contract-model/phase3-certification/**",
+    "lib/covenant-engine.ts (unless demonstrated defect + coordinator ack)",
+    "docs/**/sealed*/**",
+    "tests/product-acceptance/** (Claude-owned)",
+    "tests/fixtures/product-acceptance/** (Claude-owned)",
+    "Paid provider calls without founder authorization",
+    "Silent certification of AI-generated legal interpretations",
+    "Automatic PR merges"
+  ],
+  "specialists": [
+    {
+      "workstreamId": "WS-NEON",
+      "name": "Neon intelligence baseline",
+      "bcId": "bc-01a122b3-10f8-7367-bc8a-3d8c317d2229",
+      "branch": "cursor/neon-intelligence-baseline-2229",
+      "pr": "https://github.com/egsul897/headroom/pull/210",
+      "missionSummary": "Read-only Neon inventory; maturity-separated corpus map; KF retrieval honesty; distinguish precedent vs customer contractual truth.",
+      "exclusiveOwn": [
+        "docs/intelligence-factory/**",
+        "scripts/knowledge-factory/neon-intelligence-baseline.ts"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/product/legal-reasoning/**",
+        "lib/knowledge-factory/mass-precedent/**"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-engine.ts",
+        "lib/contract-model/runtime/capacity/**",
+        "lib/contract-model/runtime/transaction/**",
+        "app/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P1 — keep baseline current after corpus mutations; do NOT claim CERTIFIED from DISCOVERED counts",
+      "dependsOn": []
+    },
+    {
+      "workstreamId": "WS-MECH",
+      "name": "Covenant mechanics knowledge",
+      "bcId": "bc-01a122bc-802f-75a0-ac42-f7137baff761",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Source-backed mechanic coverage (growers, builders, shared caps, anti-stack, incremental, AA) without a second rulebook.",
+      "exclusiveOwn": [
+        "docs/product/covenant-mechanics/**",
+        "lib/product/covenant-mechanics/**",
+        "scripts/product/covenant-mechanics/**",
+        "tests/product/covenant-mechanics/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/product/covenant-intelligence/**",
+        "docs/product/covenant-intelligence-loop/**"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-engine.ts",
+        "lib/contract-model/runtime/capacity/**",
+        "lib/contract-model/ir/**",
+        "docs/intelligence-factory/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P1 — map mechanic coverage against Neon baseline; feed WS-CAP adversarial cases; no promotion to legal truth",
+      "dependsOn": ["WS-NEON baseline inventory"]
+    },
+    {
+      "workstreamId": "WS-FIN",
+      "name": "Financial compliance engine",
+      "bcId": "bc-01a122bc-c18b-707a-aeb2-e90523f88d31",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Financial statements + officer certificates → approved snapshots; reconcile definitions; NS-4 store consumers only.",
+      "exclusiveOwn": [
+        "docs/product/financial-compliance/**",
+        "lib/product/financial-compliance/**",
+        "scripts/product/financial-compliance/**",
+        "tests/product/financial-compliance/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/onboarding/ns4-financial-sync.ts",
+        "lib/contract-model/runtime/input/**",
+        "docs/architecture/NS-4-*"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-engine.ts",
+        "lib/contract-model/runtime/capacity/**",
+        "lib/knowledge-factory/**",
+        "docs/intelligence-factory/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P0 — authentic certificate → approved snapshot path unlocks Position/Simulate/Ask for many packages; coordinate with #190 (DIRTY) do not fork store",
+      "dependsOn": ["NS-4 store interfaces on main / #190 rebase"]
+    },
+    {
+      "workstreamId": "WS-CAP",
+      "name": "Covenant capacity validation",
+      "bcId": "bc-01a122bc-f497-7ff4-b280-f5d60318b580",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Validate basket/ratio/shared-capacity math against authoritative runtime; kill false permissions; never invent usage=0.",
+      "exclusiveOwn": [
+        "docs/product/capacity-validation/**",
+        "lib/product/capacity-validation/**",
+        "scripts/product/capacity-validation/**",
+        "tests/product/capacity-validation/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/contract-model/runtime/capacity/**",
+        "tests/contract-model/runtime/capacity/**"
+      ],
+      "mustNotTouch": [
+        "lib/contract-model/ir/**",
+        "lib/knowledge-factory/**",
+        "app/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P0 CRITICAL — shared-capacity / ledger utilization hardcoded to 0 is a multi-workflow false-permission risk; prove unknown≠zero; prefer evidence over new UI",
+      "dependsOn": [],
+      "criticalDefectRefs": [
+        "Neon baseline: SharedCapacityConstraint usage loader-hardcoded to 0",
+        "lib/product/legal-intelligence/run-package-path.ts ledger = 0 comment"
+      ]
+    },
+    {
+      "workstreamId": "WS-TXN",
+      "name": "Transaction effects covenant state",
+      "bcId": "bc-01a122bd-1aa4-7638-86cd-4673ac688970",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Transaction-state propagation through ledger + capacity; Phase 4D simulateVerifiedTransaction consumers only.",
+      "exclusiveOwn": [
+        "docs/product/transaction-effects/**",
+        "lib/product/transaction-effects/**",
+        "scripts/product/transaction-effects/**",
+        "tests/product/transaction-effects/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/contract-model/runtime/transaction/**",
+        "tests/product/stage-c-pkgn-ratio-execution.test.ts"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-engine.ts",
+        "lib/contract-model/runtime/capacity/graph.ts",
+        "docs/product/customer-workflow/authentic-72d-execution/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P1 — stack behind #205/#209 for simulate path; do not duplicate #209 stage-C ratio work; own additive txn-effect tests under exclusive tree",
+      "dependsOn": ["#205 authentic path (or main equivalent)", "#209 Stage C ratio (or rebase)"]
+    },
+    {
+      "workstreamId": "WS-XDOC",
+      "name": "Cross-document covenant reasoning",
+      "bcId": "bc-01a122bd-78d2-78f1-8563-812cfa335d11",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Multi-instrument operative state, amendment attachment honesty, debt+lien companions; no second amendment engine.",
+      "exclusiveOwn": [
+        "docs/product/cross-document/**",
+        "lib/product/cross-document/**",
+        "scripts/product/cross-document/**",
+        "tests/product/cross-document/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "lib/product/north-star-workflow/verified-path-enumeration.ts",
+        "lib/contract-model/compiler/**/relationship-resolution.ts"
+      ],
+      "mustNotTouch": [
+        "lib/covenant-engine.ts",
+        "docs/product/customer-workflow/authentic-72d-execution/**",
+        "docs/intelligence-factory/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P0 — SECURED_DEBT without certified lien companion (#207); cross-rule gate honesty; CONMED Omnibus/Second-Amendment attachment rules already on main — freeze unless regression",
+      "dependsOn": ["Coordinate file ownership with #205/#207 collision"]
+    },
+    {
+      "workstreamId": "WS-RCV",
+      "name": "Headroom real company validation",
+      "bcId": "bc-01a122bd-9fa0-76ea-bb80-1212c5f0aebc",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Authentic package cold-runs and independent expected answers; CONMED/Gibraltar/Chewy evidence without weakening gates.",
+      "exclusiveOwn": [
+        "docs/product/real-company-validation/**",
+        "lib/product/real-company-validation/**",
+        "scripts/product/real-company-validation/**",
+        "tests/product/real-company-validation/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "docs/product/customer-workflow/**",
+        "docs/product/debt-package-transaction-answer/**"
+      ],
+      "mustNotTouch": [
+        "tests/product-acceptance/**",
+        "lib/covenant-engine.ts",
+        "lib/contract-model/phase3-certification/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P1 — offline authentic CONMED §7.2(d) path evidence (#205); label synthetic CTA honestly; do not claim customer-ready CERTIFIED package",
+      "dependsOn": []
+    },
+    {
+      "workstreamId": "WS-UCP",
+      "name": "Unified customer product",
+      "bcId": "bc-01a122bd-ea9c-7d70-a35b-ccd0b216a9e4",
+      "branch": null,
+      "pr": null,
+      "missionSummary": "Wire Position / Simulate / Ask to one verified state; consume existing bridges; no dashboard theater.",
+      "exclusiveOwn": [
+        "docs/product/unified-customer/**",
+        "lib/product/unified-customer/**",
+        "scripts/product/unified-customer/**",
+        "tests/product/unified-customer/**"
+      ],
+      "extendViaNewSiblingOnly": [
+        "app/**",
+        "lib/product/north-star-workflow/**",
+        "docs/product/execution/**",
+        "docs/product/primary-engine/**"
+      ],
+      "mustNotTouch": [
+        "lib/contract-model/ir/**",
+        "lib/knowledge-factory/**",
+        "tests/product-acceptance/**",
+        "docs/architecture/parallel-agents/**"
+      ],
+      "priorityAssignment": "P1 — consume #208 primary-engine audit; wire Ask/Position/Simulate only through existing certified bridges; freeze working Coherent path",
+      "dependsOn": ["WS-FIN approved snapshots", "WS-CAP unknown≠zero", "authentic VEP paths"]
+    }
+  ],
+  "validationLane": {
+    "workstreamId": "WS-ADV",
+    "name": "Headroom adversarial testing",
+    "bcId": "bc-01a122bd-fbfd-7d89-863b-cecced244f52",
+    "role": "Independent correctness / false-permission hunting — does not own production engines",
+    "exclusiveOwn": [
+      "docs/product/adversarial/**",
+      "tests/product/adversarial/**",
+      "scripts/product/adversarial/**"
+    ],
+    "mustNotTouch": [
+      "lib/**",
+      "app/**",
+      "tests/product-acceptance/**"
+    ],
+    "priorityAssignment": "P0 — hunt CFP from usage=0, secured-without-lien, qualitative-gate loss; evidence only"
+  },
+  "adjacentRunningAgents": [
+    {
+      "name": "North star implementation",
+      "bcId": "bc-01a120db-7f46-7a37-a22e-f4b9e92505a7",
+      "pr": "https://github.com/egsul897/headroom/pull/190",
+      "note": "NS-4 Prisma store — DIRTY vs main; WS-FIN must rebase/consume, not fork"
+    },
+    {
+      "name": "Headroom knowledge integration",
+      "bcId": "bc-01a11df0-461f-795f-88c8-33cf27c2f673",
+      "prs": [205, 207, 209],
+      "note": "Owns authentic §7.2(d) / lien companion / Stage C ratio tips — coordinate file collisions before more specialists edit same trees"
+    }
+  ],
+  "fileCollisionAlerts": [
+    {
+      "id": "COLL-205-207",
+      "severity": "HIGH",
+      "prs": [205, 207],
+      "overlap": [
+        "lib/contract-model/compiler/context-retrieval/definition-graph.ts",
+        "lib/contract-model/runtime/capacity/graph.ts",
+        "docs/product/customer-workflow/authentic-72d-execution/**",
+        "tests/product/authentic-72d-execution.test.ts"
+      ],
+      "resolution": "Merge/land #205 first as authentic-path base; #207 rebases and keeps only lien-companion delta; WS-XDOC owns further companion work under exclusive tree"
+    },
+    {
+      "id": "COLL-200-MAIN",
+      "severity": "MEDIUM",
+      "prs": [200],
+      "overlap": "Large DIRTY product/covenant-intelligence-loop tip",
+      "resolution": "Do not open parallel growers/shared-capacity engines; rebase or extract non-conflicting tests only after coordinator ack"
+    }
+  ],
+  "ownershipInvariants": [
+    "No two specialists share an exclusiveOwn glob that can match the same path.",
+    "Production Phase 1–4E surfaces are extendViaNewSiblingOnly or frozen unless a demonstrated defect requires a fix.",
+    "Integration conflicts resolved by rebase/stack + adapters, not silent contract rewrites.",
+    "Claude product-acceptance remains out of fleet ownership.",
+    "promotedToLegalTruth / CERTIFIED claims require verification_record_id evidence — coordinator will reject narrative inflation."
+  ]
+}

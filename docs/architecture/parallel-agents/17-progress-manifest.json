@@ -1,0 +1,386 @@
+{
+  "schemaVersion": "headroom.engineering-coordinator.progress-manifest.v1",
+  "artifact": "shared-progress-manifest",
+  "ownerWorkstream": "WS-AEC",
+  "updatedAt": "2026-10-09T22:45:00Z",
+  "emergencyReconciliation": "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md",
+  "reconciliationV3": "docs/architecture/parallel-agents/25-reconciliation-v3-2026-10-09.md",
+  "controllingSequence": "docs/architecture/parallel-agents/25-reconciliation-v3-2026-10-09.md",
+  "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "coordinatorBcId": "bc-01a122be-22d2-7ace-bfd2-863f2b0110ff",
+  "coordinatorBranch": "cursor/engineering-coordinator-10ff",
+  "paidInferenceCostUsd": 0,
+  "paidInferenceAuthorized": false,
+  "autoMerge": false,
+  "northStar": {
+    "interfaces": ["Position", "Simulate", "Ask"],
+    "underlying": "One verified company state + calculation engine",
+    "controllingDoc": "docs/headroom-north-star-v2.md"
+  },
+  "peerManifests": [
+    {
+      "path": "docs/intelligence-factory/progress-manifest.json",
+      "owner": "WS-NEON",
+      "pr": 210,
+      "status": "ADOPTED_AS_PEER_CONTRIBUTION",
+      "note": "Five-lane A–E factory manifest; coordinator maps it onto eight specialists without absorbing Neon exclusive trees"
+    },
+    {
+      "path": "docs/product-readiness/01-progress-manifest.md",
+      "owner": "Claude independent validation",
+      "status": "CONSUME_READONLY"
+    }
+  ],
+  "fleetMap": "docs/architecture/parallel-agents/16-product-specialist-fleet.json",
+  "coverage": {
+    "corpus": {
+      "status": "PARTIAL_DURABLE_NOT_CERTIFIED",
+      "neonKnowledgeSources": 730,
+      "distinctContentHashes": 708,
+      "issuers": 200,
+      "semanticTruthRecords": 0,
+      "kfCertifiedRepresentations": 0,
+      "promotedToLegalTruth": 0,
+      "evidence": [
+        "PR #210 Neon baseline",
+        "docs/knowledge-factory/durability/a2-complete.md",
+        "docs/product/execution/STATUS-BOARD.md (stale SHA; durability YES)"
+      ]
+    },
+    "financialCertificate": {
+      "status": "PARTIAL",
+      "neonFinancialSnapshots": 8,
+      "contractInputSnapshotsApproved": 6,
+      "authenticCustomerCertificates": "synthetic/fixtures only on product path",
+      "ns4FinancialSyncOnMain": true,
+      "ns4PrismaStorePr": {
+        "number": 190,
+        "mergeState": "DIRTY"
+      },
+      "evidence": [
+        "lib/onboarding/ns4-financial-sync.ts",
+        "prisma/migrations/20261009220000_ns4_financial_sync_outbox"
+      ]
+    },
+    "covenantFormula": {
+      "status": "PARTIAL_ENGINE_YES_AUTHENTIC_PACKAGE_LIMITED",
+      "legacyFormulaTypesOnNeon": 8,
+      "basketCorpusCapacityComputable": 0,
+      "sharedCapacityUsageWiring": "HARDCODED_ZERO_RISK",
+      "authenticConmed72dPath": "OPEN_PR_205_CLEAN_LABELED_SYNTHETIC_CTA",
+      "stageCRatioPath": "OPEN_PR_209",
+      "evidence": [
+        "docs/intelligence-factory/NEON-INTELLIGENCE-BASELINE.md",
+        "PR #205",
+        "PR #209"
+      ]
+    },
+    "ledgerState": {
+      "status": "PARTIAL_FAIL_CLOSED_GAPS",
+      "neonLedgerEntries": 6,
+      "contractLedgerUsages": 1,
+      "phase4CapacityState": {
+        "path": "lib/contract-model/runtime/capacity/state.ts",
+        "posture": "empty usage → NOT_DETERMINED (fail closed) — confirmed by coverage audit"
+      },
+      "unknownUtilizationSilentZero": {
+        "risk": "CRITICAL",
+        "status": "PARTIAL_FIX_IN_PR_215_NOT_CLOSED",
+        "locations": [
+          "lib/covenant-engine.ts:1899 currentUsage: 0 (solver SharedConstraint loader)",
+          "lib/product/legal-intelligence/run-package-path.ts:66 ledger = 0",
+          "PR #215 wires named-member usage only when basketUsage passed; default path still zero"
+        ]
+      },
+      "coverageAuditRef": "bc-e95160c1-251f-5024-b003-3ef2309ab9d3"
+    },
+    "crossDocument": {
+      "status": "PARTIAL",
+      "conmedMultiDocWorkspace": true,
+      "contractModelRelationshipEdgesInNeon": 0,
+      "kfRelationshipEdgesDiscovered": 8193,
+      "securedWithoutLienCompanion": "ADDRESSED_IN_PR_207",
+      "omnibusChronologyGuardOnMain": true,
+      "evidence": [
+        "docs/product/customer-workflow/authenticated-vep/00-blocker-report.md",
+        "PR #207"
+      ]
+    },
+    "customerColdStart": {
+      "status": "PARTIAL",
+      "uploadReviewDashboardLoopMerged": true,
+      "pr199Merged": true,
+      "endToEndHeadroomVerified": false,
+      "capacityOnConmed": "NOT_DETERMINABLE_HONEST",
+      "evidence": [
+        "docs/product/execution/STATUS-BOARD.md",
+        "docs/product/primary-engine/00-capability-audit.md (PR #208)"
+      ]
+    },
+    "independentCorrectness": {
+      "status": "ACTIVE_CLAUDE_TRACK",
+      "productAcceptanceOwner": "claude/independent-product-validation",
+      "pinnedAcceptanceRun": "docs/product-readiness/acceptance-runs/6f0e372daf48/",
+      "pinnedChecks": "706/736 pass",
+      "pinnedCfp": 0,
+      "criticalFalsePermissionClassesOpen": [
+        "IPV-16 section bundle false certification (see #168 / package M)",
+        "Shared capacity usage=0 overstatement risk (PR #215 partial only)",
+        "SECURED_DEBT without lien companion (mitigation in #207/#211)"
+      ],
+      "cfpTarget": 0,
+      "coverageAuditRef": "bc-e95160c1-251f-5024-b003-3ef2309ab9d3"
+    }
+  },
+  "workstreams": {
+    "WS-NEON": {
+      "status": "PRS_OPEN_STACK",
+      "prs": [210, 212, 215],
+      "next": [
+        "Land #210 then #212 (stack)",
+        "Treat #215 as partial usage wire — document residual gap; do not close BLK-USAGE-ZERO",
+        "Sole owner of docs/intelligence-factory/progress-manifest.json — require #217 rebase"
+      ]
+    },
+    "WS-MECH": {
+      "status": "PR_OPEN_COLLISION",
+      "prs": [217],
+      "next": [
+        "Rebase #217 off #210/#212 — progress-manifest.json owned by WS-NEON",
+        "Keep shared-capacity Pass A precision; no second engine",
+        "Hand offs adversarial cases to WS-CAP / WS-ADV"
+      ]
+    },
+    "WS-FIN": {
+      "status": "RUNNING_NO_PR",
+      "next": [
+        "Consume NS-4 interfaces; help rebase #190 or land slice without fork",
+        "Authentic officer-certificate → approved snapshot demo (labeled)",
+        "No invented financials for CONMED clearance"
+      ]
+    },
+    "WS-TXN": {
+      "status": "PR_OPEN",
+      "prs": [223],
+      "next": [
+        "Reuse simulate APIs only; no second simulator",
+        "Sequence after #209/#221 when possible",
+        "CI green before merge"
+      ]
+    },
+    "WS-XDOC": {
+      "status": "PRS_OPEN",
+      "prs": [218, 211],
+      "next": [
+        "Sequence #211 after #205→#207 (verified-path-enumeration collision)",
+        "CI on #218; path drift docs/cross-document-covenant-reasoning/** accepted if invariants hold",
+        "No second amendment engine"
+      ]
+    },
+    "WS-RCV": {
+      "status": "RUNNING_NO_PR",
+      "next": [
+        "Independent expected answers for authentic packages",
+        "Label SYNTHETIC_LABELED_TECHNICAL_DEMO vs customer-ready",
+        "Do not weaken certifyCandidate gates"
+      ]
+    },
+    "WS-UCP": {
+      "status": "DUAL_PR_RECONCILED",
+      "prs": [221, 213],
+      "canonical": 221,
+      "next": [
+        "Land or cherry-pick #213 overview null honesty first",
+        "Canonical façade is #221 lib/product/unified-customer/**",
+        "Rebase #221 onto post-#213; wire unknown usage → MISSING_EVIDENCE",
+        "No CERTIFIED numeric claims without VEP + approved inputs"
+      ]
+    },
+    "WS-CAP": {
+      "status": "PRS_OPEN_PARTIAL",
+      "prs": [214, 215],
+      "next": [
+        "After #215: open #215b fail-closed status propagation — do not claim BLK-USAGE-ZERO CLOSED",
+        "Land consolidated usage-zero matrix tests (22-usage-zero-regression-matrix.md)",
+        "Fix #214 CI before merge"
+      ]
+    },
+    "WS-ADV": {
+      "status": "RUNNING_NO_PR",
+      "next": [
+        "Adversarial suite for usage=0 and secured-without-lien",
+        "Docs/tests only under exclusive tree"
+      ]
+    }
+  },
+  "criticalBlockers": [
+    {
+      "id": "BLK-USAGE-ZERO",
+      "severity": "CRITICAL",
+      "summary": "Unknown utilization treated as zero on Position overview (main) and solver SharedConstraint loader — multi-workflow false permission risk",
+      "owner": "WS-CAP",
+      "status": "PARTIAL_213_215_NOT_CLOSED",
+      "assignmentBrief": "docs/architecture/parallel-agents/19-blk-usage-zero-assignment.md",
+      "regressionMatrix": "docs/architecture/parallel-agents/22-usage-zero-regression-matrix.md",
+      "evidence": [
+        "lib/covenant-overview-builder.ts NOT_TRACKED paints util%=0 remaining=capacity (fixed in #213)",
+        "lib/covenant-engine.ts currentUsage:0 / #215 discards non-COMPUTED status",
+        "lib/product/legal-intelligence/run-package-path.ts:66 ledger = 0"
+      ],
+      "requiredFollowUp": "215b fail-closed status propagation",
+      "unlocks": ["Position", "Simulate", "Ask", "shared baskets across packages"]
+    },
+    {
+      "id": "BLK-CROSS-RULE",
+      "severity": "HIGH",
+      "summary": "CROSS_RULE_GATE_NOT_EXECUTABLE blocks CONMED §7.2(c) numeric capacity; §7.2(d) path is the honest alternate (PR #205)",
+      "owner": "WS-XDOC + Legal Core (out of fleet)",
+      "unlocks": ["authenticated VEP numeric EXECUTE on gated baskets"]
+    },
+    {
+      "id": "BLK-NS4-DIRTY",
+      "severity": "HIGH",
+      "summary": "NS-4 Prisma approved-snapshot store PR #190 DIRTY vs main after #204 sync outbox",
+      "owner": "North star implementation + WS-FIN",
+      "unlocks": ["durable approved financial truth for Ask/Position"]
+    },
+    {
+      "id": "BLK-FILE-COLLISION-205-207",
+      "severity": "HIGH",
+      "summary": "PRs #205 and #207 edit the same capacity/definition/authentic-72d files",
+      "owner": "WS-AEC sequencing + knowledge-integration agent",
+      "unlocks": ["safe integration of authentic path + lien companion"]
+    },
+    {
+      "id": "BLK-PACKAGE-CERTIFIED",
+      "severity": "HIGH",
+      "summary": "CONMED package-level certifyPackage remains PARTIAL; no customer-ready CERTIFIED package claim",
+      "owner": "Phase 3 Legal Core (out of fleet) + WS-RCV evidence",
+      "unlocks": ["honest customer VerifiedExecutionPackage clearance"]
+    }
+  ],
+  "activeOpenPrs": [
+    {
+      "number": 210,
+      "title": "Neon intelligence baseline",
+      "mergeState": "UNSTABLE",
+      "dependency": "none",
+      "recommend": "CI then founder merge when green; non-promoting"
+    },
+    {
+      "number": 208,
+      "title": "Primary engine capability audit",
+      "mergeState": "CLEAN",
+      "dependency": "none",
+      "recommend": "Safe docs-only; low risk"
+    },
+    {
+      "number": 205,
+      "title": "Authentic CONMED §7.2(d) path",
+      "mergeState": "CLEAN",
+      "dependency": "land before #207",
+      "recommend": "Priority authentic-path PR; labeled synthetic CTA"
+    },
+    {
+      "number": 207,
+      "title": "Refuse SECURED_DEBT without lien companion",
+      "mergeState": "CLEAN",
+      "dependency": "rebase after #205",
+      "recommend": "False-permission prevention; must not duplicate #205 base"
+    },
+    {
+      "number": 209,
+      "title": "Stage C ratio execution",
+      "mergeState": "CLEAN",
+      "dependency": "independent of #205 file set mostly",
+      "recommend": "OK parallel after collision check on simulate.ts"
+    },
+    {
+      "number": 206,
+      "title": "CONMED debt-package transaction-answer E2E",
+      "mergeState": "UNSTABLE",
+      "dependency": "CI",
+      "recommend": "Hold narrative claims to evidence in answer-sheet"
+    },
+    {
+      "number": 200,
+      "title": "Comprehensive covenant systems",
+      "mergeState": "DIRTY",
+      "dependency": "large rebase",
+      "recommend": "Do not merge; extract only non-duplicate slices via coordinator"
+    },
+    {
+      "number": 190,
+      "title": "NS-4 Prisma store slice 3",
+      "mergeState": "DIRTY",
+      "dependency": "rebase onto main incl. #204",
+      "recommend": "WS-FIN assist rebase; no store fork"
+    },
+    {
+      "number": 136,
+      "title": "Governing aggregate / shared-capacity E2E",
+      "mergeState": "UNSTABLE",
+      "dependency": "certified-path FAILURE",
+      "recommend": "KEEP ISOLATED — do not merge"
+    },
+    {
+      "number": 163,
+      "title": "Glued (i)(A) parser",
+      "mergeState": "UNKNOWN",
+      "dependency": "independent acceptance",
+      "recommend": "KEEP ISOLATED until acceptance closed"
+    }
+  ],
+  "workCompletedThisSession": [
+    "Fetched origin/main bae24ced; inventoried open PRs",
+    "Identified eight specialist agents + adversarial lane + adjacent NS/knowledge agents",
+    "Published 16-product-specialist-fleet.json exclusive ownership",
+    "Published this shared progress manifest",
+    "Flagged BLK-USAGE-ZERO / file collisions / merge sequence",
+    "Opened coordinator draft PR #216",
+    "Published 19-blk-usage-zero-assignment.md with exact file:line evidence"
+  ],
+  "workInProgress": [
+    "Specialists mostly RUNNING without PRs — ownership contract must land before code forks",
+    "Await CI on #216",
+    "Monitor specialist PR creation against exclusive trees"
+  ],
+  "nextAssignments": [
+    {
+      "workstreamId": "WS-CAP",
+      "task": "P0 unknown≠zero shared-capacity utilization — fail closed with regression test under exclusive tree; propose minimal fix to extendViaNewSiblingOnly capacity loader only if defect proven"
+    },
+    {
+      "workstreamId": "WS-XDOC",
+      "task": "After #205/#207 sequencing, own lien-companion + cross-doc operative honesty under exclusive tree"
+    },
+    {
+      "workstreamId": "WS-FIN",
+      "task": "NS-4 #190 rebase assist + authentic certificate→snapshot path using existing store APIs"
+    },
+    {
+      "workstreamId": "WS-MECH",
+      "task": "Mechanic coverage matrix from Neon STRUCTURALLY_INDEXED; no second engine"
+    },
+    {
+      "workstreamId": "WS-UCP",
+      "task": "Implement smallest slice from #208 audit consuming existing bridges only"
+    },
+    {
+      "workstreamId": "WS-ADV",
+      "task": "Adversarial cases for usage=0 and secured-without-lien"
+    },
+    {
+      "workstreamId": "WS-RCV",
+      "task": "Independent expected answers for §7.2(d) path; enforce SYNTHETIC label discipline"
+    },
+    {
+      "workstreamId": "WS-NEON",
+      "task": "Land #210; keep baseline script read-only"
+    },
+    {
+      "workstreamId": "WS-TXN",
+      "task": "Additive transaction-effect tests; do not race #209 on simulate.ts"
+    }
+  ]
+}

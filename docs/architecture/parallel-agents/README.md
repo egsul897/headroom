@@ -1,10 +1,10 @@
 # Parallel agents — coordination pack (WS-PAR)
 
-**Workstream:** `WS-PAR` — Parallel Agent Operating Rules / fleet coordination  
-**Owner agent:** Cursor Cloud `bc-01a11d87-7950-77b8-8141-e448c7e00e3f`  
-**Branch:** `cursor/parallel-agent-operating-rules-0e3f`  
-**Base:** `origin/main` @ `9de4e5737166fcec84a35fdc9a3404870549211f` (fetched 2026-10-08)  
-**Status:** DRAFT coordination contract — does not merge itself; does not certify product readiness
+**Workstream:** `WS-PAR` / `WS-AEC` — Parallel Agent Operating Rules + Autonomous Engineering Coordinator  
+**Owner agents:** `bc-01a11d87-7950-77b8-8141-e448c7e00e3f` (PAR bootstrap) · `bc-01a122be-22d2-7ace-bfd2-863f2b0110ff` (AEC 2026-10-09)  
+**Branch (current):** `cursor/engineering-coordinator-10ff`  
+**Base:** `origin/main` @ `7f1dd3a202b026b9a862ef727480a1a9f284523a` (fetched 2026-10-10; post-#229+#237)  
+**Status:** ACTIVE coordination contract — does not auto-merge; does not certify product readiness
 
 ## Purpose
 
@@ -22,7 +22,20 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `13-shared-corpus-manifest.json` | Shared corpus manifest + contributing datasets |
 | `14-continuous-main-integration-dashboard.json` | Live Integration Lead dashboard (merged SHAs, blockers, next five) |
 | `15-e2e-product-proof-execution-board.json` | End-to-end product-proof gates A1–C1 + first broken arrow |
-| `daily/` | Daily integration summaries |
+| `16-product-specialist-fleet.json` | Eight product specialists + adversarial lane exclusive ownership |
+| `17-progress-manifest.json` | Shared engineering progress manifest (session-facing) |
+| `18-pr-integration-sequence.json` | Recommended PR order / do-not-merge (no auto-merge) |
+| `19-blk-usage-zero-assignment.md` | P0 WS-CAP brief: unknown utilization ≠ zero |
+| `20-specialist-pr-wave-2026-10-09.json` | Specialist PR wave inventory + collision calls |
+| `21-emergency-reconciliation-2026-10-09.md` | **Controlling** live PR matrix + integration order |
+| `22-usage-zero-regression-matrix.md` | Customer-reachable unknown≠zero path matrix |
+| `23-integration-plan-v2.md` | Specialist assignments + merge recommendations |
+| `24-e2e-benchmark-plan.md` | Shared Coherent/CONMED E2E benchmark plan |
+| `25-reconciliation-v3-2026-10-09.md` | V3 batches (historical; superseded for merge sequencing) |
+| `26-first-integration-batch.md` | V3 acceptance batch — **SUPERSEDED** (stale #229 merge ask) |
+| `27-reconciliation-v4-acceptance.md` | **Controlling** V4 acceptance — post-#229/#237 truth |
+| `28-post-237-integration-mission.md` | Post-#237 sequential+#secured floor mission (#251) |
+| `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
 | `04-canonical-identity-contract.json` | Logical corpus IDs → existing schema mappings |
