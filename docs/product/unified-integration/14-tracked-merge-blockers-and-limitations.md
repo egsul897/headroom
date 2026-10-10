@@ -1,8 +1,9 @@
 # Tracked blockers / limitations — PR #253 closeout
 
-**Tip:** `e46dd9ea762b52f085c26c6784245972c2bad750`  
-**Semantic safety:** accepted (EXECUTABLE / path identity).  
-**Do not merge / certify / paid-infer / Neon-write from this agent.**
+**Audited semantic-safety tip:** `4ff3374a6d4e0ddbfe47ba7f2249b46e355932f5`  
+**Semantic safety:** accepted (EXECUTABLE / path identity) — `SEMANTIC_SAFETY_ACCEPTED_INTEGRATION_REVIEW_PENDING`.  
+**Do not merge / certify / paid-infer / Neon-write from this agent.**  
+**Green CI ≠ resolution** of FA-P1/P2 defects or FA-CONC concurrency proofs below.
 
 ## Owners and acceptance criteria
 

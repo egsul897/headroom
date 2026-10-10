@@ -1,0 +1,108 @@
+{
+  "artifact": "PRODUCT_PROOF_001_EXECUTION",
+  "version": 1,
+  "executedAt": "2026-10-10T10:20:14.856Z",
+  "packageId": "kennametal-2026-term-loan-credit-agreement",
+  "bodySha256": "4827a5cfc56740a5d1311677c4fc0cacb574272b20ba4c0a544ab9a44fdd4df7",
+  "extractedTextSha256": "4ac7dab7b8833d7986efea1299572c797e966ec4ca52f49dbc58ce4b92442455",
+  "paidInference": false,
+  "neonWrites": false,
+  "manuallyModeledCovenants": false,
+  "gitHeadRef": "ref: refs/heads/cursor/canonical-integrated-product-10ff",
+  "stages": [
+    {
+      "stage": "PARSE_HTML",
+      "status": "EXECUTED",
+      "detail": "htmlParseMatchesExtractedText=true; chars=414902"
+    },
+    {
+      "stage": "STRUCTURE",
+      "status": "EXECUTED",
+      "detail": "nodes=426; definitions=230; references=333"
+    },
+    {
+      "stage": "PASS_A_DETERMINISTIC",
+      "status": "EXECUTED",
+      "detail": "candidates=236; signalCounts={\"permission_construction\":106,\"builder_language\":5,\"headline_heading\":4,\"permitted_construct\":5,\"covenant_verb\":103,\"percentage\":15,\"greater_lesser_of\":2,\"shared_cap\":6,\"exception_marker\":107,\"dollar_value\":27,\"prohibitive_construction\":78,\"financial_metric\":14,\"cure_or_trigger\":12,\"refinancing\":3,\"ratio_expression\":4}"
+    },
+    {
+      "stage": "PASS_B_SEMANTIC",
+      "status": "UNSUPPORTED",
+      "detail": "No AI_GATEWAY_API_KEY / ANTHROPIC_API_KEY; Pass B refused; synthetic caller not used"
+    },
+    {
+      "stage": "MODELED_PERMISSIONS_AND_VEP",
+      "status": "UNSUPPORTED",
+      "detail": "No authentic Permission rows, SharedConstraints, or Verified Execution Package exist for Kennametal. Manual modeling forbidden by freeze."
+    }
+  ],
+  "firstUnsupportedStage": "PASS_B_SEMANTIC",
+  "manualInterventions": [],
+  "emptySolverAttempt": {
+    "attempted": true,
+    "eligiblePermissions": 0,
+    "note": "runSolver not invoked with invented permissions; zero authentic permissions → no CLEAR path"
+  },
+  "executableProbeFalse": true,
+  "sourceFindings": [
+    {
+      "id": "PP001-Q1",
+      "status": "SUPPORTED_BY_SOURCE_TEXT",
+      "evidence": "Frozen extracted text contains Section 6.1 Financial Condition Covenant and ratio 3.75 to 1.00",
+      "productCapacityAnswer": null
+    },
+    {
+      "id": "PP001-Q2",
+      "status": "SUPPORTED_BY_SOURCE_TEXT",
+      "evidence": "Frozen extracted text contains Section 6.2(e) aggregate cap $150,000,000",
+      "productCapacityAnswer": null
+    },
+    {
+      "id": "PP001-Q3",
+      "status": "SUPPORTED_BY_SOURCE_TEXT",
+      "evidence": "Frozen extracted text contains Section 6.2(i) aggregate cap $350,000,000 with Attributable Debt / Qualified Receivables Transactions",
+      "productCapacityAnswer": null
+    },
+    {
+      "id": "PP001-Q4",
+      "status": "NOT_ANSWERABLE_BY_PRODUCT",
+      "evidence": "No authentic modeled permissions / VEP / NS-4 approved financials for Kennametal; capacity path correctly unavailable. EXECUTABLE probe=false",
+      "productCapacityAnswer": null
+    },
+    {
+      "id": "PP001-Q5",
+      "status": "NOT_ANSWERABLE_BY_PRODUCT",
+      "evidence": "Secured dual-path requires authentic debt+lien permissions and shared constraints from the package; none exist without manual modeling (forbidden). No false CLEAR/EXECUTABLE asserted.",
+      "productCapacityAnswer": null
+    }
+  ],
+  "customerUsableCapacityOrTransactionAnswer": false,
+  "topBlockers": [
+    {
+      "id": "PP001-B1",
+      "title": "Pass B semantic discovery requires paid provider — refused for baseline",
+      "blocks": "Sealed discovery candidates / roles for Kennametal"
+    },
+    {
+      "id": "PP001-B2",
+      "title": "No authentic modeled Permission / SharedConstraint graph for the package",
+      "blocks": "Solver election / capacity / secured dual-path"
+    },
+    {
+      "id": "PP001-B3",
+      "title": "No Verified Execution Package (VEP) retrieval for Kennametal",
+      "blocks": "Affirmative EXECUTABLE on Simulate (OUT-VEP-01 class)"
+    },
+    {
+      "id": "PP001-B4",
+      "title": "No NS-4 APPROVED financial snapshot / completeness certificate for Kennametal",
+      "blocks": "Remaining capacity claims (OUT-NS4-01 class)"
+    },
+    {
+      "id": "PP001-B5",
+      "title": "Foundation P1/P2 + concurrency proofs remain open on tracked register",
+      "blocks": "Production readiness claims; green CI ≠ resolution"
+    }
+  ],
+  "verdict": "PRODUCT_PROOF_001_BASELINE_ESTABLISHED_CUSTOMER_ANSWER_NOT_YET_PRODUCIBLE"
+}

@@ -224,3 +224,14 @@
 - Local: tsc PASS · phase3 481/481 · core 283+cycle6 17 · probe NOT_SATISFIED
 - Neon-dependent suites require CI (no unauthorized Neon writes locally)
 - Verdict pending CI green on tip → INTEGRATED_PRODUCT_READY_FOR_HUMAN_REVIEW
+
+---
+
+## 2026-10-10T10:20:00Z — PR #253 CLOSEOUT + PRODUCT PROOF 001 BASELINE
+
+- Disposition: **SEMANTIC_SAFETY_ACCEPTED_INTEGRATION_REVIEW_PENDING** at audited SHA `4ff3374a` — no auto-merge
+- TX-engine shared-lien 4/4 proves Phase 4D aggregation only; solver independent-lien conservation from #258 reconciled onto #253
+- Cross-layer boundary suite green — no false CLEAR / EXECUTABLE / inflated EXACT max
+- PRODUCT PROOF 001: Kennametal 2026 term-loan CA (genuinely unseen); freeze + first offline run; first unsupported stage **PASS_B_SEMANTIC**; customer-usable capacity answer **not** yet producible
+- FA-P1/P2 + concurrency proofs remain tracked; green CI ≠ resolution
+- Artifacts: `docs/product/unified-integration/16-shared-lien-scope-and-258-reconciliation.md`, `docs/product/product-proof-001/`

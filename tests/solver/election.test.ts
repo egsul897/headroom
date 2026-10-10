@@ -245,7 +245,7 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(priorityReq?.status).toBe("FAILED");
     });
 
-        it("Case: non-authoritative shared usage must not yield favorable remaining capacity", () => {
+    it("Case: non-authoritative shared usage must not yield favorable remaining capacity", () => {
       const p = permission("a", { formulaType: "FLAT_AMOUNT", thresholdValue: 500 });
       const graph = buildPermissionGraph([p], []);
       const constraint: SharedConstraint = {
@@ -456,7 +456,6 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       const tnl = permission("tnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: { debtBasis: "total" } });
       // SSNL basis: threshold*500 - (400-50) = 150 => threshold*500 = 500 => threshold = 1.0
       const ssnl = permission("ssnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 1.0, params: { debtBasis: "secured" } });
-      // Secured transactions also require a Permitted Lien path per debt leg.
       const tnlLien = permission("tnl-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
       const ssnlLien = permission("ssnl-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
       const graph = buildPermissionGraph(
@@ -474,23 +473,6 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         ["ssnl-lien", ssnlLien],
       ]);
       const secured = { ...baseTransaction, secured: true };
-
-      // Without any lien path, secured dual-ratio election is BLOCKED (debt+lien gate).
-      const noLienGraph = buildPermissionGraph([tnl, ssnl], [rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" })]);
-      const noLien = evaluateElection({
-        election: { id: "e-nolien", memberPermissionIds: ["tnl", "ssnl"], rationale: "" },
-        permissionsById: new Map([
-          ["tnl", tnl],
-          ["ssnl", ssnl],
-        ]),
-        graph: noLienGraph,
-        financials: FIN,
-        requestedAmount: 150,
-        eligibilityContext: { transaction: secured, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
-        sharedConstraints: [],
-        collateralScopes: [],
-      });
-      expect(buildPermissionPaths([noLien])[0]!.status).toBe("BLOCKED");
 
       // SSNL room (150) is the tighter of the two - joint ceiling is min(300, 150) = 150.
       const at150 = evaluateElection({
@@ -518,47 +500,56 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(buildPermissionPaths([at250])[0]!.status).toBe("BLOCKED"); // TNL alone would allow 250, but SSNL blocks it
       expect(at250.requirements.find((r) => r.scope.permissionId === "ssnl")?.status).toBe("FAILED");
       expect(at250.requirements.find((r) => r.scope.permissionId === "tnl")?.status).toBe("SATISFIED");
-    });
-  });
 
-  describe("permissionAsProvision", () => {
-    it("maps a Permission onto the CovenantProvisionInput shape evaluateProvision expects", () => {
-      const p = permission("a", { code: "flat_basket", formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA", thresholdValue: 50, params: { pctEbitda: 0.1 } });
-      const provision = permissionAsProvision(p);
-      expect(provision.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_EBITDA");
-      expect(provision.thresholdValue).toBe(50);
-      expect(provision.params).toEqual({ pctEbitda: 0.1 });
+      // Without any lien path, secured dual-ratio election is BLOCKED (debt+lien gate).
+      const noLienGraph = buildPermissionGraph([tnl, ssnl], [rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" })]);
+      const noLien = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["tnl", "ssnl"], rationale: "" },
+        permissionsById: new Map([
+          ["tnl", tnl],
+          ["ssnl", ssnl],
+        ]),
+        graph: noLienGraph,
+        financials: FIN,
+        requestedAmount: 150,
+        eligibilityContext: { transaction: secured, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([noLien])[0]!.status).toBe("BLOCKED");
+      expect(noLien.requirements.some((r) => r.class === "LIEN_PERMISSION" && r.status === "FAILED")).toBe(true);
     });
   });
 
   describe("secured borrowing requires debt + lien per debt leg (correctness gate)", () => {
     it("blocks Ratio Debt that free-rides on another leg's AUTOMATIC_LINKED_PERMISSION lien", () => {
-      // Coherent failure mode: Ratio Debt (§3.3(a)) + SCF under CONCURRENT_DISREGARDED
-      // inherited SCF cl.(6) auto-lien → false-favorable indenture secured ~$11,933.
+      // Synthetic (non-Coherent): SCF flat + Ratio Debt under CONCURRENT_DISREGARDED.
+      // Pre-fix: Ratio Debt inherited SCF auto-lien → false-favorable secured max.
+      const scf = permission("scf", { formulaType: "FLAT_AMOUNT", thresholdValue: 1779 });
       const ratio = permission("ratio", {
         amountKind: "INCURRENCE_BASED",
-        formulaType: "COVERAGE_RATIO_ROOM",
-        thresholdValue: 2,
+        formulaType: "LEVERAGE_RATIO_ROOM",
+        thresholdValue: 2.0,
+        params: { debtBasis: "total" },
       });
-      const scf = permission("scf", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
       const scfLien = permission("scf-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
       const graph = buildPermissionGraph(
-        [ratio, scf, scfLien],
+        [scf, ratio, scfLien],
         [
           rel({ fromPermissionId: "scf", toPermissionId: "ratio", relationshipType: "CONCURRENT_DISREGARDED" }),
           rel({ fromPermissionId: "scf", toPermissionId: "scf-lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" }),
         ],
       );
       const evalResult = evaluateElection({
-        election: { id: "e", memberPermissionIds: ["ratio", "scf"], rationale: "" },
+        election: { id: "e", memberPermissionIds: ["scf", "ratio"], rationale: "" },
         permissionsById: new Map([
-          ["ratio", ratio],
           ["scf", scf],
+          ["ratio", ratio],
           ["scf-lien", scfLien],
         ]),
         graph,
         financials: FIN,
-        requestedAmount: 50,
+        requestedAmount: 5000,
         eligibilityContext: {
           transaction: { ...baseTransaction, secured: true },
           entityClasses: [],
@@ -569,21 +560,22 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         sharedConstraints: [],
         collateralScopes: [],
       });
-      const ratioLienFail = evalResult.requirements.find(
-        (r) => r.class === "LIEN_PERMISSION" && r.scope.permissionId === "ratio" && r.status === "FAILED",
-      );
-      expect(ratioLienFail).toBeDefined();
       expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+      expect(
+        evalResult.requirements.some(
+          (r) => r.class === "LIEN_PERMISSION" && r.scope.permissionId === "ratio" && r.status === "FAILED",
+        ),
+      ).toBe(true);
     });
 
     it("allows secured debt when each debt leg has its own auto-lien", () => {
       const mila = permission("mila", {
         amountKind: "INCURRENCE_BASED",
         formulaType: "LEVERAGE_RATIO_ROOM",
-        thresholdValue: 3,
+        thresholdValue: 3.0,
         params: { debtBasis: "secured" },
       });
-      const capex = permission("capex", { formulaType: "FLAT_AMOUNT", thresholdValue: 50 });
+      const capex = permission("capex", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
       const milaLien = permission("mila-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
       const capexLien = permission("capex-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
       const graph = buildPermissionGraph(
@@ -604,7 +596,7 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         ]),
         graph,
         financials: FIN,
-        requestedAmount: 50,
+        requestedAmount: 100,
         eligibilityContext: {
           transaction: { ...baseTransaction, secured: true },
           entityClasses: [],
@@ -615,18 +607,17 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         sharedConstraints: [],
         collateralScopes: [],
       });
-      expect(evalResult.requirements.filter((r) => r.class === "LIEN_PERMISSION" && r.status === "FAILED")).toHaveLength(0);
       expect(buildPermissionPaths([evalResult])[0]!.status).toBe("CLEAR");
+      expect(evalResult.requirements.filter((r) => r.class === "LIEN_PERMISSION" && r.status === "FAILED")).toHaveLength(0);
     });
 
     it("CONCURRENT_COUNTED fixed+ratio maxCapacity is not the sum of standalones", () => {
-      // Pre-fix: SCF $1779 + MILA $4041 summed to $5820 under COUNTED.
       const fixedP = permission("fixed", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
       const ratioP = permission("ratio", {
         amountKind: "INCURRENCE_BASED",
         formulaType: "LEVERAGE_RATIO_ROOM",
         thresholdValue: 5,
-        params: {},
+        params: { debtBasis: "total" },
       });
       const graph = buildPermissionGraph(
         [fixedP, ratioP],
@@ -640,7 +631,7 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         ]),
         graph,
         financials: FIN,
-        requestedAmount: 0,
+        requestedAmount: 10000,
         eligibilityContext: {
           transaction: baseTransaction,
           entityClasses: [],
@@ -657,6 +648,47 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(evalResult.maxCapacity!).toBeLessThan(fixedCap + ratioCap - 1e-6);
       // COUNTED: max(fixed-only, disregarded(0)+ratioRoom) = max(200, ratioRoom)
       expect(evalResult.maxCapacity!).toBeCloseTo(Math.max(fixedCap, ratioCap), 6);
+    });
+
+    it("adversarial non-Coherent: independent LIEN member covers debt without auto-link", () => {
+      const debt = permission("gen-debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+      const lien = permission("gen-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+      const graph = buildPermissionGraph([debt, lien], []);
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["gen-debt", "gen-lien"], rationale: "" },
+        permissionsById: new Map([
+          ["gen-debt", debt],
+          ["gen-lien", lien],
+        ]),
+        graph,
+        financials: FIN,
+        requestedAmount: 50,
+        eligibilityContext: {
+          transaction: { ...baseTransaction, secured: true },
+          entityClasses: [],
+          ruleActivationConditions: [],
+          activationState: emptyActivationState,
+          asOfDate: new Date(),
+        },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([evalResult])[0]!.status).toBe("CLEAR");
+      expect(
+        evalResult.requirements.some(
+          (r) => r.class === "LIEN_PERMISSION" && r.scope.permissionId === "gen-debt" && r.status === "SATISFIED",
+        ),
+      ).toBe(true);
+    });
+  });
+
+  describe("permissionAsProvision", () => {
+    it("maps a Permission onto the CovenantProvisionInput shape evaluateProvision expects", () => {
+      const p = permission("a", { code: "flat_basket", formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA", thresholdValue: 50, params: { pctEbitda: 0.1 } });
+      const provision = permissionAsProvision(p);
+      expect(provision.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_EBITDA");
+      expect(provision.thresholdValue).toBe(50);
+      expect(provision.params).toEqual({ pctEbitda: 0.1 });
     });
   });
 });
