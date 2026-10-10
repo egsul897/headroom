@@ -22,6 +22,13 @@
  * document. See package-graph-incrementality.test.ts for a real
  * assertion of this (unrelated documents' own persisted rows are
  * byte-identical after only one document's unrelated body text changes).
+ *
+ * Canonical instrument identity (HEADROOM-3): only
+ * InstrumentGroupingResult.documentIds (trusted confirmed members) receive
+ * Document.instrumentId. provisionalDocumentIds are discovery associations
+ * and never assign instrumentId. Stale assignments to managed instruments
+ * are cleared on replay; empty orphan instruments are deleted after
+ * upgrade/merge/split.
  */
 import { prisma } from "../../../prisma";
 import type { DocumentType } from "@prisma/client";
@@ -42,10 +49,69 @@ export interface PackageGraphPersistenceSummary {
   documentsAssignedToInstrument: number;
   relationshipEdgesUpserted: number;
   amendmentEffectCandidatesUpserted: number;
+  staleInstrumentIdsCleared?: number;
+  orphanInstrumentsDeleted?: number;
 }
 
 /** Only proposes a classification onto Document.type when nobody has confirmed a type yet (typeConfirmedByUser === false) and confidence clears a real bar - never silently overwrites a human-confirmed value (task §4/§14's own conservatism applied to persistence, not just detection). */
 const MIN_CONFIDENCE_TO_PROPOSE_TYPE = 0.7;
+
+/**
+ * Pure membership plan used by persistPackageGraph and by unit tests that
+ * must not touch a database. Confirmed documentIds only; provisional ids
+ * are deliberately excluded.
+ */
+export function planConfirmedInstrumentMembership(
+  result: Pick<PackageGraphResult, "instruments">,
+  options?: { companyDocumentIds?: ReadonlySet<string> },
+): {
+  confirmedDocumentToInstrumentKey: Map<string, string>;
+  currentBaseDocumentIds: Set<string>;
+  skippedForeignDocumentIds: string[];
+} {
+  const companyDocumentIds = options?.companyDocumentIds;
+  const confirmedDocumentToInstrumentKey = new Map<string, string>();
+  const currentBaseDocumentIds = new Set<string>();
+  const skippedForeignDocumentIds: string[] = [];
+  for (const instrument of result.instruments) {
+    if (!instrument.baseDocumentId) continue;
+    if (companyDocumentIds && !companyDocumentIds.has(instrument.baseDocumentId)) {
+      skippedForeignDocumentIds.push(instrument.baseDocumentId);
+      continue;
+    }
+    currentBaseDocumentIds.add(instrument.baseDocumentId);
+    for (const documentId of instrument.documentIds) {
+      if (companyDocumentIds && !companyDocumentIds.has(documentId)) {
+        skippedForeignDocumentIds.push(documentId);
+        continue;
+      }
+      confirmedDocumentToInstrumentKey.set(documentId, instrument.instrumentKey);
+    }
+  }
+  return {
+    confirmedDocumentToInstrumentKey,
+    currentBaseDocumentIds,
+    skippedForeignDocumentIds: [...new Set(skippedForeignDocumentIds)].sort(),
+  };
+}
+
+/** Pure replay helper: which package docs should have instrumentId cleared. */
+export function planStaleInstrumentIdClears(input: {
+  companyDocumentIds: ReadonlySet<string>;
+  confirmedDocumentIds: ReadonlySet<string>;
+  currentAssignments: ReadonlyMap<string, string | null>;
+  managedInstrumentIds: ReadonlySet<string>;
+}): string[] {
+  const clear: string[] = [];
+  for (const documentId of [...input.companyDocumentIds].sort()) {
+    if (input.confirmedDocumentIds.has(documentId)) continue;
+    const assigned = input.currentAssignments.get(documentId);
+    if (!assigned) continue;
+    if (!input.managedInstrumentIds.has(assigned)) continue;
+    clear.push(documentId);
+  }
+  return clear;
+}
 
 export async function persistPackageGraph(companyId: string, result: PackageGraphResult): Promise<PackageGraphPersistenceSummary> {
   let documentTypesUpdated = 0;
@@ -60,8 +126,26 @@ export async function persistPackageGraph(companyId: string, result: PackageGrap
 
   let instrumentsUpserted = 0;
   let documentsAssignedToInstrument = 0;
+  let staleInstrumentIdsCleared = 0;
+  let orphanInstrumentsDeleted = 0;
+  // Canonical membership only — provisionalDocumentIds never assign instrumentId.
+  // Tenant isolation: only documents that actually belong to `companyId` may be
+  // assigned, cleared, or used as instrument bases (defense against a hostile
+  // or mistaken PackageGraphResult that names another company's document ids).
+  const companyDocuments = await prisma.document.findMany({
+    where: { companyId, id: { in: result.classifications.map((c) => c.documentId) } },
+    select: { id: true },
+  });
+  const companyDocumentIds = new Set(companyDocuments.map((d) => d.id));
+
+  const membershipPlan = planConfirmedInstrumentMembership(result, { companyDocumentIds });
+  const currentBaseDocumentIds = membershipPlan.currentBaseDocumentIds;
+  const confirmedDocumentToInstrumentId = new Map<string, string>();
+  const managedInstrumentIds = new Set<string>();
+
   for (const instrument of result.instruments) {
     if (!instrument.baseDocumentId) continue;
+    if (!currentBaseDocumentIds.has(instrument.baseDocumentId)) continue;
     const reviewStatus = instrument.reviewStatus === "RESOLVED" ? "APPROVED" : "REVIEW_REQUIRED";
     const existing = await prisma.debtInstrument.findFirst({ where: { companyId, baseDocumentId: instrument.baseDocumentId } });
     let row = existing;
@@ -75,16 +159,57 @@ export async function persistPackageGraph(companyId: string, result: PackageGrap
       row = await prisma.debtInstrument.update({ where: { id: existing.id }, data: { name: instrument.name, confidence: instrument.confidence, reviewStatus } });
       instrumentsUpserted++;
     }
+    managedInstrumentIds.add(row!.id);
     for (const documentId of instrument.documentIds) {
-      const doc = await prisma.document.findUnique({ where: { id: documentId }, select: { instrumentId: true } });
-      if (doc?.instrumentId === row!.id) continue;
-      await prisma.document.update({ where: { id: documentId }, data: { instrumentId: row!.id } });
-      documentsAssignedToInstrument++;
+      if (!membershipPlan.confirmedDocumentToInstrumentKey.has(documentId)) continue;
+      if (membershipPlan.confirmedDocumentToInstrumentKey.get(documentId) !== instrument.instrumentKey) continue;
+      confirmedDocumentToInstrumentId.set(documentId, row!.id);
+    }
+  }
+
+  // Assign / reassign confirmed members (company-scoped documents only).
+  for (const [documentId, instrumentId] of confirmedDocumentToInstrumentId) {
+    const doc = await prisma.document.findUnique({ where: { id: documentId }, select: { instrumentId: true, companyId: true } });
+    if (!doc || doc.companyId !== companyId) continue;
+    if (doc.instrumentId === instrumentId) continue;
+    await prisma.document.update({ where: { id: documentId }, data: { instrumentId } });
+    documentsAssignedToInstrument++;
+  }
+
+  // Clear stale canonical membership: package documents still pointing at a
+  // managed instrument without being confirmed members (e.g. former provisional
+  // mis-assignment, or membership removed after edge rejection/downgrade).
+  for (const documentId of companyDocumentIds) {
+    const expected = confirmedDocumentToInstrumentId.get(documentId);
+    if (expected) continue; // already assigned above
+    const doc = await prisma.document.findUnique({ where: { id: documentId }, select: { instrumentId: true, companyId: true } });
+    if (!doc || doc.companyId !== companyId) continue;
+    if (!doc.instrumentId) continue;
+    if (!managedInstrumentIds.has(doc.instrumentId)) continue;
+    await prisma.document.update({ where: { id: documentId }, data: { instrumentId: null } });
+    staleInstrumentIdsCleared++;
+  }
+
+  // Drop orphan DebtInstrument rows whose base is no longer a current instrument
+  // base and that have zero remaining member documents (upgrade/merge cleanup).
+  if (currentBaseDocumentIds.size > 0) {
+    const orphans = await prisma.debtInstrument.findMany({
+      where: { companyId, baseDocumentId: { notIn: [...currentBaseDocumentIds] } },
+      select: { id: true },
+    });
+    for (const orphan of orphans) {
+      const members = await prisma.document.count({ where: { instrumentId: orphan.id } });
+      if (members === 0) {
+        await prisma.debtInstrument.delete({ where: { id: orphan.id } });
+        orphanInstrumentsDeleted++;
+      }
     }
   }
 
   let relationshipEdgesUpserted = 0;
   for (const rel of result.relationshipCandidates) {
+    if (!companyDocumentIds.has(rel.sourceDocumentId)) continue;
+    if (rel.targetDocumentId && !companyDocumentIds.has(rel.targetDocumentId)) continue;
     const existing = await prisma.documentRelationshipEdge.findFirst({ where: { companyId, sourceDocumentId: rel.sourceDocumentId, relationshipType: rel.relationshipType as never, sourceCitation: rel.sourceCitation } });
     const data = {
       companyId,
@@ -140,5 +265,13 @@ export async function persistPackageGraph(companyId: string, result: PackageGrap
     }
   }
 
-  return { documentTypesUpdated, instrumentsUpserted, documentsAssignedToInstrument, relationshipEdgesUpserted, amendmentEffectCandidatesUpserted };
+  return {
+    documentTypesUpdated,
+    instrumentsUpserted,
+    documentsAssignedToInstrument,
+    relationshipEdgesUpserted,
+    amendmentEffectCandidatesUpserted,
+    staleInstrumentIdsCleared,
+    orphanInstrumentsDeleted,
+  };
 }
