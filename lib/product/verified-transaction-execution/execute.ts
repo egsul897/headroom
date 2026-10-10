@@ -366,6 +366,7 @@ export function executeUnifiedVerifiedTransaction(
     expectedCompanyId: request.companyId,
     expectedCurrency: request.transaction.currency,
     evaluationAsOf: request.transaction.date,
+    trustedIssuerAuth: request.reviewerAuthorization.trustedIssuerAuth,
     allowHypotheticalFinancials:
       mode === "HYPOTHETICAL" && Boolean(request.allowHypotheticalFinancials),
   });

@@ -27,12 +27,13 @@ Execution status, legal path, source citations, financial inputs + provenance, b
 
 Underlying `evaluateVerifiedCapacity` / `simulateVerifiedTransaction` outcomes are attached under `verified` without re-computation.
 
-## Adapters for unmerged backends
+## Adapters (reconciled to merged main)
 
 | Dependency | Status on main | Adapter |
 |---|---|---|
-| #273 financial evidence | open | `adapters/financial-evidence.ts` |
-| #274 operative handoff | open | `adapters/operative-authority.ts` |
+| #273/#279 financial evidence | merged | `adapters/financial-evidence.ts` wraps `validateFinancialMetricEvidence` |
+| #274 operative handoff | merged | `adapters/operative-authority.ts` reuses classification + `operativeAuthorityFromProvision` |
 | #268 utilization authenticity | merged | `adapters/utilization.ts` → `lib/capacity` |
+| #266 greater-of slice | merged | Consumes MAX capacity IR; no compiler duplication |
 
-When #273/#274 merge, replace adapter bodies with thin wraps — do not keep parallel validators.
+No parallel validators — capacity financial evidence is the single source of truth.

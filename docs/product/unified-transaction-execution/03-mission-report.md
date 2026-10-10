@@ -36,7 +36,18 @@ Fixed-dollar · greater-of · missing financials · missing utilization · wrong
 - No paid inference
 - No self-merge
 - No Position/Ask/Simulate page redesign
-- #273/#274 consumed via adapters (not unsafe branch imports)
+- #273/#274/#279 consumed via thin adapters wrapping merged main modules
+
+## CI remediation (final)
+
+**Vercel root cause at `1f8caf61`:** Next.js build typecheck failed on workstream-owned
+`adapters/utilization.ts` (`SolverCompletenessCertInput` incomplete object) while the branch
+was also behind main’s #277 headroom-5 typecheck fix and missing merged #274/#266/#279/#280.
+
+**Remediation:** Rebase onto current main; pass full completeness certificate into
+`evaluateCompletenessForRemainingClaim`; wrap merged `lib/capacity/financial-evidence` and
+#274 operative classification instead of parallel validators; re-run `tsc`, `next build`,
+and all 19 Scope F tests.
 
 ## Handoff
 

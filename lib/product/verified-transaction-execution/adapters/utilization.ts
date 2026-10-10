@@ -58,14 +58,9 @@ export function evaluateUtilizationAuthorityGate(args: {
     };
   }
 
-  // APPROVED without authenticity refuses production (and remaining unless demo hatch).
+  // Pass the full certificate — SolverCompletenessCertInput extends UtilizationCompletenessCertificate.
   const completeness = evaluateCompletenessForRemainingClaim({
-    cert: {
-      approvalState: cert.approvalState,
-      authenticity: cert.authenticity,
-      issuer: cert.issuer,
-      kind: cert.kind,
-    },
+    cert,
     trustedIssuerAuth: args.trustedIssuerAuth,
     allowSyntheticRemaining: args.allowSyntheticRemaining,
   });

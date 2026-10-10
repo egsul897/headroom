@@ -16,9 +16,10 @@
 | Utilization / remaining | `lib/capacity/*` | Completeness + remaining publication gates |
 | #266 compiler slice | open / PP002 | Greater-of vertical slice — orchestration consumes MAX IR, does not compile |
 | #268 authenticity | merged | Trusted-issuer + production remaining gates reused |
-| #273 financial evidence | open | Adapter under `adapters/financial-evidence.ts` until merge |
-| #274 operative handoff | open | Adapter under `adapters/operative-authority.ts` until merge |
-| #275 product workflow | open | Handoff projection for Position/Ask/Simulate |
+| #273/#279 financial evidence | **merged** | Adapter wraps `lib/capacity/financial-evidence.ts` |
+| #274 operative handoff | **merged** | Adapter reuses `OperativeAuthorityClassification` + provision projection |
+| #266 greater-of compiler slice | **merged** | Orchestration consumes MAX IR; does not compile |
+| #280 customer workflow | **merged** | Handoff projection remains additive for Position/Ask/Simulate |
 
 ## Canonical call chain
 

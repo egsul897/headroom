@@ -1,24 +1,16 @@
 /**
  * Operative source-authority adapter for unified transaction execution.
  *
- * #274 (`operative-handoff.ts`) is not yet on main. This adapter accepts an
- * already-classified operative authority claim and fails closed on provisional
- * documents, conflicting amendments, and unconfirmed identity — without
- * importing unmerged package-graph expansion.
- *
- * When #274 merges, prefer projecting `OperativeProvisionResolution` into
- * `OperativeSourceAuthority` rather than re-implementing chain logic here.
+ * Reconciled to merged #274 (`operative-handoff.ts`): reuses the same
+ * `OperativeAuthorityClassification` union. Orchestration still accepts an
+ * already-classified `OperativeSourceAuthority` claim (callers may project
+ * from `OperativeProvisionResolution` via `operativeAuthorityFromProvision`)
+ * and fails closed on provisional / conflicted / unconfirmed identity.
  */
 
-export type OperativeAuthorityClassification =
-  | "CONFIRMED_OPERATIVE"
-  | "PROVISIONAL_IDENTITY_BLOCKED"
-  | "NOT_YET_EFFECTIVE"
-  | "SUPERSEDED_SOURCE"
-  | "AMBIGUOUS"
-  | "REVIEW_REQUIRED"
-  | "CONFLICTED"
-  | "UNSUPPORTED";
+export type { OperativeAuthorityClassification } from "@/lib/contract-model/compiler/package-graph/operative-handoff";
+import type { OperativeAuthorityClassification } from "@/lib/contract-model/compiler/package-graph/operative-handoff";
+import type { OperativeProvisionResolution } from "@/lib/contract-model/compiler/package-graph/operative-handoff";
 
 export type DocumentOperativeStatus =
   | "OPERATIVE"
@@ -60,6 +52,40 @@ const BLOCKING: ReadonlySet<OperativeAuthorityClassification> = new Set([
   "CONFLICTED",
   "UNSUPPORTED",
 ]);
+
+/**
+ * Project a #274 OperativeProvisionResolution into the orchestration claim shape.
+ */
+export function operativeAuthorityFromProvision(
+  provision: OperativeProvisionResolution,
+  opts?: {
+    documentStatus?: DocumentOperativeStatus;
+    mayConsolidateOperative?: boolean;
+  },
+): OperativeSourceAuthority {
+  const provisional =
+    provision.authorityClassification === "PROVISIONAL_IDENTITY_BLOCKED" ||
+    provision.canonicalInstrumentKey == null;
+  return {
+    canonicalInstrumentKey: provision.canonicalInstrumentKey,
+    sourceDocumentId: provision.sourceDocumentId ?? "",
+    sourceSectionRef: provision.sectionRef ?? provision.definedTermRef ?? "",
+    sourceCitation: provision.sourceSpan.citation ?? provision.provisionKey,
+    authorityClassification: provision.authorityClassification,
+    documentStatus:
+      opts?.documentStatus ??
+      (provisional
+        ? "PROVISIONAL"
+        : provision.authorityClassification === "SUPERSEDED_SOURCE"
+          ? "SUPERSEDED"
+          : "OPERATIVE"),
+    effectiveAsOfDate: provision.effectiveAsOfDate,
+    provisionalIdentity: provisional,
+    conflictingAmendment: provision.authorityClassification === "CONFLICTED",
+    unresolvedConflicts: [...provision.unresolvedConflicts],
+    mayConsolidateOperative: opts?.mayConsolidateOperative ?? !provisional,
+  };
+}
 
 /**
  * Gate operative source authority for execution.

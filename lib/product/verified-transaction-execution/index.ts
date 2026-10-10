@@ -44,6 +44,7 @@ export {
 
 export {
   evaluateOperativeSourceAuthority,
+  operativeAuthorityFromProvision,
   type OperativeSourceAuthority,
   type OperativeAuthorityClassification,
   type OperativeAuthorityEvaluation,

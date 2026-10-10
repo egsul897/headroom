@@ -1,70 +1,35 @@
 /**
- * Financial-evidence contract adapter for unified transaction execution.
+ * Financial-evidence orchestration adapter.
  *
- * #273 (`lib/capacity/financial-evidence.ts`) is not yet on main. This adapter
- * implements the fail-closed validation surface required by orchestration
- * without importing unmerged branches or duplicating capacity arithmetic.
- *
- * When #273 merges, replace the body of `validateFinancialEvidenceBundle` with
- * a re-export/thin wrap of `validateAuthenticatedFinancialSnapshot` — do not
- * keep two production validators.
+ * Reconciled to merged #279 (`lib/capacity/financial-evidence.ts`).
+ * Does not duplicate metric validation — wraps
+ * `validateFinancialMetricEvidence` / capacity types and projects the
+ * orchestration-facing bundle result (including hypotheticalOk).
  */
 
-export type FinancialMetricKey =
-  | "TOTAL_ASSETS"
-  | "CONSOLIDATED_EBITDA"
-  | "TOTAL_DEBT"
-  | "SECURED_DEBT"
-  | "INTEREST_EXPENSE"
-  | "CASH_BALANCES"
-  | "OTHER";
+import {
+  validateFinancialMetricEvidence,
+  type AmendmentRestatementStatus,
+  type FinancialEvidenceAuthenticity,
+  type FinancialEvidenceRefusalReason as CapacityRefusalReason,
+  type FinancialMetricEvidence,
+  type FinancialMetricKey,
+  type FinancialVerificationStatus,
+  type TrustedIssuerAuthorizationContext,
+} from "@/lib/capacity";
 
-export type FinancialVerificationStatus =
-  | "UNVERIFIED_EXTRACTION"
-  | "REVIEW_REQUIRED"
-  | "VERIFIED"
-  | "REJECTED";
+export type {
+  FinancialMetricKey,
+  FinancialMetricEvidence,
+  FinancialVerificationStatus,
+  AmendmentRestatementStatus,
+  FinancialEvidenceAuthenticity,
+};
 
-export type AmendmentRestatementStatus =
-  | "ORIGINAL"
-  | "AMENDED"
-  | "RESTATED"
-  | "SUPERSEDED";
-
-export type FinancialEvidenceAuthenticity =
-  | "AUTHENTIC"
-  | "SYNTHETIC_LABELED"
-  | "CALLER_STIPULATED_HYPOTHETICAL";
-
-export interface FinancialMetricEvidence {
-  metricKey: FinancialMetricKey;
-  value: number;
-  currency: string;
-  units: string;
-  entity: {
-    companyId: string;
-    entityName: string | null;
-    consolidationPerimeter: string;
-  };
-  sourceDocument: {
-    documentId: string;
-    exactLocation: string;
-    excerpt?: string | null;
-  };
-  reportingPeriod: string;
-  measurementDate: string;
-  accountingDefinition: string;
-  amendmentRestatementStatus: AmendmentRestatementStatus;
-  verificationStatus: FinancialVerificationStatus;
-  authenticity: FinancialEvidenceAuthenticity;
-  issuer?: {
-    role: "COUNSEL_REVIEWER" | "LEDGER_CUSTODIAN" | "SYSTEM_FIXTURE";
-    actorId: string;
-    attestedAt?: string;
-  };
-  provenanceId: string;
-  maxAgeDays?: number | null;
-}
+export type FinancialEvidenceRefusalReason =
+  | CapacityRefusalReason
+  | "MISSING_REQUIRED_METRIC"
+  | "EMPTY_BUNDLE";
 
 export interface FinancialEvidenceBundle {
   metrics: readonly FinancialMetricEvidence[];
@@ -72,24 +37,9 @@ export interface FinancialEvidenceBundle {
   requiredMetricKeys: readonly FinancialMetricKey[];
 }
 
-export type FinancialEvidenceRefusalReason =
-  | "MISSING_REQUIRED_FIELD"
-  | "MISSING_REQUIRED_METRIC"
-  | "UNVERIFIED_EXTRACTION"
-  | "SYNTHETIC_FIXTURE"
-  | "CALLER_STIPULATED"
-  | "STALE_SNAPSHOT"
-  | "WRONG_ENTITY"
-  | "WRONG_CURRENCY"
-  | "WRONG_ACCOUNTING_PERIOD"
-  | "RESTATED_OR_SUPERSEDED"
-  | "UNAUTHORIZED_ISSUER"
-  | "TAMPERED_PROVENANCE"
-  | "EMPTY_BUNDLE";
-
 export interface FinancialEvidenceValidationResult {
   ok: boolean;
-  /** AUTHENTIC + VERIFIED + non-stale + matching identity — never synthetic. */
+  /** AUTHENTIC + VERIFIED + trusted issuer — never synthetic/stipulated. */
   productionAuthoritative: boolean;
   /** Ok for HYPOTHETICAL simulation when allowHypotheticalFinancials is set. */
   hypotheticalOk: boolean;
@@ -103,31 +53,13 @@ export interface ValidateFinancialEvidenceArgs {
   expectedCurrency: string;
   evaluationAsOf: string;
   expectedReportingPeriod?: string | null;
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   allowHypotheticalFinancials?: boolean;
-}
-
-function missingField(e: FinancialMetricEvidence): string | null {
-  if (!e.metricKey) return "metricKey";
-  if (!Number.isFinite(e.value)) return "value";
-  if (!e.currency?.trim()) return "currency";
-  if (!e.units?.trim()) return "units";
-  if (!e.entity?.companyId?.trim()) return "entity.companyId";
-  if (!e.entity?.consolidationPerimeter?.trim()) return "entity.consolidationPerimeter";
-  if (!e.sourceDocument?.documentId?.trim()) return "sourceDocument.documentId";
-  if (!e.sourceDocument?.exactLocation?.trim()) return "sourceDocument.exactLocation";
-  if (!e.reportingPeriod?.trim()) return "reportingPeriod";
-  if (!e.measurementDate?.trim()) return "measurementDate";
-  if (!e.accountingDefinition?.trim()) return "accountingDefinition";
-  if (!e.amendmentRestatementStatus) return "amendmentRestatementStatus";
-  if (!e.verificationStatus) return "verificationStatus";
-  if (!e.authenticity) return "authenticity";
-  if (!e.provenanceId?.trim()) return "provenanceId";
-  return null;
 }
 
 /**
  * Fail-closed financial evidence validation for orchestration.
- * Does not invent figures. Extraction ≠ verification.
+ * Delegates per-metric rules to merged #279; never invents figures.
  */
 export function validateFinancialEvidenceBundle(
   args: ValidateFinancialEvidenceArgs,
@@ -135,6 +67,7 @@ export function validateFinancialEvidenceBundle(
   const blockers: string[] = [];
   const refusalReasons: FinancialEvidenceRefusalReason[] = [];
   const metrics = args.evidence.metrics;
+  const allowHypo = Boolean(args.allowHypotheticalFinancials);
 
   if (metrics.length === 0 && args.evidence.requiredMetricKeys.length > 0) {
     return {
@@ -154,101 +87,60 @@ export function validateFinancialEvidenceBundle(
     }
   }
 
-  let anySynthetic = false;
-  let anyStipulated = false;
-  let allAuthenticVerified = metrics.length > 0;
+  let allProduction = metrics.length > 0 || args.evidence.requiredMetricKeys.length === 0;
+  let hardFailure = refusalReasons.includes("MISSING_REQUIRED_METRIC");
 
   for (const e of metrics) {
-    const missing = missingField(e);
-    if (missing) {
-      blockers.push(`financial evidence missing required field: ${missing}`);
-      refusalReasons.push("MISSING_REQUIRED_FIELD");
-      allAuthenticVerified = false;
-      continue;
+    const result = validateFinancialMetricEvidence({
+      evidence: e,
+      expectedCompanyId: args.expectedCompanyId,
+      expectedCurrency: args.expectedCurrency,
+      expectedReportingPeriod: args.expectedReportingPeriod,
+      evaluationAsOf: args.evaluationAsOf,
+      trustedIssuerAuth: args.trustedIssuerAuth,
+      // Hatch only for orchestration hypothetical mode — never production.
+      allowSynthetic: allowHypo,
+      allowCallerStipulated: allowHypo,
+    });
+
+    blockers.push(...result.blockers);
+    refusalReasons.push(...result.refusalReasons);
+
+    if (!result.productionAuthoritative) {
+      allProduction = false;
     }
 
-    if (e.entity.companyId !== args.expectedCompanyId) {
-      blockers.push(
-        `wrong entity: evidence companyId "${e.entity.companyId}" ≠ expected "${args.expectedCompanyId}"`,
+    // Hard failures even under hypothetical hatch.
+    const hard = result.refusalReasons.filter(
+      (r) =>
+        r !== "SYNTHETIC_FIXTURE" &&
+        r !== "CALLER_STIPULATED" &&
+        // When hatch is on, capacity marks synthetic/stipulated ok without these
+        // reasons — but missing issuer context on AUTHENTIC paths is still hard
+        // for production; for hypo we only treat identity/verification failures
+        // as hard if the metric itself is not synthetic/stipulated.
+        !(
+          allowHypo &&
+          (e.authenticity === "SYNTHETIC_LABELED" ||
+            e.authenticity === "CALLER_STIPULATED_HYPOTHETICAL") &&
+          (r === "MISSING_TRUSTED_HOST_CONTEXT" ||
+            r === "UNAUTHORIZED_ISSUER" ||
+            r === "FORGED_ISSUER" ||
+            r === "PRODUCTION_FIXTURE_REFUSED")
+        ),
+    );
+    // If capacity returned ok under hatch, no hard failure for that metric.
+    if (!result.ok) {
+      // Distinguish hatch-cleared authenticity refusals from hard identity failures.
+      const remainingHard = hard.filter(
+        (r) =>
+          !(
+            allowHypo &&
+            (r === "SYNTHETIC_FIXTURE" || r === "CALLER_STIPULATED")
+          ),
       );
-      refusalReasons.push("WRONG_ENTITY");
-      allAuthenticVerified = false;
-    }
-
-    if (e.currency !== args.expectedCurrency) {
-      blockers.push(
-        `wrong currency: evidence "${e.currency}" ≠ expected "${args.expectedCurrency}"`,
-      );
-      refusalReasons.push("WRONG_CURRENCY");
-      allAuthenticVerified = false;
-    }
-
-    if (
-      args.expectedReportingPeriod &&
-      e.reportingPeriod !== args.expectedReportingPeriod
-    ) {
-      blockers.push(
-        `wrong accounting period: evidence "${e.reportingPeriod}" ≠ expected "${args.expectedReportingPeriod}"`,
-      );
-      refusalReasons.push("WRONG_ACCOUNTING_PERIOD");
-      allAuthenticVerified = false;
-    }
-
-    if (
-      e.amendmentRestatementStatus === "RESTATED" ||
-      e.amendmentRestatementStatus === "SUPERSEDED"
-    ) {
-      blockers.push(
-        `financial evidence is ${e.amendmentRestatementStatus} — cannot establish authoritative capacity inputs`,
-      );
-      refusalReasons.push("RESTATED_OR_SUPERSEDED");
-      allAuthenticVerified = false;
-    }
-
-    if (e.verificationStatus !== "VERIFIED") {
-      blockers.push(
-        `verificationStatus ${e.verificationStatus} — extracted values are not verified merely because they came from a document`,
-      );
-      refusalReasons.push("UNVERIFIED_EXTRACTION");
-      allAuthenticVerified = false;
-    }
-
-    if (e.authenticity === "SYNTHETIC_LABELED") {
-      anySynthetic = true;
-      allAuthenticVerified = false;
-      if (!args.allowHypotheticalFinancials) {
-        blockers.push(
-          "SYNTHETIC_LABELED financial evidence cannot establish production authority",
-        );
-        refusalReasons.push("SYNTHETIC_FIXTURE");
-      }
-    } else if (e.authenticity === "CALLER_STIPULATED_HYPOTHETICAL") {
-      anyStipulated = true;
-      allAuthenticVerified = false;
-      if (!args.allowHypotheticalFinancials) {
-        blockers.push(
-          "CALLER_STIPULATED_HYPOTHETICAL financial values cannot establish production authority",
-        );
-        refusalReasons.push("CALLER_STIPULATED");
-      }
-    } else if (e.authenticity !== "AUTHENTIC") {
-      blockers.push("financial evidence authenticity is not AUTHENTIC");
-      refusalReasons.push("UNVERIFIED_EXTRACTION");
-      allAuthenticVerified = false;
-    }
-
-    if (e.maxAgeDays != null && e.maxAgeDays >= 0) {
-      const measured = Date.parse(e.measurementDate.slice(0, 10));
-      const evalAt = Date.parse(args.evaluationAsOf.slice(0, 10));
-      if (Number.isFinite(measured) && Number.isFinite(evalAt)) {
-        const ageDays = (evalAt - measured) / (24 * 60 * 60 * 1000);
-        if (ageDays > e.maxAgeDays) {
-          blockers.push(
-            `financial evidence stale: age ${Math.floor(ageDays)}d > maxAgeDays ${e.maxAgeDays}`,
-          );
-          refusalReasons.push("STALE_SNAPSHOT");
-          allAuthenticVerified = false;
-        }
+      if (remainingHard.length > 0 || !allowHypo) {
+        hardFailure = true;
       }
     }
   }
@@ -257,40 +149,53 @@ export function validateFinancialEvidenceBundle(
   const uniqueBlockers = [...new Set(blockers)];
 
   const productionAuthoritative =
-    allAuthenticVerified &&
-    !anySynthetic &&
-    !anyStipulated &&
-    uniqueBlockers.length === 0 &&
-    args.evidence.requiredMetricKeys.every((k) => byKey.has(k));
+    allProduction &&
+    !hardFailure &&
+    uniqueReasons.length === 0 &&
+    args.evidence.requiredMetricKeys.every((k) => byKey.has(k)) &&
+    (metrics.length === 0 ||
+      metrics.every((m) => m.authenticity === "AUTHENTIC" && m.verificationStatus === "VERIFIED"));
 
-  // Hypothetical hatch clears only SYNTHETIC / CALLER_STIPULATED — hard identity
-  // and verification failures still refuse.
-  let hypotheticalOk = productionAuthoritative;
-  if (!productionAuthoritative && args.allowHypotheticalFinancials) {
-    const hard = uniqueReasons.filter(
-      (r) => r !== "SYNTHETIC_FIXTURE" && r !== "CALLER_STIPULATED",
-    );
+  // When no metrics required and none supplied, financial gate is vacuously ok
+  // for hypothetical execution (fixed-dollar paths).
+  const vacuousOk =
+    metrics.length === 0 && args.evidence.requiredMetricKeys.length === 0;
+
+  let hypotheticalOk = productionAuthoritative || vacuousOk;
+  if (!hypotheticalOk && allowHypo && !hardFailure) {
     hypotheticalOk =
-      hard.length === 0 &&
       args.evidence.requiredMetricKeys.every((k) => byKey.has(k)) &&
       metrics.every((m) => {
-        const missing = missingField(m);
-        return (
-          missing == null &&
-          m.entity.companyId === args.expectedCompanyId &&
-          m.currency === args.expectedCurrency &&
-          m.verificationStatus === "VERIFIED" &&
-          m.amendmentRestatementStatus !== "RESTATED" &&
-          m.amendmentRestatementStatus !== "SUPERSEDED"
-        );
+        const r = validateFinancialMetricEvidence({
+          evidence: m,
+          expectedCompanyId: args.expectedCompanyId,
+          expectedCurrency: args.expectedCurrency,
+          expectedReportingPeriod: args.expectedReportingPeriod,
+          evaluationAsOf: args.evaluationAsOf,
+          trustedIssuerAuth: args.trustedIssuerAuth,
+          allowSynthetic: true,
+          allowCallerStipulated: true,
+        });
+        return r.ok;
       });
   }
+
+  // Strip hatch-only refusal noise from blockers when hypo succeeded.
+  const surfaceBlockers =
+    hypotheticalOk && !productionAuthoritative
+      ? uniqueBlockers.filter(
+          (b) =>
+            !/SYNTHETIC_LABELED|CALLER_STIPULATED_HYPOTHETICAL|cannot establish production/i.test(
+              b,
+            ),
+        )
+      : uniqueBlockers;
 
   return {
     ok: productionAuthoritative || hypotheticalOk,
     productionAuthoritative,
     hypotheticalOk,
-    blockers: uniqueBlockers,
+    blockers: surfaceBlockers,
     refusalReasons: uniqueReasons,
   };
 }
