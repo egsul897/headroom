@@ -33,6 +33,12 @@ export {
   getLatestFinancialEvidenceBundle,
   getFinancialEvidenceBundleById,
   revokeFinancialEvidenceBundle,
+  loadFinancialEvidenceSnapshot,
+  rehydrateFinancialSnapshotFromBundle,
+  revalidatePersistedFinancialEvidence,
+  type FinancialIngestionAuditSidecar,
+  type FinancialEvidenceBundlePayload,
+  type PersistFinancialEvidenceInput,
 } from "./financial-evidence";
 export {
   persistUtilizationCompletenessRecord,
@@ -57,8 +63,31 @@ export {
   type InvalidatableEntityType,
 } from "./invalidation";
 export {
+  persistUtilizationReconstruction,
+  loadUtilizationReconstructionEnvelope,
+  loadAttributedLedgerUsages,
+  evaluatePersistedUtilizationAuthority,
+  attributedUsageToLedgerRecord,
+  UTILIZATION_RECONSTRUCTION_CALC_PREFIX,
+  type UtilizationReconstructionEnvelope,
+  type PersistUtilizationReconstructionInput,
+} from "./utilization-reconstruction";
+export {
+  persistVerifiedCapacityInputSnapshot,
+  loadVerifiedCapacityInputSnapshot,
+  loadVerifiedCapacityInputByHash,
+  VERIFIED_CAPACITY_INPUT_CALC_PREFIX,
+} from "./verified-capacity-input";
+export {
   durablyRememberOperativeHandoff,
   durablyRememberContextManifest,
   durablyRememberSimulation,
   durablyRememberCapacityCalculation,
+  durablyRememberFinancialEvidence,
+  durablyRememberUtilizationReconstruction,
+  durablyBuildAndRememberVerifiedCapacityInput,
+  invalidateCapacityAfterFinancialRevision,
+  invalidateCapacityAfterCompletenessRevoke,
+  resolveDurableCapacityIdentitiesForProduct,
+  type DurableCapacityIdentityRefs,
 } from "./product-bridge";
