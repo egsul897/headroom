@@ -630,6 +630,7 @@ describeDb("Agent #9 financial/utilization durable persistence (disposable Postg
 
   it("adversarial: GAAP/covenant metric confusion refused on ingest + preserved in store", async () => {
     const gaap = fixture.statementLines.find((l) => l.lineId === "bs-total-assets")!;
+    // Same amount + same perimeter without allowIdenticalAmountAcrossAssetKeys → refuse.
     const refused = normalizeFinancialStatementEvidence({
       companyId: COMPANY_A,
       entityName: fixture.entityName,
@@ -642,9 +643,9 @@ describeDb("Agent #9 financial/utilization durable persistence (disposable Postg
         {
           ...gaap,
           lineId: "bs-tca-same",
-          definitionBasis: "CONTRACT_ADJUSTED",
-          accountingDefinition: "Total Consolidated Assets",
-          consolidationPerimeter: "Issuer and Restricted Subsidiaries",
+          label: "Total Consolidated Assets (illicit equate)",
+          accountingDefinition: "Illicit copy of GAAP Total assets as Consolidated Total Assets",
+          consolidationPerimeter: gaap.consolidationPerimeter,
         },
       ],
       mappings: [
@@ -656,6 +657,22 @@ describeDb("Agent #9 financial/utilization durable persistence (disposable Postg
     });
     expect(refused.ok).toBe(false);
     expect(refused.refusalReasons).toContain("TOTAL_ASSETS_EQUATED_TO_CONSOLIDATED");
+
+    // Direct GAAP→covenant mapping also refused; durable store preserves covenant marker when legitimately mapped.
+    const direct = normalizeFinancialStatementEvidence({
+      companyId: COMPANY_A,
+      entityName: fixture.entityName,
+      asOf: fixture.asOf,
+      reportingPeriod: fixture.reportingPeriod,
+      currency: fixture.currency,
+      provenanceId: "gaap-as-covenant-map",
+      lines: [gaap],
+      mappings: [{ lineId: gaap.lineId, metricKey: "TOTAL_CONSOLIDATED_ASSETS" }],
+      verificationStatus: "UNVERIFIED_EXTRACTION",
+      authenticity: "AUTHENTIC",
+    });
+    expect(direct.ok).toBe(false);
+    expect(direct.refusalReasons).toContain("TOTAL_ASSETS_EQUATED_TO_CONSOLIDATED");
   });
 
   it("adversarial: Hypothetical transaction does not mutate ledger", async () => {
