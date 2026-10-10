@@ -9,7 +9,7 @@
 |---|---|
 | Starting main SHA | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
 | Seal commit | `ca667446df228984bb5d6b50b44c3c98b45f0730` |
-| Evaluation tip | `1cb1523ef1d20ce39c58869c4ebd48cbc0321347` |
+| Evaluation tip | `c7b9742e4e367f598ee61e7d7b94ab4260dd2be5` |
 | Package | AutoNation (AN) Third→Fifth A&R (`an-2020-2026-credit-facility`) |
 | Unseen claim | **NOT claimed** (authentic evaluation package distinct from tuning fixtures) |
 | Paid inference | $0 |
