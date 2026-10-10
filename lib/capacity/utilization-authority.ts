@@ -179,10 +179,7 @@ export function evaluateCompletenessForRemainingClaim(args: {
       supportsRemainingClaim: false,
       productionAuthoritative: false,
       demoSynthetic: false,
-      blockers:
-        cert == null
-          ? ["no completeness certificate presented"]
-          : ["certificate approvalState is not APPROVED"],
+      blockers: cert == null ? ["no completeness certificate presented"] : ["certificate approvalState is not APPROVED"],
     };
   }
   if (cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED") {
@@ -451,18 +448,18 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
     supportsRemainingClaim: productionOk,
     completenessCertified: productionOk ? r.completenessCertified : false,
     authoritativeForRemaining: productionOk,
-    blockers: [
-      ...r.blockers,
-      ...(r.supportsRemainingClaim && r.productionAuthoritative !== true
-        ? ["remaining claim is not production-authoritative (synthetic/demo or missing trusted issuer)"]
-        : []),
-    ],
+    blockers: productionOk
+      ? r.blockers
+      : [
+          ...r.blockers,
+          ...(r.supportsRemainingClaim && r.productionAuthoritative !== true
+            ? [
+                "authoritative remaining refused — completeness not production-authoritative (missing authenticity or unverified issuer)",
+              ]
+            : []),
+        ],
     note: r.note,
-    solverStatus: productionOk
-      ? solverStatus
-      : kind === "VERIFIED_ZERO" || kind === "KNOWN_ATTRIBUTED"
-        ? "ATTRIBUTED_INCOMPLETE"
-        : solverStatus,
+    solverStatus: productionOk ? solverStatus : kind === "PARTIALLY_KNOWN" ? "PARTIAL_ATTRIBUTED_USAGE" : kind === "KNOWN_ATTRIBUTED" ? "ATTRIBUTED_INCOMPLETE" : "ZERO_NO_ATTRIBUTED_USAGE",
   };
 }
 

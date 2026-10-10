@@ -130,7 +130,7 @@ export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): Ve
     !args.allowSyntheticRemaining
   ) {
     blockers.push(
-      "remaining claim lacks production-authoritative completeness (authenticity + trusted issuer)",
+      "authoritative remaining refused — completeness not production-authoritative (missing authenticity or unverified issuer)",
     );
   }
 
