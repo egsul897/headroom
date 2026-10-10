@@ -24,4 +24,4 @@ Full Agent 6 docs tree, all three-company scorecards, Benchmark/Insulet fixtures
 
 ## §7.01 verified-rule attempt
 
-See `14-knife-river-701-verified-rule-attempt/`. Base doc-a only; amendments not consolidated. Without credentials + `KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1`, report is OPERATIONAL blocker — no invented IR.
+See `14-knife-river-701-verified-rule-attempt/` (JSON + `02-justified-refusal.md`). Base doc-a only; amendments not consolidated. **Mission outcome: JUSTIFIED_REFUSAL / OPERATIONAL_CREDENTIAL** — no invented IR. Live path needs keys + spend auth + budget + certifiedConfig (or approved offline replay).
