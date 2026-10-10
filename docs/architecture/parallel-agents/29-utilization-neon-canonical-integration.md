@@ -1,6 +1,6 @@
 # Canonical utilization + Neon pathway — post-#237 harden
 
-**Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a` (PR #237 already landed #232+#234 reconcile)  
+**Base main:** `2f608e1a6634007b95feb8c29cb3ad74b30dcf97` (PR #237 already landed #232+#234 reconcile)  
 **Integration branch:** `cursor/utilization-neon-canonical-a9e4`  
 **Combined PR:** https://github.com/egsul897/headroom/pull/241 (draft — no auto-merge)  
 **Auto-merge:** **no** · Neon writes: **none** · Certification bypass: **none**
