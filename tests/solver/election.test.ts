@@ -456,9 +456,40 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       const tnl = permission("tnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: { debtBasis: "total" } });
       // SSNL basis: threshold*500 - (400-50) = 150 => threshold*500 = 500 => threshold = 1.0
       const ssnl = permission("ssnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 1.0, params: { debtBasis: "secured" } });
-      const graph = buildPermissionGraph([tnl, ssnl], [rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" })]);
-      const permissionsById = new Map([["tnl", tnl], ["ssnl", ssnl]]);
+      const tnlLien = permission("tnl-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+      const ssnlLien = permission("ssnl-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+      const graph = buildPermissionGraph(
+        [tnl, ssnl, tnlLien, ssnlLien],
+        [
+          rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" }),
+          rel({ fromPermissionId: "tnl", toPermissionId: "tnl-lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" }),
+          rel({ fromPermissionId: "ssnl", toPermissionId: "ssnl-lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" }),
+        ],
+      );
+      const permissionsById = new Map([
+        ["tnl", tnl],
+        ["ssnl", ssnl],
+        ["tnl-lien", tnlLien],
+        ["ssnl-lien", ssnlLien],
+      ]);
       const secured = { ...baseTransaction, secured: true };
+
+      // Without per-leg liens, secured dual-ratio is BLOCKED (debt+lien gate).
+      const noLienGraph = buildPermissionGraph([tnl, ssnl], [rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" })]);
+      const noLien = evaluateElection({
+        election: { id: "e-nolien", memberPermissionIds: ["tnl", "ssnl"], rationale: "" },
+        permissionsById: new Map([
+          ["tnl", tnl],
+          ["ssnl", ssnl],
+        ]),
+        graph: noLienGraph,
+        financials: FIN,
+        requestedAmount: 150,
+        eligibilityContext: { transaction: secured, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([noLien])[0]!.status).toBe("BLOCKED");
 
       // SSNL room (150) is the tighter of the two - joint ceiling is min(300, 150) = 150.
       const at150 = evaluateElection({

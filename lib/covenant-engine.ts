@@ -1215,6 +1215,7 @@ export interface PerDocumentRemainingCapacity {
   method:
     | "SOLVER_NATIVE_RECOMPUTED"
     | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT"
+    | "SOLVER_CLAMPED_TO_LEGACY"
     | "CROSS_DOCUMENT_MODELED"
     | "NOT_DETERMINABLE";
   /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
@@ -1223,6 +1224,28 @@ export interface PerDocumentRemainingCapacity {
   maximumCapacity?: MaxCapacityResult;
   bindingConstraint?: SourceCitation[];
   reason?: string;
+  /** Pre-clamp solver figure when method is SOLVER_CLAMPED_TO_LEGACY (diagnostic only). */
+  solverNativeBeforeClamp?: number;
+}
+
+/**
+ * Separates authority layers. None of these is Phase-4 REQUIRE certification.
+ * CROSS_DOCUMENT_MODELED / package remaining used for customer headlines are
+ * MODELED / EVALUATION_SEED unless an upstream verified path says otherwise.
+ */
+export interface PackageCapacityAuthorityLayers {
+  modeledCrossDocument: number | null;
+  solverNativePackageMin: number | null;
+  legacyPackageMin: number | null;
+  publishedRemaining: number | null;
+  publishedMethod: PerDocumentRemainingCapacity["method"] | null;
+  bindingDocumentName: string | null;
+  bindingProvisionCode: string | null;
+  label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
+  solverIsFalseFavorableVsModeled: boolean;
+  legacyIsFalseFavorableVsModeled: boolean;
+  discrepancyRequiresInvestigation: boolean;
+  note: string;
 }
 
 export interface PostTransactionCapacitySimulation {
@@ -1233,6 +1256,8 @@ export interface PostTransactionCapacitySimulation {
   binding?: PerDocumentRemainingCapacity;
   /** = `binding?.remainingCapacity`, exposed at the top level for convenience. Undefined (never 0) when not determinable. */
   remainingCapacity?: number;
+  /** Diagnostic authority layers — never Phase-4 REQUIRE by itself. */
+  authorityLayers?: PackageCapacityAuthorityLayers;
 }
 
 /**
@@ -1283,6 +1308,15 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const postFin: FinancialSnapshotInput = { ...fin, totalDebt: fin.totalDebt + amount, securedDebt: fin.securedDebt + (secured ? amount : 0) };
 
   const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
+    const status = secured ? d.securedStatus : d.unsecuredStatus;
+    const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
+    const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
+    const legacyRemaining =
+      status === "modeled" && capacity !== undefined ? capacity - amount : undefined;
+    const legacyBinding = bindingProvision
+      ? [{ documentId: bindingProvision.documentId, sectionRef: bindingProvision.sectionRef, permissionId: bindingProvision.id }]
+      : undefined;
+
     if (solverContext) {
       const doc = data.documents.find((doc) => doc.id === d.documentId);
       const legacyFormulaPresent = Boolean(side === "secured" ? doc?.capacityFormulas?.secured : doc?.capacityFormulas?.unsecured);
@@ -1290,26 +1324,46 @@ export function computeRemainingCapacityAfterDebtIncurrence(
       if (coverage.status === "SOLVER_NATIVE") {
         const postResult = runSolverForDocument(d.documentId, d.documentName, postFin, 0, secured, solverContext, coverage);
         const mc = postResult.maximumCapacity;
-        const remainingCapacity = mc?.kind === "EXACT" ? mc.amount : undefined;
+        const solverRemaining = mc?.kind === "EXACT" ? mc.amount : undefined;
+
+        // Per-document false-favorable guard vs capacityFormulas ceiling.
+        // Substituting the lower legacy figure avoids publishing a looser
+        // solver election as capacity — it is NOT itself Phase-4 certification.
+        if (
+          solverRemaining !== undefined &&
+          legacyRemaining !== undefined &&
+          solverRemaining > legacyRemaining + 1e-6
+        ) {
+          return {
+            documentId: d.documentId,
+            documentName: d.documentName,
+            method: "SOLVER_CLAMPED_TO_LEGACY" as const,
+            remainingCapacity: legacyRemaining,
+            maximumCapacity: mc,
+            bindingConstraint: legacyBinding,
+            solverNativeBeforeClamp: solverRemaining,
+            reason:
+              `Solver-native max $${solverRemaining}M exceeded capacityFormulas ceiling $${legacyRemaining}M for ${d.documentName}/${side}; ` +
+              `clamped to legacy (fail-closed diagnostic). Not Phase-4 REQUIRE certification.`,
+          };
+        }
+
         return {
           documentId: d.documentId,
           documentName: d.documentName,
           method: "SOLVER_NATIVE_RECOMPUTED",
-          remainingCapacity,
+          remainingCapacity: solverRemaining,
           maximumCapacity: mc,
           bindingConstraint: postResult.bindingConstraint,
           reason:
-            remainingCapacity === undefined
+            solverRemaining === undefined
               ? `Post-transaction maximum capacity for ${d.documentName} is ${mc?.kind ?? "not determinable"}, not a single EXACT figure.`
               : undefined,
         };
       }
     }
 
-    const status = secured ? d.securedStatus : d.unsecuredStatus;
-    const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
-    const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
-    if (status !== "modeled" || capacity === undefined) {
+    if (legacyRemaining === undefined) {
       return {
         documentId: d.documentId,
         documentName: d.documentName,
@@ -1321,8 +1375,8 @@ export function computeRemainingCapacityAfterDebtIncurrence(
       documentId: d.documentId,
       documentName: d.documentName,
       method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
-      remainingCapacity: capacity - amount,
-      bindingConstraint: bindingProvision ? [{ documentId: bindingProvision.documentId, sectionRef: bindingProvision.sectionRef, permissionId: bindingProvision.id }] : undefined,
+      remainingCapacity: legacyRemaining,
+      bindingConstraint: legacyBinding,
     };
   });
 
@@ -1330,29 +1384,38 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const sorted = [...perDocument].filter((d) => d.remainingCapacity !== undefined).sort((a, b) => a.remainingCapacity! - b.remainingCapacity!);
   let binding = anyNotDeterminable ? undefined : sorted[0];
   let remainingCapacity = binding?.remainingCapacity;
+  const solverNativePackageMin = remainingCapacity ?? null;
 
-  // Package-wide legal ceiling: cross-document modeled binding (min across governing
-  // documents' declared formulas). Solver-native per-document coverage can omit a
-  // binding instrument (Coherent secured: Indenture SSNL ≈ $4,041M vs CA TNL ≈ $5,129M
-  // reported as secured). Floor package remaining to the tighter cross-document figure
-  // so the generalized dashboard/simulate path cannot publish the false-favorable gap.
+  const legacyOnlyMins = position.documents
+    .map((d) => {
+      const status = secured ? d.securedStatus : d.unsecuredStatus;
+      const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
+      return status === "modeled" && capacity !== undefined ? capacity - amount : undefined;
+    })
+    .filter((n): n is number => n !== undefined);
+  const legacyPackageMin = legacyOnlyMins.length > 0 ? Math.min(...legacyOnlyMins) : null;
+
+  // Package-wide modeled ceiling: cross-document capacityFormulas min.
+  // Floors false-favorable solver package mins. MODELED / EVALUATION_SEED —
+  // never masquerades as Phase-4 REQUIRE.
   const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+  const modeledCrossDocument =
+    cross.status === "modeled" && cross.capacity !== undefined ? cross.capacity - amount : null;
+
   if (
-    cross.status === "modeled" &&
-    cross.capacity !== undefined &&
+    modeledCrossDocument !== null &&
     cross.bindingDocumentId &&
     cross.bindingDocumentName
   ) {
-    const crossRemaining = cross.capacity - amount;
     const solverOverstates =
-      remainingCapacity !== undefined && crossRemaining + 1e-9 < remainingCapacity;
+      remainingCapacity !== undefined && modeledCrossDocument + 1e-9 < remainingCapacity;
     const solverMissing = remainingCapacity === undefined && !anyNotDeterminable;
     if (solverOverstates || solverMissing) {
       binding = {
         documentId: cross.bindingDocumentId,
         documentName: cross.bindingDocumentName,
         method: "CROSS_DOCUMENT_MODELED",
-        remainingCapacity: crossRemaining,
+        remainingCapacity: modeledCrossDocument,
         bindingConstraint: cross.bindingProvision
           ? [
               {
@@ -1363,14 +1426,46 @@ export function computeRemainingCapacityAfterDebtIncurrence(
             ]
           : undefined,
         reason: solverOverstates
-          ? `Cross-document ${side} binding (${cross.bindingDocumentName}) is tighter than solver-native per-document remaining; package remaining uses the cross-document ceiling to avoid false-favorable overstatement.`
-          : `Package ${side} remaining taken from cross-document modeled binding (${cross.bindingDocumentName}).`,
+          ? `Cross-document ${side} binding (${cross.bindingDocumentName}) is tighter than solver-native per-document remaining; package remaining uses the cross-document modeled ceiling to avoid false-favorable overstatement. MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not Phase-4 REQUIRE.`
+          : `Package ${side} remaining taken from cross-document modeled binding (${cross.bindingDocumentName}). MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not Phase-4 REQUIRE.`,
+        solverNativeBeforeClamp: solverNativePackageMin ?? undefined,
       };
-      remainingCapacity = crossRemaining;
+      remainingCapacity = modeledCrossDocument;
     }
   }
 
-  return { amount, secured, perDocument, binding, remainingCapacity };
+  const solverIsFalseFavorableVsModeled =
+    solverNativePackageMin !== null &&
+    modeledCrossDocument !== null &&
+    solverNativePackageMin > modeledCrossDocument + 1e-6;
+  const legacyIsFalseFavorableVsModeled =
+    legacyPackageMin !== null &&
+    modeledCrossDocument !== null &&
+    legacyPackageMin > modeledCrossDocument + 1e-6;
+
+  const authorityLayers: PackageCapacityAuthorityLayers = {
+    modeledCrossDocument,
+    solverNativePackageMin,
+    legacyPackageMin,
+    publishedRemaining: remainingCapacity ?? null,
+    publishedMethod: binding?.method ?? null,
+    bindingDocumentName: binding?.documentName ?? cross.bindingDocumentName ?? null,
+    bindingProvisionCode: cross.bindingProvision?.code ?? null,
+    label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+    solverIsFalseFavorableVsModeled,
+    legacyIsFalseFavorableVsModeled,
+    discrepancyRequiresInvestigation:
+      (solverNativePackageMin !== null &&
+        modeledCrossDocument !== null &&
+        Math.abs(solverNativePackageMin - modeledCrossDocument) > 0.5) ||
+      (legacyPackageMin !== null &&
+        modeledCrossDocument !== null &&
+        Math.abs(legacyPackageMin - modeledCrossDocument) > 0.5),
+    note:
+      "Layers are diagnostic. Published package remaining uses cross-document modeled binding when the solver overstates. None of these figures is Phase-4 REQUIRE certified capacity.",
+  };
+
+  return { amount, secured, perDocument, binding, remainingCapacity, authorityLayers };
 }
 
 // ---------------------------------------------------------------------------
