@@ -356,3 +356,11 @@
 - Secured discrepancy: corrected in generalized `computeRemainingCapacityAfterDebtIncurrence` (not presentation-only)
 - Verdict direction: PRODUCT_E2E_DEMONSTRATED_WITH_LIMITATIONS; #251 INTEGRATION_READY_FOR_HUMAN_REVIEW pending CI
 - actualExternalCostsUsd: 0 · merges: 0
+
+---
+
+## 2026-10-10T00:22:00Z — #251 CI green
+
+- Tip `887d701168cc` — all 8 CI checks SUCCESS · MERGEABLE/CLEAN
+- Human merge recommendation for Priority A stack stands: merge #251 only after re-fetch; then close #243/#223 as superseded
+- No auto-merge by coordinator
