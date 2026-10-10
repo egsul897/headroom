@@ -411,7 +411,7 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
 export function authorityFromUtilizationResolution(r: UtilizationResolution): UtilizationAuthorityDecision {
   const syntheticOnly = r.recordsApplied.some((x) => x.authenticity === "SYNTHETIC_LABELED")
     && r.recordsApplied.every((x) => x.authenticity === "SYNTHETIC_LABELED");
-  if (syntheticOnly && r.supportsRemainingClaim) {
+  if (syntheticOnly && r.supportsRemainingClaim && r.productionAuthoritative !== true) {
     // Defensive: product should never mark synthetic as remaining-supporting without allow flag.
     return {
       kind: "SYNTHETIC_ONLY",
@@ -441,6 +441,7 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
   else solverStatus = "ZERO_NO_ATTRIBUTED_USAGE";
 
   const productionOk = r.productionAuthoritative === true && r.supportsRemainingClaim;
+
   return {
     kind,
     attributedAmount: r.attributedAmount,
