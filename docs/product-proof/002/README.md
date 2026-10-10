@@ -36,6 +36,7 @@ Library: `lib/contract-model/analysis/offline-package-compile.ts` → `compileFr
 | `11-final-verdict.md` | One verdict |
 | `12-vertical-slice-phases.md` | Phases 1–7 fixed-dollar vertical-slice evidence |
 | `13-greater-of-vertical-slice.md` | Greater-of assets family + shared-capacity slice |
+| `14-next-family-handoff.md` | Next bounded family recommendation (facility-difference) — do not implement here |
 
 ## Constraints honored
 

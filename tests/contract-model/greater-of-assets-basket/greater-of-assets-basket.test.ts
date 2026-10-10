@@ -181,7 +181,10 @@ describe("greater-of-assets vertical slice", () => {
     });
     expect(after.capacity?.outcome).toBe("EXECUTED");
     // Effective remaining under shared constraint must be reduced (not a second independent $1.5B).
-    const sharedRem = after.capacity!.state.sharedConstraints[0];
+    if (after.capacity?.outcome !== "EXECUTED") {
+      throw new Error("expected EXECUTED capacity for shared-pool conservation check");
+    }
+    const sharedRem = after.capacity.state.sharedConstraints[0];
     expect(sharedRem).toBeTruthy();
     if (sharedRem?.remaining && sharedRem.remaining.kind === "AMOUNT") {
       const v = sharedRem.remaining.value as { amount?: string | number };

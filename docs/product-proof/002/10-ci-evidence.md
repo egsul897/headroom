@@ -27,7 +27,15 @@ Tip drift explanation: `2011da01` docs-pinned the first fixed-dollar ending SHA;
 | Vercel | **pass** | deployment completed |
 | Vercel Preview Comments | **pass** | |
 
-All checks completed without failures on tip `b4d45628054a8d532f1a0c12583cd1e731deff1c`. Greater-of tip CI recorded after push (see below / PR checks).
+All checks completed without failures on tip `b4d45628054a8d532f1a0c12583cd1e731deff1c`.
+
+## Greater-of tip CI
+
+| Item | Value |
+|---|---|
+| Tip SHA | *(recorded after green)* |
+| certified path (provider-free) | pending / see PR checks |
+| Notes | Tip `f7db31df` failed typecheck on greater-of tests (nullability / VerifiedCapacityResult narrowing); fix commit follows. |
 
 ## Constraints
 

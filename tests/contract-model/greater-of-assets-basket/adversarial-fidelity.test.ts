@@ -31,7 +31,11 @@ describe("greater-of adversarial fidelity", () => {
       if (Array.isArray(e.operands)) return { ...e, operands: e.operands.map(bump) };
       return e;
     }
-    const tampered = { ...compiled.rule!, capacityExpression: bump(cap) as typeof compiled.rule.capacityExpression };
+    const baseRule = compiled.rule!;
+    const tampered = {
+      ...baseRule,
+      capacityExpression: bump(cap) as typeof baseRule.capacityExpression,
+    };
     const fidelity = verifyGreaterOfLegalFidelity({ operativeSourceText: TEXT, rule: tampered });
     expect(fidelity.verdict).toBe("FAIL");
     expect(fidelity.findings.some((f) => f.code === "FIXED_LIMB_MISMATCH")).toBe(true);
@@ -54,9 +58,10 @@ describe("greater-of adversarial fidelity", () => {
       if (Array.isArray(e.operands)) return { ...e, operands: e.operands.map(rewriteMetric) };
       return e;
     }
+    const baseRule = compiled.rule!;
     const tampered = {
-      ...compiled.rule!,
-      capacityExpression: rewriteMetric(compiled.rule!.capacityExpression) as typeof compiled.rule.capacityExpression,
+      ...baseRule,
+      capacityExpression: rewriteMetric(baseRule.capacityExpression) as typeof baseRule.capacityExpression,
     };
     const fidelity = verifyGreaterOfLegalFidelity({ operativeSourceText: TEXT, rule: tampered });
     expect(fidelity.verdict).toBe("FAIL");
