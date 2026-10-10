@@ -81,10 +81,11 @@ describe("unlimited is its own state, never a very large number", () => {
     const c = one(state);
     expect(c.grossCapacity).toEqual({ kind: "GATE_NOT_SATISFIED" });
     expect(c.remaining).toEqual({ kind: "GATE_NOT_SATISFIED" });
-    // A8-01 (merged via #229 on main): domain status is NOT_SATISFIED.
+    // A8-01 / aligned with PR #229: domain status is NOT_SATISFIED (never AVAILABLE, never REVIEW_REQUIRED for a determined failed gate).
     expect(c.status).toBe("NOT_SATISFIED");
     expect(c.status).not.toBe("AVAILABLE");
     expect(c.status).not.toBe("REVIEW_REQUIRED");
+    // Published amount stays GATE_NOT_SATISFIED (not rewritten to NOT_DETERMINED).
     expect(c.provisional).toBeNull();
   });
 

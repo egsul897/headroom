@@ -345,48 +345,70 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // this is Case F's "entity-specific sub-cap" mechanism: a permission with
   // NO per-permission member row can still be gated by a shared constraint
   // purely because of which entity is incurring.
-  const constraintFor = (permissionId: string): SharedConstraint | undefined =>
-    sharedConstraints.find(
+  const constraintsFor = (permissionId: string): SharedConstraint[] =>
+    sharedConstraints.filter(
       (c) =>
         c.members.some((mem) => mem.permissionId === permissionId) ||
-        (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
+        (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass))),
     );
   /**
-   * Shared-constraint headroom (#234 completeness alignment):
-   * Remaining = cap − usage only when `currentUsageSupportsRemainingClaim` is true
-   * (completeness certificate required). Attributed/approved records alone, partial,
-   * missing, synthetic-without-cert, stale, or mismatched evidence must NOT yield
-   * favorable remaining. Fail closed with utilizationUnknown.
+   * Shared-constraint headroom. Utilization integrity (Neon activation P0 / joint #239):
+   * when any matching constraint's `currentUsageAuthoritative` is not true, do NOT
+   * treat numeric zero (or another constraint's certified headroom) as proven remaining —
+   * overlapping / concurrent baskets must fail closed. Bind the tightest remaining
+   * across all authoritative matching constraints.
    */
   const headroomAndConsume = (
     permissionId: string,
     desiredAlloc: number,
   ): { cappedAlloc: number; constraintId?: string; utilizationUnknown?: boolean } => {
-    const constraint = constraintFor(permissionId);
-    if (!constraint) return { cappedAlloc: desiredAlloc };
-    const mayClaimRemaining =
-      constraint.currentUsageSupportsRemainingClaim === true ||
-      // Backward-compat: only honor authoritative when supportsRemainingClaim unset
-      // AND authoritative was explicitly set under the completeness-aware loader.
-      (constraint.currentUsageSupportsRemainingClaim === undefined &&
-        constraint.currentUsageAuthoritative === true &&
-        constraint.currentUsageCompletenessCertified === true);
-    if (!mayClaimRemaining) {
+    const matching = constraintsFor(permissionId);
+    if (matching.length === 0) return { cappedAlloc: desiredAlloc };
+
+    const nonAuthoritative = matching.find((c) => c.currentUsageAuthoritative !== true);
+    if (nonAuthoritative) {
       return {
         cappedAlloc: 0,
-        constraintId: constraint.id,
+        constraintId: nonAuthoritative.id,
         utilizationUnknown: true,
       };
     }
-    if (!sharedRemaining.has(constraint.id)) {
-      const cap = "amount" in constraint.cap ? constraint.cap.amount : evaluateProvision({ ...permissionAsProvision(permissionsById.get(permissionId)!), formulaType: constraint.cap.formulaType, thresholdValue: constraint.cap.thresholdValue, params: constraint.cap.params }, financials, computeLeverageMetrics(financials)).capacity;
-      sharedRemaining.set(constraint.id, Math.max(0, (cap ?? 0) - constraint.currentUsage));
+
+    for (const constraint of matching) {
+      if (!sharedRemaining.has(constraint.id)) {
+        const cap =
+          "amount" in constraint.cap
+            ? constraint.cap.amount
+            : evaluateProvision(
+                {
+                  ...permissionAsProvision(permissionsById.get(permissionId)!),
+                  formulaType: constraint.cap.formulaType,
+                  thresholdValue: constraint.cap.thresholdValue,
+                  params: constraint.cap.params,
+                },
+                financials,
+                computeLeverageMetrics(financials),
+              ).capacity;
+        sharedRemaining.set(constraint.id, Math.max(0, (cap ?? 0) - constraint.currentUsage));
+      }
     }
-    const before = sharedRemaining.get(constraint.id)!;
-    const consumed = Math.max(0, Math.min(desiredAlloc, before));
-    sharedRemaining.set(constraint.id, before - consumed);
-    sharedConsumption.push({ constraintId: constraint.id, amountConsumed: consumed, headroomBefore: before, headroomAfter: before - consumed });
-    return { cappedAlloc: consumed, constraintId: constraint.id };
+    const cappedAlloc = matching.reduce(
+      (min, c) => Math.min(min, sharedRemaining.get(c.id)!),
+      desiredAlloc,
+    );
+    let bindingId = matching[0]!.id;
+    for (const constraint of matching) {
+      const before = sharedRemaining.get(constraint.id)!;
+      if (before <= cappedAlloc) bindingId = constraint.id;
+      sharedRemaining.set(constraint.id, before - cappedAlloc);
+      sharedConsumption.push({
+        constraintId: constraint.id,
+        amountConsumed: cappedAlloc,
+        headroomBefore: before,
+        headroomAfter: before - cappedAlloc,
+      });
+    }
+    return { cappedAlloc, constraintId: bindingId };
   };
 
   const pushSharedCapRequirement = (
@@ -397,14 +419,17 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     utilizationUnknown: boolean | undefined,
   ) => {
     if (utilizationUnknown) {
-      const status = constraintFor(permissionId)?.currentUsageStatus ?? "ZERO_NO_ATTRIBUTED_USAGE";
+      const status =
+        constraintsFor(permissionId).find((c) => c.id === constraintId)?.currentUsageStatus ??
+        "ZERO_NO_ATTRIBUTED_USAGE";
       requirements.push({
         class: "SHARED_CAP",
         scope: { permissionId, constraintId },
         status: "UNKNOWN",
         detail:
-          `Shared constraint ${constraintId} utilization does not support a remaining claim (${status}); ` +
-          `attributed/approved records without a completeness certificate, and partial/missing/stale/mismatched evidence, must not produce favorable remaining capacity.`,
+          `Shared constraint ${constraintId} utilization is not authoritative (${status}); ` +
+          `non-authoritative usage must not produce favorable remaining capacity ` +
+          `(including when another overlapping constraint is certified).`,
         reasonCategory: "EXTERNAL_INPUT",
       });
       return;

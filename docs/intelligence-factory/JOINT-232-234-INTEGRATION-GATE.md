@@ -1,69 +1,45 @@
-# Joint #232 / #234 integration gate
+# Joint #232/#234 integration gate (reconciled onto #237)
 
-**Combined branch:** `cursor/joint-232-234-integration-2229`  
-**Base:** `main` @ `b99f934b` (merged #229 — capacity state/types unchanged)  
-**#232 tip accepted provisionally:** `5b208705` (CI green on that tip)  
-**#234 tip reconciled:** `91996d1b` (completeness authority gate)
+**PR:** #239  
+**Status:** reconciled onto current main after #237 merge  
+**Authority implementation:** `lib/capacity/utilization-authority.ts` (#237)  
+**Contract marker:** `lib/capacity/remaining-authority.ts` (`joint-232-234.on-237.v1`)
 
-## Contract
+## Why #239 was blocked
 
-One fail-closed remaining-capacity rule across engine and customer-facing consumers:
+GitHub `mergeable=CONFLICTING` / `mergeStateStatus=DIRTY` against main after
+`7f1dd3a2` (#237). Real content conflicts — not transient metadata.
 
-1. Approved / attributed usage ⇒ known attributed amount only.
-2. Remaining = gross − usage requires a validated completeness certificate
-   (`VERIFIED_EMPTY` | `VERIFIED_COMPLETE`).
-3. PRODUCTION refuses synthetic / fixture certificates; DEMO_SYNTHETIC may
-   demonstrate mechanics but never publishes production-authoritative AVAILABLE.
-4. Position / Simulate / Ask share `buildSharedProductCapacityViews` →
-   `refuseAuthoritativeRemaining`.
-5. Solver `supportsRemainingClaim` / election SHARED_CAP use the same gate via
-   the compact certificate adapter (`constraintId` binding).
+Main landed the newer protected authority module (`utilization-authority.ts`).
+The pre-reconcile joint tip carried parallel older modules
+(`completeness-certificate.ts` / rich fingerprint certs) that must **not**
+overwrite #237.
 
-Canonical marker: `lib/capacity/remaining-authority.ts`
-(`REMAINING_AUTHORITY_CONTRACT_VERSION = joint-232-234.v1`).
+## Reconciliation rules applied
 
-## #229 capacity identity
+1. Prefer #237 `utilization-authority.ts` and its consumers (solver shared-usage,
+   product verified-remaining, covenant-engine flags).
+2. Delete obsolete joint-only modules that conflicted with #237 types.
+3. Keep `remaining-authority.ts` as a thin re-export / version marker only.
+4. Preserve #229 capacity `state.ts` / `types.ts` byte-identical to main.
+5. Preserve package-path labeling that refuses treating legacy engine figures
+   as utilization-completeness-certified remaining.
+6. No automatic merge.
 
-`lib/contract-model/runtime/capacity/state.ts` and `types.ts` are byte-identical
-to `origin/main` (`CAPACITY_EQ_MAIN=yes`). Do not close or supersede #229.
+## Contract (unchanged semantics)
 
-## Disposition (no auto-merge)
-
-- Do **not** merge #232 or #234 independently while this joint candidate is the
-  integration vehicle.
-- Land the joint tip (or land both PRs only after they match this contract).
-- No automatic merge from this gate.
-
-## Evidence matrix covered
-
-| Evidence | Expected |
+| Evidence | Remaining |
 |---|---|
-| Approved-but-incomplete | `supportsRemainingClaim=false` |
-| Missing ledger | UNKNOWN / no remaining |
-| Partial attribution | refuse |
-| Stale certificate | refuse |
-| Mismatched rule/constraint | refuse |
-| Synthetic in PRODUCTION | refuse |
-| Contradictory EMPTY+usage | refuse |
+| Approved-but-incomplete | refused |
+| Missing / empty ledger | UNKNOWN — refused |
+| Partial attribution | refused |
+| Mismatched / contradictory cert | refused |
+| Synthetic in production | refused |
+| AUTHENTIC VERIFIED_EMPTY / VERIFIED_COMPLETE | allowed |
 
-## Consumers traced
-
-| Path | Gate |
-|---|---|
-| Position / Simulate / Ask | `refuseAuthoritativeRemaining` |
-| Solver election SHARED_CAP | `currentUsageSupportsRemainingClaim` |
-| Package / legacy engine figures | labeled non-authoritative remaining |
-| Covenant-engine shared load | completeness + authenticity |
+Consumers: Position / Simulate / Ask (`buildSharedProductCapacityViews`),
+solver election SHARED_CAP (`currentUsageAuthoritative`), covenant-engine load.
 
 ## SHA / CI
 
-| Item | Value |
-|---|---|
-| Combined tip (CI-green) | `09140bdc563712dc59287c53ad7901eb52991794` |
-| Joint PR | #239 |
-| #232 tip CI | green on `5b208705` |
-| Local TypeScript | green after `prisma generate` |
-| Local capacity / solver / adversarial / certified-path | green (see gate report) |
-| Joint GitHub CI on combined tip | **green** — certified-path, invent-absence soft gates, P3-R0, Vercel |
-
-**No auto-merge. Do not land #232 or #234 independently.**
+Filled after reconcile push (see gate return).

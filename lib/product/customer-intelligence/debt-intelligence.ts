@@ -645,13 +645,11 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       // Legacy LedgerEntry rows are basket-family only — never treat empty table as verified zero.
       const utilEvidence: UtilizationEvidenceRecord[] = [];
       const utilResolution = resolveUtilization({
-        companyId,
         capacityRuleId: matchedPerm?.id ?? `section:${item.sectionRef}`,
         asOf: asOfDate ?? new Date().toISOString().slice(0, 10),
         records: utilEvidence,
         unattributedLegacyBasketPresent: ledger.length > 0,
-        completenessCertificate: null,
-        executionMode: "PRODUCTION",
+        verifiedEmptyCertificate: null,
       });
       let remaining: string | null = null;
       let basketStatus: MetricNumericStatus = approval

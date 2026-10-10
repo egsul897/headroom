@@ -1840,28 +1840,26 @@ export interface LoadCompanySolverStaticOptions {
   /**
    * Optional permission-attributed basket usage. When omitted or empty,
    * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 with status
-   * ZERO_NO_ATTRIBUTED_USAGE and supportsRemainingClaim=false.
-   * Approved attributed records alone do NOT enable remaining claims (#234).
+   * ZERO_NO_ATTRIBUTED_USAGE and currentUsageAuthoritative=false.
+   * Callers must not treat that zero as proven empty utilization.
    */
   basketUsage?: BasketUsageRecord[];
   /**
-   * Optional completeness certificates keyed by shared-constraint id (#234).
-   * Required for any remaining-capacity claim on that constraint.
+   * Optional completeness certificates keyed by SharedCapacityConstraint id.
+   * Required for currentUsageAuthoritative=true (remaining = cap − usage).
+   * See lib/capacity/utilization-authority.ts.
    */
-  completenessCertificates?: Record<
+  completenessCertificatesByConstraintId?: Record<
     string,
     {
-      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
-      approvalState: "APPROVED";
+      capacityRuleId: string;
       asOf: string;
+      approvalState: "APPROVED";
       sourceLabel: string;
-      /** AUTHENTIC required under PRODUCTION (default); SYNTHETIC_LABELED only for DEMO_SYNTHETIC. */
+      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
       authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
     }
   >;
-  asOf?: string;
-  /** Mirrors #234 UtilizationExecutionMode. Default PRODUCTION refuses synthetic completeness. */
-  utilizationExecutionMode?: "PRODUCTION" | "DEMO_SYNTHETIC";
 }
 
 /**
@@ -1959,7 +1957,6 @@ export async function loadCompanySolverStaticData(
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
     ...(() => {
-      const cert = options?.completenessCertificates?.[c.id];
       const computed = computeSharedConstraintCurrentUsage({
         aggregationRule: c.aggregationRule,
         measurementBasis: c.measurementBasis,
@@ -1970,21 +1967,12 @@ export async function loadCompanySolverStaticData(
           externalInstrumentRef: m.externalInstrumentRef ?? undefined,
         })),
         basketUsage: options?.basketUsage ?? [],
-        constraintId: c.id,
-        asOf: options?.asOf,
-        executionMode: options?.utilizationExecutionMode ?? "PRODUCTION",
-        completenessCertificate: cert
-          ? { ...cert, constraintId: c.id }
-          : null,
+        completenessCertificate: options?.completenessCertificatesByConstraintId?.[c.id] ?? null,
       });
       return {
         currentUsage: computed.usage,
         currentUsageStatus: computed.status,
-        // Authoritative remaining only when supportsRemainingClaim (completeness + authenticity gate).
-        currentUsageAuthoritative: computed.supportsRemainingClaim,
-        currentUsageSupportsRemainingClaim: computed.supportsRemainingClaim,
-        currentUsageAttributedKnown: computed.attributedKnown,
-        currentUsageCompletenessCertified: computed.completenessCertified,
+        currentUsageAuthoritative: computed.authoritative,
       };
     })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },

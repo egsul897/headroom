@@ -1,32 +1,35 @@
 # Utilization integrity audit
 
-## Distinctions (#234 completeness alignment)
+**Superseded in part by** `UTILIZATION-AUTHORITY-CONTRACT.md` (reconciled #232 + #234).
 
-| Status / flag | Meaning | Supports remaining claim? |
+## Distinctions (solver)
+
+| Status | Meaning | Authoritative remaining? |
 |---|---|---|
-| Attributed `COMPUTED` without certificate | Known attributed sum only | **No** |
-| `VERIFIED_ZERO` + `VERIFIED_EMPTY` cert | Completeness-certified empty path | **Yes** |
-| `COMPUTED` + `VERIFIED_COMPLETE` cert | Completeness-certified attributed set | **Yes** |
+| `VERIFIED_ZERO` | Completeness cert `VERIFIED_EMPTY` + no attributed usage | **Yes** |
+| `COMPUTED` | Completeness cert `VERIFIED_COMPLETE` + attributed usage | **Yes** |
+| `ATTRIBUTED_INCOMPLETE` | Attributed rows without completeness cert | **No** |
 | `ZERO_NO_ATTRIBUTED_USAGE` | No attributed records | **No** |
-| `PARTIAL_ATTRIBUTED_USAGE` | Some members attributed | **No** |
-| `EXTERNAL_INPUT_REQUIRED` / `ENTITY_CLASS_USAGE_UNAVAILABLE` | External/class unknown | **No** |
-| `COMPLETENESS_CERTIFICATE_INVALID` | Stale / mismatched / contradictory cert | **No** |
-
-**Approved attributed records do not establish historical completeness.**
+| `PARTIAL_ATTRIBUTED_USAGE` | Some named members attributed | **No** |
+| `EXTERNAL_INPUT_REQUIRED` | EXTERNAL_INSTRUMENT_BALANCE | **No** |
+| `ENTITY_CLASS_USAGE_UNAVAILABLE` | ENTITY_CLASS_FILTER | **No** |
 
 ## Loader contract
 
 `loadCompanySolverStaticData` attaches:
 
-- `currentUsage` / `currentUsageStatus`
-- `currentUsageAttributedKnown`
-- `currentUsageSupportsRemainingClaim` (and deprecated alias `currentUsageAuthoritative` = same)
-- `currentUsageCompletenessCertified`
+- `currentUsage`
+- `currentUsageStatus`
+- `currentUsageAuthoritative`
 
-Optional `completenessCertificates[constraintId]` required for remaining support.
+Optional `completenessCertificatesByConstraintId` is required for authoritative remaining.
+
+Numeric `currentUsage === 0` with `ZERO_NO_ATTRIBUTED_USAGE` or `ATTRIBUTED_INCOMPLETE` is **not** proven empty for remaining claims.
 
 ## Solver consumer enforcement
 
-`headroomAndConsume` requires `currentUsageSupportsRemainingClaim` (completeness-certified). Otherwise SHARED_CAP → `UNKNOWN`, alloc 0.
+`lib/solver/election.ts` `headroomAndConsume` requires `currentUsageAuthoritative === true` before computing `cap − currentUsage`.
 
-Legacy Position/Simulate gross paths must not be labeled utilization-adjusted remaining without the #234 verified-remaining / product-view path.
+## Product
+
+Debt intelligence and `computeVerifiedRemaining` refuse AVAILABLE / remaining without completeness-certified utilization. See silent-zero audit.

@@ -4,31 +4,12 @@ export type {
   UtilizationEvidenceRecord,
   UtilizationCompletenessCertificate,
   UtilizationResolution,
-  UtilizationExecutionMode,
-  CompletenessIssuerRole,
-  CompletenessMethod,
-  CompletenessEvidenceScope,
-  CompletenessBindingFingerprints,
-  OpeningBalancePolicy,
-  ReclassificationPolicy,
-  SupersessionPolicy,
 } from "./utilization-types";
 export {
   resolveUtilization,
   evidenceFromAttributedLedger,
   type ResolveUtilizationArgs,
 } from "./utilization-resolver";
-export {
-  validateCompletenessCertificate,
-  bindingFingerprints,
-  type CompletenessValidationContext,
-  type CompletenessValidationResult,
-} from "./completeness-certificate";
-export {
-  syntheticCompletenessCertificate,
-  authenticCompletenessCertificate,
-  DEMO_BINDINGS,
-} from "./completeness-fixtures";
 export {
   computeVerifiedRemaining,
   type GrossCapacityInput,
@@ -41,10 +22,17 @@ export {
   toProductCapacityView,
   buildSharedProductCapacityViews,
   assertProductCapacityConsistency,
-  refuseAuthoritativeRemaining,
   type ProductSurface,
   type ProductCapacityView,
 } from "./product-capacity-view";
+export {
+  decideSolverUtilizationAuthority,
+  authorityFromUtilizationResolution,
+  assertMayPublishRemaining,
+  type UtilizationAuthorityKind,
+  type UtilizationAuthorityDecision,
+  type SolverUsageObservation,
+} from "./utilization-authority";
 export {
   REMAINING_AUTHORITY_CONTRACT_VERSION,
   mayPublishRemainingCapacity,

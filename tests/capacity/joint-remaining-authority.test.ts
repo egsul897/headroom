@@ -1,19 +1,21 @@
 /**
- * Joint #232 / #234 remaining-authority contract.
+ * Joint #239 authority gate on #237 utilization-authority.
  *
- * Product resolver and solver shared-usage helpers must agree: no path may
- * publish supported remaining from approved-but-incomplete, missing, partial,
- * stale, mismatched, synthetic-in-PRODUCTION, or contradictory evidence.
+ * Product resolver + solver shared-usage must agree: no path may publish
+ * supported remaining from approved-but-incomplete, missing, partial,
+ * mismatched, contradictory, or synthetic production evidence.
+ * Also covers overlapping shared constraints / concurrent utilization.
  */
 import { describe, expect, it } from "vitest";
 import {
-  DEMO_BINDINGS,
+  REMAINING_AUTHORITY_CONTRACT_VERSION,
+  assertMayPublishRemaining,
+  authorityFromUtilizationResolution,
   buildSharedProductCapacityViews,
   computeVerifiedRemaining,
+  decideSolverUtilizationAuthority,
   mayPublishRemainingCapacity,
-  refuseAuthoritativeRemaining,
   resolveUtilization,
-  syntheticCompletenessCertificate,
   type UtilizationEvidenceRecord,
 } from "@/lib/capacity";
 import { computeSharedConstraintCurrentUsage } from "@/lib/solver/shared-usage";
@@ -22,7 +24,6 @@ import { buildPermissionGraph } from "@/lib/solver/graph";
 import type { ActivationState, Permission, SharedConstraint, Transaction } from "@/lib/solver/types";
 
 const AS_OF = "2026-10-09";
-const CO = "co-joint";
 
 function permission(id: string, overrides: Partial<Permission> = {}): Permission {
   return {
@@ -68,7 +69,7 @@ const baseTransaction: Transaction = {
 
 function attributed(amount: number, ruleId = "rule-a"): UtilizationEvidenceRecord {
   return {
-    usageId: `u-${amount}`,
+    usageId: `u-${amount}-${ruleId}`,
     kind: "ATTRIBUTED_RULE",
     amount,
     currency: "USD",
@@ -91,17 +92,28 @@ const gross = {
   capacityRuleId: "rule-a",
 };
 
-describe("joint remaining authority (#232 solver + #234 product)", () => {
-  it("approved attributed records without completeness certificate do not support remaining on either path", () => {
+const authenticComplete = {
+  capacityRuleId: "rule-a",
+  asOf: AS_OF,
+  approvalState: "APPROVED" as const,
+  sourceLabel: "auth-complete",
+  kind: "VERIFIED_COMPLETE" as const,
+};
+
+describe("joint remaining authority on #237 utilization-authority", () => {
+  it("pins joint contract version to #237 authority module", () => {
+    expect(REMAINING_AUTHORITY_CONTRACT_VERSION).toBe("joint-232-234.on-237.v1");
+  });
+
+  it("approved attributed records without completeness do not support remaining on either path", () => {
     const product = resolveUtilization({
-      companyId: CO,
       capacityRuleId: "rule-a",
       asOf: AS_OF,
       records: [attributed(35)],
-      executionMode: "PRODUCTION",
     });
     expect(product.supportsRemainingClaim).toBe(false);
     expect(mayPublishRemainingCapacity(product.supportsRemainingClaim)).toBe(false);
+    expect(assertMayPublishRemaining(authorityFromUtilizationResolution(product))).toBe(false);
 
     const verified = computeVerifiedRemaining({
       gross,
@@ -110,7 +122,6 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
     });
     expect(verified.mayPublishAvailable).toBe(false);
     expect(verified.supportedRemaining).toBeNull();
-    expect(refuseAuthoritativeRemaining(verified).mayPublishAvailable).toBe(false);
 
     const solver = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
@@ -124,93 +135,44 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
           prepaymentCredit: 0,
         },
       ],
-      executionMode: "PRODUCTION",
     });
-    expect(solver.supportsRemainingClaim).toBe(false);
-    expect(solver.attributedKnown).toBe(true);
+    expect(solver.authoritative).toBe(false);
+    expect(assertMayPublishRemaining(decideSolverUtilizationAuthority({
+      namedMemberCount: 1,
+      attributedMemberCount: 1,
+      measuredUsage: 35,
+      aggregation: "NAMED_MEMBER_CLAUSES",
+    }))).toBe(false);
   });
 
-  it("missing / partial / stale / mismatched / contradictory / synthetic-in-PRODUCTION never publish remaining", () => {
-    const cases = [
-      resolveUtilization({
-        companyId: CO,
+  it("missing / partial / mismatched / contradictory / synthetic-in-production never publish remaining", () => {
+    const missing = resolveUtilization({ capacityRuleId: "rule-a", asOf: AS_OF, records: [] });
+    const partial = resolveUtilization({
+      capacityRuleId: "rule-a",
+      asOf: AS_OF,
+      records: [attributed(10)],
+      unattributedLegacyBasketPresent: true,
+    });
+    const mismatched = resolveUtilization({
+      capacityRuleId: "rule-a",
+      asOf: AS_OF,
+      records: [attributed(10)],
+      completenessCertificate: { ...authenticComplete, capacityRuleId: "other-rule" },
+    });
+    const contradictory = resolveUtilization({
+      capacityRuleId: "rule-a",
+      asOf: AS_OF,
+      records: [attributed(10)],
+      completenessCertificate: {
         capacityRuleId: "rule-a",
         asOf: AS_OF,
-        records: [],
-        executionMode: "PRODUCTION",
-      }),
-      resolveUtilization({
-        companyId: CO,
-        capacityRuleId: "rule-a",
-        asOf: AS_OF,
-        records: [attributed(10)],
-        unattributedLegacyBasketPresent: true,
-        executionMode: "PRODUCTION",
-      }),
-      resolveUtilization({
-        companyId: CO,
-        capacityRuleId: "rule-a",
-        asOf: AS_OF,
-        records: [attributed(10)],
-        executionMode: "PRODUCTION",
-        currentBindings: DEMO_BINDINGS,
-        completenessCertificate: syntheticCompletenessCertificate({
-          kind: "VERIFIED_COMPLETE",
-          capacityRuleId: "rule-a",
-          companyId: CO,
-          asOf: "2026-01-01",
-          bindings: {
-            ...DEMO_BINDINGS,
-            financialStateAsOf: "2026-01-01",
-          },
-        }),
-      }),
-      resolveUtilization({
-        companyId: CO,
-        capacityRuleId: "rule-a",
-        asOf: AS_OF,
-        records: [attributed(10)],
-        executionMode: "PRODUCTION",
-        currentBindings: DEMO_BINDINGS,
-        completenessCertificate: syntheticCompletenessCertificate({
-          kind: "VERIFIED_COMPLETE",
-          capacityRuleId: "other-rule",
-          companyId: CO,
-          asOf: AS_OF,
-        }),
-      }),
-      resolveUtilization({
-        companyId: CO,
-        capacityRuleId: "rule-a",
-        asOf: AS_OF,
-        records: [attributed(10)],
-        executionMode: "PRODUCTION",
-        currentBindings: DEMO_BINDINGS,
-        completenessCertificate: syntheticCompletenessCertificate({
-          kind: "VERIFIED_EMPTY",
-          capacityRuleId: "rule-a",
-          companyId: CO,
-          asOf: AS_OF,
-        }),
-      }),
-      // Synthetic certificate under PRODUCTION — refuse even with matching bindings.
-      resolveUtilization({
-        companyId: CO,
-        capacityRuleId: "rule-a",
-        asOf: AS_OF,
-        records: [attributed(10)],
-        executionMode: "PRODUCTION",
-        currentBindings: DEMO_BINDINGS,
-        completenessCertificate: syntheticCompletenessCertificate({
-          kind: "VERIFIED_COMPLETE",
-          capacityRuleId: "rule-a",
-          companyId: CO,
-          asOf: AS_OF,
-        }),
-      }),
-    ];
+        approvalState: "APPROVED",
+        sourceLabel: "empty-vs-usage",
+        kind: "VERIFIED_EMPTY",
+      },
+    });
 
-    for (const u of cases) {
+    for (const u of [missing, partial, mismatched, contradictory]) {
       expect(u.supportsRemainingClaim).toBe(false);
       const v = computeVerifiedRemaining({
         gross,
@@ -219,10 +181,9 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       });
       expect(v.mayPublishAvailable).toBe(false);
       expect(v.supportedRemaining).toBeNull();
-      expect(refuseAuthoritativeRemaining(v).remaining).toBeNull();
     }
 
-    const solverSyntheticProd = computeSharedConstraintCurrentUsage({
+    const syntheticProd = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
       measurementBasis: "CURRENTLY_OUTSTANDING",
       members: [{ permissionId: "a" }],
@@ -235,18 +196,15 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
         },
       ],
       completenessCertificate: {
-        kind: "VERIFIED_COMPLETE",
-        approvalState: "APPROVED",
+        capacityRuleId: "a",
         asOf: AS_OF,
+        approvalState: "APPROVED",
         sourceLabel: "synth",
+        kind: "VERIFIED_COMPLETE",
         authenticity: "SYNTHETIC_LABELED",
-        constraintId: "sc1",
       },
-      constraintId: "sc1",
-      asOf: AS_OF,
-      executionMode: "PRODUCTION",
     });
-    expect(solverSyntheticProd.supportsRemainingClaim).toBe(false);
+    expect(syntheticProd.authoritative).toBe(false);
 
     const solverPartial = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",
@@ -261,53 +219,23 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
         },
       ],
       completenessCertificate: {
-        kind: "VERIFIED_COMPLETE",
-        approvalState: "APPROVED",
+        capacityRuleId: "a",
         asOf: AS_OF,
-        sourceLabel: "auth",
-        authenticity: "AUTHENTIC",
-        constraintId: "sc1",
-      },
-      constraintId: "sc1",
-      asOf: AS_OF,
-      executionMode: "PRODUCTION",
-    });
-    expect(solverPartial.supportsRemainingClaim).toBe(false);
-
-    const solverStale = computeSharedConstraintCurrentUsage({
-      aggregationRule: "NAMED_MEMBER_CLAUSES",
-      measurementBasis: "CURRENTLY_OUTSTANDING",
-      members: [{ permissionId: "a" }],
-      basketUsage: [
-        {
-          permissionId: "a",
-          cumulativeIncurred: 10,
-          currentlyOutstanding: 10,
-          prepaymentCredit: 0,
-        },
-      ],
-      completenessCertificate: {
-        kind: "VERIFIED_COMPLETE",
         approvalState: "APPROVED",
-        asOf: "2026-01-01",
-        sourceLabel: "stale",
+        sourceLabel: "auth",
+        kind: "VERIFIED_COMPLETE",
         authenticity: "AUTHENTIC",
-        constraintId: "sc1",
       },
-      constraintId: "sc1",
-      asOf: AS_OF,
-      executionMode: "PRODUCTION",
     });
-    expect(solverStale.supportsRemainingClaim).toBe(false);
+    expect(solverPartial.authoritative).toBe(false);
+    expect(solverPartial.status).toBe("PARTIAL_ATTRIBUTED_USAGE");
   });
 
-  it("Position/Simulate/Ask shared views never diverge and never publish AVAILABLE without remaining support", () => {
+  it("Position/Simulate/Ask never diverge and never publish AVAILABLE without remaining support", () => {
     const utilization = resolveUtilization({
-      companyId: CO,
       capacityRuleId: "rule-a",
       asOf: AS_OF,
       records: [attributed(35)],
-      executionMode: "PRODUCTION",
     });
     const views = buildSharedProductCapacityViews({
       gross,
@@ -322,10 +250,9 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       views.POSITION.supportedRemainingCapacity,
     );
     expect(views.ASK.publicationLabel).toBe(views.POSITION.publicationLabel);
-    expect(views.POSITION.productionAuthoritativeRemaining).toBe(false);
   });
 
-  it("solver election refuses favorable shared remaining without completeness", () => {
+  it("solver election refuses favorable shared remaining without authoritative completeness", () => {
     const p = permission("a");
     const graph = buildPermissionGraph([p], []);
     const constraint: SharedConstraint = {
@@ -338,11 +265,8 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       measurementBasis: "CURRENTLY_OUTSTANDING",
       followsRefinancing: false,
       currentUsage: 20,
-      currentUsageStatus: "COMPUTED",
+      currentUsageStatus: "ATTRIBUTED_INCOMPLETE",
       currentUsageAuthoritative: false,
-      currentUsageSupportsRemainingClaim: false,
-      currentUsageAttributedKnown: true,
-      currentUsageCompletenessCertified: false,
       sourceProvision: { documentId: "doc-1", sectionRef: "§s" },
     };
     const evalResult = evaluateElection({
@@ -371,6 +295,126 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       collateralScopes: [],
     });
     expect(evalResult.requirements.find((r) => r.class === "SHARED_CAP")?.status).toBe("UNKNOWN");
+    expect(evalResult.legs[0]!.amountAllocated).toBe(0);
+  });
+
+  it("overlapping shared constraints / concurrent utilization refuse remaining without per-constraint completeness", () => {
+    // Two overlapping baskets share member "a"; concurrent attributed usage on both
+    // without completeness must not publish remaining on either constraint.
+    const scA = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }, { permissionId: "b" }],
+      basketUsage: [
+        { permissionId: "a", cumulativeIncurred: 40, currentlyOutstanding: 40, prepaymentCredit: 0 },
+        { permissionId: "b", cumulativeIncurred: 10, currentlyOutstanding: 10, prepaymentCredit: 0 },
+      ],
+    });
+    const scB = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }, { permissionId: "c" }],
+      basketUsage: [
+        { permissionId: "a", cumulativeIncurred: 40, currentlyOutstanding: 40, prepaymentCredit: 0 },
+        { permissionId: "c", cumulativeIncurred: 5, currentlyOutstanding: 5, prepaymentCredit: 0 },
+      ],
+    });
+    expect(scA.authoritative).toBe(false);
+    expect(scB.authoritative).toBe(false);
+    expect(scA.usage).toBe(50);
+    expect(scB.usage).toBe(45);
+
+    // Completeness on A only — B still blocked (concurrent/overlap does not leak authority).
+    const scACertified = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }, { permissionId: "b" }],
+      basketUsage: [
+        { permissionId: "a", cumulativeIncurred: 40, currentlyOutstanding: 40, prepaymentCredit: 0 },
+        { permissionId: "b", cumulativeIncurred: 10, currentlyOutstanding: 10, prepaymentCredit: 0 },
+      ],
+      completenessCertificate: {
+        capacityRuleId: "sc-a",
+        asOf: AS_OF,
+        approvalState: "APPROVED",
+        sourceLabel: "sc-a-complete",
+        kind: "VERIFIED_COMPLETE",
+        authenticity: "AUTHENTIC",
+      },
+    });
+    const scBStillOpen = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }, { permissionId: "c" }],
+      basketUsage: [
+        { permissionId: "a", cumulativeIncurred: 40, currentlyOutstanding: 40, prepaymentCredit: 0 },
+        { permissionId: "c", cumulativeIncurred: 5, currentlyOutstanding: 5, prepaymentCredit: 0 },
+      ],
+    });
+    expect(scACertified.authoritative).toBe(true);
+    expect(scBStillOpen.authoritative).toBe(false);
+
+    const pA = permission("a");
+    const pB = permission("b", { id: "b" });
+    const graph = buildPermissionGraph([pA, pB], []);
+    const constraints: SharedConstraint[] = [
+      {
+        id: "sc-a",
+        companyId: "co-1",
+        name: "overlap-a",
+        cap: { amount: 100 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "a" }, { permissionId: "b" }],
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        currentUsage: 50,
+        currentUsageStatus: "COMPUTED",
+        currentUsageAuthoritative: true,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§a" },
+      },
+      {
+        id: "sc-b",
+        companyId: "co-1",
+        name: "overlap-b",
+        cap: { amount: 80 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "a" }, { permissionId: "c" }],
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        currentUsage: 45,
+        currentUsageStatus: "ATTRIBUTED_INCOMPLETE",
+        currentUsageAuthoritative: false,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§b" },
+      },
+    ];
+    // Election on member a hits both constraints; non-authoritative sc-b must block favorable remaining.
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
+      permissionsById: new Map([["a", pA], ["b", pB]]),
+      graph,
+      financials: {
+        ebitda: 100,
+        cash: 10,
+        interestExpense: 5,
+        cumulativeNetIncome: 0,
+        equityProceedsSinceIssue: 0,
+        assumedNewDebtRatePct: 5,
+        totalDebt: 50,
+        securedDebt: 40,
+      },
+      requestedAmount: 30,
+      eligibilityContext: {
+        transaction: baseTransaction,
+        entityClasses: [],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: new Date(AS_OF),
+      },
+      sharedConstraints: constraints,
+      collateralScopes: [],
+    });
+    const sharedReqs = evalResult.requirements.filter((r) => r.class === "SHARED_CAP");
+    expect(sharedReqs.some((r) => r.status === "UNKNOWN")).toBe(true);
     expect(evalResult.legs[0]!.amountAllocated).toBe(0);
   });
 });

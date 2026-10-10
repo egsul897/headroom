@@ -68,6 +68,11 @@ export interface ComputeVerifiedRemainingArgs {
   crossDocumentConstraints?: string[];
   sourceCitations?: string[];
   certificationStatus?: VerifiedRemainingResult["certificationStatus"];
+  /**
+   * Test/demo only. When false (default), SYNTHETIC_LABELED evidence cannot
+   * publish AVAILABLE / supported remaining even with a completeness cert.
+   */
+  allowSyntheticRemaining?: boolean;
 }
 
 function isResolution(u: ResolveUtilizationArgs | UtilizationResolution): u is UtilizationResolution {
@@ -88,6 +93,18 @@ export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): Ve
   const crossDocumentConstraints = args.crossDocumentConstraints ?? [];
   const sourceCitations = args.sourceCitations ?? [];
   const certificationStatus = args.certificationStatus ?? "NOT_CERTIFIED";
+
+  // Synthetic-only evidence never publishes customer AVAILABLE / remaining unless
+  // explicitly allowed for labeled demos/tests (never set by production loaders).
+  const applied = utilization.recordsApplied ?? [];
+  const syntheticOnly =
+    applied.length > 0 && applied.every((r) => r.authenticity === "SYNTHETIC_LABELED");
+  const blockSynthetic =
+    syntheticOnly && utilization.supportsRemainingClaim && !args.allowSyntheticRemaining;
+  const supportsRemaining = utilization.supportsRemainingClaim && !blockSynthetic;
+  if (blockSynthetic) {
+    blockers.push("synthetic-labeled utilization evidence cannot publish authoritative remaining");
+  }
 
   if (gross.refusalReason) {
     return {
@@ -158,7 +175,7 @@ export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): Ve
   const grossCapacity = gross.unlimited ? null : gross.amount;
   const grossUnlimited = Boolean(gross.unlimited);
 
-  if (!utilization.supportsRemainingClaim) {
+  if (!supportsRemaining) {
     // Known attributed amount may still be reportable; unknown/completeness gap
     // blocks remaining. Never treat known attributed rows as a complete set.
     return {
