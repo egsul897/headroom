@@ -59,11 +59,11 @@ to `origin/main` (`CAPACITY_EQ_MAIN=yes`). Do not close or supersede #229.
 
 | Item | Value |
 |---|---|
-| Combined tip | `a2e2343e7edce5467c3f24a5523ba4eae35d9fda` |
+| Combined tip (CI-green) | `09140bdc563712dc59287c53ad7901eb52991794` |
 | Joint PR | #239 |
 | #232 tip CI | green on `5b208705` |
 | Local TypeScript | green after `prisma generate` |
 | Local capacity / solver / adversarial / certified-path | green (see gate report) |
-| Joint GitHub CI on combined tip | pending on tip after typecheck-fix + SHA pin |
+| Joint GitHub CI on combined tip | **green** — certified-path, invent-absence soft gates, P3-R0, Vercel |
 
 **No auto-merge. Do not land #232 or #234 independently.**
