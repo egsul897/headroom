@@ -248,8 +248,30 @@ export interface SharedConstraint {
   members: SharedConstraintMember[];
   measurementBasis: MeasurementBasis;
   followsRefinancing: boolean;
-  /** Pre-transaction usage. For EXTERNAL_INSTRUMENT_BALANCE this is itself an external input - see ExternalInputs.instrumentBalances. */
+  /**
+   * Pre-transaction usage amount. Numeric zero is NOT authoritative unless
+   * `currentUsageStatus` is VERIFIED_ZERO or COMPUTED. See lib/solver/shared-usage.ts.
+   * For EXTERNAL_INSTRUMENT_BALANCE this is itself an external input - see ExternalInputs.instrumentBalances.
+   */
   currentUsage: number;
+  /**
+   * Integrity status for `currentUsage`. Callers must not treat
+   * ZERO_NO_ATTRIBUTED_USAGE as a verified empty basket.
+   */
+  currentUsageStatus?:
+    | "COMPUTED"
+    | "VERIFIED_ZERO"
+    | "ZERO_NO_ATTRIBUTED_USAGE"
+    | "PARTIAL_ATTRIBUTED_USAGE"
+    | "ATTRIBUTED_INCOMPLETE"
+    | "EXTERNAL_INPUT_REQUIRED"
+    | "ENTITY_CLASS_USAGE_UNAVAILABLE";
+  /**
+   * True only when currentUsage may be subtracted for remaining-capacity claims.
+   * Requires APPROVED completeness certificate (see lib/capacity/utilization-authority.ts).
+   * Attributed records alone never set this true.
+   */
+  currentUsageAuthoritative?: boolean;
   sourceProvision: SourceProvisionRef;
 }
 

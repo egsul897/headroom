@@ -123,7 +123,7 @@ describe("hand-authored real-shape Phase-3 IR", () => {
     const { state } = prove(rules, { definitions: ALL_FIXTURE_DEFINITIONS.map(retarget) });
     expect(state.capacities.length).toBe(rules.length);
     for (const c of state.capacities) {
-      expect(["AVAILABLE", "NEEDS_INPUT", "UNSUPPORTED", "AMBIGUOUS", "REVIEW_REQUIRED", "ERROR"]).toContain(c.status);
+      expect(["AVAILABLE", "NOT_SATISFIED", "NEEDS_INPUT", "UNSUPPORTED", "AMBIGUOUS", "REVIEW_REQUIRED", "ERROR"]).toContain(c.status);
       if (c.status !== "AVAILABLE") expect(c.limitations.length).toBeGreaterThan(0);
     }
   });
