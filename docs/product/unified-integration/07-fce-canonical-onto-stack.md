@@ -38,6 +38,23 @@ Apply the strongest #220 financial-engine final-integration work onto the existi
 
 **Root cause:** generated Prisma client in the environment lagged the schema (model exists since `2874c42e`). Not a schema/code mismatch introduced by #220 or the stack. **Does not block the combined build** after `prisma generate`.
 
+## Combined SHA
+
+**`1a835dd0f17c016dba2ac592cf6d34a67bb1e2ee`** (onto #250 `ac0ff925`)
+
+## Acceptance checks on combined SHA
+
+| Suite | Result |
+|-------|--------|
+| FCE non-Neon (engine, reconcile, sequential-financial, authentic-capacity, integration-gate, final-integration) | **42 passed** |
+| `tests/capacity` utilization | **13 passed** |
+| sequential (state-correctness + verified-boundary + effects) | **33 passed** |
+| architecture + verified-execution | **45 passed** |
+| `npm run test:phase3-certification` | **481 passed** |
+| `tsc --noEmit` (after `prisma generate`) | **0 errors** |
+| entity-scope / utilization / adversarial | green (see CI) |
+| FCE NS-4 propose + approval-bridge; some cross-doc | **env Neon unreachable** — no code writes attempted |
+
 ## Recommendation
 
-`READY_FOR_HUMAN_REVIEW` of this PR onto #250 (then human merge of #247→#250 stack). No auto-merge.
+**READY_FOR_HUMAN_REVIEW** of this PR onto #250 (then human merge of #247→#250 stack). No auto-merge.
