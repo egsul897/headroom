@@ -5,7 +5,7 @@
 | Item | Value |
 |---|---|
 | Feature branch | `cursor/product-proof-002-compilation-d8e9` |
-| Head commit SHA | `334f2755f85bcb7351683b3672eb8bc0b7a7f689` |
+| Head commit SHA | `eda075c8f8433c5918e412e0ce6bdc11f057fd02` (feature commit `334f2755f85bcb7351683b3672eb8bc0b7a7f689`) |
 | Base | `main` @ `3612fe76d4cb5f1d1af189e87d77e8aae11fc894` |
 | PR | https://github.com/egsul897/headroom/pull/266 |
 | PP001 doc-A text SHA-256 | `a7d281818d70c085076dd612bb1fe8b3965bd452f61ad3d413c57e3f2879a58e` |
