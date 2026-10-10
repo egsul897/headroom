@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "neon-corpus-flywheel.evidence-manifest.v1",
+  "purpose": "Lightweight identity link from #255 acceptance-gate evidence artifacts to the exact #259 structural port SHA. Does not rewrite historical evidence payloads.",
+  "generatedAt": "2026-10-10T10:10:00.000Z",
+  "pr255": {
+    "url": "https://github.com/egsul897/headroom/pull/255",
+    "branch": "cursor/neon-corpus-intelligence-flywheel-981a",
+    "auditedSourceHead": "ded25fdc943cca6d23bb934e14f2776ac684e607",
+    "acceptanceGateContentSha": "a3dd58954e78a88832cba0611ea72ad979c80acc",
+    "acceptanceGateContentShaRole": "Commit that recorded e7d311e8 as acceptance tip content SHA (historical docs pin).",
+    "priorGateCloseTip": "187c72e06da53801f19dfaef548ecffb94e5e67f",
+    "priorGateCloseTipRole": "Final #255 tip at independent acceptance-gate close (docs pin of a3dd5895). CI-verified green at that tip.",
+    "finalAuditRemediationBranch": "cursor/flywheel-batch1-final-audit-981a"
+  },
+  "pr259": {
+    "url": "https://github.com/egsul897/headroom/pull/259",
+    "branch": "cursor/flywheel-structure-into-canonical-981a",
+    "exactPortSha": "697111a81ec22a592178d7c0542eb646ee273d79",
+    "baseCanonicalTip": "e46dd9ea762b52f085c26c6784245972c2bad750",
+    "portScope": [
+      "lib/contract-model/compiler/stage-structure.ts",
+      "lib/contract-model/compiler/structural-definitions.ts",
+      "tests/neon-corpus-flywheel/definition-body-clause-scope.test.ts"
+    ],
+    "mergeStatus": "UNMERGED_PENDING_HUMAN_REVIEW"
+  },
+  "evidenceArtifacts": [
+    {
+      "path": "docs/neon-corpus-flywheel/acceptance-gate/ACCEPTANCE-GATE-REPORT.md",
+      "role": "Gate 1–10 narrative; SHA table preserves a3dd5895 and 187c72e0 as distinct historical states"
+    },
+    {
+      "path": "docs/neon-corpus-flywheel/acceptance-gate/before-after-health.json",
+      "role": "Historical Gate 3 ERROR/fingerprint delta vs main PRE_SHA 7f1dd3a2 — not rewritten by final audit"
+    },
+    {
+      "path": "docs/neon-corpus-flywheel/acceptance-gate/final-audit-fingerprint-delta.json",
+      "role": "Final-audit fingerprint delta vs prior tip 187c72e0"
+    },
+    {
+      "path": "docs/neon-corpus-flywheel/acceptance-gate/batch2-holdout-plan.json",
+      "role": "LSB falsification-first Batch 2 plan"
+    },
+    {
+      "path": "tests/neon-corpus-flywheel/definition-body-clause-scope.test.ts",
+      "role": "DSGR/Chewy structural remediation regression (also on #259 port)"
+    },
+    {
+      "path": "tests/neon-corpus-flywheel/definition-boundary-adversarial.test.ts",
+      "role": "Gate 2 findTopLevelDefinitionStarts adversarial suite"
+    },
+    {
+      "path": "tests/neon-corpus-flywheel/definition-section-context-adversarial.test.ts",
+      "role": "Final-audit false-context + containment adversarial suite"
+    },
+    {
+      "path": "tests/neon-corpus-flywheel/structure-identity-integrity.test.ts",
+      "role": "Gate 3 identity/span integrity including LSB holdout"
+    },
+    {
+      "path": "tests/neon-corpus-flywheel/ownership-and-discovery-consequences.test.ts",
+      "role": "Gate 4 DSGR/Chewy/CONMED ownership + Pass A consequences"
+    }
+  ],
+  "shaIdentityNotes": [
+    "a3dd5895 and 187c72e0 are different historical states: content pin vs gate-close tip.",
+    "Do not collapse them; do not rewrite before-after-health.json afterSha.",
+    "#259 exactPortSha 697111a8 is the additive Batch-1 port onto #253; final-audit heading/containment fix is additive follow-up evidence on the final-audit branch and a separate #259 follow-up commit when ported."
+  ]
+}
