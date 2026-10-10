@@ -89,3 +89,30 @@ export {
   type BuildVerifiedCapacityInputArgs,
   type VerifiedUtilizationHandoffInput,
 } from "./verified-input-contract";
+/** Agent #9 statement ingestion + utilization reconstruction (feeds Agent #2 contract). */
+export {
+  normalizeFinancialStatementEvidence,
+  statementBalancesDoNotEstablishBasketAttribution,
+  type AccountingDefinitionBasis,
+  type FinancialStatementFamily,
+  type FinancialMetricAdjustment,
+  type StatementCapacityMetricKey,
+  type RawFinancialStatementLine,
+  type StatementMetricDefinitionMapping,
+  type FinancialStatementIngestionInput,
+  type FinancialStatementIngestionResult,
+  type StatementIngestionRefusalReason,
+  type StatementNormalizationTraceEntry,
+} from "./financial-statement-ingestion";
+export {
+  reconstructUtilizationEvidence,
+  toVerifiedUtilizationHandoffInput,
+  type HistoricalUtilizationEventKind,
+  type HistoricalUtilizationEvent,
+  type SupersessionTreatment,
+  type UtilizationCompletenessLayer,
+  type UtilizationReconstructionInput,
+  type UtilizationReconstructionResult,
+  type AttributedUtilizationUsage,
+  type UtilizationReconstructionTraceEntry,
+} from "./utilization-evidence-reconstruction";
