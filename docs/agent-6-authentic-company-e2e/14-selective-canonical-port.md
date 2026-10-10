@@ -22,6 +22,10 @@
 
 Full Agent 6 docs tree, all three-company scorecards, Benchmark/Insulet fixtures, bulk e2e harnesses (114-file dump). Add only as needed later.
 
-## §7.01 verified-rule attempt
+## Canonical identity remediation (audit)
 
-See `14-knife-river-701-verified-rule-attempt/` (JSON + `02-justified-refusal.md`). Base doc-a only; amendments not consolidated. **Mission outcome: JUSTIFIED_REFUSAL / OPERATIONAL_CREDENTIAL** — no invented IR. Live path needs keys + spend auth + budget + certifiedConfig (or approved offline replay).
+Trusted-only union-find for `documentIds` / `Document.instrumentId`. REVIEW_REQUIRED edges become `provisionalDocumentIds` discovery associations (or `provisionalBridgeBlockers` when they would merge confirmed instruments). See `tests/agent6/provisional-bridge-canonical-identity.test.ts`.
+
+## §7.01 readiness probe
+
+See `14-knife-river-701-verified-rule-attempt/`. Script role: **CREDENTIAL_READINESS_PROBE** — live certified path is **not implemented**. Outcome: **JUSTIFIED_REFUSAL / LIVE_PATH_NOT_IMPLEMENTED**. Credentials are not requested until implementation + budget/config gates exist. `verifiedRule.count=0`.

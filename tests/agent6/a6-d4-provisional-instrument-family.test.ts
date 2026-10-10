@@ -1,12 +1,13 @@
 /**
- * A6-D4 — REVIEW_REQUIRED amendments associate into the correct instrument
- * family without being treated as operatively confirmed.
+ * A6-D4 — REVIEW_REQUIRED amendments associate for discovery without becoming
+ * canonical instrument members or operatively confirmed.
  */
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildPackageGraph } from "@/lib/contract-model/compiler/package-graph/pipeline";
 import {
+  discoveryAssociatedDocumentIds,
   groupPackageIntoInstruments,
   isAssociativeGroupingEdge,
   isLegallyConfirmedAmendmentChain,
@@ -44,7 +45,7 @@ const am: DocumentClassification = {
 };
 
 describe("A6-D4 provisional instrument family association", () => {
-  it("REVIEW_REQUIRED + SUPPORTING AMENDS associates amendment with base and marks PROVISIONAL_FAMILY", () => {
+  it("REVIEW_REQUIRED + SUPPORTING AMENDS records discovery association without canonical membership merge", () => {
     const rels: RelationshipCandidate[] = [
       {
         sourceDocumentId: "am",
@@ -63,12 +64,17 @@ describe("A6-D4 provisional instrument family association", () => {
     expect(isAssociativeGroupingEdge(rels[0]!)).toBe(true);
 
     const result = groupPackageIntoInstruments(["ca", "am"], [ca, am], [], rels);
-    expect(result).toHaveLength(1);
-    expect(result[0]!.documentIds.sort()).toEqual(["am", "ca"]);
-    expect(result[0]!.baseDocumentId).toBe("ca");
-    expect(result[0]!.reviewStatus).toBe("REVIEW_REQUIRED");
-    expect(result[0]!.associationKind).toBe("PROVISIONAL_FAMILY");
-    expect(result[0]!.provisionalDocumentIds).toEqual(["am"]);
+    // Confirmed clusters stay separate; provisional is discovery-only on the CA.
+    expect(result).toHaveLength(2);
+    const facility = result.find((r) => r.baseDocumentId === "ca")!;
+    const amendmentInst = result.find((r) => r.baseDocumentId === "am")!;
+    expect(facility.documentIds).toEqual(["ca"]);
+    expect(facility.provisionalDocumentIds).toEqual(["am"]);
+    expect(facility.associationKind).toBe("PROVISIONAL_FAMILY");
+    expect(facility.reviewStatus).toBe("REVIEW_REQUIRED");
+    expect(discoveryAssociatedDocumentIds(facility)).toEqual(["am", "ca"]);
+    expect(amendmentInst.documentIds).toEqual(["am"]);
+    expect(amendmentInst.provisionalDocumentIds).toEqual([]);
   });
 
   it("preserves defense-in-depth: RESOLVED + SUPPORTING still does not group", () => {
@@ -109,6 +115,7 @@ describe("A6-D4 provisional instrument family association", () => {
     expect(isAssociativeGroupingEdge(rels[0]!)).toBe(false);
     const result = groupPackageIntoInstruments(["ca", "am"], [ca, am], [], rels);
     expect(result).toHaveLength(2);
+    expect(result.every((r) => (r.provisionalDocumentIds ?? []).length === 0)).toBe(true);
   });
 
   it("missing-base UNRESOLVED AMENDS does not attach historical amendments to a later restatement", () => {
@@ -189,7 +196,7 @@ describe("A6-D4 provisional instrument family association", () => {
     expect(result.find((r) => r.baseDocumentId === "ind")!.documentIds).toEqual(["ind"]);
   });
 
-  it("Knife River authentic package: First+Second Amendments provisionally join the CA instrument", () => {
+  it("Knife River authentic package: First+Second Amendments are provisional discovery associations on the CA", () => {
     const docs = loadPackage("knife-river-2023-2026");
     const graph = buildPackageGraph("agent6-kr", "knife-river-2023-2026", docs);
     const amends = graph.relationshipCandidates.filter((r) => r.relationshipType === "AMENDS");
@@ -199,14 +206,13 @@ describe("A6-D4 provisional instrument family association", () => {
 
     const facility = graph.instruments.find((i) => i.baseDocumentId === "doc-a");
     expect(facility).toBeTruthy();
-    expect(facility!.documentIds.sort()).toEqual(["doc-a", "doc-b", "doc-c"]);
+    // Canonical members: base only. Amendments stay provisional discovery associations.
+    expect(facility!.documentIds).toEqual(["doc-a"]);
+    expect(facility!.provisionalDocumentIds?.sort()).toEqual(["doc-b", "doc-c"]);
     expect(facility!.reviewStatus).toBe("REVIEW_REQUIRED");
     expect(facility!.associationKind).toBe("PROVISIONAL_FAMILY");
-    expect(facility!.provisionalDocumentIds?.sort()).toEqual(["doc-b", "doc-c"]);
-    // Relationship status itself is unchanged — not force-resolved.
+    expect(discoveryAssociatedDocumentIds(facility!)).toEqual(["doc-a", "doc-b", "doc-c"]);
     expect(amends.every((r) => r.status === "REVIEW_REQUIRED")).toBe(true);
-    // Provisional family must never be mistaken for a confirmed amendment chain
-    // or consolidated operative agreement.
     expect(isLegallyConfirmedAmendmentChain(facility!)).toBe(false);
     expect(mayConsolidateOperativeAgreement(facility!)).toBe(false);
   });

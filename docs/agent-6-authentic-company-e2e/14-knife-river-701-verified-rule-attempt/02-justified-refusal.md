@@ -1,8 +1,8 @@
-# Knife River §7.01 — justified refusal (no invented IR)
+# Knife River §7.01 — justified refusal (readiness probe)
 
 ## Verdict
 
-**JUSTIFIED_REFUSAL / OPERATIONAL_CREDENTIAL** — no verified rule produced; legal interpretation was not attempted and was not fabricated.
+**JUSTIFIED_REFUSAL / LIVE_PATH_NOT_IMPLEMENTED** — this script is a **credential/readiness probe**, not a working live interpretation harness. No verified rule produced; no paid calls initiated; no IR fabricated.
 
 ## What was established (credential-independent)
 
@@ -10,28 +10,26 @@
 |---|---|
 | Base doc-a §7.01 structural section | Present (`Indebtedness`) |
 | Pass A hit on base §7.01 | 1 (SIGNAL_ONLY_NOT_EXECUTABLE) |
-| Amendment consolidation | **Forbidden** — `PROVISIONAL_FAMILY`, `mayConsolidateOperativeAgreement=false` |
-| Operative authority scope | `BASE_AGREEMENT_DOC_A_ONLY` (doc-b / doc-c excluded) |
+| Canonical instrument members | `documentIds = [doc-a]` only |
+| Provisional discovery associations | `provisionalDocumentIds = [doc-b, doc-c]` |
+| Amendment consolidation | **Forbidden** |
+| Operative authority scope | `BASE_AGREEMENT_DOC_A_ONLY` |
 | Offline replay corpus for KR 7.01 | Absent |
 | `verifiedRule.count` | **0** |
+| `interpretation.attempted` | **false** |
 | Cost | $0 |
 
-## Exact inputs required to proceed (any one live path)
+## Gate order (do not skip)
 
-1. `AI_GATEWAY_API_KEY` **or** `ANTHROPIC_API_KEY`
-2. `KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1`
-3. Explicit budget ceiling (USD) for certified compile/inventory/verify
-4. `certifiedConfig` model IDs for `createCertifiedCallers`
-5. Run: `npx tsx scripts/agent6/attempt-knife-river-701-verified-rule.ts --live`
+1. Implement certified live path (`createCertifiedCallers` → `compileCandidateToVerifiedIR` → certify)
+2. Positive `KNIFE_RIVER_701_BUDGET_CEILING_USD`
+3. Certified model ids configured
+4. Only then: API credentials + `KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1` + `--live`
 
-**Alternative:** an approved offline replay corpus at `tests/fixtures/phase-3-live-replay/knife-river-7.01` (does not exist today).
-
-## Production path when authorized
-
-`createCertifiedCallers` → `buildCandidateCompilerInput(doc-a §7.01)` → `compileCandidateToVerifiedIR` → verify/certify → (optional) `evaluateVerifiedCapacity` under REQUIRE only if CERTIFIED.
+Credentials are **not** requested while step 1 is unimplemented.
 
 ## Non-goals observed
 
 - No consolidation of provisional First/Second Amendments into operative text
 - No invented interpretation or synthetic IR
-- Not a discovery scorecard — refusal is the deliverable until credentials/spend land
+- No `LIVE_PATH_ENTERED` claim without interpretation actually running

@@ -1,6 +1,8 @@
 {
   "schema": "agent6-knife-river-701-verified-rule-attempt.v1",
-  "generatedAt": "2026-10-10T01:27:31.776Z",
+  "role": "CREDENTIAL_READINESS_PROBE",
+  "livePathImplemented": false,
+  "generatedAt": "2026-10-10T10:09:56.776Z",
   "companyKey": "knife-river-2023-2026",
   "target": {
     "sectionRef": "7.01",
@@ -15,14 +17,22 @@
   "amendmentAuthority": {
     "associationKind": "PROVISIONAL_FAMILY",
     "reviewStatus": "REVIEW_REQUIRED",
+    "confirmedDocumentIds": [
+      "doc-a"
+    ],
     "provisionalDocumentIds": [
+      "doc-b",
+      "doc-c"
+    ],
+    "discoveryAssociatedDocumentIds": [
+      "doc-a",
       "doc-b",
       "doc-c"
     ],
     "legallyConfirmedAmendmentChain": false,
     "mayConsolidateOperativeAgreement": false,
     "operativeAuthorityScope": "BASE_AGREEMENT_DOC_A_ONLY",
-    "note": "First/Second Amendments remain PROVISIONAL_FAMILY — not treated as consolidated operative text."
+    "note": "First/Second Amendments remain provisional discovery associations — not consolidated operative text and not canonical Document.instrumentId members."
   },
   "discovery": {
     "passAHitsOnBase701": 1,
@@ -30,11 +40,23 @@
     "agent1Eligibility": "SIGNAL_ONLY_NOT_EXECUTABLE",
     "note": "Pass A identification is not legal interpretation and not a verified rule."
   },
+  "gates": {
+    "structuralOk": true,
+    "livePathImplemented": false,
+    "budgetCeilingUsd": null,
+    "budgetOk": false,
+    "certifiedModelIdsPresent": false,
+    "credentialPresent": false,
+    "spendAuthorized": false,
+    "liveFlag": false,
+    "offlineReplayAvailable": false
+  },
   "interpretation": {
     "attempted": false,
     "mode": "NOT_ATTEMPTED",
     "fabricated": false,
-    "result": null
+    "result": null,
+    "note": "Interpretation not attempted."
   },
   "verifiedRule": {
     "count": 0,
@@ -47,16 +69,13 @@
     "note": "A verified rule is not automatically numerical capacity. Remaining capacity withheld without utilization."
   },
   "blocker": {
-    "class": "OPERATIONAL_CREDENTIAL",
-    "reason": "No AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY in environment. Cannot run certified compile/inventory/verify without inventing IR.",
+    "class": "LIVE_PATH_NOT_IMPLEMENTED",
+    "reason": "This script is a credential/readiness probe only. The certified live interpretation path is not implemented; refusing rather than inventing IR or initiating paid calls. No credentials are requested until implementation and budget/config gates are independently verified.",
     "missingInputs": [
-      "AI_GATEWAY_API_KEY_OR_ANTHROPIC_API_KEY",
-      "KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1",
-      "EXPLICIT_BUDGET_CEILING_USD",
-      "CERTIFIED_MODEL_IDS_VIA_certifiedConfig",
+      "IMPLEMENT_CERTIFIED_LIVE_PATH_createCertifiedCallers_compileCandidateToVerifiedIR",
       "APPROVED_OFFLINE_REPLAY_CORPUS_FOR_KR_701"
     ],
-    "exactProductionPathWhenAuthorized": [
+    "exactProductionPathWhenImplementedAndAuthorized": [
       "createCertifiedCallers + certifiedConfig + HardDispatchBudget",
       "buildCandidateCompilerInput(doc-a §7.01)",
       "compileCandidateToVerifiedIR",
@@ -68,5 +87,5 @@
   "callerSynthetic": true,
   "costUsd": 0,
   "missionOutcome": "JUSTIFIED_REFUSAL",
-  "successCriterion": "JUSTIFIED_REFUSAL (OPERATIONAL_CREDENTIAL): verifiedRule.count=0; interpretation not fabricated. Exact inputs listed in blocker.missingInputs."
+  "successCriterion": "JUSTIFIED_REFUSAL (LIVE_PATH_NOT_IMPLEMENTED): verifiedRule.count=0; interpretation not fabricated; paid calls not initiated."
 }

@@ -3,23 +3,27 @@
  * underlying credit facility or note series a base agreement plus its own
  * amendments/joinders/supplements all belong to.
  *
- * Two membership strengths (Agent 6 A6-D4):
- * 1. CONFIRMED — RESOLVED + STRONG_TARGET_EVIDENCE (or pre-taxonomy RESOLVED)
- *    edges. Same trust bar as Phase 3F.1.4 PKG-01/PKG-02.
- * 2. PROVISIONAL_FAMILY — REVIEW_REQUIRED edges with SUPPORTING or STRONG
- *    evidence and a concrete targetDocumentId. Associates amendments with the
- *    correct instrument family for discovery/completeness WITHOUT promoting
- *    the edge to RESOLVED or treating the amendment as operatively confirmed.
+ * Canonical instrument identity (Agent 6 audit remediation):
+ * 1. CONFIRMED membership — union-find over trusted RESOLVED +
+ *    STRONG_TARGET_EVIDENCE (or pre-taxonomy RESOLVED) edges ONLY. These
+ *    members alone may receive Document.instrumentId at persistence.
+ * 2. PROVISIONAL discovery associations — REVIEW_REQUIRED edges with
+ *    SUPPORTING/STRONG evidence and a concrete targetDocumentId. Recorded on
+ *    the target instrument as provisionalDocumentIds for discovery/completeness
+ *    WITHOUT unioning clusters, WITHOUT merging two confirmed instruments, and
+ *    WITHOUT assigning canonical Document.instrumentId.
  *
  * CONTEXTUAL_MENTION_ONLY / NEGATIVE_EVIDENCE / UNRESOLVED (null target) never
- * alter membership. Cross-cutting document types (INTERCREDITOR / GUARANTEE /
- * SECURITY / COMPLIANCE_CERTIFICATE / SIDE_LETTER / FEE_LETTER) are never
- * grouped into an instrument themselves.
+ * alter membership or discovery associations. Cross-cutting document types
+ * (INTERCREDITOR / GUARANTEE / SECURITY / COMPLIANCE_CERTIFICATE / SIDE_LETTER /
+ * FEE_LETTER / FINANCIAL_STATEMENT) are never grouped into an instrument
+ * themselves.
  */
 import type {
   DocumentClassification,
   DocumentIdentity,
   InstrumentGroupingResult,
+  ProvisionalBridgeBlocker,
   RelationshipCandidate,
   TargetEvidenceClass,
 } from "./types";
@@ -58,9 +62,10 @@ export function isTrustedGroupingEdge(rel: RelationshipCandidate): boolean {
 
 /**
  * Provisional family-association edge (A6-D4). REVIEW_REQUIRED with a concrete
- * target and SUPPORTING/STRONG evidence joins family membership and forces
- * reviewStatus=REVIEW_REQUIRED / associationKind=PROVISIONAL_FAMILY. Never
- * upgrades relationship status and never alone establishes operative authority.
+ * target and SUPPORTING/STRONG evidence may be recorded as a discovery/review
+ * association on the target instrument. Never unions confirmed clusters, never
+ * upgrades relationship status, and never alone establishes operative authority
+ * or canonical Document.instrumentId.
  */
 export function isAssociativeGroupingEdge(rel: RelationshipCandidate): boolean {
   return (
@@ -69,11 +74,6 @@ export function isAssociativeGroupingEdge(rel: RelationshipCandidate): boolean {
     GROUPING_RELATIONSHIP_TYPES.has(rel.relationshipType) &&
     ASSOCIATIVE_EVIDENCE.has(rel.evidenceClass)
   );
-}
-
-/** Either confirmed or provisional — used for union-find membership only. */
-function isMembershipEdge(rel: RelationshipCandidate): boolean {
-  return isTrustedGroupingEdge(rel) || isAssociativeGroupingEdge(rel);
 }
 
 class UnionFind {
@@ -93,16 +93,15 @@ class UnionFind {
   }
 }
 
-function trustedReachableFrom(baseDocumentId: string, members: string[], relationshipCandidates: RelationshipCandidate[]): Set<string> {
-  const uf = new UnionFind();
-  for (const id of members) uf.find(id);
-  for (const rel of relationshipCandidates) {
-    if (!isTrustedGroupingEdge(rel)) continue;
-    if (!members.includes(rel.sourceDocumentId) || !members.includes(rel.targetDocumentId!)) continue;
-    uf.union(rel.sourceDocumentId, rel.targetDocumentId!);
-  }
-  const baseRoot = uf.find(baseDocumentId);
-  return new Set(members.filter((id) => uf.find(id) === baseRoot));
+/**
+ * Document ids in discovery scope for an instrument: confirmed members plus
+ * provisional discovery associations. Never use this set for canonical
+ * Document.instrumentId assignment.
+ */
+export function discoveryAssociatedDocumentIds(
+  instrument: Pick<InstrumentGroupingResult, "documentIds" | "provisionalDocumentIds">,
+): string[] {
+  return [...new Set([...instrument.documentIds, ...(instrument.provisionalDocumentIds ?? [])])].sort();
 }
 
 /**
@@ -140,6 +139,96 @@ export function mayConsolidateOperativeAgreement(
   return true;
 }
 
+function findInstrumentForDocument(
+  instruments: InstrumentGroupingResult[],
+  documentId: string,
+): InstrumentGroupingResult | undefined {
+  return instruments.find((i) => i.documentIds.includes(documentId));
+}
+
+/**
+ * Attach REVIEW_REQUIRED associative edges as discovery associations without
+ * mutating confirmed clusters. Never merges two trusted clusters.
+ */
+function applyProvisionalDiscoveryAssociations(
+  instruments: InstrumentGroupingResult[],
+  relationshipCandidates: RelationshipCandidate[],
+  instrumentEligible: string[],
+): void {
+  const eligible = new Set(instrumentEligible);
+  const associative = relationshipCandidates.filter(
+    (r) =>
+      isAssociativeGroupingEdge(r) &&
+      eligible.has(r.sourceDocumentId) &&
+      eligible.has(r.targetDocumentId!),
+  );
+
+  // Ambiguity: a singleton source with associative edges into 2+ confirmed
+  // clusters is cross-document-ambiguous — record blockers, attach to none.
+  const targetsBySource = new Map<string, Set<string>>();
+  for (const rel of associative) {
+    const srcInst = findInstrumentForDocument(instruments, rel.sourceDocumentId);
+    const tgtInst = findInstrumentForDocument(instruments, rel.targetDocumentId!);
+    if (!srcInst || !tgtInst) continue;
+    if (srcInst.instrumentKey === tgtInst.instrumentKey) continue;
+    const set = targetsBySource.get(rel.sourceDocumentId) ?? new Set<string>();
+    set.add(tgtInst.instrumentKey);
+    targetsBySource.set(rel.sourceDocumentId, set);
+  }
+
+  const pushBlocker = (inst: InstrumentGroupingResult, blocker: ProvisionalBridgeBlocker) => {
+    const list = inst.provisionalBridgeBlockers ?? [];
+    if (list.some((b) => b.sourceDocumentId === blocker.sourceDocumentId && b.targetDocumentId === blocker.targetDocumentId && b.reason === blocker.reason)) {
+      return;
+    }
+    inst.provisionalBridgeBlockers = [...list, blocker];
+    inst.reviewStatus = "REVIEW_REQUIRED";
+  };
+
+  for (const rel of associative) {
+    const src = rel.sourceDocumentId;
+    const tgt = rel.targetDocumentId!;
+    const srcInst = findInstrumentForDocument(instruments, src);
+    const tgtInst = findInstrumentForDocument(instruments, tgt);
+    if (!srcInst || !tgtInst) continue;
+    if (srcInst.instrumentKey === tgtInst.instrumentKey) continue;
+
+    const srcIsMulti = srcInst.documentIds.length > 1;
+    const tgtKeys = targetsBySource.get(src) ?? new Set();
+
+    if (srcIsMulti) {
+      // Confirmed member of one instrument must not provisionally join another.
+      const blocker: ProvisionalBridgeBlocker = {
+        sourceDocumentId: src,
+        targetDocumentId: tgt,
+        reason: "BRIDGES_CONFIRMED_INSTRUMENTS",
+      };
+      pushBlocker(srcInst, blocker);
+      pushBlocker(tgtInst, blocker);
+      continue;
+    }
+
+    if (tgtKeys.size > 1) {
+      const blocker: ProvisionalBridgeBlocker = {
+        sourceDocumentId: src,
+        targetDocumentId: tgt,
+        reason: "AMBIGUOUS_MULTI_TARGET",
+      };
+      pushBlocker(srcInst, blocker);
+      pushBlocker(tgtInst, blocker);
+      continue;
+    }
+
+    // Singleton source → unique target cluster: discovery association only.
+    const prov = new Set(tgtInst.provisionalDocumentIds ?? []);
+    prov.add(src);
+    tgtInst.provisionalDocumentIds = [...prov].sort();
+    tgtInst.associationKind = "PROVISIONAL_FAMILY";
+    tgtInst.reviewStatus = "REVIEW_REQUIRED";
+    tgtInst.confidence = Math.min(tgtInst.confidence, 0.6);
+  }
+}
+
 export function groupPackageIntoInstruments(
   documentIds: string[],
   classifications: DocumentClassification[],
@@ -150,10 +239,11 @@ export function groupPackageIntoInstruments(
   const identityById = new Map(identities.map((i) => [i.documentId, i] as const));
   const instrumentEligible = documentIds.filter((id) => !NON_INSTRUMENT_TYPES.has(classById.get(id)?.type ?? "UNKNOWN"));
 
+  // Canonical clusters: trusted edges ONLY. Provisional edges never union.
   const uf = new UnionFind();
   for (const id of instrumentEligible) uf.find(id);
   for (const rel of relationshipCandidates) {
-    if (!isMembershipEdge(rel)) continue;
+    if (!isTrustedGroupingEdge(rel)) continue;
     if (!instrumentEligible.includes(rel.sourceDocumentId) || !instrumentEligible.includes(rel.targetDocumentId!)) continue;
     uf.union(rel.sourceDocumentId, rel.targetDocumentId!);
   }
@@ -166,15 +256,12 @@ export function groupPackageIntoInstruments(
 
   const results: InstrumentGroupingResult[] = [];
   for (const [, members] of clusters) {
-    // Base = document that is not the source of a membership AMENDS/RESTATES/…
-    // edge targeting another member. Associative edges count for base selection
-    // (so a REVIEW_REQUIRED amendment is not wrongly named the base) without
-    // upgrading their relationship status.
+    // Base selection uses trusted membership edges only (never provisional).
     const amendsSomeoneInCluster = new Set(
       relationshipCandidates
         .filter(
           (r) =>
-            isMembershipEdge(r) &&
+            isTrustedGroupingEdge(r) &&
             members.includes(r.sourceDocumentId) &&
             members.includes(r.targetDocumentId!),
         )
@@ -190,35 +277,27 @@ export function groupPackageIntoInstruments(
               (identityById.get(b)?.amendmentNumber ?? identityById.get(b)?.supplementNumber ?? 0),
           )[0] ?? members[0]!);
 
-    const usedAssociative = relationshipCandidates.some(
-      (r) =>
-        isAssociativeGroupingEdge(r) &&
-        members.includes(r.sourceDocumentId) &&
-        members.includes(r.targetDocumentId!),
-    );
-    const confirmedReachable = trustedReachableFrom(baseDocumentId, members, relationshipCandidates);
-    const provisionalDocumentIds = members.filter((id) => id !== baseDocumentId && !confirmedReachable.has(id)).sort();
-
     const baseIdentity = identityById.get(baseDocumentId);
     const baseClassification = classById.get(baseDocumentId);
     const name =
       baseIdentity?.facilityOrInstrumentName ?? baseIdentity?.title ?? baseClassification?.type ?? "Unnamed instrument";
 
-    const associationKind = usedAssociative || provisionalDocumentIds.length > 0 ? "PROVISIONAL_FAMILY" : "CONFIRMED";
-    const reviewStatus =
-      associationKind === "PROVISIONAL_FAMILY" || baseCandidates.length !== 1 ? "REVIEW_REQUIRED" : "RESOLVED";
+    const reviewStatus = baseCandidates.length !== 1 ? "REVIEW_REQUIRED" : "RESOLVED";
 
     results.push({
       instrumentKey: `instrument:${baseDocumentId}`,
       name,
-      documentIds: members,
+      documentIds: [...members].sort(),
       baseDocumentId,
-      confidence: associationKind === "CONFIRMED" ? (members.length > 1 ? 0.9 : 0.5) : 0.6,
+      confidence: members.length > 1 ? 0.9 : 0.5,
       reviewStatus,
-      associationKind,
-      provisionalDocumentIds,
+      associationKind: "CONFIRMED",
+      provisionalDocumentIds: [],
+      provisionalBridgeBlockers: [],
     });
   }
+
+  applyProvisionalDiscoveryAssociations(results, relationshipCandidates, instrumentEligible);
 
   return results;
 }
