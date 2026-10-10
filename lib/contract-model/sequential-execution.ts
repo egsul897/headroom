@@ -189,7 +189,15 @@ export interface SequentialStepResult {
   recipeLimitations: { code: string; message: string; refs: string[] }[];
   simulation: TransactionSimulationResult | null;
   preState: CapacitySnapshotView[];
+  /** Authoritative post-state only when the world was advanced (SIMULATED + SATISFIED). */
   postState: CapacitySnapshotView[] | null;
+  /**
+   * Non-null when Phase 4D published a provisional post-state under REVIEW_REQUIRED (or similar)
+   * that must NOT advance the sequential world or complete into the ledger.
+   */
+  provisionalPostState: CapacitySnapshotView[] | null;
+  /** True only when this step authoritatively advanced the chained world for subsequent steps. */
+  worldAdvanced: boolean;
   independentPostCheck: CapacitySnapshotView[] | null;
   independentPostMatchesSimulation: boolean | null;
   preStateHash: string;
@@ -203,6 +211,15 @@ export interface SequentialStepResult {
   financialViewChained: boolean;
   stateKinds: StateKindDisclosure[];
   notes: string[];
+}
+
+/** Authoritative sequential advance: SIMULATED + SATISFIED + non-null postState. REVIEW_REQUIRED never qualifies. */
+export function mayAdvanceSequentialWorld(simulation: TransactionSimulationResult): boolean {
+  return (
+    simulation.postState !== null &&
+    simulation.simulationStatus === "SIMULATED" &&
+    simulation.selectedPathResult === "SATISFIED"
+  );
 }
 
 export interface SequentialRunResult {
@@ -358,6 +375,7 @@ export function runSequentialTransactions(args: {
     "Each step executes via simulateVerifiedTransaction under REQUIRE.",
     "Financial overlays chain via SET of prior APPLIED results into the next base resolver.",
     "Restore authority enforced at the verified-execution boundary.",
+    "Authoritative world advance requires SIMULATED + SATISFIED; REVIEW_REQUIRED is provisional-only.",
   ];
 
   for (const step of args.steps) {
@@ -380,6 +398,8 @@ export function runSequentialTransactions(args: {
         simulation: null,
         preState: preViews,
         postState: null,
+        provisionalPostState: null,
+        worldAdvanced: false,
         independentPostCheck: null,
         independentPostMatchesSimulation: null,
         preStateHash: preHash,
@@ -422,6 +442,8 @@ export function runSequentialTransactions(args: {
         simulation: null,
         preState: preViews,
         postState: null,
+        provisionalPostState: null,
+        worldAdvanced: false,
         independentPostCheck: null,
         independentPostMatchesSimulation: null,
         preStateHash: preHash,
@@ -450,17 +472,17 @@ export function runSequentialTransactions(args: {
     const commitPostedUsageIds: string[] = [];
     const commitRefused: { usageId: string; codes: string[] }[] = [];
     let postViews: CapacitySnapshotView[] | null = null;
+    let provisionalPostState: CapacitySnapshotView[] | null = null;
+    let worldAdvanced = false;
     let independent: CapacitySnapshotView[] | null = null;
     let match: boolean | null = null;
     let postHash: string | null = null;
     let chainedMetricKeysAfter: string[] = [];
     let financialViewChained = false;
 
-    const pathOk =
-      simulation.selectedPathResult === "SATISFIED" ||
-      simulation.selectedPathResult === "REVIEW_REQUIRED";
+    const advanceOk = mayAdvanceSequentialWorld(simulation);
 
-    if (simulation.postState && pathOk) {
+    if (advanceOk) {
       const advanced = advanceWorld(world, simulation);
       const chainInfo = chainFinancialViewWithScope(world.inputs, simulation, {
         companyId: world.companyId,
@@ -468,16 +490,20 @@ export function runSequentialTransactions(args: {
       });
       chainedMetricKeysAfter = chainInfo.chainedMetricKeys;
       financialViewChained = chainInfo.chainedMetricKeys.length > 0 || chainInfo.chainedEvents.length > 0;
-      postViews = viewState(simulation.postState, utilizationStatus);
-      postHash = simulation.postState.stateHash;
+      postViews = viewState(simulation.postState!, utilizationStatus);
+      postHash = simulation.postState!.stateHash;
       independent = independentRecompute(advanced, utilizationStatus);
       match = snapshotsEqual(forCompare(postViews), forCompare(independent));
       world = advanced;
+      worldAdvanced = true;
 
       if (args.mode === "COMPLETED") {
         if (!args.ledgerBackend) throw new Error("COMPLETED mode requires ledgerBackend");
-        if (!simulation.commitPlan.committable) {
-          stepNotes.push("COMPLETED mode skipped ledger post: commitPlan.committable=false");
+        // Belt-and-suspenders: Phase 4D already sets committable only for SIMULATED+SATISFIED.
+        if (!simulation.commitPlan.committable || simulation.selectedPathResult !== "SATISFIED") {
+          stepNotes.push(
+            `COMPLETED mode skipped ledger post: committable=${simulation.commitPlan.committable} path=${simulation.selectedPathResult}`,
+          );
         } else {
           for (const p of simulation.ledgerEffects.proposed) {
             const posted = args.ledgerBackend.appendUsage({ usage: p.record });
@@ -486,11 +512,25 @@ export function runSequentialTransactions(args: {
           }
         }
       }
+    } else if (simulation.postState && simulation.selectedPathResult === "REVIEW_REQUIRED") {
+      // Provisional analysis only — never advance world, never complete ledger, never chain overlays.
+      provisionalPostState = viewState(simulation.postState, utilizationStatus);
+      postHash = simulation.postState.stateHash;
+      abortedAtStepId = step.stepId;
+      stepNotes.push(
+        `REVIEW_REQUIRED: provisional post-state exposed; world not advanced; not affirmative permission (simulationStatus=${simulation.simulationStatus}, committable=${simulation.commitPlan.committable})`,
+      );
+      if (args.mode === "COMPLETED") {
+        stepNotes.push("COMPLETED mode refused ledger post for REVIEW_REQUIRED (not SATISFIED).");
+      }
     } else {
       abortedAtStepId = step.stepId;
       stepNotes.push(
-        `No post-state published (simulationStatus=${simulation.simulationStatus}, path=${simulation.selectedPathResult})`,
+        `No authoritative advance (simulationStatus=${simulation.simulationStatus}, path=${simulation.selectedPathResult}, postState=${simulation.postState ? "present" : "null"})`,
       );
+      if (args.mode === "COMPLETED") {
+        stepNotes.push("COMPLETED mode refused ledger post: path not SIMULATED+SATISFIED.");
+      }
     }
 
     const stateKinds: StateKindDisclosure[] = [
@@ -515,6 +555,8 @@ export function runSequentialTransactions(args: {
       simulation,
       preState: verifiedPre,
       postState: postViews,
+      provisionalPostState,
+      worldAdvanced,
       independentPostCheck: independent,
       independentPostMatchesSimulation: match,
       preStateHash: verified.capacity.stateHash,
@@ -533,7 +575,11 @@ export function runSequentialTransactions(args: {
     });
 
     if (abortedAtStepId) {
-      notes.push(`Aborted at ${step.stepId}: simulation did not publish post-state`);
+      notes.push(
+        worldAdvanced
+          ? `Aborted at ${step.stepId}: unexpected abort after advance`
+          : `Aborted at ${step.stepId}: no authoritative world advance (path=${simulation.selectedPathResult})`,
+      );
       break;
     }
   }
