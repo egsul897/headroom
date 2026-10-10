@@ -147,15 +147,44 @@ async function main() {
     }, {}),
     fixedDollarVerticalSlice: {
       attempted: result.fixedDollarResults.length,
-      verifiedExecutable: verifiedExecutableUnits.length,
-      productionCapacityRefused: verifiedExecutableUnits.filter((u) => u.fixedDollarSlice?.productionRefusal).length,
-      units: verifiedExecutableUnits.map((u) => ({
-        sourceRef: u.sourceRef,
-        classification: u.fixedDollarSlice?.classification ?? null,
-        fidelityVerdict: u.fixedDollarSlice?.fidelityVerdict ?? null,
-        capacityOutcome: u.fixedDollarSlice?.capacityOutcome ?? null,
-        availableAmountUsd: u.fixedDollarSlice?.availableAmountUsd ?? null,
-        productionRefusal: u.fixedDollarSlice?.productionRefusal ?? null,
+      verifiedExecutable: result.stages.fixedDollarVerticalSlice.verifiedExecutable,
+      productionCapacityRefused: result.stages.fixedDollarVerticalSlice.productionCapacityRefused,
+      units: verifiedExecutableUnits
+        .filter((u) => u.fixedDollarSlice)
+        .map((u) => ({
+          sourceRef: u.sourceRef,
+          classification: u.fixedDollarSlice?.classification ?? null,
+          fidelityVerdict: u.fixedDollarSlice?.fidelityVerdict ?? null,
+          capacityOutcome: u.fixedDollarSlice?.capacityOutcome ?? null,
+          availableAmountUsd: u.fixedDollarSlice?.availableAmountUsd ?? null,
+          productionRefusal: u.fixedDollarSlice?.productionRefusal ?? null,
+        })),
+    },
+    greaterOfVerticalSlice: {
+      attempted: result.stages.greaterOfVerticalSlice.attempted,
+      verifiedExecutable: result.stages.greaterOfVerticalSlice.verifiedExecutable,
+      productionCapacityRefused: result.stages.greaterOfVerticalSlice.productionCapacityRefused,
+      sharedCapacityPairs: result.stages.greaterOfVerticalSlice.sharedCapacityPairs,
+      units: verifiedExecutableUnits
+        .filter((u) => u.greaterOfSlice)
+        .map((u) => ({
+          sourceRef: u.sourceRef,
+          classification: u.greaterOfSlice?.classification ?? null,
+          fidelityVerdict: u.greaterOfSlice?.fidelityVerdict ?? null,
+          capacityOutcome: u.greaterOfSlice?.capacityOutcome ?? null,
+          availableAmountUsd: u.greaterOfSlice?.availableAmountUsd ?? null,
+          metricName: u.greaterOfSlice?.metricName ?? null,
+          fixedAmountUsd: u.greaterOfSlice?.fixedAmountUsd ?? null,
+          percentFraction: u.greaterOfSlice?.percentFraction ?? null,
+          productionRefusal: u.greaterOfSlice?.productionRefusal ?? null,
+          sharedCapacity: u.greaterOfSlice?.sharedCapacity ?? false,
+        })),
+      sharedPairs: result.greaterOfSharedPairs.map((p) => ({
+        refA: p.refA,
+        refB: p.refB,
+        shared: p.shared,
+        evidence: p.evidence,
+        sharedCapId: p.sharedCapId,
       })),
     },
   };
@@ -220,6 +249,43 @@ async function main() {
         capacityOutcome: r.evaluation.capacity?.outcome ?? null,
         ruleId: r.compile.rule?.ruleId ?? null,
         sufficiency: r.compile.rule?.sufficiency ?? null,
+      })),
+      null,
+      2,
+    ),
+  );
+  fs.writeFileSync(
+    path.join(outDir, "greater-of-results.json"),
+    JSON.stringify(
+      result.greaterOfResults.map((r) => ({
+        sourceRef: r.sourceRef,
+        executableClass: r.compile.executableClass,
+        classification: r.compile.classification.class,
+        fixedAmountUsd: r.compile.classification.fixedAmountUsd,
+        percentFraction: r.compile.classification.percentFraction,
+        metricName: r.compile.classification.metricName,
+        residuals: r.compile.classification.residuals,
+        fidelityVerdict: r.evaluation.fidelity.verdict,
+        outcomeLabel: r.evaluation.outcomeLabel,
+        availableAmountUsd: r.evaluation.availableAmountUsd,
+        productionRefusal: r.evaluation.productionRefusal,
+        capacityOutcome: r.evaluation.capacity?.outcome ?? null,
+        ruleId: r.compile.rule?.ruleId ?? null,
+        sufficiency: r.compile.rule?.sufficiency ?? null,
+      })),
+      null,
+      2,
+    ),
+  );
+  fs.writeFileSync(
+    path.join(outDir, "greater-of-shared-pairs.json"),
+    JSON.stringify(
+      result.greaterOfSharedPairs.map((p) => ({
+        refA: p.refA,
+        refB: p.refB,
+        shared: p.shared,
+        evidence: p.evidence,
+        sharedCapId: p.sharedCapId,
       })),
       null,
       2,

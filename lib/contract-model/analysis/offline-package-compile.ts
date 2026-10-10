@@ -53,6 +53,13 @@ import {
   type FixedDollarCapacityEval,
   type FixedDollarCompileResult,
 } from "../compiler/fixed-dollar-basket";
+import {
+  compileGreaterOfAssetsBasket,
+  compileGreaterOfSharedPair,
+  evaluateGreaterOfCapacity,
+  type GreaterOfCapacityEval,
+  type GreaterOfCompileResult,
+} from "../compiler/greater-of-assets-basket";
 
 export const OFFLINE_PACKAGE_COMPILE_VERSION = "offline-package-compile.v1";
 
@@ -111,8 +118,8 @@ export interface CompileUnitRepresentation {
   deterministicFactCount: number;
   localCompileStatus: string;
   /**
-   * Default REFUSED. Fixed-dollar vertical slice may set VERIFIED_EXECUTABLE
-   * only after independent fidelity + evaluator EXECUTED under stipulated gates.
+   * Default REFUSED. Fixed-dollar / greater-of vertical slices may set
+   * VERIFIED_EXECUTABLE after independent fidelity PASS on generalized IR.
    * Production capacity remains separately refused.
    */
   executableAuthority: "REFUSED" | "VERIFIED_EXECUTABLE";
@@ -123,6 +130,18 @@ export interface CompileUnitRepresentation {
     capacityOutcome: string | null;
     availableAmountUsd: number | null;
     productionRefusal: string | null;
+  } | null;
+  greaterOfSlice: {
+    classification: string;
+    compileClass: string;
+    fidelityVerdict: string | null;
+    capacityOutcome: string | null;
+    availableAmountUsd: number | null;
+    metricName: string | null;
+    fixedAmountUsd: number | null;
+    percentFraction: number | null;
+    productionRefusal: string | null;
+    sharedCapacity: boolean;
   } | null;
   provenance: {
     discoveryMethods: string[];
@@ -158,6 +177,12 @@ export interface OfflinePackageCompileResult {
       verifiedExecutable: number;
       productionCapacityRefused: number;
     };
+    greaterOfVerticalSlice: {
+      attempted: number;
+      verifiedExecutable: number;
+      productionCapacityRefused: number;
+      sharedCapacityPairs: number;
+    };
   };
   exceptionCatalogs: ExceptionCatalogDiscovery[];
   candidates: DiscoveredCandidate[];
@@ -166,6 +191,18 @@ export interface OfflinePackageCompileResult {
     sourceRef: string;
     compile: FixedDollarCompileResult;
     evaluation: FixedDollarCapacityEval;
+  }[];
+  greaterOfResults: {
+    sourceRef: string;
+    compile: GreaterOfCompileResult;
+    evaluation: GreaterOfCapacityEval;
+  }[];
+  greaterOfSharedPairs: {
+    refA: string;
+    refB: string;
+    shared: boolean;
+    evidence: string[];
+    sharedCapId: string | null;
   }[];
   humanInterventions: { kind: string; detail: string }[];
   summary: {
@@ -449,6 +486,14 @@ export async function compileFrozenDebtPackage(
   // --- per-candidate representation + local compile (deterministic) ---
   const units: CompileUnitRepresentation[] = [];
   const fixedDollarResults: OfflinePackageCompileResult["fixedDollarResults"] = [];
+  const greaterOfResults: OfflinePackageCompileResult["greaterOfResults"] = [];
+  const greaterOfCandidates: {
+    sourceRef: string;
+    operativeText: string;
+    documentId: string;
+    discoveryId: string;
+    families: string[];
+  }[] = [];
   for (const candidate of candidates) {
     const bundle = bundles.get(candidate.discoveryId) ?? null;
     let operativeText = operativeSourceTextFor(candidate, index, operativeState);
@@ -567,9 +612,10 @@ export async function compileFrozenDebtPackage(
       }
     }
 
-    // Fixed-dollar vertical slice: attempt only on catalog clause candidates.
+    // Vertical slices: attempt only on catalog clause candidates.
     let executableAuthority: CompileUnitRepresentation["executableAuthority"] = "REFUSED";
     let fixedDollarSlice: CompileUnitRepresentation["fixedDollarSlice"] = null;
+    let greaterOfSlice: CompileUnitRepresentation["greaterOfSlice"] = null;
     const isCatalogClause =
       /\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) &&
       (candidate.normalizedSourceRef.startsWith("def:") || /^\d+\.\d+\(/i.test(candidate.normalizedSourceRef));
@@ -609,6 +655,57 @@ export async function compileFrozenDebtPackage(
         if (hypo.outcomeLabel === "VERIFIED_EXECUTABLE" && hypo.fidelity.verdict === "PASS") {
           executableAuthority = "VERIFIED_EXECUTABLE";
         }
+      } else {
+        const goCompile = compileGreaterOfAssetsBasket({
+          companyId: options.companyId,
+          instrumentKey,
+          sourceDocumentId: candidate.documentId,
+          candidateRef: candidate.discoveryId,
+          sourceSectionRef: candidate.normalizedSourceRef,
+          operativeSourceText: operativeText,
+          covenantFamily: candidate.families[0],
+          action: candidate.families.includes("LIENS") ? "CREATE_LIEN" : "INCUR_DEBT",
+        });
+        if (goCompile.executableClass !== "UNSUPPORTED") {
+          greaterOfCandidates.push({
+            sourceRef: candidate.normalizedSourceRef,
+            operativeText,
+            documentId: candidate.documentId,
+            discoveryId: candidate.discoveryId,
+            families: candidate.families,
+          });
+          // No fabricated Total Assets in package compile — metric must be supplied by caller.
+          const hypo = evaluateGreaterOfCapacity({
+            compile: goCompile,
+            operativeSourceText: operativeText,
+            authorityMode: "CALLER_STIPULATED_HYPOTHETICAL",
+            totalAssetsUsd: null,
+            asOf: asOfDate,
+          });
+          const prod = evaluateGreaterOfCapacity({
+            compile: goCompile,
+            operativeSourceText: operativeText,
+            authorityMode: "PRODUCTION",
+            totalAssetsUsd: null,
+            asOf: asOfDate,
+          });
+          greaterOfResults.push({ sourceRef: candidate.normalizedSourceRef, compile: goCompile, evaluation: hypo });
+          greaterOfSlice = {
+            classification: goCompile.classification.class,
+            compileClass: goCompile.executableClass,
+            fidelityVerdict: hypo.fidelity.verdict,
+            capacityOutcome: hypo.outcomeLabel,
+            availableAmountUsd: hypo.availableAmountUsd,
+            metricName: goCompile.classification.metricName,
+            fixedAmountUsd: goCompile.classification.fixedAmountUsd,
+            percentFraction: goCompile.classification.percentFraction,
+            productionRefusal: prod.productionRefusal,
+            sharedCapacity: false,
+          };
+          if (hypo.fidelity.verdict === "PASS" && goCompile.executableClass === "VERIFIED_EXECUTABLE_CANDIDATE") {
+            executableAuthority = "VERIFIED_EXECUTABLE";
+          }
+        }
       }
     }
 
@@ -641,6 +738,7 @@ export async function compileFrozenDebtPackage(
       localCompileStatus: local.inference.status,
       executableAuthority,
       fixedDollarSlice,
+      greaterOfSlice,
       provenance: {
         discoveryMethods: candidate.discoveryMethods,
         evidenceSignals: candidate.evidenceSignals,
@@ -649,8 +747,51 @@ export async function compileFrozenDebtPackage(
     });
   }
 
+  // Shared-capacity pairs: only when operative text mutually asserts without-duplication combine.
+  const greaterOfSharedPairs: OfflinePackageCompileResult["greaterOfSharedPairs"] = [];
+  for (let i = 0; i < greaterOfCandidates.length; i++) {
+    for (let j = i + 1; j < greaterOfCandidates.length; j++) {
+      const a = greaterOfCandidates[i]!;
+      const b = greaterOfCandidates[j]!;
+      const pair = compileGreaterOfSharedPair({
+        companyId: options.companyId,
+        instrumentKey,
+        sourceDocumentId: a.documentId,
+        candidateRef: `shared:${a.discoveryId}+${b.discoveryId}`,
+        memberA: {
+          sourceSectionRef: a.sourceRef,
+          operativeSourceText: a.operativeText,
+          action: a.families.includes("LIENS") ? "CREATE_LIEN" : "INCUR_DEBT",
+          covenantFamily: a.families[0],
+        },
+        memberB: {
+          sourceSectionRef: b.sourceRef,
+          operativeSourceText: b.operativeText,
+          action: b.families.includes("LIENS") ? "CREATE_LIEN" : "INCUR_DEBT",
+          covenantFamily: b.families[0],
+        },
+      });
+      if (pair.shared) {
+        greaterOfSharedPairs.push({
+          refA: a.sourceRef,
+          refB: b.sourceRef,
+          shared: true,
+          evidence: pair.evidence,
+          sharedCapId: pair.sharedCapacity?.sharedCapId ?? null,
+        });
+        for (const u of units) {
+          if (u.sourceRef === a.sourceRef || u.sourceRef === b.sourceRef) {
+            if (u.greaterOfSlice) u.greaterOfSlice.sharedCapacity = true;
+          }
+        }
+      }
+    }
+  }
+
   const verifiedExecutableUnits = units.filter((u) => u.executableAuthority === "VERIFIED_EXECUTABLE");
-  const productionRefused = verifiedExecutableUnits.filter((u) => u.fixedDollarSlice?.productionRefusal).length;
+  const productionRefused = verifiedExecutableUnits.filter(
+    (u) => u.fixedDollarSlice?.productionRefusal || u.greaterOfSlice?.productionRefusal,
+  ).length;
 
   let capacityHandoff: OfflinePackageCompileResult["stages"]["capacityHandoff"];
   if (verifiedExecutableUnits.length === 0) {
@@ -663,7 +804,7 @@ export async function compileFrozenDebtPackage(
     capacityHandoff = {
       attempted: true,
       outcome: "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
-      detail: `${verifiedExecutableUnits.length} fixed-dollar unit(s) verified executable under CALLER_STIPULATED_HYPOTHETICAL; production capacity refused for all (${productionRefused}) pending authenticated financial/utilization evidence.`,
+      detail: `${verifiedExecutableUnits.length} unit(s) verified executable (fixed-dollar and/or greater-of); production capacity refused for all (${productionRefused}) pending authenticated financial/utilization evidence. Greater-of units require stipulated Total Assets for hypothetical numeric capacity.`,
     };
   }
 
@@ -675,10 +816,20 @@ export async function compileFrozenDebtPackage(
     refusedExecutableUnits: units.filter((u) => u.executableAuthority === "REFUSED").length,
     verifiedExecutableUnits: verifiedExecutableUnits.length,
     // False executable = claimed VERIFIED_EXECUTABLE without a passing fidelity slice.
-    falseExecutableClassifications: units.filter(
-      (u) => u.executableAuthority === "VERIFIED_EXECUTABLE" && u.fixedDollarSlice?.fidelityVerdict !== "PASS",
-    ).length,
+    falseExecutableClassifications: units.filter((u) => {
+      if (u.executableAuthority !== "VERIFIED_EXECUTABLE") return false;
+      const fdOk = u.fixedDollarSlice?.fidelityVerdict === "PASS";
+      const goOk = u.greaterOfSlice?.fidelityVerdict === "PASS";
+      return !fdOk && !goOk;
+    }).length,
   };
+
+  const greaterOfVerified = units.filter(
+    (u) => u.executableAuthority === "VERIFIED_EXECUTABLE" && u.greaterOfSlice?.fidelityVerdict === "PASS",
+  ).length;
+  const fixedDollarVerified = units.filter(
+    (u) => u.executableAuthority === "VERIFIED_EXECUTABLE" && u.fixedDollarSlice?.fidelityVerdict === "PASS",
+  ).length;
 
   return {
     version: OFFLINE_PACKAGE_COMPILE_VERSION,
@@ -712,14 +863,22 @@ export async function compileFrozenDebtPackage(
       capacityHandoff,
       fixedDollarVerticalSlice: {
         attempted: fixedDollarResults.length,
-        verifiedExecutable: verifiedExecutableUnits.length,
-        productionCapacityRefused: productionRefused,
+        verifiedExecutable: fixedDollarVerified,
+        productionCapacityRefused: units.filter((u) => u.fixedDollarSlice?.productionRefusal).length,
+      },
+      greaterOfVerticalSlice: {
+        attempted: greaterOfResults.length,
+        verifiedExecutable: greaterOfVerified,
+        productionCapacityRefused: units.filter((u) => u.greaterOfSlice?.productionRefusal).length,
+        sharedCapacityPairs: greaterOfSharedPairs.length,
       },
     },
     exceptionCatalogs,
     candidates,
     units,
     fixedDollarResults,
+    greaterOfResults,
+    greaterOfSharedPairs,
     humanInterventions,
     summary,
   };

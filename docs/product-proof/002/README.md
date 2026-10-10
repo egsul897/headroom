@@ -34,7 +34,8 @@ Library: `lib/contract-model/analysis/offline-package-compile.ts` → `compileFr
 | `09-remediation-roadmap.md` | Next levers |
 | `10-ci-evidence.md` | SHA + CI |
 | `11-final-verdict.md` | One verdict |
-| `12-vertical-slice-phases.md` | Phases 1–7 vertical-slice evidence |
+| `12-vertical-slice-phases.md` | Phases 1–7 fixed-dollar vertical-slice evidence |
+| `13-greater-of-vertical-slice.md` | Greater-of assets family + shared-capacity slice |
 
 ## Constraints honored
 

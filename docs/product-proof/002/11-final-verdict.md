@@ -2,7 +2,12 @@
 
 ## Verdict
 
-# VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED
+# GREATER_OF_VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED
+
+Prior compound verdict (fixed-dollar only) remains historically valid:
+`VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED`.
+
+See `13-greater-of-vertical-slice.md` for the greater-of evidence package.
 
 ---
 
@@ -10,28 +15,27 @@
 
 | Verdict | Why accepted / rejected |
 |---|---|
-| PRODUCT_PROOF_002_VERTICAL_SLICE_PASSED | **Rejected as standalone label** — slice criteria met, but production capacity authority remains unavailable; use the compound form below |
-| **VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED** | **Accepted** — ≥1 previously unsupported authentic permission (MTN Permitted Debt (o); also (n), Liens (p); MHK §7.01(i), §7.03(f)) is generalized IR + independently fidelity-verified + evaluator-executable + reusable beyond one issuer + zero false favorables; production capacity refused for missing authenticated financial/utilization evidence |
-| GENERALIZED_COMPILATION_PARTIAL | Superseded for this continuation — catalog-only partial is no longer the ceiling |
-| PRODUCT_PROOF_002_BLOCKED | **Rejected** — vertical slice is runnable on two authentic packages |
-| Full Product Proof 002 complete | **Rejected** — growers, facility-difference, shared TCA, ratio permissions, and production capacity remain open |
+| **GREATER_OF_VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED** | **Accepted** — authentic MHK §7.01(u)/§7.03(g) greater-of ($1.5B / 10% TCA) compile to canonical IR, pass independent fidelity, share one mutual without-duplication capacity pool, refuse missing/stale/mismatched metric inputs, and refuse PRODUCTION capacity; five fixed-dollar VEs preserved; false-favorable = 0 |
+| GREATER_OF_VERTICAL_SLICE_PASSED — AUTHENTICATED_CAPACITY_VERIFIED | **Rejected** — no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / utilization completeness; package compile yields `NEEDS_METRIC_INPUT` for greater-of |
+| GREATER_OF_VERTICAL_SLICE_PARTIAL | **Rejected** — authentic mutual shared greater-of pair is verified-executable under hypo gates |
+| GREATER_OF_VERTICAL_SLICE_BLOCKED | **Rejected** — slice runnable on MHK holdout + Acme reuse |
+| Full Product Proof 002 complete | **Rejected** — facility-difference, ratio permissions, and production capacity remain open |
 
 ## What was proven
 
-1. Fixed-dollar basket family compiles through the **existing** IR / normalize / evaluate path (no parallel compiler).
-2. Qualitative residuals become `TRANSACTION_INPUT` gates — false gates yield $0, not silent overclaim.
-3. Independent fidelity re-derives amount + gates from operative text; tampered amounts fail.
-4. Transferability: MTN + MHK authentic clauses + Acme synthetic sole-cap.
-5. MHK `structuralNodes=0` root-caused and fixed (EDGAR NNBSP/WS bare-decimal headings) → 910 nodes.
-6. Production capacity path remains refuse-closed.
+1. Fixed-dollar basket family (prior slice) preserved: MTN (n)/(o)/Liens(p); MHK §7.01(i)/§7.03(f).
+2. Greater-of fixed-or-%-assets family compiles through the **existing** IR / normalize / evaluate path.
+3. Mutual shared capacity (MHK u↔g) uses the **canonical** shared-capacity engine; conservation tested.
+4. Adversarial fidelity covers limb dominance, missing/stale metric, currency/scope/version mismatch, tamper, facility-diff refuse, replay.
+5. Production capacity path remains refuse-closed.
 
 ## What was not proven
 
-1. Production-authoritative numerical capacity (VEP + authenticated financials + utilization completeness).
-2. Executable IR for greater-of / % TCA / facility-difference formulas.
-3. Full definition-resolution sufficiency under unpaid discovery for all baskets.
-4. Customer-facing selected-path transaction answers under trusted issuer gates.
+1. Production-authoritative numerical capacity.
+2. Facility-difference (MTN Debt (l) / Liens (d)).
+3. Ratio-conditioned permissions and other grower families.
+4. Customer-facing selected-path answers under trusted issuer gates.
 
 ## Required interpretation
 
-Headroom can now turn a bounded authentic fixed-dollar covenant family into **verified executable IR under stipulated hypothetical gates**, reusable across issuers, without fabricating production capacity.
+Headroom can turn a bounded authentic **greater-of (fixed / % Total Assets)** covenant family — including one mutually cross-referenced shared pool — into **verified executable IR under stipulated hypothetical gates**, without fabricating production capacity.

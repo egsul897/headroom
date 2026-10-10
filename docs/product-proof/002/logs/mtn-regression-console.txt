@@ -1,5 +1,5 @@
 {
-  "wallMs": 5900,
+  "wallMs": 6070,
   "version": "offline-package-compile.v1",
   "companyId": "product-proof-002-mtn",
   "packageKey": "mtn-2026-tenth-ar-credit-agreement",
@@ -55,12 +55,18 @@
     "capacityHandoff": {
       "attempted": true,
       "outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
-      "detail": "3 fixed-dollar unit(s) verified executable under CALLER_STIPULATED_HYPOTHETICAL; production capacity refused for all (3) pending authenticated financial/utilization evidence."
+      "detail": "3 unit(s) verified executable (fixed-dollar and/or greater-of); production capacity refused for all (3) pending authenticated financial/utilization evidence. Greater-of units require stipulated Total Assets for hypothetical numeric capacity."
     },
     "fixedDollarVerticalSlice": {
       "attempted": 3,
       "verifiedExecutable": 3,
       "productionCapacityRefused": 3
+    },
+    "greaterOfVerticalSlice": {
+      "attempted": 0,
+      "verifiedExecutable": 0,
+      "productionCapacityRefused": 0,
+      "sharedCapacityPairs": 0
     }
   },
   "summary": {
@@ -136,6 +142,14 @@
         "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
       }
     ]
+  },
+  "greaterOfVerticalSlice": {
+    "attempted": 0,
+    "verifiedExecutable": 0,
+    "productionCapacityRefused": 0,
+    "sharedCapacityPairs": 0,
+    "units": [],
+    "sharedPairs": []
   }
 }
 
