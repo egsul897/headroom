@@ -1,10 +1,10 @@
 {
   "artifact": "pr-integration-sequence",
   "version": 1,
-  "updatedAt": "2026-10-09T22:35:00Z",
-  "baseMainSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
-  "status": "SUPERSEDED_BY_EMERGENCY_RECONCILIATION",
-  "supersededBy": "docs/architecture/parallel-agents/21-emergency-reconciliation-2026-10-09.md",
+  "updatedAt": "2026-10-10T00:06:00Z",
+  "baseMainSha": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
+  "status": "SUPERSEDED_BY_V4_ACCEPTANCE",
+  "supersededBy": "docs/architecture/parallel-agents/27-reconciliation-v4-acceptance.md",
   "policy": {
     "autoMerge": false,
     "paidInference": false,
@@ -12,7 +12,7 @@
     "forbidUnverifiedCertifiedClaims": true
   },
   "waveInventory": "docs/architecture/parallel-agents/20-specialist-pr-wave-2026-10-09.json",
-  "note": "Do not execute the older recommendedOrder without reading 21-emergency-reconciliation. P0 is now #213+#215+#215b before authentic-path stacking.",
+  "note": "Do not execute recommendedOrder. #229 and #237 (combined #232/#234 authority) are on main. Controlling: 27-reconciliation-v4-acceptance.md. Close #232/#234/#239/#241 as superseded.",
   "recommendedOrder": [
     {
       "order": 1,
