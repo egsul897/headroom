@@ -607,6 +607,31 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
         "ENTITY_SCOPE_OVERINCLUSIVE_VS_SOURCE",
         `model entityScope ${JSON.stringify(before.entityScope)} is wider than the clause's own actor language, which establishes exactly ${JSON.stringify(ownDerived)}; scope narrowed to the source-derived set and rule limited — never certified as the wider governing lead-in scope`,
       );
+    } else if (
+      ownDerived &&
+      relationOf(entityScope, ownDerived) === "MODEL_DIFFERENT" &&
+      // Child-specific exact class (e.g. Unrestricted Subsidiary) when model carries a covering
+      // parent-wide tag set (ANY_SUBSIDIARY). Only replace when ownDerived is denotationally
+      // ⊆ model — never widen a specific model class to a coarser ownDerived (xref NON_GUARANTOR_RS).
+      [...scopeCoverage(ownDerived).full].every((a) => scopeCoverage(entityScope).full.has(a))
+    ) {
+      status = "SOURCE_SCOPE_DERIVED";
+      precedence = "OWN_OPERATIVE_LANGUAGE";
+      modelDiscrepancy = {
+        modelScope: [...before.entityScope],
+        rawEmitted,
+        governingScope: [...ownDerived],
+        relation: "MODEL_DIFFERENT",
+      };
+      entityScope = [...ownDerived];
+      witnessOut.decidedBy = tiersOf(binding);
+      codes.push("ENTITY_SCOPE_SOURCE_DERIVED", "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
+      reasons.push(
+        reasonText(
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          `entityScope ${JSON.stringify(entityScope)} - the rule's own actor language establishes the applicability exactly; the model's covering/discrepant scope ${JSON.stringify(before.entityScope)} is recorded as a discrepancy and did not control the result`,
+        ),
+      );
     } else {
       status = "SOURCE_MATCH_CONFIRMED";
       precedence = ownDerived ? "OWN_OPERATIVE_LANGUAGE" : "MODEL_EMITTED";

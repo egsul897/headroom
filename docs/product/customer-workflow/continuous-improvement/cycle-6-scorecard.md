@@ -4,7 +4,7 @@
 |---|---|
 | Cycle | 6 |
 | Starting SHA | `c517820bd36d302b5124c156ad1dd9d6af2c3a8e` (#228 tip) |
-| Ending SHA | `cc46958831c1e282e05c329c0685f0c243c41c0a` |
+| Ending SHA | _(integration-gate tip — see PR #233 head)_ |
 | Paid inference cost | **$0** |
 | Controlling North Star | `docs/headroom-north-star-v2.md` |
 

@@ -41,15 +41,16 @@ export interface RuleEvaluation {
 function scopeApplicability(rule: IRRule): RuleEvaluation["entityScope"] {
   const audit = rule.entityScopeAudit;
   if (!audit) return { entityScope: rule.entityScope, entityScopeExcluded: rule.entityScopeExcluded, auditStatus: null, safeToRely: null, applicability: "SCOPE_UNAUDITED", note: "rule carries no entity-scope audit; the runtime does not assert who a computed capacity applies to" };
-  // SOURCE_SCOPE_DERIVED: Phase-3 guard established applicability from own/governing/parent source
-  // (safeToRely). Treat like SOURCE_MATCH_CONFIRMED — never leave a source-derived scope as
-  // SCOPE_NOT_SAFE_TO_RELY_ON solely because the model disagreed or omitted tags.
-  const applicability: EntityScopeApplicability =
-    audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED"
-      ? "SCOPE_CONFIRMED_BY_SOURCE"
-      : audit.status === "UNSPECIFIED"
-        ? "SCOPE_UNSPECIFIED"
-        : "SCOPE_NOT_SAFE_TO_RELY_ON";
+  // Confirm only when status is source-backed AND safeToRely AND a non-empty class was asserted.
+  const sourceConfirmed =
+    audit.safeToRely === true &&
+    rule.entityScope.length > 0 &&
+    (audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED");
+  const applicability: EntityScopeApplicability = sourceConfirmed
+    ? "SCOPE_CONFIRMED_BY_SOURCE"
+    : audit.status === "UNSPECIFIED"
+      ? "SCOPE_UNSPECIFIED"
+      : "SCOPE_NOT_SAFE_TO_RELY_ON";
   return {
     entityScope: rule.entityScope,
     entityScopeExcluded: rule.entityScopeExcluded,
