@@ -9,6 +9,7 @@ import type { GroundTruthProvenance, VerificationCaseMeta } from "../types";
 import { AUTHENTIC_PACKAGE_SCENARIOS } from "@/lib/product/covenant-intelligence/cross-document-authentic-packages";
 import { AUTHENTIC_CROSS_DOCUMENT_SCENARIOS } from "@/lib/product/covenant-intelligence/cross-document-scenarios";
 import { ADVERSARIAL_CROSS_DOCUMENT_SCENARIOS } from "@/lib/product/covenant-intelligence/cross-document-adversarial";
+import { listGroundedExpansionCases } from "./grounded-expansion";
 
 function gt(partial: Omit<GroundTruthProvenance, "contractVersion" | "notDerivedFromEngine">): GroundTruthProvenance {
   return {
@@ -316,21 +317,26 @@ function factoryNativeCases(): VerificationCaseMeta[] {
   ];
 }
 
-/** Example holdout seal metadata — expectations not visible without HOLDOUT_UNLOCK. */
+/**
+ * In-repo sealed example — readable by agents ⇒ FROZEN_REGRESSION, not BLIND.
+ * Truly blind answer keys must live outside the agent-accessible workspace.
+ */
 export const EXAMPLE_HOLDOUT_SEAL_META: VerificationCaseMeta = {
   caseId: "holdout-example-sealed",
-  title: "Sealed holdout placeholder (expectations not visible to implementation agents)",
+  title: "In-repo sealed holdout example (FROZEN_REGRESSION — not blind)",
   lane: "CROSS_DOCUMENT",
-  fixtureClass: "BLIND_AUTHENTIC_HOLDOUT",
+  fixtureClass: "FROZEN_REGRESSION",
   mechanics: ["CROSS_DOCUMENT"],
-  structureFamilies: ["holdout:example", "package:sealed"],
+  structureFamilies: ["holdout:example", "package:sealed", "isolation:frozen-not-blind"],
   sourcePackageIds: ["sealed-holdout-example"],
   adapter: "suite-pointer",
   provenance: {
     holdoutSealId: "holdout-example-v1",
-    fixtureClass: "BLIND_AUTHENTIC_HOLDOUT",
+    fixtureClass: "FROZEN_REGRESSION",
+    isolationNote:
+      "Payload path is in-repo under holdouts-SEALED/. Label is FROZEN_REGRESSION, not BLIND_AUTHENTIC_HOLDOUT. Blind keys require external storage outside agent workspace.",
   },
-  tags: ["holdout", "sealed"],
+  tags: ["holdout", "sealed", "frozen-regression", "not-blind"],
 };
 
 export function listPublicRegistryCases(): VerificationCaseMeta[] {
@@ -339,13 +345,17 @@ export function listPublicRegistryCases(): VerificationCaseMeta[] {
     ...syntheticCases(),
     ...adversarialCases(),
     ...factoryNativeCases(),
+    ...listGroundedExpansionCases(),
     EXAMPLE_HOLDOUT_SEAL_META,
   ];
 }
 
 export function listExecutableRegistryCases(): VerificationCaseMeta[] {
-  // Holdouts are not executable without unlock + dedicated adapter.
-  return listPublicRegistryCases().filter((c) => c.fixtureClass !== "BLIND_AUTHENTIC_HOLDOUT");
+  // Sealed provenance (holdoutSealId) is never executable without unlock + dedicated adapter.
+  // BLIND_AUTHENTIC_HOLDOUT is reserved for external answer keys and also excluded.
+  return listPublicRegistryCases().filter(
+    (c) => !("holdoutSealId" in c.provenance) && c.fixtureClass !== "BLIND_AUTHENTIC_HOLDOUT",
+  );
 }
 
 export function diversityReport(cases: VerificationCaseMeta[] = listPublicRegistryCases()): {

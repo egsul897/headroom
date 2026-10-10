@@ -110,8 +110,18 @@ export interface VerificationCaseMeta {
   structureFamilies: string[];
   sourcePackageIds: string[];
   adapter: VerificationAdapterId;
-  /** Public cases embed provenance; holdouts store only a seal id. */
-  provenance: GroundTruthProvenance | { holdoutSealId: string; fixtureClass: "BLIND_AUTHENTIC_HOLDOUT" };
+  /**
+   * Public cases embed provenance; sealed entries store only a seal id.
+   * In-repo readable seals MUST use FROZEN_REGRESSION (not BLIND_AUTHENTIC_HOLDOUT).
+   * BLIND_AUTHENTIC_HOLDOUT is reserved for answer keys outside the agent workspace.
+   */
+  provenance:
+    | GroundTruthProvenance
+    | {
+        holdoutSealId: string;
+        fixtureClass: "BLIND_AUTHENTIC_HOLDOUT" | "FROZEN_REGRESSION";
+        isolationNote?: string;
+      };
   tags: string[];
 }
 
@@ -120,7 +130,8 @@ export type VerificationAdapterId =
   | "capacity-a8"
   | "sequential-conmed"
   | "metamorphic-cross-document"
-  | "suite-pointer";
+  | "suite-pointer"
+  | "grounded-boundary";
 
 export interface AdapterExecutionResult {
   adapter: VerificationAdapterId;

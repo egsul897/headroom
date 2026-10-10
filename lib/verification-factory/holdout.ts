@@ -1,11 +1,17 @@
 /**
- * Holdout isolation — blind authentic cases store expectations behind a seal.
+ * Holdout isolation — sealed expected outcomes.
  *
  * Implementation agents and default harness runs must NOT load sealed expected
  * outcomes. Release-gate runners with HOLDOUT_UNLOCK=1 may open seals for scoring.
  *
- * Sealed payloads live under tests/fixtures/verification-factory/holdouts-SEALED/
- * and are never imported by production lib/ adapters.
+ * Isolation labeling:
+ * - If agents can read payloads through the repository (e.g. holdouts-SEALED/),
+ *   label fixtureClass FROZEN_REGRESSION — not BLIND_AUTHENTIC_HOLDOUT.
+ * - BLIND_AUTHENTIC_HOLDOUT is reserved for answer keys stored outside the
+ *   agent-accessible workspace.
+ *
+ * Sealed payloads under tests/fixtures/verification-factory/holdouts-SEALED/
+ * are never imported by production lib/ adapters.
  */
 
 import { createHash } from "node:crypto";

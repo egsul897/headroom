@@ -14,6 +14,7 @@
     "test:cvf": "vitest run tests/verification-factory",
     "cvf:pr-fast": "tsx scripts/verification-factory/run-tier.ts PR_FAST",
     "cvf:integration": "tsx scripts/verification-factory/run-tier.ts INTEGRATION_BATCH",
+    "cvf:mutation-challenge": "tsx scripts/verification-factory/mutation-challenge.ts",
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",

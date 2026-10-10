@@ -6,8 +6,13 @@ import { AUTHENTIC_PACKAGE_SCENARIOS } from "@/lib/product/covenant-intelligence
 import { buildConmedSequentialDemo } from "@/lib/product/covenant-intelligence/cross-document-sequential-state";
 import type { AdapterExecutionResult } from "../types";
 
+const SEQUENTIAL_CASE_IDS = new Set([
+  "seq-conmed-debt-rp-overflow",
+  "def-stale-financial-sequential",
+]);
+
 export function runSequentialConmedAdapter(caseId: string): AdapterExecutionResult {
-  if (caseId !== "seq-conmed-debt-rp-overflow") {
+  if (!SEQUENTIAL_CASE_IDS.has(caseId)) {
     return {
       adapter: "sequential-conmed",
       actualLegalOutcome: "ERROR",

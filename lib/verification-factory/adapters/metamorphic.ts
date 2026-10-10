@@ -126,6 +126,7 @@ export function runMetamorphicAdapter(caseId: string): AdapterExecutionResult {
     case "meta-remove-source-no-improve":
       return invariantRemovingSourceDoesNotImprovePermission();
     case "meta-add-restriction-no-improve":
+    case "def-shared-capacity-metamorphic":
       return invariantAddingRestrictionDoesNotImprove();
     case "meta-replay-identical":
       return invariantReplayIdentical();

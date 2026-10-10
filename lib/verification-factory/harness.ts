@@ -14,10 +14,13 @@ import type {
 } from "./types";
 import { caseHasIndependentGroundTruth, validateGroundTruthProvenance } from "./provenance";
 import { listExecutableRegistryCases } from "./corpus/registry";
+import { BOUNDARY_ADAPTER_REMAP } from "./corpus/grounded-expansion";
 import { runCrossDocumentAdapter } from "./adapters/cross-document";
 import { runCapacityA8Adapter } from "./adapters/capacity-a8";
 import { runSequentialConmedAdapter } from "./adapters/sequential";
 import { runMetamorphicAdapter } from "./adapters/metamorphic";
+import { runGroundedBoundaryAdapter } from "./adapters/grounded-boundary";
+import { runSuitePointerAdapter } from "./adapters/suite-pointer";
 import { aggregateMetrics, formatMetricsReport } from "./metrics";
 
 function expectedFromMeta(meta: VerificationCaseMeta): ExpectedLegalOutcome | "SEALED" {
@@ -41,6 +44,7 @@ function gradeCase(
   if (expected === "MATCH_BASELINE") {
     const det = details?.deterministic;
     if (det === false) return "UNSUPPORTED_SEMANTIC";
+    if (details?.matchesExpected === false) return "UNSUPPORTED_SEMANTIC";
     return falseFavorable ? "INCORRECT_FAVORABLE" : "PASS_NEUTRAL";
   }
   if (expected === "AVAILABLE_FORBIDDEN") {
@@ -95,27 +99,34 @@ export function executeCase(meta: VerificationCaseMeta): CaseExecutionResult {
   }
 
   let adapterResult;
-  switch (meta.adapter) {
-    case "cross-document":
-      adapterResult = runCrossDocumentAdapter(meta.caseId);
-      break;
-    case "capacity-a8":
-      adapterResult = runCapacityA8Adapter(meta.caseId);
-      break;
-    case "sequential-conmed":
-      adapterResult = runSequentialConmedAdapter(meta.caseId);
-      break;
-    case "metamorphic-cross-document":
-      adapterResult = runMetamorphicAdapter(meta.caseId);
-      break;
-    default:
-      adapterResult = {
-        adapter: meta.adapter,
-        actualLegalOutcome: "ERROR",
-        falseFavorable: false,
-        materialOmissions: [] as string[],
-        notes: [`Adapter ${meta.adapter} not executable in PR harness`],
-      };
+  if (meta.adapter === "grounded-boundary" || BOUNDARY_ADAPTER_REMAP[meta.caseId]) {
+    adapterResult = runGroundedBoundaryAdapter(meta.caseId);
+  } else {
+    switch (meta.adapter) {
+      case "cross-document":
+        adapterResult = runCrossDocumentAdapter(meta.caseId);
+        break;
+      case "capacity-a8":
+        adapterResult = runCapacityA8Adapter(meta.caseId);
+        break;
+      case "sequential-conmed":
+        adapterResult = runSequentialConmedAdapter(meta.caseId);
+        break;
+      case "metamorphic-cross-document":
+        adapterResult = runMetamorphicAdapter(meta.caseId);
+        break;
+      case "suite-pointer":
+        adapterResult = runSuitePointerAdapter(meta);
+        break;
+      default:
+        adapterResult = {
+          adapter: meta.adapter,
+          actualLegalOutcome: "ERROR",
+          falseFavorable: false,
+          materialOmissions: [] as string[],
+          notes: [`Adapter ${meta.adapter} not executable in PR harness`],
+        };
+    }
   }
 
   const grade = gradeCase(
@@ -214,6 +225,6 @@ export const CI_TIER_PLAN: Record<
   RELEASE_HOLDOUT: {
     providerCalls: 0,
     entrypoints: ["HOLDOUT_UNLOCK=1 cvf holdout scoring", "sealed evaluation-v2 / open4 holdouts"],
-    note: "Periodic release gates only; expectations remain sealed from implementation agents.",
+    note: "Periodic release gates only; expectations remain sealed from implementation agents. BLIND_AUTHENTIC_HOLDOUT answer keys must live outside agent workspace.",
   },
 };

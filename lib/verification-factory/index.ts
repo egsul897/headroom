@@ -23,3 +23,14 @@ export {
   EXAMPLE_HOLDOUT_SEAL_META,
 } from "./corpus/registry";
 export { MATRIX_AXES, FIRST_1000_FAMILIES, summarizeFirst1000Plan } from "./generate/first-1000-plan";
+export { auditAdapterProductionBinding, PRODUCTION_IMPORT_REQUIREMENTS } from "./adapters/production-binding";
+export { computeCoverageDenominators, type CoverageDenominators } from "./coverage";
+export {
+  listGroundedExpansionCases,
+  groundedExpansionCounts,
+  BOUNDARY_ADAPTER_REMAP,
+} from "./corpus/grounded-expansion";
+export {
+  KNOWN_STANDING_INCORRECT_FAVORABLES,
+  isKnownStandingIncorrectFavorable,
+} from "./known-standing-defects";
