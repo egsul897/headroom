@@ -118,7 +118,7 @@ Registered detectors: incorrect favorable, incorrect refusal, missing evidence (
 
 | Field | Value |
 |-------|-------|
-| Tested SHA | see git tip after Cycle 2 commits (mutation + harness artifacts) |
+| Tested SHA | `6a73c5822caa23d8f76d7be2dd7140065a5ecaeb` |
 | Mutation detection | **6/6 detected, 6/6 restored** — see `04-mutation-challenge.json` |
 | Unique scenarios | **100** public / **99** executable |
 | Case provenance | reviewer + source sha256 + operative date + restrictions + ambiguities on grounded cases |
