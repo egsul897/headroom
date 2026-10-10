@@ -130,15 +130,68 @@ function computeMaximumCapacityFromEvaluations(
     let amount: number | undefined = evalResult.maxCapacity;
     if (evalResult.status === "NOT_EVALUABLE") {
       const members = evalResult.election.memberPermissionIds.map((id) => permissionsById.get(id)!);
+      // LIEN members never contribute debt-principal fixedTotal.
       const fixedTotal = members
-        .filter((m) => m.amountKind === "FIXED")
+        .filter((m) => m.grantType === "DEBT_INCURRENCE" && m.amountKind === "FIXED")
         .reduce((sum, m) => {
           const evaluated = evaluateProvision(permissionAsProvision(m), params.financials, computeLeverageMetrics(params.financials));
           return sum + (evaluated.status === "modeled" ? (evaluated.capacity ?? 0) : 0);
         }, 0);
-      amount = computeElectionMaxCapacityBisected(members, fixedTotal, params.financials);
+      amount = computeElectionMaxCapacityBisected(
+        members.filter((m) => m.grantType === "DEBT_INCURRENCE"),
+        fixedTotal,
+        params.financials,
+      );
     }
     if (amount === undefined) continue;
+
+    // Re-validate at the candidate maximum — probe-level CLEAR must not promote
+    // an EXACT max that fails lien/debt/shared-utilization gates at that amount.
+    if (amount > 1e-9) {
+      const atMax = evaluateElection({
+        election: evalResult.election,
+        permissionsById,
+        graph,
+        financials: params.financials,
+        requestedAmount: amount,
+        eligibilityContext: {
+          transaction: { ...params.transaction, amount },
+          entityClasses: params.entityClasses,
+          ruleActivationConditions: params.ruleActivationConditions,
+          activationState: params.activationState,
+          asOfDate: params.asOfDate,
+        },
+        sharedConstraints: params.sharedConstraints,
+        collateralScopes: params.collateralScopes,
+      });
+      if (atMax.requirements.some((r) => r.status === "FAILED")) {
+        let lo = 0;
+        let hi = amount;
+        for (let i = 0; i < 40; i++) {
+          const mid = (lo + hi) / 2;
+          const atMid = evaluateElection({
+            election: evalResult.election,
+            permissionsById,
+            graph,
+            financials: params.financials,
+            requestedAmount: mid,
+            eligibilityContext: {
+              transaction: { ...params.transaction, amount: mid },
+              entityClasses: params.entityClasses,
+              ruleActivationConditions: params.ruleActivationConditions,
+              activationState: params.activationState,
+              asOfDate: params.asOfDate,
+            },
+            sharedConstraints: params.sharedConstraints,
+            collateralScopes: params.collateralScopes,
+          });
+          if (atMid.requirements.some((r) => r.status === "FAILED")) hi = mid;
+          else lo = mid;
+        }
+        amount = lo;
+      }
+    }
+
     if (!best || amount > best.amount) best = { amount, evaluation: evalResult };
   }
 

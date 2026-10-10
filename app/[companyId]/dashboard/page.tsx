@@ -18,7 +18,17 @@ export const metadata = { title: "Headroom — Dashboard" };
 export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const inputs = await loadCovenantOverviewInputs(companyId);
-  const { company, asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById } = inputs;
+  const {
+    company,
+    asOfDate,
+    covenantData,
+    financialPosition,
+    solverContext,
+    permissionRows,
+    coverageDeclarations,
+    documentNameById,
+    attributedUtilizationSerialized,
+  } = inputs;
 
   // Verified-empty maturities/facilities are minted only after this load returned.
   // A throw never reaches these constructors, so a failed load cannot paint absence.
@@ -37,6 +47,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       documentNameEntries={[...documentNameById.entries()]}
       facilitiesQuery={facilitiesQuery}
       maturitiesQuery={maturitiesQuery}
+      attributedUtilizationSerialized={attributedUtilizationSerialized}
     />
   );
 }

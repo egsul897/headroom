@@ -35,6 +35,11 @@ import {
 import { describeFormula } from "./describe-formula";
 import type { FinancialPosition } from "./financial-core/types";
 import type { MaxCapacityResult, SourceCitation } from "./solver/types";
+import {
+  applyAttributedUsageToCapacity,
+  resolveRowAttribution,
+  type AttributedUtilizationIndex,
+} from "./product/unified-position/attributed-utilization";
 
 // ---------------------------------------------------------------------------
 // Row-level types
@@ -67,6 +72,11 @@ export interface CapacityRow {
   used: number | null;
   remaining: number | null;
   utilizationPct: number | null;
+  /**
+   * Utilization publication label (#237). Remaining is numeric only when
+   * SUPPORTED_REMAINING; attributed-without-cert is KNOWN_ATTRIBUTED_ONLY.
+   */
+  publicationLabel?: "GROSS_CONTRACTUAL" | "KNOWN_ATTRIBUTED_ONLY" | "SUPPORTED_REMAINING" | "NOT_TRACKED";
   bindingState: BindingState;
   status: RowStatus;
   reviewState: ReviewStateLabel;
@@ -253,7 +263,14 @@ function counts(rows: OverviewRow[]): FamilyCounts {
 // Row builders
 // ---------------------------------------------------------------------------
 
-function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: string, fin: CompanyCovenantData["financials"], metrics: CovenantPosition["metrics"], bindingKeys: Set<string>): CapacityRow {
+function buildCapacityRowFromPermission(
+  p: PermissionRowInput,
+  documentName: string,
+  fin: CompanyCovenantData["financials"],
+  metrics: CovenantPosition["metrics"],
+  bindingKeys: Set<string>,
+  attributed?: AttributedUtilizationIndex | null,
+): CapacityRow {
   if (p.modelingStatus === "KNOWN_NOT_MODELED") {
     return {
       kind: "CAPACITY",
@@ -268,6 +285,7 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
       used: null,
       remaining: null,
       utilizationPct: null,
+      publicationLabel: "NOT_TRACKED",
       bindingState: "UNMODELED",
       status: "UNMODELED",
       reviewState: p.reviewStatus,
@@ -282,6 +300,16 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
   const status = toRowStatus(evaluated.status);
   const capacity = evaluated.status === "modeled" ? evaluated.capacity : undefined;
   const unlimited = capacity !== undefined && !isFinite(capacity);
+  const currentCapacity = capacity !== undefined && isFinite(capacity) ? capacity : null;
+  // Exact Permission.code / action → 4C ruleId join only. No fuzzy match; no invented zero.
+  // Remaining withheld without APPROVED completeness cert (#237) — production does not invent certs.
+  const hit = resolveRowAttribution(attributed, [p.code, p.action]);
+  const usage = applyAttributedUsageToCapacity({
+    currentCapacity,
+    capacityUnlimited: unlimited,
+    attributed: hit,
+    supportsRemainingClaim: false,
+  });
 
   return {
     kind: "CAPACITY",
@@ -290,12 +318,13 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
     documentName,
     sectionRef: p.sectionRef,
     formulaDisplay: evaluated.status === "modeled" ? describeFormula(asProvision) : null,
-    currentCapacity: capacity !== undefined && isFinite(capacity) ? capacity : null,
+    currentCapacity,
     capacityUnlimited: unlimited,
-    usageState: "NOT_TRACKED",
-    used: null,
-    remaining: capacity !== undefined && isFinite(capacity) ? capacity : null,
-    utilizationPct: capacity !== undefined && isFinite(capacity) ? 0 : null,
+    usageState: usage.usageState,
+    used: usage.used,
+    remaining: usage.remaining,
+    utilizationPct: usage.utilizationPct,
+    publicationLabel: usage.publicationLabel,
     bindingState: bindingStateFor(bindingKeys, p.id, p.documentId, p.sectionRef, status),
     status,
     reviewState: p.reviewStatus,
@@ -305,11 +334,26 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
   };
 }
 
-function buildCapacityRowFromProvision(provision: CovenantProvisionInput, documentName: string, fin: CompanyCovenantData["financials"], metrics: CovenantPosition["metrics"], bindingKeys: Set<string>): CapacityRow {
+function buildCapacityRowFromProvision(
+  provision: CovenantProvisionInput,
+  documentName: string,
+  fin: CompanyCovenantData["financials"],
+  metrics: CovenantPosition["metrics"],
+  bindingKeys: Set<string>,
+  attributed?: AttributedUtilizationIndex | null,
+): CapacityRow {
   const evaluated = evaluateProvision(provision, fin, metrics);
   const status = toRowStatus(evaluated.status);
   const capacity = evaluated.status === "modeled" ? evaluated.capacity : undefined;
   const unlimited = capacity !== undefined && !isFinite(capacity);
+  const currentCapacity = capacity !== undefined && isFinite(capacity) ? capacity : null;
+  const hit = resolveRowAttribution(attributed, [provision.code, provision.basketName]);
+  const usage = applyAttributedUsageToCapacity({
+    currentCapacity,
+    capacityUnlimited: unlimited,
+    attributed: hit,
+    supportsRemainingClaim: false,
+  });
   return {
     kind: "CAPACITY",
     stableKey: `prov:${provision.id}`,
@@ -317,12 +361,13 @@ function buildCapacityRowFromProvision(provision: CovenantProvisionInput, docume
     documentName,
     sectionRef: provision.sectionRef,
     formulaDisplay: evaluated.status === "modeled" ? describeFormula(provision) : null,
-    currentCapacity: capacity !== undefined && isFinite(capacity) ? capacity : null,
+    currentCapacity,
     capacityUnlimited: unlimited,
-    usageState: "NOT_TRACKED",
-    used: null,
-    remaining: capacity !== undefined && isFinite(capacity) ? capacity : null,
-    utilizationPct: capacity !== undefined && isFinite(capacity) ? 0 : null,
+    usageState: usage.usageState,
+    used: usage.used,
+    remaining: usage.remaining,
+    utilizationPct: usage.utilizationPct,
+    publicationLabel: usage.publicationLabel,
     bindingState: bindingStateFor(bindingKeys, undefined, provision.documentId, provision.sectionRef, status),
     status,
     reviewState: "NOT_TRACKED",
@@ -386,10 +431,12 @@ export interface BuildCovenantOverviewInput {
   permissionRows: PermissionRowInput[];
   coverageDeclarations: CoverageDeclarationInput[];
   documentNameById: Map<string, string>;
+  /** Optional Phase 4C attributed usage index — absent ⇒ all rows NOT_TRACKED. */
+  attributedUtilization?: AttributedUtilizationIndex | null;
 }
 
 export function buildCovenantOverview(input: BuildCovenantOverviewInput): CovenantOverviewCore {
-  const { asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById } = input;
+  const { asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById, attributedUtilization } = input;
 
   const position = computeCovenantPosition(covenantData);
   const securedSim = computeRemainingCapacityAfterDebtIncurrence(covenantData, position, 0, true, solverContext);
@@ -469,7 +516,14 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   const lienRows: OverviewRow[] = [];
   for (const p of permissionRows) {
     if (p.grantType !== "DEBT_INCURRENCE" && p.grantType !== "LIEN") continue;
-    const built = buildCapacityRowFromPermission(p, documentNameById.get(p.documentId) ?? p.documentId, covenantData.financials, position.metrics, bindingKeys);
+    const built = buildCapacityRowFromPermission(
+      p,
+      documentNameById.get(p.documentId) ?? p.documentId,
+      covenantData.financials,
+      position.metrics,
+      bindingKeys,
+      attributedUtilization,
+    );
     if (p.grantType === "DEBT_INCURRENCE") debtRows.push(built);
     else lienRows.push(built);
   }
@@ -485,7 +539,16 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
       for (const step of doc.rpWaterfall.steps) {
         const provision = covenantData.provisions.find((pr) => pr.documentId === doc.id && pr.code === step.code);
         if (!provision || shadowed.has(`${doc.id}:${step.code}`)) continue;
-        rpRows.push(buildCapacityRowFromProvision(provision, doc.name, covenantData.financials, position.metrics, bindingKeys));
+        rpRows.push(
+          buildCapacityRowFromProvision(
+            provision,
+            doc.name,
+            covenantData.financials,
+            position.metrics,
+            bindingKeys,
+            attributedUtilization,
+          ),
+        );
       }
       const dividendGateCode = doc.rpWaterfall.ratioGateCodeByKind.dividend;
       const dividendGate = covenantData.provisions.find((pr) => pr.documentId === doc.id && pr.code === dividendGateCode);
@@ -496,7 +559,18 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
     }
     if (doc.assetSale) {
       const provision = covenantData.provisions.find((pr) => pr.documentId === doc.id && pr.code === doc.assetSale!.thresholdCode);
-      if (provision) assetSaleRows.push(buildCapacityRowFromProvision(provision, doc.name, covenantData.financials, position.metrics, bindingKeys));
+      if (provision) {
+        assetSaleRows.push(
+          buildCapacityRowFromProvision(
+            provision,
+            doc.name,
+            covenantData.financials,
+            position.metrics,
+            bindingKeys,
+            attributedUtilization,
+          ),
+        );
+      }
     }
   }
 
@@ -524,7 +598,16 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
     const key = `${provision.documentId}:${provision.code}`;
     if (shadowed.has(key) || referencedCodes.has(key) || ratioCovenantProvisionIds.has(provision.id)) continue;
     const doc = covenantData.documents.find((d) => d.id === provision.documentId);
-    unclassified.push(buildCapacityRowFromProvision(provision, doc?.name ?? provision.documentId, covenantData.financials, position.metrics, bindingKeys));
+    unclassified.push(
+      buildCapacityRowFromProvision(
+        provision,
+        doc?.name ?? provision.documentId,
+        covenantData.financials,
+        position.metrics,
+        bindingKeys,
+        attributedUtilization,
+      ),
+    );
   }
 
   const families: CovenantFamilySection[] = [];

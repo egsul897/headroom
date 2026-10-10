@@ -1,0 +1,132 @@
+{
+  "schema": "finish-product-demo.v1",
+  "generatedAt": "2026-10-10T01:22:51.288Z",
+  "paidProvidersCalled": false,
+  "neonWrites": false,
+  "authenticPackage": {
+    "packageChoice": "CONMED Eighth A&R Article VII evidence under docs/phase-3-live-validation — only authentic CERTIFIED candidate packet currently on disk (7.2c-recompute-phase2-certified).",
+    "stages": {
+      "documents": {
+        "status": "EXECUTED",
+        "note": "On-disk CONMED fixture package + Phase-3 live-validation packets"
+      },
+      "structuralDiscovery": {
+        "status": "EXECUTED",
+        "note": "Prior Phase-2/3 pipelines; not re-run here"
+      },
+      "covenantDiscovery": {
+        "status": "EXECUTED",
+        "certifiedCount": 1,
+        "reviewRequired": 5
+      },
+      "verifiedLegalRule": {
+        "status": "EXECUTED",
+        "certifiedPaths": [
+          "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json"
+        ]
+      },
+      "verifiedExecutionPackage": {
+        "status": "EXECUTED",
+        "outcome": "DERIVED",
+        "authenticity": "AUTHENTIC_PHASE3_CERTIFIED_CANDIDATE",
+        "included": [
+          "discovery-candidate:7a3f36589dacd05c41331a80"
+        ]
+      },
+      "pathEnumeration": {
+        "status": "EXECUTED",
+        "authorities": [
+          {
+            "kind": "UNSECURED_DEBT",
+            "authority": "CERTIFIED_4E",
+            "paths": 1
+          },
+          {
+            "kind": "SECURED_DEBT",
+            "authority": "CERTIFIED_4E",
+            "paths": 1
+          }
+        ]
+      },
+      "capacityEvaluation": {
+        "status": "BLOCKED",
+        "outcome": "REFUSED",
+        "refusals": [
+          {
+            "code": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+            "message": "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+            "refs": [
+              "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.1 [SOURCE_REFERENCE_RESOLVED]",
+              "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.3(g) [SOURCE_REFERENCE_RESOLVED]",
+              "ir-rule:29309c463e06b77b4b243eda rule[r-c].condition[0] -> Section 7.1 [SOURCE_REFERENCE_RESOLVED]"
+            ]
+          }
+        ],
+        "firstBlocker": {
+          "code": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+          "message": "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "refs": [
+            "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.1 [SOURCE_REFERENCE_RESOLVED]",
+            "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.3(g) [SOURCE_REFERENCE_RESOLVED]",
+            "ir-rule:29309c463e06b77b4b243eda rule[r-c].condition[0] -> Section 7.1 [SOURCE_REFERENCE_RESOLVED]"
+          ]
+        }
+      },
+      "transactionSimulation": {
+        "status": "BLOCKED",
+        "reason": "REQUIRE capacity did not EXECUTE — simulation not attempted (fail-closed)"
+      }
+    }
+  },
+  "affirmativeSyntheticLabeled": {
+    "package": "docs/product/customer-workflow/stage-d-pkgi-entity-scope/verified-execution-package.json",
+    "authenticity": "SYNTHETIC_LABELED_TECHNICAL_DEMO",
+    "covenant": {
+      "debt": "7.01(b)",
+      "lien": "7.02(b)"
+    },
+    "capacityOutcome": "EXECUTED",
+    "dualPathSimulation": {
+      "status": "EXECUTED",
+      "outcome": "EXECUTED",
+      "selectedPathResult": "SATISFIED",
+      "authenticity": "SYNTHETIC_LABELED_TECHNICAL_DEMO",
+      "note": "Affirmative secured dual-path on Stage D acceptance package — not authentic CONMED CERTIFIED customer result",
+      "debtAvailable": "AVAILABLE",
+      "lienAvailable": "AVAILABLE",
+      "companionDischargeable": true
+    }
+  },
+  "surfaces": {
+    "utilizationEmptyLedger": {
+      "knowledge": "UNKNOWN",
+      "supportsRemainingClaim": false,
+      "note": "Empty ledger ≠ verified zero remaining"
+    },
+    "positionSimulateAsk": {
+      "consistency": {
+        "ok": true
+      },
+      "POSITION": null,
+      "SIMULATE": null,
+      "ASK": null
+    },
+    "verifiedSimulateWithoutVep": {
+      "executable": false,
+      "blockers": [
+        "NO_VERIFIED_EXECUTION_PACKAGE",
+        "NO_CANDIDATE_PATHS"
+      ],
+      "authorityNote": "CERTIFIED Phase 4A–4D path not executable. Numerical capacity remains withheld. LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E must not be presented as certified.",
+      "selectedPathId": null,
+      "capacityOutcome": null,
+      "simulationOutcome": null,
+      "simulationStatus": null,
+      "selectedPathResult": null,
+      "pathCandidateCount": 0,
+      "pathAutoSelected": false,
+      "capacityExecutedWithoutPermission": false
+    }
+  },
+  "firstAuthenticBlocker": "REQUIRE capacity REFUSED — CROSS_RULE_GATE / unbound companions / no APPROVED financial snapshots for authentic CONMED §7.2(c)"
+}

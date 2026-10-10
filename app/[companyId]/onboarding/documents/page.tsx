@@ -16,6 +16,7 @@ const DOCUMENT_TYPES: { value: string; label: string }[] = [
   { value: "AMENDMENT", label: "Amendment" },
   { value: "INTERCREDITOR_AGREEMENT", label: "Intercreditor Agreement" },
   { value: "COMPLIANCE_CERTIFICATE", label: "Compliance Certificate" },
+  { value: "FINANCIAL_STATEMENT", label: "Financial Statement" },
   { value: "OTHER", label: "Other" },
 ];
 

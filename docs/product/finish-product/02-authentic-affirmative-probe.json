@@ -1,0 +1,44 @@
+{
+  "schema": "authentic-affirmative-probe.v1",
+  "generatedAt": "2026-10-10T01:30:00.000Z",
+  "paidProvidersCalled": false,
+  "neonWrites": false,
+  "authenticRule": {
+    "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+    "section": "7.2(c)",
+    "capacityKind": "UNLIMITED_CAPACITY",
+    "phase3Certification": "CERTIFIED",
+    "candidateRef": "discovery-candidate:7a3f36589dacd05c41331a80"
+  },
+  "companionDischargeable": false,
+  "independentBlockers": [
+    "HAS_OTHER_RULE_SATISFIED_CONDITION: financial covenants Section 7.1 (referencesRuleTargets)",
+    "REQUIRES_7.3(g): resolution=SOURCE_REFERENCE_RESOLVED; inPackageCompletePermissions=0",
+    "REQUIRES_7.1: resolution=SOURCE_REFERENCE_RESOLVED; inPackageCompletePermissions=0",
+    "CAPACITY_KIND=UNLIMITED_CAPACITY (companion discharge requires finite non-UNLIMITED)"
+  ],
+  "capacityOutcome": "REFUSED",
+  "refusalCode": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+  "refusalRefs": [
+    "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.1 [SOURCE_REFERENCE_RESOLVED]",
+    "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.3(g) [SOURCE_REFERENCE_RESOLVED]",
+    "ir-rule:29309c463e06b77b4b243eda rule[r-c].condition[0] -> Section 7.1 [SOURCE_REFERENCE_RESOLVED]"
+  ],
+  "mapCompanionStatus": {
+    "7.3(g)": "NOT_CERTIFIED (discovery-candidate:082c80836268c7277cc39c18; pilot FAILED PROVIDER/COMPILATION)",
+    "7.1": "NOT_CERTIFIED (a26970121ceb558846ff8d1c FAILED WALL_CLOCK_TIMEOUT; e37352369564a1e784e0560b NOT_CERTIFIED)"
+  },
+  "alternativesConsidered": {
+    "7.5j": "REVIEW_REQUIRED — not CERTIFIED",
+    "7.3(g)(ii)(B)": "population evidence exists (MULTIPLY/80% FMV) but NOT Phase-3 CERTIFIED; no VEP",
+    "stageD": "SYNTHETIC_LABELED_TECHNICAL_DEMO — excluded from authentic affirmative",
+    "onlyCertifiedOnDisk": "7.2c-recompute-phase2-certified"
+  },
+  "inputsRequiredToUnblock": [
+    "Independently CERTIFIED companion unit(s) for §7.3(g)",
+    "Independently CERTIFIED §7.1 financial covenants + certified OTHER_RULE_SATISFIED / pro-forma compliance evaluator",
+    "APPROVED financial snapshots (and for remaining vs gross: attributed utilization + completeness certificates)"
+  ],
+  "codeChangeAttempted": "none — no smallest runtime patch discharges UNLIMITED + financial-covenant compliance without weakening fail-closed or inventing CERTIFIED companions",
+  "verdict": "AUTHENTIC_AFFIRMATIVE_IRREDUCIBLY_BLOCKED"
+}
