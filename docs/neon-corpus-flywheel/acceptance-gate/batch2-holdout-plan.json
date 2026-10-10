@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "neon-corpus-flywheel.batch2-holdout.v1",
+  "priority": "falsification_before_full_batch",
+  "holdoutPackage": {
+    "packageKey": "lsb-2023-abl-credit-agreement",
+    "role": "abl_intercreditor_unresolved_ica",
+    "whyFirst": "Independent of DSGR/Chewy remediation authorship; Gate 3 showed zero structural fingerprint churn under Batch-1 fixes; exercises Payment Conditions + out-of-package ICA UNRESOLVED.",
+    "frozenFixtures": [
+      "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/definitions-excerpt.txt",
+      "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt",
+      "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/intercreditor-joinder.txt",
+      "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/human-ground-truth.ts"
+    ],
+    "expectations": [
+      "Joinder → 2013 Intercreditor Agreement remains UNRESOLVED when ICA bytes absent",
+      "No false RESOLVED from exhibit number / filing order / title alone",
+      "Definition-body scoping does not regress Art. VI negative covenant spans",
+      "Pass A citations remain physical nodeId-stable"
+    ]
+  },
+  "deferredUntilNeonAuth": [
+    "neon-indenture-holdout"
+  ],
+  "subsequentBatchOrder": [
+    "fwrg-2021-credit-agreement",
+    "riot-2025-2026-credit-facility",
+    "gibraltar-2026-credit-agreement"
+  ],
+  "coordination": {
+    "pr246": "duplicate-edge accounting only after RO inventory; no edge writes in Batch 2 structure work",
+    "pr259": "structural port onto canonical tip — merge review separate from Batch 2 analysis"
+  }
+}
