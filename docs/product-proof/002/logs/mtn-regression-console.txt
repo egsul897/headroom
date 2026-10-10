@@ -1,0 +1,105 @@
+{
+  "wallMs": 2242,
+  "version": "offline-package-compile.v1",
+  "companyId": "product-proof-002-mtn",
+  "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+  "instrumentKey": "instrument:mtn-doc-a-tenth-ar-credit-agreement",
+  "paidInferenceUsed": false,
+  "stages": {
+    "structural": {
+      "nodeCount": 1595,
+      "definitionCount": 252,
+      "referenceCount": 1501
+    },
+    "packageGraph": {
+      "documentCount": 4,
+      "relationshipCount": 0,
+      "classifications": [
+        {
+          "documentId": "mtn-doc-a-tenth-ar-credit-agreement",
+          "type": "CREDIT_AGREEMENT"
+        },
+        {
+          "documentId": "mtn-doc-b-indenture-2024",
+          "type": "INDENTURE"
+        },
+        {
+          "documentId": "mtn-doc-c-indenture-2025",
+          "type": "INDENTURE"
+        },
+        {
+          "documentId": "mtn-doc-d-10k-fy2026",
+          "type": "UNKNOWN"
+        }
+      ]
+    },
+    "amendment": {
+      "effectCount": 0
+    },
+    "discovery": {
+      "passACount": 810,
+      "pipelineCandidateCount": 201,
+      "exceptionCatalogCount": 2,
+      "exceptionClauseCount": 33,
+      "prohibitionLinkCount": 5,
+      "totalCandidates": 212,
+      "syntheticDiscovery": true
+    },
+    "context": {
+      "bundlesBuilt": 212
+    },
+    "coverageAudit": {
+      "findingCount": 3173,
+      "regionCount": 884
+    },
+    "capacityHandoff": {
+      "attempted": true,
+      "outcome": "REFUSED_NO_VEP",
+      "detail": "No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled."
+    }
+  },
+  "summary": {
+    "supportedStructureUnits": 0,
+    "partialUnits": 212,
+    "unsupportedUnits": 0,
+    "unverifiedUnits": 0,
+    "refusedExecutableUnits": 212,
+    "falseExecutableClassifications": 0
+  },
+  "humanInterventions": [
+    {
+      "kind": "DISCOVERY_MODE",
+      "detail": "Pass B semantic discovery running synthetic/unpaid — definition-exception catalog + Pass A supply deterministic candidates"
+    }
+  ],
+  "exceptionCatalogTerms": [
+    {
+      "term": "Permitted Debt",
+      "clauses": 16,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "prohibition→Permitted Debt",
+        "§8.14→Permitted Debt",
+        "§10.4→Permitted Debt"
+      ],
+      "crossLinks": 0
+    },
+    {
+      "term": "Permitted Liens",
+      "clauses": 17,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "prohibition→Permitted Liens",
+        "text→Permitted Liens",
+        "§8.11→Permitted Liens",
+        "§10.5→Permitted Liens"
+      ],
+      "crossLinks": 2
+    }
+  ],
+  "unitSupportBreakdown": {
+    "PARTIAL": 212
+  }
+}
+
+Wrote artifacts to docs/product-proof/002/artifacts/mtn-regression

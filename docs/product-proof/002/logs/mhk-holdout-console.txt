@@ -1,0 +1,88 @@
+{
+  "wallMs": 155,
+  "version": "offline-package-compile.v1",
+  "companyId": "product-proof-002-mhk-holdout",
+  "packageKey": "mhk-2026-credit-agreement",
+  "instrumentKey": "instrument:mhk-doc-a-credit-agreement",
+  "paidInferenceUsed": false,
+  "stages": {
+    "structural": {
+      "nodeCount": 0,
+      "definitionCount": 368,
+      "referenceCount": 636
+    },
+    "packageGraph": {
+      "documentCount": 1,
+      "relationshipCount": 0,
+      "classifications": [
+        {
+          "documentId": "mhk-doc-a-credit-agreement",
+          "type": "CREDIT_AGREEMENT"
+        }
+      ]
+    },
+    "amendment": {
+      "effectCount": 0
+    },
+    "discovery": {
+      "passACount": 0,
+      "pipelineCandidateCount": 0,
+      "exceptionCatalogCount": 2,
+      "exceptionClauseCount": 35,
+      "prohibitionLinkCount": 0,
+      "totalCandidates": 37,
+      "syntheticDiscovery": true
+    },
+    "context": {
+      "bundlesBuilt": 37
+    },
+    "coverageAudit": {
+      "findingCount": 308,
+      "regionCount": 0
+    },
+    "capacityHandoff": {
+      "attempted": true,
+      "outcome": "REFUSED_NO_VEP",
+      "detail": "No verified IR units available; numerical capacity claims refused. Missing financial/utilization evidence would also refuse remaining capacity even if gross were modeled."
+    }
+  },
+  "summary": {
+    "supportedStructureUnits": 0,
+    "partialUnits": 37,
+    "unsupportedUnits": 0,
+    "unverifiedUnits": 0,
+    "refusedExecutableUnits": 37,
+    "falseExecutableClassifications": 0
+  },
+  "humanInterventions": [
+    {
+      "kind": "DISCOVERY_MODE",
+      "detail": "Pass B semantic discovery running synthetic/unpaid — definition-exception catalog + Pass A supply deterministic candidates"
+    }
+  ],
+  "exceptionCatalogTerms": [
+    {
+      "term": "Section 7.01 Exceptions",
+      "clauses": 23,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "§7.01"
+      ],
+      "crossLinks": 4
+    },
+    {
+      "term": "Section 7.03 Exceptions",
+      "clauses": 12,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "§7.03"
+      ],
+      "crossLinks": 5
+    }
+  ],
+  "unitSupportBreakdown": {
+    "PARTIAL": 37
+  }
+}
+
+Wrote artifacts to docs/product-proof/002/artifacts/mhk-holdout

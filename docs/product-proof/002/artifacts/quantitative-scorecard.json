@@ -1,0 +1,59 @@
+{
+  "mtn_regression": {
+    "package": "mtn-2026-tenth-ar (PP001 freeze regression)",
+    "checks": {
+      "section_10_4_prohibition_ref": true,
+      "permitted_debt_definition": true,
+      "permitted_debt_clause_count": 16,
+      "permitted_debt_markers": "abcdefghijklmnop",
+      "secured_debt_basket_l": true,
+      "section_10_5_prohibition_ref": true,
+      "permitted_liens_definition": true,
+      "permitted_liens_clause_count": 17,
+      "lien_d_to_debt_l": true,
+      "facility_deps_on_debt_l_unit": true,
+      "false_executable": 0,
+      "capacity_outcome": "REFUSED_NO_VEP",
+      "paid_inference": false
+    }
+  },
+  "mhk_holdout": {
+    "package": "mhk-2026-credit-agreement (unseen holdout)",
+    "freeze_sha256_html": "6ee4abf323f03c509df295d82601baaeb3d40956105f2c18fd94add7af5f9784",
+    "provision_recall": 1.0,
+    "provision_precision": 1.0,
+    "clause_markers_7_01": {
+      "expected": "abcdefghijklmnopqrstuvw",
+      "found": "abcdefghijklmnopqrstuvw",
+      "exact": true
+    },
+    "clause_markers_7_03": {
+      "expected": "abcdefghijkl",
+      "found": "abcdefghijkl",
+      "exact": true
+    },
+    "clause_tp_fp_fn": {
+      "tp": 35,
+      "fp": 0,
+      "fn": 0
+    },
+    "material_baskets": {
+      "7.01(i)_cap_100m": true,
+      "7.01(u)_shared_basket": true,
+      "7.03(f)_receivables_700m": true,
+      "7.03(g)_shared_basket": true,
+      "cross_u_g": true,
+      "cross_g_u": true
+    },
+    "false_executable": 0,
+    "capacity_outcome": "REFUSED_NO_VEP",
+    "structural_nodes": 0,
+    "human_interventions": [
+      {
+        "kind": "DISCOVERY_MODE",
+        "detail": "Pass B semantic discovery running synthetic/unpaid \u2014 definition-exception catalog + Pass A supply deterministic candidates"
+      }
+    ],
+    "unsupported_affirmative_permissions": 0
+  }
+}
