@@ -30,3 +30,9 @@
 | Sequential + recipes + verified-execution + A8 + architecture | 98/98 |
 | Covenant-engine Coherent secured floor | PASS |
 | `probe-gate-status` | `NOT_SATISFIED` / never AVAILABLE |
+
+## CI (exact tip)
+
+**Tip `887d701168ccc87f37193b22c11d2e9e8a598088`:** all 8 GitHub checks **SUCCESS** · MERGEABLE / CLEAN (2026-10-10T00:22Z).
+
+**Human merge recommendation:** APPROVE merge of #251 at this SHA (re-fetch before merge). Then close #243 and #223 as superseded.
