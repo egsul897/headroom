@@ -10,7 +10,7 @@
 | Marker | SHA |
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
-| Final `origin/main` at closeout | `fa26d602f4b0551ad4fabf481a50355fcef61322` |
+| Final `origin/main` at closeout | `ba5108223405d7a3ff31da57e2766709d92e4f07` |
 | Integration branch tip | branch HEAD after this closeout pin commit (see PR #278) |
 
 Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273` (via #279), `#275` (via #280) landed on `main`.
@@ -136,5 +136,7 @@ Reported at final push of this closeout commit on `cursor/five-agent-integration
 
 ## Exact-tip CI
 
-- Tip `9d90daa5` (pre-#280 absorb): **all 5 checks SUCCESS** (certified path, dashboard invent-absence, home overview, Vercel, Vercel Preview Comments).
-- Tip after #280 absorb: re-run CI on push; report terminal status on PR #278.
+- Tip `9d90daa5`: **all 5 checks SUCCESS**.
+- Tip `005f487f` (post-#280 absorb + closeout refresh): **all 4 reported checks SUCCESS** (certified path, home overview, Vercel, Vercel Preview Comments); PR mergeable CLEAN.
+- Subsequent tip after absorbing main docs `#284` (`ba510822`): docs-only merge; re-verify CI on push.
+
