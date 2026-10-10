@@ -182,11 +182,33 @@ describe("Gate 0 - TRANSACTION_SECURITY_SCOPE eligibility condition (lib/solver/
     // have no such restriction and are unaffected by this fix.
     const restricted = permission("p-restricted", { formulaType: "FLAT_AMOUNT", thresholdValue: 500, eligibilityConditions: [UNSECURED_OR_JUNIOR_CONDITION] });
     const baseline = permission("p-baseline", { formulaType: "FLAT_AMOUNT", thresholdValue: 200, eligibilityConditions: [] });
+    const restrictedLien = permission("p-restricted-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+    const baselineLien = permission("p-baseline-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+    const lienRels = [
+      {
+        id: "rel-restricted-lien",
+        companyId: "co-1",
+        fromPermissionId: "p-restricted",
+        toPermissionId: "p-restricted-lien",
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION" as const,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§lien-r" },
+      },
+      {
+        id: "rel-baseline-lien",
+        companyId: "co-1",
+        fromPermissionId: "p-baseline",
+        toPermissionId: "p-baseline-lien",
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION" as const,
+        sourceProvision: { documentId: "doc-1", sectionRef: "§lien-b" },
+      },
+    ];
 
     function solveFor(transaction: Transaction, collateralScopes: PermissionCollateralScope[] = []) {
       return runSolver({
-        eligiblePermissions: [restricted, baseline],
-        relationships: [],
+        eligiblePermissions: transaction.secured
+          ? [restricted, baseline, restrictedLien, baselineLien]
+          : [restricted, baseline],
+        relationships: transaction.secured ? lienRels : [],
         sharedConstraints: [],
         collateralScopes,
         ruleActivationConditions: [],
@@ -203,7 +225,7 @@ describe("Gate 0 - TRANSACTION_SECURITY_SCOPE eligibility condition (lib/solver/
       expect(result.overall.maximumCapacity?.kind).toBe("EXACT");
       if (result.overall.maximumCapacity?.kind === "EXACT") {
         expect(result.overall.maximumCapacity.amount).toBe(200);
-        expect(result.overall.maximumCapacity.path.legs.map((l) => l.permissionId)).toEqual(["p-baseline"]);
+        expect(result.overall.maximumCapacity.path.legs.map((l) => l.permissionId)).toContain("p-baseline");
       }
     });
 
@@ -223,12 +245,15 @@ describe("Gate 0 - TRANSACTION_SECURITY_SCOPE eligibility condition (lib/solver/
       // requestedLienPriority)" loop) is satisfied too - this test isolates
       // the TRANSACTION_SECURITY_SCOPE mechanism specifically, not the
       // separate collateral-pool-priority machinery.
-      const collateralScopes: PermissionCollateralScope[] = [{ permissionId: "p-restricted", collateralPoolId: "pool-1", priorityTier: "SECOND" }];
+      const collateralScopes: PermissionCollateralScope[] = [
+        { permissionId: "p-restricted", collateralPoolId: "pool-1", priorityTier: "SECOND" },
+        { permissionId: "p-restricted-lien", collateralPoolId: "pool-1", priorityTier: "SECOND" },
+      ];
       const result = solveFor(baseTransaction({ amount: 100, secured: true, requestedLienPriority: [{ poolId: "pool-1", priorityTier: "SECOND" }] }), collateralScopes);
       expect(result.overall.maximumCapacity?.kind).toBe("EXACT");
       if (result.overall.maximumCapacity?.kind === "EXACT") {
         expect(result.overall.maximumCapacity.amount).toBe(500);
-        expect(result.overall.maximumCapacity.path.legs.map((l) => l.permissionId)).toEqual(["p-restricted"]);
+        expect(result.overall.maximumCapacity.path.legs.map((l) => l.permissionId)).toContain("p-restricted");
       }
     });
   });

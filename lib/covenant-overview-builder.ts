@@ -234,6 +234,37 @@ function headlineCapacitySide(sim: PostTransactionCapacitySimulation): HeadlineC
   };
 }
 
+/**
+ * Prefer MODELED_CROSS_DOCUMENT packageAuthoritative for customer headlines.
+ * Solver-native remaining is diagnostic only and must not produce a more
+ * favorable secured/unsecured package figure than the capacityFormulas min.
+ */
+function headlineCapacitySideAuthoritative(
+  sim: PostTransactionCapacitySimulation,
+  cross: { status: string; capacity?: number; bindingDocumentName?: string; bindingProvision?: { sectionRef: string } },
+): HeadlineCapacitySide {
+  const auth = sim.packageAuthoritative;
+  if (auth?.remainingCapacity != null && Number.isFinite(auth.remainingCapacity)) {
+    return {
+      maximumCapacity: sim.binding?.maximumCapacity,
+      remainingCapacity: auth.remainingCapacity,
+      bindingDocumentName: auth.bindingDocumentName ?? cross.bindingDocumentName,
+      bindingSections: cross.bindingProvision ? [cross.bindingProvision.sectionRef] : (sim.binding?.bindingConstraint ?? []).map((c) => c.sectionRef),
+      status: "MODELED",
+    };
+  }
+  if (cross.status === "modeled" && cross.capacity != null) {
+    return {
+      maximumCapacity: sim.binding?.maximumCapacity,
+      remainingCapacity: cross.capacity,
+      bindingDocumentName: cross.bindingDocumentName,
+      bindingSections: cross.bindingProvision ? [cross.bindingProvision.sectionRef] : [],
+      status: "MODELED",
+    };
+  }
+  return headlineCapacitySide(sim);
+}
+
 function familyCoverage(counts: FamilyCounts): FamilyCoverageState {
   if (counts.unmodeled > 0) return "PRESENT_BUT_UNMODELED";
   if (counts.reviewRequired > 0) return "MODELED_REVIEW_REQUIRED";
@@ -394,8 +425,11 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   const position = computeCovenantPosition(covenantData);
   const securedSim = computeRemainingCapacityAfterDebtIncurrence(covenantData, position, 0, true, solverContext);
   const unsecuredSim = computeRemainingCapacityAfterDebtIncurrence(covenantData, position, 0, false, solverContext);
-  const securedCapacity = headlineCapacitySide(securedSim);
-  const unsecuredCapacity = headlineCapacitySide(unsecuredSim);
+  // Customer headlines use MODELED_CROSS_DOCUMENT packageAuthoritative when
+  // present. Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC and
+  // must not replace the modeled binding (Coherent secured $5,129→$4,041).
+  const securedCapacity = headlineCapacitySideAuthoritative(securedSim, position.crossDocumentSecured);
+  const unsecuredCapacity = headlineCapacitySideAuthoritative(unsecuredSim, position.crossDocumentUnsecured);
   const bindingKeys = new Set([...citationsToKeys(securedSim.binding?.bindingConstraint), ...citationsToKeys(unsecuredSim.binding?.bindingConstraint)]);
 
   const fin = covenantData.financials;

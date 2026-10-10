@@ -1,0 +1,663 @@
+{
+  "schemaVersion": "product.financial-capacity-independent-validation.v1",
+  "generatedAt": "2026-10-10T00:14:00.835Z",
+  "startingSha": "b73f0828f1ddca89214beb3491a1cae9b43a3d1d",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "companyId": "coherent",
+  "asOfDate": "2026-06-30T00:00:00.000Z",
+  "financialAuthority": {
+    "ns4ApprovedSnapshots": 0,
+    "financialSnapshotRows": 1,
+    "financialStateRows": 1,
+    "goldenTestsVerified": 30,
+    "goldenTestsTotal": 30,
+    "permissionsVerified": 22,
+    "permissionsTotal": 22,
+    "classification": "EVALUATION_SEED_NOT_NS4_APPROVED",
+    "phase4RequireExecutable": false,
+    "note": "Coherent financials are evaluation-seed FinancialSnapshot/FinancialState rows with lawyer-reviewed permissions/golden tests, but zero NS-4 APPROVED ContractInputSnapshot. Do not claim Phase-4 REQUIRE execution from these inputs."
+  },
+  "fiveOneTwoNineBillion": {
+    "amountMillions": 5129,
+    "isUniversalCapacity": false,
+    "meaning": "$5,129M is the Credit Agreement §6.11 Total Net Leverage borrowing room (and the package-wide UNSECURED binding capacity). It is NOT the package-wide secured capacity.",
+    "calculation": {
+      "ebitda": 1700,
+      "threshold": 4.25,
+      "totalDebt": 3258,
+      "cash": 1162,
+      "netDebt": 2096,
+      "room": 5129,
+      "formula": "room = 4.25 × Consolidated EBITDA − (Consolidated Total Debt − unrestricted cash)",
+      "provisionCode": "ca_leverage_cap",
+      "sectionRef": "§6.11 — TNL ≤ 4.25x",
+      "document": "Credit Agreement (2022, as amended)",
+      "asOfDate": "2026-06-30T00:00:00.000Z"
+    },
+    "matchesIndependent": true,
+    "matchesCrossDocumentUnsecured": true,
+    "mustNotBePresentedAs": [
+      "Universal available capacity for both secured and unsecured debt",
+      "Package-wide secured capacity (that is $4,041M under Indenture mila_secured)",
+      "Phase-4 REQUIRE certified capacity"
+    ]
+  },
+  "capacityBreakdown": {
+    "grossLeverageBorrowingRoomTnl": {
+      "amount": 5129,
+      "formula": "4.25 × EBITDA − (totalDebt − cash)",
+      "provision": "ca_leverage_cap",
+      "section": "§6.11 — TNL ≤ 4.25x",
+      "document": "Credit Agreement (2022, as amended)",
+      "independent": 5129
+    },
+    "packageWideSecuredCapacity": {
+      "amount": 4041,
+      "bindingProvision": "mila_secured",
+      "section": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+      "document": "2029 Senior Notes Indenture",
+      "independent": 4041,
+      "authority": "MODELED_CROSS_DOCUMENT"
+    },
+    "packageWideUnsecuredCapacity": {
+      "amount": 5129,
+      "bindingProvision": "ca_leverage_cap",
+      "section": "§6.11 — TNL ≤ 4.25x",
+      "document": "Credit Agreement (2022, as amended)",
+      "independent": 5129,
+      "authority": "MODELED_CROSS_DOCUMENT"
+    },
+    "lienCapacity": {
+      "ratioProng": 4041,
+      "generalProng": 680,
+      "sum": 4721,
+      "note": "Indenture secured formula mins debt baskets, lien sum, and mila_secured; lien sum alone is not the package binding."
+    },
+    "availableBaskets": [
+      {
+        "code": "ca_leverage_cap",
+        "name": "Financial Covenants — Total Net Leverage",
+        "section": "§6.11 — TNL ≤ 4.25x",
+        "capacity": 5129,
+        "formula": "LEVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "ca_coverage_cap",
+        "name": "Financial Covenants — Interest Coverage",
+        "section": "§6.11 — IC ≥ 2.50x",
+        "capacity": 7538.461538461538,
+        "formula": "COVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "ratio_debt_fccr",
+        "name": "Ratio Debt",
+        "section": "§3.3(a) — FCCR ≥ 2.00x",
+        "capacity": 10153.846153846154,
+        "formula": "COVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "mila_secured",
+        "name": "MILA — secured prong",
+        "section": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+        "capacity": 4041,
+        "formula": "LEVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "mila_unsecured",
+        "name": "MILA — unsecured prong",
+        "section": "§3.3(b)(i)(C) — TNL ≤ 5.00x",
+        "capacity": 6404,
+        "formula": "LEVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "facility_flat",
+        "name": "Credit Facilities basket — flat",
+        "section": "§3.3(b)(i)(A) — $4,000M",
+        "capacity": 1779,
+        "formula": "FLAT_NET_OF_DEBT"
+      },
+      {
+        "code": "facility_grower",
+        "name": "Credit Facilities basket — grower",
+        "section": "§3.3(b)(i)(B) — greater of $1,320M / 100% EBITDA",
+        "capacity": 1700,
+        "formula": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "code": "general_debt",
+        "name": "General debt basket",
+        "section": "§3.3(b)(xii) — greater of $530M / 40% EBITDA",
+        "capacity": 680,
+        "formula": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "code": "lien_ratio",
+        "name": "Lien capacity — ratio prong",
+        "section": "Permitted Liens cl. (24) — SSNL ≤ 3.00x",
+        "capacity": 4041,
+        "formula": "LEVERAGE_RATIO_ROOM"
+      },
+      {
+        "code": "lien_general",
+        "name": "Lien capacity — general prong",
+        "section": "Permitted Liens cl. (25) — greater of $530M / 40% EBITDA",
+        "capacity": 680,
+        "formula": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "code": "rp_builder",
+        "name": "Builder Basket (Available Amount)",
+        "section": "§3.4(a)(C)",
+        "capacity": 2835,
+        "formula": "BUILDER_BASKET"
+      },
+      {
+        "code": "rp_general",
+        "name": "General RP Basket",
+        "section": "§3.4(b)(x) — greater of $600M / 45% EBITDA",
+        "capacity": 765,
+        "formula": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      },
+      {
+        "code": "rp_ratio_gate",
+        "name": "Ratio RP (unlimited)",
+        "section": "§3.4(b)(xvii)(i) — TNL ≤ 3.25x",
+        "capacity": null,
+        "formula": "RATIO_GATE"
+      },
+      {
+        "code": "inv_ratio_gate",
+        "name": "Ratio Investments (unlimited)",
+        "section": "§3.4(b)(xvii)(ii) — TNL ≤ 3.50x",
+        "capacity": null,
+        "formula": "RATIO_GATE"
+      },
+      {
+        "code": "asset_sale_threshold",
+        "name": "Excess Proceeds threshold",
+        "section": "§3.7(d) — greater of $35M / 2.5% EBITDA",
+        "capacity": 42.5,
+        "formula": "GREATER_OF_FLAT_OR_PCT_EBITDA"
+      }
+    ],
+    "knownHistoricalUsage": [
+      {
+        "basket": "EQUITY",
+        "direction": "CREDIT",
+        "amount": 1998
+      },
+      {
+        "basket": "ASSET_SALE",
+        "direction": "CREDIT",
+        "amount": 400
+      },
+      {
+        "basket": "ASSET_SALE",
+        "direction": "CREDIT",
+        "amount": -96
+      },
+      {
+        "basket": "DEBT_REPAY",
+        "direction": "CREDIT",
+        "amount": 502
+      },
+      {
+        "basket": "DIVIDEND",
+        "direction": "DEBIT",
+        "amount": 150
+      }
+    ],
+    "unknownHistoricalUsage": [
+      "DEBT_INCUR ledger empty — prior debt-basket elections/draws not recorded as utilization against facility_flat / general_debt / MILA",
+      "Lien grant historical usage not separately ledgered",
+      "Investment DEBIT rows absent — only DIVIDEND $150M debit known against shared Available Amount pool"
+    ],
+    "packageWideBindingConstraints": [
+      "Secured package-wide: Indenture mila_secured (SSNL ≤ 3.00x) at $4,041M — tighter than CA §6.11 $5,129M",
+      "Unsecured package-wide: CA §6.11 TNL ≤ 4.25x at $5,129M — tighter than Indenture unsecured ~$10,154M",
+      "Both documents always apply; capacity is the minimum across governing documents per side"
+    ],
+    "dashboardSolverDivergence": {
+      "securedReported": 1700,
+      "unsecuredReported": 5129,
+      "securedIsFalseFavorable": false,
+      "solverAuthority": "NON_AUTHORITATIVE_DIAGNOSTIC",
+      "packageAuthoritativeSecured": 4041,
+      "packageAuthoritativeLabel": "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+      "rootCauseTrace": [
+        "PRE-FIX: Indenture secured election ratio-fccr+scf-flat under CONCURRENT_DISREGARDED inherited SCF Permitted Liens cl.(6) auto-lien onto Ratio Debt → indenture max ≈ $11,933M (FCCR room + SCF flat).",
+        "PRE-FIX: CA secured cleared via coh-ca-d-permitted-601p (§6.01(p) TNL ≤ 4.25x) without a Permitted Lien path → $5,129M.",
+        "PRE-FIX: Package min(CA $5,129, Indenture $11,933) = $5,129M — Indenture mila_secured / SSNL ≤ 3.00x ($4,041M) never became binding.",
+        "FIX: evaluateElection requires each secured DEBT_INCURRENCE leg to have its own auto-lien or independent LIEN member; CONCURRENT_COUNTED maxCapacity is not the sum of standalones.",
+        "FIX: computeRemainingCapacityAfterDebtIncurrence clamps solver>legacy per document and quarantines false-favorable package figures; packageAuthoritative = MODELED_CROSS_DOCUMENT.",
+        "POST-FIX: Customer/package secured = Indenture mila_secured $4,041M (MODELED). Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC and must not exceed $4,041M."
+      ],
+      "note": "Solver-native remaining is NON_AUTHORITATIVE_DIAGNOSTIC. Customer headlines and package binding use MODELED_CROSS_DOCUMENT (Indenture mila_secured $4,041M secured / CA §6.11 $5,129M unsecured). Do not present solver figures as verified remaining capacity."
+    }
+  },
+  "builderAuthority": {
+    "sectionRefs": [
+      "§3.4(a)(C)(1)",
+      "§3.4(a)(C)(2)",
+      "§3.4(a)(C)(3)-(4)"
+    ],
+    "formula": "max($330M, 25% EBITDA) + 50% CNI + 100% equity proceeds/contributions since issue",
+    "starter": 425,
+    "cniContribution": 260,
+    "equityContribution": 2150,
+    "headline": 2835,
+    "equityLegalAuthority": "Indenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent Not Otherwise Applied. Exclusions: Disqualified Stock; amounts otherwise applied. Seed equityProceedsSinceIssue=$2,150M is historical attribution since Issue Date under evaluation-seed financials (includeEquityProceeds=true). Issue-date eligibility: only post-Issue-Date contributions credit the builder — pre-issue equity is out of scope. MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not verified remaining capacity.",
+    "includeEquityProceedsParam": true
+  },
+  "borrowingProceedsTreatment": {
+    "engineConvention": "IMMEDIATELY_SPENT_CASH_UNCHANGED",
+    "cashRetained": {
+      "description": "Debt +$50M secured and cash +$50M (proceeds retained). Net debt unchanged → TNL/SSNL rooms unchanged at day-0 levels.",
+      "netDebtDelta": 0,
+      "tnlRoom": 5129,
+      "ssnlRoom": 4041
+    },
+    "immediatelySpent": {
+      "description": "Debt +$50M secured, cash unchanged (engine simulateDebtIncurrence / leverage convention). Net debt +$50M → TNL room $5,079M, SSNL/mila room $3,991M.",
+      "netDebtDelta": 50,
+      "tnlRoom": 5079,
+      "ssnlRoom": 3991
+    },
+    "label": "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED"
+  },
+  "coordination": {
+    "issue220FinancialApproval": "#220 — Financial figures remain EVALUATION_SEED_NOT_NS4_APPROVED (zero NS-4 APPROVED ContractInputSnapshot). No certification bypass; financial approval still required before any verified-capacity claim.",
+    "issue234UtilizationCompleteness": "#234 — DEBT_INCUR / lien grant / investment debit utilization incomplete in Neon ledger (only DIVIDEND $150M known against shared Available Amount). Capacity figures are modeled gross of unknown historical draws.",
+    "issue218CrossDocumentRestrictions": "#218 — Cross-document binding is MODELED_CROSS_DOCUMENT min across capacityFormulas. Solver-native elections are NON_AUTHORITATIVE_DIAGNOSTIC after lien-coverage + CONCURRENT_COUNTED fixes; package secured binding remains Indenture mila_secured, not CA TNL."
+  },
+  "sequentialTransactions": [
+    {
+      "id": "SEQ-S1-debt-incur-secured-50",
+      "kind": "DEBT_INCURRENCE",
+      "title": "Incur $50M secured debt",
+      "amount": 50,
+      "sequentialIndex": 1,
+      "usesPriorPostState": false,
+      "independent": {
+        "pre": {
+          "ebitda": 1700,
+          "cash": 1162,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2096,
+          "netSecured": 1059,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "post": {
+          "ebitda": 1700,
+          "cash": 1162,
+          "totalDebt": 3308,
+          "securedDebt": 2271,
+          "netDebt": 2146,
+          "netSecured": 1109,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2623529411764707,
+          "seniorSecuredNetLeverage": 0.6523529411764706,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "cashTreatment": "Debt-incurrence leverage convention leaves cash unchanged (proceeds not added to cash for TNL/SSNL tests). Limitation: not a full sources-and-uses balance sheet.",
+        "debtTreatment": "totalDebt +$50M; securedDebt +$50M",
+        "lienLeverageEffects": [
+          "SSNL room (mila_secured) consumed by $50M → expected $3991M",
+          "TNL room (ca_leverage_cap) consumed by $50M → expected $5079M",
+          "Lien ratio prong moves with SSNL; facility_flat (FLAT_NET_OF_DEBT net of secured) also declines $50M"
+        ],
+        "basketEffects": [
+          "mila_secured CONSUMED -50",
+          "ca_leverage_cap CONSUMED -50",
+          "facility_flat CONSUMED -50",
+          "rp_builder UNAFFECTED (debt incur does not touch Available Amount)"
+        ],
+        "limitations": [
+          "Cash proceeds of the draw are NOT added — explicit engine convention",
+          "Does not elect a specific basket permission for the draw"
+        ],
+        "expectedPackageSecured": 3991,
+        "expectedPackageUnsecured": 5079,
+        "expectedBuilderHeadline": 2835,
+        "expectedBuilderStepRemaining": 2685
+      },
+      "observed": {
+        "packageSecured": 3991,
+        "packageUnsecured": 5079,
+        "builderHeadline": 2835,
+        "builderStepRemaining": null,
+        "simulationStatus": "clear",
+        "facilityFlat": 1729
+      },
+      "outcome": "CORRECT_EXECUTABLE",
+      "notes": [
+        "Independent secured pre must be $4,041M (mila), not dashboard $5,129M"
+      ]
+    },
+    {
+      "id": "SEQ-S2-debt-repay-50",
+      "kind": "DEBT_REPAYMENT",
+      "title": "Repay $50M Term Loan A (on S1 post-state)",
+      "amount": 50,
+      "sequentialIndex": 2,
+      "usesPriorPostState": true,
+      "independent": {
+        "pre": {
+          "ebitda": 1700,
+          "cash": 1162,
+          "totalDebt": 3308,
+          "securedDebt": 2271,
+          "netDebt": 2146,
+          "netSecured": 1109,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2623529411764707,
+          "seniorSecuredNetLeverage": 0.6523529411764706,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "post": {
+          "ebitda": 1700,
+          "cash": 1112,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2146,
+          "netSecured": 1109,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2623529411764707,
+          "seniorSecuredNetLeverage": 0.6523529411764706,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "cashTreatment": "Cash −$50M (repayment funded from cash). Because S1 did not add debt proceeds to cash, this paydown leaves cash $50M below the original baseline.",
+        "debtTreatment": "totalDebt −$50M; securedDebt −$50M (returns to baseline outstanding)",
+        "lienLeverageEffects": [
+          "Net debt rises vs original baseline (cash lower, debt same) → TNL room $5079M not $5129M",
+          "SSNL room $3991M not $4041M — incomplete restoration vs day-0",
+          "facility_flat RESTORED +50 vs S1 post (FLAT_NET_OF_DEBT nets secured outstanding)",
+          "Vs pre-repay (S1 post): ratio rooms RESTORED +50; vs day-0: still −50 from cash drain"
+        ],
+        "basketEffects": [
+          "mila_secured RESTORED +50 vs S1 post (not full day-0 restore)",
+          "ca_leverage_cap RESTORED +50 vs S1 post (not full day-0 restore)",
+          "facility_flat RESTORED +50 vs S1 post (full restore to day-0 flat capacity)",
+          "rp_builder UNAFFECTED"
+        ],
+        "limitations": [
+          "Sequential overlay is hypothetical — actual Neon ledger unchanged",
+          "runCompanyScenario repayment is measured from baseline DB state (not S1 post); covenant overlays above are the sequential authority",
+          "S1 debt-funded convention (no cash proceeds) + cash repayment is an asymmetric pair — must remain explicit"
+        ],
+        "expectedPackageSecured": 3991,
+        "expectedPackageUnsecured": 5079,
+        "expectedBuilderHeadline": 2835,
+        "expectedBuilderStepRemaining": 2685
+      },
+      "observed": {
+        "packageSecured": 3991,
+        "packageUnsecured": 5079,
+        "builderHeadline": 2835,
+        "builderStepRemaining": null,
+        "simulationStatus": "clear",
+        "facilityFlat": 1779
+      },
+      "outcome": "CORRECT_EXECUTABLE",
+      "notes": [
+        "Scenario-runner cash/debt deltas (baseline): cashΔ=-50, debtΔ=-50, netDebtΔ=0",
+        "Pre-repay package secured was $3991M (S1 post); post sequential secured $3991M"
+      ]
+    },
+    {
+      "id": "SEQ-S3-dividend-25",
+      "kind": "DIVIDEND",
+      "title": "Pay $25M dividend (on S2 post-state)",
+      "amount": 25,
+      "sequentialIndex": 3,
+      "usesPriorPostState": true,
+      "independent": {
+        "pre": {
+          "ebitda": 1700,
+          "cash": 1112,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2146,
+          "netSecured": 1109,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2623529411764707,
+          "seniorSecuredNetLeverage": 0.6523529411764706,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "post": {
+          "ebitda": 1700,
+          "cash": 1087,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2171,
+          "netSecured": 1134,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2770588235294118,
+          "seniorSecuredNetLeverage": 0.6670588235294118,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "cashTreatment": "Cash −$25M. Net debt rises by $25M → TNL/SSNL rooms shrink.",
+        "debtTreatment": "Debt unchanged",
+        "lienLeverageEffects": [
+          "TNL room falls by $25M (cash reduction) → expected unsecured $5054M",
+          "SSNL room falls by $25M → expected secured $3966M",
+          "Dividend is not lien-creating but cash reduction affects leverage-based capacity"
+        ],
+        "basketEffects": [
+          "rp_builder step CONSUMED −$25M (pre step 2685 → 2660)",
+          "rp_general UNAFFECTED (builder absorbed full amount)",
+          "Shared Available Amount pool with investments"
+        ],
+        "limitations": [
+          "simulateRestrictedPayment does not itself reduce cash — cash overlay applied for leverage integrity",
+          "Hypothetical ledger debit appended for sequential pool; Neon ledger not written"
+        ],
+        "expectedPackageSecured": 3966,
+        "expectedPackageUnsecured": 5054,
+        "expectedBuilderHeadline": 2835,
+        "expectedBuilderStepRemaining": 2660
+      },
+      "observed": {
+        "packageSecured": 3966,
+        "packageUnsecured": 5054,
+        "builderHeadline": 2835,
+        "builderStepRemaining": 2660,
+        "simulationStatus": "clear",
+        "facilityFlat": 1779
+      },
+      "outcome": "CORRECT_EXECUTABLE",
+      "notes": [
+        "RP sim allocated from Builder Basket (Available Amount)"
+      ]
+    },
+    {
+      "id": "SEQ-S4-equity-contribution-100",
+      "kind": "EQUITY_CONTRIBUTION",
+      "title": "Receive $100M equity contribution (on S3 post-state)",
+      "amount": 100,
+      "sequentialIndex": 4,
+      "usesPriorPostState": true,
+      "independent": {
+        "pre": {
+          "ebitda": 1700,
+          "cash": 1087,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2171,
+          "netSecured": 1134,
+          "equityProceedsSinceIssue": 2150,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2770588235294118,
+          "seniorSecuredNetLeverage": 0.6670588235294118,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "post": {
+          "ebitda": 1700,
+          "cash": 1187,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2071,
+          "netSecured": 1034,
+          "equityProceedsSinceIssue": 2250,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.218235294117647,
+          "seniorSecuredNetLeverage": 0.6082352941176471,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "cashTreatment": "Cash +$100M",
+        "debtTreatment": "Debt unchanged",
+        "lienLeverageEffects": [
+          "TNL/SSNL rooms expand by $100M from cash",
+          "No new liens"
+        ],
+        "basketEffects": [
+          "rp_builder INCREASED +$100M via §3.4(a)(C)(3)-(4) equity proceeds / equity contribution prongs (includeEquityProceeds=true)",
+          "facility_flat / general_debt / facility_grower UNAFFECTED (no debt term / no equity term)"
+        ],
+        "limitations": [
+          "No ScenarioAction EQUITY_CONTRIBUTION — financial overlay only",
+          "Seed equityProceedsSinceIssue already includes historical contributions; this adds a further hypothetical $100M"
+        ],
+        "expectedPackageSecured": 4066,
+        "expectedPackageUnsecured": 5154,
+        "expectedBuilderHeadline": 2935,
+        "expectedBuilderStepRemaining": 2760
+      },
+      "observed": {
+        "packageSecured": 4066,
+        "packageUnsecured": 5154,
+        "builderHeadline": 2935,
+        "builderStepRemaining": 2760,
+        "simulationStatus": "clear",
+        "facilityFlat": 1779
+      },
+      "outcome": "CORRECT_EXECUTABLE",
+      "notes": [
+        "Legal authority: Notes Available Amount definition — 100% net cash proceeds of Capital Stock issuance and equity contributions since Issue Date, Not Otherwise Applied (§3.4(a)(C)(3)-(4))"
+      ]
+    },
+    {
+      "id": "SEQ-S5-restricted-investment-25",
+      "kind": "RESTRICTED_INVESTMENT",
+      "title": "Make $25M restricted investment (on S4 post-state)",
+      "amount": 25,
+      "sequentialIndex": 5,
+      "usesPriorPostState": true,
+      "independent": {
+        "pre": {
+          "ebitda": 1700,
+          "cash": 1187,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2071,
+          "netSecured": 1034,
+          "equityProceedsSinceIssue": 2250,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.218235294117647,
+          "seniorSecuredNetLeverage": 0.6082352941176471,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "post": {
+          "ebitda": 1700,
+          "cash": 1162,
+          "totalDebt": 3258,
+          "securedDebt": 2221,
+          "netDebt": 2096,
+          "netSecured": 1059,
+          "equityProceedsSinceIssue": 2250,
+          "cumulativeNetIncome": 520,
+          "interestExpense": 190,
+          "totalNetLeverage": 1.2329411764705882,
+          "seniorSecuredNetLeverage": 0.6229411764705882,
+          "fixedChargeCoverage": 8.947368421052632
+        },
+        "cashTreatment": "Cash −$25M (investment funded in cash). Classification: Restricted Investment under Notes §3.4 waterfall (kind=investment), sharing Available Amount with dividends.",
+        "debtTreatment": "Debt unchanged",
+        "lienLeverageEffects": [
+          "Cash reduction shrinks TNL/SSNL rooms",
+          "Not a lien grant; debt baskets UNAFFECTED except via cash/leverage"
+        ],
+        "basketEffects": [
+          "Shared RP pool CONSUMED −$25M from builder step (pre step 2760)",
+          "Dividends and investments share the same waterfall — sequential S3 dividend already reduced pool"
+        ],
+        "limitations": [
+          "RP sim capacity-only; cash overlay applied for leverage integrity",
+          "Hypothetical INVESTMENT ledger debit; Neon not written"
+        ],
+        "expectedPackageSecured": 4041,
+        "expectedPackageUnsecured": 5129,
+        "expectedBuilderHeadline": 2935,
+        "expectedBuilderStepRemaining": 2735
+      },
+      "observed": {
+        "packageSecured": 4041,
+        "packageUnsecured": 5129,
+        "builderHeadline": 2935,
+        "builderStepRemaining": 2735,
+        "simulationStatus": "clear",
+        "facilityFlat": 1779
+      },
+      "outcome": "CORRECT_EXECUTABLE",
+      "notes": []
+    }
+  ],
+  "sequentialIntegrity": {
+    "chainLength": 5,
+    "eachUsesPriorPostState": true,
+    "ledgerMutated": false,
+    "note": "S2–S5 each start from the prior step's post financial/ledger overlay. Neon ACTIVE ledger is never written. runCompanyScenario repayment is an independent baseline check; sequential covenant authority is the overlay chain."
+  },
+  "matthews": {
+    "companyId": "matthews",
+    "provisionCount": 0,
+    "capacityFormulasPresent": false,
+    "permissionCount": 7,
+    "financialsPresent": true,
+    "outcome": "CORRECT_REFUSAL",
+    "note": "Matthews has financials and permissions but zero CovenantProvision rows and no capacityFormulas — capacity remains NOT_EXECUTABLE. Do not invent formulas.",
+    "nextStep": "Reuse document onboarding + legal-review pipeline to extract/review CovenantProvision and capacityFormulas from Matthews credit agreement / second-lien notes before any capacity claim."
+  },
+  "productConvergence": {
+    "positionSurface": "getCompanyDashboard / computeCovenantPosition — packageAuthoritative MODELED_CROSS_DOCUMENT for customer headlines; solver-native is NON_AUTHORITATIVE_DIAGNOSTIC",
+    "simulateSurface": "runCompanyScenario + simulateDebtIncurrence / simulateRestrictedPayment — same CompanyCovenantData financials + ledger; sequential overlays for multi-step drafts",
+    "askSurface": "Covenant Ask / research summaries are DISCOVERED ≠ capacity; must not answer dollar capacity without the same position engine + authority label",
+    "sharedState": "Single as-of FinancialState/Snapshot + ACTIVE ledger + capacityFormulas/provisions; transaction draft is a pure overlay (StateDelta / scenario actions) never mutating Neon until an authorized commit path exists",
+    "modeledVsVerified": "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED capacity ≠ verified remaining capacity / Phase-4 REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED)."
+  },
+  "outcomeSummary": {
+    "correctExecutable": 5,
+    "correctRefusals": 1,
+    "falseFavorable": 0,
+    "incorrect": 0,
+    "limitations": [
+      "Debt-incurrence engine convention = immediately-spent (cash unchanged); cash-retained proceeds documented separately as MODELED dual treatment",
+      "No NS-4 APPROVED financials — not Phase-4 REQUIRE; figures labeled MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+      "Unknown DEBT_INCUR historical utilization (#234)",
+      "Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC; customer binding is MODELED_CROSS_DOCUMENT mila_secured $4,041M (#218)",
+      "Financial approval still open (#220)",
+      "No officer/compliance certificate Document rows for Coherent in Neon"
+    ]
+  },
+  "customerReportMarkdown": "# Independent validation — Coherent financial capacity\n\nGenerated: 2026-10-10T00:14:00.835Z\nSHA: b73f0828f1ddca89214beb3491a1cae9b43a3d1d\npaidInferenceCalls: 0\npromotedToLegalTruth: 0\n\n## 1. Independent $5.129B calculation\n\n$5,129M is the Credit Agreement §6.11 Total Net Leverage borrowing room (and the package-wide UNSECURED binding capacity). It is NOT the package-wide secured capacity.\n\n```\nroom = 4.25 × Consolidated EBITDA − (Consolidated Total Debt − unrestricted cash)\n= 4.25 × 1700 − (3258 − 1162)\n= 5129\n```\n\nProvision: Credit Agreement (2022, as amended) §6.11 — TNL ≤ 4.25x (`ca_leverage_cap`)\nAs of: 2026-06-30T00:00:00.000Z\nIs universal secured+unsecured capacity: **false**\n\n## 2. Secured versus unsecured\n\n| Side | Package-wide | Binding | Independent |\n|---|---|---|---|\n| Secured | $4041M | 2029 Senior Notes Indenture §3.3(b)(i)(C) — SSNL ≤ 3.00x | $4041M |\n| Unsecured | $5129M | Credit Agreement (2022, as amended) §6.11 — TNL ≤ 4.25x | $5129M |\n\n### Solver divergence / authority\n\n- Package authoritative secured: $4041M (MODELED / EVALUATION_SEED_NOT_NS4_APPROVED)\n- Solver-native secured (diagnostic): $1700M — NON_AUTHORITATIVE_DIAGNOSTIC\n- False favorable: **false**\n- PRE-FIX: Indenture secured election ratio-fccr+scf-flat under CONCURRENT_DISREGARDED inherited SCF Permitted Liens cl.(6) auto-lien onto Ratio Debt → indenture max ≈ $11,933M (FCCR room + SCF flat).\n- PRE-FIX: CA secured cleared via coh-ca-d-permitted-601p (§6.01(p) TNL ≤ 4.25x) without a Permitted Lien path → $5,129M.\n- PRE-FIX: Package min(CA $5,129, Indenture $11,933) = $5,129M — Indenture mila_secured / SSNL ≤ 3.00x ($4,041M) never became binding.\n- FIX: evaluateElection requires each secured DEBT_INCURRENCE leg to have its own auto-lien or independent LIEN member; CONCURRENT_COUNTED maxCapacity is not the sum of standalones.\n- FIX: computeRemainingCapacityAfterDebtIncurrence clamps solver>legacy per document and quarantines false-favorable package figures; packageAuthoritative = MODELED_CROSS_DOCUMENT.\n- POST-FIX: Customer/package secured = Indenture mila_secured $4,041M (MODELED). Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC and must not exceed $4,041M.\n\nSolver-native remaining is NON_AUTHORITATIVE_DIAGNOSTIC. Customer headlines and package binding use MODELED_CROSS_DOCUMENT (Indenture mila_secured $4,041M secured / CA §6.11 $5,129M unsecured). Do not present solver figures as verified remaining capacity.\n\n### Borrowing proceeds treatment\n\nEngine convention: IMMEDIATELY_SPENT_CASH_UNCHANGED\n- Cash retained: Debt +$50M secured and cash +$50M (proceeds retained). Net debt unchanged → TNL/SSNL rooms unchanged at day-0 levels.\n  → TNL room $5129M · SSNL room $4041M\n- Immediately spent: Debt +$50M secured, cash unchanged (engine simulateDebtIncurrence / leverage convention). Net debt +$50M → TNL room $5,079M, SSNL/mila room $3,991M.\n  → TNL room $5079M · SSNL room $3991M\n- Label: MODELED / EVALUATION_SEED_NOT_NS4_APPROVED\n\n## 3–5. Sequential transaction economics\n\n### SEQ-S1-debt-incur-secured-50 — Incur $50M secured debt\n\n- Outcome: **CORRECT_EXECUTABLE**\n- Uses prior post-state: false\n- Pre BS: cash $1162M · totalDebt $3258M · secured $2221M · netDebt $2096M · TNL 1.233x · SSNL 0.623x\n- Post BS: cash $1162M · totalDebt $3308M · secured $2271M · netDebt $2146M · TNL 1.262x · SSNL 0.652x\n- Cash treatment: Debt-incurrence leverage convention leaves cash unchanged (proceeds not added to cash for TNL/SSNL tests). Limitation: not a full sources-and-uses balance sheet.\n- Debt treatment: totalDebt +$50M; securedDebt +$50M\n- SSNL room (mila_secured) consumed by $50M → expected $3991M\n- TNL room (ca_leverage_cap) consumed by $50M → expected $5079M\n- Lien ratio prong moves with SSNL; facility_flat (FLAT_NET_OF_DEBT net of secured) also declines $50M\n- Basket: mila_secured CONSUMED -50\n- Basket: ca_leverage_cap CONSUMED -50\n- Basket: facility_flat CONSUMED -50\n- Basket: rp_builder UNAFFECTED (debt incur does not touch Available Amount)\n- Limitation: Cash proceeds of the draw are NOT added — explicit engine convention\n- Limitation: Does not elect a specific basket permission for the draw\n- Note: Independent secured pre must be $4,041M (mila), not dashboard $5,129M\n\n### SEQ-S2-debt-repay-50 — Repay $50M Term Loan A (on S1 post-state)\n\n- Outcome: **CORRECT_EXECUTABLE**\n- Uses prior post-state: true\n- Pre BS: cash $1162M · totalDebt $3308M · secured $2271M · netDebt $2146M · TNL 1.262x · SSNL 0.652x\n- Post BS: cash $1112M · totalDebt $3258M · secured $2221M · netDebt $2146M · TNL 1.262x · SSNL 0.652x\n- Cash treatment: Cash −$50M (repayment funded from cash). Because S1 did not add debt proceeds to cash, this paydown leaves cash $50M below the original baseline.\n- Debt treatment: totalDebt −$50M; securedDebt −$50M (returns to baseline outstanding)\n- Net debt rises vs original baseline (cash lower, debt same) → TNL room $5079M not $5129M\n- SSNL room $3991M not $4041M — incomplete restoration vs day-0\n- facility_flat RESTORED +50 vs S1 post (FLAT_NET_OF_DEBT nets secured outstanding)\n- Vs pre-repay (S1 post): ratio rooms RESTORED +50; vs day-0: still −50 from cash drain\n- Basket: mila_secured RESTORED +50 vs S1 post (not full day-0 restore)\n- Basket: ca_leverage_cap RESTORED +50 vs S1 post (not full day-0 restore)\n- Basket: facility_flat RESTORED +50 vs S1 post (full restore to day-0 flat capacity)\n- Basket: rp_builder UNAFFECTED\n- Limitation: Sequential overlay is hypothetical — actual Neon ledger unchanged\n- Limitation: runCompanyScenario repayment is measured from baseline DB state (not S1 post); covenant overlays above are the sequential authority\n- Limitation: S1 debt-funded convention (no cash proceeds) + cash repayment is an asymmetric pair — must remain explicit\n- Note: Scenario-runner cash/debt deltas (baseline): cashΔ=-50, debtΔ=-50, netDebtΔ=0\n- Note: Pre-repay package secured was $3991M (S1 post); post sequential secured $3991M\n\n### SEQ-S3-dividend-25 — Pay $25M dividend (on S2 post-state)\n\n- Outcome: **CORRECT_EXECUTABLE**\n- Uses prior post-state: true\n- Pre BS: cash $1112M · totalDebt $3258M · secured $2221M · netDebt $2146M · TNL 1.262x · SSNL 0.652x\n- Post BS: cash $1087M · totalDebt $3258M · secured $2221M · netDebt $2171M · TNL 1.277x · SSNL 0.667x\n- Cash treatment: Cash −$25M. Net debt rises by $25M → TNL/SSNL rooms shrink.\n- Debt treatment: Debt unchanged\n- TNL room falls by $25M (cash reduction) → expected unsecured $5054M\n- SSNL room falls by $25M → expected secured $3966M\n- Dividend is not lien-creating but cash reduction affects leverage-based capacity\n- Basket: rp_builder step CONSUMED −$25M (pre step 2685 → 2660)\n- Basket: rp_general UNAFFECTED (builder absorbed full amount)\n- Basket: Shared Available Amount pool with investments\n- Limitation: simulateRestrictedPayment does not itself reduce cash — cash overlay applied for leverage integrity\n- Limitation: Hypothetical ledger debit appended for sequential pool; Neon ledger not written\n- Note: RP sim allocated from Builder Basket (Available Amount)\n\n### SEQ-S4-equity-contribution-100 — Receive $100M equity contribution (on S3 post-state)\n\n- Outcome: **CORRECT_EXECUTABLE**\n- Uses prior post-state: true\n- Pre BS: cash $1087M · totalDebt $3258M · secured $2221M · netDebt $2171M · TNL 1.277x · SSNL 0.667x\n- Post BS: cash $1187M · totalDebt $3258M · secured $2221M · netDebt $2071M · TNL 1.218x · SSNL 0.608x\n- Cash treatment: Cash +$100M\n- Debt treatment: Debt unchanged\n- TNL/SSNL rooms expand by $100M from cash\n- No new liens\n- Basket: rp_builder INCREASED +$100M via §3.4(a)(C)(3)-(4) equity proceeds / equity contribution prongs (includeEquityProceeds=true)\n- Basket: facility_flat / general_debt / facility_grower UNAFFECTED (no debt term / no equity term)\n- Limitation: No ScenarioAction EQUITY_CONTRIBUTION — financial overlay only\n- Limitation: Seed equityProceedsSinceIssue already includes historical contributions; this adds a further hypothetical $100M\n- Note: Legal authority: Notes Available Amount definition — 100% net cash proceeds of Capital Stock issuance and equity contributions since Issue Date, Not Otherwise Applied (§3.4(a)(C)(3)-(4))\n\n### SEQ-S5-restricted-investment-25 — Make $25M restricted investment (on S4 post-state)\n\n- Outcome: **CORRECT_EXECUTABLE**\n- Uses prior post-state: true\n- Pre BS: cash $1187M · totalDebt $3258M · secured $2221M · netDebt $2071M · TNL 1.218x · SSNL 0.608x\n- Post BS: cash $1162M · totalDebt $3258M · secured $2221M · netDebt $2096M · TNL 1.233x · SSNL 0.623x\n- Cash treatment: Cash −$25M (investment funded in cash). Classification: Restricted Investment under Notes §3.4 waterfall (kind=investment), sharing Available Amount with dividends.\n- Debt treatment: Debt unchanged\n- Cash reduction shrinks TNL/SSNL rooms\n- Not a lien grant; debt baskets UNAFFECTED except via cash/leverage\n- Basket: Shared RP pool CONSUMED −$25M from builder step (pre step 2760)\n- Basket: Dividends and investments share the same waterfall — sequential S3 dividend already reduced pool\n- Limitation: RP sim capacity-only; cash overlay applied for leverage integrity\n- Limitation: Hypothetical INVESTMENT ledger debit; Neon not written\n\n## 6. Known versus unknown utilization\n\nKnown:\n- EQUITY CREDIT $1998M\n- ASSET_SALE CREDIT $400M\n- ASSET_SALE CREDIT $-96M\n- DEBT_REPAY CREDIT $502M\n- DIVIDEND DEBIT $150M\nUnknown:\n- DEBT_INCUR ledger empty — prior debt-basket elections/draws not recorded as utilization against facility_flat / general_debt / MILA\n- Lien grant historical usage not separately ledgered\n- Investment DEBIT rows absent — only DIVIDEND $150M debit known against shared Available Amount pool\n\n## 7. Sequential integrity\n\nS2–S5 each start from the prior step's post financial/ledger overlay. Neon ACTIVE ledger is never written. runCompanyScenario repayment is an independent baseline check; sequential covenant authority is the overlay chain.\n\n## 8. Authentic financial approval status\n\n- Classification: **EVALUATION_SEED_NOT_NS4_APPROVED**\n- NS-4 APPROVED: 0\n- Phase-4 REQUIRE executable: false\n- Coherent financials are evaluation-seed FinancialSnapshot/FinancialState rows with lawyer-reviewed permissions/golden tests, but zero NS-4 APPROVED ContractInputSnapshot. Do not claim Phase-4 REQUIRE execution from these inputs.\n\n## 9. Outcomes\n\n{\n  \"correctExecutable\": 5,\n  \"correctRefusals\": 1,\n  \"falseFavorable\": 0,\n  \"incorrect\": 0,\n  \"limitations\": [\n    \"Debt-incurrence engine convention = immediately-spent (cash unchanged); cash-retained proceeds documented separately as MODELED dual treatment\",\n    \"No NS-4 APPROVED financials — not Phase-4 REQUIRE; figures labeled MODELED / EVALUATION_SEED_NOT_NS4_APPROVED\",\n    \"Unknown DEBT_INCUR historical utilization (#234)\",\n    \"Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC; customer binding is MODELED_CROSS_DOCUMENT mila_secured $4,041M (#218)\",\n    \"Financial approval still open (#220)\",\n    \"No officer/compliance certificate Document rows for Coherent in Neon\"\n  ]\n}\n\n## Equity builder legal authority\n\nIndenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent Not Otherwise Applied. Exclusions: Disqualified Stock; amounts otherwise applied. Seed equityProceedsSinceIssue=$2,150M is historical attribution since Issue Date under evaluation-seed financials (includeEquityProceeds=true). Issue-date eligibility: only post-Issue-Date contributions credit the builder — pre-issue equity is out of scope. MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not verified remaining capacity.\nFormula: max($330M, 25% EBITDA) + 50% CNI + 100% equity proceeds/contributions since issue\nStarter $425M + CNI $260M + equity $2150M = $2835M\n\n## Matthews\n\nCORRECT_REFUSAL: Matthews has financials and permissions but zero CovenantProvision rows and no capacityFormulas — capacity remains NOT_EXECUTABLE. Do not invent formulas.\nNext: Reuse document onboarding + legal-review pipeline to extract/review CovenantProvision and capacityFormulas from Matthews credit agreement / second-lien notes before any capacity claim.\n\n## Product convergence\n\n- Position: getCompanyDashboard / computeCovenantPosition — packageAuthoritative MODELED_CROSS_DOCUMENT for customer headlines; solver-native is NON_AUTHORITATIVE_DIAGNOSTIC\n- Simulate: runCompanyScenario + simulateDebtIncurrence / simulateRestrictedPayment — same CompanyCovenantData financials + ledger; sequential overlays for multi-step drafts\n- Ask: Covenant Ask / research summaries are DISCOVERED ≠ capacity; must not answer dollar capacity without the same position engine + authority label\n- Shared state: Single as-of FinancialState/Snapshot + ACTIVE ledger + capacityFormulas/provisions; transaction draft is a pure overlay (StateDelta / scenario actions) never mutating Neon until an authorized commit path exists\n- MODELED / EVALUATION_SEED_NOT_NS4_APPROVED capacity ≠ verified remaining capacity / Phase-4 REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED).\n\n## Coordination\n\n- #220 — Financial figures remain EVALUATION_SEED_NOT_NS4_APPROVED (zero NS-4 APPROVED ContractInputSnapshot). No certification bypass; financial approval still required before any verified-capacity claim.\n- #234 — DEBT_INCUR / lien grant / investment debit utilization incomplete in Neon ledger (only DIVIDEND $150M known against shared Available Amount). Capacity figures are modeled gross of unknown historical draws.\n- #218 — Cross-document binding is MODELED_CROSS_DOCUMENT min across capacityFormulas. Solver-native elections are NON_AUTHORITATIVE_DIAGNOSTIC after lien-coverage + CONCURRENT_COUNTED fixes; package secured binding remains Indenture mila_secured, not CA TNL.\n"
+}
