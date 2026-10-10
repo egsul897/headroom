@@ -44,6 +44,12 @@ export const CANONICAL_UNIT_BY_METRIC: Record<string, FinancialUnit> = {
   total_debt: "USD_MILLIONS",
   secured_debt: "USD_MILLIONS",
   covenant_ebitda: "USD_MILLIONS",
+  /**
+   * GAAP / reported EBITDA — extractable and reviewable, but deliberately
+   * absent from FINANCIAL_METRIC_FIELD_MAP so it never promotes into the
+   * capacity engine's ebitda field (contractual EBITDA only).
+   */
+  gaap_ebitda: "USD_MILLIONS",
   interest_expense: "USD_MILLIONS",
   cumulative_net_income: "USD_MILLIONS",
   equity_proceeds: "USD_MILLIONS",
