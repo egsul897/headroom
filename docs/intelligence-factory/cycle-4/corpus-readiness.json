@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-4-corpus-readiness.v1",
+  "generatedAt": "2026-10-09T22:43:34.514092Z",
+  "neonMutations": 0,
+  "secFetchAuthorized": false,
+  "pendingAuthorizedSecDocuments": 4,
+  "ehbBatchRef": "docs/intelligence-factory/cycle-3/ehb-ingest-batch.json",
+  "metadataRepairRef": "docs/intelligence-factory/cycle-3/metadata-repair-batch.json",
+  "metadataRepairProposed": {
+    "instrumentIdentity": null,
+    "unknownReclass": null,
+    "applied": 0
+  },
+  "note": "Prepared for authorized ingestion only. Idempotent batches unchanged from Cycle 3. No production Neon writes.",
+  "ehb": {
+    "planned": 25,
+    "alreadyInNeon": 21,
+    "pendingAuthorizedFetch": 4,
+    "secFetchAuthorized": false
+  },
+  "metadataRepair": {
+    "neonMutations": 0,
+    "note": "reviewable idempotent batch \u2014 not applied"
+  }
+}

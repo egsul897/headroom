@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-08T22:11:35.143Z",
+  "generatedAt": "2026-10-09T22:32:24.639Z",
   "stratified": [
     {
       "key": "agreementType=AMENDED_AND_RESTATED_AGREEMENT",
       "dimension": "agreementType",
       "value": "AMENDED_AND_RESTATED_AGREEMENT",
       "cases": 4,
-      "success": 2,
-      "failure": 2,
+      "success": 4,
+      "failure": 0,
       "unlabeled": 0,
-      "rate": 0.5
+      "rate": 1
     },
     {
       "key": "agreementType=AMENDMENT",
@@ -26,10 +26,10 @@
       "dimension": "agreementType",
       "value": "CREDIT_AGREEMENT",
       "cases": 21,
-      "success": 15,
-      "failure": 4,
+      "success": 17,
+      "failure": 2,
       "unlabeled": 1,
-      "rate": 0.7894736842105263
+      "rate": 0.8947368421052632
     },
     {
       "key": "agreementType=SYNTHETIC_MICRO",
@@ -56,10 +56,10 @@
       "dimension": "covenantFamily",
       "value": "DEFINITIONS",
       "cases": 6,
-      "success": 2,
-      "failure": 4,
+      "success": 3,
+      "failure": 3,
       "unlabeled": 0,
-      "rate": 0.3333333333333333
+      "rate": 0.5
     },
     {
       "key": "covenantFamily=FINANCIAL_COVENANTS",
@@ -106,10 +106,10 @@
       "dimension": "covenantFamily",
       "value": "OTHER",
       "cases": 9,
-      "success": 4,
-      "failure": 4,
+      "success": 7,
+      "failure": 1,
       "unlabeled": 1,
-      "rate": 0.5
+      "rate": 0.875
     },
     {
       "key": "covenantFamily=RESTRICTED_PAYMENTS",
@@ -126,50 +126,50 @@
       "dimension": "draftingComplexity",
       "value": "HIGH",
       "cases": 12,
-      "success": 5,
-      "failure": 5,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 1,
-      "rate": 0.5
+      "rate": 0.6
     },
     {
       "key": "draftingComplexity=LOW",
       "dimension": "draftingComplexity",
       "value": "LOW",
       "cases": 13,
-      "success": 10,
-      "failure": 2,
+      "success": 11,
+      "failure": 1,
       "unlabeled": 1,
-      "rate": 0.8333333333333334
+      "rate": 0.9166666666666666
     },
     {
       "key": "draftingComplexity=MEDIUM",
       "dimension": "draftingComplexity",
       "value": "MEDIUM",
       "cases": 11,
-      "success": 8,
-      "failure": 3,
+      "success": 10,
+      "failure": 1,
       "unlabeled": 0,
-      "rate": 0.7272727272727273
+      "rate": 0.9090909090909091
     },
     {
       "key": "issuer=Gibraltar Industries, Inc.",
       "dimension": "issuer",
       "value": "Gibraltar Industries, Inc.",
       "cases": 18,
-      "success": 15,
-      "failure": 1,
+      "success": 16,
+      "failure": 0,
       "unlabeled": 1,
-      "rate": 0.9375
+      "rate": 1
     },
     {
       "key": "issuer=Superior Industries International, Inc.",
       "dimension": "issuer",
       "value": "Superior Industries International, Inc.",
       "cases": 10,
-      "success": 3,
-      "failure": 7,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 0,
-      "rate": 0.3
+      "rate": 0.6
     },
     {
       "key": "issuer=SYNTHETIC",

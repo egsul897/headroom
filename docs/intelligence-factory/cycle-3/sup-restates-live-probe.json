@@ -1,0 +1,34 @@
+{
+  "restates": {
+    "relationship": "doc-b RESTATES doc-a",
+    "status": "resolved",
+    "evidenceStatus": "DISCOVERED",
+    "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness."
+  },
+  "amends": {
+    "relationship": "doc-c AMENDS doc-b",
+    "status": "review_required",
+    "evidenceStatus": "DISCOVERED",
+    "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness."
+  },
+  "allEdges": [
+    {
+      "id": "3ca98f7f46995b82446a",
+      "sourceId": "sup-doc-b",
+      "targetId": "sup-doc-a",
+      "kind": "AGREEMENT_RESTATEMENT",
+      "evidenceStatus": "DISCOVERED",
+      "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+      "confidence": 0.7
+    },
+    {
+      "id": "8ce84590bdf0e66b819d",
+      "sourceId": "sup-doc-c",
+      "targetId": "sup-doc-b",
+      "kind": "AGREEMENT_AMENDMENT",
+      "evidenceStatus": "DISCOVERED",
+      "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+      "confidence": 0.7
+    }
+  ]
+}

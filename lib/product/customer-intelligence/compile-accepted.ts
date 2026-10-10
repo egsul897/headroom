@@ -130,27 +130,19 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const ratio = parseRatio(basketText);
   const greaterOf = /greater of/i.test(basketText);
   const ebitdaBase = /EBITDA/i.test(basketText);
-  const assetsBase = /Total Assets|Consolidated Total Assets/i.test(basketText);
-  const builder = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
+  const assetsBase =
+    /Total Assets|Consolidated Total Assets|total consolidated assets/i.test(basketText);
+  // Strong builder signal: Available Amount / Cumulative Credit as the capacity mechanism.
+  // A mere mention of "Available Amount" next to a greater-of grower must NOT win (Cycle 5).
+  const builderStrong =
+    /\bAvailable Amount\b[\s\S]{0,80}\b(?:means|equal to|shall be|is equal to)\b|\bbuilder basket\b|\bCumulative Credit\b[\s\S]{0,60}\b(?:means|equal to)\b/i.test(
+      basketText,
+    );
+  const builderMention = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
-  if (builder && money != null) {
-    return {
-      formulaType: "BUILDER_BASKET",
-      thresholdValue: money,
-      params: {
-        pctEbitda: ebitdaBase && pct != null ? pct : 0,
-        cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
-        includeEquityProceeds: /equity/i.test(basketText),
-      },
-      amountKind: "FIXED",
-      measurementBasis: "CUMULATIVE_INCURRED",
-      notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
-      modelingStatus: "MODELED",
-      missingFields: ebitdaBase && pct == null ? ["builder pct of EBITDA"] : [],
-    };
-  }
-
+  // Prefer greater-of / assets growers over builder — co-occurrence of Available Amount
+  // language with grower baskets caused BUILDER false-executables in Cycle 4 audit.
   if (greaterOf && money != null && ebitdaBase && pct != null) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
@@ -177,6 +169,30 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       modelingStatus: "MODELED",
       missingFields: [],
     };
+  }
+
+  if (builderStrong && money != null && !greaterOf) {
+    return {
+      formulaType: "BUILDER_BASKET",
+      thresholdValue: money,
+      params: {
+        pctEbitda: ebitdaBase && pct != null ? pct : 0,
+        cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
+        includeEquityProceeds: /equity/i.test(basketText),
+      },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: ebitdaBase && pct == null ? ["builder pct of EBITDA"] : [],
+    };
+  }
+
+  // Weak builder mention without strong definitional capacity → do not force BUILDER_BASKET.
+  if (builderMention && money != null && !greaterOf && !builderStrong) {
+    notes.push(
+      "Available Amount / builder language mentioned but not definitional capacity — not auto-classified as BUILDER_BASKET",
+    );
   }
 
   if (greaterOf && money != null && assetsBase) {

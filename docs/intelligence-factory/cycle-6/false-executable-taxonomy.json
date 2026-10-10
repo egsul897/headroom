@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-false-exec-taxonomy.v1",
+  "auditedSha": "daa4fb1e72fe9373898fce38a4f27aa8e36d20af",
+  "cohort": {
+    "path": "docs/intelligence-factory/cycle-6/new-blind-holdout.json",
+    "salt": "0xc6c6",
+    "status": "EXPOSED_EVALUATION_ARTIFACT",
+    "note": "Taxonomy only — classifications MUST NOT be used to tune gates against these exact examples."
+  },
+  "n": 6,
+  "cases": [
+    {
+      "sourceId": "ehb:d8c0f01b5a0780f12200cc3a",
+      "sectionRef": "5.01(a)",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "primaryRootCause": "formula_shape_error",
+      "secondaryRootCauses": ["missing_operative_context", "legal_condition_omissions"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": true,
+        "sharedCapacityDependency": false,
+        "entityScope": false,
+        "legalConditionOmissions": true
+      },
+      "detail": "Successor/merger article parsed as FLAT $1; independent window is leverage-ratio conditioned consolidation — not a capacity basket.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "Was EXECUTABLE_FORMULA_ONLY pool member (entered holdout). Audit-backed path blocks compile."
+    },
+    {
+      "sourceId": "ehb:bcee5376c77a823288d0c99d",
+      "sectionRef": "VIII",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "primaryRootCause": "formula_shape_error",
+      "secondaryRootCauses": ["missing_operative_context", "entity_scope", "legal_condition_omissions"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": true,
+        "sharedCapacityDependency": false,
+        "entityScope": true,
+        "legalConditionOmissions": true
+      },
+      "detail": "Article VIII Successors — FLAT $1 vs leverage-ratio merger test; entity scope unresolved in window.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "EXECUTABLE_FORMULA_ONLY pool member; compile blocked by audit-backed record."
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "6.02",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": null,
+      "primaryRootCause": "missing_operative_context",
+      "secondaryRootCauses": ["formula_shape_error", "legal_condition_omissions"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": true,
+        "sharedCapacityDependency": false,
+        "entityScope": false,
+        "legalConditionOmissions": true
+      },
+      "detail": "Liens chapeau; candidate threshold $63.15 not evidenced as independent basket in operative window.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "EXECUTABLE_FORMULA_ONLY via baskets-only dollars; compile blocked."
+    },
+    {
+      "sourceId": "ehb:278de2d8dc3045219af8a891",
+      "sectionRef": "4.10",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": null,
+      "independentComparator": "LESSER_OF",
+      "primaryRootCause": "formula_shape_error",
+      "secondaryRootCauses": ["entity_scope"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": false,
+        "sharedCapacityDependency": false,
+        "entityScope": true,
+        "legalConditionOmissions": false
+      },
+      "detail": "Asset Sales uses lesser-of comparator; candidate classified FLAT — incorrect_greater_of_vs_lesser_of omission.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "EXECUTABLE_FORMULA_ONLY; compile blocked."
+    },
+    {
+      "sourceId": "ehb:14d6bbd5ccbaf12f0e9e8b9f",
+      "sectionRef": "8.8(l)",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": null,
+      "primaryRootCause": "missing_operative_context",
+      "secondaryRootCauses": ["formula_shape_error", "legal_condition_omissions"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": true,
+        "sharedCapacityDependency": false,
+        "entityScope": false,
+        "legalConditionOmissions": true
+      },
+      "detail": "Contractual rights of set-off — not an affirmative capacity basket; independent formula null.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "EXECUTABLE_FORMULA_ONLY; compile blocked."
+    },
+    {
+      "sourceId": "ehb:0ca3f9395b43053d2db7beed",
+      "sectionRef": "4.11",
+      "candidateFormula": "FLAT_AMOUNT",
+      "independentFormula": null,
+      "primaryRootCause": "missing_operative_context",
+      "secondaryRootCauses": ["legal_condition_omissions"],
+      "taxonomy": {
+        "formulaShapeError": true,
+        "missingOperativeContext": true,
+        "sharedCapacityDependency": false,
+        "entityScope": false,
+        "legalConditionOmissions": true
+      },
+      "detail": "Future Guarantors accession covenant — not a monetary capacity basket.",
+      "reviewReadyPath": {
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "counselCompileEligible": false,
+        "promotionState": "DISCOVERED",
+        "canReachCounselCompile": false,
+        "canReachProductionAuthoritative": false
+      },
+      "activationPathRisk": "EXECUTABLE_FORMULA_ONLY; compile blocked."
+    }
+  ],
+  "summaryCounts": {
+    "formulaShapeError": 6,
+    "missingOperativeContext": 5,
+    "sharedCapacityDependency": 0,
+    "entityScope": 2,
+    "legalConditionOmissions": 5,
+    "canReachCounselCompile": 0,
+    "canReachProductionAuthoritative": 0
+  },
+  "generalizedCorrectionsApplied": [
+    "NON_CAPACITY_STRUCTURAL_HEADING (successors/merger/future guarantors/set-off)",
+    "STRUCTURAL_ONLY_FAMILIES without capacity co-tag",
+    "FLAT dollars must appear in operative excerpt (not baskets-only)",
+    "lesser-of / leverage-ratio vs FLAT formula-shape mismatch gate",
+    "measure/report: audit-backed promotionState; mayEnterCounselCompilePath requires counselCompileEligible boolean",
+    "activate-neon demos filter on counselCompileEligible, not executableEligible alone"
+  ],
+  "tuningPolicy": "Corrections are source-structure/semantic rules with synthetic unit tests. The six holdout IDs were not hard-coded as exceptions."
+}

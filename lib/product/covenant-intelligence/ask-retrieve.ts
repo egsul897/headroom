@@ -250,7 +250,18 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
     if ((item.conditions ?? []).some((c) => /ratio|leverage|pro forma/i.test(c))) score += 3;
   }
   if (intent === "SHARED_CAPACITY") {
-    if (/aggregate|shared|builder|available amount|in the aggregate/i.test(hay)) score += 6;
+    // Prefer relationship language; bare "aggregate amount" is ordinary ceiling noise.
+    if (
+      /shared\s+(?:capacity|basket|pool)|combined\s+with|together\s+with.{0,120}(?:pursuant\s+to|under)\s+(?:section|clause)|without\s+duplication|anti[-\s]?stack/i.test(
+        hay,
+      )
+    ) {
+      score += 8;
+    } else if (/builder|available amount/i.test(hay)) {
+      score += 3;
+    } else if (/\baggregate\b/i.test(hay)) {
+      score += 1;
+    }
   }
   if (intent === "ASSET_SALES") {
     if (item.category === "ASSET_SALES") score += 8;

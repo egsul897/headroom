@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "intelligence-factory.progress-manifest.v1",
+  "updatedAt": "2026-10-09T22:33:00.000Z",
+  "agent": "HEADROOM AGENT 1 — COVENANT INTELLIGENCE FACTORY",
+  "northStar": "Accept unfamiliar financing package → source-backed rulebook → capacity → transaction answers with citations",
+  "guardrails": {
+    "neonWrites": "owner-gated only — Cycle 3 applied 0",
+    "paidInference": "not authorized",
+    "failClosed": "preserve",
+    "autoMerge": false,
+    "populations": "development / regression / holdout preserved"
+  },
+  "workstreams": {
+    "A_neon_inventory": { "status": "STABLE_SKIP_UNLESS_INTEGRITY_ISSUE" },
+    "B_precedent_expansion": {
+      "status": "BATCH_READY",
+      "artifacts": ["docs/intelligence-factory/cycle-3/ehb-ingest-batch.json"],
+      "blockedOn": ["SEC UA + KF_MASS_PRECEDENT_LIVE_WRITE for 4 pending EHB docs"]
+    },
+    "C_covenant_reasoning": {
+      "status": "CYCLE_3_COMPLETE",
+      "outcomes": [
+        "False-permission forensic: adversarial 1/2 vs live 0/2",
+        "SUP RESTATES self-exclusion fix",
+        "Activation pipeline 2254 independently checked candidates"
+      ]
+    },
+    "D_capacity_mathematics": {
+      "status": "CYCLE_3_PARTIAL",
+      "outcomes": ["5 synthetic labeled evaluateProvision demos from Neon greater-of candidates"]
+    },
+    "E_customer_cold_start": { "status": "QUEUED" }
+  },
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "name": "Neon intelligence baseline + retrieval honesty",
+      "peerBranch": "cursor/neon-intelligence-baseline-2229"
+    },
+    {
+      "id": "cycle-2",
+      "name": "Shared-capacity precision + mechanic patterns + population registry",
+      "branch": "cursor/covenant-intelligence-factory-f761"
+    },
+    {
+      "id": "cycle-3",
+      "name": "Activate Neon knowledge + false-permission forensic + SUP RESTATES",
+      "branch": "cursor/covenant-intelligence-factory-f761",
+      "paidInferenceCostUsd": 0,
+      "neonMutations": 0,
+      "outcomes": [
+        "Live false-permission incidence 0/2; adversarial control retained 1/2",
+        "2254 independently checked executable candidates (NOT_CERTIFIED)",
+        "Metadata repair batch proposed (675 identity + 13 reclass) not applied",
+        "SUP RESTATES restored; amendment_reconstruction 100%; unseen 100%",
+        "EHB ingest batch: 4 pending authorized fetch"
+      ]
+    }
+  ]
+}

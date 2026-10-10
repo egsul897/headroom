@@ -1,0 +1,880 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-5-remediation.v1",
+  "generatedAt": "2026-10-09T22:53:13.821Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "peerCoordination": {
+    "pr225": "https://github.com/egsul897/headroom/pull/225",
+    "pr227": "https://github.com/egsul897/headroom/pull/227",
+    "pr232": "https://github.com/egsul897/headroom/pull/232",
+    "agent2": "contractual financial definitions and inputs",
+    "agent3": "mathematical formula correctness",
+    "agent5": "cross-document conditions and shared capacity",
+    "neonActivation": "durable reviewed-rule lifecycle",
+    "coordinator": "PR integration and ownership"
+  },
+  "population": {
+    "sourcesScanned": 400,
+    "formulaDiscoveries": 22225,
+    "executableEligibleAfterGates": 107,
+    "note": "Discovery retained; executable set reduced by eligibility gates (BUILDER/LEVERAGE blocked)."
+  },
+  "fixedCohort61": {
+    "n": 61,
+    "priorFalseExecutable": 32,
+    "remediatedOfPriorFalse": 32,
+    "stillExecutableAmongPriorFalse": 0,
+    "productionReachableFalseExecutable": 0,
+    "ratesOnRescore": {
+      "formulaPrecision": {
+        "successes": 31,
+        "n": 60,
+        "rate": 0.5166666666666667,
+        "wilson95": {
+          "low": 0.39307594850843575,
+          "high": 0.6382515871422999
+        }
+      },
+      "thresholdPrecision": {
+        "successes": 26,
+        "n": 60,
+        "rate": 0.43333333333333335,
+        "wilson95": {
+          "low": 0.3157220039440064,
+          "high": 0.5589678534530513
+        }
+      },
+      "materialLegalOmissionRate": {
+        "successes": 48,
+        "n": 60,
+        "rate": 0.8,
+        "wilson95": {
+          "low": 0.6821795390818299,
+          "high": 0.8817161026314104
+        }
+      },
+      "falseExecutableClassificationRate": {
+        "successes": 36,
+        "n": 60,
+        "rate": 0.6,
+        "wilson95": {
+          "low": 0.47365824394206846,
+          "high": 0.7143069699623449
+        }
+      },
+      "falseFavorableOutcomeRate": {
+        "successes": 0,
+        "n": 60,
+        "rate": 0,
+        "wilson95": {
+          "low": 0,
+          "high": 0.060173930477932895
+        }
+      },
+      "reviewReadyRate": {
+        "successes": 22,
+        "n": 60,
+        "rate": 0.36666666666666664,
+        "wilson95": {
+          "low": 0.2562073884620827,
+          "high": 0.4931723263320326
+        }
+      },
+      "byMechanic": {
+        "FLAT_AMOUNT": {
+          "audited": 25,
+          "formulaPrecision": {
+            "successes": 13,
+            "n": 25,
+            "rate": 0.52,
+            "wilson95": {
+              "low": 0.3349821795314731,
+              "high": 0.6996899607103999
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 8,
+            "n": 25,
+            "rate": 0.32,
+            "wilson95": {
+              "low": 0.1720498751689115,
+              "high": 0.5159008626542329
+            }
+          },
+          "falseExecutable": {
+            "successes": 17,
+            "n": 25,
+            "rate": 0.68,
+            "wilson95": {
+              "low": 0.48409913734576715,
+              "high": 0.8279501248310885
+            }
+          }
+        },
+        "BUILDER_BASKET": {
+          "audited": 4,
+          "formulaPrecision": {
+            "successes": 0,
+            "n": 4,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.48990002040399916
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 1,
+            "n": 4,
+            "rate": 0.25,
+            "wilson95": {
+              "low": 0.045586062644636216,
+              "high": 0.6993639475573634
+            }
+          },
+          "falseExecutable": {
+            "successes": 4,
+            "n": 4,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.5100999795960008,
+              "high": 1
+            }
+          }
+        },
+        "GREATER_OF_FLAT_OR_PCT_EBITDA": {
+          "audited": 15,
+          "formulaPrecision": {
+            "successes": 9,
+            "n": 15,
+            "rate": 0.6,
+            "wilson95": {
+              "low": 0.357464427565077,
+              "high": 0.8017577191740534
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 10,
+            "n": 15,
+            "rate": 0.6666666666666666,
+            "wilson95": {
+              "low": 0.4171312515121298,
+              "high": 0.8482389930530875
+            }
+          },
+          "falseExecutable": {
+            "successes": 6,
+            "n": 15,
+            "rate": 0.4,
+            "wilson95": {
+              "low": 0.19824228082594664,
+              "high": 0.6425355724349229
+            }
+          }
+        },
+        "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+          "audited": 9,
+          "formulaPrecision": {
+            "successes": 8,
+            "n": 9,
+            "rate": 0.8888888888888888,
+            "wilson95": {
+              "low": 0.5649937852319398,
+              "high": 0.9801096286728695
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 7,
+            "n": 9,
+            "rate": 0.7777777777777778,
+            "wilson95": {
+              "low": 0.4525833436728054,
+              "high": 0.9367762376877727
+            }
+          },
+          "falseExecutable": {
+            "successes": 2,
+            "n": 9,
+            "rate": 0.2222222222222222,
+            "wilson95": {
+              "low": 0.0632237623122272,
+              "high": 0.5474166563271946
+            }
+          }
+        },
+        "LEVERAGE_RATIO_ROOM": {
+          "audited": 6,
+          "formulaPrecision": {
+            "successes": 1,
+            "n": 6,
+            "rate": 0.16666666666666666,
+            "wilson95": {
+              "low": 0.030052585871730285,
+              "high": 0.563509436563646
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 0,
+            "n": 6,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.3903430336530645
+            }
+          },
+          "falseExecutable": {
+            "successes": 6,
+            "n": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6096569663469354,
+              "high": 1
+            }
+          }
+        }
+      },
+      "dispositions": {
+        "REVIEW_READY_WITH_GAPS": 16,
+        "FALSE_EXECUTABLE": 36,
+        "REQUIRES_HUMAN_REVIEW": 2,
+        "REVIEW_READY_EXECUTABLE": 6
+      }
+    },
+    "activationTransition": {
+      "stillExecutable": 0,
+      "blockedMechanicGate": 11,
+      "blockedSharedCapacity": 7,
+      "reviewRequired": 10,
+      "discoveredFormula": 20,
+      "missing": 1
+    },
+    "rootCauseCategories": {
+      "missed_conditions": 14,
+      "entity_scope": 5,
+      "builder_misclassify_or_ungated_builder": 8,
+      "builder_over_greater_of_precedence": 1,
+      "builder_over_flat_precedence": 4,
+      "shared_capacity_ungated": 2,
+      "missing_from_rescan": 1,
+      "threshold_or_formula_mismatch": 1,
+      "leverage_ungated": 3
+    }
+  },
+  "reviewReadyRecheck": {
+    "priorCount": 27,
+    "surviving": 0,
+    "dropped": 27,
+    "records": [
+      {
+        "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+        "sectionRef": "6.08",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+        "sectionRef": "5.1",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_HUMAN_REVIEW",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language",
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+        "sectionRef": "7.07(d)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+        "sectionRef": "6.01(j)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+        "sectionRef": "5.9(c)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:c91227d9b9432c787e8641ea",
+        "sectionRef": "7.06(d)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "BLOCKED_SHARED_CAPACITY",
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+        "sectionRef": "3.25",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:d42507f956621a8cb28805b7",
+        "sectionRef": "7.9",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_HUMAN_REVIEW",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language",
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:61dbd6bc587f2b79844c0e09",
+        "sectionRef": "6.01",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_CROSS_REF_RESOLUTION",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+        "sectionRef": "2.20(j)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:0a41b36af3e4c39fa695edd1",
+        "sectionRef": "4.06",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_CROSS_REF_RESOLUTION",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+        "sectionRef": "5.14",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+        "sectionRef": "2.14",
+        "status": "MISSING_FROM_SCAN",
+        "survivesRecheck": false
+      },
+      {
+        "sourceId": "ehb:dc18fe783caab6b799ca4693",
+        "sectionRef": "6.01(j)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+        "sectionRef": "7.01(j)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "BLOCKED_SHARED_CAPACITY",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:e16cad81e52d87aede4dcb27",
+        "sectionRef": "6.01",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_HUMAN_REVIEW",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "sectionRef": "10.1(r)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+        "sectionRef": "6.01(b)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "BLOCKED_SHARED_CAPACITY",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "sectionRef": "10.3(h)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+        "sectionRef": "8.1(a)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:bbc42b58a4dd0077d4f3dce2",
+        "sectionRef": "7.05(k)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+        "sectionRef": "7.2(m)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+        "sectionRef": "10.4",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:8deb135bf498cdaedfb97cef",
+        "sectionRef": "7.2",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "BLOCKED_SHARED_CAPACITY",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+        "sectionRef": "8.2(i)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "REVIEW_REQUIRED",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "missed_condition_language",
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "ehb:9cc9fb36b694a18d721deb93",
+        "sectionRef": "10.05(e)",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "DISCOVERED_FORMULA",
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "certificationState": "REVIEW_READY_UNVERIFIED",
+        "note": "Review-ready is not counsel-accepted."
+      },
+      {
+        "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+        "sectionRef": "8.2",
+        "status": "DROPPED",
+        "survivesRecheck": false,
+        "currentReadiness": "NEEDS_HUMAN_REVIEW",
+        "disposition": "FALSE_EXECUTABLE",
+        "formulaType": "FLAT_AMOUNT",
+        "materialOmissions": [
+          "entity_scope_unresolved"
+        ],
+        "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+        "note": "Review-ready is not counsel-accepted."
+      }
+    ]
+  },
+  "newHoldout": {
+    "n": 16,
+    "quotas": {
+      "FLAT_AMOUNT": 10,
+      "BUILDER_BASKET": 8,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 10,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 8,
+      "LEVERAGE_RATIO_ROOM": 6,
+      "OTHER": 0
+    },
+    "excludedBlindHoldouts": [
+      "gibraltar-2026-credit-agreement",
+      "knife-river-blind"
+    ],
+    "rates": {
+      "formulaPrecision": {
+        "successes": 15,
+        "n": 16,
+        "rate": 0.9375,
+        "wilson95": {
+          "low": 0.7167073163197013,
+          "high": 0.9888809426916687
+        }
+      },
+      "thresholdPrecision": {
+        "successes": 16,
+        "n": 16,
+        "rate": 1,
+        "wilson95": {
+          "low": 0.8063865817272801,
+          "high": 1
+        }
+      },
+      "materialLegalOmissionRate": {
+        "successes": 8,
+        "n": 16,
+        "rate": 0.5,
+        "wilson95": {
+          "low": 0.2799923761135083,
+          "high": 0.7200076238864918
+        }
+      },
+      "falseExecutableClassificationRate": {
+        "successes": 1,
+        "n": 16,
+        "rate": 0.0625,
+        "wilson95": {
+          "low": 0.011119057308331216,
+          "high": 0.2832926836802987
+        }
+      },
+      "falseFavorableOutcomeRate": {
+        "successes": 0,
+        "n": 16,
+        "rate": 0,
+        "wilson95": {
+          "low": 0,
+          "high": 0.19361341827271994
+        }
+      },
+      "reviewReadyRate": {
+        "successes": 14,
+        "n": 16,
+        "rate": 0.875,
+        "wilson95": {
+          "low": 0.6397666856325172,
+          "high": 0.9650232506629429
+        }
+      },
+      "byMechanic": {
+        "FLAT_AMOUNT": {
+          "audited": 10,
+          "formulaPrecision": {
+            "successes": 9,
+            "n": 10,
+            "rate": 0.9,
+            "wilson95": {
+              "low": 0.5958436145024277,
+              "high": 0.9821242504842789
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 10,
+            "n": 10,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.7224598312333834,
+              "high": 1
+            }
+          },
+          "falseExecutable": {
+            "successes": 1,
+            "n": 10,
+            "rate": 0.1,
+            "wilson95": {
+              "low": 0.01787574951572113,
+              "high": 0.4041563854975721
+            }
+          }
+        },
+        "BUILDER_BASKET": {
+          "audited": 0,
+          "formulaPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "falseExecutable": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          }
+        },
+        "GREATER_OF_FLAT_OR_PCT_EBITDA": {
+          "audited": 6,
+          "formulaPrecision": {
+            "successes": 6,
+            "n": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6096569663469354,
+              "high": 1
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 6,
+            "n": 6,
+            "rate": 1,
+            "wilson95": {
+              "low": 0.6096569663469354,
+              "high": 1
+            }
+          },
+          "falseExecutable": {
+            "successes": 0,
+            "n": 6,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0.3903430336530645
+            }
+          }
+        },
+        "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+          "audited": 0,
+          "formulaPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "falseExecutable": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          }
+        },
+        "LEVERAGE_RATIO_ROOM": {
+          "audited": 0,
+          "formulaPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "thresholdPrecision": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          },
+          "falseExecutable": {
+            "successes": 0,
+            "n": 0,
+            "rate": 0,
+            "wilson95": {
+              "low": 0,
+              "high": 0
+            }
+          }
+        }
+      },
+      "dispositions": {
+        "REVIEW_READY_WITH_GAPS": 6,
+        "REVIEW_READY_EXECUTABLE": 8,
+        "FALSE_EXECUTABLE": 1,
+        "REQUIRES_HUMAN_REVIEW": 1
+      }
+    },
+    "reviewReadyPrecisionAmongExecutable": {
+      "successes": 13,
+      "n": 15,
+      "rate": 0.8666666666666667,
+      "wilson95": {
+        "low": 0.6211750079348376,
+        "high": 0.9626395301086408
+      }
+    },
+    "counselCompileEligible": 13
+  },
+  "generalizableFixes": [
+    "Eligibility gates separate formula discovery from EXECUTABLE permission",
+    "BUILDER_BASKET / LEVERAGE_RATIO_ROOM blocked behind BLOCKED_MECHANIC_GATE",
+    "Shared-capacity fail-closed (BLOCKED_SHARED_CAPACITY)",
+    "parseCounselFormulaForTest: greater-of preferred over Available Amount mention",
+    "Builder requires strong definitional capacity language",
+    "Non-operative headings (Notices, Evidence of Indebtedness) blocked from executable"
+  ],
+  "authorizationNote": "No counsel ACCEPT, no VERIFIED SemanticTruth, no durable Permission writes."
+}

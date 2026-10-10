@@ -1,8 +1,8 @@
 {
   "schemaVersion": "ckg-benchmark.v1",
-  "generatedAt": "2026-10-08T22:11:35.143Z",
-  "headSha": "766cefa7dc69a4a3c9c195686f23cd1ca8834032",
-  "branch": "cursor/covenant-knowledge-generalization-bench-7f51",
+  "generatedAt": "2026-10-09T22:32:24.639Z",
+  "headSha": "2867a241acb723b55aa018cce21f1ebbc23bc408",
+  "branch": "cursor/covenant-intelligence-factory-f761",
   "paidCalls": 0,
   "dataset": {
     "packageCount": 3,
@@ -14,14 +14,14 @@
     {
       "metric": "amendment_reconstruction",
       "evaluated": 3,
-      "success": 2,
-      "failure": 1,
+      "success": 3,
+      "failure": 0,
       "unlabeled": 0,
       "notEvaluated": 0,
-      "rate": 0.6666666666666666,
+      "rate": 1,
       "lowerIsBetter": false,
       "costUsdOnSourceVerifiedSuccesses": 0,
-      "sourceVerifiedSuccesses": 2
+      "sourceVerifiedSuccesses": 3
     },
     {
       "metric": "comparator_correctness",
@@ -146,23 +146,23 @@
     {
       "metric": "shared_capacity_recognition",
       "evaluated": 3,
-      "success": 1,
-      "failure": 2,
+      "success": 3,
+      "failure": 0,
       "unlabeled": 0,
       "notEvaluated": 0,
-      "rate": 0.3333333333333333,
+      "rate": 1,
       "lowerIsBetter": false,
       "costUsdOnSourceVerifiedSuccesses": 0,
-      "sourceVerifiedSuccesses": 1
+      "sourceVerifiedSuccesses": 2
     },
     {
       "metric": "unseen_document_performance",
       "evaluated": 1,
-      "success": 0,
-      "failure": 1,
+      "success": 1,
+      "failure": 0,
       "unlabeled": 0,
       "notEvaluated": 0,
-      "rate": 0,
+      "rate": 1,
       "lowerIsBetter": false,
       "costUsdOnSourceVerifiedSuccesses": 0,
       "sourceVerifiedSuccesses": 0
@@ -186,10 +186,10 @@
       "dimension": "agreementType",
       "value": "AMENDED_AND_RESTATED_AGREEMENT",
       "cases": 4,
-      "success": 2,
-      "failure": 2,
+      "success": 4,
+      "failure": 0,
       "unlabeled": 0,
-      "rate": 0.5
+      "rate": 1
     },
     {
       "key": "agreementType=AMENDMENT",
@@ -206,10 +206,10 @@
       "dimension": "agreementType",
       "value": "CREDIT_AGREEMENT",
       "cases": 21,
-      "success": 15,
-      "failure": 4,
+      "success": 17,
+      "failure": 2,
       "unlabeled": 1,
-      "rate": 0.7894736842105263
+      "rate": 0.8947368421052632
     },
     {
       "key": "agreementType=SYNTHETIC_MICRO",
@@ -236,10 +236,10 @@
       "dimension": "covenantFamily",
       "value": "DEFINITIONS",
       "cases": 6,
-      "success": 2,
-      "failure": 4,
+      "success": 3,
+      "failure": 3,
       "unlabeled": 0,
-      "rate": 0.3333333333333333
+      "rate": 0.5
     },
     {
       "key": "covenantFamily=FINANCIAL_COVENANTS",
@@ -286,10 +286,10 @@
       "dimension": "covenantFamily",
       "value": "OTHER",
       "cases": 9,
-      "success": 4,
-      "failure": 4,
+      "success": 7,
+      "failure": 1,
       "unlabeled": 1,
-      "rate": 0.5
+      "rate": 0.875
     },
     {
       "key": "covenantFamily=RESTRICTED_PAYMENTS",
@@ -306,50 +306,50 @@
       "dimension": "draftingComplexity",
       "value": "HIGH",
       "cases": 12,
-      "success": 5,
-      "failure": 5,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 1,
-      "rate": 0.5
+      "rate": 0.6
     },
     {
       "key": "draftingComplexity=LOW",
       "dimension": "draftingComplexity",
       "value": "LOW",
       "cases": 13,
-      "success": 10,
-      "failure": 2,
+      "success": 11,
+      "failure": 1,
       "unlabeled": 1,
-      "rate": 0.8333333333333334
+      "rate": 0.9166666666666666
     },
     {
       "key": "draftingComplexity=MEDIUM",
       "dimension": "draftingComplexity",
       "value": "MEDIUM",
       "cases": 11,
-      "success": 8,
-      "failure": 3,
+      "success": 10,
+      "failure": 1,
       "unlabeled": 0,
-      "rate": 0.7272727272727273
+      "rate": 0.9090909090909091
     },
     {
       "key": "issuer=Gibraltar Industries, Inc.",
       "dimension": "issuer",
       "value": "Gibraltar Industries, Inc.",
       "cases": 18,
-      "success": 15,
-      "failure": 1,
+      "success": 16,
+      "failure": 0,
       "unlabeled": 1,
-      "rate": 0.9375
+      "rate": 1
     },
     {
       "key": "issuer=Superior Industries International, Inc.",
       "dimension": "issuer",
       "value": "Superior Industries International, Inc.",
       "cases": 10,
-      "success": 3,
-      "failure": 7,
+      "success": 6,
+      "failure": 4,
       "unlabeled": 0,
-      "rate": 0.3
+      "rate": 0.6
     },
     {
       "key": "issuer=SYNTHETIC",
@@ -534,7 +534,7 @@
     {
       "caseId": "gib-shared-pass-a-false-positive-control",
       "metric": "shared_capacity_recognition",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "SOURCE_VERIFIED",
       "strata": {
         "agreementType": "CREDIT_AGREEMENT",
@@ -542,7 +542,7 @@
         "covenantFamily": "OTHER",
         "draftingComplexity": "LOW"
       },
-      "detail": "shared expected=false predicted=true memberOk=true",
+      "detail": "shared expected=false predicted=false memberOk=true",
       "attributedCostUsd": 0
     },
     {
@@ -674,7 +674,7 @@
     {
       "caseId": "sup-shared-ebitda-10pct",
       "metric": "shared_capacity_recognition",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "REVIEWER_APPROVED",
       "strata": {
         "agreementType": "CREDIT_AGREEMENT",
@@ -682,13 +682,13 @@
         "covenantFamily": "DEFINITIONS",
         "draftingComplexity": "MEDIUM"
       },
-      "detail": "shared expected=true predicted=false memberOk=false",
+      "detail": "shared expected=true predicted=true memberOk=true",
       "attributedCostUsd": 0
     },
     {
       "caseId": "sup-amend-doc-b-restates-doc-a",
       "metric": "amendment_reconstruction",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "SOURCE_VERIFIED",
       "strata": {
         "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
@@ -696,7 +696,7 @@
         "covenantFamily": "OTHER",
         "draftingComplexity": "MEDIUM"
       },
-      "detail": "rel=\"none\" status=\"missing\" vs \"doc-b restates doc-a\"/\"resolved\"",
+      "detail": "rel=\"doc-b restates doc-a\" status=\"resolved\" vs \"doc-b restates doc-a\"/\"resolved\"",
       "attributedCostUsd": 0
     },
     {
@@ -730,7 +730,7 @@
     {
       "caseId": "sup-unseen-aggregate",
       "metric": "unseen_document_performance",
-      "outcome": "FAILURE",
+      "outcome": "SUCCESS",
       "authority": "REVIEWER_APPROVED",
       "strata": {
         "agreementType": "AMENDED_AND_RESTATED_AGREEMENT",
@@ -738,7 +738,7 @@
         "covenantFamily": "OTHER",
         "draftingComplexity": "HIGH"
       },
-      "detail": "unseen subcases 2/3",
+      "detail": "unseen subcases 3/3",
       "attributedCostUsd": 0
     },
     {

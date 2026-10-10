@@ -74,8 +74,8 @@
     {
       "caseId": "gib-shared-pass-a-false-positive-control",
       "predictionSource": "DETERMINISTIC_PASS_A",
-      "prediction": { "isSharedCapacity": true },
-      "notes": "INTENTIONAL SYSTEM FAILURE REFLECTING PASS A: shared_cap signal over-fires on aggregate-amount nodes. Scored as FAILURE against SOURCE_VERIFIED expected false."
+      "prediction": { "isSharedCapacity": false },
+      "notes": "CORRECTED 2026-10-09: Pass A shared_cap no longer fires on bare aggregate-amount ceilings (aggregate_ceiling is a separate discovery signal). Recognition uses relationship language only."
     },
     {
       "caseId": "gib-comp-7.08a-leverage",

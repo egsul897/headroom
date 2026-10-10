@@ -1,0 +1,680 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-4-audit.v1",
+  "generatedAt": "2026-10-09T22:43:34.426Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "holdoutsExcluded": [
+    "gibraltar-2026-credit-agreement",
+    "knife-river-blind"
+  ],
+  "peerCoordination": {
+    "pr225": "https://github.com/egsul897/headroom/pull/225",
+    "pr227": "https://github.com/egsul897/headroom/pull/227",
+    "activationPath": "counsel-compile-accepted-interpretation"
+  },
+  "population": {
+    "sourcesScanned": 400,
+    "executableCandidatesByMechanic": {
+      "FLAT_AMOUNT": 2023,
+      "BUILDER_BASKET": 150,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 50,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 24,
+      "LEVERAGE_RATIO_ROOM": 7
+    },
+    "totalExecutableInScan": 2254
+  },
+  "sample": {
+    "audited": 61,
+    "quotas": {
+      "FLAT_AMOUNT": 12,
+      "BUILDER_BASKET": 14,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 16,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 12,
+      "LEVERAGE_RATIO_ROOM": 8,
+      "OTHER": 0
+    },
+    "byMechanicSampled": {
+      "FLAT_AMOUNT": 12,
+      "BUILDER_BASKET": 14,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 16,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 12,
+      "LEVERAGE_RATIO_ROOM": 7
+    }
+  },
+  "rates": {
+    "formulaPrecision": {
+      "successes": 33,
+      "n": 61,
+      "rate": 0.5409836065573771,
+      "wilson95": {
+        "low": 0.41723829935814166,
+        "high": 0.6598726911171088
+      }
+    },
+    "thresholdPrecision": {
+      "successes": 37,
+      "n": 61,
+      "rate": 0.6065573770491803,
+      "wilson95": {
+        "low": 0.4811702438560874,
+        "high": 0.7193183313795638
+      }
+    },
+    "incorrectGreaterVsLesserOf": {
+      "successes": 0,
+      "n": 61,
+      "rate": 0,
+      "wilson95": {
+        "low": 0,
+        "high": 0.05924591620194442
+      }
+    },
+    "missedConditions": {
+      "successes": 37,
+      "n": 61,
+      "rate": 0.6065573770491803,
+      "wilson95": {
+        "low": 0.4811702438560874,
+        "high": 0.7193183313795638
+      }
+    },
+    "missedExceptions": {
+      "successes": 27,
+      "n": 61,
+      "rate": 0.4426229508196721,
+      "wilson95": {
+        "low": 0.32507608033920443,
+        "high": 0.5669685329954449
+      }
+    },
+    "missedSharedCapacity": {
+      "successes": 6,
+      "n": 61,
+      "rate": 0.09836065573770492,
+      "wilson95": {
+        "low": 0.04586395136730972,
+        "high": 0.1984483419752358
+      }
+    },
+    "incorrectEntityScope": {
+      "successes": 12,
+      "n": 61,
+      "rate": 0.19672131147540983,
+      "wilson95": {
+        "low": 0.1162768855953685,
+        "high": 0.31310178488777807
+      }
+    },
+    "materialLegalOmissionRate": {
+      "successes": 44,
+      "n": 61,
+      "rate": 0.7213114754098361,
+      "wilson95": {
+        "low": 0.598283313687268,
+        "high": 0.8181160348790846
+      }
+    },
+    "falseExecutableClassificationRate": {
+      "successes": 32,
+      "n": 61,
+      "rate": 0.5245901639344263,
+      "wilson95": {
+        "low": 0.4015694171531101,
+        "high": 0.6446971771320403
+      }
+    },
+    "requiresHumanReviewRate": {
+      "successes": 2,
+      "n": 61,
+      "rate": 0.03278688524590164,
+      "wilson95": {
+        "low": 0.00903770081568788,
+        "high": 0.1118970077664569
+      }
+    },
+    "reviewReadyRate": {
+      "successes": 27,
+      "n": 61,
+      "rate": 0.4426229508196721,
+      "wilson95": {
+        "low": 0.32507608033920443,
+        "high": 0.5669685329954449
+      }
+    },
+    "insufficientOperativeText": {
+      "successes": 0,
+      "n": 61,
+      "rate": 0,
+      "wilson95": {
+        "low": 0,
+        "high": 0.05924591620194442
+      }
+    },
+    "byMechanic": {
+      "FLAT_AMOUNT": {
+        "audited": 12,
+        "formulaPrecision": {
+          "successes": 10,
+          "n": 12,
+          "rate": 0.8333333333333334,
+          "wilson95": {
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 10,
+          "n": 12,
+          "rate": 0.8333333333333334,
+          "wilson95": {
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776
+          }
+        },
+        "falseExecutable": {
+          "successes": 2,
+          "n": 12,
+          "rate": 0.16666666666666666,
+          "wilson95": {
+            "low": 0.046964147614822246,
+            "high": 0.44803635738467273
+          }
+        }
+      },
+      "BUILDER_BASKET": {
+        "audited": 14,
+        "formulaPrecision": {
+          "successes": 0,
+          "n": 14,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.21531701192718142
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 7,
+          "n": 14,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.2679886791947528,
+            "high": 0.7320113208052473
+          }
+        },
+        "falseExecutable": {
+          "successes": 14,
+          "n": 14,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.7846829880728186,
+            "high": 1
+          }
+        }
+      },
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": {
+        "audited": 16,
+        "formulaPrecision": {
+          "successes": 10,
+          "n": 16,
+          "rate": 0.625,
+          "wilson95": {
+            "low": 0.38640647097934805,
+            "high": 0.8151901744524719
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 11,
+          "n": 16,
+          "rate": 0.6875,
+          "wilson95": {
+            "low": 0.4440393186673406,
+            "high": 0.8583556494803894
+          }
+        },
+        "falseExecutable": {
+          "successes": 6,
+          "n": 16,
+          "rate": 0.375,
+          "wilson95": {
+            "low": 0.18480982554752803,
+            "high": 0.6135935290206519
+          }
+        }
+      },
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+        "audited": 12,
+        "formulaPrecision": {
+          "successes": 11,
+          "n": 12,
+          "rate": 0.9166666666666666,
+          "wilson95": {
+            "low": 0.6461140782014047,
+            "high": 0.9851352905492264
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 9,
+          "n": 12,
+          "rate": 0.75,
+          "wilson95": {
+            "low": 0.4676896608793401,
+            "high": 0.9110599603710388
+          }
+        },
+        "falseExecutable": {
+          "successes": 3,
+          "n": 12,
+          "rate": 0.25,
+          "wilson95": {
+            "low": 0.08894003962896137,
+            "high": 0.53231033912066
+          }
+        }
+      },
+      "LEVERAGE_RATIO_ROOM": {
+        "audited": 7,
+        "formulaPrecision": {
+          "successes": 2,
+          "n": 7,
+          "rate": 0.2857142857142857,
+          "wilson95": {
+            "low": 0.08221716570901552,
+            "high": 0.6410709098517873
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 0,
+          "n": 7,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.35433884297520657
+          }
+        },
+        "falseExecutable": {
+          "successes": 7,
+          "n": 7,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6456611570247934,
+            "high": 1
+          }
+        }
+      }
+    }
+  },
+  "dispositions": {
+    "REVIEW_READY_WITH_GAPS": 20,
+    "FALSE_EXECUTABLE": 32,
+    "REQUIRES_HUMAN_REVIEW": 2,
+    "REVIEW_READY_EXECUTABLE": 7
+  },
+  "reviewReadyCount": 27,
+  "newlyAcceptedInterpretations": 0,
+  "newDurablePermissions": 0,
+  "authorizationNote": "No counsel ACCEPT and no Permission writes performed.",
+  "authenticCalculationExamples": [
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08",
+      "issuerTicker": null,
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 10,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+      "sectionRef": "5.1",
+      "issuerTicker": "EPAC",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+      "sectionRef": "7.07(d)",
+      "issuerTicker": "USLM",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1.5,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1.5,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+      "sectionRef": "6.01(j)",
+      "issuerTicker": "DOV",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 50,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+      "sectionRef": "5.9(c)",
+      "issuerTicker": "CRD-A",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:c91227d9b9432c787e8641ea",
+      "sectionRef": "7.06(d)",
+      "issuerTicker": "EML",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 5,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 5,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+      "sectionRef": "3.25",
+      "issuerTicker": "SIF",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 3,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 3,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:d42507f956621a8cb28805b7",
+      "sectionRef": "7.9",
+      "issuerTicker": "CHDN",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 100,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 100,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    }
+  ],
+  "auditSample": [
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 10,
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+      "sectionRef": "5.1",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:89001ae98391326522ad9cc9",
+      "sectionRef": "1.09(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "sectionRef": "2.04(a)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REQUIRES_HUMAN_REVIEW",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "materialOmissions": [
+        "missed_shared_capacity_dependency"
+      ],
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+      "sectionRef": "7.07(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1.5,
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+      "sectionRef": "6.01(j)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 50,
+      "materialOmissions": [],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+      "sectionRef": "5.9(c)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "materialOmissions": [],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:c91227d9b9432c787e8641ea",
+      "sectionRef": "7.06(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 5,
+      "materialOmissions": [],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+      "sectionRef": "3.25",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 3,
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:d42507f956621a8cb28805b7",
+      "sectionRef": "7.9",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 100,
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "ehb:61dbd6bc587f2b79844c0e09",
+      "sectionRef": "6.01",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 100,
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false
+    },
+    {
+      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+      "sectionRef": "2.11",
+      "formulaType": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true
+    }
+  ]
+}

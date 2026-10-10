@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "intelligence-factory.authentic-capacity-examples.v1",
+  "generatedAt": "2026-10-09T22:43:08.749Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "examples": [
+    {
+      "exampleId": "fwrg-6-01-non-loan-party-debt-greater-of",
+      "packageId": "fwrg-2021-credit-agreement",
+      "sectionRef": "6.01",
+      "population": "DEVELOPMENT",
+      "holdout": false,
+      "operativeWindowChars": 488,
+      "independentParse": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdMillions": 30,
+        "pct": 0.5,
+        "comparator": "GREATER_OF"
+      },
+      "expected": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdMillions": 30,
+        "pct": 0.5,
+        "capacityMillions": 50
+      },
+      "matches": {
+        "formulaMatch": true,
+        "thresholdMatch": true,
+        "pctMatch": true,
+        "capacityOk": true
+      },
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 100,
+        "cash": 40,
+        "interestExpense": 30,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 700,
+        "securedDebt": 400,
+        "totalAssets": 1500
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 50,
+      "refusalWithoutAssets": null,
+      "legalPermissionDistinctFromCapacity": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "notes": "FWRG development GT — §6.01 non-Loan-Party debt greater-of; capacity under SYNTHETIC labeled inputs.",
+      "path": "Authentic text → independent parse → formula → labeled finance → capacity number"
+    },
+    {
+      "exampleId": "conmed-7-2-assets-grower",
+      "packageId": "conmed-2025-credit-facility",
+      "sectionRef": "7.2",
+      "population": "DEVELOPMENT",
+      "holdout": false,
+      "operativeWindowChars": 326,
+      "independentParse": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdMillions": 50,
+        "pct": 0.03,
+        "comparator": "GREATER_OF"
+      },
+      "expected": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdMillions": 50,
+        "pct": 0.03,
+        "capacityMillions": 84
+      },
+      "matches": {
+        "formulaMatch": true,
+        "thresholdMatch": true,
+        "pctMatch": true,
+        "capacityOk": true
+      },
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 420,
+        "cash": 80,
+        "interestExpense": 55,
+        "cumulativeNetIncome": 200,
+        "equityProceedsSinceIssue": 50,
+        "assumedNewDebtRatePct": 6.5,
+        "totalDebt": 1100,
+        "securedDebt": 750,
+        "totalAssets": 2800
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 84,
+      "refusalWithoutAssets": {
+        "status": "review_required",
+        "reason": "\"conmed-7-2-assets-grower\" (7.2) is a greater-of flat / % Consolidated Total Assets basket — enter Consolidated Total Assets on the financial snapshot to evaluate the grower leg (fixed floor $50M is not presented alone as remaining capacity)."
+      },
+      "legalPermissionDistinctFromCapacity": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "notes": "CONMED §7.2 — aligns with PR #227 Neon E2E proof shape; synthetic assets labeled.",
+      "path": "Authentic text → independent parse → formula → labeled finance → capacity number"
+    },
+    {
+      "exampleId": "lsb-6-01-assets-grower",
+      "packageId": "lsb-2023-abl-credit-agreement",
+      "sectionRef": "6.01",
+      "population": "DEVELOPMENT",
+      "holdout": false,
+      "operativeWindowChars": 398,
+      "independentParse": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdMillions": 70,
+        "pct": 0.055,
+        "comparator": "GREATER_OF"
+      },
+      "expected": {
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "thresholdMillions": 70,
+        "pct": 0.055,
+        "capacityMillions": 110
+      },
+      "matches": {
+        "formulaMatch": true,
+        "thresholdMatch": true,
+        "pctMatch": true,
+        "capacityOk": true
+      },
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 300,
+        "cash": 25,
+        "interestExpense": 20,
+        "cumulativeNetIncome": 50,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 500,
+        "securedDebt": 350,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 110,
+      "refusalWithoutAssets": {
+        "status": "review_required",
+        "reason": "\"lsb-6-01-assets-grower\" (6.01) is a greater-of flat / % Consolidated Total Assets basket — enter Consolidated Total Assets on the financial snapshot to evaluate the grower leg (fixed floor $70M is not presented alone as remaining capacity)."
+      },
+      "legalPermissionDistinctFromCapacity": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "notes": "LSB development package — assets grower (PR #225 holdout proof uses similar).",
+      "path": "Authentic text → independent parse → formula → labeled finance → capacity number"
+    }
+  ],
+  "passed": 3,
+  "total": 3
+}

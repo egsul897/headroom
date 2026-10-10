@@ -74,6 +74,8 @@ describe("discovery ranking + taxonomy + patterns", () => {
     expect(patterns).toContain("greater-of-basket");
     expect(patterns).toContain("builder-basket");
     expect(patterns).toContain("no-default-condition");
+    expect(patterns).toContain("grower-basket");
+    expect(patterns).toContain("shared-capacity");
   });
 });
 

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "intelligence-factory.false-permission-forensic.v1",
+  "generatedAt": "2026-10-09T22:31:56.837Z",
+  "adversarialControl": {
+    "numeratorFailures": 1,
+    "denominatorEvaluated": 2,
+    "incidence": 0.5,
+    "failingCaseId": "syn-false-perm-general-prohibition",
+    "successCaseId": "syn-false-perm-carveout-present",
+    "predictionSource": "SYNTHETIC_ADVERSARIAL_OUTPUT",
+    "fixturePath": "tests/fixtures/covenant-knowledge-generalization/system-outputs/synthetic-offline.json",
+    "isInjectedAdversarialFailure": true,
+    "representsLiveProductionPath": false,
+    "note": "The FAILURE is an intentionally injected {permitted:true,status:PERMITTED} used to prove the CKG scorer can detect false permissions. It is not Headroom live output."
+  },
+  "liveProductionPath": {
+    "numeratorFailures": 0,
+    "denominatorEvaluated": 2,
+    "incidence": 0,
+    "outcomes": [
+      {
+        "caseId": "syn-false-perm-general-prohibition",
+        "shouldDeny": true,
+        "systemPermitted": false,
+        "falsePermission": false,
+        "analyzerPermissionCount": 0,
+        "askKind": "answered",
+        "verifierVerdict": "REJECTED",
+        "permissionAuthority": "DISCOVERY_NON_AUTHORITATIVE",
+        "usableByPhase4A": false,
+        "usableByPhase4E": false,
+        "detailSnippet": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n\n(1) §6.01 — Indebtedness [GENERAL_PROHIBITION]\nSection 6.01 (“Indebtedness”) is a general debt incurrence prohibition covering Borrower. shall not incur any Indebtedn",
+        "gateBlocksCustomerExecutable": true
+      },
+      {
+        "caseId": "syn-false-perm-carveout-present",
+        "shouldDeny": false,
+        "systemPermitted": false,
+        "falsePermission": false,
+        "analyzerPermissionCount": 1,
+        "askKind": "answered",
+        "verifierVerdict": "REJECTED",
+        "permissionAuthority": "DISCOVERY_NON_AUTHORITATIVE",
+        "usableByPhase4A": false,
+        "usableByPhase4E": false,
+        "detailSnippet": "Debt incurrence is typically a general prohibition with enumerated exceptions. Matching analyzed provisions say:\n\n(1) §6.01 — Indebtedness [UNRESOLVED]\nSection 6.01 (“Indebtedness”) relates to debt incurrence, but its prohibition/permission posture could not be determined from th",
+        "gateBlocksCustomerExecutable": true
+      }
+    ],
+    "certificationGatesPreventCustomerExecutable": true,
+    "releaseBlocking": false
+  },
+  "adversarialControlNote": "CKG offline false_permission_rate (1/2 = 50%) scores SYNTHETIC_ADVERSARIAL_OUTPUT fixtures that intentionally inject a false PERMITTED. That control proves the scorer catches unsafe outputs; it is not a live production-path measurement. Use this live probe for reachability."
+}

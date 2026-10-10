@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-historical-cohorts.v1",
+  "note": "Exposed / historical — do not use for iterative gate tuning as blind evaluation.",
+  "frozen61": {
+    "path": "docs/intelligence-factory/cycle-5/fixed-cohort-61.json",
+    "n": 61,
+    "status": "HISTORICAL_EXPOSED"
+  },
+  "cycle5Holdout16": {
+    "path": "docs/intelligence-factory/cycle-5/new-holdout-audit.json",
+    "n": 16,
+    "status": "HISTORICAL_EXPOSED"
+  },
+  "cycle6BlindHoldout14": {
+    "path": "docs/intelligence-factory/cycle-6/new-blind-holdout.json",
+    "n": 14,
+    "salt": "0xc6c6",
+    "status": "EXPOSED_EVALUATION_ARTIFACT",
+    "note": "Inspected for taxonomy; not a tuning target."
+  },
+  "exposedKeyCount": 91
+}

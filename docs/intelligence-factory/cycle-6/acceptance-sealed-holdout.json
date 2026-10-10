@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-acceptance-sealed.v1",
+  "generatedAt": "2026-10-10T10:10:32.843Z",
+  "salt": "0xc6a1",
+  "status": "BLOCKED_BY_NEON_CONNECTIVITY",
+  "error": "\nInvalid `prisma.knowledgeSource.findMany()` invocation in\n/workspace/scripts/knowledge-factory/cycle-6-acceptance-sealed-holdout.ts:111:41\n\n  108 \n  109 let rows;\n  110 try {\n→ 111   rows = await prisma.knowledgeSource.findMany(\nCan't reach database server at `ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech:5432`\n\nPlease make sure your database server is running at `ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech:5432`.",
+  "neonMutations": 0,
+  "paidInferenceCostUsd": 0,
+  "note": "Sealed protocol recorded; live audit deferred until Neon readable. Do NOT claim UNSEEN_FORMULA_RELIABILITY_VALIDATED.",
+  "excludedExposedKeys": 91
+}

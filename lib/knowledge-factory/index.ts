@@ -15,6 +15,12 @@ export { classifyDebtDocument, stripIdentityTokens } from "./classify/debt-docum
 export { scoreDiscoveryPotential } from "./rank/discovery-score";
 export { TAXONOMY_VERSION, TAXONOMY_FAMILIES, classifyFamiliesFromText } from "./taxonomy/families";
 export { PATTERN_LIBRARY_VERSION, SEED_PATTERNS, detectPatternsInText, allPatterns, getPattern } from "./patterns/library";
+export {
+  isSharedCapacityLanguage,
+  hasSharedCapacityRelationship,
+  hasAggregateCeilingLanguage,
+  hasAntiStackingLanguage,
+} from "./patterns/shared-capacity";
 export { canTransition, assertNotSilentPromotion, describeLevel } from "./representation/levels";
 
 export { CorpusStore, defaultCorpusPaths } from "./store/corpus-store";
@@ -46,6 +52,14 @@ export {
 } from "./legal-safety/promotion-guards";
 export { buildReviewerDataset } from "./corpus/reviewer-dataset";
 export { PILOT_ISSUER_SEEDS, stratifiedPilotPlan, expansionPlan, diversityReport } from "./corpus/issuer-sample";
+export {
+  CORPUS_POPULATION_REGISTRY,
+  packagesForPopulation,
+  assertHoldoutUntouched,
+} from "./corpus/population-registry";
+export type { CorpusPopulation, PopulationPackage } from "./corpus/population-registry";
+export { activateSummaryItem } from "./activation/provision-candidates";
+export type { ActivatedProvisionCandidate, ActivationReadiness } from "./activation/provision-candidates";
 export {
   NON_DEBT_TITLE,
   isDebtSource,

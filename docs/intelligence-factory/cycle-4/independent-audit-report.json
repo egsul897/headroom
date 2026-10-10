@@ -1,0 +1,5259 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-4-audit.v1",
+  "generatedAt": "2026-10-09T22:43:34.426Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "holdoutsExcluded": [
+    "gibraltar-2026-credit-agreement",
+    "knife-river-blind"
+  ],
+  "peerCoordination": {
+    "pr225": "https://github.com/egsul897/headroom/pull/225",
+    "pr227": "https://github.com/egsul897/headroom/pull/227",
+    "activationPath": "counsel-compile-accepted-interpretation"
+  },
+  "population": {
+    "sourcesScanned": 400,
+    "executableCandidatesByMechanic": {
+      "FLAT_AMOUNT": 2023,
+      "BUILDER_BASKET": 150,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 50,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 24,
+      "LEVERAGE_RATIO_ROOM": 7
+    },
+    "totalExecutableInScan": 2254
+  },
+  "sample": {
+    "audited": 61,
+    "quotas": {
+      "FLAT_AMOUNT": 12,
+      "BUILDER_BASKET": 14,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 16,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 12,
+      "LEVERAGE_RATIO_ROOM": 8,
+      "OTHER": 0
+    },
+    "byMechanicSampled": {
+      "FLAT_AMOUNT": 12,
+      "BUILDER_BASKET": 14,
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": 16,
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": 12,
+      "LEVERAGE_RATIO_ROOM": 7
+    }
+  },
+  "rates": {
+    "formulaPrecision": {
+      "successes": 33,
+      "n": 61,
+      "rate": 0.5409836065573771,
+      "wilson95": {
+        "low": 0.41723829935814166,
+        "high": 0.6598726911171088
+      }
+    },
+    "thresholdPrecision": {
+      "successes": 37,
+      "n": 61,
+      "rate": 0.6065573770491803,
+      "wilson95": {
+        "low": 0.4811702438560874,
+        "high": 0.7193183313795638
+      }
+    },
+    "incorrectGreaterVsLesserOf": {
+      "successes": 0,
+      "n": 61,
+      "rate": 0,
+      "wilson95": {
+        "low": 0,
+        "high": 0.05924591620194442
+      }
+    },
+    "missedConditions": {
+      "successes": 37,
+      "n": 61,
+      "rate": 0.6065573770491803,
+      "wilson95": {
+        "low": 0.4811702438560874,
+        "high": 0.7193183313795638
+      }
+    },
+    "missedExceptions": {
+      "successes": 27,
+      "n": 61,
+      "rate": 0.4426229508196721,
+      "wilson95": {
+        "low": 0.32507608033920443,
+        "high": 0.5669685329954449
+      }
+    },
+    "missedSharedCapacity": {
+      "successes": 6,
+      "n": 61,
+      "rate": 0.09836065573770492,
+      "wilson95": {
+        "low": 0.04586395136730972,
+        "high": 0.1984483419752358
+      }
+    },
+    "incorrectEntityScope": {
+      "successes": 12,
+      "n": 61,
+      "rate": 0.19672131147540983,
+      "wilson95": {
+        "low": 0.1162768855953685,
+        "high": 0.31310178488777807
+      }
+    },
+    "materialLegalOmissionRate": {
+      "successes": 44,
+      "n": 61,
+      "rate": 0.7213114754098361,
+      "wilson95": {
+        "low": 0.598283313687268,
+        "high": 0.8181160348790846
+      }
+    },
+    "falseExecutableClassificationRate": {
+      "successes": 32,
+      "n": 61,
+      "rate": 0.5245901639344263,
+      "wilson95": {
+        "low": 0.4015694171531101,
+        "high": 0.6446971771320403
+      }
+    },
+    "requiresHumanReviewRate": {
+      "successes": 2,
+      "n": 61,
+      "rate": 0.03278688524590164,
+      "wilson95": {
+        "low": 0.00903770081568788,
+        "high": 0.1118970077664569
+      }
+    },
+    "reviewReadyRate": {
+      "successes": 27,
+      "n": 61,
+      "rate": 0.4426229508196721,
+      "wilson95": {
+        "low": 0.32507608033920443,
+        "high": 0.5669685329954449
+      }
+    },
+    "insufficientOperativeText": {
+      "successes": 0,
+      "n": 61,
+      "rate": 0,
+      "wilson95": {
+        "low": 0,
+        "high": 0.05924591620194442
+      }
+    },
+    "byMechanic": {
+      "FLAT_AMOUNT": {
+        "audited": 12,
+        "formulaPrecision": {
+          "successes": 10,
+          "n": 12,
+          "rate": 0.8333333333333334,
+          "wilson95": {
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 10,
+          "n": 12,
+          "rate": 0.8333333333333334,
+          "wilson95": {
+            "low": 0.5519636426153274,
+            "high": 0.9530358523851776
+          }
+        },
+        "falseExecutable": {
+          "successes": 2,
+          "n": 12,
+          "rate": 0.16666666666666666,
+          "wilson95": {
+            "low": 0.046964147614822246,
+            "high": 0.44803635738467273
+          }
+        }
+      },
+      "BUILDER_BASKET": {
+        "audited": 14,
+        "formulaPrecision": {
+          "successes": 0,
+          "n": 14,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.21531701192718142
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 7,
+          "n": 14,
+          "rate": 0.5,
+          "wilson95": {
+            "low": 0.2679886791947528,
+            "high": 0.7320113208052473
+          }
+        },
+        "falseExecutable": {
+          "successes": 14,
+          "n": 14,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.7846829880728186,
+            "high": 1
+          }
+        }
+      },
+      "GREATER_OF_FLAT_OR_PCT_EBITDA": {
+        "audited": 16,
+        "formulaPrecision": {
+          "successes": 10,
+          "n": 16,
+          "rate": 0.625,
+          "wilson95": {
+            "low": 0.38640647097934805,
+            "high": 0.8151901744524719
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 11,
+          "n": 16,
+          "rate": 0.6875,
+          "wilson95": {
+            "low": 0.4440393186673406,
+            "high": 0.8583556494803894
+          }
+        },
+        "falseExecutable": {
+          "successes": 6,
+          "n": 16,
+          "rate": 0.375,
+          "wilson95": {
+            "low": 0.18480982554752803,
+            "high": 0.6135935290206519
+          }
+        }
+      },
+      "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
+        "audited": 12,
+        "formulaPrecision": {
+          "successes": 11,
+          "n": 12,
+          "rate": 0.9166666666666666,
+          "wilson95": {
+            "low": 0.6461140782014047,
+            "high": 0.9851352905492264
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 9,
+          "n": 12,
+          "rate": 0.75,
+          "wilson95": {
+            "low": 0.4676896608793401,
+            "high": 0.9110599603710388
+          }
+        },
+        "falseExecutable": {
+          "successes": 3,
+          "n": 12,
+          "rate": 0.25,
+          "wilson95": {
+            "low": 0.08894003962896137,
+            "high": 0.53231033912066
+          }
+        }
+      },
+      "LEVERAGE_RATIO_ROOM": {
+        "audited": 7,
+        "formulaPrecision": {
+          "successes": 2,
+          "n": 7,
+          "rate": 0.2857142857142857,
+          "wilson95": {
+            "low": 0.08221716570901552,
+            "high": 0.6410709098517873
+          }
+        },
+        "thresholdPrecision": {
+          "successes": 0,
+          "n": 7,
+          "rate": 0,
+          "wilson95": {
+            "low": 0,
+            "high": 0.35433884297520657
+          }
+        },
+        "falseExecutable": {
+          "successes": 7,
+          "n": 7,
+          "rate": 1,
+          "wilson95": {
+            "low": 0.6456611570247934,
+            "high": 1
+          }
+        }
+      }
+    }
+  },
+  "dispositions": {
+    "REVIEW_READY_WITH_GAPS": 20,
+    "FALSE_EXECUTABLE": 32,
+    "REQUIRES_HUMAN_REVIEW": 2,
+    "REVIEW_READY_EXECUTABLE": 7
+  },
+  "reviewReadyCount": 27,
+  "newlyAcceptedInterpretations": 0,
+  "newDurablePermissions": 0,
+  "authorizationNote": "No counsel ACCEPT and no Permission writes performed.",
+  "authenticCalculationExamples": [
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08",
+      "issuerTicker": null,
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 10,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+      "sectionRef": "5.1",
+      "issuerTicker": "EPAC",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+      "sectionRef": "7.07(d)",
+      "issuerTicker": "USLM",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1.5,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1.5,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+      "sectionRef": "6.01(j)",
+      "issuerTicker": "DOV",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 50,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+      "sectionRef": "5.9(c)",
+      "issuerTicker": "CRD-A",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 1,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:c91227d9b9432c787e8641ea",
+      "sectionRef": "7.06(d)",
+      "issuerTicker": "EML",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 5,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_EXECUTABLE",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 5,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+      "sectionRef": "3.25",
+      "issuerTicker": "SIF",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 3,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 3,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    },
+    {
+      "sourceId": "ehb:d42507f956621a8cb28805b7",
+      "sectionRef": "7.9",
+      "issuerTicker": "CHDN",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 100,
+      "params": null,
+      "independentAuditDisposition": "REVIEW_READY_WITH_GAPS",
+      "financialInputsLabel": "SYNTHETIC_LABELED_FINANCIAL_INPUTS_NOT_COMPANY_CAPACITY",
+      "financialInputs": {
+        "ebitda": 500,
+        "cash": 50,
+        "interestExpense": 40,
+        "cumulativeNetIncome": 100,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 7,
+        "totalDebt": 800,
+        "securedDebt": 400,
+        "totalAssets": 2000
+      },
+      "evaluationStatus": "modeled",
+      "capacityMillions": 100,
+      "legalPermissionDistinctFromCapacity": true,
+      "note": "Numerical capacity under labeled synthetic inputs ≠ overall legal permission to incur.",
+      "certificationState": "REVIEW_READY_UNVERIFIED"
+    }
+  ],
+  "auditSample": [
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=10 independent=10"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 10,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ess of Subsidiaries that are not Loan Parties otherwise permitted hereunder. 74 6.08 Dividends and Distributions . The Borrower shall not, and shall not permit any of its Subsidiaries to, make or pay, or agree to become or remain liable to make or pay, any dividend or other distribution of any nature (whether in cash, ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:9781ff866c8a24fbed8fdc5b",
+      "sectionRef": "5.1",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ng assigned to the Notes below an Investment Grade Rating. ARTICLE V SUCCESSORS SECTION 5.1 Consolidation, Merger, Conveyance, Transfer or Lease . The Company will not in any transaction or series of transactions, consolidate with or merge into any other Person (other than a merger of a Restricted Subsidiary into the C",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:89001ae98391326522ad9cc9",
+      "sectionRef": "1.09(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2670 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=100 independent=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2670,
+      "operativeWindowPreview": "SECTION 1.09. Notices Communications, Etc . (a) All notices, demands, requests, consents and other Communications provided for in this Agreement shall be given in writing, or by any telecommunication device capable of creating a written record (including electronic mail, except with respect to (x) service of process to",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "sectionRef": "2.04(a)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REQUIRES_HUMAN_REVIEW",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "Section 2.03 [Reserved]. Section 2.04 [Reserved]. Section 2.05 Prepayments. 103 (a) Optional. (i) The Borrower may, upon notice by the Borrower to the Administrative Agent substantially in the form of Exhibit J, at any time or from time to time voluntarily prepay Loans in whole or in part without premium or penalty exc",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:c63be521bf29ecdae4e28e92",
+      "sectionRef": "7.07(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1.5 independent=1.5"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1.5,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "from the substantially concurrent issue of, new shares of its common stock; and (d) the Borrower may declare or pay any dividends or make any other payment or distribution on account of its capital stock during any Fiscal Year which would (i) leave Borrower Solvent, (ii) not cause, or with notice and/or the passage of ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:ffc666407ef4ff4e2cd0c724",
+      "sectionRef": "6.01(j)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=50 independent=50"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 50,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "e ERISA Group to incur a current payment obligation in excess of US$25,000,000; (j) a judgment or order for the payment of money in excess of the US Dollar Equivalent of US$50,000,000 shall be rendered against the Company or any Subsidiary and such judgment or order shall continue unsatisfied and unstayed for a period ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:2954d4fcffbf68d6009f557c",
+      "sectionRef": "5.9(c)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ast thirty (30) days prior written notice is given to the Administrative Agent. (c) The Borrowers irrevocably make, constitute and appoint the Administrative Agent (and all officers, employees or agents designated by the Administrative Agent), so long as any Event of Default shall have occurred and be continuing as Bor",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:c91227d9b9432c787e8641ea",
+      "sectionRef": "7.06(d)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=5 independent=5"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 5,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ant set forth in Section 1.1(b) after giving effect to such Restricted Payment; (d) so long as no Default or Event of Default shall have occurred and be continuing or would result therefrom, other Restricted Payments in an aggregate amount during the term of this Agreement not to exceed the sum of $5,000,000; (e) so lo",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:a6fd1a010562d6873ea5498e",
+      "sectionRef": "3.25",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=3 independent=3"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 3,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " as follows 1.1 The following new Section 3.25 is added to the Credit Agreement SECTION 3.25 Subordinated Indebtedness . The Borrowers have received $3,000,000 in immediately available funds on the Ninth Amendment Effective Date from the incurrence of the Silk Subordinated Indebtedness. The Silk Subordinated Note, the ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:d42507f956621a8cb28805b7",
+      "sectionRef": "7.9",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=100 independent=100"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 100,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "all have no liability for any action or inaction of any successor Trustee. -90- SECTION 7.9 Successor Trustee by Merger . If the Trustee consolidates with, merges or converts into, or transfers all or substantially all its corporate trust business or assets to, another corporation or banking association, the resulting,",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:61dbd6bc587f2b79844c0e09",
+      "sectionRef": "6.01",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=100 independent=100"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 100,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "payment of principal and interest on the Notes. ARTICLE 6 DEFAULTS AND REMEDIES Section 6.01. Events of Default . Whenever used herein or in this Indenture, an Event of Default means any one of the following events: (a) there shall be a default in the payment of the principal of (or premium, if any, on) any Note at its",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+      "sectionRef": "2.11",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 1390 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=525 independent=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 1390,
+      "operativeWindowPreview": "Section 2.11(1), each Lender and the Administrative Agent shall maintain in accordance with its usual practice accounts or records and, in the case of the Administrative Agent, entries in the Register, evidencing the purchases and sales by such Lender of participations in Letters of Credit and Swing Line Loans. In the ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.01(a)",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=5 independent=5"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 5,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "debtedness . Incur, create, assume or permit to exist any Indebtedness, except: (a) (x) Indebtedness (other than as described in Section 6.01(b) below) existing or committed on the Closing Date ( provided , that any such Indebtedness for borrowed money that is owed to any person other than the Borrower and/or one or mo",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.10",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 903 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=12.5 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.35 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 903,
+      "operativeWindowPreview": "Section 6.10 Amendment of Junior Financing Modifications of Organizational Documents . (a) The Borrower will not, and will not permit any Restricted Subsidiary to, amend or modify the documentation governing any Junior Financing if the effect of such amendment or modification, when taken as a whole, is materially adver",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.06",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=7 independent=7"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.1 independentPct=0.1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 7,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "at the time received and without giving effect to subsequent changes in value). Section 6.06 Restricted Payments . (i) Declare or pay any dividend or make any other distribution (by reduction of capital or otherwise), whether in cash, property, securities or a combination thereof, with respect to any of its Equity Inte",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.05(d)",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=10.75 independent=10.75"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.3 independentPct=0.3"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 10.75,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "rice of such replacement property (or a functional equivalent of such property) (d) Dispositions of property to the Borrower or any Restricted Subsidiary provided that if the transferor in such a transaction is a Loan Party, then either (i) the transferee must be a Loan Party, (ii) to the extent constituting an Investm",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.01(s)",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=100 independent=100"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=0.25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 100,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ss and not in connection with the borrowing of money or any Hedging Agreements; (s) Indebtedness representing deferred compensation to employees, consultants or independent contractors of the Borrower or any Subsidiary incurred in the ordinary course of business; (t) Indebtedness in connection with Qualified Receivable",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.05(r)",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=12.5 independent=7"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.35 independentPct=0.2"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 7,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "r waive contractual rights and settle or waive contractual or litigation claims (r) Dispositions of Unrestricted Subsidiaries (other than Unrestricted Subsidiaries the primary assets of which are Permitted Investments received from the Borrower or a Restricted Subsidiary) or assets acquired from Unrestricted Subsidiari",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "3.12",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 171 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=63.15 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.15 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 171,
+      "operativeWindowPreview": "Section 3.12 Liens . There are no Liens on any of the real or personal properties of the TopCo Borrower or any Restricted Subsidiary except for Liens permitted by &#x200e;",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "sectionRef": "6.01",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=720 independent=720"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=1 independentPct=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 720,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ck and Preferred Stock then outstanding and incurred or issued pursuant to this Section 6.01(b)(12)(b) (together with any outstanding Indebtedness under Section 6.01(b)(13) hereof incurred to Refinance Indebtedness initially incurred under this Section 6.01(b)(12)(b)), does not exceed the greater of (x) $720.0 million ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "9.08",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=63.15 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.15 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "lar jurisdiction shall not invalidate such provision in any other jurisdiction. Section 9.08 Right of Setoff . If an Event of Default shall have occurred and be continuing, each Lender and each of their respective Affiliates is hereby authorized at any time and from time to time, to the fullest extent permitted by law,",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.01",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 3111 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=12.5 independent=35.6"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.35 independentPct=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 35.6,
+      "operativeWindowChars": 3111,
+      "operativeWindowPreview": "6.01(a)(xv)(A) shall not exceed the sum of (xvi) (I) an amount equal to the greater of (i) $35,600,000 and (ii) 100% of Consolidated EBITDA for the Test Period then last ended (minus, without duplication, the amounts of all Incremental Facilities and Incremental Equivalent Debt, in each case, incurred under the Fixed I",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "6.1",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=20 independent=20"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.25 independentPct=0.25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 20,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ants and agrees with Administrative Agent, Issuing Lender and the Lenders that: 6.1 Indebtedness. No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, create, incur, assume, or permit to exist any Indebtedness, except: (a) Indebtedness under this Agreement and the other Loan Documents; (b) the I",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "9.22",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=150 independent=150"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.35 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 150,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "n of Affected Financial Institutions 222 SECTION 9.21 Certain ERISA Matters 223 SECTION 9.22 Acknowledgement Regarding any Supported QFCs 224 iii SCHEDULES Schedule 2.01 Commitments and Loans Schedule 2.05 Letter of Credit Commitments Schedule 3.03 Government Approvals No Conflicts Schedule 3.06 Litigation Schedule 3.1",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "6.01(n)",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=100 independent=15"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=0.2"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 15,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ame extent as such underlying Indebtedness is subordinated in right of payment; (n) Indebtedness arising from agreements of the Borrower or any Subsidiary providing for indemnification, adjustment of purchase or acquisition price or similar obligations (including earn-outs), in each case, incurred or assumed in connect",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "6.03",
+      "formulaType": "BUILDER_BASKET",
+      "mechanic": "BUILDER_BASKET",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 1302 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=BUILDER_BASKET independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=12.5 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.35 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 1302,
+      "operativeWindowPreview": "Section 6.03 ) in order to consummate such Investment, in each case in accordance with the requirements of Sections 5.11 and 5.12 provided , further , that the contribution in clause (D)(1) and the merger, amalgamation or consolidation in clause (D)(2) shall not build basket capacity, whether through the Available Amou",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "2.20(j)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=105.25 independent=105.25"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.25 independentPct=0.25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 105.25,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "tomary &#x201c;SunGard&#x201d; or &#x201c;certain funds&#x201d; conditionality. (j) Any Borrower or Restricted Subsidiary may, at any time or from time to time after the Closing Date, issue, incur or otherwise obtain Indebtedness of such Borrower or Subsidiary (and any Permitted Refinancing Indebtedness in respect ther",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "2.20(c)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=421 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " Obligations had been acquired by such Incremental Lender by way of assignment. (c) Each Incremental Lender providing a portion of any Incremental Commitments shall execute and deliver to the Administrative Agent and each applicable Borrower all such documentation (including the relevant Incremental Amendment) as may b",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:0a41b36af3e4c39fa695edd1",
+      "sectionRef": "4.06",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=50 independent=50"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.03125 independentPct=0.03125"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 50,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ary shall not be deemed a restriction on the ability to make loans or advances. Section 4.06 Asset Sales . (a) The Company shall not, and shall not permit any of the Restricted Subsidiaries to, cause or make an Asset Sale, unless (x) the Company or any Restricted Subsidiary, as the case may be, receives consideration a",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "5.14",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=12 independent=12"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.15 independentPct=0.15"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 12,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "oregoing, in each case as reasonably determined by the Borrowers in good faith. 5.14 Transactions with Affiliates. No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, sell, lease or otherwise transfer any assets to, or purchase, lease or otherwise acquire any assets from, or otherwise engage in",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+      "sectionRef": "7.5(f)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=27.06 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "uired pursuant to a Permitted Business Acquisition to any other Subsidiary; 105 (f) any Asset Sale other Dispositions of assets (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event Capital Stock) ; provided that ( i A ) the aggregate any such Disposition shall be for fair market v",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "sectionRef": "2.14",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=2000 independent=2000"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=1 independentPct=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 2000,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "e interest in the Commitment(s) or Loan(s) to which such participation relates. Section 2.14 Incremental Facilities . (a) The Borrower may, from time to time after the Restatement Date, arrange an incremental Facility (with such Person arranging such Facility (who may be (x) the Administrative Agent or (y) any other Pe",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:dc18fe783caab6b799ca4693",
+      "sectionRef": "6.01(j)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=100 independent=100"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.25 independentPct=0.25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 100,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ed by this clause (i) shall not exceed $100,000,000 at any time outstanding; 86 (j) (i) unsecured Indebtedness of the Company and its Subsidiaries so long as the Company, on a pro forma basis giving effect to such incurrence of Indebtedness, is in compliance with a Fixed Charge Coverage Ratio of no less than 2.25 to 1.",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "sectionRef": "7.01(j)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=7 independent=7"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.2 independentPct=0.2"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 7,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "y such proceeding or (v) make a general assignment for the benefit of creditors (j) one or more enforceable judgments for the payment of money in an aggregate amount in excess of the greater of (x) $7,000,000 and (y) 20% of Consolidated EBITDA for the Test Period then last ended (to the extent not covered by insurance ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:e16cad81e52d87aede4dcb27",
+      "sectionRef": "6.01",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=100 independent=100"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.25 independentPct=0.25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 100,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "debtedness of the Borrower and its Subsidiaries not otherwise permitted by this Section 6.01, so long as the aggregate outstanding principal amount of such Indebtedness shall not exceed at any time the greater of (x) $100,000,000 and (y) 25% of Consolidated EBITDA at such time; provided that no more than $100,000,000 o",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "2.20(a)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "se to or warranty by the parties thereto. Section 2.20 Incremental Facilities . (a) Each applicable Borrower may, at any time, on one or more occasions on or after the Closing Date pursuant to an Incremental Amendment (i) add one or more new Classes of term facilities (each new Class, a &#x201c; New Incremental Term Fa",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "2.20(k)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 4250 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=421 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 4250,
+      "operativeWindowPreview": "Section 2.20(a) . &#x201c; Indebtedness &#x201d; of any Person means, without duplication, (a) all obligations of such Person for borrowed money, (b) all obligations of such Person evidenced by bonds, debentures, notes or similar instruments, (c) [reserved], (d) all obligations of such Person under conditional sale or ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "sectionRef": "10.1(r)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=60 independent=60"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.2 independentPct=0.2"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 60,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ee or (2) any guarantee by a Restricted Subsidiary of Indebtedness of Holdings; (r) Indebtedness of Restricted Subsidiaries that are not Guarantors in an amount not to exceed, in the aggregate at any one time outstanding, the greater of (x) $60,000,000 and (y) 20% of Consolidated EBITDA for the most recently ended Test",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+      "sectionRef": "10.04",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REQUIRES_HUMAN_REVIEW",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=700 independent=700"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=1 independentPct=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 700,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ny portion thereof) and (C) Section 1.09 shall apply. Section 10.03 [Reserved]. Section 10.04 Investments, Loans and Advances . (i) Purchase or acquire (including pursuant to any merger with a person that is not a Wholly Owned Subsidiary immediately prior to such merger) any Equity Interests, evidences of Indebtedness ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "2.20(f)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 4250 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=421 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 4250,
+      "operativeWindowPreview": "Section 2.20(a) . &#x201c; Indebtedness &#x201d; of any Person means, without duplication, (a) all obligations of such Person for borrowed money, (b) all obligations of such Person evidenced by bonds, debentures, notes or similar instruments, (c) [reserved], (d) all obligations of such Person under conditional sale or ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "sectionRef": "6.01(b)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=360 independent=360"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.5 independentPct=0.5"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 360,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "1), (a)(ii)(2), or (a)(ii)(3), as applicable, the Permitted Ratio Debt ). -130- (b) The provisions of Section 6.01(a) hereof shall not apply to: (1) Indebtedness incurred pursuant to (X) the Loan Documents (including pursuant to Section 2.18, 2.19 or 2.22) and any Credit Agreement Refinancing Indebtedness in respect th",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "1.01(i)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=LEVERAGE_RATIO_ROOM comparator=RATIO"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=421 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "this clause (c), the &#x201c; Incremental Ratio Basket &#x201d;), provided that (i) any Incremental Facility or Incremental Equivalent Debt may be incurred under one or more of clauses (a), (b) or (c) of this definition as selected by the U.S. Borrower in its sole discretion, (ii) if any Incremental Facility or Increme",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "sectionRef": "10.3(h)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=45 independent=45"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.015 independentPct=0.015"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 45,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "t to Section 10.5 or an investment that constitutes a Permitted Investment; and (h) so long as no Event of Default has occurred and is continuing or would result therefrom, Holdings or any Restricted Subsidiary may change its legal form. 10.4 Limitation on Sale of Assets . Holdings will not, and will not permit any Res",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "sectionRef": "8.1(a)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=300 independent=300"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.02 independentPct=0.02"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 300,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ministrative Agent hereunder, that 8.1 Indebtedness Certain Equity Securities . (a) The Credit Parties will not, and will not permit any Subsidiary to create, incur, assume or permit to exist (including by way of Guarantee Obligations) any Indebtedness, except (i)Indebtedness incurred and outstanding under the Loan Doc",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:bbc42b58a4dd0077d4f3dce2",
+      "sectionRef": "7.05(k)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=50 independent=50"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.015 independentPct=0.015"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 50,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "to Casualty Events upon receipt of the Net Cash Proceeds of such Casualty Event (k) Dispositions of property not otherwise permitted under this Section 7.05 provided that (i) the Company and its Subsidiaries shall be in Pro Forma Compliance with the Financial Covenants, (ii) at the time of such Disposition (other than ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+      "sectionRef": "7.2(m)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=125 independent=125"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.075 independentPct=0.075"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 125,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "uarantee in respect of Permitted Unsecured Indebtedness shall be unsecured; 100 (m) Indebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal amount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measu",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "sectionRef": "10.4",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=45 independent=45"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.015 independentPct=0.015"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 45,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ult therefrom, Holdings or any Restricted Subsidiary may change its legal form. 10.4 Limitation on Sale of Assets . Holdings will not, and will not permit any Restricted Subsidiary to, consummate an Asset Sale, unless: (a) Holdings or such Restricted Subsidiary, as the case may be, receives consideration at the time of",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:8deb135bf498cdaedfb97cef",
+      "sectionRef": "7.2",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=60 independent=60"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.05 independentPct=0.05"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 60,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "s and advances (expressly excluding loans or advances expressly permitted under Section 7.2.4(v) above), to or in: (a) Loan Parties; or (b) other Persons, provided that such investment, loans and advances in other Persons, 87 measured at the time of the making thereof (determined without regard to any write-down or wri",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:6b18a2a138c223c9a69121a7",
+      "sectionRef": "5.02",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=450 independent=null"
+        },
+        {
+          "field": "grower_pct",
+          "ok": false,
+          "detail": "candidatePct=0.1 independentPct=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " to so comply would not be reasonably likely to have a Material Adverse Effect. SECTION 5.02. Negative Covenants . So long as any Advance shall remain unpaid or any Lender shall have any Commitment hereunder, the Company will not (a) Liens, Etc . Create or suffer to exist, or permit any of its Subsidiaries to create or",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+      "sectionRef": "8.1",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 824 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=435 independent=290"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.03 independentPct=0.02"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 290,
+      "operativeWindowChars": 824,
+      "operativeWindowPreview": "Section 8.1(a)(xxvi) (xxvii) Permitted European Borrower Debt (including any Permitted Refinancing Indebtedness of such Indebtedness) in an aggregate principal amount not to exceed 500,000,000 at any time, the net proceeds of which are used to finance a Permitted Acquisition (and to pay fees and expenses related theret",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "sectionRef": "8.2(i)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=200 independent=200"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.02 independentPct=0.02"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 200,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " it, except the following (herein collectively referred to as Permitted Liens ) (i) Liens created under the Loan Documents or otherwise securing the Obligations, (ii) Liens on Cash, Cash Equivalents or deposits granted in favor of the Administrative Agent, the Collateral Agent, any Swing Line Lender or Facing Agent to ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:9cc9fb36b694a18d721deb93",
+      "sectionRef": "10.05(e)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=20 independent=20"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.025 independentPct=0.025"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 20,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "stricted Subsidiaries (other than the Pulitzer Entities). (d) [Reserved]; -162- (e) For the purposes of this Section 10.05, the following are deemed to be cash: (x) the assumption of Indebtedness or other liabilities of the Borrower (other than Disqualified Stock or Subordinated Obligations) or Indebtedness or other li",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "sectionRef": "8.1",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 823 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=300 independent=200"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.02 independentPct=0.02"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 200,
+      "operativeWindowChars": 823,
+      "operativeWindowPreview": "Section 8.1(a)(xxvi) (xxvii) Permitted European Borrower Debt (including any Permitted Refinancing Indebtedness of such Indebtedness) in an aggregate principal amount not to exceed 500,000,000 at any time, the net proceeds of which are used to finance a Permitted Acquisition (and to pay fees and expenses related theret",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "sectionRef": "8.2",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS independent=GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=200 independent=200"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.02 independentPct=0.02"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      "independentThresholdMillions": 200,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ed stock or other preferred Capital Stock other than Permitted Preferred Stock. 8.2 Liens . The Credit Parties will not, and will not permit any of their Subsidiaries to create, incur, assume or permit to exist any Lien on any property or asset now owned or hereafter acquired by it, except the following (herein collect",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:904ee677f8fd70e7a6227a6b",
+      "sectionRef": "4.03",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=LEVERAGE_RATIO_ROOM comparator=RATIO"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=2 independent=25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "independentThresholdMillions": 25,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "to which the Trustee is entitled to rely exclusively on Officers Certificates). SECTION 4.03. Limitation on Indebtedness. (a) The Company will not, and will not permit any Restricted Subsidiary to, Incur, directly or indirectly, any Indebtedness; provided , however , that the Company and any Restricted Subsidiary will ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "sectionRef": "2.21",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=2 independent=5"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 5,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "repaid on the Amendment No. 1 Delayed Draw Term Loan may not be reborrowed. 128 Section 2.21 Incremental Commitments . (a) Except during the Covenant Relief Period, after the Amendment No. 1 Effective Date has occurred, the Borrower may, by written notice to the Administrative Agent from time to time, request Increment",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:96a1b2a76a688edf7158cac4",
+      "sectionRef": "10.13",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=2 independent=1775"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1775,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " point of view and (xvi) pledges of Capital Stock of Unrestricted Subsidiaries. SECTION 10.13. Limitation on Indebtedness and Preferred Stock. (a) The Company shall not, and shall not permit any Restricted Subsidiary to, directly or indirectly, Incur any Indebtedness (including Acquired Indebtedness), and shall not per",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:9df315f2b3ab68af58bce6a8",
+      "sectionRef": "5.01(b)",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=LEVERAGE_RATIO_ROOM comparator=RATIO"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=5 independent=500"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "independentThresholdMillions": 500,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " or results of operations of the Company and its Subsidiaries taken as a whole. (b) Consolidated Net Leverage Ratio. (i) Maintain a Consolidated Net Leverage Ratio as of the last day of each Reference Period ending during the Covenant Relief Period (commencing with the first Reference Period 74 ending after the Amendme",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:b5612b991d4aa51dd71badf4",
+      "sectionRef": "10.09(a)",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 463 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=0 independent=0.115"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 0.115,
+      "operativeWindowChars": 463,
+      "operativeWindowPreview": "SECTION 10.09. Adjustment for Cash Dividends. If, after the Issue Date of the Securities, the Company distributes to all or substantially all holders of its Common Stock any cash (excluding (a) any quarterly cash dividend on the Company s Common Stock to the extent 54 that such dividend equals $0.115 per share, as adju",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:0ca3f9395b43053d2db7beed",
+      "sectionRef": "4.03",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=2 independent=250"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 250,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ies Act. The Company also shall comply with the other provisions of TIA 314(a). SECTION 4.03 Limitation on Indebtedness. (a) The Company will not, and will not permit any Restricted Subsidiary to, Incur, directly or indirectly, any Indebtedness; provided , however , that the Company and the Subsidiary Guarantors shall ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:bcee5376c77a823288d0c99d",
+      "sectionRef": "10.09",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "mechanic": "LEVERAGE_RATIO_ROOM",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=LEVERAGE_RATIO_ROOM independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=2 independent=200"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 200,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "venture agreement and applicable only to the Person that is a party thereto. 66 SECTION 10.09 Incurrence of Indebtedness and Issuance of Preferred Stock . (a) The Issuer will not, and will not permit any of its Restricted Subsidiaries to, directly or indirectly, create, incur, issue, assume, guarantee or otherwise beco",
+      "certificationStatus": "NOT_CERTIFIED"
+    }
+  ]
+}

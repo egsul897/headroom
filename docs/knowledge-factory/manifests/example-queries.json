@@ -1,32 +1,6 @@
 {
   "leverage_based_rp_baskets": [
     {
-      "sourceId": "fixture:conmed-article7",
-      "title": "Credit Agreement — Article VII",
-      "documentClass": "CREDIT_AGREEMENT",
-      "filingDate": "2020-01-01",
-      "sourceUrl": "fixture://fixture:conmed-article7",
-      "representationLevel": "DISCOVERED_CANDIDATE",
-      "excerpt": "NEGATIVE COVENANTS\nThe Parent Borrower hereby agrees that, so long\nas the Commitments remain in effect, any Letter of Credit remains outstanding or any Loan or other amount is owing to any Lender or the\nAdministrative Agent hereunder, the Parent Borrower shall not, and shall not permit any of its Subsidiaries to, directly or indirectly:\nSECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the P",
-      "families": [
-        "FINANCIAL_MAINTENANCE_COVENANTS",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
-        "INDEBTEDNESS",
-        "LIENS",
-        "RESTRICTED_PAYMENTS",
-        "INVESTMENTS",
-        "ASSET_SALES",
-        "GUARANTEES",
-        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
-        "RATIO_BASED_PERMISSIONS",
-        "SHARED_CAPACITY_PROVISIONS",
-        "EVENTS_OF_DEFAULT",
-        "MANDATORY_PREPAYMENTS"
-      ],
-      "score": 56,
-      "note": "Source-backed example only — not a generalized legal conclusion."
-    },
-    {
       "sourceId": "fixture:fwrg-defs",
       "title": "Credit Agreement — Definitions Excerpt",
       "documentClass": "CREDIT_AGREEMENT",
@@ -48,11 +22,25 @@
         "UNRESTRICTED_SUBSIDIARIES",
         "EVENTS_OF_DEFAULT"
       ],
-      "score": 51.5,
+      "score": 55,
       "note": "Source-backed example only — not a generalized legal conclusion."
-    }
-  ],
-  "shared_baskets_investments_junior_debt": [
+    },
+    {
+      "sourceId": "fixture:conmed-article7",
+      "title": "Credit Agreement — Article VII",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:conmed-article7",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "SECTION 7.1 Financial Condition\nCovenants .\n(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the foregoing, if the Parent Borrower\nor any of its Subsidiaries consummates a Material Acquisition, at the election of the Parent Borrower (the notice of which election shall\nbe given prior to the earlier of (i) the date that is thirty (30) days after consummating the relevant Material Acquisition and (ii) the\ndate by which the Parent Borrower has to deliver financial statements in accordance with Section 6.1(a) or (b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition\nis consummated; provided that (x) such step-up shall be permitted only twice during the term of this Agreement and (y) there shall\nbe at least two fiscal quarters in between any such step-ups.\n(b)\nConsolidated Total Leverage Ratio . Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed 5.50 to 1.00. Notwithstanding\nthe foregoing, if the Parent Borrower or any of its Subsidiaries consummates",
+      "families": [
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "RATIO_BASED_PERMISSIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "score": 20.5,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    },
     {
       "sourceId": "fixture:fwrg-article6",
       "title": "Credit Agreement — Article VI Negative Covenants",
@@ -60,15 +48,134 @@
       "filingDate": "2020-01-01",
       "sourceUrl": "fixture://fixture:fwrg-article6",
       "representationLevel": "DISCOVERED_CANDIDATE",
-      "excerpt": "Section 6.03. [Reserved] . Section 6.04. Restricted Payments; Restricted Debt Payments . (a) The Borrower shall not pay or make any Restricted Payment, except that: (i) the Borrower may make, directly or indirectly, Restricted Payments to the extent necessary to permit any Parent Company: (A) to pay general administrative and operating costs and expenses (including corporate overhead, legal or similar expenses and customary salary, bonus and other benefits payable to any director, officer, employee, member of management, manager and/or consultant of any Parent Company) and franchise Taxes, and similar fees and expenses required to maintain the organizational existence or qualification to do business of such Parent Company, in each case, which are reasonable and customary and incurred in th",
+      "excerpt": "Section 6.10. Financial Covenants . (a) Total Rent Adjusted Net Leverage Ratio . On the last day of any Test Period (commencing with the Test Period ending March 27, 2022), the Borrower shall not permit the Total Rent Adjusted Net Leverage Ratio to be greater than (A) from the Test Period ending on March 27, 2022 to and including the Test Period ending on December 25, 2022, 5.50:1.00, (B) from the Test Period ending on March 26, 2023 to and including the Test Period ending on December 31, 2023, 5.25:1.00, and (C) from the Test Period ending on March 31, 2024 and each Test Period ending thereafter, 5.00:1.00; provided that, upon the consummation of a Material Acquisition, for the Fiscal Quarter in which such Material Acquisition is consummated and the three full Fiscal Quarters ending immediately thereafter (such period, the &#147; Covenant Acquisition Increase Period &#148;), the ratios set forth above applicable to each such Fiscal Quarter shall be increased by 0.50:1.00 (such increase, the &#147; Covenant Acquisition Increase &#148;); provided , further , that notwithstanding the foregoing, there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods (which, for the avoidance of doubt, may result in the delay of the commencement of a Covenant Acquisition Increase Period with respect to any Material Acquisition that occurs during another Covenant Acquisition Increase Period or such one Fiscal Quarter period). (b) Fixed Charge Coverage Ratio . On the last day of any Test Period (co",
       "families": [
-        "RESTRICTED_PAYMENTS",
-        "JUNIOR_DEBT_PREPAYMENTS",
-        "RESTRICTED_SUBSIDIARIES",
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "RATIO_BASED_PERMISSIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "score": 18.5,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    },
+    {
+      "sourceId": "fixture:chwy",
+      "title": "Chewy Credit Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:chwy",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "Section 2.09(b) as a result of any Asset Sale consummated by a Loan Party pursuant to Section 6.05(a)(2)(ii), 100.0%; provided that the Disposition Percentage (i) shall be 50.0% if the First Lien Leverage Ratio as of the\napplicable time of determination is less than or equal to 2.50:1.00 and greater than 2.00:1.00, and (ii) shall be 0.0% if the First Lien Leverage Ratio as of the applicable time of determination is less than or equal to 2.00:1.00, in each case\nof clauses (i) and (ii), (A) calculated on a Pro Forma Basis (and including any proceeds to be realized in connection with such disposition) and any prepayments to be made on or prior to the last day on which such mandatory prepayment is\nrequired to be made pursuant to Section 2.09(b), and (B) such calculation shall only be required to be tested once by the Initial Borrower at any time, at the Initial Borrower’s sole discretion, from the entry into the letter of\nintent (or, if none, the underlying definitive sale agreement) in respect thereof until the last day of the Asset Sale Proceeds Application Period (or, if later, the last day of the First Commitment Application Period or the Second Commitment\nApplication Period, as applicable).\n“ Disqualified Lenders ” means, on any date:\n\n(a)\nthose Persons who are known or reasonably identifiable competitors of the Restricted Parties;\n\n-29-\n\n(b)\nthose Persons that are engaged as principals primarily in private equity, mezzanine financing or venture\ncapital and those banks, financial institutions, other institutional lenders and other persons, in each case, identified in writi",
+      "families": [
+        "LIENS",
+        "ASSET_SALES",
+        "RATIO_BASED_PERMISSIONS",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS",
         "INVESTMENTS",
+        "MANDATORY_PREPAYMENTS"
+      ],
+      "score": 15,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    }
+  ],
+  "shared_baskets_investments_junior_debt": [
+    {
+      "sourceId": "fixture:chwy",
+      "title": "Chewy Credit Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:chwy",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "Section 6.08), without duplication by (i) the aggregate principal amount of Indebtedness that has been incurred pursuant to and to the extent outstanding under Section 6.01(b)(31) (together with any outstanding Indebtedness under\n",
+      "families": [
+        "INDEBTEDNESS",
         "SHARED_CAPACITY_PROVISIONS",
-        "UNRESTRICTED_SUBSIDIARIES"
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "score": 5,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    },
+    {
+      "sourceId": "fixture:gibraltar",
+      "title": "Gibraltar Credit Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:gibraltar",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "Section 2.01(a) (i) in an aggregate principal amount not to exceed the amount set forth opposite\nsuch Tranche A Term Lender’s name on Schedule 2.01 under the caption “Initial Tranche A Term Commitment” as such amount may\nbe adjusted from time to time in accordance with this Agreement.  The initial aggregate amount of the Initial Tranche A Term Commitments as of the Closing Date is $650,000,000.\n\n“ Initial Tranche A Term Loans ” has the meaning specified in Section 2.01 (a)(i) .\n\n“ Initial Tranche B   Facility ” means the Term Facility consisting of Initial Tranche B Term Loans.\n\n“ Initial Tranche B Term   Borrowing ” means a\nborrowing consisting of simultaneous Initial Tranche B Term Loans made by each of the Tranche B Term Lenders pursuant to Section 2.01(a)(ii) on the Closing Date.\n\n“ Initial Tranche B Term Commitment ” means, as\nto each Tranche B Term Lender, its obligation to make Initial Tranche B Term Loans to the Borrower pursuant to Section 2.01(a)(ii) in an aggregate principal amount not to exceed the\namount set forth opposite such Tranche B Term Lender’s name on Schedule 2.01 under the caption “Initial Tranche B Term Commitment” as such amount may be adjusted from time to time in\naccordance with this Agreement.  The initial aggregate amount of the Initial Tranche B Term Commitments as of the Closing Date is $650,000,000.\n\n“ Initial Tranche B Term Loans ” has the meaning specified in Section 2.01(a) (ii) .\n\n“ Inside Maturity Basket ” has the meaning specified in Section 2.14(d)(ii)( D) .\n\n“ Intellectual   Property   Security   Agreement ” means, individually and co",
+      "families": [
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "score": 5,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    }
+  ],
+  "ebitda_acquisition_addbacks": [
+    {
+      "sourceId": "fixture:gibraltar",
+      "title": "Gibraltar Credit Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:gibraltar",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "(2)\n\nthe Capital Stock of a Person that is engaged in a Similar Business and becomes a Restricted Subsidiary as a result of the acquisition of such Capital Stock by the Borrower or a Restricted Subsidiary; or\n\n",
+      "families": [
+        "RESTRICTED_SUBSIDIARIES"
+      ],
+      "score": 10,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    }
+  ],
+  "amendments_narrowing_available_amount": [],
+  "debt_baskets_no_default": [
+    {
+      "sourceId": "fixture:conmed-article7",
+      "title": "Credit Agreement — Article VII",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:conmed-article7",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n(a)\nMake or offer to make any voluntary payment, prepayment, repurchase or redemption of or otherwise defease or segregate funds (any\nsuch action, a \" Prepayment \") with respect to Permitted Subordinated Indebtedness or Permitted Unsecured Indebtedness,\nunless (i) both immediately prior to and immediately after giving effect to any such Prepayment, no Default or Event of Default shall\nhave occurred and be continuing, and (ii) the Parent Borrower and the Subsidiaries are in compliance, on a pro forma basis after\ngiving effect to such Prepayment, with the financial covenants contained in Section 7.1, recomputed as at the last day of the most recently\nended fiscal quarter of the Parent Borrower and its Subsidiaries for which financial statements are available, except this Section 7.9(a)\nshall not limit payments or deliveries by the Parent Borrower or any Subsidiary Borrower in shares of common stock (or other securities\nor property following a merger event or other change of the common stock of the Parent Borrower or any such Subsidiary Borrower) (and\ncash in lieu of fractional shares) and/or cash required by the terms of, and otherwise perform its obligations under, any Permitted Unsecured\nIndebtedness (including making payments of interest and principal thereon, making payments due upon required repurchase thereof and/or\nmaking payments and deliveries due upon conversion thereof).\n(b)\nAmend, modify, waive or otherwise change, or consent or agree to any amendment, modification, waiver or ",
+      "families": [
+        "INDEBTEDNESS",
+        "JUNIOR_DEBT_PREPAYMENTS",
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "MANDATORY_PREPAYMENTS"
+      ],
+      "score": 26,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    },
+    {
+      "sourceId": "fixture:gibraltar",
+      "title": "Gibraltar Credit Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:gibraltar",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "Section 5.21\n\nNo Default\n\n210\n\n",
+      "families": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "score": 11,
+      "note": "Source-backed example only — not a generalized legal conclusion."
+    }
+  ],
+  "non_guarantor_sub_debt": [],
+  "unusual_reclassification": [
+    {
+      "sourceId": "fixture:conmed-gsa",
+      "title": "Guarantee and Collateral Agreement",
+      "documentClass": "CREDIT_AGREEMENT",
+      "filingDate": "2020-01-01",
+      "sourceUrl": "fixture://fixture:conmed-gsa",
+      "representationLevel": "DISCOVERED_CANDIDATE",
+      "excerpt": "5.4\nInvestment Property . If such Grantor shall become entitled to receive or shall receive any stock certificate (including,\nwithout limitation, any certificate representing a dividend or a distribution in connection with any reclassification, increase or reduction\nof capital or any stock certificate issued in connection with any reorganization), option or rights in respect of the Capital Stock of\nany Issuer, whether in addition to, in substitution of, as a conversion of, or in exchange for, any shares of the Pledged Stock, or otherwise\nin respect thereof, such Grantor shall accept the same as the agent of the Administrative Agent and the Lenders, hold the same in trust\nfor the Administrative Agent and the Lenders and deliver the same forthwith to the Administrative Agent in the exact form received, duly\nindorsed by such Grantor to the Administrative Agent, if required, together with an undated stock power covering such certificate duly\nexecuted in blank by such Grantor and with, if the Administrative Agent so requests, signature guaranteed, to be held by the Administrative\nAgent, subject to the terms hereof, as additional collateral security for the Obligations. Except as permitted by the Credit Agreement,\nany sums paid upon or in respect of the Investment Property upon the liquidation or dissolution of any Issuer shall be paid over to the\nAdministrative Agent to be held by it hereunder as additional collateral security for the Obligations, and in case any distribution of\ncapital shall be made on or in respect of the Investment Property or any property shall be distribute",
+      "families": [
+        "INVESTMENTS",
+        "INDEBTEDNESS",
+        "LIENS"
       ],
       "score": 5,
       "note": "Source-backed example only — not a generalized legal conclusion."
@@ -80,50 +187,9 @@
       "filingDate": "2020-01-01",
       "sourceUrl": "fixture://fixture:lsb-article6",
       "representationLevel": "DISCOVERED_CANDIDATE",
-      "excerpt": "SECTION  6.11 Restricted Payments . Make any\ndistribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a\n“ Restricted Payment ”); provided , that the foregoing shall not prohibit any of the following: (a) Restricted\nPayments by a Loan Party to another Loan Party; (b) transactions permitted under Section  6.03 ;\n (c) Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment; and\n (d) Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any\nRestricted Payment made pursuant this clause (d) s",
+      "excerpt": "SECTION  6.03 Restrictions on Fundamental Changes .\n (a) Enter into any merger, consolidation, or reorganization, or, except for the Parent, reclassify its Stock;\n (b) liquidate, wind up, or dissolve itself (or suffer any liquidation or dissolution); or\n (c) convey, sell, lease, license, assign, transfer, or otherwise dispose of, in one transaction or a series of transactions, all or\nsubstantially all of the assets of the Parent and its Restricted Subsidiaries, taken as a whole; provided , that the foregoing clauses (a), (b) and\n(c) shall not apply to (i) the merger or consolidation of a Loan Party or a Subsidiary of a Loan Party with and into another Loan Party (in each such case, so long as a Borrower (to the extent a Borrower is part of such transaction) is the\nsurviving entity of any such merger), (ii) the sale, transfer, lease or other disposal of any assets of any Loan Party or any of its Subsidiaries to any other Loan Party, (iii) Permitted Dispositions, (iv) Acquisitions and other\nInvestments to the extent permitted hereunder, (v) conveyances, sales, leases, licenses, assignments, transfers or other dispositions permitted by Section  6.04 , (vi) mergers, liquidations, sale of assets of a non-Loan Party Subsidiary into or to another non-Loan Party Subsidiary, and (vii) any liquidation or dissolution of any Subsidiary that is not a Loan Party if the\nBorrower Representative determines in good faith that such liquidation or dissolution is in the best interests of the Parent and its Subsidiaries, is not materially disadvantageous to the Lenders, and the assets owned or c",
       "families": [
-        "RESTRICTED_PAYMENTS",
-        "INVESTMENTS",
-        "GUARANTEES",
-        "SHARED_CAPACITY_PROVISIONS",
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
-      ],
-      "score": 5,
-      "note": "Source-backed example only — not a generalized legal conclusion."
-    }
-  ],
-  "ebitda_acquisition_addbacks": [],
-  "amendments_narrowing_available_amount": [],
-  "debt_baskets_no_default": [
-    {
-      "sourceId": "fixture:gibraltar",
-      "title": "Gibraltar Credit Agreement",
-      "documentClass": "CREDIT_AGREEMENT",
-      "filingDate": "2020-01-01",
-      "sourceUrl": "fixture://fixture:gibraltar",
-      "representationLevel": "DISCOVERED_CANDIDATE",
-      "excerpt": "Section 5.19\n\nSanctions; OFAC\n\n209\n\nSection 5.20\n\nAnti-Corruption Laws\n\n210\n\nSection 5.21\n\nNo Default\n\n210\n\n",
-      "families": [
-        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
-      ],
-      "score": 11,
-      "note": "Source-backed example only — not a generalized legal conclusion."
-    }
-  ],
-  "non_guarantor_sub_debt": [],
-  "unusual_reclassification": [
-    {
-      "sourceId": "fixture:lsb-article6",
-      "title": "ABL Credit Agreement — Article VI",
-      "documentClass": "ABL_AGREEMENT",
-      "filingDate": "2020-01-01",
-      "sourceUrl": "fixture://fixture:lsb-article6",
-      "representationLevel": "DISCOVERED_CANDIDATE",
-      "excerpt": "(t) Guarantees of Indebtedness permitted under\n Sections 6.01(a) through (n)  above. SECTION  6.02 Liens.\n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of Permitted Liens to the extent that the original Indebtedness is refinanced, renewed, replaced or extended under\n Section  6.01(d) and so long as the replacement Liens only encumber those assets that secured the refinanced, renewed, or extended Indebtedness).\n SECTION  6.03 Restrictions on Fundamental Changes .\n (a) Enter into any merger, consolidation, or reorganization, or, except for the Parent, reclassify its S",
-      "families": [
-        "INDEBTEDNESS",
-        "LIENS",
-        "GUARANTEES",
+        "FUNDAMENTAL_CHANGES",
         "INVESTMENTS",
         "ASSET_SALES",
         "GENERAL_CONDITIONS_AND_EXCEPTIONS"

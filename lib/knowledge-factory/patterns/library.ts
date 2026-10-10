@@ -4,8 +4,13 @@
  */
 
 import type { PatternLibraryEntry } from "../types";
+import {
+  ANTI_STACKING_RE,
+  hasAggregateCeilingLanguage,
+  hasSharedCapacityRelationship,
+} from "./shared-capacity";
 
-export const PATTERN_LIBRARY_VERSION = "covenant-patterns.v1";
+export const PATTERN_LIBRARY_VERSION = "covenant-patterns.v2";
 
 export const SEED_PATTERNS: PatternLibraryEntry[] = [
   {
@@ -151,11 +156,54 @@ export const SEED_PATTERNS: PatternLibraryEntry[] = [
   {
     patternId: "shared-capacity",
     name: "Shared capacity",
-    structuralCharacteristics: ["aggregate/combined/shared basket language across categories"],
+    structuralCharacteristics: [
+      "combined with / shared basket / together with under other clauses",
+      "cross-category capacity sharing",
+    ],
     supportedSemanticHypotheses: ["cross-category capacity sharing"],
-    counterexamples: ["independent siloed baskets"],
-    knownFailureModes: ["under-detecting shared caps"],
+    counterexamples: ["ordinary aggregate amount ceiling on a single basket"],
+    knownFailureModes: ["treating bare aggregate amount as shared capacity"],
     verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "aggregate-ceiling",
+    name: "Aggregate ceiling (non-shared)",
+    structuralCharacteristics: ["in the aggregate / aggregate amount on a single basket"],
+    supportedSemanticHypotheses: ["ordinary quantum ceiling"],
+    counterexamples: ["shared pool across multiple clauses"],
+    knownFailureModes: ["promoting to shared capacity without relationship language"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "anti-stacking",
+    name: "Anti-stacking / without duplication",
+    structuralCharacteristics: ["without duplication", "anti-stacking", "not double counted"],
+    supportedSemanticHypotheses: ["prevents stacking independent baskets for the same usage"],
+    counterexamples: ["independent siloed baskets with no anti-stack language"],
+    knownFailureModes: ["confusing anti-stacking with shared-capacity ceilings"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "grower-basket",
+    name: "Grower basket (percentage of metric)",
+    structuralCharacteristics: ["percentage of Consolidated EBITDA / Total Assets", "often inside greater-of"],
+    supportedSemanticHypotheses: ["capacity scales with a financial metric"],
+    counterexamples: ["fixed-dollar-only baskets"],
+    knownFailureModes: ["missing the fixed-dollar prong of a greater-of grower"],
+    verificationStatus: "STRUCTURALLY_OBSERVED",
+    sourceExampleIds: [],
+  },
+  {
+    patternId: "lesser-of-basket",
+    name: "Lesser-of basket",
+    structuralCharacteristics: ["lesser of", "dollar amount and/or percentage"],
+    supportedSemanticHypotheses: ["min of fixed and growth/ratio component"],
+    counterexamples: ["greater-of constructions"],
+    knownFailureModes: ["misreading comparator direction"],
+    verificationStatus: "UNVERIFIED",
     sourceExampleIds: [],
   },
   {
@@ -232,8 +280,10 @@ export const SEED_PATTERNS: PatternLibraryEntry[] = [
 
 const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
   { patternId: "greater-of-basket", re: /\bgreater of\b/i },
+  { patternId: "lesser-of-basket", re: /\blesser of\b/i },
   { patternId: "ratio-basket", re: /\b(?:Leverage|Coverage)\s+Ratio\b/i },
   { patternId: "builder-basket", re: /\bAvailable\s+Amount\b|\bbuilder\s+basket\b/i },
+  { patternId: "grower-basket", re: /\b\d+(?:\.\d+)?\s*%\s+of\s+(?:Consolidated\s+)?(?:EBITDA|Total\s+Assets)\b/i },
   { patternId: "fixed-dollar-basket", re: /\$[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/i },
   { patternId: "incremental-equivalent-debt", re: /\bIncremental\s+Equivalent\s+Debt\b/i },
   { patternId: "permitted-liens", re: /\bPermitted\s+Liens?\b/i },
@@ -241,7 +291,7 @@ const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
   { patternId: "asset-sale-reinvestment", re: /\breinvest/i },
   { patternId: "no-default-condition", re: /\bno\s+(?:Default|Event of Default)\b/i },
   { patternId: "pro-forma-compliance", re: /\bpro\s+forma\s+compliance\b/i },
-  { patternId: "shared-capacity", re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b/i },
+  { patternId: "anti-stacking", re: ANTI_STACKING_RE },
   { patternId: "reclassification", re: /\breclassif/i },
   { patternId: "refinancing-debt", re: /\brefinanc/i },
   { patternId: "purchase-money-debt", re: /\bpurchase\s+money\b/i },
@@ -256,7 +306,11 @@ const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
 ];
 
 export function detectPatternsInText(text: string): string[] {
-  return PATTERN_DETECT.filter((p) => p.re.test(text)).map((p) => p.patternId);
+  const hits = PATTERN_DETECT.filter((p) => p.re.test(text)).map((p) => p.patternId);
+  // Shared capacity and aggregate ceilings are mutually informative but distinct.
+  if (hasSharedCapacityRelationship(text)) hits.push("shared-capacity");
+  else if (hasAggregateCeilingLanguage(text)) hits.push("aggregate-ceiling");
+  return [...new Set(hits)];
 }
 
 export function getPattern(patternId: string): PatternLibraryEntry | undefined {

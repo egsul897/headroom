@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-ownership.v1",
+  "researchStatus": "FROZEN",
+  "acceptedVerdict": "CYCLE6_RESEARCH_IMPROVEMENT_ACCEPTED",
+  "acceptedSha": "6808fad1622df59089a30933bf16d3fa3c13f115",
+  "productProof002Handoff": "docs/intelligence-factory/cycle-6/PRODUCT-PROOF-002-HANDOFF.md",
+  "sealedHoldout0xc6a1": {
+    "status": "BLOCKED_BY_NEON_CONNECTIVITY",
+    "path": "docs/intelligence-factory/cycle-6/acceptance-sealed-holdout.json",
+    "doNotSubstituteSyntheticTests": true,
+    "doNotClaimUnseenReliability": true
+  },
+  "agent1": {
+    "status": "CLOSED",
+    "owns": [
+      "FLAT_AMOUNT / GREATER_OF EBITDA / GREATER_OF TOTAL_ASSETS formula-executable path (handed to Product Proof 002)",
+      "operative completeness + non-permission threshold gates",
+      "promotion ladder (never PRODUCTION_AUTHORITATIVE)"
+    ],
+    "doesNotOwn": ["builder recovery", "leverage recovery", "conditions[] structuring", "Neon Permission writes", "Product Proof 002 execution"]
+  },
+  "agent2": {
+    "owns": [
+      "applicable definition resolution for grower bases (EBITDA, Total Assets)",
+      "Available Amount / builder definition inputs",
+      "financial snapshot labeling for evaluation-time inputs"
+    ],
+    "blockedUntil": "definitions resolved before Agent3 builder/leverage promotion"
+  },
+  "agent3": {
+    "owns": [
+      "BUILDER_BASKET formula modeling after Agent2 defs",
+      "LEVERAGE_RATIO_ROOM / RATIO_GATE after defs",
+      "grower proximity when operative excerpt incomplete"
+    ],
+    "stillBlocked": true,
+    "note": "Cycle 6 does not relax BLOCKED_MECHANIC_GATE for builder/leverage"
+  },
+  "agent5": {
+    "owns": [
+      "structure conditions[] from proviso language",
+      "shared-capacity / cross-clause stacking resolution",
+      "cross-document restrictions before counsel-compile"
+    ],
+    "note": "WITH_GAPS and incomplete excerpts remain REVIEW_REQUIRED / not compile-eligible"
+  },
+  "peers": {
+    "extraction": "https://github.com/egsul897/headroom/pull/225",
+    "neonCapacity": "https://github.com/egsul897/headroom/pull/227",
+    "durableLifecycle": "https://github.com/egsul897/headroom/pull/232",
+    "utilizationAuthorityMain": "https://github.com/egsul897/headroom/pull/237"
+  },
+  "reopenPolicy": "No new Agent 1 research cycle unless Product Proof 002 identifies a specific extraction or discovery defect that prevents authentic compilation."
+}

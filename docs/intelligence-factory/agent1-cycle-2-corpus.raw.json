@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "intelligence-factory.agent1-corpus-cycle.v1",
+  "generatedAt": "2026-10-09T22:21:46.823Z",
+  "paidInferenceCostUsd": 0,
+  "neonMutations": 0,
+  "inventory": {
+    "totalKnowledgeSources": 730,
+    "publicSecEdgar": 681,
+    "documentByteObjects": 711,
+    "distinctIssuers": 200,
+    "distinctByteHashes": 681,
+    "duplicateHashGroups": 0,
+    "duplicateRows": 0,
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 60,
+      "DISCOVERED_CANDIDATE": 670
+    },
+    "byClass": {
+      "INDENTURE": 58,
+      "TERM_LOAN_AGREEMENT": 12,
+      "ABL_AGREEMENT": 1,
+      "RESTATEMENT": 93,
+      "WAIVER": 1,
+      "SUPPLEMENTAL_INDENTURE": 93,
+      "UNKNOWN": 180,
+      "OTHER_DEBT_RELATED": 35,
+      "CREDIT_AGREEMENT": 110,
+      "INTERCREDITOR_AGREEMENT": 3,
+      "GUARANTEE_AGREEMENT": 3,
+      "AMENDMENT": 57,
+      "REVOLVING_CREDIT_AGREEMENT": 9,
+      "SECURITY_AGREEMENT": 26
+    },
+    "relationshipEdges": {
+      "AGREEMENT_AMENDMENT": 24,
+      "AGREEMENT_RESTATEMENT": 94,
+      "INDENTURE_SUPPLEMENTAL": 75,
+      "PROVISION_DEFINITION": 1052,
+      "PROVISION_CROSS_REFERENCE": 4017,
+      "PROVISION_EXCEPTION": 1248,
+      "PROVISION_CONDITION": 1633,
+      "PROVISION_SHARED_CAPACITY": 50
+    },
+    "withV2Summaries": 630,
+    "covenantSummaryItems": 28831,
+    "familyHistogramTop": {
+      "GENERAL_CONDITIONS_AND_EXCEPTIONS": 22013,
+      "EVENTS_OF_DEFAULT": 8595,
+      "GUARANTEES": 4990,
+      "LIENS": 4250,
+      "UNKNOWN": 2289,
+      "INVESTMENTS": 2236,
+      "INDEBTEDNESS": 2154,
+      "ASSET_SALES": 1980,
+      "SHARED_CAPACITY_PROVISIONS": 1874,
+      "FUNDAMENTAL_CHANGES": 1409,
+      "RESTRICTED_SUBSIDIARIES": 1284,
+      "RATIO_BASED_PERMISSIONS": 804,
+      "RESTRICTED_PAYMENTS": 737,
+      "FINANCIAL_MAINTENANCE_COVENANTS": 698,
+      "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS": 532,
+      "MANDATORY_PREPAYMENTS": 496,
+      "INCREMENTAL_DEBT_AND_FACILITIES": 388,
+      "JUNIOR_DEBT_PREPAYMENTS": 317,
+      "UNRESTRICTED_SUBSIDIARIES": 290,
+      "DESIGNATIONS": 242,
+      "AFFILIATE_TRANSACTIONS": 192
+    }
+  },
+  "instrumentIdentity": {
+    "currentlyAssigned": 10,
+    "missing": 671,
+    "wouldAssignOnBackfill": 671,
+    "distinctIdentitiesAfterBackfill": 674,
+    "note": "Dry-run only — no Neon writes. Version history preserved via sourceId + bytes hash; identity is additive metadata."
+  },
+  "unknownReclassifyDryRun": {
+    "scanned": 180,
+    "reclassable": 13,
+    "byTarget": {
+      "CREDIT_AGREEMENT": 4,
+      "INDENTURE": 5,
+      "RESTATEMENT": 3,
+      "TERM_LOAN_AGREEMENT": 1
+    },
+    "note": "Requires KF_MASS_PRECEDENT_LIVE_WRITE for live apply via reclassify-unknown-neon.ts"
+  },
+  "mechanicCoverageSample": {
+    "sampledDocuments": 80,
+    "sampleLimit": 80,
+    "patternLibrarySize": 26,
+    "documentsWithPattern": {
+      "greater-of-basket": 28,
+      "ratio-basket": 24,
+      "incremental-equivalent-debt": 2,
+      "no-default-condition": 39,
+      "refinancing-debt": 30,
+      "acquisition-debt": 7,
+      "lesser-of-basket": 11,
+      "builder-basket": 5,
+      "grower-basket": 11,
+      "fixed-dollar-basket": 58,
+      "permitted-liens": 18,
+      "anti-stacking": 29,
+      "reclassification": 12,
+      "shared-capacity": 34,
+      "aggregate-ceiling": 23,
+      "pro-forma-compliance": 2,
+      "general-debt-basket": 8,
+      "conditional-amendment-effectiveness": 11,
+      "purchase-money-debt": 8,
+      "financial-covenant-cure": 1,
+      "restricted-payment-builder": 1,
+      "asset-sale-reinvestment": 4,
+      "liability-management": 7,
+      "subsidiary-designation": 2
+    },
+    "sharedCapacityRelationshipHits": 34,
+    "aggregateCeilingOnlyHits": 23,
+    "previouslyUnsupportedNowRepresented": [
+      "anti-stacking",
+      "grower-basket",
+      "lesser-of-basket",
+      "aggregate-ceiling"
+    ],
+    "note": "BYTEA text sample scan; discovery labels ≠ certified contractual truth."
+  },
+  "populations": [
+    {
+      "packageId": "fwrg-2021-credit-agreement",
+      "population": "DEVELOPMENT",
+      "role": "Primary human GT / IR shapes",
+      "fixturePath": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "lsb-2023-abl-credit-agreement",
+      "population": "DEVELOPMENT",
+      "role": "Primary human GT / IR shapes",
+      "fixturePath": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "conmed-2025-credit-facility",
+      "population": "DEVELOPMENT",
+      "role": "Pilot verified population + product demos",
+      "fixturePath": "tests/fixtures/unseen-packages/conmed-2025-credit-facility",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "dsgr-2022-2025-credit-facility",
+      "population": "REGRESSION",
+      "role": "Amendment-chain / multi-doc regression",
+      "fixturePath": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "chwy-2026-credit-agreement",
+      "population": "REGRESSION",
+      "role": "Chewy semantic / marker regression",
+      "fixturePath": "tests/fixtures/unseen-packages/chwy-2026-credit-agreement",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "riot-2025-2026-credit-facility",
+      "population": "REGRESSION",
+      "role": "Riot unseen-run regression",
+      "fixturePath": "tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run",
+      "notes": "Ineligible as held-out generalization evidence."
+    },
+    {
+      "packageId": "final-lightweight-unseen-sup",
+      "population": "REGRESSION",
+      "role": "Formerly unseen Superior — permanent regression (invariant 28)",
+      "fixturePath": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup",
+      "notes": "FORMERLY_UNSEEN_NOW_REGRESSION — cannot again support blind generalization."
+    },
+    {
+      "packageId": "gibraltar-2026-credit-agreement",
+      "population": "HOLDOUT_DEVELOPMENT",
+      "role": "CKG held-out DEVELOPMENT public EDGAR package",
+      "fixturePath": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement",
+      "notes": "HELD_OUT_DEVELOPMENT_PACKAGE — do not use for prompt/extraction-rule development."
+    },
+    {
+      "packageId": "knife-river-blind",
+      "population": "HOLDOUT_BLIND",
+      "role": "Reserved blind body (unread)",
+      "notes": "Body unread; reserved UNLABELED synthetic slot only."
+    }
+  ],
+  "ckgEvaluationSnapshot": {
+    "present": true,
+    "path": "docs/covenant-knowledge-generalization-benchmark/02-evaluation-results.json",
+    "hash": "3e318647ab3336a4"
+  },
+  "elapsedMs": 7536
+}

@@ -1,0 +1,1619 @@
+{
+  "certificationStatus": "NOT_CERTIFIED",
+  "count": 2254,
+  "note": "Full candidate list regenerated via npm run kf:activate-neon-provisions. Sample only committed.",
+  "sample": [
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "6.1",
+      "heading": "6.1 Indebtedness.",
+      "families": [
+        "INDEBTEDNESS",
+        "RESTRICTED_SUBSIDIARIES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "INVESTMENTS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "BUILDER_BASKET",
+      "thresholdValue": 20,
+      "params": {
+        "pctEbitda": 0.25,
+        "includeEquityProceeds": false
+      },
+      "excerptEvidence": "6.1 Indebtedness.\n No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, create, incur, assume, or permit to exist any Indebtedness, except: (a) Indebtedness under this Agreement and the other Loan Documents; (b) the Indebtedness (i) described on Schedule 6.1 or (ii) outstanding on the Effective Date not in excess of $1,000,000 in the aggregate (when taken together with all ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "BUILDER_BASKET threshold=20"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "pct_tokens_in_excerpt",
+          "ok": true,
+          "detail": "25% evidenced"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "6.15",
+      "heading": "6.15 Prepayments of Indebtedness.",
+      "families": [
+        "INDEBTEDNESS",
+        "INVESTMENTS",
+        "JUNIOR_DEBT_PREPAYMENTS",
+        "EVENTS_OF_DEFAULT",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "RATIO_BASED_PERMISSIONS",
+        "FINANCIAL_MAINTENANCE_COVENANTS",
+        "RESTRICTED_PAYMENTS",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "MANDATORY_PREPAYMENTS"
+      ],
+      "posture": "MAINTENANCE_TEST",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "BUILDER_BASKET",
+      "thresholdValue": 20,
+      "params": {
+        "pctEbitda": 0.25,
+        "includeEquityProceeds": true
+      },
+      "excerptEvidence": "6.15 Prepayments of Indebtedness.\n No Company shall make any voluntary payment or prepayment of the principal of or interest on, or any other amount owing in respect of, any Subordinated Indebtedness, Indebtedness secured on a junior basis to the Obligations, or unsecured Indebtedness with a principal amount in excess of the greater of (1) $12,000,000 and (2) 15% of Consolidated EBITDA (determined",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "BUILDER_BASKET threshold=20"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "pct_tokens_in_excerpt",
+          "ok": true,
+          "detail": "25% evidenced"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "6.5",
+      "heading": "6.5 Investments.",
+      "families": [
+        "INVESTMENTS",
+        "ASSET_SALES",
+        "RESTRICTED_SUBSIDIARIES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "GUARANTEES",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "UNRESTRICTED_SUBSIDIARIES"
+      ],
+      "posture": "CONDITIONAL_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "BUILDER_BASKET",
+      "thresholdValue": 20,
+      "params": {
+        "pctEbitda": 0.25,
+        "includeEquityProceeds": true
+      },
+      "excerptEvidence": "6.5 Investments.\n No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, make, or permit to remain outstanding any Investments except:\n\n164 (a) the Investments outstanding or contemplated on the Effective Date (i) identified on Schedule 6.5 or (ii) in an amount not to exceed $1,000,000 in the aggregate (when taken together with all other Indebtedness outstanding in reliance o",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "BUILDER_BASKET threshold=20"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "pct_tokens_in_excerpt",
+          "ok": true,
+          "detail": "25% evidenced"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "2.10",
+      "heading": "2.10 Prepayment of Loans.",
+      "families": [
+        "ASSET_SALES",
+        "RESTRICTED_SUBSIDIARIES",
+        "EVENTS_OF_DEFAULT",
+        "MANDATORY_PREPAYMENTS",
+        "RATIO_BASED_PERMISSIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "OBLIGATION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "BUILDER_BASKET",
+      "thresholdValue": 12,
+      "params": {
+        "pctEbitda": 0.15,
+        "includeEquityProceeds": false
+      },
+      "excerptEvidence": "2.10 Prepayment of Loans.\n (a) Optional Prepayments. The Borrowers shall have the right at any time and from time to time to prepay any Borrowing in whole or in part, subject to the requirements of this Section and Section 2.15; provided that each voluntary prepayment of the Term Loans shall be in an amount that is at least $500,000 or a larger multiple of $100,000 in excess thereof or, if less, t",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "BUILDER_BASKET threshold=12"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "pct_tokens_in_excerpt",
+          "ok": true,
+          "detail": "15% evidenced"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "1.14(c)",
+      "heading": "1.14(c)",
+      "families": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "CONDITIONAL_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1,
+      "params": null,
+      "excerptEvidence": "(c) Delayed Draw Term Loans. Subject to the terms and conditions set forth herein, each DDTL Lender agrees, severally and not jointly with any other Lenders, to make the Delayed Draw Term Loans to the Borrowers from time to time during the period commencing after the Effective Date through the DDTL Commitment Termination Date in an aggregate principal amount not exceeding such DDTL Lender’s Delaye",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=1"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "sectionRef": "5.14",
+      "heading": "5.14 Transactions with Affiliates.",
+      "families": [
+        "RESTRICTED_SUBSIDIARIES",
+        "EVENTS_OF_DEFAULT",
+        "RESTRICTED_PAYMENTS",
+        "INVESTMENTS",
+        "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "CONDITIONAL_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "thresholdValue": 12,
+      "params": {
+        "pctEbitda": 0.15
+      },
+      "excerptEvidence": "5.14 Transactions with Affiliates.\n No Obligor shall, nor shall it permit any of its Restricted Subsidiaries to, sell, lease or otherwise transfer any assets to, or purchase, lease or otherwise acquire any assets from, or otherwise engage in any other transactions with, any of its Affiliates, if the value of such transaction is in excess of the greater of (x) $12,000,000 and (y) 15% of Consolidate",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "GREATER_OF_FLAT_OR_PCT_EBITDA threshold=12"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "pct_tokens_in_excerpt",
+          "ok": true,
+          "detail": "15% evidenced"
+        },
+        {
+          "check": "greater_of_language",
+          "ok": true,
+          "detail": "greater-of language present"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": "SUJA",
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "Suja Life"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
+      "sectionRef": "2(f)",
+      "heading": "2(f)",
+      "families": [
+        "INDEBTEDNESS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10000,
+      "params": null,
+      "excerptEvidence": "(f) Section 6.01(h) of the Credit Agreement is hereby amended and restated in its\nentirety as follows:\nother Indebtedness of the Borrower or any Subsidiary; provided that the aggregate principal\namount of such Indebtedness, together with the aggregate principal amount of Indebtedness referred to in Sections 6.01(a), 6.01(d) and 6.01(e), shall not exceed $10,000,000,000 at any time outstanding.\n\n",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10000"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "d424570dex102.htm"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
+      "sectionRef": "2",
+      "heading": "Amendments.",
+      "families": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "LIENS"
+      ],
+      "posture": "UNRESOLVED",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 1500,
+      "params": null,
+      "excerptEvidence": "Section 2. Amendments.\n(a) Section 1.01 of the Credit Agreement is hereby amended by adding (in appropriate alphabetical order) the following definition:\n\n Amended and Restated Term Loan Agreement  means the $1,500,000,000 three-year senior unsecured amended and\nrestated term loan agreement dated as of October 12, 2012 among the Borrower, the lenders party thereto and the Administrative Agent, ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=1500"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "d424570dex102.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "sectionRef": "11.23(e)",
+      "heading": "11.23(e)",
+      "families": [
+        "INCREMENTAL_DEBT_AND_FACILITIES",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 500,
+      "params": null,
+      "excerptEvidence": "(e)            Notwithstanding\nanything to the contrary in this Section 11.23, (i) the aggregate amount of incremental Revolving Credit Commitments provided pursuant to this Section 11.23 shall not\n\n79\n\nexceed $500,000,000 and (ii) no Lender shall have any obligation to provide an incremental Revolving Credit Commitment unless it agrees to do so in its\nsole discretion.\n\n",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=500"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "CREDIT_AGREEMENT",
+      "documentTitle": "ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "sectionRef": "8",
+      "heading": "SECTION 8.          EVENTS OF DEFAULT",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 500,
+      "params": null,
+      "excerptEvidence": "SECTION 8.          EVENTS OF DEFAULT\n\nIf any of the following events shall occur and be continuing:\n\n(a)            Any\nBorrower shall (i) fail to pay any principal of any Loan when due in accordance with the applicable terms of this Agreement or (ii) fail to pay any interest on any Loan, or any fee or other amount, within five Business Days after any such\ninterest, fee or other amount becomes du",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=500"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "CREDIT_AGREEMENT",
+      "documentTitle": "ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "sectionRef": "2.13",
+      "heading": "Termination or Reduction of Revolving Credit Commitments . IBM shall have the right, upon not less than three Business Days’ irrevocable notice to the",
+      "families": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "OBLIGATION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "2.13            Termination or Reduction of Revolving Credit Commitments . IBM shall have the right, upon not less than three Business Days’ irrevocable notice to the\nAdministrative Agent, to terminate the Revolving Credit Commitments or, from time to time, to reduce the amount of the Revolving Credit Commitments; provided\nthat a notice of termination of the Revolving Credit Commitments delivered ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "CREDIT_AGREEMENT",
+      "documentTitle": "ex10-1.htm"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "sectionRef": "2.2",
+      "heading": "Procedure for Revolving Credit Borrowing . Each Borrower may borrow under the Revolving Credit Commitments during the Revolving Credit Commitment Period on any Business Day;",
+      "families": [
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "OBLIGATION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "2.2            Procedure for Revolving Credit Borrowing . Each Borrower may borrow under the Revolving Credit Commitments during the Revolving Credit Commitment Period on any Business Day;\nprovided that such Borrower shall give the Administrative Agent irrevocable notice (which notice must be received by the Administrative Agent prior to (a) 11:00 a.m., New York City time, three U.S. Government Se",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "CREDIT_AGREEMENT",
+      "documentTitle": "ex10-1.htm"
+    },
+    {
+      "sourceId": "ehb:42e4a267e5f11e0fb858e576",
+      "sectionRef": "4",
+      "heading": "4. Subsections (a) and (b) of Section 2.02.1 of the Credit Agreement are hereby deleted in their entirety and in their stead are inserted the following:",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "4. Subsections (a) and (b) of Section 2.02.1 of the Credit Agreement are hereby deleted in their entirety and in their stead are inserted the following:\n(a)     Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement and the other Loan Documents, the Swing Line Lender may, in its sole and absolute discretion, make avail",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1xfirstamendment.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.06(iv)",
+      "heading": "6.06(iv)",
+      "families": [
+        "INVESTMENTS",
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "CONDITIONAL_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "(iv) any Loan Party and any Subsidiary of a Loan Party may form Joint Ventures, provided that no (a) Event of Default shall exist immediately prior to and after giving effect to such formation and (b) the aggregate amount of investments made by the Borrower and its Subsidiaries in such Joint Ventures does not exceed (i) Fifty Million and 00/100 Dollars ($50,000,000.00) for any one Joint Venture an",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "5.15",
+      "heading": "Subsidiary Guaranty Agreements and Pledge Agreements .",
+      "families": [
+        "GUARANTEES",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "5.15   Subsidiary Guaranty Agreements and Pledge Agreements .\n\n(a)   Subsidiary Guaranty Agreements .  Each Domestic Subsidiary (excluding any Securitization Entity or a Foreign Subsidiary Holding Company) of a Loan Party created or acquired subsequent to the Closing Date shall immediately execute and deliver to the Agent a Guaranty Agreement, along with such corporate governance and authorization",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "5.15(a)",
+      "heading": "5.15(a)",
+      "families": [
+        "GUARANTEES",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "(a)   Subsidiary Guaranty Agreements .  Each Domestic Subsidiary (excluding any Securitization Entity or a Foreign Subsidiary Holding Company) of a Loan Party created or acquired subsequent to the Closing Date shall immediately execute and deliver to the Agent a Guaranty Agreement, along with such corporate governance and authorization documents as may be deemed reasonably necessary or advisable b",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "2.01",
+      "heading": "Revolving Credit Facility Commitment .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 150,
+      "params": null,
+      "excerptEvidence": "2.01   Revolving Credit Facility Commitment .\n\n(a)   Revolving Credit Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement, the Notes and the other Loan Documents, the Banks severally (but not jointly) agree to make loans in either Dollars or one or more Optional Currencies (the \"Revolving Credit Loans\") to the Borrower at any ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=150"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "2.01(a)",
+      "heading": "2.01(a)",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 150,
+      "params": null,
+      "excerptEvidence": "(a)   Revolving Credit Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement, the Notes and the other Loan Documents, the Banks severally (but not jointly) agree to make loans in either Dollars or one or more Optional Currencies (the \"Revolving Credit Loans\") to the Borrower at any time or from time to time on or after the Closi",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=150"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "2.02",
+      "heading": "Swing Line Facility .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 35,
+      "params": null,
+      "excerptEvidence": "2.02   Swing Line Facility .\n\n2.02.1   Swing Line Loan Facility .\n\n(a)   Swing Line Loans .  Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement and the other Loan Documents, the Swing Line Lender may, in its sole and absolute discretion, make available to the Borrower at any time and from time to time during the period from the Closi",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=35"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "2.02(a)",
+      "heading": "2.02(a)",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 35,
+      "params": null,
+      "excerptEvidence": "(a)   Swing Line Loans .  Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement and the other Loan Documents, the Swing Line Lender may, in its sole and absolute discretion, make available to the Borrower at any time and from time to time during the period from the Closing Date through and including the Business Day immediately precedin",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=35"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "2.21",
+      "heading": "Increase of Revolving Credit Facility Commitment .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "INCREMENTAL_DEBT_AND_FACILITIES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "2.21   Increase of Revolving Credit Facility Commitment .\n\nIf at any time after the Closing Date, and so long as no Event of Default or Potential Default has occurred and is continuing, the Borrower desires to increase the Revolving Credit Facility Commitment, (each, an \"Additional Revolving Credit Increase\") and/or, at the Borrower's option, request to add term loans (each, an \"Incremental Term L",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08",
+      "heading": "Dividends and Distributions .",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "6.08   Dividends and Distributions .\n\nThe Borrower shall not, and shall not permit any of its Subsidiaries to, make or pay, or agree to become or remain liable to make or pay, any dividend or other distribution of any nature (whether in cash, property, securities or otherwise) on account of or in respect of its shares of capital stock, partnership interests or limited liability company interests o",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "6.08(i)",
+      "heading": "6.08(i)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "(i) dividends or other distributions to a Loan Party or from a Subsidiary that is not a Loan Party to another Subsidiary that is not a Loan Party, (ii) dividends or other distributions made solely in capital stock or other equity interests, (iii) distributions  in the form of repurchases of capital stock or other equity interests from employees pursuant to a plan or other employment arrangement; p",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "8.17",
+      "heading": "Bank Assignments/Participations .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 5,
+      "params": null,
+      "excerptEvidence": "8.17   Bank Assignments/Participations .\n\n(A)   Assignment/Transfer of Commitments .\n\nEach Bank shall have the right at any time or times to assign or transfer to an Eligible Assignee or any Affiliate of such Bank, without recourse, all or a portion of (a) that Bank's Commitment, (b) all Loans made by that Bank, (c) that Bank's Notes, and (d) that Bank's participation in Letters of Credit and that",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=5"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "8.17(A)",
+      "heading": "8.17(A)",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "SHARED_CAPACITY_PROVISIONS",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 5,
+      "params": null,
+      "excerptEvidence": "(A)   Assignment/Transfer of Commitments .\n\nEach Bank shall have the right at any time or times to assign or transfer to an Eligible Assignee or any Affiliate of such Bank, without recourse, all or a portion of (a) that Bank's Commitment, (b) all Loans made by that Bank, (c) that Bank's Notes, and (d) that Bank's participation in Letters of Credit and that Bank's participation purchased pursuant t",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=5"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "sectionRef": "II",
+      "heading": "THE CREDIT FACILITIES",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 150,
+      "params": null,
+      "excerptEvidence": "ARTICLE II\n\nTHE CREDIT FACILITIES\n\n2.01   Revolving Credit Facility Commitment .\n\n(a)   Revolving Credit Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement, the Notes and the other Loan Documents, the Banks severally (but not jointly) agree to make loans in either Dollars or one or more Optional Currencies (the \"Revolving Cre",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=150"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "exhibit10-1-loanagree.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "6.06(iv)",
+      "heading": "6.06(iv)",
+      "families": [
+        "INVESTMENTS",
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "CONDITIONAL_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 75,
+      "params": null,
+      "excerptEvidence": "(iv) any Loan Party and any Subsidiary of a Loan Party may form Joint Ventures, provided that (a) no Event of Default shall exist immediately prior to and after giving effect to such formation and (b) the aggregate amount of investments made by the Borrower and its Subsidiaries in such Joint Ventures does not exceed at any time outstanding (i) Seventy-Five Million and 00/100 Dollars ($75,000,000.0",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=75"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "5.15",
+      "heading": "Subsidiary Guaranty Agreements and Pledge Agreements .",
+      "families": [
+        "GUARANTEES",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "5.15      Subsidiary Guaranty Agreements and Pledge Agreements .\n(a)     Subsidiary Guaranty Agreements . Each Domestic Subsidiary (excluding any Securitization Entity, a Foreign Subsidiary Holding Company or a Restricted JV Subsidiary (so long as such Subsidiary entity is a Joint Venture)) of a Loan Party created or acquired subsequent to the Closing Date shall immediately execute and deliver to ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "5.15(a)",
+      "heading": "5.15(a)",
+      "families": [
+        "GUARANTEES",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "(a)     Subsidiary Guaranty Agreements . Each Domestic Subsidiary (excluding any Securitization Entity, a Foreign Subsidiary Holding Company or a Restricted JV Subsidiary (so long as such Subsidiary entity is a Joint Venture)) of a Loan Party created or acquired subsequent to the Closing Date shall immediately execute and deliver to the Agent a Guaranty Agreement, along with such corporate governa",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "2.01",
+      "heading": "Revolving Credit Facility Commitment .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 350,
+      "params": null,
+      "excerptEvidence": "2.01      Revolving Credit Facility Commitment .\n(a)      Revolving Credit Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement, the Notes and the other Loan Documents, the Banks severally (but not jointly) agree to make loans in either Dollars or one or more Optional Currencies (the \"Revolving Credit Loans\") to the Borrower at",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=350"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "2.01(a)",
+      "heading": "2.01(a)",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 350,
+      "params": null,
+      "excerptEvidence": "(a)      Revolving Credit Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement, the Notes and the other Loan Documents, the Banks severally (but not jointly) agree to make loans in either Dollars or one or more Optional Currencies (the \"Revolving Credit Loans\") to the Borrower at any time or from time to time on or after the Cl",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=350"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "2.02",
+      "heading": "Swing Line Facility .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "2.02      Swing Line Facility .\n\n2.02.1     Swing Line Loan Facility .\n(a)     Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement and the other Loan Documents, the Swing Line Lender may, in its sole and absolute discretion, make available to the Borrower at any time and from time to time during the period from the ",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "2.02(a)",
+      "heading": "2.02(a)",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+        "SHARED_CAPACITY_PROVISIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 50,
+      "params": null,
+      "excerptEvidence": "(a)     Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth in this Agreement and the other Loan Documents, the Swing Line Lender may, in its sole and absolute discretion, make available to the Borrower at any time and from time to time during the period from the Closing Date through and including the Business Day immediately precedi",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=50"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "2.21",
+      "heading": "Increase of Commitment .",
+      "families": [
+        "EVENTS_OF_DEFAULT",
+        "INCREMENTAL_DEBT_AND_FACILITIES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "2.21      Increase of Commitment .\nIf at any time after the Closing Date, and so long as no Event of Default or Potential Default has occurred and is continuing, the Borrower desires to increase the Revolving\n\n59\n\nCredit Facility Commitment, (each, an \"Additional Revolving Credit Increase\") and/or, at the Borrower’s option, request to add term loans (each, an \"Incremental Term Loan\" and collective",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "6.08",
+      "heading": "Dividends and Distributions .",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "6.08      Dividends and Distributions .\nThe Borrower shall not, and shall not permit any of its Subsidiaries to, make or pay, or agree to become or remain liable to make or pay, any dividend or other distribution of any nature (whether in cash, property, securities or otherwise) on account of or in respect of its shares of capital stock, partnership interests or limited liability company interests",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "6.08(i)",
+      "heading": "6.08(i)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "(i) dividends or other distributions to a Loan Party or from a Subsidiary that is not a Loan Party to another Subsidiary that is not a Loan Party, (ii) dividends or other distributions made solely in capital stock or other equity interests, (iii) distributions in the form of repurchases of capital stock or other equity interests from employees pursuant to a plan or other employment arrangement; pr",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "sectionRef": "7.01(l)",
+      "heading": "7.01(l)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "posture": "ENUMERATED_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "(l)      To the extent involving liability, singularly or in the aggregate, in excess of Ten Million and 00/100 Dollars ($10,000,000.00), (i) a Termination Event with respect to a Plan\n\n87\n\nshall occur, (ii) any Person shall engage in any Prohibited Transaction or Reportable Event involving any Plan, (iii) an accumulated funding deficiency, whether or not waived, shall exist with respect to any Pl",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "ex101loanagreement.htm"
+    },
+    {
+      "sourceId": "ehb:a77c506b087aab39da748554",
+      "sectionRef": "7.06",
+      "heading": "Application of Proceeds . From and after the date on which the Agent has taken any action pursuant to Section 7.02 and until payment in full of all Indebtedness owed under this Agreement and each other Loan Document, any and all proceeds received by the Agent from any sale or other disposition of any equity interests pledged under any Pledge Agreement, or any part thereof, or the exercise of any other remedy by the Agent, shall be applied as follows:",
+      "families": [
+        "INDEBTEDNESS",
+        "ASSET_SALES",
+        "GUARANTEES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "7.06     Application of Proceeds . From and after the date on which the Agent has taken any action pursuant to Section 7.02 and until payment in full of all Indebtedness owed under this Agreement and each other Loan Document, any and all proceeds received by the Agent from any sale or other disposition of any equity interests pledged under any Pledge Agreement, or any part thereof, or the exercise",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "fifthamendmenttothirdamend.htm"
+    },
+    {
+      "sourceId": "ehb:a77c506b087aab39da748554",
+      "sectionRef": "7.06(iv)",
+      "heading": "7.06(iv)",
+      "families": [
+        "INDEBTEDNESS",
+        "ASSET_SALES",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "ENUMERATED_PERMISSION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "(iv)     Fourth , to payment of that portion of the Indebtedness owed under this Agreement and the other Loan Documents constituting unpaid principal of the Loans, the outstanding amount of drawn but unreimbursed Letters of Credit and unpaid payment obligations then owing under Bank-Provided Hedges and Treasury Management Agreements, ratably among the Agent, the Issuing Bank, and the Banks or Affi",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "fifthamendmenttothirdamend.htm"
+    },
+    {
+      "sourceId": "ehb:a77c506b087aab39da748554",
+      "sectionRef": "6.07",
+      "heading": "Double Negative Pledge .",
+      "families": [
+        "LIENS",
+        "EVENTS_OF_DEFAULT",
+        "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+      ],
+      "posture": "GENERAL_PROHIBITION",
+      "readiness": "EXECUTABLE_FORMULA_CANDIDATE",
+      "formulaType": "FLAT_AMOUNT",
+      "thresholdValue": 10,
+      "params": null,
+      "excerptEvidence": "6.07     Double Negative Pledge .\nNo Loan Party nor any Subsidiary of a Loan Party (other than a Securitization Entity) shall enter into any agreement with any Person, other than in connection with this Agreement, which prohibits or limits the ability of such Loan Party or Subsidiary to create, incur, assume or suffer to exist any Lien in favor of the Agent on behalf of the Banks upon or with resp",
+      "independentChecks": [
+        {
+          "check": "parseable_tested_formula",
+          "ok": true,
+          "detail": "FLAT_AMOUNT threshold=10"
+        },
+        {
+          "check": "threshold_tokens_in_excerpt",
+          "ok": true,
+          "detail": "dollar/million tokens found in excerpt"
+        },
+        {
+          "check": "no_unresolved_blocking_defs",
+          "ok": true,
+          "detail": "ok"
+        }
+      ],
+      "allChecksPassed": true,
+      "certificationStatus": "NOT_CERTIFIED",
+      "note": "Source-backed formula candidate — independently checked against excerpt tokens; NOT certified; NOT written to Permission.",
+      "issuerTicker": null,
+      "documentClass": "RESTATEMENT",
+      "documentTitle": "fifthamendmenttothirdamend.htm"
+    }
+  ]
+}

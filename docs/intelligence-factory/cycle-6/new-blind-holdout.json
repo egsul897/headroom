@@ -1,0 +1,2364 @@
+{
+  "schemaVersion": "intelligence-factory.cycle-6-blind-holdout.v1",
+  "status": "BLIND",
+  "n": 14,
+  "audits": [
+    {
+      "sourceId": "ehb:d8c0f01b5a0780f12200cc3a",
+      "sectionRef": "5.01(a)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=LEVERAGE_RATIO_ROOM comparator=RATIO"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "LE 5 Successor Company SECTION 5.01. When Company May Merge or Transfer Assets. (a) The Company shall not, directly or indirectly, consolidate with or merge with or into, or convey, transfer or lease all or substantially all its assets, in one or a series of related transactions, to, any Person, unless: (1) the resulti",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:689e6883dab945cf591f0a74",
+      "sectionRef": "8.07(c)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "and identifying the Participant and the interest purchased by such Participant. (c) The Bank may at any time assign to one or more banks or financial institutions (each an \"Assignee\") all, or a proportionate part of all, of its rights and obligations under this Agreement, the Note and the other Loan Documents, and such",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:cce359b1f70a01e762e327a5",
+      "sectionRef": "2.6",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=15 independent=15"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 15,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "f the Credit Agreement are hereby amended to read in their entirety as follows: 2.6 Term Loan B . The Lender agrees, subject to the terms and conditions of this Agreement, to make a Term Loan to the Borrower on the Amendment 1 Effective Date in the principal amount of Fifteen Million Dollars ($15,000,000) (the Term Loa",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:904ee677f8fd70e7a6227a6b",
+      "sectionRef": "4.06",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=25 independent=25"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 25,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ments limiting the transfer of such assets pending the closing of such sale. 52 SECTION 4.06. Limitation on Sales of Assets and Subsidiary Stock. (a) The Company will not, and will not permit any Restricted Subsidiary to, directly or indirectly, consummate any Asset Disposition unless: (1) the Company or such Restricte",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:28142070efcd45b8b60c13b6",
+      "sectionRef": "5.02(c)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REQUIRES_HUMAN_REVIEW",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=2500 independent=2500"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "shared-capacity / multi-clause language present"
+        },
+        {
+          "field": "shared_capacity_captured",
+          "ok": false,
+          "detail": "operative shared-cap missed in candidate evidence"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "missed_shared_capacity_dependency"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 2500,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "ntinuing at the time of such proposed transaction or would result therefrom. 57 (c) Subsidiary Debt . Permit any of its Subsidiaries to create or suffer to exist, any Debt other than: (i) Debt owed to the Company or to a Subsidiary of the Company or Debt owed under this Agreement, (ii) Debt existing on the date that is",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:558ffcedad0751ad7533a8e6",
+      "sectionRef": "4.04(2)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 1742 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1600 independent=1600"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1600,
+      "operativeWindowChars": 1742,
+      "operativeWindowPreview": "SECTION 4.04. Limitation on Debt. The Company shall not, and shall not permit any Restricted Subsidiary to, Incur, directly or indirectly, any Debt unless, after giving effect to the application of the proceeds thereof, no Default or Event of Default would occur as a consequence of the Incurrence or be continuing follo",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:bcee5376c77a823288d0c99d",
+      "sectionRef": "VIII",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=LEVERAGE_RATIO_ROOM comparator=RATIO"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": "LEVERAGE_RATIO_ROOM",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "stee when any Notes are listed on any stock exchange and any delisting thereof. ARTICLE VIII SUCCESSORS SECTION 8.01 Merger, Consolidation or Sale of Assets . (a) the Issuer shall not merge or consolidate with or into another Person or transfer or lease its assets substantially as an entirety to another Person, and ano",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "6.02",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 984 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=63.15 independent=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 984,
+      "operativeWindowPreview": "Section 6.02 Liens . Each Borrower will not and will not permit any Restricted Subsidiary to, create, incur, assume or permit to exist any Lien on any property or asset (other than Unrestricted Margin Stock) now owned or hereafter acquired by it, except: (a) Liens created pursuant to any Loan Document including with re",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:278de2d8dc3045219af8a891",
+      "sectionRef": "4.10",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=LESSER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=50 independent=50"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious condition language in window"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": null,
+          "detail": "n/a"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": false,
+          "detail": "entity scope not explicit in window"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "incorrect_greater_of_vs_lesser_of",
+        "entity_scope_unresolved"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": 50,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "be tested as of the date of such election or change in election, as applicable. Section 4.10 Asset Sales. The Company shall not, and shall not permit any of its Restricted Subsidiaries to, consummate an Asset Sale (including, in each case, by operation of our as a result of an LLC Division) unless: (1) the Company (or ",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:14d6bbd5ccbaf12f0e9e8b9f",
+      "sectionRef": "8.8(l)",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=5 independent=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "g as a matter of law encumbering deposits (including the right of set-off); and (l) Liens that are contractual rights of set-off (i) relating to the establishment of depository relations with banks not given in connection with the issuance or incurrence of Indebtedness, (ii) relating to pooled deposit or sweep accounts",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0000947871-16-001292:ss1511888_ex1001.htm",
+      "sectionRef": "3.16",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=FLAT_AMOUNT independent=FLAT_AMOUNT comparator=FLAT"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=1 independent=1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "FLAT_AMOUNT",
+      "independentThresholdMillions": 1,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": " Interest is entitled to any preemptive, first refusal or other similar rights. SECTION 3.16 Security Interest in Collateral . The provisions of this Agreement and the other Loan Documents create legal and valid Liens on all the Collateral in favor of the Administrative Agent, for the benefit of the Administrative Agen",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "ehb:0ca3f9395b43053d2db7beed",
+      "sectionRef": "4.11",
+      "formulaType": "FLAT_AMOUNT",
+      "mechanic": "FLAT_AMOUNT",
+      "disposition": "FALSE_EXECUTABLE",
+      "sufficientForExecutableEvaluation": false,
+      "falseExecutableClassification": true,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 600 chars"
+        },
+        {
+          "field": "formula",
+          "ok": false,
+          "detail": "candidate=FLAT_AMOUNT independent=null comparator=null"
+        },
+        {
+          "field": "threshold",
+          "ok": false,
+          "detail": "candidate=250 independent=null"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "flat basket — threshold only (utilization still required for remaining capacity)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": null,
+      "independentThresholdMillions": null,
+      "operativeWindowChars": 600,
+      "operativeWindowPreview": "SECTION 4.11 Future Guarantors . The Company shall cause each Domestic Restricted Subsidiary created or acquired after the Issue Date to within five Business Days become a Subsidiary Guarantor and to execute and deliver to the Trustee a Guarantee Agreement pursuant to which such Subsidiary shall Guarantee payment of th",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "sectionRef": "6.18",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_WITH_GAPS",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=200 independent=200"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.1 independentPct=0.1"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": false,
+          "detail": "operative has conditions; candidate evidence lacks them"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "exception language present"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": null,
+          "detail": "no clear defined-term hooks in window"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [
+        "missed_condition_language"
+      ],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 200,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "mplementary, synergistic or ancillary thereto or reasonable extensions thereof. Section 6.18 Transactions with Affiliates . (a) The Borrower will not, and will not permit their Restricted Subsidiaries to, directly or indirectly, make any payment to, or sell, lease, transfer or otherwise dispose of any of its properties",
+      "certificationStatus": "NOT_CERTIFIED"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "sectionRef": "10.1(n)",
+      "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "mechanic": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "disposition": "REVIEW_READY_EXECUTABLE",
+      "sufficientForExecutableEvaluation": true,
+      "falseExecutableClassification": false,
+      "fields": [
+        {
+          "field": "governing_section_locatable",
+          "ok": true,
+          "detail": "window 2880 chars"
+        },
+        {
+          "field": "formula",
+          "ok": true,
+          "detail": "candidate=GREATER_OF_FLAT_OR_PCT_EBITDA independent=GREATER_OF_FLAT_OR_PCT_EBITDA comparator=GREATER_OF"
+        },
+        {
+          "field": "threshold",
+          "ok": true,
+          "detail": "candidate=120 independent=120"
+        },
+        {
+          "field": "grower_pct",
+          "ok": true,
+          "detail": "candidatePct=0.4 independentPct=0.4"
+        },
+        {
+          "field": "conditions_present_in_operative",
+          "ok": true,
+          "detail": "condition/proviso language present"
+        },
+        {
+          "field": "condition_captured_in_candidate_evidence",
+          "ok": true,
+          "detail": "evidenced"
+        },
+        {
+          "field": "exceptions_present_in_operative",
+          "ok": true,
+          "detail": "no obvious exception language"
+        },
+        {
+          "field": "shared_capacity_in_operative",
+          "ok": true,
+          "detail": "no shared-capacity language in window"
+        },
+        {
+          "field": "entity_scope_language",
+          "ok": true,
+          "detail": "entity nouns present"
+        },
+        {
+          "field": "defined_term_dependencies",
+          "ok": true,
+          "detail": "definitional dependencies referenced"
+        },
+        {
+          "field": "required_financial_inputs",
+          "ok": true,
+          "detail": "requires approved financial snapshot (EBITDA/assets/leverage as applicable)"
+        },
+        {
+          "field": "historical_utilization_required",
+          "ok": true,
+          "detail": "remaining capacity requires ledger/utilization — not asserted by formula alone"
+        }
+      ],
+      "materialOmissions": [],
+      "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      "independentThresholdMillions": 120,
+      "operativeWindowChars": 2880,
+      "operativeWindowPreview": "btedness, Disqualified Stock or preferred stock of the Borrower or a Guarantor; (n) Indebtedness, Disqualified Stock or preferred stock of (x) Holdings or a Restricted Subsidiary incurred or issued to finance an acquisition, merger, or consolidation; provided that the amount of Indebtedness (other than Acquired Indebte",
+      "certificationStatus": "NOT_CERTIFIED"
+    }
+  ],
+  "reviewReady": [
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:d8c0f01b5a0780f12200cc3a",
+      "sectionRef": "5.01(a)",
+      "heading": "5.01(a)",
+      "governingAgreement": "EXHIBIT 4.2 INDENTURE, DATED AS OF JUNE 23, 2005",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "GT",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 1,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "LEVERAGE_RATIO_ROOM",
+        "independentThresholdMillions": 1
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(a) The\nCompany shall not, directly or indirectly, consolidate with or merge with or\ninto, or convey, transfer or lease all or substantially all its assets, in one\nor a series of related transactions, to, any Person, unless:\n\n            (1) the resulting, surviving or transferee Person (the \"Successor\n      Company\") will be a corporation organized and existing under the laws of\n      the United States of America, any State thereof or the District of\n      Columbia and the Successor Company (if not the Company) will expressly\n      assume, by a supplemental indenture, executed and delivered t",
+        "operativeWindowPreview": "LE 5 Successor Company SECTION 5.01. When Company May Merge or Transfer Assets. (a) The Company shall not, directly or indirectly, consolidate with or merge with or into, or convey, transfer or lease all or substantially all its assets, in one or a series of related transactions, to, any Person, unless: (1) the resulti",
+        "sourceCitation": "ehb:d8c0f01b5a0780f12200cc3a · 5.01(a)",
+        "families": [
+          "RESTRICTED_SUBSIDIARIES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "no_default: no Default shall have occurred and be continuing; (3) immediately after giving effect to such transaction, (A) the Successor Company would be able to Incur an a…"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "Securities",
+            "resolved": true
+          },
+          {
+            "term": "Indenture",
+            "resolved": true
+          },
+          {
+            "term": "Company",
+            "resolved": true
+          },
+          {
+            "term": "Default",
+            "resolved": true
+          },
+          {
+            "term": "Trustee",
+            "resolved": true
+          },
+          {
+            "term": "Person",
+            "resolved": true
+          },
+          {
+            "term": "Incur",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:689e6883dab945cf591f0a74",
+      "sectionRef": "8.07(c)",
+      "heading": "8.07(c)",
+      "governingAgreement": "CREDIT AGREEMENT BETWEEN ATLANTIC AMERICAN CORPORATION AND WACHOVIA BANK, NATION",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "AAME",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 1,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 1
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(c) The Bank may at any time assign to one or more banks or financial institutions (each an \"Assignee\") all, or a proportionate\npart of all, of its rights and obligations under this Agreement, the Note and the other Loan Documents, and such Assignee\nshall assume all such rights and obligations, pursuant to an Assignment and Acceptance in the form attached hereto as\nExhibit F , executed by such Assignee and the Bank (and, in the case of an Assignee that is not an Affiliate of the Bank, by\nthe Borrower); provided that (i) the amount of the Advances or Commitment subject to such assignment (deter",
+        "operativeWindowPreview": "and identifying the Participant and the interest purchased by such Participant. (c) The Bank may at any time assign to one or more banks or financial institutions (each an \"Assignee\") all, or a proportionate part of all, of its rights and obligations under this Agreement, the Note and the other Loan Documents, and such",
+        "sourceCitation": "ehb:689e6883dab945cf591f0a74 · 8.07(c)",
+        "families": [
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "subject_to: subject to such assignment (determined as of the effective date of the assignment) shall be equal to or greater than $1,000,000, and (ii) unless a Default shall…",
+          "provided_that: provided that (i) the amount of the Advances or Commitment subject to such assignment (determined as of the effective date of the assignment) shall be equal to …"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Assignment and Acceptance",
+            "resolved": true
+          },
+          {
+            "term": "Loan Documents",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "Commitment",
+            "resolved": true
+          },
+          {
+            "term": "Agreement",
+            "resolved": true
+          },
+          {
+            "term": "Assignee",
+            "resolved": true
+          },
+          {
+            "term": "Borrower",
+            "resolved": true
+          },
+          {
+            "term": "Advance",
+            "resolved": true
+          },
+          {
+            "term": "Default",
+            "resolved": true
+          },
+          {
+            "term": "Bank",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "EXECUTABLE_FORMULA_ONLY",
+      "completenessReasons": [
+        "abbreviated_operative_excerpt",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: abbreviated_operative_excerpt, shared_capacity_only_in_full_window, missed_condition_language. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:cce359b1f70a01e762e327a5",
+      "sectionRef": "2.6",
+      "heading": "Term Loan B . The Lender agrees, subject to the terms and conditions of this Agreement, to make a Term Loan to the Borrower on the Amendment 1 Effective Date in the principal amount of Fifteen Million Dollars ($15,000,000) (the “ Term Loan B ”). Principal repaid under the Term Loan may not be reborrowed.",
+      "governingAgreement": "AMENDED AND RESTATED CREDIT FACILITY AGREEMENT AMENDMENT 1",
+      "documentClass": "RESTATEMENT",
+      "issuerTicker": "TRNS",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 15,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 15
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "2.6 Term Loan B . The Lender agrees, subject to the terms and conditions of this Agreement, to make a Term Loan to the Borrower on the Amendment 1 Effective Date in the principal amount of Fifteen Million Dollars ($15,000,000) (the “ Term Loan B ”). Principal repaid under the Term Loan may not be reborrowed.\n\n",
+        "operativeWindowPreview": "f the Credit Agreement are hereby amended to read in their entirety as follows: 2.6 Term Loan B . The Lender agrees, subject to the terms and conditions of this Agreement, to make a Term Loan to the Borrower on the Amendment 1 Effective Date in the principal amount of Fifteen Million Dollars ($15,000,000) (the Term Loa",
+        "sourceCitation": "ehb:cce359b1f70a01e762e327a5 · 2.6",
+        "families": [
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "subject_to: subject to the terms and conditions of this Agreement, to make a Term Loan to the Borrower on the Amendment 1 Effective Date in the principal amount of Fifteen …"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": []
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "promotionState": "COUNSEL_COMPILE_ELIGIBLE",
+      "completenessReasons": [],
+      "note": "Counsel-compile-eligible (UNVERIFIED). NOT production-authoritative; NOT auto-certified; NOT written."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:904ee677f8fd70e7a6227a6b",
+      "sectionRef": "4.06",
+      "heading": "SECTION 4.06.\n\nLimitation on Sales of Assets and Subsidiary Stock",
+      "governingAgreement": "INDENTURE",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "MAGN",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "KNOWN_NOT_MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 0,
+        "params": null,
+        "missingFields": [
+          "thresholdValue",
+          "formulaType"
+        ]
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 25
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "SECTION 4.06.\n\nLimitation on Sales of Assets and Subsidiary Stock\n\n53\n\n",
+        "operativeWindowPreview": "ments limiting the transfer of such assets pending the closing of such sale. 52 SECTION 4.06. Limitation on Sales of Assets and Subsidiary Stock. (a) The Company will not, and will not permit any Restricted Subsidiary to, directly or indirectly, consummate any Asset Disposition unless: (1) the Company or such Restricte",
+        "sourceCitation": "ehb:904ee677f8fd70e7a6227a6b · 4.06",
+        "families": [
+          "UNKNOWN",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "UNRESOLVED",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "EXECUTABLE_FORMULA_ONLY",
+      "completenessReasons": [
+        "missing_chapeau_or_operative_verb",
+        "abbreviated_operative_excerpt",
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: missing_chapeau_or_operative_verb, abbreviated_operative_excerpt, conditions_only_in_full_operative_window, shared_capacity_only_in_full_window, missed_condition_language. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:28142070efcd45b8b60c13b6",
+      "sectionRef": "5.02(c)",
+      "heading": "5.02(c)",
+      "governingAgreement": "CREDIT AGREEMENT DATED AS OF JUNE 6, 2022",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "GLW",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 2500,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REQUIRES_HUMAN_REVIEW",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language",
+          "missed_shared_capacity_dependency"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 2500
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(c) Subsidiary Debt . Permit any of its Subsidiaries to create or suffer to exist, any Debt other than:\n\n(i) Debt owed to the Company or to a Subsidiary of the Company or Debt owed under this Agreement,\n\n(ii) Debt existing on the date that is described on Schedule 5.02(c) hereto or the principal or face amount of which does not exceed $10,000,000 individually or $25,000,000 in the aggregate (the “ Existing Debt ”), and any Debt extending the maturity of, or refunding, refinancing, modifying or amending, in whole or in part, the Existing Debt, provided that the principal amount of such Existing",
+        "operativeWindowPreview": "ntinuing at the time of such proposed transaction or would result therefrom. 57 (c) Subsidiary Debt . Permit any of its Subsidiaries to create or suffer to exist, any Debt other than: (i) Debt owed to the Company or to a Subsidiary of the Company or Debt owed under this Agreement, (ii) Debt existing on the date that is",
+        "sourceCitation": "ehb:28142070efcd45b8b60c13b6 · 5.02(c)",
+        "families": [
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "LIENS",
+          "GUARANTEES"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that the principal amount of such Existing Debt shall not be increased above the principal amount thereof outstanding immediately prior to such extensi…"
+        ],
+        "exceptions": [
+          "other_than: other than: (i) Debt owed to the Company or to a Subsidiary of the Company or Debt owed under this Agreement, (ii) Debt existing on the date that is described o…",
+          "other_than: other than the Company or any of its Subsidiaries) aggregating for all of the Company’s Subsidiaries, together with Debt secured by Liens permitted under Sectio…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Consolidated Net Tangible Assets",
+            "resolved": true
+          },
+          {
+            "term": "Hedge Agreements",
+            "resolved": true
+          },
+          {
+            "term": "Person",
+            "resolved": true
+          },
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: shared_capacity_only_in_full_window, missed_condition_language, missed_shared_capacity_dependency. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:558ffcedad0751ad7533a8e6",
+      "sectionRef": "4.04(2)",
+      "heading": "4.04(2)",
+      "governingAgreement": "INDENTURE GOVERNING THE EURO DENOMINATED 8.625% SENIOR NOTES DUE 2013",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "LEVI",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 1600,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language",
+          "entity_scope_unresolved"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 1600
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(2) the Debt is Permitted Debt.\n\nPermitted Debt means:\n\n(a) Debt of the Company evidenced by the Original Securities, the Floating Rate Notes and the 9-3/4% senior notes of the Company due\n2015 issued on December 22, 2004;\n\n(b) Debt of\nthe Company or a Restricted Subsidiary Incurred under any Credit Facilities, Incurred by the Company or a Restricted Subsidiary pursuant to a Real Estate Financing Transaction, a Sale and Leaseback Transaction, an Equipment Financing Transaction or\nDebt Issuances, Debt Incurred by the Company or a Restricted Subsidiary in respect of Capital Lease Obligations a",
+        "operativeWindowPreview": "SECTION 4.04. Limitation on Debt. The Company shall not, and shall not permit any Restricted Subsidiary to, Incur, directly or indirectly, any Debt unless, after giving effect to the application of the proceeds thereof, no Default or Event of Default would occur as a consequence of the Incurrence or be continuing follo",
+        "sourceCitation": "ehb:558ffcedad0751ad7533a8e6 · 4.04(2)",
+        "families": [
+          "RESTRICTED_SUBSIDIARIES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "CONDITIONAL_PERMISSION",
+        "conditions": [
+          "provided_that: provided that the aggregate principal amount of all Debt of this kind at any one time outstanding shall not exceed the greater of: (1) $1.6 billion, which amoun…"
+        ],
+        "exceptions": [
+          "except_as: except for Standard Securitization Undertakings), provided that the aggregate principal amount of all Debt of this kind at any one time outstanding shall not ex…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Standard Securitization Undertakings",
+            "resolved": true
+          },
+          {
+            "term": "Qualified Receivables Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Real Estate Financing Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Equipment Financing Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Sale and Leaseback Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Capital Lease Obligation",
+            "resolved": true
+          },
+          {
+            "term": "Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Floating Rate Notes",
+            "resolved": true
+          },
+          {
+            "term": "Purchase Money Debt",
+            "resolved": true
+          },
+          {
+            "term": "Original Securities",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "EXECUTABLE_FORMULA_ONLY",
+      "completenessReasons": [
+        "missing_chapeau_or_operative_verb",
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: missing_chapeau_or_operative_verb, conditions_only_in_full_operative_window, shared_capacity_only_in_full_window, missed_condition_language, entity_scope_unresolved. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:bcee5376c77a823288d0c99d",
+      "sectionRef": "VIII",
+      "heading": "SUCCESSORS",
+      "governingAgreement": "INDENTURE, DATED AS OF NOVEMBER 4, 2010",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "NYT",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "KNOWN_NOT_MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 0,
+        "params": null,
+        "missingFields": [
+          "thresholdValue",
+          "formulaType"
+        ]
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "missed_condition_language",
+          "entity_scope_unresolved"
+        ],
+        "independentFormula": "LEVERAGE_RATIO_ROOM",
+        "independentThresholdMillions": 1
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "ARTICLE VIII\n\nSUCCESSORS\n\nSECTION 8.01\n\nMerger, Consolidation or Sale of Assets.\n\n53\n\nSECTION 8.02\n\nSuccessor Person Substituted.\n\n54\n\n",
+        "operativeWindowPreview": "stee when any Notes are listed on any stock exchange and any delisting thereof. ARTICLE VIII SUCCESSORS SECTION 8.01 Merger, Consolidation or Sale of Assets . (a) the Issuer shall not merge or consolidate with or into another Person or transfer or lease its assets substantially as an entirety to another Person, and ano",
+        "sourceCitation": "ehb:bcee5376c77a823288d0c99d · VIII",
+        "families": [
+          "UNKNOWN",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "UNRESOLVED",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Person",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "missing_chapeau_or_operative_verb",
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "sectionRef": "6.02",
+      "heading": "Section 6.02\n\nLiens",
+      "governingAgreement": "Alkermes plc",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "ALKS",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 63.15,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": null,
+        "independentThresholdMillions": null
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "Section 6.02\n\nLiens\n\n124 126\n\n",
+        "operativeWindowPreview": "Section 6.02 Liens . Each Borrower will not and will not permit any Restricted Subsidiary to, create, incur, assume or permit to exist any Lien on any property or asset (other than Unrestricted Margin Stock) now owned or hereafter acquired by it, except: (a) Liens created pursuant to any Loan Document including with re",
+        "sourceCitation": "research:cbcfl:alks-unknown-alks-ex10_1 · 6.02",
+        "families": [
+          "LIENS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "missing_chapeau_or_operative_verb",
+        "abbreviated_operative_excerpt",
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:278de2d8dc3045219af8a891",
+      "sectionRef": "4.10",
+      "heading": "Section 4.10 Asset Sales.",
+      "governingAgreement": "EX-4.1",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "PATK",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 50,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "incorrect_greater_of_vs_lesser_of",
+          "entity_scope_unresolved"
+        ],
+        "independentFormula": null,
+        "independentThresholdMillions": 50
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "Section 4.10 Asset Sales. The Company shall not, and shall not permit any of its Restricted Subsidiaries to, consummate an Asset Sale (including, in each case, by operation of our as a result of an LLC Division) unless: (1) the Company (or the Restricted Subsidiary, as the case may be) receives consideration at the time of the Asset Sale at least equal to the Fair Market Value of the assets or Equity Interests issued or sold or otherwise disposed of; and (2) at least 75% of the consideration received in the Asset Sale by the Company or such Restricted Subsidiary is in the form of cash or Cash ",
+        "operativeWindowPreview": "be tested as of the date of such election or change in election, as applicable. Section 4.10 Asset Sales. The Company shall not, and shall not permit any of its Restricted Subsidiaries to, consummate an Asset Sale (including, in each case, by operation of our as a result of an LLC Division) unless: (1) the Company (or ",
+        "sourceCitation": "ehb:278de2d8dc3045219af8a891 · 4.10",
+        "families": [
+          "ASSET_SALES",
+          "RESTRICTED_SUBSIDIARIES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "GUARANTEES"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that in connection with any prepayment, repayment or purchase of Indebtedness pursuant to this clause (1), the Company or such Restricted Subsidiary sh…"
+        ],
+        "exceptions": [
+          "other_than: other than contingent liabilities and liabilities that are by their terms subordinated to the Notes or any Note Guarantee) that are assumed by the transferee of…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Designated Non-cash Consideration",
+            "resolved": true
+          },
+          {
+            "term": "Consolidated Total Assets",
+            "resolved": true
+          },
+          {
+            "term": "Permitted Business",
+            "resolved": true
+          },
+          {
+            "term": "Fair Market Value",
+            "resolved": true
+          },
+          {
+            "term": "Cash Equivalents",
+            "resolved": true
+          },
+          {
+            "term": "Credit Agreement",
+            "resolved": true
+          },
+          {
+            "term": "Equity Interests",
+            "resolved": true
+          },
+          {
+            "term": "Note Guarantee",
+            "resolved": true
+          },
+          {
+            "term": "Capital Stock",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:14d6bbd5ccbaf12f0e9e8b9f",
+      "sectionRef": "8.8(l)",
+      "heading": "8.8(l)",
+      "governingAgreement": "CREDIT AGREEMENT, DATED NOVEMBER 22, 2024",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "SIEB",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 5,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": null,
+        "independentThresholdMillions": null
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(l) Liens\nthat are contractual rights of set-off (i) relating to the establishment of depository relations with banks not given in connection\nwith the issuance or incurrence of Indebtedness, (ii) relating to pooled deposit or sweep accounts of the Borrower or any Subsidiary\nto permit satisfaction of overdraft or similar obligations incurred in the ordinary course of business or (iii) relating to purchase\norders and other agreements entered into with customers of the Borrower or any Subsidiary in the ordinary course of business.\n\nSection 8.9. Investments,\nAcquisitions, Loans and Advances . The ",
+        "operativeWindowPreview": "g as a matter of law encumbering deposits (including the right of set-off); and (l) Liens that are contractual rights of set-off (i) relating to the establishment of depository relations with banks not given in connection with the issuance or incurrence of Indebtedness, (ii) relating to pooled deposit or sweep accounts",
+        "sourceCitation": "ehb:14d6bbd5ccbaf12f0e9e8b9f · 8.8(l)",
+        "families": [
+          "LIENS",
+          "EVENTS_OF_DEFAULT",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "RESTRICTED_PAYMENTS",
+          "INVESTMENTS",
+          "ASSET_SALES"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "no_default: no Default or Event of Default has occurred and is continuing or would result therefrom. Section 8.10. Mergers, Consolidations and Sales. The Borrower shall not…",
+          "no_default: no Default or Event of Default exists or would result from such sale, transfer or other disposition, and (iii) after giving pro forma effect to such sale, trans…",
+          "so_long_as: so long as no Default or Event of Default has occurred and is continuing or would result therefrom. Section 8.10. Mergers, Consolidations and Sales. The Borrowe…",
+          "provided_that: provided, however, that this Section shall not apply to nor operate to prevent: (a) the sale of securities or other financial instruments in the ordinary course…",
+          "provided_that: provided that (i) each such sale, transfer or other disposition shall be made for fair value, (ii) no Default or Event of Default exists or would result from su…"
+        ],
+        "exceptions": [
+          "other_than: other than investments and acquisitions permitted by the Borrower’s or such Subsidiary’s Organizational Documents and by the Regulatory Authorities so long as n…",
+          "other_than: other than the Borrower) into any Subsidiary; (e) the sale, transfer or other disposition of Property by any Subsidiary to the Borrower or any other Subsidiary;…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Organizational Documents",
+            "resolved": true
+          },
+          {
+            "term": "Change of Control",
+            "resolved": true
+          },
+          {
+            "term": "Event of Default",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Agreement",
+            "resolved": true
+          },
+          {
+            "term": "Property",
+            "resolved": true
+          },
+          {
+            "term": "Default",
+            "resolved": true
+          },
+          {
+            "term": "Person",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "edgar:0000947871-16-001292:ss1511888_ex1001.htm",
+      "sectionRef": "3.16",
+      "heading": "Security Interest in Collateral",
+      "governingAgreement": "CREDIT AGREEMENT",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "CHEF",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 1,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "FLAT_AMOUNT",
+        "independentThresholdMillions": 1
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "SECTION 3.16   Security Interest in Collateral .  The provisions of this Agreement and the other Loan Documents create legal and valid Liens on all the Collateral in favor of the Administrative Agent, for the benefit of the Administrative Agent and the Secured Parties, and such Liens constitute perfected and continuing Liens on the Collateral, securing the Secured Obligations, enforceable against the applicable Loan Party and all third parties, and having priority over all other Liens on the Collateral except in the case of (a) Liens permitted by Section 6.02, to the extent any such Liens (to ",
+        "operativeWindowPreview": " Interest is entitled to any preemptive, first refusal or other similar rights. SECTION 3.16 Security Interest in Collateral . The provisions of this Agreement and the other Loan Documents create legal and valid Liens on all the Collateral in favor of the Administrative Agent, for the benefit of the Administrative Agen",
+        "sourceCitation": "edgar:0000947871-16-001292:ss1511888_ex1001.htm · 3.16",
+        "families": [
+          "LIENS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "UNRESOLVED",
+        "conditions": [
+          "subject_to: subject to certificates of title, (f) Excluded Assets, (g) letter-of-credit rights with respect to letters of credit in an amount, in each case, of less than $1…"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Administrative Agent",
+            "resolved": true
+          },
+          {
+            "term": "Agreement",
+            "resolved": true
+          },
+          {
+            "term": "Collateral",
+            "resolved": true
+          },
+          {
+            "term": "Excluded Assets",
+            "resolved": true
+          },
+          {
+            "term": "Governmental Authority",
+            "resolved": true
+          },
+          {
+            "term": "Lien",
+            "resolved": true
+          },
+          {
+            "term": "Loan Documents",
+            "resolved": true
+          },
+          {
+            "term": "Obligations",
+            "resolved": true
+          },
+          {
+            "term": "SEC",
+            "resolved": true
+          },
+          {
+            "term": "Secured Obligations",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "EXECUTABLE_FORMULA_ONLY",
+      "completenessReasons": [
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: conditions_only_in_full_operative_window, shared_capacity_only_in_full_window, missed_condition_language. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "ehb:0ca3f9395b43053d2db7beed",
+      "sectionRef": "4.11",
+      "heading": "Future Guarantors",
+      "governingAgreement": "INDENTURE, DATED JUNE 28, 2011",
+      "documentClass": "INDENTURE",
+      "issuerTicker": "DCO",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "FLAT_AMOUNT",
+        "thresholdValue": 250,
+        "params": null,
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "FALSE_EXECUTABLE",
+        "sufficientForExecutableEvaluation": false,
+        "falseExecutableClassification": true,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": null,
+        "independentThresholdMillions": null
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "SECTION 4.11 Future Guarantors . The Company shall cause each Domestic Restricted\nSubsidiary created or acquired after the Issue Date to within five Business Days become a Subsidiary Guarantor and to execute and deliver to the Trustee a Guarantee Agreement pursuant to which such Subsidiary shall Guarantee payment of the\nSecurities on the same terms and conditions as those set forth in this Indenture; provided that any such Domestic Restricted Subsidiary that constitutes an Immaterial Subsidiary need not become a Subsidiary Guarantor until such time as it\nceases to be an Immaterial Subsidiary.\n",
+        "operativeWindowPreview": "SECTION 4.11 Future Guarantors . The Company shall cause each Domestic Restricted Subsidiary created or acquired after the Issue Date to within five Business Days become a Subsidiary Guarantor and to execute and deliver to the Trustee a Guarantee Agreement pursuant to which such Subsidiary shall Guarantee payment of th",
+        "sourceCitation": "ehb:0ca3f9395b43053d2db7beed · 4.11",
+        "families": [
+          "LIENS",
+          "RESTRICTED_SUBSIDIARIES",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "GUARANTEES"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that any such Domestic Restricted Subsidiary that constitutes an Immaterial Subsidiary need not become a Subsidiary Guarantor until such time as it cea…"
+        ],
+        "exceptions": [],
+        "applicableDefinitions": [
+          {
+            "term": "Domestic Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Immaterial Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Guarantee Agreement",
+            "resolved": true
+          },
+          {
+            "term": "Permitted Liens",
+            "resolved": true
+          },
+          {
+            "term": "Business Day",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Issue Date",
+            "resolved": true
+          },
+          {
+            "term": "Securities",
+            "resolved": true
+          },
+          {
+            "term": "Subsidiary",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_FALSE_EXECUTABLE",
+      "counselCompileEligible": false,
+      "promotionState": "DISCOVERED",
+      "completenessReasons": [
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Blocked or needs human review before counsel compile. PRODUCTION_AUTHORITATIVE never set by KF."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "sectionRef": "6.18",
+      "heading": "Transactions with Affiliates",
+      "governingAgreement": "lyv-20251231xex1019amended.htm",
+      "documentClass": "UNKNOWN",
+      "issuerTicker": null,
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 200,
+        "params": {
+          "pctEbitda": 0.1
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_WITH_GAPS",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [
+          "missed_condition_language"
+        ],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 200
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "Section 6.18 Transactions with Affiliates .\n\n(a) The Borrower will not, and will not permit their Restricted Subsidiaries to, directly or indirectly, make any payment to, or sell, lease, transfer or otherwise dispose of any of its properties or assets to, or purchase any property or assets from, or enter into or make or amend any transaction or series of transactions, contract, agreement, understanding, loan, advance or guarantee with, or for the benefit of, any Affiliate of the Borrower involving aggregate consideration in excess of the greater of (x) $200,000,000 and (y) 10% of the EBITDA Gr",
+        "operativeWindowPreview": "mplementary, synergistic or ancillary thereto or reasonable extensions thereof. Section 6.18 Transactions with Affiliates . (a) The Borrower will not, and will not permit their Restricted Subsidiaries to, directly or indirectly, make any payment to, or sell, lease, transfer or otherwise dispose of any of its properties",
+        "sourceCitation": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm · 6.18",
+        "families": [
+          "INVESTMENTS",
+          "RESTRICTED_SUBSIDIARIES",
+          "RESTRICTED_PAYMENTS",
+          "AFFILIATE_TRANSACTIONS",
+          "GUARANTEES",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "so_long_as: so long as such amendment, supplement or replacement agreement is 95 not materially disadvantageous (as determined in good faith by the senior management of the…",
+          "provided_that: provided , however , that the existence of, or the performance by the Borrower or any of its Restricted Subsidiaries of its obligations under, any future amendm…"
+        ],
+        "exceptions": [
+          "other_than: other than Permitted Investments under clause (13) of the definition thereof); (3) transactions in which the Borrower or any Restricted Subsidiary, as the case …"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Independent Financial Advisor",
+            "resolved": true
+          },
+          {
+            "term": "Affiliate Transaction",
+            "resolved": true
+          },
+          {
+            "term": "Permitted Investments",
+            "resolved": true
+          },
+          {
+            "term": "Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Administrative Agent",
+            "resolved": true
+          },
+          {
+            "term": "EBITDA Grower Amount",
+            "resolved": true
+          },
+          {
+            "term": "Responsible Officer",
+            "resolved": true
+          },
+          {
+            "term": "Board of Directors",
+            "resolved": true
+          },
+          {
+            "term": "Restricted Payment",
+            "resolved": true
+          },
+          {
+            "term": "Restatement Date",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "BLOCKED_INCOMPLETE_OPERATIVE",
+      "counselCompileEligible": false,
+      "promotionState": "EXECUTABLE_FORMULA_ONLY",
+      "completenessReasons": [
+        "conditions_only_in_full_operative_window",
+        "shared_capacity_only_in_full_window"
+      ],
+      "note": "Forced REVIEW_REQUIRED / incomplete — gaps: conditions_only_in_full_operative_window, shared_capacity_only_in_full_window, missed_condition_language. Not a complete-rule representation."
+    },
+    {
+      "schemaVersion": "intelligence-factory.review-ready-activation.v1",
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "sectionRef": "10.1(n)",
+      "heading": "10.1(n)",
+      "governingAgreement": "BrightView Holdings, Inc.",
+      "documentClass": "CREDIT_AGREEMENT",
+      "issuerTicker": "BV",
+      "activationPath": "counsel-compile-accepted-interpretation",
+      "peerCoordination": {
+        "lifecyclePr": "https://github.com/egsul897/headroom/pull/227",
+        "extractionPr": "https://github.com/egsul897/headroom/pull/225",
+        "durableLifecyclePr": "https://github.com/egsul897/headroom/pull/232",
+        "note": "Uses parseCounselFormulaForTest / compileAcceptedInterpretation — no competing activation pipeline. Peers #225/#227/#232."
+      },
+      "parsedFormula": {
+        "modelingStatus": "MODELED",
+        "formulaType": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "thresholdValue": 120,
+        "params": {
+          "pctEbitda": 0.4
+        },
+        "missingFields": []
+      },
+      "independentAudit": {
+        "disposition": "REVIEW_READY_EXECUTABLE",
+        "sufficientForExecutableEvaluation": true,
+        "falseExecutableClassification": false,
+        "materialOmissions": [],
+        "independentFormula": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "independentThresholdMillions": 120
+      },
+      "sourceEvidence": {
+        "operativeLanguageExcerpt": "(n) Indebtedness, Disqualified Stock or preferred stock of (x) Holdings or a Restricted Subsidiary incurred or issued to finance an acquisition, merger, or consolidation; provided that the amount of Indebtedness (other than Acquired Indebtedness), Disqualified Stock and preferred stock that may be incurred pursuant to the foregoing, together with any amounts incurred under the first paragraph of this Section 10.1 and Section 10.1(l)(ii) by Restricted Subsidiaries that are not Guarantors shall not exceed the greater of (i) $120,000,000 and (ii) 40% of Consolidated EBITDA for the most recently e",
+        "operativeWindowPreview": "btedness, Disqualified Stock or preferred stock of the Borrower or a Guarantor; (n) Indebtedness, Disqualified Stock or preferred stock of (x) Holdings or a Restricted Subsidiary incurred or issued to finance an acquisition, merger, or consolidation; provided that the amount of Indebtedness (other than Acquired Indebte",
+        "sourceCitation": "research:cbcfl:bv-unknown-bv-ex10_1 · 10.1(n)",
+        "families": [
+          "INDEBTEDNESS",
+          "GUARANTEES",
+          "RESTRICTED_SUBSIDIARIES",
+          "RATIO_BASED_PERMISSIONS",
+          "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+          "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+          "UNRESTRICTED_SUBSIDIARIES"
+        ],
+        "posture": "GENERAL_PROHIBITION",
+        "conditions": [
+          "provided_that: provided that the amount of Indebtedness (other than Acquired Indebtedness), Disqualified Stock and preferred stock that may be incurred pursuant to the foregoi…",
+          "provided_that: provided that after giving effect to any such acquisition, merger, consolidation or designation described in this clause (n) , either: (1) Holdings would be per…"
+        ],
+        "exceptions": [
+          "other_than: other than Acquired Indebtedness), Disqualified Stock and preferred stock that may be incurred pursuant to the foregoing, together with any amounts incurred und…"
+        ],
+        "applicableDefinitions": [
+          {
+            "term": "Fixed Charge Coverage Ratio",
+            "resolved": true
+          },
+          {
+            "term": "Unrestricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Acquired Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Restricted Subsidiary",
+            "resolved": true
+          },
+          {
+            "term": "Consolidated EBITDA",
+            "resolved": true
+          },
+          {
+            "term": "Disqualified Stock",
+            "resolved": true
+          },
+          {
+            "term": "Indebtedness",
+            "resolved": true
+          },
+          {
+            "term": "Test Period",
+            "resolved": true
+          },
+          {
+            "term": "Guarantors",
+            "resolved": true
+          },
+          {
+            "term": "Holdings",
+            "resolved": true
+          }
+        ]
+      },
+      "provenance": {
+        "epistemicStatus": "DISCOVERED_CANDIDATE",
+        "promotedToLegalTruth": 0,
+        "neonMutations": 0
+      },
+      "certificationState": "REVIEW_READY_UNVERIFIED",
+      "counselCompileEligible": true,
+      "promotionState": "COUNSEL_COMPILE_ELIGIBLE",
+      "completenessReasons": [],
+      "note": "Counsel-compile-eligible (UNVERIFIED). NOT production-authoritative; NOT auto-certified; NOT written."
+    }
+  ]
+}
