@@ -60,6 +60,26 @@ export type RestrictionFamily =
 
 export type Stance = "PERMITS" | "PROHIBITS" | "CONDITIONAL" | "UNKNOWN" | "INAPPLICABLE";
 
+/**
+ * How condition satisfaction was established.
+ * Caller-supplied knownFacts are never verified production financial evidence.
+ */
+export type ConditionEvidenceAuthority =
+  | "NONE"
+  | "CALLER_STIPULATED_HYPOTHETICAL"
+  | "VERIFIED_APPROVED_FINANCIAL_EVIDENCE"
+  | "UNKNOWN_OR_UNSUPPORTED";
+
+/**
+ * Authority of the legal overallResult for production capacity decisions.
+ * A PERMITTED legal outcome under stipulated facts is hypothetical — never
+ * verified production capacity solely because the caller supplied favorable facts.
+ */
+export type LegalOutcomeAuthority =
+  | "UNVERIFIED_LEGAL_EVALUATION"
+  | "HYPOTHETICAL_UNDER_STIPULATED_FACTS"
+  | "VERIFIED_PRODUCTION_CAPACITY";
+
 export interface SourceCitation {
   documentId: string;
   documentLabel: string;
@@ -110,7 +130,15 @@ export interface ContemplatedTransaction {
   instrumentClassification?: string | null;
   /** Named instruments currently outstanding (for cross-doc caps). */
   outstandingByInstrument?: Record<string, number>;
-  /** Facts known about the borrower group for condition evaluation. */
+  /**
+   * Caller-stipulated facts for hypothetical condition evaluation.
+   * Never authenticated financial evidence. Satisfaction under these facts
+   * yields HYPOTHETICAL_UNDER_STIPULATED_FACTS — not verified production capacity.
+   *
+   * For senior secured leverage gates, also set
+   * `seniorSecuredLeverageIsProFormaForContemplatedTransaction: true` to attest
+   * the figure is pro forma for this transaction (not an unrelated historical ratio).
+   */
   knownFacts?: Record<string, string | number | boolean | null>;
 }
 
@@ -174,6 +202,12 @@ export interface CrossDocumentCovenantVerdict {
   }>;
   antiStackingNotes: string[];
   falsePermissionRisks: string[];
+  /** How financial/default conditions were (or were not) evidenced. */
+  conditionEvidenceAuthority: ConditionEvidenceAuthority;
+  /** Whether overallResult may be treated as verified production capacity. */
+  legalOutcomeAuthority: LegalOutcomeAuthority;
+  /** Always false unless verified approved financial evidence cleared conditions. */
+  isVerifiedProductionCapacity: boolean;
   note: string;
 }
 
@@ -303,6 +337,119 @@ function documentRelevantToTxn(
   };
 }
 
+/**
+ * Evaluate operative conditions against caller-stipulated knownFacts.
+ * Never upgrades to verified production financial evidence.
+ */
+function evaluateConditionsAgainstKnownFacts(
+  conditions: string[],
+  txn: ContemplatedTransaction,
+  sectionRef: string,
+  documentLabel: string,
+  unknownVerb: "condition not evidenced as satisfied" | "condition not evidenced",
+): { unresolved: string[]; usedCallerStipulation: boolean } {
+  const known = txn.knownFacts ?? {};
+  const unresolved: string[] = [];
+  let usedCallerStipulation = false;
+  const asOf = iso(txn.asOfDate);
+  const snapRaw = known.financialSnapshotAsOf;
+  const snap = typeof snapRaw === "string" ? iso(snapRaw) : null;
+  const staleUnattested =
+    snap != null && asOf != null && snap < asOf && known.seniorSecuredLeverageIsProFormaForContemplatedTransaction !== true;
+
+  for (const c of conditions) {
+    let satisfied = false;
+
+    // Affirmative Event of Default blocks "no Event of Default" gates.
+    if (/no Event of Default/i.test(c) && (known.eventOfDefault === true || known.noEventOfDefault === false)) {
+      unresolved.push(
+        `${documentLabel} §${sectionRef}: ${unknownVerb} — affirmative Event of Default under stipulated facts — ${c}`,
+      );
+      usedCallerStipulation = true;
+      continue;
+    }
+
+    if (
+      /no Default/i.test(c) &&
+      known.noDefault === true &&
+      !/Payment Conditions|Availability|Borrowing Base|Available Amount/i.test(c) &&
+      !/no Event of Default/i.test(c)
+    ) {
+      satisfied = true;
+      usedCallerStipulation = true;
+    }
+    // Event of Default requires an explicit noEventOfDefault stipulation — bare
+    // noDefault must not silently clear an EOD gate (Default ≠ Event of Default).
+    if (
+      /no Event of Default/i.test(c) &&
+      known.noEventOfDefault === true &&
+      known.eventOfDefault !== true &&
+      known.noEventOfDefault !== false
+    ) {
+      satisfied = true;
+      usedCallerStipulation = true;
+    }
+    if (/made in cash|in cash/i.test(c) && /cash/i.test(txn.description)) satisfied = true;
+    if (typeof known.fccr === "number" && /Fixed Charge Coverage Ratio|FCCR/i.test(c)) {
+      const m = c.match(/(\d+(?:\.\d+)?)/);
+      if (m && known.fccr >= Number(m[1])) {
+        satisfied = true;
+        usedCallerStipulation = true;
+      }
+    }
+    // Senior secured leverage: require explicit pro forma attestation for the contemplated txn.
+    // A bare historical ratio is UNKNOWN_OR_UNSUPPORTED — not sufficient.
+    if (
+      typeof known.seniorSecuredLeverage === "number" &&
+      /Senior Secured Leverage|Consolidated Senior Secured Leverage/i.test(c)
+    ) {
+      const m = c.match(/(\d+(?:\.\d+)?)\s*to\s*1|(\d+(?:\.\d+)?)\s*x/i);
+      const ceiling = m ? Number(m[1] ?? m[2]) : null;
+      if (staleUnattested) {
+        unresolved.push(
+          `${documentLabel} §${sectionRef}: ${unknownVerb} — financial snapshot ${snap} is stale vs asOf ${asOf} without pro forma attestation — ${c}`,
+        );
+        usedCallerStipulation = true;
+        continue;
+      }
+      if (known.seniorSecuredLeverageIsProFormaForContemplatedTransaction !== true) {
+        unresolved.push(
+          `${documentLabel} §${sectionRef}: ${unknownVerb} — senior secured leverage lacks pro forma attestation for contemplated transaction — ${c}`,
+        );
+        usedCallerStipulation = true;
+        continue;
+      }
+      if (ceiling != null && known.seniorSecuredLeverage <= ceiling) {
+        satisfied = true;
+        usedCallerStipulation = true;
+      } else if (ceiling != null) {
+        unresolved.push(
+          `${documentLabel} §${sectionRef}: ${unknownVerb} — pro forma CSSLR ${known.seniorSecuredLeverage} exceeds ${ceiling} — ${c}`,
+        );
+        usedCallerStipulation = true;
+        continue;
+      }
+    }
+    for (const [k, v] of Object.entries(known)) {
+      if (
+        v === true &&
+        k !== "noDefault" &&
+        k !== "noEventOfDefault" &&
+        k !== "seniorSecuredLeverageIsProFormaForContemplatedTransaction" &&
+        k !== "eventOfDefault" &&
+        new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, " "), "i").test(c)
+      ) {
+        satisfied = true;
+        usedCallerStipulation = true;
+      }
+    }
+    if (!satisfied) {
+      unresolved.push(`${documentLabel} §${sectionRef}: ${unknownVerb} — ${c}`);
+    }
+  }
+  return { unresolved, usedCallerStipulation };
+}
+
 function evaluateFactAgainstTxn(
   fact: OperativeProvisionFact,
   txn: ContemplatedTransaction,
@@ -312,11 +459,13 @@ function evaluateFactAgainstTxn(
   prohibitions: string[];
   conditions: string[];
   unknowns: string[];
+  usedCallerStipulation: boolean;
 } {
   const permissions: string[] = [];
   const prohibitions: string[] = [];
   const conditions: string[] = [...fact.conditions];
   const unknowns: string[] = [];
+  let usedCallerStipulation = false;
 
   if (fact.posture === "DEFINITION") {
     return {
@@ -327,6 +476,7 @@ function evaluateFactAgainstTxn(
       unknowns: fact.definitionRefs.length
         ? []
         : [`Definition "${fact.statement.slice(0, 80)}" must be applied wherever referenced — not an independent grant.`],
+      usedCallerStipulation: false,
     };
   }
 
@@ -346,6 +496,7 @@ function evaluateFactAgainstTxn(
       unknowns: [
         `${fact.documentLabel} §${fact.sectionRef}: Investment permission is not an applicable Restricted Payment pathway (cross-family OR blocked).`,
       ],
+      usedCallerStipulation: false,
     };
   }
 
@@ -355,10 +506,10 @@ function evaluateFactAgainstTxn(
       const gate = fact.statement.match(/unless (.+)$/i);
       if (gate) {
         conditions.push(gate[1]!.replace(/\.$/, ""));
-        return { stance: "CONDITIONAL", permissions, prohibitions, conditions, unknowns };
+        return { stance: "CONDITIONAL", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
       }
       prohibitions.push(`${fact.documentLabel} §${fact.sectionRef}: ${fact.statement}`);
-      return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
+      return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
     }
   }
 
@@ -384,7 +535,7 @@ function evaluateFactAgainstTxn(
     });
     if (targetsHit.length === 0) {
       // Cap concerns a different instrument than the contemplated transaction.
-      return { stance: "INAPPLICABLE", permissions, prohibitions, conditions, unknowns };
+      return { stance: "INAPPLICABLE", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
     }
     for (const target of targetsHit) {
       const key = Object.keys(outstanding).find((k) => k.toLowerCase() === target.toLowerCase());
@@ -395,7 +546,7 @@ function evaluateFactAgainstTxn(
           prohibitions.push(
             `${fact.documentLabel} §${fact.sectionRef}: pro forma ${target} outstanding $${proForma.toLocaleString("en-US")} exceeds cap $${fact.capacityUsd.toLocaleString("en-US")}.`,
           );
-          return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
+          return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
         }
         permissions.push(
           `${fact.documentLabel} §${fact.sectionRef}: ${target} within cap $${fact.capacityUsd.toLocaleString("en-US")} (pro forma $${proForma.toLocaleString("en-US")}).`,
@@ -406,13 +557,14 @@ function evaluateFactAgainstTxn(
           prohibitions,
           conditions,
           unknowns,
+          usedCallerStipulation: false,
         };
       }
       if (fact.capacityUsd != null && current == null) {
         unknowns.push(
           `${fact.documentLabel} §${fact.sectionRef}: outstanding balance under "${target}" not supplied — cannot confirm cross-document cap.`,
         );
-        return { stance: "UNKNOWN", permissions, prohibitions, conditions, unknowns };
+        return { stance: "UNKNOWN", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
       }
     }
   }
@@ -422,69 +574,31 @@ function evaluateFactAgainstTxn(
       prohibitions.push(
         `${fact.documentLabel} §${fact.sectionRef}: amount $${amount.toLocaleString("en-US")} exceeds basket $${fact.capacityUsd.toLocaleString("en-US")}.`,
       );
-      return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
+      return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
     }
     permissions.push(
       `${fact.documentLabel} §${fact.sectionRef}: amount within basket $${fact.capacityUsd.toLocaleString("en-US")}.`,
     );
     if (conditions.length > 0) {
-      // Do not infer conditions satisfied — only accept explicit knownFacts or clear txn text.
-      for (const c of conditions) {
-        const known = txn.knownFacts ?? {};
-        let satisfied = false;
-        // Only treat noDefault as satisfying a bare Default gate — not Payment Conditions / Availability bundles.
-        if (
-          /no Default/i.test(c) &&
-          known.noDefault === true &&
-          !/Payment Conditions|Availability|Borrowing Base|Available Amount/i.test(c)
-        ) {
-          satisfied = true;
-        }
-        // Event of Default gate (CONMED §7.6(e)(ii) and similar).
-        if (
-          /no Event of Default/i.test(c) &&
-          (known.noEventOfDefault === true || known.noDefault === true)
-        ) {
-          satisfied = true;
-        }
-        if (/made in cash|in cash/i.test(c) && /cash/i.test(txn.description)) satisfied = true;
-        if (typeof known.fccr === "number" && /Fixed Charge Coverage Ratio|FCCR/i.test(c)) {
-          const m = c.match(/(\d+(?:\.\d+)?)/);
-          if (m && known.fccr >= Number(m[1])) satisfied = true;
-        }
-        // Senior secured leverage incurrence gate (CONMED §7.6(e)(i) — "no greater than 3.50").
-        if (
-          typeof known.seniorSecuredLeverage === "number" &&
-          /Senior Secured Leverage|Consolidated Senior Secured Leverage/i.test(c)
-        ) {
-          const m = c.match(/(\d+(?:\.\d+)?)\s*to\s*1|(\d+(?:\.\d+)?)\s*x/i);
-          const ceiling = m ? Number(m[1] ?? m[2]) : null;
-          if (ceiling != null && known.seniorSecuredLeverage <= ceiling) satisfied = true;
-        }
-        for (const [k, v] of Object.entries(known)) {
-          if (
-            v === true &&
-            k !== "noDefault" &&
-            k !== "noEventOfDefault" &&
-            new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, " "), "i").test(c)
-          ) {
-            satisfied = true;
-          }
-        }
-        if (!satisfied) {
-          unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: condition not evidenced as satisfied — ${c}`);
-        }
-      }
-      const unresolved = unknowns.some((u) => u.includes(`§${fact.sectionRef}:`));
+      const ev = evaluateConditionsAgainstKnownFacts(
+        conditions,
+        txn,
+        fact.sectionRef,
+        fact.documentLabel,
+        "condition not evidenced as satisfied",
+      );
+      unknowns.push(...ev.unresolved);
+      usedCallerStipulation = ev.usedCallerStipulation;
       return {
-        stance: unresolved ? "CONDITIONAL" : "PERMITS",
+        stance: ev.unresolved.length ? "CONDITIONAL" : "PERMITS",
         permissions,
         prohibitions,
         conditions,
         unknowns,
+        usedCallerStipulation,
       };
     }
-    return { stance: "PERMITS", permissions, prohibitions, conditions, unknowns };
+    return { stance: "PERMITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
   }
 
   if (fact.posture === "PERMISSION" && fact.capacityUsd == null) {
@@ -496,59 +610,30 @@ function evaluateFactAgainstTxn(
       /Loan Documents|Credit Agreement loans|under the (?:Credit Agreement|facility|Loan Documents)/i.test(desc);
     if (matchesLoanDocTxn) {
       permissions.push(`${fact.documentLabel} §${fact.sectionRef}: Loan Documents carve-out matches contemplated facility debt.`);
-      return { stance: "PERMITS", permissions, prohibitions, conditions, unknowns };
+      return { stance: "PERMITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
     }
     if (loanDocCarveOut) {
       // Alternative basket that does not match this transaction — not a prohibition.
-      return { stance: "INAPPLICABLE", permissions, prohibitions, conditions, unknowns };
+      return { stance: "INAPPLICABLE", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
     }
     permissions.push(`${fact.documentLabel} §${fact.sectionRef}: qualitative/ratio permission exists.`);
     if (fact.conditions.length > 0) {
-      const known = txn.knownFacts ?? {};
-      for (const c of fact.conditions) {
-        let satisfied = false;
-        if (
-          /no Default/i.test(c) &&
-          known.noDefault === true &&
-          !/Payment Conditions|Availability|Borrowing Base|Available Amount/i.test(c)
-        ) {
-          satisfied = true;
-        }
-        if (
-          /no Event of Default/i.test(c) &&
-          (known.noEventOfDefault === true || known.noDefault === true)
-        ) {
-          satisfied = true;
-        }
-        if (
-          typeof known.seniorSecuredLeverage === "number" &&
-          /Senior Secured Leverage|Consolidated Senior Secured Leverage/i.test(c)
-        ) {
-          const m = c.match(/(\d+(?:\.\d+)?)\s*to\s*1|(\d+(?:\.\d+)?)\s*x/i);
-          const ceiling = m ? Number(m[1] ?? m[2]) : null;
-          if (ceiling != null && known.seniorSecuredLeverage <= ceiling) satisfied = true;
-        }
-        for (const [k, v] of Object.entries(known)) {
-          if (
-            v === true &&
-            k !== "noDefault" &&
-            k !== "noEventOfDefault" &&
-            new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/_/g, " "), "i").test(c)
-          ) {
-            satisfied = true;
-          }
-        }
-        if (!satisfied) {
-          unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: condition not evidenced — ${c}`);
-        }
-      }
-      const unresolved = unknowns.some((u) => u.includes(`§${fact.sectionRef}:`));
+      const ev = evaluateConditionsAgainstKnownFacts(
+        fact.conditions,
+        txn,
+        fact.sectionRef,
+        fact.documentLabel,
+        "condition not evidenced",
+      );
+      unknowns.push(...ev.unresolved);
+      usedCallerStipulation = ev.usedCallerStipulation;
       return {
-        stance: unresolved ? "CONDITIONAL" : "PERMITS",
+        stance: ev.unresolved.length ? "CONDITIONAL" : "PERMITS",
         permissions,
         prohibitions,
         conditions,
         unknowns,
+        usedCallerStipulation,
       };
     }
     return {
@@ -559,6 +644,7 @@ function evaluateFactAgainstTxn(
       unknowns: [
         `${fact.documentLabel} §${fact.sectionRef}: permission lacks quantified capacity or evidenced condition satisfaction.`,
       ],
+      usedCallerStipulation: false,
     };
   }
 
@@ -570,7 +656,14 @@ function evaluateFactAgainstTxn(
         } condition requires evidence — ${c}`,
       );
     }
-    return { stance: "CONDITIONAL", permissions, prohibitions, conditions: fact.conditions, unknowns };
+    return {
+      stance: "CONDITIONAL",
+      permissions,
+      prohibitions,
+      conditions: fact.conditions,
+      unknowns,
+      usedCallerStipulation: false,
+    };
   }
 
   if (fact.posture === "PROHIBITION") {
@@ -579,15 +672,15 @@ function evaluateFactAgainstTxn(
         prohibitions.push(
           `${fact.documentLabel} §${fact.sectionRef}: exceeds stated ceiling $${fact.capacityUsd.toLocaleString("en-US")}.`,
         );
-        return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
+        return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
       }
     }
     prohibitions.push(`${fact.documentLabel} §${fact.sectionRef}: ${fact.statement}`);
-    return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
+    return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
   }
 
   unknowns.push(`${fact.documentLabel} §${fact.sectionRef}: unable to classify stance from operative fact.`);
-  return { stance: "UNKNOWN", permissions, prohibitions, conditions, unknowns };
+  return { stance: "UNKNOWN", permissions, prohibitions, conditions, unknowns, usedCallerStipulation: false };
 }
 
 /**
@@ -713,6 +806,7 @@ export function evaluateCrossDocumentTransaction(params: {
   const allUnknowns: string[] = [];
   const antiStackingNotes: string[] = [];
   const falsePermissionRisks: string[] = [];
+  let usedCallerStipulation = false;
   const pathways: CrossDocumentCovenantVerdict["contractualPathways"] = [];
 
   for (const [documentId, facts] of byDoc) {
@@ -755,6 +849,8 @@ export function evaluateCrossDocumentTransaction(params: {
         allCitations.push(citation);
 
         const ev = evaluateFactAgainstTxn(fact, txn);
+        // Only stamp hypothetical authority when stipulation actually cleared a permission path.
+        if (ev.usedCallerStipulation && ev.stance === "PERMITS") usedCallerStipulation = true;
         const andConstraint = isAndConstraint(fact);
         if (andConstraint) {
           andStances.push(ev.stance);
@@ -970,6 +1066,23 @@ export function evaluateCrossDocumentTransaction(params: {
     reason: d.applicabilityReason,
   }));
 
+  // Authority boundary: caller knownFacts never establish verified production capacity.
+  // This evaluator does not consume authenticated approved financial snapshots.
+  const conditionEvidenceAuthority: ConditionEvidenceAuthority = usedCallerStipulation
+    ? "CALLER_STIPULATED_HYPOTHETICAL"
+    : allConditions.length > 0 && allUnknowns.some((u) => /condition not evidenced/i.test(u))
+      ? "UNKNOWN_OR_UNSUPPORTED"
+      : "NONE";
+  const legalOutcomeAuthority: LegalOutcomeAuthority = usedCallerStipulation
+    ? "HYPOTHETICAL_UNDER_STIPULATED_FACTS"
+    : "UNVERIFIED_LEGAL_EVALUATION";
+  const isVerifiedProductionCapacity = false;
+  if (usedCallerStipulation && (finalResult === "PERMITTED" || finalResult === "MULTIPLE_PATHWAYS")) {
+    falsePermissionRisks.push(
+      "AUTHORITY: overallResult under caller-stipulated knownFacts is HYPOTHETICAL_UNDER_STIPULATED_FACTS — not verified production capacity.",
+    );
+  }
+
   return {
     version: CROSS_DOCUMENT_COVENANT_VERSION,
     transaction: txn,
@@ -996,8 +1109,11 @@ export function evaluateCrossDocumentTransaction(params: {
     contractualPathways: pathways,
     antiStackingNotes: [...new Set(antiStackingNotes)],
     falsePermissionRisks,
+    conditionEvidenceAuthority,
+    legalOutcomeAuthority,
+    isVerifiedProductionCapacity,
     note:
-      "Cross-document evaluation uses conjunction across independently applicable agreements. Irrelevant documents are not required to authorize. Missing restrictions and absent documents remain unknowns.",
+      "Cross-document evaluation uses conjunction across independently applicable agreements. Irrelevant documents are not required to authorize. Missing restrictions and absent documents remain unknowns. Caller-stipulated knownFacts yield hypothetical satisfaction only — never verified production capacity.",
   };
 }
 

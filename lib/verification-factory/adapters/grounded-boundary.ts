@@ -122,15 +122,17 @@ export function runGroundedBoundaryAdapter(caseId: string): AdapterExecutionResu
       ? base.provisions
       : base.provisions.filter((p) => !exclude.has(p.sectionRef));
 
+  // Spec knownFacts fully replace base knownFacts when provided — avoid leaking
+  // base scenario noDefault into authority-sensitive gates (e.g. Event of Default).
   const transaction = {
     ...base.transaction,
     amountUsd: spec.amountUsd,
     kind: spec.kind as typeof base.transaction.kind,
     description: spec.title,
-    knownFacts: {
-      ...(base.transaction.knownFacts ?? {}),
-      ...(spec.knownFacts ?? {}),
-    },
+    knownFacts:
+      spec.knownFacts !== undefined
+        ? { ...spec.knownFacts }
+        : { ...(base.transaction.knownFacts ?? {}) },
   };
 
   const verdict = evaluateCrossDocumentTransaction({
