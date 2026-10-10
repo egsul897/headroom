@@ -41,7 +41,10 @@ Hot overlaps: `verified-execution.ts` (#243/#218/#233); `capacity/state|types` (
 | 2 | https://github.com/egsul897/headroom/pull/247 | `0838455d0ef4a7336d998284bbfc2fb8585bd0a8` |
 | 3 | https://github.com/egsul897/headroom/pull/248 | `dd727d2b7813d909331ce46dc2f2d28765749ec3` |
 | 4 | https://github.com/egsul897/headroom/pull/249 | `f6322ed70f6712fda83504f7df7cd2360a717397` |
-| 5 (full stack) | https://github.com/egsul897/headroom/pull/250 | **`230505709e4350eb6634b6f23d3032fc160dfa95`** |
+| 5 (full stack) | https://github.com/egsul897/headroom/pull/250 | **`230505709e4350eb6634b6f23d3032fc160dfa95`** (functional) |
+| #213 reconcile onto #250 | https://github.com/egsul897/headroom/pull/250 | see tip after `07-agent-213-canonical-reconcile.md` |
+
+**Do not merge #213 independently** — #250 already contains #213 @ `696bd7fa` as ancestor; Stage 5 integrate + Stage 4 Ask honesty layers are the canonical product vehicle.
 
 ## 6. Tests and CI results
 
