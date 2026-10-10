@@ -1,7 +1,7 @@
 # Agent 2 — Financial Engine Integration Gate
 
 **PR:** https://github.com/egsul897/headroom/pull/220  
-**Integration candidate SHA:** _(pinned at commit)_  
+**Integration candidate SHA:** `40873fc16860579545e094acbd8b9975cfe5730e`  
 **Cost:** $0
 
 ---
