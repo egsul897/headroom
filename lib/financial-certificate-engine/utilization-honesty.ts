@@ -1,28 +1,26 @@
 /**
- * Utilization honesty for remaining-capacity claims (coord Agent 3 / PR #234).
+ * FCE remaining-capacity publication — thin adapter over canonical #237
+ * `lib/capacity` utilization authority.
  *
- * Approved financial metrics alone never establish authoritative remaining
- * capacity. Remaining = gross − usage requires:
- *   1. attributed utilization evidence bound to the capacity path, AND
- *   2. a completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).
- *
+ * Do not maintain a parallel completeness / remaining decision here.
+ * Remaining = gross − usage requires approved attributed evidence AND an
+ * APPROVED completeness certificate (VERIFIED_COMPLETE or VERIFIED_EMPTY).
  * Empty / unattributed ledgers are UNKNOWN — never silent zero.
- * This module mirrors the #234 contract without vendoring that exclusive tree.
  */
 
-export type UtilizationCompletenessKind = "VERIFIED_COMPLETE" | "VERIFIED_EMPTY";
+import { resolveUtilization } from "@/lib/capacity/utilization-resolver";
+import type {
+  UtilizationCompletenessCertificate as CanonicalCompletenessCertificate,
+  UtilizationEvidenceRecord,
+} from "@/lib/capacity/utilization-types";
 
-export interface UtilizationCompletenessCertificate {
-  capacityRuleId: string;
-  asOf: string;
-  kind: UtilizationCompletenessKind;
-  approvalState: "APPROVED";
-  sourceLabel: string;
-}
+/** Re-export canonical certificate shape for FCE callers. */
+export type UtilizationCompletenessCertificate = CanonicalCompletenessCertificate;
 
 export interface AttributedUtilizationRecord {
   usageId: string;
   capacityRuleId: string;
+  /** Amount in millions (FCE convention); converted to absolute units for #237. */
   amountMillions: number;
   effectiveAsOf: string;
   status: "ACTIVE" | "RECORDED" | "SUPERSEDED" | "REVERSED";
@@ -52,6 +50,29 @@ export type RemainingPublication =
       reason: string;
     };
 
+function toEvidence(records: readonly AttributedUtilizationRecord[]): UtilizationEvidenceRecord[] {
+  return records.map((r) => ({
+    usageId: r.usageId,
+    kind: "ATTRIBUTED_RULE" as const,
+    // Keep millions as the shared unit for FCE gross + utilization.
+    amount: r.amountMillions,
+    currency: "USD_MILLIONS",
+    effectiveAsOf: r.effectiveAsOf,
+    capacityRuleId: r.capacityRuleId,
+    sharedCapacityId: null,
+    legacyBasketFamily: null,
+    entityKey: null,
+    status: r.status === "REVERSED" ? "REVERSED" : r.status === "SUPERSEDED" ? "SUPERSEDED" : "ACTIVE",
+    approvalState: "APPROVED" as const,
+    sourceLabel: "fce-attributed-utilization",
+    authenticity: "AUTHENTIC" as const,
+  }));
+}
+
+/**
+ * Publish remaining capacity via #237 `resolveUtilization`.
+ * Never invents remaining without completeness; never labels AVAILABLE.
+ */
 export function publishRemainingCapacity(args: {
   capacityRuleId: string;
   asOf: string;
@@ -79,47 +100,30 @@ export function publishRemainingCapacity(args: {
       remainingCapacityMillions: null,
       supportsRemainingClaim: false,
       reason:
-        "Unlimited gross gate does not publish numeric remaining without utilization completeness (coord #234).",
+        "Unlimited gross gate does not publish numeric remaining without utilization completeness (#237).",
     };
   }
 
-  const active = args.records.filter(
-    (r) =>
-      r.capacityRuleId === args.capacityRuleId &&
-      (r.status === "ACTIVE" || r.status === "RECORDED") &&
-      r.effectiveAsOf.slice(0, 10) <= args.asOf.slice(0, 10),
-  );
-  const cert = args.completenessCertificate;
-  const certOk =
-    cert != null &&
-    cert.capacityRuleId === args.capacityRuleId &&
-    cert.approvalState === "APPROVED" &&
-    (cert.kind === "VERIFIED_COMPLETE" || cert.kind === "VERIFIED_EMPTY") &&
-    cert.asOf.slice(0, 10) >= args.asOf.slice(0, 10);
+  const resolution = resolveUtilization({
+    capacityRuleId: args.capacityRuleId,
+    asOf: args.asOf,
+    currency: "USD_MILLIONS",
+    records: toEvidence(args.records),
+    completenessCertificate: args.completenessCertificate ?? null,
+    unattributedLegacyBasketPresent: args.unattributedLegacyBasketPresent,
+  });
 
-  if (!certOk) {
+  if (!resolution.supportsRemainingClaim || resolution.attributedAmount == null) {
     return {
       status: "GROSS_ONLY",
       grossCapacityMillions: args.grossCapacityMillions,
       remainingCapacityMillions: null,
       supportsRemainingClaim: false,
-      reason: args.unattributedLegacyBasketPresent
-        ? "Approved financials present and legacy basket rows exist, but utilization is not attributed to this provision and no completeness certificate — remaining refused (UNKNOWN ≠ zero)."
-        : "Approved financial metrics alone cannot establish remaining capacity without attributed utilization + completeness certificate.",
+      reason: resolution.note || resolution.blockers.join("; ") || "Remaining not supported by #237 utilization authority.",
     };
   }
 
-  if (cert!.kind === "VERIFIED_EMPTY" && active.length > 0) {
-    return {
-      status: "GROSS_ONLY",
-      grossCapacityMillions: args.grossCapacityMillions,
-      remainingCapacityMillions: null,
-      supportsRemainingClaim: false,
-      reason: "VERIFIED_EMPTY certificate conflicts with attributed active records — remaining refused.",
-    };
-  }
-
-  const known = active.reduce((s, r) => s + r.amountMillions, 0);
+  const known = resolution.attributedAmount;
   const remaining = Math.max(0, args.grossCapacityMillions! - known);
   return {
     status: "REMAINING_SUPPORTED",
@@ -127,6 +131,6 @@ export function publishRemainingCapacity(args: {
     remainingCapacityMillions: remaining,
     supportsRemainingClaim: true,
     knownUtilizationMillions: known,
-    reason: `Remaining supported by attributed utilization (${known}) and ${cert!.kind} completeness certificate.`,
+    reason: resolution.note,
   };
 }
