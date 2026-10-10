@@ -76,8 +76,22 @@ const syntheticRecord = evidenceFromAttributedLedger({
   authenticity: "SYNTHETIC_LABELED",
 });
 
+type CertInput = {
+  capacityRuleId: string;
+  asOf: string;
+  approvalState: "APPROVED";
+  sourceLabel: string;
+  kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+  issuer?: {
+    role: "COUNSEL_REVIEWER" | "LEDGER_CUSTODIAN" | "SYSTEM_FIXTURE";
+    actorId: string;
+    attestedAt?: string;
+  };
+};
+
 function productViews(over: {
-  cert?: typeof authenticComplete | null;
+  cert?: CertInput | null;
   records?: ReturnType<typeof evidenceFromAttributedLedger>[];
   trustedIssuerAuth?: typeof CO_AUTH | null;
   allowSyntheticRemaining?: boolean;
