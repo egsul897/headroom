@@ -10,14 +10,10 @@
 import { createHash } from "node:crypto";
 import { normalizeSubmission } from "../semantic/normalize";
 import { SubmitCompilationSchema, type SubmitCompilationInput, type WireExpression } from "../semantic/wire-schema";
-import {
-  SEMANTIC_COMPILER_ALGORITHM_VERSION,
-  SEMANTIC_COMPILER_PROMPT_VERSION,
-  SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
-  type SemanticCompilerInput,
-} from "../semantic/types";
+import { SEMANTIC_COMPILER_ALGORITHM_VERSION } from "../semantic/types";
 import { IR_SCHEMA_VERSION, type IRRule } from "../../ir/types";
 import type { CovenantContextBundle } from "../context-retrieval/types";
+import { assembleStipulatedOperativeCompilerInput } from "../../covenant-map/candidate-input";
 import { classifyFixedDollarBasket, type FixedDollarClassification } from "./classify";
 
 export const FIXED_DOLLAR_BASKET_COMPILER_VERSION = "fixed-dollar-basket.v1";
@@ -137,53 +133,6 @@ function inferFamily(text: string, explicit?: string): string {
   return "INDEBTEDNESS";
 }
 
-function buildCompilerInput(args: FixedDollarCompileArgs): SemanticCompilerInput {
-  return {
-    companyId: args.companyId,
-    instrumentKey: args.instrumentKey,
-    sourceDocumentId: args.sourceDocumentId,
-    candidateRef: args.candidateRef,
-    sourceSectionRef: args.sourceSectionRef,
-    operativeSourceText: args.operativeSourceText,
-    contextBundle: emptyContextBundle(),
-    operativeLineage: null,
-    toolAccess: {
-      structuralIndex: {
-        getNodeById: () => undefined,
-        resolveUniqueNodeByRef: () => ({ status: "NOT_FOUND" as const }),
-        findNodesByRef: () => [],
-        getNode: () => undefined,
-        getNodeByRef: () => undefined,
-        getChildren: () => [],
-        getParent: () => undefined,
-        getAncestors: () => [],
-        getSiblings: () => [],
-        getDescendants: () => [],
-        getNodeText: () => "",
-        roots: () => [],
-        orphans: () => [],
-        healthDiagnostics: () => [],
-        getDefinition: () => undefined,
-        getDefinitionFullText: () => undefined,
-        allDefinitions: () => [],
-        findReferencesFrom: () => [],
-        findReferencesTo: () => [],
-        searchStructuralNodes: () => [],
-        allNodes: () => [],
-        getDocumentText: () => args.operativeSourceText,
-      } as never,
-      operativeState: null,
-      packageGraph: null,
-      amendmentEffects: null,
-      contextBundle: emptyContextBundle(),
-    },
-    irSchemaVersion: IR_SCHEMA_VERSION,
-    compilerAlgorithmVersion: `${SEMANTIC_COMPILER_ALGORITHM_VERSION}+${FIXED_DOLLAR_BASKET_COMPILER_VERSION}`,
-    compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION,
-    toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
-  };
-}
-
 export function compileFixedDollarBasket(args: FixedDollarCompileArgs): FixedDollarCompileResult {
   const classification = classifyFixedDollarBasket(args.operativeSourceText);
   const sourceContentVersion = createHash("sha256")
@@ -257,7 +206,22 @@ export function compileFixedDollarBasket(args: FixedDollarCompileArgs): FixedDol
     overallNotes: [`${FIXED_DOLLAR_BASKET_COMPILER_VERSION}`],
   });
 
-  const input = buildCompilerInput(args);
+  const bundle = emptyContextBundle();
+  bundle.companyId = args.companyId;
+  bundle.instrumentKey = args.instrumentKey;
+  bundle.originatingDocumentId = args.sourceDocumentId;
+  bundle.originatingDiscoveryId = args.candidateRef;
+  bundle.normalizedSourceRef = args.sourceSectionRef;
+  const input = assembleStipulatedOperativeCompilerInput({
+    companyId: args.companyId,
+    instrumentKey: args.instrumentKey,
+    sourceDocumentId: args.sourceDocumentId,
+    candidateRef: args.candidateRef,
+    sourceSectionRef: args.sourceSectionRef,
+    operativeSourceText: args.operativeSourceText,
+    contextBundle: bundle,
+    compilerAlgorithmVersion: `${SEMANTIC_COMPILER_ALGORITHM_VERSION}+${FIXED_DOLLAR_BASKET_COMPILER_VERSION}`,
+  });
   const normalized = normalizeSubmission(wire, input);
   const rule = normalized.rules[0] ?? null;
   if (!rule) {
