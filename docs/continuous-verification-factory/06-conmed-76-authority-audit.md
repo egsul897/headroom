@@ -76,6 +76,8 @@ Probe: **11/11 OK** (`ADVERSARIAL_MATRIX_OK`). Conjunction: applicable prohibiti
 ## Remaining limitations
 
 1. Hypothetical PERMITTED remains available to harness/tests under stipulated facts — by design, labeled, never verified capacity.
-2. No path yet upgrades stipulated CSSLR/EOD to authenticated approved financial evidence (`AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE` reserved).
+2. No path yet upgrades stipulated CSSLR/EOD to authenticated approved financial evidence — tracked as **Product Proof 002** (`product-proof-002-authenticated-financial-evidence.md`).
 3. Ask/DB product tests skip without reachable DATABASE_URL (soft-gate stays provider-free).
-4. #238 still depends on unmerged Agent 5 / #218 base.
+4. #238 still depends on unmerged Agent 5 / #218 base — reconcile only via designated canonical integration owner (no independent rebase/merge to `main`).
+
+**Closeout:** see `07-conmed-76-authority-closeout.md`. Workstream frozen after human-review handoff.

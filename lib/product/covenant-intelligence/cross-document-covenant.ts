@@ -67,7 +67,8 @@ export type Stance = "PERMITS" | "PROHIBITS" | "CONDITIONAL" | "UNKNOWN" | "INAP
 export type ConditionEvidenceAuthority =
   | "NONE"
   | "CALLER_STIPULATED_HYPOTHETICAL"
-  | "VERIFIED_APPROVED_FINANCIAL_EVIDENCE"
+  /** Reserved — never assigned from caller knownFacts. See Product Proof 002. */
+  | "AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE"
   | "UNKNOWN_OR_UNSUPPORTED";
 
 /**
