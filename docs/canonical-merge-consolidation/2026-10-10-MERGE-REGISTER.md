@@ -15,7 +15,7 @@ Do **not** read this as `ALL_PRS_MERGED`. Many PRs remain open by design.
 |---|---|
 | **Starting main** | `3612fe76d4cb5f1d1af189e87d77e8aae11fc894` (#250 merge) |
 | **Ending main (code batch)** | `c2dde8f1dd28832eb77ab6c9f50d4609a9efd52e` |
-| **Ending main (incl. this handoff)** | `123b4c38247834aee7224ef7a6fbb25cf5438407` (#270) |
+| **Ending main (incl. this handoff)** | `bf0c85b8488d66d7c450e4bec550fbb7ffec6816` (#270+#271) |
 
 ### Merge commits landed this batch
 
@@ -25,7 +25,7 @@ Do **not** read this as `ALL_PRS_MERGED`. Many PRs remain open by design.
 | 2 | #255 | `97ff628cdaf0395358a0b36384994e703ca45862` | Flywheel Batch-1 definition-body + nestRank |
 | 3 | #261 via #267 | `0ff2e305c85b5231703375198b21ed7eddb1f52a` | Final-audit definitions-context + preamble containment |
 | 4 | #239 selective via #269 | `c2dde8f1dd28832eb77ab6c9f50d4609a9efd52e` | Debt multi-constraint shared-cap conservation |
-| 5 | Handoff register via #270 | `123b4c38247834aee7224ef7a6fbb25cf5438407` | This merge register |
+| 5 | Handoff register via #270+#271 | `bf0c85b8488d66d7c450e4bec550fbb7ffec6816` | This merge register |
 
 Integration branch: `cursor/canonical-safe-merge-batch-5a28`.
 
@@ -66,14 +66,14 @@ Large queue remains (#135–#257 family). Docs-only MERGEABLE candidates observe
 `3612fe76d4cb5f1d1af189e87d77e8aae11fc894`
 
 ### 2. Ending main SHA
-`123b4c38247834aee7224ef7a6fbb25cf5438407` (code batch closed at `c2dde8f1`; handoff docs via #270)
+`bf0c85b8488d66d7c450e4bec550fbb7ffec6816` (code batch closed at `c2dde8f1`; handoff docs via #270+#271)
 
 ### 3. PRs actually merged
 - #265 (docs PP002 baseline)
 - #255 (flywheel Batch-1 structure)
 - #261 content via integration PR #267
 - #239 selective behavior via integration PR #269
-- #270 (this merge register)
+- #270 / #271 (this merge register)
 
 ### 4. Unique changes selectively ported
 From #239 onto main (without merging #239):
@@ -158,8 +158,8 @@ From #239 onto main (without merging #239):
 
 ```
 WORKSTREAM STATUS: CLOSED
-FINAL MAIN SHA: 123b4c38247834aee7224ef7a6fbb25cf5438407
-MERGED PRS: #265, #255, #261(via #267), #239-selective(via #269), #270(handoff)
+FINAL MAIN SHA: bf0c85b8488d66d7c450e4bec550fbb7ffec6816
+MERGED PRS: #265, #255, #261(via #267), #239-selective(via #269), #270+#271(handoff)
 SELECTIVELY PORTED: #239 debt multi-constraint shared-cap + remaining-authority marker + honesty wording
 BLOCKED PRS: #218, #238, #246, #253, #258, #260, #263, #264, #266 (+ broader conflicting product queue)
 HANDOFF PATH: docs/canonical-merge-consolidation/2026-10-10-MERGE-REGISTER.md
