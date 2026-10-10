@@ -4,17 +4,35 @@
   "url": "https://github.com/egsul897/headroom/pull/253",
   "branch": "cursor/canonical-integrated-product-10ff",
   "base": "main",
-  "headOidAtHandoff": "6d87a6c61649acd71f8b7faaefa8af62bfa2afb4",
-  "recordedAt": "2026-10-10T12:06:00Z",
+  "headOidAtHandoff": "6429421d043e20eb932ce5a9e0bd94289bcd1c52",
+  "recordedAt": "2026-10-10T12:08:00Z",
   "ci": {
     "overall": "SUCCESS",
     "checks": [
-      { "name": "certified path (provider-free)", "conclusion": "SUCCESS" },
-      { "name": "dashboard invent-absence (soft gate)", "conclusion": "SUCCESS" },
-      { "name": "home overview (soft gate)", "conclusion": "SUCCESS" },
-      { "name": "P3-R0 carry-forward and supersession (soft gate)", "conclusion": "SUCCESS" },
-      { "name": "Vercel", "conclusion": "SUCCESS" },
-      { "name": "Vercel Preview Comments", "conclusion": "SUCCESS" }
+      {
+        "name": "certified path (provider-free)",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "dashboard invent-absence (soft gate)",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "home overview (soft gate)",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "P3-R0 carry-forward and supersession (soft gate)",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Vercel",
+        "conclusion": "SUCCESS"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "conclusion": "SUCCESS"
+      }
     ],
     "greenCiDoesNotResolve": [
       "FA-P1-01",
@@ -24,19 +42,20 @@
       "FA-CONC-02",
       "OUT-VEP-01",
       "OUT-NS4-01"
-    ]
+    ],
+    "note": "CI SUCCESS recorded on prior tip 6d87a6c6; this tip is docs/evidence freeze only. Re-check CI after push."
   },
   "mergeability": {
     "mergeable": "CONFLICTING",
     "mergeStateStatus": "DIRTY",
-    "blocker": "Merge conflicts vs origin/main — not auto-mergeable",
+    "blocker": "Merge conflicts vs origin/main \u2014 not auto-mergeable",
     "conflictingPathsObserved": [
       "app/[companyId]/capacity/page.tsx",
       "lib/covenant-engine.ts",
       "lib/solver/election.ts",
       "tests/solver/secured-debt-lien-adversarial.test.ts"
     ],
-    "note": "main advanced (includes #250 merge and overlapping solver shared-lien commits). Conflict resolution is human / separate review — out of scope for this closeout workstream. Do not broaden PR #253 here."
+    "note": "main advanced (includes #250 merge and overlapping solver shared-lien commits). Conflict resolution is human / separate review \u2014 out of scope for this closeout workstream. Do not broaden PR #253 here."
   },
   "integrationReviewCandidate": {
     "solverToSimulationSharedLien": "ACCEPTED_AS_CANDIDATE_FOR_HUMAN_INTEGRATION_REVIEW",
