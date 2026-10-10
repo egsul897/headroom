@@ -25,6 +25,16 @@
 
 Approved individual ledger rows **never** establish completeness by themselves.
 
+### Production-authoritative remaining (solver path)
+
+An `APPROVED` certificate alone is **not** enough. Production-authoritative remaining requires:
+
+1. `authenticity: "AUTHENTIC"` — **missing authenticity refuses** (coordinates with #241 authenticity gate).
+2. Trusted issuer authorization via `TrustedIssuerAuthorizationContext` (`lib/capacity/completeness-issuer-auth.ts`, selective port from #244) — caller-supplied `issuer.role` alone never suffices.
+3. Demo/synthetic remaining only via explicit `allowSyntheticRemaining` + `SYNTHETIC_LABELED` (never production).
+
+**Activation requirement (documented, not wired here):** production identity-provider → `TrustedIssuerAuthorizationContext` host wiring remains outstanding until real attestations are enabled. No broad utilization refactor; #237 authority bridge preserved; #244 is a source of improvements, not a merge candidate (#250 remains canonical product integration).
+
 ## Solver status mapping
 
 | Solver `currentUsageStatus` | Authority | `currentUsageAuthoritative` |

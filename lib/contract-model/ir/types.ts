@@ -186,8 +186,8 @@ export interface IREntityTagNormalization {
 export interface IREntityScopeSignal {
   /** Which bound text the signal was found in. PARENT_SCOPE: the immediately enclosing provision's lead-in; GOVERNING_SCOPE: a farther ancestor / article preamble (inherited applicability, recorded as such). */
   tier: "OWN_EXCERPT" | "CITED_UNIT_LEAD_IN" | "PARENT_SCOPE" | "GOVERNING_SCOPE";
-  /** OBLIGOR: the mention binds who may/may not act. MEASUREMENT_CONTEXT: the mention only names whose statements/metrics/periods a test is computed over. CONDITION_SUBJECT (v3): the mention names who must satisfy a compliance / delivery test in a proviso ("X shall be in compliance with ..."). Neither of the latter widens, narrows or contradicts applicability. */
-  role?: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT";
+  /** OBLIGOR: the mention binds who may/may not act. MEASUREMENT_CONTEXT: the mention only names whose statements/metrics/periods a test is computed over. CONDITION_SUBJECT (v3): the mention names who must satisfy a compliance / delivery test in a proviso ("X shall be in compliance with ..."). COUNTERPARTY (v5): the mention is the creditor/payee in "owed/owing/payable/due to X" (not the obligor who incurs). None of the non-OBLIGOR roles widen, narrow or contradict applicability. */
+  role?: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT" | "COUNTERPARTY";
   phrase: string;
   index: number;
   excludedContext: boolean;

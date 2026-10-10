@@ -30,7 +30,7 @@ import type { ModelContractViolationDiagnostic } from "../semantic-accountabilit
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 import { applyEntityScopeGuard, classifyEntityTag, entityScopeWitnessFor, normalizeEntityTags } from "./entity-scope-guard";
 import type { IREntityTagNormalization, IRSourceReferenceAudit, IRSourceReferenceAuditEntry, IRSourceTargetSelector } from "../../ir/types";
-import type { GoverningSemanticContext } from "./governing-scope";
+import { resolveGoverningScopeForCitedUnit, type GoverningSemanticContext } from "./governing-scope";
 import { classifySourceAction, assessActionCompatibility } from "./action-ontology";
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
 import { resolveProvenanceExcerpt, type AdmissibleSourceText } from "./provenance-binding";
@@ -878,13 +878,22 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     // legacy readers: only the genuinely UNKNOWN references remain "unresolved"; resolved ones are first-class source dependencies
     const unresolvedDependencies: IRUnresolvedDependency[] = sourceDependencies.filter((d) => d.resolutionStatus === "DEPENDENCY_UNKNOWN").map((d) => ({ relationshipType: d.relationshipType, targetRef: d.exactSourceTargetRef, description: d.description, reason: `"${d.exactSourceTargetRef}" resolves to no structural node of this document - DEPENDENCY_UNKNOWN (review required), never guessed or dropped`, ...(d.inventoryItemIds ? { inventoryItemIds: d.inventoryItemIds } : {}) }));
     const inheritedAttributes: IRInheritedAttribute[] = [];
-    const spanOf = (regionId: string | null | undefined) => { const r = regionId ? governingScope?.ancestorRegions.find((x) => x.regionId === regionId) : null; return r ? { sourceSpan: { documentId: r.documentId, structuralNodeId: r.structuralNodeId, charStart: r.charStart, charEnd: r.charEnd, sha256: r.sha256 }, ancestorDistance: r.ancestorDistance } : {}; };
+    // Lettered children compiled under a section-level candidate re-resolve governing scope from the
+    // child's structural node so PARENT_SCOPE is the section chapeau (source-witnessed), not empty.
+    const ruleGoverningScope: GoverningSemanticContext | null = resolveGoverningScopeForCitedUnit({
+      candidateRef: input.candidateRef,
+      documentId,
+      ruleSourceSectionRef: wireRule.sourceSectionRef,
+      candidateGoverningScope: governingScope,
+      index: referenceIndex,
+    });
+    const spanOf = (regionId: string | null | undefined) => { const r = regionId ? ruleGoverningScope?.ancestorRegions.find((x) => x.regionId === regionId) : null; return r ? { sourceSpan: { documentId: r.documentId, structuralNodeId: r.structuralNodeId, charStart: r.charStart, charEnd: r.charEnd, sha256: r.sha256 }, ancestorDistance: r.ancestorDistance } : {}; };
     // GOVERNING SCOPE §8/§14: inherited attributes are derived from authenticated structural context, never guessed from
     // drafting patterns. governingProhibition: the nearest ancestor lead-in carrying a prohibition phrase (the governing
     // chain when resolved; the PARENT_SCOPE bundle items otherwise).
     if (posture === "PERMISSION" || ruleType === "QUANTITATIVE_PERMISSION") {
-      if (governingScope?.governingProhibition) {
-        const g = governingScope.governingProhibition;
+      if (ruleGoverningScope?.governingProhibition) {
+        const g = ruleGoverningScope.governingProhibition;
         inheritedAttributes.push({ attribute: "governingProhibition", sourceAuthority: g.role, sourceSectionRef: g.sectionRef, evidence: g.evidence, ...spanOf(g.regionId) });
       } else {
         for (const item of parentScopeItems) if (/\b(?:shall not|will not|may not|shall not permit|not permit)\b/i.test(item.excerptText)) { inheritedAttributes.push({ attribute: "governingProhibition", sourceAuthority: "PARENT_SCOPE", sourceSectionRef: item.normalizedRef, evidence: item.excerptText.slice(0, 240) }); break; }
@@ -896,7 +905,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const ownAction = classifySourceAction(wireRule.excerpt ?? "");
     const actionBasis = ownAction.coverage !== "NO_ACTION_FOUND" && wireRule.excerpt && input.operativeSourceText.replace(/\s+/g, " ").toLowerCase().includes(wireRule.excerpt.replace(/\s+/g, " ").trim().toLowerCase())
       ? { classification: ownAction, sourceAuthority: "OWN_SOURCE" as const, sourceSectionRef: wireRule.sourceSectionRef, regionId: null, role: null }
-      : governingScope?.inheritedActionBasis ? { classification: governingScope.inheritedActionBasis.classification, sourceAuthority: governingScope.inheritedActionBasis.role, sourceSectionRef: governingScope.inheritedActionBasis.sectionRef, regionId: governingScope.inheritedActionBasis.regionId, role: governingScope.inheritedActionBasis.role } : null;
+      : ruleGoverningScope?.inheritedActionBasis ? { classification: ruleGoverningScope.inheritedActionBasis.classification, sourceAuthority: ruleGoverningScope.inheritedActionBasis.role, sourceSectionRef: ruleGoverningScope.inheritedActionBasis.sectionRef, regionId: ruleGoverningScope.inheritedActionBasis.regionId, role: ruleGoverningScope.inheritedActionBasis.role } : null;
     if (actionBasis) {
       const compat = assessActionCompatibility(action, actionBasis.classification);
       inheritedAttributes.push({ attribute: "action", sourceAuthority: actionBasis.sourceAuthority, sourceSectionRef: actionBasis.sourceSectionRef, evidence: actionBasis.classification.phrase, canonicalValue: actionBasis.classification.canonicalAction, compatibility: compat.compatibility, ...spanOf(actionBasis.regionId) });
@@ -951,16 +960,17 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       compilerVersion: input.compilerAlgorithmVersion,
       sourceContentVersion: null,
     };
-    // ENTITY-SCOPE GUARD v3 (§5-§12): deterministic precedence - the rule's own actor language, else the authenticated
-    // governing chain, else the model scope. Removes false precision, derives only from source, never widens by guess.
-    const guarded = applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext?.regions ?? null, parentScopeItems.map((i) => i.excerptText), governingScope, input.operativeSourceText), tagNorm);
+    // ENTITY-SCOPE GUARD v3/v6 (§5-§12): deterministic precedence - the rule's own actor language, else the authenticated
+    // governing chain (per-rule for lettered children), else the model scope. Removes false precision, derives only from
+    // source, never widens by guess.
+    const guarded = applyEntityScopeGuard(rule, entityScopeWitnessFor(rule, input.sourceContext?.regions ?? null, parentScopeItems.map((i) => i.excerptText), ruleGoverningScope, input.operativeSourceText), tagNorm);
     const audit = guarded.entityScopeAudit;
     for (const d of audit?.diagnostics ?? []) diag(ctx, d);
     if (audit?.status === "UNRECOGNIZED_TAG") for (const u of tagNorm.tagNormalization) if (u.outcome === "UNRECOGNIZED_ENTITY_TAG" && (u.field === "entityScope" || u.field === "entityScopeExcluded")) warn(ctx, `ENTITY_SCOPE_UNRECOGNIZED_TAG: ${u.field} tag "${u.raw}" is not an EntityClassTag value - scope made non-authoritative, tag preserved in entityScopeAudit, not guessed`);
     if (audit && (audit.status === "SOURCE_SCOPE_DERIVED" || (audit.status === "SOURCE_MATCH_CONFIRMED" && (audit.witness.decidedBy === "PARENT_SCOPE" || audit.witness.decidedBy === "GOVERNING_SCOPE")))) {
       const g = audit.witness.governingScope;
       const fromGoverning = audit.precedence === "GOVERNING_SCOPE_SOURCE" || audit.witness.decidedBy === "PARENT_SCOPE" || audit.witness.decidedBy === "GOVERNING_SCOPE";
-      const basisRegionId = fromGoverning ? governingScope?.inheritedEntityScopeBasis?.regionId ?? null : null;
+      const basisRegionId = fromGoverning ? ruleGoverningScope?.inheritedEntityScopeBasis?.regionId ?? null : null;
       const authority: IRInheritedAttribute["sourceAuthority"] = !fromGoverning ? "OWN_SOURCE" : g?.basisRole ?? "PARENT_SCOPE";
       const sectionRef = !fromGoverning ? rule.sourceSectionRef : g?.basisSectionRef ?? parentScopeItems[0]?.normalizedRef ?? null;
       const evidence = !fromGoverning ? (audit.witness.citedUnitLeadIn ?? audit.witness.ownExcerpt ?? "") : g?.evidence ?? (parentScopeItems[0]?.excerptText ?? "");

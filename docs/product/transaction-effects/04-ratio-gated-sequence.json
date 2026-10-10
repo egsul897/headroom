@@ -1,0 +1,43 @@
+{
+  "independentExpectation": {
+    "initialTotalDebt": "300",
+    "initialEbitda": "100",
+    "initialTnl": "3",
+    "leverageGate": "3.5",
+    "debtIncurrence": "100",
+    "postIncurTotalDebt": "400",
+    "postIncurTnl": "4",
+    "dividendAttempt": "40",
+    "expectedAfterIncur": "RP_GATE_FAILS_TNL_ABOVE_3_5",
+    "sourceAuthority": {
+      "debtBasket": "§debt-basket — Indebtedness permission (flat $500)",
+      "rpBasket": "§rp-basket — Restricted Payments (flat $200) subject to TNL ≤ 3.50x",
+      "leverageTest": "COMPARE(DIVIDE(total-debt, ebitda), LTE, RATIO(3.50))"
+    }
+  },
+  "steps": [
+    {
+      "stepId": "1-debt-incurrence",
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "SATISFIED",
+      "financialViewChained": true,
+      "chainedMetricKeysAfter": [
+        "total-debt"
+      ],
+      "limitations": [],
+      "postStatePublished": true
+    },
+    {
+      "stepId": "2-dividend-blocked",
+      "simulationStatus": "SIMULATED",
+      "selectedPathResult": "NOT_SATISFIED",
+      "financialViewChained": false,
+      "chainedMetricKeysAfter": [],
+      "limitations": [
+        "CONDITION_NOT_SATISFIED"
+      ],
+      "postStatePublished": false
+    }
+  ],
+  "abortedAtStepId": "2-dividend-blocked"
+}

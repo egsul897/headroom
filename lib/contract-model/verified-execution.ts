@@ -26,15 +26,53 @@
  */
 import type { IRDefinition, IRRule, IRSharedCapacity } from "./ir/types";
 import type { SemanticVerificationResult } from "./compiler/semantic-verification/types";
-import type { InputResolver } from "./runtime/types";
+import type { InputResolver, SerializedRuntimeValue } from "./runtime/types";
 import { buildCapacityGraph } from "./runtime/capacity/graph";
 import { evaluateCapacityState } from "./runtime/capacity/state";
-import type { CapacityGraph, CapacityState, LedgerPolicy, LedgerUsageRecord } from "./runtime/capacity/types";
+import type {
+  CapacityAmount,
+  CapacityGraph,
+  CapacityState,
+  CapacityStateEntry,
+  LedgerPolicy,
+  LedgerUsageRecord,
+  ReclassificationElection,
+} from "./runtime/capacity/types";
 import { simulateTransaction } from "./runtime/transaction/simulate";
-import type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult } from "./runtime/transaction/types";
+import { buildOverlay } from "./runtime/transaction/overlay";
+import type {
+  ChangeMetricEffect,
+  EventStateEffect,
+  HypotheticalTransaction,
+  SelectedPath,
+  TransactionEffect,
+  TransactionQuantity,
+  TransactionSimulationResult,
+} from "./runtime/transaction/types";
+import { assertRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 
-/** Re-export 4D caller types so product never imports `runtime/transaction/*`. */
-export type { HypotheticalTransaction, SelectedPath, TransactionSimulationResult };
+/**
+ * Re-export 4D caller types so product / sequential composition never imports
+ * `runtime/capacity/*` or `runtime/transaction/*` execution surfaces.
+ */
+export type {
+  HypotheticalTransaction,
+  SelectedPath,
+  TransactionSimulationResult,
+  TransactionQuantity,
+  TransactionEffect,
+  ChangeMetricEffect,
+  EventStateEffect,
+  CapacityGraph,
+  CapacityState,
+  CapacityStateEntry,
+  CapacityAmount,
+  LedgerUsageRecord,
+  LedgerPolicy,
+  ReclassificationElection,
+  InputResolver,
+};
+export { assertRestoreAuthority, formatRestoreReason, extractRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 import { hashOf } from "./runtime/input/identity";
 import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";
 import { blocksUnit, interpretVerificationStatus, type VerificationCoverage as UnitCoverage } from "./runtime/verification-gate";
@@ -100,7 +138,9 @@ export type BoundaryRefusalCode =
   /** The IR package is not one instrument's consistent unit set (a unit for another company/instrument, or an id claimed twice). */
   | "IR_PACKAGE_INCONSISTENT"
   /** A rule's permission is gated on another rule's satisfaction (a cross-rule condition or a REQUIRES/LIMITED_BY source dependency). The runtime has no certified cross-rule satisfaction evaluator yet (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE), so the package fails closed: the gate is never treated as satisfied and an UNLIMITED_CAPACITY behind it never executes. */
-  | "CROSS_RULE_GATE_NOT_EXECUTABLE";
+  | "CROSS_RULE_GATE_NOT_EXECUTABLE"
+  /** RESTORE_CAPACITY without contractual authority marker — shared product/verified boundary (TE-D2). */
+  | "UNAUTHORIZED_CAPACITY_RESTORE";
 
 export interface BoundaryRefusal { code: BoundaryRefusalCode; message: string; refs: string[] }
 
@@ -136,6 +176,38 @@ const unitIdOf = (u: IRRule | IRDefinition): string => ("ruleId" in u ? u.ruleId
 type BoundUnit = IRRule | IRDefinition | IRSharedCapacity;
 const anyUnitIdOf = (u: BoundUnit): string => ("ruleId" in u ? u.ruleId : "definitionId" in u ? u.definitionId : u.sharedCapId);
 const anyKindOf = (u: BoundUnit): "RULE" | "DEFINITION" | "SHARED_CAPACITY" => ("ruleId" in u ? "RULE" : "definitionId" in u ? "DEFINITION" : "SHARED_CAPACITY");
+
+/**
+ * Companion-REQUIRES discharge (v1): true only when every cross-rule gate on the rule is a
+ * SOURCE_REFERENCE_RESOLVED REQUIRES dependency, the rule itself has finite (non-UNLIMITED)
+ * capacity, and each target section has a COMPLETE PERMISSION rule in the package.
+ * Compliance conditions, LIMITED_BY, unknown deps, and UNLIMITED capacity stay non-dischargeable.
+ */
+export function isCompanionRequiresDischargeable(rule: IRRule, packageRules: readonly IRRule[]): boolean {
+  if (rule.conditions.some((c) => (c.referencesRuleTargets?.length ?? 0) > 0)) return false;
+  const unknown = (rule.unresolvedDependencies ?? []).filter(
+    (d) =>
+      (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") &&
+      !(rule.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef),
+  );
+  if (unknown.length > 0) return false;
+  const deps = (rule.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY");
+  if (deps.length === 0) return false;
+  if (deps.some((d) => d.relationshipType !== "REQUIRES" || d.resolutionStatus !== "SOURCE_REFERENCE_RESOLVED")) return false;
+  const capKind = rule.capacityExpression?.kind;
+  if (!capKind || capKind === "UNLIMITED_CAPACITY") return false;
+  if (rule.sufficiency !== "COMPLETE" || rule.posture !== "PERMISSION") return false;
+  return deps.every((d) =>
+    packageRules.some(
+      (t) =>
+        t.ruleId !== rule.ruleId &&
+        t.posture === "PERMISSION" &&
+        t.sufficiency === "COMPLETE" &&
+        t.sourceSectionRef != null &&
+        t.sourceSectionRef === d.normalizedTargetRef,
+    ),
+  );
+}
 
 interface Bound { refusals: BoundaryRefusal[]; envelope: RuntimeVerificationEnvelope | null; units: BoundUnit[] }
 
@@ -204,18 +276,47 @@ function bind(pkg: VerifiedExecutionPackage): Bound {
   }
   if (sharedProblems.length > 0) refusals.push({ code: "VERIFICATION_ARTIFACT_INCOMPLETE", message: "shared capacity pool(s) are not cleanly verified; under REQUIRE an unverified pool never shapes capacity", refs: sharedProblems.sort() });
 
-  // SEMANTIC FIDELITY: cross-rule gates fail closed. A rule whose availability depends on another rule being satisfied
-  // (referencesRuleTargets on a condition, or a REQUIRES / LIMITED_BY source dependency) cannot be executed by this runtime
-  // as "satisfied" - whether or not the package has bound the target - because no certified cross-rule satisfaction
-  // evaluator exists yet. Refusing here is what keeps an UNLIMITED_CAPACITY behind such a gate from reading as available.
+  // SEMANTIC FIDELITY: cross-rule gates fail closed by default. UNLIMITED capacity, compliance
+  // conditions (referencesRuleTargets), LIMITED_BY, and unresolved REQUIRES still refuse the package —
+  // that is what keeps an UNLIMITED_CAPACITY behind a gate from reading as available (xref §40/§54).
+  //
+  // Companion-REQUIRES discharge (v1): a finite-capacity permission whose only cross-rule gates are
+  // SOURCE_REFERENCE_RESOLVED REQUIRES dependencies, and whose target section has a COMPLETE
+  // PERMISSION rule in this same package, is allowed through the boundary. The dependency remains on
+  // the IR; this does not invent satisfaction of compliance tests or named Payment Conditions.
   const gated: string[] = [];
   for (const r of pkg.rules) {
-    const conds = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0).map((c) => `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`);
-    const deps = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY").map((d) => `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`);
-    const unknown = (r.unresolvedDependencies ?? []).filter((d) => (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") && !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef)).map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`);
-    gated.push(...conds, ...deps, ...unknown);
+    const condGates = r.conditions.filter((c) => (c.referencesRuleTargets?.length ?? 0) > 0);
+    const depGates = (r.sourceDependencies ?? []).filter((d) => d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY");
+    const unknownGates = (r.unresolvedDependencies ?? []).filter(
+      (d) =>
+        (d.relationshipType === "REQUIRES" || d.relationshipType === "LIMITED_BY") &&
+        !(r.sourceDependencies ?? []).some((sd) => sd.exactSourceTargetRef === d.targetRef),
+    );
+    if (condGates.length === 0 && depGates.length === 0 && unknownGates.length === 0) continue;
+
+    if (isCompanionRequiresDischargeable(r, pkg.rules)) continue;
+
+    gated.push(
+      ...condGates.map(
+        (c) =>
+          `${r.ruleId} ${c.conditionId} -> ${c.referencesRuleTargets!.map((t) => `${t.exactSourceTargetRef} [${t.boundSemanticTargetIds.length > 0 ? `bound:${t.boundSemanticTargetIds.join("+")}` : t.resolutionStatus}]`).join(", ")}`,
+      ),
+      ...depGates.map(
+        (d) =>
+          `${r.ruleId} ${d.relationshipType} ${d.exactSourceTargetRef} [${d.boundSemanticTargetIds.length > 0 ? `bound:${d.boundSemanticTargetIds.join("+")}` : d.resolutionStatus}]`,
+      ),
+      ...unknownGates.map((d) => `${r.ruleId} ${d.relationshipType} ${d.targetRef} [DEPENDENCY_UNKNOWN]`),
+    );
   }
-  if (gated.length > 0) refusals.push({ code: "CROSS_RULE_GATE_NOT_EXECUTABLE", message: "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed", refs: gated.sort() });
+  if (gated.length > 0) {
+    refusals.push({
+      code: "CROSS_RULE_GATE_NOT_EXECUTABLE",
+      message:
+        "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+      refs: gated.sort(),
+    });
+  }
 
   if (refusals.length > 0) return { refusals, envelope: null, units };
 
@@ -309,10 +410,92 @@ export function evaluateVerifiedCapacity(args: VerifiedCapacityArgs): VerifiedCa
 export function simulateVerifiedTransaction(args: VerifiedTransactionArgs): VerifiedTransactionResult {
   const capacity = evaluateVerifiedCapacity(args);
   if (capacity.outcome === "REFUSED") return capacity;
+  const auth = assertRestoreAuthority(args.transaction);
+  if (!auth.ok) {
+    return {
+      outcome: "REFUSED",
+      policy: VERIFIED_EXECUTION_POLICY,
+      packageHash: capacity.packageHash,
+      refusals: auth.issues.map((i) => ({
+        code: UNAUTHORIZED_RESTORE_CODE as BoundaryRefusalCode,
+        message: i.message,
+        refs: [i.effectId, i.usageId],
+      })),
+    };
+  }
   const pkg = args.package;
   const simulation = simulateTransaction({
     transaction: args.transaction, currentState: capacity.state, capacityGraph: capacity.graph, selectedPath: args.selectedPath, inputs: args.inputs,
     context: { rules: pkg.rules, sharedCapacities: pkg.sharedCapacities, definitions: pkg.definitions, ledger: args.ledger, ledgerPolicy: args.ledgerPolicy, asOf: args.asOf ?? null, verification: capacity.envelope, policy: VERIFIED_EXECUTION_POLICY },
   });
   return { outcome: "EXECUTED", policy: VERIFIED_EXECUTION_POLICY, packageHash: capacity.packageHash, envelope: capacity.envelope, coverage: capacity.coverage, capacity: capacity.state, simulation };
+}
+
+// ---------------------------------------------------------------------------
+// Sequential financial-view chaining (TE-D3) — lives on the verified boundary so
+// composition modules never import buildOverlay / raw simulate primitives.
+// ---------------------------------------------------------------------------
+
+function serializedToQuantity(v: SerializedRuntimeValue): TransactionQuantity | null {
+  switch (v.type) {
+    case "MONEY": return { type: "MONEY", amount: v.amount, currency: v.currency };
+    case "NUMBER": return { type: "NUMBER", value: v.value };
+    case "PERCENT": return { type: "PERCENT", fraction: v.fraction };
+    case "RATIO": return { type: "RATIO", value: v.value };
+    default: return null;
+  }
+}
+
+/**
+ * Chain prior APPLIED overlay results into the next step's base resolver.
+ * Used by sequential composition after each verified simulation step.
+ */
+export function chainFinancialViewWithScope(
+  base: InputResolver,
+  result: TransactionSimulationResult,
+  scope: { companyId: string; instrumentKey: string },
+): { resolver: InputResolver; chainedMetricKeys: string[]; chainedEvents: string[] } {
+  const metricEffects: ChangeMetricEffect[] = [];
+  const chainedMetricKeys: string[] = [];
+  for (const e of result.financialEffects) {
+    if (e.state !== "APPLIED" || !e.result) continue;
+    const q = serializedToQuantity(e.result);
+    if (!q) continue;
+    metricEffects.push({
+      effectId: `chain:${result.transactionIdentity.transactionId}:${e.effectId}`,
+      kind: "CHANGE_METRIC",
+      metricKey: e.metricKey,
+      period: e.period,
+      asOf: e.asOf,
+      adjustment: { kind: "SET", value: q },
+    });
+    chainedMetricKeys.push(e.metricKey);
+  }
+
+  const eventEffects: EventStateEffect[] = result.simulationInputView.eventAdjustments.map((e) => ({
+    effectId: `chain-evt:${e.effectId}`,
+    kind: e.active ? "ACTIVATE_EVENT" as const : "DEACTIVATE_EVENT" as const,
+    eventDescription: e.eventDescription,
+    asOf: e.asOf,
+  }));
+  const chainedEvents = eventEffects.map((e) => e.eventDescription);
+
+  if (metricEffects.length === 0 && eventEffects.length === 0) {
+    return { resolver: base, chainedMetricKeys: [], chainedEvents: [] };
+  }
+
+  const overlay = buildOverlay({
+    base,
+    transactionId: `chain-of:${result.transactionIdentity.transactionId}`,
+    companyId: scope.companyId,
+    instrumentKey: scope.instrumentKey,
+    metricEffects,
+    eventEffects,
+  });
+
+  return {
+    resolver: overlay.resolver,
+    chainedMetricKeys: [...new Set(chainedMetricKeys)].sort(),
+    chainedEvents: [...new Set(chainedEvents)].sort(),
+  };
 }

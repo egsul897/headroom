@@ -1,0 +1,40 @@
+{
+  "schema": "stage-d-pkgi-companion-discharge.v1",
+  "paidProvidersCalled": false,
+  "lienRuleId": "ir-rule:81aa6243b5eb1655b8642df0",
+  "dischargeable": true,
+  "sourceDependencies": [
+    {
+      "boundSemanticTargetIds": [],
+      "description": "requires that the terms of Section 7.01(b) are satisfied; the semantics of Section 7.01(b) are separately owned and resolved at package level",
+      "exactSourceTargetRef": "Section 7.01(b)",
+      "inventoryItemIds": [
+        "inv-item:470f1474dfef219a37facbd6"
+      ],
+      "normalizedTargetRef": "7.01(b)",
+      "owningCandidateRefs": [
+        "discovery-candidate:manifest-credit-agreement-7.01"
+      ],
+      "provenance": {
+        "documentId": "credit-agreement",
+        "excerpt": null,
+        "sourceCitation": "§7.02",
+        "sourceNodeKey": null
+      },
+      "relationshipType": "REQUIRES",
+      "resolutionStatus": "SOURCE_REFERENCE_RESOLVED",
+      "resolvedStructuralTarget": {
+        "documentId": "credit-agreement",
+        "sectionRef": "7.01(b)",
+        "structuralNodeId": "structural-node:a7312e2877531aee47fb7331"
+      },
+      "selector": {
+        "kind": "WHOLE_PROVISION",
+        "qualifierText": null,
+        "sourceText": "Section 7.01(b)"
+      }
+    }
+  ],
+  "capacityKind": "MONEY",
+  "note": "UNLIMITED + referencesRuleTargets compliance gates remain non-dischargeable."
+}
