@@ -98,4 +98,10 @@ See `06-stage6-independent-acceptance.md`. False favorables checked: debt-only�
 
 1. Land stacked PRs #247→#250 after CI green (human merge)  
 2. Collapse FCE utilization-honesty → #237 adapter  
-3. Close superseded component PRs without merging stale capacity from #218  
+3. Close superseded component PRs without merging stale capacity from #218
+
+## Final correctness remediation (post Stage 6)
+
+See `07-final-correctness-acceptance.md` — #231 debt� Final correctness remediation (post Stage 6)
+
+See `07-final-correctness-acceptance.md` — #231 debt∩lien election + #237 utilization collapse on #250 tip.
