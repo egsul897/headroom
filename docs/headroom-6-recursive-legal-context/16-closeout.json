@@ -1,53 +1,23 @@
 {
   "artifact": "HEADROOM-6_CLOSEOUT",
-  "verdict": "SAFE_TO_ARCHIVE",
+  "verdict": "TECHNICALLY_ACCEPTED_AWAITING_HUMAN_APPROVAL",
   "safeToArchive": true,
+  "doNotReopenWithoutRegression": true,
   "prUrl": "https://github.com/egsul897/headroom/pull/287",
   "startingSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
   "featureSha": "3b1e2b48c15aab1750b88a9200abcab47d54afb3",
-  "endingTipSha": "aa8a2d2746a4c82d9f090e202dfa2fe086ba0893",
-  "failingTipSha": "b5c8ad91579460de1de4df9c3f9a02dced7fca82",
+  "verifiedSha": "b2bff75e931e90b3fe2a4608be052718a3ace8d4",
+  "mainShaAtDisposition": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "mergeSha": null,
+  "finalMainSha": null,
+  "selfMerge": false,
   "ciBranch": "cursor/agent6-recursive-legal-context-8ce3",
-  "exactTipCi": {
-    "lastFullyGreenSha": "aa8a2d2746a4c82d9f090e202dfa2fe086ba0893",
-    "certifiedPath": "SUCCESS",
-    "certifiedPathRun": 38059701412,
-    "codeFixTip": "f3b5e135fadf1f28332c8f0d842b7876ea95c091",
-    "vercel": "SUCCESS",
-    "vercelPreviewComments": "SUCCESS"
-  },
-  "ciRemediation": {
-    "typecheck": {
-      "attribution": "PR_INTRODUCED",
-      "rootCause": "TS2322 families:[\"OTHER\"] not assignable to CovenantFamily; plus offline-eval typed-array/packageKey/healthDiagnostics regression",
-      "fixTip": "16dad8e78a9fdb020dac193417a180b5e672c5b0",
-      "mainWasGreen": "4f1a0b81 run 38058881803"
-    },
-    "architecture": {
-      "attribution": "PR_INTRODUCED",
-      "rootCause": "pipeline.ts combined structuralNodeIds[0] with getNodeText(...DESCENDANTS) violating IPV-04",
-      "fixTip": "f3b5e135fadf1f28332c8f0d842b7876ea95c091",
-      "fix": "definitions-dump length via resolveOperativeSource"
-    },
-    "vercelAtFailingTip": {
-      "conclusion": "FAILURE",
-      "deployment": "dpl_3jqGKL8b8KHXtX1Ad73sLnZTMQdn",
-      "logAccess": "NO_VERCEL_TOKEN",
-      "resolvedOn": "16dad8e7+ (SUCCESS after typecheck fix)"
-    }
-  },
   "worDenom": 10,
-  "worBefore": {
-    "SUFFICIENT": 0,
-    "BUDGET_EXCEEDED": 9,
-    "INCOMPLETE": 1,
-    "REVIEW_REQUIRED": 0
-  },
   "worAfter": {
     "SUFFICIENT": 1,
+    "REVIEW_REQUIRED": 9,
     "BUDGET_EXCEEDED": 0,
     "INCOMPLETE": 0,
-    "REVIEW_REQUIRED": 9,
     "falseSufficient": 0,
     "sufficientClauseIds": [
       "WOR-B-6.01"
@@ -57,11 +27,15 @@
     "sealedLegalReferenceUntouched": true,
     "noPaidInference": true,
     "noSelfMerge": true,
+    "noThresholdLowering": true,
+    "noFabricatedSchedulesOrDefinitions": true,
     "contextManifestPreserved": true,
-    "canonicalBodyAnchorsPreserved": true
+    "canonicalBodyAnchorsPreserved": true,
+    "canonicalOperativeSourceResolverPreserved": true
   },
-  "selfMerge": false,
-  "ciVerifiedTipSha": "aa8a2d2746a4c82d9f090e202dfa2fe086ba0893",
-  "lastFullyGreenTipSha": "aa8a2d2746a4c82d9f090e202dfa2fe086ba0893",
-  "note": "endingTipSha/lastFullyGreenTipSha are the last tip with full GitHub check SUCCESS. Branch HEAD may include subsequent docs-only commits; re-verify HEAD if needed."
+  "integrationWith283": "OPEN \u2014 contains verified #287 tip; owns operative-authority binding",
+  "nextHandoff": "docs/headroom-6-recursive-legal-context/18-next-legal-context-handoff.md",
+  "disposition": "docs/headroom-6-recursive-legal-context/17-final-disposition.json",
+  "reconciledTipSha": "4f75e413f2e4e93eddc850514d2a0b954b80c22a",
+  "mainMergeCommitSha": "44088dc79f155c36f13dd370bcc1e61b72727a60"
 }

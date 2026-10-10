@@ -1,28 +1,30 @@
 # Handoff 03 — Context retrieval sufficiency under bounded budgets
 
 **Priority:** 3  
-**Owner:** next bounded remediation agent  
-**Source:** WOR holdout — `contextDefsPresent: 10/10` but `contextSufficient: 0/10` (`budgetExceeded: 9`, `incomplete: 1`).
+**Owner:** completed by HEADROOM-6 (PR #287) — residual coverage → `docs/headroom-6-recursive-legal-context/18-next-legal-context-handoff.md`  
+**Source:** WOR holdout — previously `contextSufficient: 0/10` (`budgetExceeded: 9`, `incomplete: 1`).
 
-## Problem
+## Status (Agent #6)
 
-Required definition names appear in retrieved bundles, yet `sufficiencyState` never reaches SUFFICIENT under current budgets. Compiler consumers therefore cannot treat context as complete for executable claims.
+| Metric | Before | After (#287) |
+|---|---|---|
+| SUFFICIENT | 0/10 | **1/10** (`WOR-B-6.01`) |
+| REVIEW_REQUIRED | 0/10 | **9/10** |
+| BUDGET_EXCEEDED | 9/10 | **0/10** |
+| INCOMPLETE | 1/10 | **0/10** |
+| False SUFFICIENT | — | **0** |
 
-## In scope
+Canonical body anchors, recursive definition closure, soft-budget continuation, and `contextManifest` shipped. Fail-closed preserved. Do not reopen this handoff without a demonstrated regression.
 
-- Diagnose budget accounting vs required dependency set for GT-anchored WOR probes.
-- Adjust retrieval ranking / budget policy so necessary operative dependencies fit without truncating governing definitions.
-- Keep fail-closed: never mark SUFFICIENT when unresolved dependencies remain.
-- Adversarial tests for budget-exceeded vs incomplete vs sufficient.
+## Residual (next workstream — not Agent #6)
 
-## Out of scope
+- Equivalent Amount / Equivalent Currency definition morphology
+- Schedule/exhibit structural coverage when source text includes them
+- Consume #283 governing-document binding once that PR merges
 
-- Raising budgets unbounded
+## Out of scope (unchanged)
+
+- Raising budgets unbounded / lowering sufficiency thresholds
 - Paid expansion of context via LLM
 - Changing sealed legal references
-
-## Acceptance
-
-- Offline WOR eval: material improvement in `sufficiencySufficient` without false SUFFICIENT.
-- No false-favorable capacity outcomes.
-- `$0` paid inference.
+- Inventing schedules, definitions, or amendment authority
