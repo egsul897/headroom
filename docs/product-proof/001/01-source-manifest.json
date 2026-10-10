@@ -1,0 +1,102 @@
+{
+  "mission": "HEADROOM_PRODUCT_PROOF_001",
+  "packageId": "mtn-2026-tenth-ar-credit-agreement",
+  "frozenAt": "2026-10-10T10:20:00Z",
+  "testedMainSha": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
+  "selection": {
+    "company": "Vail Resorts, Inc.",
+    "ticker": "MTN",
+    "cik": "0000812011",
+    "instrument": "Vail Holdings, Inc. Tenth Amended and Restated Credit Agreement dated February 9, 2026 (Bank of America, N.A., Administrative Agent)",
+    "reason": "Public mid-cap US issuer with a full A&R credit agreement filed as 8-K EX-10.1 containing operative Debt (§10.4) and Liens (§10.5) covenants whose capacity lives in Permitted Debt / Permitted Liens definitions, plus Section 11 financial covenants. Zero prior Headroom fixture, golden, demo, or agent-tuning usage.",
+    "excludedAlternatives": ["CONMED", "Chewy/CHWY", "ROCK/Gibraltar", "DSGR", "FWRG", "LSB", "RIOT", "SUP", "Matthews", "Coherent"],
+    "unseenEvidence": "Repository search found no Vail/MTN/0000812011/tentharcredit package under tests/fixtures, datasets, docs/product, or golden tests prior to this proof directory."
+  },
+  "documents": [
+    {
+      "documentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "role": "OPERATIVE_CREDIT_AGREEMENT",
+      "accessionNumber": "0000812011-26-000010",
+      "form": "8-K EX-10.1",
+      "filingDate": "2026-02-12",
+      "effectiveDate": "2026-02-09",
+      "url": "https://www.sec.gov/Archives/edgar/data/812011/000081201126000010/tentharcreditagreement-exe.htm",
+      "localRawPath": "sources/mtn-2026-tenth-ar-credit-agreement/raw-html/doc-a-tenth-ar-credit-agreement.htm",
+      "localExtractedPath": "sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-a-tenth-ar-credit-agreement.txt",
+      "sha256": "2715a533797827d353cbcb61ba22d7c504a08597efbc531a26975370485db3a0",
+      "bytes": 1459864
+    },
+    {
+      "documentId": "mtn-doc-b-indenture-2024",
+      "role": "RELATED_SENIOR_NOTES_INDENTURE",
+      "accessionNumber": "0000812011-24-000050",
+      "form": "8-K EX-4.1",
+      "filingDate": "2024-05-08",
+      "effectiveDate": "2024-05-08",
+      "url": "https://www.sec.gov/Archives/edgar/data/812011/000081201124000050/vailresorts-indenture2024.htm",
+      "localRawPath": "sources/mtn-2026-tenth-ar-credit-agreement/raw-html/doc-b-indenture-2024.htm",
+      "localExtractedPath": "sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-b-indenture-2024.txt",
+      "sha256": "2fe0d69c1a697e8bb02684c621f89b9f74ae5c8a3e0ff27247288be8605d26ba",
+      "bytes": 919658
+    },
+    {
+      "documentId": "mtn-doc-c-indenture-2025",
+      "role": "RELATED_SENIOR_NOTES_INDENTURE",
+      "accessionNumber": "0000812011-25-000084",
+      "form": "8-K EX-4.1",
+      "filingDate": "2025-07-02",
+      "effectiveDate": "2025-07-02",
+      "url": "https://www.sec.gov/Archives/edgar/data/812011/000081201125000084/vailresorts-indenture2025.htm",
+      "localRawPath": "sources/mtn-2026-tenth-ar-credit-agreement/raw-html/doc-c-indenture-2025.htm",
+      "localExtractedPath": "sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-c-indenture-2025.txt",
+      "sha256": "065a5846596ed8302cae1a58f19a4304210f2cd92a686b11a5b5b34c457a593f",
+      "bytes": 922878
+    },
+    {
+      "documentId": "mtn-doc-d-10k-fy2026",
+      "role": "FINANCIAL_STATEMENTS_PUBLIC",
+      "accessionNumber": "0000812011-26-000049",
+      "form": "10-K",
+      "filingDate": "2026-09-28",
+      "periodEnd": "2026-07-31",
+      "url": "https://www.sec.gov/Archives/edgar/data/812011/000081201126000049/mtn-20260731.htm",
+      "localRawPath": "sources/mtn-2026-tenth-ar-credit-agreement/raw-html/doc-d-10k-fy2026.htm",
+      "localExtractedPath": "sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-d-10k-fy2026.txt",
+      "sha256": "39fed75a50f3a1e7c9b9f951877245beba4030d22e2e26d74490e56abfba6d41",
+      "bytes": 2446392
+    }
+  ],
+  "missingComponents": [
+    {
+      "component": "Security Documents / Pledge Agreement exhibits",
+      "status": "NOT_FILED_WITH_TENTH_AR_8K",
+      "impact": "Collateral scope and lien perfection details referenced as 'Security Documents' in §6 / Permitted Liens (a) are not independently available in this freeze."
+    },
+    {
+      "component": "Intercreditor agreement for Permitted Debt (l)",
+      "status": "NOT_IN_PACKAGE",
+      "impact": "Clause (l) Secured Debt requires intercreditor arrangements satisfactory to Administrative Agent — document unavailable."
+    },
+    {
+      "component": "Prior Ninth A&R Credit Agreement full text",
+      "status": "SUPERSEDED_BY_RESTATEMENT",
+      "impact": "Tenth A&R is the operative restatement; prior CA not required for current operative text but amendment-chain history is incomplete."
+    },
+    {
+      "component": "Schedule 2.3 Part B (existing Debt list)",
+      "status": "NOT_SEPARATELY_EXTRACTED_AS_STRUCTURED_ARTIFACT",
+      "impact": "Permitted Debt (b) depends on schedule contents embedded in CA HTML; not compiled to structured inventory by Headroom."
+    },
+    {
+      "component": "Authenticated basket utilization ledger",
+      "status": "UNAVAILABLE",
+      "impact": "Remaining capacity cannot be verified; public 10-K balances ≠ attributed basket usage."
+    }
+  ],
+  "freezeCommands": [
+    "curl -A 'HeadroomProductProof001/1.0 ...' -o raw-html/doc-a-....htm <SEC URL>",
+    "python3 html→text extraction (local, deterministic)",
+    "sha256sum recorded in artifacts/stage-00-source-inventory.json"
+  ],
+  "authoritativeHashesPath": "artifacts/stage-00-source-inventory.json"
+}

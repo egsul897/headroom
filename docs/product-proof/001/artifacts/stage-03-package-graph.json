@@ -1,0 +1,1969 @@
+{
+  "companyId": "product-proof-001-mtn",
+  "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+  "classifications": [
+    {
+      "documentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "mtn-doc-b-indenture-2024",
+      "type": "INDENTURE",
+      "confidence": 0.9,
+      "evidence": [
+        "INDENTURE"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "mtn-doc-c-indenture-2025",
+      "type": "INDENTURE",
+      "confidence": 0.9,
+      "evidence": [
+        "INDENTURE"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "mtn-doc-d-10k-fy2026",
+      "type": "UNKNOWN",
+      "confidence": 0,
+      "evidence": [],
+      "resolutionMethod": "UNKNOWN_NO_SIGNAL"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "title": "EX-10.1 TENTH A&R VHI CREDIT AGREEMENT",
+      "agreementTypeLabel": "EX-10.1 TENTH A&R VHI CREDIT AGREEMENT",
+      "executionDate": "February 9, 2026",
+      "effectiveDate": "February 9, 2026",
+      "parties": [
+        "VAIL HOLDINGS, INC."
+      ],
+      "borrowerOrIssuer": "VAIL HOLDINGS, INC.",
+      "administrativeAgentOrTrustee": "BANK OF AMERICA, N.A.",
+      "facilityOrInstrumentName": "EX-10.1 TENTH A&R VHI CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": " EX-10.1 TENTH A&R VHI CREDIT AGREEMENT",
+          "charStart": 46
+        },
+        "executionDate": {
+          "text": "Dated as of February 9, 2026",
+          "charStart": 263
+        },
+        "borrowerOrIssuer": {
+          "text": "VAIL HOLDINGS, INC. \n as Borrower",
+          "charStart": 310
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "BANK OF AMERICA, N.A. \n as Administrative Agent",
+          "charStart": 346
+        }
+      }
+    },
+    {
+      "documentId": "mtn-doc-b-indenture-2024",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": "MAY 8, 2024",
+      "effectiveDate": "MAY 8, 2024",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "U.S. Bank Trust Company, National Association",
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "executionDate": {
+          "text": "DATED MAY 8, 2024",
+          "charStart": 56
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "U.S. Bank Trust Company, National Association \n as Trustee",
+          "charStart": 216
+        }
+      }
+    },
+    {
+      "documentId": "mtn-doc-c-indenture-2025",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": "JULY 2, 2025",
+      "effectiveDate": "JULY 2, 2025",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "U.S. Bank Trust Company, National Association",
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "executionDate": {
+          "text": "DATED JULY 2, 2025",
+          "charStart": 56
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "U.S. Bank Trust Company, National Association \n as Trustee",
+          "charStart": 223
+        }
+      }
+    },
+    {
+      "documentId": "mtn-doc-d-10k-fy2026",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": null,
+      "effectiveDate": null,
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {}
+    }
+  ],
+  "relationshipCandidates": [],
+  "modificationCandidates": [
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "sourceNodeCitation": "Vail Resorts, Inc. Indenture dated May 8, 2024 (5.625% Senior Notes)",
+      "sourceText": "Without Consent of Noteholders . Notwithstanding Section 8.02, the Issuer, the Guarantors and the Trustee may modify and amend or supplement",
+      "operation": "UNKNOWN_CHANGE",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "targetSectionRef": "8.02",
+      "targetDefinedTermRef": null,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "the source document references more than one other agreement - which one this specific modification targets was not disambiguated",
+      "confidence": 0.7
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "sourceNodeCitation": "Vail Resorts, Inc. Indenture dated July 2, 2025 (6.50% Senior Notes)",
+      "sourceText": "Without Consent of Noteholders . Notwithstanding Section 8.02, the Issuer, the Guarantors and the Trustee may modify and amend or supplement",
+      "operation": "UNKNOWN_CHANGE",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "targetSectionRef": "8.02",
+      "targetDefinedTermRef": null,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "the source document references more than one other agreement - which one this specific modification targets was not disambiguated",
+      "confidence": 0.7
+    }
+  ],
+  "crossDocumentReferenceLeads": [
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Indenture",
+      "charStart": 12357,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type INDENTURE exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 56385,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 57147,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 88930,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the Peak Resorts Acquisition Agreement",
+      "charStart": 91984,
+      "namedAgreementHint": "Peak Resorts Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "as defined in the applicable trust indenture",
+      "charStart": 119574,
+      "namedAgreementHint": "applicable trust indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type INDENTURE exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the indenture",
+      "charStart": 122368,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type INDENTURE exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the Whistler Acquisition Agreement",
+      "charStart": 134388,
+      "namedAgreementHint": "Whistler Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 146523,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "subject to the terms and conditions of this Agreement",
+      "charStart": 190031,
+      "namedAgreementHint": "terms and conditions of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the indenture",
+      "charStart": 354461,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type INDENTURE exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 412554,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty Agreement",
+      "charStart": 412887,
+      "namedAgreementHint": "Guaranty Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 443076,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 456791,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 482885,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the Existing Credit Agreement",
+      "charStart": 483322,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the Existing Credit Agreement",
+      "charStart": 483769,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "pursuant to the Existing Credit Agreement",
+      "charStart": 484135,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "referenceText": "the Guaranty",
+      "charStart": 484606,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the provisions of this Indenture",
+      "charStart": 41768,
+      "namedAgreementHint": "provisions of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 50091,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 80644,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the procedures required by this Indenture",
+      "charStart": 130481,
+      "namedAgreementHint": "procedures required by this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "subject to the Suspended Covenants under this Indenture",
+      "charStart": 163489,
+      "namedAgreementHint": "Suspended Covenants under this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "subject to the Suspended Covenants under this Indenture",
+      "charStart": 163866,
+      "namedAgreementHint": "Suspended Covenants under this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 190117,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "as defined in the Trust Indenture",
+      "charStart": 196749,
+      "namedAgreementHint": "Trust Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 197636,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "pursuant to the provisions of this Indenture",
+      "charStart": 198682,
+      "namedAgreementHint": "provisions of this Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 270211,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 270273,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 270357,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 270514,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 270743,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 271430,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "The Indenture",
+      "charStart": 274996,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 275253,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 275503,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 275717,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 276821,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 277003,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 277283,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 277640,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 277655,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 278126,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 278355,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 278432,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 278622,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 278691,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 280325,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 280374,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 280461,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 281536,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 281897,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "subject to the terms of the Indenture",
+      "charStart": 281992,
+      "namedAgreementHint": "terms of the Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 282016,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 282522,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 283600,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 285024,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 285225,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "THE INDENTURE",
+      "charStart": 289474,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "THE INDENTURE",
+      "charStart": 289753,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "THE INDENTURE",
+      "charStart": 290050,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 291758,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 292033,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 293485,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 293713,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 295205,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 295436,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 297440,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 297659,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 298055,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 298198,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 298394,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 298639,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 298890,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 299033,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 299229,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 299474,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 299794,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 299937,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 300133,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 300371,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 300825,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 301021,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 301259,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 302423,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 302939,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 303214,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 304414,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 305326,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 306149,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 307320,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 307511,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 308246,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 308380,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 308687,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 308967,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 309095,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 309598,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "subject to the conditions set forth in the Note Guarantee and in the Indenture",
+      "charStart": 309742,
+      "namedAgreementHint": "conditions set forth in the Note Guarantee and in the Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 309807,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-b-indenture-2024",
+      "referenceText": "the Indenture",
+      "charStart": 310203,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-c-indenture-2025",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the provisions of this Indenture",
+      "charStart": 42812,
+      "namedAgreementHint": "provisions of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 51134,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 81681,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the procedures required by this Indenture",
+      "charStart": 131518,
+      "namedAgreementHint": "procedures required by this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "subject to the Suspended Covenants under this Indenture",
+      "charStart": 164526,
+      "namedAgreementHint": "Suspended Covenants under this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "subject to the Suspended Covenants under this Indenture",
+      "charStart": 164903,
+      "namedAgreementHint": "Suspended Covenants under this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 191154,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "as defined in the Trust Indenture",
+      "charStart": 197786,
+      "namedAgreementHint": "Trust Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the terms of this Indenture",
+      "charStart": 198673,
+      "namedAgreementHint": "terms of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "pursuant to the provisions of this Indenture",
+      "charStart": 199719,
+      "namedAgreementHint": "provisions of this Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 270797,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 270859,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 270943,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 271100,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 271330,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 272017,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "The Indenture",
+      "charStart": 275580,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 275837,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 276087,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 276301,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 277405,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 277587,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 277867,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 278224,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 278239,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 278710,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 278939,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 279016,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 279206,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 279275,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 280909,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 280958,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 281045,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 282120,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 282481,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "subject to the terms of the Indenture",
+      "charStart": 282576,
+      "namedAgreementHint": "terms of the Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 282600,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 283106,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 284184,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 285608,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 285809,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "THE INDENTURE",
+      "charStart": 290058,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "THE INDENTURE",
+      "charStart": 290337,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "THE INDENTURE",
+      "charStart": 290634,
+      "namedAgreementHint": "INDENTURE",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 292386,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 292662,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 294114,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 294342,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 295834,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 296065,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 298067,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 298286,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 298682,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 298825,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 299021,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 299266,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 299517,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 299660,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 299856,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 300101,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 300421,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 300564,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 300760,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 301016,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 301454,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 301650,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 301888,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 303052,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 303613,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 303889,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 305089,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 306001,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 306824,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 307995,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 308186,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 308921,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 309055,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 309363,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 309643,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 309771,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 310274,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "subject to the conditions set forth in the Note Guarantee and in the Indenture",
+      "charStart": 310418,
+      "namedAgreementHint": "conditions set forth in the Note Guarantee and in the Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 310483,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-c-indenture-2025",
+      "referenceText": "the Indenture",
+      "charStart": 310879,
+      "namedAgreementHint": "Indenture",
+      "targetDocumentId": "mtn-doc-b-indenture-2024",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "pursuant to the term loan facility under the Vail Holdings Credit Agreement",
+      "charStart": 205959,
+      "namedAgreementHint": "term loan facility under the Vail Holdings Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "as defined in the Vail Holdings Credit Agreement",
+      "charStart": 304369,
+      "namedAgreementHint": "Vail Holdings Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "as defined in the Whistler Credit Agreement",
+      "charStart": 304536,
+      "namedAgreementHint": "Whistler Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "as defined in the Vail Holdings Credit Agreement",
+      "charStart": 305477,
+      "namedAgreementHint": "Vail Holdings Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "pursuant to the Ninth Amended and Restated Credit Agreement",
+      "charStart": 402737,
+      "namedAgreementHint": "Ninth Amended and Restated Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "mtn-doc-d-10k-fy2026",
+      "referenceText": "as defined in the Vail Holdings Credit Agreement",
+      "charStart": 404254,
+      "namedAgreementHint": "Vail Holdings Credit Agreement",
+      "targetDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:mtn-doc-a-tenth-ar-credit-agreement",
+      "name": "EX-10.1 TENTH A&R VHI CREDIT AGREEMENT",
+      "documentIds": [
+        "mtn-doc-a-tenth-ar-credit-agreement"
+      ],
+      "baseDocumentId": "mtn-doc-a-tenth-ar-credit-agreement",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:mtn-doc-b-indenture-2024",
+      "name": "INDENTURE",
+      "documentIds": [
+        "mtn-doc-b-indenture-2024"
+      ],
+      "baseDocumentId": "mtn-doc-b-indenture-2024",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:mtn-doc-c-indenture-2025",
+      "name": "INDENTURE",
+      "documentIds": [
+        "mtn-doc-c-indenture-2025"
+      ],
+      "baseDocumentId": "mtn-doc-c-indenture-2025",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:mtn-doc-d-10k-fy2026",
+      "name": "UNKNOWN",
+      "documentIds": [
+        "mtn-doc-d-10k-fy2026"
+      ],
+      "baseDocumentId": "mtn-doc-d-10k-fy2026",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 4,
+    "totalCharsScanned": 1628060,
+    "relationshipCandidatesGenerated": 0,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 0,
+    "modificationCandidatesGenerated": 2,
+    "crossDocumentReferenceLeadsGenerated": 194,
+    "wallClockMs": 54,
+    "semanticCallsUsed": 0
+  }
+}
