@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "companyKey": "insulet-2021-2026",
+  "issuer": "Insulet Corporation",
+  "method": "independent_human_read_of_source_excerpts",
+  "methodNotes": [
+    "Ground truth selected by human-style reading of extracted source text with simple string search for section numbers.",
+    "NOT generated from Pass A signal logic, isCovenantHeadlineHeading, or structural-heading inventory in audit-discovery-completeness.ts.",
+    "Frozen mustDiscoverPin column mirrors 00/02 expectation pins as a separate label only — pins did not drive item selection.",
+    "Discovery ≠ interpretation ≠ verification ≠ execution."
+  ],
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "file": "doc-a-2021-05-04-credit-agreement.txt",
+      "sourceSha256": "93c61b0395b4d33eb8d361644806256a2a31617fc123a0cb4c999aff3f0e6169",
+      "role": "CREDIT_AGREEMENT"
+    },
+    {
+      "documentId": "doc-b",
+      "file": "doc-b-2025-03-20-indenture.txt",
+      "sourceSha256": "1f2c1960858cfe59a1362d4e8b419b9797f2b98fe03e0355e58c236e3e73b573",
+      "role": "INDENTURE"
+    },
+    {
+      "documentId": "doc-c",
+      "file": "doc-c-2026-09-21-ninth-amendment.txt",
+      "sourceSha256": "702028c2a85517b3c37960a71d996d283e34df90f29c2b12d230246853abb7a5",
+      "role": "AMENDMENT"
+    }
+  ],
+  "itemCount": 4,
+  "items": [
+    {
+      "id": "in-gt-01",
+      "companyKey": "insulet-2021-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "INVESTMENTS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.02",
+      "sourceExcerpt": "SECTION 7.02  Investments . Make any Investments, except:\n\n (a) Investments by the Company or a Restricted Subsidiary in assets that are or were Cash Equivalents when such Investment was made;\n\n (b) loans or advances to officers, directors, managers, partners and employees of the Company (or any direct or indirect parent thereof) or its\nRestricted Subsidiaries (i) for",
+      "sourceCharStart": 629148,
+      "sourceSha256": "93c61b0395b4d33eb8d361644806256a2a31617fc123a0cb4c999aff3f0e6169",
+      "mustDiscoverPin": true,
+      "notes": "SECTION 7.02 Investments — Make any Investments, except…"
+    },
+    {
+      "id": "in-gt-02",
+      "companyKey": "insulet-2021-2026",
+      "category": "financial_ratio_conditions",
+      "expectedFamily": "FINANCIAL",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.09",
+      "sourceExcerpt": "SECTION 7.09  Financial Covenant Leverage Ratio . With respect to the Revolving Credit Facility only, except with the written\nconsent of the Required Revolving Credit Lenders, permit the Financial Covenant Leverage Ratio of the Company and its Restricted Subsidiaries on a consolidated basis as of the last day of a Test Period (commencing with the Test Period ending on or\nabout",
+      "sourceCharStart": 691704,
+      "sourceSha256": "93c61b0395b4d33eb8d361644806256a2a31617fc123a0cb4c999aff3f0e6169",
+      "mustDiscoverPin": true,
+      "notes": "SECTION 7.09 Financial Covenant Leverage Ratio — Revolving Facility leverage test."
+    },
+    {
+      "id": "in-gt-03",
+      "companyKey": "insulet-2021-2026",
+      "category": "provisions_with_cross_document_consequences",
+      "expectedFamily": "INDEBTEDNESS",
+      "operativeDocumentId": "doc-b",
+      "sectionRef": "3.02",
+      "sourceExcerpt": "est payments hereunder.\n\n SECTION 3.02  Limitation on Indebtedness .\n\n (a) The Issuer shall not, and shall not permit any of its Restricted Subsidiaries to, incur any Indebtedness (including Acquired Indebtedness);\n provided ,  however , that the Issuer and any Restricted Subsidiary may incur Indebtedness (including Acquired Indebtedness), if on the date of such incurrence and",
+      "sourceCharStart": 304095,
+      "sourceSha256": "1f2c1960858cfe59a1362d4e8b419b9797f2b98fe03e0355e58c236e3e73b573",
+      "mustDiscoverPin": true,
+      "notes": "Indenture SECTION 3.02 Limitation on Indebtedness — second instrument parallel to credit agreement negatives."
+    },
+    {
+      "id": "in-gt-04",
+      "companyKey": "insulet-2021-2026",
+      "category": "amendments_modifying_removing_prior_restrictions",
+      "expectedFamily": "OTHER",
+      "operativeDocumentId": "doc-c",
+      "sectionRef": "2",
+      "sourceExcerpt": "the Credit Agreement is hereby amended to delete the stricken text (indicated textually in the same manner as the following\nexample:   stricken text   ) and to add the double-underlined text (indicated textually in the same manner as the\nfollowing example:    double-underlined text   ) as set forth in\nthe conformed copy of the Credit Agreement attached as  Exhibit A  hereto.\n\n",
+      "sourceCharStart": 5213,
+      "sourceSha256": "702028c2a85517b3c37960a71d996d283e34df90f29c2b12d230246853abb7a5",
+      "mustDiscoverPin": false,
+      "notes": "Ninth Amendment SECTION 2 — conformed redline amends Credit Agreement covenants; amendments 1–8 missing from fixture."
+    }
+  ]
+}

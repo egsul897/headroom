@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0",
+  "companyKey": "knife-river-2023-2026",
+  "issuer": "Knife River Corporation",
+  "method": "independent_human_read_of_source_excerpts",
+  "methodNotes": [
+    "Ground truth selected by human-style reading of extracted source text with simple string search for section numbers.",
+    "NOT generated from Pass A signal logic, isCovenantHeadlineHeading, or structural-heading inventory in audit-discovery-completeness.ts.",
+    "Frozen mustDiscoverPin column mirrors 00/02 expectation pins as a separate label only — pins did not drive item selection.",
+    "Discovery ≠ interpretation ≠ verification ≠ execution."
+  ],
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "file": "doc-a-2023-05-31-credit-agreement.txt",
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "role": "CREDIT_AGREEMENT"
+    },
+    {
+      "documentId": "doc-b",
+      "file": "doc-b-2025-03-07-first-amendment.txt",
+      "sourceSha256": "15db4e11249692d80f6c7aeaae8671f71fc2e1423566a43e30d32b4711bfeb57",
+      "role": "AMENDMENT"
+    },
+    {
+      "documentId": "doc-c",
+      "file": "doc-c-2026-05-15-second-amendment.txt",
+      "sourceSha256": "b0f57ec27a6ce1e0ff08991b9414e941d472e3e1e89815b05cc866d939d9b155",
+      "role": "AMENDMENT"
+    }
+  ],
+  "itemCount": 12,
+  "items": [
+    {
+      "id": "kr-gt-01",
+      "companyKey": "knife-river-2023-2026",
+      "category": "restrictions_with_explicit_section_headings",
+      "expectedFamily": "INDEBTEDNESS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.01",
+      "sourceExcerpt": "Section 7.01             Indebtedness  .\n\n    \n\n   (a)                Incur any Indebtedness (including Acquired\n    Indebtedness);  provided  that the Borrower and any Restricted Subsidiary may incur Indebtedness (including Acquired Indebtedness) in an amount not to exceed the Incremental Amount available as of the date of Incurrence (subject to  Section\n      1.02(i) ); ",
+      "sourceCharStart": 733877,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Body Section 7.01 Indebtedness prohibition with Incremental Amount / Ratio Debt proviso."
+    },
+    {
+      "id": "kr-gt-02",
+      "companyKey": "knife-river-2023-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "LIENS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.02",
+      "sourceExcerpt": "Section 7.02            Limitations  on Liens  . Create, incur or permit to exist any Lien on any of its assets or properties (each, a “ Subject Lien ”), except if such Subject Lien is a Permitted Lien.\n\n    \n\n   With respect to any Lien that was permitted to secure such Indebtedness at the time of the incurrence of such Indebtedness, such Lien shall also\n    be permitted to",
+      "sourceCharStart": 757488,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Section 7.02 Limitations on Liens — Subject Lien / Permitted Lien restriction."
+    },
+    {
+      "id": "kr-gt-03",
+      "companyKey": "knife-river-2023-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "ASSET_SALES",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.03",
+      "sourceExcerpt": "Section 7.03             Fundamental\n\n        Changes  . Merge, dissolve, liquidate, amalgamate, consolidate with or into another Person, or dispose of (whether in one transaction or in a series of transactions) all or substantially all of its assets (whether now owned or hereafter\n    acquired) to or in favor of any Person, except that, (other than in the case of  clause (e) ",
+      "sourceCharStart": 757926,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Section 7.03 Fundamental Changes — merger/disposition of all or substantially all assets."
+    },
+    {
+      "id": "kr-gt-04",
+      "companyKey": "knife-river-2023-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "ASSET_SALES",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.04",
+      "sourceExcerpt": "Section 7.04             Asset\n        Dispositions  .\n\n    \n\n   (a)                 Cause or make any\n      Asset Disposition, unless:\n\n    \n\n         (1)\n         the Borrower or such Restricted Subsidiary, as applicable, receives consideration (including by way of relief from, or by any other Person assuming responsibility for, any liabilities, contingent or otherwise) at\n ",
+      "sourceCharStart": 762470,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": false,
+      "notes": "Section 7.04 Asset Dispositions — not among frozen must-discover pins (pins use 7.03 for ASSET_SALES)."
+    },
+    {
+      "id": "kr-gt-05",
+      "companyKey": "knife-river-2023-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "RESTRICTED_PAYMENTS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.05",
+      "sourceExcerpt": "Section 7.05             Restricted\n\n        Payments  . (a)\n\n    \n\n         (1)\n         Declare or pay any dividend or make any distribution on or in respect of the Borrower’s or any Restricted Subsidiary’s Capital Stock (including any such payment in connection with any merger or consolidation\n          involving the Borrower or any of the Restricted Subsidiaries) except:\n\n",
+      "sourceCharStart": 768668,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Section 7.05 Restricted Payments chapeau and nested dividend/distribution restriction."
+    },
+    {
+      "id": "kr-gt-06",
+      "companyKey": "knife-river-2023-2026",
+      "category": "financial_ratio_conditions",
+      "expectedFamily": "FINANCIAL",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.08",
+      "sourceExcerpt": "Section 7.08             Financial\n\n        Covenant  s.\n\n    \n\n   (a)       Permit the Consolidated Total Net Leverage Ratio as of the last day of any fiscal quarter of the Borrower (commencing with the last day of\n    the first full fiscal quarter to end after the Closing Date) to be greater than 4.75 to 1.00 (the “ Covenant Leverage Ratio ”);  provided  that the Covenant",
+      "sourceCharStart": 814191,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Section 7.08 Financial Covenants — Consolidated Total Net Leverage Ratio 4.75 to 1.00 with step-up proviso."
+    },
+    {
+      "id": "kr-gt-07",
+      "companyKey": "knife-river-2023-2026",
+      "category": "exceptions_provisos",
+      "expectedFamily": "INDEBTEDNESS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.01(b)",
+      "sourceExcerpt": "(b)                The provisions of\n       Section 7.01(a)  will not prohibit the incurrence of the following Indebtedness (collectively, “ Permitted Debt ”):\n\n    \n\n         (1)\n         (w) Indebtedness incurred under the Loan Documents, including any refinancing thereof in accordance with  Section 2.18 , (x) Credit Agreement Refinancing Debt and any Refinancing",
+      "sourceCharStart": 735612,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Nested exception/proviso: Section 7.01(a) will not prohibit listed Permitted Debt baskets under 7.01(b)."
+    },
+    {
+      "id": "kr-gt-08",
+      "companyKey": "knife-river-2023-2026",
+      "category": "restrictions_nested_in_paragraphs_subsections",
+      "expectedFamily": "RESTRICTED_PAYMENTS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.05",
+      "sourceExcerpt": "Declare or pay any dividend or make any distribution on or in respect of the Borrower’s or any Restricted Subsidiary’s Capital Stock (including any such payment in connection with any merger or consolidation\n          involving the Borrower or any of the Restricted Subsidiaries) except:\n\n    \n\n         (a)\n         dividends, payments or distributions payable in Capital Stock",
+      "sourceCharStart": 768758,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Nested RP operative paragraph 7.05(a)(1) — dividend/distribution ban with sub-exceptions; not a separate TOC heading."
+    },
+    {
+      "id": "kr-gt-09",
+      "companyKey": "knife-river-2023-2026",
+      "category": "defined_term_dependencies",
+      "expectedFamily": "RESTRICTED_PAYMENTS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.05",
+      "sourceExcerpt": "ITDA (the foregoing  clause (y) , the “ Available Amount Builder Basket ”).\n\n    \n\n   For the avoidance of doubt, the acquisition by and/or transfer to the Borrower and/or any of its Subsidiaries of the Spinco Business and the\n    related transactions in connection with the Spin-Off shall be deemed not to increase the Available Amount Builder Basket.\n\n    \n\n   (b)             ",
+      "sourceCharStart": 777634,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Defined-term dependency: Available Amount Builder Basket capacity constructed inside Section 7.05(a)(y)."
+    },
+    {
+      "id": "kr-gt-10",
+      "companyKey": "knife-river-2023-2026",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "expectedFamily": "AFFILIATE_TRANSACTIONS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "6.18",
+      "sourceExcerpt": "Section 6.18             Transactions\n\n        with Affiliates  .\n\n    \n\n   (a)                 Not enter into or\n      conduct any transaction (including the purchase, sale, lease or exchange of any property or the rendering of any service) with any Affiliate of the Borrower (an “ Affiliate Transaction ”) involving value in excess of the greater of (i) $15 ,000,000\n\n     and",
+      "sourceCharStart": 718433,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": false,
+      "notes": "Section 6.18 Transactions with Affiliates — Affiliate Transaction value threshold; affirmative-article placement."
+    },
+    {
+      "id": "kr-gt-11",
+      "companyKey": "knife-river-2023-2026",
+      "category": "amendments_modifying_removing_prior_restrictions",
+      "expectedFamily": "OTHER",
+      "operativeDocumentId": "doc-b",
+      "sectionRef": "2.1",
+      "sourceExcerpt": "the Credit Agreement is hereby amended to delete the stricken text (indicated textually in the same manner as the following example:   stricken text  ) and to add the double-underlined text (indicated textually in the same manner as the following example:   double-underlined text  ) as set forth in   Exhibit A   attached hereto;\n  (b)    Schedule 1.01(c) to the Credit",
+      "sourceCharStart": 9756,
+      "sourceSha256": "15db4e11249692d80f6c7aeaae8671f71fc2e1423566a43e30d32b4711bfeb57",
+      "mustDiscoverPin": false,
+      "notes": "First Amendment SECTION 2.1 Amendments to Credit Agreement — redline delete/add modifying prior CA restrictions via Exhibit A."
+    },
+    {
+      "id": "kr-gt-12",
+      "companyKey": "knife-river-2023-2026",
+      "category": "provisions_with_cross_document_consequences",
+      "expectedFamily": "INDEBTEDNESS",
+      "operativeDocumentId": "doc-a",
+      "sectionRef": "7.01(b)",
+      "sourceExcerpt": "Indebtedness represented by (a) the 7.750% Notes (other than any Additional Notes (as defined in the 7.750% Notes Documents)), including any Guarantee thereof, (b) any Indebtedness (other than Indebtedness incurred\n          pursuant to  clauses (1)  and  (4)(a)  of this  Section 7.01(b) ) outstanding on the Closing Date and any Guarantees thereof and, to the extent the",
+      "sourceCharStart": 737367,
+      "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+      "mustDiscoverPin": true,
+      "notes": "Permitted Debt basket for 7.750% Notes / Notes Documents — restriction interacts with separate notes instrument."
+    }
+  ]
+}
