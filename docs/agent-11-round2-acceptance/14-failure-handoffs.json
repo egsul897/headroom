@@ -1,0 +1,63 @@
+{
+  "artifact": "AGENT11_ROUND2_FAILURE_HANDOFFS",
+  "policy": "Do not fix in Agent #11. Hand to owning workstream. Do not self-merge OPEN PRs.",
+  "failures": [
+    {
+      "id": "A11-R2-F01",
+      "owner": "HEADROOM-7 (#283 OPEN) / package-graph operative restatement + HEADROOM-3 consumer",
+      "severity": "CRITICAL",
+      "summary": "Operative document not resolved to doc-b (Fifth A&R) as of 2026-09-15",
+      "evidence": "10d-operative-state.json",
+      "observed": {
+        "operativeDocumentId": null,
+        "status": "REVIEW_REQUIRED",
+        "reviewReason": "3 restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641)."
+      },
+      "expected": "doc-b",
+      "disposition": "TESTED_AND_BLOCKED"
+    },
+    {
+      "id": "A11-R2-F02",
+      "owner": "HEADROOM-6 (#287 OPEN) recursive context retrieval",
+      "severity": "HIGH",
+      "summary": "Context retrieval SUFFICIENT rate below 80% on GT-anchored probes",
+      "evidence": "10-clause-coverage.json",
+      "observed": "SUFFICIENT 0/10",
+      "disposition": "TESTED_AND_BLOCKED",
+      "note": "#287 not merged — Round 2 cannot credit recursive context improvements"
+    },
+    {
+      "id": "A11-R2-F03",
+      "owner": "HEADROOM-1 / offline compile verified IR path",
+      "severity": "HIGH",
+      "summary": "No independently verified executable IR under offline no-paid-inference policy",
+      "evidence": "10-clause-coverage.json + 10e-offline-package-compile.json",
+      "note": "Fixture/vertical-slice IR not counted as independently compiled IR",
+      "disposition": "TESTED_AND_BLOCKED"
+    },
+    {
+      "id": "A11-R2-F04",
+      "owner": "HEADROOM-9 (#281 OPEN) financial statement pathway + package attachment",
+      "severity": "HIGH",
+      "summary": "Financial-evidence module merged (#278/#279) but no authenticated AN financial package — completeness 0/1",
+      "evidence": "10-capacity-tracks.json",
+      "disposition": "TESTED_AND_BLOCKED"
+    },
+    {
+      "id": "A11-R2-F06",
+      "owner": "HEADROOM-8 (#282 OPEN) / Host IdP activation",
+      "severity": "HIGH",
+      "summary": "Production trusted-issuer activation remains BLOCKED without registered host IdP",
+      "evidence": "10-capacity-tracks.json (verifiedHandoff.productionActivation)",
+      "disposition": "TESTED_AND_BLOCKED"
+    },
+    {
+      "id": "A11-R2-F07",
+      "owner": "Agent #10 (#285 OPEN) unified verified transaction execution",
+      "severity": "HIGH",
+      "summary": "#285 not merged — unified production transaction execution not on tip",
+      "evidence": "01-pr-inventory.json",
+      "disposition": "IMPLEMENTED_BUT_UNMERGED"
+    }
+  ]
+}
