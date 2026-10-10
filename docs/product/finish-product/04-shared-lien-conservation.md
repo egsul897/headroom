@@ -1,8 +1,9 @@
 # Shared-lien conservation — HIGH merge-hold evidence
 
 **Separate from:** authentic affirmative acceptance (`03-authentic-affirmative-acceptance.md` / SHAs `887b41ab` / `380054b7`)  
-**Verdict:** `SHARED_LIEN_CONSERVATION_REMEDIATED_PENDING_CI`  
-**Tip:** `11452d74db118654dbbab6483ec20b3067ca955b`  
+**Verdict:** `SHARED_LIEN_CONSERVATION_REMEDIATED`  
+**Tip:** `8fda7b53b808d960a3f253dd239b3d119b7e37e8`  
+**CI at tip:** 6/6 SUCCESS (canonical-compiler, home-overview, p3-r0-soft-gate, dashboard-invent-absence, Vercel, Vercel Preview Comments)  
 **Auto-merge:** **no** · certification **not** advanced · no fabricated evidence · no Neon writes · no paid inference
 
 ## Defect reproduced (pre-fix on auto-lien path)
