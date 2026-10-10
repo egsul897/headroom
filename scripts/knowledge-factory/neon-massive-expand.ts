@@ -4,9 +4,14 @@
  *   # Dry-run (no Neon writes)
  *   npx tsx scripts/knowledge-factory/neon-massive-expand.ts --dry-run --max=5
  *
- *   # Live (requires explicit write gate)
+ *   # Live — requires BOTH operator tokens (enforced in code, not policy-only):
+ *   #   KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE
+ *   #   KF_GRAPH_REMEDIATION_RESUME=I_RESUME_GRAPH_WRITES_AFTER_REMEDIATION
+ *   # Do not resume while TOCTOU/UNIQUE, historical duplicates, self-loops, or
+ *   # untested migration rollback remain open blockers.
  *   HEADROOM_SEC_FETCH_OWNER=WS-CKF \
  *   KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE \
+ *   KF_GRAPH_REMEDIATION_RESUME=I_RESUME_GRAPH_WRITES_AFTER_REMEDIATION \
  *   npx tsx scripts/knowledge-factory/neon-massive-expand.ts --max=25 --issuers=12
  */
 import { runNeonExpandBatch } from "../../lib/knowledge-factory/continuous/neon-expand-batch";

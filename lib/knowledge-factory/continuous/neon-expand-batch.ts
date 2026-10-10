@@ -26,6 +26,7 @@ import type { DiscoveredFilingDocument, KnowledgeSourceRecord } from "../types";
 import { DIVERSITY_EXPAND_TARGETS, scoreExhibitForTargets } from "./target-issuers";
 import { buildSyntheticCalculationLibrary, type CalculationExampleCase } from "./calculation-examples";
 import { MASS_LIVE_ENV, MASS_LIVE_TOKEN } from "../acquisition/persistence-mode";
+import { assertCorpusGraphWriteAuthorized } from "./graph-write-gate";
 
 export interface NeonExpandBatchOptions {
   repoRoot?: string;
@@ -714,8 +715,13 @@ export async function runNeonExpandBatch(
 ): Promise<{ result: NeonExpandBatchResult; calculationCases: CalculationExampleCase[] }> {
   const repoRoot = options.repoRoot ?? process.cwd();
   const live = Boolean(options.live);
-  if (live && !liveAuthorized()) {
-    throw new Error(`Live Neon expand refused: set ${MASS_LIVE_ENV}=${MASS_LIVE_TOKEN}`);
+  if (live) {
+    // Dual operator gate: mass live-write token AND explicit remediation resume.
+    // liveAuthorized() alone is insufficient while quality remediation blockers remain open.
+    assertCorpusGraphWriteAuthorized("neon-massive-expand");
+    if (!liveAuthorized()) {
+      throw new Error(`Live Neon expand refused: set ${MASS_LIVE_ENV}=${MASS_LIVE_TOKEN}`);
+    }
   }
 
   process.env.HEADROOM_SEC_FETCH_OWNER = process.env.HEADROOM_SEC_FETCH_OWNER || "WS-CKF";

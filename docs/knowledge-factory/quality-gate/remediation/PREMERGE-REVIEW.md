@@ -7,6 +7,8 @@
 
 Production graph promotion and the dedupe migration remain **BLOCKED** until an authorized isolated-DB apply+rollback proof and `UNIQUE(discoveryKey)` are in place (see unresolved risks).
 
+**Expand/persist pause is code-enforced** (dual env tokens) — see `EXPAND-PAUSE-ENFORCEMENT.md`. Not policy-only. Does not claim DB concurrency safety.
+
 ---
 
 ## 1. Concurrent-writer idempotence (vs sequential double-run)

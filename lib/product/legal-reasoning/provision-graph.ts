@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { summarizeFromStoredMetadata, type CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import type { RelationshipKind } from "../../knowledge-factory/types";
 import { detectPatternsInText } from "../../knowledge-factory/patterns/library";
+import { assertCorpusGraphWriteAuthorized } from "../../knowledge-factory/continuous/graph-write-gate";
 
 export interface ProvisionGraphEdge {
   fromSourceId: string;
@@ -205,6 +206,11 @@ export async function persistProvisionGraph(params?: {
   let skippedExisting = 0;
 
   if (!params?.dryRun) {
+    // Global corpus rebuild (no companyId) requires dual operator resume tokens.
+    // Company-scoped paths are not used here today; gate any non-dryRun persist.
+    if (!params?.companyId) {
+      assertCorpusGraphWriteAuthorized("global-provision-graph-persist");
+    }
     // Full scan — never cap existing IDs (prior take:20000 caused duplicate amplification).
     const existingIds = await loadExistingProvisionDiscoveryIds();
 

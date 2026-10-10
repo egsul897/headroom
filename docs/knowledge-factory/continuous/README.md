@@ -19,9 +19,13 @@ npm run kf:neon-baseline
 # Dry-run (no Neon writes)
 npm run kf:neon-massive-expand -- --dry-run --max=5
 
-# Live batch (explicit write gate + SEC identity)
+# Live batch — PAUSED under quality remediation (dual operator tokens, code-enforced).
+# See docs/knowledge-factory/quality-gate/remediation/EXPAND-PAUSE-ENFORCEMENT.md.
+# Do not resume while TOCTOU/UNIQUE, 18984 duplicates, 93 self-loops, or untested
+# migration rollback remain open. Does not claim DB concurrency safety.
 export HEADROOM_SEC_FETCH_OWNER=WS-CKF
 export KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE
+export KF_GRAPH_REMEDIATION_RESUME=I_RESUME_GRAPH_WRITES_AFTER_REMEDIATION
 export SEC_EDGAR_CONTACT_EMAIL='authorized@email'
 npm run kf:neon-massive-expand -- --max=25 --issuers=12
 ```

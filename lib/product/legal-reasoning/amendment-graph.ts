@@ -13,6 +13,7 @@ import type {
   KnowledgeSourceRecord,
 } from "../../knowledge-factory/types";
 import { padCik, partiesLikelySame, buildPartyIdentity } from "./party-identity";
+import { assertCorpusGraphWriteAuthorized } from "../../knowledge-factory/continuous/graph-write-gate";
 
 export interface AmendmentGraphPersistResult {
   sourcesScanned: number;
@@ -177,6 +178,11 @@ export async function persistAmendmentGraph(params?: {
   let linkedMetadataUpdates = 0;
 
   if (!params?.dryRun) {
+    // Corpus-wide rebuild requires dual operator resume tokens.
+    // Customer upload path passes companyId and remains available for product workflows.
+    if (!params?.companyId) {
+      assertCorpusGraphWriteAuthorized("global-amendment-graph-persist");
+    }
     for (const r of discovered) {
       // Never persist agreement-level self-loops (invalid self-amendments).
       if (r.sourceId === r.targetId) {
