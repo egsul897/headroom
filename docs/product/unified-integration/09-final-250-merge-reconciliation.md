@@ -27,7 +27,13 @@ P0 remediation commits (`592d53c8` … `def5e4eca`) remain ancestors of the tip.
 - Pre-fix: CLEAR @ `$150m`, EXACT max `$200m` (false favorable)
 - Conserved reference: pool `$100m` → BLOCKED @ `$150m`; maxCapacity ≤ `$100m`
 
-**Fix:** Track `sharedLienConstraintRemaining` keyed by constraint id while building the pool; capacity counted for one lien is subtracted before the next. Liens without a shared constraint remain additive.
+**Fix (landed on tip via `556a2c6e`, reconciled with this agent’s tests/docs):**
+
+- Reserve attributed contribution per binding shared constraint (`lienSharedReserved`), across **all** binding constraints (not only the first via `constraintFor`).
+- Subsequent independent liens cannot re-count reserved headroom.
+- Genuinely unconstrained liens remain additive.
+- Fail closed on missing constraint identity, non-authoritative utilization, and unquantified caps.
+- Adversarial coverage: `tests/solver/shared-capacity-double-count-remediation.test.ts` (A–R + oracle) and `tests/solver/secured-debt-lien-adversarial.test.ts` (reference-calculated conservation suite).
 
 ## Preserved
 
