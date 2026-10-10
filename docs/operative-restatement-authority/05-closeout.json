@@ -31,16 +31,33 @@
   "integrationCommitSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
   "headroom6Pr": "https://github.com/egsul897/headroom/pull/287",
   "legalAuthorityVerdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
-  "reviewDisposition": "READY_FOR_FOCUSED_HUMAN_REVIEW",
+  "reviewDisposition": "RECONCILIATION_COMPLETE_STOP_ISOLATED_DEV",
   "mergeDisposition": "AWAITING_HUMAN_APPROVAL_BRANCH_PROTECTION",
   "productionAuthorityActive": false,
   "cpSatisfactionAsserted": false,
   "remainingBlockers": [
     "Human approval / branch-protection merge required (no self-merge)",
-    "Package-graph RESTATES remains REVIEW_REQUIRED — provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
-    "CP satisfaction NOT_INDEPENDENTLY_PROVEN — cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
+    "Package-graph RESTATES remains REVIEW_REQUIRED \u2014 provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
+    "CP satisfaction NOT_INDEPENDENTLY_PROVEN \u2014 cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
     "Production capacity activation remains refused (financial/utilization gates separate)"
   ],
   "note": "lastFullyGreenTipSha is the CI-green tip before this metadata commit. Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId.",
-  "localTipRegressionEvidence": "docs/operative-restatement-authority/07-tip-regression-evidence.txt"
+  "localTipRegressionEvidence": "docs/operative-restatement-authority/07-tip-regression-evidence.txt",
+  "canonicalReconciliation": {
+    "verdict": "AGENT_7_CANONICAL_INTEGRATION_DEFECT",
+    "report": "docs/operative-restatement-authority/08-canonical-293-reconciliation.md",
+    "mainSha": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+    "pr283CurrentSha": "50ab46adb298d60a2630d995a9506f5c3598dc5d",
+    "pr287CurrentSha": "603426c3e59b2f16b5c7b26a7e373c98de45c4cf",
+    "pr293CurrentSha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1",
+    "previouslyReviewedTip": "0da545027365db571c4e7c51352424a167f3c14f",
+    "interveningProductionCodeChanged": false,
+    "missingOn293": [
+      "retrieval-source.ts",
+      "bindCandidateToOperativeRetrievalSource offline-compile wiring",
+      "retrieval-source-binding.test.ts"
+    ],
+    "autonationOperativeDocAccuracy": "0/1",
+    "mergeRecommendation": "Absorb retrieval binding into #293; do not independently merge #283/#287"
+  }
 }
