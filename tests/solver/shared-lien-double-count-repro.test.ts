@@ -178,7 +178,7 @@ describe("HIGH: shared-constraint double-count across two independent liens", ()
       followsRefinancing: false,
       currentUsage: used,
       currentUsageAuthoritative: true,
-      currentUsageStatus: "VERIFIED_PARTIAL",
+      currentUsageStatus: "PARTIAL_ATTRIBUTED_USAGE",
       sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
     };
     const relationships = [
