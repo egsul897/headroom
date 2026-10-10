@@ -233,11 +233,23 @@ function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documen
   return { text, evidenceState };
 }
 
-export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
+export function retrieveOperativeSource(
+  state: RetrievalState,
+  index: StructuralIndex,
+  documentId: string,
+  nodeId: string,
+  options?: { narrowedOperativeText?: string | null; narrowedTerm?: string | null },
+): ContextItem | null {
   const node = index.getNodeById(nodeId);
   if (!node) return null;
-  const { text, evidenceState } = operativeExcerpt(state, index, documentId, node, false);
-  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
+  const { text: baseText, evidenceState } = operativeExcerpt(state, index, documentId, node, false);
+  const narrowed = options?.narrowedOperativeText?.trim();
+  const text = narrowed && narrowed.length > 0 ? narrowed : baseText;
+  const reason =
+    narrowed && options?.narrowedTerm
+      ? `Definitions-section anchor narrowed to the operative definition unit for "${options.narrowedTerm}" — the full Section ${node.sectionRef} dump is not treated as this candidate's operative source (HEADROOM-6).`
+      : "The discovered covenant candidate's own source text.";
+  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, options?.narrowedTerm ?? node.sectionRef, options?.narrowedTerm ? `Definition of "${options.narrowedTerm}"` : `Section ${node.sectionRef}`, text, reason, 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 
 /**

@@ -1,0 +1,53 @@
+{
+  "artifact": "HEADROOM-6_FINAL_DISPOSITION",
+  "verdict": "TECHNICALLY_ACCEPTED_AWAITING_HUMAN_APPROVAL",
+  "prUrl": "https://github.com/egsul897/headroom/pull/287",
+  "verifiedSha": "b2bff75e931e90b3fe2a4608be052718a3ace8d4",
+  "reconciledTipSha": "4f75e413f2e4e93eddc850514d2a0b954b80c22a",
+  "mainShaAtDisposition": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "mergeSha": null,
+  "finalMainSha": null,
+  "selfMerge": false,
+  "safeToArchive": true,
+  "doNotReopenWithoutRegression": true,
+  "scope": {
+    "retrievalOnly": true,
+    "candidateSpanUntouchedVsMain": true,
+    "amendmentUntouchedVsMain": true,
+    "packageGraphUntouchedByThisPrDelta": true,
+    "sealedWorLegalReferenceUntouched": true,
+    "sealedLegalReferenceSha256": "591097d967a496e129522355376ef31a5245218eca3e94943dd926ef05495b97"
+  },
+  "operativeSourceResolver": {
+    "canonical": "lib/contract-model/compiler/candidate-span.ts#resolveOperativeSource",
+    "pipelineUsesResolveOperativeSource": true,
+    "pipelineRawDescendantsGetNodeText": false
+  },
+  "worOnReconciledTip": {
+    "denom": 10,
+    "SUFFICIENT": 1,
+    "REVIEW_REQUIRED": 9,
+    "BUDGET_EXCEEDED": 0,
+    "INCOMPLETE": 0,
+    "falseSufficient": 0,
+    "sufficientClauseIds": [
+      "WOR-B-6.01"
+    ],
+    "thresholdsLowered": false,
+    "fabricatedEvidence": false
+  },
+  "integrationWith283": {
+    "pr": "https://github.com/egsul897/headroom/pull/283",
+    "state": "OPEN",
+    "containsVerified287Tip": true,
+    "bindingSurface": "lib/contract-model/compiler/operative-authority/retrieval-source.ts (bindCandidateToOperativeRetrievalSource \u2192 buildCovenantContextBundle)",
+    "note": "Agent #7 owns operative-document succession and remaps candidates onto governingDocumentId before Phase 2D retrieval. Agent #6 does not invent restatement authority."
+  },
+  "nextWorkstreamHandoff": "docs/headroom-6-recursive-legal-context/18-next-legal-context-handoff.md",
+  "outstandingBlockers": [
+    "Human approving review + merge of #287 under branch protection",
+    "Post-merge: re-run WOR + retrieval regressions on merged main",
+    "#283 remains OPEN for operative-authority human review (consumes #287 tip)"
+  ],
+  "mainMergeCommitSha": "44088dc79f155c36f13dd370bcc1e61b72727a60"
+}

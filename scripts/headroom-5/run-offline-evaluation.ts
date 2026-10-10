@@ -35,6 +35,7 @@ import { buildPackageGraph } from "../../lib/contract-model/compiler/package-gra
 import { PACKAGE_GRAPH_PIPELINE_VERSION } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
 import { buildCovenantContextBundle } from "../../lib/contract-model/compiler/context-retrieval/pipeline";
+import { resolveCanonicalBodyAnchor } from "../../lib/contract-model/compiler/context-retrieval/body-anchor";
 import { RETRIEVAL_ALGORITHM_VERSION } from "../../lib/contract-model/compiler/context-retrieval/types";
 import { runAmendmentPipeline } from "../../lib/contract-model/compiler/amendment/pipeline";
 import { computeOperativeContractState, buildNodeSupersessionIndex } from "../../lib/contract-model/compiler/amendment/operative-state";
@@ -109,7 +110,17 @@ function nodeText(index: StructuralIndex, nodeId: string): string {
   }
 }
 
-function probeCandidate(documentId: string, node: StructuralNode, family: string): DiscoveredCandidate {
+/** Defined-term focus for definition-section probes (sectionRef 1.01). Never issuer-specific — derived from GT title. */
+const DEFINITION_PROBE_TERMS: Record<string, string> = {
+  "WOR-B-PERM-LIENS": "Permitted Liens",
+  "WOR-B-DEF-ICR": "Interest Coverage Ratio",
+  "WOR-B-DEF-EBITDA": "Consolidated EBITDA",
+  "WOR-B-FACILITY": "Aggregate Commitment",
+};
+
+function probeCandidate(documentId: string, node: StructuralNode, family: string, clauseId?: string): DiscoveredCandidate {
+  const termHint = clauseId ? DEFINITION_PROBE_TERMS[clauseId] : undefined;
+  const evidenceSignals = ["gt_probe", ...(termHint ? [`DEFINED_TERM:${termHint}`] : [])];
   return {
     discoveryId: `probe:${documentId}:${node.nodeId}`,
     documentId,
@@ -122,11 +133,11 @@ function probeCandidate(documentId: string, node: StructuralNode, family: string
     roleNormalizationStatus: "VALID_CANONICAL",
     familiesRaw: [family],
     familiesNormalizationStatus: "VALID_CANONICAL",
-    description: `Independent GT probe for ${node.sectionRef}`,
+    description: termHint ? `Definition of ${termHint}` : `Independent GT probe for ${node.sectionRef}`,
     multipleRulesLikely: false,
     definedTermDependencyLikely: true,
     discoveryMethods: ["DETERMINISTIC_SIGNAL"],
-    evidenceSignals: ["gt_probe"],
+    evidenceSignals,
     reviewStatus: "AUTO_ACCEPTED",
     confidence: null,
     sourceCitation: `${documentId} §${node.sectionRef}`,
@@ -303,11 +314,15 @@ async function main() {
 
     const sectionNodes = findSectionNodes(allNodes, documentId, sectionRef);
     const foundStructurally = sectionNodes.length > 0;
-    // Prefer the longest DESCENDANTS span as the body occurrence; TOC entries are short page-number stubs.
+    // HEADROOM-6: canonical body-anchor ranking (TOC/furniture vs operative body).
+    // Longest-DESCENDANTS remains the diagnostic contrast baseline for naive first-match.
+    const bodyResolution = resolveCanonicalBodyAnchor(index, documentId, sectionRef);
     const ranked = sectionNodes
       .map((n) => ({ node: n, text: nodeText(index, n.nodeId) }))
       .sort((a, b) => b.text.length - a.text.length);
-    const best = ranked[0] ?? null;
+    const best = bodyResolution.selected
+      ? { node: bodyResolution.selected, text: nodeText(index, bodyResolution.selected.nodeId) }
+      : ranked[0] ?? null;
     const firstMatch = sectionNodes[0] ?? null; // emission-order / naive selection
     const primary = best?.node ?? null;
     const spanText = best?.text ?? "";
@@ -349,7 +364,12 @@ async function main() {
     let contextBundle = null;
     let contextCompleteness = null;
     if (primary) {
-      const candidate = probeCandidate(documentId, primary, family === "DEFINITION" ? "OTHER" : family);
+      const candidate = probeCandidate(
+        documentId,
+        primary,
+        family === "DEFINITION" ? "DEFINITIONS_CALCULATION_RULES" : family,
+        clauseId,
+      );
       const exactTermsByDocument = new Map<string, Map<string, string>>();
       for (const d of documents) {
         const m = new Map<string, string>();
@@ -383,6 +403,19 @@ async function main() {
         definitionItemCount: bundle.items.filter((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY").length,
         retrievalAlgorithmVersion: RETRIEVAL_ALGORITHM_VERSION,
         stopReasons: bundle.stopReasons,
+        bodyAnchorStatus: bodyResolution.status,
+        bodyAnchorConfidence: bodyResolution.confidence,
+        tocCollisionResolved: bodyResolution.tocCollisionResolved,
+        contextManifest: bundle.contextManifest
+          ? {
+              sufficiencyClassification: bundle.contextManifest.sufficiencyClassification,
+              operativeAuthorityStatus: bundle.contextManifest.operativeAuthorityStatus,
+              missingDependencyCount: bundle.contextManifest.missingDependencies.length,
+              ambiguityCount: bundle.contextManifest.ambiguities.length,
+              definitionGraphNodes: bundle.contextManifest.definitionDependencyGraph.length,
+              textCharsUsed: bundle.contextManifest.budgetAccounting.textCharsUsed,
+            }
+          : null,
       };
       const bundleText = bundle.items.map((i) => `${i.excerptText ?? ""}\n${i.sourceCitation ?? ""}`).join("\n");
       const defHits = requiredDefs.filter((t) => bundleText.toLowerCase().includes(t.toLowerCase()));
@@ -640,6 +673,7 @@ async function main() {
   const contextSufficient = gtClauses.filter((c) => c.contextBundle?.sufficiencyState === "SUFFICIENT").length;
   const contextBudgetExceeded = gtClauses.filter((c) => c.contextBundle?.sufficiencyState === "BUDGET_EXCEEDED").length;
   const contextIncomplete = gtClauses.filter((c) => c.contextBundle?.sufficiencyState === "INCOMPLETE").length;
+  const contextReviewRequired = gtClauses.filter((c) => c.contextBundle?.sufficiencyState === "REVIEW_REQUIRED").length;
   const contextAttempted = gtClauses.filter((c) => c.contextCompleteness).length;
   const falseExecutableRateNum = gtClauses.filter((c) => c.falseExecutable).length;
   const correctRefusalNum = gtClauses.filter((c) => c.correctRefusal === true).length;
@@ -690,8 +724,9 @@ async function main() {
         sufficiencySufficient: contextSufficient,
         sufficiencyBudgetExceeded: contextBudgetExceeded,
         sufficiencyIncomplete: contextIncomplete,
+        sufficiencyReviewRequired: contextReviewRequired,
         sufficiencySufficientRate: contextAttempted ? contextSufficient / contextAttempted : null,
-        note: "GT-anchored probes on longest body section node (not TOC stub). Substring presence of required definition names is necessary but not sufficient — sufficiencyState is the governing completeness signal.",
+        note: "GT-anchored probes on canonical body-anchor SECTION nodes (TOC stubs rejected). Substring presence of required definition names is necessary but not sufficient — sufficiencyState is the governing completeness signal. HEADROOM-6 retrieval v6.",
       },
       D_cross_document_amendment: {
         docAClassification: docAClass,
