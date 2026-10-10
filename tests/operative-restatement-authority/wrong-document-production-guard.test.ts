@@ -219,6 +219,32 @@ describe("wrong-document production promotion guard", () => {
     expect(wrongDocumentProductionPromotion).toBe(false);
   });
 
+  it("undated REVIEW_REQUIRED competitor (null effectiveDateIso) also refuses base CONFIRMED_OPERATIVE", () => {
+    // Absorbed from #296 fail-closed: uncertain dating must not leave doc-a confirmed.
+    const undatedB = reviewRequiredAuthority("doc-b", "2026-09-14");
+    const authorities: RestatementAuthorityResolution[] = [
+      reviewRequiredAuthority("doc-a", "2020-03-26"),
+      {
+        ...undatedB,
+        effectiveDateIso: null,
+        evidence: {
+          ...undatedB.evidence,
+          executionDate: { value: null, isoDate: null, excerpt: null },
+        },
+      },
+    ];
+    const gov = resolveGoverningProvision({
+      asOfDate: "2026-09-15",
+      sectionRef: "8.1",
+      instrumentDocumentIds: ["doc-a", "doc-b"],
+      baseDocumentId: "doc-a",
+      restatementAuthorities: authorities,
+    });
+    expect(gov.authorityClassification).toBe("REVIEW_REQUIRED");
+    expect(gov.governingDocumentId).toBeNull();
+    expect(gov.unresolvedConflicts.join(" ")).toMatch(/doc-b/);
+  });
+
   it("package-level summary refuses ACTIVE when provisions mis-label CONFIRMED_OPERATIVE under unresolved restatements", () => {
     const authorities = [
       reviewRequiredAuthority("doc-a", "2020-03-26"),
