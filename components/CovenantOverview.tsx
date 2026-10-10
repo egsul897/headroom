@@ -109,7 +109,9 @@ function bindingLabel(state: BindingState): string {
     case "BINDING":
       return "Binding";
     case "AVAILABLE":
-      return "Available";
+      // Binding-state AVAILABLE means the path is not the locked/binding constraint —
+      // not that remaining capacity is customer AVAILABLE. Avoid the favorable word.
+      return "Open path";
     case "REVIEW_REQUIRED":
       return "Review required";
     case "UNMODELED":
@@ -150,7 +152,16 @@ function remainingText(row: Extract<OverviewRow, { kind: "CAPACITY" }>): string 
       ? "Not certified complete"
       : "Not evaluable";
   }
-  return fmtM(row.remaining);
+  // Gross / untracked publication must never render as a favorable remaining figure.
+  if (
+    row.publicationLabel === "GROSS_CONTRACTUAL" ||
+    row.publicationLabel === "NOT_TRACKED"
+  ) {
+    return "MODELED / NOT VERIFIED";
+  }
+  // On main (PR #268 unmerged), even SUPPORTED_REMAINING from overview attribution
+  // is not production-authoritative — keep the number but refuse AVAILABLE wording.
+  return `${fmtM(row.remaining)} (modeled)`;
 }
 
 /**
@@ -503,7 +514,7 @@ export function CovenantFamiliesView({ families }: { families: CovenantFamilySec
           {(
             [
               ["ALL", "All"],
-              ["AVAILABLE", "Available"],
+              ["AVAILABLE", "Open path"],
               ["USED", "Used"],
               ["BINDING", "Binding"],
               ["REVIEW_REQUIRED", "Review required"],

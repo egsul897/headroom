@@ -1,4 +1,5 @@
 import { Banner, Card, Chip } from "@/components/ui";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import type { summarizeVerifiedSimulate } from "@/lib/product/unified-position/certified-simulate-bridge";
 
 type VerifiedSummary = ReturnType<typeof summarizeVerifiedSimulate>;
@@ -25,6 +26,11 @@ export function VerifiedSimulatePanel({
       <div className="row" style={{ marginTop: 8 }}>
         <div className="row-label">Status</div>
         <div className="row-value">
+          {summary.executable ? (
+            <StatusChip code="VERIFIED_EXECUTABLE" />
+          ) : (
+            <StatusChip code="UNSUPPORTED" />
+          )}{" "}
           <Chip tone={summary.executable ? "pass" : "tight"}>
             {summary.executable ? "EXECUTABLE" : "NOT EXECUTABLE"}
           </Chip>
@@ -57,8 +63,9 @@ export function VerifiedSimulatePanel({
       )}
       {summary.executable && (
         <Banner tone="amber">
-          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"} under REQUIRE.
-          Hypothetical — does not post to the ledger. Not a legal approval.
+          Verified pre/post simulation executed for path {summary.selectedPathId ?? "—"} under REQUIRE.{" "}
+          <StatusChip code="HYPOTHETICAL" compact /> — does not post to the ledger. Not a legal approval.
+          Executable path ≠ production AVAILABLE remaining without utilization completeness.
         </Banner>
       )}
       <div className="row-note" style={{ marginTop: 8 }}>

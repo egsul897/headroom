@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
+import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocumentDetails } from "@/lib/dashboard-service";
 import { fmtDate } from "@/lib/format";
 import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
@@ -9,6 +11,7 @@ import {
   listCustomerDocumentIntelligence,
 } from "@/lib/product/customer-intelligence/load";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
+import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 
 export const metadata = { title: "Headroom — Documents" };
 
@@ -28,7 +31,8 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
     <div className="stack">
       <Card>
         <div className="card-title">Financing documents</div>
-        <div className="card-subtitle">
+        <WorkflowJourney companyId={companyId} current="documents" />
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
           Upload credit agreements, indentures, and amendments. Review covenant summaries and ask
           workspace-grounded questions. Public precedents never govern this package.
         </div>
@@ -52,6 +56,7 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
           <div className="row">
             <div className="row-label">Operative resolution</div>
             <div className="row-value">
+              <StatusChip code={mapEngineLabelToCustomerStatus(amendment.operativeResolution)} />{" "}
               <Chip
                 tone={
                   amendment.operativeResolution === "UNRESOLVED_PRECEDENCE"
