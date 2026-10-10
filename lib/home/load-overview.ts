@@ -208,8 +208,16 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
       getCovenantOverview(companyId).catch(() => null),
     ]);
 
-    const securedRem = covenantOverview?.securedCapacity.remainingCapacity ?? dashboard.capacity.secured.remainingCapacity;
-    const unsecuredRem = covenantOverview?.unsecuredCapacity.remainingCapacity ?? dashboard.capacity.unsecured.remainingCapacity;
+    // Prefer MODELED_CROSS_DOCUMENT packageAuthoritative over solver-native
+    // remaining (solver is NON_AUTHORITATIVE_DIAGNOSTIC).
+    const securedRem =
+      covenantOverview?.securedCapacity.remainingCapacity ??
+      dashboard.capacity.secured.packageAuthoritative?.remainingCapacity ??
+      dashboard.capacity.secured.remainingCapacity;
+    const unsecuredRem =
+      covenantOverview?.unsecuredCapacity.remainingCapacity ??
+      dashboard.capacity.unsecured.packageAuthoritative?.remainingCapacity ??
+      dashboard.capacity.unsecured.remainingCapacity;
     const headroom = primaryHeadroomDisplay(securedRem, unsecuredRem);
     load.totalHeadroom = headroom
       ? totalHeadroomStateFromQuery({ outcome: "populated", display: headroom })

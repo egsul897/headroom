@@ -1212,13 +1212,19 @@ export function simulateDebtIncurrence(
 export interface PerDocumentRemainingCapacity {
   documentId: string;
   documentName: string;
-  method: "SOLVER_NATIVE_RECOMPUTED" | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT" | "NOT_DETERMINABLE";
+  method:
+    | "SOLVER_NATIVE_RECOMPUTED"
+    | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT"
+    | "SOLVER_CLAMPED_TO_LEGACY"
+    | "NOT_DETERMINABLE";
   /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
   remainingCapacity?: number;
   /** Present only for SOLVER_NATIVE_RECOMPUTED - the full post-transaction MaxCapacityResult `remainingCapacity` was read from (design doc §O). */
   maximumCapacity?: MaxCapacityResult;
   bindingConstraint?: SourceCitation[];
   reason?: string;
+  /** Pre-clamp solver figure when method is SOLVER_CLAMPED_TO_LEGACY (diagnostic only). */
+  solverNativeBeforeClamp?: number;
 }
 
 export interface PostTransactionCapacitySimulation {
@@ -1229,6 +1235,21 @@ export interface PostTransactionCapacitySimulation {
   binding?: PerDocumentRemainingCapacity;
   /** = `binding?.remainingCapacity`, exposed at the top level for convenience. Undefined (never 0) when not determinable. */
   remainingCapacity?: number;
+  /**
+   * Package-wide capacity from computeCovenantPosition cross-document formulas.
+   * Authoritative for customer conclusions. Solver-native package min is
+   * diagnostic only and must not raise a more favorable figure than this.
+   */
+  packageAuthoritative?: {
+    remainingCapacity: number | null;
+    bindingDocumentName: string | null;
+    bindingProvisionCode: string | null;
+    authority: "MODELED_CROSS_DOCUMENT";
+    label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
+    solverNativeRemaining: number | null;
+    solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC";
+    solverIsFalseFavorable: boolean;
+  };
 }
 
 /**
@@ -1279,6 +1300,15 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const postFin: FinancialSnapshotInput = { ...fin, totalDebt: fin.totalDebt + amount, securedDebt: fin.securedDebt + (secured ? amount : 0) };
 
   const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
+    const status = secured ? d.securedStatus : d.unsecuredStatus;
+    const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
+    const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
+    const legacyRemaining =
+      status === "modeled" && capacity !== undefined ? capacity - amount : undefined;
+    const legacyBinding = bindingProvision
+      ? [{ documentId: bindingProvision.documentId, sectionRef: bindingProvision.sectionRef, permissionId: bindingProvision.id }]
+      : undefined;
+
     if (solverContext) {
       const doc = data.documents.find((doc) => doc.id === d.documentId);
       const legacyFormulaPresent = Boolean(side === "secured" ? doc?.capacityFormulas?.secured : doc?.capacityFormulas?.unsecured);
@@ -1286,26 +1316,47 @@ export function computeRemainingCapacityAfterDebtIncurrence(
       if (coverage.status === "SOLVER_NATIVE") {
         const postResult = runSolverForDocument(d.documentId, d.documentName, postFin, 0, secured, solverContext, coverage);
         const mc = postResult.maximumCapacity;
-        const remainingCapacity = mc?.kind === "EXACT" ? mc.amount : undefined;
+        const solverRemaining = mc?.kind === "EXACT" ? mc.amount : undefined;
+
+        // Generalizable false-favorable guard: when capacityFormulas declare a
+        // tighter document-side ceiling than the solver election max, never
+        // report the looser solver figure (Coherent indenture SSNL/mila hard
+        // cap vs mila+capex stacking, and the pre-fix ratio+SCF $11,933 path).
+        if (
+          solverRemaining !== undefined &&
+          legacyRemaining !== undefined &&
+          solverRemaining > legacyRemaining + 1e-6
+        ) {
+          return {
+            documentId: d.documentId,
+            documentName: d.documentName,
+            method: "SOLVER_CLAMPED_TO_LEGACY" as const,
+            remainingCapacity: legacyRemaining,
+            maximumCapacity: mc,
+            bindingConstraint: legacyBinding,
+            solverNativeBeforeClamp: solverRemaining,
+            reason:
+              `Solver-native max $${solverRemaining}M exceeded capacityFormulas ceiling $${legacyRemaining}M for ${d.documentName}/${side}; ` +
+              `clamped to legacy (fail-closed). Solver figure is non-authoritative for this document/side.`,
+          };
+        }
+
         return {
           documentId: d.documentId,
           documentName: d.documentName,
           method: "SOLVER_NATIVE_RECOMPUTED",
-          remainingCapacity,
+          remainingCapacity: solverRemaining,
           maximumCapacity: mc,
           bindingConstraint: postResult.bindingConstraint,
           reason:
-            remainingCapacity === undefined
+            solverRemaining === undefined
               ? `Post-transaction maximum capacity for ${d.documentName} is ${mc?.kind ?? "not determinable"}, not a single EXACT figure.`
               : undefined,
         };
       }
     }
 
-    const status = secured ? d.securedStatus : d.unsecuredStatus;
-    const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
-    const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
-    if (status !== "modeled" || capacity === undefined) {
+    if (legacyRemaining === undefined) {
       return {
         documentId: d.documentId,
         documentName: d.documentName,
@@ -1317,16 +1368,73 @@ export function computeRemainingCapacityAfterDebtIncurrence(
       documentId: d.documentId,
       documentName: d.documentName,
       method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
-      remainingCapacity: capacity - amount,
-      bindingConstraint: bindingProvision ? [{ documentId: bindingProvision.documentId, sectionRef: bindingProvision.sectionRef, permissionId: bindingProvision.id }] : undefined,
+      remainingCapacity: legacyRemaining,
+      bindingConstraint: legacyBinding,
     };
   });
 
   const anyNotDeterminable = perDocument.some((d) => d.method === "NOT_DETERMINABLE");
   const sorted = [...perDocument].filter((d) => d.remainingCapacity !== undefined).sort((a, b) => a.remainingCapacity! - b.remainingCapacity!);
   const binding = anyNotDeterminable ? undefined : sorted[0];
+  const solverNativeRemaining = binding?.remainingCapacity;
 
-  return { amount, secured, perDocument, binding, remainingCapacity: binding?.remainingCapacity };
+  const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+  const packageModeled =
+    cross.status === "modeled" && cross.capacity !== undefined ? cross.capacity - amount : null;
+  const solverIsFalseFavorable =
+    solverNativeRemaining !== undefined &&
+    packageModeled !== null &&
+    solverNativeRemaining > packageModeled + 1e-6;
+
+  // Customer-facing remainingCapacity is MODELED_CROSS_DOCUMENT when present.
+  // Solver-native package min is retained only on packageAuthoritative
+  // (NON_AUTHORITATIVE_DIAGNOSTIC) and must never raise a more favorable figure.
+  const remainingCapacity =
+    packageModeled !== null ? packageModeled : solverNativeRemaining;
+
+  const crossBinding: PerDocumentRemainingCapacity | undefined =
+    packageModeled !== null
+      ? {
+          documentId: cross.bindingDocumentId ?? binding?.documentId ?? "",
+          documentName: cross.bindingDocumentName ?? binding?.documentName ?? "",
+          method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
+          remainingCapacity: packageModeled,
+          bindingConstraint: cross.bindingProvision
+            ? [
+                {
+                  documentId: cross.bindingProvision.documentId,
+                  sectionRef: cross.bindingProvision.sectionRef,
+                  permissionId: cross.bindingProvision.id,
+                },
+              ]
+            : undefined,
+          reason:
+            solverIsFalseFavorable
+              ? `Solver-native package remaining $${solverNativeRemaining}M exceeded MODELED_CROSS_DOCUMENT ` +
+                `$${packageModeled}M — false-favorable quarantine; binding is cross-document provision.`
+              : `Package binding from MODELED_CROSS_DOCUMENT (capacityFormulas). Solver-native package min ` +
+                `$${solverNativeRemaining ?? "n/a"}M is NON_AUTHORITATIVE_DIAGNOSTIC.`,
+          solverNativeBeforeClamp: solverNativeRemaining,
+        }
+      : binding;
+
+  return {
+    amount,
+    secured,
+    perDocument,
+    binding: crossBinding,
+    remainingCapacity,
+    packageAuthoritative: {
+      remainingCapacity: packageModeled,
+      bindingDocumentName: cross.bindingDocumentName ?? null,
+      bindingProvisionCode: cross.bindingProvision?.code ?? null,
+      authority: "MODELED_CROSS_DOCUMENT",
+      label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+      solverNativeRemaining: solverNativeRemaining ?? null,
+      solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC",
+      solverIsFalseFavorable,
+    },
+  };
 }
 
 // ---------------------------------------------------------------------------

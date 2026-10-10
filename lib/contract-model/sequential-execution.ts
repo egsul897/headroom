@@ -21,6 +21,7 @@ import {
   type FinancialInput,
   type FinancialSnapshot,
   type InputResolver,
+  type LedgerWriteResult,
 } from "./north-star-bridge";
 import {
   chainFinancialViewWithScope,
@@ -156,9 +157,7 @@ export interface SequentialWorld {
 export type RunnerMode = "HYPOTHETICAL" | "COMPLETED";
 
 export interface LedgerAppendSurface {
-  appendUsage(request: { usage: LedgerUsageRecord }):
-    | { ok: true; usage?: LedgerUsageRecord; events?: unknown[] }
-    | { ok: false; issues: { code: string }[] };
+  appendUsage(request: { usage: LedgerUsageRecord }): LedgerWriteResult;
 }
 
 export interface SequentialStepSpec {

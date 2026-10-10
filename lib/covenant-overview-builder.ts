@@ -232,6 +232,20 @@ function toRowStatus(status: EvaluationStatus): RowStatus {
 }
 
 function headlineCapacitySide(sim: PostTransactionCapacitySimulation): HeadlineCapacitySide {
+  // Prefer MODELED_CROSS_DOCUMENT packageAuthoritative for customer headlines.
+  // Solver-native remaining is NON_AUTHORITATIVE_DIAGNOSTIC and must not produce
+  // a more favorable package figure (Coherent secured $5,129M vs Indenture $4,041M).
+  const auth = sim.packageAuthoritative;
+  if (auth?.remainingCapacity != null && Number.isFinite(auth.remainingCapacity)) {
+    const bindingSections = (sim.binding?.bindingConstraint ?? []).map((c) => c.sectionRef);
+    return {
+      maximumCapacity: sim.binding?.maximumCapacity,
+      remainingCapacity: auth.remainingCapacity,
+      bindingDocumentName: auth.bindingDocumentName ?? sim.binding?.documentName,
+      bindingSections,
+      status: "MODELED",
+    };
+  }
   const mc = sim.binding?.maximumCapacity;
   const status: HeadlineCapacitySide["status"] = mc?.kind === "EXACT" ? "MODELED" : mc ? "REVIEW_REQUIRED" : "NOT_MODELED";
   const bindingSections = (sim.binding?.bindingConstraint ?? []).map((c) => c.sectionRef);

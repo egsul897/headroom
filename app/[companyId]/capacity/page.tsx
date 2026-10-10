@@ -15,7 +15,9 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
     case "SOLVER_NATIVE_RECOMPUTED":
       return "Solver-native (full recomputation)";
     case "LEGACY_DECLARED_MINUS_TESTED_AMOUNT":
-      return "Legacy (declared ceiling)";
+      return "Legacy / modeled cross-document ceiling";
+    case "SOLVER_CLAMPED_TO_LEGACY":
+      return "Solver clamped to modeled ceiling (diagnostic disagreement)";
     case "NOT_DETERMINABLE":
       return "Not determinable";
   }
