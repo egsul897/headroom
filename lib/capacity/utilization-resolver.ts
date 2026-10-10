@@ -188,7 +188,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
   if (duplicateUsage) {
     blockers.push("duplicate ledger usage ids on capacity path — remaining not supported");
   }
->>>>>>> refs/pr/268
+
   let knowledge: UtilizationKnowledgeKind;
   let attributedAmount: number | null = null;
   let currency: string | null = currencyHint;
@@ -213,7 +213,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
       } else {
         knowledge = "KNOWN_ATTRIBUTED";
       }
-      if (recordsComplete && !mixedAuthenticity && !duplicateUsage) {>>>>>>> refs/pr/268
+      if (recordsComplete && !mixedAuthenticity && !duplicateUsage) {
         supportsRemainingClaim = true;
         note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}); completeness certified (${cert!.sourceLabel}${authorityEval.productionAuthoritative ? ", production-authoritative" : ", demo-only"}).`;
       } else {
@@ -303,7 +303,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
   }
   if (supportsRemainingClaim && duplicateUsage) {
     supportsRemainingClaim = false;
-  }>>>>>>> refs/pr/268
+  }
   if (supportsRemainingClaim && !authorityOk) {
     supportsRemainingClaim = false;
   }
