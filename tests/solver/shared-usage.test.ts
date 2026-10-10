@@ -11,7 +11,7 @@ const EMPTY_CERT = {
   approvalState: "APPROVED" as const,
   asOf: "2026-10-09",
   sourceLabel: "test-empty-cert",
-  authenticity: "SYNTHETIC_LABELED" as const,
+  authenticity: "AUTHENTIC" as const,
 };
 
 const COMPLETE_CERT = {
@@ -19,6 +19,14 @@ const COMPLETE_CERT = {
   approvalState: "APPROVED" as const,
   asOf: "2026-10-09",
   sourceLabel: "test-complete-cert",
+  authenticity: "AUTHENTIC" as const,
+};
+
+const SYNTHETIC_COMPLETE_CERT = {
+  kind: "VERIFIED_COMPLETE" as const,
+  approvalState: "APPROVED" as const,
+  asOf: "2026-10-09",
+  sourceLabel: "test-synthetic-cert",
   authenticity: "SYNTHETIC_LABELED" as const,
 };
 
@@ -179,6 +187,41 @@ describe("shared-usage helpers (#234 completeness alignment)", () => {
     });
     expect(emptyCertWithUsage.supportsRemainingClaim).toBe(false);
     expect(emptyCertWithUsage.status).toBe("COMPLETENESS_CERTIFICATE_INVALID");
+  });
+
+  it("PRODUCTION refuses SYNTHETIC_LABELED completeness; DEMO_SYNTHETIC allows labeled synthetic", () => {
+    const usage = [
+      {
+        permissionId: "a",
+        cumulativeIncurred: 70,
+        currentlyOutstanding: 70,
+        prepaymentCredit: 0,
+      },
+    ];
+    const production = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: usage,
+      completenessCertificate: { ...SYNTHETIC_COMPLETE_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+      executionMode: "PRODUCTION",
+    });
+    expect(production.supportsRemainingClaim).toBe(false);
+    expect(production.status).toBe("COMPLETENESS_CERTIFICATE_INVALID");
+
+    const demo = computeSharedConstraintCurrentUsage({
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      members: [{ permissionId: "a" }],
+      basketUsage: usage,
+      completenessCertificate: { ...SYNTHETIC_COMPLETE_CERT, constraintId: "sc1" },
+      constraintId: "sc1",
+      asOf: "2026-10-09",
+      executionMode: "DEMO_SYNTHETIC",
+    });
+    expect(demo.supportsRemainingClaim).toBe(true);
   });
 
   it("loadCompanySolverStaticData requires completeness certificate for remaining support", async () => {

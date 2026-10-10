@@ -45,3 +45,8 @@ export {
   type ProductSurface,
   type ProductCapacityView,
 } from "./product-capacity-view";
+export {
+  REMAINING_AUTHORITY_CONTRACT_VERSION,
+  mayPublishRemainingCapacity,
+  type RemainingRefusalReason,
+} from "./remaining-authority";

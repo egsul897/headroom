@@ -1855,10 +1855,13 @@ export interface LoadCompanySolverStaticOptions {
       approvalState: "APPROVED";
       asOf: string;
       sourceLabel: string;
+      /** AUTHENTIC required under PRODUCTION (default); SYNTHETIC_LABELED only for DEMO_SYNTHETIC. */
       authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
     }
   >;
   asOf?: string;
+  /** Mirrors #234 UtilizationExecutionMode. Default PRODUCTION refuses synthetic completeness. */
+  utilizationExecutionMode?: "PRODUCTION" | "DEMO_SYNTHETIC";
 }
 
 /**
@@ -1969,6 +1972,7 @@ export async function loadCompanySolverStaticData(
         basketUsage: options?.basketUsage ?? [],
         constraintId: c.id,
         asOf: options?.asOf,
+        executionMode: options?.utilizationExecutionMode ?? "PRODUCTION",
         completenessCertificate: cert
           ? { ...cert, constraintId: c.id }
           : null,
@@ -1976,6 +1980,7 @@ export async function loadCompanySolverStaticData(
       return {
         currentUsage: computed.usage,
         currentUsageStatus: computed.status,
+        // Authoritative remaining only when supportsRemainingClaim (completeness + authenticity gate).
         currentUsageAuthoritative: computed.supportsRemainingClaim,
         currentUsageSupportsRemainingClaim: computed.supportsRemainingClaim,
         currentUsageAttributedKnown: computed.attributedKnown,

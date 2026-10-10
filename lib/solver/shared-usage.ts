@@ -1,14 +1,18 @@
 /**
  * Shared-constraint pre-transaction usage helpers.
  *
- * Aligned with PR #234 utilization completeness contract:
+ * Joint #232 / #234 remaining-authority contract (same rule as lib/capacity):
  * - Approved / attributed basketUsage records establish *known attributed usage only*.
  * - They do NOT establish completeness of historical usage.
  * - Remaining = cap − usage requires an affirmative completeness certificate
  *   (VERIFIED_EMPTY or VERIFIED_COMPLETE). Approved records alone never suffice.
  * - Missing attribution is ZERO_NO_ATTRIBUTED_USAGE / UNKNOWN — never invent zero.
- * - Partial attribution, external, entity-class, synthetic-without-cert, and
- *   mismatched certificates never support a remaining claim.
+ * - Partial attribution, external, entity-class, stale, mismatched, contradictory,
+ *   and synthetic-in-PRODUCTION certificates never support a remaining claim.
+ *
+ * Solver uses a compact certificate adapter bound by `constraintId`. Product path
+ * uses the full `lib/capacity` UtilizationCompletenessCertificate bound by
+ * `capacityRuleId` + fingerprints. Both share one supportsRemainingClaim gate.
  */
 
 import type {
@@ -27,7 +31,16 @@ export type SharedUsageComputationStatus =
   | "ENTITY_CLASS_USAGE_UNAVAILABLE"
   | "COMPLETENESS_CERTIFICATE_INVALID";
 
-/** Completeness certificate — required for any remaining-capacity claim (#234). */
+/** Mirrors lib/capacity UtilizationExecutionMode. */
+export type SolverUtilizationExecutionMode = "PRODUCTION" | "DEMO_SYNTHETIC";
+
+/**
+ * Completeness certificate adapter for solver shared-capacity paths.
+ * Semantic peer of `lib/capacity/utilization-types.UtilizationCompletenessCertificate`
+ * (`VERIFIED_EMPTY` | `VERIFIED_COMPLETE` + APPROVED). Solver binds via `constraintId`;
+ * product path binds via `capacityRuleId` + fingerprints. Do not invent a second
+ * remaining-authority rule — only a lighter transport shape for solver loaders.
+ */
 export type UtilizationCompletenessKind = "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
 
 export interface UtilizationCompletenessCertificate {
@@ -36,12 +49,14 @@ export interface UtilizationCompletenessCertificate {
   /** ISO date; must be >= evaluation asOf when provided. */
   asOf: string;
   sourceLabel: string;
-  /**
-   * When set, certificate applies only to this constraint id.
-   * Mismatched ids invalidate the certificate for the current constraint.
-   */
+  /** Product-path binding (#234). */
+  capacityRuleId?: string;
+  /** Solver shared-constraint binding (#232). */
   constraintId?: string;
-  /** AUTHENTIC historical cert vs SYNTHETIC labeled fixture. */
+  /**
+   * AUTHENTIC required for PRODUCTION remaining claims.
+   * SYNTHETIC_LABELED only supports remaining under DEMO_SYNTHETIC execution.
+   */
   authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
 }
 
@@ -100,11 +115,18 @@ function certificateApplies(
   cert: UtilizationCompletenessCertificate | null | undefined,
   constraintId: string | undefined,
   asOf: string | undefined,
+  executionMode: SolverUtilizationExecutionMode,
 ): boolean {
   if (!cert) return false;
   if (cert.approvalState !== "APPROVED") return false;
   if (cert.constraintId && constraintId && cert.constraintId !== constraintId) return false;
   if (asOf && asOfDay(cert.asOf) < asOfDay(asOf)) return false;
+  // Align with #234: synthetic/fixture certificates never authorize PRODUCTION remaining.
+  if (executionMode === "PRODUCTION") {
+    if (cert.authenticity !== "AUTHENTIC") return false;
+  } else if (cert.authenticity === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -136,7 +158,13 @@ export function computeSharedConstraintCurrentUsage(params: {
   completenessCertificate?: UtilizationCompletenessCertificate | null;
   constraintId?: string;
   asOf?: string;
+  /**
+   * PRODUCTION (default) refuses SYNTHETIC_LABELED certificates — same as #234 product path.
+   * DEMO_SYNTHETIC allows labeled synthetic certificates for mechanics demos only.
+   */
+  executionMode?: SolverUtilizationExecutionMode;
 }): SharedUsageComputationResult {
+  const executionMode: SolverUtilizationExecutionMode = params.executionMode ?? "PRODUCTION";
   const fail = (
     status: SharedUsageComputationStatus,
     usage = 0,
@@ -184,6 +212,7 @@ export function computeSharedConstraintCurrentUsage(params: {
       params.completenessCertificate,
       params.constraintId,
       params.asOf,
+      executionMode,
     );
     if (certOk && params.completenessCertificate!.kind === "VERIFIED_EMPTY") {
       return {
@@ -195,6 +224,9 @@ export function computeSharedConstraintCurrentUsage(params: {
         completenessCertified: true,
       };
     }
+    if (params.completenessCertificate) {
+      return fail("COMPLETENESS_CERTIFICATE_INVALID");
+    }
     return fail("ZERO_NO_ATTRIBUTED_USAGE");
   }
 
@@ -205,7 +237,7 @@ export function computeSharedConstraintCurrentUsage(params: {
   // All named members attributed — amount known, but NOT complete without certificate.
   const attributedStatus: SharedUsageComputationStatus = usage === 0 ? "COMPUTED" : "COMPUTED";
   const cert = params.completenessCertificate ?? null;
-  const certOk = certificateApplies(cert, params.constraintId, params.asOf);
+  const certOk = certificateApplies(cert, params.constraintId, params.asOf, executionMode);
 
   if (!certOk) {
     // Stale / mismatched / missing / unapproved cert → no remaining claim.
