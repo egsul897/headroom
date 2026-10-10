@@ -39,6 +39,11 @@ export {
   type ProductionAuthorityEvaluation,
 } from "./production-authority-gate";
 
+export {
+  bindCandidateToOperativeRetrievalSource,
+  type OperativeRetrievalSourceBinding,
+} from "./retrieval-source";
+
 export type {
   ConditionsPrecedentSatisfaction,
   ConfirmedInstrumentIdentityView,

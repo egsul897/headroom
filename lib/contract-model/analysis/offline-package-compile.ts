@@ -69,11 +69,13 @@ import {
   mayConsolidateOperativeAgreement,
 } from "../compiler/package-graph/instrument-grouping";
 import {
+  bindCandidateToOperativeRetrievalSource,
   buildOperativeAuthorityHandoffBundle,
   confirmedIdentityFromInstrumentGrouping,
   summarizeBundleProductionAuthority,
   type BundleProductionAuthoritySummary,
   type OperativeAuthorityHandoffBundle,
+  type OperativeRetrievalSourceBinding,
 } from "../compiler/operative-authority";
 
 export const OFFLINE_PACKAGE_COMPILE_VERSION = "offline-package-compile.v1";
@@ -596,7 +598,7 @@ export async function compileFrozenDebtPackage(
     });
   }
 
-  // --- context bundles ---
+  // --- context bundles (Agent #6 retrieval bound to Agent #7 governingDocumentId) ---
   const access: PackageAccess = {
     index,
     packageGraph,
@@ -604,13 +606,39 @@ export async function compileFrozenDebtPackage(
     operativeState,
     supersessionIndex,
   };
+  const retrievalBindings = new Map<string, OperativeRetrievalSourceBinding>();
+  let operativeSourceRemapped = 0;
+  let operativeSourceRemapRefused = 0;
+  let operativeSourceAlreadyGoverning = 0;
+  for (const candidate of candidates) {
+    const binding = bindCandidateToOperativeRetrievalSource({
+      candidate,
+      authority: operativeAuthorityHandoff,
+      index,
+    });
+    retrievalBindings.set(candidate.discoveryId, binding);
+    if (binding.remapped) operativeSourceRemapped += 1;
+    else if (binding.refusalReason) operativeSourceRemapRefused += 1;
+    else if (binding.retrievalAuthorized && binding.governingDocumentId === binding.originalDocumentId) {
+      operativeSourceAlreadyGoverning += 1;
+    }
+  }
+  if (operativeSourceRemapRefused > 0) {
+    humanInterventions.push({
+      kind: "OPERATIVE_RETRIEVAL_SOURCE_BLOCKED",
+      detail: `${operativeSourceRemapRefused} candidate(s) were not remapped onto a successor governing document (provisional identity, null governingDocumentId, or unresolved authority). Discovery document preserved; no silent consolidation.`,
+    });
+  }
+  void operativeSourceRemapped;
+  void operativeSourceAlreadyGoverning;
   const bundles = new Map<string, CovenantContextBundle>();
   for (const candidate of candidates) {
+    const binding = retrievalBindings.get(candidate.discoveryId)!;
     bundles.set(
       candidate.discoveryId,
       buildCovenantContextBundle(
         {
-          candidate,
+          candidate: binding.retrievalCandidate,
           packageKey: options.packageKey,
           companyId: options.companyId,
           instrumentKey,
@@ -664,7 +692,10 @@ export async function compileFrozenDebtPackage(
   }[] = [];
   for (const candidate of candidates) {
     const bundle = bundles.get(candidate.discoveryId) ?? null;
-    let operativeText = operativeSourceTextFor(candidate, index, operativeState);
+    const retrievalBinding = retrievalBindings.get(candidate.discoveryId)!;
+    const operativeCandidate = retrievalBinding.retrievalCandidate;
+    const operativeDocumentId = operativeCandidate.documentId;
+    let operativeText = operativeSourceTextFor(operativeCandidate, index, operativeState);
     // For definition catalog clauses, operativeSourceTextFor may be empty if no node ids —
     // fall back to candidate description's catalog clause text from exception catalogs.
     if (!operativeText.trim()) {
@@ -711,10 +742,10 @@ export async function compileFrozenDebtPackage(
       operativeText = candidate.description;
     }
 
-    const knownDefs = [...(exactTermsByDocument.get(candidate.documentId)?.values() ?? [])];
+    const knownDefs = [...(exactTermsByDocument.get(operativeDocumentId)?.values() ?? [])];
     const facts = extractDeterministicCovenantFacts({
       text: operativeText,
-      documentId: candidate.documentId,
+      documentId: operativeDocumentId,
       candidateRef: candidate.discoveryId,
       citation: candidate.normalizedSourceRef,
       knownFamilies: candidate.families,
@@ -733,7 +764,7 @@ export async function compileFrozenDebtPackage(
     const local = await compileLocalSemanticUnit(
       {
         unitId: candidate.discoveryId,
-        documentId: candidate.documentId,
+        documentId: operativeDocumentId,
         sectionRef: candidate.normalizedSourceRef,
         operativeText,
         dependencyTexts: depTexts,
@@ -741,7 +772,7 @@ export async function compileFrozenDebtPackage(
           companyId: options.companyId,
           packageKey: options.packageKey,
           instrumentKey,
-          documentId: candidate.documentId,
+          documentId: operativeDocumentId,
           candidateRef: candidate.discoveryId,
           operativeVersionRef: null,
           sourceContentHashes: [sha256(operativeText)],

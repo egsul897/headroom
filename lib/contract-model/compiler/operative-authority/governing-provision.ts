@@ -216,14 +216,25 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
   }
 
   // Surface review-required / ambiguous authorities that would otherwise silently drop.
+  // CRITICAL: predecessorDocumentId may be null when prior-agreement identity is unresolved
+  // (AutoNation Fourth A&R absent). That MUST still block CONFIRMED_OPERATIVE fallback onto
+  // baseDocumentId — otherwise superseded/uncertain predecessors are falsely promoted.
   for (const r of datedRestatements) {
     if (r.status === "AMBIGUOUS") {
       unresolvedConflicts.push(`Restatement authority AMBIGUOUS for ${r.successorDocumentId}: ${r.reasons.join(" ")}`);
     }
-    if (r.status === "REVIEW_REQUIRED" && r.predecessorDocumentId && familyIds.has(r.successorDocumentId)) {
-      // Only block when no confirmed governing restatement exists yet, or this review item is the sole candidate successor.
+    if (
+      (r.status === "REVIEW_REQUIRED" || r.status === "UNSUPPORTED") &&
+      familyIds.has(r.successorDocumentId)
+    ) {
       if (!governingRestatement) {
-        unresolvedConflicts.push(`Restatement authority REVIEW_REQUIRED for ${r.successorDocumentId}: ${r.reasons.join(" ")}`);
+        const predNote =
+          r.predecessorDocumentId == null
+            ? " (predecessor identity unresolved — refuse base CONFIRMED_OPERATIVE fallback)"
+            : "";
+        unresolvedConflicts.push(
+          `Restatement authority ${r.status} for ${r.successorDocumentId}: ${r.reasons.join(" ")}${predNote}`,
+        );
       } else {
         caveats.push(`NON_BLOCKING_REVIEW_ITEM:${r.successorDocumentId}`);
       }
@@ -290,6 +301,58 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
     };
   }
 
+  // Unresolved *current* succession candidates (not the base itself, not clearly future).
+  // A REVIEW_REQUIRED Fifth A&R with null predecessor and effectiveDate <= asOf must block
+  // CONFIRMED_OPERATIVE fallback onto doc-a. A NOT_YET_EFFECTIVE successor must NOT block —
+  // predecessor remains governing under NOT_YET_EFFECTIVE.
+  const unresolvedCurrentSuccessors = datedRestatements.filter((r) => {
+    if (!familyIds.has(r.successorDocumentId)) return false;
+    if (input.baseDocumentId && r.successorDocumentId === input.baseDocumentId) return false;
+    if (r.status === "NOT_YET_EFFECTIVE" || r.status === "OPERATIVE_AUTHORITY_CONFIRMED") return false;
+    if (r.status !== "REVIEW_REQUIRED" && r.status !== "AMBIGUOUS" && r.status !== "UNSUPPORTED") {
+      return false;
+    }
+    if (r.effectiveDateIso == null) return true; // uncertain dating → block
+    return compareIsoDates(r.effectiveDateIso, asOf) <= 0;
+  });
+
+  // Fail closed when a later/current restatement candidate's succession is unresolved.
+  if (!governingRestatement && unresolvedCurrentSuccessors.length > 0) {
+    return {
+      asOfDate: asOf,
+      provisionKey: key,
+      kind,
+      sectionRef,
+      definedTermRef,
+      authorityClassification: "REVIEW_REQUIRED",
+      governingDocumentId: null,
+      supersededDocumentIds: [],
+      instrumentLinks: [...familyIds].sort().map((documentId) => ({
+        documentId,
+        role: roleForDocument(documentId, input.restatementAuthorities, amendments, input.baseDocumentId),
+        relationshipToGoverning: "INAPPLICABLE" as const,
+        restatementAuthorityStatus:
+          datedRestatements.find((r) => r.successorDocumentId === documentId)?.status ?? null,
+      })),
+      applicableAuthorityChain: datedRestatements,
+      unresolvedConflicts,
+      caveats,
+      reasons: [
+        "Restatement succession is unresolved — refuse CONFIRMED_OPERATIVE on base or successor; governing-document identity remains uncertain.",
+        `Unresolved successor candidate(s): ${unresolvedCurrentSuccessors.map((r) => r.successorDocumentId).join(", ")}.`,
+        ...(input.baseDocumentId
+          ? [`Base document ${input.baseDocumentId} is NOT confirmed as operative while succession review is outstanding.`]
+          : ["No confirmed restatement authority and no base document — refuse."]),
+      ],
+      provenance: {
+        usedConfirmedInstrumentIdentity: !!identity,
+        packageGraphRestatesStatus: datedRestatements[0]?.evidence.packageGraphRelationshipStatus ?? null,
+        effectivenessInference: datedRestatements[0]?.effectivenessInference ?? null,
+        conditionsPrecedentSatisfaction: datedRestatements[0]?.conditionsPrecedentSatisfaction ?? null,
+      },
+    };
+  }
+
   if (!governingRestatement && unresolvedConflicts.length > 0 && !input.baseDocumentId) {
     return {
       asOfDate: asOf,
@@ -339,6 +402,7 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
         `Restatement ${future.successorDocumentId} is not yet effective as of ${asOf}; base/predecessor ${input.baseDocumentId} remains governing.`,
       );
     } else if (input.baseDocumentId) {
+      // Only when no unresolved *current* successor restatement exists.
       authorityClassification = "CONFIRMED_OPERATIVE";
       reasons.push(`No effective restatement as of ${asOf}; base document ${input.baseDocumentId} governs.`);
     } else {
