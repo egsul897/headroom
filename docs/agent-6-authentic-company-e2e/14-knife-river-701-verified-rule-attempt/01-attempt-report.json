@@ -1,0 +1,68 @@
+{
+  "schema": "agent6-knife-river-701-verified-rule-attempt.v1",
+  "generatedAt": "2026-10-10T01:25:22.774Z",
+  "companyKey": "knife-river-2023-2026",
+  "target": {
+    "sectionRef": "7.01",
+    "family": "INDEBTEDNESS",
+    "operativeDocumentId": "doc-a",
+    "sourceFile": "tests/fixtures/authentic-packages/knife-river-2023-2026/extracted-text/doc-a-2023-05-31-credit-agreement.txt",
+    "sourceSha256": "35e80e1eba3fd743cfa9810667a77ef6586899bc44d734b224886b503b9e74c5",
+    "sourceExcerpt": "Section 7.01 Indebtedness . (a) Incur any Indebtedness (including Acquired Indebtedness); provided that the Borrower and any Restricted Subsidiary may incur Indebtedness (including Acquired Indebtedness) in an amount not to exceed the Incremental Amount available as of the date of Incurrence (subject to Section 1.02(i) ); provided , however , th",
+    "structuralNodeId": "structural-node:fbd177540a920503c9bcf553",
+    "heading": "Indebtedness"
+  },
+  "amendmentAuthority": {
+    "associationKind": "PROVISIONAL_FAMILY",
+    "reviewStatus": "REVIEW_REQUIRED",
+    "provisionalDocumentIds": [
+      "doc-b",
+      "doc-c"
+    ],
+    "legallyConfirmedAmendmentChain": false,
+    "mayConsolidateOperativeAgreement": false,
+    "operativeAuthorityScope": "BASE_AGREEMENT_DOC_A_ONLY",
+    "note": "First/Second Amendments remain PROVISIONAL_FAMILY — not treated as consolidated operative text."
+  },
+  "discovery": {
+    "passAHitsOnBase701": 1,
+    "passAExecutableCount": 0,
+    "agent1Eligibility": "SIGNAL_ONLY_NOT_EXECUTABLE",
+    "note": "Pass A identification is not legal interpretation and not a verified rule."
+  },
+  "interpretation": {
+    "attempted": false,
+    "mode": "NOT_ATTEMPTED",
+    "fabricated": false,
+    "result": null
+  },
+  "verifiedRule": {
+    "count": 0,
+    "certificationStatus": null,
+    "packageHash": null
+  },
+  "evaluation": {
+    "evaluateVerifiedCapacityInvoked": false,
+    "outcome": null,
+    "note": "A verified rule is not automatically numerical capacity. Remaining capacity withheld without utilization."
+  },
+  "blocker": {
+    "class": "OPERATIONAL_CREDENTIAL",
+    "reason": "Dry-run default. Pass --live only with credentials AND KNIFE_RIVER_701_INFERENCE_AUTHORIZED=1 and budget ceiling.",
+    "missingInputs": [
+      "AI_GATEWAY_API_KEY_OR_ANTHROPIC_API_KEY",
+      "APPROVED_OFFLINE_REPLAY_CORPUS_FOR_KR_701"
+    ],
+    "exactProductionPathWhenAuthorized": [
+      "createCertifiedCallers + certifiedConfig + HardDispatchBudget",
+      "buildCandidateCompilerInput(doc-a §7.01)",
+      "compileCandidateToVerifiedIR",
+      "verifyCompiledCandidate → buildVerifiedUnitPackage → certifyCandidate",
+      "evaluateVerifiedCapacity under REQUIRE only if CERTIFIED (gross may still be unavailable without financials)"
+    ],
+    "offlineReplayAvailable": false
+  },
+  "callerSynthetic": true,
+  "costUsd": 0,
+  "successCriterion": "One genuinely verified unseen-package rule with reproducible execution or justified refusal — NOT met: interpretation not run; verifiedRule.count=0."
+}
