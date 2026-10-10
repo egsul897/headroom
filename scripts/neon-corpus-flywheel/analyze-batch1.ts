@@ -6,12 +6,19 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
-import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
-import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
+import {
+  detectStructuralDefinitions,
+  type DetectedDefinition,
+} from "../../lib/contract-model/compiler/structural-definitions";
+import {
+  detectStructuralReferences,
+  type DetectedReference,
+} from "../../lib/contract-model/compiler/structural-references";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { runPassADeterministicSignals } from "../../lib/contract-model/compiler/discovery/pass-a-signals";
 import { buildPackageGraph } from "../../lib/contract-model/compiler/package-graph/pipeline";
 import type { PackageDocumentInput } from "../../lib/contract-model/compiler/package-graph/types";
+import type { StructuralNode } from "../../lib/contract-model/compiler/types";
 
 const OUT = path.join("docs/neon-corpus-flywheel");
 
@@ -79,9 +86,9 @@ function analyzePackage(pkg: PackageSpec) {
     .filter((d) => existsSync(d.textPath))
     .map((d) => ({ ...d, text: readFileSync(d.textPath, "utf8") }));
 
-  const nodesByDocument = new Map<string, { text: string; nodes: ReturnType<typeof parseDocumentStructure> }>();
-  const allDefs = [];
-  const allRefs = [];
+  const nodesByDocument = new Map<string, { text: string; nodes: StructuralNode[] }>();
+  const allDefs: DetectedDefinition[] = [];
+  const allRefs: DetectedReference[] = [];
   for (const d of loaded) {
     const nodes = parseDocumentStructure({ documentId: d.id, label: d.label, text: d.text });
     nodesByDocument.set(d.id, { text: d.text, nodes });
@@ -92,7 +99,7 @@ function analyzePackage(pkg: PackageSpec) {
 
   const structural = loaded.map((d) => {
     const nodes = nodesByDocument.get(d.id)!.nodes;
-    const defs = allDefs.filter((x) => x.documentId === d.id);
+    const defs: DetectedDefinition[] = allDefs.filter((x) => x.documentId === d.id);
     const candidates = runPassADeterministicSignals(d.id, index);
     const signalHits = new Map<string, number>();
     for (const c of candidates) {
