@@ -62,23 +62,6 @@ function trustedAmends(source: string, target: string): RelationshipCandidate {
   };
 }
 
-function graph(
-  instruments: ReturnType<typeof groupPackageIntoInstruments>,
-  rels: RelationshipCandidate[],
-  classifications: DocumentClassification[],
-): PackageGraphResult {
-  return {
-    companyId: "co",
-    packageKey: "pkg",
-    documents: classifications.map((c) => ({ documentId: c.documentId, label: c.documentId, text: "" })),
-    identities: [],
-    classifications,
-    relationshipCandidates: rels,
-    instruments,
-    warnings: [],
-  };
-}
-
 function view(over: Partial<OperativeProvisionView> & Pick<OperativeProvisionView, "provisionKey">): OperativeProvisionView {
   return {
     instrumentKey: "instrument:ca",
@@ -96,15 +79,59 @@ function view(over: Partial<OperativeProvisionView> & Pick<OperativeProvisionVie
     supersededSourceNodeKeys: [],
     supersededSourceNodeIds: [],
     status: "OPERATIVE_STATE_RESOLVED",
+    unresolvedIssues: [],
+    conflicts: [],
     targetResolutionStatus: "UNIQUE",
     targetResolutionReason: null,
     candidateSourceNodeIds: ["node-601"],
     structuralHealthStatus: "STRUCTURAL_HEALTH_SUFFICIENT",
-    reviewRequired: false,
-    unresolvedIssues: [],
-    conflicts: [],
+    structuralHealthIssues: [],
     attemptedText: null,
+    reviewRequired: false,
+    candidateTexts: [],
     ...over,
+  };
+}
+
+function graph(
+  instruments: ReturnType<typeof groupPackageIntoInstruments>,
+  rels: RelationshipCandidate[],
+  classifications: DocumentClassification[],
+): PackageGraphResult {
+  return {
+    companyId: "fixture-hr278-gate",
+    packageKey: "hr278-gate",
+    classifications,
+    identities: classifications.map((c) => ({
+      documentId: c.documentId,
+      title: c.documentId,
+      agreementTypeLabel: null,
+      executionDate: "2022-01-01",
+      effectiveDate: c.documentId.startsWith("am") ? "2023-06-01" : "2022-01-01",
+      parties: [],
+      borrowerOrIssuer: null,
+      administrativeAgentOrTrustee: null,
+      facilityOrInstrumentName: null,
+      originalAgreementReferenceHint: null,
+      amendmentNumber: c.documentId.includes("am") ? 1 : null,
+      supplementNumber: null,
+      evidenceByField: {},
+    })),
+    relationshipCandidates: rels,
+    modificationCandidates: [],
+    crossDocumentReferenceLeads: [],
+    instruments,
+    performance: {
+      documentCount: classifications.length,
+      totalCharsScanned: 0,
+      relationshipCandidatesGenerated: rels.length,
+      relationshipsResolved: rels.filter((r) => r.status === "RESOLVED").length,
+      relationshipsUnresolved: 0,
+      modificationCandidatesGenerated: 0,
+      crossDocumentReferenceLeadsGenerated: 0,
+      wallClockMs: 0,
+      semanticCallsUsed: 0,
+    },
   };
 }
 
@@ -122,14 +149,13 @@ describe("offline compile operative identity gate (contract A)", () => {
     expect(result.stages.operativeHandoff.authorityGate).toBe("CONFIRMED_OPERATIVE_IDENTITY");
     expect(result.stages.operativeHandoff.provisionalBlockedCount).toBe(0);
     expect(result.summary.falseExecutableClassifications).toBe(0);
-    // Production capacity remains refused even when IR verifies.
     for (const u of result.units.filter((x) => x.executableAuthority === "VERIFIED_EXECUTABLE")) {
       const refusal = u.fixedDollarSlice?.productionRefusal ?? u.greaterOfSlice?.productionRefusal;
       expect(refusal).toMatch(/PRODUCTION_CAPACITY_REFUSED/);
     }
   });
 
-  it("provisional instrument identity → PROVISIONAL_IDENTITY_BLOCKED; no VERIFIED_EXECUTABLE", () => {
+  it("provisional instrument identity → PROVISIONAL_IDENTITY_BLOCKED; provenance survives", () => {
     const classifications = [cls("ca", "CREDIT_AGREEMENT"), cls("am", "AMENDMENT")];
     const rels = [provisionalAmends("am", "ca")];
     const instruments = groupPackageIntoInstruments(["ca", "am"], classifications, [], rels);
@@ -174,7 +200,6 @@ describe("offline compile operative identity gate (contract A)", () => {
     expect(bundle.provisions[0]!.authorityClassification).toBe("PROVISIONAL_IDENTITY_BLOCKED");
     expect(bundle.provisions[0]!.canonicalInstrumentKey).toBeNull();
     expect(bundle.instruments[0]!.mayConsolidateOperative).toBe(false);
-    // Provenance / chain survive the handoff even when blocked.
     expect(bundle.provisions[0]!.applicableAmendmentChain).toHaveLength(1);
     expect(bundle.provisions[0]!.applicableAmendmentChain[0]!.amendmentDocumentId).toBe("am");
     expect(bundle.provisions[0]!.sourceSpan.nodeId).toBe("node-601");
@@ -216,7 +241,16 @@ describe("offline compile operative identity gate (contract A)", () => {
           provisionKey: "instrument:ca::SECTION::7.01",
           sectionRef: "7.01",
           status: "OPERATIVE_STATE_CONFLICTED",
-          conflicts: [{ conflictType: "AMENDMENT_ORDER", reason: "two competing replaces" }],
+          conflicts: [
+            {
+              conflictType: "AMENDMENT_CONFLICT",
+              provisionKey: "instrument:ca::SECTION::7.01",
+              involvedEffectIds: ["e1", "e2"],
+              reason: "two competing replaces",
+            },
+          ],
+          candidateTexts: ["text-a", "text-b"],
+          currentText: null,
         }),
       ],
     };
