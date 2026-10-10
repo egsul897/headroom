@@ -18,8 +18,20 @@
     "NO_PRODUCTION_NEON_WRITES",
     "NO_SELF_MERGE"
   ],
-  "endingTipSha": "32245075be71e214dc9b0b2a3370b265d578a732",
+  "endingTipSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
   "note": "endingTipSha is the branch tip immediately before this metadata alignment commit; verify with git rev-parse origin/cursor/operative-restatement-authority-2670 after pull.",
-  "exactTipCi": "GREEN",
-  "ciNote": "All checks green after rebase onto main@4f1a0b81 (#289). Vercel + certified path + soft gates."
+  "exactTipCi": "PENDING_SUBSCRIPTION",
+  "ciNote": "All checks green after rebase onto main@4f1a0b81 (#289). Vercel + certified path + soft gates.",
+  "integrationCommitSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
+  "legalAuthorityVerdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
+  "reviewDisposition": "READY_FOR_FOCUSED_HUMAN_REVIEW",
+  "mergeDisposition": "AWAITING_HUMAN_APPROVAL_BRANCH_PROTECTION",
+  "productionAuthorityActive": false,
+  "cpSatisfactionAsserted": false,
+  "remainingBlockers": [
+    "Human approval / branch-protection merge required (no self-merge)",
+    "Package-graph RESTATES remains REVIEW_REQUIRED \u2014 provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
+    "CP satisfaction NOT_INDEPENDENTLY_PROVEN \u2014 cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
+    "Production capacity activation remains refused (financial/utilization gates separate)"
+  ]
 }
