@@ -1,6 +1,6 @@
 {
   "artifact": "AGENT11_EVIDENCE_RECONCILIATION",
-  "mission": "FINAL EVIDENCE RECONCILIATION — PR #286",
+  "mission": "FINAL EVIDENCE RECONCILIATION \u2014 PR #286",
   "reconciledAtUtc": "2026-10-10T14:07:30Z",
   "priorReportedHarnessTip": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
   "prHeadAtReconciliationStart": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
@@ -9,7 +9,7 @@
     {
       "sha": "f0403f25",
       "subject": "docs(agent-11): record offline acceptance evidence and scorecard",
-      "nature": "Evidence artifacts from prior run + honesty gate in harness (stage-5 SUFFICIENT threshold ≥80%; A11-F02 trigger). Does not improve coverage numerators."
+      "nature": "Evidence artifacts from prior run + honesty gate in harness (stage-5 SUFFICIENT threshold \u226580%; A11-F02 trigger). Does not improve coverage numerators."
     },
     {
       "sha": "c48b9117",
@@ -50,7 +50,13 @@
     "metricDiffCount": 0,
     "stageClassDiffCount": 0,
     "adversarialPassClassificationDiffCount": 0,
-    "handoffIdsPreserved": ["A11-F01", "A11-F02", "A11-F03", "A11-F04", "A11-F05"],
+    "handoffIdsPreserved": [
+      "A11-F01",
+      "A11-F02",
+      "A11-F03",
+      "A11-F04",
+      "A11-F05"
+    ],
     "discrepancies": [],
     "note": "Re-run at f2c67456 reproduced the previously committed scorecard/classifications/adversarial/handoffs byte-for-byte on measured fields. Tip SHA field updated to f2c67456."
   },
@@ -121,10 +127,16 @@
     "commit": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
     "githubActionsCheckRuns": [],
     "githubCommitStatuses": [
-      { "context": "Vercel", "state": "success" }
+      {
+        "context": "Vercel",
+        "state": "success"
+      }
     ],
     "checkRuns": [
-      { "name": "Vercel Preview Comments", "conclusion": "success" }
+      {
+        "name": "Vercel Preview Comments",
+        "conclusion": "success"
+      }
     ],
     "rollup": "SUCCESS (Vercel only)",
     "githubActionsNote": "Path-filtered workflows (canonical-compiler, stratified-cert, etc.) did not register check-runs on this tip; Agent #11 changes are docs/scripts/fixtures only and did not match those path filters on the tip commit.",
@@ -134,5 +146,13 @@
       "paidInferenceUsd": 0
     }
   },
-  "archiveStatus": "PENDING_PUSH_OF_THIS_RECORD"
+  "archiveStatus": "SAFE_TO_ARCHIVE",
+  "finalSha": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
+  "finalHarnessRerunTip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
+  "postCommitRerun": {
+    "tip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
+    "legalUnchanged": true,
+    "scorecardMetricsUnchangedVsF2c67456": true,
+    "handoffsPreserved": true
+  }
 }
