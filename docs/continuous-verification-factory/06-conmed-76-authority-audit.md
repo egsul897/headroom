@@ -1,9 +1,7 @@
 # CONMED §7.6 Final Authority-Boundary Audit
 
 **Starting SHA:** `368fc1d54e760b50bf0134f52f9cfbeca69da10e`  
-**Ending SHA:** `49fccf6f4cf2c26f06be9df25dd79ab360b346fe`  
-
-
+**Ending SHA:** `fc7ec44f6d7610c7568b75c677282a478be58ee1` (typecheck-clean authority tip)  
 **PR:** #238
 
 ## Verdict
