@@ -1,0 +1,41 @@
+{
+  "schema": "stage-d-pkgi-secured-capacity.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "asOf": "2026-12-31",
+  "outcome": "EXECUTED",
+  "debt701b": {
+    "status": "AVAILABLE",
+    "effectiveRemaining": {
+      "kind": "AMOUNT",
+      "value": {
+        "type": "MONEY",
+        "amount": "50000000",
+        "currency": "USD",
+        "lineage": {
+          "exprId": "ir-expr:09691fbb468a1a7770f867f4",
+          "inputKeys": [],
+          "rawSource": 50000000
+        }
+      }
+    },
+    "limitations": []
+  },
+  "lien702b": {
+    "status": "AVAILABLE",
+    "effectiveRemaining": {
+      "kind": "AMOUNT",
+      "value": {
+        "type": "MONEY",
+        "amount": "20000000",
+        "currency": "USD",
+        "lineage": {
+          "exprId": "ir-expr:478cb4c61c859ba8182c4e02",
+          "inputKeys": [],
+          "rawSource": 20000000
+        }
+      }
+    },
+    "limitations": []
+  }
+}

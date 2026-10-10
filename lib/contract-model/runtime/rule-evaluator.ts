@@ -41,8 +41,29 @@ export interface RuleEvaluation {
 function scopeApplicability(rule: IRRule): RuleEvaluation["entityScope"] {
   const audit = rule.entityScopeAudit;
   if (!audit) return { entityScope: rule.entityScope, entityScopeExcluded: rule.entityScopeExcluded, auditStatus: null, safeToRely: null, applicability: "SCOPE_UNAUDITED", note: "rule carries no entity-scope audit; the runtime does not assert who a computed capacity applies to" };
-  const applicability: EntityScopeApplicability = audit.status === "SOURCE_MATCH_CONFIRMED" ? "SCOPE_CONFIRMED_BY_SOURCE" : audit.status === "UNSPECIFIED" ? "SCOPE_UNSPECIFIED" : "SCOPE_NOT_SAFE_TO_RELY_ON";
-  return { entityScope: rule.entityScope, entityScopeExcluded: rule.entityScopeExcluded, auditStatus: audit.status, safeToRely: audit.safeToRely, applicability, note: applicability === "SCOPE_CONFIRMED_BY_SOURCE" ? "scope confirmed against the rule's own source by the Phase-3 guard" : "the runtime must not claim the computed value applies confidently to a specific entity set; scope is not repaired here" };
+  // Confirm only when status is source-backed AND safeToRely AND a non-empty class was asserted.
+  const sourceConfirmed =
+    audit.safeToRely === true &&
+    rule.entityScope.length > 0 &&
+    (audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED");
+  const applicability: EntityScopeApplicability = sourceConfirmed
+    ? "SCOPE_CONFIRMED_BY_SOURCE"
+    : audit.status === "UNSPECIFIED"
+      ? "SCOPE_UNSPECIFIED"
+      : "SCOPE_NOT_SAFE_TO_RELY_ON";
+  return {
+    entityScope: rule.entityScope,
+    entityScopeExcluded: rule.entityScopeExcluded,
+    auditStatus: audit.status,
+    safeToRely: audit.safeToRely,
+    applicability,
+    note:
+      applicability === "SCOPE_CONFIRMED_BY_SOURCE"
+        ? audit.status === "SOURCE_SCOPE_DERIVED"
+          ? "scope derived from authenticated source by the Phase-3 guard (own actor language, governing chain, or parent chapeau)"
+          : "scope confirmed against the rule's own source by the Phase-3 guard"
+        : "the runtime must not claim the computed value applies confidently to a specific entity set; scope is not repaired here",
+  };
 }
 
 export function evaluateRule(rule: IRRule, inputs: InputResolver, context: EvaluationContext = {}): RuleEvaluation {

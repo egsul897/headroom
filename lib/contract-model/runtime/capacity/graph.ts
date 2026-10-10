@@ -27,9 +27,17 @@ const componentNodeId = (ownerNodeId: string, exprId: string) => `${ownerNodeId}
 
 function entityScopeOf(rule: IRRule): CapacityEntityScope {
   const audit = rule.entityScopeAudit;
+  // SOURCE_SCOPE_DERIVED / SOURCE_MATCH_CONFIRMED map to SCOPE_CONFIRMED_BY_SOURCE only when the
+  // Phase-3 guard also marked safeToRely and asserted a non-empty entity class. A status label
+  // alone never confirms an unsupported or empty scope.
+  const sourceConfirmed =
+    !!audit &&
+    audit.safeToRely === true &&
+    rule.entityScope.length > 0 &&
+    (audit.status === "SOURCE_MATCH_CONFIRMED" || audit.status === "SOURCE_SCOPE_DERIVED");
   const applicability: CapacityEntityScope["applicability"] = !audit
     ? "SCOPE_UNAUDITED"
-    : audit.status === "SOURCE_MATCH_CONFIRMED"
+    : sourceConfirmed
       ? "SCOPE_CONFIRMED_BY_SOURCE"
       : audit.status === "UNSPECIFIED"
         ? "SCOPE_UNSPECIFIED"

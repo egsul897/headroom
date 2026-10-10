@@ -4,6 +4,7 @@ export type {
   UtilizationEvidenceRecord,
   UtilizationCompletenessCertificate,
   UtilizationResolution,
+  CompletenessIssuerRole,
 } from "./utilization-types";
 export {
   resolveUtilization,
@@ -32,7 +33,20 @@ export {
   type UtilizationAuthorityKind,
   type UtilizationAuthorityDecision,
   type SolverUsageObservation,
+  type SolverCompletenessCertInput,
 } from "./utilization-authority";
+export {
+  authorizeCompletenessIssuer,
+  productionTrustedIssuerAuth,
+  demoTrustedIssuerAuth,
+  sessionCounselPrincipal,
+  sessionCustodianPrincipal,
+  type CompletenessIssuerPrincipal,
+  type CompletenessIdentityAssurance,
+  type TrustedIssuerAuthorizationContext,
+  type IssuerAuthorizationResult,
+} from "./completeness-issuer-auth";
+/** Thin joint marker — does not invent a parallel authority path. */
 export {
   REMAINING_AUTHORITY_CONTRACT_VERSION,
   mayPublishRemainingCapacity,

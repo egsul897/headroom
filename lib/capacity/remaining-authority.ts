@@ -1,16 +1,13 @@
 /**
- * Joint remaining-capacity contract marker (reconciled onto #237).
+ * Joint #239 contract marker — NOT a parallel authority path.
  *
- * Authority implementation lives in `utilization-authority.ts` (#237).
- * This module does not invent a second rule — it re-exports the canonical
- * publish gate and pins the joint contract version for integration evidence.
+ * Canonical implementation (post-#237 / #250):
+ * - `utilization-authority.ts` — remaining / completeness / synthetic refusal
+ * - `completeness-issuer-auth.ts` — trusted issuer for production-authoritative remaining
  *
- * Rules (identical to #237 UTILIZATION-AUTHORITY-CONTRACT):
- * - Attributed / approved usage ⇒ known attributed amounts only.
- * - Remaining requires APPROVED completeness (VERIFIED_EMPTY | VERIFIED_COMPLETE).
- * - Synthetic production evidence never publishes authoritative remaining.
- * - Position / Simulate / Ask share one verified-remaining projection.
- * - Solver election SHARED_CAP requires currentUsageAuthoritative === true.
+ * This module only re-exports the publish gate and pins an integration version
+ * string for human-review handoff. Do not restore obsolete completeness-certificate
+ * modules here.
  */
 
 export {
@@ -22,10 +19,10 @@ export {
   type SolverUsageObservation,
 } from "./utilization-authority";
 
-/** Integration marker — joint #232/#234 contract preserved on #237 authority. */
-export const REMAINING_AUTHORITY_CONTRACT_VERSION = "joint-232-234.on-237.v1";
+/** Integration marker: joint #232/#234 contract on #237/#250 canonical authority. */
+export const REMAINING_AUTHORITY_CONTRACT_VERSION = "joint-232-234.on-250.v1";
 
-/** Alias of assertMayPublishRemaining for boolean supportsRemainingClaim flags. */
+/** Alias of supportsRemainingClaim boolean gate. */
 export function mayPublishRemainingCapacity(supportsRemainingClaim: boolean | undefined | null): boolean {
   return supportsRemainingClaim === true;
 }
@@ -38,6 +35,7 @@ export type RemainingRefusalReason =
   | "MISMATCHED_CERTIFICATE"
   | "CONTRADICTORY_CERTIFICATE"
   | "SYNTHETIC_IN_PRODUCTION"
+  | "UNTRUSTED_ISSUER"
   | "EXTERNAL_USAGE_UNKNOWN"
   | "GATE_FAILED"
   | "NOT_MODELED";

@@ -9,6 +9,7 @@
  */
 
 import { decideSolverUtilizationAuthority } from "../capacity/utilization-authority";
+import type { TrustedIssuerAuthorizationContext } from "../capacity/completeness-issuer-auth";
 import type {
   AggregationRule,
   BasketUsageRecord,
@@ -102,6 +103,11 @@ export function computeSharedConstraintCurrentUsage(params: {
   completenessCertificate?: (UtilizationCompletenessCertificate & {
     authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
   }) | null;
+  /**
+   * Trusted issuer authorization — required for production-authoritative remaining.
+   * Identity-provider wiring is an activation requirement until real attestations land.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   /** Test-only — never set in production loaders. */
   allowSyntheticRemaining?: boolean;
 }): {
@@ -134,6 +140,7 @@ export function computeSharedConstraintCurrentUsage(params: {
     measuredUsage,
     aggregation: params.aggregationRule,
     completenessCertificate: params.completenessCertificate ?? null,
+    trustedIssuerAuth: params.trustedIssuerAuth ?? null,
     allowSyntheticRemaining: params.allowSyntheticRemaining,
   });
 

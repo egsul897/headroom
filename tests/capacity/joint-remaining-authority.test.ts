@@ -15,7 +15,9 @@ import {
   computeVerifiedRemaining,
   decideSolverUtilizationAuthority,
   mayPublishRemainingCapacity,
+  productionTrustedIssuerAuth,
   resolveUtilization,
+  sessionCounselPrincipal,
   type UtilizationEvidenceRecord,
 } from "@/lib/capacity";
 import { computeSharedConstraintCurrentUsage } from "@/lib/solver/shared-usage";
@@ -24,6 +26,15 @@ import { buildPermissionGraph } from "@/lib/solver/graph";
 import type { ActivationState, Permission, SharedConstraint, Transaction } from "@/lib/solver/types";
 
 const AS_OF = "2026-10-09";
+const PROD_AUTH = productionTrustedIssuerAuth([sessionCounselPrincipal("counsel-alice")]);
+const AUTHENTIC_ISSUER = {
+  authenticity: "AUTHENTIC" as const,
+  issuer: {
+    role: "COUNSEL_REVIEWER" as const,
+    actorId: "counsel-alice",
+    attestedAt: `${AS_OF}T12:00:00.000Z`,
+  },
+};
 
 function permission(id: string, overrides: Partial<Permission> = {}): Permission {
   return {
@@ -100,9 +111,9 @@ const authenticComplete = {
   kind: "VERIFIED_COMPLETE" as const,
 };
 
-describe("joint remaining authority on #237 utilization-authority", () => {
-  it("pins joint contract version to #237 authority module", () => {
-    expect(REMAINING_AUTHORITY_CONTRACT_VERSION).toBe("joint-232-234.on-237.v1");
+describe("joint remaining authority on #250 canonical utilization-authority", () => {
+  it("pins joint contract version as thin marker on #250 authority", () => {
+    expect(REMAINING_AUTHORITY_CONTRACT_VERSION).toBe("joint-232-234.on-250.v1");
   });
 
   it("approved attributed records without completeness do not support remaining on either path", () => {
@@ -339,8 +350,9 @@ describe("joint remaining authority on #237 utilization-authority", () => {
         approvalState: "APPROVED",
         sourceLabel: "sc-a-complete",
         kind: "VERIFIED_COMPLETE",
-        authenticity: "AUTHENTIC",
+        ...AUTHENTIC_ISSUER,
       },
+      trustedIssuerAuth: PROD_AUTH,
     });
     const scBStillOpen = computeSharedConstraintCurrentUsage({
       aggregationRule: "NAMED_MEMBER_CLAUSES",

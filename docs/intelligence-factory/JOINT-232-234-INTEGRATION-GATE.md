@@ -1,53 +1,36 @@
-# Joint #232/#234 integration gate (reconciled onto #237)
+# Joint #239 — final disposition (human-review candidate)
 
-**PR:** #239  
-**Status:** reconciled onto current main after #237 merge  
-**Authority implementation:** `lib/capacity/utilization-authority.ts` (#237)  
-**Contract marker:** `lib/capacity/remaining-authority.ts` (`joint-232-234.on-237.v1`)
+**PR:** #239 (draft)  
+**Status:** candidate for human review — **not** independent merge authorization  
+**Canonical authority:** `#237` / `#250` `lib/capacity/utilization-authority.ts` + `completeness-issuer-auth.ts`  
+**Marker only:** `lib/capacity/remaining-authority.ts` (`joint-232-234.on-250.v1`) — no parallel authority path
 
-## Why #239 was blocked
+## Why GitHub reported non-mergeable after CLEAN
 
-GitHub `mergeable=CONFLICTING` / `mergeStateStatus=DIRTY` against main after
-`7f1dd3a2` (#237). Real content conflicts — not transient metadata.
+Prior CLEAN state was against main `@7f1dd3a2` (#237). Main then moved to
+`3612fe76` via merged **#250**. GitHub correctly flipped to
+`mergeable=CONFLICTING` / `DIRTY` — **branch movement / new conflicts**, not
+transient metadata.
 
-Main landed the newer protected authority module (`utilization-authority.ts`).
-The pre-reconcile joint tip carried parallel older modules
-(`completeness-certificate.ts` / rich fingerprint certs) that must **not**
-overwrite #237.
+## What was ported (genuinely missing vs post-#250 main)
 
-## Reconciliation rules applied
+1. Debt-path overlapping SHARED_CAP fail-closed in `election.headroomAndConsume`
+   (main already had full-set checks for liens; debt waterfall still used first-only).
+2. Package-path + authoritative-capacity labeling (UNKNOWN ≠ zero / completeness).
+3. Thin `remaining-authority` marker + joint regression tests.
 
-1. Prefer #237 `utilization-authority.ts` and its consumers (solver shared-usage,
-   product verified-remaining, covenant-engine flags).
-2. Delete obsolete joint-only modules that conflicted with #237 types.
-3. Keep `remaining-authority.ts` as a thin re-export / version marker only.
-4. Preserve #229 capacity `state.ts` / `types.ts` byte-identical to main.
-5. Preserve package-path labeling that refuses treating legacy engine figures
-   as utilization-completeness-certified remaining.
-6. No automatic merge.
+## What was NOT restored
 
-## Contract (unchanged semantics)
+- Obsolete `completeness-certificate.ts` / fixtures / fingerprint adversarial suite
+- Any second authority module that competes with `#250` utilization-authority
 
-| Evidence | Remaining |
-|---|---|
-| Approved-but-incomplete | refused |
-| Missing / empty ledger | UNKNOWN — refused |
-| Partial attribution | refused |
-| Mismatched / contradictory cert | refused |
-| Synthetic in production | refused |
-| AUTHENTIC VERIFIED_EMPTY / VERIFIED_COMPLETE | allowed |
+## Disposition
 
-Consumers: Position / Simulate / Ask (`buildSharedProductCapacityViews`),
-solver election SHARED_CAP (`currentUsageAuthoritative`), covenant-engine load.
+- No auto-merge
+- No certification promotion / Neon writes / broad further integration
+- Primary engineering priority remains Product Proof 002
+- Close this workstream after human handoff
 
-## SHA / CI
+## SHA
 
-| Item | Value |
-|---|---|
-| Main SHA reconciled onto | `7f1dd3a202b026b9a862ef727480a1a9f284523a` (#237) |
-| Reconciled tip | `9fe553b62a6cd1acd6f8a4c19838ac4fd37e3cce` |
-| GitHub mergeable | MERGEABLE (was CONFLICTING / DIRTY) |
-| `#229` capacity state/types | `CAPACITY_EQ_MAIN=yes` |
-| `#237` utilization-authority | `UTIL_AUTH_EQ_MAIN=yes` |
-
-**No auto-merge. Ready for human review after CI green.**
+Filled on tip after push.

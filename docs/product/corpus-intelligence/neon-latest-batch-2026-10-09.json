@@ -1,0 +1,57 @@
+{
+  "batchKey": "neon-massive-batch5-abl-2026-10-09",
+  "live": true,
+  "startedAt": "2026-10-09T23:07:10.255Z",
+  "finishedAt": "2026-10-09T23:11:06.285Z",
+  "wallMs": 236030,
+  "discovered": 1784,
+  "skippedExisting": 7,
+  "skippedNonFinancing": 888,
+  "fetched": 8,
+  "persisted": 8,
+  "reused": 0,
+  "analyzed": 8,
+  "failed": 1,
+  "relationshipEdgesPersisted": 8004,
+  "calculationExamples": 13,
+  "errors": [
+    {
+      "ticker": "ALSIN",
+      "error": "EdgarKnowledgeClient: ticker \"ALSIN\" not found"
+    }
+  ],
+  "persistedSourceIds": [
+    "edgar:0000106640-18-000051:whirlpoolwellstermloanagre.htm",
+    "edgar:0001206774-20-000818:bwa3736371-ex101.htm",
+    "edgar:0001206774-20-002836:bwa3814781-ex42.htm",
+    "edgar:0000723612-18-000015:exhibit10_1.htm",
+    "edgar:0000723612-19-000025:aesop2015-3supplement.htm",
+    "edgar:0000950123-18-003783:gtq120182ndlienarcreditagree.htm",
+    "edgar:0000947871-16-001493:ss10342_ex1001.htm",
+    "edgar:0000947871-16-001292:ss1511888_ex1001.htm"
+  ],
+  "byClassDelta": {
+    "TERM_LOAN_AGREEMENT": 1,
+    "RESTATEMENT": 3,
+    "SUPPLEMENTAL_INDENTURE": 1,
+    "CREDIT_AGREEMENT": 2,
+    "AMENDMENT": 1
+  },
+  "neonAfter": {
+    "knowledgeSources": 769,
+    "documentByteObjects": 746,
+    "knowledgeRelationships": 48226,
+    "distinctIssuers": 213,
+    "covenantSummaryItems": 31689,
+    "databaseSizePretty": "257 MB"
+  },
+  "quality": {
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 64,
+      "DETERMINISTICALLY_VALIDATED": 3,
+      "DISCOVERED_CANDIDATE": 702
+    },
+    "certifiedPromotionCount": 0,
+    "note": "Automated pipeline stops at DISCOVERED_CANDIDATE / DETERMINISTICALLY_VALIDATED — never invents CERTIFIED"
+  }
+}

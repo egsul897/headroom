@@ -45,9 +45,22 @@ export interface UtilizationEvidenceRecord {
   authenticity: "AUTHENTIC" | "SYNTHETIC_LABELED";
 }
 
+/** Who may issue a completeness certificate. SYSTEM_FIXTURE is never production-authoritative. */
+export type CompletenessIssuerRole =
+  | "COUNSEL_REVIEWER"
+  | "LEDGER_CUSTODIAN"
+  | "SYSTEM_FIXTURE";
+
 /**
  * Affirmative ledger-completeness certificate for one capacity path.
  * Required for any remaining-capacity claim (including verified zero).
+ *
+ * Solver production-authoritative remaining additionally requires:
+ * - authenticity: "AUTHENTIC" (missing authenticity refuses production authority)
+ * - issuer verified via TrustedIssuerAuthorizationContext (role string alone is insufficient)
+ * See `lib/capacity/utilization-authority.ts` and `completeness-issuer-auth.ts`.
+ * Production identity-provider → TrustedIssuerAuthorizationContext wiring remains an
+ * activation requirement until real attestations are enabled.
  */
 export interface UtilizationCompletenessCertificate {
   capacityRuleId: string;
@@ -59,6 +72,17 @@ export interface UtilizationCompletenessCertificate {
    * VERIFIED_COMPLETE — attributed records on the path are the full usage set.
    */
   kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+  /** Required for production-authoritative remaining; omit/missing refuses that path. */
+  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+  /**
+   * Claimed issuer on the certificate blob. Never trusted alone —
+   * must be authorized via TrustedIssuerAuthorizationContext for production remaining.
+   */
+  issuer?: {
+    role: CompletenessIssuerRole;
+    actorId: string;
+    attestedAt?: string;
+  };
 }
 
 export interface UtilizationResolution {

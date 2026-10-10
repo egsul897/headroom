@@ -75,3 +75,41 @@ export {
   type FixtureVerifiedPackage,
   type FixtureCertifiedRun,
 } from "./fixture-verified-package";
+export {
+  ALL_BUSINESS_TRANSACTION_TYPES,
+  TRANSACTION_EFFECT_RECIPES_VERSION,
+  recipeDebtIncurrence,
+  recipeDebtRepayment,
+  recipeSecuredBorrowing,
+  recipeDividendPayment,
+  recipeRestrictedInvestment,
+  recipeEquityContribution,
+  recipeInvestmentReturn,
+  recipeAssetSale,
+  recipeReinvestment,
+  recipeBasketReclassification,
+  recipeAmendmentAffectingCapacity,
+  type BusinessTransactionType,
+  type RecipeBuildResult,
+  type RecipeIdentity,
+} from "./transaction-effect-recipes";
+export {
+  runSequentialTransactions,
+  replaySequentialRun,
+  assertCompletedNotDoublePosted,
+  SEQUENTIAL_TRANSACTION_RUNNER_VERSION,
+  type SequentialRunResult,
+  type SequentialStepResult,
+  type RunnerMode,
+} from "./sequential-transaction-runner";
+export {
+  classifyUtilizationHistory,
+  honestRemaining,
+  UTILIZATION_UNKNOWN_REASON,
+  type UtilizationHistoryStatus,
+} from "./utilization-history";
+export {
+  runCanonicalSequentialDemo,
+  buildCanonicalSequentialSteps,
+  buildSequentialDemoWorld,
+} from "./sequential-demo-scenario";

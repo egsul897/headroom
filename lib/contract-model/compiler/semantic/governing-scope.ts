@@ -70,7 +70,7 @@ export interface SourceSemanticEvidence {
 
 export interface SourceEntityScopeEvidence extends SourceSemanticEvidence {
   kind: "ENTITY_SCOPE";
-  mentionRole: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT";
+  mentionRole: "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT" | "COUNTERPARTY";
   excludedContext: boolean;
   /** The exact EntityClassTag value(s) the phrase denotes under the fixed enum, or null when the enum cannot name the class exactly. */
   mappedTags: EntityClassTag[] | null;
@@ -225,6 +225,35 @@ export interface ResolveGoverningScopeInput {
   index: StructuralIndex;
 }
 
+/**
+ * When a lettered/child unit (e.g. 7.02(b)) is compiled under a section-level candidate
+ * (anchor = 7.02), the candidate-level governing chain often has no entity-binding ancestor —
+ * the section chapeau is the candidate's own text, not an ancestor. Re-resolve from the child's
+ * structural node so PARENT_SCOPE is the section lead-in (source-witnessed). Falls back to the
+ * candidate governing scope when the child cannot be uniquely located or has no lettered path.
+ */
+export function resolveGoverningScopeForCitedUnit(input: {
+  candidateRef: string;
+  documentId: string;
+  ruleSourceSectionRef: string | null | undefined;
+  candidateGoverningScope: GoverningSemanticContext | null;
+  index: StructuralIndex | null;
+}): GoverningSemanticContext | null {
+  const ref = input.ruleSourceSectionRef?.trim() ?? "";
+  if (!ref || !input.index) return input.candidateGoverningScope;
+  // Lettered / nested path: 7.02(b), 9.2(a)(i), etc.
+  if (!/\([^)]+\)/.test(ref)) return input.candidateGoverningScope;
+  const nodes = input.index.findNodesByRef(input.documentId, ref);
+  if (nodes.length !== 1) return input.candidateGoverningScope;
+  const resolved = resolveGoverningScope({
+    candidateRef: `${input.candidateRef}#${ref}`,
+    documentId: input.documentId,
+    anchorNodeId: nodes[0]!.nodeId,
+    index: input.index,
+  });
+  return resolved ?? input.candidateGoverningScope;
+}
+
 /** Walks the candidate's real ancestor chain and derives the typed governing context. Null when the anchor is unknown to the index. */
 export function resolveGoverningScope(input: ResolveGoverningScopeInput): GoverningSemanticContext | null {
   const anchor = input.index.getNodeById(input.anchorNodeId);
@@ -264,8 +293,31 @@ export function resolveGoverningScope(input: ResolveGoverningScopeInput): Govern
     if (!governingProhibition && new RegExp(PROHIBITION_PHRASE.source).test(r.text)) governingProhibition = { regionId: r.regionId, sectionRef: r.sectionRef, role: r.role, evidence: r.text.slice(0, 240) };
 
     const signals = findEntityBindingSignals(r.text);
-    const obligors = signals.filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT");
-    for (const s of signals) entityScopeEvidence.push({ regionId: r.regionId, sectionRef: r.sectionRef, role: r.role, kind: "ENTITY_SCOPE", phrase: s.phrase, index: s.index, mentionRole: s.role ?? "OBLIGOR", excludedContext: s.excludedContext, mappedTags: mapPhrase(s.phrase), detail: s.excludedContext ? "carve-out mention" : s.role === "MEASUREMENT_CONTEXT" ? "measurement-group mention" : s.role === "CONDITION_SUBJECT" ? "condition-subject mention" : "obligor binding" });
+    const obligors = signals.filter(
+      (s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT" && s.role !== "COUNTERPARTY",
+    );
+    for (const s of signals) {
+      entityScopeEvidence.push({
+        regionId: r.regionId,
+        sectionRef: r.sectionRef,
+        role: r.role,
+        kind: "ENTITY_SCOPE",
+        phrase: s.phrase,
+        index: s.index,
+        mentionRole: s.role ?? "OBLIGOR",
+        excludedContext: s.excludedContext,
+        mappedTags: mapPhrase(s.phrase),
+        detail: s.excludedContext
+          ? "carve-out mention"
+          : s.role === "MEASUREMENT_CONTEXT"
+            ? "measurement-group mention"
+            : s.role === "CONDITION_SUBJECT"
+              ? "condition-subject mention"
+              : s.role === "COUNTERPARTY"
+                ? "counterparty (payee) mention"
+                : "obligor binding",
+      });
+    }
     if (inheritedEntityScope === null && inheritedEntityScopeBasis === null && obligors.length > 0) {
       const mapped = obligors.map((s) => mapPhrase(s.phrase));
       if (mapped.every((t) => t !== null)) {

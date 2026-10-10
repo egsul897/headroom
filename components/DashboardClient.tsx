@@ -4,6 +4,10 @@ import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
+import {
+  deserializeAttributedUtilization,
+  type AttributedUtilizationSerialized,
+} from "@/lib/product/unified-position/attributed-utilization";
 import { resolveDashboardCopy } from "@/lib/dashboard/copy";
 import {
   maturitiesStateFromQuery,
@@ -56,6 +60,8 @@ export interface DashboardClientProps {
    */
   facilitiesQuery: FacilitiesQuery;
   maturitiesQuery: MaturitiesQuery;
+  /** Phase 4C attributed utilization (serializable). Absent ⇒ all rows NOT_TRACKED. */
+  attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -188,6 +194,11 @@ export function DashboardClient(props: DashboardClientProps) {
 
   const [financials, setFinancials] = useState<FinancialsInput>(covenantData.financials);
 
+  const attributedUtilization = useMemo(
+    () => deserializeAttributedUtilization(props.attributedUtilizationSerialized ?? null),
+    [props.attributedUtilizationSerialized],
+  );
+
   const overview = useMemo(() => {
     const reconstructedSolverContext: SolverNativeCompanyContext = {
       ...solverContext,
@@ -201,8 +212,9 @@ export function DashboardClient(props: DashboardClientProps) {
       permissionRows,
       coverageDeclarations,
       documentNameById,
+      attributedUtilization,
     });
-  }, [financials, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById, props.asOfDate]);
+  }, [financials, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById, props.asOfDate, attributedUtilization]);
 
   const rpHeadline = restrictedPaymentsHeadline(overview.covenantFamilies);
 

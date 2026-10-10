@@ -6,7 +6,22 @@ import {
   measureBasketUsageAmount,
 } from "../../lib/solver/shared-usage";
 import { loadCompanySolverStaticData } from "../../lib/covenant-engine";
-import { assertMayPublishRemaining, decideSolverUtilizationAuthority } from "../../lib/capacity";
+import {
+  assertMayPublishRemaining,
+  decideSolverUtilizationAuthority,
+  productionTrustedIssuerAuth,
+  sessionCounselPrincipal,
+} from "../../lib/capacity";
+
+const PROD_AUTH = productionTrustedIssuerAuth([sessionCounselPrincipal("counsel-alice")]);
+const AUTHENTIC_ISSUER = {
+  authenticity: "AUTHENTIC" as const,
+  issuer: {
+    role: "COUNSEL_REVIEWER" as const,
+    actorId: "counsel-alice",
+    attestedAt: "2026-10-09T12:00:00.000Z",
+  },
+};
 
 describe("shared-usage helpers — completeness-certificate authority", () => {
   it("measures basket usage by measurement basis", () => {
@@ -54,8 +69,9 @@ describe("shared-usage helpers — completeness-certificate authority", () => {
         approvalState: "APPROVED",
         sourceLabel: "test-empty-cert",
         kind: "VERIFIED_EMPTY",
-        authenticity: "AUTHENTIC",
+        ...AUTHENTIC_ISSUER,
       },
+      trustedIssuerAuth: PROD_AUTH,
     });
     expect(verified).toMatchObject({ usage: 0, status: "VERIFIED_ZERO", authoritative: true });
     expect(isAuthoritativeUsageStatus(verified.status, verified.authoritative)).toBe(true);
@@ -92,8 +108,9 @@ describe("shared-usage helpers — completeness-certificate authority", () => {
         approvalState: "APPROVED",
         sourceLabel: "test-complete-cert",
         kind: "VERIFIED_COMPLETE",
-        authenticity: "AUTHENTIC",
+        ...AUTHENTIC_ISSUER,
       },
+      trustedIssuerAuth: PROD_AUTH,
     });
     expect(complete).toMatchObject({ usage: 70, status: "COMPUTED", authoritative: true });
   });
