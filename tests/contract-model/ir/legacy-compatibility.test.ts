@@ -49,14 +49,86 @@ describe("Phase 3A IR - Category F: legacy compatibility", () => {
     expect(result.rule && validateRule(result.rule).ok).toBe(true);
   });
 
-  it("F3: an unsupported legacy formula (LEVERAGE_RATIO_ROOM - depends on live solver machinery) refuses with an honest reason rather than guessing", () => {
-    const provision: CovenantProvisionInput = { id: "prov-2", documentId: "doc-1", code: "leverage-room", basketName: "Leverage ratio room", sectionRef: "6.10(a)", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4.5 };
+  it("F3a: LEVERAGE_RATIO_ROOM adapts to MAX(0, threshold×EBITDA − (Debt−Cash)) METRIC tree (generalizable; still PARTIAL)", () => {
+    const provision: CovenantProvisionInput = {
+      id: "prov-2",
+      documentId: "doc-1",
+      code: "leverage-room",
+      basketName: "Leverage ratio room",
+      sectionRef: "6.10(a)",
+      formulaType: "LEVERAGE_RATIO_ROOM",
+      thresholdValue: 4.5,
+      params: { debtBasis: "total" },
+    };
+    const result = adaptLegacyCovenantProvision(provision, COMPANY_ID, INSTRUMENT_KEY);
+    expect(result.rule).not.toBeNull();
+    expect(result.rule?.capacityExpression?.kind).toBe("MAX");
+    expect(result.rule?.sufficiency).toBe("PARTIAL");
+    expect(result.rule?.compilerVersion).toBeNull();
+    expect(result.rule && validateRule(result.rule).ok).toBe(true);
+  });
+
+  it("F3b: BUILDER_BASKET adapts when sectionRef params are citation labels only (leaf does not cross-lookup)", () => {
+    const provision: CovenantProvisionInput = {
+      id: "prov-builder",
+      documentId: "doc-1",
+      code: "aa-builder",
+      basketName: "Available Amount",
+      sectionRef: "1.01",
+      formulaType: "BUILDER_BASKET",
+      thresholdValue: 50,
+      params: { pctEbitda: 0.25, cniSharePct: 0.5, includeEquityProceeds: true, starterSectionRef: "1.01-starter" },
+    };
+    const result = adaptLegacyCovenantProvision(provision, COMPANY_ID, INSTRUMENT_KEY);
+    expect(result.rule).not.toBeNull();
+    expect(result.rule?.capacityExpression?.kind).toBe("ADD");
+    expect(result.rule?.sufficiency).toBe("PARTIAL");
+    expect(result.rule && validateRule(result.rule).ok).toBe(true);
+  });
+
+  it("F3c: RATIO_GATE adapts to UnlimitedCapacity gated by net-leverage COMPARE", () => {
+    const provision: CovenantProvisionInput = {
+      id: "prov-gate",
+      documentId: "doc-1",
+      code: "ratio-gate",
+      basketName: "Ratio gate",
+      sectionRef: "6.10(b)",
+      formulaType: "RATIO_GATE",
+      thresholdValue: 4.0,
+      params: { debtBasis: "secured" },
+    };
+    const result = adaptLegacyCovenantProvision(provision, COMPANY_ID, INSTRUMENT_KEY);
+    expect(result.rule).not.toBeNull();
+    expect(result.rule?.capacityExpression?.kind).toBe("UNLIMITED_CAPACITY");
+    expect(result.rule && validateRule(result.rule).ok).toBe(true);
+  });
+
+  it("F3d: COVERAGE_RATIO_ROOM with non-positive threshold still refuses honestly", () => {
+    const provision: CovenantProvisionInput = {
+      id: "prov-cov",
+      documentId: "doc-1",
+      code: "coverage-bad",
+      basketName: "Coverage",
+      sectionRef: "6.11",
+      formulaType: "COVERAGE_RATIO_ROOM",
+      thresholdValue: 0,
+    };
     const result = adaptLegacyCovenantProvision(provision, COMPANY_ID, INSTRUMENT_KEY);
     expect(result.rule).toBeNull();
-    expect(result.refusalReason).toBeTruthy();
-    expect(result.refusalReason).toContain("solver");
+    expect(result.refusalReason).toContain("positive coverage threshold");
 
-    const unrouted: CandidateContractRule = { covenantFamily: "LIENS", ruleType: "QUANTITATIVE_PERMISSION", evaluationClass: "JUDGMENT_REQUIRED", action: "CREATE_LIEN", entityScope: [], entityScopeExcluded: [], conditions: [], exceptions: [], sourceSectionRef: "6.02(a)", definedTermRefs: [] };
+    const unrouted: CandidateContractRule = {
+      covenantFamily: "LIENS",
+      ruleType: "QUANTITATIVE_PERMISSION",
+      evaluationClass: "JUDGMENT_REQUIRED",
+      action: "CREATE_LIEN",
+      entityScope: [],
+      entityScopeExcluded: [],
+      conditions: [],
+      exceptions: [],
+      sourceSectionRef: "6.02(a)",
+      definedTermRefs: [],
+    };
     const unroutedResult = adaptCandidateContractRule(unrouted, COMPANY_ID, INSTRUMENT_KEY, "doc-1");
     expect(unroutedResult.rule).toBeNull();
     expect(unroutedResult.refusalReason).toBeTruthy();
