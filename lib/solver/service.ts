@@ -130,8 +130,9 @@ function computeMaximumCapacityFromEvaluations(
     let amount: number | undefined = evalResult.maxCapacity;
     if (evalResult.status === "NOT_EVALUABLE") {
       const members = evalResult.election.memberPermissionIds.map((id) => permissionsById.get(id)!);
+      // LIEN members never contribute debt-principal fixedTotal.
       const fixedTotal = members
-        .filter((m) => m.amountKind === "FIXED")
+        .filter((m) => m.grantType === "DEBT_INCURRENCE" && m.amountKind === "FIXED")
         .reduce((sum, m) => {
           const evaluated = evaluateProvision(permissionAsProvision(m), params.financials, computeLeverageMetrics(params.financials));
           return sum + (evaluated.status === "modeled" ? (evaluated.capacity ?? 0) : 0);
