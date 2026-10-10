@@ -569,12 +569,22 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // this is Case F's "entity-specific sub-cap" mechanism: a permission with
   // NO per-permission member row can still be gated by a shared constraint
   // purely because of which entity is incurring.
+  const constraintBindsPermission = (c: SharedConstraint, permissionId: string): boolean =>
+    c.members.some((mem) => mem.permissionId === permissionId) ||
+    (c.aggregationRule === "ENTITY_CLASS_FILTER" &&
+      c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)));
+
+  /** First binding constraint (debt waterfall / shared-cap consumption). */
   const constraintFor = (permissionId: string): SharedConstraint | undefined =>
-    sharedConstraints.find(
-      (c) =>
-        c.members.some((mem) => mem.permissionId === permissionId) ||
-        (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
-    );
+    sharedConstraints.find((c) => constraintBindsPermission(c, permissionId));
+
+  /**
+   * Every binding shared constraint for a permission. Lien coverage must respect
+   * the full overlapping set — selecting only the first would drop a binding
+   * constraint and can overstate usable capacity (Invariant C / Case F).
+   */
+  const constraintsFor = (permissionId: string): SharedConstraint[] =>
+    sharedConstraints.filter((c) => constraintBindsPermission(c, permissionId));
   /**
    * Shared-constraint headroom. Utilization integrity (Neon activation P0):
    * when `currentUsageAuthoritative` is not true, do NOT treat numeric zero as
@@ -892,6 +902,18 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     let independentCoveragePool = 0;
     let independentCoverageUnknown = false;
     const independentClearedIds: string[] = [];
+    // Shared-constraint headroom reserved by prior independent liens in this
+    // coverage aggregation. Without reservation, each lien was min'd against
+    // the same remaining headroom and those amounts were summed — manufacturing
+    // capacity by counting one legal pool repeatedly (Invariant A).
+    // Seed with debt-waterfall sharedConsumption already booked against the
+    // same constraint identity (true shared pools bind both); do NOT reduce
+    // lien headroom merely because the debt allocation equals the transaction
+    // amount when debt is not a member of that constraint (Invariant D).
+    const lienSharedReserved = new Map<string, number>();
+    for (const c of sharedConsumption) {
+      lienSharedReserved.set(c.constraintId, (lienSharedReserved.get(c.constraintId) ?? 0) + c.amountConsumed);
+    }
 
     for (const lien of independentLienMembers) {
       // Re-check eligibility even for election members (member pass already ran;
@@ -980,8 +1002,29 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         lienCurrency && lienCurrency !== txnCurrency && authorizedFx != null
           ? evaluated.capacity * authorizedFx
           : evaluated.capacity;
-      const constraint = constraintFor(lien.id);
-      if (constraint) {
+
+      // Shared-capacity-aware contribution (Invariants A/B/C/E):
+      // - Genuinely independent liens (no shared constraint) remain additive.
+      // - Every binding shared constraint is respected (not only the first).
+      // - Attribution across liens sharing a pool never exceeds verified remaining.
+      // - Unquantified / non-authoritative / missing identity → fail closed.
+      const bindingConstraints = constraintsFor(lien.id);
+      let sharedCapBlocks = false;
+      for (const constraint of bindingConstraints) {
+        if (!constraint.id || constraint.id.trim() === "") {
+          independentCoverageUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: lien.id },
+            status: "UNKNOWN",
+            detail:
+              `Independent lien ${lien.id} binds a shared constraint with missing identity — ` +
+              `cannot attribute capacity without a stable constraint identity.`,
+            reasonCategory: "MISSING_ASSUMPTION",
+          });
+          sharedCapBlocks = true;
+          break;
+        }
         if (constraint.currentUsageAuthoritative !== true) {
           independentCoverageUnknown = true;
           requirements.push({
@@ -993,28 +1036,66 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
               `remaining lien capacity cannot support a favorable secured conclusion.`,
             reasonCategory: "EXTERNAL_INPUT",
           });
-          continue;
+          sharedCapBlocks = true;
+          break;
         }
-        const constraintCap =
-          "amount" in constraint.cap
-            ? constraint.cap.amount
-            : evaluateProvision(
-                {
-                  ...permissionAsProvision(lien),
-                  formulaType: constraint.cap.formulaType,
-                  thresholdValue: constraint.cap.thresholdValue,
-                  params: constraint.cap.params,
-                },
-                financials,
-                metricsForLien,
-              ).capacity ?? 0;
+        let constraintCap: number | null = null;
+        if ("amount" in constraint.cap) {
+          if (!Number.isFinite(constraint.cap.amount)) {
+            constraintCap = null;
+          } else {
+            constraintCap = constraint.cap.amount;
+          }
+        } else {
+          const capEval = evaluateProvision(
+            {
+              ...permissionAsProvision(lien),
+              formulaType: constraint.cap.formulaType,
+              thresholdValue: constraint.cap.thresholdValue,
+              params: constraint.cap.params,
+            },
+            financials,
+            metricsForLien,
+          );
+          if (capEval.status !== "modeled" || capEval.capacity == null || !Number.isFinite(capEval.capacity)) {
+            constraintCap = null;
+          } else {
+            constraintCap = capEval.capacity;
+          }
+        }
+        if (constraintCap == null) {
+          independentCoverageUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: lien.id },
+            status: "UNKNOWN",
+            detail:
+              `Independent lien ${lien.id} shares constraint ${constraint.id} whose cap is unquantified — ` +
+              `fail closed; unquantified shared capacity is never treated as available.`,
+            reasonCategory: "EXTERNAL_INPUT",
+          });
+          sharedCapBlocks = true;
+          break;
+        }
         const headroom = Math.max(0, constraintCap - constraint.currentUsage);
-        const already = sharedConsumption
-          .filter((c) => c.constraintId === constraint.id)
-          .reduce((s, c) => s + c.amountConsumed, 0);
-        cap = Math.min(cap, Math.max(0, headroom - already));
+        const reserved = lienSharedReserved.get(constraint.id) ?? 0;
+        const remainingOnConstraint = Math.max(0, headroom - reserved);
+        cap = Math.min(cap, remainingOnConstraint);
       }
-      independentCoveragePool += Math.max(0, cap);
+      if (sharedCapBlocks) continue;
+
+      const contribution = Math.max(0, cap);
+      // Reserve this lien's contribution against every binding constraint so
+      // subsequent liens cannot re-count the same underlying headroom.
+      if (contribution > EPS && bindingConstraints.length > 0) {
+        for (const constraint of bindingConstraints) {
+          lienSharedReserved.set(
+            constraint.id,
+            (lienSharedReserved.get(constraint.id) ?? 0) + contribution,
+          );
+        }
+      }
+      independentCoveragePool += contribution;
       independentClearedIds.push(lien.id);
     }
 
