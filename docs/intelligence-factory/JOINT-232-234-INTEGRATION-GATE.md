@@ -42,4 +42,12 @@ solver election SHARED_CAP (`currentUsageAuthoritative`), covenant-engine load.
 
 ## SHA / CI
 
-Filled after reconcile push (see gate return).
+| Item | Value |
+|---|---|
+| Main SHA reconciled onto | `7f1dd3a202b026b9a862ef727480a1a9f284523a` (#237) |
+| Reconciled tip | `9fe553b62a6cd1acd6f8a4c19838ac4fd37e3cce` |
+| GitHub mergeable | MERGEABLE (was CONFLICTING / DIRTY) |
+| `#229` capacity state/types | `CAPACITY_EQ_MAIN=yes` |
+| `#237` utilization-authority | `UTIL_AUTH_EQ_MAIN=yes` |
+
+**No auto-merge. Ready for human review after CI green.**
