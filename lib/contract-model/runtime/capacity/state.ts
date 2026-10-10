@@ -306,15 +306,39 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
       continue;
     }
     const cap = claimants[0]!;
-    const evaluation = evaluate(cap.capExpression, { companyId, instrumentKey, asOf });
+    // PHASE-4 VERIFICATION GATE: shared capacities are first-class verified semantic units (same
+    // bind()/REQUIRE path as rules). Evaluate the pool cap under the pool's own unit identity so
+    // a clean SHARED_CAPACITY artifact can vouch for it — and so an unverified pool still fails closed.
+    const poolIdentity = {
+      ruleOrDefinitionId: cap.sharedCapId,
+      companyId: cap.companyId,
+      instrumentKey: cap.instrumentKey,
+      irSchemaVersion: cap.irSchemaVersion ?? "",
+      compilerVersion: cap.compilerVersion ?? null,
+      sourceContentVersion: cap.sourceContentVersion ?? null,
+    };
+    const poolOwn = gateActive ? assessUnit(cap.sharedCapId, args.verification, args.policy, poolIdentity) : null;
+    const evaluation = evaluate(cap.capExpression, {
+      companyId,
+      instrumentKey,
+      asOf,
+      unitId: cap.sharedCapId,
+      unitIdentity: poolIdentity,
+    });
+    const poolVerificationFloor = poolOwn ? capacityVerificationFloor(poolOwn, evaluation, node.capacityNodeId) : null;
+    if (poolVerificationFloor) limitations.push(...poolVerificationFloor.limitations);
     const gross = amountOf(evaluation.value, evaluation.status === "NEEDS_INPUT" ? "a financial fact the shared cap depends on is missing" : `shared cap not evaluable: ${evaluation.status}`);
-    // PHASE-4 VERIFICATION GATE: a pool is not a verifiable unit, but its cap may expand into one, and
-    // under REQUIRE the pool itself is unverified. A refusal is reported as what it is, not as an
-    // ambiguous financial fact.
     const poolBlocks = gateActive ? verificationBlocksIn(evaluation) : [];
-    if (poolBlocks.length > 0) limitations.push({ code: "PHASE3_VERIFICATION_MATERIAL_FINDING", message: `[${poolBlocks[0]!.reason}] ${poolBlocks[0]!.message}`, refs: [node.capacityNodeId, ...new Set(poolBlocks.flatMap((b) => b.findingIds))].sort() });
+    if (poolBlocks.length > 0 && !(poolVerificationFloor?.limitations.length)) {
+      limitations.push({ code: "PHASE3_VERIFICATION_MATERIAL_FINDING", message: `[${poolBlocks[0]!.reason}] ${poolBlocks[0]!.message}`, refs: [node.capacityNodeId, ...new Set(poolBlocks.flatMap((b) => b.findingIds))].sort() });
+    }
     if (gateActive && verificationIncompleteIn(evaluation)) limitations.push({ code: "PHASE3_VERIFICATION_INCOMPLETE", message: "a unit this shared cap depends on was not completely verified; the pool is reviewable, not defective", refs: [node.capacityNodeId] });
-    if (evaluation.status === "AMBIGUOUS" && !(poolBlocks.length > 0 && ambiguousKeysOf(evaluation).length === 0)) limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    const poolAmbiguousIsVerificationOnly =
+      (poolVerificationFloor?.conditions.some((c) => c !== "NONE" && c !== "ATTEMPTED_INCOMPLETE") ?? false) &&
+      ambiguousKeysOf(evaluation).length === 0;
+    if (evaluation.status === "AMBIGUOUS" && !poolAmbiguousIsVerificationOnly && !(poolBlocks.length > 0 && ambiguousKeysOf(evaluation).length === 0)) {
+      limitations.push({ code: "AMBIGUOUS_FINANCIAL_INPUT", message: `a financial fact the shared cap depends on resolved ambiguously: ${ambiguousKeysOf(evaluation).join(", ")}`, refs: ambiguousKeysOf(evaluation) });
+    }
     const currency = currencyOf(gross);
     const memberRuleIds = [...new Set(cap.memberRuleIds)].sort();
 

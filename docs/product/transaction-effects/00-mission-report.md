@@ -3,7 +3,7 @@
 **Verdict:** TE-D2 and TE-D3 mitigated at the shared sequential/verified boundary without changing Phase 4D contracts. Every subsequent transaction now evaluates against the prior post-transaction financial + capacity state. Unauthorized restores are refused on product paths. Independently pre-calculated ratio-gated sequence matches Headroom.
 
 **Starting SHA (this turn):** `569ef3868fd488905d3e4736e0fba7001116fc44`  
-**Ending SHA:** `ada9e6b98c711308d1e94d32d2fa394858285953`  
+**Ending SHA:** `0b25bd902366db2353a1e8dc1635ac121f6f0674`  
 **Cost:** $0.00
 
 ## Deliverables
