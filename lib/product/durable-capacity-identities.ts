@@ -56,10 +56,15 @@ export async function buildSharedVerifiedCapacityInputFromDurable(
   return durablyBuildAndRememberVerifiedCapacityInput(prisma, args);
 }
 
-/** Remaining call sites for full product integration (documented, not claimed done). */
+/**
+ * Remaining call sites for full product integration.
+ * Gate: assessSsrPersistedExecutionReadiness / assessCurrentSsrEntrypointShape.
+ */
 export const REMAINING_PRODUCT_DURABLE_WIRING_CALL_SITES = [
-  "lib/product/unified-position/* — Position capacity row loaders should accept DurableCapacityIdentityRefs",
-  "lib/product/north-star-workflow/transaction-analysis.ts — Ask should reference shared calculationId/inputHash",
-  "lib/product/verified-transaction-execution/execute.ts — VTE should load financial/utilization identities from Neon before handoff",
-  "app/(product) Position/Ask/Simulate route loaders — pass companyId + bundleKey + capacityRuleId into loadSharedDurableCapacityIdentities",
+  "MISSING_TENANT_AUTH — no lib/auth / session / companyScope (app/page.tsx documents this)",
+  "MISSING_VERIFIED_EXECUTION_PACKAGE — SSR passes verifiedPackage: null today",
+  "app/[companyId]/position/page.tsx — still getCompanyDashboard/buildPositionView",
+  "lib/ask/shell-runner.ts + app/api/ask/route.ts — attemptCertifiedTransaction only",
+  "app/[companyId]/simulate/page.tsx — attemptVerifiedSimulate(verifiedPackage:null)",
+  "Assemble UnifiedTransactionExecutionRequest then executeAndPersist only when gate.mayCallExecuteAndPersist",
 ] as const;

@@ -67,6 +67,16 @@ export {
   type ExecuteAndPersistOptions,
 } from "./persist-execution";
 
+export {
+  SSR_PERSISTED_EXECUTION_GATE_VERSION,
+  assessSsrPersistedExecutionReadiness,
+  assessCurrentSsrEntrypointShape,
+  type ProductSurface,
+  type SsrPersistedExecutionBlocker,
+  type SsrPersistedExecutionDependencies,
+  type SsrPersistedExecutionAssessment,
+} from "./ssr-persisted-execution-gate";
+
 /** Shared durable capacity identity refs for Position / Ask / Simulate (Agent #9 pathway). */
 export {
   loadSharedDurableCapacityIdentities,
