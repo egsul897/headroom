@@ -75,6 +75,21 @@ export interface ReviewReadyActivationRecord {
   note: string;
 }
 
+/**
+ * Downstream consumers MUST use this (or `counselCompileEligible` boolean),
+ * never `promotionState === "COUNSEL_COMPILE_ELIGIBLE"` alone — labels can lag
+ * audit-backed completeness when activation used a short excerpt.
+ */
+export function mayEnterCounselCompilePath(
+  rec: Pick<ReviewReadyActivationRecord, "counselCompileEligible" | "promotionState" | "certificationState">,
+): boolean {
+  return (
+    rec.counselCompileEligible === true &&
+    rec.certificationState === "REVIEW_READY_UNVERIFIED" &&
+    rec.promotionState === "COUNSEL_COMPILE_ELIGIBLE"
+  );
+}
+
 export function buildReviewReadyRecord(params: {
   sourceId: string;
   item: CovenantSummaryItem;

@@ -75,6 +75,9 @@ async function main() {
   const executable = candidates.filter(
     (c) => c.readiness === "EXECUTABLE_FORMULA_CANDIDATE" && c.executableEligible,
   );
+  // Synthetic demos require counselCompileEligible — never trust promotionState alone,
+  // and never treat formula-executable-only as compile-ready.
+  const counselCompileEligible = candidates.filter((c) => c.counselCompileEligible === true);
   const byFormula: Record<string, number> = {};
   for (const c of executable) {
     byFormula[c.formulaType ?? "null"] = (byFormula[c.formulaType ?? "null"] ?? 0) + 1;
@@ -82,7 +85,9 @@ async function main() {
 
   // Demo: evaluate first few greater-of EBITDA candidates with SYNTHETIC finance
   const demos = [];
-  for (const c of executable.filter((x) => x.formulaType === "GREATER_OF_FLAT_OR_PCT_EBITDA").slice(0, 5)) {
+  for (const c of counselCompileEligible
+    .filter((x) => x.formulaType === "GREATER_OF_FLAT_OR_PCT_EBITDA")
+    .slice(0, 5)) {
     const provision: CovenantProvisionInput = {
       id: `demo:${c.sourceId}:${c.sectionRef}`,
       documentId: `demo-doc:${c.sourceId}`,

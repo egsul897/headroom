@@ -96,9 +96,20 @@ export const STRICT_REVIEW_MECHANICS = new Set(["BUILDER_BASKET", "LEVERAGE_RATI
 const NON_OPERATIVE_SECTION =
   /\b(?:Notices?|Communications|Evidence of Indebtedness|Successor Trustee|Definitions?|Interpretation|Accounting Terms|Construction|Incremental\s+(?:Term\s+)?Facilit|Refinancing Amendment|Amend and Extend|Consolidation,\s*Merger|Fundamental Changes)\b/i;
 
+/**
+ * Structural non-capacity headings: successor/merger mechanics, guarantee accession,
+ * and contractual set-off — dollars here are not affirmative capacity baskets.
+ * Generalized semantic classes (not accession-specific exceptions).
+ */
+const NON_CAPACITY_STRUCTURAL_HEADING =
+  /\b(?:Successors?|When (?:the )?Company May Merge|Future Guarantors?|Guarantee Agreement|Merger,?\s*Consolidation or Sale of Assets|contractual rights? of set-off|Rights? of Set[- ]?Off)\b/i;
+
+/** Families that are structural/corporate, not basket capacity, unless co-tagged with a capacity family. */
+const STRUCTURAL_ONLY_FAMILIES = /^(?:FUNDAMENTAL_CHANGES|SUCCESSORS?)$/i;
+
 /** Article-level headings that aggregate many baskets — not a single executable permission. */
 const ARTICLE_LEVEL_HEADING =
-  /^(?:Negative Covenants|Affirmative Covenants|Events of Default)\.?\s*$/i;
+  /^(?:Negative Covenants|Affirmative Covenants|Events of Default|Successors?)\.?\s*$/i;
 
 /** Definitional / admin / incremental section refs that must not become executable from coincidental dollars. */
 const NON_BASKET_SECTION_REF = /^(?:1\.0[01]|1\.1|2\.1[14]|2\.20|Article\s*I\b)/i;
@@ -178,6 +189,15 @@ function evaluateEligibilityGates(params: {
     NON_BASKET_SECTION_REF.test(item.sectionRef.trim()) ||
     (/\bmeans\b/i.test(excerpt) && /\bDefinitions?\b/i.test(item.heading));
   const articleLevel = ARTICLE_LEVEL_HEADING.test((item.heading ?? "").trim());
+  const nonCapacityStructural =
+    NON_CAPACITY_STRUCTURAL_HEADING.test(item.heading ?? "") ||
+    NON_CAPACITY_STRUCTURAL_HEADING.test(excerpt.slice(0, 240));
+  const families = item.families ?? [];
+  const hasCapacityFamily = families.some((f) =>
+    /INDEBTEDNESS|LIENS?|RESTRICTED_PAYMENTS?|INVESTMENTS?|ASSET_SALES?|AVAILABLE_AMOUNT/i.test(f),
+  );
+  const structuralFamilyOnly =
+    families.some((f) => STRUCTURAL_ONLY_FAMILIES.test(f)) && !hasCapacityFamily;
   const nonPermission = isNonPermissionThreshold(item);
   const sourceOk =
     excerpt.replace(/\s+/g, " ").trim().length >= 80 &&
@@ -186,6 +206,8 @@ function evaluateEligibilityGates(params: {
     !NON_OPERATIVE_SECTION.test(item.sectionRef) &&
     !definitionalSection &&
     !articleLevel &&
+    !nonCapacityStructural &&
+    !structuralFamilyOnly &&
     !nonPermission;
   gates.push({
     gate: "source_text_sufficient",
@@ -194,19 +216,23 @@ function evaluateEligibilityGates(params: {
       ? "excerpt length + operative verbs; heading not a non-covenant article"
       : nonPermission
         ? "non-permission monetary threshold (EOD/judgment/indemnity/prepay/reporting) — not capacity"
-        : articleLevel
-          ? "article-level heading (Negative/Affirmative Covenants) — not a single basket"
-          : definitionalSection
-            ? "definitional / Article I section — not an executable basket"
-            : "excerpt too thin, non-operative heading, or missing operative verbs",
+        : nonCapacityStructural || structuralFamilyOnly
+          ? "structural non-capacity provision (successor/merger/guarantor accession/set-off) — not a basket"
+          : articleLevel
+            ? "article-level heading (Negative/Affirmative Covenants/Successors) — not a single basket"
+            : definitionalSection
+              ? "definitional / Article I section — not an executable basket"
+              : "excerpt too thin, non-operative heading, or missing operative verbs",
   });
   if (!sourceOk) {
     unresolved.push(
       nonPermission
         ? "non_permission_threshold"
-        : articleLevel
-          ? "article_level_heading"
-          : "source_text_incomplete",
+        : nonCapacityStructural || structuralFamilyOnly
+          ? "non_capacity_structural"
+          : articleLevel
+            ? "article_level_heading"
+            : "source_text_incomplete",
     );
   }
 
@@ -339,31 +365,59 @@ function evaluateEligibilityGates(params: {
     }
   }
 
-  // Cycle 6: growers must show "greater of" in the operative excerpt itself.
-  // Basket-only growers laundered false executables (Crown 8.1, MRVI 6.05(d)).
+  // Growers must show "greater of" in the operative excerpt itself (not baskets-only).
+  // FLAT must likewise show dollar evidence in the operative excerpt (not baskets-only).
+  // Comparator mismatches: "lesser of" or leverage-ratio language cannot support FLAT/GREATER_OF.
   const growerOk = growerProximityOk(excerpt, formulaType);
   const growerOperativeOk = !formulaType.startsWith("GREATER_OF") || greaterOfInOperative;
+  const flatMoneyInOperative =
+    formulaType !== "FLAT_AMOUNT" || excerptHasMoney(operativeOnly, params.thresholdValue);
+  const lesserOfMismatch =
+    (formulaType === "FLAT_AMOUNT" || formulaType.startsWith("GREATER_OF")) &&
+    /\blesser of\b/i.test(operativeOnly) &&
+    !/\bgreater of\b/i.test(operativeOnly);
+  const leverageFlatMismatch =
+    formulaType === "FLAT_AMOUNT" &&
+    /\b(?:Total\s+Net\s+)?Leverage Ratio\b|\bto\s+1\.0{1,2}\b/i.test(operativeOnly) &&
+    !/\bnot to exceed\s*\$/i.test(operativeOnly);
   const evidenceOk =
     params.moneyOk &&
     (params.pctOk === null || params.pctOk === true) &&
     growerOk &&
-    growerOperativeOk;
+    growerOperativeOk &&
+    flatMoneyInOperative &&
+    !lesserOfMismatch &&
+    !leverageFlatMismatch;
   gates.push({
     gate: "formula_threshold_evidenced",
     ok: evidenceOk,
-    detail: !growerOperativeOk
-      ? "greater-of formula only in materialBasketsThresholds — operative excerpt incomplete (not source-backed)"
-      : !growerOk
-        ? "greater-of / base not in proximity in excerpt (Agent3)"
-        : evidenceOk
-          ? "threshold/pct tokens evidenced in source excerpt"
-          : "formula/threshold not evidenced in excerpt",
+    detail: lesserOfMismatch
+      ? "operative uses lesser-of comparator — incompatible with FLAT/GREATER_OF candidate (formula-shape)"
+      : leverageFlatMismatch
+        ? "operative leverage-ratio language incompatible with FLAT_AMOUNT candidate (formula-shape)"
+        : !flatMoneyInOperative
+          ? "FLAT threshold dollars only in materialBasketsThresholds — operative excerpt incomplete"
+          : !growerOperativeOk
+            ? "greater-of formula only in materialBasketsThresholds — operative excerpt incomplete (not source-backed)"
+            : !growerOk
+              ? "greater-of / base not in proximity in excerpt (Agent3)"
+              : evidenceOk
+                ? "threshold/pct tokens evidenced in source excerpt"
+                : "formula/threshold not evidenced in excerpt",
   });
   if (!evidenceOk) {
     unresolved.push(
-      !growerOperativeOk ? "grower_not_in_operative_excerpt" : "formula_threshold_evidence",
+      lesserOfMismatch || leverageFlatMismatch
+        ? "formula_shape_mismatch"
+        : !flatMoneyInOperative
+          ? "flat_not_in_operative_excerpt"
+          : !growerOperativeOk
+            ? "grower_not_in_operative_excerpt"
+            : "formula_threshold_evidence",
     );
-    if (!growerOk || !growerOperativeOk) ownership.push("Agent3:formula-proximity");
+    if (!growerOk || !growerOperativeOk || lesserOfMismatch || leverageFlatMismatch) {
+      ownership.push("Agent3:formula-proximity");
+    }
   }
 
   const completeness = assessOperativeCompleteness({ item, operativeExcerpt: excerpt });

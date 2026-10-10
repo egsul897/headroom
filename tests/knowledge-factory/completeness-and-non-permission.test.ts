@@ -3,7 +3,10 @@ import {
   assessOperativeCompleteness,
   isNonPermissionThreshold,
 } from "../../lib/knowledge-factory/activation/completeness";
-import { buildReviewReadyRecord } from "../../lib/knowledge-factory/activation/review-ready-record";
+import {
+  buildReviewReadyRecord,
+  mayEnterCounselCompilePath,
+} from "../../lib/knowledge-factory/activation/review-ready-record";
 import type { IndependentAuditResult } from "../../lib/knowledge-factory/activation/independent-audit";
 import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
 
@@ -116,5 +119,23 @@ describe("review-ready WITH_GAPS never counsel-compile-eligible", () => {
     expect(rec.certificationState).toBe("BLOCKED_INCOMPLETE_OPERATIVE");
     expect(rec.promotionState).not.toBe("PRODUCTION_AUTHORITATIVE");
     expect(rec.promotionState).not.toBe("COUNSEL_COMPILE_ELIGIBLE");
+    expect(mayEnterCounselCompilePath(rec)).toBe(false);
+  });
+
+  it("mayEnterCounselCompilePath requires counselCompileEligible boolean, not label alone", () => {
+    expect(
+      mayEnterCounselCompilePath({
+        counselCompileEligible: false,
+        promotionState: "COUNSEL_COMPILE_ELIGIBLE",
+        certificationState: "BLOCKED_INCOMPLETE_OPERATIVE",
+      }),
+    ).toBe(false);
+    expect(
+      mayEnterCounselCompilePath({
+        counselCompileEligible: true,
+        promotionState: "COUNSEL_COMPILE_ELIGIBLE",
+        certificationState: "REVIEW_READY_UNVERIFIED",
+      }),
+    ).toBe(true);
   });
 });

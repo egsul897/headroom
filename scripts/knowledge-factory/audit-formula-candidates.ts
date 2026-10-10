@@ -242,7 +242,8 @@ async function main() {
 
   // Authentic calculation examples from review-ready greater-of / flat that pass
   const authenticExamples = [];
-  for (const rec of reviewReady.filter((r) => r.counselCompileEligible).slice(0, 8)) {
+  // Gate on counselCompileEligible boolean (not promotionState label alone).
+  for (const rec of reviewReady.filter((r) => r.counselCompileEligible === true).slice(0, 8)) {
     const ft = rec.parsedFormula.formulaType;
     if (!ft || rec.parsedFormula.thresholdValue == null) continue;
     if (!["FLAT_AMOUNT", "GREATER_OF_FLAT_OR_PCT_EBITDA", "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"].includes(ft)) {

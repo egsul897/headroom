@@ -266,6 +266,66 @@ describe("Cycle 5 eligibility gates — formula discovery ≠ legal permission",
     expect(activated.completeness?.conditionsStructured).toBe(false);
   });
 
+  it("blocks structural successor / future-guarantor / set-off headings from executable", () => {
+    for (const spec of [
+      {
+        heading: "When Company May Merge or Transfer Assets",
+        families: ["FUNDAMENTAL_CHANGES"],
+        excerpt:
+          "The Company shall not consolidate with or merge with or into any Person unless the Successor Company assumes all Obligations and leverage ratio conditions are satisfied.",
+      },
+      {
+        heading: "Future Guarantors",
+        families: ["GUARANTEES"],
+        excerpt:
+          "The Company shall cause each Domestic Restricted Subsidiary to become a Subsidiary Guarantor and execute a Guarantee Agreement within five Business Days.",
+      },
+      {
+        heading: "8.8 Liens",
+        families: ["LIENS"],
+        excerpt:
+          "Liens that are contractual rights of set-off relating to the establishment of depository relations with banks not given in connection with Indebtedness of $5,000,000.",
+      },
+    ] as const) {
+      const activated = activateSummaryItem({
+        sourceId: "test-structural",
+        item: item({
+          heading: spec.heading,
+          families: [...spec.families],
+          operativeLanguageExcerpt: spec.excerpt,
+          materialBasketsThresholds: ["$5,000,000"],
+        }),
+      });
+      expect(activated.executableEligible).toBe(false);
+      expect(activated.counselCompileEligible).toBe(false);
+    }
+  });
+
+  it("rejects FLAT when operative uses lesser-of or leverage-ratio shape", () => {
+    const lesser = activateSummaryItem({
+      sourceId: "test-lesser",
+      item: item({
+        operativeLanguageExcerpt:
+          "The Company shall not permit Asset Sales unless Net Proceeds do not exceed the lesser of $50,000,000 and the amount of the Asset Sale.",
+        materialBasketsThresholds: ["$50,000,000"],
+      }),
+    });
+    expect(lesser.executableEligible).toBe(false);
+    expect(lesser.unresolvedDependencies).toContain("formula_shape_mismatch");
+
+    const lev = activateSummaryItem({
+      sourceId: "test-lev-flat",
+      item: item({
+        heading: "Successors",
+        families: ["FUNDAMENTAL_CHANGES"],
+        operativeLanguageExcerpt:
+          "The Issuer shall not merge unless on a pro forma basis the Total Net Leverage Ratio is not greater than 4.50 to 1.00 and Net Worth is at least $1.",
+        materialBasketsThresholds: ["$1"],
+      }),
+    });
+    expect(lev.executableEligible).toBe(false);
+  });
+
   it("blocks article-level Negative Covenants heading from executable", () => {
     const activated = activateSummaryItem({
       sourceId: "test-article",

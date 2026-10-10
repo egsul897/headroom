@@ -261,17 +261,35 @@ async function main() {
       counselCompileEligible = rec.counselCompileEligible;
       completenessReasons = rec.completenessReasons;
       certState = rec.certificationState;
+      // Always report audit-backed promotionState — never mix act.promotionState
+      // (short-excerpt completeness) with rec.counselCompileEligible (full-window).
+      gapRecheck.push({
+        sourceId: g.sourceId,
+        sectionRef: g.sectionRef,
+        readiness: hit.act.readiness,
+        executableEligible: hit.act.executableEligible,
+        counselCompileEligible,
+        certificationState: certState,
+        promotionState: rec.promotionState,
+        activationPromotionState: hit.act.promotionState,
+        promotionStateConsistent: rec.promotionState !== "COUNSEL_COMPILE_ELIGIBLE" || counselCompileEligible,
+        completenessReasons,
+        forcedIncomplete: !counselCompileEligible,
+      });
+      continue;
     }
     gapRecheck.push({
       sourceId: g.sourceId,
       sectionRef: g.sectionRef,
-      readiness: hit?.act.readiness ?? "MISSING",
-      executableEligible: hit?.act.executableEligible ?? false,
-      counselCompileEligible,
-      certificationState: certState,
-      promotionState: hit?.act.promotionState ?? null,
-      completenessReasons,
-      forcedIncomplete: !counselCompileEligible,
+      readiness: "MISSING",
+      executableEligible: false,
+      counselCompileEligible: false,
+      certificationState: null,
+      promotionState: null,
+      activationPromotionState: null,
+      promotionStateConsistent: true,
+      completenessReasons: [],
+      forcedIncomplete: true,
     });
   }
 
