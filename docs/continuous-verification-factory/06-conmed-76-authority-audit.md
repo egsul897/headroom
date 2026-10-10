@@ -1,7 +1,8 @@
 # CONMED §7.6 Final Authority-Boundary Audit
 
 **Starting SHA:** `368fc1d54e760b50bf0134f52f9cfbeca69da10e`  
-**Ending SHA:** `6b5303198661adfaa8c7379f4f12af66f84f5653` (authority tip; pin commit)  
+**Ending SHA:** `49fccf6f4cf2c26f06be9df25dd79ab360b346fe`  
+
 
 **PR:** #238
 
