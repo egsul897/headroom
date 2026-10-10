@@ -13,7 +13,7 @@
 | #247 | `0838455d0ef4a7336d998284bbfc2fb8585bd0a8` | Stage 2 verified sequential |
 | #248 | `dd727d2b7813d909331ce46dc2f2d28765749ec3` | Stage 3 FCE |
 | #249 | `f6322ed70f6712fda83504f7df7cd2360a717397` | Stage 4 entity-scope + cross-doc |
-| #250 | (this tip after reconcile commit) | Stage 5–6 full stack — **contains #213 as ancestor** |
+| #250 | `2cce3592fd674671b8ed0ab7b87eae7a03aed414` | Stage 5–6 full stack — **contains #213 as ancestor** |
 | #251 | `887d701168ccc87f37193b22c11d2e9e8a598088` | Parallel post-237 sequential floor (not stacked here) |
 | #220 / #231 | open | Superseded into #248 / not required for Stage 5 product surfaces |
 
