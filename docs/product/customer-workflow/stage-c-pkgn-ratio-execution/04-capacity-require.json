@@ -1,0 +1,43 @@
+{
+  "schema": "stage-c-pkgn-capacity-require.v1",
+  "paidProvidersCalled": false,
+  "financialInputs": "SYNTHETIC_LABELED_TECHNICAL_DEMO",
+  "certifiedCustomerResult": false,
+  "asOf": "2026-12-31",
+  "success": [
+    {
+      "capacityNodeId": "capacity:rule:ir-rule:482a6fb7f6984ae5932dec28",
+      "ruleId": "ir-rule:482a6fb7f6984ae5932dec28",
+      "status": "AVAILABLE",
+      "effectiveRemaining": {
+        "kind": "UNLIMITED",
+        "gate": "SATISFIED"
+      }
+    }
+  ],
+  "refusals": {
+    "missingInput": {
+      "status": "NEEDS_INPUT",
+      "remaining": {
+        "kind": "NOT_DETERMINED",
+        "reason": "a financial fact this capacity depends on is missing"
+      },
+      "limitations": [
+        {
+          "code": "MISSING_FINANCIAL_INPUT",
+          "message": "missing: Total Net Leverage Ratio",
+          "refs": [
+            "Total Net Leverage Ratio"
+          ]
+        }
+      ]
+    },
+    "ratioAboveCap": {
+      "status": "AVAILABLE",
+      "remaining": {
+        "kind": "GATE_NOT_SATISFIED"
+      },
+      "limitations": []
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "stage-c-pkgn-phase4d.v1",
+  "paidProvidersCalled": false,
+  "certifiedCustomerResult": false,
+  "simulation": {
+    "simulationStatus": "SIMULATED",
+    "selectedPathResult": "SATISFIED",
+    "capacityEffects": [
+      {
+        "effectId": "e1",
+        "capacityNodeId": "capacity:rule:ir-rule:482a6fb7f6984ae5932dec28",
+        "ruleId": "ir-rule:482a6fb7f6984ae5932dec28",
+        "sharedCapacityId": null,
+        "attemptedAmount": {
+          "type": "MONEY",
+          "amount": "10000000",
+          "currency": "USD"
+        },
+        "sharedConstraintIds": [],
+        "availableAmount": {
+          "kind": "UNLIMITED",
+          "gate": "SATISFIED"
+        },
+        "shortfallAmount": null,
+        "outcome": "SATISFIED",
+        "capacityStatus": "AVAILABLE",
+        "provisional": null,
+        "limitations": []
+      }
+    ],
+    "effects": [
+      {
+        "effectId": "e1",
+        "kind": "CONSUME_CAPACITY",
+        "supported": true,
+        "applied": true,
+        "reason": "executed by the typed effect model"
+      }
+    ],
+    "conditions": [
+      {
+        "conditionId": "rule[r4].condition[0]",
+        "result": "SATISFIED",
+        "reason": "evaluated true against the pro-forma input view",
+        "description": "RATIO_TEST: Total Net Leverage Ratio does not exceed 3.00 to 1.00"
+      },
+      {
+        "conditionId": "rule[r4].condition[1]",
+        "result": "SATISFIED",
+        "reason": "discharged: expressionless pro-forma manner phrase is already carried as evaluationBasis.proForma on a sibling condition that evaluated SATISFIED; not an independent unevaluable gate",
+        "description": "PRO_FORMA: after giving pro forma effect thereto"
+      }
+    ],
+    "limitations": [],
+    "committable": true
+  }
+}
