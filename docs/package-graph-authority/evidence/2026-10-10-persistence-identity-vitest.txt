@@ -1,0 +1,19 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /workspace
+
+ ✓ tests/package-graph-authority/persistence-membership-plan.test.ts > HEADROOM-3 persistence membership plan (no DB) > provisional associations never appear in confirmed membership plan
+ ✓ tests/package-graph-authority/persistence-membership-plan.test.ts > HEADROOM-3 persistence membership plan (no DB) > foreign company document ids are skipped from the plan
+ ✓ tests/package-graph-authority/persistence-membership-plan.test.ts > HEADROOM-3 persistence membership plan (no DB) > stale clear plan removes contaminated provisional assignment on replay
+ ✓ tests/package-graph-authority/persistence-membership-plan.test.ts > HEADROOM-3 persistence membership plan (no DB) > orphan bases disappear from currentBaseDocumentIds after upgrade merge
+ ✓ tests/package-graph-authority/persistence-membership-plan.test.ts > HEADROOM-3 persistence membership plan (no DB) > repeated planning is deterministic (replay consistency)
+ ✓ tests/package-graph-authority/persistence-identity.test.ts > HEADROOM-3 persistence identity (EVALUATION fixture only) > provisional bridge does not assign shared instrumentId across instruments
+ ✓ tests/package-graph-authority/persistence-identity.test.ts > HEADROOM-3 persistence identity (EVALUATION fixture only) > upgrade merges; rejection/split clears stale instrumentId; orphan singleton deleted
+ ✓ tests/package-graph-authority/persistence-identity.test.ts > HEADROOM-3 persistence identity (EVALUATION fixture only) > repeated persistence is idempotent (no duplicate instruments / edges)
+ ✓ tests/package-graph-authority/persistence-identity.test.ts > HEADROOM-3 persistence identity (EVALUATION fixture only) > cross-company contamination: company B document never receives company A instrumentId
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  14:37:34
+   Duration  454ms (transform 80ms, setup 0ms, collect 176ms, tests 194ms, environment 0ms, prepare 89ms)
+
