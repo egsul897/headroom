@@ -116,3 +116,35 @@ export {
   type AttributedUtilizationUsage,
   type UtilizationReconstructionTraceEntry,
 } from "./utilization-evidence-reconstruction";
+/**
+ * Trusted identity boundary (Agent #8) — fail-closed until a real IdP adapter
+ * is activated. Stronger than WeakSet-only host minting: requires
+ * ServerIdentityProvider.verifyCredentials + discrete permissions + audit.
+ * Does not weaken TRUSTED_ISSUER_ACTIVATION / evaluateCompletenessForRemainingClaim.
+ */
+export {
+  TRUSTED_IDENTITY_BOUNDARY_VERIFIED,
+  TRUSTED_IDENTITY_PRODUCTION_ACTIVATION,
+  TRUSTED_IDENTITY_DEPLOYMENT_REQUIREMENTS,
+  TRUSTED_IDENTITY_INVENTORY,
+  isTrustedIdentityProductionActive,
+  AUTHORIZATION_PERMISSIONS,
+  PERMISSION_BUNDLES,
+  authorizeDecision,
+  verifyAndMintPrincipal,
+  mintTrustedIssuerAuthorizationContext,
+  registerServerIdentityProvider,
+  createTestIdentityHarness,
+  resetTrustedIdentityRuntimeForTests,
+  refuseClientInjectedIdentity,
+  refuseUntrustedTrustedIssuerConstruction,
+  getAuthorizationAuditLog,
+  clearAuthorizationAuditLogForTests,
+  type AuthorizationPermission,
+  type AuthorizationDecisionKind,
+  type VerifiedServerPrincipal,
+  type ServerIdentityProvider,
+  type IdpVerificationResult,
+  type AuthorizeDecisionResult,
+  type TrustedIdentityActivationState,
+} from "./identity";
