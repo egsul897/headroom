@@ -2,7 +2,7 @@
 
 **Branch:** `cursor/unified-stage5-position-ask-f673` (#250)  
 **Starting tip:** `ac0ff92547d4b3154255a4dd9afae4a52d96f5a4`
-**Ending tip:** `2485d767c9f713b39d06f4b10071e18b8f4be1ad`
+**Ending tip:** `fc1070cf97a2da511b23cc5e412ef5e530cd2644`
 
 Remote tip advanced with #213 adversarial reconcile (`68d93706`) before this remediation landed.
 
