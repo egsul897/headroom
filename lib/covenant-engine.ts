@@ -1857,7 +1857,8 @@ export interface LoadCompanySolverStaticOptions {
       approvalState: "APPROVED";
       sourceLabel: string;
       kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
-      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+      /** SYNTHETIC_LABELED never authorizes remaining in production loaders. */
+      authenticity: "AUTHENTIC" | "SYNTHETIC_LABELED";
     }
   >;
 }
