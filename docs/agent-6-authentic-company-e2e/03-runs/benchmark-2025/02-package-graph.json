@@ -1,0 +1,100 @@
+{
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this “  Amendment  ”)"
+      ]
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this “  Amendment  ”)"
+      ]
+    },
+    {
+      "documentId": "doc-c",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "sourceDocumentId": "doc-a",
+      "targetDocumentId": null,
+      "relationshipType": "AMENDS",
+      "status": "UNRESOLVED",
+      "confidence": 0,
+      "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"December 21, 2021\" is not in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": null,
+      "relationshipType": "AMENDS",
+      "status": "UNRESOLVED",
+      "confidence": 0,
+      "unresolvedReason": "type matches but the only candidate document of that type is dated after this document's own execution date (candidate executionDate after source) - an earlier amendment cannot target a later restatement; the referenced agreement dated \"December 21, 2021\" is not in this package"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": null,
+      "relationshipType": "RESTATES",
+      "status": "UNRESOLVED",
+      "confidence": 0,
+      "unresolvedReason": "no document in this package is classified as CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "documentIds": [
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-c",
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": []
+    }
+  ],
+  "performance": {
+    "documentCount": 3,
+    "totalCharsScanned": 1860839,
+    "relationshipCandidatesGenerated": 3,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 3,
+    "modificationCandidatesGenerated": 0,
+    "crossDocumentReferenceLeadsGenerated": 169,
+    "wallClockMs": 46,
+    "semanticCallsUsed": 0
+  }
+}

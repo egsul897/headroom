@@ -1,0 +1,847 @@
+{
+  "generatedAt": "2026-10-10T01:03:32.445Z",
+  "costUsd": 0,
+  "method": "Independent human-read GT vs Pass A + structural index (evaluation only). Pins not retuned. Discovery ≠ interpretation ≠ verification ≠ execution.",
+  "definitions": {
+    "TP": "GT item with documentLocalHit (Pass A on operativeDocumentId matching sectionRef)",
+    "FN": "GT item without documentLocalHit (even if packageLevelHit)",
+    "FP_bounded": "Pass A SECTION candidates on operative base with covenant headline that are not in GT and not in frozen must-discover pins (bounded sample, not exhaustive)",
+    "documentLocalRecall": "TP / GT items",
+    "packageLevelRecall": "GT items with Pass A hit on any package document matching sectionRef / GT items",
+    "familyHint": "Best-effort heading/signal suggestion only — not sealed interpretation"
+  },
+  "expectationPinsPreserved": true,
+  "totals": {
+    "gtItems": 20,
+    "TP": 17,
+    "FN": 3,
+    "FP_bounded": 28,
+    "documentLocalRecall": 0.85,
+    "packageLevelRecall": 0.95
+  },
+  "falseNegatives": [
+    {
+      "companyKey": "knife-river-2023-2026",
+      "id": "kr-gt-10",
+      "sectionRef": "6.18",
+      "operativeDocumentId": "doc-a",
+      "packageLevelHit": true,
+      "expectedFamily": "AFFILIATE_TRANSACTIONS",
+      "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+      "notes": "Section 6.18 Transactions with Affiliates — Affiliate Transaction value threshold; affirmative-article placement."
+    },
+    {
+      "companyKey": "knife-river-2023-2026",
+      "id": "kr-gt-11",
+      "sectionRef": "2.1",
+      "operativeDocumentId": "doc-b",
+      "packageLevelHit": false,
+      "expectedFamily": "OTHER",
+      "category": "amendments_modifying_removing_prior_restrictions",
+      "notes": "First Amendment SECTION 2.1 Amendments to Credit Agreement — redline delete/add modifying prior CA restrictions via Exhibit A."
+    },
+    {
+      "companyKey": "benchmark-2025",
+      "id": "bm-gt-04",
+      "sectionRef": "7.08",
+      "operativeDocumentId": "doc-c",
+      "packageLevelHit": true,
+      "expectedFamily": "AFFILIATE_TRANSACTIONS",
+      "category": "exceptions_provisos",
+      "notes": "§7.08 Transactions with Affiliates — ordinary-course fair-terms exception path; not a frozen must-discover pin."
+    }
+  ],
+  "companies": [
+    {
+      "companyKey": "knife-river-2023-2026",
+      "issuer": "Knife River Corporation",
+      "expectationPinPreserved": true,
+      "operativeBaseDocumentId": "doc-a",
+      "gtItemCount": 12,
+      "mustDiscoverPinCountInSample": 9,
+      "scores": {
+        "TP": 10,
+        "FN": 2,
+        "FP_bounded": 6,
+        "documentLocalRecall": 0.8333333333333334,
+        "packageLevelRecall": 0.9166666666666666,
+        "familyHintMatchRate": 0.6666666666666666
+      },
+      "falseNegatives": [
+        {
+          "id": "kr-gt-10",
+          "sectionRef": "6.18",
+          "operativeDocumentId": "doc-a",
+          "packageLevelHit": true,
+          "expectedFamily": "AFFILIATE_TRANSACTIONS",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "notes": "Section 6.18 Transactions with Affiliates — Affiliate Transaction value threshold; affirmative-article placement."
+        },
+        {
+          "id": "kr-gt-11",
+          "sectionRef": "2.1",
+          "operativeDocumentId": "doc-b",
+          "packageLevelHit": false,
+          "expectedFamily": "OTHER",
+          "category": "amendments_modifying_removing_prior_restrictions",
+          "notes": "First Amendment SECTION 2.1 Amendments to Credit Agreement — redline delete/add modifying prior CA restrictions via Exhibit A."
+        }
+      ],
+      "falsePositivesBounded": [
+        {
+          "documentId": "doc-a",
+          "sectionRef": "2.15",
+          "heading": "Incremental Equivalent Debt",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "2.18",
+          "heading": "Specified Refinancing Debt",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "2.20",
+          "heading": "Permitted Debt Exchanges",
+          "signals": [
+            "permitted_construct",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "5.12",
+          "heading": "Subsidiaries; Capital Stock",
+          "signals": [
+            "exception_marker",
+            "permitted_construct",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "5.13",
+          "heading": "Margin Regulations; Investment Company Act",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "6.17",
+          "heading": "No Change in Line of Business",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        }
+      ],
+      "items": [
+        {
+          "id": "kr-gt-01",
+          "category": "restrictions_with_explicit_section_headings",
+          "expectedFamily": "INDEBTEDNESS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.01",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INDEBTEDNESS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 21,
+          "packageHitCount": 63,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Body Section 7.01 Indebtedness prohibition with Incremental Amount / Ratio Debt proviso."
+        },
+        {
+          "id": "kr-gt-02",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "LIENS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.02",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "LIENS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 1,
+          "packageHitCount": 3,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "permitted_construct",
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Section 7.02 Limitations on Liens — Subject Lien / Permitted Lien restriction."
+        },
+        {
+          "id": "kr-gt-03",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "ASSET_SALES",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.03",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "ASSET_SALES",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 8,
+          "packageHitCount": 26,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "covenant_verb"
+          ],
+          "classification": "TP",
+          "notes": "Section 7.03 Fundamental Changes — merger/disposition of all or substantially all assets."
+        },
+        {
+          "id": "kr-gt-04",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "ASSET_SALES",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.04",
+          "mustDiscoverPin": false,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "ASSET_SALES",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 11,
+          "packageHitCount": 33,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Section 7.04 Asset Dispositions — not among frozen must-discover pins (pins use 7.03 for ASSET_SALES)."
+        },
+        {
+          "id": "kr-gt-05",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "RESTRICTED_PAYMENTS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.05",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": false,
+          "localHitCount": 43,
+          "packageHitCount": 133,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "covenant_verb"
+          ],
+          "classification": "TP",
+          "notes": "Section 7.05 Restricted Payments chapeau and nested dividend/distribution restriction."
+        },
+        {
+          "id": "kr-gt-06",
+          "category": "financial_ratio_conditions",
+          "expectedFamily": "FINANCIAL",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.08",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "FINANCIAL",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 17,
+          "packageHitCount": 49,
+          "sampleLocalSignals": [
+            "ratio_expression",
+            "permission_construction",
+            "financial_metric"
+          ],
+          "classification": "TP",
+          "notes": "Section 7.08 Financial Covenants — Consolidated Total Net Leverage Ratio 4.75 to 1.00 with step-up proviso."
+        },
+        {
+          "id": "kr-gt-07",
+          "category": "exceptions_provisos",
+          "expectedFamily": "INDEBTEDNESS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.01(b)",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INDEBTEDNESS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 21,
+          "packageHitCount": 63,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Nested exception/proviso: Section 7.01(a) will not prohibit listed Permitted Debt baskets under 7.01(b)."
+        },
+        {
+          "id": "kr-gt-08",
+          "category": "restrictions_nested_in_paragraphs_subsections",
+          "expectedFamily": "RESTRICTED_PAYMENTS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.05",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": false,
+          "localHitCount": 43,
+          "packageHitCount": 133,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "covenant_verb"
+          ],
+          "classification": "TP",
+          "notes": "Nested RP operative paragraph 7.05(a)(1) — dividend/distribution ban with sub-exceptions; not a separate TOC heading."
+        },
+        {
+          "id": "kr-gt-09",
+          "category": "defined_term_dependencies",
+          "expectedFamily": "RESTRICTED_PAYMENTS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.05",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": false,
+          "localHitCount": 43,
+          "packageHitCount": 133,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "covenant_verb"
+          ],
+          "classification": "TP",
+          "notes": "Defined-term dependency: Available Amount Builder Basket capacity constructed inside Section 7.05(a)(y)."
+        },
+        {
+          "id": "kr-gt-10",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "AFFILIATE_TRANSACTIONS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "6.18",
+          "mustDiscoverPin": false,
+          "documentLocalHit": false,
+          "packageLevelHit": true,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": false,
+          "localHitCount": 0,
+          "packageHitCount": 24,
+          "sampleLocalSignals": [
+            "percentage",
+            "greater_lesser_of",
+            "financial_metric"
+          ],
+          "classification": "FN",
+          "notes": "Section 6.18 Transactions with Affiliates — Affiliate Transaction value threshold; affirmative-article placement."
+        },
+        {
+          "id": "kr-gt-11",
+          "category": "amendments_modifying_removing_prior_restrictions",
+          "expectedFamily": "OTHER",
+          "operativeDocumentId": "doc-b",
+          "sectionRef": "2.1",
+          "mustDiscoverPin": false,
+          "documentLocalHit": false,
+          "packageLevelHit": false,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 0,
+          "packageHitCount": 0,
+          "sampleLocalSignals": [],
+          "classification": "FN",
+          "notes": "First Amendment SECTION 2.1 Amendments to Credit Agreement — redline delete/add modifying prior CA restrictions via Exhibit A."
+        },
+        {
+          "id": "kr-gt-12",
+          "category": "provisions_with_cross_document_consequences",
+          "expectedFamily": "INDEBTEDNESS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.01(b)",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INDEBTEDNESS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 21,
+          "packageHitCount": 63,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Permitted Debt basket for 7.750% Notes / Notes Documents — restriction interacts with separate notes instrument."
+        }
+      ],
+      "layerBoundaries": {
+        "discovery": "IN_SCOPE",
+        "interpretation": "OUT_OF_SCOPE_familyHint_best_effort_only",
+        "verification": "OUT_OF_SCOPE",
+        "execution": "OUT_OF_SCOPE"
+      }
+    },
+    {
+      "companyKey": "insulet-2021-2026",
+      "issuer": "Insulet Corporation",
+      "expectationPinPreserved": true,
+      "operativeBaseDocumentId": "doc-a",
+      "gtItemCount": 4,
+      "mustDiscoverPinCountInSample": 3,
+      "scores": {
+        "TP": 4,
+        "FN": 0,
+        "FP_bounded": 9,
+        "documentLocalRecall": 1,
+        "packageLevelRecall": 1,
+        "familyHintMatchRate": 1
+      },
+      "falseNegatives": [],
+      "falsePositivesBounded": [
+        {
+          "documentId": "doc-a",
+          "sectionRef": "5.07",
+          "heading": "Ownership of Property; Liens",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "5.11",
+          "heading": "Subsidiaries; Equity Interests",
+          "signals": [
+            "exception_marker",
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "5.12",
+          "heading": "Margin Regulations; Investment Company Act",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "6.10",
+          "heading": "Covenant to Guarantee Obligations and Give Security",
+          "signals": [
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "6.13",
+          "heading": "Designation of Subsidiaries",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "6.16",
+          "heading": "Nature of Business",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "8.03",
+          "heading": "Exclusion of Immaterial Subsidiaries",
+          "signals": [
+            "percentage",
+            "financial_metric",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "8.06",
+          "heading": "Change of Control",
+          "signals": [
+            "exception_marker",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-a",
+          "sectionRef": "9.11",
+          "heading": "Collateral and Guaranty Matters",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        }
+      ],
+      "items": [
+        {
+          "id": "in-gt-01",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "INVESTMENTS",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.02",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INVESTMENTS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 20,
+          "packageHitCount": 57,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "SECTION 7.02 Investments — Make any Investments, except…"
+        },
+        {
+          "id": "in-gt-02",
+          "category": "financial_ratio_conditions",
+          "expectedFamily": "FINANCIAL",
+          "operativeDocumentId": "doc-a",
+          "sectionRef": "7.09",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "FINANCIAL",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 1,
+          "packageHitCount": 8,
+          "sampleLocalSignals": [
+            "dollar_value",
+            "percentage",
+            "ratio_expression",
+            "prohibitive_construction",
+            "exception_marker",
+            "financial_metric",
+            "shared_cap",
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "SECTION 7.09 Financial Covenant Leverage Ratio — Revolving Facility leverage test."
+        },
+        {
+          "id": "in-gt-03",
+          "category": "provisions_with_cross_document_consequences",
+          "expectedFamily": "INDEBTEDNESS",
+          "operativeDocumentId": "doc-b",
+          "sectionRef": "3.02",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INDEBTEDNESS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 22,
+          "packageHitCount": 50,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Indenture SECTION 3.02 Limitation on Indebtedness — second instrument parallel to credit agreement negatives."
+        },
+        {
+          "id": "in-gt-04",
+          "category": "amendments_modifying_removing_prior_restrictions",
+          "expectedFamily": "OTHER",
+          "operativeDocumentId": "doc-c",
+          "sectionRef": "2",
+          "mustDiscoverPin": false,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "UNKNOWN",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 117,
+          "packageHitCount": 279,
+          "sampleLocalSignals": [
+            "permission_construction",
+            "exception_marker"
+          ],
+          "classification": "TP",
+          "notes": "Ninth Amendment SECTION 2 — conformed redline amends Credit Agreement covenants; amendments 1–8 missing from fixture."
+        }
+      ],
+      "layerBoundaries": {
+        "discovery": "IN_SCOPE",
+        "interpretation": "OUT_OF_SCOPE_familyHint_best_effort_only",
+        "verification": "OUT_OF_SCOPE",
+        "execution": "OUT_OF_SCOPE"
+      }
+    },
+    {
+      "companyKey": "benchmark-2025",
+      "issuer": "Benchmark Electronics, Inc.",
+      "expectationPinPreserved": true,
+      "operativeBaseDocumentId": "doc-c",
+      "gtItemCount": 4,
+      "mustDiscoverPinCountInSample": 3,
+      "scores": {
+        "TP": 3,
+        "FN": 1,
+        "FP_bounded": 13,
+        "documentLocalRecall": 0.75,
+        "packageLevelRecall": 1,
+        "familyHintMatchRate": 0.75
+      },
+      "falseNegatives": [
+        {
+          "id": "bm-gt-04",
+          "sectionRef": "7.08",
+          "operativeDocumentId": "doc-c",
+          "packageLevelHit": true,
+          "expectedFamily": "AFFILIATE_TRANSACTIONS",
+          "category": "exceptions_provisos",
+          "notes": "§7.08 Transactions with Affiliates — ordinary-course fair-terms exception path; not a frozen must-discover pin."
+        }
+      ],
+      "falsePositivesBounded": [
+        {
+          "documentId": "doc-c",
+          "sectionRef": "2.11",
+          "heading": "Evidence of Debt.",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "5.13",
+          "heading": "Margin Regulations; Investment Company Act.",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "5.18",
+          "heading": "Subsidiaries; Equity Interests; Loan Parties.",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "5.24",
+          "heading": "Outbound Investment Rules .",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "6.13",
+          "heading": "Covenant to Guarantee Obligations.",
+          "signals": [
+            "permission_construction",
+            "exception_marker",
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "6.15",
+          "heading": "Ownership of Subsidiaries .",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "6.19",
+          "heading": "Unrestricted Subsidiaries . (a) Cause the management, business and affairs of each of the Company and its Restricted Subsidiaries to be conducted in such a mann",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "7.07",
+          "heading": "Change in Nature of Business.",
+          "signals": [
+            "dollar_value",
+            "prohibitive_construction",
+            "exception_marker",
+            "permitted_construct",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "7.16",
+          "heading": "Amendment of Material Documents .",
+          "signals": [
+            "permission_construction",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "7.18",
+          "heading": "Outbound Investment Rules .",
+          "signals": [
+            "prohibitive_construction",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "9.10",
+          "heading": "Collateral and Guaranty Matters.",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "9.13",
+          "heading": "Recovery of Erroneous Payments . Without limitation of any other provision in this Agreement, if at any time the Administrative Agent makes a payment hereunder ",
+          "signals": [
+            "greater_lesser_of",
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        },
+        {
+          "documentId": "doc-c",
+          "sectionRef": "10.24",
+          "heading": "Amendment and Restatement; Exiting Lenders .",
+          "signals": [
+            "headline_heading"
+          ],
+          "classification": "FP_BOUNDED"
+        }
+      ],
+      "items": [
+        {
+          "id": "bm-gt-01",
+          "category": "restrictions_with_explicit_section_headings",
+          "expectedFamily": "LIENS",
+          "operativeDocumentId": "doc-c",
+          "sectionRef": "7.01",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "LIENS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 10,
+          "packageHitCount": 32,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "permitted_construct",
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Second A&R §7.01 Liens — Permitted Liens exceptions list."
+        },
+        {
+          "id": "bm-gt-02",
+          "category": "debt_lien_rp_investment_asset_sale_affiliate_transaction_restrictions",
+          "expectedFamily": "INVESTMENTS",
+          "operativeDocumentId": "doc-c",
+          "sectionRef": "7.03",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "INVESTMENTS",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 8,
+          "packageHitCount": 29,
+          "sampleLocalSignals": [
+            "exception_marker",
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "Second A&R §7.03 Investments restriction."
+        },
+        {
+          "id": "bm-gt-03",
+          "category": "financial_ratio_conditions",
+          "expectedFamily": "FINANCIAL",
+          "operativeDocumentId": "doc-c",
+          "sectionRef": "7.11",
+          "mustDiscoverPin": true,
+          "documentLocalHit": true,
+          "packageLevelHit": true,
+          "familyHint": "FINANCIAL",
+          "familyHintMatchedExpected": true,
+          "localHitCount": 3,
+          "packageHitCount": 11,
+          "sampleLocalSignals": [
+            "headline_heading"
+          ],
+          "classification": "TP",
+          "notes": "§7.11 Financial Covenants — Consolidated Interest Coverage Ratio 3.00 to 1.00 and Net Leverage."
+        },
+        {
+          "id": "bm-gt-04",
+          "category": "exceptions_provisos",
+          "expectedFamily": "AFFILIATE_TRANSACTIONS",
+          "operativeDocumentId": "doc-c",
+          "sectionRef": "7.08",
+          "mustDiscoverPin": false,
+          "documentLocalHit": false,
+          "packageLevelHit": true,
+          "familyHint": "LIENS",
+          "familyHintMatchedExpected": false,
+          "localHitCount": 0,
+          "packageHitCount": 4,
+          "sampleLocalSignals": [
+            "permitted_construct",
+            "covenant_verb",
+            "headline_heading"
+          ],
+          "classification": "FN",
+          "notes": "§7.08 Transactions with Affiliates — ordinary-course fair-terms exception path; not a frozen must-discover pin."
+        }
+      ],
+      "layerBoundaries": {
+        "discovery": "IN_SCOPE",
+        "interpretation": "OUT_OF_SCOPE_familyHint_best_effort_only",
+        "verification": "OUT_OF_SCOPE",
+        "execution": "OUT_OF_SCOPE"
+      }
+    }
+  ],
+  "notes": [
+    "Ground truth was not generated from Pass A, isCovenantHeadlineHeading, or structural-heading inventory.",
+    "mustDiscoverPin on GT items is a separate frozen-pin label, not the GT selection criterion.",
+    "FP is intentionally bounded (headline SECTION on operative base outside GT∪pins), not an exhaustive precision census.",
+    "A packageLevelHit without documentLocalHit remains FN for document-local scoring."
+  ]
+}

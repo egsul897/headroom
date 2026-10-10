@@ -1,0 +1,65 @@
+{
+  "roleComparisons": [
+    {
+      "documentId": "doc-a",
+      "expectedRole": "CREDIT_AGREEMENT",
+      "actualRole": "CREDIT_AGREEMENT",
+      "match": true
+    },
+    {
+      "documentId": "doc-b",
+      "expectedRole": "AMENDMENT",
+      "actualRole": "AMENDMENT",
+      "match": true
+    },
+    {
+      "documentId": "doc-c",
+      "expectedRole": "AMENDMENT",
+      "actualRole": "AMENDMENT",
+      "match": true
+    }
+  ],
+  "operativeBaseOk": true,
+  "expectedOperativeBase": "doc-a",
+  "expectedCovenantFamilies": [
+    "INDEBTEDNESS",
+    "LIENS",
+    "ASSET_SALES",
+    "RESTRICTED_PAYMENTS",
+    "FINANCIAL"
+  ],
+  "structuralDefinitionsDetected": 1728,
+  "transactions": [
+    {
+      "id": "kr-t1",
+      "description": "$50mm incremental unsecured debt under general indebtedness basket",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "No utilization or approved financial snapshot."
+    },
+    {
+      "id": "kr-t2",
+      "description": "$10mm restricted payment",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "RP/builder capacity unknown without certificate."
+    },
+    {
+      "id": "kr-t3",
+      "description": "Identify operative package as CA + two amendments",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Legal identification can proceed; capacity cannot."
+    }
+  ],
+  "costUsd": 0
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "agent6-authentic-capacity-attempt.v1",
+  "paidProvidersCalled": false,
+  "fixtureIrInvented": false,
+  "certifiedCount": 1,
+  "adapterOutcome": "DERIVED",
+  "claimedScope": "CANDIDATE_VEP_4E",
+  "note": "Reuses Agent-3/product authenticated VEP path over on-disk Phase-3 CERTIFIED artifacts. Unseen Agent-6 packages have no CERTIFIED VEP; this attempt is the closest authentic capacity path without inventing IR.",
+  "companyId": "conmed-pilot",
+  "instrumentKey": "conmed-eighth-ar-credit-agreement",
+  "verifiedRules": 1,
+  "ruleSummaries": [
+    {
+      "ruleId": "ir-rule:29309c463e06b77b4b243eda",
+      "capacityExpression": {
+        "gatedBy": null,
+        "kind": "UNLIMITED_CAPACITY",
+        "provenance": {
+          "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "excerpt": null,
+          "sourceCitation": "§7.2(c)",
+          "sourceNodeKey": null
+        },
+        "type": "CAPACITY"
+      }
+    }
+  ],
+  "capacityOutcome": "REFUSED",
+  "grossCapacity": null,
+  "remainingCapacity": null,
+  "refusals": [
+    {
+      "code": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+      "message": "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+      "refs": [
+        "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.1 [SOURCE_REFERENCE_RESOLVED]",
+        "ir-rule:29309c463e06b77b4b243eda REQUIRES Section 7.3(g) [SOURCE_REFERENCE_RESOLVED]",
+        "ir-rule:29309c463e06b77b4b243eda rule[r-c].condition[0] -> Section 7.1 [SOURCE_REFERENCE_RESOLVED]"
+      ]
+    }
+  ],
+  "stoppingStage": "CAPACITY",
+  "stoppingReason": "CROSS_RULE_GATE_NOT_EXECUTABLE",
+  "noteExtra": "Authentic CONMED §7.2(c) CERTIFIED candidate derives a VEP but evaluateVerifiedCapacity REFUSES (e.g. cross-rule gate). Refusal preserved; not counted as executable capacity."
+}

@@ -1,0 +1,37 @@
+{
+  "llmBlocker": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC",
+  "caller": {
+    "provider": "synthetic",
+    "model": "synthetic-v1",
+    "synthetic": true
+  },
+  "amendmentSummary": {
+    "documentsProcessed": 3,
+    "deterministicEffectsFound": 2,
+    "semanticCallsMade": 0,
+    "semanticEffectsFound": 0,
+    "semanticEffectsRejectedByValidation": 0,
+    "conflictsDetected": 0,
+    "wallClockMs": 3.696168000000057,
+    "inputTokens": 0,
+    "outputTokens": 0
+  },
+  "effectCount": 2,
+  "unattachedEffects": 2,
+  "operativeByInstrument": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 0,
+      "unattachedEffects": 2
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "baseDocumentId": "doc-b",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "provisionCount": 0,
+      "unattachedEffects": 0
+    }
+  ]
+}

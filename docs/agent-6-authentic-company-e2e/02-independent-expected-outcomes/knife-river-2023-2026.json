@@ -1,0 +1,149 @@
+{
+  "companyKey": "knife-river-2023-2026",
+  "issuer": "Knife River Corporation",
+  "cik": "0001955520",
+  "authoredBeforeEngineRun": true,
+  "authoredAt": "2026-10-09T22:24:47.582726+00:00",
+  "method": "source-text-only; no compiler output consulted; NBSP-normalized excerpts",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "file": "doc-a-2023-05-31-credit-agreement.txt",
+      "expectedRole": "CREDIT_AGREEMENT",
+      "datedAsOf": "2023-05-31",
+      "parties": [
+        "Knife River Holding Company",
+        "JPMorgan Chase Bank, N.A."
+      ],
+      "amendsTarget": null,
+      "notes": "Original Credit Agreement"
+    },
+    {
+      "documentId": "doc-b",
+      "file": "doc-b-2025-03-07-first-amendment.txt",
+      "expectedRole": "AMENDMENT",
+      "datedAsOf": "2025-03-07",
+      "parties": [
+        "Knife River Corporation",
+        "JPMorgan Chase Bank, N.A."
+      ],
+      "amendsTarget": {
+        "documentId": "doc-a",
+        "description": "Credit Agreement dated as of May 31, 2023"
+      },
+      "notes": "First Amendment; appears to include attached conformed agreement text=True"
+    },
+    {
+      "documentId": "doc-c",
+      "file": "doc-c-2026-05-15-second-amendment.txt",
+      "expectedRole": "AMENDMENT",
+      "datedAsOf": "2026-05-15",
+      "parties": [
+        "Knife River Corporation",
+        "JPMorgan Chase Bank, N.A."
+      ],
+      "amendsTarget": {
+        "documentId": "doc-a",
+        "description": "Credit Agreement dated May 31, 2023 as amended by First Amendment"
+      },
+      "notes": "Second Amendment; attached conformed text=True"
+    }
+  ],
+  "operativePackage": {
+    "operativeBaseDocumentId": "doc-a",
+    "rationale": "Operative financing package is the May 31, 2023 Credit Agreement as amended by the First and Second Amendments.",
+    "amendmentsInForce": [
+      "doc-b",
+      "doc-c"
+    ],
+    "missingDocuments": []
+  },
+  "covenantsExpected": [
+    {
+      "family": "INDEBTEDNESS",
+      "sectionRef": "7.01",
+      "evidenceExcerpt": "Section 7.01 Indebtedness",
+      "mustDiscover": true
+    },
+    {
+      "family": "LIENS",
+      "sectionRef": "7.02",
+      "evidenceExcerpt": "Section 7.02 Limitations on Liens",
+      "mustDiscover": true
+    },
+    {
+      "family": "ASSET_SALES",
+      "sectionRef": "7.03",
+      "evidenceExcerpt": "Section 7.03 Fundamental Changes",
+      "mustDiscover": true
+    },
+    {
+      "family": "RESTRICTED_PAYMENTS",
+      "sectionRef": "7.05",
+      "evidenceExcerpt": "Section 7.05 Restricted Payments",
+      "mustDiscover": true
+    },
+    {
+      "family": "FINANCIAL",
+      "sectionRef": "7.08",
+      "evidenceExcerpt": "Section 7.08 Financial Covenant",
+      "mustDiscover": true
+    }
+  ],
+  "definitionsExpected": [
+    {
+      "term": "Consolidated EBITDA",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Consolidated EBITDA \u201d means, with respect to any Person for any period, the Consolidated Net Income of such Person for such period: (1) increased (without duplica"
+    },
+    {
+      "term": "Available Amount Builder Basket",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Available Amount Builder Basket \u201d has the meaning specified in Section 7.05(a)(y)(6) . \u201c Available Tenor \u201d means, as of any date of determination and with respect to t"
+    },
+    {
+      "term": "Indebtedness",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Indebtedness \u201d means, with respect to any Person on any date of determination (without duplication): (1) the principal of indebtedness of such Person for borrowed"
+    }
+  ],
+  "financials": {
+    "public10QAvailable": "YES",
+    "officerCertificateWithUtilization": "ABSENT",
+    "notes": "Agreement contains Compliance Certificate form references; no completed officer certificate with filled basket utilization is in this package."
+  },
+  "utilization": {
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "all basket utilization",
+      "revolving outstandings",
+      "Available Amount Builder Basket balance"
+    ]
+  },
+  "proposedTransactions": [
+    {
+      "id": "kr-t1",
+      "description": "$50mm incremental unsecured debt under general indebtedness basket",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "No utilization or approved financial snapshot."
+    },
+    {
+      "id": "kr-t2",
+      "description": "$10mm restricted payment",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "RP/builder capacity unknown without certificate."
+    },
+    {
+      "id": "kr-t3",
+      "description": "Identify operative package as CA + two amendments",
+      "expectedEngineOutcome": "REVIEW_REQUIRED",
+      "rationale": "Legal identification can proceed; capacity cannot."
+    }
+  ],
+  "positionReportExpectations": {
+    "mustNotClaimFavorableCapacityWithoutEvidence": true,
+    "mustReportMissingCertificate": true,
+    "mustReportUnknownUtilization": true
+  }
+}

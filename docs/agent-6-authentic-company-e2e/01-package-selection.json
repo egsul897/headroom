@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "mission": "HEADROOM_AGENT_6_REAL_COMPANY_E2E",
+  "selectionDate": "2026-10-09",
+  "method": "Prioritized Lane-7 blind-hunt ranks and the final-lightweight-unseen candidate pool. Acquired only public SEC EDGAR HTML exhibits. No company-specific production hardcoding. Independent expected outcomes authored from source text before engine runs (see 00-expectation-pins.json).",
+  "credentialConstraint": "Environment injected DATABASE_URL only — no AI_GATEWAY_API_KEY / ANTHROPIC_API_KEY. LLM discovery/compile/verify stages recorded as BLOCKED_BY_MISSING_CREDENTIAL, never synthetic-faked as generalization evidence.",
+  "packages": [
+    {
+      "companyKey": "knife-river-2023-2026",
+      "issuer": "Knife River Corporation",
+      "cik": "0001955520",
+      "ticker": "KNF",
+      "whySelected": "Lane-7 rank 2 — clean credit-agreement + amendment chain with builder/reclass phrase evidence; not an Nth A&R clone.",
+      "documents": 3,
+      "unseenAtSelection": true
+    },
+    {
+      "companyKey": "insulet-2021-2026",
+      "issuer": "Insulet Corporation",
+      "cik": "0001145197",
+      "ticker": "PODD",
+      "whySelected": "Lane-7 rank 1 — long amendment chain + second instrument (indenture). Fixture intentionally omits amendments 1–8 to measure missing-amendment honesty.",
+      "documents": 3,
+      "unseenAtSelection": true
+    },
+    {
+      "companyKey": "benchmark-2025",
+      "issuer": "Benchmark Electronics, Inc.",
+      "cik": "0000863436",
+      "ticker": "BHE",
+      "whySelected": "final-lightweight-unseen candidate pool index 2 — Second A&R plus historical amendments with missing prior A&R / Amendment No. 2 (missing-evidence stress).",
+      "documents": 3,
+      "unseenAtSelection": true
+    }
+  ],
+  "explicitlyNotSelected": [
+    "CONMED, Chewy, FWRG, LSB, DSGR, Riot, Gibraltar, Superior — already heavily used as fixtures/holdouts",
+    "Everus — Knife River sibling; not independent evidence"
+  ]
+}

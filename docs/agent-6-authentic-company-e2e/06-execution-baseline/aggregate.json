@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-10-10T01:06:05.017Z",
+  "costUsd": 0,
+  "credentialGate": "BLOCKED_BY_MISSING_CREDENTIAL",
+  "pipelineLegend": [
+    "DOCUMENT → STRUCTURAL_GRAPH → PACKAGE_GRAPH → COVENANT_CANDIDATE → LEGAL_INTERPRETATION → VERIFIED_RULE → FINANCIAL_INPUTS → CAPACITY → TRANSACTION"
+  ],
+  "autonomousE2EReadinessClaimed": false,
+  "companies": [
+    {
+      "companyKey": "benchmark-2025",
+      "issuer": "Benchmark Electronics, Inc.",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal.",
+      "stoppingFailureClass": "OPERATIONAL_CREDENTIAL",
+      "passACandidates": 1250,
+      "passARecall": 1,
+      "passAExecutableCount": 0,
+      "falseFavorableOutcomes": 0,
+      "incorrectFavorables": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "remainingCapacityPolicy": "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
+      "correctRefusalsCountedAsCapacity": false
+    },
+    {
+      "companyKey": "insulet-2021-2026",
+      "issuer": "Insulet Corporation",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal.",
+      "stoppingFailureClass": "OPERATIONAL_CREDENTIAL",
+      "passACandidates": 1473,
+      "passARecall": 1,
+      "passAExecutableCount": 0,
+      "falseFavorableOutcomes": 0,
+      "incorrectFavorables": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "remainingCapacityPolicy": "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
+      "correctRefusalsCountedAsCapacity": false
+    },
+    {
+      "companyKey": "knife-river-2023-2026",
+      "issuer": "Knife River Corporation",
+      "stoppingStage": "LEGAL_INTERPRETATION",
+      "stoppingReason": "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC — semantic compile / inventory / composition not run; no fabricated LLM output. This is an OPERATIONAL_CREDENTIAL failure, not a substantive legal-interpretation refusal.",
+      "stoppingFailureClass": "OPERATIONAL_CREDENTIAL",
+      "passACandidates": 1945,
+      "passARecall": 1,
+      "passAExecutableCount": 0,
+      "falseFavorableOutcomes": 0,
+      "incorrectFavorables": 0,
+      "grossCapacity": null,
+      "remainingCapacity": null,
+      "remainingCapacityPolicy": "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
+      "correctRefusalsCountedAsCapacity": false
+    }
+  ],
+  "authenticCapacityAttempt": {
+    "adapterOutcome": "DERIVED",
+    "capacityOutcome": "REFUSED",
+    "grossCapacity": null,
+    "remainingCapacity": null,
+    "stoppingStage": "CAPACITY",
+    "stoppingReason": "CROSS_RULE_GATE_NOT_EXECUTABLE"
+  },
+  "productBenchmarkIndex": [
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/benchmark-2025.json",
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/insulet-2021-2026.json",
+    "docs/agent-6-authentic-company-e2e/07-product-benchmark/knife-river-2023-2026.json"
+  ],
+  "a6d4": "PROVISIONAL_FAMILY association for REVIEW_REQUIRED AMENDS — see tests/agent6/a6-d4-provisional-instrument-family.test.ts"
+}

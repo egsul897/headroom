@@ -1,0 +1,189 @@
+{
+  "companyKey": "insulet-2021-2026",
+  "issuer": "Insulet Corporation",
+  "cik": "0001145197",
+  "authoredBeforeEngineRun": true,
+  "authoredAt": "2026-10-09T22:24:47.566118+00:00",
+  "method": "source-text-only; no compiler output consulted; NBSP-normalized excerpts",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "file": "doc-a-2021-05-04-credit-agreement.txt",
+      "expectedRole": "CREDIT_AGREEMENT",
+      "datedAsOf": "2021-05-04",
+      "parties": [
+        "Insulet Corporation",
+        "Morgan Stanley Senior Funding, Inc."
+      ],
+      "amendsTarget": null,
+      "notes": "Original credit agreement"
+    },
+    {
+      "documentId": "doc-b",
+      "file": "doc-b-2025-03-20-indenture.txt",
+      "expectedRole": "INDENTURE",
+      "datedAsOf": "2025-03-20",
+      "parties": [
+        "Insulet Corporation",
+        "Computershare Trust Company, National Association"
+      ],
+      "amendsTarget": null,
+      "notes": "6.50% Senior Notes due 2033"
+    },
+    {
+      "documentId": "doc-c",
+      "file": "doc-c-2026-09-21-ninth-amendment.txt",
+      "expectedRole": "AMENDMENT",
+      "datedAsOf": "2026-09-21",
+      "parties": [
+        "Insulet Corporation",
+        "Morgan Stanley Senior Funding, Inc."
+      ],
+      "amendsTarget": {
+        "documentId": "doc-a",
+        "description": "Credit Agreement dated May 4, 2021 as previously amended"
+      },
+      "notes": "Ninth Amendment; amendments 1-8 not in fixture"
+    }
+  ],
+  "operativePackage": {
+    "operativeBaseDocumentId": "doc-a",
+    "rationale": "Two instruments: (1) 2021 credit agreement as amended by ninth amendment (amendments 1-8 missing from fixture), (2) 2025 senior notes indenture.",
+    "amendmentsInForce": [
+      "doc-c"
+    ],
+    "instruments": [
+      "credit-facility",
+      "senior-notes-indenture"
+    ],
+    "missingDocuments": [
+      "credit agreement amendments 1 through 8"
+    ],
+    "ninthAmendmentIncludesSubstantialText": true
+  },
+  "covenantsExpected": [
+    {
+      "family": "LIENS",
+      "sectionRef": "7.01",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.01 Liens",
+      "mustDiscover": true
+    },
+    {
+      "family": "INVESTMENTS",
+      "sectionRef": "7.02",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.02 Investments",
+      "mustDiscover": true
+    },
+    {
+      "family": "INDEBTEDNESS",
+      "sectionRef": "7.03",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.03 Indebtedness",
+      "mustDiscover": true
+    },
+    {
+      "family": "ASSET_SALES",
+      "sectionRef": "7.04",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.04 Fundamental Changes",
+      "mustDiscover": true
+    },
+    {
+      "family": "RESTRICTED_PAYMENTS",
+      "sectionRef": "7.06",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.06 Restricted Payments",
+      "mustDiscover": true
+    },
+    {
+      "family": "FINANCIAL",
+      "sectionRef": "7.09",
+      "instrument": "credit",
+      "evidenceExcerpt": "SECTION 7.09 Financial Covenant Leverage Ratio",
+      "mustDiscover": true
+    },
+    {
+      "family": "INDEBTEDNESS",
+      "sectionRef": "3.02",
+      "instrument": "indenture",
+      "evidenceExcerpt": "Section 3.02 Limitation on Indebtedness",
+      "mustDiscover": true
+    },
+    {
+      "family": "LIENS",
+      "sectionRef": "3.06",
+      "instrument": "indenture",
+      "evidenceExcerpt": "Section 3.06 Limitation on Liens",
+      "mustDiscover": true
+    },
+    {
+      "family": "RESTRICTED_PAYMENTS",
+      "sectionRef": "3.03",
+      "instrument": "indenture",
+      "evidenceExcerpt": "Section 3.03 Limitation on Restricted Payments",
+      "mustDiscover": true
+    }
+  ],
+  "definitionsExpected": [
+    {
+      "term": "Consolidated EBITDA",
+      "sectionHint": "1.01",
+      "instrument": "credit",
+      "evidenceExcerpt": "\u201c Consolidated EBITDA \u201d means, with respect to any Person for any period, the Consolidated Net Income of such Person for such period: (1) increased (without duplication) by: (a"
+    },
+    {
+      "term": "Indebtedness",
+      "sectionHint": "1.01",
+      "instrument": "credit",
+      "evidenceExcerpt": "\u201c Indebtedness \u201d means, as to any Person at a particular time, without duplication, all of the following, whether or not included as indebtedness or liabilities in accordance with "
+    },
+    {
+      "term": "Consolidated EBITDA",
+      "sectionHint": "1.01",
+      "instrument": "indenture",
+      "evidenceExcerpt": "\u201c Consolidated EBITDA \u201d means, with respect to any Person for any period, the Consolidated Net Income of such Person for such period: (1) increased (without duplication) by: (a"
+    }
+  ],
+  "financials": {
+    "officerCertificateWithUtilization": "ABSENT",
+    "notes": "No completed officer certificate with utilization in package."
+  },
+  "utilization": {
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "facility outstandings",
+      "indenture builder basket usage",
+      "credit basket usage"
+    ]
+  },
+  "proposedTransactions": [
+    {
+      "id": "in-t1",
+      "description": "$25mm incremental revolving borrowing",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "Missing utilization and financial certificate."
+    },
+    {
+      "id": "in-t2",
+      "description": "$15mm restricted payment under indenture",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "Builder/Available Amount utilization unknown."
+    },
+    {
+      "id": "in-t3",
+      "description": "Recognize dual-instrument package",
+      "expectedEngineOutcome": "REVIEW_REQUIRED",
+      "rationale": "Should identify credit + indenture without claiming capacity."
+    }
+  ],
+  "positionReportExpectations": {
+    "mustNotClaimFavorableCapacityWithoutEvidence": true,
+    "mustReportMissingCertificate": true,
+    "mustReportUnknownUtilization": true,
+    "mustRecognizeTwoInstruments": true,
+    "mustFlagMissingAmendments1Through8": true
+  }
+}

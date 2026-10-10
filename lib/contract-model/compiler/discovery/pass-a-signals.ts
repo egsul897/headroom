@@ -45,6 +45,15 @@ const HEADLINE_HEADING_WORDS = /\b(?:Indebtedness|Debt|Liens?|Restricted Payment
 /** Disposition / asset-sale arm of HEADLINE_HEADING_WORDS. A heading match is not a sealed ASSET_SALES family. */
 const ASSET_DISPOSITION_HEADING = /\b(?:Dispositions?|Asset Sales?)\b/i;
 
+/**
+ * True when a SECTION heading matches the same covenant-headline vocabulary Pass A
+ * uses for over-selection. A hit is an inventory signal for completeness audits —
+ * never a sealed family discovery and never an executable rule.
+ */
+export function isCovenantHeadlineHeading(heading: string): boolean {
+  return HEADLINE_HEADING_WORDS.test(heading);
+}
+
 export function isAssetDispositionHeading(heading: string): boolean {
   return ASSET_DISPOSITION_HEADING.test(heading);
 }

@@ -1,0 +1,129 @@
+{
+  "generatedAt": "2026-10-10T01:04:46.859Z",
+  "costUsd": 0,
+  "expectationPinsPreserved": true,
+  "totalMustDiscoverPins": 20,
+  "totalRestrictionSectionsInventoried": 150,
+  "totalMissedRestrictionsPassA": 0,
+  "totalUniqueOutsideMustDiscoverPins": 50,
+  "totalStructuralBaseGaps": 1,
+  "companies": [
+    {
+      "companyKey": "benchmark-2025",
+      "pinPreserved": true,
+      "inventory": {
+        "restrictionSectionsPackage": 59,
+        "restrictionSectionsOnBase": 20,
+        "mustDiscoverPins": 6,
+        "expectedAndPassAHit": 18,
+        "passAHitOutsideMustDiscoverPins": 41,
+        "uniqueOutsideMustDiscoverSectionRefs": 17,
+        "missedRestrictionsPassA": 0,
+        "structuralBaseGaps": 1
+      },
+      "missedRestrictionSectionRefs": [],
+      "outsidePinSectionRefs": [
+        "2.11",
+        "5.13",
+        "5.18",
+        "6.13",
+        "6.15",
+        "6.19",
+        "7.05",
+        "7.07",
+        "7.08",
+        "7.09",
+        "7.13",
+        "7.16",
+        "9.10",
+        "10.24",
+        "9.13",
+        "5.24",
+        "7.18"
+      ],
+      "structuralBaseGapRefs": [
+        {
+          "sectionRef": "7.06",
+          "gap": "STRUCTURAL_SECTION_ABSENT_ON_OPERATIVE_BASE",
+          "passAHitAnywhereInPackage": true
+        }
+      ]
+    },
+    {
+      "companyKey": "insulet-2021-2026",
+      "pinPreserved": true,
+      "inventory": {
+        "restrictionSectionsPackage": 46,
+        "restrictionSectionsOnBase": 16,
+        "mustDiscoverPins": 9,
+        "expectedAndPassAHit": 16,
+        "passAHitOutsideMustDiscoverPins": 30,
+        "uniqueOutsideMustDiscoverSectionRefs": 20,
+        "missedRestrictionsPassA": 0,
+        "structuralBaseGaps": 0
+      },
+      "missedRestrictionSectionRefs": [],
+      "outsidePinSectionRefs": [
+        "2.11",
+        "5.07",
+        "5.11",
+        "5.12",
+        "6.10",
+        "6.13",
+        "6.16",
+        "8.03",
+        "8.06",
+        "9.11",
+        "3.04",
+        "3.05",
+        "3.07",
+        "3.08",
+        "3.19",
+        "3.20",
+        "6.06",
+        "10.01",
+        "10.02",
+        "2.02"
+      ],
+      "structuralBaseGapRefs": []
+    },
+    {
+      "companyKey": "knife-river-2023-2026",
+      "pinPreserved": true,
+      "inventory": {
+        "restrictionSectionsPackage": 45,
+        "restrictionSectionsOnBase": 9,
+        "mustDiscoverPins": 5,
+        "expectedAndPassAHit": 12,
+        "passAHitOutsideMustDiscoverPins": 33,
+        "uniqueOutsideMustDiscoverSectionRefs": 13,
+        "missedRestrictionsPassA": 0,
+        "structuralBaseGaps": 0
+      },
+      "missedRestrictionSectionRefs": [],
+      "outsidePinSectionRefs": [
+        "2.15",
+        "2.18",
+        "2.20",
+        "5.12",
+        "5.13",
+        "6.17",
+        "7.04",
+        "2.11",
+        "5.08",
+        "6.12",
+        "6.18",
+        "7.06",
+        "9.11"
+      ],
+      "structuralBaseGapRefs": []
+    }
+  ],
+  "notes": [
+    "Frozen expectation pins were not modified.",
+    "Missed restrictions = restriction-headline SECTION inventory rows with no Pass A hit anywhere in the package.",
+    "Outside-pin hits are completeness beyond the 20 must-discover expectations — not retuned into pins.",
+    "Structural base gaps (e.g. Knife River Article VII under-parse) are reported separately from Pass A misses.",
+    "Pass A executableCount is always 0 (Agent 1 conservative eligibility)."
+  ]
+}

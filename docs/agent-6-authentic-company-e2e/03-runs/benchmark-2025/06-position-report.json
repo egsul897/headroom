@@ -1,0 +1,219 @@
+{
+  "reportType": "COMPANY_POSITION",
+  "companyKey": "benchmark-2025",
+  "issuer": "Benchmark Electronics, Inc.",
+  "generatedAt": "2026-10-09T22:54:58.423Z",
+  "capacityConclusion": "MISSING_EVIDENCE",
+  "favorableCapacityClaimed": false,
+  "missingEvidence": [
+    "COMPLETED_OFFICER_COMPLIANCE_CERTIFICATE_WITH_UTILIZATION",
+    "APPROVED_NorthStar_financial_snapshot",
+    "VerifiedExecutionPackage_CERTIFIED",
+    "HISTORICAL_BASKET_UTILIZATION_LEDGER",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC",
+    "MISSING_PACKAGE_DOCUMENT:prior Amended and Restated Credit Agreement",
+    "MISSING_PACKAGE_DOCUMENT:Amendment No. 2"
+  ],
+  "utilization": {
+    "established": false,
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "all basket utilization",
+      "facility outstandings"
+    ],
+    "certificateScan": {
+      "formOfCertificateReferenced": true,
+      "completedOfficerCertificateWithUtilization": false
+    }
+  },
+  "ratiosCalculated": [],
+  "basketsCalculated": [],
+  "structuralSummary": [
+    {
+      "documentId": "doc-a",
+      "totalNodes": 779,
+      "nodesByType": {
+        "SECTION": 149,
+        "ARTICLE": 10,
+        "SUBSECTION": 348,
+        "CLAUSE": 182,
+        "SUBCLAUSE": 90
+      },
+      "definitionsDetected": 337,
+      "referencesDetected": 589
+    },
+    {
+      "documentId": "doc-b",
+      "totalNodes": 794,
+      "nodesByType": {
+        "SECTION": 123,
+        "SUBSECTION": 316,
+        "CLAUSE": 223,
+        "SUBCLAUSE": 127,
+        "ARTICLE": 5
+      },
+      "definitionsDetected": 337,
+      "referencesDetected": 588
+    },
+    {
+      "documentId": "doc-c",
+      "totalNodes": 746,
+      "nodesByType": {
+        "ARTICLE": 10,
+        "SECTION": 123,
+        "SUBSECTION": 330,
+        "CLAUSE": 163,
+        "SUBCLAUSE": 120
+      },
+      "definitionsDetected": 335,
+      "referencesDetected": 572
+    }
+  ],
+  "packageGraphSummary": {
+    "classifications": [
+      {
+        "documentId": "doc-a",
+        "type": "AMENDMENT",
+        "confidence": 0.97,
+        "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+        "evidence": [
+          "(this “  Amendment  ”)"
+        ]
+      },
+      {
+        "documentId": "doc-b",
+        "type": "AMENDMENT",
+        "confidence": 0.97,
+        "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+        "evidence": [
+          "(this “  Amendment  ”)"
+        ]
+      },
+      {
+        "documentId": "doc-c",
+        "type": "AMENDED_AND_RESTATED_AGREEMENT",
+        "confidence": 0.9,
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+        "evidence": [
+          "AMENDED AND RESTATED CREDIT AGREEMENT"
+        ]
+      }
+    ],
+    "relationshipCount": 3,
+    "instruments": [
+      {
+        "instrumentKey": "instrument:doc-a",
+        "documentIds": [
+          "doc-a"
+        ],
+        "baseDocumentId": "doc-a",
+        "reviewStatus": "RESOLVED",
+        "associationKind": "CONFIRMED",
+        "provisionalDocumentIds": []
+      },
+      {
+        "instrumentKey": "instrument:doc-b",
+        "documentIds": [
+          "doc-b"
+        ],
+        "baseDocumentId": "doc-b",
+        "reviewStatus": "RESOLVED",
+        "associationKind": "CONFIRMED",
+        "provisionalDocumentIds": []
+      },
+      {
+        "instrumentKey": "instrument:doc-c",
+        "documentIds": [
+          "doc-c"
+        ],
+        "baseDocumentId": "doc-c",
+        "reviewStatus": "RESOLVED",
+        "associationKind": "CONFIRMED",
+        "provisionalDocumentIds": []
+      }
+    ],
+    "roleComparisons": [
+      {
+        "documentId": "doc-a",
+        "expectedRole": "AMENDMENT",
+        "actualRole": "AMENDMENT",
+        "match": true
+      },
+      {
+        "documentId": "doc-b",
+        "expectedRole": "AMENDMENT",
+        "actualRole": "AMENDMENT",
+        "match": true
+      },
+      {
+        "documentId": "doc-c",
+        "expectedRole": "AMENDED_AND_RESTATED_AGREEMENT",
+        "actualRole": "AMENDED_AND_RESTATED_AGREEMENT",
+        "match": true
+      }
+    ],
+    "operativeBaseOk": true
+  },
+  "operativeByInstrument": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 0,
+      "unattachedEffects": 1
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "baseDocumentId": "doc-b",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 0,
+      "unattachedEffects": 1
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "baseDocumentId": "doc-c",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "provisionCount": 0,
+      "unattachedEffects": 1
+    }
+  ],
+  "transactions": [
+    {
+      "id": "be-t1",
+      "description": "$40mm incremental term loan",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "No utilization or approved snapshot."
+    },
+    {
+      "id": "be-t2",
+      "description": "$5mm investment in joint venture",
+      "expected": "MISSING_EVIDENCE",
+      "actual": "MISSING_EVIDENCE",
+      "correct": true,
+      "correctRefusal": true,
+      "detail": "Missing approved snapshot and/or utilization and/or VerifiedExecutionPackage.",
+      "rationale": "Investment basket remaining capacity unknown."
+    },
+    {
+      "id": "be-t3",
+      "description": "Treat doc-c as operative over amendments 1 and 3",
+      "expected": "REVIEW_REQUIRED",
+      "actual": "REVIEW_REQUIRED",
+      "correct": true,
+      "correctRefusal": false,
+      "detail": "Legal package identification / operative-state review — no capacity claim.",
+      "rationale": "Package graph should prefer Second A&R."
+    }
+  ],
+  "limitations": [
+    "No invented historical utilization.",
+    "No fabricated officer certificates.",
+    "Missing evidence yields MISSING_EVIDENCE, never a favorable capacity conclusion.",
+    "BLOCKED_BY_MISSING_CREDENTIAL:AI_GATEWAY_OR_ANTHROPIC"
+  ]
+}

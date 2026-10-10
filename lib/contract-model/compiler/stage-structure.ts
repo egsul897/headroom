@@ -150,7 +150,15 @@ export function normalizeOcrSectionNumber(raw: string): string {
 const BOUNDED_GAP = "(?:[^\\S\\n]*\\n[^\\S\\n]*|[^\\S\\n]+)";
 
 const ARTICLE_PATTERNS = [
-  new RegExp(`${ARTICLE_KEYWORD}\\s+([IVXLC]+|\\d+)\\.?${BOUNDED_GAP}([A-Z][A-Z ,&';-]{0,58}?)(?=\\s+[A-Z][a-z]|\\s*$)`, "g"),
+  // Lookahead after the ALL-CAPS title: Title Case prose (classic), OR a
+  // bare decimal section number on the next line (Bank-of-America / Benchmark
+  // style: "ARTICLE I\nDEFINITIONS...\n  1.01\tDefined Terms."), OR end of
+  // string. Agent 6 authentic Benchmark Second A&R collapsed to 3 ARTICLEs
+  // because only titles followed by "Each of the Borrowers..." prose matched
+  // the prior `[A-Z][a-z]` lookahead — Articles I–IV/VIII–X followed by
+  // `1.01`/`2.01`/… were silently dropped. General drafting convention, not
+  // package-specific.
+  new RegExp(`${ARTICLE_KEYWORD}\\s+([IVXLC]+|\\d+)\\.?${BOUNDED_GAP}([A-Z][A-Z ,&';-]{0,58}?)(?=\\s+[A-Z][a-z]|\\s+\\d+\\.\\d+|\\s*$)`, "g"),
   /^ARTICLE\s+([IVXLC]+|\d+)\.?\s*([^\n]*)$/gim,
 ];
 
@@ -175,6 +183,20 @@ const ARTICLE_PATTERNS = [
  * remediation.json) and is fixed generally, with no per-pattern priority
  * change to the shapes below and no package-specific logic.
  */
+/**
+ * Agent 6 A6-D6 — EDGAR HTML→text extraction routinely wraps SECTION titles
+ * across a blank line with indentation on the continuation, e.g.
+ *   `Section 7.03····Fundamental\n\n        Changes  . Merge…`
+ * The number and first title word remain on the same line (BOUNDED_GAP still
+ * forbids blank lines between number and title *start*). The title capture
+ * itself may span at most one blank-line wrap (1–2 newlines + indent) before
+ * the terminating period. Without this, Knife River operative CA silently
+ * dropped §§7.03/7.05/7.08 as SECTION nodes while amendment conformed copies
+ * still matched — a general drafting/extraction shape, not a fixture patch.
+ */
+const SECTION_TITLE_CAPTURE =
+  "(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?(?:(?:[^\\S\\n]*\\n){1,2}[^\\S\\n]*[A-Z][A-Za-z ,&';[\\]-]{0,60}?)?)";
+
 const SECTION_PATTERNS = [
   // Title characters allow "[" / "]" (a "[Reserved]" section) and ";" (a
   // real, common compound heading like "Payments of Indebtedness;
@@ -184,12 +206,21 @@ const SECTION_PATTERNS = [
   // requirement (`[A-Z]` starting the title) stays genuinely case-sensitive.
   // Number capture allows a trailing OCR-confused letter ("7.0l") so recovery
   // can restore "7.01" instead of silently minting a truncated "7.0" label (IPV-23).
-  new RegExp(`(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.[\\dA-Za-z]+)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
+  new RegExp(
+    `(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.[\\dA-Za-z]+)\\.?${BOUNDED_GAP}${SECTION_TITLE_CAPTURE}\\s*\\.(?!\\d)`,
+    "g",
+  ),
   /^Section\s+(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   /^§\s?(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   // Bare decimal: require a real digit-only major.minor so "7.0l Title" is not
   // truncated to "7.0"; OCR-garbled bare forms are recovered via the keyword patterns.
-  /^(\d+\.\d+)(?![A-Za-z])\s+([A-Z][^\n]*)$/gm,
+  // Optional leading whitespace + required trailing period on the title:
+  // Bank-of-America exhibits indent body headings (`  1.01\t  Defined Terms.`)
+  // while TOC rows use the same number/title without a trailing period
+  // (`1.01\tDefined Terms` + page). Agent 6 Benchmark Second A&R had ZERO
+  // SECTION nodes until leading whitespace was allowed; the period guard
+  // keeps TOC rows from minting false sections. General convention.
+  /^\s*(\d+\.\d+)(?![A-Za-z])[ \t]+([A-Z][^\n]*\.)\s*$/gm,
 ];
 
 /**

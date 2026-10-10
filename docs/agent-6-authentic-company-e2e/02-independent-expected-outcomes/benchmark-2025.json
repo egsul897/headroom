@@ -1,0 +1,163 @@
+{
+  "companyKey": "benchmark-2025",
+  "issuer": "Benchmark Electronics, Inc.",
+  "cik": "0000863436",
+  "authoredBeforeEngineRun": true,
+  "authoredAt": "2026-10-09T22:24:47.571827+00:00",
+  "method": "source-text-only; no compiler output consulted; NBSP-normalized excerpts",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "file": "doc-a-2022-05-20-amendment-no-1.txt",
+      "expectedRole": "AMENDMENT",
+      "datedAsOf": "2022-05-20",
+      "parties": [
+        "Benchmark Electronics, Inc.",
+        "Bank of America, N.A."
+      ],
+      "amendsTarget": {
+        "documentId": null,
+        "description": "prior Amended and Restated Credit Agreement (NOT IN PACKAGE)"
+      },
+      "notes": "Amendment No. 1; base A&R missing"
+    },
+    {
+      "documentId": "doc-b",
+      "file": "doc-b-2023-05-01-amendment-no-3.txt",
+      "expectedRole": "AMENDMENT",
+      "datedAsOf": "2023-05-01",
+      "parties": [
+        "Benchmark Electronics, Inc.",
+        "Bank of America, N.A."
+      ],
+      "amendsTarget": {
+        "documentId": null,
+        "description": "prior A&R as amended; Amendment No. 2 also missing"
+      },
+      "notes": "Amendment No. 3"
+    },
+    {
+      "documentId": "doc-c",
+      "file": "doc-c-2025-06-27-second-ar-credit-agreement.txt",
+      "expectedRole": "AMENDED_AND_RESTATED_AGREEMENT",
+      "datedAsOf": "2025-06-27",
+      "parties": [
+        "Benchmark Electronics, Inc.",
+        "Bank of America, N.A."
+      ],
+      "amendsTarget": {
+        "description": "restates prior credit agreement"
+      },
+      "notes": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT \u2014 operative"
+    }
+  ],
+  "operativePackage": {
+    "operativeBaseDocumentId": "doc-c",
+    "rationale": "Second A&R dated June 27, 2025 is the operative credit agreement. Amendments 1 and 3 amend a superseded prior A&R and must not govern over doc-c.",
+    "amendmentsInForce": [],
+    "missingDocuments": [
+      "prior Amended and Restated Credit Agreement",
+      "Amendment No. 2"
+    ]
+  },
+  "covenantsExpected": [
+    {
+      "family": "LIENS",
+      "sectionRef": "7.01",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.01 Liens (TOC)",
+      "mustDiscover": true
+    },
+    {
+      "family": "INDEBTEDNESS",
+      "sectionRef": "7.02",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.02 Indebtedness (TOC)",
+      "mustDiscover": true
+    },
+    {
+      "family": "INVESTMENTS",
+      "sectionRef": "7.03",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.03 Investments (TOC)",
+      "mustDiscover": true
+    },
+    {
+      "family": "ASSET_SALES",
+      "sectionRef": "7.04",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.04 Fundamental Changes (TOC)",
+      "mustDiscover": true
+    },
+    {
+      "family": "RESTRICTED_PAYMENTS",
+      "sectionRef": "7.06",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.06 Restricted Payments (TOC)",
+      "mustDiscover": true
+    },
+    {
+      "family": "FINANCIAL",
+      "sectionRef": "7.11",
+      "instrument": "credit",
+      "evidenceExcerpt": "Section 7.11 Financial Covenants (TOC)",
+      "mustDiscover": true
+    }
+  ],
+  "definitionsExpected": [
+    {
+      "term": "Consolidated EBITDA",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Consolidated EBITDA \u201d means, for the Company and its Restricted Subsidiaries for any Measurement Period, without duplication, the Consolidated Net Income for such Measurement P"
+    },
+    {
+      "term": "Indebtedness",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Indebtedness \u201d means, as to any Person at a particular time, without duplication, all of the following, whether or not included as indebtedness or liabilities in accordance wit"
+    },
+    {
+      "term": "Permitted Acquisition",
+      "sectionHint": "1.01",
+      "evidenceExcerpt": "\u201c Permitted Acquisition \u201d means an Acquisition that is permitted pursuant to Section 7.03(f) . \u201c Permitted Encumbrances \u201d means: (a) Liens imposed by law for Taxes tha"
+    }
+  ],
+  "financials": {
+    "officerCertificateWithUtilization": "ABSENT",
+    "notes": "No completed officer certificate with utilization in package."
+  },
+  "utilization": {
+    "policy": "DO_NOT_INVENT",
+    "known": [],
+    "unknown": [
+      "all basket utilization",
+      "facility outstandings"
+    ]
+  },
+  "proposedTransactions": [
+    {
+      "id": "be-t1",
+      "description": "$40mm incremental term loan",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "No utilization or approved snapshot."
+    },
+    {
+      "id": "be-t2",
+      "description": "$5mm investment in joint venture",
+      "expectedEngineOutcome": "MISSING_EVIDENCE",
+      "rationale": "Investment basket remaining capacity unknown."
+    },
+    {
+      "id": "be-t3",
+      "description": "Treat doc-c as operative over amendments 1 and 3",
+      "expectedEngineOutcome": "REVIEW_REQUIRED",
+      "rationale": "Package graph should prefer Second A&R."
+    }
+  ],
+  "positionReportExpectations": {
+    "mustNotClaimFavorableCapacityWithoutEvidence": true,
+    "mustTreatDocCAsOperative": true,
+    "mustNotTreatAmendments1And3AsGoverningOverDocC": true,
+    "mustReportMissingCertificate": true,
+    "mustReportUnknownUtilization": true
+  }
+}

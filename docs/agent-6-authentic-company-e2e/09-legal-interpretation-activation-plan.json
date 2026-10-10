@@ -1,0 +1,66 @@
+{
+  "schema": "agent6-legal-interpretation-activation-plan.v1",
+  "status": "BOUNDED_PLAN_ONLY",
+  "autonomousE2EReadinessClaimed": false,
+  "paidInferenceAuthorized": false,
+  "fabricateModelOutputs": false,
+  "selectedFirstPackage": {
+    "companyKey": "knife-river-2023-2026",
+    "rationale": "Single credit-facility instrument with A6-D4 PROVISIONAL_FAMILY already associated; richest Pass A candidate set; no dual-instrument indenture complication; independent must-discover pins cover core Article VII covenants.",
+    "scaleToOthersOnlyAfter": "Independent legal review + verified-rule construction + gross-capacity evaluation succeed on Knife River with source-backed outcomes."
+  },
+  "activationModes": [
+    {
+      "mode": "AUTHORIZED_LIVE_INFERENCE",
+      "when": "AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY provided AND explicit spend authorization recorded",
+      "steps": [
+        "Confirm budget ceiling and model identity with Coordinator",
+        "Run Pass B–D discovery for Knife River operative base only (Agent 1 eligibility still NOT_EXECUTABLE until verify)",
+        "Legal interpretation / semantic compile for must-discover + audit-flagged restriction sections",
+        "Independent legal review checklist (human or designated reviewer) against source excerpts",
+        "Verified-unit construction + Layer-1 verify",
+        "certifyCandidate only when gates pass — never invent CERTIFIED",
+        "Gross-capacity evaluateVerifiedCapacity under REQUIRE with empty utilization ledger if needed",
+        "Withhold remaining capacity until APPROVED financials + complete utilization evidence (Agent 2)"
+      ],
+      "stopConditions": [
+        "Any REVIEW_REQUIRED / cross-rule gate → refuse, do not force executable",
+        "Budget exhausted → stop, record OPERATIONAL_AUTHORIZATION",
+        "PROVISIONAL_FAMILY amendments → do not consolidate operative text without confirmed chain"
+      ]
+    },
+    {
+      "mode": "APPROVED_OFFLINE_REPLAY",
+      "when": "Sealed offline fixtures / replay corpus authorized for the target package",
+      "steps": [
+        "Locate approved replay artifacts (none currently exist for Knife River / Insulet / Benchmark)",
+        "Replay only sealed provider transcripts — never invent completions",
+        "Same verification and capacity gates as live path"
+      ],
+      "currentAvailability": "NONE_FOR_UNSEEN_PACKAGES",
+      "note": "CONMED Phase-3 packets are a separate authentic path, not a substitute for unseen-package interpretation."
+    }
+  ],
+  "failureClassReporting": {
+    "OPERATIONAL_CREDENTIAL": "Missing AI_GATEWAY/ANTHROPIC keys",
+    "OPERATIONAL_AUTHORIZATION": "Keys present but spend not authorized",
+    "SUBSTANTIVE_LEGAL_INTERPRETATION": "Model/reviewer produced an interpretation that fails closed on legal grounds",
+    "MISSING_EVIDENCE": "Financials / utilization / VEP absent",
+    "CASCADE_FROM_UPSTREAM": "Stage not reached because an upstream operational block prevented work"
+  },
+  "agent1Coordination": {
+    "gate": "lib/contract-model/compiler/discovery/eligibility.ts",
+    "rule": "Pass A SIGNAL_ONLY_NOT_EXECUTABLE — candidates never become executable merely because Pass A identified them"
+  },
+  "remainingCapacityPolicy": "WITHHOLD_UNTIL_AUTHORITATIVE_UTILIZATION",
+  "prohibited": [
+    "Fabricate LLM outputs",
+    "Paid inference without authorization",
+    "Retune frozen expectation pins",
+    "Treat PROVISIONAL_FAMILY as confirmed operative consolidation",
+    "Count correct refusals as capacity",
+    "Auto-merge",
+    "Unauthorized Neon writes",
+    "Certification bypass"
+  ]
+}

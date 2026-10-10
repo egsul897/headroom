@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "mission": "HEADROOM_AGENT_6_REAL_COMPANY_E2E",
+  "defects": [
+    {
+      "id": "A6-D1",
+      "severity": "HTML_HEX_ENTITY_DECODE",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "stripHtmlPreserveStructure decoded decimal &#NNN; but not hex &#x201c;/&#x201d;, leaving literal entity text that broke definition detectors.",
+      "evidencePackage": "benchmark-2025",
+      "fix": "lib/contract-model/compiler/deterministic-extraction/html-text.ts",
+      "regression": "tests/agent6/html-entity-hex-decode.test.ts"
+    },
+    {
+      "id": "A6-D2",
+      "severity": "CP1252_C1_CURLY_QUOTES",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "Windows-1252 curly quotes misread as Latin-1 landed in U+0091–U+0094 C1 controls; definition detectors expecting Unicode quotes failed.",
+      "evidencePackage": "insulet-2021-2026",
+      "fix": "lib/contract-model/compiler/deterministic-extraction/html-text.ts",
+      "regression": "tests/agent6/html-entity-hex-decode.test.ts"
+    },
+    {
+      "id": "A6-D3",
+      "severity": "BOFA_BARE_DECIMAL_SECTION_AND_ARTICLE_LOOKAHEAD",
+      "severity": "CRITICAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "Bank-of-America style credit agreements use indented tab-separated bare decimals (`  1.01\\t  Defined Terms.`) and ARTICLE titles followed immediately by section numbers. Prior patterns yielded 3 ARTICLEs / 0 SECTIONs on Benchmark Second A&R.",
+      "evidencePackage": "benchmark-2025",
+      "fix": "lib/contract-model/compiler/stage-structure.ts",
+      "regression": "tests/agent6/benchmark-bofa-structure.test.ts",
+      "remeasure": "After fix: doc-c ARTICLE=10 SECTION=123 (was ARTICLE=3 SECTION=0)"
+    },
+    {
+      "id": "A6-D4",
+      "severity": "REVIEW_REQUIRED_AMENDS_NOT_GROUPED_INTO_INSTRUMENT",
+      "severity": "MATERIAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "Knife River First/Second Amendments correctly classify as AMENDMENT and surface AMENDS→doc-a at REVIEW_REQUIRED. Instrument grouping now associates REVIEW_REQUIRED SUPPORTING/STRONG edges into a PROVISIONAL_FAMILY without upgrading relationship status or treating amendments as operatively confirmed.",
+      "evidencePackage": "knife-river-2023-2026",
+      "fix": "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+      "regression": "tests/agent6/a6-d4-provisional-instrument-family.test.ts",
+      "notes": "associationKind=PROVISIONAL_FAMILY; provisionalDocumentIds lists members reachable only via associative edges; RESOLVED+SUPPORTING still rejected (defense-in-depth); missing-base UNRESOLVED amends do not attach to later A&R; dual instruments remain separate."
+    },
+    {
+      "id": "A6-D5",
+      "severity": "LLM_STAGES_BLOCKED_WITHOUT_CREDENTIAL",
+      "severity": "ENVIRONMENT",
+      "status": "HONEST_BLOCKER",
+      "summary": "No AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY in environment. Discovery/compile/verify not run; covenant/rule/ratio/basket scorecard cells remain 0. Position reports correctly refuse favorable capacity. Classified as OPERATIONAL_CREDENTIAL (not substantive legal-interpretation failure).",
+      "evidencePackage": "all",
+      "fix": null,
+      "regression": "scripts/agent6/run-authentic-company-e2e.ts credentialGate"
+    },
+    {
+      "id": "A6-D6",
+      "severity": "KNIFE_RIVER_ARTICLE_VII_SECTION_UNDERPARSE",
+      "severity": "MATERIAL_GENERALIZABLE",
+      "status": "FIXED",
+      "summary": "EDGAR HTML→text wraps SECTION titles across a blank line (e.g. Section 7.03 Fundamental\\n\\nChanges .). SECTION_PATTERNS title capture now allows at most one blank-line wrap mid-title before the terminating period. Knife River operative base now exposes 7.01–7.08 as SECTION nodes. Root cause: heading recognition (title character class forbade newlines), not extraction or segmentation.",
+      "evidencePackage": "knife-river-2023-2026",
+      "fix": "lib/contract-model/compiler/stage-structure.ts",
+      "regression": "tests/agent6/knife-river-article-vii-structure.test.ts",
+      "notes": "Amendment Pass A hits still must not be treated as curing operative-base structure. PROVISIONAL_FAMILY / REVIEW_REQUIRED amendment authority unchanged."
+    }
+  ]
+}

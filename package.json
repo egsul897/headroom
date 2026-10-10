@@ -65,7 +65,12 @@
     "product:multipath-exercises": "tsx scripts/product/run-multipath-exercises.ts",
     "test:knowledge-factory": "vitest run tests/knowledge-factory",
     "test:product": "vitest run tests/product tests/home-overview-empty.test.tsx",
-    "test:legal-excellence": "vitest run tests/product/legal-excellence.test.ts tests/product/substantive-covenant-intelligence.test.ts tests/contract-model/entity-scope-guard.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts"
+    "test:legal-excellence": "vitest run tests/product/legal-excellence.test.ts tests/product/substantive-covenant-intelligence.test.ts tests/contract-model/entity-scope-guard.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts",
+    "agent6:authentic-e2e": "tsx scripts/agent6/run-authentic-company-e2e.ts",
+    "agent6:execution-baseline": "tsx scripts/agent6/run-execution-baseline.ts",
+    "agent6:discovery-audit": "tsx scripts/agent6/audit-discovery-completeness.ts",
+    "agent6:score-independent-discovery": "tsx scripts/agent6/score-independent-discovery.ts",
+    "test:agent6": "vitest run tests/agent6/"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
