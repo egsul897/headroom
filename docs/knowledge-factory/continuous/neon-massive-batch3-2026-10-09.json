@@ -1,0 +1,55 @@
+{
+  "batchKey": "neon-massive-batch3-2026-10-09",
+  "live": true,
+  "startedAt": "2026-10-09T22:48:35.710Z",
+  "finishedAt": "2026-10-09T22:53:13.316Z",
+  "wallMs": 277606,
+  "discovered": 1845,
+  "skippedExisting": 2,
+  "skippedNonFinancing": 917,
+  "fetched": 929,
+  "persisted": 12,
+  "reused": 0,
+  "analyzed": 12,
+  "failed": 0,
+  "relationshipEdgesPersisted": 8005,
+  "calculationExamples": 13,
+  "errors": [],
+  "persistedSourceIds": [
+    "edgar:0001408075-23-000010:a1056amendmentno2tocredita.htm",
+    "edgar:0001408075-23-000010:a1057amendmentno3tocredita.htm",
+    "edgar:0000091767-24-000032:amendedandrestatedcreditag.htm",
+    "edgar:0000091767-22-000070:sonoco364-daytlxcreditagre.htm",
+    "edgar:0001477333-23-000064:ex101amendedandrestated201.htm",
+    "edgar:0001477333-23-000064:ex102amendedandrestatedespp.htm",
+    "edgar:0001174922-25-000122:ex41-wmlindenture.htm",
+    "edgar:0001174922-24-000141:ex41-indenturewynnxseptemb.htm",
+    "edgar:0001590895-23-000077:ex101sl-amendedandrestated.htm",
+    "edgar:0001590895-20-000039:amendedandrestatedomni.htm",
+    "edgar:0001657853-24-000112:ex103-amendmentno9tocredit.htm",
+    "edgar:0001657853-24-000105:ex103-amendmentno9tocredit.htm"
+  ],
+  "byClassDelta": {
+    "AMENDMENT": 4,
+    "RESTATEMENT": 5,
+    "CREDIT_AGREEMENT": 1,
+    "INDENTURE": 2
+  },
+  "neonAfter": {
+    "knowledgeSources": 749,
+    "documentByteObjects": 727,
+    "knowledgeRelationships": 32215,
+    "distinctIssuers": 207,
+    "covenantSummaryItems": 30448,
+    "databaseSizePretty": "246 MB"
+  },
+  "quality": {
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 62,
+      "DETERMINISTICALLY_VALIDATED": 2,
+      "DISCOVERED_CANDIDATE": 685
+    },
+    "certifiedPromotionCount": 0,
+    "note": "Automated pipeline stops at DISCOVERED_CANDIDATE / DETERMINISTICALLY_VALIDATED — never invents CERTIFIED"
+  }
+}

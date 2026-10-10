@@ -1,0 +1,451 @@
+{
+  "schema": "neon-massive-corpus-baseline.v1",
+  "generatedAt": "2026-10-09T22:22:46.993Z",
+  "wallMs": 16587,
+  "readOnly": true,
+  "counts": {
+    "companies": 16,
+    "companiesCustomer": 9,
+    "documents": 29,
+    "documentNodes": 60,
+    "documentRelationships": 0,
+    "debtInstruments": 6,
+    "facilities": 6,
+    "covenantProvisions": 19,
+    "definedTerms": 75,
+    "definedTermNodes": 0,
+    "definedTermDeps": 0,
+    "contractRules": 0,
+    "contractRuleRelationships": 0,
+    "amendmentEffects": 0,
+    "permissions": 39,
+    "sharedCapacityConstraints": 3,
+    "intercreditorAgreements": 1,
+    "financialSnapshots": 8,
+    "financialStates": 8,
+    "ledgerEntries": 6,
+    "debtEvents": 7,
+    "debtTranches": 4,
+    "goldenTests": 48,
+    "semanticTruthRecords": 0,
+    "knowledgeSources": 730,
+    "knowledgeRelationships": 8193,
+    "documentByteObjects": 711,
+    "knowledgeImportBatches": 0,
+    "knowledgeCostLedger": 0,
+    "ingestionJobs": 5,
+    "sourceArtifacts": 17,
+    "extractionRuns": 18,
+    "extractionCandidates": 166,
+    "legalReviewRecords": 109,
+    "contractInputSnapshots": 6,
+    "contractLedgerUsages": 1
+  },
+  "financingPackages": {
+    "debtInstrumentRows": 6,
+    "companiesWithDocuments": 15,
+    "note": "Package identity is multi-table; DebtInstrument + Document graphs are proxies, not a single package table"
+  },
+  "knowledgeFactoryQuality": {
+    "knowledgeSourceRows": 730,
+    "distinctIssuerCiks": 200,
+    "distinctTickers": 186,
+    "distinctAccessions": 440,
+    "withStorageRef": 730,
+    "withOriginalBytesHash": 730,
+    "withV2Summaries": 669,
+    "covenantSummaryItems": 30051,
+    "withCovenantCandidates": 668,
+    "covenantCandidateTotalFromMeta": 40518,
+    "withDefinitionsMeta": 467,
+    "definitionsTotalFromMeta": 46533,
+    "withStructuralMeta": 614,
+    "structuralTotalFromMeta": 213142,
+    "representationVerifiedLike": 0,
+    "representationCertifiedLike": 0,
+    "syntheticFlagged": 0,
+    "byDocumentClass": {
+      "UNKNOWN": 200,
+      "CREDIT_AGREEMENT": 135,
+      "RESTATEMENT": 94,
+      "SECURITY_AGREEMENT": 26,
+      "AMENDMENT": 60,
+      "TERM_LOAN_AGREEMENT": 12,
+      "INDENTURE": 58,
+      "REVOLVING_CREDIT_AGREEMENT": 9,
+      "OTHER_DEBT_RELATED": 35,
+      "SUPPLEMENTAL_INDENTURE": 93,
+      "WAIVER": 1,
+      "INTERCREDITOR_AGREEMENT": 3,
+      "ABL_AGREEMENT": 1,
+      "GUARANTEE_AGREEMENT": 3
+    },
+    "byRepresentationLevel": {
+      "DISCOVERED_CANDIDATE": 670,
+      "STRUCTURALLY_INDEXED": 60
+    },
+    "byExtractionStatus": {
+      "CANDIDATES_DISCOVERED": 730
+    },
+    "byUsageRights": {
+      "PUBLIC_SEC_EDGAR": 681,
+      "FIXTURE_INTERNAL": 14,
+      "UNREVIEWED": 35
+    },
+    "qualityNote": "DISCOVERED/STRUCTURALLY_INDEXED/DETERMINISTICALLY_VALIDATED ≠ REVIEWER_VERIFIED or CERTIFIED legal truth"
+  },
+  "verification": {
+    "error": "\nInvalid `prisma.contractRule.groupBy()` invocation in\n/workspace/scripts/knowledge-factory/neon-massive-corpus-baseline.ts:258:53\n\n  255   by: [\"trustStatus\"],\n  256   _count: true,\n  257 });\n→ 258 c"
+  },
+  "retrievalIndexes": {
+    "knowledgeSourcesWithRetrievalIndexMeta": 0,
+    "note": "Mass-precedent retrieval index also lives under docs/knowledge-factory/mass-precedent/"
+  },
+  "databaseSize": {
+    "databaseSize": "207 MB",
+    "databaseSizeBytes": 217456640,
+    "topTables": [
+      {
+        "table": "knowledge_sources",
+        "size": "116 MB",
+        "bytes": 122134528,
+        "rowEstimate": 730
+      },
+      {
+        "table": "document_byte_objects",
+        "size": "72 MB",
+        "bytes": 75071488,
+        "rowEstimate": 642
+      },
+      {
+        "table": "knowledge_relationship_edges",
+        "size": "4384 kB",
+        "bytes": 4489216,
+        "rowEstimate": 8193
+      },
+      {
+        "table": "extraction_candidates",
+        "size": "336 kB",
+        "bytes": 344064,
+        "rowEstimate": 166
+      },
+      {
+        "table": "contract_input_snapshot_events",
+        "size": "216 kB",
+        "bytes": 221184,
+        "rowEstimate": 12
+      },
+      {
+        "table": "legal_review_records",
+        "size": "216 kB",
+        "bytes": 221184,
+        "rowEstimate": 109
+      },
+      {
+        "table": "document_chunks",
+        "size": "208 kB",
+        "bytes": 212992,
+        "rowEstimate": 65
+      },
+      {
+        "table": "financial_states",
+        "size": "200 kB",
+        "bytes": 204800,
+        "rowEstimate": 8
+      },
+      {
+        "table": "golden_tests",
+        "size": "168 kB",
+        "bytes": 172032,
+        "rowEstimate": 48
+      },
+      {
+        "table": "claim_review_items",
+        "size": "160 kB",
+        "bytes": 163840,
+        "rowEstimate": 40
+      },
+      {
+        "table": "contract_input_fact_locators",
+        "size": "152 kB",
+        "bytes": 155648,
+        "rowEstimate": 48
+      },
+      {
+        "table": "contract_input_facts",
+        "size": "152 kB",
+        "bytes": 155648,
+        "rowEstimate": 48
+      },
+      {
+        "table": "permissions",
+        "size": "144 kB",
+        "bytes": 147456,
+        "rowEstimate": 33
+      },
+      {
+        "table": "source_artifacts",
+        "size": "144 kB",
+        "bytes": 147456,
+        "rowEstimate": 17
+      },
+      {
+        "table": "document_nodes",
+        "size": "136 kB",
+        "bytes": 139264,
+        "rowEstimate": 50
+      },
+      {
+        "table": "candidate_review_events",
+        "size": "136 kB",
+        "bytes": 139264,
+        "rowEstimate": 146
+      },
+      {
+        "table": "contract_input_snapshots",
+        "size": "120 kB",
+        "bytes": 122880,
+        "rowEstimate": 6
+      },
+      {
+        "table": "defined_terms",
+        "size": "104 kB",
+        "bytes": 106496,
+        "rowEstimate": 35
+      },
+      {
+        "table": "semantic_truth_records",
+        "size": "96 kB",
+        "bytes": 98304,
+        "rowEstimate": -1
+      },
+      {
+        "table": "extraction_runs",
+        "size": "96 kB",
+        "bytes": 98304,
+        "rowEstimate": 10
+      },
+      {
+        "table": "analysis_runs",
+        "size": "96 kB",
+        "bytes": 98304,
+        "rowEstimate": 6
+      },
+      {
+        "table": "extraction_stages",
+        "size": "88 kB",
+        "bytes": 90112,
+        "rowEstimate": 93
+      },
+      {
+        "table": "ns4_financial_syncs",
+        "size": "88 kB",
+        "bytes": 90112,
+        "rowEstimate": 0
+      },
+      {
+        "table": "ingestion_job_stages",
+        "size": "88 kB",
+        "bytes": 90112,
+        "rowEstimate": 30
+      },
+      {
+        "table": "contract_ledger_usage_events",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 1
+      },
+      {
+        "table": "contract_ledger_usages",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 1
+      },
+      {
+        "table": "solver_coverage_declarations",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 10
+      },
+      {
+        "table": "external_input_records",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": -1
+      },
+      {
+        "table": "documents",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 24
+      },
+      {
+        "table": "financial_snapshots",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 8
+      },
+      {
+        "table": "permission_relationships",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": -1
+      },
+      {
+        "table": "document_relationship_edges",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": -1
+      },
+      {
+        "table": "claim_review_observations",
+        "size": "80 kB",
+        "bytes": 81920,
+        "rowEstimate": 40
+      },
+      {
+        "table": "companies",
+        "size": "72 kB",
+        "bytes": 73728,
+        "rowEstimate": 16
+      },
+      {
+        "table": "_prisma_migrations",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": 36
+      },
+      {
+        "table": "debt_events",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": -1
+      },
+      {
+        "table": "permission_collateral_scopes",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": -1
+      },
+      {
+        "table": "rule_activation_conditions",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": -1
+      },
+      {
+        "table": "ingestion_jobs",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": -1
+      },
+      {
+        "table": "shared_capacity_constraint_members",
+        "size": "64 kB",
+        "bytes": 65536,
+        "rowEstimate": -1
+      }
+    ],
+    "neonDiagnostics": {
+      "note": "neon.* diagnostic views not queried / unavailable"
+    }
+  },
+  "companySample": [
+    {
+      "id": "apple-mt979e4i",
+      "name": "Apple",
+      "ticker": "AAPL",
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "conmed-demo",
+      "name": "CONMED Corporation",
+      "ticker": "CNMD",
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "coherent",
+      "name": "Coherent Corp.",
+      "ticker": "COHR",
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "cust-intel-demo-0e3f",
+      "name": "Customer Intel Demo Co",
+      "ticker": "CIDM",
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "debug-ff-promo-1791564684828",
+      "name": "Debug",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "debug-ff-promo-1791564708733",
+      "name": "Debug",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "demo-customer-workflow",
+      "name": "Demo Customer Workflow (CONMED Article VII)",
+      "ticker": "DEMO-CWF",
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "gateway-live-test-co",
+      "name": "Gateway Live Test Co",
+      "ticker": null,
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv1b0gp8",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv17ud1e",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv17vhc9",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv17xuhh",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv19het9",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "saas-setup-loop-e2e-mv19kelo",
+      "name": "Harbor Lane Industries (SaaS setup E2E)",
+      "ticker": null,
+      "tenantKind": "CUSTOMER"
+    },
+    {
+      "id": "live-acceptance-test-co-autonomous-retrieval-v1",
+      "name": "Live Acceptance Test Co (autonomous-retrieval-v1)",
+      "ticker": null,
+      "tenantKind": "EVALUATION"
+    },
+    {
+      "id": "matthews",
+      "name": "Matthews International Corporation",
+      "ticker": "MATW",
+      "tenantKind": "EVALUATION"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "schema": "kf-operative-audit.v1",
+  "generatedAt": "2026-10-09T23:59:47.707Z",
+  "readOnly": true,
+  "cases": [
+    {
+      "caseId": "gpk-multi-amendment-ambiguous",
+      "ticker": "GPK",
+      "asOfDate": "2024-06-01",
+      "docsConsidered": 2,
+      "engineStatus": "UNRESOLVED_PRECEDENCE",
+      "engineOperativeSourceId": null,
+      "engineOperativeTitle": null,
+      "expectedStatus": "UNRESOLVED_PRECEDENCE",
+      "statusMatch": true,
+      "titleMatch": null,
+      "unresolvedReasons": [
+        "No clear base credit agreement / indenture identified among uploads.",
+        "Operative resolution requires exactly one identified base agreement."
+      ],
+      "note": "Multiple or zero bases — cannot select controlling document.",
+      "pass": true
+    },
+    {
+      "caseId": "wynn-indenture-family",
+      "ticker": "WYNN",
+      "asOfDate": "2025-12-01",
+      "docsConsidered": 2,
+      "engineStatus": "UNRESOLVED_PRECEDENCE",
+      "engineOperativeSourceId": null,
+      "engineOperativeTitle": null,
+      "expectedStatus": "UNRESOLVED_PRECEDENCE",
+      "statusMatch": true,
+      "titleMatch": null,
+      "unresolvedReasons": [
+        "Multiple base-like documents present without discovered amendment/restatement edges.",
+        "Operative resolution requires exactly one identified base agreement."
+      ],
+      "note": "Multiple or zero bases — cannot select controlling document.",
+      "pass": true
+    },
+    {
+      "caseId": "son-credit-restatement-candidate",
+      "ticker": "SON",
+      "asOfDate": "2025-01-01",
+      "docsConsidered": 2,
+      "engineStatus": "RESOLVED",
+      "engineOperativeSourceId": "edgar:0000091767-24-000032:amendedandrestatedcreditag.htm",
+      "engineOperativeTitle": "EX-10.1",
+      "expectedStatus": "UNRESOLVED_PRECEDENCE",
+      "statusMatch": false,
+      "titleMatch": false,
+      "unresolvedReasons": [],
+      "note": "Operative package language treated as superseded by restatement “EX-10.1” (effective/filing 2024-05-07). Prior versions retained for history.",
+      "pass": false
+    },
+    {
+      "caseId": "luv-revolving-amendment",
+      "ticker": "LUV",
+      "asOfDate": "2021-06-01",
+      "docsConsidered": 6,
+      "engineStatus": "UNRESOLVED_PRECEDENCE",
+      "engineOperativeSourceId": null,
+      "engineOperativeTitle": null,
+      "expectedStatus": "UNRESOLVED_PRECEDENCE",
+      "statusMatch": true,
+      "titleMatch": null,
+      "unresolvedReasons": [
+        "Amendment package detected — operative bindings require section-level change evidence and consistent chronology (auto-resolved when present).",
+        "Operative resolution requires exactly one identified base agreement."
+      ],
+      "note": "Multiple or zero bases — cannot select controlling document.",
+      "pass": true
+    },
+    {
+      "caseId": "hlt-supplemental-indentures",
+      "ticker": "HLT",
+      "asOfDate": "2025-01-01",
+      "docsConsidered": 2,
+      "engineStatus": "UNRESOLVED_PRECEDENCE",
+      "engineOperativeSourceId": null,
+      "engineOperativeTitle": null,
+      "expectedStatus": "UNRESOLVED_PRECEDENCE",
+      "statusMatch": true,
+      "titleMatch": null,
+      "unresolvedReasons": [
+        "No clear base credit agreement / indenture identified among uploads.",
+        "Operative resolution requires exactly one identified base agreement."
+      ],
+      "note": "Multiple or zero bases — cannot select controlling document.",
+      "pass": true
+    }
+  ],
+  "passRate": 0.8,
+  "productionSafety": [
+    "Operative audit uses stubbed AmendmentCompareView — section bindings are not certified.",
+    "Fail-closed expectations dominate: similarity/filing-order alone must not invent RESOLVED."
+  ]
+}

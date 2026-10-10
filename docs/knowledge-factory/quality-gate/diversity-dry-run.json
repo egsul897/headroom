@@ -1,0 +1,56 @@
+{
+  "schema": "kf-diversity-dry-run.v1",
+  "generatedAt": "2026-10-10T00:00:10.538Z",
+  "neonWrites": false,
+  "network": true,
+  "baselineSparse": {
+    "ABL_AGREEMENT": 1,
+    "INTERCREDITOR_AGREEMENT": 3,
+    "GUARANTEE_AGREEMENT": 3,
+    "SECURITY_AGREEMENT": 26,
+    "REVOLVING_CREDIT_AGREEMENT": 9
+  },
+  "candidates": [
+    {
+      "ticker": "CHEF",
+      "sourceId": "edgar:0000947871-25-000614:ss4960725_ex1001.htm",
+      "title": "THIRTEENTH AMENDMENT TO CREDIT AGREEMENT",
+      "exhibitType": "EX-10.1",
+      "predictedClass": "AMENDMENT",
+      "sizeBytes": 57040,
+      "score": 19,
+      "alreadyInNeon": false,
+      "rationale": "foodservice ABL-adjacent"
+    },
+    {
+      "ticker": "CHEF",
+      "sourceId": "edgar:0000947871-24-000816:ss4025178_ex1001.htm",
+      "title": "AMENDMENT TO CREDIT AGREEMENT",
+      "exhibitType": "EX-10.1",
+      "predictedClass": "AMENDMENT",
+      "sizeBytes": 67792,
+      "score": 19,
+      "alreadyInNeon": false,
+      "rationale": "foodservice ABL-adjacent"
+    },
+    {
+      "ticker": "CHEF",
+      "sourceId": "edgar:0000947871-24-000287:ss3150144_ex1001.htm",
+      "title": "ELEVENTH AMENDMENT TO CREDIT AGREEMENT",
+      "exhibitType": "EX-10.1",
+      "predictedClass": "AMENDMENT",
+      "sizeBytes": 61099,
+      "score": 19,
+      "alreadyInNeon": false,
+      "rationale": "foodservice ABL-adjacent"
+    }
+  ],
+  "summary": {
+    "discoveredPromising": 3,
+    "notYetInNeon": 3,
+    "byPredictedClass": {
+      "AMENDMENT": 3
+    }
+  },
+  "note": "Dry-run only — no BYTEA/KnowledgeSource writes. Next live batch requires explicit KF_MASS_PRECEDENT_LIVE_WRITE authorization."
+}
