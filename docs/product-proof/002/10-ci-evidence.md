@@ -6,6 +6,7 @@
 |---|---|
 | Feature branch | `cursor/product-proof-002-compilation-d8e9` |
 | Starting SHA (verified) | `e6f82aa9c719ab8975bd9296bd17cba3a7b78666` |
+| Ending SHA (vertical slice) | `64e39ab50af98dcb5884f21f169b785f171d0a37` |
 | Feature commit preserved | `334f2755f85bcb7351683b3672eb8bc0b7a7f689` |
 | `origin/main` at continuation start | `c2dde8f1dd28832eb77ab6c9f50d4609a9efd52e` |
 | PR | https://github.com/egsul897/headroom/pull/266 |
