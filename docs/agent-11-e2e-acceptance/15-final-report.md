@@ -9,7 +9,7 @@
 |---|---|
 | Starting main SHA | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
 | Seal commit | `ca667446df228984bb5d6b50b44c3c98b45f0730` |
-| Evaluation tip | `26cf94aff9d5273b0956a50aad41ed789ce0d140` (branch tip; harness run tip `1cb1523ef1d20ce39c58869c4ebd48cbc0321347`) |
+| Evaluation tip | `f2c674563b0b0cd43c30c0c0f497cf5ec761b179` (exact harness re-run tip; see 17-evidence-reconciliation.json) |
 | Package | AutoNation (AN) Third→Fifth A&R (`an-2020-2026-credit-facility`) |
 | Unseen claim | **NOT claimed** (authentic evaluation package distinct from tuning fixtures) |
 | Paid inference | $0 |
@@ -85,4 +85,12 @@ npx tsx scripts/agent-11/run-offline-acceptance.ts
 # Artifacts: docs/agent-11-e2e-acceptance/10-*.json … 15-final-report.md
 ```
 
-Elapsed: 588 ms.
+Elapsed: 605 ms.
+
+## Evidence reconciliation
+
+Re-run at PR head `f2c67456` reproduced prior scorecard with **zero** metric / stage / adversarial / handoff discrepancies.
+Legal-reference hash unchanged: `393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd`.
+Commits after `1cb1523e` were evidence recording + tip pins + honesty gate (not coverage inflation).
+Exact-tip CI: Vercel SUCCESS; GitHub Actions path-filtered (no check-runs). Local `tsc --noEmit` PASS.
+Archive status: `SAFE_TO_ARCHIVE`.

@@ -11,13 +11,14 @@
   "paidInferenceUsd": 0,
   "productionNeonWrites": false,
   "productionCodeEdits": false,
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
   "legalReferenceUnchangedAfterRun": true,
+  "priorReportedHarnessTip": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
+  "harnessRerunTip": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
+  "evidenceReconciliationPath": "docs/agent-11-e2e-acceptance/17-evidence-reconciliation.json",
   "handoffPath": "docs/agent-11-e2e-acceptance/14-failure-handoffs.json",
   "reportPath": "docs/agent-11-e2e-acceptance/15-final-report.md",
   "reproduction": "npx tsx scripts/agent-11/run-offline-acceptance.ts",
-  "archiveStatus": "SAFE_TO_ARCHIVE_AFTER_HANDOFF_ACK",
-  "endingTipSha": "26cf94aff9d5273b0956a50aad41ed789ce0d140",
-  "evaluationTipSha": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
-  "evaluationRunTipSha": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
-  "branchTipNote": "Branch tip advances with docs-only pins; evaluationRunTipSha is the harness execution tip."
+  "archiveStatus": "SAFE_TO_ARCHIVE",
+  "workstreamStatus": "CLOSED"
 }
