@@ -1,0 +1,86 @@
+{
+  "artifact": "HEADROOM-5_FIXTURE_CLASSIFICATION",
+  "methodology": "Classified from repository history (phase selection logs, remediation branches, product-proof work, VIC authentic-corpus report). Development/tuning packages are never scored as sealed unseen holdouts.",
+  "DEVELOPMENT_FIXTURES": [
+    {
+      "packageKey": "conmed-2025-credit-facility",
+      "issuer": "CONMED Corporation",
+      "ticker": "CNMD",
+      "role": "DEVELOPMENT",
+      "evidence": "Phase 2F/2G unseen subject later used for Phase 3 pilot, population, and many remediations (p3-lane-d, track-e, investments pins)."
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "issuer": "Chewy, Inc.",
+      "ticker": "CHWY",
+      "role": "DEVELOPMENT",
+      "evidence": "Phase 3 final validation / F-series remediations (f7b canaries, 6.08 work)."
+    },
+    {
+      "packageKey": "dsgr-2022-2025-credit-facility",
+      "issuer": "Distribution Solutions Group / Lawson Products",
+      "ticker": "DSGR",
+      "role": "DEVELOPMENT",
+      "evidence": "Phase 3F first blind package; subsequent 3F.1 remediation regression."
+    },
+    {
+      "packageKey": "riot-2025-2026-credit-facility",
+      "issuer": "Riot Platforms, Inc.",
+      "ticker": "RIOT",
+      "role": "DEVELOPMENT",
+      "evidence": "Phase 3F.2 unseen package; post-3F.2 regression replay and remediation loops."
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "issuer": "Gibraltar Industries, Inc.",
+      "ticker": "ROCK",
+      "role": "DEVELOPMENT",
+      "evidence": "provenance.json designation DEVELOPMENT (Lane C / p3-track-d)."
+    },
+    {
+      "packageKey": "matthews / MTN product-proof path",
+      "issuer": "Matthews International (MATW) production ref; Product Proof 001 used Vail Resorts (MTN) on branch cursor/product-proof-001-d8e9",
+      "ticker": "MATW / MTN",
+      "role": "DEVELOPMENT",
+      "evidence": "Matthews is production Company B; PP001 authentic MTN challenge used for product-proof development (not on main tip as sealed holdout)."
+    }
+  ],
+  "REGRESSION_FIXTURES": [
+    {
+      "packageKey": "fwrg-2021-credit-agreement",
+      "issuer": "First Watch Restaurant Group, Inc.",
+      "ticker": "FWRG",
+      "role": "REGRESSION",
+      "evidence": "Phase 3A-3E unseen package 1; retained for known-package regression only."
+    },
+    {
+      "packageKey": "lsb-2023-abl-credit-agreement",
+      "issuer": "LSB Industries, Inc.",
+      "ticker": "LXU",
+      "role": "REGRESSION",
+      "evidence": "Phase 3A-3E unseen package 2; retained for known-package regression only."
+    },
+    {
+      "packageKey": "final-lightweight-unseen-sup",
+      "issuer": "Superior Industries International, Inc.",
+      "ticker": "SUP",
+      "role": "REGRESSION",
+      "evidence": "Prior lightweight unseen confirmation already executed and documented; not eligible as a new sealed holdout."
+    }
+  ],
+  "NOT_PRESENT_IN_MAIN_TIP": [
+    {
+      "ticker": "MHK",
+      "issuer": "Mohawk Industries (expected)",
+      "note": "No Mohawk/MHK fixture, docs, or sources found on main tip 342a6b05. Listed in mission prompt as an inspected authentic fixture family but absent from this checkout."
+    }
+  ],
+  "SEALED_UNSEEN_HOLDOUT": {
+    "packageKey": "wor-2023-2026-credit-facility",
+    "issuer": "Worthington Enterprises, Inc. (f/k/a Worthington Industries, Inc.)",
+    "ticker": "WOR",
+    "cik": "0000108516",
+    "role": "SEALED_UNSEEN_HOLDOUT",
+    "contaminationCheck": "Repository grep before selection: Worthington Enterprises / WOR / CIK 0000108516 absent. Only incidental Worthington Steel (WS, CIK 0001968487) name in an unopened prior candidate list — different issuer."
+  }
+}

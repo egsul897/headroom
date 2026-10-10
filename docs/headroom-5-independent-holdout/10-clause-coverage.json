@@ -1,0 +1,1134 @@
+{
+  "clauses": [
+    {
+      "clauseId": "WOR-B-6.01",
+      "documentId": "doc-b",
+      "sectionRef": "6.01",
+      "family": "INDEBTEDNESS",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:9083d0ad4ec259dc8d9adff4",
+      "naiveFirstMatchNodeId": "structural-node:9bb3dca12104e14d04ead98f",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "The Company will not cause or permit any Restricted Subsidiary to, directly or indirectly, incur, create, assume or permit to exist any Indebtedness except:",
+        "shall not exceed $30,000,000 in the aggregate at any time",
+        "not in excess of 10% of Consolidated Net Tangible Assets"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Restricted Subsidiary",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Net Tangible Assets",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Worthington Receivables",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "INCOMPLETE",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "DEFINITION": 4,
+          "DEFINITION_DEPENDENCY": 4,
+          "CROSS_DOCUMENT_REFERENCE": 7
+        },
+        "unresolvedCount": 7,
+        "definitionItemCount": 8,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": []
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 4,
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 28,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Restricted Subsidiaries (not a Company-level general debt negative covenant)",
+      "conditionsExpected": [
+        "Basket (i) anti-contemplation proviso"
+      ],
+      "formulaExpected": {
+        "basket_iii": {
+          "type": "FIXED_USD",
+          "cap": 30000000,
+          "metric": "aggregate face amount of LCs not issued under the Agreement"
+        },
+        "basket_iv": {
+          "type": "PERCENT_OF_METRIC",
+          "percent": 10,
+          "metric": "Consolidated Net Tangible Assets",
+          "basis": "aggregate principal amount at any time outstanding"
+        }
+      }
+    },
+    {
+      "clauseId": "WOR-A-6.01-SPINOFF",
+      "documentId": "doc-a",
+      "sectionRef": "6.01",
+      "family": "INDEBTEDNESS",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:e5da075247479231b681941b",
+      "naiveFirstMatchNodeId": "structural-node:5dd8fc1015be64ef8e055ae9",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "It is understood and agreed that this Section 6.01 shall not prohibit the Permitted Spinoff",
+        "not to exceed $550,000,000 at any time"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Permitted Spinoff",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Permitted Spinoff Transaction",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Restricted Subsidiary",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Guaranty Obligation",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "DEFINITION": 7,
+          "DEFINITION_DEPENDENCY": 45
+        },
+        "unresolvedCount": 31,
+        "definitionItemCount": 52,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxItems reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 5,
+        "definitionsPresentInBundleText": 5,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 38,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Restricted Subsidiaries (historical)",
+      "conditionsExpected": [
+        "Permitted Spinoff / Permitted Spinoff Transaction context",
+        "additional conditions if Company/Subsidiary remains borrower/obligor/guarantor/credit support"
+      ],
+      "formulaExpected": {
+        "type": "FIXED_USD",
+        "cap": 550000000
+      }
+    },
+    {
+      "clauseId": "WOR-B-6.02",
+      "documentId": "doc-b",
+      "sectionRef": "6.02",
+      "family": "LIENS",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:cc14aa550991f9a5be47e83c",
+      "naiveFirstMatchNodeId": "structural-node:aec8b4d385af539e67de7c03",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "The Company will not, and will not cause or permit any Restricted Subsidiary to, incur, create, assume, become or be liable in any way, or suffer to exist any mortgage, pledge, lien, charge, or other encumbrance",
+        "other than Permitted Liens"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Permitted Liens",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Restricted Subsidiary",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 2,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 7,
+          "CROSS_REFERENCE": 1,
+          "CROSS_DOCUMENT_REFERENCE": 7
+        },
+        "unresolvedCount": 7,
+        "definitionItemCount": 10,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 8,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "ENTITY_SCOPE_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Company and Restricted Subsidiaries",
+      "conditionsExpected": [
+        "Exception set is entirely by reference to definition Permitted Liens"
+      ],
+      "formulaExpected": null
+    },
+    {
+      "clauseId": "WOR-B-PERM-LIENS",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:86b296522d5c0c2d39aa4821",
+      "naiveFirstMatchNodeId": "structural-node:a3632e920cd79d5d6d53da2b",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "Permitted Liens ” means:",
+        "do not secure any obligation, or related series of obligations, in an amount exceeding $50,000,000",
+        "Liens to secure Indebtedness permitted pursuant to Section 6.01(iii)"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Capital Lease Obligation",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Unrestricted Subsidiary",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Subsidiary",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1
+        },
+        "unresolvedCount": 137,
+        "definitionItemCount": 0,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 4,
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 362,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "FINANCIAL_RATIO",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Definitional",
+      "conditionsExpected": [
+        "Multiple clause-specific conditions (contestation, non-contemplation, no increase on refinance, etc.)"
+      ],
+      "formulaExpected": {
+        "clause_x_cap": 50000000
+      }
+    },
+    {
+      "clauseId": "WOR-B-6.03",
+      "documentId": "doc-b",
+      "sectionRef": "6.03",
+      "family": "INVESTMENTS",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:c917ab878ae13ce608cecc53",
+      "naiveFirstMatchNodeId": "structural-node:30d1d6427d544952dbe5a83f",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "the initial amount (determined at the time made) of such Investments which are made after the Effective Date shall not exceed $150,000,000 in the aggregate",
+        "additional Investments not exceeding $150,000,000 in the aggregate in any fiscal year of the Company",
+        "the Company is in pro forma compliance with the financial covenants set forth in Section 6.13"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Investment",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Permitted Investments",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Cash Equivalents",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Permitted Acquisitions",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Restricted Subsidiary",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Controlling Person",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 12,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "DEFINITION": 4,
+          "DEFINITION_DEPENDENCY": 40
+        },
+        "unresolvedCount": 46,
+        "definitionItemCount": 44,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxItems reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 6,
+        "definitionsPresentInBundleText": 6,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 45,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Company and Restricted Subsidiaries",
+      "conditionsExpected": [
+        "(x) requires pro forma compliance with §6.13 as of prior fiscal quarter end before and after",
+        "(iii) Sarbanes-Oxley §402 constraint on officer/director advances"
+      ],
+      "formulaExpected": {
+        "basket_x": {
+          "type": "FIXED_USD_PLUS_RATIO_GATE",
+          "cap": 150000000,
+          "ratioGate": "Section 6.13 financial covenants pro forma"
+        },
+        "basket_xii": {
+          "type": "FIXED_USD_PER_FISCAL_YEAR",
+          "cap": 150000000
+        }
+      }
+    },
+    {
+      "clauseId": "WOR-B-6.13",
+      "documentId": "doc-b",
+      "sectionRef": "6.13",
+      "family": "FINANCIAL_COVENANT",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:8f2ba92b909793271ba01efa",
+      "naiveFirstMatchNodeId": "structural-node:bb4deca11919298ebdaf58e6",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "to be less than 3.25:1.00",
+        "to be greater than 55%"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Interest Coverage Ratio",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated EBITDA",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Interest Expense",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Capitalization",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Net Worth",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 2,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 22,
+          "CROSS_DOCUMENT_REFERENCE": 7
+        },
+        "unresolvedCount": 13,
+        "definitionItemCount": 24,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 6,
+        "definitionsPresentInBundleText": 6,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 20,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "NUMERICAL_THRESHOLD",
+          "FINANCIAL_RATIO",
+          "ENTITY_SCOPE_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Company (consolidated metrics)",
+      "conditionsExpected": [
+        "Quarter-end calculation",
+        "four-quarter period for Interest Coverage Ratio"
+      ],
+      "formulaExpected": {
+        "interest_coverage_min": "3.25:1.00",
+        "indebtedness_to_capitalization_max": 0.55
+      }
+    },
+    {
+      "clauseId": "WOR-B-DEF-ICR",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:86b296522d5c0c2d39aa4821",
+      "naiveFirstMatchNodeId": "structural-node:a3632e920cd79d5d6d53da2b",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "Interest Coverage Ratio ” means, for any period, the ratio of (i) Consolidated EBITDA of the Company and its Subsidiaries for such period to (ii) Consolidated Interest Expense of the Company and its Subsidiaries for such period."
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated EBITDA",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Interest Expense",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1
+        },
+        "unresolvedCount": 137,
+        "definitionItemCount": 0,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 1,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 360,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "FINANCIAL_RATIO",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Definitional",
+      "conditionsExpected": [],
+      "formulaExpected": "Consolidated EBITDA / Consolidated Interest Expense"
+    },
+    {
+      "clauseId": "WOR-B-DEF-EBITDA",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:86b296522d5c0c2d39aa4821",
+      "naiveFirstMatchNodeId": "structural-node:a3632e920cd79d5d6d53da2b",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "Consolidated EBITDA ” means, for any period, the sum of (i) Consolidated Net Income for such period plus",
+        "If the Company or any Subsidiary makes a material acquisition or divestiture"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated Net Income",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Interest Expense",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "GAAP",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1
+        },
+        "unresolvedCount": 137,
+        "definitionItemCount": 0,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 3,
+        "definitionsPresentInBundleText": 3,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 361,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "FINANCIAL_RATIO",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Definitional",
+      "conditionsExpected": [
+        "Acquisition/divestiture adjustment limited to Interest Coverage Ratio measurement context",
+        "synergies require Required Lenders approval"
+      ],
+      "formulaExpected": "CNI + Interest + Taxes + D&A/impairment/non-cash expense − interest income − non-cash income/gains (+/− acquisition/divestiture hist. adjust for ICR)"
+    },
+    {
+      "clauseId": "WOR-B-11.01",
+      "documentId": "doc-b",
+      "sectionRef": "11.01",
+      "family": "AMENDMENT_RESTATEMENT",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:48680623494d46784e6c82c1",
+      "naiveFirstMatchNodeId": "structural-node:2386ed73dcf874be25536ed9",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "the terms and provisions of the Existing Credit Agreement shall be and hereby are amended, superseded and restated in their entirety by the terms and provisions of this Agreement",
+        "This Agreement is not intended to and shall not constitute a novation of the Existing Credit Agreement"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Existing Credit Agreement",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Effective Date",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 1,
+          "DEFINITION": 7,
+          "DEFINITION_DEPENDENCY": 34,
+          "CROSS_REFERENCE": 2,
+          "CROSS_DOCUMENT_REFERENCE": 7
+        },
+        "unresolvedCount": 75,
+        "definitionItemCount": 41,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 31,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "NUMERICAL_THRESHOLD",
+          "ENTITY_SCOPE_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Package relationship",
+      "conditionsExpected": [
+        "§4.01 conditions precedent (or waiver)"
+      ],
+      "formulaExpected": null
+    },
+    {
+      "clauseId": "WOR-B-FACILITY",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "FACILITY",
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:86b296522d5c0c2d39aa4821",
+      "naiveFirstMatchNodeId": "structural-node:a3632e920cd79d5d6d53da2b",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [],
+      "naiveFirstMatchMissingAnchors": [
+        "As of the Effective Date, the Aggregate Commitment is $500,000,000",
+        "Foreign Currency Sublimit ” means $0 as of the Effective Date",
+        "As of the Effective Date the only Agreed Currency shall be Dollars"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Aggregate Commitment",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Agreed Currencies",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Foreign Currency Sublimit",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1
+        },
+        "unresolvedCount": 137,
+        "definitionItemCount": 0,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ]
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 3,
+        "definitionsPresentInBundleText": 3,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 362,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ],
+        "deterministicFactKinds": [
+          "COVENANT_FAMILY_SIGNAL",
+          "DEFINITION",
+          "CROSS_REFERENCE",
+          "EXCEPTION_MARKER",
+          "PROVISO_MARKER",
+          "NUMERICAL_THRESHOLD",
+          "FINANCIAL_RATIO",
+          "ENTITY_SCOPE_SIGNAL",
+          "SHARED_CAPACITY_SIGNAL"
+        ]
+      },
+      "amendmentNotes": {
+        "spinoffPresentInDocA": true,
+        "spinoffPresentInDocB": false,
+        "packageClassifications": [
+          {
+            "id": "doc-a",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          },
+          {
+            "id": "doc-b",
+            "type": "AMENDED_AND_RESTATED_AGREEMENT",
+            "confidence": 0.9
+          }
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — deterministic/local path is UNVERIFIED and not production-authoritative",
+      "hypotheticalCapacity": "ILLUSTRATIVE_ONLY_IF_LABELED — no authenticated financials supplied",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "entityScopeExpected": "Facility",
+      "conditionsExpected": [],
+      "formulaExpected": {
+        "aggregateCommitment": 500000000,
+        "foreignCurrencySublimit": 0
+      }
+    }
+  ]
+}

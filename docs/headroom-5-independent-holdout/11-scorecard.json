@@ -1,0 +1,127 @@
+{
+  "artifact": "HEADROOM-5_SCORECARD",
+  "holdoutId": "WOR-2023-2026-FIFTH-AR-CREDIT-FACILITY",
+  "versions": {
+    "structuralIndexVersion": "phase-3f1-open1-wiring-structural-ambiguity.v1",
+    "discoveryPipelineVersion": "phase-2b-discovery-pipeline.v4",
+    "packageGraphPipelineVersion": "phase-2c-package-graph-pipeline.v1",
+    "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v5",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "localSemanticCompilerVersion": "local-semantic-compiler.v1",
+    "irSchemaVersion": "headroom-covenant-ir.v1"
+  },
+  "paidInferenceUsd": 0,
+  "layers": {
+    "A_structural_indexing": {
+      "denominator": 10,
+      "sectionNodesFound": 10,
+      "rate": 1,
+      "evidence": "findSectionNodes against GT sectionRef on sealed docs"
+    },
+    "B_clause_discovery": {
+      "denominator": 10,
+      "passARecall": 10,
+      "passARecallRate": 1,
+      "precisionNote": "Pass A is recall-oriented over-selection; precision vs GT not claimed as executable-rule precision. Synthetic Pass B produced no semantic candidates.",
+      "falsePositivesNotScoredAsExecutable": true
+    },
+    "C_definition_context_retrieval": {
+      "denominator": 10,
+      "requiredDefinitionNamesPresentInBundleText": 10,
+      "sufficiencySufficient": 0,
+      "sufficiencyBudgetExceeded": 9,
+      "sufficiencyIncomplete": 1,
+      "sufficiencySufficientRate": 0,
+      "note": "GT-anchored probes on longest body section node (not TOC stub). Substring presence of required definition names is necessary but not sufficient — sufficiencyState is the governing completeness signal."
+    },
+    "D_cross_document_amendment": {
+      "docAClassification": {
+        "documentId": "doc-a",
+        "type": "AMENDED_AND_RESTATED_AGREEMENT",
+        "confidence": 0.9,
+        "evidence": [
+          "AMENDED AND RESTATED CREDIT AGREEMENT"
+        ],
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+      },
+      "docBClassification": {
+        "documentId": "doc-b",
+        "type": "AMENDED_AND_RESTATED_AGREEMENT",
+        "confidence": 0.9,
+        "evidence": [
+          "AMENDED AND RESTATED CREDIT AGREEMENT"
+        ],
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+      },
+      "relationshipCandidateCount": 2,
+      "amendmentEffectCount": 2,
+      "spinoffRemovedFromOperativeDocB": true,
+      "restatementSignalPresent": true
+    },
+    "E_legal_representation": {
+      "denominator": 10,
+      "completeOperativeSpansBestNode": 10,
+      "completeOperativeSpansNaiveFirstMatch": 0,
+      "tocCollisionCount": 10,
+      "rateBestNode": 1,
+      "rateNaiveFirstMatch": 0,
+      "localCompileUnverified": 10,
+      "note": "Best-node span uses longest DESCENDANTS text; naive first-match exposes TOC stub selection. Deterministic/local representation is UNVERIFIED, not executable IR."
+    },
+    "F_independent_fidelity_verification": {
+      "status": "NO_PAID_INFERENCE_BLOCKED",
+      "denominator": 10,
+      "verifiedPass": 0,
+      "note": "Semantic verifier reviewer path requires paid model; not run."
+    },
+    "G_executable_ir": {
+      "status": "NOT_CLAIMED",
+      "executableRuleCoverage": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0
+      },
+      "falseExecutableRate": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0
+      },
+      "note": "Discovered clauses and UNVERIFIED local output are not counted as executable rules."
+    },
+    "H_hypothetical_capacity": {
+      "status": "NOT_COUNTED_AS_PRODUCTION",
+      "note": "No hypothetical numeric capacity asserted as product truth."
+    },
+    "I_production_authoritative_capacity": {
+      "correctRefusalRate": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1
+      },
+      "falseFavorableCapacityOutcomes": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0
+      },
+      "note": "All production capacity refused absent financial + utilization evidence."
+    }
+  },
+  "SEALED_UNSEEN_HOLDOUT": {
+    "packageKey": "wor-2023-2026-credit-facility",
+    "clauseDenominator": 10,
+    "clauseRecallPassA": 10,
+    "structuralFound": 10,
+    "spanCompleteBestNode": 10,
+    "spanCompleteNaiveFirstMatch": 0,
+    "tocCollisionCount": 10,
+    "contextDefsPresent": 10,
+    "contextSufficient": 0,
+    "contextBudgetExceeded": 9,
+    "contextIncomplete": 1,
+    "falseFavorableCapacityOutcomes": 0
+  },
+  "DEVELOPMENT_FIXTURES": "See 11-regression-structural.json — scored separately, not combined into holdout headline.",
+  "REGRESSION_FIXTURES": "See 11-regression-structural.json — scored separately, not combined into holdout headline."
+}

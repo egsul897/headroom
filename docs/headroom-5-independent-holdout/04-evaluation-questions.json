@@ -1,0 +1,78 @@
+{
+  "artifact": "HEADROOM-5_EVALUATION_QUESTIONS",
+  "createdBeforeCompilerRun": true,
+  "createdAtUtc": "2026-10-10T13:09:00Z",
+  "sourceBasis": "Independent reading of sealed WOR extracted texts (doc-a, doc-b) before any Headroom compiler invocation.",
+  "questions": [
+    {
+      "id": "Q-DEBT-601",
+      "layerFocus": ["B", "C", "E", "G"],
+      "question": "Under the operative credit agreement as of 2026-08-31, what Indebtedness may Restricted Subsidiaries incur?",
+      "expectedCitation": "doc-b §6.01",
+      "adversarialTags": ["amendments", "entity_mismatch", "growers"]
+    },
+    {
+      "id": "Q-DEBT-601-SPINOFF-REMOVED",
+      "layerFocus": ["D", "E"],
+      "question": "Does the operative agreement still contain the Fourth AR §6.01 Permitted Spinoff Indebtedness carveout (up to $550,000,000)?",
+      "expectedCitation": "doc-a §6.01 (historical only); absent from doc-b §6.01",
+      "adversarialTags": ["amendments", "cross_document_references"]
+    },
+    {
+      "id": "Q-LIEN-602",
+      "layerFocus": ["B", "C", "E"],
+      "question": "What is the general Lien negative covenant and where are Permitted Liens defined?",
+      "expectedCitation": "doc-b §6.02; definition Permitted Liens in Art I",
+      "adversarialTags": ["nested_definitions", "definitions_in_different_sections"]
+    },
+    {
+      "id": "Q-INV-603",
+      "layerFocus": ["B", "C", "E", "G"],
+      "question": "What are the quantitative Investment baskets in §6.03?",
+      "expectedCitation": "doc-b §6.03(x)/(xii) and cross-ref to §6.13 for (x)",
+      "adversarialTags": ["ratio_baskets", "cross_provision_references", "shared_capacity"]
+    },
+    {
+      "id": "Q-FINCOV-613",
+      "layerFocus": ["B", "C", "E", "H", "I"],
+      "question": "What are the §6.13 financial covenant thresholds and required definitional inputs?",
+      "expectedCitation": "doc-b §6.13; Interest Coverage Ratio; Capitalization; Consolidated Indebtedness; Consolidated EBITDA",
+      "adversarialTags": ["ratio_baskets", "unknown_financial_evidence"]
+    },
+    {
+      "id": "Q-RESTATE-1101",
+      "layerFocus": ["A", "D"],
+      "question": "Which document is operative after the Fifth AR Effective Date, and is the Fourth AR novated?",
+      "expectedCitation": "doc-b recitals + §11.01",
+      "adversarialTags": ["amendments", "cross_document_references", "duplicate_section_references"]
+    },
+    {
+      "id": "Q-ENTITY-SCOPE",
+      "layerFocus": ["C", "E"],
+      "question": "Who is bound by §6.01 vs §6.02 — Company only, Restricted Subsidiaries, or both?",
+      "expectedCitation": "doc-b §6.01 (Restricted Subsidiaries); §6.02 (Company and Restricted Subsidiaries)",
+      "adversarialTags": ["entity_mismatch"]
+    },
+    {
+      "id": "Q-CURRENCY",
+      "layerFocus": ["C", "E", "I"],
+      "question": "What is the Foreign Currency Sublimit as of the Effective Date, and may capacity be stated in a non-Dollar Agreed Currency without conversion evidence?",
+      "expectedCitation": "doc-b definitions Agreed Currencies / Foreign Currency Sublimit ($0 as of Effective Date)",
+      "adversarialTags": ["currency_mismatch", "facility_difference_baskets"]
+    },
+    {
+      "id": "Q-CAPACITY-UNKNOWN-UTIL",
+      "layerFocus": ["H", "I"],
+      "question": "Without attested utilization of the §6.01(iii) $30,000,000 LC basket and without financial evidence for CNTA, may production-authoritative remaining capacity be stated?",
+      "expectedCitation": "doc-b §6.01(iii)/(iv); evaluation policy: refuse",
+      "adversarialTags": ["unknown_utilization", "unknown_financial_evidence"]
+    },
+    {
+      "id": "Q-DEF-EBITDA",
+      "layerFocus": ["C", "E"],
+      "question": "Is Consolidated EBITDA defined with acquisition/divestiture adjustment for Interest Coverage Ratio measurement?",
+      "expectedCitation": "doc-b Art I Consolidated EBITDA",
+      "adversarialTags": ["nested_definitions", "ratio_baskets"]
+    }
+  ]
+}

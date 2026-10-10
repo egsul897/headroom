@@ -1,0 +1,21 @@
+{
+  "artifact": "HEADROOM-5_VERSIONS_AND_STARTING_SHA",
+  "role": "independent_quality_evaluator",
+  "startingSha": "342a6b059e3385fb14d605b8d1593e878a221578",
+  "startingShaSource": "origin/main after git fetch (local HEAD matched origin/main 0/0 ahead/behind)",
+  "recordedAtUtc": "2026-10-10T13:06:00Z",
+  "compilerVersions": {
+    "structuralIndexVersion": "phase-3f1-open1-wiring-structural-ambiguity.v1",
+    "discoveryPipelineVersion": "phase-2b-discovery-pipeline.v4",
+    "packageGraphPipelineVersion": "phase-2c-package-graph-pipeline.v1",
+    "contextRetrievalAlgorithmVersion": "RETRIEVAL_ALGORITHM_VERSION (lib/contract-model/compiler/context-retrieval/types.ts)",
+    "amendmentPipelineVersionPrefix": "phase-2g-amendment-pipeline.v1",
+    "semanticCompilerAlgorithmVersion": "semantic-accountability-compiler.v12",
+    "semanticCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+    "semanticVerifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+    "localSemanticCompilerVersion": "local-semantic-compiler.v1",
+    "irSchemaVersion": "headroom-covenant-ir.v1"
+  },
+  "paidInferencePolicy": "FORBIDDEN for this mission. Evaluation uses deterministic / synthetic-caller paths only.",
+  "productionCodePolicy": "Do not modify lib/, app/, or prisma/. Evaluation fixtures/scripts/docs only."
+}
