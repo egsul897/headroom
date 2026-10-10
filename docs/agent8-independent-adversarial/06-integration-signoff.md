@@ -79,14 +79,15 @@ No open PR reintroduces bare `statusFromEvaluation` → AVAILABLE without `statu
 
 ## 7. Independent Agent 8 sign-off
 
-Against the **integration candidate** (PR #229 into `main`), not only the isolated adversarial branch:
+Against **`main` after authorized merge of PR #229** (`b99f934b`):
 
-- **A8-01:** CLOSED pending merge of corrected behavior (reproducer + matrix green on this tip).
-- **A8-02:** CLOSED pending merge (withhold + diagnostic deficit verified).
+- **A8-01:** **CLOSED** — verified on `main` (see `07-post-merge-close.md`).
+- **A8-02:** **CLOSED** — verified on `main`.
 - **False-permission count:** **0**.
-- **Merge recommendation:** Ready for **authorized** merge ahead of conflicting feature work once CI is green on the tip SHA. **Do not auto-merge.**
+- **Post-merge evidence:** probe `NOT_SATISFIED`; Agent 8 **32/32**; integrated suite **413 passed**.
+- **Merged:** 2026-10-09T23:10:20Z (human-authorized; not auto-merge). Tip `b33f8655` is ancestor of `main`.
 
 ## 8. Remaining blockers
 
-- **None for authorized merge of PR #229.** CI green on tip; regressions green; exclusive ownership held.
-- Post-merge only: re-verify tip of `main` contains `statusForAmount`, then mark A8-01 / A8-02 **CLOSED** in the defect register.
+- **None for A8-01 / A8-02.**
+- Next: silent-zero utilization + rebase/reconcile #232 onto post-#229 `main` (see `docs/architecture/parallel-agents/27-post-229-integration-batch.md`). Do not auto-merge unrelated PRs.

@@ -15,7 +15,7 @@
 
 **Initial finding (pre-remediation):** release-blocking A8-01 — `status: AVAILABLE` with amount `GATE_NOT_SATISFIED`. Material observation A8-02 — shared pool published negative remaining.
 
-**Post-remediation (this branch):** both closed. Independent Agent 8 matrix **32/32 pass**, **0** incorrect favorable, **0** release-blocking. See `05-remediation-verdict.md`.
+**Post-remediation + post-merge (`main` `b99f934b` via PR #229):** **DEFECT-A8-01 / A8-02 CLOSED**. Independent Agent 8 matrix **32/32 pass**, **0** incorrect favorable, **0** incorrect refusal, **0** release-blocking. See `05-remediation-verdict.md` and `07-post-merge-close.md`.
 
 **No incorrect executable permission** on `simulateTransaction` for exercised scenarios. Legitimate favorable paths remain AVAILABLE when independently justified.
 
@@ -23,20 +23,20 @@ Prior IPV critical false-permission rows (IPV-01/02/20/22) remain **CLOSED** in 
 
 ---
 
-## Outcome tracking (required buckets)
+## Outcome tracking (required buckets) — post-merge retest on `main`
 
 | Bucket | Count | Notes |
 |---|---:|---|
 | Correct executable outcomes | 16 | Growers, builders, equity contribution, path separation, CONMED figure spans |
-| Correct prohibitions | 4 | Shared overdraw, no auto-reclass, AA sequential depletion, ordering |
-| Correct refusals | 10 | Missing EBITDA, stale/draft inputs, FX, negative usage, duplicate identity, unsupported operand, amendment non-attach |
+| Correct prohibitions | 5 | Shared overdraw, no auto-reclass, AA sequential depletion, ordering, gated unlimited |
+| Correct refusals | 11 | Missing EBITDA, stale/draft inputs, FX, negative usage, duplicate identity, unsupported operand, amendment non-attach |
 | Incorrect refusals | 0 | — |
-| Incorrect favorable outcomes | 1 | **RT-08b** status AVAILABLE with failed gate |
+| Incorrect favorable outcomes | 0 | A8-01 remediated — failed gate is `NOT_SATISFIED` |
 | Unsupported cases | 0 | — |
 | Untested cases | 0 | All 20 challenge categories exercised (≥1 case each) |
-| Observations | 1 | **RT-02b** shared negative remaining published |
+| Observations | 0 | A8-02 remediated — over-consumption withholds remaining |
 
-Totals: **32** cases · **30** pass · **2** fail · **1** release-blocking.
+Totals: **32** cases · **32** pass · **0** fail · **0** release-blocking.
 
 ---
 
