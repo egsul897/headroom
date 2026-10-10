@@ -1,9 +1,27 @@
 {
   "schemaVersion": "agent8-critical-defects.v1",
   "mission": "HEADROOM AGENT 8 — INDEPENDENT CORRECTNESS AND ADVERSARIAL TESTING",
-  "productionCodeModified": true,
-  "remediationBranch": "cursor/a8-gate-status-remediation-4f52",
-  "releaseBlocking": [],
+  "shaTestedMain": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
+  "productionCodeModified": false,
+  "releaseBlocking": [
+    {
+      "id": "DEFECT-A8-03",
+      "caseId": "CONT-06-pending-pr243-reintroduces-a8-01",
+      "status": "OPEN",
+      "title": "Pending PR #243 tip reintroduces AVAILABLE + GATE_NOT_SATISFIED",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "affectedSha": "8bc6112efdf499cd36ead440d37cf37de7145b9e",
+      "pr": 243,
+      "onMain": false,
+      "productionReachableIfMerged": true,
+      "expected": "status=NOT_SATISFIED when amount kind is GATE_NOT_SATISFIED",
+      "actual": "status=AVAILABLE with GATE_NOT_SATISFIED",
+      "rootCause": "Tip ~25 commits behind main; lacks CapacityStatus.NOT_SATISFIED and statusForAmount floor",
+      "fixRecommendation": "Rebase onto main ≥7f1dd3a2; preserve capacity state/types A8 semantics; re-apply sequential verification edits only",
+      "regression": "a8-gate-status-regression.test.ts + probe-gate-status.ts + CONT-06",
+      "retestOutcome": "PENDING_REBASE"
+    }
+  ],
   "closed": [
     {
       "id": "DEFECT-A8-01",
@@ -11,8 +29,8 @@
       "status": "CLOSED",
       "title": "Failed ratio gate reports capacity status AVAILABLE",
       "severity": "CRITICAL_FALSE_PERMISSION",
-      "fix": "CapacityStatus.NOT_SATISFIED + statusForAmount floor on GATE_NOT_SATISFIED in evaluateCapacityState",
-      "afterStatus": "NOT_SATISFIED",
+      "fix": "CapacityStatus.NOT_SATISFIED + statusForAmount floor (PR #229)",
+      "closedOnMain": "b99f934b / reconfirmed 7f1dd3a2",
       "releaseBlocking": false
     },
     {
@@ -21,15 +39,16 @@
       "status": "CLOSED",
       "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED",
       "severity": "MATERIAL_OVERSTATEMENT",
-      "fix": "SharedConstraintState withholds remaining as NOT_DETERMINED on OVER_CONSUMPTION; deficit in overConsumption/provisional",
+      "fix": "Withhold remaining on OVER_CONSUMPTION; deficit in overConsumption/provisional (PR #229)",
+      "closedOnMain": "b99f934b / reconfirmed 7f1dd3a2",
       "releaseBlocking": false
     }
   ],
-  "materialObservations": [],
-  "independentRetest": {
-    "total": 32,
-    "passed": 32,
-    "incorrectFavorable": 0,
-    "releaseBlockingCount": 0
+  "continuation": {
+    "artifact": "08-continuation-results.json",
+    "report": "09-continuation-accuracy-report.md",
+    "falseFavorableOnMain": 0,
+    "mutationDetectionRate": 1,
+    "pendingPrsTracked": [243, 213]
   }
 }
