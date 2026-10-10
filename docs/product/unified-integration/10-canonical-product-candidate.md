@@ -1,7 +1,8 @@
 # Canonical integrated product candidate
 
 **Branch:** `cursor/canonical-integrated-product-10ff`  
-**Tip:** `db5f1ef22f9f4def02253639167d62b7d28c6464`  
+**Functional tip:** `58ae735f28afd5f26bf48392ac3b1152dfb3e275` (code)  
+**Docs tip:** see branch HEAD / PR #253  
 **Base:** #250 tip `ac0ff925` (Stages 2–5 stacked on main `7f1dd3a2`)  
 **Auto-merge:** no · **Neon writes:** none · **Paid inference:** $0  
 
