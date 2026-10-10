@@ -1251,6 +1251,13 @@ export interface PostTransactionCapacitySimulation {
     solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC";
     solverIsFalseFavorable: boolean;
   };
+  /**
+   * Utilization-completeness authority for customer-facing remaining.
+   * LEGACY gross − amount and solver headroom without trusted completeness
+   * certificates are NEVER production-authoritative remaining. See
+   * lib/capacity/utilization-authority.ts / refuseAuthoritativeRemaining.
+   */
+  utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE" | "PRODUCTION_AUTHORITATIVE";
 }
 
 /**
@@ -1430,6 +1437,9 @@ export function computeRemainingCapacityAfterDebtIncurrence(
       solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC",
       solverIsFalseFavorable,
     },
+    // Live Position/dashboard remaining is modeled gross-contractual subtract —
+    // not utilization-completeness production-authoritative AVAILABLE.
+    utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
   };
 }
 
@@ -1962,8 +1972,20 @@ export interface LoadCompanySolverStaticOptions {
       sourceLabel: string;
       kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
       authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+      issuer?: {
+        role: "COUNSEL_REVIEWER" | "LEDGER_CUSTODIAN" | "SYSTEM_FIXTURE";
+        actorId: string;
+        attestedAt?: string;
+      };
     }
   >;
+  /**
+   * Trusted issuer authorization — required for currentUsageAuthoritative=true.
+   * Production identity-provider wiring is an activation requirement; omitting
+   * this fails closed (APPROVED cert alone never authorizes remaining).
+   */
+  /** Host must supply independently authenticated principals — never certificate blob roles. */
+  trustedIssuerAuth?: import("./capacity/completeness-issuer-auth").TrustedIssuerAuthorizationContext | null;
 }
 
 /**
@@ -2072,6 +2094,7 @@ export async function loadCompanySolverStaticData(
         })),
         basketUsage: options?.basketUsage ?? [],
         completenessCertificate: options?.completenessCertificatesByConstraintId?.[c.id] ?? null,
+        trustedIssuerAuth: options?.trustedIssuerAuth ?? null,
       });
       return {
         currentUsage: computed.usage,
@@ -2110,3 +2133,4 @@ export async function loadCompanySolverStaticData(
 
   return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
 }
+
