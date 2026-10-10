@@ -5,24 +5,30 @@
   "branch": "cursor/operative-restatement-authority-2670",
   "startingMainSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
   "featureCommitSha": "2dd7e6d785cc4bfc59ccd563b76a1cc40a29b4d2",
-  "tipShaBeforeCloseoutCommit": "b46048c6ddf6c13408a34bfa4a06f951aab4cdbc",
+  "priorReportedTipSha": "7db1c80a71a24ab7c16532187593d69b3e701f23",
+  "reconciledDocsTipSha": "dee2545ddb149983a39d961a2a862074dc2891b8",
+  "agent6MergeCommitSha": "3ad64aa220ab489cfe0eb609a91b55fad442e8f1",
+  "retrievalBindingCommitSha": "0dcb4a1766f83b7d83537d87c098b176096d4109",
   "tests": {
-    "command": "npx vitest run tests/operative-restatement-authority/",
-    "passed": 13,
-    "failed": 0
+    "command": "npx vitest run tests/operative-restatement-authority/ tests/contract-model/package-graph-pipeline.test.ts tests/contract-model/package-graph-real-evidence.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts tests/contract-model/offline-package-compile tests/contract-model/context-retrieval-body-anchor.test.ts tests/contract-model/context-retrieval-recursive-closure.test.ts",
+    "passed": 91,
+    "failed": 0,
+    "tipShaAtRun": "0dcb4a1766f83b7d83537d87c098b176096d4109"
   },
   "guardrails": [
     "NO_PACKAGE_GRAPH_EDGE_MUTATION",
     "NO_MANUFACTURED_CP_SATISFACTION",
     "NO_PAID_INFERENCE",
     "NO_PRODUCTION_NEON_WRITES",
-    "NO_SELF_MERGE"
+    "NO_SELF_MERGE",
+    "NO_SILENT_PROVISIONAL_IDENTITY_CONSOLIDATION",
+    "NO_PRODUCTION_AUTHORITY_FROM_CAVEATED_RESTATEMENT"
   ],
-  "endingTipSha": "7db1c80a71a24ab7c16532187593d69b3e701f23",
-  "note": "endingTipSha is the branch tip immediately before this metadata alignment commit; verify with git rev-parse origin/cursor/operative-restatement-authority-2670 after pull.",
-  "exactTipCi": "GREEN",
-  "ciNote": "All checks green on tip 7db1c80a (Vercel + certified path).",
+  "endingTipSha": "1d868a39e8cd3c15fefbfd3ebfbad12fd9695a1b",
+  "exactTipCi": "PENDING_POST_PUSH",
+  "ciNote": "Local tip regressions 91/91 + tsc green on 1d868a39; awaiting GitHub CI.",
   "integrationCommitSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
+  "headroom6Pr": "https://github.com/egsul897/headroom/pull/287",
   "legalAuthorityVerdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
   "reviewDisposition": "READY_FOR_FOCUSED_HUMAN_REVIEW",
   "mergeDisposition": "AWAITING_HUMAN_APPROVAL_BRANCH_PROTECTION",
@@ -33,5 +39,7 @@
     "Package-graph RESTATES remains REVIEW_REQUIRED \u2014 provisional identity blocks consolidation until trusted edge or confirmed membership upgrade",
     "CP satisfaction NOT_INDEPENDENTLY_PROVEN \u2014 cannot activate PRODUCTION_AUTHORITY_ACTIVE from caveated restatement",
     "Production capacity activation remains refused (financial/utilization gates separate)"
-  ]
+  ],
+  "retrievalBindingTipSha": "1d868a39e8cd3c15fefbfd3ebfbad12fd9695a1b",
+  "note": "Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId. endingTipSha is this closeout tip after alignment commits."
 }
